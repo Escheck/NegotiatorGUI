@@ -1,17 +1,20 @@
 package negotiator.issue;
 
-public class ValueInteger extends Value {
+public class ValueInteger implements Value {
 	
 	//	 Class fields
 	int value;
 	
 	// Constructor
-	public ValueInteger(ISSUETYPE type, int i) {
-		super(type);
+	public ValueInteger(int i) {
 		value = i;
 	}
 	
 	// Class methods
+	public ISSUETYPE getType() {
+		return ISSUETYPE.INTEGER;
+	}
+	
 	public int getValue() {
 		return value;
 	}
@@ -20,8 +23,16 @@ public class ValueInteger extends Value {
 		return Integer.toString(value);
 	}
 	
-	public boolean equals(ValueInteger val) {
-		return (type==val.getType() && value==val.getValue());
+	public boolean equals(Object pObject) {
+		if(pObject instanceof ValueInteger) {
+			ValueInteger val = (ValueInteger)pObject;
+			return  value==val.getValue();
+		} else 
+			if(pObject instanceof Integer){
+				int val = (Integer) pObject;
+				return value == val;
+			} else				
+			return false;
 	}
 
 }

@@ -11,20 +11,35 @@ package negotiator;
 
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueInteger;
+import negotiator.issue.ValueReal;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.UtilitySpace;
 
 /**
  *
- * @author dmytro
+ * @author Dmytro Tykhonov
+ * 
  */
 
+//TODO: Maybe move this class to negotiator.agents package?
 public class Agent {
     private     String          fName;
     protected   UtilitySpace    utilitySpace;
     private NegotiationTemplate fNT;
     
+    //TODO: Check if we realy need this declaration!
     // Some declarations for 'ease of use' when defining agents.
     public static final ISSUETYPE discrete = ISSUETYPE.DISCRETE;
+    public static final ISSUETYPE integer = ISSUETYPE.DISCRETE;
+    public static final ISSUETYPE real = ISSUETYPE.REAL;
+
     
     /** Creates a new instance of Agent */
     public Agent() {
@@ -63,21 +78,12 @@ public class Agent {
         return utilitySpace.getUtility(bid);
     }
     
+    public final Bid getMaxUtilityBid() {
+    	return utilitySpace.getMaxUtilityBid();
+    }
+    
     public final NegotiationTemplate getNegotiationTemplate() {
         return fNT;
-    }
-    
-    // Some declarations for 'ease of use' when defining agents.
-    public static Value makeValue(ISSUETYPE type, String s) {
-    	return Value.makeValue(type, s);
-    }
-    
-    public static Value makeValue(ISSUETYPE type, int i) {
-    	return Value.makeValue(type, i);
-    }
-    
-    public static Value makeValue(ISSUETYPE type, double r) {
-    	return Value.makeValue(type, r);
     }
     
 }

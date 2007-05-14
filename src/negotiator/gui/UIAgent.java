@@ -14,11 +14,11 @@ import javax.swing.JOptionPane;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationTemplate;
-import negotiator.UtilitySpace;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.utility.UtilitySpace;
 
 /**
  *

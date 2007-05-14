@@ -1,7 +1,7 @@
 <negotiation_template number_of_sessions="5">
-	<agent name="AgentA" class="negotiation.group0.SimpleAgent" utility_space="agent_a_space.xml"/>
-	<agent name="AgentB" class="negotiation.group0.SimpleAgent" utility_space="agent_b_space.xml"/>
-	<utility_space number_of_issue="3">
+	<agent name="AgentA" class="negotiator.agents.SimpleAgent" utility_space="agent_a_space.xml"/>
+	<agent name="AgentB" class="negotiator.agents.SimpleAgent" utility_space="agent_b_space.xml"/>
+	<utility_space number_of_issues="3">
 		<issue index="1" name="First Issue">
 			<item index="1" value="0"/>
 			<item index="2" value="100"/>

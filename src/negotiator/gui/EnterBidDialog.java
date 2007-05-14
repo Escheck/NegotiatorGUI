@@ -268,7 +268,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
                 for(int i=0;i<nt.getDomain().getNumberOfIssues();i++)
 //                    myBid[i] = myPreviousBid.getValueIndex(i);
                 	// Assume discrete-value issues only.
-                	myBid[i] = ((DiscreteIssue)nt.getDomain().getIssue(i)).getValueIndex(((ValueDiscrete)myPreviousBid.getValue(i)).getValue());
+                	myBid[i] = ((IssueDiscrete)nt.getDomain().getIssue(i)).getValueIndex(((ValueDiscrete)myPreviousBid.getValue(i)).getValue());
             else for(int i=0;i<nt.getDomain().getNumberOfIssues();i++) myBid[i] = -1;
             this.nt = nt;
         }
@@ -285,7 +285,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
             Object value = null;
             if(myBid[col]>=0)
             	// Assume discrete-valued issues only.
-                value = ((DiscreteIssue)nt.getDomain().getIssue(col)).getValue(myBid[col]);
+                value = ((IssueDiscrete)nt.getDomain().getIssue(col)).getValue(myBid[col]);
             else
                 value = new String("");
             return value;
@@ -302,8 +302,8 @@ public class EnterBidDialog extends javax.swing.JDialog {
             //Set up the editor for the sport cells.
             JComboBox comboBox = new JComboBox();
             // Assumption: Discrete-valued issues only
-            for (int i=0;i<((DiscreteIssue)issue).getNumberOfValues();i++) {
-                comboBox.addItem(((DiscreteIssue)issue).getValue(i));    
+            for (int i=0;i<((IssueDiscrete)issue).getNumberOfValues();i++) {
+                comboBox.addItem(((IssueDiscrete)issue).getValue(i));    
             }
             issueColumn.setCellEditor(new DefaultCellEditor(comboBox));
             
@@ -314,7 +314,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
             issueColumn.setCellRenderer(renderer);
         }
         public void setValueAt(Object value, int row, int col) {
-            myBid[col] = ((DiscreteIssue)nt.getDomain().getIssue(col)).getValueIndex(value.toString());
+            myBid[col] = ((IssueDiscrete)nt.getDomain().getIssue(col)).getValueIndex(value.toString());
             fireTableCellUpdated(row, col);
         }
         public Bid getMyBid() throws BidDoesNotExistInDomainException {
@@ -323,7 +323,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
 //                bid = nt.getDomain().makeBid(myBid);
             	Value[] values = new Value[myBid.length];
             	for (int i=0; i<myBid.length; i++) {
-            		values[i] = Value.makeValue(ISSUETYPE.DISCRETE, ((DiscreteIssue)nt.getDomain().getIssue(i)).getValue(myBid[i]));
+            		values[i] = (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i]));
             	}
             	bid = new Bid(nt.getDomain(), values);
 //            } catch (BidDoesNotExistInDomainException e) {

@@ -60,7 +60,6 @@ public class Negotiation implements Runnable {
     public void run() {
         ArrayList<Bid> lAgentABids = new ArrayList<Bid>();
         ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();;
-    	
         try {
             agentA.init(sessionNumber, sessionTotalNumber, nt);
             agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
@@ -127,12 +126,16 @@ public class Negotiation implements Runnable {
                        if(agent.equals(agentA)) {
                     	   if(action instanceof Offer) {
                     		   lAgentABids.add(((Offer)action).getBid());
+                    	   } if(action instanceof Accept) {
+                    		   lAgentABids.add(((Accept)action).getBid());
                     	   }
                     	   agent = agentB;
                        }
                        else{
                     	   if(action instanceof Offer) {
-                    		   lAgentABids.add(((Offer)action).getBid());
+                    		   lAgentBBids.add(((Offer)action).getBid());
+                    	   } if(action instanceof Accept) {
+                    		   lAgentBBids.add(((Accept)action).getBid());
                     	   }
                     	   agent = agentA;
                        }
@@ -140,8 +143,23 @@ public class Negotiation implements Runnable {
                    }
                  
                    //change agents
-                   if(agent.equals(agentA)) agent = agentB;
-                   else agent = agentA;
+                   if(agent.equals(agentA)) {
+                	   if(action instanceof Offer) {
+                		   lAgentABids.add(((Offer)action).getBid());
+                	   } if(action instanceof Accept) {
+                		   lAgentABids.add(((Accept)action).getBid());
+                	   }
+                	   agent = agentB;
+                   }
+                   else{
+                	   if(action instanceof Offer) {
+                		   lAgentBBids.add(((Offer)action).getBid());
+                	   } else if(action instanceof Accept) {
+                		   lAgentBBids.add(((Accept)action).getBid());
+                	   }
+                	   agent = agentA;
+                   }
+
                  
                 } catch(Exception e) {
                     if(e instanceof InterruptedException) {
@@ -151,27 +169,24 @@ public class Negotiation implements Runnable {
                                                    agentB.getClass().getCanonicalName(),
                                                     String.valueOf(0),
                                                     String.valueOf(0));
-                                
-                        
-                    } else {
-                    	
-                    	e.printStackTrace();
-
                     }
+                	e.printStackTrace();                    
                     System.exit(-1);
+                    
                 }
             }
         } catch (Exception e) {
                     if(e instanceof InterruptedException) {
                         Main.logger.add("Negotiation was interrupted!!!");
-                    } else e.printStackTrace();
+                    }    
+                    e.printStackTrace();
                     
                 
         }
         synchronized (Main.nm) {
             Main.nm.notify();
         }
-/*        double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
+        double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
         for(int i=0;i< lAgentABids.size();i++) {
         	lAgentAUtilities [i][0] = agentA.getUtility(lAgentABids.get(i));
@@ -184,7 +199,7 @@ public class Negotiation implements Runnable {
         
         Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
         Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-        */
+        Main.fChart.show();
         Main.logger.add("Session is finished");
         return;
     }

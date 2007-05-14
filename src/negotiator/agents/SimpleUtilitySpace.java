@@ -7,9 +7,10 @@
  * and open the template in the editor.
  */
 
-package negotiation.group0;
+package negotiator.agents;
 
 import negotiator.*;
+import negotiator.utility.UtilitySpace;
 
 /**
  *

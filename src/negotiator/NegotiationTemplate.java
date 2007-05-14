@@ -21,6 +21,14 @@ import javax.swing.JOptionPane;
 import negotiator.analysis.Analysis;
 import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.Value;
+import negotiator.issue.ValueInteger;
+import negotiator.issue.ValueReal;
+import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
@@ -99,24 +107,36 @@ public class NegotiationTemplate {
 			e.printStackTrace();
 		}
 	}
-    
 
 	protected void showAnalysis(){
-		Chart lChart = new Chart();
+		Chart lChart = new Chart();		
+/*		if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
+			fAnalysis.buildCompleteOutcomeSpace();*/
+		if(fAnalysis.isCompleteSpaceBuilt()) {
+			
+			double[][] lAllBids = new double[fAnalysis.getTotalNumberOfBids()][2];
+			for(int i=0;i<fAnalysis.getTotalNumberOfBids();i++) {
+				lAllBids[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getBidFromCompleteSpace(i));
+				lAllBids[i][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getBidFromCompleteSpace(i));
+			}
+			lChart.addCurve("All Outcomes", lAllBids);		
+	
+		}
+
 		double[][] lParetoPoints = new double[fAnalysis.getParetoCount()][2];
 		for(int i=0;i<fAnalysis.getParetoCount();i++) {
 			lParetoPoints[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getParetoBid(i));
 			lParetoPoints[i][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getParetoBid(i));
 		}
-///		lChart.addCurve("Pareto frontier", lParetoPoints);		
+		lChart.addCurve("Pareto frontier", lParetoPoints);		
 		double[][] lNash = new double[1][2];
-/*		lNash[0][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getNashProduct());
+		lNash[0][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getNashProduct());
 		lNash[0][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getNashProduct());		
 		lChart.addCurve("Nash product", lNash);
 		double[][] lKalaiSmorodinsky = new double[1][2];
 		lKalaiSmorodinsky[0][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getKalaiSmorodinsky());
 		lKalaiSmorodinsky[0][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getKalaiSmorodinsky());		
-		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);*/
+		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);
 		Main.fChart = lChart;
 		lChart.show();
 	}
@@ -169,6 +189,5 @@ public class NegotiationTemplate {
 	public UtilitySpace getAgentBUtilitySpace() {
 		return fAgentBUtilitySpace;
 	}
- 
 
 }

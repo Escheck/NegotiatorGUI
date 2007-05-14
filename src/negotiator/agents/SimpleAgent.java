@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package negotiation.group0;
+package negotiator.agents;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +29,7 @@ public class SimpleAgent extends Agent{
     private int[] myPreviousBidIndex;
     private Bid myPreviousBid;
     private static final double BREAK_OFF_POINT = 0.5;
-    
+ 
     /** Creates a new instance of MyAgent */
 
     public SimpleAgent() {
@@ -44,7 +44,7 @@ public class SimpleAgent extends Agent{
         actionOfPartner = null;
         myPreviousBid = null;
         return;
-    }    
+    }
 
     @Override
 	public void ReceiveMessage(Action opponentAction) {
@@ -53,16 +53,35 @@ public class SimpleAgent extends Agent{
     }
     
     private Bid getNextBid() {
-        Value[] values = new ValueDiscrete[getNegotiationTemplate().getDomain().getNumberOfIssues()];       
+        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];       
         for(int i=0;i<getNegotiationTemplate().getDomain().getNumberOfIssues();i++) {
-        	// Assume that all issues are discrete-valued
-        	DiscreteIssue issue = (DiscreteIssue)getNegotiationTemplate().getDomain().getIssue(i);
-            int numberOfOptions = issue.getNumberOfValues()-1; //do not include "unspecified"
-            int optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
-            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
-            System.out.println(optionIndex);
-            values[i]= makeValue(discrete, issue.getValue(optionIndex));
-        }
+        	Issue lIssue = getNegotiationTemplate().getDomain().getIssue(i);        	
+			switch(lIssue.getType()) {
+			case INTEGER:
+	            int numberOfOptions = 
+	            	((IssueInteger)lIssue).getUpperBound()- 
+	            	((IssueInteger)lIssue).getLowerBound()+1; //do not include "unspecified"
+	            int optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
+	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
+	            System.out.println(optionIndex);
+	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex);
+			case REAL: 
+				IssueReal lIssueReal =(IssueReal)lIssue;
+				double lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lIssueReal.getNumberOfDiscretizationSteps();
+	            numberOfOptions =lIssueReal.getNumberOfDiscretizationSteps();
+	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
+	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
+				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex);
+				break;
+			case DISCRETE:
+				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
+	            numberOfOptions =lIssueDiscrete.getNumberOfValues();
+	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
+	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
+				values[i]= lIssueDiscrete.getValue(optionIndex);
+				break;
+			}// switch
+		}//for
         return new Bid(getNegotiationTemplate().getDomain(),values);
     }
     

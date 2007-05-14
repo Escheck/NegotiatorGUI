@@ -7,8 +7,6 @@
 
 package negotiator.issue;
 
-import negotiator.exceptions.ValueTypeError;
-
 /**
  *
  * @author Koen Hindriks
@@ -19,14 +17,12 @@ public class Issue {
     
     // Class fields
 	private String name;
-	private ISSUETYPE type;
 	int issueNumber;
     
     // Constructor
-    public Issue(String name, int issueNumber, ISSUETYPE issueType) {
+    public Issue(String name, int issueNumber) {
         this.name = name;
         this.issueNumber = issueNumber;
-        this.type = issueType;
     }
     
     // Class methods
@@ -35,28 +31,50 @@ public class Issue {
     }
     
     public ISSUETYPE getType() {
-    	return type;
+    	if (this instanceof IssueDiscrete)
+    		return ISSUETYPE.DISCRETE;
+// TODO: Remove.
+//    	else if (this instanceof IssueDiscreteWCost)
+//    		return ISSUETYPE.DISCRETEWCOST;
+    	else if (this instanceof IssueInteger)
+    		return ISSUETYPE.INTEGER;
+    	else if (this instanceof IssueReal)
+    		return ISSUETYPE.REAL;
+// TODO: Remove.
+//    	else if (this instanceof IssuePrice)
+//    		return ISSUETYPE.PRICE;
+    	else return null;
+    }
+	//
+    /**
+     * Converts ISSUETYPE enumeration to a string. Reverse functiong for 
+     * convertToType method. Used to save issue to XML file.
+     * 
+     * Remark: Added by Dmytro on 09/05/2007 
+     * 
+     * @param pType - issue type
+     * @return corresponding string representation
+     */
+    public static String convertToString(ISSUETYPE pType) {
+    	//If typeString is null for some reason (i.e. not spceified in the XML template
+    	// then we assume that we have DISCRETE type
+    	switch(pType) {
+    	case DISCRETE:
+    		return "discrete";
+// TODO: Remove    		
+//    	case PRICE:
+//    		return "price";		
+    	case INTEGER:
+    		return "integer";		
+    	case REAL:
+    		return "real";	
+    	default: return "";
+    	}
+       	// TODO: Define corresponding exception.
+
     }
     
-    public static ISSUETYPE convertToType(String typeString) {
-    	if (typeString.equalsIgnoreCase("price"))
-        	return ISSUETYPE.PRICE;
-        else if (typeString.equalsIgnoreCase("integer"))
-        	return ISSUETYPE.INTEGER;
-        else if (typeString.equalsIgnoreCase("real"))
-        	return ISSUETYPE.REAL;
-        else if (typeString.equalsIgnoreCase("discrete"))
-        	return ISSUETYPE.DISCRETE;
-        else {
-        	// Type specified incorrectly!
-        	System.out.println("Type specified incorrectly.");
-        	// For now return DISCRETE type.
-        	return ISSUETYPE.DISCRETE;
-        	// TO DO: Define corresponding exception.
-        }
-    }
-    
-    public boolean checkInRange(Value val) throws ValueTypeError {
+    public boolean checkInRange(Value val) {
     	return false;
     }
     
@@ -69,7 +87,7 @@ public class Issue {
 		
 		// Constructor
 		public RangeInt(int min, int max) {
-			if (min<max)
+			if (min>max)
 				System.out.println("Lower bound in real range exceeds upper bound!");
 				// TO DO: Define exception.
 			if (min==max) // issue warning.
@@ -97,7 +115,7 @@ public class Issue {
 		
 		// Constructor
 		protected RangeReal(double min, double max) {
-			if (min<max)
+			if (min>max)
 				System.out.println("Lower bound in real range exceeds upper bound!");
 				// TO DO: Define exception.
 			if (min==max) // issue warning.

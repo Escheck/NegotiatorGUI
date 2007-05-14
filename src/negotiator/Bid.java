@@ -11,8 +11,11 @@ package negotiator;
 
 // import negotiator.xml.SimpleElement;
 import negotiator.exceptions.BidDoesNotExistInDomainException;
-import negotiator.exceptions.ValueTypeError;
+import negotiator.issue.Issue;
 import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueInteger;
+import negotiator.issue.ValueReal;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -36,12 +39,10 @@ public final class Bid {
         try {
         	if (pValues.length!=nrOfIssues)
         		throw new BidDoesNotExistInDomainException();
-            for(int i=0; i<nrOfIssues; i++) {
+        	//FIXME: DT: I am not sure if this check has sense now...Does it?
+/*            for(int i=0; i<nrOfIssues; i++) {
                 if(!fDomain.getIssue(i).checkInRange(pValues[i]))
-                	throw new BidDoesNotExistInDomainException();
-            }
-        } catch(ValueTypeError e) {
-            System.out.println("Values do not match value type.");
+                	throw new BidDoesNotExistInDomainException();*/            
         } catch(BidDoesNotExistInDomainException e) {
             System.out.println("Bid not within domain range.");
         }
@@ -64,7 +65,13 @@ public final class Bid {
     public Value getValue(int issueIndex) {
         return fValues[issueIndex];
     }
-    
+    public void setValue(int issueIdex, Value pValue) {
+    	if(fValues[issueIdex].getType()==pValue.getType()) {
+    		fValues[issueIdex] = pValue;
+    	} /* TODO Throw an excpetion.
+    	else
+    		throw new BidDoesNotExistInDomainException();*/
+    }
     public String toString() {
         String s = "<< Bid = \n";
         for(int i=0;i<fValues.length;i++)
@@ -92,31 +99,87 @@ public final class Bid {
 //    	return result;
 //    }
     // TODO re-do the save/load XML for bids
-/*    public Bid(Domain pDomain, SimpleElement pXMLBid) {
+    public Bid(Domain pDomain, SimpleElement pXMLBid) {
     	fDomain = pDomain;
-    	fValuesIndexes = new int[pDomain.getNumberOfIssues()];
-    	Object[] lXMLIssues = (pXMLBid.getChildByTagName("issues"));
-    	for(int i=0;i<lXMLIssues.length;i++) {   		
-    		SimpleElement lXMLItem = 
-    			(SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("item"))[0];
-    		fValuesIndexes[Integer.valueOf(((SimpleElement)lXMLIssues[i]).getAttribute("index"))-1] = 
-    			Integer.valueOf(lXMLItem.getAttribute("index"));    		
+    	fValues = new Value[pDomain.getNumberOfIssues()];
+    	//fValuesIndexes = new int[pDomain.getNumberOfIssues()];
+    	Object[] lXMLIssues = (pXMLBid.getChildByTagName("issue"));
+    	Value lValue = null;
+    	SimpleElement lXMLItem;
+    	String lTmp ;
+    	for(int i=0;i<lXMLIssues.length;i++) { 
+    		switch(fDomain.getIssue(i).getType()) {
+    		case DISCRETE:
+    			lXMLItem = 
+    				(SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("item"))[0];
+    			lTmp = lXMLItem.getAttribute("value");
+//    			fValuesIndexes[Integer.valueOf(((SimpleElement)lXMLIssues[i]).getAttribute("index"))-1] = 
+//    				Integer.valueOf();
+    			lValue = new ValueDiscrete(lTmp);
+    			break;
+    		case INTEGER:
+    			lXMLItem = 
+    				(SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("value"))[0];
+    			lTmp = lXMLItem.getText();
+    			lValue = new ValueInteger(Integer.valueOf(lTmp));
+    			break;
+    			
+//    		case PRICE:
+//    			lXMLItem = 
+//    				(SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("value"))[0];
+//    			lTmp = lXMLItem.getText();
+//    			lValue = new ValuePrice(Double.valueOf(lTmp));
+//    			break;
+    		case REAL:
+    			lXMLItem = 
+    				(SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("value"))[0];
+    			lTmp = lXMLItem.getText();
+    			lValue = new ValueReal(Double.valueOf(lTmp));
+    			break;
+    			
+        		//TODO:COMPLETED: DT implement Bid(Domain, SimpleElement) in Bid for the rest of the issue/value types
+    			//TODO: DT add bid validation w.r.t. Domain, throw an exception BidDoesNotExist 
+    		}//switch
+    		fValues[i] = lValue;
     	}
     }
     
-    
     public SimpleElement toXML() {
     	SimpleElement lXMLBid = new SimpleElement("bid");
-    	for(int i=0;i<fValuesIndexes.length;i++) {
+    	for(int i=0;i<fValues.length;i++) {
     		SimpleElement lXMLIssue = new SimpleElement("issue");
+    		lXMLIssue.setAttribute("type", Issue.convertToString(fDomain.getIssue(i).getType()));
     		lXMLIssue.setAttribute("index", String.valueOf(i+1));
     		lXMLBid.addChildElement(lXMLIssue);
-    		SimpleElement lXMLItem = new SimpleElement("item");
-    		lXMLItem.setAttribute("index", String.valueOf(fValuesIndexes[i]+1));
+    		SimpleElement lXMLItem=null;
+    		
+    		switch(fValues[i].getType()) {
+    		case DISCRETE:
+    			ValueDiscrete lDiscVal = (ValueDiscrete)(fValues[i]);    			
+        		lXMLItem = new SimpleElement("item");
+        		lXMLItem.setAttribute("value", lDiscVal.getValue());
+        		break;
+        		//TODO: COMPLETE DT implement toXML method in Bid for the rest of the issue/value types
+    		case INTEGER:
+    			ValueInteger lIntVal = (ValueInteger)(fValues[i]);    			
+        		lXMLItem = new SimpleElement("value");
+        		lXMLItem.setText(String.valueOf(lIntVal.getValue()));
+        		break;
+    		case REAL:
+    			ValueReal lRealVal = (ValueReal)(fValues[i]);    			
+        		lXMLItem = new SimpleElement("value");
+        		lXMLItem.setText(String.valueOf(lRealVal.getValue()));
+        		break;
+//    		case PRICE:
+//    			ValueReal lPriceVal = (ValueReal)(fValues[i]);    			
+//        		lXMLValue = new SimpleElement("value");
+//        		lXMLValue.setText(String.valueOf(lPriceVal.getValue()));
+//        		break;
+    		}
     		lXMLIssue.addChildElement(lXMLItem);
     	}
     	return lXMLBid;
-    }*/
+    }
     //TODO can we save indexes to Strings?
 /*    public String indexesToString() {
     	String result ="";

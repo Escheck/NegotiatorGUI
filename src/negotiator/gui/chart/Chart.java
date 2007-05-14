@@ -29,13 +29,13 @@ public class Chart {
 		fFrame = new JFrame();
 		fFrame.setSize(300,300);
 
-		
+
 		fFrame.setLayout(new BorderLayout());
 		fFrame.add(fPlotCanvas.getGraphicsCanvas(), BorderLayout.CENTER);
 //		fFrame.add(createControlPanel(), BorderLayout.SOUTH);
 	}
-	
-	
+
+
 	private GraphicsPlotCanvas createPlotCanvas() {
 		Properties props = new Properties();
 		ConfigParameters config
@@ -49,29 +49,73 @@ public class Chart {
 		props.put("plot/coordinateSystem/yAxis/minimum", "0");
 		props.put("plot/coordinateSystem/yAxis/maximum", "1");
 		props.put("plot/coordinateSystem/yAxis/ticLabelFormat", "%.1f%");
-		props.put("plot/curveFactory/definitions", "curve");
-		props.put("plot/curveFactory/curve/withLine", "false");
-		props.put("plot/curveFactory/curve/symbolFactory/className", 
-		"jcckit.plot.BarFactory");
-		props.put("plot/curveFactory/curve/symbolFactory/attributes/className", 
-		"jcckit.graphic.ShapeAttributes");
-		props.put("plot/curveFactory/curve/symbolFactory/attributes/fillColor", 
-		"0xfe8000");
-		props.put("plot/curveFactory/curve/symbolFactory/attributes/lineColor", 
-		"0");
-		props.put("plot/curveFactory/curve/symbolFactory/size", "0.08");
-		props.put("plot/initialHintForNextCurve/className", 
-		"jcckit.plot.PositionHint");
-		props.put("plot/initialHintForNextCurve/position", "0 0.1");
-
+		props.put("plot/curveFactory/definitions" , "def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
+		props.put("plot/curveFactory/def1/initialHintForNextPoint/className",
+		"jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def1/initialHintForNextPoint/initialAttributes/fillColor", 
+		"0x50a");
+//		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
+//		"0.0 0.0 0.018");
+		props.put("plot/curveFactory/def1/withLine", "false");
+		props.put("plot/curveFactory/def1/symbolFactory/className", 
+		"jcckit.plot.CircleSymbolFactory");
+		props.put("plot/curveFactory/def1/symbolFactory/size", "0.007");
+		
+		//Pareto
+		props.put("plot/curveFactory/def2/", "defaultDefinition/");
+		props.put("plot/curveFactory/def2/symbolFactory/className" , "jcckit.plot.CircleSymbolFactory");
+		props.put("plot/curveFactory/def2/symbolFactory/size", "0.001");		
+		props.put("plot/curveFactory/def2/withLine", "true");
+		props.put("plot/curveFactory/def2/symbolFactory/attributes/fillColor", "0x8000");
+		props.put("plot/curveFactory/def2/symbolFactory/attributes/lineColor" , "");
+		
+		//Nash
+		
+		props.put("plot/curveFactory/def3/initialHintForNextPoint/className",
+		"jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def3/initialHintForNextPoint/initialAttributes/fillColor", 
+		"0x00FF00");
+//		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
+//		"0.0 0.0 0.018");
+		props.put("plot/curveFactory/def3/withLine", "false");
+		props.put("plot/curveFactory/def3/symbolFactory/className", 
+		"jcckit.plot.SquareSymbolFactory");
+		
+		props.put("plot/curveFactory/def3/symbolFactory/size", "0.007");
+		//Kalai
+		props.put("plot/curveFactory/def4/initialHintForNextPoint/className",
+		"jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def4/initialHintForNextPoint/initialAttributes/fillColor", 
+		"0xFF0000");
+//		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
+//		"0.0 0.0 0.018");
+		props.put("plot/curveFactory/def4/withLine", "false");
+		props.put("plot/curveFactory/def4/symbolFactory/className", 
+		"jcckit.plot.SquareSymbolFactory");
+		
+		props.put("plot/curveFactory/def4/symbolFactory/size", "0.007");
+		//Negotiation paths
+		props.put("plot/curveFactory/def5/", "defaultDefinition/");
+		props.put("plot/curveFactory/def6/", "defaultDefinition/");		  
+		props.put("plot/curveFactory/def7/", "defaultDefinition/");
+		props.put("plot/curveFactory/def8/", "defaultDefinition/");
+		props.put("plot/curveFactory/def9/", "defaultDefinition/");
+		props.put("plot/curveFactory/def10/", "defaultDefinition/");
+		props.put("plot/curveFactory/def11/", "defaultDefinition/");
+		props.put("plot/curveFactory/def12/", "defaultDefinition/");
+		props.put("plot/curveFactory/def13/", "defaultDefinition/");
+		props.put("plot/curveFactory/def14/", "defaultDefinition/");
+		props.put("plot/curveFactory/def15/", "defaultDefinition/");
 		return new GraphicsPlotCanvas(config);
 	}
 	public void addCurve(String pCurveName, double[][] pValues) {
 		try {
 			DataCurve curve = new DataCurve(pCurveName);
+			
 			for(int i=0; i<pValues.length;i++)
 				curve.addElement(new DataPoint(pValues[i][0],pValues[i][1]));
 			fDataPlot.addElement(curve);
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

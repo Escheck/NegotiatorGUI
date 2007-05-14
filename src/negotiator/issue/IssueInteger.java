@@ -1,14 +1,12 @@
 package negotiator.issue;
 
-import negotiator.exceptions.ValueTypeError;
-
 /**
 *
 * @author Koen Hindriks
 * 
 */
 
-public class IntegerIssue extends Issue {
+public class IssueInteger extends Issue {
 	
 	// Class fields
 	// Assumption 1: integer-valued issues have a fixed range, with a lower and upper bound.
@@ -17,20 +15,24 @@ public class IntegerIssue extends Issue {
 	RangeInt range;
 	
 	// Constructor
-	public IntegerIssue(String name, int issueNumber, ISSUETYPE issueType, int min, int max) {
-		super(name, issueNumber, issueType);
-		if (issueType!=ISSUETYPE.INTEGER)
-			System.out.println("Issue has wrong type!"); // TO DO: Define excecption.
+	public IssueInteger(String name, int issueNumber, int min, int max) {
+		super(name, issueNumber);
 		if (min>max)
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
 		range = new RangeInt(min, max);
 	}
 	
 	// Class method
-	public boolean checkInRange(Value val) throws ValueTypeError {
-		if (val instanceof ValueInteger)
+	public boolean checkInRange(ValueInteger val) {
 			return ( ((ValueInteger)val).getValue() >= range.getLowerBound() && ((ValueInteger)val).getValue() <= range.getUpperBound());
-		else throw new ValueTypeError();
+	}
+	
+	public final int getLowerBound() {
+		return range.getLowerBound();
+	}
+	
+	public final int getUpperBound() {
+		return range.getUpperBound();
 	}
 	
 }

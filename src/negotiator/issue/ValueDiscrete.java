@@ -1,38 +1,46 @@
 package negotiator.issue;
 
-import com.sun.org.omg.SendingContext.CodeBasePackage.ValueDescSeqHelper;
-
-public class ValueDiscrete extends Value {
+public class ValueDiscrete extends Object implements Value {
 
 	// Class fields
 	String value;
 	
 	// Constructor
-	//TODO Remove ISSUETYPE
-	public ValueDiscrete(ISSUETYPE type, String s) {
-		super(type);
+	public ValueDiscrete(String s) {
 		value = s;
 	}
 	
 	// Class methods
+	public final ISSUETYPE getType() {
+		return ISSUETYPE.DISCRETE;
+	}
+	
 	public String getValue() {
 		return value;
 	}
-	
+		
 	public String getStringValue() {
 		return value;
 	}
-	
-	public boolean equals(Object pObject) {
-		if(pObject instanceof ValueDiscrete) {
-			ValueDiscrete val = (ValueDiscrete)pObject;
-			return (type==val.getType() && value==val.getValue());
-		} else 
-			if(pObject instanceof String ){
-				String val = (String) pObject;
+
+	@Override
+	public int hashCode() {
+		return value.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+    	if(obj instanceof ValueDiscrete) {
+			ValueDiscrete val = (ValueDiscrete)obj;
+			return value.equals(val.getValue());
+		} else
+			if(obj instanceof String){
+				String val = (String) obj;
 				return (value.equals(val));
 			} else				
 			return false;
+		
 	}
+	
 	
 }

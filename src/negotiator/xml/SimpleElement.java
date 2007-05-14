@@ -80,13 +80,15 @@ public class SimpleElement {
             	
             	lResult +=" "+lAttrName+"=\"" +lAttrValue+"\"";
             }
-            lResult +=">";
+            lResult +="> \n";
             //save all children
             for(int i=0;i<childElements.size();i++) {
             	SimpleElement lSE = (SimpleElement)getChildElements()[i];
             	lResult += lSE.toString();
             }
-            lResult +="</" + tagName+">";
+            if(text!=null) {
+            	lResult += text+" \n";}
+            lResult +="</" + tagName+"> \n";
         	
         	return lResult;
         }

@@ -18,8 +18,11 @@ import java.io.IOException;
 import negotiator.gui.SessionFrame;
 /**
  *
- * @author Dell D600
+ * @author Dmytro Tykhonov
  */
+
+// TODO: Make negotiation environment more robust.
+
 public class NegotiationManager implements Runnable {
     private Thread negoThread = null;
     private Agent agentA; 
@@ -48,6 +51,8 @@ public class NegotiationManager implements Runnable {
         Main.logger.add("Loading agents...");
         agentA = null;
         agentB = null;
+        
+        // TODO: load reservation value somewhere if present in utility template file.
         try {
             java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
             agentA = (Agent)(loaderA.loadClass(agentAclassName/*"agentexample.MyAgent"*/).newInstance());
@@ -90,24 +95,25 @@ public class NegotiationManager implements Runnable {
     }
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) {
         Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber);
-        negoThread = new Thread(nego);
-        negoThread.start();
-        try {
-             synchronized (this) {
-            	 if(Main.isDebug()) 
-            		 wait(NEGOTIATION_TIMOUT*1000);
-            	 else
-            		 wait(NEGOTIATION_TIMOUT*1000000);
-             }
-        } catch (InterruptedException ie) {
+        if(Main.fDebug) {
+        	nego.run();	
+        } else {
+        	negoThread = new Thread(nego);
+        	negoThread.start();
+        	try {
+        		synchronized (this) {
+        				wait(NEGOTIATION_TIMOUT*1000);
+        		}
+        	} catch (InterruptedException ie) {
             
-        }
+        	}
         
-        if (negoThread.isAlive()) {
-            try {
-                negoThread.stop();
-            } catch (Exception e) {
-            }
+        	if (negoThread.isAlive()) {
+        		try {
+        			negoThread.stop();
+        		} catch (Exception e) {
+        		}
+        	}
         }
         NegotiationOutcome no = null;
         if(nego.no!=null) no = nego.no;
