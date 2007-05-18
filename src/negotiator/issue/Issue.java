@@ -25,6 +25,12 @@ public class Issue extends Objective {
         this.issueNumber = issueNumber;
     }
     
+    public Issue (String name, int issueNumber, Objective parent) {
+    	super(parent);
+    	this.name = name;
+    	this.issueNumber = issueNumber;
+    }
+    
     // Class methods
     public String getName() {
         return name;
