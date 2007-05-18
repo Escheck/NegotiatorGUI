@@ -30,6 +30,11 @@ public class Objective implements MutableTreeNode{
 		this.parent = parent;
 	}
 	
+	public Objective(Objective parent, String name) {
+		this.parent = parent;
+		this.name = name;
+	}
+	
 	//Methods
 	
 	/**
@@ -103,6 +108,17 @@ public class Objective implements MutableTreeNode{
 	 */
 	public boolean isIssue() {
 		return (this instanceof Issue);
+	}
+	
+	/**
+	 * Adds a child to this Objective. The new child must be an Objective or an issue. The child is messaged
+	 * to set it's parent to the receiver.
+	 * 
+	 * @param newObjective a child to be added to this Objective.
+	 */
+	public void addChild(Objective newObjective) {
+		children.add(newObjective);
+		newObjective.setParent(this);
 	}
 	
 	//Methods from the TreeNode interface
