@@ -23,6 +23,7 @@ public class Domain {
 	// Class fields
     private int fNumberOfIssues;
     private Issue fIssues[];
+    private Objective fObjectivesRoot;
     
     // Constructor
     public Domain(SimpleElement root) {
@@ -128,6 +129,144 @@ public class Domain {
             }
             fIssues[i] = issue;
         }
+    }
+    // Function to load the tree from an xml file. The actual loading of the file is done
+    // by the SimpleDOMParser. 
+    private final void loadTreeFromXML(SimpleElement pRoot){
+    	//SimpleElement root contains a LinkedList with SimpleElements.
+    	/*
+    	 * Structure of the file:
+    	 * 
+    	 * The root SimpleElement contains the root objective of the tree, with a number of objective
+    	 * as tagnames.
+    	 * 
+    	 * 
+    	 */    	
+        Objective objAlmostRoot = new Objective();
+        //set objAlmostRoot attributes based on pRoot
+        
+        fObjectivesRoot = buildTreeRecursive(pRoot, objAlmostRoot); //the 2nd parameter is the returnvalue.
+    	
+        
+    } 
+    
+    private final Objective buildTreeRecursive(SimpleElement currentLevelRoot, Objective currentParent){
+    	String s = currentLevelRoot.getAttribute("number_of_children");
+    	Integer sint = new Integer(s);
+    	int sintint = sint; //Check of this cast works!
+    	
+    	Object[] currentLevelObjectives = currentLevelRoot.getChildByTagName("Objective");
+    	Object[] currentLevelIssues = currentLevelRoot.getChildByTagName("Issue");
+    	for(int i =0; i < currentLevelObjectives.length; i++){
+       			SimpleElement childObjectives = (SimpleElement)currentLevelObjectives[i];
+    			Objective child = new Objective(currentParent);
+    			//Set child attributes based on childObjectives.
+    			child.setName(childObjectives.getAttribute("name"));
+    			child.setDescription(childObjectives.getAttribute("description"));
+    			Double weight = new Double(childObjectives.getAttribute("weight")); //TODO check if weigth is the same things as value!
+    			child.setWeight(weight.doubleValue()); 
+    			
+    			currentParent.addChild(buildTreeRecursive(childObjectives, child));
+   
+    		
+    	}
+    	
+    	for(int j = 0; j < currentLevelIssues.length; j++){
+    		Issue child;
+    		
+    		SimpleElement childIssues = (SimpleElement)currentLevelIssues[j];
+    		//check type of issue
+    		String name;
+    		int index;
+    		
+//    		 Collect issue value type from XML file.
+            String type = childIssues.getAttribute("type");
+            String vtype = childIssues.getAttribute("vtype");
+            ISSUETYPE issueType;
+            if (type==vtype) {
+            	if (type==null) { // No value type specified.
+            		System.out.println("Type not specified in template file.");
+                	issueType = ISSUETYPE.DISCRETE;
+            	} else { // Both "type" as well as "vtype" attribute, but consistent.
+            		issueType = ISSUETYPE.convertToType(type);
+            	}
+            } else if (vtype!=null && type==null) {
+            	issueType = ISSUETYPE.convertToType(vtype);
+            } else if (type!=null && vtype==null) { // Used label "type" instead of label "vtype".
+            	issueType = ISSUETYPE.convertToType(type);
+            } else {
+            	System.out.println("Conflicting value types specified for issue in template file.");
+            	// TODO: Define exception.
+            	// For now: use "type" label.
+            	issueType = ISSUETYPE.convertToType(type);
+            }
+            
+            
+//          Collect values and/or corresponding parameters for issue type.
+            Object[] xml_items;
+            Object[] xml_item;
+            int nrOfItems, minI, maxI;
+            double minR, maxR;
+            String[] values;
+            Issue issue;
+            switch(issueType) {
+            case DISCRETE:
+            	// Collect discrete values for discrete-valued issue from xml template
+            	xml_items = childIssues.getChildByTagName("item");
+                nrOfItems = xml_items.length;
+                values = new String[nrOfItems];
+                for(int j=0;j<nrOfItems;j++) {
+                	// TODO: check range of indexes.
+                    index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
+                    values[index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
+                }
+                issue = new IssueDiscrete(name, index, values, currentParent);
+            	break;
+            case INTEGER:
+            	// Collect range bounds for integer-valued issue from xml template
+            	xml_item = childIssues.getChildByTagName("range");
+            	minI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
+            	maxI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
+            	issue = new IssueInteger(name, index, minI, maxI, currentParent);
+            	break;
+            case REAL:
+            	// Collect range bounds for integer-valued issue from xml template
+            	xml_item = childIssues.getChildByTagName("range");
+            	minR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
+            	maxR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
+            	issue = new IssueReal(name, index, minR, maxR);
+            	break;
+ // Issue values cannot be of type "price" anymore... TODO: Remove when everything works.
+ //           case PRICE:
+ //           	// Collect range bounds for integer-valued issue from xml template
+ //           	xml_item = childIssues.getChildByTagName("range");
+ //           	minR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("lowerbound"));
+ //           	maxR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("upperbound"));
+ //           	issue = new IssuePrice(name, index, minR, maxR);
+ //           	break;
+            default: // By default, create discrete-valued issue
+            	// Collect discrete values for discrete-valued issue from xml template
+            	xml_items = childIssues.getChildByTagName("item");
+                nrOfItems = xml_items.length;
+                values = new String[nrOfItems];
+                for(int j=0;j<nrOfItems;j++) {
+                    int item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
+                    values[item_index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
+                }
+            	issue = new IssueDiscrete(name, index, values, currentParent);
+            	break;
+            }
+    		    		
+//    		create new issue, fill attributes based on childIssues
+            child.setDescription(childIssues.getAttribute("name"));
+    		child.setDescription(childIssues.getAttribute("description"));
+    		Double weight = new Double(childIssues.getAttribute("weight"));
+    		child.setWeight(weight.doubleValue());
+    		
+    		currentParent.addChild(child);
+       	}
+    	
+    	return currentParent;
     }
     
 	// KH 070511: Moved to here since it is generic method that can be made available to all agents.
