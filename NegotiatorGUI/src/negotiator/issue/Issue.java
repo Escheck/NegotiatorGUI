@@ -16,25 +16,21 @@ package negotiator.issue;
 public class Issue extends Objective {
     
     // Class fields
-	private String name;
-	int issueNumber;
+	//private String name;
+	//int issueNumber;
+	//
+	//Modified by Richard
     
     // Constructor
     public Issue(String name, int issueNumber) {
-        this.name = name;
-        this.issueNumber = issueNumber;
+        super(null, name, issueNumber);
     }
     
     public Issue (String name, int issueNumber, Objective parent) {
-    	super(parent);
-    	this.name = name;
-    	this.issueNumber = issueNumber;
+    	super(parent, name, issueNumber);
     }
     
     // Class methods
-    public String getName() {
-        return name;
-    }
     
     public ISSUETYPE getType() {
     	if (this instanceof IssueDiscrete)

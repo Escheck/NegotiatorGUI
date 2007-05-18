@@ -61,6 +61,20 @@ public class Objective implements MutableTreeNode{
 	}
 	
 	/**
+	 * @return the number of this Objective / Issue.
+	 */
+	public int getNumber() {
+		return number;
+	}
+	
+	/**
+	 * Sets the number of this Objective / Issue.
+	 */
+	public void setNumber(int nr) {
+		number = nr;
+	}
+	
+	/**
 	 * 
 	 * @return the weight associated with this node.
 	 */
@@ -104,14 +118,15 @@ public class Objective implements MutableTreeNode{
 	//public void setUserObject -> see Methods from MutableTreeNode interface 
 	
 	/**
-	 * @return true if and only if this node is of the Objective type.
+	 * @return true if and only if this node is of the Objective type, but not of the Issue type. This is
+	 * implemented by looking if the receiver is instanceof Objective, but not instanceof Issue.
 	 */
 	public boolean isObjective() {
-		return (this instanceof Objective);
+		return ((this instanceof Objective) && !(this instanceof Issue));
 	}
 	
 	/**
-	 * @return true if and only if this node is of the Issue type.
+	 * @return true if and only if this node is of the Issue type. It is implemented with instanceof Issue.
 	 */
 	public boolean isIssue() {
 		return (this instanceof Issue);
@@ -129,6 +144,26 @@ public class Objective implements MutableTreeNode{
 	}
 	
 	/**
+	 * This method does a recursive depth-first search on the subtree that is rooted at the receiver, and returns
+	 *  the first Objective or Issue with the given number. If there is no matching node found, null is returned.
+	 * @param objectiveNr the Objective/Issue number that is being searched for.
+	 * @return the Objective/Issue with the given number, or null if the requested Objective/Issue is nog found
+	 * in the subtree that is rooted at the receiver.
+	 */
+	public Objective getObjective(int objectiveNr) {
+		if (getNumber() == objectiveNr)
+			return this;
+		
+		Enumeration<Objective> descendants = children();
+		while (descendants.hasMoreElements()) {
+			Objective obj = descendants.nextElement().getObjective(objectiveNr);
+			if (obj != null)
+				return obj;
+		}
+		return null;
+	}
+	
+	/**
 	 * @return the name of this Objective.
 	 */
 	public String toString() {
@@ -140,7 +175,7 @@ public class Objective implements MutableTreeNode{
 	/**
 	 * @return an Enumeration of this Objective's children.
 	 */
-	public Enumeration children() {
+	public Enumeration<Objective> children() {
 		return children.elements();
 	}
 
@@ -190,7 +225,7 @@ public class Objective implements MutableTreeNode{
 	 * @return is the receiving node is a leaf node. A Objective is a leaf node when it is of the ISSUE type.
 	 */
 	public boolean isLeaf() {
-		return (this instanceof Issue);
+		return isIssue();
 	}
 
 	//Methods from the MutableTreeNode interface
