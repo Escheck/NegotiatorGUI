@@ -13,7 +13,7 @@ package negotiator.issue;
  * 
  */
 
-public class Issue {
+public class Issue extends Objective {
     
     // Class fields
 	private String name;
