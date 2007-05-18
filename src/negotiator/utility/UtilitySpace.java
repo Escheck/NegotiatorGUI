@@ -54,6 +54,11 @@ public class UtilitySpace {
     public final Evaluator getEvaluator(int index) {
     	Issue issue = domain.getIssue(index);
     	return fEvaluators.get(issue);
+    	/*
+    	 * TODO replace with:
+    	 * Objective obj = domain.getObjective(index);
+    	 * return fEvaluators.get(obj);
+    	 */
     }
 
 // Utility space should not return domain-related information, should it?
