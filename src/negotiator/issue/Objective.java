@@ -16,11 +16,12 @@ public class Objective implements MutableTreeNode{
 	
 	//Attributes
 	private String name;
+	private int number;
 	private double weight;
 	private String description;
 	private Object userObject; //can be a picture, for instance
 	private Objective parent;
-	private Vector<Objective> children;
+	private Vector<Objective> children = new Vector();
 		
 	//Constructors
 	public Objective() {
@@ -35,13 +36,19 @@ public class Objective implements MutableTreeNode{
 		this.name = name;
 	}
 	
+	public Objective(Objective parent, String name, int nr) {
+		this.parent = parent;
+		this.name = name;
+		this.number = nr;
+	}
+	
 	//Methods
 	
 	/**
 	 * @return the name of this node.
 	 */
 	public String getName() {
-		return name;
+		return "toedelodokie";//name;
 	}
 	
 	/**
@@ -119,6 +126,13 @@ public class Objective implements MutableTreeNode{
 	public void addChild(Objective newObjective) {
 		children.add(newObjective);
 		newObjective.setParent(this);
+	}
+	
+	/**
+	 * @return the name of this Objective.
+	 */
+	public String toString() {
+		return name;
 	}
 	
 	//Methods from the TreeNode interface
