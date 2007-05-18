@@ -39,6 +39,10 @@ public class Domain {
         return fIssues[index];
     }
     
+    public final Objective getObjective(int index){
+    	return fObjectivesRoot.getObjective(index); //could be that this returns the wrong type.
+    }
+    
     private final void loadFromXML(SimpleElement pRoot) {
         // Get number of issues from the xml file & create array of issues
         String s = pRoot.getAttribute("number_of_issues");
