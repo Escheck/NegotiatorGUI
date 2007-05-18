@@ -172,12 +172,12 @@ public class Domain {
     	}
     	
     	for(int j = 0; j < currentLevelIssues.length; j++){
-    		Issue child;
+    		Issue child = null;
     		
     		SimpleElement childIssues = (SimpleElement)currentLevelIssues[j];
     		//check type of issue
-    		String name;
-    		int index;
+    		String name = childIssues.getAttribute("name");
+    		int index = Integer.parseInt(childIssues.getAttribute("index"));
     		
 //    		 Collect issue value type from XML file.
             String type = childIssues.getAttribute("type");
@@ -215,10 +215,10 @@ public class Domain {
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
                 values = new String[nrOfItems];
-                for(int j=0;j<nrOfItems;j++) {
+                for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
-                    index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
-                    values[index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
+                    index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
+                    values[index-1] = ((SimpleElement)xml_items[k]).getAttribute("value");
                 }
                 issue = new IssueDiscrete(name, index, values, currentParent);
             	break;
@@ -249,7 +249,7 @@ public class Domain {
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
                 values = new String[nrOfItems];
-                for(int j=0;j<nrOfItems;j++) {
+                for(int k=0;k<nrOfItems;k++) {
                     int item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
                     values[item_index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
                 }
@@ -257,8 +257,6 @@ public class Domain {
             	break;
             }
     		    		
-//    		create new issue, fill attributes based on childIssues
-            child.setDescription(childIssues.getAttribute("name"));
     		child.setDescription(childIssues.getAttribute("description"));
     		Double weight = new Double(childIssues.getAttribute("weight"));
     		child.setWeight(weight.doubleValue());
