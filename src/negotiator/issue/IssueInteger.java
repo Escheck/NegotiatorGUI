@@ -14,9 +14,16 @@ public class IssueInteger extends Issue {
 	// Assumption 3: step size for integer valued issue is 1.
 	RangeInt range;
 	
-	// Constructor
+	// Constructors
 	public IssueInteger(String name, int issueNumber, int min, int max) {
 		super(name, issueNumber);
+		if (min>max)
+			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
+		range = new RangeInt(min, max);
+	}
+	
+	public IssueInteger(String name, int issueNumber, int min, int max, Objective objParent) {
+		super(name, issueNumber, objParent);
 		if (min>max)
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
 		range = new RangeInt(min, max);

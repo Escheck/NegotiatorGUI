@@ -19,9 +19,19 @@ public class IssueDiscrete extends Issue {
 	ValueDiscrete issueValues[];
 	
 		
-	// Constructor
+	// Constructors
+	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
-		super(name, issueNumber);
+		super(name, issueNumber);		
+		numberOfValues = values.length;
+	    issueValues = new ValueDiscrete[numberOfValues];
+	    for(int i=0; i<numberOfValues;i++) {
+	        issueValues[i] = new ValueDiscrete(values[i]);
+	    }
+	}	
+	
+	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
+		super(name, issueNumber, objParent);		
 		numberOfValues = values.length;
 	    issueValues = new ValueDiscrete[numberOfValues];
 	    for(int i=0; i<numberOfValues;i++) {
