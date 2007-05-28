@@ -7,15 +7,26 @@ import negotiator.xml.SimpleElement;
 public class EvaluatorPrice implements Evaluator {
 	
 	// Class fields
+	public double fweight; //the weight of the evaluated Objective or Issue.
+	
 	double lowerBound;
 	double upperBound;
 	double maxMargin = -1;
 	double rationalityfactor=0;
 	
 	public EvaluatorPrice() {
+		fweight = 0;
 	}
 
 	// Class methods
+	public double getWeight(){
+		return fweight;
+	}
+	
+	public void setWeight(double wt){
+		fweight = wt;
+	}
+	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		int nrOfEvals;
 		double price, costs = 0, maxCost = 0, profit, utility;

@@ -10,6 +10,7 @@
 package negotiator.utility;
 
 import java.io.*;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +31,8 @@ public class UtilitySpace {
     private Domain domain;
     private double weights[];
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
-    private Map<Issue,Evaluator> fEvaluators;
-    
+//    private Map<Issue,Evaluator> fEvaluators;
+    private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
     // Constructor
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
@@ -39,6 +40,10 @@ public class UtilitySpace {
     }
     
     // Class methods
+    
+    /**
+     * @depricated Use checkTreeNormalization
+     */
     private boolean checkNormalization() {
         double lSum=0;
         for(int i=0;i<domain.getNumberOfIssues();i++) {
@@ -46,19 +51,50 @@ public class UtilitySpace {
         }
         return (lSum==1);
     }
+    /**
+     * Checks the normalization throughout the tree. Will eventually replace checkNormalization 
+     * @return true if the weigths are indeed normalized, false if they aren't. 
+     */
+    private boolean checkTreeNormalization(){
+    	return checkTreeNormalizationRecursive(domain.getObjectivesRoot());
+    }
+    
+    /**
+     * Private helper function to check the normalisation throughout the tree.
+     * @param currentRoot The current parent node of the subtree we are going to check
+     * @return True if the weights are indeed normalized, false if they aren't.
+     */
+    private boolean checkTreeNormalizationRecursive(Objective currentRoot ){
+    	boolean normalised = true;
+    	double lSum = 0;
+    	
+    	Enumeration<Objective> children = currentRoot.children();
+    	
+    	while(children.hasMoreElements() && normalised){
+    		
+    		Objective tmpObj = children.nextElement();
+    		lSum += (fEvaluators.get(tmpObj)).getWeight();
+    		
+    	}
+    	
+    	return (normalised && lSum==1);
+    }
     
     public final int getNrOfEvaluators() {
     	return fEvaluators.size();
     }
     
+    /**
+     * Returns an evaluator for an Objective or Issue
+     * @param index The index of the Objective or Issue
+     * @return An Evaluator for the Objective or Issue.
+     */
     public final Evaluator getEvaluator(int index) {
-    	Issue issue = domain.getIssue(index);
+ /*   	Issue issue = domain.getIssue(index);
     	return fEvaluators.get(issue);
-    	/*
-    	 * TODO replace with:
-    	 * Objective obj = domain.getObjective(index);
-    	 * return fEvaluators.get(obj);
-    	 */
+ */   	
+    	Objective obj = domain.getObjective(index); //Used to be Issue in stead of Objective
+    	return fEvaluators.get(obj);
     }
 
 // Utility space should not return domain-related information, should it?
@@ -91,8 +127,13 @@ public class UtilitySpace {
     	ISSUETYPE vtype;
     	vtype = bid.getValue(pIssueIndex).getType();
     	
-    	Issue lIssue = getDomain().getIssue(pIssueIndex);
+  /* hdevos: used to be this: 	
+   		Issue lIssue = getDomain().getIssue(pIssueIndex);
     	Evaluator lEvaluator = fEvaluators.get(lIssue);
+   */
+
+    	Objective lObj = getDomain().getObjective(pIssueIndex);
+    	Evaluator lEvaluator = fEvaluators.get(lObj);
     	EVALUATORTYPE etype = lEvaluator.getType();
     	
     	switch(etype) {
@@ -104,9 +145,13 @@ public class UtilitySpace {
     		return ((EvaluatorReal)lEvaluator).getEvaluation(this,bid,pIssueIndex);
     	case PRICE:
     		return ((EvaluatorPrice)lEvaluator).getEvaluation(this,bid,pIssueIndex);
+    	case OBJECTIVE: 
+    		return ((EvaluatorObjective)lEvaluator).getEvaluation(this,bid,pIssueIndex);
     	default:
     		return -1;
+    	
     	}
+    
     }
     
     // KH 070511: Moved getMaxBid method to UtilitySpace class since it should be available to all agents.
@@ -182,6 +227,139 @@ public class UtilitySpace {
 		return new Bid(domain, maxValues);
 	}
 
+	
+	//added by Herbert
+	/**
+	 * @param filename The name of the xml file to parse.
+	 */
+	private final void loadTreeFromFile(String filename){
+    //	double weightsSum = 0;
+    //	EVALUATORTYPE evalType;
+    //	String type, etype;
+       // Evaluator lEvaluator=null;
+     //   int nrOfIssues=0, indexEvalPrice=-1;
+        
+        SimpleDOMParser parser = new SimpleDOMParser();
+        try{
+        	fEvaluators = new HashMap<Objective, Evaluator>();
+            BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
+            SimpleElement root = parser.parse(file);
+            loadTreeRecursive(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+   	}
+	/**
+	 * Loads the weights and issues for the evaluators.
+	 * @param root The current root of the Objective tree.
+	 */
+	private final void loadTreeRecursive(SimpleElement currentRoot){
+		//TODO hdevos:
+        //We get an Objective or issue from the SimpleElement structure,
+        //get it's number of children:
+		
+		int nrOfChildren = new Integer(currentRoot.getAttribute("number_of_children"));
+		//TODO hdevos: find a way of checking the number of issues in the Domain versus the number of issues in the UtilitySpace
+		
+		int index;
+		double weightsSum = 0;
+		weights = new double[nrOfChildren]; //all weights for the children of this node.
+		Evaluator tmpEvaluator[] = new Evaluator[nrOfChildren]; //tmp array with all Evaluators at this level. Used to normalize weigths.
+		EVALUATORTYPE evalType;
+    	String type, etype;
+        Evaluator lEvaluator=null;
+        int indexEvalPrice=-1;
+        
+        //Get the weights of the current children
+		Object[] xml_weights = currentRoot.getChildByTagName("weight");
+        for(int i = 0; i < nrOfChildren; i++){
+        	index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
+        	weights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
+            weightsSum += weights[index-1]; // For normalization purposes. See below.
+        }
+        
+//      Collect evaluations for each of the issue values from file.
+        // Assumption: Discrete-valued issues.
+        Object[] xml_issues = currentRoot.getChildByTagName("issue");
+//        boolean issueWithCost = false;
+//        double[] cost;
+        for(int i=0;i<nrOfChildren;i++) {
+            index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
+            type = ((SimpleElement)xml_issues[i]).getAttribute("type");
+            etype = ((SimpleElement)xml_issues[i]).getAttribute("etype");
+            if (type==etype) {
+            	if (type==null) { // No value type specified.
+            		System.out.println("Evaluator type not specified in utility template file.");
+            		// TODO: Define exception.
+                	evalType = EVALUATORTYPE.DISCRETE;
+            	} else { // Both "type" as well as "vtype" attribute, but consistent.
+            		evalType = EVALUATORTYPE.convertToType(type);
+            	}
+            } else if (etype!=null && type==null) {
+            	evalType = EVALUATORTYPE.convertToType(etype);
+            } else if (type!=null && etype==null) { // Used label "type" instead of label "vtype".
+            	evalType = EVALUATORTYPE.convertToType(type);
+            } else {
+            	System.out.println("Conflicting value types specified for evaluators in utility template file.");
+            	// TODO: Define exception.
+            	// For now: use "type" label.
+            	evalType = EVALUATORTYPE.convertToType(type);
+            }
+            switch(evalType) {
+            case DISCRETE:
+            	lEvaluator = new EvaluatorDiscrete();
+            	break;
+            case INTEGER:
+            	lEvaluator = new EvaluatorInteger();
+            	break;
+            case REAL:
+            	lEvaluator = new EvaluatorReal();
+            	break;
+            case PRICE:
+            	if (indexEvalPrice>-1)
+            		System.out.println("Multiple price evaluators in utility template file!");
+               	// TODO: Define exception.
+            	indexEvalPrice = index-1;
+            	lEvaluator = new EvaluatorPrice();
+            	break;
+            case OBJECTIVE:
+            	lEvaluator = new EvaluatorObjective();
+            	//set weights here.
+            	break;
+            }
+            lEvaluator.loadFromXML((SimpleElement)(xml_issues[i]));
+            // TODO: put lEvaluator to an array (done?)
+            //evaluations.add(tmp_evaluations);
+            //TODO: hdevos: add weigths to the evaluators.
+            fEvaluators.put(getDomain().getObjective(index-1),lEvaluator); //Here we get the Objective or Issue.
+            
+            tmpEvaluator[index-1] = lEvaluator; //for normalisation purposes.
+        }
+        //Normalize weights if sum of weights exceeds 1.
+        // Do not include weight for price evaluator! This weight represents "financial rationality factor".
+        // TODO: Always normalize weights to 1??
+        if (indexEvalPrice!=-1) {
+        	weightsSum -= weights[indexEvalPrice];
+        }
+        if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
+        	for (int i=0;i<nrOfChildren;i++) {
+        		if (i!=indexEvalPrice) {
+        			tmpEvaluator[i].setWeight(tmpEvaluator[i].getWeight()/weightsSum);
+        		}
+        	}
+        }
+        
+        
+        //Recurse over all children:
+        Object[] objArray = currentRoot.getChildElements();
+        for(int i = 0; i < objArray.length ; i++ )
+        loadTreeRecursive((SimpleElement)objArray[i]);             
+        
+        
+        //Checking if the UtilitySpace of this agent and the Domain match.
+		
+	}
+	
     private final void loadFromFile(String fileName) {
     	double weightsSum = 0;
     	EVALUATORTYPE evalType;
@@ -191,12 +369,12 @@ public class UtilitySpace {
     	
         SimpleDOMParser parser = new SimpleDOMParser();
         try {
-            fEvaluators = new HashMap<Issue, Evaluator>();
+            fEvaluators = new HashMap<Objective, Evaluator>();
             BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
             SimpleElement root = parser.parse(file);
             
             // Read indicated number of issues from the xml file.
-            String s = root.getAttribute("number_of_issues");
+            String s = root.getAttribute("number_of_issues"); 
             nrOfIssues = new Integer(s);
             if (domain.getNumberOfIssues()!=nrOfIssues)
             	System.out.println("Mismatch between indicated number of issues in agent and template file.");
@@ -281,13 +459,29 @@ public class UtilitySpace {
         	}
         }
     }
-    
+   
     public double getWeight(int issuesIndex) {
-        return weights[issuesIndex];
+        //return weights[issuesIndex]; //old
+    	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
     }
-
+    
+    /**
+     * @depricated Use getObjective
+     * 
+     * @param index The index of the issue to 
+     * @return the indexed issue
+     */
     public final Issue getIssue(int index) {
         return domain.getIssue(index);
+    }
+    
+    /**
+     * Returns the Objective or Issue at that index
+     * @param index The index of the Objective or Issue.
+     * @return An Objective or Issue.
+     */
+    public final Objective getObjective(int index){
+    	return domain.getObjective(index);
     }
     
     public final Domain getDomain() {

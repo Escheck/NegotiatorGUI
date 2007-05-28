@@ -9,6 +9,8 @@ import java.util.HashMap;
 public class EvaluatorInteger implements Evaluator {
 	
 	// Class fields
+	public double fweight; //the weight of the evaluated Objective or Issue.
+	
 	int lowerBound;
 	int upperBound;
 	EVALFUNCTYPE type;
@@ -16,9 +18,20 @@ public class EvaluatorInteger implements Evaluator {
 		
 	public EvaluatorInteger() {
 		fParam = new HashMap<Integer, Integer>();
+		
+		fweight = 0;
 	}
 
 	// Class methods
+	public double getWeight(){
+		return fweight;
+	}
+	
+	public void setWeight(double wt){
+		fweight = wt;
+	}
+	
+	
 	public Integer getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		Integer lTmp = ((ValueInteger)bid.getValue(index)).getValue();
 		switch(this.type) {

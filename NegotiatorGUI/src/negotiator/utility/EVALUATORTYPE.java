@@ -1,6 +1,6 @@
 package negotiator.utility;
 
-public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, PRICE;
+public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, PRICE, OBJECTIVE;
 
 	public static EVALUATORTYPE convertToType(String typeString) {
 		if (typeString.equalsIgnoreCase("price"))
@@ -11,6 +11,8 @@ public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, PRICE;
         	return EVALUATORTYPE.REAL;
         else if (typeString.equalsIgnoreCase("discrete"))
         	return EVALUATORTYPE.DISCRETE;
+        else if (typeString.equalsIgnoreCase("objective"))
+        	return EVALUATORTYPE.OBJECTIVE;
         else {
         	// Type specified incorrectly!
         	System.out.println("Evaluator type specified incorrectly.");

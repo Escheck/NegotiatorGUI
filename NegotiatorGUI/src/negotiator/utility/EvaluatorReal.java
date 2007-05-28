@@ -9,6 +9,8 @@ import java.util.HashMap;
 public class EvaluatorReal implements Evaluator {
 	
 	// Class fields
+	public double fweight; //the weight of the evaluated Objective or Issue.
+	
 	double lowerBound;
 	double upperBound;
 	EVALFUNCTYPE type;
@@ -16,9 +18,19 @@ public class EvaluatorReal implements Evaluator {
 		
 	public EvaluatorReal() {
 		fParam = new HashMap<Integer, Double>();
+		
+		fweight = 0;
 	}
 
 	// Class methods
+	public double getWeight(){
+		return fweight;
+	}
+	
+	public void setWeight(double wt){
+		fweight = wt;
+	}
+	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		double utility;
 		double value = ((ValueReal)bid.getValue(index)).getValue();
