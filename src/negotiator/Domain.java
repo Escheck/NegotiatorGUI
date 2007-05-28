@@ -40,8 +40,12 @@ public class Domain {
     }
     
     public final Objective getObjective(int index){
-    	return fObjectivesRoot.getObjective(index); //could be that this returns the wrong type.
+    	return fObjectivesRoot.getObjective(index); 
     }
+    
+    public final Objective getObjectivesRoot(){
+    	return fObjectivesRoot; //TODO hdevos this could be done in a more elegant way. To discuss with Richard.
+    }   
     
     private final void loadFromXML(SimpleElement pRoot) {
         // Get number of issues from the xml file & create array of issues
@@ -134,8 +138,13 @@ public class Domain {
             fIssues[i] = issue;
         }
     }
-    // Function to load the tree from an xml file. The actual loading of the file is done
-    // by the SimpleDOMParser. 
+    
+    
+    //added by Herbert
+    /**
+     * 
+     * @param pRoot The SimpleElement that contains the root of the Objective tree.
+     */
     private final void loadTreeFromXML(SimpleElement pRoot){
     	//SimpleElement root contains a LinkedList with SimpleElements.
     	/*
@@ -153,6 +162,13 @@ public class Domain {
     	
         
     } 
+    //added by Herbert
+    /**
+     * 
+     * @param currentLevelRoot The current SimpleElement containing the information for the Objective on this level.
+     * @param currentParent parent of the current level of this branch of the tree.
+     * @return The current parent of this level of the tree, with the children attached.
+     */
     
     private final Objective buildTreeRecursive(SimpleElement currentLevelRoot, Objective currentParent){
     	String s = currentLevelRoot.getAttribute("number_of_children");

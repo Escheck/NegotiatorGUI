@@ -9,16 +9,28 @@ import java.util.HashMap;
 public class EvaluatorDiscrete implements Evaluator {
 	
 	// Class fields
+	public double fweight; //the weight of the evaluated Objective or Issue.
+	
 	private HashMap<ValueDiscrete, Double> fEval;
 	private HashMap<ValueDiscrete, Double> fCost;
 	private double maxCost = 0;
 	
 	public EvaluatorDiscrete() {
 		fEval = new HashMap<ValueDiscrete, Double>();
-		fCost = new HashMap<ValueDiscrete, Double>();	
+		fCost = new HashMap<ValueDiscrete, Double>();
+		
+		fweight = 0;
 	}
 
 	// Class methods
+	public double getWeight(){
+		return fweight;
+	}
+	
+	public void setWeight(double wt){
+		fweight = wt;
+	}
+	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		//Added by Dmytro on 09/05/2007
 		Double lTmp =fEval.get(((ValueDiscrete)bid.getValue(index)));
