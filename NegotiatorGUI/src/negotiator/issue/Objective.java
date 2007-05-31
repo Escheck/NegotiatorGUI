@@ -48,6 +48,7 @@ public class Objective implements MutableTreeNode{
 	 * @return the name of this node.
 	 */
 	public String getName() {
+		//TODO Implement
 		return "toedelodokie";//name;
 	}
 	
