@@ -27,8 +27,9 @@ public class TreePanel extends JPanel {
 		treeTable = new JTreeTable(model);
 		//TODO THIS IS FOR TESTING
 		WeightSlider slider = treeModel.getWeightSlider();
-		treeTable.setDefaultRenderer(WeightSlider.class, slider);
-		treeTable.setDefaultEditor(WeightSlider.class, new WeightSliderCellEditor(model));
+		WeightSliderCellEditor cellEditor = new WeightSliderCellEditor(model);
+		treeTable.setDefaultRenderer(WeightSlider.class, cellEditor);//new WeightSliderCellRenderer(model));//slider);
+		treeTable.setDefaultEditor(WeightSlider.class, cellEditor);//new WeightSliderCellEditor(model));
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		//TODO END OF TESTING
 		JScrollPane treePane = new JScrollPane(treeTable);

@@ -11,7 +11,7 @@ import negotiator.issue.*;
 * 
 */
 
-public class WeightSlider extends JPanel implements TableCellRenderer, TableCellEditor {
+public class WeightSlider extends JPanel { //implements TableCellRenderer {//, TableCellEditor {
 	
 	//Attributes
 	static final int MIN_VALUE = 0;
@@ -50,13 +50,15 @@ public class WeightSlider extends JPanel implements TableCellRenderer, TableCell
 	
 	//@TODO for testing purpose. Prolly' don't work as supposed to
 	//TEST
-	public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		return this;
-	}
 	
+	//public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	//	return this;
+	//}
+	
+	/*
 	public Component getTableCellEditorComponent (JTable table, Object value, boolean isSelected, int row, int column) {
 		return this;
-	}
+	}*/
 	
 	//TODO END TESTING
 }

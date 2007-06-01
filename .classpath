@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="dep/absolutelayout.jar"/>
 	<classpathentry kind="lib" path="dep/jcckit.jar"/>
+	<classpathentry kind="lib" path="F:/Documents/School/Artificial Intelligence Verv. Opdracht/Code/NegotiatorGUI/dep/jtreetable.jar" sourcepath="dep/jtreetable.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

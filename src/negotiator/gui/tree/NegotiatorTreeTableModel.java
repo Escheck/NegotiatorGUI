@@ -2,9 +2,11 @@ package negotiator.gui.tree;
 
 import jtreetable.*;
 
+import java.util.*;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 import negotiator.issue.*;
+import negotiator.utility.*;
 
 /**
 *
@@ -18,6 +20,8 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	private Objective root;
 	private String[] colNames = {"Tree", "Col 1", "Weight"};
 	private Class[] colTypes = {TreeTableModel.class, String.class, WeightSlider.class};
+	private UtilitySpace utilitySpace;
+	private Map<Objective, WeightSlider> sliders;
 	
 	//TODO remove this: TEST CODE
 	WeightSlider slider = new WeightSlider();
@@ -25,6 +29,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	//Constructors
 	public NegotiatorTreeTableModel(Objective root) {
 		this.root = root;
+		sliders = new HashMap<Objective, WeightSlider>();
 	}
 	
 	//Methods
@@ -116,10 +121,12 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		//TODO Maybe also instanceof Issue.
 		//do the rest
 		WeightSlider slider = new WeightSlider();
+		
 		switch(column) {
 		case 0: 	return objective.getName();
 		case 1: 	return "Test";
-		case 2:		return slider;//new WeightSlider(); //TEST
+		case 2:		return utilitySpace.getObjective();//6;//sliders.get(objective); 
+		//slider;//new WeightSlider(); //TEST
 		}
 		
 		return null;
@@ -144,6 +151,48 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		else
 			return 0;
 	}
+	
+	/**
+	 * 
+	 * @return the UtilitySpace.
+	 */
+	public UtilitySpace getUtilitySpace() {
+		return utilitySpace;
+	}
+	
+	/**
+	 * Sets this model's UtilitySpace. A UtilitySpace is required to map utilities to treeNodes.
+	 * @param space a UtilitySpace object.
+	 */
+	public void setUtilitySpace(UtilitySpace space) {
+		utilitySpace = space;
+	}
+	
+	/**
+	 * Returns the WeightSlider belonging to the given Objective. If there is no WeightSlider attached to the given Objective,
+	 * a new one is created and added using setWeightSlider(Objective, WeightSlider).
+	 * @param node an Objective.
+	 * @return the slider associated with node.
+	 */
+	protected WeightSlider getWeightSlider(Objective node) {
+		WeightSlider slider = sliders.get(node);
+		if (slider == null) {
+			slider = new WeightSlider();
+			setWeightSlider(node, slider);
+		}
+		return slider;
+	}
+	
+	/**
+	 * Sets the WeightSlider object for the given Objective.
+	 * @param node Objective to attach the slider to.
+	 * @param slider the WeightSlider to be attached to node.
+	 */
+	protected void setWeightSlider(Objective node, WeightSlider slider) {
+		sliders.put(node, slider);
+	}
+	
+	//protected WeightSlider
 	
 	//TODO TEST CODE
 	public WeightSlider getWeightSlider() {
