@@ -150,15 +150,23 @@ public class Domain {
     	/*
     	 * Structure of the file:
     	 * 
-    	 * The root SimpleElement contains the root objective of the tree, with a number of objective
+    	 * pRoot contains information about how many items there exist in the utilityspace.
+    	 * The first SimpleElement under pRoot contains the root objective of the tree, with a number of objective
     	 * as tagnames.
     	 * 
     	 * 
     	 */    	
+    	
+    	//Get the number of issues:
+    	String s = pRoot.getAttribute("number_of_issues");
+    	Integer nr_issues = new Integer(s);
+    	fNumberOfIssues = nr_issues;
+    	
+    	SimpleElement[] root = (SimpleElement[])pRoot.getChildByTagName("Objective"); //Get the actual root Objective.
         Objective objAlmostRoot = new Objective();
         //set objAlmostRoot attributes based on pRoot
         
-        fObjectivesRoot = buildTreeRecursive(pRoot, objAlmostRoot); //the 2nd parameter is the returnvalue.
+        fObjectivesRoot = buildTreeRecursive(root[0], objAlmostRoot);
     	
         
     } 
@@ -183,9 +191,9 @@ public class Domain {
     			//Set child attributes based on childObjectives.
     			child.setName(childObjectives.getAttribute("name"));
     			child.setDescription(childObjectives.getAttribute("description"));
-    			Double weight = new Double(childObjectives.getAttribute("weight")); //TODO check if weigth is the same things as value!
+   /* 			Double weight = new Double(childObjectives.getAttribute("weight")); //TODO check if weigth is the same things as value!
     			child.setWeight(weight.doubleValue()); 
-    			
+    */			
     			currentParent.addChild(buildTreeRecursive(childObjectives, child));
    
     		
@@ -278,9 +286,9 @@ public class Domain {
             }
     		    		
     		child.setDescription(childIssues.getAttribute("description"));
-    		Double weight = new Double(childIssues.getAttribute("weight"));
+    /*		Double weight = new Double(childIssues.getAttribute("weight"));
     		child.setWeight(weight.doubleValue());
-    		
+    */		
     		currentParent.addChild(child);
        	}
     	
