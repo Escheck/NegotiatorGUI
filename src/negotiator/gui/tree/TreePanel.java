@@ -3,6 +3,7 @@ package negotiator.gui.tree;
 import javax.swing.*;
 import javax.swing.table.*;
 import jtreetable.*;
+import negotiator.gui.tree.actions.*;
 
 /**
 *
@@ -24,12 +25,19 @@ public class TreePanel extends JPanel {
 		
 		model = treeModel;
 		
+		//Create Actions
+		AddAction addAct = new AddAction();
+		DeleteAction delAct = new DeleteAction();
+		EditAction editAct = new EditAction();
+		
 		treeTable = new JTreeTable(model);
 		//TODO THIS IS FOR TESTING
-		WeightSlider slider = treeModel.getWeightSlider();
+		//WeightSlider slider = treeModel.getWeightSlider();
 		WeightSliderCellEditor cellEditor = new WeightSliderCellEditor(model);
 		treeTable.setDefaultRenderer(WeightSlider.class, cellEditor);//new WeightSliderCellRenderer(model));//slider);
 		treeTable.setDefaultEditor(WeightSlider.class, cellEditor);//new WeightSliderCellEditor(model));
+		treeTable.getColumnModel().getColumn(2).setPreferredWidth(new WeightSlider().getPreferredSize().width);//(new WeightSlider().getSize().width);
+		treeTable.setRowHeight(new WeightSlider().getPreferredSize().height);
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		//TODO END OF TESTING
 		JScrollPane treePane = new JScrollPane(treeTable);
@@ -37,11 +45,10 @@ public class TreePanel extends JPanel {
 		
 		//Initialise the Panel with buttons.
 		JPanel controls = new JPanel();
-		controls.add(new JButton("Add"));
-		controls.add(new JButton("Delete"));
-		controls.add(new JButton("Move"));
-		
-		controls.add(new WeightSlider());
+		controls.setBorder(BorderFactory.createTitledBorder("Edit nodes"));
+		controls.add(new JButton(addAct));
+		controls.add(new JButton(delAct));
+		controls.add(new JButton(editAct));
 		this.add(controls);
 	}
 	

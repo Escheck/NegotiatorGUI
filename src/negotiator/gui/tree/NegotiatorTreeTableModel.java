@@ -18,17 +18,22 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 
 	//Attributes
 	private Objective root;
-	private String[] colNames = {"Tree", "Col 1", "Weight"};
+	private String[] colNames = {"Tree", "Type", "Weight"};
 	private Class[] colTypes = {TreeTableModel.class, String.class, WeightSlider.class};
 	private UtilitySpace utilitySpace;
 	private Map<Objective, WeightSlider> sliders;
 	
-	//TODO remove this: TEST CODE
-	WeightSlider slider = new WeightSlider();
 	
 	//Constructors
+	//TODO remove this constructor. UtilitySpace is needed.
 	public NegotiatorTreeTableModel(Objective root) {
 		this.root = root;
+		sliders = new HashMap<Objective, WeightSlider>();
+	}
+	
+	public NegotiatorTreeTableModel(Objective root, UtilitySpace utilitySpace) {
+		this.root = root;
+		this.utilitySpace = utilitySpace;
 		sliders = new HashMap<Objective, WeightSlider>();
 	}
 	
@@ -125,7 +130,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		switch(column) {
 		case 0: 	return objective.getName();
 		case 1: 	return "Test";
-		case 2:		return utilitySpace.getObjective();//6;//sliders.get(objective); 
+		case 2:		return getWeightSlider(objective); 
 		//slider;//new WeightSlider(); //TEST
 		}
 		
@@ -190,13 +195,6 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 */
 	protected void setWeightSlider(Objective node, WeightSlider slider) {
 		sliders.put(node, slider);
-	}
-	
-	//protected WeightSlider
-	
-	//TODO TEST CODE
-	public WeightSlider getWeightSlider() {
-		return slider;
 	}
 	
 }
