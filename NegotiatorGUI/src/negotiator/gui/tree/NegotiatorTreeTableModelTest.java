@@ -43,6 +43,7 @@ public class NegotiatorTreeTableModelTest {
 		
 		TreePanel panel = new TreePanel(model);
 		mainFrame.getContentPane().add(panel);
+		//mainFrame.getContentPane().add(new WeightSlider());
 		
 		mainFrame.pack();
 		mainFrame.setVisible(true);
