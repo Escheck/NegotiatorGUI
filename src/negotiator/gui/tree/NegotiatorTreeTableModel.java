@@ -18,7 +18,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 
 	//Attributes
 	private Objective root;
-	private String[] colNames = {"Tree", "Type", "Weight"};
+	private String[] colNames = {"Tree", "Eval Type", "Weight"};
 	private Class[] colTypes = {TreeTableModel.class, String.class, WeightSlider.class};
 	private UtilitySpace utilitySpace;
 	private Map<Objective, WeightSlider> sliders;
@@ -129,7 +129,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		
 		switch(column) {
 		case 0: 	return objective.getName();
-		case 1: 	return "Test";
+		case 1: 	return utilitySpace.getEvaluator(objective.getNumber()).getType().toString();
 		case 2:		return getWeightSlider(objective); 
 		//slider;//new WeightSlider(); //TEST
 		}
@@ -182,7 +182,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	protected WeightSlider getWeightSlider(Objective node) {
 		WeightSlider slider = sliders.get(node);
 		if (slider == null) {
-			slider = new WeightSlider();
+			slider = new WeightSlider(this);
 			setWeightSlider(node, slider);
 		}
 		return slider;

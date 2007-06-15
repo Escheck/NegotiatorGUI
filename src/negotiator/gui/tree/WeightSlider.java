@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import negotiator.issue.*;
+import negotiator.utility.*;
 
 /**
 *
@@ -22,7 +23,9 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	static final Color BACKGROUND = Color.white;
 	
-	private Objective objective;
+	//private Objective objective;
+	//private Evaluator evaluator;
+	private NegotiatorTreeTableModel tableModel;
 	private JCheckBox lock;
 	private JSlider slider;
 	private JFormattedTextField valueField;
@@ -38,17 +41,14 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		this(null);
 	}
 	
-	public WeightSlider(Objective obj) {
-		objective = obj;
+	//public WeightSlider(Objective obj) {
+	public WeightSlider(NegotiatorTreeTableModel model) {
+		//objective = obj;
+		//evaluator = eval;
+		tableModel = model;
 		
 		this.setBackground(BACKGROUND);
 		this.setLayout(new FlowLayout());
-		
-		lock = new JCheckBox();
-		lock.setBackground(BACKGROUND);
-		lock.setToolTipText("Lock weight");
-		lock.addItemListener(this);
-		this.add(lock);
 		
 		slider = new JSlider(MIN_VALUE, MAX_VALUE);
 		slider.setBackground(BACKGROUND);
@@ -62,6 +62,12 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		valueField.setColumns(4);
 		valueField.setToolTipText("Fill in a weight between 0 and 1");
 		this.add(valueField);
+		
+		lock = new JCheckBox();
+		lock.setBackground(BACKGROUND);
+		lock.setToolTipText("Lock weight");
+		lock.addItemListener(this);
+		this.add(lock);
 		
 		updatePreferredSize();
 	}
