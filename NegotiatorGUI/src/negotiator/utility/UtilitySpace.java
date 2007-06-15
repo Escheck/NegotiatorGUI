@@ -158,8 +158,8 @@ public class UtilitySpace {
     // Method returns (a) bid which has maximum utility in this utility space.
 	public final Bid getMaxUtilityBid() {
 		int nrOfIssues = domain.getNumberOfIssues();
-		Value[] values = new Value[nrOfIssues];
-		Value[] maxValues = new Value[nrOfIssues];
+		Value[] values = new Value[nrOfIssues];	//TODO hdv: Do something about these values. See proposal of 11-6-7
+		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.
 		Bid lBid, newBid;
 		Issue issue;
 		ISSUETYPE type;
@@ -217,7 +217,7 @@ public class UtilitySpace {
 				
 				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
 				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
-				lBid = new Bid(domain,values);
+				lBid = new Bid(domain,values);	//TODO hdv: Are these the only 3 places where the constructor of Bid is called?
 				newBid = new Bid(domain,maxValues);
 				if (this.getUtility(lBid)>this.getUtility(newBid))
 					maxValues[i] = new ValueReal(((ValueReal)values[i]).getValue());
