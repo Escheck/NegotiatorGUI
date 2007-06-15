@@ -25,19 +25,19 @@ public class EvaluatorObjective implements Evaluator {
 	}
 	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
-		return 0.0;
+		return 0.0; //TODO hdevos: Do what here, evaluate the bid for it's children?
 	}
 	
 	public Double getEvaluation(ValueDiscrete value) {
-		return 0.0;
+		return 0.0;  //TODO hdevos: Do what here, only it's children have values. Or so i gather.
 	}
 	
 	public double getCost(Value value) {
-		return 0.0;
+		return 0.0;  //TODO hdevos: Eh.. what value?
 	}
 	
 	public double getMaxCost() {
-		return 0.0;
+		return 0.0;  //TODO hdevos: Same here.
 	}
 	
 	public EVALUATORTYPE getType() {
