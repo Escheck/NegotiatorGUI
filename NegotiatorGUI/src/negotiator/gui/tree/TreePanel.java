@@ -53,9 +53,16 @@ public class TreePanel extends JPanel {
 	}
 	
 	//Methods
+	private void initPopupMenu() {
+		
+	}
 	
 	public JTreeTable getTreeTable() {
 		return treeTable;
+	}
+	
+	public NegotiatorTreeTableModel getNegotiatorTreeTableModel() {
+		return model;
 	}
 
 }

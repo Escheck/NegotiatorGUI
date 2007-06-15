@@ -15,6 +15,8 @@ public class NegotiatorTreeTableModelTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		//Domain domain = new Domain
+		
 		Objective root = new Objective(null, "Root", 0);
 		Objective obj1 = new Objective(root, "Objective 1", 9);
 		Objective obj2 = new Objective(root, "Objective 2", 10);
