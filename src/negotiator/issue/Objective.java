@@ -302,4 +302,63 @@ public class Objective implements MutableTreeNode{
 	public void setUserObject(Object object) {
 		userObject = object;
 	}
+	
+	/**
+	 * Constructs an Enumeration of the entire subtree of the receiver (including itself) in preorder. The enumeration is
+	 * immediately constructed against the current state of the tree, so modifications to the tree afterwards are not 
+	 * reflected in the Enumeration.
+	 * @return the preorder Enumeration of the subtree.
+	 */
+	public Enumeration<Objective> getPreorderEnumeration() {
+		return getPreorderElements(true, true, new Vector<Objective>()).elements();
+	}
+	
+	/**
+	 * Constructs an Enumeration of the entire subtree of the receiver (including itself) in preorder, containting only the
+	 * Ojectives, but not the Issues.. The enumeration is immediately constructed against the current state of the tree, so
+	 * modifications to the tree afterwards are not reflected in the Enumeration.
+	 * @return the preorder Enumeration of Objectives from the subtree.
+	 */
+	public Enumeration<Objective> getPreorderObjectiveEnumeration() {
+		return getPreorderElements(true, false, new Vector<Objective>()).elements();
+	}
+	
+	/**
+	 * Constructs an Enumeration of the entire subtree of the receiver (including itself) in preorder, containing only the 
+	 * Issues, but not the normal Objectives. The enumeration is immediately constructed against the current state of the 
+	 * tree, so modifications to the tree afterwards are not reflected in the Enumeration.
+	 * @return the preorder Enumeration of Issues from the subtree.
+	 */
+	public Enumeration<Objective> getPreorderIssueEnumeration() {
+		//TODO return Enumeration<Issue>, but lets do that once we can really test these methods.
+		return getPreorderElements(false, true, new Vector<Objective>()).elements();
+	}
+	
+	/**
+	 * Makes a preorder traversal of the tree, adding Objectives and Issues to the Vector elems. 
+	 * @param includeObjectives defines if Objectives should be included in the Vector.
+	 * @param includeIssues defines if Issues should be included in the Vector.
+	 * @param elems the Vector that will contain all the elements of the tree. It may not be null.
+	 * @return elems, with all descendants added to the vector in preorder.
+	 */
+	private Vector<Objective> getPreorderElements(boolean includeObjectives, boolean includeIssues, Vector<Objective> elems) {
+		//TODO Test if it works flawless
+		if (isIssue() && includeIssues) {
+			elems.add(this);
+			//If this is an Issue, it doesn't have children so we can return.
+			return elems;
+		}
+		else if (isObjective()) {
+			if (includeObjectives)
+				elems.add(this);
+			
+			Enumeration<Objective> desc = children();
+			while (desc.hasMoreElements()) {
+				desc.nextElement().getPreorderElements(includeObjectives, includeIssues, elems);
+			}
+		}
+		return elems;
+	}
+	
+	//TODO Add other traversal types
 }
