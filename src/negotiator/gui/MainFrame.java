@@ -73,8 +73,6 @@ public class MainFrame extends javax.swing.JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
         jPanel1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         fieldNegotiationTemplate = new javax.swing.JTextField();
@@ -100,6 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         buttonStart = new javax.swing.JButton();
         buttonStop = new javax.swing.JButton();
+        buttonShowModel = new javax.swing.JButton();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -219,10 +218,24 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.add(buttonStop);
         buttonStop.setBounds(100, 10, 70, 23);
 
+        buttonShowModel.setText("Show Model");
+        buttonShowModel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonShowModelActionPerformed(evt);
+            }
+        });
+
+        jPanel2.add(buttonShowModel);
+        buttonShowModel.setBounds(300, 10, 100, 23);
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 410, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonShowModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonShowModelActionPerformed
+// TODO Show the model GUI here!
+    }//GEN-LAST:event_buttonShowModelActionPerformed
 
     private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
 
@@ -287,6 +300,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonBrowseAgentAUtilitySpace;
     private javax.swing.JButton buttonBrowseAgentBUtilitySpace;
     private javax.swing.JButton buttonBrowseNegotiationTemplate;
+    private javax.swing.JButton buttonShowModel;
     private javax.swing.JButton buttonStart;
     private javax.swing.JButton buttonStop;
     private javax.swing.JTextField fieldAgentAClassName;
