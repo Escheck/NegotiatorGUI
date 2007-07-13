@@ -221,7 +221,7 @@ public class ABMPAgent extends Agent {
 						lUtility = Math.abs(lTE[i]- lEvalValue);
 					}//if
 				}//for
-			lTotalConcession += fIssueWeight[i]*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation((ValueDiscrete)lIssueIndex[i]));
+	//FIXME		lTotalConcession += fIssueWeight[i]*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation((ValueDiscrete)lIssueIndex[i]));
 			} else if (lIssue.getType() == real)
 				lNrOfRealIssues += 1;
 		}

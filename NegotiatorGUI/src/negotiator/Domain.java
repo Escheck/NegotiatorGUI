@@ -27,7 +27,8 @@ public class Domain {
     
     // Constructor
     public Domain(SimpleElement root) {
-        loadFromXML(root);
+//        loadFromXML(root);
+    	loadTreeFromXML(root);    
     }
     
     // Class methods
@@ -162,11 +163,14 @@ public class Domain {
     	Integer nr_issues = new Integer(s);
     	fNumberOfIssues = nr_issues;
     	
-    	SimpleElement[] root = (SimpleElement[])pRoot.getChildByTagName("Objective"); //Get the actual root Objective.
+    	
+ 
+//causes error. the []s seem to cause a classcastexception.    	SimpleElement[] root = (SimpleElement[])(pRoot.getChildByTagName("objective")); //Get the actual root Objective.
+    	SimpleElement root = (SimpleElement)(pRoot.getChildByTagName("objective")[0]); //Get the actual root Objective. 
         Objective objAlmostRoot = new Objective();
         //set objAlmostRoot attributes based on pRoot
         
-        fObjectivesRoot = buildTreeRecursive(root[0], objAlmostRoot);
+        fObjectivesRoot = buildTreeRecursive(root, objAlmostRoot);
     	
         
     } 
@@ -183,8 +187,8 @@ public class Domain {
     	Integer sint = new Integer(s);
     	int sintint = sint; //Check of this cast works!
     	
-    	Object[] currentLevelObjectives = currentLevelRoot.getChildByTagName("Objective");
-    	Object[] currentLevelIssues = currentLevelRoot.getChildByTagName("Issue");
+    	Object[] currentLevelObjectives = currentLevelRoot.getChildByTagName("objective");
+    	Object[] currentLevelIssues = currentLevelRoot.getChildByTagName("issue");
     	for(int i =0; i < currentLevelObjectives.length; i++){
        			SimpleElement childObjectives = (SimpleElement)currentLevelObjectives[i];
     			Objective child = new Objective(currentParent);
