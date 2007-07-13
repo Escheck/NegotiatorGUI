@@ -12,6 +12,8 @@ package negotiator.agents;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
+import java.util.HashMap;
+
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
@@ -53,7 +55,8 @@ public class SimpleAgent extends Agent{
     }
     
     private Bid getNextBid() {
-        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];       
+//        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];
+    	HashMap<Integer, Value> values = new HashMap<Integer, Value>();
         for(int i=0;i<getNegotiationTemplate().getDomain().getNumberOfIssues();i++) {
         	Issue lIssue = getNegotiationTemplate().getDomain().getIssue(i);        	
 			switch(lIssue.getType()) {
@@ -64,21 +67,24 @@ public class SimpleAgent extends Agent{
 	            int optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
 	            System.out.println(optionIndex);
-	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex);
+//	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex);
+	            values.put(new Integer(i), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex));
 			case REAL: 
 				IssueReal lIssueReal =(IssueReal)lIssue;
 				double lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lIssueReal.getNumberOfDiscretizationSteps();
 	            numberOfOptions =lIssueReal.getNumberOfDiscretizationSteps();
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
-				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex);
+//				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex);
+	            values.put(new Integer(i), new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex));
 				break;
 			case DISCRETE:
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
 	            numberOfOptions =lIssueDiscrete.getNumberOfValues();
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
-				values[i]= lIssueDiscrete.getValue(optionIndex);
+//				values[i]= lIssueDiscrete.getValue(optionIndex);
+	            values.put(new Integer(i), lIssueDiscrete.getValue(optionIndex));
 				break;
 			}// switch
 		}//for

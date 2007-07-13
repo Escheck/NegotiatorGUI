@@ -158,8 +158,10 @@ public class UtilitySpace {
     // Method returns (a) bid which has maximum utility in this utility space.
 	public final Bid getMaxUtilityBid() {
 		int nrOfIssues = domain.getNumberOfIssues();
-		Value[] values = new Value[nrOfIssues];	//TODO hdv: Do something about these values. See proposal of 11-6-7
-		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.
+//		Value[] values = new Value[nrOfIssues];	//TODO hdv: Do something about these values. See proposal of 11-6-7
+		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
+//		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.
+		HashMap<Integer, Value> maxValues = new HashMap<Integer, Value>();
 		Bid lBid, newBid;
 		Issue issue;
 		ISSUETYPE type;
@@ -175,15 +177,20 @@ public class UtilitySpace {
 			type = issue.getType();
 			switch(type) {
 			case DISCRETE:
-				values[i] = ((IssueDiscrete)issue).getValue(0);
+//				values[i] = ((IssueDiscrete)issue).getValue(0);
+				values.put(new Integer(i), ((IssueDiscrete)issue).getValue(0));
 				break;
 			case INTEGER:
-				values[i] = new ValueInteger(((IssueInteger)issue).getLowerBound());
-				maxValues[i] = new ValueInteger(((IssueInteger)issue).getUpperBound());
+//				values[i] = new ValueInteger(((IssueInteger)issue).getLowerBound());
+				values.put(new Integer(i), new ValueInteger(((IssueInteger)issue).getLowerBound()));
+//				maxValues[i] = new ValueInteger(((IssueInteger)issue).getUpperBound());
+				maxValues.put(new Integer(i), new ValueInteger(((IssueInteger)issue).getUpperBound()));
 				break;
 			case REAL:
-				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
-				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
+//				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
+				values.put(new Integer(i), new ValueReal(((IssueReal)issue).getLowerBound()));
+//				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
+				maxValues.put(new Integer(i), new ValueReal(((IssueReal)issue).getUpperBound()));
 				break;
 			}
 		}
@@ -205,8 +212,10 @@ public class UtilitySpace {
 						u1 = u2;
 					}
 				}
-				values[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
-				maxValues[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
+//				values[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
+				values.put(new Integer(i), new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue()) );
+//				maxValues[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
+				maxValues.put(new Integer(i), new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue()));
 				
 				break;
 			case INTEGER:
@@ -215,12 +224,15 @@ public class UtilitySpace {
 			case REAL:
 				// assume indep & linear
 				
-				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
-				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
+//				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
+				values.put(new Integer(i), new ValueReal(((IssueReal)issue).getLowerBound()));
+//				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
+				maxValues.put(new Integer(i), new ValueReal(((IssueReal)issue).getUpperBound()));
 				lBid = new Bid(domain,values);	//TODO hdv: Are these the only 3 places where the constructor of Bid is called?
 				newBid = new Bid(domain,maxValues);
 				if (this.getUtility(lBid)>this.getUtility(newBid))
-					maxValues[i] = new ValueReal(((ValueReal)values[i]).getValue());
+//					maxValues[i] = new ValueReal(((ValueReal)values.get(new Integer(i))).getValue());
+					maxValues.put(new Integer(i), new ValueReal(((ValueReal)values.get(new Integer(i))).getValue()));
 				break;
 			}
 		}

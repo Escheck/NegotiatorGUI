@@ -10,6 +10,7 @@ package negotiator.agents;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
+import java.util.HashMap;
 
 import negotiator.*;
 import negotiator.actions.*;
@@ -170,7 +171,8 @@ public class ABMPAgent extends Agent {
 	// ABMP Specific Code
 
 	private Bid getBidABMPsimple(double targetUtility) {
-		Value[] lIssueIndex = new Value[nrOfIssues];
+		//Value[] lIssueIndex = new Value[nrOfIssues];
+		HashMap<Integer, Value> lIssueIndex = new HashMap<Integer, Value>();
 		double[] lIssueAlpha = new double[nrOfIssues];
 		double[] lBE = new double[nrOfIssues];
 		double[] lBTE = new double[nrOfIssues];
@@ -214,7 +216,8 @@ public class ABMPAgent extends Agent {
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
 					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation(lIssueDiscrete.getValue(j));
 					if (Math.abs(lTE[i] - lEvalValue) < lUtility) {
-						lIssueIndex[i] = lIssueDiscrete.getValue(j);
+//						lIssueIndex[i] = lIssueDiscrete.getValue(j);
+						lIssueIndex.put(new Integer(i), lIssueDiscrete.getValue(i));
 						lUtility = Math.abs(lTE[i]- lEvalValue);
 					}//if
 				}//for
@@ -241,13 +244,16 @@ public class ABMPAgent extends Agent {
 				case REAL:
 					EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(i));
 					double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
-					lIssueIndex[i] = new ValueReal(r);
+//					lIssueIndex[i] = new ValueReal(r);
+					lIssueIndex.put(new Integer(i), new ValueReal(r));
 					break;
 				case PRICE:
 					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(i));
-					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound()); 
+//					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound());
+					lIssueIndex.put(new Integer(i), new ValueReal(lPriceEvaluator.getLowerBound()));
 					Bid lTempBid = new Bid(getNegotiationTemplate().getDomain(), lIssueIndex);
-					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
+//					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
+					lIssueIndex.put(new Integer(i), lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]));
 					break;
 				}
 			}
