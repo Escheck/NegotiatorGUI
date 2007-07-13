@@ -62,7 +62,8 @@ public class SimpleElement {
             ListIterator iter = childElements.listIterator();
             while(iter.hasNext()) {
                 SimpleElement se = (SimpleElement)iter.next();
-                if (se.getTagName().equals(tagName))
+                String seTagName = se.getTagName();
+                if (seTagName.equals(tagName))
                     result.add(se);
             }
             return result.toArray();

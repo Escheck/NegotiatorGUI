@@ -77,7 +77,7 @@ public class NegotiationTemplate {
 			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
 			fRoot = parser.parse(file);
 			/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-            else this.negotiationType = CONVENTIONAL_NEGOTIATION;*/
+            else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
 			SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
 			domain = new Domain(xml_utility_space);
 			loadAgentsUtilitySpaces();			
