@@ -1,7 +1,7 @@
 package negotiator;
 
 import java.util.Iterator;
-
+import java.util.HashMap;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.*;
 
@@ -80,7 +80,8 @@ public class BidIterator implements Iterator {
 		else
 			fValuesIndexes = lNextIndexes;
 		try {
-			Value[] lValues = new Value[fNumberOfIssues];
+			//Value[] lValues = new Value[fNumberOfIssues];
+			HashMap<Integer, Value> lValues = new HashMap<Integer, Value>();
 			for(int i=0;i<fNumberOfIssues;i++) {
 				Issue lIssue = fDomain.getIssue(i);
 				double lOneStep;
@@ -88,11 +89,13 @@ public class BidIterator implements Iterator {
 				//TODO: COMPLETE add cases for all types of issues
 				case INTEGER:
 					IssueInteger lIssueInteger =(IssueInteger)lIssue;
-					lValues[i]= new ValueInteger(lIssueInteger.getLowerBound()+fValuesIndexes[i]);
+					//lValues[i]= new ValueInteger(lIssueInteger.getLowerBound()+fValuesIndexes[i]);
+					lValues.put(new Integer(i), new ValueInteger(lIssueInteger.getLowerBound()+fValuesIndexes[i]));
 				case REAL: 
 					IssueReal lIssueReal =(IssueReal)lIssue;
 					lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lIssueReal.getNumberOfDiscretizationSteps();
-					lValues[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*fValuesIndexes[i]);
+					//lValues[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*fValuesIndexes[i]);
+					lValues.put(new Integer(i),new ValueReal(lIssueReal.getLowerBound()+lOneStep*fValuesIndexes[i]));
 					break;
 					/* Removed by DT because KH removed PRICE
 					 * 
@@ -105,7 +108,8 @@ public class BidIterator implements Iterator {
 */					
 				case DISCRETE:
 					IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
-					lValues[i] = lIssueDiscrete.getValue(fValuesIndexes[i]);
+					//lValues[i] = lIssueDiscrete.getValue(fValuesIndexes[i]);
+					lValues.put(new Integer(i), lIssueDiscrete.getValue(fValuesIndexes[i]));
 					break;
 				}// switch
 			}//for				

@@ -14,6 +14,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import java.util.HashMap;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationTemplate;
@@ -321,9 +323,11 @@ public class EnterBidDialog extends javax.swing.JDialog {
             Bid bid = null;
 //            try {
 //                bid = nt.getDomain().makeBid(myBid);
-            	Value[] values = new Value[myBid.length];
+//            	Value[] values = new Value[myBid.length];
+            	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
             	for (int i=0; i<myBid.length; i++) {
-            		values[i] = (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i]));
+//            		values[i] = (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i]));
+            		values.put(new Integer(i), (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i])));
             	}
             	bid = new Bid(nt.getDomain(), values);
 //            } catch (BidDoesNotExistInDomainException e) {

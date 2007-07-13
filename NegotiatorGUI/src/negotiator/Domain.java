@@ -11,7 +11,7 @@ package negotiator;
 
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
-
+import java.util.HashMap;
 /**
  *
  * @author Dmytro Tykhonov & Koen Hindriks
@@ -297,7 +297,9 @@ public class Domain {
     
 	// KH 070511: Moved to here since it is generic method that can be made available to all agents.
 	public final Bid getRandomBid() {
-       Value[] values = new Value[this.getNumberOfIssues()];
+       //Value[] values = new Value[this.getNumberOfIssues()];
+		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
+		
        Issue lIssue;
        int lNrOfOptions, lOptionIndex;
 
@@ -311,14 +313,16 @@ public class Domain {
 	            lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
-				values[i]= lIssueDiscrete.getValue(lOptionIndex);
+				//values[i]= lIssueDiscrete.getValue(lOptionIndex);
+	            values.put(new Integer(i), lIssueDiscrete.getValue(lOptionIndex));
 				break;
 			case INTEGER:
 		        lNrOfOptions = ((IssueInteger)lIssue).getUpperBound()-((IssueInteger)lIssue).getLowerBound()+1;
 		        lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
-	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex);
+	            //values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex);
+	            values.put(new Integer(i), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex));
 		        break;
 			case REAL:
 				IssueReal lIssueReal =(IssueReal)lIssue;
@@ -327,7 +331,8 @@ public class Domain {
 	            lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
-				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex);
+				//values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex);
+	            values.put(new Integer(i), new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex));
 				break;
 			}
 		}
