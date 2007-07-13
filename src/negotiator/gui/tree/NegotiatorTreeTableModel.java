@@ -5,6 +5,7 @@ import jtreetable.*;
 import java.util.*;
 import javax.swing.table.*;
 import javax.swing.tree.*;
+import negotiator.*;
 import negotiator.issue.*;
 import negotiator.utility.*;
 
@@ -14,10 +15,13 @@ import negotiator.utility.*;
 * 
 */
 
+//TODO: replace instances of root by Domain.getRoot (or something similar)
+
 public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
 	//Attributes
 	private Objective root;
+	private Domain domain;
 	private String[] colNames = {"Name", "Eval Type", "Issue Type", "Value", "Weight"};
 	private Class[] colTypes = {TreeTableModel.class, String.class, String.class, String.class, WeightSlider.class};
 	private UtilitySpace utilitySpace;
@@ -31,6 +35,14 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		sliders = new HashMap<Objective, WeightSlider>();
 	}
 	
+	public NegotiatorTreeTableModel(Domain domain, UtilitySpace utilitySpace) {
+		this.domain = domain;
+		this.root = domain.getObjectivesRoot();
+		this.utilitySpace = utilitySpace;
+		sliders = new HashMap<Objective, WeightSlider>();
+	}
+	
+	//TODO Old constructor. Now work via Domain to get the root.
 	public NegotiatorTreeTableModel(Objective root, UtilitySpace utilitySpace) {
 		this.root = root;
 		this.utilitySpace = utilitySpace;

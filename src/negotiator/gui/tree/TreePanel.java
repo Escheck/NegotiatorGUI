@@ -3,6 +3,8 @@ package negotiator.gui.tree;
 import javax.swing.*;
 import javax.swing.table.*;
 import jtreetable.*;
+import negotiator.*;
+import negotiator.utility.*;
 import negotiator.gui.tree.actions.*;
 
 /**
@@ -19,6 +21,9 @@ public class TreePanel extends JPanel {
 	
 	
 	//Constructors
+	public TreePanel(Domain domain, UtilitySpace utilitySpace) {
+		this(new NegotiatorTreeTableModel(domain, utilitySpace));
+	}
 	
 	public TreePanel(NegotiatorTreeTableModel treeModel) {
 		super();
