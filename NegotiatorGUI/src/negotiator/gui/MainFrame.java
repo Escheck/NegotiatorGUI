@@ -15,6 +15,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import negotiator.Main;
+import negotiator.gui.tree.*;
 import negotiator.NegotiationManager;
 import negotiator.NegotiationTemplate;
 
@@ -234,7 +235,18 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonShowModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonShowModelActionPerformed
-// TODO Show the model GUI here!
+// TODO At the moment it is hardcoded that the utilitySpace from Agent A is used in the GUI. Change this later (maybe 2 separate buttons?)
+    	/*NegotiationManager manager = new NegotiationManager(
+                fieldAgentAClassName.getText(),
+                fieldAgentAName.getText(),
+                fieldAgentAUtilitySpace.getText(),
+                fieldAgentBClassName.getText(), 
+                fieldAgentBName.getText(),
+                fieldAgentBUtilitySpace.getText(),
+                fieldNegotiationTemplate.getText(), 
+                Integer.valueOf(fieldNumberOfSession.getText()));*/
+    	NegotiationTemplate template = new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText());
+    	TreePanel treePanel = new TreePanel(template.getDomain(), template.getAgentAUtilitySpace());
     }//GEN-LAST:event_buttonShowModelActionPerformed
 
     private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
