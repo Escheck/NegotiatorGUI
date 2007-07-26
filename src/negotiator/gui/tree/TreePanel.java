@@ -32,6 +32,8 @@ public class TreePanel extends JPanel {
 		
 		//Create Actions
 		AddAction addAct = new AddAction();
+		AddObjectiveAction addObjectiveAct = new AddObjectiveAction();
+		AddIssueAction addIssueAct = new AddIssueAction();
 		DeleteAction delAct = new DeleteAction();
 		EditAction editAct = new EditAction();
 		
@@ -52,6 +54,8 @@ public class TreePanel extends JPanel {
 		JPanel controls = new JPanel();
 		controls.setBorder(BorderFactory.createTitledBorder("Edit nodes"));
 		controls.add(new JButton(addAct));
+		controls.add(new JButton(addObjectiveAct));
+		controls.add(new JButton(addIssueAct));
 		controls.add(new JButton(delAct));
 		controls.add(new JButton(editAct));
 		this.add(controls);

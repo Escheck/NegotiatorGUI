@@ -245,8 +245,18 @@ public class MainFrame extends javax.swing.JFrame {
                 fieldAgentBUtilitySpace.getText(),
                 fieldNegotiationTemplate.getText(), 
                 Integer.valueOf(fieldNumberOfSession.getText()));*/
-    	NegotiationTemplate template = new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText());
-    	TreePanel treePanel = new TreePanel(template.getDomain(), template.getAgentAUtilitySpace());
+    	//Temporarily just create a TreePanel with an empty domain and utilitySpace, because reading the utilitySpaces
+    	//doesn't work properly yet (Herbert is working on that)
+    	//NegotiationTemplate template = new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText());
+    	//TreePanel treePanel = new TreePanel(template.getDomain(), template.getAgentAUtilitySpace());
+    	TreePanel treePanel = new TreePanel(new NegotiatorTreeTableModel(new negotiator.issue.Objective()));
+		
+    	javax.swing.JFrame frame = new javax.swing.JFrame();
+    	frame.getContentPane().add(treePanel);
+		//mainFrame.getContentPane().add(new WeightSlider());
+		
+		frame.pack();
+		frame.setVisible(true);
     }//GEN-LAST:event_buttonShowModelActionPerformed
 
     private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
