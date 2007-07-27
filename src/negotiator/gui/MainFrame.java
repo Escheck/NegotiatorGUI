@@ -249,10 +249,10 @@ public class MainFrame extends javax.swing.JFrame {
     	//doesn't work properly yet (Herbert is working on that)
     	//NegotiationTemplate template = new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText());
     	//TreePanel treePanel = new TreePanel(template.getDomain(), template.getAgentAUtilitySpace());
-    	TreePanel treePanel = new TreePanel(new NegotiatorTreeTableModel(new negotiator.issue.Objective()));
+    	TreeFrame treeFrame = new TreeFrame(new NegotiatorTreeTableModel(new negotiator.issue.Objective()));
 		
     	javax.swing.JFrame frame = new javax.swing.JFrame();
-    	frame.getContentPane().add(treePanel);
+    	frame.getContentPane().add(treeFrame);
 		//mainFrame.getContentPane().add(new WeightSlider());
 		
 		frame.pack();

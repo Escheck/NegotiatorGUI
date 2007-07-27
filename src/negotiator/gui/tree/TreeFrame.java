@@ -1,5 +1,6 @@
 package negotiator.gui.tree;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import jtreetable.*;
@@ -13,7 +14,7 @@ import negotiator.gui.tree.actions.*;
 * 
 */
 
-public class TreePanel extends JPanel {
+public class TreeFrame extends JFrame {
 	
 	//Attributes
 	JTreeTable treeTable;
@@ -21,21 +22,16 @@ public class TreePanel extends JPanel {
 	
 	
 	//Constructors
-	public TreePanel(Domain domain, UtilitySpace utilitySpace) {
+	public TreeFrame(Domain domain, UtilitySpace utilitySpace) {
 		this(new NegotiatorTreeTableModel(domain, utilitySpace));
 	}
 	
-	public TreePanel(NegotiatorTreeTableModel treeModel) {
+	public TreeFrame(NegotiatorTreeTableModel treeModel) {
 		super();
 		
 		model = treeModel;
 		
-		//Create Actions
-		AddAction addAct = new AddAction();
-		AddObjectiveAction addObjectiveAct = new AddObjectiveAction();
-		AddIssueAction addIssueAct = new AddIssueAction();
-		DeleteAction delAct = new DeleteAction();
-		EditAction editAct = new EditAction();
+		this.getContentPane().setLayout(new FlowLayout());
 		
 		treeTable = new JTreeTable(model);
 		//TODO THIS IS FOR TESTING
@@ -48,7 +44,14 @@ public class TreePanel extends JPanel {
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		//TODO END OF TESTING
 		JScrollPane treePane = new JScrollPane(treeTable);
-		this.add(treePane);
+		this.getContentPane().add(treePane);
+		
+		//Create Actions
+		AddAction addAct = new AddAction();
+		AddObjectiveAction addObjectiveAct = new AddObjectiveAction(this, treeTable);
+		AddIssueAction addIssueAct = new AddIssueAction();
+		DeleteAction delAct = new DeleteAction();
+		EditAction editAct = new EditAction();
 		
 		//Initialise the Panel with buttons.
 		JPanel controls = new JPanel();
@@ -58,7 +61,10 @@ public class TreePanel extends JPanel {
 		controls.add(new JButton(addIssueAct));
 		controls.add(new JButton(delAct));
 		controls.add(new JButton(editAct));
-		this.add(controls);
+		this.getContentPane().add(controls);
+		
+		this.pack();
+		this.setVisible(true);
 	}
 	
 	//Methods

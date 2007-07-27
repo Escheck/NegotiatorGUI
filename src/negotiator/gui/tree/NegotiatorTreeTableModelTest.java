@@ -35,7 +35,8 @@ public class NegotiatorTreeTableModelTest {
 		//JTreeTable treeTable = new JTreeTable(model);
 		//JTree treeTable = new JTree(model);
 		
-		JFrame mainFrame = new JFrame();
+		//JFrame mainFrame = new JFrame();
+		TreeFrame mainFrame = new TreeFrame(model);
 		
 		mainFrame.addWindowListener(new WindowAdapter() {
 		    public void windowClosing(WindowEvent we) {
@@ -43,8 +44,8 @@ public class NegotiatorTreeTableModelTest {
 		    }
 		});
 		
-		TreePanel panel = new TreePanel(model);
-		mainFrame.getContentPane().add(panel);
+		
+		//mainFrame.getContentPane().add(frame);
 		//mainFrame.getContentPane().add(new WeightSlider());
 		
 		mainFrame.pack();
@@ -56,12 +57,12 @@ public class NegotiatorTreeTableModelTest {
 		if (test == null)
 			System.out.println("all seems well");
 		
-		System.out.println("\n2, 2 editable: " + panel.getTreeTable().isCellEditable(2,2));
+		System.out.println("\n2, 2 editable: " + mainFrame.getTreeTable().isCellEditable(2,2));
 		
 		try {Thread.sleep(15000);}
 		catch (Exception e) {}
 		
-		System.out.println("\n2, 2 editable: " + panel.getTreeTable().isCellEditable(2,2));
+		System.out.println("\n2, 2 editable: " + mainFrame.getTreeTable().isCellEditable(2,2));
 		//model.fire
 		
 		/*
