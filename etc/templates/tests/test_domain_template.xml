@@ -1,11 +1,11 @@
-<negotiation_template nubmer_of_sessions="1">
+<negotiation_template nubmer_of_sessions="5">
 <agent class="negotiator.agents.SimpleAgent" name="orange" utility_space="orange_test_utilityspace.xml">
 </agent>
 <agent class="negotiator.agents.SimpleAgent" name="green" utility_space="green_test_utilityspace.xml">
 </agent>
 
 <utility_space number_of_issues="2">
-        <weigth index="1" value="1.0"/>
+        <weight index="1" value="1.0"/>
         <objective index="1" number_of_children="2" vtype="objective" type="objective" etype="objective">
 		<weight index="2" value="0.4"/>
 		<weight index="3" value="0.6"/>

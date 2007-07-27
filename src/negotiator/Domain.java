@@ -36,8 +36,8 @@ public class Domain {
         return fNumberOfIssues;
     }
     
-    public final Issue getIssue(int index) {
-        return fIssues[index];
+    public final Objective getIssue(int index) {
+        return fObjectivesRoot.getChildAt(index);
     }
     
     public final Objective getObjective(int index){

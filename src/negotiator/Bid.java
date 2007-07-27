@@ -163,7 +163,11 @@ public final class Bid {
 				lTmp = lXMLItem.getText();
 				lValue = new ValueReal(Double.valueOf(lTmp));
 				break;
-
+			case OBJECTIVE:
+				//TODO something with objectives.
+				//for now, do nothing. Objectives do not enter into bids.
+				break;
+				
 			// TODO:COMPLETED: DT implement Bid(Domain, SimpleElement) in Bid
 			// for the rest of the issue/value types
 			// TODO: DT add bid validation w.r.t. Domain, throw an exception
