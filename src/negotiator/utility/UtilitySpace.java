@@ -37,7 +37,8 @@ public class UtilitySpace {
     // Constructor
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
-        loadTreeFromFile(fileName);
+        if(!fileName.equals(""))
+        	loadTreeFromFile(fileName);
     }
     
     // Class methods
