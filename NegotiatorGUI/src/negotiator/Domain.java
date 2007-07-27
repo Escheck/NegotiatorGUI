@@ -215,7 +215,7 @@ public class Domain {
             String type = childIssues.getAttribute("type");
             String vtype = childIssues.getAttribute("vtype");
             ISSUETYPE issueType;
-            if (type==vtype) {
+            if (type.equals(vtype)) {
             	if (type==null) { // No value type specified.
             		System.out.println("Type not specified in template file.");
                 	issueType = ISSUETYPE.DISCRETE;
@@ -237,7 +237,7 @@ public class Domain {
 //          Collect values and/or corresponding parameters for issue type.
             Object[] xml_items;
             Object[] xml_item;
-            int nrOfItems, minI, maxI;
+            int nrOfItems, minI, maxI, item_index;
             double minR, maxR;
             String[] values;
             Issue issue;
@@ -246,10 +246,11 @@ public class Domain {
             	// Collect discrete values for discrete-valued issue from xml template
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
+                
                 values = new String[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
-                    index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
+                    item_index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
                     values[index-1] = ((SimpleElement)xml_items[k]).getAttribute("value");
                 }
                 issue = new IssueDiscrete(name, index, values, currentParent);
@@ -282,14 +283,14 @@ public class Domain {
                 nrOfItems = xml_items.length;
                 values = new String[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) {
-                    int item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
+                    item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
                     values[item_index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
                 }
             	issue = new IssueDiscrete(name, index, values, currentParent);
             	break;
             }
     		    		
-    		child.setDescription(childIssues.getAttribute("description"));
+ //Descriptions?   		child.setDescription(childIssues.getAttribute("description"));
     /*		Double weight = new Double(childIssues.getAttribute("weight"));
     		child.setWeight(weight.doubleValue());
     */		
