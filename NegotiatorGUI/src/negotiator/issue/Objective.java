@@ -12,7 +12,7 @@ import javax.swing.tree.TreeNode;
 * 
 */
 
-public class Objective implements MutableTreeNode{
+public class Objective {//implements MutableTreeNode{
 	
 	//Attributes
 	private String name;
@@ -228,8 +228,6 @@ public class Objective implements MutableTreeNode{
 	public boolean isLeaf() {
 		return isIssue();
 	}
-
-	//Methods from the MutableTreeNode interface
 	
 	/**
 	 * Adds child to the receiver at index. child will be messaged with setParent. Nodes at the given index and above are
@@ -239,7 +237,7 @@ public class Objective implements MutableTreeNode{
 	 * 				thrown.
 	 * @param index	the index where the new node is to be inserted.
 	 */
-	public void insert(MutableTreeNode child, int index) {
+	public void insert(Objective child, int index) {
 		if (index <= getChildCount() && index >= 0) {
 			children.insertElementAt((Objective)child, index);
 			child.setParent(this);
@@ -263,7 +261,7 @@ public class Objective implements MutableTreeNode{
 	 * Removes node from the receiver's children, and sets it's parent to null. If node is not one of the receiver's
 	 * children, nothing happens. 
 	 */
-	public void remove(MutableTreeNode node) {
+	public void remove(Objective node) {
 		for (int i = 0; i < children.size(); i++) {
 			if (node == children.elementAt(i)) {
 				getChildAt(i).setParent(null);
@@ -290,8 +288,8 @@ public class Objective implements MutableTreeNode{
 	 * and remove() to reassign a child's parent, it should not be messaged from anywhere else. Also, newParent is cast to a
 	 * Objective. Calling this method with a different type of TreeNode will result in a ClassCastException.
 	 */
-	public void setParent(MutableTreeNode newParent) {
-		parent = (Objective)newParent;
+	public void setParent(Objective newParent) {
+		parent = newParent;
 	}
 
 	/**
