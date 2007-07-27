@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Vector;
 import java.util.ListIterator;
 
 /**
@@ -57,19 +58,25 @@ public class SimpleElement {
 	public Object[] getChildElements() {
 		return childElements.toArray();
 	}
-        public Object[] getChildByTagName(String tagName) {
-            LinkedList result = new LinkedList();
-            ListIterator iter = childElements.listIterator();
-            while(iter.hasNext()) {
-                SimpleElement se = (SimpleElement)iter.next();
-                String seTagName = se.getTagName();
-                if (seTagName.equals(tagName))
-                    result.add(se);
-            }
-            return result.toArray();
-                
+        
+	public Object[] getChildByTagName(String tagName) {
+	//	LinkedList<Object> result = new LinkedList<Object>();
+		Vector<Object> result = new Vector<Object>();
+        ListIterator iter = childElements.listIterator();
+        while(iter.hasNext()) {
+        	SimpleElement se = (SimpleElement)iter.next();
+           	String seTagName = se.getTagName();
+            if (seTagName.equals(tagName))
+				result.add(se);
         }
-        public String toString() {
+		Object[] resultArray = new Object[result.size()];//for some reason the toArray gave me a direct reference to the last element of the returned array, not the array itself. - Hdv.
+		for(int ind=0; ind < result.size(); ind++){
+			resultArray[ind] = result.elementAt(ind);	
+		}
+		return resultArray;
+    }
+        
+	public String toString() {
         	String lResult="";
         	lResult +="<" + tagName;
             //save all attributes
