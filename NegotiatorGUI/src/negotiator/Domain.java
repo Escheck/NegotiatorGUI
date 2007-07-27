@@ -167,7 +167,9 @@ public class Domain {
  
 //causes error. the []s seem to cause a classcastexception.    	SimpleElement[] root = (SimpleElement[])(pRoot.getChildByTagName("objective")); //Get the actual root Objective.
     	SimpleElement root = (SimpleElement)(pRoot.getChildByTagName("objective")[0]); //Get the actual root Objective. 
+    	int rootIndex = Integer.valueOf(root.getAttribute("index"));
         Objective objAlmostRoot = new Objective();
+        objAlmostRoot.setNumber(rootIndex);
         //set objAlmostRoot attributes based on pRoot
         
         fObjectivesRoot = buildTreeRecursive(root, objAlmostRoot);
@@ -191,10 +193,12 @@ public class Domain {
     	Object[] currentLevelIssues = currentLevelRoot.getChildByTagName("issue");
     	for(int i =0; i < currentLevelObjectives.length; i++){
        			SimpleElement childObjectives = (SimpleElement)currentLevelObjectives[i];
+       			int obj_index = Integer.valueOf(childObjectives.getAttribute("index"));
     			Objective child = new Objective(currentParent);
+    			child.setNumber(obj_index);
     			//Set child attributes based on childObjectives.
     			child.setName(childObjectives.getAttribute("name"));
-    			child.setDescription(childObjectives.getAttribute("description"));
+   // 			child.setDescription(childObjectives.getAttribute("description"));
    /* 			Double weight = new Double(childObjectives.getAttribute("weight")); //TODO check if weigth is the same things as value!
     			child.setWeight(weight.doubleValue()); 
     */			
@@ -244,6 +248,7 @@ public class Domain {
             switch(issueType) {
             case DISCRETE:
             	// Collect discrete values for discrete-valued issue from xml template
+            	
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
                 
@@ -251,23 +256,23 @@ public class Domain {
                 for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
                     item_index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
-                    values[index-1] = ((SimpleElement)xml_items[k]).getAttribute("value");
+                    values[k] = ((SimpleElement)xml_items[k]).getAttribute("value");
                 }
-                issue = new IssueDiscrete(name, index, values, currentParent);
+                child = new IssueDiscrete(name, index, values, currentParent);
             	break;
             case INTEGER:
             	// Collect range bounds for integer-valued issue from xml template
             	xml_item = childIssues.getChildByTagName("range");
             	minI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
             	maxI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
-            	issue = new IssueInteger(name, index, minI, maxI, currentParent);
+            	child = new IssueInteger(name, index, minI, maxI, currentParent);
             	break;
             case REAL:
             	// Collect range bounds for integer-valued issue from xml template
             	xml_item = childIssues.getChildByTagName("range");
             	minR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
             	maxR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
-            	issue = new IssueReal(name, index, minR, maxR);
+            	child = new IssueReal(name, index, minR, maxR);
             	break;
  // Issue values cannot be of type "price" anymore... TODO: Remove when everything works.
  //           case PRICE:
@@ -284,17 +289,23 @@ public class Domain {
                 values = new String[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) {
                     item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
-                    values[item_index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
+                    values[k] = ((SimpleElement)xml_items[j]).getAttribute("value");
                 }
-            	issue = new IssueDiscrete(name, index, values, currentParent);
+            	child = new IssueDiscrete(name, index, values, currentParent);
             	break;
             }
     		    		
  //Descriptions?   		child.setDescription(childIssues.getAttribute("description"));
     /*		Double weight = new Double(childIssues.getAttribute("weight"));
     		child.setWeight(weight.doubleValue());
-    */		
-    		currentParent.addChild(child);
+    */		child.setNumber(index);
+            try{
+            	currentParent.addChild(child);
+            }catch(Exception e){
+            	System.out.println("child is NULL");
+            	e.printStackTrace();
+            	
+            }
        	}
     	
     	return currentParent;
