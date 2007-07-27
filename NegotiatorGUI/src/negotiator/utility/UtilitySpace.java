@@ -12,6 +12,7 @@ package negotiator.utility;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Vector;
 import java.util.Map;
 
 import negotiator.Bid;
@@ -29,14 +30,14 @@ public class UtilitySpace {
 	
 	// Class fields
     private Domain domain;
-    private double weights[];
+    private HashMap<Integer, Double> weights[];
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
     // Constructor
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
-        loadFromFile(fileName);
+        loadTreeFromFile(fileName);
     }
     
     // Class methods
@@ -269,14 +270,17 @@ public class UtilitySpace {
 		//TODO hdevos:
         //We get an Objective or issue from the SimpleElement structure,
         //get it's number of children:
-		
-		int nrOfChildren = new Integer(currentRoot.getAttribute("number_of_children"));
+		int nrOfWeights = 0;
+		String what = currentRoot.getTagName();
+		if(!what.equals("Objective") || what.equals("utility_space")){ //are the only two tags that can have weights
+			loadTreeRecursive((SimpleElement)(currentRoot.getChildElements())[0]); //It's the utility_space tag. Ignore.
+		}
 		//TODO hdevos: find a way of checking the number of issues in the Domain versus the number of issues in the UtilitySpace
 		
 		int index;
 		double weightsSum = 0;
-		weights = new double[nrOfChildren]; //all weights for the children of this node.
-		Evaluator tmpEvaluator[] = new Evaluator[nrOfChildren]; //tmp array with all Evaluators at this level. Used to normalize weigths.
+		
+		Vector<Evaluator> tmpEvaluator = new Vector<Evaluator>(); //tmp vector with all Evaluators at this level. Used to normalize weigths.
 		EVALUATORTYPE evalType;
     	String type, etype;
         Evaluator lEvaluator=null;
@@ -284,10 +288,12 @@ public class UtilitySpace {
         
         //Get the weights of the current children
 		Object[] xml_weights = currentRoot.getChildByTagName("weight");
-        for(int i = 0; i < nrOfChildren; i++){
+		nrOfWeights = xml_weights.length; //assuming each 
+		double tmpWeights[] = new double[nrOfWeights];
+        for(int i = 0; i < nrOfWeights; i++){
         	index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
-        	weights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
-            weightsSum += weights[index-1]; // For normalization purposes. See below.
+        	tmpWeights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
+            weightsSum += tmpWeights[index-1]; // For normalization purposes on this level. See below.
         }
         
 //      Collect evaluations for each of the issue values from file.
@@ -295,7 +301,7 @@ public class UtilitySpace {
         Object[] xml_issues = currentRoot.getChildByTagName("issue");
 //        boolean issueWithCost = false;
 //        double[] cost;
-        for(int i=0;i<nrOfChildren;i++) {
+        for(int i=0;i<nrOfWeights;i++) {
             index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
             type = ((SimpleElement)xml_issues[i]).getAttribute("type");
             etype = ((SimpleElement)xml_issues[i]).getAttribute("etype");
@@ -343,20 +349,20 @@ public class UtilitySpace {
             // TODO: put lEvaluator to an array (done?)
             //evaluations.add(tmp_evaluations);
             //TODO: hdevos: add weigths to the evaluators.
-            fEvaluators.put(getDomain().getObjective(index-1),lEvaluator); //Here we get the Objective or Issue.
+            fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
             
-            tmpEvaluator[index-1] = lEvaluator; //for normalisation purposes.
+            tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }
         //Normalize weights if sum of weights exceeds 1.
         // Do not include weight for price evaluator! This weight represents "financial rationality factor".
         // TODO: Always normalize weights to 1??
         if (indexEvalPrice!=-1) {
-        	weightsSum -= weights[indexEvalPrice];
+        	weightsSum -= tmpWeights[indexEvalPrice];
         }
         if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
-        	for (int i=0;i<nrOfChildren;i++) {
+        	for (int i=0;i<nrOfWeights;i++) {
         		if (i!=indexEvalPrice) {
-        			tmpEvaluator[i].setWeight(tmpEvaluator[i].getWeight()/weightsSum);
+        			tmpEvaluator.elementAt(i).setWeight(tmpEvaluator.elementAt(i).getWeight()/weightsSum); //redo this bit!
         		}
         	}
         }
@@ -377,7 +383,7 @@ public class UtilitySpace {
     	EVALUATORTYPE evalType;
     	String type, etype;
         Evaluator lEvaluator=null;
-        int nrOfIssues=0, indexEvalPrice=-1;
+        int nrOfIssues=0, indexEvalPrice=-1, nrOfLevelWeights = 0;
     	
         SimpleDOMParser parser = new SimpleDOMParser();
         try {
@@ -395,9 +401,11 @@ public class UtilitySpace {
             
             // Collect weights from file.
             // TODO: Normalize weights if they add up to >1. 
-            weights = new double[nrOfIssues];
+            
             Object[] xml_weights = root.getChildByTagName("weight");
-            for(int i=0;i<nrOfIssues;i++) {
+            nrOfLevelWeights = xml_weights.length;
+            weights = new double[nrOfLevelWeights];
+            for(int i=0;i<nrOfLevelWeights;i++) {
                 index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
                 weights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
                 weightsSum += weights[index-1]; // For normalization purposes. See below.
@@ -408,6 +416,7 @@ public class UtilitySpace {
             Object[] xml_issues = root.getChildByTagName("issue");
 //            boolean issueWithCost = false;
 //            double[] cost;
+            nrOfIssues = xml_issues.length;
             for(int i=0;i<nrOfIssues;i++) {
                 index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
                 type = ((SimpleElement)xml_issues[i]).getAttribute("type");
