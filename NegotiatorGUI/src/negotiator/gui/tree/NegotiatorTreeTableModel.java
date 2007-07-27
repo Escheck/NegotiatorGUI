@@ -211,4 +211,15 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		sliders.put(node, slider);
 	}
 	
+	/**
+	 * Notifies the listeners that the structure of the tree has changed. In it's current
+	 * implementation, this method is just a wrapper for the protected method
+	 * fireTreeStructureChanged where the child index array and the children array
+	 * are left empty.
+	 * @param source the source that triggered the change.
+	 * @param path a TreePath object that identifies the path to the parent of the modified item(s)
+	 */
+	public void treeStructureChanged(Object source, Object[] path) {
+		fireTreeStructureChanged(source, path, new int[0], new Object[0]);
+	}
 }
