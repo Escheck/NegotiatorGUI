@@ -12,6 +12,8 @@ package negotiator.utility;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class UtilitySpace {
 	
 	// Class fields
     private Domain domain;
-    private HashMap<Integer, Double> weights[];
+    private HashMap<Integer, Double> weights;
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
@@ -48,8 +50,14 @@ public class UtilitySpace {
      */
     private boolean checkNormalization() {
         double lSum=0;
-        for(int i=0;i<domain.getNumberOfIssues();i++) {
+        /*for(int i=0;i<domain.getNumberOfIssues();i++) {
             lSum += weights[i];
+        }
+        */
+        Set set= fEvaluators.keySet(); 
+        Iterator iter = set.iterator();
+        while(iter.hasNext()){
+        	lSum += fEvaluators.get(iter.next()).getWeight();
         }
         return (lSum==1);
     }
@@ -114,7 +122,7 @@ public class UtilitySpace {
         	case DISCRETE:
         	case INTEGER:
         	case REAL:
-        		utility += weights[i]*getEvaluation(i,bid);
+        		utility += fEvaluators.get(i).getWeight()*getEvaluation(i,bid);
         		break;
         	case PRICE:
         		financialUtility = getEvaluation(i,bid);
@@ -273,9 +281,10 @@ public class UtilitySpace {
         //get it's number of children:
 		int nrOfWeights = 0;
 		String what = currentRoot.getTagName();
-		if(!what.equals("Objective") || what.equals("utility_space")){ //are the only two tags that can have weights
+/*		if(!what.equals("Objective") || !what.equals("utility_space")){ //are the only two tags that can have weights
 			loadTreeRecursive((SimpleElement)(currentRoot.getChildElements())[0]); //It's the utility_space tag. Ignore.
 		}
+*/		
 		//TODO hdevos: find a way of checking the number of issues in the Domain versus the number of issues in the UtilitySpace
 		
 		int index;
@@ -290,23 +299,35 @@ public class UtilitySpace {
         //Get the weights of the current children
 		Object[] xml_weights = currentRoot.getChildByTagName("weight");
 		nrOfWeights = xml_weights.length; //assuming each 
-		double tmpWeights[] = new double[nrOfWeights];
+		HashMap<Integer, Double> tmpWeights = new HashMap<Integer, Double>();
         for(int i = 0; i < nrOfWeights; i++){
         	index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
-        	tmpWeights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
-            weightsSum += tmpWeights[index-1]; // For normalization purposes on this level. See below.
+        	double dval = Double.valueOf( ((SimpleElement)xml_weights[i]).getAttribute("value"));
+        	Integer indInt = new Integer(index);
+        	Double valueDouble = new Double(dval);
+        	tmpWeights.put(indInt, valueDouble);
+            weightsSum += tmpWeights.get(index); // For normalization purposes on this level. See below.
         }
         
 //      Collect evaluations for each of the issue values from file.
         // Assumption: Discrete-valued issues.
         Object[] xml_issues = currentRoot.getChildByTagName("issue");
+        Object[] xml_objectives = currentRoot.getChildByTagName("objective");
+        Object[] xml_obj_issues = new Object[xml_issues.length + xml_objectives.length];
+        int i_ind;
+        for(i_ind = 0; i_ind < xml_issues.length; i_ind++){
+        	xml_obj_issues[i_ind] = xml_issues[i_ind];
+        }
+        for(int o_ind = i_ind; o_ind < xml_obj_issues.length; o_ind++){
+        	xml_obj_issues[o_ind] = xml_objectives[o_ind];
+        }
 //        boolean issueWithCost = false;
 //        double[] cost;
-        for(int i=0;i<nrOfWeights;i++) {
-            index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
-            type = ((SimpleElement)xml_issues[i]).getAttribute("type");
-            etype = ((SimpleElement)xml_issues[i]).getAttribute("etype");
-            if (type==etype) {
+        for(int i=0;i<xml_obj_issues.length;i++) {
+            index = Integer.valueOf(((SimpleElement)xml_obj_issues[i]).getAttribute("index"));
+            type = ((SimpleElement)xml_obj_issues[i]).getAttribute("type");
+            etype = ((SimpleElement)xml_obj_issues[i]).getAttribute("etype");
+            if (type.equals(etype)) {
             	if (type==null) { // No value type specified.
             		System.out.println("Evaluator type not specified in utility template file.");
             		// TODO: Define exception.
@@ -346,19 +367,25 @@ public class UtilitySpace {
             	//set weights here.
             	break;
             }
-            lEvaluator.loadFromXML((SimpleElement)(xml_issues[i]));
+            lEvaluator.loadFromXML((SimpleElement)(xml_obj_issues[i]));
             // TODO: put lEvaluator to an array (done?)
             //evaluations.add(tmp_evaluations);
             //TODO: hdevos: add weigths to the evaluators.
             fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
-            
+            try{
+            	fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
+            }catch(Exception e){
+            	System.out.println("Evaluator-weight mismatch.");
+            	e.printStackTrace();
+            	
+            }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }
         //Normalize weights if sum of weights exceeds 1.
         // Do not include weight for price evaluator! This weight represents "financial rationality factor".
         // TODO: Always normalize weights to 1??
         if (indexEvalPrice!=-1) {
-        	weightsSum -= tmpWeights[indexEvalPrice];
+        	weightsSum -= tmpWeights.get(indexEvalPrice); //FIXME? hdv: -1 is an invalid index. So.. what gives?
         }
         if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
         	for (int i=0;i<nrOfWeights;i++) {
@@ -378,7 +405,7 @@ public class UtilitySpace {
         //Checking if the UtilitySpace of this agent and the Domain match.
 		
 	}
-	
+/*	
     private final void loadFromFile(String fileName) {
     	double weightsSum = 0;
     	EVALUATORTYPE evalType;
@@ -470,8 +497,8 @@ public class UtilitySpace {
         // Normalize weights if sum of weights exceeds 1.
         // Do not include weight for price evaluator! This weight represents "financial rationality factor".
         // TODO: Always normalize weights to 1??
-        if (indexEvalPrice!=-1) {
-        	weightsSum -= weights[indexEvalPrice];
+        if (indexEvalPrice!=-1) {  //hdv: wtf? -1 throws an arrayIndexOutOfBounds.
+        	weightsSum = weightsSum - tmpWeights.;
         }
         if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
         	for (int i=0;i<nrOfIssues;i++) {
@@ -481,7 +508,7 @@ public class UtilitySpace {
         	}
         }
     }
-   
+  */ 
     public double getWeight(int issuesIndex) {
         //return weights[issuesIndex]; //old
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
