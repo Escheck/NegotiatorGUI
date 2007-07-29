@@ -115,18 +115,20 @@ public class UtilitySpace {
     public final double getUtility(Bid bid) {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
-        
-        for(int i=0;i<domain.getNumberOfIssues();i++) { //TODO hdv change getNumberOfIssues to an iterator over the number of issues in the bid.
-        	type = getEvaluator(i).getType();
+        Objective root = domain.getObjectivesRoot();
+        Enumeration issueEnum = root.getPreorderIssueEnumeration();
+        while(issueEnum.hasMoreElements()){
+        	Objective is = (Objective)issueEnum.nextElement();
+        	type = fEvaluators.get(is).getType();
         	switch(type) {
         	case DISCRETE:
         	case INTEGER:
         	case REAL:
-        		utility += fEvaluators.get(i).getWeight()*getEvaluation(i,bid);
+        		utility += fEvaluators.get(is).getWeight()*getEvaluation(i,bid);
         		break;
         	case PRICE:
         		financialUtility = getEvaluation(i,bid);
-        		financialRat = ((EvaluatorPrice)getEvaluator(i)).rationalityfactor;
+        		financialRat = ((EvaluatorPrice)fEvaluators.get(is)).rationalityfactor;
         		break;
         	}
         }
