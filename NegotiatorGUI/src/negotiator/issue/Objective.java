@@ -29,6 +29,7 @@ public class Objective implements MutableTreeNode{
 	
 	public Objective(Objective parent) {
 		this.parent = parent;
+		this.name = "No name specified";
 	}
 	
 	public Objective(Objective parent, String name) {
@@ -48,8 +49,7 @@ public class Objective implements MutableTreeNode{
 	 * @return the name of this node.
 	 */
 	public String getName() {
-		//TODO Implement
-		return "toedelodokie";//name;
+		return name;
 	}
 	
 	/**
