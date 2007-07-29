@@ -90,7 +90,7 @@ public final class Bid {
         Iterator value_it = value_set.iterator();
         while(value_it.hasNext()){
         	int ind = ((Entry<Integer, Value>)value_it.next()).getKey();
-        	Object tmpobj = fDomain.getObjective(ind);
+        	Object tmpobj = fDomain.getObjective(ind); //Objective isn't recognized here, GKW. hdv
         	if(tmpobj != null){
         		String nm = fDomain.getObjective(ind).getName();
         		s += nm + ": " +

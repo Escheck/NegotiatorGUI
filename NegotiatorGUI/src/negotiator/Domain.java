@@ -170,6 +170,11 @@ public class Domain {
     	int rootIndex = Integer.valueOf(root.getAttribute("index"));
         Objective objAlmostRoot = new Objective();
         objAlmostRoot.setNumber(rootIndex);
+        String name = root.getAttribute("name");
+        if(name != null)
+        	objAlmostRoot.setName(name);
+        else
+        	objAlmostRoot.setName("root"); //just in case.
         //set objAlmostRoot attributes based on pRoot
         
         fObjectivesRoot = buildTreeRecursive(root, objAlmostRoot);
