@@ -134,6 +134,16 @@ public class Objective implements MutableTreeNode{
 	}
 	
 	/**
+	 * This method is added for convenience. It is simply an alternative implementation of the getType method
+	 * from the Issue class. It will always return that the type is Objective. This method must be overridden
+	 * in Issue to return the type of the Issue.
+	 * @return ISSUETYPE.OBJECTIVE
+	 */
+	public ISSUETYPE getType() {
+		return ISSUETYPE.OBJECTIVE;
+	}
+	
+	/**
 	 * Adds a child to this Objective. The new child must be an Objective or an issue. The child is messaged
 	 * to set it's parent to the receiver.
 	 * 
