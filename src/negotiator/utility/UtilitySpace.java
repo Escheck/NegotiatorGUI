@@ -124,10 +124,10 @@ public class UtilitySpace {
         	case DISCRETE:
         	case INTEGER:
         	case REAL:
-        		utility += fEvaluators.get(is).getWeight()*getEvaluation(i,bid);
+        		utility += fEvaluators.get(is).getWeight()*getEvaluation(is.getNumber(),bid);
         		break;
         	case PRICE:
-        		financialUtility = getEvaluation(i,bid);
+        		financialUtility = getEvaluation(is.getNumber(),bid);
         		financialRat = ((EvaluatorPrice)fEvaluators.get(is)).rationalityfactor;
         		break;
         	}
@@ -137,7 +137,8 @@ public class UtilitySpace {
     
     public final double getEvaluation(int pIssueIndex, Bid bid) {
     	ISSUETYPE vtype;
-    	vtype = bid.getValue(pIssueIndex).getType();
+    	Value tmpval = bid.getValue(pIssueIndex);
+    	vtype = tmpval.getType();
     	
   /* hdevos: used to be this: 	
    		Issue lIssue = getDomain().getIssue(pIssueIndex);
