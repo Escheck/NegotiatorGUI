@@ -90,8 +90,15 @@ public final class Bid {
         Iterator value_it = value_set.iterator();
         while(value_it.hasNext()){
         	int ind = ((Entry<Integer, Value>)value_it.next()).getKey();
-        	s += fDomain.getObjective(ind).getName() + ": " +
-        		 fValues.get(ind).getStringValue() + "\n"; 
+        	Object tmpobj = fDomain.getObjective(ind);
+        	if(tmpobj != null){
+        		String nm = fDomain.getObjective(ind).getName();
+        		s += nm + ": " +
+        		fValues.get(ind).getStringValue() + "\n";
+        	}else{
+        		System.out.println("objective with index " + ind + " does not exist");
+        	}
+        		
         }
         return s;
     }

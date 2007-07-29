@@ -116,7 +116,7 @@ public class UtilitySpace {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
         
-        for(int i=0;i<domain.getNumberOfIssues();i++) {
+        for(int i=0;i<domain.getNumberOfIssues();i++) { //TODO hdv change getNumberOfIssues to an iterator over the number of issues in the bid.
         	type = getEvaluator(i).getType();
         	switch(type) {
         	case DISCRETE:
@@ -173,7 +173,7 @@ public class UtilitySpace {
 //		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.
 		HashMap<Integer, Value> maxValues = new HashMap<Integer, Value>();
 		Bid lBid, newBid;
-		Issue issue;
+		Objective issue;
 		ISSUETYPE type;
 		int lMax;
 		double u1,u2;
@@ -518,9 +518,9 @@ public class UtilitySpace {
      * @depricated Use getObjective
      * 
      * @param index The index of the issue to 
-     * @return the indexed issue
+     * @return the indexed objective or issue
      */
-    public final Issue getIssue(int index) {
+    public final Objective getIssue(int index) {
         return domain.getIssue(index);
     }
     

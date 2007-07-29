@@ -58,7 +58,7 @@ public class SimpleAgent extends Agent{
 //        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];
     	HashMap<Integer, Value> values = new HashMap<Integer, Value>();
         for(int i=0;i<getNegotiationTemplate().getDomain().getNumberOfIssues();i++) {
-        	Issue lIssue = getNegotiationTemplate().getDomain().getIssue(i);        	
+        	Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);        	
 			switch(lIssue.getType()) {
 			case INTEGER:
 	            int numberOfOptions = 

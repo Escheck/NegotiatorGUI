@@ -40,7 +40,7 @@ public class BidIterator implements Iterator {
 		for(int i=0;i<fNumberOfIssues;i++) 
 			lNewIndexes [i] = fValuesIndexes[i];
 		for(int i=0;i<fNumberOfIssues;i++) {
-			Issue lIssue = fDomain.getIssue(i);
+			Objective lIssue = fDomain.getIssue(i);
 //			to loop through the Real and Price Issues we use discretization
 			int lNumberOfValues=0;
 			switch(lIssue.getType()) {
@@ -83,7 +83,7 @@ public class BidIterator implements Iterator {
 			//Value[] lValues = new Value[fNumberOfIssues];
 			HashMap<Integer, Value> lValues = new HashMap<Integer, Value>();
 			for(int i=0;i<fNumberOfIssues;i++) {
-				Issue lIssue = fDomain.getIssue(i);
+				Objective lIssue = fDomain.getIssue(i);
 				double lOneStep;
 				switch(lIssue.getType()) {
 				//TODO: COMPLETE add cases for all types of issues
