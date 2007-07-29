@@ -316,7 +316,7 @@ public class Domain {
        //Value[] values = new Value[this.getNumberOfIssues()];
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 		
-       Issue lIssue;
+       Objective lIssue;
        int lNrOfOptions, lOptionIndex;
 
        // For each issue, compute a random value to return in bid.

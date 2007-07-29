@@ -210,7 +210,7 @@ public class ABMPAgent extends Agent {
 		int lNrOfRealIssues = 0;
 		for (int i = 0; i < nrOfIssues; i++) {
 			lUtility = 1; // ASSUMPTION: Max utility = 1.
-			Issue lIssue = getNegotiationTemplate().getDomain().getIssue(i);
+			Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);
 			if(lIssue.getType() == discrete) {
 				IssueDiscrete lIssueDiscrete =(IssueDiscrete)lIssue;
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
@@ -237,7 +237,7 @@ public class ABMPAgent extends Agent {
 		double lRestUtitility = lUtilityGap + lTotalConcession;
 		// Distribute remaining utility of real and/or price issues. Integers still to be done. See above.
 		for (int i = 0; i < nrOfIssues; i++) {
-			Issue lIssue = getNegotiationTemplate().getDomain().getIssue(i);
+			Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);
 			if(lIssue.getType() == real) {
 				lTE[i] += lRestUtitility/lNrOfRealIssues;
 				switch(utilitySpace.getEvaluator(i).getType()) {
