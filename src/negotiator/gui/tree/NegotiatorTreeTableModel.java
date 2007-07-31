@@ -22,30 +22,34 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	//Attributes
 	private Objective root;
 	private Domain domain;
-	private String[] colNames = {"Name", "Eval Type", "Issue Type", "Value", "Weight"};
-	private Class[] colTypes = {TreeTableModel.class, String.class, String.class, String.class, WeightSlider.class};
+	private String[] colNames;// = {"Name", "Eval Type", "Issue Type", "Value", "Weight"};
+	private Class[] colTypes;// = {TreeTableModel.class, String.class, String.class, String.class, WeightSlider.class};
 	private UtilitySpace utilitySpace;
+	private boolean containsUtilitySpace;
 	private Map<Objective, WeightSlider> sliders;
+	
+	private static final String[] domainColNames = {"Name", "Type", "Number"};
+	private static final Class[] domainColTypes = {TreeTableModel.class, String.class, Integer.class};
+	private static final String[] domainAndUtilityColNames = {"Name", "Type", "Number", "Value", "Weight"};
+	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, String.class, Integer.class, String.class, WeightSlider.class};
 	
 	
 	//Constructors
-	//TODO remove this constructor. UtilitySpace is needed.
-	public NegotiatorTreeTableModel(Objective root) {
-		this.root = root;
-		sliders = new HashMap<Objective, WeightSlider>();
+	public NegotiatorTreeTableModel(Domain domain) {
+		this.domain = domain;
+		this.root = domain.getObjectivesRoot();
+		this.containsUtilitySpace = false;
+		this.colNames = domainColNames;
+		this.colTypes = domainColTypes;
 	}
 	
 	public NegotiatorTreeTableModel(Domain domain, UtilitySpace utilitySpace) {
 		this.domain = domain;
 		this.root = domain.getObjectivesRoot();
 		this.utilitySpace = utilitySpace;
-		sliders = new HashMap<Objective, WeightSlider>();
-	}
-	
-	//TODO Old constructor. Now work via Domain to get the root.
-	public NegotiatorTreeTableModel(Objective root, UtilitySpace utilitySpace) {
-		this.root = root;
-		this.utilitySpace = utilitySpace;
+		this.containsUtilitySpace = true;
+		this.colNames = domainAndUtilityColNames;
+		this.colTypes = domainAndUtilityColTypes;
 		sliders = new HashMap<Objective, WeightSlider>();
 	}
 	
@@ -135,17 +139,17 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		else
 			objective = (Objective)node;
 		
+		
+		
 		//TODO Maybe also instanceof Issue.
 		//do the rest
-		WeightSlider slider = new WeightSlider();
 		
 		switch(column) {
 		case 0: 	return objective.getName();
-		case 1: 	return "Tja";//utilitySpace.getEvaluator(objective.getNumber()).getType().toString();
-		case 2:		return "Test";
-		case 3:		return "Test";
+		case 1: 	return objective.getType();
+		case 2:		return objective.getNumber();
+		case 3:		return utilitySpace.getEvaluator(objective.getNumber());//Is this going to work in all cases? Answer: no
 		case 4:		return getWeightSlider(objective); 
-		//slider;//new WeightSlider(); //TEST
 		}
 		
 		return null;
@@ -172,6 +176,17 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	}
 	
 	/**
+	 * Recursively calculates the highest Objective / Issue number in the tree.
+	 * @return the highest Objective / Issue  number in the tree, or -1.
+	 */
+	public int getHighestObjectiveNr() {
+		if (root != null)
+			return root.getHighestObjectiveNr(-1);
+		else
+			return -1;
+	}
+	
+	/**
 	 * 
 	 * @return the UtilitySpace.
 	 */
@@ -187,6 +202,21 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		utilitySpace = space;
 	}
 	
+	public void updateWeights(WeightSlider caller, double newWeight) {
+		//Calculate the new weights for the tree, and return to caller with the caller's new weight. This new weight can be 
+		//different from the requested weight, for instance if that modification is impossible for some reason.
+		
+		//Root may not be null!
+		
+		//TODO Implement this method. Need new weight calculations from Herbert.
+		Enumeration<Objective> objectives = root.getPreorderEnumeration();
+		while (objectives.hasMoreElements()) {
+			Objective obj = objectives.nextElement();
+			double updatedWeight = utilitySpace.getWeight(obj.getNumber());
+			getWeightSlider(obj).setWeight(updatedWeight);
+		}
+	}
+	
 	/**
 	 * Returns the WeightSlider belonging to the given Objective. If there is no WeightSlider attached to the given Objective,
 	 * a new one is created and added using setWeightSlider(Objective, WeightSlider).
@@ -198,6 +228,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		if (slider == null) {
 			slider = new WeightSlider(this);
 			setWeightSlider(node, slider);
+			slider.setWeight(utilitySpace.getWeight(node.getNumber()));
 		}
 		return slider;
 	}

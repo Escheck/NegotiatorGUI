@@ -3,6 +3,7 @@ package negotiator.gui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import jtreetable.*;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
@@ -37,10 +38,29 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	}
 		
 	public NewObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable) {
-		super(owner, "Create new Objective", modal);
+		this(owner, modal, treeTable, "Create new Objective");
+	}
+	
+	public NewObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable, String name) {
+		super(owner, name, modal);
 		
 		this.treeTable = treeTable;
 		
+		initPanels();
+		
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	//Methods
+	protected void initPanels() {
+		this.setLayout(new BorderLayout());
+		
+		this.add(constructBasicPropertyPanel(), BorderLayout.NORTH);
+		this.add(constructButtonPanel(), BorderLayout.SOUTH);
+	}
+	
+	private JPanel constructBasicPropertyPanel() {
 		//Initialize the labels
 		nameLabel = new JLabel("Name:");
 		nameLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -54,16 +74,10 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		nameField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		numberField = new JTextField();
 		numberField.setAlignmentX(Component.LEFT_ALIGNMENT);
+		numberField.setEditable(false);
+		numberField.setText("" + (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1));
 		descriptionArea = new JTextArea();
 		descriptionArea.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		//Initialize the buttons
-		okButton = new JButton("Ok");
-		okButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		
-		this.setLayout(new BorderLayout());
 		
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.PAGE_AXIS));
@@ -79,27 +93,40 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		fieldPanel.add(numberField);
 		fieldPanel.add(descriptionArea);
 		
-		JPanel buttonPanel = new JPanel();
+		JPanel basicPropertyPanel = new JPanel();
+		basicPropertyPanel.setBorder(BorderFactory.createTitledBorder("Basic Properties"));
+		basicPropertyPanel.setLayout(new BorderLayout());
+		basicPropertyPanel.add(labelPanel, BorderLayout.LINE_START);
+		basicPropertyPanel.add(fieldPanel, BorderLayout.CENTER);
 		
+		return basicPropertyPanel;
+	}
+	
+	/**
+	 * Initializes the buttons, and returns a panel containing them.
+	 * @return a JPanel with the buttons.
+	 */
+	private JPanel constructButtonPanel() {
+		//Initialize the buttons
+		okButton = new JButton("Ok");
+		okButton.addActionListener(this);
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(this);
+		
+		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(okButton);
 		buttonPanel.add(cancelButton);
 		
-		this.add(labelPanel, BorderLayout.LINE_START);
-		this.add(fieldPanel, BorderLayout.CENTER);
-		this.add(buttonPanel, BorderLayout.SOUTH);
-		
-		this.pack();
-		this.setVisible(true);
+		return buttonPanel;
 	}
 	
-	//Methods
 	public void commitNewObjective() {
 		Objective selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
 		
 		//The selected Objective is the parent.
 		Objective newObjective = new Objective();
 		newObjective.setName(nameField.getText());
-		//Number?
+		newObjective.setNumber(Integer.parseInt(numberField.getText()));
 		newObjective.setDescription(descriptionArea.getText());
 		selected.addChild(newObjective);
 		
@@ -107,14 +134,14 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
 		model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
 		
-		System.out.println(selected.toString());
+		this.dispose();
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == okButton)
 			commitNewObjective();
 		else
-			System.out.println("Source in NewObjectiveDialog was not okButton.");
+			this.dispose();
 			
 	}
 	

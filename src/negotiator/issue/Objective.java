@@ -238,6 +238,26 @@ public class Objective implements MutableTreeNode{
 	public boolean isLeaf() {
 		return isIssue();
 	}
+	
+	/**
+	 * This method recursively calculates the highest Objective / Issue number in the subtree rooted at the callee.
+	 * @param lowerBound the number to be returned must have at least this value. Used for the recursive implementation.
+	 * @return the highest Objective number within this subtree that is greater than lowerBound, or otherwise lowerBound. 
+	 */
+	public int getHighestObjectiveNr(int lowerBound) {
+		if (getNumber() > lowerBound)
+			lowerBound = getNumber();
+		
+		Enumeration<Objective> descendants = children();
+		while (descendants.hasMoreElements()) {
+			Objective obj = descendants.nextElement();
+			if (obj.getNumber() > lowerBound)
+				lowerBound = obj.getNumber();
+			lowerBound = obj.getHighestObjectiveNr(lowerBound);
+		}
+		
+		return lowerBound;
+	}
 
 	//Methods from the MutableTreeNode interface
 	

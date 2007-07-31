@@ -136,5 +136,13 @@ public class Issue extends Objective {
 		}
 
 	}
+	
+	/**
+	 * Overrides addChild from Objective to do nothing, since Issues can't have children. This
+	 * method simply returns without doing anything. 
+	 * @param newObjective gets negated.
+	 */
+	public void addChild(Objective newObjective) {
+	}
 
 }
