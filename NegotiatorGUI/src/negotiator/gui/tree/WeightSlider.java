@@ -36,10 +36,6 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	
 	//Constructors
-	public WeightSlider() {
-		//TODO This is a stub for testing. Weightsliders should know their objectives / issues.
-		this(null);
-	}
 	
 	//public WeightSlider(Objective obj) {
 	public WeightSlider(NegotiatorTreeTableModel model) {
