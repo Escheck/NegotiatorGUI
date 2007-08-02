@@ -9,8 +9,8 @@ import java.util.HashMap;
 public class EvaluatorReal implements Evaluator {
 	
 	// Class fields
-	public double fweight; //the weight of the evaluated Objective or Issue.
-	
+	private double fweight; //the weight of the evaluated Objective or Issue.
+	private boolean fweightLock;	
 	double lowerBound;
 	double upperBound;
 	EVALFUNCTYPE type;
@@ -30,7 +30,30 @@ public class EvaluatorReal implements Evaluator {
 	public void setWeight(double wt){
 		fweight = wt;
 	}
+
+
+	/**
+	 * Locks the weight of this Evaluator.
+	 */
+	public void lockWeight(){
+		fweightLock = true;
+	}
 	
+	/**
+	 * Unlock the weight of this evaluator.
+	 *
+	 */
+	public void unlockWeight(){
+		fweightLock = false;
+	}
+	
+	/**
+	 * 
+	 * @return The state of the weightlock.
+	 */
+	public boolean weightLocked(){
+		return fweightLock;
+	}	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		double utility;
 		double value = ((ValueReal)bid.getValue(index)).getValue();
@@ -74,9 +97,80 @@ public class EvaluatorReal implements Evaluator {
 	}
 	
 	public double getUpperBound() {
-		return lowerBound;
+		return lowerBound; //TODO hdv is this ok?
 	}	
 	
+	/**
+	 * Sets the lower bound for this evaluator.
+	 * @param lf The new lower bound.
+	 */
+	public void setLowerBound(double lf){
+		lowerBound = lf;
+	}
+	
+	/**
+	 * Sets the upper bound for this evaluator
+	 * @param ub The new upper bound
+	 */
+	public void setUpperBound(double ub){
+		upperBound = ub;
+	}
+	
+	/**
+	 * Sets the evaluator function type.
+	 * @param ft The new type, either <code>"linear"</code> or <code>"constant"</code>
+	 */
+	public void setftype(String ft){
+		type = EVALFUNCTYPE.convertToType(ft);
+	}
+	
+	/**
+	 * Sets the linear parameter for the evaluation function and changes the ftype of
+	 * this evaluator to "linear".
+	 * @param par1 The new linear evaluation parameter.
+	 */
+	public void setLinearParam(double par1){
+		setftype("linear");
+		fParam.put(new Integer(1), new Double(par1));
+	}
+	
+	/**
+	 * 
+	 * @return The linear parameter of this Evaluator, or 0 if it doesn't exist.
+	 */
+	public double getLinearParam(){
+		try{
+			return fParam.get(new Integer(1));
+		}catch(Exception e){
+			System.out.println("Linear parameter does not exist");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sets the constant parameter for the evaluation function and changes the ftype of this
+	 * evaluator to "constant"
+	 * @param par0 The new constant evalutation parameter.
+	 */
+	public void setConstantParam(double par0){
+		setftype("constant");
+		fParam.put(new Integer(0), new Double(par0));
+	}
+
+	/**
+	 * 
+	 * @return The constant parameter of this Evaluator, or 0 if it doesn't exist.
+	 */	
+	public double getConstantParam(){
+		try{
+			return fParam.get(new Integer(1));
+		}catch(Exception e){
+			System.out.println("Linear parameter does not exist");
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_item = ((SimpleElement)pRoot).getChildByTagName("range");
 		this.lowerBound = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));

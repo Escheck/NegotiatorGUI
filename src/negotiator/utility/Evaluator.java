@@ -16,6 +16,11 @@ public interface Evaluator {
 	 */
 	public void setWeight(double wt);
 	
+	public void lockWeight();
+	
+	public void unlockWeight();
+	
+	public boolean weightLocked();
 	
 	// The getEvaluation method returns a scalar evaluation for a value in a bid.
 	// Providing the complete bid as a paramater to the method allows for issue dependencies. 
@@ -24,6 +29,5 @@ public interface Evaluator {
 	public EVALUATORTYPE getType();
 	
 	public void loadFromXML(SimpleElement pRoot);
-	
 	
 }
