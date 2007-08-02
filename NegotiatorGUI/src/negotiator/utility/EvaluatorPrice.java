@@ -7,8 +7,8 @@ import negotiator.xml.SimpleElement;
 public class EvaluatorPrice implements Evaluator {
 	
 	// Class fields
-	public double fweight; //the weight of the evaluated Objective or Issue.
-	
+	private double fweight; //the weight of the evaluated Objective or Issue.
+	private boolean fweightLock;	
 	double lowerBound;
 	double upperBound;
 	double maxMargin = -1;
@@ -25,6 +25,30 @@ public class EvaluatorPrice implements Evaluator {
 	
 	public void setWeight(double wt){
 		fweight = wt;
+	}
+	
+
+	/**
+	 * Locks the weight of this Evaluator.
+	 */
+	public void lockWeight(){
+		fweightLock = true;
+	}
+	
+	/**
+	 * Unlock the weight of this evaluator.
+	 *
+	 */
+	public void unlockWeight(){
+		fweightLock = false;
+	}
+	
+	/**
+	 * 
+	 * @return The state of the weightlock.
+	 */
+	public boolean weightLocked(){
+		return fweightLock;
 	}
 	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
@@ -100,9 +124,33 @@ public class EvaluatorPrice implements Evaluator {
 	}
 	
 	public double getUpperBound() {
-		return lowerBound;
+		return lowerBound; //TODO hdv: check if this is correct.
 	}	
 	
+	/**
+	 * Sets the lower bound for this evaluator.
+	 * @param lb The new lower bound.
+	 */
+	public void setLowerBound(double lb){
+		lowerBound = lb;
+	}
+	
+	/**
+	 * Sets the upper bound for this evaluator.
+	 * @param ub The new upper bound.
+	 */
+	public void setUpperBound(double ub){
+		upperBound = ub;
+	}
+	
+	/**
+	 * Sets the rationality factor of this evaluator.
+	 * @param rf The new rationality factor.
+	 */
+	public void setRationalityFactor(double rf){
+		rationalityfactor = rf;
+	}
+ 	
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_item = ((SimpleElement)pRoot).getChildByTagName("range");
 		this.lowerBound = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));

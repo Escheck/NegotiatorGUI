@@ -9,8 +9,8 @@ import java.util.HashMap;
 public class EvaluatorDiscrete implements Evaluator {
 	
 	// Class fields
-	public double fweight; //the weight of the evaluated Objective or Issue.
-	
+	private double fweight; //the weight of the evaluated Objective or Issue.
+	private boolean fweightLock; 
 	private HashMap<ValueDiscrete, Double> fEval;
 	private HashMap<ValueDiscrete, Double> fCost;
 	private double maxCost = 0;
@@ -29,6 +29,29 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	public void setWeight(double wt){
 		fweight = wt;
+	}
+
+	/**
+	 * Locks the weight of this Evaluator.
+	 */
+	public void lockWeight(){
+		fweightLock = true;
+	}
+	
+	/**
+	 * Unlock the weight of this evaluator.
+	 *
+	 */
+	public void unlockWeight(){
+		fweightLock = false;
+	}
+	
+	/**
+	 * 
+	 * @return The state of the weightlock.
+	 */
+	public boolean weightLocked(){
+		return fweightLock;
 	}
 	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
@@ -61,6 +84,56 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	public EVALUATORTYPE getType() {
 		return EVALUATORTYPE.DISCRETE;
+	}
+	
+	/**
+	 * Sets the maximum cost
+	 * @param mc
+	 */
+	public void setMaxCost(double mc){
+		maxCost = mc;
+	}
+	
+	/**
+	 * Adds a valueDiscrete with evaluation and cost to this Evaluator. Sets maxCost to cost if 
+	 * it turns out that the new cost is higher than the maximum.
+	 * 
+	 * @param name The name of the ValueDiscrete.
+	 * @param evaluation The evaluation of the value
+	 * @param cost The cost.
+	 */
+	public void setValue(String name, double evaluation, double cost){
+		Value val = new ValueDiscrete(name);
+		fEval.put((ValueDiscrete)val, new Double(evaluation));
+		if(maxCost < cost){
+			maxCost = cost;
+			fCost.put((ValueDiscrete)val, new Double(cost));
+		}
+		
+	}
+	
+	/**
+	 * Sets the evaluation for Value <code>val</code>. If this value doesn't exist yet in this Evaluator,
+	 * adds it as well.
+	 * 
+	 * @param val The value to add or have its evaluation modified.
+	 * @param evaluation The new evaluation.
+	 */
+	public void setEvaluation(Value val, double evaluation ){
+		fEval.put((ValueDiscrete)val, new Double(evaluation));		
+	}
+
+	/**
+	 * Sets the cost for value <code>val</code>. If the value doesn't exist yet in this Evaluator,
+	 * add it as well. Note that here isn't an evaluation for it if we add it through here.
+	 * @param val The value to have it's cost set/modified
+	 * @param cost The new cost of the value.
+	 */
+	public void setCost(Value val, double cost){
+		if(maxCost < cost){
+			maxCost = cost;
+			fCost.put((ValueDiscrete)val, new Double(cost));
+		}
 	}
 	
 	public void loadFromXML(SimpleElement pRoot) {

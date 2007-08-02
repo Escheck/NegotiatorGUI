@@ -514,6 +514,7 @@ public class UtilitySpace {
   */ 
     public double getWeight(int issuesIndex) {
         //return weights[issuesIndex]; //old
+    	//TODO geeft een null terug als de weight of de eveluator niet bestaat.
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
     }
     
@@ -539,5 +540,115 @@ public class UtilitySpace {
     public final Domain getDomain() {
         return domain;
     }
+    
+    /**
+     * Adds an evaluator to an objective or issue
+     * @param obj The Objective or Issue to attach an Evaluator to.
+     * @return The new Evaluator.
+     */
+    public final Evaluator addEvaluator(Objective obj){
+    	Evaluator ev = null;
+    	ISSUETYPE etype = obj.getType();
+    	switch(etype){
+    	case INTEGER:
+    		ev = new EvaluatorInteger();
+    		break;
+    	case REAL:
+    		ev = new EvaluatorReal();
+    		break;
+    	case DISCRETE:
+    		ev = new EvaluatorDiscrete();
+    		break;
+    	case OBJECTIVE:
+    		ev = new EvaluatorObjective();
+    		break;
+    /*	case PRICE:
+    		ev = new EvaluatorPrice();
+    		break;
+    */		
+    	}
+    	fEvaluators.put(obj, ev);
+    	return ev;
+    }
+    
+    /**
+     * @return The set with all pairs of evaluators and objectives in this utilityspace.
+     */
+    public final Set<Map.Entry<Objective, Evaluator> >getEvaluators(){
+    	return fEvaluators.entrySet();
+    }
+    
+    /**
+     * Place a lock on the weight of an objective or issue.
+     * @param obj The objective or issue that is about to have it's weight locked.
+     * @return <code>true</code> if succesfull, <code>false</code> If the objective doesn't have an evaluator yet.
+     */
+    public final boolean lock(Objective obj){
+    	try{
+    		fEvaluators.get(obj).lockWeight();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	return true;
+    }
+    /**
+     * Clear a lock on the weight of an objective or issue.
+     * @param obj The objective or issue that is having it's lock cleared.
+     * @return <code>true</code> If the lock is cleared, <code>false</code> if the objective or issue doesn't have an evaluator yet.
+     */
+    public final boolean unlock(Objective obj){
+    	try{
+    		fEvaluators.get(obj).lockWeight();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	return true;    	
+    }
+    
+    public final Set<Map.Entry<Objective,Evaluator>> nomalizeChildren(Objective obj){
+    	Enumeration<Objective> childs = obj.children();
+    	double weightSum = 0;
+    	double lockedWeightSum = 0;
+    	while(childs.hasMoreElements()){
+    		Objective tmpObj = childs.nextElement();
+    		try{
+    			weightSum += fEvaluators.get(tmpObj).getWeight();
+    		}catch(Exception e){
+    			//do nothing, we can encounter Objectives/issues without Evaluators.
+    		}
+    	}
+    	if(weightSum + lockedWeightSum > 1.0){
+    		//normalize:
+    		Enumeration<Objective> normalChilds = obj.children();
+    		while(normalChilds.hasMoreElements()){
+    			Objective tmpObj = normalChilds.nextElement();
+    			try{
+    				if(!fEvaluators.get(obj).weightLocked()){
+    					fEvaluators.get(obj).setWeight(fEvaluators.get(obj).getWeight()/weightSum);
+    		//FIXME hdv: how to normalize over only the unlocked weights?			
+    				}
+    			}catch(Exception e){
+//    				do nothing, we can encounter Objectives/issues without Evaluators.
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    	
+    	return getEvaluators();
+    }
+    
+     public final Set<Map.Entry<Objective,Evaluator> > modifyWeight(Objective obj, double wt){
+    	 if(fEvaluators.get(obj).weightLocked() || wt > 1.0){
+    		 return getEvaluators();
+    	 }else{
+    		 fEvaluators.get(obj).setWeight(wt);
+    		 return nomalizeChildren(obj.getParent());
+    	 }
+     }
+    	 
     
 }

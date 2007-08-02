@@ -9,8 +9,8 @@ import java.util.HashMap;
 public class EvaluatorObjective implements Evaluator {
 	
 	// Class fields
-	public double fweight; //the weight of the evaluated Objective or Issue.
-	
+	private double fweight; //the weight of the evaluated Objective or Issue.
+	private boolean fweightLock;	
 	public EvaluatorObjective() {
 		fweight = 0; //needs to be set later on.
 	}
@@ -23,7 +23,31 @@ public class EvaluatorObjective implements Evaluator {
 	public void setWeight(double wt){
 		fweight = wt;
 	}
+
+
+	/**
+	 * Locks the weight of this Evaluator.
+	 */
+	public void lockWeight(){
+		fweightLock = true;
+	}
 	
+	/**
+	 * Unlock the weight of this evaluator.
+	 *
+	 */
+	public void unlockWeight(){
+		fweightLock = false;
+	}
+	
+	/**
+	 * 
+	 * @return The state of the weightlock.
+	 */
+	public boolean weightLocked(){
+		return fweightLock;
+	}
+
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		return 0.0; //TODO hdevos: Do what here, evaluate the bid for it's children?
 	}
