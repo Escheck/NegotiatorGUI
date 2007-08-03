@@ -72,4 +72,14 @@ public class EvaluatorObjective implements Evaluator {
 		//do nothing, we have no issues to load atm.
 	}
 	
+	/**
+	 * Sets weights and evaluator properties for the object in SimpleElement representation that is passed to it.
+	 * @param evalObj The object of which to set the evaluation properties.
+	 * @return The modified simpleElement with all evaluator properties set.
+	 */
+	public SimpleElement setXML(SimpleElement evalObj){
+		
+		
+		return evalObj;
+	}
 }

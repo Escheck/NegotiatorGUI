@@ -159,4 +159,15 @@ public class EvaluatorPrice implements Evaluator {
 		this.rationalityfactor = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("value"));
 	}
 	
+	/**
+	 * Sets weights and evaluator properties for the object in SimpleElement representation that is passed to it.
+	 * @param evalObj The object of which to set the evaluation properties.
+	 * @return The modified simpleElement with all evaluator properties set.
+	 */
+	public SimpleElement setXML(SimpleElement evalObj){
+		
+		
+		return evalObj;
+	}
+	
 }

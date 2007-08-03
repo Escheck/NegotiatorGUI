@@ -12,6 +12,7 @@ package negotiator;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 import java.util.HashMap;
+import java.util.Enumeration;
 /**
  *
  * @author Dmytro Tykhonov & Koen Hindriks
@@ -359,4 +360,21 @@ public class Domain {
 		}
         return new Bid(this,values);
 	}
+	
+	/**
+	 * Creates an XML representation of this domain.
+	 * @return the SimpleElements representation of this Domain or <code>null</code> when there was an error.
+	 */
+	public SimpleElement toXML(){
+		SimpleElement root = new SimpleElement("utility_space");
+		//set attributes for this domain
+		root.setAttribute("number_of_issues", ""+0); //unknown right now
+		
+	//TODO hdv: kaas, doe dit eens voor mij- -:)	root.addChildElement(fObjectivesRoot.toXMl());
+		
+		return root;
+	}
+	
+
+	
 }
