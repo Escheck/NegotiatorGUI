@@ -649,6 +649,26 @@ public class UtilitySpace {
     		 return nomalizeChildren(obj.getParent());
     	 }
      }
-    	 
     
+    /**
+     * Creates an xml representation (in the form of a SimpleElements) of the utilityspace.
+     * @return A representation of this utilityspace or <code>null</code> when there was an error.
+     */ 
+    public SimpleElement toXML(){
+    	SimpleElement root = domain.toXML();
+    	//insert the relevant values everywhere:
+    	int ind = Integer.valueOf(root.getAttribute("index"));
+    	root = fEvaluators.get(domain.getObjective(ind)).setXML(root);
+    	Object[] children = root.getChildElements();
+    	for(int i = 0; i<children.length; i++){
+    		root = toXMLrecursive(root);
+    	}
+    	return root;
+    }
+    
+    private SimpleElement toXMLrecurse(SimpleElement currentLevel){
+    
+    	
+    	return currentLevel;
+    }
 }

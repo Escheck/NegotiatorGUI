@@ -30,4 +30,6 @@ public interface Evaluator {
 	
 	public void loadFromXML(SimpleElement pRoot);
 	
+	public SimpleElement setXML(SimpleElement evalObj);
+	
 }
