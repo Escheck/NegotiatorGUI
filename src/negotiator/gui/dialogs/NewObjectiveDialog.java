@@ -120,30 +120,77 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		return buttonPanel;
 	}
 	
-	public void commitNewObjective() {
-		Objective selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
-		
-		//The selected Objective is the parent.
-		Objective newObjective = new Objective();
-		newObjective.setName(nameField.getText());
-		newObjective.setNumber(Integer.parseInt(numberField.getText()));
-		newObjective.setDescription(descriptionArea.getText());
-		selected.addChild(newObjective);
-		
-		//Notify the model that the contents of the treetable have changed.
-		NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
-		model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
-		
-		this.dispose();
+	protected String getObjectiveName() throws InvalidInputException {
+		//TODO Add side effect: check the input, and throw exception 
+		return nameField.getText();
+	}
+	
+	protected int getObjectiveNumber() throws InvalidInputException {
+		//TODO Add side effect: check the input, and throw exception
+		return Integer.parseInt(numberField.getText());
+	}
+	
+	protected String getObjectiveDescription() throws InvalidInputException {
+		//TODO Add side effect: check the input, and throw exception
+		return descriptionArea.getText();
+	}
+	
+	protected Objective constructObjective() {
+		String name;
+		int number;
+		String description;
+		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
+		try {
+			name = getObjectiveName();
+			number = getObjectiveNumber();
+			description = getObjectiveDescription();
+		}
+		catch (InvalidInputException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			return null;
+		}
+		try {
+			selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
+			if (selected == null) {
+				JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
+				return null;
+			}
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
+			return null;
+		}
+		Objective objective = new Objective(selected, name, number);
+		objective.setDescription(description);
+		selected.addChild(objective);
+		return objective;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == okButton)
-			commitNewObjective();
-		else
+		if (e.getSource() == okButton) {
+			Objective objective = constructObjective();
+			if (objective == null) {
+				return;
+			}
+			else {
+				//Notify the model that the contents of the treetable have changed.
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
+				model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+				this.dispose();
+			}
+		}			
+		else if (e.getSource() == cancelButton) {
 			this.dispose();
-			
+		}
 	}
 	
-	
+	protected class InvalidInputException extends Exception {
+		protected InvalidInputException() {
+			super();
+		}
+		
+		protected InvalidInputException(String message) {
+			super(message);
+		}
+	}
 }

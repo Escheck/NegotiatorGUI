@@ -94,11 +94,19 @@ public class TreeFrame extends JFrame {
 		treeTable = new JTreeTable(model);
 		treeTable.setPreferredSize(new Dimension(1024, 600));
 		treeTable.setPreferredScrollableViewportSize(new Dimension(1024, 600));
+		treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		treeTable.setRowSelectionAllowed(true);
+		treeTable.setColumnSelectionAllowed(false);
+		treeTable.setCellSelectionEnabled(true);
+		
+		IssueValueCellEditor valueEditor = new IssueValueCellEditor(model);
+		treeTable.setDefaultRenderer(IssueValuePanel.class, valueEditor);
+		treeTable.setDefaultEditor(IssueValuePanel.class, valueEditor);
 		
 		WeightSliderCellEditor cellEditor = new WeightSliderCellEditor(model);
 		treeTable.setDefaultRenderer(WeightSlider.class, cellEditor);
 		treeTable.setDefaultEditor(WeightSlider.class, cellEditor);
-		treeTable.getColumnModel().getColumn(4).setPreferredWidth(new WeightSlider(model).getPreferredSize().width);
+		//treeTable.getColumnModel().getColumn(4).setPreferredWidth(new WeightSlider(model).getPreferredSize().width);
 		treeTable.setRowHeight(new WeightSlider(model).getPreferredSize().height);
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		
