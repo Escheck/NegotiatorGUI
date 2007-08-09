@@ -37,6 +37,13 @@ public class UtilitySpace {
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
     // Constructor
+    
+    /**
+     * Creates an empty utility space.
+     */
+    public UtilitySpace(){
+    	this.domain = new Domain();
+    }
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
         if(!fileName.equals(""))
@@ -518,6 +525,13 @@ public class UtilitySpace {
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
     }
     
+    public double setWeight(int issueIndex, double wt){
+    	//TODO probeer te normalizeren met de gegeven wt. Als dat niet werkt, geef
+    	//de waarde terug die wel werkt.
+
+    	return 0.0;
+    }
+    
     /**
      * @depricated Use getObjective
      * 
@@ -661,7 +675,7 @@ public class UtilitySpace {
     	root = fEvaluators.get(domain.getObjective(ind)).setXML(root);
     	Object[] children = root.getChildElements();
     	for(int i = 0; i<children.length; i++){
-    		root = toXMLrecursive(root);
+    		root = toXMLrecurse(root);
     	}
     	return root;
     }
