@@ -27,6 +27,10 @@ public class Domain {
     private Objective fObjectivesRoot;
     
     // Constructor
+    public Domain(){
+    	fObjectivesRoot = null;
+    	fNumberOfIssues=0;
+    }
     public Domain(SimpleElement root) {
 //        loadFromXML(root);
     	loadTreeFromXML(root);    
