@@ -7,7 +7,10 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
-*
+* Some work needs to be done to guarantee consistency of the tree. Methods like setParent don't signal 
+* the parent that it has a new child yet. Also check the constructors for this...
+* The whole code needs a review anyway, though with current use it works fine :-)
+* 
 * @author Richard Noorlandt 
 * 
 */

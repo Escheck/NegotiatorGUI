@@ -3,6 +3,7 @@ package negotiator.gui.tree;
 import jtreetable.*;
 
 import java.util.*;
+import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 import negotiator.*;
@@ -20,6 +21,12 @@ import negotiator.utility.*;
 public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
 	//Attributes
+	private static final String NAME = "Name";
+	private static final String TYPE = "Type";
+	private static final String NUMBER = "Number";
+	private static final String VALUE = "Value";
+	private static final String WEIGHT = "Weight";
+	
 	private Objective root;
 	private Domain domain;
 	private String[] colNames;// = {"Name", "Eval Type", "Issue Type", "Value", "Weight"};
@@ -27,11 +34,12 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	private UtilitySpace utilitySpace;
 	private boolean containsUtilitySpace;
 	private Map<Objective, WeightSlider> sliders;
+	private Map<Objective, IssueValuePanel> issueValues; //Contains objects representing the possible values of an issue
 	
-	private static final String[] domainColNames = {"Name", "Type", "Number"};
-	private static final Class[] domainColTypes = {TreeTableModel.class, String.class, Integer.class};
-	private static final String[] domainAndUtilityColNames = {"Name", "Type", "Number", "Value", "Weight"};
-	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, String.class, Integer.class, String.class, WeightSlider.class};
+	private static final String[] domainColNames = {NAME, TYPE, NUMBER, VALUE};//{"Name", "Type", "Number", "Value"};
+	private static final Class[] domainColTypes = {TreeTableModel.class, String.class, Integer.class, IssueValuePanel.class};
+	private static final String[] domainAndUtilityColNames = {NAME, TYPE, NUMBER, VALUE, WEIGHT};//{"Name", "Type", "Number", "Value", "Weight"};
+	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, String.class, Integer.class, IssueValuePanel.class, WeightSlider.class};
 	
 	
 	//Constructors
@@ -41,6 +49,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		this.containsUtilitySpace = false;
 		this.colNames = domainColNames;
 		this.colTypes = domainColTypes;
+		issueValues = new HashMap<Objective, IssueValuePanel>();
 	}
 	
 	public NegotiatorTreeTableModel(Domain domain, UtilitySpace utilitySpace) {
@@ -50,6 +59,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		this.containsUtilitySpace = true;
 		this.colNames = domainAndUtilityColNames;
 		this.colTypes = domainAndUtilityColTypes;
+		issueValues = new HashMap<Objective, IssueValuePanel>();
 		sliders = new HashMap<Objective, WeightSlider>();
 	}
 	
@@ -143,14 +153,27 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		
 		//TODO Maybe also instanceof Issue.
 		//do the rest
+		//Also, when only editing Objectives, don't show anything after the objective columns. <-- already happens automatically due to getColumnCount()
 		
-		switch(column) {
+		/*switch(column) {
 		case 0: 	return objective.getName();
 		case 1: 	return objective.getType();
 		case 2:		return objective.getNumber();
 		case 3:		return utilitySpace.getEvaluator(objective.getNumber());//Is this going to work in all cases? Answer: no
 		case 4:		return getWeightSlider(objective); 
-		}
+		}*/
+		
+		//if (getColumnName(column).equals(arg0))
+		if (getColumnName(column) == NAME)
+			return objective.getName();
+		else if (getColumnName(column) == TYPE)
+			return objective.getType();
+		else if (getColumnName(column) == NUMBER)
+			return objective.getNumber();
+		else if (getColumnName(column) == VALUE)
+			return getIssueValuePanel(objective);
+		else if (getColumnName(column) == WEIGHT)
+			return getWeightSlider(objective);
 		
 		return null;
 	}
@@ -240,6 +263,31 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 */
 	protected void setWeightSlider(Objective node, WeightSlider slider) {
 		sliders.put(node, slider);
+	}
+	
+	protected Object getIssueValuePanel(Objective node) {
+		//TODO Finish!
+		IssueValuePanel value = issueValues.get(node);
+		if (value == null) {
+			if (node.getType() == ISSUETYPE.DISCRETE) {
+				value = new IssueDiscreteValuePanel(this, (IssueDiscrete)node);
+			}
+			else if (node.getType() == ISSUETYPE.INTEGER) {
+				value = new IssueIntegerValuePanel(this, (IssueInteger)node);
+			}
+			else if (node.getType() == ISSUETYPE.REAL) {
+				value = new IssueRealValuePanel(this, (IssueReal)node);
+			}
+			else if (node.getType() == ISSUETYPE.OBJECTIVE) {
+				value = new ObjectiveValuePanel(this, node);
+			}
+			setIssueValuePanel(node, value);
+		}
+		return value;
+	}
+	
+	protected void setIssueValuePanel(Objective node, IssueValuePanel panel) {
+		issueValues.put(node, panel);
 	}
 	
 	/**
