@@ -1,5 +1,7 @@
 package negotiator.issue;
 
+import negotiator.xml.SimpleElement;
+
 /**
 *
 * @author Koen Hindriks
@@ -40,6 +42,23 @@ public class IssueInteger extends Issue {
 	
 	public final int getUpperBound() {
 		return range.getUpperBound();
+	}
+	
+	/**
+	 * Returns a SimpleElement representation of this issue.
+	 * @return The SimpleElement with this issues attributes
+	 */
+	public SimpleElement toXML(){
+		SimpleElement thisIssue = new SimpleElement("issue");
+		thisIssue.setAttribute("name", getName());
+		thisIssue.setAttribute("index", ""+getNumber());
+		//TODO set range, upperBound and lowerBound items.
+		SimpleElement thisRange = new SimpleElement("range");
+		thisRange.setAttribute("lowerBound", ""+getLowerBound());
+		thisRange.setAttribute("upperBound", ""+getUpperBound());
+		thisIssue.addChildElement(thisRange);
+		return thisIssue;
+		
 	}
 	
 }

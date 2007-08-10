@@ -3,6 +3,7 @@ package negotiator.issue;
 import java.util.ArrayList;
 
 import negotiator.exceptions.ValueTypeError;
+import negotiator.xml.SimpleElement;
 
 /**
 *
@@ -62,6 +63,29 @@ public class IssueDiscrete extends Issue {
 	
 	public boolean checkInRange(ValueDiscrete val) {
 			return (getValueIndex(((ValueDiscrete)val).getValue())!=-1);
+	}
+	
+	/**
+	 * Returns a SimpleElement representation of this issue.
+	 * @return The SimpleElement with this issues attributes
+	 */
+	public SimpleElement toXML(){
+		SimpleElement thisIssue = new SimpleElement("issue");
+		thisIssue.setAttribute("name", getName());
+		thisIssue.setAttribute("index", ""+getNumber());
+		thisIssue.setAttribute("etype", "discrete");
+		thisIssue.setAttribute("type", "discrete");
+		thisIssue.setAttribute("vtype", "discrete");
+		//TODO find some way of putting the items in. Probably in much the same way as weights.
+		for(int item_ind = 0; item_ind < numberOfValues; item_ind++){
+			SimpleElement thisItem = new SimpleElement("item");
+			thisItem.setAttribute("index", "" + item_ind +1); //One off error?
+			thisItem.setAttribute("value", issueValues[item_ind].getStringValue());
+			thisItem.setAttribute("evaluation", "" + 0.0 ); //TODO find a way of getting the evaluation here.
+			thisIssue.addChildElement(thisItem);
+ 		}
+		return thisIssue;
+		
 	}
 	
 }

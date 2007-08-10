@@ -373,8 +373,8 @@ public class Domain {
 		SimpleElement root = new SimpleElement("utility_space");
 		//set attributes for this domain
 		root.setAttribute("number_of_issues", ""+0); //unknown right now
-		
-	//TODO hdv: kaas, doe dit eens voor mij- -:)	root.addChildElement(fObjectivesRoot.toXMl());
+		root.addChildElement(fObjectivesRoot.toXML());
+	
 		
 		return root;
 	}

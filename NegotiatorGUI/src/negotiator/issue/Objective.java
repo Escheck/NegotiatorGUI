@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import negotiator.xml.SimpleElement;
 
 /**
 * Some work needs to be done to guarantee consistency of the tree. Methods like setParent don't signal 
@@ -394,4 +395,30 @@ public class Objective implements MutableTreeNode{
 	}
 	
 	//TODO Add other traversal types
+	
+	/**
+	 * Returns an xml representation of this Objective and all Objectives and issues underneath it.
+	 */
+	public SimpleElement toXML(){
+		SimpleElement thisObjective = new SimpleElement(name);
+		thisObjective.setAttribute("index", ""+number);
+		thisObjective.setAttribute("description", ""+ description);
+		thisObjective.setAttribute("type", "objective");
+		thisObjective.setAttribute("etype", "objective");
+		//Recurse over this object's children. Call their toXML
+		Enumeration<Objective> weightsEnum = this.children();
+		while(weightsEnum.hasMoreElements()){
+			Objective tmpObj = weightsEnum.nextElement();
+			SimpleElement thisWeight = new SimpleElement("weight");
+			thisWeight.setAttribute("index", ""+tmpObj.getNumber());
+			thisWeight.setAttribute("value", ""+tmpObj.getWeight());
+			thisObjective.addChildElement(thisWeight);
+		}
+		Enumeration<Objective> kidsEnum = this.children();
+		while(kidsEnum.hasMoreElements()){
+			//how to get the weights?
+			thisObjective.addChildElement( (kidsEnum.nextElement()).toXML() );
+		}
+		return thisObjective;
+	}
 }

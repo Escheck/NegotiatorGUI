@@ -1,5 +1,7 @@
 package negotiator.issue;
 
+import negotiator.xml.SimpleElement;
+
 /**
 *
 * @author Koen Hindriks
@@ -46,5 +48,22 @@ public class IssueReal extends Issue {
 
 	public void setNumberOfDiscretizationSteps(int numberOfDiscretizationSteps) {
 		fNumberOfDiscretizationSteps = numberOfDiscretizationSteps;
+	}
+	
+	/**
+	 * Returns a SimpleElement representation of this issue.
+	 * @return The SimpleElement with this issues attributes
+	 */
+	public SimpleElement toXML(){
+		SimpleElement thisIssue = new SimpleElement("issue");
+		thisIssue.setAttribute("name", getName());
+		thisIssue.setAttribute("index", ""+getNumber());
+		SimpleElement thisRange = new SimpleElement("range");
+		thisRange.setAttribute("lowerbound", ""+getLowerBound());
+		thisRange.setAttribute("upperbound", ""+getUpperBound());
+		
+		//todo find way of adding items.
+		return thisIssue;
+		
 	}
 }

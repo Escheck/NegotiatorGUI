@@ -7,6 +7,8 @@
 
 package negotiator.issue;
 
+import negotiator.xml.SimpleElement;
+
 /**
  *
  * @author Koen Hindriks
@@ -144,5 +146,16 @@ public class Issue extends Objective {
 	 */
 	public void addChild(Objective newObjective) {
 	}
-
+	
+	/**
+	 * Returns a SimpleElement representation of this issue.
+	 * @return The SimpleElement with this issues name and index.
+	 */
+	public SimpleElement toXML(){
+		SimpleElement thisIssue = new SimpleElement("issue");
+		thisIssue.setAttribute("name", getName());
+		thisIssue.setAttribute("index", ""+getNumber());
+		return thisIssue;
+		
+	}
 }
