@@ -669,19 +669,74 @@ public class UtilitySpace {
      * @return A representation of this utilityspace or <code>null</code> when there was an error.
      */ 
     public SimpleElement toXML(){
-    	SimpleElement root = domain.toXML();
-    	//insert the relevant values everywhere:
-    	int ind = Integer.valueOf(root.getAttribute("index"));
-    	root = fEvaluators.get(domain.getObjective(ind)).setXML(root);
-    	Object[] children = root.getChildElements();
-    	for(int i = 0; i<children.length; i++){
-    		root = toXMLrecurse(root);
-    	}
-    	return root;
+    	SimpleElement root = (domain.getObjectivesRoot()).toXML();
+    	root = toXMLrecurse(root);
+    	return root;//but how to get the correct values in place?
     }
     
     private SimpleElement toXMLrecurse(SimpleElement currentLevel){
-    
+    	//go through all tags.
+    	Object[] Objectives = currentLevel.getChildByTagName("objective");
+    	for(int objInd=0; objInd<Objectives.length;objInd++){
+    		SimpleElement currentChild = (SimpleElement)Objectives[objInd];
+    		int childIndex = Integer.valueOf(currentChild.getAttribute("index"));
+    		Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
+    		
+    		SimpleElement currentChildWeight = new SimpleElement("Weight");
+    		currentChildWeight.setAttribute("index", ""+childIndex);
+    		currentChildWeight.setAttribute("value", ""+ev.getWeight());
+    		currentLevel.addChildElement(currentChildWeight);
+    		
+    		currentChild = toXMLrecurse(currentChild); //I hope this works.
+    	}
+    	
+    	Object[] Issues = currentLevel.getChildByTagName("issue");
+    	for(int issInd=0; issInd<Issues.length; issInd++){
+    		SimpleElement tmpIssue = (SimpleElement) Issues[issInd];
+    		
+    		//set the weight
+    		int childIndex = Integer.valueOf(tmpIssue.getAttribute("index"));
+    		Evaluator ev = fEvaluators.get(domain.getIssue(childIndex));
+    		SimpleElement currentChildWeight = new SimpleElement("Weight");
+    		currentChildWeight.setAttribute("index", ""+childIndex);
+    		currentChildWeight.setAttribute("value", ""+ev.getWeight());
+    		currentLevel.addChildElement(currentChildWeight);
+
+    		
+    		String evtype_str = tmpIssue.getAttribute("etype");
+    		EVALUATORTYPE evtype = EVALUATORTYPE.convertToType(evtype_str);
+    		switch(evtype){
+    		case DISCRETE:
+    			//fill this issue with the relevant weights to items.
+    			Object[] items = tmpIssue.getChildByTagName("item");
+    			for(int itemInd = 0; itemInd < items.length; itemInd++){
+    				SimpleElement tmpItem = (SimpleElement) items[itemInd];
+    				IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
+    				
+    				EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
+    				double eval = dev.getEvaluation(theIssue.getValue(itemInd));
+    				tmpItem.setAttribute("evaluation", ""+eval);
+    			}
+    			break;
+    		case INTEGER:
+    			Object[] Ranges = tmpIssue.getChildByTagName("range");
+    			SimpleElement thisRange = (SimpleElement)Ranges[0];
+    			EvaluatorInteger iev = (EvaluatorInteger) ev;
+    			thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
+    			thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
+    			//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
+    			break;
+    		case REAL:
+    			Object[] RealRanges = tmpIssue.getChildByTagName("range");
+    			SimpleElement thisRealRange = (SimpleElement)RealRanges[0];
+    			EvaluatorReal rev = (EvaluatorReal) ev;
+    			thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
+    			thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
+    			//TODO hdv the same thing as above vor the "evaluator" tag.
+    			break;
+    		}
+    		
+    	}
     	
     	return currentLevel;
     }
