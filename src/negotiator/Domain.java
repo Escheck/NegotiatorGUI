@@ -11,6 +11,11 @@ package negotiator;
 
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
+import negotiator.xml.SimpleDOMParser;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Enumeration;
 /**
@@ -34,7 +39,18 @@ public class Domain {
     public Domain(SimpleElement root) {
 //        loadFromXML(root);
     	loadTreeFromXML(root);
-    	
+    }
+    
+    public Domain(String filename){
+    	SimpleDOMParser parser = new SimpleDOMParser();
+    	try{
+    		BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
+    		SimpleElement root = parser.parse(file);
+    		SimpleElement xml_utility_space = (SimpleElement)(root.getChildByTagName("utility_space")[0]);
+    		loadTreeFromXML(xml_utility_space);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     
     // Class methods
