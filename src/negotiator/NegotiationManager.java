@@ -80,12 +80,6 @@ public class NegotiationManager implements Runnable {
             e2.printStackTrace();
             
         }
-        //FIXME testing
-        this.printDomainXML("testdomainxml.xml");
-        System.out.println("Start testing utility space:");
-        this.printAgentAUtilitySpace("testAutilityxml.xml");
-        System.out.println("Done testing utility space.");
-        this.printAgentBUtilitySpace("testButilityxml.xml");
     }
     
     public void run() {

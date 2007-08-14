@@ -35,8 +35,6 @@ public class Domain {
 //        loadFromXML(root);
     	loadTreeFromXML(root);
     	
-    	//FIXME just for testing.
-    	toXML();
     }
     
     // Class methods
@@ -377,12 +375,6 @@ public class Domain {
 		//set attributes for this domain
 		root.setAttribute("number_of_issues", ""+0); //unknown right now
 		root.addChildElement(fObjectivesRoot.toXML());
-		try{
-			root.saveToFile("testdomain.xml");
-		}catch(Exception e){
-			System.out.println("Exception when printing xml file");
-			
-		}
 		return root;
 	}
 	
