@@ -400,7 +400,8 @@ public class Objective implements MutableTreeNode{
 	 * Returns an xml representation of this Objective and all Objectives and issues underneath it.
 	 */
 	public SimpleElement toXML(){
-		SimpleElement thisObjective = new SimpleElement(name);
+		SimpleElement thisObjective = new SimpleElement("objective");
+		thisObjective.setAttribute("name", name);
 		thisObjective.setAttribute("index", ""+number);
 		thisObjective.setAttribute("description", ""+ description);
 		thisObjective.setAttribute("type", "objective");

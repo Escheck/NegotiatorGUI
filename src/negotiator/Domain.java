@@ -33,7 +33,10 @@ public class Domain {
     }
     public Domain(SimpleElement root) {
 //        loadFromXML(root);
-    	loadTreeFromXML(root);    
+    	loadTreeFromXML(root);
+    	
+    	//FIXME just for testing.
+    	toXML();
     }
     
     // Class methods
@@ -195,10 +198,10 @@ public class Domain {
      */
     
     private final Objective buildTreeRecursive(SimpleElement currentLevelRoot, Objective currentParent){
-    	String s = currentLevelRoot.getAttribute("number_of_children");
+ /*   	String s = currentLevelRoot.getAttribute("number_of_children");
     	Integer sint = new Integer(s);
     	int sintint = sint; //Check of this cast works!
-    	
+ */   	
     	Object[] currentLevelObjectives = currentLevelRoot.getChildByTagName("objective");
     	Object[] currentLevelIssues = currentLevelRoot.getChildByTagName("issue");
     	for(int i =0; i < currentLevelObjectives.length; i++){
@@ -374,8 +377,12 @@ public class Domain {
 		//set attributes for this domain
 		root.setAttribute("number_of_issues", ""+0); //unknown right now
 		root.addChildElement(fObjectivesRoot.toXML());
-	
-		
+		try{
+			root.saveToFile("testdomain.xml");
+		}catch(Exception e){
+			System.out.println("Exception when printing xml file");
+			
+		}
 		return root;
 	}
 	

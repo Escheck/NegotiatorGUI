@@ -1,4 +1,4 @@
-<negotiation_template nubmer_of_sessions="5">
+<negotiation_template number_of_sessions="5">
 <agent class="negotiator.agents.SimpleAgent" name="orange" utility_space="orange_test_utilityspace.xml">
 </agent>
 <agent class="negotiator.agents.SimpleAgent" name="green" utility_space="green_test_utilityspace.xml">
