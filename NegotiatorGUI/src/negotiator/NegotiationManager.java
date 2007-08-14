@@ -1,7 +1,7 @@
 /*
  * NegotiationManager.java
  *
- * Created on 13 Ноябрь 2006 г., 10:29
+ * Created on 13 пїЅпїЅпїЅпїЅпїЅпїЅ 2006 пїЅ., 10:29
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import negotiator.gui.SessionFrame;
+import negotiator.xml.SimpleElement;
 /**
  *
  * @author Dmytro Tykhonov
@@ -79,7 +80,12 @@ public class NegotiationManager implements Runnable {
             e2.printStackTrace();
             
         }
-        
+        //FIXME testing
+        this.printDomainXML("testdomainxml.xml");
+        System.out.println("Start testing utility space:");
+        this.printAgentAUtilitySpace("testAutilityxml.xml");
+        System.out.println("Done testing utility space.");
+        this.printAgentBUtilitySpace("testButilityxml.xml");
     }
     
     public void run() {
@@ -147,5 +153,41 @@ public class NegotiationManager implements Runnable {
             runNegotiationSession(i+1, numberOfSessions);
         }
     }
+    
+    public void printDomainXML(String filename){
+    	SimpleElement thisTemplate = new SimpleElement("negotiation_template");
+    	thisTemplate.setAttribute("number_of_sessions", ""+numberOfSessions); //FIXME for now.
+	
+    	SimpleElement thisAgentA = new SimpleElement("agent");
+    	thisAgentA.setAttribute("class", agentAclassName);
+    	thisAgentA.setAttribute("name", agentA.getName());
+    	thisAgentA.setAttribute("utility_space", nt.getAgentAUtilitySpaceFileName());
+    	
+    	SimpleElement thisAgentB = new SimpleElement("agent");
+    	thisAgentB.setAttribute("class", agentBclassName);
+    	thisAgentB.setAttribute("name", agentB.getName());
+    	thisAgentB.setAttribute("utility_space", nt.getAgentBUtilitySpaceFileName());
+
+    	thisTemplate.addChildElement(thisAgentA);
+    	thisTemplate.addChildElement(thisAgentB);
+    	thisTemplate.addChildElement(nt.domainToXML());
+    	
+    	try{
+    	thisTemplate.saveToFile(filename);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void printAgentAUtilitySpace(String filename){
+    	SimpleElement Autil = nt.getAgentAUtilitySpace().toXML();
+    	Autil.saveToFile(filename);
+    }
+    
+    public void printAgentBUtilitySpace(String filename){
+    	SimpleElement Butil = nt.getAgentBUtilitySpace().toXML();
+    	Butil.saveToFile(filename);
+    }
+    
     
 }

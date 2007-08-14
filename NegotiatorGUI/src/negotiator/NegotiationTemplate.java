@@ -189,5 +189,10 @@ public class NegotiationTemplate {
 	public UtilitySpace getAgentBUtilitySpace() {
 		return fAgentBUtilitySpace;
 	}
+	
+	 
+    public SimpleElement domainToXML(){
+    	return domain.toXML(); 		
+    }
 
 }

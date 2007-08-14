@@ -79,9 +79,8 @@ public class IssueDiscrete extends Issue {
 		//TODO find some way of putting the items in. Probably in much the same way as weights.
 		for(int item_ind = 0; item_ind < numberOfValues; item_ind++){
 			SimpleElement thisItem = new SimpleElement("item");
-			thisItem.setAttribute("index", "" + item_ind +1); //One off error?
+			thisItem.setAttribute("index", "" + (item_ind +1)); //One off error?
 			thisItem.setAttribute("value", issueValues[item_ind].getStringValue());
-			thisItem.setAttribute("evaluation", "" + 0.0 ); //TODO find a way of getting the evaluation here.
 			thisIssue.addChildElement(thisItem);
  		}
 		return thisIssue;

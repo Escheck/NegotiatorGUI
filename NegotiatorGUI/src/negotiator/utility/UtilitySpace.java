@@ -528,8 +528,14 @@ public class UtilitySpace {
     public double setWeight(int issueIndex, double wt){
     	//TODO probeer te normalizeren met de gegeven wt. Als dat niet werkt, geef
     	//de waarde terug die wel werkt.
-
-    	return 0.0;
+    	Objective tmpObj = domain.getObjective(issueIndex);
+    	Evaluator ev = fEvaluators.get(tmpObj);
+    	if(!ev.weightLocked()){
+    		ev.setWeight(wt); //set weight
+    	}
+    	this.nomalizeChildren(tmpObj);
+    	
+    	return ev.getWeight(); 
     }
     
     /**
@@ -625,23 +631,34 @@ public class UtilitySpace {
     	Enumeration<Objective> childs = obj.children();
     	double weightSum = 0;
     	double lockedWeightSum = 0;
+    	int lockedCount = 0;
     	while(childs.hasMoreElements()){
     		Objective tmpObj = childs.nextElement();
     		try{
+    			if(!fEvaluators.get(tmpObj).weightLocked()){
     			weightSum += fEvaluators.get(tmpObj).getWeight();
+    			}else{
+    				lockedWeightSum += fEvaluators.get(tmpObj).getWeight();
+    				lockedCount++;
+    			}
     		}catch(Exception e){
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
     	if(weightSum + lockedWeightSum > 1.0){
     		//normalize:
+    		double normalizeWith = (weightSum - 1.0) / lockedCount;
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
     			try{
     				if(!fEvaluators.get(obj).weightLocked()){
-    					fEvaluators.get(obj).setWeight(fEvaluators.get(obj).getWeight()/weightSum);
-    		//FIXME hdv: how to normalize over only the unlocked weights?			
+    					double newWeight = fEvaluators.get(obj).getWeight() - normalizeWith;
+    					if(newWeight < 0){
+    						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
+    					}
+    					fEvaluators.get(obj).setWeight(newWeight);
+    		
     				}
     			}catch(Exception e){
 //    				do nothing, we can encounter Objectives/issues without Evaluators.
@@ -671,70 +688,101 @@ public class UtilitySpace {
     public SimpleElement toXML(){
     	SimpleElement root = (domain.getObjectivesRoot()).toXML();
     	root = toXMLrecurse(root);
-    	return root;//but how to get the correct values in place?
+    	SimpleElement rootWrapper = new SimpleElement("utility_space"); //can't really say overhere how many issues there are inhere.
+    	rootWrapper.addChildElement(root);
+    	return rootWrapper;//but how to get the correct values in place?
     }
     
     private SimpleElement toXMLrecurse(SimpleElement currentLevel){
     	//go through all tags.
+
     	Object[] Objectives = currentLevel.getChildByTagName("objective");
+    	Object[] childWeights = currentLevel.getChildByTagName("weight");
     	for(int objInd=0; objInd<Objectives.length;objInd++){
     		SimpleElement currentChild = (SimpleElement)Objectives[objInd];
     		int childIndex = Integer.valueOf(currentChild.getAttribute("index"));
     		Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
     		
-    		SimpleElement currentChildWeight = new SimpleElement("Weight");
-    		currentChildWeight.setAttribute("index", ""+childIndex);
-    		currentChildWeight.setAttribute("value", ""+ev.getWeight());
-    		currentLevel.addChildElement(currentChildWeight);
-    		
-    		currentChild = toXMLrecurse(currentChild); //I hope this works.
+    		if(childWeights.length == 0){
+    			SimpleElement currentChildWeight = new SimpleElement("Weight");
+    			currentChildWeight.setAttribute("index", ""+childIndex);
+    			currentChildWeight.setAttribute("value", ""+ev.getWeight());
+    			currentLevel.addChildElement(currentChildWeight);
+    		}else{
+    			for(int weightInd = 0; weightInd < childWeights.length; weightInd++){
+    				SimpleElement thisWeight = (SimpleElement)childWeights[weightInd];
+    				int w_ind = Integer.valueOf(thisWeight.getAttribute("index"));
+    				Evaluator child_ev = fEvaluators.get(domain.getObjective(w_ind));
+    				thisWeight.setAttribute("value", ""+ child_ev.getWeight());
+    				currentLevel.addChildElement(thisWeight);
+    			}
+    			
+    		}
+    		currentChild = toXMLrecurse(currentChild);
     	}
     	
     	Object[] Issues = currentLevel.getChildByTagName("issue");
+    	Object[] IssueWeights = currentLevel.getChildByTagName("weight");
     	for(int issInd=0; issInd<Issues.length; issInd++){
     		SimpleElement tmpIssue = (SimpleElement) Issues[issInd];
     		
     		//set the weight
     		int childIndex = Integer.valueOf(tmpIssue.getAttribute("index"));
-    		Evaluator ev = fEvaluators.get(domain.getIssue(childIndex));
-    		SimpleElement currentChildWeight = new SimpleElement("Weight");
-    		currentChildWeight.setAttribute("index", ""+childIndex);
-    		currentChildWeight.setAttribute("value", ""+ev.getWeight());
-    		currentLevel.addChildElement(currentChildWeight);
-
-    		
-    		String evtype_str = tmpIssue.getAttribute("etype");
-    		EVALUATORTYPE evtype = EVALUATORTYPE.convertToType(evtype_str);
-    		switch(evtype){
-    		case DISCRETE:
-    			//fill this issue with the relevant weights to items.
-    			Object[] items = tmpIssue.getChildByTagName("item");
-    			for(int itemInd = 0; itemInd < items.length; itemInd++){
-    				SimpleElement tmpItem = (SimpleElement) items[itemInd];
-    				IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
-    				
-    				EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
-    				double eval = dev.getEvaluation(theIssue.getValue(itemInd));
-    				tmpItem.setAttribute("evaluation", ""+eval);
+    		Objective tmpEvObj = domain.getObjective(childIndex);
+    		try{
+    			
+    			Evaluator ev = fEvaluators.get(tmpEvObj);
+    			
+    			if(IssueWeights.length == 0){
+    				SimpleElement currentChildWeight = new SimpleElement("Weight");
+    				currentChildWeight.setAttribute("index", ""+childIndex);
+    				currentChildWeight.setAttribute("value", ""+ev.getWeight());
+    				currentLevel.addChildElement(currentChildWeight);
     			}
-    			break;
-    		case INTEGER:
-    			Object[] Ranges = tmpIssue.getChildByTagName("range");
-    			SimpleElement thisRange = (SimpleElement)Ranges[0];
-    			EvaluatorInteger iev = (EvaluatorInteger) ev;
-    			thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
-    			thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
-    			//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
-    			break;
-    		case REAL:
-    			Object[] RealRanges = tmpIssue.getChildByTagName("range");
-    			SimpleElement thisRealRange = (SimpleElement)RealRanges[0];
-    			EvaluatorReal rev = (EvaluatorReal) ev;
-    			thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
-    			thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
-    			//TODO hdv the same thing as above vor the "evaluator" tag.
-    			break;
-    		}
+    			else{
+    				for(int issueWind = 0; issueWind < IssueWeights.length; issueWind++){
+    					SimpleElement currIssueWt = (SimpleElement) IssueWeights[issueWind]; 
+    					int c_ind = Integer.valueOf(currIssueWt.getAttribute("index"));
+    					Evaluator thisIssueEv = fEvaluators.get(domain.getObjective(c_ind));
+    					currIssueWt.setAttribute("value", ""+thisIssueEv.getWeight());
+    				}
+    			}
+    		
+    			String evtype_str = tmpIssue.getAttribute("etype");
+    			EVALUATORTYPE evtype = EVALUATORTYPE.convertToType(evtype_str);
+    			switch(evtype){
+    			case DISCRETE:
+    				//fill this issue with the relevant weights to items.
+    				Object[] items = tmpIssue.getChildByTagName("item");
+    				for(int itemInd = 0; itemInd < items.length; itemInd++){
+    					SimpleElement tmpItem = (SimpleElement) items[itemInd];
+    					IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
+    				
+    					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
+    					double eval = dev.getEvaluation(theIssue.getValue(itemInd));
+    					tmpItem.setAttribute("evaluation", ""+eval);
+    				}
+    				break;
+    			case INTEGER:
+    				Object[] Ranges = tmpIssue.getChildByTagName("range");
+    				SimpleElement thisRange = (SimpleElement)Ranges[0];
+    				EvaluatorInteger iev = (EvaluatorInteger) ev;
+    				thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
+    				thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
+    				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
+    				break;
+    			case REAL:
+    				Object[] RealRanges = tmpIssue.getChildByTagName("range");
+    				SimpleElement thisRealRange = (SimpleElement)RealRanges[0];
+    				EvaluatorReal rev = (EvaluatorReal) ev;
+    				thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
+    				thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
+    				//TODO hdv the same thing as above vor the "evaluator" tag.
+    				break;
+    			}
+    		}catch(Exception e){
+    			//do nothing, it could be that this objective/issue doesn't have an evaluator yet.
+    		}	
     		
     	}
     	
