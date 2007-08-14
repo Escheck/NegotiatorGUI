@@ -41,10 +41,14 @@ public class Domain {
     	loadTreeFromXML(root);
     }
     
-    public Domain(String filename){
+    public Domain(String filename) {
+    	this(new File(filename));
+    }
+    
+    public Domain(File filename){
     	SimpleDOMParser parser = new SimpleDOMParser();
     	try{
-    		BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
+    		BufferedReader file = new BufferedReader(new FileReader(filename));                  
     		SimpleElement root = parser.parse(file);
     		SimpleElement xml_utility_space = (SimpleElement)(root.getChildByTagName("utility_space")[0]);
     		loadTreeFromXML(xml_utility_space);
