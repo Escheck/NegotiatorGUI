@@ -2,12 +2,15 @@ package negotiator.gui.tree;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 import jtreetable.*;
 import negotiator.*;
 import negotiator.utility.*;
 import negotiator.gui.tree.actions.*;
+import negotiator.issue.*;
 
 /**
 *
@@ -18,25 +21,36 @@ import negotiator.gui.tree.actions.*;
 public class TreeFrame extends JFrame {
 	
 	//Attributes
+	private static final Color UNSELECTED = Color.WHITE;
+	private static final Color HIGHLIGHT = Color.YELLOW;
+	
 	private JTreeTable treeTable;
 	private NegotiatorTreeTableModel model;
+	
+	private SelectedInfoPanel infoPanel;
 	
 	private AddAction addAct;
 	private AddObjectiveAction addObjectiveAct;
 	private AddIssueAction addIssueAct;
+	private CutAction cutAct;
+	private PasteAction pasteAct;
 	private DeleteAction delAct;
 	private EditAction editAct;
+	private NewDomainAction newDomainAct;
+	private NewUtilitySpaceAction newUtilitySpaceAct;
+	private LoadDomainAction loadDomainAct;
+	private LoadUtilitySpaceAction loadUtilitySpaceAct;
+	private SaveDomainAction saveDomainAct;
+	private SaveUtilitySpaceAction saveUtilitySpaceAct;
 	private ExitAction exitAct;
+	
+	private static JFileChooser fileChooser;
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	
 	private JPopupMenu treePopupMenu;
-	
-	private JMenuItem addObjectiveMenuItem;
-	private JMenuItem addIssueMenuItem;
-	private JMenuItem exitMenuItem;
 	
 	//Constructors
 	public TreeFrame(Domain domain) {
@@ -50,36 +64,63 @@ public class TreeFrame extends JFrame {
 	public TreeFrame(NegotiatorTreeTableModel treeModel) {
 		super();
 		
+		init(treeModel, null);
+	}
+	
+	//Methods
+	public void reinitTreeTable(Domain domain) {
+		init(new NegotiatorTreeTableModel(domain), this.getSize());
+	}
+	
+	public void reinitTreeTable(Domain domain, UtilitySpace utilitySpace) {
+		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize()); 
+		
+	}
+	
+	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
 		model = treeModel;
 		
-		this.getContentPane().setLayout(new BorderLayout());
+		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout());
+		this.setContentPane(contentPane);
 		
 		//Initialize the table
 		initTable(model);
 		treeTable.addMouseListener(new TreePopupListener());
+		treeTable.getSelectionModel().addListSelectionListener(new TreeSelectionListener());
 		
-		//Create Actions
-		addAct = new AddAction();
-		addObjectiveAct = new AddObjectiveAction(this, treeTable);
-		addIssueAct = new AddIssueAction(this, treeTable);
-		delAct = new DeleteAction();
-		editAct = new EditAction();
-		exitAct = new ExitAction(this);
+		//Initialize the FileChooser
+		initFileChooser();
+		
+		initActions();
 		
 		//Initialize the Menu
-		initMenuItems();
 		initMenus();
 		initPopupMenus();
+		
+		JPanel controlPanel = new JPanel();
 		
 		//Initialise the Panel with buttons.
 		JPanel controls = new JPanel();
 		controls.setBorder(BorderFactory.createTitledBorder("Edit nodes"));
+		BoxLayout boxLayout = new BoxLayout(controls, BoxLayout.PAGE_AXIS);
+		
+		controls.setLayout(boxLayout);
 		controls.add(new JButton(addAct));
 		controls.add(new JButton(addObjectiveAct));
 		controls.add(new JButton(addIssueAct));
+		controls.add(new JButton(cutAct));
+		controls.add(new JButton(pasteAct));
 		controls.add(new JButton(delAct));
 		controls.add(new JButton(editAct));
-		this.getContentPane().add(controls, BorderLayout.PAGE_END);
+		controlPanel.add(controls);
+		//this.getContentPane().add(controls, BorderLayout.PAGE_END);
+		
+		//Initialize the InfoPanel
+		infoPanel = new SelectedInfoPanel();
+		controlPanel.add(infoPanel);
+		
+		this.getContentPane().add(controlPanel, BorderLayout.PAGE_END);
 		
 		//Do nothing on closing, since we might need different behaviour.
 		//See negotiator.gui.tree.actions.ExitAction
@@ -87,9 +128,12 @@ public class TreeFrame extends JFrame {
 		
 		this.pack();
 		this.setVisible(true);
+		
+		if (size != null)
+			this.setSize(size);
+		
 	}
 	
-	//Methods
 	private void initTable(NegotiatorTreeTableModel model) {
 		treeTable = new JTreeTable(model);
 		treeTable.setPreferredSize(new Dimension(1024, 600));
@@ -98,6 +142,14 @@ public class TreeFrame extends JFrame {
 		treeTable.setRowSelectionAllowed(true);
 		treeTable.setColumnSelectionAllowed(false);
 		treeTable.setCellSelectionEnabled(true);
+		
+		NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
+		treeRenderer.setRowHeight(18);
+		treeTable.setDefaultRenderer(TreeTableModel.class, treeRenderer);
+		
+		DefaultTableCellRenderer labelRenderer = new JLabelCellRenderer();
+		treeTable.setDefaultRenderer(JLabel.class, labelRenderer);
+		treeTable.setDefaultRenderer(JTextField.class, labelRenderer);
 		
 		IssueValueCellEditor valueEditor = new IssueValueCellEditor(model);
 		treeTable.setDefaultRenderer(IssueValuePanel.class, valueEditor);
@@ -115,10 +167,26 @@ public class TreeFrame extends JFrame {
 		this.getContentPane().add(treePane, BorderLayout.CENTER);
 	}
 	
-	private void initMenuItems() {
-		addObjectiveMenuItem = new JMenuItem(addObjectiveAct);
-		addIssueMenuItem = new JMenuItem(addIssueAct);
-		exitMenuItem = new JMenuItem(exitAct);
+	/**
+	 * Recreates the Actions. Note that it doesn't reinitialise the Buttons that are dependent on it!
+	 * The caller is responsible for this.
+	 */
+	private void initActions() {
+		//Create Actions
+		addAct = new AddAction();
+		addObjectiveAct = new AddObjectiveAction(this, treeTable);
+		addIssueAct = new AddIssueAction(this, treeTable);
+		cutAct = new CutAction(this);
+		pasteAct = new PasteAction(this);
+		delAct = new DeleteAction();
+		editAct = new EditAction();
+		newDomainAct = new NewDomainAction(this);
+		newUtilitySpaceAct = new NewUtilitySpaceAction(this);
+		loadDomainAct = new LoadDomainAction(this, fileChooser);
+		loadUtilitySpaceAct = new LoadUtilitySpaceAction(this, fileChooser);
+		saveDomainAct = new SaveDomainAction(this, fileChooser);
+		saveUtilitySpaceAct = new SaveUtilitySpaceAction(this, fileChooser);
+		exitAct = new ExitAction(this);
 	}
 	
 	private void initMenus() {
@@ -128,20 +196,47 @@ public class TreeFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		
-		fileMenu.add(new JMenuItem("Test"));
+		fileMenu.add(newDomainAct);
+		fileMenu.add(newUtilitySpaceAct);
+		fileMenu.addSeparator();
+		fileMenu.add(loadDomainAct);
+		fileMenu.add(loadUtilitySpaceAct);
+		fileMenu.addSeparator();
+		fileMenu.add(saveDomainAct);
+		fileMenu.add(saveUtilitySpaceAct);
+		fileMenu.addSeparator();
 		fileMenu.add(exitAct);
 		
-		editMenu.add(addObjectiveMenuItem);
-		editMenu.add(addIssueMenuItem);
+		editMenu.add(addObjectiveAct);
+		editMenu.add(addIssueAct);
+		editMenu.addSeparator();
+		editMenu.add(cutAct);
+		editMenu.add(pasteAct);
+		editMenu.add(editAct);
+		editMenu.add(delAct);
 		
 		this.setJMenuBar(menuBar);
+	}
+	
+	private void initFileChooser() {
+		//Don't reset the fileChooser if it's already there, since that would also reset the last
+		//opened location.
+		if (fileChooser == null) {
+			fileChooser = new JFileChooser();
+		}
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
 	
 	private void initPopupMenus() {
 		treePopupMenu = new JPopupMenu();
 		
-		treePopupMenu.add(addObjectiveMenuItem);
-		treePopupMenu.add(addIssueMenuItem);
+		treePopupMenu.add(addObjectiveAct);
+		treePopupMenu.add(addIssueAct);
+		treePopupMenu.addSeparator();
+		treePopupMenu.add(cutAct);
+		treePopupMenu.add(pasteAct);
+		treePopupMenu.add(editAct);
+		treePopupMenu.add(delAct);
 	}
 	
 	public JTreeTable getTreeTable() {
@@ -150,6 +245,78 @@ public class TreeFrame extends JFrame {
 	
 	public NegotiatorTreeTableModel getNegotiatorTreeTableModel() {
 		return model;
+	}
+	
+	public void selectionChanged() {
+		Object selected = treeTable.getTree().getLastSelectedPathComponent();
+		
+		if (selected instanceof Issue) {
+			addObjectiveAct.setEnabled(false);
+			addIssueAct.setEnabled(false);
+			cutAct.setEnabled(true);
+			pasteAct.setEnabled(false);
+			editAct.setEnabled(true);
+			delAct.setEnabled(true);
+			
+			//TODO remove
+			System.out.println("An Issue");
+		}
+		else if (selected instanceof Objective) {
+			addObjectiveAct.setEnabled(true);
+			addIssueAct.setEnabled(true);
+			cutAct.setEnabled(true);
+			pasteAct.setEnabled(false); //TODO check is something is cut first.
+			editAct.setEnabled(true);
+			delAct.setEnabled(true);
+						
+			//TODO remove
+			System.out.println("An Objective");
+		}
+		else {
+			addObjectiveAct.setEnabled(false);
+			addIssueAct.setEnabled(false);
+			cutAct.setEnabled(false);
+			pasteAct.setEnabled(false);
+			editAct.setEnabled(false);
+			delAct.setEnabled(false);
+			
+			selected = null;
+			
+			//TODO remove
+			System.out.println("Unknown selection");
+		}
+		
+		updateHighlights((Objective)selected);
+		infoPanel.displayObjective((Objective)selected);
+		treeTable.repaint();
+	}
+	
+	protected void updateHighlights(Objective selected) {
+		Objective parent = null;
+		if (selected != null) {
+			parent = selected.getParent();
+		}
+		Enumeration<Objective> treeEnum = ((Objective)model.getRoot()).getPreorderEnumeration();
+		while (treeEnum.hasMoreElements()) {
+			Objective obj = treeEnum.nextElement();
+			if (selected == null || parent == null) {
+				setRowBackground(obj, UNSELECTED);
+			}
+			else if (parent.isParent(obj)) {
+				setRowBackground(obj, HIGHLIGHT);
+			}
+			else {
+				setRowBackground(obj, UNSELECTED);
+			}
+		}
+	}
+	
+	
+	protected void setRowBackground(Objective node, Color color) {
+		model.getNameField(node).setBackground(color);
+		model.getTypeField(node).setBackground(color);
+		model.getNumberField(node).setBackground(color);
+		model.getIssueValuePanel(node).setBackground(color);
 	}
 	
 	class TreePopupListener extends MouseAdapter {
@@ -164,9 +331,24 @@ public class TreeFrame extends JFrame {
 		} 
 		
 		private void maybeShowPopup(MouseEvent e) {
-			if (e.isPopupTrigger())
+			if (e.isPopupTrigger()) {
+				Point point = new Point(e.getX(), e.getY());
+				int rowIndex = treeTable.rowAtPoint(point);
+				if (rowIndex != -1) {
+					treeTable.setRowSelectionInterval(rowIndex, rowIndex);
+				}				
 				treePopupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
 		} 
+	}
+	
+	class TreeSelectionListener implements ListSelectionListener {
+		
+		//Methods
+		public void valueChanged(ListSelectionEvent e) {
+			selectionChanged();
+		}
+		
 	}
 
 }

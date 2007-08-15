@@ -185,6 +185,52 @@ public class Objective implements MutableTreeNode{
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return an Objective[] containing this node's siblings, or an empty array if this Objective's parent is null.
+	 */
+	public Objective[] getSiblings() {
+		Objective[] siblings;
+		Objective parent = getParent();
+		if (parent == null) {
+			return new Objective[0];
+		}
+		
+		siblings = new Objective[parent.getChildCount() -1];
+		//Fill the array with siblings. i is used for enumerating all children of the parent, j is used to index
+		//the array. j is needed because there is one less sibling than there are children.
+		for (int i = 0, j = 0; i < siblings.length; i++, j++) {
+			Objective obj = parent.getChildAt(i);
+			if (obj == this) {
+				//Don't add to the array, decrease j to undo j++
+				j--;
+			}
+			else {
+				siblings[j] = obj;
+			}
+		}
+		
+		return siblings;
+	}
+	
+	/**
+	 * Check whether or not a particular Objective is a child of the receiver. Comparison is based on simple
+	 * pointer comparison. 
+	 * @param child the potential child of the callee.
+	 * @return true iff child is a direct child of the receiving node.
+	 */
+	public boolean isParent(Objective child) {
+		boolean result = false;
+		Enumeration<Objective> childEnum = children();
+		while (childEnum.hasMoreElements()) {
+			Objective obj = childEnum.nextElement();
+			if (obj == child) {
+				result = true;
+			}
+		}
+		return result;
+	}
+	
 	//Methods from the TreeNode interface
 	
 	/**
