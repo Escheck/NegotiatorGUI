@@ -2,6 +2,7 @@ package negotiator.gui.tree;
 
 import jtreetable.*;
 
+import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -33,13 +34,16 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	private Class[] colTypes;// = {TreeTableModel.class, String.class, String.class, String.class, WeightSlider.class};
 	private UtilitySpace utilitySpace;
 	private boolean containsUtilitySpace;
+	private Map<Objective, JTextField> names;
+	private Map<Objective, JTextField> types;
+	private Map<Objective, JTextField> numbers;
 	private Map<Objective, WeightSlider> sliders;
 	private Map<Objective, IssueValuePanel> issueValues; //Contains objects representing the possible values of an issue
 	
 	private static final String[] domainColNames = {NAME, TYPE, NUMBER, VALUE};//{"Name", "Type", "Number", "Value"};
-	private static final Class[] domainColTypes = {TreeTableModel.class, String.class, Integer.class, IssueValuePanel.class};
+	private static final Class[] domainColTypes = {TreeTableModel.class, JTextField.class, JTextField.class, IssueValuePanel.class};
 	private static final String[] domainAndUtilityColNames = {NAME, TYPE, NUMBER, VALUE, WEIGHT};//{"Name", "Type", "Number", "Value", "Weight"};
-	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, String.class, Integer.class, IssueValuePanel.class, WeightSlider.class};
+	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, JTextField.class, JTextField.class, IssueValuePanel.class, WeightSlider.class};
 	
 	
 	//Constructors
@@ -49,6 +53,9 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		this.containsUtilitySpace = false;
 		this.colNames = domainColNames;
 		this.colTypes = domainColTypes;
+		names = new HashMap<Objective, JTextField>();
+		types = new HashMap<Objective, JTextField>();
+		numbers = new HashMap<Objective, JTextField>();
 		issueValues = new HashMap<Objective, IssueValuePanel>();
 	}
 	
@@ -59,6 +66,9 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		this.containsUtilitySpace = true;
 		this.colNames = domainAndUtilityColNames;
 		this.colTypes = domainAndUtilityColTypes;
+		names = new HashMap<Objective, JTextField>();
+		types = new HashMap<Objective, JTextField>();
+		numbers = new HashMap<Objective, JTextField>();
 		issueValues = new HashMap<Objective, IssueValuePanel>();
 		sliders = new HashMap<Objective, WeightSlider>();
 	}
@@ -165,11 +175,11 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		
 		//if (getColumnName(column).equals(arg0))
 		if (getColumnName(column) == NAME)
-			return objective.getName();
+			getNameField(objective);
 		else if (getColumnName(column) == TYPE)
-			return objective.getType();
+			return getTypeField(objective);
 		else if (getColumnName(column) == NUMBER)
-			return objective.getNumber();
+			return getNumberField(objective);
 		else if (getColumnName(column) == VALUE)
 			return getIssueValuePanel(objective);
 		else if (getColumnName(column) == WEIGHT)
@@ -211,6 +221,14 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	
 	/**
 	 * 
+	 * @return the Domain.
+	 */
+	public Domain getDomain() {
+		return domain;
+	}
+	
+	/**
+	 * 
 	 * @return the UtilitySpace.
 	 */
 	public UtilitySpace getUtilitySpace() {
@@ -240,6 +258,36 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		}
 	}
 	
+	protected JTextField getNameField(Objective node) {
+		JTextField field = names.get(node);
+		if (field == null) {
+			field = new JTextField(node.getName());
+			field.setBorder(BorderFactory.createEmptyBorder());
+			setNameField(node, field);
+		}
+		return field;
+	}
+	
+	protected JTextField getTypeField(Objective node) {
+		JTextField field = types.get(node);
+		if (field == null) {
+			field = new JTextField("" + node.getType());
+			field.setBorder(BorderFactory.createEmptyBorder());
+			setTypeField(node, field);
+		}
+		return field;
+	}
+	
+	protected JTextField getNumberField(Objective node) {
+		JTextField field = numbers.get(node);
+		if (field == null) {
+			field = new JTextField("" + node.getNumber());
+			field.setBorder(BorderFactory.createEmptyBorder());
+			setNumberField(node, field);
+		}
+		return field;
+	}
+	
 	/**
 	 * Returns the WeightSlider belonging to the given Objective. If there is no WeightSlider attached to the given Objective,
 	 * a new one is created and added using setWeightSlider(Objective, WeightSlider).
@@ -265,7 +313,19 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		sliders.put(node, slider);
 	}
 	
-	protected Object getIssueValuePanel(Objective node) {
+	protected void setNameField(Objective node, JTextField field) {
+		names.put(node, field);
+	}
+	
+	protected void setTypeField(Objective node, JTextField field) {
+		types.put(node, field);
+	}
+	
+	protected void setNumberField(Objective node, JTextField field) {
+		numbers.put(node, field);
+	}
+	
+	protected IssueValuePanel getIssueValuePanel(Objective node) {
 		//TODO Finish!
 		IssueValuePanel value = issueValues.get(node);
 		if (value == null) {
