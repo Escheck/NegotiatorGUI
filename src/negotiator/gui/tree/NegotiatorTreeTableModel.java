@@ -260,6 +260,19 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		System.out.println("==============End Call==================");
 	}
 	
+	public void removeObjective(Objective obj) {
+		obj.removeFromParent();
+		names.remove(obj);
+		types.remove(obj);
+		numbers.remove(obj);
+		
+		//In case we're editing a UtilitySpace
+		if (containsUtilitySpace) {
+			getUtilitySpace().removeEvaluator(obj);
+			sliders.remove(obj);
+		}
+	}
+	
 	protected JTextField getNameField(Objective node) {
 		JTextField field = names.get(node);
 		if (field == null) {
