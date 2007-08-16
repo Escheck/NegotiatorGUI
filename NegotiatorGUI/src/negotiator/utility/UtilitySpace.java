@@ -528,12 +528,17 @@ public class UtilitySpace {
     public double setWeight(Objective tmpObj, double wt){
     	try{
     		Evaluator ev = fEvaluators.get(tmpObj);
+    		double oldWt = ev.getWeight();
     		if(!ev.weightLocked()){
     			ev.setWeight(wt); //set weight
     		}
     		this.nomalizeChildren(tmpObj.getParent());
-    	
-    		return fEvaluators.get(tmpObj).getWeight();
+    		if(this.checkTreeNormalization()){
+    			return fEvaluators.get(tmpObj).getWeight();
+    		}else{
+    			ev.setWeight(oldWt); //set the old weight back.
+    			return fEvaluators.get(tmpObj).getWeight();
+    		}
     	}catch(NullPointerException npe){
     		return -1;
     	}
@@ -634,11 +639,13 @@ public class UtilitySpace {
     	double weightSum = 0;
     	double lockedWeightSum = 0;
     	int lockedCount = 0;
+    	int totalCount = 0;
     	while(childs.hasMoreElements()){
     		Objective tmpObj = childs.nextElement();
     		try{
     			if(!fEvaluators.get(tmpObj).weightLocked()){
     			weightSum += fEvaluators.get(tmpObj).getWeight();
+    			totalCount++;
     			}else{
     				lockedWeightSum += fEvaluators.get(tmpObj).getWeight();
     				lockedCount++;
@@ -648,15 +655,14 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
-    	if(weightSum + lockedWeightSum != 1.0){
+    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < totalCount){ //that second bit to ensure that there is no problem with
     		//normalize:
-    		double normalizedLockedWeightSum = lockedWeightSum / lockedCount;
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
     			try{
     				if(!fEvaluators.get(tmpObj).weightLocked()){
-    					double newWeight = fEvaluators.get(tmpObj).getWeight() / weightSum;
+    					double newWeight = (fEvaluators.get(tmpObj).getWeight()+lockedWeightSum) / (weightSum + lockedWeightSum);
     					if(newWeight < 0){
     						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     					}
