@@ -651,7 +651,7 @@ public class UtilitySpace {
     				lockedCount++;
     			}
     		}catch(Exception e){
-    			System.out.println("No evaluator.");
+    			
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
@@ -667,11 +667,9 @@ public class UtilitySpace {
     						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     					}
     					fEvaluators.get(tmpObj).setWeight(newWeight);
-    					System.out.println("new weight for object " + tmpObj.getNumber() + " = " + newWeight);
     				}
     			}catch(Exception e){
 //    				do nothing, we can encounter Objectives/issues without Evaluators.
-    				System.out.println("No evaluator.");
     			}
     			
     		}
