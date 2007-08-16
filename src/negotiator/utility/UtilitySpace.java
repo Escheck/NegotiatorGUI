@@ -525,17 +525,14 @@ public class UtilitySpace {
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
     }
     
-    public double setWeight(int issueIndex, double wt){
-    	//TODO probeer te normalizeren met de gegeven wt. Als dat niet werkt, geef
-    	//de waarde terug die wel werkt.
-    	Objective tmpObj = domain.getObjective(issueIndex);
+    public double setWeight(Objective tmpObj, double wt){
     	Evaluator ev = fEvaluators.get(tmpObj);
     	if(!ev.weightLocked()){
     		ev.setWeight(wt); //set weight
     	}
-    	this.nomalizeChildren(tmpObj);
+    	this.nomalizeChildren(tmpObj.getParent());
     	
-    	return ev.getWeight(); 
+    	return fEvaluators.get(tmpObj).getWeight(); 
     }
     
     /**
@@ -680,7 +677,17 @@ public class UtilitySpace {
     		 return nomalizeChildren(obj.getParent());
     	 }
      }
-    
+
+     public boolean removeEvaluator(Objective obj){
+    	 try{
+    		 fEvaluators.remove(obj);
+    		 
+    	 }catch(Exception e){
+    		 return false;
+    	 }
+    	 return true;
+     }
+     
     /**
      * Creates an xml representation (in the form of a SimpleElements) of the utilityspace.
      * @return A representation of this utilityspace or <code>null</code> when there was an error.
