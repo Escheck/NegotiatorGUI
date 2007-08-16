@@ -3,6 +3,8 @@ package negotiator.gui.tree.actions;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
+import negotiator.gui.tree.*;
+import negotiator.gui.dialogs.*;
 
 /**
 *
@@ -13,12 +15,12 @@ import java.awt.event.*;
 public class SaveDomainAction extends AbstractAction {
 	
 	//Attributes
-	private JFrame parent;
+	private TreeFrame parent;
 	private File openedFile;
 	private final JFileChooser fileChooser;
 	
 	//Constructors
-	public SaveDomainAction (JFrame parent, JFileChooser fileChooser) {
+	public SaveDomainAction (TreeFrame parent, JFileChooser fileChooser) {
 		super("Save Domain");
 		this.parent = parent;
 		this.fileChooser = fileChooser;
@@ -26,11 +28,12 @@ public class SaveDomainAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		int result = fileChooser.showSaveDialog(parent);
+		/*int result = fileChooser.showSaveDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			openedFile = fileChooser.getSelectedFile();
 			saveDomain(openedFile);
-		}
+		}*/
+		new SaveDomainDialog(parent, true, parent.getTreeTable());
 	}
 	
 	private void saveDomain(File file) {

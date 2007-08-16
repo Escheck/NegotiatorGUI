@@ -133,7 +133,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	public void changeWeight(double newWeight) {
 		weight = tableModel.getUtilitySpace().setWeight(objective, newWeight);
 		tableModel.updateWeights(this, weight);
-		setWeight(weight);
+		setWeight(weight); //redundant
 	}
 	
 	public void stateChanged(ChangeEvent e) {

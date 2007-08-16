@@ -19,7 +19,7 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 	
 	//Constructors
 	public SaveUtilitySpaceAction (JFrame parent, JFileChooser fileChooser) {
-		super("Save Domain");
+		super("Save UtilitySpace");
 		this.parent = parent;
 		this.fileChooser = fileChooser;
 	}
