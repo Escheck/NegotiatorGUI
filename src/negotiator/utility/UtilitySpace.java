@@ -526,13 +526,18 @@ public class UtilitySpace {
     }
     
     public double setWeight(Objective tmpObj, double wt){
-    	Evaluator ev = fEvaluators.get(tmpObj);
-    	if(!ev.weightLocked()){
-    		ev.setWeight(wt); //set weight
-    	}
-    	this.nomalizeChildren(tmpObj.getParent());
+    	try{
+    		Evaluator ev = fEvaluators.get(tmpObj);
+    		if(!ev.weightLocked()){
+    			ev.setWeight(wt); //set weight
+    		}
+    		this.nomalizeChildren(tmpObj.getParent());
     	
-    	return fEvaluators.get(tmpObj).getWeight(); 
+    		return fEvaluators.get(tmpObj).getWeight();
+    	}catch(NullPointerException npe){
+    		return -1;
+    	}
+    	
     }
     
     /**
