@@ -57,6 +57,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		valueField = new JFormattedTextField(format);
 		valueField.setColumns(4);
 		valueField.setToolTipText("Fill in a weight between 0 and 1");
+		valueField.setEditable(false);
 		this.add(valueField);
 		
 		lock = new JCheckBox();
