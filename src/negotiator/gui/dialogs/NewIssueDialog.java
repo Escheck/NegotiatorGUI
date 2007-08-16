@@ -19,25 +19,25 @@ import negotiator.issue.*;
 
 public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	//Variables
-	private static final String DISCRETE = "Discrete";
-	private static final String INTEGER = "Integer";
-	private static final String REAL = "Real";
+	protected static final String DISCRETE = "Discrete";
+	protected static final String INTEGER = "Integer";
+	protected static final String REAL = "Real";
 	
-	private JComboBox issueType;
-	private String[] issueTypes;// = {DISCRETE, INTEGER, REAL}; <- for some weird reason this doesn't work
-	private JPanel issuePropertyCards;
-	private JPanel issuePropertyPanel;
-	private JPanel discretePanel;
-	private JPanel integerPanel;
-	private JPanel realPanel;
+	protected JComboBox issueType;
+	protected String[] issueTypes;// = {DISCRETE, INTEGER, REAL}; <- for some weird reason this doesn't work
+	protected JPanel issuePropertyCards;
+	protected JPanel issuePropertyPanel;
+	protected JPanel discretePanel;
+	protected JPanel integerPanel;
+	protected JPanel realPanel;
 	
-	private JTextArea discreteTextArea;
+	protected JTextArea discreteTextArea;
 	
-	private JTextField integerMinField;
-	private JTextField integerMaxField;
+	protected JTextField integerMinField;
+	protected JTextField integerMaxField;
 	
-	private JTextField realMinField;
-	private JTextField realMaxField;
+	protected JTextField realMinField;
+	protected JTextField realMaxField;
 	
 	//Constructors
 	public NewIssueDialog(JTreeTable treeTable) {
@@ -45,7 +45,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 		
 	public NewIssueDialog(Frame owner, boolean modal, JTreeTable treeTable) {
-		super(owner, modal, treeTable, "Create new Issue");
+		this(owner, modal, "Create new Issue", treeTable);
+	}
+	
+	public NewIssueDialog(Frame owner, boolean modal, String name, JTreeTable treeTable) {
+		super(owner, modal, treeTable, name);
 	}
 	
 	//Methods
