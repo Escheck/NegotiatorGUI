@@ -7,6 +7,7 @@ import javax.swing.*;
 import negotiator.gui.tree.*;
 import jtreetable.*;
 
+import negotiator.xml.SimpleElement;
 /**
  * 
  * @author Richard Noorlandt
@@ -144,7 +145,24 @@ public class SaveDomainDialog extends JDialog implements ActionListener {
 			}
 		}
 		else if (e.getSource() == saveButton) {
+			SimpleElement neg_template = new SimpleElement("negotiation_template");
+			neg_template.setAttribute("number_of_sessions", sessionLabel.getText());
 			
+			SimpleElement agentA_tag = new SimpleElement("agent");
+			agentA_tag.setAttribute("class", agentAClassLabel.getText());
+			agentA_tag.setAttribute("name", agentAClassNameLabel.getText());
+			agentA_tag.setAttribute("utility_space", agentAUtilitySpaceLabel.getText());
+			
+			SimpleElement agentB_tag = new SimpleElement("agent");
+			agentB_tag.setAttribute("class", agentBClassLabel.getText());
+			agentB_tag.setAttribute("name", agentBClassNameLabel.getText());
+			agentB_tag.setAttribute("utility_space", agentBUtilitySpaceLabel.getText());
+			
+			neg_template.addChildElement(agentA_tag);
+			neg_template.addChildElement(agentB_tag);
+			neg_template.addChildElement(parent.getNegotiatorTreeTableModel().getDomain().toXML());
+			
+			neg_template.saveToFile("file");
 		}
 		else if (e.getSource() == cancelButton) {
 			this.dispose();
