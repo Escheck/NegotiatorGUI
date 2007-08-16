@@ -58,6 +58,9 @@ public class IssueReal extends Issue {
 		SimpleElement thisIssue = new SimpleElement("issue");
 		thisIssue.setAttribute("name", getName());
 		thisIssue.setAttribute("index", ""+getNumber());
+		thisIssue.setAttribute("type", "real");
+		thisIssue.setAttribute("etype", "real");
+		thisIssue.setAttribute("vtype", "real");
 		SimpleElement thisRange = new SimpleElement("range");
 		thisRange.setAttribute("lowerbound", ""+getLowerBound());
 		thisRange.setAttribute("upperbound", ""+getUpperBound());
