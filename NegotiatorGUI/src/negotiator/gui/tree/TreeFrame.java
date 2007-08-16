@@ -143,6 +143,10 @@ public class TreeFrame extends JFrame {
 		treeTable.setColumnSelectionAllowed(false);
 		treeTable.setCellSelectionEnabled(true);
 		
+		TableColumnModel colModel = treeTable.getColumnModel();
+		colModel.getColumn(1).setMaxWidth(120);
+		colModel.getColumn(2).setMaxWidth(40);
+		
 		//NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
 		//treeRenderer.setRowHeight(18);
 		//treeTable.setDefaultRenderer(TreeTableModel.class, treeRenderer);
@@ -183,7 +187,7 @@ public class TreeFrame extends JFrame {
 		addIssueAct = new AddIssueAction(this, treeTable);
 		cutAct = new CutAction(this);
 		pasteAct = new PasteAction(this);
-		delAct = new DeleteAction();
+		delAct = new DeleteAction(treeTable);
 		editAct = new EditAction();
 		newDomainAct = new NewDomainAction(this);
 		newUtilitySpaceAct = new NewUtilitySpaceAction(this);

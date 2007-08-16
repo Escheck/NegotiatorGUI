@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
 
+import negotiator.gui.tree.*;
+
 /**
 *
 * @author Richard Noorlandt
@@ -13,12 +15,12 @@ import java.awt.event.*;
 public class SaveUtilitySpaceAction extends AbstractAction {
 	
 	//Attributes
-	private JFrame parent;
+	private TreeFrame parent;
 	private File openedFile;
 	private final JFileChooser fileChooser;
 	
 	//Constructors
-	public SaveUtilitySpaceAction (JFrame parent, JFileChooser fileChooser) {
+	public SaveUtilitySpaceAction (TreeFrame parent, JFileChooser fileChooser) {
 		super("Save UtilitySpace");
 		this.parent = parent;
 		this.fileChooser = fileChooser;
@@ -34,6 +36,6 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 	}
 	
 	private void saveUtilitySpace(File file) {
-		System.out.println(file);
+		parent.getNegotiatorTreeTableModel().getUtilitySpace().toXML().saveToFile(file.getPath());
 	}
 }

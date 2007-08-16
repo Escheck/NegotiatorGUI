@@ -1,8 +1,8 @@
 package negotiator.gui.dialogs;
 
+import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 import negotiator.gui.tree.*;
 import jtreetable.*;
@@ -145,6 +145,12 @@ public class SaveDomainDialog extends JDialog implements ActionListener {
 			}
 		}
 		else if (e.getSource() == saveButton) {
+			int result = fileChooser.showSaveDialog(parent);
+			File file = null;
+			if (result == JFileChooser.APPROVE_OPTION) {
+				file = fileChooser.getSelectedFile();
+			}
+			
 			SimpleElement neg_template = new SimpleElement("negotiation_template");
 			neg_template.setAttribute("number_of_sessions", sessionLabel.getText());
 			
@@ -162,7 +168,9 @@ public class SaveDomainDialog extends JDialog implements ActionListener {
 			neg_template.addChildElement(agentB_tag);
 			neg_template.addChildElement(parent.getNegotiatorTreeTableModel().getDomain().toXML());
 			
-			neg_template.saveToFile("file");
+			neg_template.saveToFile(file.getPath());
+			
+			this.dispose();
 		}
 		else if (e.getSource() == cancelButton) {
 			this.dispose();
