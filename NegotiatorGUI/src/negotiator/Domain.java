@@ -74,99 +74,6 @@ public class Domain {
     	return fObjectivesRoot; //TODO hdevos this could be done in a more elegant way. To discuss with Richard.
     }   
     
-    private final void loadFromXML(SimpleElement pRoot) {
-        // Get number of issues from the xml file & create array of issues
-        String s = pRoot.getAttribute("number_of_issues");
-        fNumberOfIssues = new Integer(s);
-        fIssues = new Issue[fNumberOfIssues];
-        
-        // Collect issue parameters and/or values from XML file.
-        Object[] xml_issues =  pRoot.getChildByTagName("issue");
-        for(int i=0;i<fNumberOfIssues;i++) {	
-        	int index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
-            String name = ((SimpleElement)xml_issues[i]).getAttribute("name");
-            
-            // Collect issue value type from XML file.
-            String type = ((SimpleElement)xml_issues[i]).getAttribute("type");
-            String vtype = ((SimpleElement)xml_issues[i]).getAttribute("vtype");
-            ISSUETYPE issueType;
-            if (type==vtype) {
-            	if (type==null) { // No value type specified.
-            		System.out.println("Type not specified in template file.");
-                	issueType = ISSUETYPE.DISCRETE;
-            	} else { // Both "type" as well as "vtype" attribute, but consistent.
-            		issueType = ISSUETYPE.convertToType(type);
-            	}
-            } else if (vtype!=null && type==null) {
-            	issueType = ISSUETYPE.convertToType(vtype);
-            } else if (type!=null && vtype==null) { // Used label "type" instead of label "vtype".
-            	issueType = ISSUETYPE.convertToType(type);
-            } else {
-            	System.out.println("Conflicting value types specified for issue in template file.");
-            	// TODO: Define exception.
-            	// For now: use "type" label.
-            	issueType = ISSUETYPE.convertToType(type);
-            }
-            
-            // Collect values and/or corresponding parameters for issue type.
-            Object[] xml_items;
-            Object[] xml_item;
-            int nrOfItems, minI, maxI;
-            double minR, maxR;
-            String[] values;
-            Issue issue;
-            switch(issueType) {
-            case DISCRETE:
-            	// Collect discrete values for discrete-valued issue from xml template
-            	xml_items = ((SimpleElement)xml_issues[i]).getChildByTagName("item");
-                nrOfItems = xml_items.length;
-                values = new String[nrOfItems];
-                for(int j=0;j<nrOfItems;j++) {
-                	// TODO: check range of indexes.
-                    index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
-                    values[index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
-                }
-                issue = new IssueDiscrete(name, index, values);
-            	break;
-            case INTEGER:
-            	// Collect range bounds for integer-valued issue from xml template
-            	xml_item = ((SimpleElement)xml_issues[i]).getChildByTagName("range");
-            	minI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
-            	maxI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
-            	issue = new IssueInteger(name, index, minI, maxI);
-            	break;
-            case REAL:
-            	// Collect range bounds for integer-valued issue from xml template
-            	xml_item = ((SimpleElement)xml_issues[i]).getChildByTagName("range");
-            	minR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
-            	maxR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
-            	issue = new IssueReal(name, index, minR, maxR);
-            	break;
- // Issue values cannot be of type "price" anymore... TODO: Remove when everything works.
- //           case PRICE:
- //           	// Collect range bounds for integer-valued issue from xml template
- //           	xml_item = ((SimpleElement)xml_issues[i]).getChildByTagName("range");
- //           	minR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("lowerbound"));
- //           	maxR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("upperbound"));
- //           	issue = new IssuePrice(name, index, minR, maxR);
- //           	break;
-            default: // By default, create discrete-valued issue
-            	// Collect discrete values for discrete-valued issue from xml template
-            	xml_items = ((SimpleElement)xml_issues[i]).getChildByTagName("item");
-                nrOfItems = xml_items.length;
-                values = new String[nrOfItems];
-                for(int j=0;j<nrOfItems;j++) {
-                    int item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
-                    values[item_index-1] = ((SimpleElement)xml_items[j]).getAttribute("value");
-                }
-            	issue = new IssueDiscrete(name, index, values);
-            	break;
-            }
-            fIssues[i] = issue;
-        }
-    }
-    
-    
     //added by Herbert
     /**
      * 
@@ -185,11 +92,6 @@ public class Domain {
     	 */    	
     	
     	//Get the number of issues:
-    	String s = pRoot.getAttribute("number_of_issues");
-    	Integer nr_issues = new Integer(s);
-    	fNumberOfIssues = nr_issues;
-    	
-    	
  
 //causes error. the []s seem to cause a classcastexception.    	SimpleElement[] root = (SimpleElement[])(pRoot.getChildByTagName("objective")); //Get the actual root Objective.
     	SimpleElement root = (SimpleElement)(pRoot.getChildByTagName("objective")[0]); //Get the actual root Objective. 
