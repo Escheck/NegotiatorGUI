@@ -264,7 +264,7 @@ public class UtilitySpace {
 	/**
 	 * @param filename The name of the xml file to parse.
 	 */
-	private final void loadTreeFromFile(String filename){
+	private final boolean loadTreeFromFile(String filename){
     //	double weightsSum = 0;
     //	EVALUATORTYPE evalType;
     //	String type, etype;
@@ -276,16 +276,17 @@ public class UtilitySpace {
         	fEvaluators = new HashMap<Objective, Evaluator>();
             BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
             SimpleElement root = parser.parse(file);
-            loadTreeRecursive(root);
+            return loadTreeRecursive(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
    	}
 	/**
 	 * Loads the weights and issues for the evaluators.
 	 * @param root The current root of the Objective tree.
 	 */
-	private final void loadTreeRecursive(SimpleElement currentRoot){
+	private final boolean loadTreeRecursive(SimpleElement currentRoot){
 		//TODO hdevos:
         //We get an Objective or issue from the SimpleElement structure,
         //get it's number of children:
@@ -381,13 +382,19 @@ public class UtilitySpace {
             // TODO: put lEvaluator to an array (done?)
             //evaluations.add(tmp_evaluations);
             //TODO: hdevos: add weigths to the evaluators.
-            fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
+            try{
+            	fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
+            }catch(Exception e){
+            	System.out.println("Domain-utilityspace mismatch");
+            	e.printStackTrace();
+            	return false;
+            }
             try{
             	fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
             }catch(Exception e){
             	System.out.println("Evaluator-weight mismatch.");
             	e.printStackTrace();
-            	
+            	return false;
             }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }
@@ -407,13 +414,11 @@ public class UtilitySpace {
         
         
         //Recurse over all children:
+        boolean returnval = false;
         Object[] objArray = currentRoot.getChildElements();
         for(int i = 0; i < objArray.length ; i++ )
-        loadTreeRecursive((SimpleElement)objArray[i]);             
-        
-        
-        //Checking if the UtilitySpace of this agent and the Domain match.
-		
+        	returnval = loadTreeRecursive((SimpleElement)objArray[i]);
+        return returnval;
 	}
 /*	
     private final void loadFromFile(String fileName) {
@@ -719,23 +724,27 @@ public class UtilitySpace {
     	for(int objInd=0; objInd<Objectives.length;objInd++){
     		SimpleElement currentChild = (SimpleElement)Objectives[objInd];
     		int childIndex = Integer.valueOf(currentChild.getAttribute("index"));
-    		Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
+    		try{
+    			Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
     		
-    		if(childWeights.length == 0){
-    			SimpleElement currentChildWeight = new SimpleElement("Weight");
-    			currentChildWeight.setAttribute("index", ""+childIndex);
-    			currentChildWeight.setAttribute("value", ""+ev.getWeight());
-    			currentLevel.addChildElement(currentChildWeight);
-    		}else{
-    			for(int weightInd = 0; weightInd < childWeights.length; weightInd++){
-    				SimpleElement thisWeight = (SimpleElement)childWeights[weightInd];
-    				int w_ind = Integer.valueOf(thisWeight.getAttribute("index"));
-    				Evaluator child_ev = fEvaluators.get(domain.getObjective(w_ind));
-    				thisWeight.setAttribute("value", ""+ child_ev.getWeight());
-    				currentLevel.addChildElement(thisWeight);
-    			}
+    			if(childWeights.length == 0){
+    				SimpleElement currentChildWeight = new SimpleElement("Weight");
+    				currentChildWeight.setAttribute("index", ""+childIndex);
+    				currentChildWeight.setAttribute("value", ""+ev.getWeight());
+    				currentLevel.addChildElement(currentChildWeight);
+    			}else{
+    				for(int weightInd = 0; weightInd < childWeights.length; weightInd++){
+    					SimpleElement thisWeight = (SimpleElement)childWeights[weightInd];
+    					int w_ind = Integer.valueOf(thisWeight.getAttribute("index"));
+    					Evaluator child_ev = fEvaluators.get(domain.getObjective(w_ind));
+    					thisWeight.setAttribute("value", ""+ child_ev.getWeight());
+    					currentLevel.addChildElement(thisWeight);
+    				}
     			
-    		}
+    			}
+    		}catch(Exception e){
+    			//do nothing, not every node has an evaluator.
+    		}	
     		currentChild = toXMLrecurse(currentChild);
     	}
     	
