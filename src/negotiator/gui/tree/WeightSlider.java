@@ -26,6 +26,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	//private Objective objective;
 	//private Evaluator evaluator;
 	private NegotiatorTreeTableModel tableModel;
+	private Objective objective;
 	private JCheckBox lock;
 	private JSlider slider;
 	private JFormattedTextField valueField;
@@ -38,10 +39,9 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	//Constructors
 	
 	//public WeightSlider(Objective obj) {
-	public WeightSlider(NegotiatorTreeTableModel model) {
-		//objective = obj;
-		//evaluator = eval;
+	public WeightSlider(NegotiatorTreeTableModel model, Objective obj) {
 		tableModel = model;
+		objective = obj;
 		
 		this.setBackground(BACKGROUND);
 		this.setLayout(new FlowLayout());
@@ -114,6 +114,26 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	 */
 	public void setWeight(double newWeight) {
 		weight = newWeight;
+		valueField.setValue(weight);
+		slider.setValue(convertToInt(weight));
+	}
+	
+	public Objective getObjective() {
+		return objective;
+	}
+	
+	//public void setObjective(Objective obj) {
+	//
+	//}
+	
+	/**
+	 * Tries to set the new weight, and signals the NegotiatorTreeTableModel that weights are updated.
+	 * @param newWeight the new weight.
+	 */
+	public void changeWeight(double newWeight) {
+		weight = tableModel.getUtilitySpace().setWeight(objective, newWeight);
+		tableModel.updateWeights(this, weight);
+		setWeight(weight);
 	}
 	
 	public void stateChanged(ChangeEvent e) {
@@ -123,8 +143,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		//System.out.println("\nJust slide with me!");
 		double newWeight = convertToDouble(slider.getValue());
 		valueField.setValue(newWeight);
-		setWeight(newWeight);
-		System.out.println("\n" + getWeight());
+		changeWeight(newWeight);
 	}
 	
 	/**
@@ -138,12 +157,14 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 			locked = true;
 			slider.setEnabled(false);
 			valueField.setEnabled(false);
+			tableModel.getUtilitySpace().lock(objective);
 		}
 		//Otherwise, it is deselected
 		else {
 			locked = false;
 			slider.setEnabled(true);
 			valueField.setEnabled(true);
+			tableModel.getUtilitySpace().unlock(objective);
 		}
 	}
 	
@@ -162,18 +183,4 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		
 		this.setPreferredSize(new Dimension(prefWidth, prefHeight));
 	}
-	
-	//@TODO for testing purpose. Prolly' don't work as supposed to
-	//TEST
-	
-	//public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	//	return this;
-	//}
-	
-	/*
-	public Component getTableCellEditorComponent (JTable table, Object value, boolean isSelected, int row, int column) {
-		return this;
-	}*/
-	
-	//TODO END TESTING
 }
