@@ -53,22 +53,6 @@ public class UtilitySpace {
     // Class methods
     
     /**
-     * @depricated Use checkTreeNormalization
-     */
-    private boolean checkNormalization() {
-        double lSum=0;
-        /*for(int i=0;i<domain.getNumberOfIssues();i++) {
-            lSum += weights[i];
-        }
-        */
-        Set set= fEvaluators.keySet(); 
-        Iterator iter = set.iterator();
-        while(iter.hasNext()){
-        	lSum += fEvaluators.get(iter.next()).getWeight();
-        }
-        return (lSum==1);
-    }
-    /**
      * Checks the normalization throughout the tree. Will eventually replace checkNormalization 
      * @return true if the weigths are indeed normalized, false if they aren't. 
      */
@@ -420,111 +404,8 @@ public class UtilitySpace {
         	returnval = loadTreeRecursive((SimpleElement)objArray[i]);
         return returnval;
 	}
-/*	
-    private final void loadFromFile(String fileName) {
-    	double weightsSum = 0;
-    	EVALUATORTYPE evalType;
-    	String type, etype;
-        Evaluator lEvaluator=null;
-        int nrOfIssues=0, indexEvalPrice=-1, nrOfLevelWeights = 0;
-    	
-        SimpleDOMParser parser = new SimpleDOMParser();
-        try {
-            fEvaluators = new HashMap<Objective, Evaluator>();
-            BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
-            SimpleElement root = parser.parse(file);
-            
-            // Read indicated number of issues from the xml file.
-            String s = root.getAttribute("number_of_issues"); 
-            nrOfIssues = new Integer(s);
-            if (domain.getNumberOfIssues()!=nrOfIssues)
-            	System.out.println("Mismatch between indicated number of issues in agent and template file.");
-            	// TODO: Define exception?
-            int index;
-            
-            // Collect weights from file.
-            // TODO: Normalize weights if they add up to >1. 
-            
-            Object[] xml_weights = root.getChildByTagName("weight");
-            nrOfLevelWeights = xml_weights.length;
-            weights = new double[nrOfLevelWeights];
-            for(int i=0;i<nrOfLevelWeights;i++) {
-                index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
-                weights[index-1] = Double.valueOf(((SimpleElement)xml_weights[i]).getAttribute("value"));
-                weightsSum += weights[index-1]; // For normalization purposes. See below.
-            }
-            
-            // Collect evaluations for each of the issue values from file.
-            // Assumption: Discrete-valued issues.
-            Object[] xml_issues = root.getChildByTagName("issue");
-//            boolean issueWithCost = false;
-//            double[] cost;
-            nrOfIssues = xml_issues.length;
-            for(int i=0;i<nrOfIssues;i++) {
-                index = Integer.valueOf(((SimpleElement)xml_issues[i]).getAttribute("index"));
-                type = ((SimpleElement)xml_issues[i]).getAttribute("type");
-                etype = ((SimpleElement)xml_issues[i]).getAttribute("etype");
-                if (type==etype) {
-                	if (type==null) { // No value type specified.
-                		System.out.println("Evaluator type not specified in utility template file.");
-                		// TODO: Define exception.
-                    	evalType = EVALUATORTYPE.DISCRETE;
-                	} else { // Both "type" as well as "vtype" attribute, but consistent.
-                		evalType = EVALUATORTYPE.convertToType(type);
-                	}
-                } else if (etype!=null && type==null) {
-                	evalType = EVALUATORTYPE.convertToType(etype);
-                } else if (type!=null && etype==null) { // Used label "type" instead of label "vtype".
-                	evalType = EVALUATORTYPE.convertToType(type);
-                } else {
-                	System.out.println("Conflicting value types specified for evaluators in utility template file.");
-                	// TODO: Define exception.
-                	// For now: use "type" label.
-                	evalType = EVALUATORTYPE.convertToType(type);
-                }
-                switch(evalType) {
-                case DISCRETE:
-                	lEvaluator = new EvaluatorDiscrete();
-                	break;
-                case INTEGER:
-                	lEvaluator = new EvaluatorInteger();
-                	break;
-                case REAL:
-                	lEvaluator = new EvaluatorReal();
-                	break;
-                case PRICE:
-                	if (indexEvalPrice>-1)
-                		System.out.println("Multiple price evaluators in utility template file!");
-                   	// TODO: Define exception.
-                	indexEvalPrice = index-1;
-                	lEvaluator = new EvaluatorPrice();
-                	break;
-                }
-                lEvaluator.loadFromXML((SimpleElement)(xml_issues[i]));
-                // TODO: put lEvaluator to an array (done?)
-                //evaluations.add(tmp_evaluations);
-                fEvaluators.put(getDomain().getIssue(index-1),lEvaluator);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        // Normalize weights if sum of weights exceeds 1.
-        // Do not include weight for price evaluator! This weight represents "financial rationality factor".
-        // TODO: Always normalize weights to 1??
-        if (indexEvalPrice!=-1) {  //hdv: wtf? -1 throws an arrayIndexOutOfBounds.
-        	weightsSum = weightsSum - tmpWeights.;
-        }
-        if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
-        	for (int i=0;i<nrOfIssues;i++) {
-        		if (i!=indexEvalPrice) {
-        			weights[i] = weights[i]/weightsSum;
-        		}
-        	}
-        }
-    }
-  */ 
-    public double getWeight(int issuesIndex) {
+
+	public double getWeight(int issuesIndex) {
         //return weights[issuesIndex]; //old
     	//TODO geeft een null terug als de weight of de eveluator niet bestaat.
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
