@@ -33,7 +33,7 @@ public class SaveDomainAction extends AbstractAction {
 			openedFile = fileChooser.getSelectedFile();
 			saveDomain(openedFile);
 		}*/
-		new SaveDomainDialog(parent, true, parent.getTreeTable());
+		new SaveDomainDialog(parent, true, parent.getTreeTable(), fileChooser);
 	}
 	
 	private void saveDomain(File file) {
