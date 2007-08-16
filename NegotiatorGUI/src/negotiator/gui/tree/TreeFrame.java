@@ -143,9 +143,13 @@ public class TreeFrame extends JFrame {
 		treeTable.setColumnSelectionAllowed(false);
 		treeTable.setCellSelectionEnabled(true);
 		
-		NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
-		treeRenderer.setRowHeight(18);
-		treeTable.setDefaultRenderer(TreeTableModel.class, treeRenderer);
+		//NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
+		//treeRenderer.setRowHeight(18);
+		//treeTable.setDefaultRenderer(TreeTableModel.class, treeRenderer);
+		//NegotiatorTreeCellRenderer treeRenderer = new NegotiatorTreeCellRenderer();
+		//treeRenderer.setBackgroundSelectionColor(Color.RED);
+		//treeRenderer.setBackgroundNonSelectionColor(Color.CYAN);
+		//treeTable.getTree().setCellRenderer(treeRenderer);
 		
 		DefaultTableCellRenderer labelRenderer = new JLabelCellRenderer();
 		treeTable.setDefaultRenderer(JLabel.class, labelRenderer);
@@ -159,7 +163,8 @@ public class TreeFrame extends JFrame {
 		treeTable.setDefaultRenderer(WeightSlider.class, cellEditor);
 		treeTable.setDefaultEditor(WeightSlider.class, cellEditor);
 		//treeTable.getColumnModel().getColumn(4).setPreferredWidth(new WeightSlider(model).getPreferredSize().width);
-		treeTable.setRowHeight(new WeightSlider(model).getPreferredSize().height);
+		//treeTable.setRowHeight(new WeightSlider(model, null).getPreferredSize().height);
+		treeTable.setRowHeight(18);
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		
 		JScrollPane treePane = new JScrollPane(treeTable);
@@ -317,6 +322,7 @@ public class TreeFrame extends JFrame {
 		model.getTypeField(node).setBackground(color);
 		model.getNumberField(node).setBackground(color);
 		model.getIssueValuePanel(node).setBackground(color);
+		//model.getWeightSlider(node).setBackground(color);
 	}
 	
 	class TreePopupListener extends MouseAdapter {

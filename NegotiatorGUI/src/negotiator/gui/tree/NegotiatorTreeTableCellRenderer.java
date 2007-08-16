@@ -56,7 +56,7 @@ public class NegotiatorTreeTableCellRenderer  extends JTree implements TableCell
 		// null.
 		// dtcr.setBorderSelectionColor(null);
 		dtcr.setTextSelectionColor(UIManager.getColor
-					   ("Table.selectionForeground"));
+						("Table.selectionForeground"));
 		dtcr.setBackgroundSelectionColor(UIManager.getColor
 						("Table.selectionBackground"));
 	    }
@@ -100,15 +100,74 @@ public class NegotiatorTreeTableCellRenderer  extends JTree implements TableCell
 						       boolean isSelected,
 						       boolean hasFocus,
 						       int row, int column) {
+		//This is all lots of test code, which doesn't seem to be working.
+		
+		/*
+		if(isSelected) {	
+			setBackground(Color.RED);
+			
+			DefaultTreeCellRenderer render = (DefaultTreeCellRenderer)((JTreeTable)table).getTree().getCellRenderer();
+			render.setBackground(Color.RED);
+			render.setBackgroundSelectionColor(Color.RED);
+		}
+		else {
+			setBackground(Color.GREEN);
+			
+			DefaultTreeCellRenderer render = (DefaultTreeCellRenderer)((JTreeTable)table).getTree().getCellRenderer();
+			render.setBackground(Color.GREEN);
+			render.setBackgroundSelectionColor(Color.GREEN);
+		}
+		if (table instanceof JTreeTable) {
+			
+		}
+		*/
+		if(isSelected) {
+			setBackground(Color.YELLOW);
+			//((JTreeTable)table).getTree().setBackground(Color.YELLOW);
+			if (value instanceof JTextField) {
+				//((JTextField)value).setOpaque(true);
+				((JTextField)value).setBackground(Color.YELLOW);
+				//((JTextField)value).setForeground(Color.YELLOW);
+				((JTextField)value).repaint();
+				System.out.println(((JTextField)value).getText());//((JTextField)value).setText("selected");
+				return (Component)value;
+			}
+		}
+		else {
+			setBackground(Color.WHITE);
+			//((JTreeTable)table).getTree().setBackground(Color.WHITE);
+			if (value instanceof JTextField)
+				((JTextField)value).setBackground(Color.WHITE);
+		}
+		
+		visibleRow = row;
+		return this;//super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		
+		/*
 	    if(isSelected) {
-	    	setBackground(table.getSelectionBackground());
-	    	System.out.println(value);
+	    	setBackground(Color.RED);//table.getSelectionBackground());
+	    	//Object selected = this.getLastSelectedPathComponent();
+	    	Object selected = this.getPathForRow(row).getLastPathComponent();
+	    	String msg = "null dus in getTableCellRendererComponent";
+	    	if (selected != null) {
+	    		msg = selected.toString();
+	    		if (selected instanceof JTextField)
+	    			System.out.println("JTextField");
+	    		if (selected instanceof negotiator.issue.Objective)
+	    			System.out.println("Objective");
+	    		//this.setOpaque(false);
+	    		System.out.println(java.awt.MouseInfo.getPointerInfo().getLocation().toString());
+	    		System.out.println(treeTable.getComponentAt(java.awt.MouseInfo.getPointerInfo().getLocation()).toString());
+	    	}
+	    	System.out.println(msg);//this.getLastSelectedPathComponent().toString());
+	    	System.out.println("row = " + row + "    col = " + column);
+	    	//this.setBackgroundSelectionColor(Color.RED);
 	    }
 	    else {
-	    	setBackground(table.getBackground());
+	    	setBackground(Color.GREEN);//table.getBackground());
 	    }
 
 	    visibleRow = row;
-	    return this;
+	    return this;*/
 	}
 }

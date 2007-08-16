@@ -175,7 +175,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		
 		//if (getColumnName(column).equals(arg0))
 		if (getColumnName(column) == NAME)
-			getNameField(objective);
+			return getNameField(objective);
 		else if (getColumnName(column) == TYPE)
 			return getTypeField(objective);
 		else if (getColumnName(column) == NUMBER)
@@ -248,14 +248,16 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		//different from the requested weight, for instance if that modification is impossible for some reason.
 		
 		//Root may not be null!
-		
+		System.out.println("==============Begin Call================");
 		//TODO Implement this method. Need new weight calculations from Herbert.
 		Enumeration<Objective> objectives = root.getPreorderEnumeration();
 		while (objectives.hasMoreElements()) {
 			Objective obj = objectives.nextElement();
 			double updatedWeight = utilitySpace.getWeight(obj.getNumber());
 			getWeightSlider(obj).setWeight(updatedWeight);
+			System.out.println("Objective " + obj.getNumber() + ":" + updatedWeight);
 		}
+		System.out.println("==============End Call==================");
 	}
 	
 	protected JTextField getNameField(Objective node) {
@@ -297,7 +299,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	protected WeightSlider getWeightSlider(Objective node) {
 		WeightSlider slider = sliders.get(node);
 		if (slider == null) {
-			slider = new WeightSlider(this);
+			slider = new WeightSlider(this, node);
 			setWeightSlider(node, slider);
 			slider.setWeight(utilitySpace.getWeight(node.getNumber()));
 		}
