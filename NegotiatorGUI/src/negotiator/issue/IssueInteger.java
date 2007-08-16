@@ -52,6 +52,9 @@ public class IssueInteger extends Issue {
 		SimpleElement thisIssue = new SimpleElement("issue");
 		thisIssue.setAttribute("name", getName());
 		thisIssue.setAttribute("index", ""+getNumber());
+		thisIssue.setAttribute("type", "integer");
+		thisIssue.setAttribute("etype", "integer");
+		thisIssue.setAttribute("vtype", "integer");
 		//TODO set range, upperBound and lowerBound items.
 		SimpleElement thisRange = new SimpleElement("range");
 		thisRange.setAttribute("lowerBound", ""+getLowerBound());
