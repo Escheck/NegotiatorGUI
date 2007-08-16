@@ -64,6 +64,7 @@ public class EditIssueDialog extends NewIssueDialog {
 		}
 		
 		//LET OP!!!!!!!!!!! HIER KOMT COPY FEEST!
+		/*
 		String selectedType = (String)issueType.getSelectedItem();
 		Issue issue;
 		
@@ -108,6 +109,8 @@ public class EditIssueDialog extends NewIssueDialog {
 			JOptionPane.showMessageDialog(this, "Please select an issue type!");
 			return null;
 		}
+		*/
+		//En copy feest is vies ;p
 		
 		return issue;
 	}
