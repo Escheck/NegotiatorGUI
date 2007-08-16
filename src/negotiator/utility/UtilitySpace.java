@@ -654,12 +654,12 @@ public class UtilitySpace {
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
     			try{
-    				if(!fEvaluators.get(obj).weightLocked()){
-    					double newWeight = fEvaluators.get(obj).getWeight() - normalizeWith;
+    				if(!fEvaluators.get(tmpObj).weightLocked()){
+    					double newWeight = fEvaluators.get(tmpObj).getWeight() - normalizeWith;
     					if(newWeight < 0){
     						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     					}
-    					fEvaluators.get(obj).setWeight(newWeight);
+    					fEvaluators.get(tmpObj).setWeight(newWeight);
     		
     				}
     			}catch(Exception e){
