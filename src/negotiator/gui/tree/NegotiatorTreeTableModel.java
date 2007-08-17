@@ -10,7 +10,7 @@ import javax.swing.tree.*;
 import negotiator.*;
 import negotiator.issue.*;
 import negotiator.utility.*;
-
+import negotiator.gui.dialogs.NewObjectiveDialog;
 /**
 *
 * @author Richard Noorlandt
@@ -374,6 +374,17 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 * @param path a TreePath object that identifies the path to the parent of the modified item(s)
 	 */
 	public void treeStructureChanged(Object source, Object[] path) {
+		try{
+			//this bit is to enable adding/removing sliders for evaluators.
+			Object p = path[0];
+			Objective ob = (Objective)p; //Let's hope this thing is predictable.
+			Enumeration<Objective> objEnum = ob.getParent().children();
+			while(objEnum.hasMoreElements()){
+				this.getWeightSlider(objEnum.nextElement()).forceRedraw(); //try to set visibility on the slider.
+			}	
+		}catch(Exception e){
+			//do nothing.
+		}
 		fireTreeStructureChanged(source, path, new int[0], new Object[0]);
 	}
 }

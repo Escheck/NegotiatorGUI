@@ -59,18 +59,44 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		valueField.setToolTipText("Fill in a weight between 0 and 1");
 		valueField.setEditable(false);
 		this.add(valueField);
-		
+	
 		lock = new JCheckBox();
 		lock.setBackground(BACKGROUND);
 		lock.setToolTipText("Lock weight");
 		lock.addItemListener(this);
 		this.add(lock);
+	
+		if(tableModel.getUtilitySpace().getEvaluator(obj.getNumber())== null || obj.getName()=="root"){
+			System.out.println("No Evaluator");
+			slider.setVisible(false);
+			valueField.setVisible(false);
+			lock.setVisible(false);
+		}
 		
 		updatePreferredSize();
+		
 	}
 	
 	
 	//Methods
+	
+	/**
+	 * Sets this slider to be visible or invisible, dependent on whether there is an evaluator available. When there is no evaluator, the
+	 * slider wil always be invisible.
+	 * @parem vis True makes the slider visible, false wil hide the slider.
+	 */
+	public void setVisible(boolean vis){
+		if(tableModel.getUtilitySpace().getEvaluator(objective.getNumber())== null || objective.getName()=="root"){
+			slider.setVisible(false);
+			valueField.setVisible(false);
+			lock.setVisible(false);
+		}else{
+			slider.setVisible(vis);
+			valueField.setVisible(vis);
+			lock.setVisible(vis);
+		}
+	}
+	
 	/**
 	 * Converts an int between MIN_VALUE and MAX_VALUE to a double between 0 and 1. This method is
 	 * necessary because JSlider only works on int, and weights are doubles between 0 and 1.
@@ -184,4 +210,15 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		
 		this.setPreferredSize(new Dimension(prefWidth, prefHeight));
 	}
+	
+	public void forceRedraw(){
+		try{
+		this.changeWeight(this.getWeight());
+		}catch(Exception e){
+			//do nothing, maybe we don't have a weight
+		}
+		this.setVisible(true);
+		this.repaint();
+	}
 }
+

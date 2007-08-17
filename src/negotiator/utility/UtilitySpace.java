@@ -411,6 +411,7 @@ public class UtilitySpace {
     	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
     }
     
+	
     public double setWeight(Objective tmpObj, double wt){
     	try{
     		Evaluator ev = fEvaluators.get(tmpObj);
@@ -512,7 +513,7 @@ public class UtilitySpace {
      */
     public final boolean unlock(Objective obj){
     	try{
-    		fEvaluators.get(obj).lockWeight();
+    		fEvaluators.get(obj).unlockWeight();
     	}catch(Exception e){
     		e.printStackTrace();
     		return false;
