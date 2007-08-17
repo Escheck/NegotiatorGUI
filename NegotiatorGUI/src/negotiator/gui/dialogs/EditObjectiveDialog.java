@@ -35,14 +35,14 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 	private void setFieldValues() {
 		nameField.setText(objective.getName());
 		numberField.setText("" + objective.getNumber());
-		descriptionArea.setText(objective.getDescription());
+//		descriptionArea.setText(objective.getDescription());
 	}
 	
 	//overrides from newobjectdialog
 	protected Objective constructObjective() {
-		String name;
-		int number;
-		String description;
+		String name="";
+		int number=0;
+		String description="";
 		try {
 			name = getObjectiveName();
 			number = (getObjectiveNumber());

@@ -7,7 +7,8 @@ import javax.swing.*;
 import jtreetable.*;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
-
+import negotiator.gui.tree.NegotiatorTreeTableModel;
+import negotiator.utility.UtilitySpace;
 /**
 *
 * @author Richard Noorlandt
@@ -22,12 +23,13 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	
 	JLabel nameLabel;
 	JLabel numberLabel;
-	JLabel descriptionLabel;
+	//JLabel descriptionLabel;
+	JLabel weightLabel;
 	
 	JTextField nameField;
 	JTextField numberField; //TODO: make this non editable
-	//WeightSlider?
-	JTextArea descriptionArea;
+	JCheckBox weightCheck;
+	//JTextArea descriptionArea;
 	
 	JTreeTable treeTable;
 	
@@ -66,8 +68,10 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		nameLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		numberLabel = new JLabel("Number:");
 		numberLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		descriptionLabel = new JLabel("Description:");
-		descriptionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		weightLabel = new JLabel("Has Evaluator:");
+		weightLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+//		descriptionLabel = new JLabel("Description:");
+//		descriptionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
 		//Initialize the fields
 		nameField = new JTextField();
@@ -76,22 +80,26 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		numberField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		numberField.setEditable(false);
 		numberField.setText("" + (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1));
-		descriptionArea = new JTextArea();
-		descriptionArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+		weightCheck = new JCheckBox();
+		weightCheck.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		descriptionArea = new JTextArea();
+//		descriptionArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.PAGE_AXIS));
 		
 		labelPanel.add(new JLabel("Name:"));
 		labelPanel.add(new JLabel("Number:"));
-		labelPanel.add(new JLabel("Description:"));
+		//labelPanel.add(new JLabel("Description:"));
+		labelPanel.add(new JLabel("has Evaluator:"));
 		
 		JPanel fieldPanel = new JPanel();
 		fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.PAGE_AXIS));
 		
 		fieldPanel.add(nameField);
 		fieldPanel.add(numberField);
-		fieldPanel.add(descriptionArea);
+	//	fieldPanel.add(descriptionArea);
+		fieldPanel.add(weightCheck);
 		
 		JPanel basicPropertyPanel = new JPanel();
 		basicPropertyPanel.setBorder(BorderFactory.createTitledBorder("Basic Properties"));
@@ -132,18 +140,26 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	
 	protected String getObjectiveDescription() throws InvalidInputException {
 		//TODO Add side effect: check the input, and throw exception
-		return descriptionArea.getText();
+	//	return descriptionArea.getText();
+		return "";
+	}
+	
+	protected Boolean getWeightCheck(){
+		return weightCheck.isSelected();
+		
 	}
 	
 	protected Objective constructObjective() {
 		String name;
 		int number;
-		String description;
+		//String description;
+		boolean hasEvaluator;
 		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
 		try {
 			name = getObjectiveName();
 			number = getObjectiveNumber();
-			description = getObjectiveDescription();
+			hasEvaluator = getWeightCheck();
+		//	description = getObjectiveDescription();
 		}
 		catch (InvalidInputException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
@@ -161,7 +177,13 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 			return null;
 		}
 		Objective objective = new Objective(selected, name, number);
-		objective.setDescription(description);
+		if(hasEvaluator){
+			
+			UtilitySpace uts = ( (NegotiatorTreeTableModel)treeTable.getTree().getModel() ).getUtilitySpace();
+			uts.addEvaluator(objective);
+			uts.setWeight(objective,0.0);
+		}
+		//objective.setDescription(description);
 		selected.addChild(objective);
 		return objective;
 	}
