@@ -78,8 +78,8 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		nameField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		numberField = new JTextField();
 		numberField.setAlignmentX(Component.LEFT_ALIGNMENT);
-		numberField.setEditable(false);
-		numberField.setText("" + (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1));
+//		numberField.setEditable(false);
+//		numberField.setText("" + (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1));
 		weightCheck = new JCheckBox();
 		weightCheck.setAlignmentX(Component.LEFT_ALIGNMENT);
 //		descriptionArea = new JTextArea();
@@ -89,7 +89,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.PAGE_AXIS));
 		
 		labelPanel.add(new JLabel("Name:"));
-		labelPanel.add(new JLabel("Number:"));
+//		labelPanel.add(new JLabel("Number:"));
 		//labelPanel.add(new JLabel("Description:"));
 		labelPanel.add(new JLabel("has Evaluator:"));
 		
@@ -97,7 +97,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.PAGE_AXIS));
 		
 		fieldPanel.add(nameField);
-		fieldPanel.add(numberField);
+//		fieldPanel.add(numberField);
 	//	fieldPanel.add(descriptionArea);
 		fieldPanel.add(weightCheck);
 		
@@ -157,7 +157,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
 		try {
 			name = getObjectiveName();
-			number = getObjectiveNumber();
+			number = (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1);
 			hasEvaluator = getWeightCheck();
 		//	description = getObjectiveDescription();
 		}

@@ -377,8 +377,7 @@ public class UtilitySpace {
             	fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
             }catch(Exception e){
             	System.out.println("Evaluator-weight mismatch.");
-            	e.printStackTrace();
-            	return false;
+            	//return false? 
             }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }

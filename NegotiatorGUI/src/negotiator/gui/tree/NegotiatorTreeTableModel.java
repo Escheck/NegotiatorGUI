@@ -71,6 +71,8 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		numbers = new HashMap<Objective, JTextField>();
 		issueValues = new HashMap<Objective, IssueValuePanel>();
 		sliders = new HashMap<Objective, WeightSlider>();
+		
+		
 	}
 	
 	//Methods
