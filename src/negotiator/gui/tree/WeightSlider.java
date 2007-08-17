@@ -66,7 +66,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		lock.addItemListener(this);
 		this.add(lock);
 	
-		if(tableModel.getUtilitySpace().getEvaluator(obj.getNumber())== null || obj.getName()=="root"){
+		if(tableModel.getUtilitySpace().getEvaluator(obj.getNumber())== null || obj.getName().equals("root")){
 			System.out.println("No Evaluator");
 			slider.setVisible(false);
 			valueField.setVisible(false);
@@ -86,7 +86,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	 * @parem vis True makes the slider visible, false wil hide the slider.
 	 */
 	public void setVisible(boolean vis){
-		if(tableModel.getUtilitySpace().getEvaluator(objective.getNumber())== null || objective.getName()=="root"){
+		if(tableModel.getUtilitySpace().getEvaluator(objective.getNumber())== null || objective.getName().equals("root")){
 			slider.setVisible(false);
 			valueField.setVisible(false);
 			lock.setVisible(false);
