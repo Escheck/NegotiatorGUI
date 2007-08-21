@@ -106,11 +106,11 @@ public class TreeFrame extends JFrame {
 		BoxLayout boxLayout = new BoxLayout(controls, BoxLayout.PAGE_AXIS);
 		
 		controls.setLayout(boxLayout);
-		controls.add(new JButton(addAct));
+		//controls.add(new JButton(addAct));
 		controls.add(new JButton(addObjectiveAct));
 		controls.add(new JButton(addIssueAct));
-		controls.add(new JButton(cutAct));
-		controls.add(new JButton(pasteAct));
+		//controls.add(new JButton(cutAct));
+		//controls.add(new JButton(pasteAct));
 		controls.add(new JButton(delAct));
 		controls.add(new JButton(editAct));
 		controlPanel.add(controls);
@@ -124,7 +124,7 @@ public class TreeFrame extends JFrame {
 		
 		//Do nothing on closing, since we might need different behaviour.
 		//See negotiator.gui.tree.actions.ExitAction
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		this.pack();
 		this.setVisible(true);
@@ -144,8 +144,9 @@ public class TreeFrame extends JFrame {
 		treeTable.setCellSelectionEnabled(true);
 		
 		TableColumnModel colModel = treeTable.getColumnModel();
-		colModel.getColumn(1).setMaxWidth(120);
-		colModel.getColumn(2).setMaxWidth(40);
+		colModel.getColumn(0).setMaxWidth(160);
+		colModel.getColumn(1).setMaxWidth(80);
+		//colModel.getColumn(2).setMaxWidth(120);
 		
 		//NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
 		//treeRenderer.setRowHeight(18);
@@ -168,7 +169,7 @@ public class TreeFrame extends JFrame {
 		treeTable.setDefaultEditor(WeightSlider.class, cellEditor);
 		//treeTable.getColumnModel().getColumn(4).setPreferredWidth(new WeightSlider(model).getPreferredSize().width);
 		//treeTable.setRowHeight(new WeightSlider(model, null).getPreferredSize().height);
-		treeTable.setRowHeight(18);
+		treeTable.setRowHeight(24);
 		//treeTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(slider));
 		
 		JScrollPane treePane = new JScrollPane(treeTable);
@@ -219,8 +220,8 @@ public class TreeFrame extends JFrame {
 		editMenu.add(addObjectiveAct);
 		editMenu.add(addIssueAct);
 		editMenu.addSeparator();
-		editMenu.add(cutAct);
-		editMenu.add(pasteAct);
+		//editMenu.add(cutAct);
+		//editMenu.add(pasteAct);
 		editMenu.add(editAct);
 		editMenu.add(delAct);
 		
@@ -242,8 +243,8 @@ public class TreeFrame extends JFrame {
 		treePopupMenu.add(addObjectiveAct);
 		treePopupMenu.add(addIssueAct);
 		treePopupMenu.addSeparator();
-		treePopupMenu.add(cutAct);
-		treePopupMenu.add(pasteAct);
+		//treePopupMenu.add(cutAct);
+		//treePopupMenu.add(pasteAct);
 		treePopupMenu.add(editAct);
 		treePopupMenu.add(delAct);
 	}

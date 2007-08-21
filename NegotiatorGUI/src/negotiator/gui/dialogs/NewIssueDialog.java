@@ -242,6 +242,9 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		issue.setDescription(description);
 		selected.addChild(issue);
+		if (getWeightCheck()) {
+			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(issue);
+		}
 		return issue;	
 	}
 	

@@ -30,8 +30,8 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	
 	private Objective root;
 	private Domain domain;
-	private String[] colNames;// = {"Name", "Eval Type", "Issue Type", "Value", "Weight"};
-	private Class[] colTypes;// = {TreeTableModel.class, String.class, String.class, String.class, WeightSlider.class};
+	private String[] colNames;
+	private Class[] colTypes;
 	private UtilitySpace utilitySpace;
 	private boolean containsUtilitySpace;
 	private Map<Objective, JTextField> names;
@@ -40,10 +40,10 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	private Map<Objective, WeightSlider> sliders;
 	private Map<Objective, IssueValuePanel> issueValues; //Contains objects representing the possible values of an issue
 	
-	private static final String[] domainColNames = {NAME, TYPE, NUMBER, VALUE};//{"Name", "Type", "Number", "Value"};
-	private static final Class[] domainColTypes = {TreeTableModel.class, JTextField.class, JTextField.class, IssueValuePanel.class};
-	private static final String[] domainAndUtilityColNames = {NAME, TYPE, NUMBER, VALUE, WEIGHT};//{"Name", "Type", "Number", "Value", "Weight"};
-	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, JTextField.class, JTextField.class, IssueValuePanel.class, WeightSlider.class};
+	private static final String[] domainColNames = {NAME, TYPE, /*NUMBER,*/ VALUE};
+	private static final Class[] domainColTypes = {TreeTableModel.class, JTextField.class, /*JTextField.class,*/ IssueValuePanel.class};
+	private static final String[] domainAndUtilityColNames = {NAME, TYPE, /*NUMBER,*/ VALUE, WEIGHT};
+	private static final Class[] domainAndUtilityColTypes = {TreeTableModel.class, JTextField.class, /*JTextField.class,*/ IssueValuePanel.class, WeightSlider.class};
 	
 	
 	//Constructors
@@ -376,17 +376,6 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 * @param path a TreePath object that identifies the path to the parent of the modified item(s)
 	 */
 	public void treeStructureChanged(Object source, Object[] path) {
-		try{
-			//this bit is to enable adding/removing sliders for evaluators.
-			Object p = path[0];
-			Objective ob = (Objective)p; //Let's hope this thing is predictable.
-			Enumeration<Objective> objEnum = ob.getParent().children();
-			while(objEnum.hasMoreElements()){
-				this.getWeightSlider(objEnum.nextElement()).forceRedraw(); //try to set visibility on the slider.
-			}	
-		}catch(Exception e){
-			//do nothing.
-		}
 		fireTreeStructureChanged(source, path, new int[0], new Object[0]);
 	}
 }
