@@ -524,14 +524,14 @@ public class UtilitySpace {
     	Enumeration<Objective> childs = obj.children();
     	double weightSum = 0;
     	double lockedWeightSum = 0;
+    	int freeCount = 0;
     	int lockedCount = 0;
-    	int totalCount = 0;
     	while(childs.hasMoreElements()){
     		Objective tmpObj = childs.nextElement();
     		try{
     			if(!fEvaluators.get(tmpObj).weightLocked()){
     			weightSum += fEvaluators.get(tmpObj).getWeight();
-    			totalCount++;
+    			freeCount++;
     			}else{
     				lockedWeightSum += fEvaluators.get(tmpObj).getWeight();
     				lockedCount++;
@@ -541,14 +541,16 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
-    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < totalCount){ //that second bit to ensure that there is no problem with
+    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < (freeCount + lockedCount)){ //that second bit to ensure that there is no problem with
     		//normalize:
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
+    			double diff = (lockedWeightSum + weightSum) - 1.0;
+    			double diffPerWt = diff/freeCount;
     			try{
     				if(!fEvaluators.get(tmpObj).weightLocked()){
-    					double newWeight = (fEvaluators.get(tmpObj).getWeight()+lockedWeightSum) / (weightSum + lockedWeightSum);
+    					double newWeight = fEvaluators.get(tmpObj).getWeight()- diffPerWt;
     					if(newWeight < 0){
     						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     					}
