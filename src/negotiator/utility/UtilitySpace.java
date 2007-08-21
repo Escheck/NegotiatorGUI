@@ -547,10 +547,10 @@ public class UtilitySpace {
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
     			double diff = (lockedWeightSum + weightSum) - 1.0;
-    			double diffPerWt = diff/freeCount;
     			try{
     				if(!fEvaluators.get(tmpObj).weightLocked()){
-    					double newWeight = fEvaluators.get(tmpObj).getWeight()- diffPerWt;
+    					double currentWeight = fEvaluators.get(tmpObj).getWeight();
+    					double newWeight = currentWeight - (diff* currentWeight/weightSum);
     					if(newWeight < 0){
     						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     					}
