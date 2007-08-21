@@ -182,7 +182,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		//objective.setDescription(description);
 		selected.addChild(objective);
 		if (getWeightCheck()) {
-			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(objective);
+			((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace().addEvaluator(objective);
 		}
 		return objective;
 	}
