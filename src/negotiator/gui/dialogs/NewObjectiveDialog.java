@@ -135,7 +135,8 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	
 	protected int getObjectiveNumber() throws InvalidInputException {
 		//TODO Add side effect: check the input, and throw exception
-		return Integer.parseInt(numberField.getText());
+		//return Integer.parseInt(numberField.getText());
+		return (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1);
 	}
 	
 	protected String getObjectiveDescription() throws InvalidInputException {
@@ -144,7 +145,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		return "";
 	}
 	
-	protected Boolean getWeightCheck(){
+	protected boolean getWeightCheck(){
 		return weightCheck.isSelected();
 		
 	}
@@ -177,14 +178,12 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 			return null;
 		}
 		Objective objective = new Objective(selected, name, number);
-		if(hasEvaluator){
-			
-			UtilitySpace uts = ( (NegotiatorTreeTableModel)treeTable.getTree().getModel() ).getUtilitySpace();
-			uts.addEvaluator(objective);
-			uts.setWeight(objective,0.0);
-		}
+		
 		//objective.setDescription(description);
 		selected.addChild(objective);
+		if (getWeightCheck()) {
+			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(objective);
+		}
 		return objective;
 	}
 	
