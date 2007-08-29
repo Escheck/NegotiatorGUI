@@ -39,10 +39,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected JTextField integerMinField;
 	protected JTextField integerOtherField;
+	protected JTextField integerLinearField;
+	protected JTextField integerParameterField;
 	protected JTextField integerMaxField;
 	
 	protected JTextField realMinField;
 	protected JTextField realOtherField;
+	protected JTextField realLinearField;
+	protected JTextField realParameterField;
 	protected JTextField realMaxField;
 	
 	//Constructors
@@ -79,9 +83,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		discreteTextEvaluationArea = new JTextArea(20,25);
 		integerMinField = new JTextField(15);
 		integerOtherField = new JTextField(15);
+		integerLinearField = new JTextField(15);
+		integerParameterField = new JTextField(15);
+		
 		integerMaxField = new JTextField(15);
 		realMinField = new JTextField(15);
 		realOtherField = new JTextField(15);
+		realLinearField = new JTextField(15);
+		realParameterField = new JTextField(15);
 		realMaxField = new JTextField(15);
 		
 		//Initialize the panels.
@@ -137,12 +146,18 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		min.add(new JLabel("Min: "));
 		min.add(integerMinField);
 		panel.add(min);
-		
-		JPanel other = new JPanel();
-		other.setAlignmentX(Component.LEFT_ALIGNMENT);
-		other.add(new JLabel("Other: "));
-		other.add(integerOtherField);
-		panel.add(other);
+
+		JPanel lin = new JPanel();
+		lin.setAlignmentX(Component.LEFT_ALIGNMENT);
+		lin.add(new JLabel("Linear: "));
+		lin.add(integerLinearField);
+		panel.add(lin);		
+
+		JPanel par = new JPanel();
+		par.setAlignmentX(Component.LEFT_ALIGNMENT);
+		par.add(new JLabel("Parameter: "));
+		par.add(integerParameterField);
+		panel.add(par);	
 		
 		JPanel max = new JPanel();
 		max.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -164,10 +179,17 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		min.add(realMinField);
 		panel.add(min);
 
-		JPanel other = new JPanel();
-		other.add(new JLabel("Other: "));
-		other.add(realOtherField);
-		panel.add(other);
+		JPanel lin = new JPanel();
+		lin.setAlignmentX(Component.LEFT_ALIGNMENT);
+		lin.add(new JLabel("Linear: "));
+		lin.add(realLinearField);
+		panel.add(lin);		
+
+		JPanel par = new JPanel();
+		par.setAlignmentX(Component.LEFT_ALIGNMENT);
+		par.add(new JLabel("Parameter: "));
+		par.add(realParameterField);
+		panel.add(par);	
 		
 		JPanel max = new JPanel();
 		max.add(new JLabel("Max: "));
@@ -226,6 +248,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected int getIntegerOther() throws InvalidInputException{
 		return Integer.parseInt(integerOtherField.getText());
 	}
+
+	protected int getIntegerLinear() throws InvalidInputException {
+		return Integer.parseInt(realLinearField.getText());
+	}
+	
+	protected int getIntegerParameter() throws InvalidInputException {
+		return Integer.parseInt(realParameterField.getText());
+	}	
 	
 	protected int getIntegerMax() throws InvalidInputException {
 		return Integer.parseInt(integerMaxField.getText());
@@ -237,6 +267,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected double getRealOther()throws InvalidInputException {
 		return Double.parseDouble(realOtherField.getText());
+	}
+	
+	protected double getRealLinear() throws InvalidInputException {
+		return Double.parseDouble(realLinearField.getText());
+	}
+	
+	protected double getRealParameter() throws InvalidInputException {
+		return Double.parseDouble(realParameterField.getText());
 	}
 	
 	protected double getRealMax() throws InvalidInputException {
@@ -271,7 +309,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		String selectedType = (String)issueType.getSelectedItem();
 		Issue issue = null;
-		Evaluator eval = null;
+		Evaluator evDis = null;
 		if (selectedType == DISCRETE) {
 			String[] values;
 			double[] evalues = null;
@@ -285,8 +323,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			try{
 				evalues = getDiscreteEvalutions();
 				if(evalues != null){
-					eval = new EvaluatorDiscrete();
-					eval.setWeight(0.0);
+					evDis = new EvaluatorDiscrete();
+					evDis.setWeight(0.0);
 				}
 				
 			}catch (Exception f){ //Can also be a casting exception.
@@ -296,41 +334,83 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			issue = new IssueDiscrete(name, number, values);
 			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
 			int eval_ind = 0;
-			while(v_enum.hasMoreElements() && eval != null && eval_ind < evalues.length){
-				((EvaluatorDiscrete)eval).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
+			while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
+				((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
 			}
 			
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			if(uts != null){
+				uts.addEvaluator(issue, evDis);
+			}
 
 		}
 		else if (selectedType == INTEGER) {
 			int min;
-			int other;
+			int linear;
+			int parameter;
 			int max;
+			
+			Evaluator evInt = null;
 			try {
 				min = getIntegerMin();
-				other = getIntegerOther();
 				max = getIntegerMax();
+				
+				if(! integerLinearField.getText().equals("")){
+					evInt = new EvaluatorInteger();
+					evInt.setWeight(0.0);
+					((EvaluatorInteger)evInt).setLowerBound(min);
+					((EvaluatorInteger)evInt).setUpperBound(max);
+					((EvaluatorInteger)evInt).setLinearParam(getIntegerLinear());
+				}else if(! integerParameterField.getText().equals("")){
+					evInt = new EvaluatorInteger();
+					evInt.setWeight(0.0);
+					((EvaluatorInteger)evInt).setLowerBound(min);
+					((EvaluatorInteger)evInt).setUpperBound(max);
+					((EvaluatorInteger)evInt).setConstantParam(getIntegerParameter());
+				}
 			}
 			catch (InvalidInputException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return null;
 			}
 			issue = new IssueInteger(name, number, min, max);
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			if(uts != null){
+				uts.addEvaluator(issue, evInt);
+			}
 		}
 		else if (selectedType == REAL) {
 			double min;
 			double other;
 			double max;
+			Evaluator evReal = null;
 			try {
 				min = getRealMin();
 				other = getRealOther();
 				max = getRealMax();
+				if(! integerLinearField.getText().equals("")){
+					evReal = new EvaluatorReal();
+					evReal.setWeight(0.0);
+					((EvaluatorReal)evReal).setLowerBound(min);
+					((EvaluatorReal)evReal).setUpperBound(max);
+					((EvaluatorReal)evReal).setLinearParam(getIntegerLinear());
+				}else if(! integerParameterField.getText().equals("")){
+					evReal = new EvaluatorReal();
+					evReal.setWeight(0.0);
+					((EvaluatorReal)evReal).setLowerBound(min);
+					((EvaluatorReal)evReal).setUpperBound(max);
+					((EvaluatorReal)evReal).setConstantParam(getIntegerParameter());
+				}
 			}
 			catch (InvalidInputException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return null;
 			}
 			issue = new IssueReal(name, number, min, max);
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			if(uts != null){
+				uts.addEvaluator(issue, evReal);
+			}
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "Please select an issue type!");

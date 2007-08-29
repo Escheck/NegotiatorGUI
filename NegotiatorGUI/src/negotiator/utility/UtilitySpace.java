@@ -485,6 +485,17 @@ public class UtilitySpace {
     }
     
     /**
+     * Add an Objective, evaluator pair.
+     * @param obj The Objective to attach an Evaluator to.
+     * @param ev The Evaluator to attach.
+     * @return
+     */
+    public final Evaluator addEvaluator(Objective obj, Evaluator ev){
+    	fEvaluators.put(obj, ev);
+    	return ev;
+    }
+    
+    /**
      * @return The set with all pairs of evaluators and objectives in this utilityspace.
      */
     public final Set<Map.Entry<Objective, Evaluator> >getEvaluators(){
