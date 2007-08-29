@@ -102,14 +102,17 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param evaluation The evaluation of the value
 	 * @param cost The cost.
 	 */
-	public void setValue(String name, double evaluation, double cost){
+	public void set_Value(String name, double evaluation, double cost){
+	/*	Double valEval = fEval.get(new ValueDiscrete(name));
+		if(valEval == 0)		{
 		Value val = new ValueDiscrete(name);
+		}
 		fEval.put((ValueDiscrete)val, new Double(evaluation));
 		if(maxCost < cost){
 			maxCost = cost;
 			fCost.put((ValueDiscrete)val, new Double(cost));
 		}
-		
+	*/	
 	}
 	
 	/**
