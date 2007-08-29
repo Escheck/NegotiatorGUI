@@ -26,6 +26,6 @@ public class NewDomainAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		
+		parent.reinitTreeTable(new Domain());
 	}
 }

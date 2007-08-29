@@ -243,6 +243,17 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 */
 	public void setUtilitySpace(UtilitySpace space) {
 		utilitySpace = space;
+		
+		if (space != null) {
+			containsUtilitySpace = true;
+			colNames = domainAndUtilityColNames;
+			colTypes = domainAndUtilityColTypes;
+		}
+		else {
+			containsUtilitySpace = false;
+			colNames = domainColNames;
+			colTypes = domainColTypes;
+		}
 	}
 	
 	public void updateWeights(WeightSlider caller, double newWeight) {

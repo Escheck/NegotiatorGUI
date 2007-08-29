@@ -27,6 +27,6 @@ public class NewUtilitySpaceAction extends AbstractAction {
 	//Methods
 	public void actionPerformed(ActionEvent e) {
 		Domain domain = parent.getNegotiatorTreeTableModel().getDomain();
-		parent.reinitTreeTable(new Domain(), new UtilitySpace(domain, ""));
+		parent.reinitTreeTable(domain, new UtilitySpace(domain, ""));
 	}
 }
