@@ -73,6 +73,14 @@ public class Domain {
     public final Objective getObjectivesRoot(){
     	return fObjectivesRoot; //TODO hdevos this could be done in a more elegant way. To discuss with Richard.
     }   
+
+    /**
+     * Sets a new domain root.
+     * @param ob The new root Objective
+     */
+    public final void setObjectivesRoot(Objective ob){
+    	fObjectivesRoot = ob;
+    }
     
     //added by Herbert
     /**
