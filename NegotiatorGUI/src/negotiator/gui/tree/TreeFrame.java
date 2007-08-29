@@ -29,11 +29,10 @@ public class TreeFrame extends JFrame {
 	
 	private SelectedInfoPanel infoPanel;
 	
-	private AddAction addAct;
 	private AddObjectiveAction addObjectiveAct;
 	private AddIssueAction addIssueAct;
-	private CutAction cutAct;
-	private PasteAction pasteAct;
+	//private CutAction cutAct;
+	//private PasteAction pasteAct;
 	private DeleteAction delAct;
 	private EditAction editAct;
 	private NewDomainAction newDomainAct;
@@ -183,11 +182,10 @@ public class TreeFrame extends JFrame {
 	 */
 	private void initActions() {
 		//Create Actions
-		addAct = new AddAction();
 		addObjectiveAct = new AddObjectiveAction(this, treeTable);
 		addIssueAct = new AddIssueAction(this, treeTable);
-		cutAct = new CutAction(this);
-		pasteAct = new PasteAction(this);
+		//cutAct = new CutAction(this);
+		//pasteAct = new PasteAction(this);
 		delAct = new DeleteAction(treeTable);
 		editAct = new EditAction(treeTable);
 		newDomainAct = new NewDomainAction(this);
@@ -197,6 +195,12 @@ public class TreeFrame extends JFrame {
 		saveDomainAct = new SaveDomainAction(this, fileChooser);
 		saveUtilitySpaceAct = new SaveUtilitySpaceAction(this, fileChooser);
 		exitAct = new ExitAction(this);
+		
+		//Disable the actions, since no selection is made yet
+		addObjectiveAct.setEnabled(false);
+		addIssueAct.setEnabled(false);
+		delAct.setEnabled(false);
+		editAct.setEnabled(false);
 	}
 	
 	private void initMenus() {
@@ -263,8 +267,8 @@ public class TreeFrame extends JFrame {
 		if (selected instanceof Issue) {
 			addObjectiveAct.setEnabled(false);
 			addIssueAct.setEnabled(false);
-			cutAct.setEnabled(true);
-			pasteAct.setEnabled(false);
+			//cutAct.setEnabled(true);
+			//pasteAct.setEnabled(false);
 			editAct.setEnabled(true);
 			delAct.setEnabled(true);
 			
@@ -274,8 +278,8 @@ public class TreeFrame extends JFrame {
 		else if (selected instanceof Objective) {
 			addObjectiveAct.setEnabled(true);
 			addIssueAct.setEnabled(true);
-			cutAct.setEnabled(true);
-			pasteAct.setEnabled(false); //TODO check is something is cut first.
+			//cutAct.setEnabled(true);
+			//pasteAct.setEnabled(false); //TODO check is something is cut first.
 			editAct.setEnabled(true);
 			delAct.setEnabled(true);
 						
@@ -285,8 +289,8 @@ public class TreeFrame extends JFrame {
 		else {
 			addObjectiveAct.setEnabled(false);
 			addIssueAct.setEnabled(false);
-			cutAct.setEnabled(false);
-			pasteAct.setEnabled(false);
+			//cutAct.setEnabled(false);
+			//pasteAct.setEnabled(false);
 			editAct.setEnabled(false);
 			delAct.setEnabled(false);
 			
