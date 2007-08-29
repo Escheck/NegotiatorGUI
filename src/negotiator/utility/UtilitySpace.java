@@ -95,7 +95,9 @@ public class UtilitySpace {
     	return fEvaluators.get(issue);
  */   	
     	Objective obj = domain.getObjective(index); //Used to be Issue in stead of Objective
-    	return fEvaluators.get(obj);
+    	if(obj != null){
+    		return fEvaluators.get(obj);
+    	}else return null;
     }
 
 // Utility space should not return domain-related information, should it?
