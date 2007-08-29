@@ -43,9 +43,11 @@ public class UtilitySpace {
      */
     public UtilitySpace(){
     	this.domain = new Domain();
+    	fEvaluators = new HashMap<Objective, Evaluator>();
     }
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
+    	fEvaluators = new HashMap<Objective, Evaluator>();
         if(!fileName.equals(""))
         	loadTreeFromFile(fileName);
     }
@@ -259,7 +261,6 @@ public class UtilitySpace {
         
         SimpleDOMParser parser = new SimpleDOMParser();
         try{
-        	fEvaluators = new HashMap<Objective, Evaluator>();
             BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
             SimpleElement root = parser.parse(file);
             return loadTreeRecursive(root);
