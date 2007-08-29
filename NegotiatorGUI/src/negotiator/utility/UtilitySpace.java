@@ -417,8 +417,12 @@ public class UtilitySpace {
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issuesIndex);
 		if(ob != null){
-			return fEvaluators.get(ob).getWeight();
-		}else return 0.0;
+			Evaluator ev = fEvaluators.get(ob);
+			if(ev != null){
+				return ev.getWeight();
+			}
+		}
+		return 0.0; //fallthrough.
     }
     
 	
