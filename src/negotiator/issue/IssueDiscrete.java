@@ -1,10 +1,11 @@
 package negotiator.issue;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import negotiator.exceptions.ValueTypeError;
 import negotiator.xml.SimpleElement;
-
 /**
 *
 * @author Koen Hindriks
@@ -61,8 +62,23 @@ public class IssueDiscrete extends Issue {
 	    return -1;
 	}
 	
+	
 	public boolean checkInRange(ValueDiscrete val) {
 			return (getValueIndex(((ValueDiscrete)val).getValue())!=-1);
+	}
+	
+	/**
+	 * Gives an enumeration over all values in this discrete issue.
+	 * @return An enumeration containing <code>valueDiscrete</code>
+	 */
+	public Enumeration getValues(){
+		
+		Vector<ValueDiscrete> tmpValues = new Vector<ValueDiscrete>();
+		for(int vind = 0; vind < issueValues.length; vind++){
+			tmpValues.add(issueValues[vind]);
+			
+		}
+		return tmpValues.elements();
 	}
 	
 	/**

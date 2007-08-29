@@ -7,9 +7,12 @@ import javax.swing.*;
 
 import jtreetable.JTreeTable;
 
+import java.util.Enumeration;
+
 import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
+import negotiator.utility.*;
 
 /**
 *
@@ -32,11 +35,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected JPanel realPanel;
 	
 	protected JTextArea discreteTextArea;
+	protected JTextArea discreteTextEvaluationArea;
 	
 	protected JTextField integerMinField;
+	protected JTextField integerOtherField;
 	protected JTextField integerMaxField;
 	
 	protected JTextField realMinField;
+	protected JTextField realOtherField;
 	protected JTextField realMaxField;
 	
 	//Constructors
@@ -70,9 +76,12 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		//Initialize the input components
 		discreteTextArea = new JTextArea(20, 25);
+		discreteTextEvaluationArea = new JTextArea(20,25);
 		integerMinField = new JTextField(15);
+		integerOtherField = new JTextField(15);
 		integerMaxField = new JTextField(15);
 		realMinField = new JTextField(15);
+		realOtherField = new JTextField(15);
 		realMaxField = new JTextField(15);
 		
 		//Initialize the panels.
@@ -97,10 +106,22 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	private JPanel constructDiscretePanel() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		JLabel label = new JLabel("Edit the discrete values below. Use one line for each value.");
-		panel.add(label);
-		panel.add(new JScrollPane(discreteTextArea));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+		
+		JPanel textPanel = new JPanel();
+		JPanel evalPanel = new JPanel();
+		
+		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
+		JLabel textLabel = new JLabel("Edit the discrete values below. Use one line for each value.");
+		textPanel.add(textLabel);
+		textPanel.add(new JScrollPane(discreteTextArea));
+		panel.add(textPanel);
+		
+		evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
+		JLabel evalLabel = new JLabel("Edit the evaluation values below. Use one line for each value.");
+		evalPanel.add(evalLabel);
+		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
+		panel.add(evalPanel);
 		return panel;
 	}
 	
@@ -110,16 +131,25 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		JLabel label = new JLabel("Give the bounds of the Integer values:");
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(label);
+		
 		JPanel min = new JPanel();
 		min.setAlignmentX(Component.LEFT_ALIGNMENT);
 		min.add(new JLabel("Min: "));
 		min.add(integerMinField);
 		panel.add(min);
+		
+		JPanel other = new JPanel();
+		other.setAlignmentX(Component.LEFT_ALIGNMENT);
+		other.add(new JLabel("Other: "));
+		other.add(integerOtherField);
+		panel.add(other);
+		
 		JPanel max = new JPanel();
 		max.setAlignmentX(Component.LEFT_ALIGNMENT);
 		max.add(new JLabel("Max: "));
 		max.add(integerMaxField);
 		panel.add(max);
+		
 		return panel;
 	}
 	
@@ -128,14 +158,22 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		JLabel label = new JLabel("Give the bounds of the Real values:");
 		panel.add(label);
+		
 		JPanel min = new JPanel();
 		min.add(new JLabel("Min: "));
 		min.add(realMinField);
 		panel.add(min);
+
+		JPanel other = new JPanel();
+		other.add(new JLabel("Other: "));
+		other.add(realOtherField);
+		panel.add(other);
+		
 		JPanel max = new JPanel();
 		max.add(new JLabel("Max: "));
 		max.add(realMaxField);
 		panel.add(max);
+		
 		return panel;
 	}
 	
@@ -153,8 +191,40 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		return values;
 	}
 	
+	/**
+	 * Gets the evaluations for the discrete issue from the input field in this dialog. The input values don't need to be normalized.
+	 * @return An nomalized array with the evaluations.
+	 * @throws InvalidInputException 
+	 */
+	protected double[] getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
+		String[] evalueStrings = discreteTextEvaluationArea.getText().split("\n");
+		double weightSum = 0;
+		if(evalueStrings.length != 0){
+			double evalues[] = new double[evalueStrings.length];
+			for(int i = 0; i<evalueStrings.length; i++){
+			if(!evalueStrings.equals("")){
+				evalues[i] = Double.valueOf(evalueStrings[i]);
+				weightSum += evalues[i];
+				System.out.println(""+evalues[i]);
+				}
+			}
+			if(weightSum != 1.0){ //normalize the evaluations.
+				for(int norm_i = 0; norm_i < evalues.length; norm_i++){
+					evalues[norm_i] = evalues[norm_i]/weightSum;
+					
+				}
+				
+			}
+			return evalues;
+		}else return null;
+	}
+	
 	protected int getIntegerMin() throws InvalidInputException {
 		return Integer.parseInt(integerMinField.getText());
+	}
+	
+	protected int getIntegerOther() throws InvalidInputException{
+		return Integer.parseInt(integerOtherField.getText());
 	}
 	
 	protected int getIntegerMax() throws InvalidInputException {
@@ -163,6 +233,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected double getRealMin() throws InvalidInputException {
 		return Double.parseDouble(realMinField.getText());
+	}
+	
+	protected double getRealOther()throws InvalidInputException {
+		return Double.parseDouble(realOtherField.getText());
 	}
 	
 	protected double getRealMax() throws InvalidInputException {
@@ -196,10 +270,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		
 		String selectedType = (String)issueType.getSelectedItem();
-		Issue issue;
-		
+		Issue issue = null;
+		Evaluator eval = null;
 		if (selectedType == DISCRETE) {
 			String[] values;
+			double[] evalues = null;
 			try {
 				values = getDiscreteValues(); 
 			}
@@ -207,13 +282,33 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return null;
 			}
+			try{
+				evalues = getDiscreteEvalutions();
+				if(evalues != null){
+					eval = new EvaluatorDiscrete();
+					eval.setWeight(0.0);
+				}
+				
+			}catch (Exception f){ //Can also be a casting exception.
+				JOptionPane.showMessageDialog(this, f.getMessage());
+			}
+			
 			issue = new IssueDiscrete(name, number, values);
+			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
+			int eval_ind = 0;
+			while(v_enum.hasMoreElements() && eval != null && eval_ind < evalues.length){
+				((EvaluatorDiscrete)eval).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
+			}
+			
+
 		}
 		else if (selectedType == INTEGER) {
 			int min;
+			int other;
 			int max;
 			try {
 				min = getIntegerMin();
+				other = getIntegerOther();
 				max = getIntegerMax();
 			}
 			catch (InvalidInputException e) {
@@ -224,9 +319,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		else if (selectedType == REAL) {
 			double min;
+			double other;
 			double max;
 			try {
 				min = getRealMin();
+				other = getRealOther();
 				max = getRealMax();
 			}
 			catch (InvalidInputException e) {
@@ -243,7 +340,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		issue.setDescription(description);
 		selected.addChild(issue);
 		if (getWeightCheck()) {
-			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(issue);
+			try{
+	//FIXME			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(issue);
+			}catch(ClassCastException e){
+				e.printStackTrace();
+			}
 		}
 		return issue;	
 	}
