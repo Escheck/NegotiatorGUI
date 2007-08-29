@@ -407,10 +407,18 @@ public class UtilitySpace {
         return returnval;
 	}
 
+	/**
+	 * 
+	 * @param issuesIndex The Issue or Objective to get the weight from
+	 * @return The weight, or -1 if the objective doesn't exist.
+	 */
 	public double getWeight(int issuesIndex) {
         //return weights[issuesIndex]; //old
-    	//TODO geeft een null terug als de weight of de eveluator niet bestaat.
-    	return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
+    	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
+		Objective ob = domain.getObjective(issuesIndex);
+		if(ob != null){
+			return fEvaluators.get(domain.getObjective(issuesIndex)).getWeight();
+		}else return 0.0;
     }
     
 	
