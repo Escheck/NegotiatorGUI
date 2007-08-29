@@ -338,7 +338,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
 			}
 			
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evDis);
 			}
@@ -374,7 +374,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				return null;
 			}
 			issue = new IssueInteger(name, number, min, max);
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evInt);
 			}
@@ -407,7 +407,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				return null;
 			}
 			issue = new IssueReal(name, number, min, max);
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evReal);
 			}
