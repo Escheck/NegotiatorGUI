@@ -3,9 +3,10 @@ package negotiator.gui.tree.actions;
 import javax.swing.*;
 import java.awt.event.*;
 
-import negotiator.Domain;
+import negotiator.*;
 import negotiator.gui.tree.*;
-import negotiator.utility.UtilitySpace;
+import negotiator.issue.*;
+import negotiator.utility.*;
 
 /**
 *
@@ -26,6 +27,9 @@ public class NewDomainAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		parent.reinitTreeTable(new Domain());
+		Objective newRoot = new Objective(null, "root", 0);
+		Domain domain = new Domain();
+		domain.setObjectivesRoot(newRoot);
+		parent.reinitTreeTable(domain);
 	}
 }
