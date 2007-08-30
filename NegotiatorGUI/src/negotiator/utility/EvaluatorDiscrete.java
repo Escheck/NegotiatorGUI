@@ -139,6 +139,12 @@ public class EvaluatorDiscrete implements Evaluator {
 		}
 	}
 	
+	public void clear(){
+		fEval.clear();
+		fCost.clear();
+		
+	}
+	
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("item");
 		int nrOfValues = xml_items.length;
