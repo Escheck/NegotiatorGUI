@@ -328,7 +328,9 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				}
 				
 			}catch (Exception f){ //Can also be a casting exception.
-				JOptionPane.showMessageDialog(this, f.getMessage());
+				if(f instanceof InvalidInputException){
+					JOptionPane.showMessageDialog(this, f.getMessage());
+				}
 			}
 			
 			issue = new IssueDiscrete(name, number, values);

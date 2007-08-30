@@ -37,7 +37,6 @@ public class Domain {
     	fNumberOfIssues=0;
     }
     public Domain(SimpleElement root) {
-//        loadFromXML(root);
     	loadTreeFromXML(root);
     }
     
