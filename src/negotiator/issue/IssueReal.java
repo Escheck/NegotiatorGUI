@@ -41,6 +41,27 @@ public class IssueReal extends Issue {
 	public final double getUpperBound() {
 		return range.getUpperBound();
 	}
+	
+	public final boolean setUpperBound(double up){
+		if(up > range.lowerBound){
+			range.upperBound=up;
+			return true;
+		}else{
+			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
+			return false;
+		}
+		
+	}
+	
+	public final boolean setLowerBound(double lo){
+		if(lo < range.upperBound){
+			range.lowerBound=lo;
+			return true;
+		}else{
+			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
+			return false;
+		}
+	}
 
 	public int getNumberOfDiscretizationSteps() {
 		return fNumberOfDiscretizationSteps;
