@@ -71,6 +71,24 @@ public class IssueDiscrete extends Issue {
 		issueValues.clear();
 	}
 	
+	/**
+	 * Adds a value.
+	 * @param valname The name of the value to add.
+	 */
+	public void addValue(String valname){
+		issueValues.add(new ValueDiscrete(valname));
+	}
+	
+	/**
+	 * Adds values.
+	 * @param valnames Array with names of values to add.
+	 */
+	public void addValues(String[] valnames){
+		for(int ind=0; ind < valnames.length; ind++){
+			issueValues.add(new ValueDiscrete(valnames[ind]));
+		}
+	}
+	
 	
 	public boolean checkInRange(ValueDiscrete val) {
 			return (getValueIndex(((ValueDiscrete)val).getValue())!=-1);
