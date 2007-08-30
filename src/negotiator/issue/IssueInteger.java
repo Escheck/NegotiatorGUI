@@ -44,6 +44,26 @@ public class IssueInteger extends Issue {
 		return range.getUpperBound();
 	}
 	
+	public final boolean setUpperBound(int up){
+		if(up > range.lowerBound){
+			range.upperBound=up;
+			return true;
+		}else{
+			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
+			return false;
+		}
+		
+	}
+	
+	public final boolean setLowerBound(int lo){
+		if(lo < range.upperBound){
+			range.lowerBound=lo;
+			return true;
+		}else{
+			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
+			return false;
+		}
+	}
 	/**
 	 * Returns a SimpleElement representation of this issue.
 	 * @return The SimpleElement with this issues attributes
@@ -57,8 +77,8 @@ public class IssueInteger extends Issue {
 		thisIssue.setAttribute("vtype", "integer");
 		//TODO set range, upperBound and lowerBound items.
 		SimpleElement thisRange = new SimpleElement("range");
-		thisRange.setAttribute("lowerBound", ""+getLowerBound());
-		thisRange.setAttribute("upperBound", ""+getUpperBound());
+		thisRange.setAttribute("lowerbound", ""+getLowerBound());
+		thisRange.setAttribute("upperbound", ""+getUpperBound());
 		thisIssue.addChildElement(thisRange);
 		return thisIssue;
 		

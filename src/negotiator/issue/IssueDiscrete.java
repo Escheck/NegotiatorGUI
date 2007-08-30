@@ -18,7 +18,8 @@ public class IssueDiscrete extends Issue {
 	private int numberOfValues;
 	//TODO Use DiscreteValue here??
 	//TODO use ArrayList
-	ValueDiscrete issueValues[];
+	//ValueDiscrete issueValues[];
+	Vector<ValueDiscrete> issueValues;
 	
 		
 	// Constructors
@@ -26,18 +27,18 @@ public class IssueDiscrete extends Issue {
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
 		numberOfValues = values.length;
-	    issueValues = new ValueDiscrete[numberOfValues];
+	    issueValues = new Vector<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
-	        issueValues[i] = new ValueDiscrete(values[i]);
+	        issueValues.add(new ValueDiscrete(values[i]));
 	    }
 	}	
 	
 	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
 		super(name, issueNumber, objParent);		
 		numberOfValues = values.length;
-	    issueValues = new ValueDiscrete[numberOfValues];
+		issueValues = new Vector<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
-	        issueValues[i] = new ValueDiscrete(values[i]);
+	        issueValues.add(new ValueDiscrete(values[i]));
 	    }
 	}
 	
@@ -47,19 +48,27 @@ public class IssueDiscrete extends Issue {
 	}
 		
 	public ValueDiscrete getValue(int index) {
-		return (ValueDiscrete)issueValues[index];
+		return (ValueDiscrete)issueValues.get(index);
 	}
 	
 	public String getStringValue(int index) {
-		return ((ValueDiscrete)issueValues[index]).getValue();
+		return ((ValueDiscrete)issueValues.get(index)).getValue();
 	}
 	    
 	public int getValueIndex(String value) {
 	    for(int i=0;i<numberOfValues;i++)
-	        if(issueValues[i].getStringValue().equals(value)) {
+	        if(issueValues.get(i).getStringValue().equals(value)) {
 	            return i;
 	        }
 	    return -1;
+	}
+	
+	/**
+	 * Removes all values from this Issue.
+	 *
+	 */
+	public void clear(){
+		issueValues.clear();
 	}
 	
 	
@@ -72,13 +81,7 @@ public class IssueDiscrete extends Issue {
 	 * @return An enumeration containing <code>valueDiscrete</code>
 	 */
 	public Enumeration getValues(){
-		
-		Vector<ValueDiscrete> tmpValues = new Vector<ValueDiscrete>();
-		for(int vind = 0; vind < issueValues.length; vind++){
-			tmpValues.add(issueValues[vind]);
-			
-		}
-		return tmpValues.elements();
+		return issueValues.elements();
 	}
 	
 	/**
@@ -96,7 +99,7 @@ public class IssueDiscrete extends Issue {
 		for(int item_ind = 0; item_ind < numberOfValues; item_ind++){
 			SimpleElement thisItem = new SimpleElement("item");
 			thisItem.setAttribute("index", "" + (item_ind +1)); //One off error?
-			thisItem.setAttribute("value", issueValues[item_ind].getStringValue());
+			thisItem.setAttribute("value", issueValues.get(item_ind).getStringValue());
 			thisIssue.addChildElement(thisItem);
  		}
 		return thisIssue;
