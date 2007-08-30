@@ -285,7 +285,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		String name;
 		int number;
 		String description;
-		Objective selected; //The Objective that is seleced in the tree, which will be the new Issue's parent.
+		Objective selected; //The Objective that is selected in the tree, which will be the new Issue's parent.
 		try {
 			name = getObjectiveName();
 			number = getObjectiveNumber();
@@ -421,13 +421,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		issue.setDescription(description);
 		selected.addChild(issue);
-		if (getWeightCheck()) {
-			try{
-	//FIXME			((NegotiatorTreeTableModel)treeTable.getModel()).getUtilitySpace().addEvaluator(issue);
-			}catch(ClassCastException e){
-				e.printStackTrace();
-			}
-		}
+		
 		return issue;	
 	}
 	
