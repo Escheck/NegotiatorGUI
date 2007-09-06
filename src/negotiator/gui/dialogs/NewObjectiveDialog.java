@@ -18,20 +18,20 @@ import negotiator.utility.UtilitySpace;
 public class NewObjectiveDialog extends JDialog implements ActionListener {
 
 	//Attributes	
-	JButton okButton;
-	JButton cancelButton;
+	protected JButton okButton;
+	protected JButton cancelButton;
 	
-	JLabel nameLabel;
-	JLabel numberLabel;
-	//JLabel descriptionLabel;
-	JLabel weightLabel;
+	protected JLabel nameLabel;
+	protected JLabel numberLabel;
+	//protected JLabel descriptionLabel;
+	protected JLabel weightLabel;
 	
-	JTextField nameField;
-	JTextField numberField; //TODO: make this non editable
-	JCheckBox weightCheck;
+	protected JTextField nameField;
+	protected JTextField numberField; //TODO: make this non editable
+	protected JCheckBox weightCheck;
 	//JTextArea descriptionArea;
 	
-	JTreeTable treeTable;
+	protected JTreeTable treeTable;
 	
 	//Constructors
 	
