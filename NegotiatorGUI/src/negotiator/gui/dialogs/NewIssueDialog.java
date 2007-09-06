@@ -280,12 +280,17 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected double getRealMax() throws InvalidInputException {
 		return Double.parseDouble(realMaxField.getText());
 	}
-	 
+	
 	protected Issue constructIssue() {
+		return updateIssue(null);
+	}
+	
+	protected Issue updateIssue(Issue issue) {
 		String name;
 		int number;
 		String description;
-		Objective selected; //The Objective that is selected in the tree, which will be the new Issue's parent.
+		Objective selected = null; //The Objective that is selected in the tree, which will be the new Issue's parent.
+		boolean newIssue = (issue == null); //Defines if a new Issue is added, or if an existing Issue is being edited.
 		try {
 			name = getObjectiveName();
 			number = getObjectiveNumber();
@@ -295,20 +300,23 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 			return null;
 		}
-		try {
-			selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
-			if (selected == null) {
+		//If no issue is given to be modified, construct a new one that is the child of the selected Objective.
+		if (newIssue) {
+			try {
+				selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
+				if (selected == null) {
+					JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
+					return null;
+				}
+			}
+			catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
 				return null;
 			}
 		}
-		catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
-			return null;
-		}
 		
 		String selectedType = (String)issueType.getSelectedItem();
-		Issue issue = null;
+		//Issue issue = null;
 		Evaluator evDis = null;
 		if (selectedType == DISCRETE) {
 			String[] values;
@@ -333,15 +341,24 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				}
 			}
 			
-			issue = new IssueDiscrete(name, number, values);
+			if (newIssue) {
+				issue = new IssueDiscrete(name, number, values);
+			}
+			else {
+				issue.setName(name);
+				issue.setNumber(number);
+				((IssueDiscrete)issue).addValues(values);
+			}
 			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
 			int eval_ind = 0;
+			((EvaluatorDiscrete)evDis).clear();
 			while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
 				((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
 			}
 			
 			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
+				//uts.getEvaluator(issue).clear();
 				uts.addEvaluator(issue, evDis);
 			}
 
@@ -375,7 +392,15 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return null;
 			}
-			issue = new IssueInteger(name, number, min, max);
+			if (newIssue) {
+				issue = new IssueInteger(name, number, min, max);
+			}
+			else {
+				issue.setName(name);
+				issue.setNumber(number);
+				((IssueInteger)issue).setLowerBound(min);
+				((IssueInteger)issue).setUpperBound(max);
+			}
 			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evInt);
@@ -388,27 +413,35 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			Evaluator evReal = null;
 			try {
 				min = getRealMin();
-				other = getRealOther();
+				//other = getRealOther();
 				max = getRealMax();
-				if(! integerLinearField.getText().equals("")){
+				if(! realLinearField.getText().equals("")){
 					evReal = new EvaluatorReal();
 					evReal.setWeight(0.0);
 					((EvaluatorReal)evReal).setLowerBound(min);
 					((EvaluatorReal)evReal).setUpperBound(max);
-					((EvaluatorReal)evReal).setLinearParam(getIntegerLinear());
-				}else if(! integerParameterField.getText().equals("")){
+					((EvaluatorReal)evReal).setLinearParam(getRealLinear());
+				}else if(! realParameterField.getText().equals("")){
 					evReal = new EvaluatorReal();
 					evReal.setWeight(0.0);
 					((EvaluatorReal)evReal).setLowerBound(min);
 					((EvaluatorReal)evReal).setUpperBound(max);
-					((EvaluatorReal)evReal).setConstantParam(getIntegerParameter());
+					((EvaluatorReal)evReal).setConstantParam(getRealParameter());
 				}
 			}
 			catch (InvalidInputException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				return null;
 			}
-			issue = new IssueReal(name, number, min, max);
+			if (newIssue) {
+				issue = new IssueReal(name, number, min, max);
+			}
+			else {
+				issue.setName(name);
+				issue.setNumber(number);
+				((IssueReal)issue).setLowerBound(min);
+				((IssueReal)issue).setUpperBound(max);
+			}
 			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evReal);
@@ -420,7 +453,9 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		
 		issue.setDescription(description);
-		selected.addChild(issue);
+		if (newIssue) {
+			selected.addChild(issue);
+		}
 		
 		return issue;	
 	}

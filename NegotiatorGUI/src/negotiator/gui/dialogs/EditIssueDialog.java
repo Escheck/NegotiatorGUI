@@ -1,11 +1,15 @@
 package negotiator.gui.dialogs;
 
-import java.awt.Frame;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
-import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
+import negotiator.gui.dialogs.*;
+import negotiator.gui.tree.*;
 import negotiator.issue.*;
+import negotiator.utility.*;
 import jtreetable.*;
 
 /**
@@ -32,164 +36,87 @@ public class EditIssueDialog extends NewIssueDialog {
 	public EditIssueDialog(Frame owner, boolean modal, String name, JTreeTable treeTable, Issue issue) {
 		super(owner, modal, name, treeTable);
 		this.issue = issue;
-		setTypePanel(issue);
+		setPanelContents(issue);
 	}
 	
 	//Methods
-	private void setTypePanel(Issue issue) {
+	private void setPanelContents(Issue issue) {
+		UtilitySpace utilSpace = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+		
+		nameField.setText(issue.getName());
+		numberField.setText("" + issue.getNumber());
+		
+		if (utilSpace != null && (utilSpace.getEvaluator(issue.getNumber()) == null))
+			weightCheck.setSelected(false);
+		else
+			weightCheck.setSelected(true);
 		if (issue instanceof IssueDiscrete) {
+			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, DISCRETE);
+			Enumeration<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
+			String valueString = "";
+			ValueDiscrete val;
 			
+			while (values.hasMoreElements()) {
+				val = values.nextElement();
+				valueString = valueString + val + "\n";
+			}
+			discreteTextArea.setText(valueString);
+			
+			if (utilSpace != null) {
+				EvaluatorDiscrete eval = (EvaluatorDiscrete)utilSpace.getEvaluator(issue.getNumber());
+				//Let's reuse some variables
+				values = ((IssueDiscrete)issue).getValues();
+				valueString = "";
+				while (values.hasMoreElements()) {
+					val = values.nextElement();
+					valueString = valueString + eval.getEvaluation(val) + "\n";
+				}
+				discreteTextEvaluationArea.setText(valueString);
+			}
 		}
 		else if (issue instanceof IssueInteger) {
-			
+			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, INTEGER);
+			integerMinField.setText("" + ((IssueInteger)issue).getLowerBound());
+			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
+			if (utilSpace != null) {
+				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
+				if (eval != null) {
+					//integerOtherField.setText(eval.); Herbert: what's integerOtherField?
+					integerLinearField.setText("" + eval.getLinearParam());
+					integerParameterField.setText("" + eval.getConstantParam());
+				}
+			}
 		}
 		else if (issue instanceof IssueReal) {
-			
+			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, REAL);
+			realMinField.setText("" + ((IssueReal)issue).getLowerBound());
+			realMaxField.setText("" + ((IssueReal)issue).getUpperBound());
+			if (utilSpace != null) {
+				EvaluatorReal eval = (EvaluatorReal)utilSpace.getEvaluator(issue.getNumber());
+				if (eval != null) {
+					//realOtherField.setText(eval.); Herbert: what's realOtherField?
+					realLinearField.setText("" + eval.getLinearParam());
+					realParameterField.setText("" + eval.getConstantParam());
+				}
+			}
 		}
 	}
 	
-	protected Issue constructIssue() {
-		String name;
-		int number;
-		String description;
-		
-		try {
-			name = getObjectiveName();
-			number = getObjectiveNumber();
-			description = getObjectiveDescription();
-		}
-		catch (InvalidInputException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
-			return null;
-		}
-		
-		//LET OP!!!!!!!!!!! HIER KOMT COPY FEEST!
-		/*
-		String selectedType = (String)issueType.getSelectedItem();
-		Issue issue;
-		
-		if (selectedType == DISCRETE) {
-			String[] values;
-			try {
-				values = getDiscreteValues(); 
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueDiscrete(name, number, values);
-		}
-		else if (selectedType == INTEGER) {
-			int min;
-			int max;
-			try {
-				min = getIntegerMin();
-				max = getIntegerMax();
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueInteger(name, number, min, max);
-		}
-		else if (selectedType == REAL) {
-			double min;
-			double max;
-			try {
-				min = getRealMin();
-				max = getRealMax();
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueReal(name, number, min, max);
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "Please select an issue type!");
-			return null;
-		}
-		*/
-		//En copy feest is vies ;p
-		
-		return issue;
-	}
-	
-	/*
-	 * protected Issue constructIssue() {
-		String name;
-		int number;
-		String description;
-		Objective selected; //The Objective that is seleced in the tree, which will be the new Issue's parent.
-		try {
-			name = getObjectiveName();
-			number = getObjectiveNumber();
-			description = getObjectiveDescription();
-		}
-		catch (InvalidInputException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
-			return null;
-		}
-		try {
-			selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
-			if (selected == null) {
-				JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
-				return null;
-			}
-		}
-		catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
-			return null;
-		}
-		
-		String selectedType = (String)issueType.getSelectedItem();
-		Issue issue;
-		
-		if (selectedType == DISCRETE) {
-			String[] values;
-			try {
-				values = getDiscreteValues(); 
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueDiscrete(name, number, values);
-		}
-		else if (selectedType == INTEGER) {
-			int min;
-			int max;
-			try {
-				min = getIntegerMin();
-				max = getIntegerMax();
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueInteger(name, number, min, max);
-		}
-		else if (selectedType == REAL) {
-			double min;
-			double max;
-			try {
-				min = getRealMin();
-				max = getRealMax();
-			}
-			catch (InvalidInputException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage());
-				return null;
-			}
-			issue = new IssueReal(name, number, min, max);
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "Please select an issue type!");
-			return null;
-		}
-		
-		issue.setDescription(description);
-		selected.addChild(issue);
-		return issue;	
-	}
+	/**
+	 * Overrides actionPerformed from NewIssueDialog.
 	 */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == okButton) {
+			if (issue == null) 
+				return;
+			updateIssue(issue);
+			//Notify the model that the contents of the treetable have changed.
+			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
+			model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+			this.dispose();
+		}			
+		else if (e.getSource() == cancelButton) {
+			this.dispose();
+		}
+	}
 }
