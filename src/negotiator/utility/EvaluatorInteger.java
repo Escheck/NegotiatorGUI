@@ -124,8 +124,7 @@ public class EvaluatorInteger implements Evaluator {
 		try{
 			return fParam.get(new Integer(1));
 		}catch(Exception e){
-			System.out.println("Linear parameter does not exist");
-			e.printStackTrace();
+			//do nothing
 		}
 		return 0;
 	}
@@ -146,8 +145,7 @@ public class EvaluatorInteger implements Evaluator {
 		try{
 			return fParam.get(new Integer(0));
 		}catch(Exception e){
-			System.out.println("Constant parameter does not exist");
-			e.printStackTrace();
+			//do nothing.
 		}
 		return 0;
 	}
