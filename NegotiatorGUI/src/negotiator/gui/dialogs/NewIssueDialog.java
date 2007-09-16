@@ -354,6 +354,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			((EvaluatorDiscrete)evDis).clear();
 			while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
 				((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
+				eval_ind++;
 			}
 			
 			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
