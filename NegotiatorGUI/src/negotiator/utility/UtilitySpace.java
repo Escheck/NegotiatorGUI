@@ -567,7 +567,7 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
-    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < (freeCount + lockedCount)){ //that second bit to ensure that there is no problem with
+    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < (freeCount + lockedCount) && weightSum + lockedWeightSum != 0.0 ){ //that second bit to ensure that there is no problem with
     		//normalize:
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
@@ -586,6 +586,15 @@ public class UtilitySpace {
 //    				do nothing, we can encounter Objectives/issues without Evaluators.
     			}
     			
+    		}
+    		
+    	}else if(weightSum + lockedWeightSum == 0.0){
+    		//normalize so all unlocked ones receive a weight.
+    		Enumeration<Objective> normalChilds = obj.children();
+    		double amount = 1.0/freeCount;
+    		while(normalChilds.hasMoreElements()){
+    			Objective tmpObj = (Objective) normalChilds.nextElement();
+    			fEvaluators.get(tmpObj).setWeight(amount);
     		}
     		
     	}

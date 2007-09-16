@@ -250,11 +250,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 
 	protected int getIntegerLinear() throws InvalidInputException {
-		return Integer.parseInt(realLinearField.getText());
+		return Integer.parseInt(integerLinearField.getText());
 	}
 	
 	protected int getIntegerParameter() throws InvalidInputException {
-		return Integer.parseInt(realParameterField.getText());
+		return Integer.parseInt(integerParameterField.getText());
 	}	
 	
 	protected int getIntegerMax() throws InvalidInputException {
