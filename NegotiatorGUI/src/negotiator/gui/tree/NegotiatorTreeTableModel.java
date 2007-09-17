@@ -353,7 +353,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		numbers.put(node, field);
 	}
 	
-	protected IssueValuePanel getIssueValuePanel(Objective node) {
+	public IssueValuePanel getIssueValuePanel(Objective node) {
 		//TODO Finish!
 		IssueValuePanel value = issueValues.get(node);
 		if (value == null) {

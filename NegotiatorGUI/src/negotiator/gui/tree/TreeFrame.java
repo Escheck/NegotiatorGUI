@@ -72,8 +72,7 @@ public class TreeFrame extends JFrame {
 	}
 	
 	public void reinitTreeTable(Domain domain, UtilitySpace utilitySpace) {
-		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize()); 
-		
+		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize());
 	}
 	
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
@@ -142,9 +141,9 @@ public class TreeFrame extends JFrame {
 		treeTable.setColumnSelectionAllowed(false);
 		treeTable.setCellSelectionEnabled(true);
 		
-		TableColumnModel colModel = treeTable.getColumnModel();
-		colModel.getColumn(0).setMaxWidth(160);
-		colModel.getColumn(1).setMaxWidth(80);
+		//TableColumnModel colModel = treeTable.getColumnModel();
+		//colModel.getColumn(0).setMaxWidth(160);
+		//colModel.getColumn(1).setMaxWidth(80);
 		//colModel.getColumn(2).setMaxWidth(120);
 		
 		//NegotiatorTreeTableCellRenderer treeRenderer = new NegotiatorTreeTableCellRenderer(treeTable);
