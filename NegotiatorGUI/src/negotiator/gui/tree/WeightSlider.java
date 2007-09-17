@@ -171,6 +171,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	public void stateChanged(ChangeEvent e) {
 		//TODO Remove these silly debug thingies
+		System.out.println("stateChanged called");
 		if (e.getSource() != slider){
 			System.out.println("Ain't the slider");
 			return;
