@@ -351,10 +351,13 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			}
 			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
 			int eval_ind = 0;
-			((EvaluatorDiscrete)evDis).clear();
-			while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
-				((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
-				eval_ind++;
+			if(evDis != null){
+				((EvaluatorDiscrete)evDis).clear();
+			
+				while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
+					((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
+					eval_ind++;
+				}
 			}
 			
 			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
