@@ -347,6 +347,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			else if (issue instanceof IssueDiscrete) {
 				issue.setName(name);
 				issue.setNumber(number);
+				((IssueDiscrete)issue).clear();
 				((IssueDiscrete)issue).addValues(values);
 			}
 			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
