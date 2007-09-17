@@ -86,6 +86,29 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	//Methods
 	
+	public void registerListeners(){
+		if(slider != null && lock != null){
+			slider.addChangeListener(this);
+			lock.addItemListener(this);
+		}else{
+			slider = new JSlider(MIN_VALUE, MAX_VALUE);
+			slider.setBackground(BACKGROUND);
+			slider.setToolTipText("Drag to change the weight");
+			slider.addChangeListener(this);
+			this.add(slider);
+			
+			lock = new JCheckBox();
+			lock.setBackground(BACKGROUND);
+			lock.setToolTipText("Lock weight");
+			lock.addItemListener(this);
+			this.add(lock);
+			
+			setVisible(true);
+		}
+	}
+		
+	
+	
 	/**
 	 * Sets this slider to be visible or invisible, dependent on whether there is an evaluator available. When there is no evaluator, the
 	 * slider wil always be invisible.
@@ -171,9 +194,11 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	public void stateChanged(ChangeEvent e) {
 		//TODO Remove these silly debug thingies
-		if (e.getSource() != slider)
+		if (e.getSource() != slider){
+			System.out.println("Ain't the slider");
 			return;
-		//System.out.println("\nJust slide with me!");
+		}
+		System.out.println("\nJust slide with me!");
 		double newWeight = convertToDouble(slider.getValue());
 		valueField.setValue(newWeight);
 		changeWeight(newWeight);
