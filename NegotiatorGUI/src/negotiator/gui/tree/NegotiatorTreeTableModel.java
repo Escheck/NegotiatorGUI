@@ -328,8 +328,6 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 			slider = new WeightSlider(this, node);
 			setWeightSlider(node, slider);
 			slider.setWeight(utilitySpace.getWeight(node.getNumber()));
-			
-			slider.registerListeners();
 		}
 		return slider;
 	}

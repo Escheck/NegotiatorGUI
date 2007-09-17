@@ -383,6 +383,8 @@ public class Objective implements MutableTreeNode{
 		userObject = object;
 	}
 	
+	//Enumeration methods
+	
 	/**
 	 * Constructs an Enumeration of the entire subtree of the receiver (including itself) in preorder. The enumeration is
 	 * immediately constructed against the current state of the tree, so modifications to the tree afterwards are not 
