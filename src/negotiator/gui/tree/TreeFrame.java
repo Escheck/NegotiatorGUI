@@ -285,7 +285,7 @@ public class TreeFrame extends JFrame {
 			//TODO remove
 			System.out.println("An Objective");
 		}
-		else {
+		else if (selected == null){
 			addObjectiveAct.setEnabled(false);
 			addIssueAct.setEnabled(false);
 			//cutAct.setEnabled(false);
