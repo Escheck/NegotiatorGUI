@@ -344,7 +344,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			if (newIssue) {
 				issue = new IssueDiscrete(name, number, values);
 			}
-			else {
+			else if (issue instanceof IssueDiscrete) {
 				issue.setName(name);
 				issue.setNumber(number);
 				((IssueDiscrete)issue).addValues(values);
@@ -396,7 +396,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			if (newIssue) {
 				issue = new IssueInteger(name, number, min, max);
 			}
-			else {
+			else if (issue instanceof IssueInteger){
 				issue.setName(name);
 				issue.setNumber(number);
 				((IssueInteger)issue).setLowerBound(min);
@@ -437,7 +437,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			if (newIssue) {
 				issue = new IssueReal(name, number, min, max);
 			}
-			else {
+			else if (issue instanceof IssueReal){
 				issue.setName(name);
 				issue.setNumber(number);
 				((IssueReal)issue).setLowerBound(min);
