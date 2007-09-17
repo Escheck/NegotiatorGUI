@@ -444,6 +444,8 @@ public class Objective implements MutableTreeNode{
 	
 	/**
 	 * Returns an xml representation of this Objective and all Objectives and issues underneath it.
+	 * 
+	 * @param showEvaluators Also print the respective evaluators to xml.
 	 */
 	public SimpleElement toXML(){
 		SimpleElement thisObjective = new SimpleElement("objective");
@@ -453,7 +455,7 @@ public class Objective implements MutableTreeNode{
 		thisObjective.setAttribute("type", "objective");
 		thisObjective.setAttribute("etype", "objective");
 		//Recurse over this object's children. Call their toXML
-		Enumeration<Objective> weightsEnum = this.children();
+/*		Enumeration<Objective> weightsEnum = this.children(); FIXME'd: i don't think we need to give weights here.
 		while(weightsEnum.hasMoreElements()){
 			Objective tmpObj = weightsEnum.nextElement();
 			SimpleElement thisWeight = new SimpleElement("weight");
@@ -461,7 +463,7 @@ public class Objective implements MutableTreeNode{
 			thisWeight.setAttribute("value", ""+tmpObj.getWeight());
 			thisObjective.addChildElement(thisWeight);
 		}
-		Enumeration<Objective> kidsEnum = this.children();
+*/		Enumeration<Objective> kidsEnum = this.children();
 		while(kidsEnum.hasMoreElements()){
 			//how to get the weights?
 			thisObjective.addChildElement( (kidsEnum.nextElement()).toXML() );
