@@ -58,7 +58,7 @@ public class EditIssueDialog extends NewIssueDialog {
 			
 			while (values.hasMoreElements()) {
 				val = values.nextElement();
-				valueString = valueString + val + "\n";
+				valueString = valueString + val.getValue() + "\n";
 			}
 			discreteTextArea.setText(valueString);
 			
