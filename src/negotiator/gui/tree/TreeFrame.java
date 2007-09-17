@@ -285,7 +285,7 @@ public class TreeFrame extends JFrame {
 			//TODO remove
 			System.out.println("An Objective");
 		}
-		else if (selected == null){
+		/*else {
 			addObjectiveAct.setEnabled(false);
 			addIssueAct.setEnabled(false);
 			//cutAct.setEnabled(false);
@@ -297,7 +297,7 @@ public class TreeFrame extends JFrame {
 			
 			//TODO remove
 			System.out.println("Unknown selection");
-		}
+		}*/
 		
 		updateHighlights((Objective)selected);
 		infoPanel.displayObjective((Objective)selected);
