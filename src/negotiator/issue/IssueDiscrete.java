@@ -44,7 +44,7 @@ public class IssueDiscrete extends Issue {
 	
 	// Class methods
 	public int getNumberOfValues() {
-	    return numberOfValues;
+	    return issueValues.size();
 	}
 		
 	public ValueDiscrete getValue(int index) {

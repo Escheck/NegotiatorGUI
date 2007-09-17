@@ -30,4 +30,11 @@ public class IssueDiscreteValuePanel extends IssueValuePanel {
 		this.add(new JLabel(values));
 		this.setToolTipText(values);
 	}
+	
+
+	
+	public void displayValues(Objective node){
+		this.removeAll();
+		init((IssueDiscrete) node);
+	}
 }

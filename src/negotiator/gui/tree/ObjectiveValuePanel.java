@@ -24,4 +24,9 @@ public class ObjectiveValuePanel extends IssueValuePanel {
 	private void init(Objective objective) {
 		this.add(new JLabel("This == Objective"));
 	}
+	
+	public void displayValues(Objective node){
+		this.removeAll();
+		init(node);
+	}
 }

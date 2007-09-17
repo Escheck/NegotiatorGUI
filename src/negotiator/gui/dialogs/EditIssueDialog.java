@@ -113,6 +113,7 @@ public class EditIssueDialog extends NewIssueDialog {
 			//Notify the model that the contents of the treetable have changed.
 			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
 			model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+			(model.getIssueValuePanel(issue)).displayValues(issue);
 			this.dispose();
 		}			
 		else if (e.getSource() == cancelButton) {

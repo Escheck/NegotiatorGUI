@@ -24,4 +24,9 @@ public class IssueRealValuePanel extends IssueValuePanel {
 	private void init(IssueReal issue) {
 		this.add(new JLabel("Min: " + issue.getLowerBound() + "\tMax: " + issue.getUpperBound()));
 	}
+	
+	public void displayValues(Objective node){
+		this.removeAll();
+		init(((IssueReal)node));
+	}
 }

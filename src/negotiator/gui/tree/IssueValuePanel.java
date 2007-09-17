@@ -36,4 +36,11 @@ public abstract class IssueValuePanel extends JPanel {
 	 * No specific methods need to be implemented. The subclasses should implement a panel that
 	 * visualizes the possible values of an issue in an appropriate way.
 	 */
+	
+	/**
+	 * Draws the values of this Issue or Objective
+	 * @param The Objective or Issue to display values of.
+	 */
+	 public abstract void displayValues(Objective node);
+	 
 }
