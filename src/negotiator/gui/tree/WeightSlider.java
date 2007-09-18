@@ -78,7 +78,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 			valueField.setVisible(false);
 			lock.setVisible(false);
 		}
-		
+	
 		updatePreferredSize();
 		
 	}
