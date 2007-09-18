@@ -66,7 +66,13 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected void initPanels() {
 		super.initPanels();
 		
-		this.add(constructIssuePropertyPanel(), BorderLayout.CENTER);
+		JPanel tmpIssPropP = constructIssuePropertyPanel();
+
+		this.add(tmpIssPropP, BorderLayout.CENTER);
+		//By all accounts this should remove the checkbox and it's label from the NewIssueDialog.
+		remove(weightLabel);
+		remove(weightCheck);
+		//Only, it doesn't.		
 	}
 	
 	private JPanel constructIssuePropertyPanel() {
@@ -126,11 +132,20 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		textPanel.add(new JScrollPane(discreteTextArea));
 		panel.add(textPanel);
 		
+		
+		
 		evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
 		JLabel evalLabel = new JLabel("Edit the evaluation values below. Use one line for each value.");
 		evalPanel.add(evalLabel);
 		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
 		panel.add(evalPanel);
+		
+		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			discreteTextEvaluationArea.setEnabled(false);
+			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
+		}
+		
+		
 		return panel;
 	}
 	
@@ -164,6 +179,13 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		max.add(new JLabel("Max: "));
 		max.add(integerMaxField);
 		panel.add(max);
+
+		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			integerLinearField.setEnabled(false);
+			integerLinearField.setToolTipText("Disabled until there is a Utility Space.");
+			integerParameterField.setEnabled(false);
+			integerParameterField.setToolTipText("Disabled until there is a Utility Space.");
+		}
 		
 		return panel;
 	}
@@ -195,6 +217,13 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		max.add(new JLabel("Max: "));
 		max.add(realMaxField);
 		panel.add(max);
+
+		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			realLinearField.setEnabled(false);
+			realLinearField.setToolTipText("Disabled until there is a Utility Space.");
+			realParameterField.setEnabled(false);
+			realParameterField.setToolTipText("Disabled until there is a Utility Space.");
+		}
 		
 		return panel;
 	}
