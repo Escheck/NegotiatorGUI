@@ -69,10 +69,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		JPanel tmpIssPropP = constructIssuePropertyPanel();
 
 		this.add(tmpIssPropP, BorderLayout.CENTER);
-		//By all accounts this should remove the checkbox and it's label from the NewIssueDialog.
-		remove(weightLabel);
-		remove(weightCheck);
-		//Only, it doesn't.		
+		
 	}
 	
 	private JPanel constructIssuePropertyPanel() {
@@ -115,7 +112,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		issuePropertyPanel.setLayout(new BorderLayout());
 		issuePropertyPanel.add(issueType, BorderLayout.PAGE_START);
 		issuePropertyPanel.add(issuePropertyCards, BorderLayout.CENTER);
-		
+		/*
+		if(this.weightCheck.isSelected()){
+			weightCheck.setEnabled(false);
+		}
+		*/
 		return issuePropertyPanel;
 	}
 	
@@ -141,6 +142,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(evalPanel);
 		
 		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			weightCheck.setEnabled(false);
+			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			discreteTextEvaluationArea.setEnabled(false);
 			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
 		}
@@ -181,6 +184,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(max);
 
 		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			weightCheck.setEnabled(false);
+			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			integerLinearField.setEnabled(false);
 			integerLinearField.setToolTipText("Disabled until there is a Utility Space.");
 			integerParameterField.setEnabled(false);
@@ -219,6 +224,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(max);
 
 		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+			weightCheck.setEnabled(false);
+			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			realLinearField.setEnabled(false);
 			realLinearField.setToolTipText("Disabled until there is a Utility Space.");
 			realParameterField.setEnabled(false);
@@ -363,6 +370,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 					evDis = new EvaluatorDiscrete();
 					evDis.setWeight(0.0);
 				}
+				
 				
 			}catch (Exception f){ //Can also be a casting exception.
 				if(f instanceof InvalidInputException){

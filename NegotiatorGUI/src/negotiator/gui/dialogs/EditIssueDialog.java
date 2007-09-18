@@ -46,7 +46,7 @@ public class EditIssueDialog extends NewIssueDialog {
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
 		
-		if (utilSpace != null && (utilSpace.getEvaluator(issue.getNumber()) == null))
+		if (utilSpace != null || (utilSpace.getEvaluator(issue.getNumber()) != null))
 			weightCheck.setSelected(false);
 		else
 			weightCheck.setSelected(true);
@@ -70,7 +70,7 @@ public class EditIssueDialog extends NewIssueDialog {
 				//Let's reuse some variables
 				values = ((IssueDiscrete)issue).getValues();
 				valueString = "";
-				while (values.hasMoreElements()) {
+				while (values.hasMoreElements() && values != null) {
 					val = values.nextElement();
 					valueString = valueString + eval.getEvaluation(val) + "\n";
 				}

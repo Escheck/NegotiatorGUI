@@ -60,6 +60,11 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		
 		this.add(constructBasicPropertyPanel(), BorderLayout.NORTH);
 		this.add(constructButtonPanel(), BorderLayout.SOUTH);
+		
+/*		if(this.weightCheck.isSelected()){
+			weightCheck.setEnabled(false);
+		}
+*/		
 	}
 	
 	private JPanel constructBasicPropertyPanel() {
@@ -68,7 +73,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		nameLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		numberLabel = new JLabel("Number:");
 		numberLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		weightLabel = new JLabel("Has Evaluator:");
+		weightLabel = new JLabel("Has Weight:");
 		weightLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 //		descriptionLabel = new JLabel("Description:");
 //		descriptionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -91,7 +96,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		labelPanel.add(new JLabel("Name:"));
 //		labelPanel.add(new JLabel("Number:"));
 		//labelPanel.add(new JLabel("Description:"));
-		labelPanel.add(new JLabel("has Evaluator:"));
+		labelPanel.add(new JLabel("has Weight:"));
 		
 		JPanel fieldPanel = new JPanel();
 		fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.PAGE_AXIS));
