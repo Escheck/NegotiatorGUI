@@ -182,7 +182,11 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		//objective.setDescription(description);
 		selected.addChild(objective);
 		if (getWeightCheck()) {
+			try{
 			((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace().addEvaluator(objective);
+			}catch(NullPointerException e){
+				JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
+			}
 		}
 		return objective;
 	}
