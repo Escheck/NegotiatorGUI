@@ -313,7 +313,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 * @param node an Objective.
 	 * @return the slider associated with node.
 	 */
-	protected WeightSlider getWeightSlider(Objective node) {
+	public WeightSlider getWeightSlider(Objective node) {
 		WeightSlider slider = sliders.get(node);
 		if (slider == null) {
 			slider = new WeightSlider(this, node);
