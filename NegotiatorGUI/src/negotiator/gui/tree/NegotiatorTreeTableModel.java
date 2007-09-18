@@ -106,19 +106,10 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 			return true;
 		else
 			return false;
-		
-		//TODO make a sensible implementation
-		//if (col == 2)
-		//	return true;
-		//return false;
 	}
 	
 	public boolean isCellEditable(Object node, int column) {
-		//TODO make a sensible implementation. Overridden from AbstractTreeTAbleModel
-        //Default: return getColumnClass(column) == TreeTableModel.class;
-		if (column == 4 || column == 0)
-			return true;
-		return false;
+		return isCellEditable(-1, column);
    }
 
 	

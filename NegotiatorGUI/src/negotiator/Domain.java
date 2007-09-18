@@ -36,6 +36,7 @@ public class Domain {
     	fObjectivesRoot = null;
     	fNumberOfIssues=0;
     }
+    
     public Domain(SimpleElement root) {
     	loadTreeFromXML(root);
     }
