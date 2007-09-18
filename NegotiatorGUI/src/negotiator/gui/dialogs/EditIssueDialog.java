@@ -50,7 +50,10 @@ public class EditIssueDialog extends NewIssueDialog {
 			weightCheck.setSelected(false);
 		else
 			weightCheck.setSelected(true);
+		
 		if (issue instanceof IssueDiscrete) {
+			this.issueType.setSelectedItem(DISCRETE);
+			this.issueType.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, DISCRETE);
 			Enumeration<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
 			String valueString = "";
@@ -75,6 +78,8 @@ public class EditIssueDialog extends NewIssueDialog {
 			}
 		}
 		else if (issue instanceof IssueInteger) {
+			this.issueType.setSelectedItem(INTEGER);
+			this.issueType.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, INTEGER);
 			integerMinField.setText("" + ((IssueInteger)issue).getLowerBound());
 			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
@@ -88,6 +93,8 @@ public class EditIssueDialog extends NewIssueDialog {
 			}
 		}
 		else if (issue instanceof IssueReal) {
+			this.issueType.setSelectedItem(REAL);
+			this.issueType.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, REAL);
 			realMinField.setText("" + ((IssueReal)issue).getLowerBound());
 			realMaxField.setText("" + ((IssueReal)issue).getUpperBound());
