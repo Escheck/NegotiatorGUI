@@ -1,7 +1,12 @@
 package negotiator.gui.dialogs;
 
 import java.awt.*;
+
+import javax.swing.JOptionPane;
+
+import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
+import negotiator.utility.UtilitySpace;
 
 import jtreetable.JTreeTable;
 
@@ -54,6 +59,24 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 		objective.setName(name);
 		objective.setNumber(number);
 		objective.setDescription(description);
+		
+		if (getWeightCheck()) {
+			try{
+				UtilitySpace us = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+				if(us == null){
+					JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
+				}else if(us.getEvaluator(objective.getNumber())== null){
+					//create a new evaluator for this objective
+					us.addEvaluator(objective);
+					us.getEvaluator(objective.getNumber()).setWeight(0.0);
+				}
+				
+					
+			}catch(NullPointerException e){
+				
+			}
+		}
+		
 		return objective;
 	}
 }
