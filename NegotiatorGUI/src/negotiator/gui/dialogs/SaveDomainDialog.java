@@ -152,7 +152,7 @@ public class SaveDomainDialog extends JDialog implements ActionListener {
 			}
 			
 			SimpleElement neg_template = new SimpleElement("negotiation_template");
-			neg_template.setAttribute("number_of_sessions", sessionLabel.getText());
+			neg_template.setAttribute("number_of_sessions", sessionField.getText());
 			
 			SimpleElement agentA_tag = new SimpleElement("agent");
 			agentA_tag.setAttribute("class", agentAClassLabel.getText());
