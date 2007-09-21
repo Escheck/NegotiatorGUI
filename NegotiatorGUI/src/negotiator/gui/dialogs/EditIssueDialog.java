@@ -72,7 +72,11 @@ public class EditIssueDialog extends NewIssueDialog {
 				valueString = "";
 				while (values.hasMoreElements() && values != null) {
 					val = values.nextElement();
+					try{
 					valueString = valueString + eval.getEvaluation(val) + "\n";
+					}catch(Exception e){
+						//do nothing, an exception is thrown whenever there  isn't an evaluator yet.
+					}
 				}
 				discreteTextEvaluationArea.setText(valueString);
 			}

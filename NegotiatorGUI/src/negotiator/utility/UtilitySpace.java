@@ -314,11 +314,17 @@ public class UtilitySpace {
         Object[] xml_obj_issues = new Object[xml_issues.length + xml_objectives.length];
         int i_ind;
         for(i_ind = 0; i_ind < xml_issues.length; i_ind++){
+        	System.out.println("issues_index: " + i_ind + " vs length:" + xml_issues.length +" to fill something of lenght: "+ xml_obj_issues.length);
         	xml_obj_issues[i_ind] = xml_issues[i_ind];
         }
-        for(int o_ind = i_ind; o_ind < xml_obj_issues.length; o_ind++){
+ /*     for(int o_ind = i_ind; o_ind < xml_obj_issues.length; o_ind++){ 
+        	System.out.println("objectives_index: " + o_ind + " vs length:" + xml_objectives.length +" to fill something of lenght: "+ xml_obj_issues.length);
         	xml_obj_issues[o_ind] = xml_objectives[o_ind];
         }
+ */     for(int o_ind = 0; (o_ind + i_ind) < xml_obj_issues.length; o_ind++){ 
+ 			System.out.println("objectives_index: " + o_ind + " vs length:" + xml_objectives.length +" to fill something of lenght: "+ xml_obj_issues.length);
+ 			xml_obj_issues[(o_ind + i_ind) ] = xml_objectives[o_ind];
+ 		}  
 //        boolean issueWithCost = false;
 //        double[] cost;
         for(int i=0;i<xml_obj_issues.length;i++) {
@@ -377,7 +383,11 @@ public class UtilitySpace {
             	return false;
             }
             try{
-            	fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
+            	double tmpdwt = tmpWeights.get(index).doubleValue();
+            	Objective tmpob = getDomain().getObjective(index);
+            	Evaluator tmpEv = fEvaluators.get(tmpob);
+            	//fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
+            	tmpEv.setWeight(tmpdwt);
             }catch(Exception e){
             	System.out.println("Evaluator-weight mismatch.");
             	//return false? 
