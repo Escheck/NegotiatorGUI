@@ -201,8 +201,10 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 			Objective objective = constructObjective();
 			if (objective == null) {
 				return;
+				
 			}
 			else {
+				System.out.println("added.");
 				//Notify the model that the contents of the treetable have changed.
 				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
 				model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
