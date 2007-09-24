@@ -138,7 +138,7 @@ public class EvaluatorInteger implements Evaluator {
 	 */
 	public void setConstantParam(int par1){
 		setftype("constant");
-		fParam.put(new Integer(1), new Integer(par1));
+		fParam.put(new Integer(0), new Integer(par1));
 	}
 
 	/**

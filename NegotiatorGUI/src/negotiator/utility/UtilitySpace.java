@@ -731,7 +731,7 @@ public class UtilitySpace {
     					thisIntEval.setAttribute("ftype", "linear");
     					thisIntEval.setAttribute("parameter1", ""+iev.getLinearParam());
     				}else if(ievtype == EVALFUNCTYPE.CONSTANT){
-    					thisIntEval.setAttribute("ftype", "param");
+    					thisIntEval.setAttribute("ftype", "constant");
     					thisIntEval.setAttribute("parameter0", ""+iev.getConstantParam());
     				}
     				tmpIssue.addChildElement(thisIntEval);
@@ -740,17 +740,18 @@ public class UtilitySpace {
     			case REAL:
     				Object[] RealRanges = tmpIssue.getChildByTagName("range");
     				SimpleElement thisRealRange = (SimpleElement)RealRanges[0];
+    				System.out.println("WRITING REAL");
     				EvaluatorReal rev = (EvaluatorReal) ev;
     				thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
     				thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
-    				
+    				System.out.println("WRITING EVAL");
     				SimpleElement thisRealEval = new SimpleElement("evaluator");
     				EVALFUNCTYPE revtype = rev.getFuncType();
     				if(revtype == EVALFUNCTYPE.LINEAR){
     					thisRealEval.setAttribute("ftype", "linear");
     					thisRealEval.setAttribute("parameter1", ""+rev.getLinearParam());
     				}else if(revtype == EVALFUNCTYPE.CONSTANT){
-    					thisRealEval.setAttribute("ftype", "param");
+    					thisRealEval.setAttribute("ftype", "constant");
     					thisRealEval.setAttribute("parameter0", ""+rev.getConstantParam());
     				}
     				tmpIssue.addChildElement(thisRealEval);    				
