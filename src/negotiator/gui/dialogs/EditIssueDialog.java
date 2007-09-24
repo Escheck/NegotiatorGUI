@@ -46,7 +46,7 @@ public class EditIssueDialog extends NewIssueDialog {
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
 		
-		if (utilSpace != null && (utilSpace.getEvaluator(issue.getNumber()) != null))
+		if (utilSpace == null || (utilSpace.getEvaluator(issue.getNumber()) == null))
 			weightCheck.setSelected(false);
 		else
 			weightCheck.setSelected(true);
@@ -73,7 +73,7 @@ public class EditIssueDialog extends NewIssueDialog {
 				while (values.hasMoreElements() && values != null) {
 					val = values.nextElement();
 					try{
-					valueString = valueString + eval.getEvaluation(val) + "\n";
+						valueString = valueString + eval.getEvaluation(val) + "\n";
 					}catch(Exception e){
 						//do nothing, an exception is thrown whenever there  isn't an evaluator yet.
 					}
