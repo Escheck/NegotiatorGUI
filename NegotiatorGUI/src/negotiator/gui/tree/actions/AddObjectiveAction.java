@@ -6,6 +6,8 @@ import javax.swing.*;
 import jtreetable.*;
 import negotiator.issue.*;
 import negotiator.gui.dialogs.*;
+import negotiator.gui.tree.*;
+import negotiator.gui.tree.*;
 
 /**
 *
@@ -18,10 +20,10 @@ public class AddObjectiveAction extends AbstractAction {
 	
 	//Attributes
 	JTreeTable treeTable;
-	Frame owner;
+	TreeFrame owner;
 	
 	//Constructors
-	public AddObjectiveAction(Frame dialogOwner, JTreeTable treeTable) {
+	public AddObjectiveAction(TreeFrame dialogOwner, JTreeTable treeTable) {
 		super("Add Objective");
 		this.treeTable = treeTable;
 		this.owner = dialogOwner;
@@ -29,7 +31,7 @@ public class AddObjectiveAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		NewObjectiveDialog dialog = new NewObjectiveDialog(owner, true, treeTable);
+		NewObjectiveDialog dialog = new NewObjectiveDialog(owner, true);
 	}
 
 }

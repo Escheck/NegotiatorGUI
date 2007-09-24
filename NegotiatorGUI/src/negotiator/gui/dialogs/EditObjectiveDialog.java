@@ -3,7 +3,7 @@ package negotiator.gui.dialogs;
 import java.awt.*;
 
 import javax.swing.JOptionPane;
-
+import negotiator.gui.tree.*;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
 import negotiator.utility.UtilitySpace;
@@ -22,16 +22,16 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 	Objective objective;
 	
 	//Constructor
-	public EditObjectiveDialog(JTreeTable treeTable, Objective objective) {
-		this(null, false, treeTable, objective);
-	}
+	//public EditObjectiveDialog(JTreeTable treeTable, Objective objective) {
+	//	this(null, false, treeTable, objective);
+	//}
 		
-	public EditObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable, Objective objective) {
+	public EditObjectiveDialog(TreeFrame owner, boolean modal, JTreeTable treeTable, Objective objective) {
 		this(owner, modal, treeTable, "Edit Objective", objective);
 	}
 	
-	public EditObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable, String name, Objective objective) {
-		super(owner, modal, treeTable, name);
+	public EditObjectiveDialog(TreeFrame owner, boolean modal, JTreeTable treeTable, String name, Objective objective) {
+		super(owner, modal, name);
 		this.objective = objective;
 		setFieldValues();
 	}
@@ -62,7 +62,7 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 		
 		if (getWeightCheck()) {
 			try{
-				UtilitySpace us = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+				UtilitySpace us = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
 				if(us == null){
 					JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
 				}else if(us.getEvaluator(objective.getNumber())== null){

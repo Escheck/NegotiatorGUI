@@ -2,13 +2,13 @@ package negotiator.gui.dialogs;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 import jtreetable.JTreeTable;
 
 import java.util.Enumeration;
 
+import negotiator.gui.tree.*;
 import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
@@ -50,16 +50,16 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected JTextField realMaxField;
 	
 	//Constructors
-	public NewIssueDialog(JTreeTable treeTable) {
-		this(null, false, treeTable);
-	}
+	//public NewIssueDialog(JTreeTable treeTable) {
+	//	this(null, false, treeTable);
+	//}
 		
-	public NewIssueDialog(Frame owner, boolean modal, JTreeTable treeTable) {
+	public NewIssueDialog(TreeFrame owner, boolean modal, JTreeTable treeTable) {
 		this(owner, modal, "Create new Issue", treeTable);
 	}
 	
-	public NewIssueDialog(Frame owner, boolean modal, String name, JTreeTable treeTable) {
-		super(owner, modal, treeTable, name);
+	public NewIssueDialog(TreeFrame owner, boolean modal, String name, JTreeTable treeTable) {
+		super(owner, modal, name);
 	}
 	
 	//Methods
@@ -141,7 +141,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
 		panel.add(evalPanel);
 		
-		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			discreteTextEvaluationArea.setEnabled(false);
@@ -183,7 +183,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		max.add(integerMaxField);
 		panel.add(max);
 
-		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			integerLinearField.setEnabled(false);
@@ -223,7 +223,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		max.add(realMaxField);
 		panel.add(max);
 
-		if(((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace()==null){
+		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			realLinearField.setEnabled(false);
@@ -339,7 +339,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		//If no issue is given to be modified, construct a new one that is the child of the selected Objective.
 		if (newIssue) {
 			try {
-				selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
+				selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
 				if (selected == null) {
 					JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
 					return null;
@@ -398,7 +398,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				}
 			}
 			
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				//uts.getEvaluator(issue).clear();
 				uts.addEvaluator(issue, evDis);
@@ -443,7 +443,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueInteger)issue).setLowerBound(min);
 				((IssueInteger)issue).setUpperBound(max);
 			}
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evInt);
 			}
@@ -484,7 +484,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueReal)issue).setLowerBound(min);
 				((IssueReal)issue).setUpperBound(max);
 			}
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
 			if(uts != null){
 				uts.addEvaluator(issue, evReal);
 			}
@@ -512,8 +512,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				return;
 			else {
 				//Notify the model that the contents of the treetable have changed.
-				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
-				model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
 				this.dispose();
 			}
 		}			

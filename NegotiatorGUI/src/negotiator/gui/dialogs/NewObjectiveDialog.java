@@ -31,22 +31,24 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	protected JCheckBox weightCheck;
 	//JTextArea descriptionArea;
 	
-	protected JTreeTable treeTable;
+	protected TreeFrame treeFrame;
+	//protected JTreeTable treeTable;
 	
 	//Constructors
 	
-	public NewObjectiveDialog(JTreeTable treeTable) {
-		this(null, false, treeTable);
-	}
+	//public NewObjectiveDialog(TreeFrame owner) {
+	//	this(owner, false);
+	//}
 		
-	public NewObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable) {
-		this(owner, modal, treeTable, "Create new Objective");
+	public NewObjectiveDialog(TreeFrame owner, boolean modal) {
+		this(owner, modal, "Create new Objective");
 	}
 	
-	public NewObjectiveDialog(Frame owner, boolean modal, JTreeTable treeTable, String name) {
+	public NewObjectiveDialog(TreeFrame owner, boolean modal, String name) {
 		super(owner, name, modal);
 		
-		this.treeTable = treeTable;
+		this.treeFrame = owner;
+		//this.treeTable = treeTable;
 		
 		initPanels();
 		
@@ -141,7 +143,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	protected int getObjectiveNumber() throws InvalidInputException {
 		//TODO Add side effect: check the input, and throw exception
 		//return Integer.parseInt(numberField.getText());
-		return (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1);
+		return (((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getHighestObjectiveNr() + 1);
 	}
 	
 	protected String getObjectiveDescription() throws InvalidInputException {
@@ -163,7 +165,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
 		try {
 			name = getObjectiveName();
-			number = (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1);
+			number = (((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getHighestObjectiveNr() + 1);
 			hasEvaluator = getWeightCheck();
 		//	description = getObjectiveDescription();
 		}
@@ -172,7 +174,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 			return null;
 		}
 		try {
-			selected = (Objective) treeTable.getTree().getLastSelectedPathComponent();
+			selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
 			if (selected == null) {
 				JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
 				return null;
@@ -188,7 +190,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		selected.addChild(objective);
 		if (getWeightCheck()) {
 			try{
-			((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace().addEvaluator(objective);
+			((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace().addEvaluator(objective);
 			}catch(NullPointerException e){
 				JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
 			}
@@ -204,9 +206,15 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 				
 			}
 			else {
-				//Notify the model that the contents of the treetable have changed.
-				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
-				model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+				//Notify the model that the contents of the treetable have changed
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+				
+				if (model.getUtilitySpace() == null) {
+					model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				}
+				else {
+					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+				}
 				
 				this.dispose();
 			}
