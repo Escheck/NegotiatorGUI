@@ -75,6 +75,10 @@ public class EvaluatorInteger implements Evaluator {
 		return EVALUATORTYPE.INTEGER;
 	}
 	
+	public EVALFUNCTYPE getFuncType(){
+		return this.type;
+	}
+	
 	public int getLowerBound() {
 		return lowerBound;
 	}
@@ -162,8 +166,10 @@ public class EvaluatorInteger implements Evaluator {
 		switch(this.type) {
 		case LINEAR:
 			this.fParam.put(1, Integer.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+			break;
 		case CONSTANT:
 			this.fParam.put(0, Integer.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
+			break;
 		}	
 	}
 	

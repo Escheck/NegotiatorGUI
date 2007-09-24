@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.Map;
 
+import negotiator.utility.EVALFUNCTYPE;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.*;
@@ -724,6 +725,16 @@ public class UtilitySpace {
     				EvaluatorInteger iev = (EvaluatorInteger) ev;
     				thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
     				thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
+    				SimpleElement thisIntEval = new SimpleElement("evaluator");
+    				EVALFUNCTYPE ievtype = iev.getFuncType();
+    				if(ievtype == EVALFUNCTYPE.LINEAR){
+    					thisIntEval.setAttribute("ftype", "linear");
+    					thisIntEval.setAttribute("parameter1", ""+iev.getLinearParam());
+    				}else if(ievtype == EVALFUNCTYPE.CONSTANT){
+    					thisIntEval.setAttribute("ftype", "param");
+    					thisIntEval.setAttribute("parameter0", ""+iev.getConstantParam());
+    				}
+    				tmpIssue.addChildElement(thisIntEval);
     				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
     				break;
     			case REAL:
@@ -732,6 +743,17 @@ public class UtilitySpace {
     				EvaluatorReal rev = (EvaluatorReal) ev;
     				thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
     				thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
+    				
+    				SimpleElement thisRealEval = new SimpleElement("evaluator");
+    				EVALFUNCTYPE revtype = rev.getFuncType();
+    				if(revtype == EVALFUNCTYPE.LINEAR){
+    					thisRealEval.setAttribute("ftype", "linear");
+    					thisRealEval.setAttribute("parameter1", ""+rev.getLinearParam());
+    				}else if(revtype == EVALFUNCTYPE.CONSTANT){
+    					thisRealEval.setAttribute("ftype", "param");
+    					thisRealEval.setAttribute("parameter0", ""+rev.getConstantParam());
+    				}
+    				tmpIssue.addChildElement(thisRealEval);    				
     				//TODO hdv the same thing as above vor the "evaluator" tag.
     				break;
     			}

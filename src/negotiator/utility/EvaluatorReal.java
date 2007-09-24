@@ -92,6 +92,10 @@ public class EvaluatorReal implements Evaluator {
 		return EVALUATORTYPE.REAL;	
 	}
 	
+	public EVALFUNCTYPE getFuncType(){
+		return this.type;
+	}
+	
 	public double getLowerBound() {
 		return lowerBound;
 	}
@@ -183,8 +187,10 @@ public class EvaluatorReal implements Evaluator {
 		switch(this.type) {
 		case LINEAR:
 			this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+			break;
 		case CONSTANT:
 			this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
+			break;
 		}
 	}
 	
