@@ -29,12 +29,12 @@ public class EditIssueDialog extends NewIssueDialog {
 	}
 		
 	public EditIssueDialog(TreeFrame owner, boolean modal, Issue issue) {
-		this(owner, modal, "Edit Issue", e, issue);
+		this(owner, modal, "Edit Issue", issue);
 		this.issue = issue;
 	}
 	
 	public EditIssueDialog(TreeFrame owner, boolean modal, String name, Issue issue) {
-		super(owner, modal, name, treeTable);
+		super(owner, modal, name);
 		this.issue = issue;
 		setPanelContents(issue);
 	}
@@ -46,7 +46,7 @@ public class EditIssueDialog extends NewIssueDialog {
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
 		
-		if (utilSpace != null || (utilSpace.getEvaluator(issue.getNumber()) != null))
+		if (utilSpace != null && (utilSpace.getEvaluator(issue.getNumber()) != null))
 			weightCheck.setSelected(false);
 		else
 			weightCheck.setSelected(true);
@@ -120,11 +120,22 @@ public class EditIssueDialog extends NewIssueDialog {
 		if (e.getSource() == okButton) {
 			if (issue == null) 
 				return;
-			updateIssue(issue);
-			//Notify the model that the contents of the treetable have changed.
-			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
-			model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-			(model.getIssueValuePanel(issue)).displayValues(issue);
+			else {
+				updateIssue(issue);
+				
+				//Notify the model that the contents of the treetable have changed
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+				
+				(model.getIssueValuePanel(issue)).displayValues(issue);
+				
+				if (model.getUtilitySpace() == null) {
+					model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				}
+				else {
+					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+				}
+			}
+			
 			this.dispose();
 		}			
 		else if (e.getSource() == cancelButton) {

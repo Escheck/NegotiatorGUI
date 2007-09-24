@@ -15,11 +15,10 @@ import negotiator.issue.*;
 import negotiator.utility.*;
 
 /**
-*
-* @author Richard Noorlandt
-* 
-*/
-
+ * Maakt een dialog om een nieuwe Issue aan te maken
+ * 
+ *
+ */
 public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	//Variables
 	protected static final String DISCRETE = "Discrete";
@@ -50,15 +49,15 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	protected JTextField realMaxField;
 	
 	//Constructors
-	//public NewIssueDialog(JTreeTable treeTable) {
-	//	this(null, false, treeTable);
-	//}
+	public NewIssueDialog(TreeFrame owner) {
+		this(owner, false);
+	}
 		
-	public NewIssueDialog(TreeFrame owner, boolean modal, JTreeTable treeTable) {
-		this(owner, modal, "Create new Issue", treeTable);
+	public NewIssueDialog(TreeFrame owner, boolean modal) {
+		this(owner, modal, "Create new Issue");
 	}
 	
-	public NewIssueDialog(TreeFrame owner, boolean modal, String name, JTreeTable treeTable) {
+	public NewIssueDialog(TreeFrame owner, boolean modal, String name) {
 		super(owner, modal, name);
 	}
 	

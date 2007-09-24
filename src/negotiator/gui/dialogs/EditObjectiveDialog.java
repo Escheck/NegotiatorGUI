@@ -11,26 +11,25 @@ import negotiator.utility.UtilitySpace;
 import jtreetable.JTreeTable;
 
 /**
+ * Maakt dialog om objectives mee te editen
  * 
- * @author Richard Noorlandt
  *
  */
-
 public class EditObjectiveDialog extends NewObjectiveDialog {
 	
 	//Attributes
 	Objective objective;
 	
 	//Constructor
-	//public EditObjectiveDialog(JTreeTable treeTable, Objective objective) {
-	//	this(null, false, treeTable, objective);
-	//}
+	public EditObjectiveDialog(TreeFrame owner, Objective objective) {
+		this(owner, false, objective);
+	}
 		
-	public EditObjectiveDialog(TreeFrame owner, boolean modal, JTreeTable treeTable, Objective objective) {
-		this(owner, modal, treeTable, "Edit Objective", objective);
+	public EditObjectiveDialog(TreeFrame owner, boolean modal, Objective objective) {
+		this(owner, modal, "Edit Objective", objective);
 	}
 	
-	public EditObjectiveDialog(TreeFrame owner, boolean modal, JTreeTable treeTable, String name, Objective objective) {
+	public EditObjectiveDialog(TreeFrame owner, boolean modal, String name, Objective objective) {
 		super(owner, modal, name);
 		this.objective = objective;
 		setFieldValues();

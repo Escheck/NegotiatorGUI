@@ -30,7 +30,7 @@ public class AddIssueAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		NewIssueDialog dialog = new NewIssueDialog(owner, true, treeTable);
+		NewIssueDialog dialog = new NewIssueDialog(owner, true);
 	}
 
 }

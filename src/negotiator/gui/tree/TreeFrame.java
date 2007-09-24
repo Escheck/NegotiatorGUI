@@ -186,7 +186,7 @@ public class TreeFrame extends JFrame {
 		//cutAct = new CutAction(this);
 		//pasteAct = new PasteAction(this);
 		delAct = new DeleteAction(treeTable);
-		editAct = new EditAction(treeTable);
+		editAct = new EditAction(this);
 		newDomainAct = new NewDomainAction(this);
 		newUtilitySpaceAct = new NewUtilitySpaceAction(this);
 		loadDomainAct = new LoadDomainAction(this, fileChooser);
