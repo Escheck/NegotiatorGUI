@@ -90,9 +90,11 @@ public class EditIssueDialog extends NewIssueDialog {
 			if (utilSpace != null) {
 				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
 				if (eval != null) {
-					//integerOtherField.setText(eval.); Herbert: what's integerOtherField?
-					integerLinearField.setText("" + eval.getLinearParam());
-					integerParameterField.setText("" + eval.getConstantParam());
+					if(eval.getFuncType() == EVALFUNCTYPE.LINEAR){
+						integerLinearField.setText("" + eval.getLinearParam());
+					}else if(eval.getFuncType() == EVALFUNCTYPE.CONSTANT){
+						integerParameterField.setText("" + eval.getConstantParam());
+					}
 				}
 			}
 		}
@@ -106,8 +108,11 @@ public class EditIssueDialog extends NewIssueDialog {
 				EvaluatorReal eval = (EvaluatorReal)utilSpace.getEvaluator(issue.getNumber());
 				if (eval != null) {
 					//realOtherField.setText(eval.); Herbert: what's realOtherField?
-					realLinearField.setText("" + eval.getLinearParam());
-					realParameterField.setText("" + eval.getConstantParam());
+					if(eval.getFuncType() == EVALFUNCTYPE.LINEAR){
+						realLinearField.setText("" + eval.getLinearParam());
+					}else if(eval.getFuncType() == EVALFUNCTYPE.CONSTANT){
+						realParameterField.setText("" + eval.getConstantParam());
+					}
 				}
 			}
 		}
