@@ -6,6 +6,7 @@ import javax.swing.*;
 import negotiator.gui.dialogs.*;
 
 import jtreetable.JTreeTable;
+import negotiator.gui.tree.*;
 
 /**
 *
@@ -18,10 +19,10 @@ public class AddIssueAction extends AbstractAction {
 	
 	//Attributes
 	private JTreeTable treeTable;
-	private Frame owner;
+	private TreeFrame owner;
 	
 	//Constructors
-	public AddIssueAction(Frame dialogOwner, JTreeTable treeTable) {
+	public AddIssueAction(TreeFrame dialogOwner, JTreeTable treeTable) {
 		super("Add Issue");
 		this.treeTable = treeTable;
 		this.owner = dialogOwner;

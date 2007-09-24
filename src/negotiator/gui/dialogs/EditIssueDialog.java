@@ -24,16 +24,16 @@ public class EditIssueDialog extends NewIssueDialog {
 	private Issue issue;
 	
 	//Constructors
-	public EditIssueDialog(JTreeTable treeTable, Issue issue) {
-		this(null, false, treeTable, issue);
+	public EditIssueDialog(TreeFrame owner, Issue issue) {
+		this(owner, false, issue);
 	}
 		
-	public EditIssueDialog(Frame owner, boolean modal, JTreeTable treeTable, Issue issue) {
-		this(owner, modal, "Edit Issue", treeTable, issue);
+	public EditIssueDialog(TreeFrame owner, boolean modal, Issue issue) {
+		this(owner, modal, "Edit Issue", e, issue);
 		this.issue = issue;
 	}
 	
-	public EditIssueDialog(Frame owner, boolean modal, String name, JTreeTable treeTable, Issue issue) {
+	public EditIssueDialog(TreeFrame owner, boolean modal, String name, Issue issue) {
 		super(owner, modal, name, treeTable);
 		this.issue = issue;
 		setPanelContents(issue);
@@ -41,7 +41,7 @@ public class EditIssueDialog extends NewIssueDialog {
 	
 	//Methods
 	private void setPanelContents(Issue issue) {
-		UtilitySpace utilSpace = ((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getUtilitySpace();
+		UtilitySpace utilSpace = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
 		
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
@@ -122,8 +122,8 @@ public class EditIssueDialog extends NewIssueDialog {
 				return;
 			updateIssue(issue);
 			//Notify the model that the contents of the treetable have changed.
-			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeTable.getTree().getModel();
-			model.treeStructureChanged(this, treeTable.getTree().getSelectionPath().getPath());
+			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+			model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
 			(model.getIssueValuePanel(issue)).displayValues(issue);
 			this.dispose();
 		}			
