@@ -509,10 +509,23 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			Issue issue = constructIssue();
 			if (issue == null) 
 				return;
-			else {
+			/*else {
 				//Notify the model that the contents of the treetable have changed.
 				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
 				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				this.dispose();
+			}*/
+			else {
+				//Notify the model that the contents of the treetable have changed
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+				
+				if (model.getUtilitySpace() == null) {
+					model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				}
+				else {
+					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+				}
+				
 				this.dispose();
 			}
 		}			
