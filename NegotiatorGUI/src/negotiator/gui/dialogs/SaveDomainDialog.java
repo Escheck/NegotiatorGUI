@@ -8,9 +8,10 @@ import negotiator.gui.tree.*;
 import jtreetable.*;
 
 import negotiator.xml.SimpleElement;
+
 /**
+ * Maakt een dialog om een Domain op te slaan
  * 
- * @author Richard Noorlandt
  *
  */
 

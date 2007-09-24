@@ -9,11 +9,10 @@ import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.utility.UtilitySpace;
+
 /**
-*
-* @author Richard Noorlandt
-* 
-*/
+ * Maakt een Dialog om een nieuwe Objective toe te voegen
+ */
 
 public class NewObjectiveDialog extends JDialog implements ActionListener {
 
@@ -36,9 +35,9 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	
 	//Constructors
 	
-	//public NewObjectiveDialog(TreeFrame owner) {
-	//	this(owner, false);
-	//}
+	public NewObjectiveDialog(TreeFrame owner) {
+		this(owner, false);
+	}
 		
 	public NewObjectiveDialog(TreeFrame owner, boolean modal) {
 		this(owner, modal, "Create new Objective");

@@ -17,20 +17,25 @@ import jtreetable.*;
 public class EditAction extends AbstractAction {
 	
 	//Attributes
-	JTreeTable treeTable;
+	TreeFrame treeFrame;
+	//JTreeTable treeTable;
 	
 	//Constructors
-	public EditAction(JTreeTable treeTable) {
+	//public EditAction(JTreeTable treeTable) {
+	//	super("Edit");
+	//	this.treeTable = treeTable;
+	//}
+	public EditAction(TreeFrame treeFrame) {
 		super("Edit");
-		this.treeTable = treeTable;
+		this.treeFrame = treeFrame;
 	}
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
 		try {
-			Objective obj = (Objective) treeTable.getTree().getLastSelectedPathComponent();
+			Objective obj = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
 			if (obj instanceof Issue) {
-				EditIssueDialog dialog = new EditIssueDialog(treeTable, (Issue)obj);
+				EditIssueDialog dialog = new EditIssueDialog(treeFrame, (Issue)obj);
 			}
 			/*
 			if (obj instanceof IssueDiscrete) {
@@ -43,7 +48,7 @@ public class EditAction extends AbstractAction {
 				EditIssueDialog dialog = new EditIssueDialog(treeTable, (Issue)obj);
 			}*/
 			else if (obj instanceof Objective) {
-				EditObjectiveDialog dialog = new EditObjectiveDialog(treeTable, obj);
+				EditObjectiveDialog dialog = new EditObjectiveDialog(treeFrame, obj);
 			}
 		}
 		catch (Exception except) {
