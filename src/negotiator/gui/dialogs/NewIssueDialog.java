@@ -277,43 +277,63 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 	
 	protected int getIntegerMin() throws InvalidInputException {
+		if(!integerMinField.getText().equals(""))
 		return Integer.parseInt(integerMinField.getText());
+		else return 0;
 	}
 	
 	protected int getIntegerOther() throws InvalidInputException{
-		return Integer.parseInt(integerOtherField.getText());
+		if(!integerOtherField.getText().equals(""))
+			return Integer.parseInt(integerOtherField.getText());
+		else return 0;
 	}
 
 	protected int getIntegerLinear() throws InvalidInputException {
-		return Integer.parseInt(integerLinearField.getText());
+		if(!integerLinearField.getText().equals(""))
+			return Integer.parseInt(integerLinearField.getText());
+		else return 0;
 	}
 	
 	protected int getIntegerParameter() throws InvalidInputException {
+		if(!integerParameterField.getText().equals(""))
 		return Integer.parseInt(integerParameterField.getText());
+		else return 0;
 	}	
 	
 	protected int getIntegerMax() throws InvalidInputException {
-		return Integer.parseInt(integerMaxField.getText());
+		if(!integerMaxField.getText().equals(""))
+			return Integer.parseInt(integerMaxField.getText());
+		else return 0;
 	}
 	
 	protected double getRealMin() throws InvalidInputException {
-		return Double.parseDouble(realMinField.getText());
+		if(!realMinField.getText().equals(""))
+			return Double.parseDouble(realMinField.getText());
+		else return 0.0;
 	}
 	
 	protected double getRealOther()throws InvalidInputException {
-		return Double.parseDouble(realOtherField.getText());
+		if(!realOtherField.getText().equals(""))
+			return Double.parseDouble(realOtherField.getText());
+		else return 0.0;
 	}
 	
 	protected double getRealLinear() throws InvalidInputException {
-		return Double.parseDouble(realLinearField.getText());
+		if(!realLinearField.getText().equals(""))
+			return Double.parseDouble(realLinearField.getText());
+		else return 0.0;
 	}
 	
 	protected double getRealParameter() throws InvalidInputException {
-		return Double.parseDouble(realParameterField.getText());
+		if(!realParameterField.getText().equals(""))
+			return Double.parseDouble(realParameterField.getText());
+		else return 0.0;
 	}
 	
 	protected double getRealMax() throws InvalidInputException {
-		return Double.parseDouble(realMaxField.getText());
+		if(!realMaxField.getText().equals(""))
+			return Double.parseDouble(realMaxField.getText());
+		else return 0.0;
 	}
 	
 	protected Issue constructIssue() {
