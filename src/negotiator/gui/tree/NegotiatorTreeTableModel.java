@@ -252,16 +252,12 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		//different from the requested weight, for instance if that modification is impossible for some reason.
 		
 		//Root may not be null!
-		System.out.println("==============Begin Call================");
-		//TODO Implement this method. Need new weight calculations from Herbert.
 		Enumeration<Objective> objectives = root.getPreorderEnumeration();
 		while (objectives.hasMoreElements()) {
 			Objective obj = objectives.nextElement();
 			double updatedWeight = utilitySpace.getWeight(obj.getNumber());
 			getWeightSlider(obj).setWeight(updatedWeight);
-			System.out.println("Objective " + obj.getNumber() + ":" + updatedWeight);
 		}
-		System.out.println("==============End Call==================");
 	}
 	
 	public void removeObjective(Objective obj) {

@@ -7,6 +7,7 @@ import java.util.*;
 import javax.swing.*;
 
 import negotiator.gui.dialogs.*;
+import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.utility.*;
@@ -115,6 +116,18 @@ public class EditIssueDialog extends NewIssueDialog {
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Overrides getObjectiveNumber from NewObjectiveDialog
+	 */
+	protected int getObjectiveNumber() throws InvalidInputException {
+		try {
+			return Integer.parseInt(arg0))numberField.getText();
+		}
+		catch (Exception e) {
+			throw new InvalidInputException("Error reading objective number from (hidden) field.");
 		}
 	}
 	
