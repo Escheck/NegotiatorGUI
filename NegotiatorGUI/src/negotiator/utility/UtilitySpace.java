@@ -739,12 +739,7 @@ public class UtilitySpace {
     				break;
     			case REAL:
     				Object[] RealRanges = tmpIssue.getChildByTagName("range");
-    				SimpleElement thisRealRange = (SimpleElement)RealRanges[0];
-    				System.out.println("WRITING REAL");
     				EvaluatorReal rev = (EvaluatorReal) ev;
-    				//thisRealRange.setAttribute("lowerbound", ""+rev.getLowerBound());
-    				//thisRealRange.setAttribute("upperbound", ""+rev.getUpperBound());
-    				System.out.println("WRITING EVAL");
     				SimpleElement thisRealEval = new SimpleElement("evaluator");
     				EVALFUNCTYPE revtype = rev.getFuncType();
     				if(revtype == EVALFUNCTYPE.LINEAR){
