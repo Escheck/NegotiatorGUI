@@ -87,6 +87,8 @@ public class TreeFrame extends JFrame {
 		treeTable.addMouseListener(new TreePopupListener());
 		treeTable.getSelectionModel().addListSelectionListener(new TreeSelectionListener());
 		
+		treeTable.getTree().addTreeWillExpandListener(new TestListener());
+		
 		//Initialize the FileChooser
 		initFileChooser();
 		
@@ -365,4 +367,21 @@ public class TreeFrame extends JFrame {
 		
 	}
 
+	//TODO: RANZIGHEID, TEST!
+	class TestListener implements TreeWillExpandListener {
+
+		public TestListener() {
+			
+		}
+
+        // Required by TreeExpansionListener interface.
+        public void treeWillExpand(TreeExpansionEvent e) {
+            System.out.println("blaat");
+        }
+
+        // Required by TreeExpansionListener interface.
+        public void treeWillCollapse(TreeExpansionEvent e) {
+        	System.out.println("blaat");
+        }
+    }
 }

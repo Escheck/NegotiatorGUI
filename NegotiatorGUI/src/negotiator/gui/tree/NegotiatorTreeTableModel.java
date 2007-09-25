@@ -101,7 +101,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		if (col >= colTypes.length || col < 0)
 			return false;
 		else if (colTypes[col] == TreeTableModel.class)
-			return false;
+			return true;
 		else if (colTypes[col] == WeightSlider.class)
 			return true;
 		else
