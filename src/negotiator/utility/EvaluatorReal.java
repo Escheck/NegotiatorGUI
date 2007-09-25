@@ -168,7 +168,7 @@ public class EvaluatorReal implements Evaluator {
 	 */	
 	public double getConstantParam(){
 		try{
-			return fParam.get(new Integer(1));
+			return fParam.get(new Integer(0));
 		}catch(Exception e){
 			System.out.println("Linear parameter does not exist");
 			e.printStackTrace();
