@@ -85,7 +85,7 @@ public class IssueReal extends Issue {
 		SimpleElement thisRange = new SimpleElement("range");
 		thisRange.setAttribute("lowerbound", ""+getLowerBound());
 		thisRange.setAttribute("upperbound", ""+getUpperBound());
-		
+		thisIssue.addChildElement(thisRange);
 		//todo find way of adding items.
 		return thisIssue;
 		
