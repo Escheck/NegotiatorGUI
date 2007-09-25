@@ -180,17 +180,19 @@ public class EvaluatorReal implements Evaluator {
 		this.lowerBound = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
 		this.upperBound = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("evaluator");
-		String ftype = ((SimpleElement)xml_items[0]).getAttribute("ftype");
-		if (ftype!=null)
-			this.type = EVALFUNCTYPE.convertToType(ftype);
-		// TODO: define exception.
-		switch(this.type) {
-		case LINEAR:
-			this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
-			break;
-		case CONSTANT:
-			this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
-			break;
+		if(xml_items.length !=0){
+			String ftype = ((SimpleElement)xml_items[0]).getAttribute("ftype");	
+			if (ftype!=null)
+				this.type = EVALFUNCTYPE.convertToType(ftype);
+			// TODO: define exception.
+			switch(this.type) {
+			case LINEAR:
+				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+				break;
+			case CONSTANT:
+				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
+				break;
+			}
 		}
 	}
 	

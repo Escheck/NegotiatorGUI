@@ -153,7 +153,10 @@ public class EvaluatorDiscrete implements Evaluator {
 				
 		for(int j=0;j<nrOfValues;j++) {
             value = new ValueDiscrete(((SimpleElement)xml_items[j]).getAttribute("value"));
-            this.fEval.put(value, Double.valueOf(((SimpleElement)xml_items[j]).getAttribute("evaluation")));
+            String evaluationStr = ((SimpleElement)xml_items[j]).getAttribute("evaluation");
+            if(evaluationStr != null){
+            	this.fEval.put(value, Double.valueOf(evaluationStr));
+            }
             String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
             if (sCost!=null) {
             	cost = Double.valueOf(sCost);
