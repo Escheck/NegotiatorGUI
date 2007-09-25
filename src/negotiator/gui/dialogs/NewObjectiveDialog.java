@@ -194,6 +194,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
 			}
 		}
+		
 		return objective;
 	}
 	
@@ -214,6 +215,12 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 				else {
 					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
 				}
+				
+				/* HACK-2-TEST
+				int rowcount = treeFrame.getTreeTable().getTree().getRowCount();
+				for (int i =0; i <= rowcount; i++) {
+					treeFrame.getTreeTable().getTree().expandRow(i);
+				}*/
 				
 				this.dispose();
 			}
