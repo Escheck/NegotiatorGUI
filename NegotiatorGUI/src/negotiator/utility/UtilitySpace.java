@@ -578,6 +578,16 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
+    	if(freeCount + lockedCount == 1){
+    		System.out.println("WAAAAAAAGH!!!!!!!!!!!!!!");
+    		Enumeration<Objective> singleChild = obj.children();
+    		while(singleChild.hasMoreElements()) {
+    			Objective tmpObj = singleChild.nextElement();
+    			if(!fEvaluators.get(tmpObj).weightLocked() ){
+    				fEvaluators.get(tmpObj).setWeight(1.0);
+    			}
+    		}
+    	}
     	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < (freeCount + lockedCount) && weightSum + lockedWeightSum != 0.0 ){ //that second bit to ensure that there is no problem with
     		//normalize:
     		Enumeration<Objective> normalChilds = obj.children();

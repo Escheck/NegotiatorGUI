@@ -172,7 +172,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 
 		JPanel par = new JPanel();
 		par.setAlignmentX(Component.LEFT_ALIGNMENT);
-		par.add(new JLabel("Parameter: "));
+		par.add(new JLabel("Constant: "));
 		par.add(integerParameterField);
 		panel.add(par);	
 		
@@ -213,7 +213,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 
 		JPanel par = new JPanel();
 		par.setAlignmentX(Component.LEFT_ALIGNMENT);
-		par.add(new JLabel("Parameter: "));
+		par.add(new JLabel("Constant: "));
 		par.add(realParameterField);
 		panel.add(par);	
 		
