@@ -69,7 +69,6 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		if ((tableModel.getUtilitySpace() != null) && tableModel.getUtilitySpace().getEvaluator(obj.getNumber()) != null)
 		{
 			setVisible(true);
-			setWeight(tableModel.getUtilitySpace().getWeight(obj.getNumber()));
 		}
 		else 
 			setVisible(false);
