@@ -299,6 +299,7 @@ public class UtilitySpace {
 		Object[] xml_weights = currentRoot.getChildByTagName("weight");
 		nrOfWeights = xml_weights.length; //assuming each 
 		HashMap<Integer, Double> tmpWeights = new HashMap<Integer, Double>();
+		System.out.println("nrOfWeights = " + nrOfWeights);
         for(int i = 0; i < nrOfWeights; i++){
         	index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
         	double dval = Double.valueOf( ((SimpleElement)xml_weights[i]).getAttribute("value"));
@@ -384,13 +385,19 @@ public class UtilitySpace {
             	return false;
             }
             try{
-            	double tmpdwt = tmpWeights.get(index).doubleValue();
-            	Objective tmpob = getDomain().getObjective(index);
-            	Evaluator tmpEv = fEvaluators.get(tmpob);
-            	//fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
-            	tmpEv.setWeight(tmpdwt);
+            	if(nrOfWeights != 0){
+            		Integer indexInt = new Integer(index);
+            		System.out.println("Hashcode here is: " + indexInt.hashCode());
+            		double tmpdwt = tmpWeights.get(indexInt).doubleValue();
+            		Objective tmpob = getDomain().getObjective(index);
+            		Evaluator tmpEv = fEvaluators.get(tmpob);
+            		//fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
+            		tmpEv.setWeight(tmpdwt);
+            		System.out.println("set weight to " + tmpdwt);
+            	}
             }catch(Exception e){
             	System.out.println("Evaluator-weight mismatch.");
+            	e.printStackTrace();
             	//return false? 
             }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
@@ -578,38 +585,51 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
+    	System.out.println("freeCount + lockedCount = " + freeCount + " + " + lockedCount);
     	if(freeCount + lockedCount == 1){
-    		System.out.println("WAAAAAAAGH!!!!!!!!!!!!!!");
+    		System.out.println("At least the IF works...");
     		Enumeration<Objective> singleChild = obj.children();
     		while(singleChild.hasMoreElements()) {
     			Objective tmpObj = singleChild.nextElement();
-    			if(!fEvaluators.get(tmpObj).weightLocked() ){
-    				fEvaluators.get(tmpObj).setWeight(1.0);
-    			}
+    			fEvaluators.get(tmpObj).setWeight(1.0);
     		}
     	}
-    	if(weightSum + lockedWeightSum != 1.0 && (lockedCount +1) < (freeCount + lockedCount) && weightSum + lockedWeightSum != 0.0 ){ //that second bit to ensure that there is no problem with
+    	if(/*weightSum + lockedWeightSum != 1.0 && */(lockedCount +1) < (freeCount + lockedCount) /*&& weightSum + lockedWeightSum != 0.0*/ ){ //that second bit to ensure that there is no problem with
     		//normalize:
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
-    			double diff = (lockedWeightSum + weightSum) - 1.0;
+    			double diff = (lockedWeightSum + weightSum) - 1.0 ;
     			try{
-    				if(!fEvaluators.get(tmpObj).weightLocked()){
-    					double currentWeight = fEvaluators.get(tmpObj).getWeight();
-    					double newWeight = currentWeight - (diff* currentWeight/weightSum);
-    					if(newWeight < 0){
-    						newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
+    				
+    					if(!fEvaluators.get(tmpObj).weightLocked()){
+    						double currentWeight = fEvaluators.get(tmpObj).getWeight();
+    						double newWeight = currentWeight -(diff* currentWeight/weightSum);
+    						if(newWeight < 0){
+    							newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
+    						}
+    						fEvaluators.get(tmpObj).setWeight(newWeight);
+    						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
     					}
-    					fEvaluators.get(tmpObj).setWeight(newWeight);
-    				}
+    		//		}else{ //Diff < 0.0, do something else
+    				/*	if(!fEvaluators.get(tmpObj).weightLocked()){
+    						double currentWeight = fEvaluators.get(tmpObj).getWeight();
+    						double newWeight = currentWeight +(diff* currentWeight/weightSum);
+    						if(newWeight < 0){
+    							newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
+    						}
+    						fEvaluators.get(tmpObj).setWeight(newWeight);
+    						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
+    					}
+    					*/
+    		//		}	
     			}catch(Exception e){
 //    				do nothing, we can encounter Objectives/issues without Evaluators.
     			}
     			
     		}
     		
-    	}else if(weightSum + lockedWeightSum == 0.0){
+    	}/*else if(weightSum + lockedWeightSum == 0.0){
     		//normalize so all unlocked ones receive a weight.
     		Enumeration<Objective> normalChilds = obj.children();
     		double amount = 1.0/freeCount;
@@ -619,7 +639,7 @@ public class UtilitySpace {
     		}
     		
     	}
-    	
+    	*/
     	
     	return getEvaluators();
     }
@@ -667,7 +687,7 @@ public class UtilitySpace {
     			Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
     		
     			if(childWeights.length == 0){
-    				SimpleElement currentChildWeight = new SimpleElement("Weight");
+    				SimpleElement currentChildWeight = new SimpleElement("weight");
     				currentChildWeight.setAttribute("index", ""+childIndex);
     				currentChildWeight.setAttribute("value", ""+ev.getWeight());
     				currentLevel.addChildElement(currentChildWeight);
