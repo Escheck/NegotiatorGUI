@@ -117,7 +117,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		if (value > MAX_VALUE)
 			return 1;
 		
-		return (double)value / (double)(MAX_VALUE - MIN_VALUE);
+		return (double)value / (double)( (MAX_VALUE) - MIN_VALUE);
 	}
 	
 	/**
@@ -173,12 +173,12 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	
 	public void stateChanged(ChangeEvent e) {
 		//TODO Remove these silly debug thingies
-		System.out.println("stateChanged called");
+		//System.out.println("stateChanged called");
 		if (e.getSource() != slider){
-			System.out.println("Ain't the slider");
+			//System.out.println("Ain't the slider");
 			return;
 		}
-		System.out.println("\nJust slide with me!");
+		//System.out.println("\nJust slide with me!");
 		double newWeight = convertToDouble(slider.getValue());
 		valueField.setValue(newWeight);
 		changeWeight(newWeight);
