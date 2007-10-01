@@ -124,7 +124,7 @@ public class EditIssueDialog extends NewIssueDialog {
 	 */
 	protected int getObjectiveNumber() throws InvalidInputException {
 		try {
-			return Integer.parseInt(arg0))numberField.getText();
+			return Integer.parseInt(numberField.getText());
 		}
 		catch (Exception e) {
 			throw new InvalidInputException("Error reading objective number from (hidden) field.");
