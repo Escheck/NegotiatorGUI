@@ -316,9 +316,11 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 			setWeightSlider(node, slider);
 			
 			if (utilitySpace != null) {
+				System.out.println("Our newest debug info says node  " + node.getNumber() + " has weight " + utilitySpace.getWeight(node.getNumber()));
 				slider.setWeight(utilitySpace.getWeight(node.getNumber()));
 			}
 			else {
+				System.out.println("Here we come in the else part of getWeightSlider. Set weight to 0.5");
 				slider.setWeight(0.5);
 			}
 		}
