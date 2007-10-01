@@ -351,38 +351,39 @@ public class UtilitySpace {
             	// For now: use "type" label.
             	evalType = EVALUATORTYPE.convertToType(type);
             }
-            switch(evalType) {
-            case DISCRETE:
-            	lEvaluator = new EvaluatorDiscrete();
-            	break;
-            case INTEGER:
-            	lEvaluator = new EvaluatorInteger();
-            	break;
-            case REAL:
-            	lEvaluator = new EvaluatorReal();
-            	break;
-            case PRICE:
-            	if (indexEvalPrice>-1)
-            		System.out.println("Multiple price evaluators in utility template file!");
-               	// TODO: Define exception.
-            	indexEvalPrice = index-1;
-            	lEvaluator = new EvaluatorPrice();
-            	break;
-            case OBJECTIVE:
-            	lEvaluator = new EvaluatorObjective();
-            	//set weights here.
-            	break;
-            }
-            lEvaluator.loadFromXML((SimpleElement)(xml_obj_issues[i]));
-            // TODO: put lEvaluator to an array (done?)
-            //evaluations.add(tmp_evaluations);
-            //TODO: hdevos: add weigths to the evaluators.
-            try{
-            	fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
-            }catch(Exception e){
-            	System.out.println("Domain-utilityspace mismatch");
-            	e.printStackTrace();
-            	return false;
+            if(tmpWeights.get(index) != null){
+            	switch(evalType) {
+            	case DISCRETE:
+            		lEvaluator = new EvaluatorDiscrete();
+            		break;
+            	case INTEGER:
+            		lEvaluator = new EvaluatorInteger();
+            		break;
+            	case REAL:
+            		lEvaluator = new EvaluatorReal();
+            		break;
+            	case PRICE:
+            		if (indexEvalPrice>-1)
+            			System.out.println("Multiple price evaluators in utility template file!");
+            		// TODO: Define exception.
+            		indexEvalPrice = index-1;
+            		lEvaluator = new EvaluatorPrice();
+            		break;
+            	case OBJECTIVE:
+            		lEvaluator = new EvaluatorObjective();		
+            		break;
+            	}
+            	lEvaluator.loadFromXML((SimpleElement)(xml_obj_issues[i]));
+            	// TODO: put lEvaluator to an array (done?)
+            	//evaluations.add(tmp_evaluations);
+            	
+            	try{
+            		fEvaluators.put(getDomain().getObjective(index),lEvaluator); //Here we get the Objective or Issue.
+            	}catch(Exception e){
+            		System.out.println("Domain-utilityspace mismatch");
+            		e.printStackTrace();
+            		return false;
+            	}
             }
             try{
             	if(nrOfWeights != 0){
@@ -395,9 +396,7 @@ public class UtilitySpace {
             		System.out.println("set weight to " + tmpdwt);
             	}
             }catch(Exception e){
-            	System.out.println("Evaluator-weight mismatch.");
-            	e.printStackTrace();
-            	//return false? 
+            	System.out.println("Evaluator-weight mismatch or no weight for this issue or objective.");
             }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }
