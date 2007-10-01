@@ -390,9 +390,8 @@ public class UtilitySpace {
             		System.out.println("Hashcode here is: " + indexInt.hashCode());
             		double tmpdwt = tmpWeights.get(indexInt).doubleValue();
             		Objective tmpob = getDomain().getObjective(index);
-            		Evaluator tmpEv = fEvaluators.get(tmpob);
+            		fEvaluators.get(tmpob).setWeight(tmpdwt);
             		//fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
-            		tmpEv.setWeight(tmpdwt);
             		System.out.println("set weight to " + tmpdwt);
             	}
             }catch(Exception e){
@@ -406,16 +405,16 @@ public class UtilitySpace {
         // Do not include weight for price evaluator! This weight represents "financial rationality factor".
         // TODO: Always normalize weights to 1??
         if (indexEvalPrice!=-1) {
-        	weightsSum -= tmpWeights.get(indexEvalPrice); //FIXME? hdv: -1 is an invalid index. So.. what gives?
+        	weightsSum -= tmpWeights.get(indexEvalPrice); //FIXME? hdv: -1 is an invalid index. So.. what gives? Why is it -1 in the original program?
         }
-        if (weightsSum>1) { // Only normalize if sum of weights exceeds 1.
+       /* if (weightsSum>1.0) { // Only normalize if sum of weights exceeds 1.
         	for (int i=0;i<nrOfWeights;i++) {
         		if (i!=indexEvalPrice) {
-        			tmpEvaluator.elementAt(i).setWeight(tmpEvaluator.elementAt(i).getWeight()/weightsSum); //redo this bit!
+        			tmpEvaluator.elementAt(i).setWeight(tmpEvaluator.elementAt(i).getWeight()/weightsSum); 
         		}
         	}
         }
-        
+       */ 
         
         //Recurse over all children:
         boolean returnval = false;
@@ -435,11 +434,15 @@ public class UtilitySpace {
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issuesIndex);
 		if(ob != null){
+			System.out.println("Obje index "+ issuesIndex +" != null");
 			Evaluator ev = fEvaluators.get(ob);
 			if(ev != null){
+				System.out.println("Weight " + issuesIndex + " should be " + ev.getWeight());
 				return ev.getWeight();
 			}
 		}
+		else
+			System.out.println("Obje "+ issuesIndex +" == null");
 		return 0.0; //fallthrough.
     }
     
