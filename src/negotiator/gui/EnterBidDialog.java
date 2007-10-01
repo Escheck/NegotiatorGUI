@@ -224,7 +224,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
         MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,nt);
         tableMyBid.setModel(myActionTableModel);
         for(int i=0;i<nt.getDomain().getNumberOfIssues();i++) {
-            myActionTableModel.setUpIssuesColumns(tableMyBid,nt.getDomain().getIssue(i), 
+            myActionTableModel.setUpIssuesColumns(tableMyBid,(Issue)(nt.getDomain().getIssue(i)), 
                     tableMyBid.getColumnModel().getColumn(i));
         }
             
