@@ -158,11 +158,11 @@ public class NegotiationTemplate {
             SimpleElement xml_agentA = (SimpleElement)(root.getChildByTagName("agent")[0]);
             mf.setAgentAName(xml_agentA.getAttribute("name"));
             mf.setAgentAClassName(xml_agentA.getAttribute("class"));
-            mf.setAgentAUtilitySpace((new File(fileName)).getParentFile().toString()+"\\"+  xml_agentA.getAttribute("utility_space"));
+            mf.setAgentAUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentA.getAttribute("utility_space"));
             SimpleElement xml_agentB = (SimpleElement)(root.getChildByTagName("agent")[1]);
             mf.setAgentBName(xml_agentB.getAttribute("name"));
             mf.setAgentBClassName(xml_agentB.getAttribute("class"));
-            mf.setAgentBUtilitySpace((new File(fileName)).getParentFile().toString()+"\\"+  xml_agentB.getAttribute("utility_space"));
+            mf.setAgentBUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentB.getAttribute("utility_space"));
         } catch (IOException e) {
             e.printStackTrace();
         }

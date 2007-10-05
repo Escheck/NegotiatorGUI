@@ -27,6 +27,7 @@ import negotiator.xml.*;
  *
  * @author Dmytro Tykhonov & Koen Hindriks 
  * 
+ * Wouter: this concerns weight handling and loading of utility spaces. 
  */
 
 public class UtilitySpace {
@@ -749,6 +750,10 @@ public class UtilitySpace {
     					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
     					double eval = dev.getEvaluation(theIssue.getValue(itemInd));
     					tmpItem.setAttribute("evaluation", ""+eval);
+    					
+    					Double cost = dev.getCost(theIssue.getValue(itemInd));
+    					if (cost!=null) tmpItem.setAttribute("cost", ""+cost);
+
     				}
     				break;
     			case INTEGER:

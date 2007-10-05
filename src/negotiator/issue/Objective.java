@@ -16,7 +16,8 @@ import negotiator.xml.SimpleElement;
 * 
 */
 
-public class Objective implements MutableTreeNode{
+public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld not be this way.
+{
 	
 	//Attributes
 	private String name;
