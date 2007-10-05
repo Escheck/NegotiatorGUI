@@ -72,10 +72,11 @@ public class EvaluatorDiscrete implements Evaluator {
 		//End of Added by Dmytro
 	}
 	
-	public double getCost(Value value) {
-		if (fCost.get(value)!=null)
-			return fCost.get(value);
-		else return 0;
+	public Double getCost(Value value) {
+		return fCost.get(value); // return null if no cost set for this issue.
+		//if (fCost.get(value)!=null)
+		//	return fCost.get(value);
+		//else return 0;
 	}
 	
 	public double getMaxCost() {
