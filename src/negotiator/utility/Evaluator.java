@@ -3,6 +3,16 @@ package negotiator.utility;
 import negotiator.Bid;
 import negotiator.xml.SimpleElement;
 
+/**
+ * 
+ * @author Dmytro?
+ * 
+ * Evaluator is an object that translates discrete values into an evaluation value.
+ * The UtilitySpace attaches it to an issue.
+ * It is saved if you save the utility space, using the setXML functions.
+ *  
+ */
+
 public interface Evaluator {
 	
 	// Interface methods
@@ -22,9 +32,11 @@ public interface Evaluator {
 	
 	public boolean weightLocked();
 	
-	// The getEvaluation method returns a scalar evaluation for a value in a bid.
-	// Providing the complete bid as a paramater to the method allows for issue dependencies. 
-	public Object getEvaluation(UtilitySpace uspace, Bid bid, int index);
+	/** The getEvaluation method returns a scalar evaluation for a value in a bid.
+	* Providing the complete bid as a paramater to the method allows for issue dependencies.
+	* @throws exception if problem, for instance illegal evaluation values.
+	*/
+	public Object getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception;
 	
 	public EVALUATORTYPE getType();
 	

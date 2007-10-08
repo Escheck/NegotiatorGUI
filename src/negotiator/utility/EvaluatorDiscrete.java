@@ -5,18 +5,24 @@ import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
 import java.util.HashMap;
+import java.util.Collection;
 
+/**
+ * 
+ * @author wouter
+ * Since 8oct07: only POSITIVE integer values acceptable as evaluation value.
+ */
 public class EvaluatorDiscrete implements Evaluator {
 	
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock; 
-	private HashMap<ValueDiscrete, Double> fEval;
+	private HashMap<ValueDiscrete, Integer> fEval;
 	private HashMap<ValueDiscrete, Double> fCost;
 	private double maxCost = 0;
 	
 	public EvaluatorDiscrete() {
-		fEval = new HashMap<ValueDiscrete, Double>();
+		fEval = new HashMap<ValueDiscrete, Integer>();
 		fCost = new HashMap<ValueDiscrete, Double>();
 		
 		fweight = 0;
@@ -54,24 +60,68 @@ public class EvaluatorDiscrete implements Evaluator {
 		return fweightLock;
 	}
 	
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
-		//Added by Dmytro on 09/05/2007
-		Double lTmp =fEval.get(((ValueDiscrete)bid.getValue(index)));
-		if(lTmp == null) 
-			return -1.0;
-		else return lTmp;
-		//End of Added by Dmytro
+	/**
+	 * @return the non-normalized evaluation. 
+	 * Or null if value is not an alternative.
+	 */
+	public Integer getValue(ValueDiscrete alternativeP)
+	{
+		return fEval.get(alternativeP);
 	}
 	
-	public Double getEvaluation(ValueDiscrete value) {
-		//Added by Dmytro on 09/05/2007
-		Double lTmp =fEval.get(value);
-		if(lTmp == null) 
-			return -1.0;
-		else return lTmp;
-		//End of Added by Dmytro
+
+	
+	/**
+	 * @author W.Pasman
+	 * @return the largest alternative available
+	 * returns null if there are no alternatives.
+	 */
+	public Integer getEvalMax()
+	{
+		Collection<Integer> alts=fEval.values();
+		Integer maximum=null;
+		for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
+
+		return maximum;
 	}
 	
+	
+	/**
+	 * @param the utilityspace settings, the complete bid and the idnumber of the issue to be evaluated
+	 * @return the normalized evaluation value.
+	 * @author Koen, Dmytro
+	 * modified W.Pasman 8oct07: now normalization happens here.
+	 * 
+	 * TODO Wouter: this function seems weird. 
+	 * The function evaluates "bid[idnumber]" as a discrete evaluator.
+	 * BUT if bid[idnumber] is not a discrete evaluator in the first place, very weird things may happen.
+	 */
+	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		//Added by Dmytro on 09/05/2007
+		return normalize(fEval.get(((ValueDiscrete)bid.getValue(index))));
+	}
+	
+	public Double getEvaluation(ValueDiscrete altP) throws Exception 
+	{
+		return normalize(fEval.get(altP));
+	}
+		
+	/** 
+	 * @author W.Pasman
+	 * @param EvalValueL
+	 * @return normalized EvalValue
+	 */
+	public Double normalize(Integer EvalValueL)
+	{
+		return EvalValueL.doubleValue()/getEvalMax().doubleValue(); // this will throw if problem.
+	}
+	
+	/** 
+	 * 
+	 * @param the alternative name 
+	 * @return cost, null if no cost available.
+	 */
 	public Double getCost(Value value) {
 		return fCost.get(value); // return null if no cost set for this issue.
 		//if (fCost.get(value)!=null)
@@ -123,8 +173,10 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param val The value to add or have its evaluation modified.
 	 * @param evaluation The new evaluation.
 	 */
-	public void setEvaluation(Value val, double evaluation ){
-		fEval.put((ValueDiscrete)val, new Double(evaluation));		
+	public void setEvaluation(Value val, int utility ) throws Exception
+	{
+		if (utility<0) throw new Exception("utility values have to be >0");
+		fEval.put((ValueDiscrete)val, new Integer(utility));		
 	}
 
 	/**
@@ -133,7 +185,8 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param val The value to have it's cost set/modified
 	 * @param cost The new cost of the value.
 	 */
-	public void setCost(Value val, double cost){
+	public void setCost(Value val, double cost)
+	{
 		if(maxCost < cost){
 			maxCost = cost;
 			fCost.put((ValueDiscrete)val, new Double(cost));
@@ -146,7 +199,8 @@ public class EvaluatorDiscrete implements Evaluator {
 		
 	}
 	
-	public void loadFromXML(SimpleElement pRoot) {
+	public void loadFromXML(SimpleElement pRoot)
+	{
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("item");
 		int nrOfValues = xml_items.length;
 		double cost;
@@ -156,18 +210,20 @@ public class EvaluatorDiscrete implements Evaluator {
             value = new ValueDiscrete(((SimpleElement)xml_items[j]).getAttribute("value"));
             String evaluationStr = ((SimpleElement)xml_items[j]).getAttribute("evaluation");
             if(evaluationStr != null){
-            	this.fEval.put(value, Double.valueOf(evaluationStr));
+            	try {
+            		this.fEval.put(value, Integer.valueOf(evaluationStr));
+            	}
+            	catch (Exception e) { System.out.println("Problem reading XML file: "+e.getMessage());}
             }
             String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
             if (sCost!=null) {
             	cost = Double.valueOf(sCost);
             	if (maxCost<cost) {
             		maxCost = cost;
-            		this.fCost.put(value, cost);
+            		setCost(value, cost);
             	}
             }
-            else // by default set cost to 0?
-            	this.fCost.put(value, 0.0);
+            // else this.fCost.put(value, 0.0);
         }
 	}
 	

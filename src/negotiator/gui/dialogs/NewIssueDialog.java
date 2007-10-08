@@ -7,6 +7,7 @@ import javax.swing.*;
 import jtreetable.JTreeTable;
 
 import java.util.Enumeration;
+import java.util.ArrayList;
 
 import negotiator.gui.tree.*;
 import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
@@ -234,6 +235,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		return panel;
 	}
 	
+	/*
+	 * 
+	 * get values from the input thingy
+	 * empty lines are not aloowed and just ignored..
+	 */
 	protected String[] getDiscreteValues() throws InvalidInputException {
 		/*int index;
 		int lastIndex = 0;
@@ -249,31 +255,28 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 	
 	/**
-	 * Gets the evaluations for the discrete issue from the input field in this dialog. The input values don't need to be normalized.
-	 * @return An nomalized array with the evaluations.
+	 * Gets the evaluations for the discrete issue from the input field in this dialog. 
+	 * The input values don't need to be normalized.
+	 * @return An  arrayList with the evaluations. 
+	 * Now returns elements with value 0 to indicate non-entered (empty field) values.
 	 * @throws InvalidInputException 
 	 */
-	protected double[] getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
-		String[] evalueStrings = discreteTextEvaluationArea.getText().split("\n");
-		double weightSum = 0;
-		if(evalueStrings.length != 0){
-			double evalues[] = new double[evalueStrings.length];
-			for(int i = 0; i<evalueStrings.length; i++){
-			if(!evalueStrings.equals("")){
-				evalues[i] = Double.valueOf(evalueStrings[i]);
-				weightSum += evalues[i];
-				System.out.println(""+evalues[i]);
-				}
+	protected ArrayList<Integer> getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
+		String[] evalueStrings = discreteTextEvaluationArea.getText().split("\n",-1);
+		for (String i:evalueStrings) System.out.println(">"+i);
+
+		ArrayList<Integer> evalues=new ArrayList<Integer>();
+		for(int i = 0; i<evalueStrings.length; i++)
+		{
+			Integer value=0;
+			if(!evalueStrings[i].equals(""))
+			{
+				value=Integer.valueOf(evalueStrings[i]);
+				if (value<=0) {value=0; System.out.println("Encountered "+value+", 0 or negative numbers are not allowed here");}
 			}
-			if(weightSum != 1.0){ //normalize the evaluations.
-				for(int norm_i = 0; norm_i < evalues.length; norm_i++){
-					evalues[norm_i] = evalues[norm_i]/weightSum;
-					
-				}
-				
-			}
-			return evalues;
-		}else return null;
+			evalues.add(value); 
+		}
+		return evalues;
 	}
 	
 	protected int getIntegerMin() throws InvalidInputException {
@@ -340,7 +343,16 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		return updateIssue(null);
 	}
 	
-	protected Issue updateIssue(Issue issue) {
+	/**
+	 * Wouter: This updates the data structures after the issue dialog was completed and user pressed OK.
+	 * Not clear to me how it can return only an issue, so where are the values that were set as well?
+	 * (the values should be put into a utility space)?
+	 * @param issue
+	 * @return
+	 * @throws exception if issues can not be accepted. e.g. negative evaluation values.
+	 */
+	protected Issue updateIssue(Issue issue)
+	{
 		String name;
 		int number;
 		String description;
@@ -372,10 +384,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		String selectedType = (String)issueType.getSelectedItem();
 		//Issue issue = null;
-		Evaluator evDis = null;
 		if (selectedType == DISCRETE) {
+			EvaluatorDiscrete evDis = null;
 			String[] values;
-			double[] evalues = null;
+			ArrayList<Integer> evalues = null;
 			try {
 				values = getDiscreteValues(); 
 			}
@@ -385,18 +397,16 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			}
 			try{
 				evalues = getDiscreteEvalutions();
+				if (evalues==null) System.out.println("RWWAIO#@! no evalues");
 				if(evalues != null){
 					evDis = new EvaluatorDiscrete();
 					evDis.setWeight(0.0);
 				}
-				
-				
 			}catch (Exception f){ //Can also be a casting exception.
-				if(f instanceof InvalidInputException){
+					System.out.println("AASH:"+f.getMessage());
 					JOptionPane.showMessageDialog(this, f.getMessage());
-				}
 			}
-			
+
 			if (newIssue) {
 				issue = new IssueDiscrete(name, number, values);
 			}
@@ -406,23 +416,33 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueDiscrete)issue).clear();
 				((IssueDiscrete)issue).addValues(values);
 			}
-			Enumeration v_enum = ((IssueDiscrete)issue).getValues();
-			int eval_ind = 0;
-			if(evDis != null){
-				((EvaluatorDiscrete)evDis).clear();
+			ArrayList<ValueDiscrete> v_enum = ((IssueDiscrete)issue).getValues();
+
+			 // jload values into discrete evaluator
+			if(evDis != null && evalues!=null)
+			{
+				try
+				{
+					evDis.clear();
+				
+					for (int i=0; i<v_enum.size(); i++) 
+					{
+						if (i < evalues.size() && evalues.get(i)!=0) // evalues field is 0 if error occured at that field.
+							evDis.setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
+					}
+				}
+				catch (Exception e) {JOptionPane.showMessageDialog(this, e.getMessage()); }
 			
-				while(v_enum.hasMoreElements() && evDis != null && eval_ind < evalues.length){
-					((EvaluatorDiscrete)evDis).setEvaluation(((Value)v_enum.nextElement()), evalues[eval_ind]);
-					eval_ind++;
+				 // Wouter: I don't like the way this works now but notime to correct it. 
+	
+				UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
+				if(uts != null){
+					System.out.println("issue updated:"+issue);
+					//uts.getEvaluator(issue).clear();
+					uts.addEvaluator(issue, evDis);
 				}
 			}
-			
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
-			if(uts != null){
-				//uts.getEvaluator(issue).clear();
-				uts.addEvaluator(issue, evDis);
-			}
-
+			else System.out.println("WARNING. no update of values!! evDis="+evDis);
 		}
 		else if (selectedType == INTEGER) {
 			int min;

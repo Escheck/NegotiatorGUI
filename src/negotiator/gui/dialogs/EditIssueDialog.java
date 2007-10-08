@@ -17,6 +17,7 @@ import jtreetable.*;
  * 
  * @author Richard Noorlandt
  *
+ * This launches a editissue dialog window.
  */
 
 public class EditIssueDialog extends NewIssueDialog {
@@ -56,30 +57,28 @@ public class EditIssueDialog extends NewIssueDialog {
 			this.issueType.setSelectedItem(DISCRETE);
 			this.issueType.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, DISCRETE);
-			Enumeration<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
+			ArrayList<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
+
 			String valueString = "";
-			ValueDiscrete val;
-			
-			while (values.hasMoreElements()) {
-				val = values.nextElement();
-				valueString = valueString + val.getValue() + "\n";
-			}
+			for (ValueDiscrete val: values) valueString = valueString + val.getValue() + "\n";
 			discreteTextArea.setText(valueString);
-			
+
 			if (utilSpace != null) {
 				EvaluatorDiscrete eval = (EvaluatorDiscrete)utilSpace.getEvaluator(issue.getNumber());
-				//Let's reuse some variables
-				values = ((IssueDiscrete)issue).getValues();
-				valueString = "";
-				while (values.hasMoreElements() && values != null) {
-					val = values.nextElement();
-					try{
-						valueString = valueString + eval.getEvaluation(val) + "\n";
-					}catch(Exception e){
-						//do nothing, an exception is thrown whenever there  isn't an evaluator yet.
+				if (eval!=null)
+				{
+					valueString = "";
+					for (ValueDiscrete val: values) 
+					{
+						Integer util=eval.getValue(val); // get the utility for this value
+						//System.out.println("util="+util);
+						if (util!=null) valueString=valueString+util;
+						valueString=valueString+"\n";
+						
 					}
+					discreteTextEvaluationArea.setText(valueString);
+			
 				}
-				discreteTextEvaluationArea.setText(valueString);
 			}
 		}
 		else if (issue instanceof IssueInteger) {
@@ -134,7 +133,8 @@ public class EditIssueDialog extends NewIssueDialog {
 	/**
 	 * Overrides actionPerformed from NewIssueDialog.
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) 
+	{
 		if (e.getSource() == okButton) {
 			if (issue == null) 
 				return;

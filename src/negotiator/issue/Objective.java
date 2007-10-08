@@ -20,9 +20,15 @@ public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld n
 {
 	
 	//Attributes
-	private String name;
 	private int number;
-	private double weight;
+
+	 /// Wouter: AAAgh this really should not be here either.
+	// Richard is misusing the Objective as the node handling weights and name
+	// it really should work with the UtilitySpace weights... and domain name
+	private String name;
+	private double weight; 
+	
+	
 	private String description;
 	private Object userObject; //can be a picture, for instance
 	private Objective parent;
