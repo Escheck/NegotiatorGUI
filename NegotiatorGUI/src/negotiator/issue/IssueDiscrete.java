@@ -19,15 +19,18 @@ public class IssueDiscrete extends Issue {
 	//TODO Use DiscreteValue here??
 	//TODO use ArrayList
 	//ValueDiscrete issueValues[];
-	Vector<ValueDiscrete> issueValues;
+
 	
+	/** Wouter: the alternatives (String objects) for the issue.
+		"value" is misleading, this is NOT the utility value but the name of the alternative */
+	ArrayList<ValueDiscrete> issueValues; 
 		
 	// Constructors
 	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
 		numberOfValues = values.length;
-	    issueValues = new Vector<ValueDiscrete>();
+	    issueValues = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
 	        issueValues.add(new ValueDiscrete(values[i]));
 	    }
@@ -36,7 +39,7 @@ public class IssueDiscrete extends Issue {
 	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
 		super(name, issueNumber, objParent);		
 		numberOfValues = values.length;
-		issueValues = new Vector<ValueDiscrete>();
+		issueValues = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
 	        issueValues.add(new ValueDiscrete(values[i]));
 	    }
@@ -55,6 +58,10 @@ public class IssueDiscrete extends Issue {
 		return ((ValueDiscrete)issueValues.get(index)).getValue();
 	}
 	    
+	/** 
+	 * @param value that is supposed to be one of the alternatives of this issue.
+	 * @return index holding that value, or -1 if value is not one of the alternatives.
+	 */
 	public int getValueIndex(String value) {
 	    for(int i=0;i<numberOfValues;i++)
 	        if(issueValues.get(i).getStringValue().equals(value)) {
@@ -98,8 +105,8 @@ public class IssueDiscrete extends Issue {
 	 * Gives an enumeration over all values in this discrete issue.
 	 * @return An enumeration containing <code>valueDiscrete</code>
 	 */
-	public Enumeration getValues(){
-		return issueValues.elements();
+	public ArrayList<ValueDiscrete> getValues() {
+		return issueValues;
 	}
 	
 	/**

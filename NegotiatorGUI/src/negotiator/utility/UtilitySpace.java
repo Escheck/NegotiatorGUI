@@ -27,13 +27,18 @@ import negotiator.xml.*;
  *
  * @author Dmytro Tykhonov & Koen Hindriks 
  * 
- * Wouter: this concerns weight handling and loading of utility spaces. 
+ * Wouter: the utility space couples all objectives to weights and evaluators.
+ * 
  */
 
 public class UtilitySpace {
 	
 	// Class fields
     private Domain domain;
+    
+    // Wouter: Why does the weight hashmap use Integer to refer to an objective,
+    // and the evaluator hashmap refers directly to the Objective???
+    
     private HashMap<Integer, Double> weights;
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
@@ -132,7 +137,7 @@ public class UtilitySpace {
         return financialRat*financialUtility+(1-financialRat)*utility;
     }
     
-    public final double getEvaluation(int pIssueIndex, Bid bid) {
+    public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     	ISSUETYPE vtype;
     	Value tmpval = bid.getValue(pIssueIndex);
     	vtype = tmpval.getType();
@@ -521,13 +526,13 @@ public class UtilitySpace {
     }
     
     /**
-     * Add an Objective, evaluator pair.
+     * Sets an <Objective, evaluator> pair. Replaces old evaluator for objective
      * @param obj The Objective to attach an Evaluator to.
      * @param ev The Evaluator to attach.
-     * @return
+     * @return the given evaluator Wouter: what's the use of the return value???
      */
     public final Evaluator addEvaluator(Objective obj, Evaluator ev){
-    	fEvaluators.put(obj, ev);
+    	fEvaluators.put(obj, ev); // replaces old value for that object-key if key already existed.
     	return ev;
     }
     
@@ -535,7 +540,7 @@ public class UtilitySpace {
      * @return The set with all pairs of evaluators and objectives in this utilityspace.
      */
     public final Set<Map.Entry<Objective, Evaluator> >getEvaluators(){
-    	return fEvaluators.entrySet();
+    	return fEvaluators.entrySet(); 
     }
     
     /**

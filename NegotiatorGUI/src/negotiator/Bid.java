@@ -26,7 +26,8 @@ import java.util.Iterator;
 /**
  * 
  * @author Dmytro Tykhonov & Koen Hindriks
- * 
+ * Wouter: a bid is a set of <idnumber,value> pairs, where idnumber is the unique number of the issue,
+ * and value is the picked alternative.
  */
 
 public final class Bid {
@@ -34,7 +35,7 @@ public final class Bid {
 	// Class fields
 	Domain fDomain;
 
-	private HashMap<Integer, Value> fValues;
+	private HashMap<Integer, Value> fValues; // Wouter: the bid values 
 
 	// Constructor
 	public Bid(Domain pDomain, HashMap pValues) {
@@ -71,8 +72,11 @@ public final class Bid {
 	// }
 	// }
 
+	/**
+	 * @return the picked value for given issue idnumber 
+	 */
 	public Value getValue(int issueIndex) {
-		return (Value) fValues.get(issueIndex);
+		return fValues.get(issueIndex);
 	}
 
 	public void setValue(int issueIdex, Value pValue) {
