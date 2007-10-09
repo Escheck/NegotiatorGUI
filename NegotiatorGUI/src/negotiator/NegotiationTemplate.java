@@ -147,10 +147,18 @@ public class NegotiationTemplate {
 		return;
 
 	}
-	public static void loadParamsFromFile (String fileName, MainFrame mf) {
+	
+	/**
+	 * 
+	 * @param fileName
+	 * @param mf points to the MainFrame GUI that currently also holds the application data (...)
+	 * @throws Exception if there are problems reading the file.
+	 */
+	public static void loadParamsFromFile (String fileName, MainFrame mf) throws Exception
+	{
 		SimpleDOMParser parser = new SimpleDOMParser();
 		try {
-			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
+			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));		
 			SimpleElement root = parser.parse(file);
 /*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
             else this.negotiationType = CONVENTIONAL_NEGOTIATION;*/
@@ -163,8 +171,8 @@ public class NegotiationTemplate {
             mf.setAgentBName(xml_agentB.getAttribute("name"));
             mf.setAgentBClassName(xml_agentB.getAttribute("class"));
             mf.setAgentBUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentB.getAttribute("utility_space"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new IOException("Problem loading parameters from "+fileName+": "+e.getMessage());
         }
     }
     
