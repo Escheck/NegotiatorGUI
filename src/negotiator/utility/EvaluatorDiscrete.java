@@ -111,6 +111,8 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @author W.Pasman
 	 * @param EvalValueL
 	 * @return normalized EvalValue
+	 * 
+	 * ASSUMED that Max value is at least 1, becaues EVERY evaluatordiscrete is at least 1.
 	 */
 	public Double normalize(Integer EvalValueL)
 	{

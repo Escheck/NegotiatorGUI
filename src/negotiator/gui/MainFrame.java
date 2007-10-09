@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import negotiator.Main;
@@ -259,10 +260,13 @@ public class MainFrame extends javax.swing.JFrame {
 		treeFrame.setVisible(true);
     }//GEN-LAST:event_buttonShowModelActionPerformed
 
-    private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
+    private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) 
+    {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
 
         browseAgentUtilitySpace(fieldNegotiationTemplate);
-        NegotiationTemplate.loadParamsFromFile(fieldNegotiationTemplate.getText(), this);
+        try { NegotiationTemplate.loadParamsFromFile(fieldNegotiationTemplate.getText(), this); }
+        catch (Exception e)
+        {			JOptionPane.showMessageDialog(this, e.getMessage());      }
     }//GEN-LAST:event_buttonBrowseNegotiationTemplateActionPerformed
 
     private void fieldAgentBNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAgentBNameActionPerformed

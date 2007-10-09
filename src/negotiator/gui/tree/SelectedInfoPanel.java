@@ -72,7 +72,9 @@ public class SelectedInfoPanel extends JPanel {
 		else {
 			name.setText(objective.getName());
 			nr.setText("" + objective.getNumber());
-			description.setText(objective.getDescription());
+			String d=objective.getDescription();
+			if (d.equals("")) d="-";
+			description.setText(d);
 			if (objective instanceof Issue) {
 				mainBorder.setTitle("Issue");
 			}

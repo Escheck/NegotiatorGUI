@@ -29,7 +29,7 @@ public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld n
 	private double weight; 
 	
 	
-	private String description;
+	private String description="";
 	private Object userObject; //can be a picture, for instance
 	private Objective parent;
 	private Vector<Objective> children = new Vector();
