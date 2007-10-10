@@ -187,12 +187,17 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param val The value to have it's cost set/modified
 	 * @param cost The new cost of the value.
 	 */
-	public void setCost(Value val, double cost)
+	public void setCost(ValueDiscrete val, Double cost)
 	{
-		if(maxCost < cost){
-			maxCost = cost;
-			fCost.put((ValueDiscrete)val, new Double(cost));
-		}
+		//Wouter: I don't get this code...
+    	//  why not set the cost if it is smaller than maxCost??
+
+		// if(maxCost < cost){
+		//	maxCost = cost;
+		//	fCost.put((ValueDiscrete)val, new Double(cost));
+		//}
+		fCost.put(val, cost);
+		if (cost>maxCost) maxCost=cost;
 	}
 	
 	public void clear(){
@@ -219,12 +224,12 @@ public class EvaluatorDiscrete implements Evaluator {
             }
             String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
             if (sCost!=null) {
-            	System.out.println("loaded cost:"+sCost);
-            	cost = Double.valueOf(sCost);
-            	if (maxCost<cost) {
-            		maxCost = cost;
-            		setCost(value, cost);
-            	}
+            	//cost = Double.valueOf(sCost);
+            	setCost((ValueDiscrete)value,Double.valueOf(sCost));
+            	
+            	// Wouter: sorry but I don't get the following old code at all....
+            	// first, that check against maxCost is already done in setCost. And second, why not set the cost if it is smaller than maxCost??
+            	// if (maxCost<cost) { maxCost = cost; setCost(value, cost);} 
             }
             // else this.fCost.put(value, 0.0);
         }
