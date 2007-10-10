@@ -16,17 +16,12 @@ import negotiator.xml.SimpleElement;
 * 
 */
 
-public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld not be this way.
+public class Objective implements MutableTreeNode 
 {
 	
 	//Attributes
 	private int number;
-
-	 /// Wouter: AAAgh this really should not be here either.
-	// Richard is misusing the Objective as the node handling weights and name
-	// it really should work with the UtilitySpace weights... and domain name
 	private String name;
-	private double weight; 
 	
 	
 	private String description="";
@@ -84,24 +79,6 @@ public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld n
 	 */
 	public void setNumber(int nr) {
 		number = nr;
-	}
-	
-	/**
-	 * 
-	 * @return the weight associated with this node.
-	 */
-	public double getWeight() {
-		return weight;
-	}
-	
-	/**
-	 * Sets a new weight for this node.
-	 * 
-	 * @param newWeight the new weight.
-	 */
-	public void setWeight(double newWeight) {
-		weight = newWeight;
-		// TODO Update dependent weights
 	}
 	
 	/**
@@ -457,26 +434,18 @@ public class Objective implements MutableTreeNode //Wouter: ouch, this shoulld n
 	 * @param showEvaluators Also print the respective evaluators to xml.
 	 */
 	public SimpleElement toXML(){
-		SimpleElement thisObjective = new SimpleElement("objective");
-		thisObjective.setAttribute("name", name);
-		thisObjective.setAttribute("index", ""+number);
-		thisObjective.setAttribute("description", ""+ description);
-		thisObjective.setAttribute("type", "objective");
-		thisObjective.setAttribute("etype", "objective");
-		//Recurse over this object's children. Call their toXML
-/*		Enumeration<Objective> weightsEnum = this.children(); FIXME'd: i don't think we need to give weights here.
-		while(weightsEnum.hasMoreElements()){
-			Objective tmpObj = weightsEnum.nextElement();
-			SimpleElement thisWeight = new SimpleElement("weight");
-			thisWeight.setAttribute("index", ""+tmpObj.getNumber());
-			thisWeight.setAttribute("value", ""+tmpObj.getWeight());
-			thisObjective.addChildElement(thisWeight);
-		}
-*/		Enumeration<Objective> kidsEnum = this.children();
+		SimpleElement xmlTree = new SimpleElement("objective");
+		xmlTree.setAttribute("name", name);
+		xmlTree.setAttribute("index", ""+number);
+		xmlTree.setAttribute("description", ""+ description);
+		xmlTree.setAttribute("type", "objective");
+		xmlTree.setAttribute("etype", "objective");
+		//Recurse over this object's children.
+		Enumeration<Objective> kidsEnum = this.children();
 		while(kidsEnum.hasMoreElements()){
-			//how to get the weights?
-			thisObjective.addChildElement( (kidsEnum.nextElement()).toXML() );
+			//how to get the weights? Wouter: domain has no weights!!
+			xmlTree.addChildElement( (kidsEnum.nextElement()).toXML() );
 		}
-		return thisObjective;
+		return xmlTree;
 	}
 }

@@ -272,7 +272,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			if(!evalueStrings[i].equals(""))
 			{
 				value=Integer.valueOf(evalueStrings[i]);
-				if (value<=0) {value=0; System.out.println("Encountered "+value+", 0 or negative numbers are not allowed here");}
+				if (value<=0) throw new InvalidInputException("Encountered "+value+". Zero or negative numbers are not allowed here");
 			}
 			evalues.add(value); 
 		}
@@ -397,14 +397,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			}
 			try{
 				evalues = getDiscreteEvalutions();
-				if (evalues==null) System.out.println("RWWAIO#@! no evalues");
+				if (evalues==null) System.out.println("No evalues");
 				if(evalues != null){
 					evDis = new EvaluatorDiscrete();
 					evDis.setWeight(0.0);
 				}
 			}catch (Exception f){ //Can also be a casting exception.
-					System.out.println("AASH:"+f.getMessage());
-					JOptionPane.showMessageDialog(this, f.getMessage());
+					System.out.println("AAGH:"+f.getMessage());
+					JOptionPane.showMessageDialog(this, "Problem reading evaluation values:"+f.getMessage());
 			}
 
 			if (newIssue) {

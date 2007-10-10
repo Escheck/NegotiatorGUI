@@ -219,6 +219,7 @@ public class EvaluatorDiscrete implements Evaluator {
             }
             String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
             if (sCost!=null) {
+            	System.out.println("loaded cost:"+sCost);
             	cost = Double.valueOf(sCost);
             	if (maxCost<cost) {
             		maxCost = cost;

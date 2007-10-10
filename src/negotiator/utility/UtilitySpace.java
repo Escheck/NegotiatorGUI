@@ -36,15 +36,12 @@ public class UtilitySpace {
 	// Class fields
     private Domain domain;
     
-    // Wouter: Why does the weight hashmap use Integer to refer to an objective,
-    // and the evaluator hashmap refers directly to the Objective???
     
-    private HashMap<Integer, Double> weights;
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
-    private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
-    // Constructor
-    
+        private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
+
+
     /**
      * Creates an empty utility space.
      */
@@ -459,7 +456,7 @@ public class UtilitySpace {
     		if(!ev.weightLocked()){
     			ev.setWeight(wt); //set weight
     		}
-    		this.nomalizeChildren(tmpObj.getParent());
+    		this.normalizeChildren(tmpObj.getParent());
     		if(this.checkTreeNormalization()){
     			return fEvaluators.get(tmpObj).getWeight();
     		}else{
@@ -572,7 +569,7 @@ public class UtilitySpace {
     	return true;    	
     }
     
-    public final Set<Map.Entry<Objective,Evaluator>> nomalizeChildren(Objective obj){
+    public final Set<Map.Entry<Objective,Evaluator>> normalizeChildren(Objective obj){
     	Enumeration<Objective> childs = obj.children();
     	double weightSum = 0;
     	double lockedWeightSum = 0;
@@ -602,8 +599,10 @@ public class UtilitySpace {
     			fEvaluators.get(tmpObj).setWeight(1.0);
     		}
     	}
-    	if(/*weightSum + lockedWeightSum != 1.0 && */(lockedCount +1) < (freeCount + lockedCount) /*&& weightSum + lockedWeightSum != 0.0*/ ){ //that second bit to ensure that there is no problem with
-    		//normalize:
+    	
+    	//Wouter: cleaned up the test...
+    	//if(/*weightSum + lockedWeightSum != 1.0 && */(lockedCount +1) < (freeCount + lockedCount) /*&& weightSum + lockedWeightSum != 0.0*/ ){ //that second bit to ensure that there is no problem with
+    	if( freeCount >1){
     		Enumeration<Objective> normalChilds = obj.children();
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
@@ -619,45 +618,24 @@ public class UtilitySpace {
     						fEvaluators.get(tmpObj).setWeight(newWeight);
     						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
     					}
-    		//		}else{ //Diff < 0.0, do something else
-    				/*	if(!fEvaluators.get(tmpObj).weightLocked()){
-    						double currentWeight = fEvaluators.get(tmpObj).getWeight();
-    						double newWeight = currentWeight +(diff* currentWeight/weightSum);
-    						if(newWeight < 0){
-    							newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
-    						}
-    						fEvaluators.get(tmpObj).setWeight(newWeight);
-    						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
-    					}
-    					*/
-    		//		}	
     			}catch(Exception e){
-//    				do nothing, we can encounter Objectives/issues without Evaluators.
+    					// do nothing, we can encounter Objectives/issues without Evaluators.
     			}
     			
     		}
     		
-    	}/*else if(weightSum + lockedWeightSum == 0.0){
-    		//normalize so all unlocked ones receive a weight.
-    		Enumeration<Objective> normalChilds = obj.children();
-    		double amount = 1.0/freeCount;
-    		while(normalChilds.hasMoreElements()){
-    			Objective tmpObj = (Objective) normalChilds.nextElement();
-    			fEvaluators.get(tmpObj).setWeight(amount);
-    		}
-    		
     	}
-    	*/
     	
     	return getEvaluators();
     }
     
-     public final Set<Map.Entry<Objective,Evaluator> > modifyWeight(Objective obj, double wt){
+     public final Set<Map.Entry<Objective,Evaluator> > modifyWeight(Objective obj, double wt)
+     {
     	 if(fEvaluators.get(obj).weightLocked() || wt > 1.0){
     		 return getEvaluators();
     	 }else{
     		 fEvaluators.get(obj).setWeight(wt);
-    		 return nomalizeChildren(obj.getParent());
+    		 return normalizeChildren(obj.getParent());
     	 }
      }
 
@@ -676,16 +654,23 @@ public class UtilitySpace {
      * @return A representation of this utilityspace or <code>null</code> when there was an error.
      */ 
     public SimpleElement toXML(){
-    	SimpleElement root = (domain.getObjectivesRoot()).toXML();
+    	SimpleElement root = (domain.getObjectivesRoot()).toXML(); // convert the domain. 
     	root = toXMLrecurse(root);
     	SimpleElement rootWrapper = new SimpleElement("utility_space"); //can't really say overhere how many issues there are inhere.
     	rootWrapper.addChildElement(root);
     	return rootWrapper;//but how to get the correct values in place?
     }
     
+    /**
+     * Wouter: I assume this adds the utilities (weights and cost) from this utility space
+     * to a given domain. It modifies the currentLevel so the return value is superfluous.
+     * @param currentLevel is pointer to a XML tree describing the domain.
+     * @return XML tree with the weights and cost set. NOTE: currentLevel is modified anyway.
+     */
     private SimpleElement toXMLrecurse(SimpleElement currentLevel){
     	//go through all tags.
 
+    	// update the objective fields.
     	Object[] Objectives = currentLevel.getChildByTagName("objective");
     	Object[] childWeights = currentLevel.getChildByTagName("weight");
     	for(int objInd=0; objInd<Objectives.length;objInd++){
@@ -715,13 +700,14 @@ public class UtilitySpace {
     		currentChild = toXMLrecurse(currentChild);
     	}
     	
+    	// update the issue fields.
     	Object[] Issues = currentLevel.getChildByTagName("issue");
     	Object[] IssueWeights = currentLevel.getChildByTagName("weight");
     	for(int issInd=0; issInd<Issues.length; issInd++){
-    		SimpleElement tmpIssue = (SimpleElement) Issues[issInd];
+    		SimpleElement issueL = (SimpleElement) Issues[issInd];
     		
     		//set the weight
-    		int childIndex = Integer.valueOf(tmpIssue.getAttribute("index"));
+    		int childIndex = Integer.valueOf(issueL.getAttribute("index"));
     		Objective tmpEvObj = domain.getObjective(childIndex);
     		try{
     			
@@ -742,12 +728,12 @@ public class UtilitySpace {
     				}
     			}
     		
-    			String evtype_str = tmpIssue.getAttribute("etype");
+    			String evtype_str = issueL.getAttribute("etype");
     			EVALUATORTYPE evtype = EVALUATORTYPE.convertToType(evtype_str);
     			switch(evtype){
     			case DISCRETE:
     				//fill this issue with the relevant weights to items.
-    				Object[] items = tmpIssue.getChildByTagName("item");
+    				Object[] items = issueL.getChildByTagName("item");
     				for(int itemInd = 0; itemInd < items.length; itemInd++){
     					SimpleElement tmpItem = (SimpleElement) items[itemInd];
     					IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
@@ -762,7 +748,7 @@ public class UtilitySpace {
     				}
     				break;
     			case INTEGER:
-    				Object[] Ranges = tmpIssue.getChildByTagName("range");
+    				Object[] Ranges = issueL.getChildByTagName("range");
     				SimpleElement thisRange = (SimpleElement)Ranges[0];
     				EvaluatorInteger iev = (EvaluatorInteger) ev;
     				thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
@@ -776,11 +762,11 @@ public class UtilitySpace {
     					thisIntEval.setAttribute("ftype", "constant");
     					thisIntEval.setAttribute("parameter0", ""+iev.getConstantParam());
     				}
-    				tmpIssue.addChildElement(thisIntEval);
+    				issueL.addChildElement(thisIntEval);
     				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
     				break;
     			case REAL:
-    				Object[] RealRanges = tmpIssue.getChildByTagName("range");
+    				Object[] RealRanges = issueL.getChildByTagName("range");
     				EvaluatorReal rev = (EvaluatorReal) ev;
     				SimpleElement thisRealEval = new SimpleElement("evaluator");
     				EVALFUNCTYPE revtype = rev.getFuncType();
@@ -791,7 +777,7 @@ public class UtilitySpace {
     					thisRealEval.setAttribute("ftype", "constant");
     					thisRealEval.setAttribute("parameter0", ""+rev.getConstantParam());
     				}
-    				tmpIssue.addChildElement(thisRealEval);    				
+    				issueL.addChildElement(thisRealEval);    				
     				//TODO hdv the same thing as above vor the "evaluator" tag.
     				break;
     			}
