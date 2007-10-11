@@ -67,6 +67,7 @@ public class TreeFrame extends JFrame {
 	}
 	
 	//Methods
+	/*
 	public void reinitTreeTable(Domain domain) {
 		init(new NegotiatorTreeTableModel(domain), this.getSize());
 	}
@@ -74,6 +75,7 @@ public class TreeFrame extends JFrame {
 	public void reinitTreeTable(Domain domain, UtilitySpace utilitySpace) {
 		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize());
 	}
+	*/
 	
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
 		model = treeModel;
