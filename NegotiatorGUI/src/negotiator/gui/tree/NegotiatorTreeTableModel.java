@@ -379,7 +379,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 * fireTreeStructureChanged where the child index array and the children array
 	 * are left empty.
 	 * Wouter: be careful with calling this, 
-	 * some web pages indicate that the GUI below the source point may be collapsed
+	 * The GUI below the source point will be collapsed
 	 * 
 	 * @param source the source that triggered the change.
 	 * @param path a TreePath object that identifies the path to the parent of the modified item(s)
@@ -388,5 +388,13 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 		fireTreeStructureChanged(source, path, new int[0], new Object[0]);
 	}
 	
-
+	
+	/**
+	 * Wouter: added to handle change of values without change of tree structure.
+	 * @param source the source that triggered the change.
+	 * @param path path a TreePath object that identifies the path to the parent of the modified item(s)
+	 */
+	public void treeNodesChanged(Object source, Object[] path) {
+		fireTreeNodesChanged(source, path, new int[0], new Object[0]);
+	}
 }

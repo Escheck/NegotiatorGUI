@@ -739,7 +739,7 @@ public class UtilitySpace {
     					IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
     				
     					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
-    					double eval = dev.getEvaluation(theIssue.getValue(itemInd));
+    					double eval = dev.getValue(theIssue.getValue(itemInd));
     					tmpItem.setAttribute("evaluation", ""+eval);
     					
     					Double cost = dev.getCost(theIssue.getValue(itemInd));

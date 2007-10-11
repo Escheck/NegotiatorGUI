@@ -152,7 +152,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		valueField.setValue(weight);
 		slider.setValue(convertToInt(weight));
 		// Wouter: try to call explicit treeStructureChanged after change.
-		tableModel.treeStructureChanged(objective, objective.getPath().getPath());
+		tableModel.treeNodesChanged(objective, objective.getPath().getPath());
 	}
 	
 	public Objective getObjective() {
@@ -183,6 +183,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		}
 		//System.out.println("\nJust slide with me!");
 		double newWeight = convertToDouble(slider.getValue());
+		System.out.println("new weight="+newWeight);
 		valueField.setValue(newWeight);
 		changeWeight(newWeight);
 	}
