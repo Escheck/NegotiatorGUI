@@ -26,6 +26,9 @@ public class LoadDomainAction extends AbstractAction {
 		this.fileChooser = fileChooser;
 	}
 	
+	/*
+	 * Wouter: following stuff is not used anyway.
+	 * 
 	//Methods
 	public void actionPerformed(ActionEvent e) {
 		int result = fileChooser.showOpenDialog(parent);
@@ -39,4 +42,5 @@ public class LoadDomainAction extends AbstractAction {
 		Domain domain = new Domain(file);
 		parent.reinitTreeTable(domain);
 	}
+	*/
 }

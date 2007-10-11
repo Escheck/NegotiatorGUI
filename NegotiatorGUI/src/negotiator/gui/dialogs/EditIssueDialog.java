@@ -145,13 +145,14 @@ public class EditIssueDialog extends NewIssueDialog {
 				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
 				
 				(model.getIssueValuePanel(issue)).displayValues(issue);
+				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
 				
-				if (model.getUtilitySpace() == null) {
-					model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				}
-				else {
-					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
-				}
+				//if (model.getUtilitySpace() == null) {
+				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				//}
+				//else {
+				//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+				//}
 			}
 			
 			this.dispose();

@@ -164,7 +164,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
 		try {
 			name = getObjectiveName();
-			number = (((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getHighestObjectiveNr() + 1);
+			number = treeFrame.getNegotiatorTreeTableModel().getHighestObjectiveNr() + 1;
 			hasEvaluator = getWeightCheck();
 		//	description = getObjectiveDescription();
 		}
@@ -189,7 +189,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		selected.addChild(objective);
 		if (getWeightCheck()) {
 			try{
-			((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace().addEvaluator(objective);
+				treeFrame.getNegotiatorTreeTableModel().getUtilitySpace().addEvaluator(objective);
 			}catch(NullPointerException e){
 				JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
 			}
@@ -207,20 +207,9 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 			}
 			else {
 				//Notify the model that the contents of the treetable have changed
-				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
-				
-				if (model.getUtilitySpace() == null) {
-					model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				}
-				else {
-					treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
-				}
-				
-				/* HACK-2-TEST
-				int rowcount = treeFrame.getTreeTable().getTree().getRowCount();
-				for (int i =0; i <= rowcount; i++) {
-					treeFrame.getTreeTable().getTree().expandRow(i);
-				}*/
+				NegotiatorTreeTableModel model = treeFrame.getNegotiatorTreeTableModel();				
+				model.treeStructureChanged(this, treeFrame.getTreeTable().
+						getTree().getSelectionPath().getPath());
 				
 				this.dispose();
 			}

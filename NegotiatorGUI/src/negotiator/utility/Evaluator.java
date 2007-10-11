@@ -26,6 +26,9 @@ public interface Evaluator {
 	 */
 	public void setWeight(double wt);
 	
+	/**Wouter: lockWeight does not actually lock setWeight or so. It merely is a flag
+	 * affecting the behaviour of the normalize function in the utility space.
+	 */
 	public void lockWeight();
 	
 	public void unlockWeight();
