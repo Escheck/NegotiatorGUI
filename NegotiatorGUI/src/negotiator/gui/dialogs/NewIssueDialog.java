@@ -404,7 +404,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 					evDis.setWeight(0.0);
 				}
 			}catch (Exception f){ //Can also be a casting exception.
-					System.out.println("AAGH:"+f.getMessage());
 					JOptionPane.showMessageDialog(this, "Problem reading evaluation values:"+f.getMessage());
 			}
 
@@ -436,7 +435,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			
 				 // Wouter: I don't like the way this works now but notime to correct it. 
 	
-				UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
+				UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 				if(uts != null){
 					System.out.println("issue updated:"+issue);
 					//uts.getEvaluator(issue).clear();

@@ -9,7 +9,7 @@ import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.utility.UtilitySpace;
-
+import negotiator.utility.*;
 /**
  * Maakt een Dialog om een nieuwe Objective toe te voegen
  */
@@ -39,6 +39,11 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		this(owner, false);
 	}
 		
+	/**
+	 * 
+	 * @param owner
+	 * @param modal true if multiple dialogs can be open at once, false if not.
+	 */
 	public NewObjectiveDialog(TreeFrame owner, boolean modal) {
 		this(owner, modal, "Create new Objective");
 	}
@@ -48,7 +53,12 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		
 		this.treeFrame = owner;
 		//this.treeTable = treeTable;
-		
+
+			//Wouter: set weightCheck according to utility space setting
+		Objective selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
+		UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		//if (selected!=null && uts !=null) 
+		//	weightCheck=uts.getEvaluator(selected.getNumber()).???
 		initPanels();
 		
 		this.pack();
@@ -61,8 +71,8 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		
 		this.add(constructBasicPropertyPanel(), BorderLayout.NORTH);
 		this.add(constructButtonPanel(), BorderLayout.SOUTH);
-		
-/*		if(this.weightCheck.isSelected()){
+/*		
+		if(this.weightCheck.isSelected()){
 			weightCheck.setEnabled(false);
 		}
 */		
@@ -187,12 +197,13 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		
 		//objective.setDescription(description);
 		selected.addChild(objective);
-		if (getWeightCheck()) {
-			try{
-				treeFrame.getNegotiatorTreeTableModel().getUtilitySpace().addEvaluator(objective);
-			}catch(NullPointerException e){
-				JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
-			}
+		//Wouter: following code is new.
+		UtilitySpace utilspace=treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		if (utilspace!=null)
+		{
+			EvaluatorObjective ev=new EvaluatorObjective();
+			ev.setHasWeight(getWeightCheck());
+			utilspace.addEvaluator(objective, ev);
 		}
 		
 		return objective;
@@ -201,18 +212,15 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == okButton) {
 			Objective objective = constructObjective();
-			if (objective == null) {
-				return;
+			if (objective == null) return;
 				
-			}
-			else {
-				//Notify the model that the contents of the treetable have changed
-				NegotiatorTreeTableModel model = treeFrame.getNegotiatorTreeTableModel();				
-				model.treeStructureChanged(this, treeFrame.getTreeTable().
-						getTree().getSelectionPath().getPath());
-				
-				this.dispose();
-			}
+			//Notify the model that the contents of the treetable have changed
+			NegotiatorTreeTableModel model = treeFrame.getNegotiatorTreeTableModel();				
+			model.treeStructureChanged(this, treeFrame.getTreeTable().
+					getTree().getSelectionPath().getPath());
+			
+			this.dispose();
+		
 		}			
 		else if (e.getSource() == cancelButton) {
 			this.dispose();

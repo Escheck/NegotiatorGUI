@@ -11,6 +11,8 @@ public class EvaluatorObjective implements Evaluator {
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock;	
+	private boolean hasWeightP; // added Wouter, 11 oct 2007
+	
 	public EvaluatorObjective() {
 		fweight = 0; //needs to be set later on.
 	}
@@ -39,6 +41,14 @@ public class EvaluatorObjective implements Evaluator {
 	public void unlockWeight(){
 		fweightLock = false;
 	}
+	
+	public void setHasWeight(boolean doesHaveWeight)
+	{ hasWeightP=doesHaveWeight; }
+	
+	
+	public boolean getHasWeight() { return hasWeightP; }
+	
+	
 	
 	/**
 	 * 
