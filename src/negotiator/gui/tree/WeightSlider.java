@@ -13,6 +13,8 @@ import negotiator.utility.*;
 *
 * @author Richard Noorlandt
 * 
+* Wouter: WeightSlider is a GUI component in the Tree,
+* it is always there but may be invisible (if the objective/issue has no weight).
 */
 
 public class WeightSlider extends JPanel implements ChangeListener, ItemListener {
@@ -66,13 +68,18 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		lock.addItemListener(this);
 		this.add(lock);
 		
-		if ((tableModel.getUtilitySpace() != null) && (tableModel.getUtilitySpace().getEvaluator(obj.getNumber()) != null))
+		// Wouter: new code using the hasWeight field.
+		boolean hasweight=true;
+		UtilitySpace us=tableModel.getUtilitySpace();
+		if (us != null)
 		{
-			setVisible(true);
+			Evaluator ev=us.getEvaluator(obj.getNumber());
+			if (ev instanceof EvaluatorObjective) // should always be the case?? 
+				hasweight=((EvaluatorObjective)ev).getHasWeight();
 		}
-		else 
-			setVisible(false);
-	
+		setVisible(hasweight);
+
+		
 		//Added by Herbert
 		if((tableModel.getUtilitySpace() != null) && tableModel.getUtilitySpace().getEvaluator(obj.getNumber())== null || obj.getName().equals("root")){
 			System.out.println("No Evaluator");
