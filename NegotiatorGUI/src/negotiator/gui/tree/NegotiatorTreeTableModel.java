@@ -378,10 +378,15 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 	 * implementation, this method is just a wrapper for the protected method
 	 * fireTreeStructureChanged where the child index array and the children array
 	 * are left empty.
+	 * Wouter: be careful with calling this, 
+	 * some web pages indicate that the GUI below the source point may be collapsed
+	 * 
 	 * @param source the source that triggered the change.
 	 * @param path a TreePath object that identifies the path to the parent of the modified item(s)
 	 */
 	public void treeStructureChanged(Object source, Object[] path) {
 		fireTreeStructureChanged(source, path, new int[0], new Object[0]);
 	}
+	
+
 }

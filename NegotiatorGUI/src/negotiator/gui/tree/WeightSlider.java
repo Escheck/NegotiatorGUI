@@ -26,7 +26,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	//private Objective objective;
 	//private Evaluator evaluator;
 	private NegotiatorTreeTableModel tableModel;
-	private Objective objective;
+	private Objective objective; // for which objective is this the weight slider
 	private JCheckBox lock;
 	private JSlider slider;
 	private JFormattedTextField valueField;
@@ -151,6 +151,8 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		weight = newWeight;
 		valueField.setValue(weight);
 		slider.setValue(convertToInt(weight));
+		// Wouter: try to call explicit treeStructureChanged after change.
+		tableModel.treeStructureChanged(objective, objective.getPath().getPath());
 	}
 	
 	public Objective getObjective() {
@@ -169,6 +171,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		weight = tableModel.getUtilitySpace().setWeight(objective, newWeight);
 		tableModel.updateWeights(this, weight);
 		setWeight(weight); //redundant
+
 	}
 	
 	public void stateChanged(ChangeEvent e) {
