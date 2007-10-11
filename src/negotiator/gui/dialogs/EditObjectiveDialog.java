@@ -4,8 +4,8 @@ import java.awt.*;
 
 import javax.swing.JOptionPane;
 import negotiator.gui.tree.*;
-import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
+import negotiator.utility.EvaluatorObjective;
 import negotiator.utility.UtilitySpace;
 
 import jtreetable.JTreeTable;
@@ -39,10 +39,25 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 	private void setFieldValues() {
 		nameField.setText(objective.getName());
 		numberField.setText("" + objective.getNumber());
-//		descriptionArea.setText(objective.getDescription());
+		
+		boolean weighted=true;
+		UtilitySpace utilspace=treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		if (utilspace!=null)
+		{
+			EvaluatorObjective ev=(EvaluatorObjective)utilspace.getEvaluator(objective.getNumber());
+			weighted=ev.getHasWeight();
+		}
+		weightCheck.setSelected(weighted);
+
+		//descriptionArea.setText(objective.getDescription());
 	}
 	
-	//overrides from newobjectdialog
+	/**Wouter:  override from NewObjectiveDialog is weird.
+	 * In fact, the 'constructObjective' now is an 'editObjective'.
+	 * This works because constructObjective inserted the new node into the tree anyway,
+	 * and now nothing has to inserted.
+	 * 
+	 */
 	protected Objective constructObjective() {
 		String name="";
 		int number=0;
@@ -59,21 +74,11 @@ public class EditObjectiveDialog extends NewObjectiveDialog {
 		objective.setNumber(number);
 		objective.setDescription(description);
 		
-		if (getWeightCheck()) {
-			try{
-				UtilitySpace us = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
-				if(us == null){
-					JOptionPane.showMessageDialog(this, "There is no Utility Space yet, continuing to add Issue or Objective without an evaluator.");
-				}else if(us.getEvaluator(objective.getNumber())== null){
-					//create a new evaluator for this objective
-					us.addEvaluator(objective);
-					us.getEvaluator(objective.getNumber()).setWeight(0.0);
-				}
-				
-					
-			}catch(NullPointerException e){
-				
-			}
+		UtilitySpace us = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		if (us!=null)
+		{
+			EvaluatorObjective ev=(EvaluatorObjective)us.getEvaluator(objective.getNumber());
+			if (ev!=null) ev.setHasWeight(getWeightCheck());
 		}
 		
 		return objective;
