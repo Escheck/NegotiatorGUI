@@ -18,6 +18,16 @@ import negotiator.issue.*;
 * 
 */
 
+
+/**
+ * Wouter: JTreeTable probably has been downloaded from
+ * http://java.sun.com/products/jfc/tsc/articles/treetable1/
+ * 
+ * "To compile and run the example program provided with this article, 
+ * you must use Swing 1.1 Beta 2 or a compatible Swing release."
+ * 
+ */
+
 public class TreeFrame extends JFrame {
 	
 	//Attributes

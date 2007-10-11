@@ -19,11 +19,14 @@ import negotiator.gui.dialogs.NewObjectiveDialog;
 
 //TODO: replace instances of root by Domain.getRoot (or something similar)
 
-/**Wouter: TreeInterface in the past was named NegotiationTreeTableModel but I did not like that name.
- * In fact a model is just an interface to the tree, needed to get correct "update" events
- * after a node in the tree is modified.
- */
 
+/**
+ * The model implement sthe  GUI event handling.
+ * It now also contains the glue to create the leaf nodes.
+ * Wouter: I don't like the "model" part of the name, it is more an interface
+ * and it does not model anything.
+ * But everyone seems to be using "model"...
+ */
 public class NegoTreeTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
 	//Attributes

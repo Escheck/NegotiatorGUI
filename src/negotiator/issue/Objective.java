@@ -6,7 +6,7 @@ import java.util.Vector;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import negotiator.xml.SimpleElement;
-
+import javax.swing.tree.TreePath;
 /**
 * Some work needs to be done to guarantee consistency of the tree. Methods like setParent don't signal 
 * the parent that it has a new child yet. Also check the constructors for this...
@@ -26,7 +26,7 @@ public class Objective implements MutableTreeNode
 	
 	private String description="";
 	private Object userObject; //can be a picture, for instance
-	private Objective parent;
+	private Objective parent; // Wouter: null if no parent available?
 	private Vector<Objective> children = new Vector();
 		
 	//Constructors
@@ -447,5 +447,20 @@ public class Objective implements MutableTreeNode
 			xmlTree.addChildElement( (kidsEnum.nextElement()).toXML() );
 		}
 		return xmlTree;
+	}
+	
+	
+	/**
+	 * @author W.Pasman
+	 * @return treepath to (and including) this objective.
+	 * requires that the parent fields are set properly and
+	 * that this implements MutableTreeNode. 
+	 * Still, it is dubious whether Objective should implement mutabletreenode...
+	 * 
+	 */
+	public TreePath getPath()
+	{
+		if (parent==null) return new TreePath((Object)this);
+		return parent.getPath().pathByAddingChild((Object)this);
 	}
 }
