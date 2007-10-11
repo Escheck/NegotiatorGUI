@@ -59,13 +59,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 	
 	public NewIssueDialog(TreeFrame owner, boolean modal, String name) {
-		super(owner, modal, name);
+		super(owner, modal, name); // This returns only after user filled in the form and pressed OK 
 	}
 	
 	//Methods
 	protected void initPanels() {
 		super.initPanels();
-		
+		weightCheck.setEnabled(false);
+		weightCheck.setSelected(true);		
 		JPanel tmpIssPropP = constructIssuePropertyPanel();
 
 		this.add(tmpIssPropP, BorderLayout.CENTER);
