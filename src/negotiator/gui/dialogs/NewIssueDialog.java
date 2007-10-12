@@ -36,6 +36,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected JTextArea discreteTextArea;
 	protected JTextArea discreteTextEvaluationArea;
+	protected JTextArea discreteCostEvaluationArea;
+	protected JTextArea discreteDescEvaluationArea;
 	
 	protected JTextField integerMinField;
 	protected JTextField integerOtherField;
@@ -85,6 +87,12 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		//Initialize the input components
 		discreteTextArea = new JTextArea(20, 25);
 		discreteTextEvaluationArea = new JTextArea(20,25);
+		discreteCostEvaluationArea = new JTextArea(20,25);
+		discreteCostEvaluationArea.setEditable(false);
+		discreteDescEvaluationArea = new JTextArea(20,25);
+		discreteDescEvaluationArea.setEditable(false);
+
+
 		integerMinField = new JTextField(15);
 		integerOtherField = new JTextField(15);
 		integerLinearField = new JTextField(15);
@@ -127,6 +135,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		JPanel textPanel = new JPanel();
 		JPanel evalPanel = new JPanel();
+		JPanel costPanel = new JPanel();
+		JPanel descPanel = new JPanel();
 		
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
 		JLabel textLabel = new JLabel("Edit the discrete values below. Use one line for each value.");
@@ -137,19 +147,33 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		
 		evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
-		JLabel evalLabel = new JLabel("Edit the evaluation values below. Use one line for each value.");
+		JLabel evalLabel = new JLabel("Evaluation values.");
 		evalPanel.add(evalLabel);
 		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
 		panel.add(evalPanel);
+
+		costPanel.setLayout(new BoxLayout(costPanel, BoxLayout.PAGE_AXIS));
+		JLabel costLabel = new JLabel("Cost of value");
+		costPanel.add(costLabel);
+		costPanel.add(new JScrollPane(discreteCostEvaluationArea));
+		panel.add(costPanel);
 		
-		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
+		descPanel.setLayout(new BoxLayout(descPanel, BoxLayout.PAGE_AXIS));
+		JLabel descLabel = new JLabel("Description");
+		descPanel.add(descLabel);
+		descPanel.add(new JScrollPane(discreteDescEvaluationArea));
+		panel.add(descPanel);
+		
+		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			discreteTextEvaluationArea.setEnabled(false);
 			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
 		}
 		
+
 		
+
 		return panel;
 	}
 	
@@ -257,9 +281,9 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	/**
 	 * Gets the evaluations for the discrete issue from the input field in this dialog. 
-	 * The input values don't need to be normalized.
 	 * @return An  arrayList with the evaluations. 
 	 * Now returns elements with value 0 to indicate non-entered (empty field) values.
+	 * Cost can not be edited anyway so not returned now.
 	 * @throws InvalidInputException 
 	 */
 	protected ArrayList<Integer> getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
@@ -418,7 +442,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			}
 			ArrayList<ValueDiscrete> v_enum = ((IssueDiscrete)issue).getValues();
 
-			 // jload values into discrete evaluator
+			 // load values into discrete evaluator
 			if(evDis != null && evalues!=null)
 			{
 				try

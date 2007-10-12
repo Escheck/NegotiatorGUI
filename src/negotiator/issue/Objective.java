@@ -2,11 +2,13 @@ package negotiator.issue;
 
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import negotiator.xml.SimpleElement;
 import javax.swing.tree.TreePath;
+
 /**
 * Some work needs to be done to guarantee consistency of the tree. Methods like setParent don't signal 
 * the parent that it has a new child yet. Also check the constructors for this...
@@ -27,7 +29,7 @@ public class Objective implements MutableTreeNode
 	private String description="";
 	private Object userObject; //can be a picture, for instance
 	private Objective parent; // Wouter: null if no parent available?
-	private Vector<Objective> children = new Vector();
+	private Vector<Objective> children = new Vector(); // Wouter: need to make this arraylist but no time now...
 		
 	//Constructors
 	public Objective() {
@@ -223,6 +225,10 @@ public class Objective implements MutableTreeNode
 	public Enumeration<Objective> children() {
 		return children.elements();
 	}
+	
+	/** Wouter: added bcause I dont have time to change all Vector and Enumerators to ArrayList code*/
+	public ArrayList<Objective> getChildren()
+	{ return new ArrayList<Objective>(children); }
 
 	/**
 	 * @return true iff the node is an OBJECTIVE, of false if the node is an ISSUE.
@@ -239,6 +245,18 @@ public class Objective implements MutableTreeNode
 			return children.elementAt(childIndex);
 		else
 			return null;
+	}
+	
+	/**
+	 * @author W.Pasman
+	 * @param ID is the ID number of the needed child
+	 * @return Objective, or null.
+	 */
+	public Objective getChildWithID(int ID)
+	{
+		for (Objective obj:getChildren())
+			if (obj.getNumber()==ID) return obj;
+		return null;
 	}
 
 	/**

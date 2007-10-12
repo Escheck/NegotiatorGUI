@@ -233,7 +233,6 @@ public class TreeFrame extends JFrame {
 		fileMenu.add(saveUtilitySpaceAct);
 		fileMenu.addSeparator();
 		fileMenu.add(exitAct);
-		
 		editMenu.add(addObjectiveAct);
 		editMenu.add(addIssueAct);
 		editMenu.addSeparator();

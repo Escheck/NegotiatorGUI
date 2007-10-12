@@ -41,9 +41,12 @@ public class EditIssueDialog extends NewIssueDialog {
 		setPanelContents(issue);
 	}
 	
-	//Methods
+	/**
+	 * Load the appropriate contents into the right panel.
+	 * @param issue
+	 */
 	private void setPanelContents(Issue issue) {
-		UtilitySpace utilSpace = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
+		UtilitySpace utilSpace = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 		
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
@@ -69,17 +72,31 @@ public class EditIssueDialog extends NewIssueDialog {
 				EvaluatorDiscrete eval = (EvaluatorDiscrete)utilSpace.getEvaluator(issue.getNumber());
 				if (eval!=null)
 				{
+					 // load the eval and cost values
 					valueString = "";
+					String costString="";
+					String descString="";
+					
 					for (ValueDiscrete val: values) 
 					{
 						Integer util=eval.getValue(val); // get the utility for this value
 						//System.out.println("util="+util);
 						if (util!=null) valueString=valueString+util;
+						
+						Double cost=eval.getCost(val);
+						if (cost!=null) costString=costString+cost;
+
+						String desc=eval.getDesc(val);
+						if (desc!=null) descString=descString+desc;
+						
 						valueString=valueString+"\n";
+						costString=costString+"\n";
+						descString=descString+"\n";
 						
 					}
 					discreteTextEvaluationArea.setText(valueString);
-			
+					discreteCostEvaluationArea.setText(costString);
+					discreteDescEvaluationArea.setText(descString);
 				}
 			}
 		}

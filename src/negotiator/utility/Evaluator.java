@@ -2,7 +2,7 @@ package negotiator.utility;
 
 import negotiator.Bid;
 import negotiator.xml.SimpleElement;
-
+import negotiator.issue.Objective;
 /**
  * 
  * @author Dmytro?
@@ -46,5 +46,11 @@ public interface Evaluator {
 	public void loadFromXML(SimpleElement pRoot);
 	
 	public SimpleElement setXML(SimpleElement evalObj);
+	
+	/** 
+	 * @param whichObjective is the objective/issue to which this evaluator is attached.
+	 * @return String describing lacking component, or null if the evaluator is complete. 
+	 */
+	public String isComplete(Objective whichObjective);
 	
 }

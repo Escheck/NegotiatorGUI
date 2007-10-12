@@ -19,11 +19,13 @@ public class EvaluatorDiscrete implements Evaluator {
 	private boolean fweightLock; 
 	private HashMap<ValueDiscrete, Integer> fEval;
 	private HashMap<ValueDiscrete, Double> fCost;
+	private HashMap<ValueDiscrete, String> fDesc; // description field for each value.
 	private double maxCost = 0;
 	
 	public EvaluatorDiscrete() {
 		fEval = new HashMap<ValueDiscrete, Integer>();
 		fCost = new HashMap<ValueDiscrete, Double>();
+		fDesc = new HashMap<ValueDiscrete, String>();
 		
 		fweight = 0;
 	}
@@ -200,6 +202,21 @@ public class EvaluatorDiscrete implements Evaluator {
 		if (cost>maxCost) maxCost=cost;
 	}
 	
+	/**
+	 * Sets the desc for value <code>val</code>. If the value doesn't exist yet in this Evaluator,
+	 * add it as well.
+	 * @param val The value to have it's desc set/modified
+	 * @param desc The new desc of the value.
+	 */
+	public void setDesc(ValueDiscrete val, String desc)
+	{
+		fDesc.put(val, desc);
+	}
+	
+	public String getDesc(ValueDiscrete val)
+	{ return fDesc.get(val); }
+	
+	
 	public void clear(){
 		fEval.clear();
 		fCost.clear();
@@ -221,7 +238,7 @@ public class EvaluatorDiscrete implements Evaluator {
             		this.fEval.put(value, Integer.valueOf(evaluationStr));
             	}
             	catch (Exception e) { System.out.println("Problem reading XML file: "+e.getMessage());}
-            }
+            }          
             String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
             if (sCost!=null) {
             	//cost = Double.valueOf(sCost);
@@ -231,6 +248,8 @@ public class EvaluatorDiscrete implements Evaluator {
             	// first, that check against maxCost is already done in setCost. And second, why not set the cost if it is smaller than maxCost??
             	// if (maxCost<cost) { maxCost = cost; setCost(value, cost);} 
             }
+            String descStr=((SimpleElement)xml_items[j]).getAttribute("description");
+            if (descStr!=null) setDesc(value,descStr);
             // else this.fCost.put(value, 0.0);
         }
 	}
@@ -245,5 +264,12 @@ public class EvaluatorDiscrete implements Evaluator {
 		
 		return evalObj;
 	}
+	
+	public String isComplete(Objective whichobj )
+	{
+		if (whichobj instanceof ....)
+		return null;
+	}
+
 	
 }
