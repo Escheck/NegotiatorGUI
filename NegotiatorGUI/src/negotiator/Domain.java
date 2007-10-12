@@ -27,14 +27,14 @@ import java.util.Enumeration;
 public class Domain {
 	
 	// Class fields
-    private int fNumberOfIssues;
-    private Issue fIssues[];
+    //private int fNumberOfIssues; // idem: removed.
+    //private Issue fIssues[]; Wouter: What's this?? Dmytro: this is OLD. delete please.
     private Objective fObjectivesRoot;
     
     // Constructor
     public Domain(){
     	fObjectivesRoot = null;
-    	fNumberOfIssues=0;
+    	//fNumberOfIssues=0;
     }
     
     public Domain(SimpleElement root) {
@@ -58,9 +58,11 @@ public class Domain {
     }
     
     // Class methods
+    /*
     public final int getNumberOfIssues() {
         return fNumberOfIssues;
     }
+    */
     
     public final Objective getIssue(int index) {
         return fObjectivesRoot.getChildAt(index);

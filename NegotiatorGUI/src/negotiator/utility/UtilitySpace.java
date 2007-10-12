@@ -571,6 +571,7 @@ public class UtilitySpace {
     
     public final Set<Map.Entry<Objective,Evaluator>> normalizeChildren(Objective obj){
     	Enumeration<Objective> childs = obj.children();
+    	double RENORMALCORR=0.05; // we add this to all weight sliders to solve the slider-stuck-at-0 problem.
     	double weightSum = 0;
     	double lockedWeightSum = 0;
     	int freeCount = 0;
@@ -607,11 +608,13 @@ public class UtilitySpace {
     		while(normalChilds.hasMoreElements()){
     			Objective tmpObj = normalChilds.nextElement();
     			double diff = (lockedWeightSum + weightSum) - 1.0 ;
+    			 // because of RENORMALCORR, total weight will get larger.
+    			double correctedWeightSum=weightSum+RENORMALCORR*freeCount;
     			try{
     				
     					if(!fEvaluators.get(tmpObj).weightLocked()){
     						double currentWeight = fEvaluators.get(tmpObj).getWeight();
-    						double newWeight = currentWeight -(diff* currentWeight/weightSum);
+    						double newWeight = currentWeight -(diff* (currentWeight+RENORMALCORR)/correctedWeightSum);
     						if(newWeight < 0){
     							newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     						}
@@ -789,4 +792,57 @@ public class UtilitySpace {
     	
     	return currentLevel;
     }
+    
+    /**
+     * @author W.Pasman
+     * @return null if util space is complete, else returns string containging explanation why not.
+     */
+    String UtilSpaceIsComplete() 
+	// Oh damn, problem, we don't have the domain template here anymore.
+    // so how can we check domain compativility?
+    // only we can check that all fields are filled.........
+    { return IsSubtreeAndComplete(domain.getObjectivesRoot()) ; }
+
+
+    /**
+     * check that the domainSubtreeP is a subtree of the utilSubtreeP, 
+     * and that all leaf nodes are complete.
+     * @param utilSubtreeP
+     * @param domainSubtreeP
+     * @return  Stringg containing explanation why not a subtree, or null.
+     * @author W.Pasman
+     */
+    String IsSubtreeAndComplete(Objective utilSubtreeP,Objective domainSubtreeP)
+    {
+    	if (utilSubtreeP.isLeaf() && domainSubtreeP.isLeaf())
+    	{
+    		// check the evaluator at the utilSubtree, whether it agrees with the domain description and is complete
+    		// if it is a leaf, it is an Issue and there should be an evaluator.
+    		// note, the non-leaf nodes do not need an evaluator.
+    		blabla
+    	}
+    	else
+    	{
+    			// check all objectives in the domain. 
+    		for (Objective domSpaceObj:domainSubtreeP.getChildren())
+    		{
+    			 // get child from utilSubtreeP that has same ID. These should match.
+    			 // we do this because order of children may differ.
+    			Objective matchingUtilSpaceObj=utilSubtreeP.getChildWithID(domSpaceObj.getNumber());
+    			if (matchingUtilSpaceObj==null)
+    				return "The utility space has no objective matching domainspace object "+domSpaceObj.getName();
+    			String checksubtrees=IsSubtreeAndComplete(matchingUtilSpaceObj,domSpaceObj);
+    			if (checksubtrees!=null) return checksubtrees;
+    		}
+    		 // strictly it don't matter if there is more in the util space under this node, but 
+    		 // lets give a warning...
+    		if (utilSubtreeP.getChildren().size()<domainSubtreeP.getChildren().size())
+    			//Wouter: need to make this a messagebox or so, how did that work??
+    			System.out.println("WARNING: utility space has more objectives than the domain space under the node"+
+    					domainSubtreeP.getName());
+    	}
+    	return null;
+    }
+
+
 }
