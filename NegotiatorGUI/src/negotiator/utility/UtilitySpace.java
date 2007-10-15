@@ -718,7 +718,7 @@ public class UtilitySpace {
     			Evaluator ev = fEvaluators.get(tmpEvObj);
     			
     			if(IssueWeights.length == 0){
-    				SimpleElement currentChildWeight = new SimpleElement("Weight");
+    				SimpleElement currentChildWeight = new SimpleElement("weight");
     				currentChildWeight.setAttribute("index", ""+childIndex);
     				currentChildWeight.setAttribute("value", ""+ev.getWeight());
     				currentLevel.addChildElement(currentChildWeight);
@@ -743,12 +743,15 @@ public class UtilitySpace {
     					IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
     				
     					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
-    					double eval = dev.getValue(theIssue.getValue(itemInd));
+    					Integer eval = dev.getValue(theIssue.getValue(itemInd));
     					tmpItem.setAttribute("evaluation", ""+eval);
     					
     					Double cost = dev.getCost(theIssue.getValue(itemInd));
     					if (cost!=null) tmpItem.setAttribute("cost", ""+cost);
 
+    					
+    					String desc = dev.getDesc(theIssue.getValue(itemInd));
+    					if (desc!=null) tmpItem.setAttribute("description", ""+desc);
     				}
     				break;
     			case INTEGER:
