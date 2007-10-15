@@ -4,6 +4,7 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EvaluatorInteger implements Evaluator {
@@ -184,6 +185,11 @@ public class EvaluatorInteger implements Evaluator {
 		
 		
 		return evalObj;
+	}
+	
+	public String isComplete(Objective whichobj )
+	{
+		return "EvaluatorInteger isComplete checker is not implemented";
 	}
 	
 	

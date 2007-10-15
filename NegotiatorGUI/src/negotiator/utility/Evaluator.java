@@ -48,6 +48,8 @@ public interface Evaluator {
 	public SimpleElement setXML(SimpleElement evalObj);
 	
 	/** 
+	 * Check whether the evaluator has enough information to make an evaluation.
+	 * 
 	 * @param whichObjective is the objective/issue to which this evaluator is attached.
 	 * @return String describing lacking component, or null if the evaluator is complete. 
 	 */

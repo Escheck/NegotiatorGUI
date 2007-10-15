@@ -12,6 +12,7 @@ package negotiator.utility;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Vector;
@@ -39,7 +40,7 @@ public class UtilitySpace {
     
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
-        private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
+    private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
 
 
     /**
@@ -794,24 +795,37 @@ public class UtilitySpace {
     }
     
     /**
-     * @author W.Pasman
+      * Wouter: this function *should* check that the domainSubtreeP is a subtree of the utilSubtreeP, 
+     * and that all leaf nodes are complete.
+     * However currently we only check that all the leaf nodes are complete,
+    * @author W.Pasman
      * @return null if util space is complete, else returns string containging explanation why not.
      */
-    String UtilSpaceIsComplete() 
+    public String UtilSpaceIsComplete() 
 	// Oh damn, problem, we don't have the domain template here anymore.
     // so how can we check domain compativility?
     // only we can check that all fields are filled.........
-    { return IsSubtreeAndComplete(domain.getObjectivesRoot()) ; }
+    { 
+    	ArrayList<Issue> issues=domain.getIssues();
+    	if (issues==null) return "Utility space is not complete, in fact it is empty!";
+    	String mess;
+    	for (Issue issue:issues) 
+    	{
+    		Evaluator ev=getEvaluator(issue.getNumber());
+    		if (ev==null) return "issue "+issue.getName()+" has no evaluator";
+    		mess= (ev.isComplete(issue));
+    		if (mess!=null) return mess;
+    	}
+    	return null;
+    }
 
 
     /**
-     * check that the domainSubtreeP is a subtree of the utilSubtreeP, 
-     * and that all leaf nodes are complete.
+     * as we don't have the domain tree.
      * @param utilSubtreeP
      * @param domainSubtreeP
      * @return  Stringg containing explanation why not a subtree, or null.
      * @author W.Pasman
-     */
     String IsSubtreeAndComplete(Objective utilSubtreeP,Objective domainSubtreeP)
     {
     	if (utilSubtreeP.isLeaf() && domainSubtreeP.isLeaf())
@@ -843,6 +857,7 @@ public class UtilitySpace {
     	}
     	return null;
     }
+     */
 
 
 }

@@ -76,16 +76,18 @@ public class TreeFrame extends JFrame {
 		init(treeModel, null);
 	}
 	
-	//Methods
-	/*
-	public void reinitTreeTable(Domain domain) {
+	
+	public void clearTreeTable(Domain domain) {
 		init(new NegotiatorTreeTableModel(domain), this.getSize());
 	}
 	
-	public void reinitTreeTable(Domain domain, UtilitySpace utilitySpace) {
+	
+	public void clearTreeTable(Domain domain, UtilitySpace utilitySpace) {
 		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize());
+		//treeTable.repaint();
 	}
-	*/
+	
+
 	
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
 		model = treeModel;

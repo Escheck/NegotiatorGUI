@@ -207,4 +207,9 @@ public class EvaluatorReal implements Evaluator {
 		
 		return evalObj;
 	}
+	
+	public String isComplete(Objective whichobj )
+	{
+		return "EvaluatorReal isComplete checker is not implemented";
+	}
 }

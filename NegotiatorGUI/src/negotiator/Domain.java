@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.ArrayList;
 /**
  *
  * @author Dmytro Tykhonov & Koen Hindriks
@@ -310,6 +311,17 @@ public class Domain {
 		return root;
 	}
 	
-
+	/**
+	 * get all issues as an arraylist.
+	 * @author W.Pasman
+	 * @return arraylist of all issues in the domain.
+	 */
+	public ArrayList<Issue> getIssues()
+	{
+		Enumeration<Objective> issues=fObjectivesRoot.getPreorderIssueEnumeration();
+		ArrayList<Issue> issuelist=new ArrayList<Issue>();
+		while (issues.hasMoreElements()) issuelist.add((Issue)issues.nextElement());
+		return issuelist;
+	}
 	
 }

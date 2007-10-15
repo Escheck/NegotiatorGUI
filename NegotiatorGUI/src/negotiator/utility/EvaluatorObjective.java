@@ -92,4 +92,9 @@ public class EvaluatorObjective implements Evaluator {
 		
 		return evalObj;
 	}
+	
+	public String isComplete(Objective whichobj )
+	{
+		return "Internal error: isComplete should be checked only with Issues, not with Objectives";
+	}
 }

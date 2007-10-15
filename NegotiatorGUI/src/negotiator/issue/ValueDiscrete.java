@@ -19,7 +19,7 @@ public class ValueDiscrete extends Object implements Value {
 		return value;
 	}
 		
-	public String getStringValue() {
+	public String toString() {
 		return value;
 	}
 
