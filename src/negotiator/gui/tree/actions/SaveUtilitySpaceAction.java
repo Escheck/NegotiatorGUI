@@ -5,6 +5,7 @@ import java.io.*;
 import java.awt.event.*;
 
 import negotiator.gui.tree.*;
+import negotiator.utility.UtilitySpace;
 
 /**
 *
@@ -28,6 +29,15 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
+		
+		// check first for problems.
+		UtilitySpace us=parent.getNegotiatorTreeTableModel().getUtilitySpace();
+		String warning=us.UtilSpaceIsComplete();
+		if (warning!=null){
+				int choice=JOptionPane.showConfirmDialog(null, "Utility space is not complete: "+warning+". Save anyway?");
+				if (choice!=JOptionPane.OK_OPTION) return;
+		}
+
 		int result = fileChooser.showSaveDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			openedFile = fileChooser.getSelectedFile();

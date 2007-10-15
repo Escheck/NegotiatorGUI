@@ -19,7 +19,7 @@ public class ValueReal implements Value {
 		return value;
 	}
 	
-	public String getStringValue() {
+	public String toString() {
 		return Double.toString(value);
 	}
 	

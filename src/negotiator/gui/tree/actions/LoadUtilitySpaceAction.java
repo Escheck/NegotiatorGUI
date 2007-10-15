@@ -39,6 +39,6 @@ public class LoadUtilitySpaceAction extends AbstractAction {
 	
 	private void loadUtilitySpace(File file) {
 		Domain domain = parent.getNegotiatorTreeTableModel().getDomain();
-		parent.reinitTreeTable(domain, new UtilitySpace(domain, file.getPath()));
+		parent.clearTreeTable(domain, new UtilitySpace(domain, file.getPath()));
 	}
 }

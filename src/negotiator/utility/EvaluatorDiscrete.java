@@ -4,6 +4,7 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -267,7 +268,18 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	public String isComplete(Objective whichobj )
 	{
-		if (whichobj instanceof ....)
+		try
+		{
+			if (!(whichobj instanceof IssueDiscrete))
+				throw new Exception("this discrete evaluator is associated with something of type "+whichobj.getClass());
+			// check that each issue value has an evaluator.
+			IssueDiscrete issue=(IssueDiscrete)whichobj;
+			ArrayList<ValueDiscrete>  values=issue.getValues();
+			for (ValueDiscrete value: values) 
+				if (fEval.get(value)==null) throw new Exception("the value "+value+" has no evaluation in the objective ");
+		}
+		catch (Exception e)
+		{ return  "Problem with objective "+whichobj.getName()+":" + e.getMessage();}
 		return null;
 	}
 

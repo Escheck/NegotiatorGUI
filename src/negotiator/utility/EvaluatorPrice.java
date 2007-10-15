@@ -170,4 +170,9 @@ public class EvaluatorPrice implements Evaluator {
 		return evalObj;
 	}
 	
+	public String isComplete(Objective whichobj )
+	{
+		return "EvaluatorPrice: isComplete checker is not implemented";
+	}
+	
 }

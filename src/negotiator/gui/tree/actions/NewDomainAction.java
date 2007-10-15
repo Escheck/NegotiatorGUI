@@ -30,6 +30,6 @@ public class NewDomainAction extends AbstractAction {
 		Objective newRoot = new Objective(null, "root", 0);
 		Domain domain = new Domain();
 		domain.setObjectivesRoot(newRoot);
-		parent.reinitTreeTable(domain);
+		parent.clearTreeTable(domain);
 	}
 }

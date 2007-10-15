@@ -64,7 +64,7 @@ public class IssueDiscrete extends Issue {
 	 */
 	public int getValueIndex(String value) {
 	    for(int i=0;i<numberOfValues;i++)
-	        if(issueValues.get(i).getStringValue().equals(value)) {
+	        if(issueValues.get(i).toString().equals(value)) {
 	            return i;
 	        }
 	    return -1;
@@ -124,7 +124,7 @@ public class IssueDiscrete extends Issue {
 		for(int item_ind = 0; item_ind < numberOfValues; item_ind++){
 			SimpleElement thisItem = new SimpleElement("item");
 			thisItem.setAttribute("index", "" + (item_ind +1)); //One off error?
-			thisItem.setAttribute("value", issueValues.get(item_ind).getStringValue());
+			thisItem.setAttribute("value", issueValues.get(item_ind).toString());
 			thisIssue.addChildElement(thisItem);
  		}
 		return thisIssue;

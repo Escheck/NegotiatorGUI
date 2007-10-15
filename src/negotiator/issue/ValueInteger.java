@@ -19,7 +19,7 @@ public class ValueInteger implements Value {
 		return value;
 	}
 	
-	public String getStringValue() {
+	public String toString() {
 		return Integer.toString(value);
 	}
 	

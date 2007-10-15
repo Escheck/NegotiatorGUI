@@ -5,6 +5,6 @@ public interface Value {
 	// Interface methods
 	public ISSUETYPE getType();
 	
-	public String getStringValue();
+	public String toString();
 
 }
