@@ -12,11 +12,16 @@ package negotiator.exceptions;
 /**
  *
  * @author dmytro
+ * 
+ * This is thrown if an attempt is made to create a bid with illegal values.
  */
-public class BidDoesNotExistInDomainException  extends NegotiatorException{
+public class BidDoesNotExistInDomainException  extends NegotiatorException
+{
     
     /** Creates a new instance of BidDoesNotExistInDomainException */
-    public BidDoesNotExistInDomainException() {
+    public BidDoesNotExistInDomainException(String msg) 
+    {
+    	super(msg);
     }
      
 }

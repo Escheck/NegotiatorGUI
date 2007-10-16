@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * 
@@ -37,46 +38,37 @@ public final class Bid {
 
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values 
 
-	// Constructor
-	public Bid(Domain pDomain, HashMap pValues) {
-		this.fDomain = pDomain; // THIS NEEDS A CHECK!
+	/**
+	 * create a new bid in a domain. Partially checks the validity of the bid as well
+	 * @param domainP: the domain in which the bid is done
+	 * @param bidsP: HashMap, which is a set of pairs <issueID,value>
+	 * @throws Exception if the bid is not a legal bid in the domain.
+	 */
+	public Bid(Domain domainP, HashMap<Integer,Value> bidP) throws Exception
+	{
+		this.fDomain = domainP; // THIS NEEDS A CHECK!
 
 		// Check if indexes are ok
-		int nrOfIssues = fDomain.getNumberOfIssues();
-		try {
-			if (pValues.size() != nrOfIssues)
-				throw new BidDoesNotExistInDomainException();
-			// FIXME: DT: I am not sure if this check has sense now...Does it?
-			/*
-			 * for(int i=0; i<nrOfIssues; i++) {
-			 * if(!fDomain.getIssue(i).checkInRange(pValues[i])) throw new
-			 * BidDoesNotExistInDomainException();
-			 */
-		} catch (BidDoesNotExistInDomainException e) {
-			System.out.println("Bid not within domain range.");
-		}
-		this.fValues = pValues;
+		// Discussion with Dmytro 16oct 1200: it is possible to do only a partial bid, leaving
+		// part of the issues un-set. But each issue being bidded on has to exist in the domain,
+		// and this is what we check here.
+		// Discussion 16oct 16:03: No, ALL values have to be set.
+		ArrayList<Issue> issues=domainP.getIssues();
+		for (Issue issue:issues)
+			if (bidP.get(new Integer(issue.getNumber()))==null)
+				throw new BidDoesNotExistInDomainException(
+						"bid for issue '"+issue.getName()+"' (issue #"+issue.getNumber()+") lacks");
+		
+		fValues = bidP;
 	}
 
-	// Class methods
-	// public Bid(Domain pDomain, SimpleElement pXMLBid) {
-	// fDomain = pDomain;
-	// fValues = new Value[pDomain.getNumberOfIssues()];
-	// SimpleElement[] lXMLIssues =
-	// (SimpleElement[])(pXMLBid.getChildByTagName("issues"));
-	// for(int i=0;i<lXMLIssues.length;i++) {
-	// SimpleElement lXMLItem =
-	// (SimpleElement)(lXMLIssues[i].getChildByTagName("item"))[0];
-	// fValues[Integer.valueOf(lXMLIssues[i].getAttribute("index"))-1] =
-	// Integer.valueOf(lXMLItem.getAttribute("index"));
-	// }
-	// }
 
 	/**
 	 * @return the picked value for given issue idnumber 
 	 */
-	public Value getValue(int issueIndex) {
-		return fValues.get(issueIndex);
+	public Value getValue(int issueNr) {
+		
+		return fValues.get(issueNr);
 	}
 
 	public void setValue(int issueIdex, Value pValue) {
@@ -98,7 +90,7 @@ public final class Bid {
         	if(tmpobj != null){
         		String nm = fDomain.getObjective(ind).getName();
         		s += nm + ": " +
-        		fValues.get(ind).getStringValue() + "\n";
+        			fValues.get(ind) + "\n";
         	}else{
         		System.out.println("objective with index " + ind + " does not exist");
         	}
@@ -133,9 +125,10 @@ public final class Bid {
 	// return result;
 	// }
 	// TODO re-do the save/load XML for bids
-	public Bid(Domain pDomain, SimpleElement pXMLBid) {
+	public Bid(Domain pDomain, SimpleElement pXMLBid) throws Exception
+	{
 		fDomain = pDomain;
-		fValues = new HashMap(pDomain.getNumberOfIssues());
+		fValues = new HashMap<Integer,Value>();
 		// fValuesIndexes = new int[pDomain.getNumberOfIssues()];
 		Object[] lXMLIssues = (pXMLBid.getChildByTagName("issue"));
 		Value lValue = null;

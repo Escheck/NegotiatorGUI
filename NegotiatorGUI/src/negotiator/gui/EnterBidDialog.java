@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -25,6 +26,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.exceptions.BidDoesNotExistInDomainException;
 import negotiator.issue.*;
+//import negotiator.issue.Issue;
 
 /**
  *
@@ -154,8 +156,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
-// TODO add your handling code here:
+    private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {
         if(buttonAccpet.isSelected()) {
             selectedAction = new Accept(agent, opponentBid);
         } else
@@ -167,8 +168,8 @@ public class EnterBidDialog extends javax.swing.JDialog {
             Bid bid;
             try {
                 bid =  model.getMyBid();
-            } catch (BidDoesNotExistInDomainException e) {
-                JOptionPane.showMessageDialog(null, "You selected bid that does not exist.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "There is a problem with your bid: "+e.getMessage());
                 return;
             }
             selectedAction = new Offer(agent,bid);
@@ -176,15 +177,17 @@ public class EnterBidDialog extends javax.swing.JDialog {
         setVisible(false);
                 
         return;        
-    }//GEN-LAST:event_buttonSendActionPerformed
+    }
 
-    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-// TODO add your handling code here:
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {
+    	//GEN-FIRST:event_buttonCancelActionPerformed 
+    	// TODO add your handling code here:
         selectedAction = null;
         setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
-    private void buttonAccpetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAccpetActionPerformed
+    private void buttonAccpetActionPerformed(java.awt.event.ActionEvent evt) {
+    	//GEN-FIRST:event_buttonAccpetActionPerformed
 // TODO add your handling code here:
     }//GEN-LAST:event_buttonAccpetActionPerformed
     
@@ -223,15 +226,19 @@ public class EnterBidDialog extends javax.swing.JDialog {
         tableOpponentBid.setModel(new OpponentActionTableModel(opponentBid, nt));
         MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,nt);
         tableMyBid.setModel(myActionTableModel);
-        for(int i=0;i<nt.getDomain().getNumberOfIssues();i++) {
-            myActionTableModel.setUpIssuesColumns(tableMyBid,(Issue)(nt.getDomain().getIssue(i)), 
-                    tableMyBid.getColumnModel().getColumn(i));
-        }
+        ArrayList<Issue> issues=nt.getDomain().getIssues();
+        for(int i=0;i<issues.size();i++)
+           myActionTableModel.setUpIssuesColumns(tableMyBid,issues.get(i), 
+                   tableMyBid.getColumnModel().getColumn(i));
             
         setVisible(true);
         
         return selectedAction;
     }
+        
+        
+        
+        
     class OpponentActionTableModel extends AbstractTableModel {
         private Bid opponentBid;
         private NegotiationTemplate nt;
@@ -239,7 +246,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
             this.opponentBid = opponentBid;
             this.nt = nt;
         }
-        public int getColumnCount() {return nt.getDomain().getNumberOfIssues();}
+        public int getColumnCount() {return nt.getDomain().getIssues().size(); }
 
         public int getRowCount() {return 1;}
 
@@ -250,44 +257,55 @@ public class EnterBidDialog extends javax.swing.JDialog {
 
         public Object getValueAt(int row, int col) {
             Object value = null;
+            ArrayList<Issue> issues=nt.getDomain().getIssues();
             if(opponentBid!= null) 
 //                value = nt.getDomain().getIssue(col).getValue(opponentBid.getValueIndex(col));
             	// Assume discrete-valued bids only.
-            	value = opponentBid.getValue(col).getStringValue();
+            	value = opponentBid.getValue(issues.get(col).getNumber()).toString();
             return value;
         }
 
 
        
     }
+    
+    
+    
+    
     class MyActionTableModel extends AbstractTableModel {
-        public int[] myBid;
+        public int[] myBid; // array of 
         
-        private NegotiationTemplate nt;
+        private NegotiationTemplate negoTemplate;
         public MyActionTableModel(Bid myPreviousBid, NegotiationTemplate nt)  {
-            myBid = new int[nt.getDomain().getNumberOfIssues()];
+            negoTemplate = nt;
+        	int nissues=getColumnCount() ;
+        	myBid = new int[nissues];
+        	ArrayList<Issue> issues=nt.getDomain().getIssues();
             if(myPreviousBid!=null)
-                for(int i=0;i<nt.getDomain().getNumberOfIssues();i++)
-//                    myBid[i] = myPreviousBid.getValueIndex(i);
-                	// Assume discrete-value issues only.
-                	myBid[i] = ((IssueDiscrete)nt.getDomain().getIssue(i)).getValueIndex(((ValueDiscrete)myPreviousBid.getValue(i)).getValue());
-            else for(int i=0;i<nt.getDomain().getNumberOfIssues();i++) myBid[i] = -1;
-            this.nt = nt;
+                for(int i=0;i<nt.getDomain().getIssues().size();i++)
+                {
+                	int issuenr=issues.get(i).getNumber();
+                	myBid[i] = ((IssueDiscrete)issues.get(i)).
+                		getValueIndex(((ValueDiscrete)myPreviousBid.getValue(issuenr)).getValue());
+
+                }
+            else for(int i=0;i<nissues;i++) myBid[i] = -1;
         }
+        
         public int getColumnCount() {
-            return nt.getDomain().getNumberOfIssues();
+            return negoTemplate.getDomain().getIssues().size();
         }
         public int getRowCount() {
             return 1;
         }
         public String getColumnName(int col) {
-            return nt.getDomain().getIssue(col).getName();
+            return negoTemplate.getDomain().getIssue(col).getName();
         }
         public Object getValueAt(int row, int col) {
             Object value = null;
             if(myBid[col]>=0)
             	// Assume discrete-valued issues only.
-                value = ((IssueDiscrete)nt.getDomain().getIssue(col)).getValue(myBid[col]);
+                value = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValue(myBid[col]);
             else
                 value = new String("");
             return value;
@@ -316,23 +334,25 @@ public class EnterBidDialog extends javax.swing.JDialog {
             issueColumn.setCellRenderer(renderer);
         }
         public void setValueAt(Object value, int row, int col) {
-            myBid[col] = ((IssueDiscrete)nt.getDomain().getIssue(col)).getValueIndex(value.toString());
+            myBid[col] = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValueIndex(value.toString());
             fireTableCellUpdated(row, col);
         }
-        public Bid getMyBid() throws BidDoesNotExistInDomainException {
+        
+        /**
+         * extract a bid from the GUI
+         * @return
+         * @throws Exception
+         */
+        public Bid getMyBid() throws Exception {
             Bid bid = null;
-//            try {
-//                bid = nt.getDomain().makeBid(myBid);
-//            	Value[] values = new Value[myBid.length];
-            	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
-            	for (int i=0; i<myBid.length; i++) {
-//            		values[i] = (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i]));
-            		values.put(new Integer(i), (((IssueDiscrete)nt.getDomain().getIssue(i)).getValue(myBid[i])));
-            	}
-            	bid = new Bid(nt.getDomain(), values);
-//            } catch (BidDoesNotExistInDomainException e) {
-//                throw e;
-//            }
+        	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
+        	ArrayList<Issue> issues=negoTemplate.getDomain().getIssues();
+        	for (int i=0; i<myBid.length; i++) {
+        		Issue iss=issues.get(i);
+        		values.put(new Integer(iss.getNumber()), 
+        				(((IssueDiscrete)negoTemplate.getDomain().getIssue(i)).getValue(myBid[i])));
+        	}
+        	bid = new Bid(negoTemplate.getDomain(), values);
             return bid;
         }
        

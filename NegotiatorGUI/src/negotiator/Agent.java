@@ -74,11 +74,13 @@ public class Agent {
         return;
     }
     
-    public final double getUtility(Bid bid) {
+    public final double getUtility(Bid bid) throws Exception
+    {
         return utilitySpace.getUtility(bid);
     }
     
-    public final Bid getMaxUtilityBid() {
+    public final Bid getMaxUtilityBid() throws Exception
+    {
     	return utilitySpace.getMaxUtilityBid();
     }
     

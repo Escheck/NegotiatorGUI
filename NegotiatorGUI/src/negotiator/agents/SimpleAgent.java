@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import negotiator.*;
 import negotiator.actions.*;
@@ -54,11 +55,13 @@ public class SimpleAgent extends Agent{
         return;
     }
     
-    private Bid getNextBid() {
+    private Bid getNextBid() throws Exception
+    {
 //        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];
-    	HashMap<Integer, Value> values = new HashMap<Integer, Value>();
-        for(int i=0;i<getNegotiationTemplate().getDomain().getNumberOfIssues();i++) {
-        	Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);        	
+    	HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>
+    	ArrayList<Issue> issues=getNegotiationTemplate().getDomain().getIssues();
+        for(Issue lIssue:issues) 
+        {
 			switch(lIssue.getType()) {
 			case INTEGER:
 	            int numberOfOptions = 
@@ -68,7 +71,7 @@ public class SimpleAgent extends Agent{
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
 	            System.out.println(optionIndex);
 //	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex);
-	            values.put(new Integer(i), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex));
+	            values.put(lIssue.getNumber(), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex));
 			case REAL: 
 				IssueReal lIssueReal =(IssueReal)lIssue;
 				double lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lIssueReal.getNumberOfDiscretizationSteps();
@@ -76,7 +79,7 @@ public class SimpleAgent extends Agent{
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
 //				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex);
-	            values.put(new Integer(i), new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex));
+	            values.put(lIssue.getNumber(), new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex));
 				break;
 			case DISCRETE:
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
@@ -84,24 +87,28 @@ public class SimpleAgent extends Agent{
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
 //				values[i]= lIssueDiscrete.getValue(optionIndex);
-	            values.put(new Integer(i), lIssueDiscrete.getValue(optionIndex));
+	            values.put(lIssue.getNumber(), lIssueDiscrete.getValue(optionIndex));
 				break;
 			}// switch
 		}//for
         return new Bid(getNegotiationTemplate().getDomain(),values);
     }
     
-    private Action chooseNextAction() {
-        Bid nextBid ;
-        nextBid = getNextBid();
-        myPreviousBid = nextBid;
+    private Action chooseNextAction() 
+    {
+        Bid nextBid=null ;
+        try { nextBid = getNextBid(); }
+        catch (Exception e) { System.out.println("Problem with received bid:"+e.getMessage()+". cancelling bidding"); }
         if (nextBid == null) return (new EndNegotiation(this));                
+        myPreviousBid = nextBid;
         return (new Offer(this, nextBid));
     }
     
     @Override
-	public Action chooseAction() {
+	public Action chooseAction()
+    {
         Action action = null;
+        try { 
 
             if(actionOfPartner==null) {
                 //
@@ -118,7 +125,6 @@ public class SimpleAgent extends Agent{
                     }
                 }
             }
-        try { 
             Thread.sleep(1000);
         } catch (Exception e) {
         
