@@ -188,6 +188,7 @@ public class Domain {
             int nrOfItems, minI, maxI, item_index;
             double minR, maxR;
             String[] values;
+            String[] desc;
             Issue issue;
             switch(issueType) {
             case DISCRETE:
@@ -197,12 +198,15 @@ public class Domain {
                 nrOfItems = xml_items.length;
                 
                 values = new String[nrOfItems];
+                desc = new String[nrOfItems];
+
                 for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
                     item_index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
                     values[k] = ((SimpleElement)xml_items[k]).getAttribute("value");
+                    desc[k]=((SimpleElement)xml_items[k]).getAttribute("description");
                 }
-                child = new IssueDiscrete(name, index, values, currentParent);
+                child = new IssueDiscrete(name, index, values, desc,currentParent);
             	break;
             case INTEGER:
             	// Collect range bounds for integer-valued issue from xml template
@@ -311,7 +315,10 @@ public class Domain {
 		return root;
 	}
 	
-	
+	/**
+	 * @author W.Pasman
+	 * @return all objectives (note, issues are also objectives!) in the domain
+	 */
 	public ArrayList<Objective> getObjectives()
 	{
 		Enumeration<Objective> objectives=fObjectivesRoot.getPreorderEnumeration();

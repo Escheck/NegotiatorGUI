@@ -2,6 +2,7 @@ package negotiator.issue;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Vector;
 
 import negotiator.exceptions.ValueTypeError;
@@ -14,18 +15,16 @@ import negotiator.xml.SimpleElement;
 
 public class IssueDiscrete extends Issue {
 		
-	// Class fields
-	private int numberOfValues;
-	//TODO Use DiscreteValue here??
-	//TODO use ArrayList
-	//ValueDiscrete issueValues[];
-
-	
 	/** Wouter: the alternatives (String objects) for the issue.
-		"value" is misleading, this is NOT the utility value but the name of the alternative */
+	"value" is misleading, this is NOT the utility value but the name of the alternative */
 	ArrayList<ValueDiscrete> issueValues; 
-		
-	// Constructors
+	
+	 // the descriptions for each value
+	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
+
+	private int numberOfValues; // Wouter: imho should not be done this way
+
+
 	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
@@ -42,6 +41,17 @@ public class IssueDiscrete extends Issue {
 		issueValues = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
 	        issueValues.add(new ValueDiscrete(values[i]));
+	    }
+	}
+	
+	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent) {
+		super(name, issueNumber, objParent);		
+		numberOfValues = values.length;
+		issueValues = new ArrayList<ValueDiscrete>();
+	    for(int i=0; i<numberOfValues;i++) {
+			ValueDiscrete v=new ValueDiscrete(values[i]);
+	        issueValues.add(v);
+	        if (descriptions!=null && descriptions[i]!=null) fDesc.put(v,descriptions[i]);
 	    }
 	}
 	
@@ -125,10 +135,30 @@ public class IssueDiscrete extends Issue {
 			SimpleElement thisItem = new SimpleElement("item");
 			thisItem.setAttribute("index", "" + (item_ind +1)); //One off error?
 			thisItem.setAttribute("value", issueValues.get(item_ind).toString());
+			String desc=fDesc.get(issueValues.get(item_ind));
+			if (desc!=null) thisItem.setAttribute("description", desc);
 			thisIssue.addChildElement(thisItem);
  		}
 		return thisIssue;
 		
 	}
+	
+	// Wouter: fromXML is currently incorporated in Domain.java. 
+	// TODO I think it should be here.
+    
+	/**
+	 * Sets the desc for value <code>val</code>. If the value doesn't exist yet in this Evaluator,
+	 * add it as well.
+	 * @param val The value to have it's desc set/modified
+	 * @param desc The new desc of the value.
+	 */
+	public void setDesc(ValueDiscrete val, String desc)
+	{
+		fDesc.put(val, desc);
+	}
+	
+	public String getDesc(ValueDiscrete val)
+	{ return fDesc.get(val); }
+	
 	
 }

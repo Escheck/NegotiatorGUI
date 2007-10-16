@@ -781,8 +781,8 @@ public class UtilitySpace {
     					if (cost!=null) tmpItem.setAttribute("cost", ""+cost);
 
     					
-    					String desc = dev.getDesc(theIssue.getValue(itemInd));
-    					if (desc!=null) tmpItem.setAttribute("description", ""+desc);
+    					//String desc = dev.getDesc(theIssue.getValue(itemInd));
+    					//if (desc!=null) tmpItem.setAttribute("description", ""+desc);
     				}
     				break;
     			case INTEGER:
