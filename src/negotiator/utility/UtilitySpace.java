@@ -143,7 +143,8 @@ public class UtilitySpace {
 //        return domain.getNumberOfIssues();
 //    }
     
-    public final double getUtility(Bid bid) {
+    public final double getUtility(Bid bid) throws Exception
+    {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
         Objective root = domain.getObjectivesRoot();
@@ -169,6 +170,7 @@ public class UtilitySpace {
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     	ISSUETYPE vtype;
     	Value tmpval = bid.getValue(pIssueIndex);
+    	assert (tmpval!=null);
     	vtype = tmpval.getType();
     	
   /* hdevos: used to be this: 	
@@ -199,9 +201,13 @@ public class UtilitySpace {
     }
     
     // KH 070511: Moved getMaxBid method to UtilitySpace class since it should be available to all agents.
-    // Method returns (a) bid which has maximum utility in this utility space.
-	public final Bid getMaxUtilityBid() {
-		int nrOfIssues = domain.getNumberOfIssues();
+    /**
+     * @throws particularly when an illegal bid is created
+     * @return (a) bid which has maximum utility in this utility space.
+     */
+	public final Bid getMaxUtilityBid() throws Exception
+	{
+		int nrOfIssues = domain.getIssues().size();
 //		Value[] values = new Value[nrOfIssues];	//TODO hdv: Do something about these values. See proposal of 11-6-7
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 //		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.

@@ -188,19 +188,22 @@ public class Negotiation implements Runnable {
         }
         double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
-        for(int i=0;i< lAgentABids.size();i++) {
-        	lAgentAUtilities [i][0] = agentA.getUtility(lAgentABids.get(i));
-        	lAgentAUtilities [i][1] = agentB.getUtility(lAgentABids.get(i));
-        }
-        for(int i=0;i< lAgentBBids.size();i++) {
-        	lAgentBUtilities [i][0] = agentA.getUtility(lAgentBBids.get(i));
-        	lAgentBUtilities [i][1] = agentB.getUtility(lAgentBBids.get(i));
-        }
-        
-        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
-        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-        Main.fChart.show();
-        Main.logger.add("Session is finished");
+        try
+        {
+	        for(int i=0;i< lAgentABids.size();i++) {
+	        	lAgentAUtilities [i][0] = agentA.getUtility(lAgentABids.get(i));
+	        	lAgentAUtilities [i][1] = agentB.getUtility(lAgentABids.get(i));
+	        }
+	        for(int i=0;i< lAgentBBids.size();i++) {
+	        	lAgentBUtilities [i][0] = agentA.getUtility(lAgentBBids.get(i));
+	        	lAgentBUtilities [i][1] = agentB.getUtility(lAgentBBids.get(i));
+	        }
+	        
+	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
+	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
+	        Main.fChart.show();
+	        Main.logger.add("Session is finished");
+        } catch (Exception e) {  System.out.println("Exception in negotiation:"+e.getMessage());}
         return;
     }
 }
