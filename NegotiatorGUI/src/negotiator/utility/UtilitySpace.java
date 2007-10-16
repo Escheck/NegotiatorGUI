@@ -50,13 +50,44 @@ public class UtilitySpace {
     	this.domain = new Domain();
     	fEvaluators = new HashMap<Objective, Evaluator>();
     }
+    
+    
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
     	fEvaluators = new HashMap<Objective, Evaluator>();
         if(!fileName.equals(""))
         	loadTreeFromFile(fileName);
+        else
+        { // add evaluator to all objectives
+        	ArrayList<Objective> objectives=domain.getObjectives();
+        	for (Objective obj:objectives) fEvaluators.put(obj, DefaultEvaluator(obj));
+        }
     }
     
+    /**
+     * @author W.Pasman
+     * create a default evaluator for a given Objective.
+     * This function is placed here, and not in Objective, because
+     * the Objectives should not be loaded with utility space functionality.
+     * The price we pay for that is that we now have an ugly switch inside the code,
+     * losing some modularity.
+     * @param obj the objective to create an evaluator for
+     * @return the defualt evaluator
+     */
+    public Evaluator DefaultEvaluator(Objective obj)
+    {
+    	if (obj.isObjective()) return new EvaluatorObjective();
+    	//if not an objective then it must be an issue.
+    	switch (((Issue)obj).getType())
+    	{
+    	case DISCRETE: return new EvaluatorDiscrete();
+    	case INTEGER: return new EvaluatorInteger();
+    	case REAL: return new EvaluatorReal();
+    	default: System.out.println("INTERNAL ERROR: issue of type "+((Issue)obj).getType()+
+    			"has no default evaluator");
+    	}
+    	return null;
+    }
     // Class methods
     
     /**
