@@ -74,6 +74,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		if (us != null)
 		{
 			Evaluator ev=us.getEvaluator(obj.getNumber());
+			if (ev==null) System.out.println("no evaluator found for "+obj);
 			if (ev instanceof EvaluatorObjective) // should always be the case?? 
 				hasweight=((EvaluatorObjective)ev).getHasWeight();
 		}

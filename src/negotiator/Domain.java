@@ -311,6 +311,15 @@ public class Domain {
 		return root;
 	}
 	
+	
+	public ArrayList<Objective> getObjectives()
+	{
+		Enumeration<Objective> objectives=fObjectivesRoot.getPreorderEnumeration();
+		ArrayList<Objective> objectivelist=new ArrayList<Objective>();
+		while (objectives.hasMoreElements()) objectivelist.add(objectives.nextElement());
+		return objectivelist;
+	}
+	
 	/**
 	 * get all issues as an arraylist.
 	 * @author W.Pasman
