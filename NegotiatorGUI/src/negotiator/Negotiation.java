@@ -104,7 +104,7 @@ public class Negotiation implements Runnable {
                                            agentB.getClass().getCanonicalName(),
                                            String.valueOf(agentAUtility),
                                            String.valueOf(agentBUtility));
-                           } else {
+                           } else { // accept.getBid==null
                                 Main.logger.add("Agents ended the negotiation without agreement");
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
@@ -113,7 +113,7 @@ public class Negotiation implements Runnable {
                                                             String.valueOf(0));
                                 checkAgentActivity(agent) ;
                            }
-                       } else {
+                       } else { // action instanceof endnegotiation
                             Main.logger.add("Agents ended the negotiation without agreement");
                             no = new NegotiationOutcome(sessionNumber, 
                                                        agentA.getClass().getCanonicalName(),

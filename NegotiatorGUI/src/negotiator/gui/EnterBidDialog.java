@@ -56,7 +56,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableOpponentBid = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        buttonAccpet = new javax.swing.JRadioButton();
+        buttonAccept = new javax.swing.JRadioButton();
         buttonEnd = new javax.swing.JRadioButton();
         buttonSendOffer = new javax.swing.JRadioButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -95,17 +95,17 @@ public class EnterBidDialog extends javax.swing.JDialog {
         jLabel2.setText("Your action:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
 
-        buttonGroupActions.add(buttonAccpet);
-        buttonAccpet.setText("Accept Opponent's Bid");
-        buttonAccpet.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        buttonAccpet.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        buttonAccpet.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroupActions.add(buttonAccept);
+        buttonAccept.setText("Accept Opponent's Bid");
+        buttonAccept.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        buttonAccept.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        buttonAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAccpetActionPerformed(evt);
             }
         });
 
-        getContentPane().add(buttonAccpet, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
+        getContentPane().add(buttonAccept, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         buttonGroupActions.add(buttonEnd);
         buttonEnd.setText("End Negotiation");
@@ -156,12 +156,18 @@ public class EnterBidDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {
-        if(buttonAccpet.isSelected()) {
+        if(buttonAccept.isSelected()) {
             selectedAction = new Accept(agent, opponentBid);
         } else
-        if(buttonCancel.isSelected()) {
-            selectedAction = new EndNegotiation(agent);;
+        if(buttonEnd.isSelected()) {
+            selectedAction = new EndNegotiation(agent);
+        } else
+            // Wouter: it's weird that the buttonCancel action
+            // also arrives in this buttonSENDaction handler.
+    	if(buttonCancel.isSelected()) {
+            selectedAction = null;
         } else
         if(buttonSendOffer.isSelected()) {
             MyActionTableModel model =  ((MyActionTableModel)tableMyBid.getModel());
@@ -193,7 +199,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
     
       
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton buttonAccpet;
+    private javax.swing.JRadioButton buttonAccept;
     private javax.swing.JButton buttonCancel;
     private javax.swing.JRadioButton buttonEnd;
     private javax.swing.ButtonGroup buttonGroupActions;
