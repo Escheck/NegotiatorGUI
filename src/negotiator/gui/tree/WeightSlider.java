@@ -55,7 +55,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		this.add(slider);
 		
 		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMaximumFractionDigits(3);
+		format.setMaximumFractionDigits(2);
 		valueField = new JFormattedTextField(format);
 		valueField.setColumns(4);
 		valueField.setToolTipText("Fill in a weight between 0 and 1");

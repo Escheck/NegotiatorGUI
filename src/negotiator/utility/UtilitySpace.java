@@ -697,7 +697,9 @@ public class UtilitySpace {
     public SimpleElement toXML(){
     	SimpleElement root = (domain.getObjectivesRoot()).toXML(); // convert the domain. 
     	root = toXMLrecurse(root);
-    	SimpleElement rootWrapper = new SimpleElement("utility_space"); //can't really say overhere how many issues there are inhere.
+    	SimpleElement rootWrapper = new SimpleElement("utility_space"); 
+    	//can't really say overhere how many issues there are inhere.
+    	// Wouter: huh??? Just count them??
     	rootWrapper.addChildElement(root);
     	return rootWrapper;//but how to get the correct values in place?
     }
@@ -743,7 +745,9 @@ public class UtilitySpace {
     	
     	// update the issue fields.
     	Object[] Issues = currentLevel.getChildByTagName("issue");
-    	Object[] IssueWeights = currentLevel.getChildByTagName("weight");
+    	//Object[] IssueWeights = currentLevel.getChildByTagName("weight"); 
+    	// Wouter: huh, domain has no weights!!!
+    	
     	for(int issInd=0; issInd<Issues.length; issInd++){
     		SimpleElement issueL = (SimpleElement) Issues[issInd];
     		
@@ -754,21 +758,11 @@ public class UtilitySpace {
     			
     			Evaluator ev = fEvaluators.get(tmpEvObj);
     			
-    			if(IssueWeights.length == 0){
-    				SimpleElement currentChildWeight = new SimpleElement("weight");
-    				currentChildWeight.setAttribute("index", ""+childIndex);
-    				currentChildWeight.setAttribute("value", ""+ev.getWeight());
-    				currentLevel.addChildElement(currentChildWeight);
-    			}
-    			else{
-    				for(int issueWind = 0; issueWind < IssueWeights.length; issueWind++){
-    					SimpleElement currIssueWt = (SimpleElement) IssueWeights[issueWind]; 
-    					int c_ind = Integer.valueOf(currIssueWt.getAttribute("index"));
-    					Evaluator thisIssueEv = fEvaluators.get(domain.getObjective(c_ind));
-    					currIssueWt.setAttribute("value", ""+thisIssueEv.getWeight());
-    				}
-    			}
-    		
+    			SimpleElement currentChildWeight = new SimpleElement("weight");
+				currentChildWeight.setAttribute("index", ""+childIndex);
+				currentChildWeight.setAttribute("value", ""+ev.getWeight());
+				currentLevel.addChildElement(currentChildWeight);
+				
     			String evtype_str = issueL.getAttribute("etype");
     			EVALUATORTYPE evtype = EVALUATORTYPE.convertToType(evtype_str);
     			switch(evtype){
