@@ -38,8 +38,11 @@ public final class Bid {
 
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
+	
 	/**
 	 * create a new bid in a domain. Partially checks the validity of the bid as well
+	 * There is only this constructor because we require that ALL values in the domain
+	 * get assigned a value.
 	 * @param domainP: the domain in which the bid is done
 	 * @param bidsP: HashMap, which is a set of pairs <issueID,value>
 	 * @throws Exception if the bid is not a legal bid in the domain.
@@ -53,6 +56,8 @@ public final class Bid {
 		// part of the issues un-set. But each issue being bidded on has to exist in the domain,
 		// and this is what we check here.
 		// Discussion 16oct 16:03: No, ALL values have to be set.
+		// Discussion 19oct: probably there only is this particular constructor because
+		// that enables to enforce this.
 		ArrayList<Issue> issues=domainP.getIssues();
 		for (Issue issue:issues)
 			if (bidP.get(new Integer(issue.getNumber()))==null)
