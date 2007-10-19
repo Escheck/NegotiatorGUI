@@ -269,5 +269,16 @@ public class EvaluatorDiscrete implements Evaluator {
 		return null;
 	}
 
-	
+	/**
+	 * throws exception if problem with computation.
+	 */
+	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		if (bid==null) throw new NullPointerException("bid=null, cant compute cost");
+		ValueDiscrete val=(ValueDiscrete)bid.getValue(index);
+		if (val==null) throw new NullPointerException("bid "+index+" has no value");
+		Double cost= fCost.get(val);
+		if (cost==null) throw new NullPointerException("no cost associated with value "+val);
+		return cost;
+	}
 }

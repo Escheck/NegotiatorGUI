@@ -13,6 +13,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.Color;
 import java.util.Vector;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.TableModelEvent;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -56,13 +58,18 @@ public class EnterBidDialog2 extends JDialog {
         initThePanel();
     }
     
+    // quick hack.. we can't refer to the Agent's utilitySpace because
+    // the field is protected and there is no getUtilitySpace function either.
+    public void setUtilitySpace(UtilitySpace us)
+    {   	negoinfo.utilitySpace=us; }
+    
     private void initThePanel() {
     	if (negoinfo==null) throw new NullPointerException("negoinfo is null");
     	Container pane=getContentPane();
         pane.setLayout(new BorderLayout());
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Choose action for agent "+agent.getName());
-        setMinimumSize(new java.awt.Dimension(480, 320));
+        setMinimumSize(new java.awt.Dimension(600, 400));
 
 
     // create north field: the message field
@@ -167,24 +174,24 @@ public class EnterBidDialog2 extends JDialog {
     			public negotiator.actions.Action 
     askUserForAction(negotiator.actions.Action opponentAction, Bid myPreviousBid) 
     {
-        negoinfo.opponentBid=null;
+        negoinfo.opponentOldBid=null;
         if(opponentAction==null) {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
         	negotiationMessages.setText("Opponent accepted the following bid:");
-        	negoinfo.opponentBid = ((Accept)opponentAction).getBid();
+        	negoinfo.opponentOldBid = ((Accept)opponentAction).getBid();
         }
         if(opponentAction instanceof EndNegotiation) {
         	negotiationMessages.setText("Opponent cancels the negotiation.");
         }
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
-        	negoinfo.opponentBid = ((Offer)opponentAction).getBid();
+        	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
         }
         
 
-        negoinfo.ourBid=myPreviousBid;
+        negoinfo.ourOldBid=myPreviousBid;
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
         BidTable.setDefaultEditor(BidTable.getColumnClass(0),new MyCellEditor(negoinfo));
@@ -201,11 +208,14 @@ public class EnterBidDialog2 extends JDialog {
 
 /**
  * this is usualy called XXXModel but I dont like the 'model' in the name.
+ * We implement actionlistener to hear the combo box events that
+ * require re-rendering of the total cost field.
  */
-class NegoInfo extends AbstractTableModel
+class NegoInfo extends AbstractTableModel implements ActionListener
 {
-	public Bid ourBid;			// Bid is hashmap <issueID,Value>.
-	public Bid opponentBid;
+	public Bid ourOldBid;			// Bid is hashmap <issueID,Value>. Our current bid is only in the comboboxes,
+									// use getBid().
+	public Bid opponentOldBid;
 	public Domain domain;
 	public UtilitySpace utilitySpace;	// WARNING: this may be null
 	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
@@ -219,7 +229,7 @@ class NegoInfo extends AbstractTableModel
 		//Wouter: just discovered that assert does nothing........... 
 		//if (us==null) throw new NullPointerException("null utilityspace?");
 		if (d==null) throw new NullPointerException("null domain?");
-		ourBid=our; opponentBid=opponent;
+		ourOldBid=our; opponentOldBid=opponent;
 		domain=d;
 		utilitySpace=us;
 		issues=d.getIssues();
@@ -250,6 +260,7 @@ class NegoInfo extends AbstractTableModel
 				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
 			ArrayList<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
 			comboBoxes.add( new JComboBox(values.toArray()));
+			for (JComboBox b:comboBoxes) b.addActionListener(this);
 		}
 	}
 	
@@ -278,12 +289,27 @@ class NegoInfo extends AbstractTableModel
 	{
 		if (row==issues.size())
 		{
-			if (col==0) return new JLabel("TOTAL COST:");
-			return new JTextArea("TBD");
+			if (col==0) return new JLabel("COST (in your utilspace):");
+			if (utilitySpace==null) return new JLabel("No UtilSpace");
+			Bid bid;
+			if (col==1) bid=opponentOldBid; 
+			else  try {bid=getBid(); } 
+			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
+			String val;
+			try
+			{
+				val=utilitySpace.getCost(bid).toString();
+			}
+			catch (Exception e) { 
+				System.out.println("Exception during cost calculation:"+e.getMessage()); 
+				//e.printStackTrace();
+				val="XXX"; }
+			return new JTextArea(val);
 		}
 		if (row==issues.size()+1)
 		{
-			if (col==0) return new JLabel("EVAL:");
+			if (col==0) return new JLabel("Utility:");
+			if (utilitySpace==null) return new JTextArea("No UtilSpace");
 			return new JTextArea("TBD");
 		}
 		switch (col)
@@ -291,7 +317,7 @@ class NegoInfo extends AbstractTableModel
 		case 0:
 			return new JTextArea(issues.get(row).getName());
 		case 1:
-			Value value= getCurrentEval(opponentBid,row);
+			Value value= getCurrentEval(opponentOldBid,row);
 			if (value==null) return new JTextArea("-");
 			return new JTextArea(value.toString());
 		case 2:
@@ -310,6 +336,9 @@ class NegoInfo extends AbstractTableModel
 		return new Bid(domain,values);
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		//System.out.println("event d!"+e);
+		fireTableCellUpdated(2,2); }
 
 }
 
@@ -347,6 +376,7 @@ class MyCellEditor extends DefaultCellEditor
     {
     	super(new JTextField("vaag")); // Java wants us to call super class, who cares...
 		negoinfo=n;
+	    setClickCountToStart(1);
     }
 	
 	public Component getTableCellEditorComponent(JTable table, Object value, 

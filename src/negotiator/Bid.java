@@ -114,12 +114,14 @@ public final class Bid {
 
 	/**
 	 * Helper function to enable the comparison between two Bids.
-	 * 
+	 * Wouter: changed to public for convenience.
 	 * @return
 	 */
 	protected HashMap<Integer, Value> getValues() {
+		 // create a clone, to avoid changing of the values.
 		return fValues;
 	}
+	
 
 	// DOES NO LONGER APPLY
 	// public String indexesToString() {

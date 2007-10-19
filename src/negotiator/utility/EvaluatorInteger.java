@@ -193,5 +193,8 @@ public class EvaluatorInteger implements Evaluator {
 	}
 	
 	
-	
+	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		throw new Exception("getCost not implemented for EvaluatorInteger");
+	}
 }
