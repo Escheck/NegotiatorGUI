@@ -42,11 +42,13 @@ public class EnterBidDialog2 extends JDialog {
 	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
     private Agent agent;    
-    private JTextArea negotiationMessages=new JTextArea("NO MESSAGES YET");    
-    private JButton buttonBid=new JButton("Do Bid");
+    private JTextArea negotiationMessages=new JTextArea("NO MESSAGES YET");  
+    // Wouter: we have some whitespace in the buttons,
+    // that makes nicer buttons and also artificially increases the window size.
+    private JButton buttonBid=new JButton("       Do Bid       ");
     private JButton buttonSkip=new JButton("Skip Turn");
-    private JButton buttonEnd=new JButton("End Nego");
-    private JButton buttonAccept=new JButton("Accept");
+    private JButton buttonEnd=new JButton("End Negotiation");
+    private JButton buttonAccept=new JButton("    Accept Bid    ");
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
@@ -58,10 +60,14 @@ public class EnterBidDialog2 extends JDialog {
         initThePanel();
     }
     
+    
     // quick hack.. we can't refer to the Agent's utilitySpace because
     // the field is protected and there is no getUtilitySpace function either.
+    // therefore the Agent has to inform us when utilspace changes.
     public void setUtilitySpace(UtilitySpace us)
-    {   	negoinfo.utilitySpace=us; }
+    { negoinfo.utilitySpace=us; }
+    
+    
     
     private void initThePanel() {
     	if (negoinfo==null) throw new NullPointerException("negoinfo is null");
@@ -69,11 +75,10 @@ public class EnterBidDialog2 extends JDialog {
         pane.setLayout(new BorderLayout());
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Choose action for agent "+agent.getName());
-        setMinimumSize(new java.awt.Dimension(600, 400));
-
+        //setSize(new java.awt.Dimension(600, 400));
+        //setBounds(0,0,640,480);
 
     // create north field: the message field
-        // somehow, the Panel is being drawn over our messages, ??
        pane.add(negotiationMessages,"North");
         
         
@@ -132,6 +137,7 @@ public class EnterBidDialog2 extends JDialog {
         }
         return bid;    	
     }
+
     
     private void buttonBidActionPerformed(java.awt.event.ActionEvent evt) 
     {
@@ -143,6 +149,7 @@ public class EnterBidDialog2 extends JDialog {
         }
     }
 
+    
     private void buttonSkipActionPerformed(java.awt.event.ActionEvent evt) {
     	System.out.println("cancel performed!");
         selectedAction = null;
@@ -189,8 +196,6 @@ public class EnterBidDialog2 extends JDialog {
         	negotiationMessages.setText("Opponent proposes the following bid:");
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
         }
-        
-
         negoinfo.ourOldBid=myPreviousBid;
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
@@ -207,9 +212,14 @@ public class EnterBidDialog2 extends JDialog {
 /********************************************************/
 
 /**
- * this is usualy called XXXModel but I dont like the 'model' in the name.
+ * NegoInfo is the class that contains all the negotiation data,
+ * and handles the GUI, updating the JTable. This is the main 
+ * interface to the actial JTable.
+ * This is usualy called XXXModel but I dont like the 'model' in the name.
  * We implement actionlistener to hear the combo box events that
- * require re-rendering of the total cost field.
+ * require re-rendering of the total cost and utility field.
+ * We are pretty hard-wired for a 3-column table, with column 0 the
+ * labels, column 1 the opponent bid and col2 our own bid.
  */
 class NegoInfo extends AbstractTableModel implements ActionListener
 {
@@ -227,7 +237,6 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws NullPointerException
 	{
 		//Wouter: just discovered that assert does nothing........... 
-		//if (us==null) throw new NullPointerException("null utilityspace?");
 		if (d==null) throw new NullPointerException("null domain?");
 		ourOldBid=our; opponentOldBid=opponent;
 		domain=d;
