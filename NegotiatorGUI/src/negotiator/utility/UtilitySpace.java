@@ -889,5 +889,25 @@ public class UtilitySpace {
     }
      */
 
+    /**
+     * @author W.Pasman
+     * compute the cost of the given bid. 
+     * There is also getCost in Evaluator but it currently only works for EvaluatorDiscrete.
+     * Need more clarity on how to deal with this.
+     * For instance, one could argue that the evaluator for the root object
+     * should be able to compute cost of the entire bid.
+     * @throws if cost can not be computed for some reason.
+     * @return computed cost
+     */
+    public Double getCost(Bid bid) throws Exception
+    {
+    	Double totalCost=0.0;
+    	for (Issue issue: domain.getIssues())
+    	{
+    		int ID=issue.getNumber();
+    		totalCost += getEvaluator(ID).getCost(this, bid, ID);
+    	}
+    	return totalCost;
+    }
 
 }

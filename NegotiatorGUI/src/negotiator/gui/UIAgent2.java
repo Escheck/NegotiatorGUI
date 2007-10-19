@@ -56,6 +56,7 @@ public class UIAgent2 extends Agent{
     public void loadUtilitySpace(String fileName) {
         //load the utility space
         utilitySpace = new UtilitySpace(domain, fileName);
+        ui.setUtilitySpace(utilitySpace);
         return;
     }
   

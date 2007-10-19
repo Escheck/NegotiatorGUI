@@ -175,4 +175,10 @@ public class EvaluatorPrice implements Evaluator {
 		return "EvaluatorPrice: isComplete checker is not implemented";
 	}
 	
+	
+	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		throw new Exception("getCost not implemented for EvaluatorPrice");
+	}
+
 }

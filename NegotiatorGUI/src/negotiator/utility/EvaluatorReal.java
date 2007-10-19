@@ -212,4 +212,11 @@ public class EvaluatorReal implements Evaluator {
 	{
 		return "EvaluatorReal isComplete checker is not implemented";
 	}
+	
+	
+	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		throw new Exception("getCost not implemented for EvaluatorReal");
+	}
+
 }

@@ -97,4 +97,14 @@ public class EvaluatorObjective implements Evaluator {
 	{
 		return "Internal error: isComplete should be checked only with Issues, not with Objectives";
 	}
+	
+	
+	/**
+	 * see also UtilitySpace.getCost
+	 */
+	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
+	{
+		throw new Exception("getCost not implemented for EvaluatorObjective");
+	}
+
 }
