@@ -150,6 +150,7 @@ public class Objective implements MutableTreeNode
 	 * @param objectiveNr the Objective/Issue number that is being searched for.
 	 * @return the Objective/Issue with the given number, or null if the requested Objective/Issue is nog found
 	 * in the subtree that is rooted at the receiver.
+	 * Wouter: this seems overly difficult????
 	 */
 	public Objective getObjective(int objectiveNr) {
 		if (getNumber() == objectiveNr)

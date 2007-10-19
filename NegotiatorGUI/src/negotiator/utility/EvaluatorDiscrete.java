@@ -203,6 +203,9 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 
 	
+	/**
+	 * wipe evaluation values and cost.
+	 */
 	public void clear(){
 		fEval.clear();
 		fCost.clear();

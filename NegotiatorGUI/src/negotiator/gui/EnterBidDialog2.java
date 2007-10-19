@@ -7,25 +7,28 @@
 package negotiator.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.awt.Color;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.awt.Container;
-
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventObject;
+import javax.swing.table.AbstractTableModel;
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.NegotiationTemplate;
-import negotiator.actions.Accept;
+import negotiator.Domain;
+import negotiator.utility.UtilitySpace;
+import negotiator.actions.*;
 import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
 import negotiator.exceptions.BidDoesNotExistInDomainException;
 import negotiator.issue.*;
-//import negotiator.issue.Issue;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
  *
@@ -33,11 +36,11 @@ import negotiator.issue.*;
  */
 public class EnterBidDialog2 extends JDialog {
 	
-    private Action selectedAction;
+	private NegoInfo negoinfo;
+	
+    private negotiator.actions.Action selectedAction;
     private Agent agent;
-    private Bid opponentBid ;
     
-
     private JTextArea negotiationMessages=new JTextArea();
     
     private JButton buttonBid=new JButton("Do Bid");
@@ -50,17 +53,26 @@ public class EnterBidDialog2 extends JDialog {
     private JLabel UtilityLabel=new JLabel("Utility");
     
     
-    private JTable BidTable; // table showing the bids, adjustable
+    private JTable BidTable ;
+     // table showing the bids, adjustable
+       	// there are two ways to handle a Table in Java:
+    	// (1) use a TableModel. 
+    	// (2) use a CellRenderer and CellEditor
+    	// using a TableModel, particularly the last obligatory function getValueAt,
+    	// breaks the approach (2), causing editing to lock up.
+    	// we use the last appraoch because TableModel does not allow ComboBox cell rendering...
+    	// it always will show the combo box as plain text.
     
-    
-    
-    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal) {
+    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us) {
         super(parent, modal);
+		if (d==null) throw new NullPointerException("null domain?");
+        negoinfo=new NegoInfo(null,null,d, us);
         this.agent = agent;
-        initComponents();
+        initThePanel();
     }
     
-    private void initComponents() {
+    /** make sure negoinfo has been initialized BERFORE calling this!!!!!!!!!!*/
+    private void initThePanel() {
     	
     	Container pane=getContentPane();
         pane.setLayout(new BorderLayout());
@@ -69,20 +81,24 @@ public class EnterBidDialog2 extends JDialog {
         //setMinimumSize(new java.awt.Dimension(480, 320));
 
         	// todo: create north field: the message field
+        pane.add(negotiationMessages,"North");
         
         	// create center panel: the bid table
-        BidTable = new javax.swing.JTable();
-        BidTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null}
-                },
-                new String [] {
-                    "Title 1", "Title 2", "Title 3", "Title 4"
-                }
-            ));
+        BidTable = new  JTable();
+        BidTable.setModel(negoinfo); // need it for column size etc...
+        // It seems that swing crashes if we don't provide TableModel and fill it with nonsense??????
+        //DefaultTableModel model = negoinfo;
+         // Damn, the initial size determines the layout of the final table....
+         // I have to figure out how to resize the table.
+        //model.addColumn("A", new Object[]{"item1","item1b"}); // Nonsense, but otherwise getColumnClass(0) crasehs....
+        //model.addColumn("B", new Object[]{"item2","item2b"});
+        //model.addColumn("C", new Object[]{"item2","item2b"});
+
+        // Model will be set up later, at call askUserForAction
+        
+
+        BidTable.setGridColor(Color.lightGray);
+        String[] values = new String[]{"item1", "item2", "item3"};
         pane.add(BidTable,"Center");
 
         	// create south panel: the buttons:
@@ -91,12 +107,10 @@ public class EnterBidDialog2 extends JDialog {
         buttonPanel.add(buttonSkip);
         buttonPanel.add(buttonEnd);
         buttonPanel.add(buttonAccept);
-        buttonAccept.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         pane.add(buttonPanel,"South");
         buttonBid.setSelected(true);
 
          // set action listeners for the buttons
-
         buttonBid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBidActionPerformed(evt);
@@ -117,59 +131,83 @@ public class EnterBidDialog2 extends JDialog {
                 buttonAcceptActionPerformed(evt);
             }
         });
-        pack();
+        //BidTable.setModel(negoinfo);
+        //pack(); // pack will do complete layout, getting all cells etc.
+        // DONT CALL PACK. Not  sure all fields are set before calling this.
     }
     
     
-    
+    private Bid getBid()
+    {
+    	//NegoTableModel model =  ((NegoTableModel)BidTable.getModel());
+        Bid bid=null;
+        try {
+            //bid =  model.getMyBid();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "There is a problem with your bid: "+e.getMessage());
+        }
+        return bid;    	
+    }
     
     private void buttonBidActionPerformed(java.awt.event.ActionEvent evt) 
     {
-
-        MyActionTableModel model =  ((MyActionTableModel)BidTable.getModel());
-        Bid bid;
-        try {
-            bid =  model.getMyBid();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "There is a problem with your bid: "+e.getMessage());
-            return;
+    	
+        Bid bid=getBid();
+        if (bid!=null) { 
+        	selectedAction = new Offer(agent,bid);         
+        	setVisible(false);
         }
-        selectedAction = new Offer(agent,bid);
-        setVisible(false);
-                
-        return;        
     }
 
-    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {
+    private void buttonSkipActionPerformed(java.awt.event.ActionEvent evt) {
     	System.out.println("cancel performed!");
         selectedAction = null;
         setVisible(false);
     }
 
     private void buttonAcceptActionPerformed(java.awt.event.ActionEvent evt) {
-    	System.out.println("Accept performed");
+        Bid bid=getBid();
+        if (bid!=null) {
+        	System.out.println("Accept performed");
+        	selectedAction=new Accept(agent,bid);
+        	setVisible(false);
+        }
     }
     
+    private void buttonEndActionPerformed(java.awt.event.ActionEvent evt) {
+    	System.out.println("End Negotiation performed");
+        selectedAction=new EndNegotiation(agent);
+        setVisible(false);
+    }
       
-    public Action askUserForAction(Action opponentAction, Bid myPreviousBid, NegotiationTemplate nt) {
-        opponentBid = null;
+    /** 
+     * This is called by UIAgent repeatedly, to ask for next action. 
+     * @param opponentAction is action done by opponent
+     * @param myPreviousBid 
+     * @param nt is negotiation template.
+     * @return our next negotionat action.
+     */
+    			public negotiator.actions.Action 
+    askUserForAction(negotiator.actions.Action opponentAction, Bid myPreviousBid) 
+    {
+        negoinfo.opponentBid=null;
         if(opponentAction==null) {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
         	negotiationMessages.setText("Opponent accepted the following bid:");
-            opponentBid = ((Accept)opponentAction).getBid();
+        	negoinfo.opponentBid = ((Accept)opponentAction).getBid();
         }
         if(opponentAction instanceof EndNegotiation) {
         	negotiationMessages.setText("Opponent cancels the negotiation.");
         }
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
-            opponentBid = ((Offer)opponentAction).getBid();
+        	negoinfo.opponentBid = ((Offer)opponentAction).getBid();
         }
         
         // load the bidding info into the table
-        BidTable.setModel(new NegoTableModel(myPreviousBid,opponentBid,nt));
+       // BidTable.setModel(new myTableModel(myPreviousBid,opponentBid,nt));
         /*
         tableOpponentBid.setModel(new OpponentActionTableModel(opponentBid, nt));
         MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,nt);
@@ -179,210 +217,188 @@ public class EnterBidDialog2 extends JDialog {
            myActionTableModel.setUpIssuesColumn(tableMyBid,issues.get(i), 
                    tableMyBid.getColumnModel().getColumn(i));
         */
-        
-        setVisible(true);
+        negoinfo.ourBid=myPreviousBid;
+        BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
+        		new MyCellRenderer(negoinfo));
+        BidTable.setDefaultEditor(BidTable.getColumnClass(0),new MyCellEditor(negoinfo));
+
+        pack();
+        setVisible(true); // this returns only after the panel closes.
         
         return selectedAction;
     }
-        
-        
-    /** 
-     * The NegoTableModel is a table showing the current bidding info.
-     * @author W.Pasman
-     *
-     */
-    class NegoTableModel extends AbstractTableModel
-    {
-    	private Bid ourBid;
-    	private Bid opponentBid;
-        private NegotiationTemplate negotemplate;
-        private ArrayList<Issue> issues; // the domain issues.
-        
-        public NegoTableModel(Bid ourBidP, Bid opponentBidP, NegotiationTemplate ntP)  {
-        	ourBid=ourBidP;
-            opponentBid = opponentBidP;
-            negotemplate = ntP;
-            issues=negotemplate.getDomain().getIssues();
-        }
-        
-        // last two rowsx are for "cost" and "utility"
-        public int getRowCount() {return issues.size()+2; }
-        public int getColumnCount() {return 3; }
+}   
+    
 
-        public String getColumnName(int col) {
-        	String[] columnNames={"","Last bid of opponent","Set your current bid"};
-        	return columnNames[col];
-        }
-        
-        public Class getColumnClass(int c) {return (new String()).getClass();}        
-        public Object getValueAt(int row, int col) {
-        	switch (col)
-        	{
-        	case 0:
-                // we need to implement the rownames oruselves, there is no getRowName() function for JTable.
-        		if (row<issues.size()) return issues.get(row).getName();
-        		if (row==issues.size()) return "Cost";
-        		return "Utility";
-        	case 1:  return getValueFromBid(opponentBid,row);
-        	case 2: return getValueFromBid(ourBid,row);
-        	default: return "ERROR";
-        	}
-        }   
-        
-        /**
-         * get appropriate row value for this bid.
-         * @param bid
-         * @param row
-         * @return
-         */
-        String	getValueFromBid(Bid bid, int row)
-        {
-    		if (row<issues.size()) return issues.get(row).getName();
-            if(bid[row]>=0)
-            	// Assume discrete-valued issues only.
-                return ((IssueDiscrete)negotemplate.getDomain().getIssue(row)).getValue(bid[row]);
-            else
-                return "";
-        }
-        
-        /**
-         * extract a bid from the GUI
-         * @return the Bid
-         * @throws Exception
-         */
-        public Bid getMyBid() throws Exception {
-            Bid bid = null;
-        	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
-        	ArrayList<Issue> issues=negoTemplate.getDomain().getIssues();
-        	for (int i=0; i<myBid.length; i++) {
-        		Issue iss=issues.get(i);
-        		values.put(new Integer(iss.getNumber()), 
-        				(((IssueDiscrete)negoTemplate.getDomain().getIssue(i)).getValue(myBid[i])));
-        	}
-        	bid = new Bid(negoTemplate.getDomain(), values);
-            return bid;
-        }
+/********************************************************/
 
-    }
-        
-    
-    
-    
-    
-    class OpponentActionTableModel extends AbstractTableModel {
-        private Bid opponentBid;
-        private NegotiationTemplate nt;
-        public OpponentActionTableModel(Bid opponentBid, NegotiationTemplate nt)  {
-            this.opponentBid = opponentBid;
-            this.nt = nt;
-        }
-        public int getColumnCount() {return nt.getDomain().getIssues().size(); }
+/**
+ * this is usualy called XXXModel but I dont like the 'model' in the name.
+ */
+class NegoInfo extends AbstractTableModel
+{
+	public Bid ourBid;			// Bid is hashmap <issueID,Value>.
+	public Bid opponentBid;
+	public Domain domain;
+	public UtilitySpace utilitySpace;	// WARNING: this may be null
+	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
+	// the issues, in row order as in the GUI. Init to empty, to enable 
+	// freshly initialized NegoInfo to give useful resuitsl to the GUI.
+	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
+	
+	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
+	
+	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws NullPointerException
+	{
+		//Wouter: just discovered that assert does nothing........... 
+		//if (us==null) throw new NullPointerException("null utilityspace?");
+		if (d==null) throw new NullPointerException("null domain?");
+		ourBid=our; opponentBid=opponent;
+		domain=d;
+		utilitySpace=us;
+		issues=d.getIssues();
+		IDs=new ArrayList<Integer>();
+		for (int i=0; i<issues.size(); i++) IDs.add(issues.get(i).getNumber());
+		makeComboBoxes();
+	}
+	
+	void makeComboBoxes()
+	{
+		comboBoxes=new ArrayList<JComboBox>();
+		for (Issue issue:issues)
+		{
+			if (!(issue instanceof IssueDiscrete))
+				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
+			ArrayList<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
+			comboBoxes.add( new JComboBox(values.toArray()));
+		}
+	}
+	
+	/**
+	 * get the currently chosen evaluation value of given row in the table. 
+	 * @param bid: which bid (the column in the table are for ourBid and opponentBid)
+	 * @return the evaluation of the given row in the bid.
+	 * returns null if the bid has no value in that row.
+	 * @throws probablly if rownr is out of range 0...issues.size()-1
+	 */
+	Value getCurrentEval(Bid bid,int rownr)
+	{
+		if (bid==null) return null;
+		Integer ID=IDs.get(rownr); // get ID of the issue in question.
+		return bid.getValue(ID); // get the current value for that issue in the bid
+	}
+	
+	
+	/**
+	 * get a render component
+	 * @param row
+	 * @param col
+	 * @return the Component that can be rendered to show this cell.
+	 */
+	public Component getValueAt(int row, int col)
+	{
+		System.out.println("get cell"+row+" "+col);
+		if (row==issues.size())
+		{
+			if (col==0) return new JLabel("TOTAL COST:");
+			return new JTextArea("TBD");
+		}
+		if (row==issues.size()+1)
+		{
+			if (col==0) return new JLabel("EVAL:");
+			return new JTextArea("TBD");
+		}
+		switch (col)
+		{
+		case 0:
+			return new JTextArea(issues.get(row).getName());
+		case 1:
+			Value value= getCurrentEval(opponentBid,row);
+			if (value==null) return new JTextArea("-");
+			return new JTextArea(value.toString());
+		case 2:
+			return comboBoxes.get(row);
+		}
+		return null;
+	}
+	
+	
+	public int getColumnCount()
+	{
+		// Return 0 because we handle our own columns
+		return 3;
+	}	
 
-        public int getRowCount() {return 1;}
-
-        public String getColumnName(int col) {
-            return nt.getDomain().getIssue(col).getName();
-        }
-        public Class getColumnClass(int c) {return (new String()).getClass();}        
-
-        public Object getValueAt(int row, int col) {
-            Object value = null;
-            ArrayList<Issue> issues=nt.getDomain().getIssues();
-            if(opponentBid!= null) 
-//                value = nt.getDomain().getIssue(col).getValue(opponentBid.getValueIndex(col));
-            	// Assume discrete-valued bids only.
-            	value = opponentBid.getValue(issues.get(col).getNumber()).toString();
-            return value;
-        }   
-    }
-    
-    
-    
-    
-    class MyActionTableModel extends AbstractTableModel {
-        public int[] myBid; // array of 
-        
-        private NegotiationTemplate negoTemplate;
-        public MyActionTableModel(Bid myPreviousBid, NegotiationTemplate nt)  {
-            negoTemplate = nt;
-        	int nissues=getColumnCount() ;
-        	myBid = new int[nissues];
-        	ArrayList<Issue> issues=nt.getDomain().getIssues();
-            if(myPreviousBid!=null)
-                for(int i=0;i<nt.getDomain().getIssues().size();i++)
-                {
-                	int issuenr=issues.get(i).getNumber();
-                	myBid[i] = ((IssueDiscrete)issues.get(i)).
-                		getValueIndex(((ValueDiscrete)myPreviousBid.getValue(issuenr)).getValue());
-
-                }
-            else for(int i=0;i<nissues;i++) myBid[i] = -1;
-        }
-        
-        public int getColumnCount() {
-            return negoTemplate.getDomain().getIssues().size();
-        }
-        public int getRowCount() {
-            return 1;
-        }
-        public String getColumnName(int col) {
-            return negoTemplate.getDomain().getIssue(col).getName();
-        }
-        public Object getValueAt(int row, int col) {
-            Object value = null;
-            if(myBid[col]>=0)
-            	// Assume discrete-valued issues only.
-                value = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValue(myBid[col]);
-            else
-                value = new String("");
-            return value;
-        }
-        public Class getColumnClass(int c) {
-            return (new String()).getClass();
-        }
-        public boolean isCellEditable(int row, int col) {
-            //Note that the data/cell address is constant,
-            //no matter where the cell appears onscreen.
-            return true;
-        }
-        public void setUpIssuesColumn(JTable table, Issue issue, TableColumn issueColumn) {
-            //Set up the editor for the sport cells.
-            JComboBox comboBox = new JComboBox();
-            // Assumption: Discrete-valued issues only
-            for (int i=0;i<((IssueDiscrete)issue).getNumberOfValues();i++) {
-                comboBox.addItem(((IssueDiscrete)issue).getValue(i));    
-            }
-            issueColumn.setCellEditor(new DefaultCellEditor(comboBox));
-            
-            //Set up tool tips for the sport cells.
-            DefaultTableCellRenderer renderer =
-                    new DefaultTableCellRenderer();
-            renderer.setToolTipText("Click for combo box");
-            issueColumn.setCellRenderer(renderer);
-        }
-        public void setValueAt(Object value, int row, int col) {
-            myBid[col] = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValueIndex(value.toString());
-            fireTableCellUpdated(row, col);
-        }
-        
-        /**
-         * extract a bid from the GUI
-         * @return the Bid
-         * @throws Exception
-         */
-        public Bid getMyBid() throws Exception {
-            Bid bid = null;
-        	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
-        	ArrayList<Issue> issues=negoTemplate.getDomain().getIssues();
-        	for (int i=0; i<myBid.length; i++) {
-        		Issue iss=issues.get(i);
-        		values.put(new Integer(iss.getNumber()), 
-        				(((IssueDiscrete)negoTemplate.getDomain().getIssue(i)).getValue(myBid[i])));
-        	}
-        	bid = new Bid(negoTemplate.getDomain(), values);
-            return bid;
-        }
-       
-    }
-    
+	public int getRowCount()
+	{
+		return issues.size()+2;
+	}
+	
 }
+
+
+
+
+/********************************************************************/
+
+class MyCellRenderer implements TableCellRenderer {
+	NegoInfo negoinfo;
+	
+     public MyCellRenderer(NegoInfo n)
+     {
+    	 negoinfo=n;
+     }
+ 
+     public Component getTableCellRendererComponent(JTable table, Object value,
+             boolean isSelected, boolean hasFocus, int row, int column) {
+		return negoinfo.getValueAt(row,column);   
+		}
+}
+
+
+
+
+
+
+/********************************************************/
+
+
+class MyCellEditor extends DefaultCellEditor implements ActionListener
+{
+	public int editrow=0;		// row that was edited in that last combo box.
+	NegoInfo negoinfo;
+    public MyCellEditor(NegoInfo  n)
+
+    {
+    	super(new JTextField("vaag")); // Java wants us to call super class, who cares...
+		negoinfo=n;
+    }
+	
+	public Component getTableCellEditorComponent(JTable table, Object value, 
+		boolean isSelected, int row, int column)
+	{
+		if (column<2) return null; // only editing of col.2
+		editrow=row;
+		return negoinfo.getValueAt(row, column);
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		System.out.println("received combo action "+e+"\nactioncommand="+e.getActionCommand()+"\nparams="+e.paramString());
+		System.out.println("edited row:"+editrow);
+	}    
+    
+	/*
+	//Unfortunately we can not use isCellEditable because we can't determine which 
+	//cell actually has been selected.....
+	public boolean isCellEditable(EventObject e)
+	{
+		System.out.println("Editable request:"+e+"source="+e.getSource()); 
+		return true;
+	}
+	*/
+
+}
+
+
+

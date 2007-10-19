@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.NegotiationTemplate;
+import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -213,7 +213,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
     private javax.swing.JTable tableMyBid;
     private javax.swing.JTable tableOpponentBid;
     // End of variables declaration//GEN-END:variables
-    public Action askUserForAction(Action opponentAction, Bid myPreviousBid, NegotiationTemplate nt) {
+    public Action askUserForAction(Action opponentAction, Bid myPreviousBid, Domain domain) {
         opponentBid = null;
         if(opponentAction==null) {
             lblOpponentAction.setText("Opponent did not send any action.");            
@@ -229,10 +229,10 @@ public class EnterBidDialog extends javax.swing.JDialog {
             lblOpponentAction.setText("Opponent proposes the following bid:");
             opponentBid = ((Offer)opponentAction).getBid();
         }            
-        tableOpponentBid.setModel(new OpponentActionTableModel(opponentBid, nt));
-        MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,nt);
+        tableOpponentBid.setModel(new OpponentActionTableModel(opponentBid, domain));
+        MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,domain);
         tableMyBid.setModel(myActionTableModel);
-        ArrayList<Issue> issues=nt.getDomain().getIssues();
+        ArrayList<Issue> issues=domain.getIssues();
         for(int i=0;i<issues.size();i++)
            myActionTableModel.setUpIssuesColumns(tableMyBid,issues.get(i), 
                    tableMyBid.getColumnModel().getColumn(i));
@@ -247,23 +247,23 @@ public class EnterBidDialog extends javax.swing.JDialog {
         
     class OpponentActionTableModel extends AbstractTableModel {
         private Bid opponentBid;
-        private NegotiationTemplate nt;
-        public OpponentActionTableModel(Bid opponentBid, NegotiationTemplate nt)  {
+        private Domain domain;
+        public OpponentActionTableModel(Bid opponentBid, Domain d)  {
             this.opponentBid = opponentBid;
-            this.nt = nt;
+            domain=d;
         }
-        public int getColumnCount() {return nt.getDomain().getIssues().size(); }
+        public int getColumnCount() {return domain.getIssues().size(); }
 
         public int getRowCount() {return 1;}
 
         public String getColumnName(int col) {
-            return nt.getDomain().getIssue(col).getName();
+            return domain.getIssue(col).getName();
         }
         public Class getColumnClass(int c) {return (new String()).getClass();}        
 
         public Object getValueAt(int row, int col) {
             Object value = null;
-            ArrayList<Issue> issues=nt.getDomain().getIssues();
+            ArrayList<Issue> issues=domain.getIssues();
             if(opponentBid!= null) 
 //                value = nt.getDomain().getIssue(col).getValue(opponentBid.getValueIndex(col));
             	// Assume discrete-valued bids only.
@@ -281,14 +281,14 @@ public class EnterBidDialog extends javax.swing.JDialog {
     class MyActionTableModel extends AbstractTableModel {
         public int[] myBid; // array of 
         
-        private NegotiationTemplate negoTemplate;
-        public MyActionTableModel(Bid myPreviousBid, NegotiationTemplate nt)  {
-            negoTemplate = nt;
+        private Domain domain;
+        public MyActionTableModel(Bid myPreviousBid, Domain d)  {
+            domain=d;
         	int nissues=getColumnCount() ;
         	myBid = new int[nissues];
-        	ArrayList<Issue> issues=nt.getDomain().getIssues();
+        	ArrayList<Issue> issues=domain.getIssues();
             if(myPreviousBid!=null)
-                for(int i=0;i<nt.getDomain().getIssues().size();i++)
+                for(int i=0;i<domain.getIssues().size();i++)
                 {
                 	int issuenr=issues.get(i).getNumber();
                 	myBid[i] = ((IssueDiscrete)issues.get(i)).
@@ -299,19 +299,19 @@ public class EnterBidDialog extends javax.swing.JDialog {
         }
         
         public int getColumnCount() {
-            return negoTemplate.getDomain().getIssues().size();
+            return domain.getIssues().size();
         }
         public int getRowCount() {
             return 1;
         }
         public String getColumnName(int col) {
-            return negoTemplate.getDomain().getIssue(col).getName();
+            return domain.getIssue(col).getName();
         }
         public Object getValueAt(int row, int col) {
             Object value = null;
             if(myBid[col]>=0)
             	// Assume discrete-valued issues only.
-                value = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValue(myBid[col]);
+                value = ((IssueDiscrete)domain.getIssue(col)).getValue(myBid[col]);
             else
                 value = new String("");
             return value;
@@ -340,7 +340,7 @@ public class EnterBidDialog extends javax.swing.JDialog {
             issueColumn.setCellRenderer(renderer);
         }
         public void setValueAt(Object value, int row, int col) {
-            myBid[col] = ((IssueDiscrete)negoTemplate.getDomain().getIssue(col)).getValueIndex(value.toString());
+            myBid[col] = ((IssueDiscrete)domain.getIssue(col)).getValueIndex(value.toString());
             fireTableCellUpdated(row, col);
         }
         
@@ -352,13 +352,13 @@ public class EnterBidDialog extends javax.swing.JDialog {
         public Bid getMyBid() throws Exception {
             Bid bid = null;
         	HashMap<Integer, Value> values = new HashMap<Integer,Value>();
-        	ArrayList<Issue> issues=negoTemplate.getDomain().getIssues();
+        	ArrayList<Issue> issues=domain.getIssues();
         	for (int i=0; i<myBid.length; i++) {
         		Issue iss=issues.get(i);
         		values.put(new Integer(iss.getNumber()), 
-        				(((IssueDiscrete)negoTemplate.getDomain().getIssue(i)).getValue(myBid[i])));
+        				(((IssueDiscrete)domain.getIssue(i)).getValue(myBid[i])));
         	}
-        	bid = new Bid(negoTemplate.getDomain(), values);
+        	bid = new Bid(domain, values);
             return bid;
         }
        

@@ -18,6 +18,9 @@ import jtreetable.*;
  * @author Richard Noorlandt
  *
  * This launches a editissue dialog window.
+ * Wouter: this is ugly. The EditIssueDialog also handles editing of evaluators.
+ * it gets access to the util space via the treeFrame, the parent of this dialog.
+ * 
  */
 
 public class EditIssueDialog extends NewIssueDialog {
@@ -92,13 +95,10 @@ public class EditIssueDialog extends NewIssueDialog {
 						
 						Double cost=eval.getCost(val);
 						if (cost!=null) costString=costString+cost;
-
-
 						
 						valueString=valueString+"\n";
 						costString=costString+"\n";
-						
-					}
+											}
 					discreteTextEvaluationArea.setText(valueString);
 					discreteCostEvaluationArea.setText(costString);
 				}
@@ -159,24 +159,21 @@ public class EditIssueDialog extends NewIssueDialog {
 	public void actionPerformed(ActionEvent e) 
 	{
 		if (e.getSource() == okButton) {
-			if (issue == null) 
-				return;
-			else {
-				updateIssue(issue);
-				
-				//Notify the model that the contents of the treetable have changed
-				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
-				
-				(model.getIssueValuePanel(issue)).displayValues(issue);
-				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				
-				//if (model.getUtilitySpace() == null) {
-				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+			if (issue == null) return;
+			updateIssue(issue);
+			
+			//Notify the model that the contents of the treetable have changed
+			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+			
+			(model.getIssueValuePanel(issue)).displayValues(issue);
+			model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+			
+			//if (model.getUtilitySpace() == null) {
+			//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+			//}
+			//else {
+			//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
 				//}
-				//else {
-				//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
-				//}
-			}
 			
 			this.dispose();
 		}			

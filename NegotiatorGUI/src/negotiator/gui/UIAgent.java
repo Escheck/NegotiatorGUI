@@ -19,6 +19,7 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
+import negotiator.Domain;
 
 /**
  *
@@ -27,17 +28,16 @@ import negotiator.utility.UtilitySpace;
 public class UIAgent extends Agent{
     private Action opponentAction;
     private EnterBidDialog ui;
-    private NegotiationTemplate nt;
     private Bid myPreviousBid;
     /** Creates a new instance of UIAgent */
     public UIAgent() {
         ui = new EnterBidDialog(this, null, true);
     }
-    protected void init(int sessionNumber, int sessionTotalNumber, NegotiationTemplate nt) {
-        super.init (sessionNumber, sessionTotalNumber, nt);
-        this.nt = nt;
-        return;
+    
+    protected void init(int sessionNumber, int sessionTotalNumber, Domain d) {
+        super.init (sessionNumber, sessionTotalNumber, d);
     }
+    
     public void ReceiveMessage(Action opponentAction) {
         this.opponentAction = opponentAction;
         if(opponentAction instanceof Accept)
@@ -48,15 +48,16 @@ public class UIAgent extends Agent{
 
         return;
     }
+    
     public Action chooseAction() {
-        Action action = ui.askUserForAction(opponentAction, myPreviousBid, nt);
+        Action action = ui.askUserForAction(opponentAction, myPreviousBid, domain);
         if((action != null)&&(action instanceof Offer)) myPreviousBid=((Offer)action).getBid(); 
         return action;
     }
 
     public void loadUtilitySpace(String fileName) {
         //load the utility space
-        utilitySpace = new UtilitySpace(nt.getDomain(), fileName);
+        utilitySpace = new UtilitySpace(domain, fileName);
         return;
     }
   

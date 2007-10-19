@@ -51,7 +51,11 @@ public class UtilitySpace {
     	fEvaluators = new HashMap<Objective, Evaluator>();
     }
     
-    
+    /**
+     * Ceate new default util space for a given domain.
+     * @param domain
+     * @param fileName to read domain from. set to "" if no file available.
+     */
     public UtilitySpace(Domain domain, String fileName) {
         this.domain = domain;
     	fEvaluators = new HashMap<Objective, Evaluator>();
@@ -125,7 +129,7 @@ public class UtilitySpace {
     
     /**
      * Returns an evaluator for an Objective or Issue
-     * @param index The index of the Objective or Issue
+     * @param index The IDnumber of the Objective or Issue
      * @return An Evaluator for the Objective or Issue.
      */
     public final Evaluator getEvaluator(int index) {
@@ -715,30 +719,22 @@ public class UtilitySpace {
 
     	// update the objective fields.
     	Object[] Objectives = currentLevel.getChildByTagName("objective");
-    	Object[] childWeights = currentLevel.getChildByTagName("weight");
+    	//Object[] childWeights = currentLevel.getChildByTagName("weight");
+    	// Wou;ter: again, domain has no weights.
+    	
     	for(int objInd=0; objInd<Objectives.length;objInd++){
     		SimpleElement currentChild = (SimpleElement)Objectives[objInd];
     		int childIndex = Integer.valueOf(currentChild.getAttribute("index"));
     		try{
     			Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
-    		
-    			if(childWeights.length == 0){
-    				SimpleElement currentChildWeight = new SimpleElement("weight");
-    				currentChildWeight.setAttribute("index", ""+childIndex);
-    				currentChildWeight.setAttribute("value", ""+ev.getWeight());
-    				currentLevel.addChildElement(currentChildWeight);
-    			}else{
-    				for(int weightInd = 0; weightInd < childWeights.length; weightInd++){
-    					SimpleElement thisWeight = (SimpleElement)childWeights[weightInd];
-    					int w_ind = Integer.valueOf(thisWeight.getAttribute("index"));
-    					Evaluator child_ev = fEvaluators.get(domain.getObjective(w_ind));
-    					thisWeight.setAttribute("value", ""+ child_ev.getWeight());
-    					currentLevel.addChildElement(thisWeight);
-    				}
-    			
-    			}
+    			// Wouter: nasty, they dont check whether object actually has weight.
+    			// they account on an exception being thrown in dthat case....
+				SimpleElement currentChildWeight = new SimpleElement("weight");
+				currentChildWeight.setAttribute("index", ""+childIndex);
+				currentChildWeight.setAttribute("value", ""+ev.getWeight());
+				currentLevel.addChildElement(currentChildWeight);	
     		}catch(Exception e){
-    			//do nothing, not every node has an evaluator.
+    			//do nothing, not every node has an evaluator. 
     		}	
     		currentChild = toXMLrecurse(currentChild);
     	}

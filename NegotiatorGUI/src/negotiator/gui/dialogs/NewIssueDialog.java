@@ -85,11 +85,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		issueType.addItemListener(this);
 		
 		//Initialize the input components
-		discreteTextArea = new JTextArea(20, 25);
-		discreteTextEvaluationArea = new JTextArea(20,25);
-		discreteCostEvaluationArea = new JTextArea(20,25);
+		discreteTextArea = new JTextArea(20, 10);
+		discreteTextEvaluationArea = new JTextArea(20,4);
+		discreteCostEvaluationArea = new JTextArea(20,4);
 		discreteCostEvaluationArea.setEditable(false);
-		discreteDescEvaluationArea = new JTextArea(20,25);
+		discreteDescEvaluationArea = new JTextArea(20,40);
 		discreteDescEvaluationArea.setEditable(false);
 
 
@@ -139,7 +139,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		JPanel descPanel = new JPanel();
 		
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
-		JLabel textLabel = new JLabel("Edit the discrete values below. Use one line for each value.");
+		JLabel textLabel = new JLabel("Edit the discrete values below.");
 		textPanel.add(textLabel);
 		textPanel.add(new JScrollPane(discreteTextArea));
 		panel.add(textPanel);
@@ -372,9 +372,12 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	 * Wouter: This updates the data structures after the issue dialog was completed and user pressed OK.
 	 * Not clear to me how it can return only an issue, so where are the values that were set as well?
 	 * (the values should be put into a utility space)?
+	 * Wouter: answer: Yes this is ugly. the utility space is updated under water, and the dialog can access it via the 
+	 * parent node (treeFrame) that has access to the utility space....
 	 * @param issue
 	 * @return
-	 * @throws exception if issues can not be accepted. e.g. negative evaluation values.
+	 * @throws exception if issues can not be accepted. e.g. negative evaluation values 
+	 * or if no evaluator available for issue while there is a utiliyt space.
 	 */
 	protected Issue updateIssue(Issue issue)
 	{
@@ -383,6 +386,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		String description;
 		Objective selected = null; //The Objective that is selected in the tree, which will be the new Issue's parent.
 		boolean newIssue = (issue == null); //Defines if a new Issue is added, or if an existing Issue is being edited.
+	
+		// Wouter: added: they threw away the old evaluator... bad because you loose the weight settings of the evaluator.
+		// Wouter; code is ugly. They create a NEW evaluator anyway. And at  the end they check whethere there is a util space
+		// anyway, and if not they throw away the new evaluator.....
+		UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		Evaluator evaluator=null;
+		if (uts!=null && issue!=null) evaluator=uts.getEvaluator(issue.getNumber());
+		
 		try {
 			name = getObjectiveName();
 			number = getObjectiveNumber();
@@ -410,7 +421,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		String selectedType = (String)issueType.getSelectedItem();
 		//Issue issue = null;
 		if (selectedType == DISCRETE) {
-			EvaluatorDiscrete evDis = null;
+			//EvaluatorDiscrete evDis = null;
 			String[] values;
 			ArrayList<Integer> evalues = null;
 			try {
@@ -423,10 +434,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			try{
 				evalues = getDiscreteEvalutions();
 				if (evalues==null) System.out.println("No evalues");
-				if(evalues != null){
-					evDis = new EvaluatorDiscrete();
-					evDis.setWeight(0.0);
-				}
+				//if(evalues != null){
+					//evDis = new EvaluatorDiscrete();
+					//evDis.setWeight(0.0);
+				//}
 			}catch (Exception f){ //Can also be a casting exception.
 					JOptionPane.showMessageDialog(this, "Problem reading evaluation values:"+f.getMessage());
 			}
@@ -443,30 +454,25 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			ArrayList<ValueDiscrete> v_enum = ((IssueDiscrete)issue).getValues();
 
 			 // load values into discrete evaluator
-			if(evDis != null && evalues!=null)
+			if(evaluator!=null && evalues!=null)
 			{
 				try
 				{
-					evDis.clear();
+					((EvaluatorDiscrete) evaluator).clear(); 
 				
 					for (int i=0; i<v_enum.size(); i++) 
 					{
 						if (i < evalues.size() && evalues.get(i)!=0) // evalues field is 0 if error occured at that field.
-							evDis.setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
+							((EvaluatorDiscrete) evaluator).setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
 					}
 				}
 				catch (Exception e) {JOptionPane.showMessageDialog(this, e.getMessage()); }
 			
 				 // Wouter: I don't like the way this works now but notime to correct it. 
 	
-				UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
-				if(uts != null){
-					System.out.println("issue updated:"+issue);
-					//uts.getEvaluator(issue).clear();
-					uts.addEvaluator(issue, evDis);
-				}
+				if(uts != null) uts.addEvaluator(issue, evaluator);
 			}
-			else System.out.println("WARNING. no update of values!! evDis="+evDis);
+			else System.out.println("WARNING. no update of values!! evDis="+evaluator);
 		}
 		else if (selectedType == INTEGER) {
 			int min;
@@ -474,23 +480,23 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			int parameter;
 			int max;
 			
-			Evaluator evInt = null;
+			//Evaluator evInt = null;
 			try {
 				min = getIntegerMin();
 				max = getIntegerMax();
 				
 				if(! integerLinearField.getText().equals("")){
-					evInt = new EvaluatorInteger();
-					evInt.setWeight(0.0);
-					((EvaluatorInteger)evInt).setLowerBound(min);
-					((EvaluatorInteger)evInt).setUpperBound(max);
-					((EvaluatorInteger)evInt).setLinearParam(getIntegerLinear());
+					//evInt = new EvaluatorInteger();
+					//evInt.setWeight(0.0);
+					((EvaluatorInteger)evaluator).setLowerBound(min);
+					((EvaluatorInteger)evaluator).setUpperBound(max);
+					((EvaluatorInteger)evaluator).setLinearParam(getIntegerLinear());
 				}else if(! integerParameterField.getText().equals("")){
-					evInt = new EvaluatorInteger();
-					evInt.setWeight(0.0);
-					((EvaluatorInteger)evInt).setLowerBound(min);
-					((EvaluatorInteger)evInt).setUpperBound(max);
-					((EvaluatorInteger)evInt).setConstantParam(getIntegerParameter());
+					//evInt = new EvaluatorInteger();
+					//evInt.setWeight(0.0);
+					((EvaluatorInteger)evaluator).setLowerBound(min);
+					((EvaluatorInteger)evaluator).setUpperBound(max);
+					((EvaluatorInteger)evaluator).setConstantParam(getIntegerParameter());
 				}
 			}
 			catch (InvalidInputException e) {
@@ -506,32 +512,29 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueInteger)issue).setLowerBound(min);
 				((IssueInteger)issue).setUpperBound(max);
 			}
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
-			if(uts != null){
-				uts.addEvaluator(issue, evInt);
-			}
+			if(uts != null) uts.addEvaluator(issue, evaluator);
 		}
 		else if (selectedType == REAL) {
 			double min;
 			double other;
 			double max;
-			Evaluator evReal = null;
+			//Evaluator evReal = null;
 			try {
 				min = getRealMin();
 				//other = getRealOther();
 				max = getRealMax();
 				if(! realLinearField.getText().equals("")){
-					evReal = new EvaluatorReal();
-					evReal.setWeight(0.0);
-					((EvaluatorReal)evReal).setLowerBound(min);
-					((EvaluatorReal)evReal).setUpperBound(max);
-					((EvaluatorReal)evReal).setLinearParam(getRealLinear());
+					//evReal = new EvaluatorReal();
+					//evReal.setWeight(0.0);
+					((EvaluatorReal)evaluator).setLowerBound(min);
+					((EvaluatorReal)evaluator).setUpperBound(max);
+					((EvaluatorReal)evaluator).setLinearParam(getRealLinear());
 				}else if(! realParameterField.getText().equals("")){
-					evReal = new EvaluatorReal();
-					evReal.setWeight(0.0);
-					((EvaluatorReal)evReal).setLowerBound(min);
-					((EvaluatorReal)evReal).setUpperBound(max);
-					((EvaluatorReal)evReal).setConstantParam(getRealParameter());
+					//evReal = new EvaluatorReal();
+					//evReal.setWeight(0.0);
+					((EvaluatorReal)evaluator).setLowerBound(min);
+					((EvaluatorReal)evaluator).setUpperBound(max);
+					((EvaluatorReal)evaluator).setConstantParam(getRealParameter());
 				}
 			}
 			catch (InvalidInputException e) {
@@ -547,10 +550,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueReal)issue).setLowerBound(min);
 				((IssueReal)issue).setUpperBound(max);
 			}
-			UtilitySpace uts = ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace();
-			if(uts != null){
-				uts.addEvaluator(issue, evReal);
-			}
+			if(uts != null) uts.addEvaluator(issue, evaluator);
+			
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "Please select an issue type!");
