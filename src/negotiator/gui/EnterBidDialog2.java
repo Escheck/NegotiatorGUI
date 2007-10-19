@@ -281,8 +281,6 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	
 	/**
 	 * get a render component
-	 * @param row
-	 * @param col
 	 * @return the Component that can be rendered to show this cell.
 	 */
 	public Component getValueAt(int row, int col)
@@ -296,10 +294,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			else  try {bid=getBid(); } 
 			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
 			String val;
-			try
-			{
-				val=utilitySpace.getCost(bid).toString();
-			}
+			try	{val=utilitySpace.getCost(bid).toString();	}
 			catch (Exception e) { 
 				System.out.println("Exception during cost calculation:"+e.getMessage()); 
 				//e.printStackTrace();
@@ -309,8 +304,19 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		if (row==issues.size()+1)
 		{
 			if (col==0) return new JLabel("Utility:");
-			if (utilitySpace==null) return new JTextArea("No UtilSpace");
-			return new JTextArea("TBD");
+			if (utilitySpace==null) return new JLabel("No UtilSpace");
+			Bid bid;
+			if (col==1) bid=opponentOldBid; 
+			else  try {bid=getBid(); } 
+			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
+			String val;
+			try	{val=String.format("%1.2f", utilitySpace.getUtility(bid));	}
+			catch (Exception e) { 
+				System.out.println("Exception during cost calculation:"+e.getMessage()); 
+				//e.printStackTrace();
+				val="XXX"; }
+
+			return new JTextArea(val);
 		}
 		switch (col)
 		{
@@ -338,7 +344,10 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 
 	public void actionPerformed(ActionEvent e) {
 		//System.out.println("event d!"+e);
-		fireTableCellUpdated(2,2); }
+		// update the cost and utility of our own bid.
+		fireTableCellUpdated(issues.size(),2);
+		fireTableCellUpdated(issues.size()+1,2);
+	}
 
 }
 
