@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.Color;
+import java.util.Vector;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class EnterBidDialog2 extends JDialog {
 	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
     private Agent agent;    
-    private JTextArea negotiationMessages=new JTextArea();    
+    private JTextArea negotiationMessages=new JTextArea("NO MESSAGES YET");    
     private JButton buttonBid=new JButton("Do Bid");
     private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Nego");
@@ -61,19 +62,24 @@ public class EnterBidDialog2 extends JDialog {
         pane.setLayout(new BorderLayout());
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Choose action for agent "+agent.getName());
-        //setMinimumSize(new java.awt.Dimension(480, 320));
+        setMinimumSize(new java.awt.Dimension(480, 320));
 
+
+    // create north field: the message field
+        // somehow, the Panel is being drawn over our messages, ??
+       pane.add(negotiationMessages,"North");
         
-     // create north field: the message field
-        pane.add(negotiationMessages,"North");
         
      // create center panel: the bid table
-        BidTable = new  JTable();
-        BidTable.setModel(negoinfo); // need a model for column size etc...
-
+        BidTable = new  JTable(negoinfo);
+        //BidTable.setModel(negoinfo); // need a model for column size etc...
+       	 // Why doesn't this work???
         BidTable.setGridColor(Color.lightGray);
         String[] values = new String[]{"item1", "item2", "item3"};
-        pane.add(BidTable,"Center");
+        JPanel tablepane=new JPanel(new BorderLayout());
+        tablepane.add(BidTable.getTableHeader(), "North");
+        tablepane.add(BidTable,"Center");
+        pane.add(tablepane,"Center");
 
         	// create south panel: the buttons:
         buttonPanel.setLayout(new FlowLayout());
@@ -105,8 +111,7 @@ public class EnterBidDialog2 extends JDialog {
                 buttonAcceptActionPerformed(evt);
             }
         });
-        //pack(); // pack will do complete layout, getting all cells etc.
-        // DONT CALL PACK. Not  sure all fields are set before calling this.
+        pack(); // pack will do complete layout, getting all cells etc.
     }
     
     
@@ -209,8 +214,6 @@ class NegoInfo extends AbstractTableModel
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
-	
-	
 	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws NullPointerException
 	{
 		//Wouter: just discovered that assert does nothing........... 
@@ -233,6 +236,8 @@ class NegoInfo extends AbstractTableModel
 	public boolean isCellEditable(int row, int col)
 	{		return (col==2 && row<issues.size());	}
 
+   	private String[] colNames={"Issue","Last Bid of Opponent","Your bid"};
+   	public String getColumnName(int col) { return colNames[col]; }
 	
 	
 	
