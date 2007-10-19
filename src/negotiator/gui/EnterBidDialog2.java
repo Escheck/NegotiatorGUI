@@ -333,7 +333,11 @@ class NegoInfo extends AbstractTableModel
 	{
 		return issues.size()+2;
 	}
-	
+
+	public boolean isCellEditable(int row, int col)
+	{
+		return (col==2 && row<issues.size());
+	}
 }
 
 
@@ -377,7 +381,6 @@ class MyCellEditor extends DefaultCellEditor implements ActionListener
 	public Component getTableCellEditorComponent(JTable table, Object value, 
 		boolean isSelected, int row, int column)
 	{
-		if (column<2) return null; // only editing of col.2
 		editrow=row;
 		return negoinfo.getValueAt(row, column);
 	}
@@ -388,15 +391,7 @@ class MyCellEditor extends DefaultCellEditor implements ActionListener
 		System.out.println("edited row:"+editrow);
 	}    
     
-	/*
-	//Unfortunately we can not use isCellEditable because we can't determine which 
-	//cell actually has been selected.....
-	public boolean isCellEditable(EventObject e)
-	{
-		System.out.println("Editable request:"+e+"source="+e.getSource()); 
-		return true;
-	}
-	*/
+
 
 }
 
