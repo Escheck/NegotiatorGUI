@@ -36,32 +36,16 @@ import negotiator.utility.EvaluatorDiscrete;
  */
 public class EnterBidDialog2 extends JDialog {
 	
-	private NegoInfo negoinfo;
-	
+	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
-    private Agent agent;
-    
-    private JTextArea negotiationMessages=new JTextArea();
-    
+    private Agent agent;    
+    private JTextArea negotiationMessages=new JTextArea();    
     private JButton buttonBid=new JButton("Do Bid");
     private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Nego");
     private JButton buttonAccept=new JButton("Accept");
-    private JPanel buttonPanel=new JPanel();
-    
-    private JLabel CostLabel=new JLabel("Cost");
-    private JLabel UtilityLabel=new JLabel("Utility");
-    
-    
+    private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
-     // table showing the bids, adjustable
-       	// there are two ways to handle a Table in Java:
-    	// (1) use a TableModel. 
-    	// (2) use a CellRenderer and CellEditor
-    	// using a TableModel, particularly the last obligatory function getValueAt,
-    	// breaks the approach (2), causing editing to lock up.
-    	// we use the last appraoch because TableModel does not allow ComboBox cell rendering...
-    	// it always will show the combo box as plain text.
     
     public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us) {
         super(parent, modal);
@@ -71,31 +55,21 @@ public class EnterBidDialog2 extends JDialog {
         initThePanel();
     }
     
-    /** make sure negoinfo has been initialized BERFORE calling this!!!!!!!!!!*/
     private void initThePanel() {
-    	
+    	if (negoinfo==null) throw new NullPointerException("negoinfo is null");
     	Container pane=getContentPane();
         pane.setLayout(new BorderLayout());
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Choose action for agent "+agent.getName());
         //setMinimumSize(new java.awt.Dimension(480, 320));
 
-        	// todo: create north field: the message field
+        
+     // create north field: the message field
         pane.add(negotiationMessages,"North");
         
-        	// create center panel: the bid table
+     // create center panel: the bid table
         BidTable = new  JTable();
-        BidTable.setModel(negoinfo); // need it for column size etc...
-        // It seems that swing crashes if we don't provide TableModel and fill it with nonsense??????
-        //DefaultTableModel model = negoinfo;
-         // Damn, the initial size determines the layout of the final table....
-         // I have to figure out how to resize the table.
-        //model.addColumn("A", new Object[]{"item1","item1b"}); // Nonsense, but otherwise getColumnClass(0) crasehs....
-        //model.addColumn("B", new Object[]{"item2","item2b"});
-        //model.addColumn("C", new Object[]{"item2","item2b"});
-
-        // Model will be set up later, at call askUserForAction
-        
+        BidTable.setModel(negoinfo); // need a model for column size etc...
 
         BidTable.setGridColor(Color.lightGray);
         String[] values = new String[]{"item1", "item2", "item3"};
@@ -110,7 +84,7 @@ public class EnterBidDialog2 extends JDialog {
         pane.add(buttonPanel,"South");
         buttonBid.setSelected(true);
 
-         // set action listeners for the buttons
+     // set action listeners for the buttons
         buttonBid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBidActionPerformed(evt);
@@ -131,7 +105,6 @@ public class EnterBidDialog2 extends JDialog {
                 buttonAcceptActionPerformed(evt);
             }
         });
-        //BidTable.setModel(negoinfo);
         //pack(); // pack will do complete layout, getting all cells etc.
         // DONT CALL PACK. Not  sure all fields are set before calling this.
     }
@@ -139,10 +112,9 @@ public class EnterBidDialog2 extends JDialog {
     
     private Bid getBid()
     {
-    	//NegoTableModel model =  ((NegoTableModel)BidTable.getModel());
         Bid bid=null;
         try {
-            //bid =  model.getMyBid();
+            bid =  negoinfo.getBid();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "There is a problem with your bid: "+e.getMessage());
         }
@@ -206,17 +178,7 @@ public class EnterBidDialog2 extends JDialog {
         	negoinfo.opponentBid = ((Offer)opponentAction).getBid();
         }
         
-        // load the bidding info into the table
-       // BidTable.setModel(new myTableModel(myPreviousBid,opponentBid,nt));
-        /*
-        tableOpponentBid.setModel(new OpponentActionTableModel(opponentBid, nt));
-        MyActionTableModel myActionTableModel = new MyActionTableModel(myPreviousBid,nt);
-        tableMyBid.setModel(myActionTableModel);
-        ArrayList<Issue> issues=nt.getDomain().getIssues();
-        for(int i=0;i<issues.size();i++)
-           myActionTableModel.setUpIssuesColumn(tableMyBid,issues.get(i), 
-                   tableMyBid.getColumnModel().getColumn(i));
-        */
+
         negoinfo.ourBid=myPreviousBid;
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
@@ -245,8 +207,9 @@ class NegoInfo extends AbstractTableModel
 	// the issues, in row order as in the GUI. Init to empty, to enable 
 	// freshly initialized NegoInfo to give useful resuitsl to the GUI.
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
-	
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
+	
+	
 	
 	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws NullPointerException
 	{
@@ -261,6 +224,17 @@ class NegoInfo extends AbstractTableModel
 		for (int i=0; i<issues.size(); i++) IDs.add(issues.get(i).getNumber());
 		makeComboBoxes();
 	}
+	
+	
+	public int getColumnCount() 	{		return 3;	}	
+
+	public int getRowCount() 	{		return issues.size()+2;	}
+
+	public boolean isCellEditable(int row, int col)
+	{		return (col==2 && row<issues.size());	}
+
+	
+	
 	
 	void makeComboBoxes()
 	{
@@ -297,7 +271,6 @@ class NegoInfo extends AbstractTableModel
 	 */
 	public Component getValueAt(int row, int col)
 	{
-		System.out.println("get cell"+row+" "+col);
 		if (row==issues.size())
 		{
 			if (col==0) return new JLabel("TOTAL COST:");
@@ -323,22 +296,18 @@ class NegoInfo extends AbstractTableModel
 	}
 	
 	
-	public int getColumnCount()
+	Bid getBid() throws Exception
 	{
-		// Return 0 because we handle our own columns
-		return 3;
-	}	
-
-	public int getRowCount()
-	{
-		return issues.size()+2;
+		HashMap<Integer, Value> values =new HashMap<Integer, Value> ();
+		
+		for (int i=0; i<issues.size(); i++)
+			values.put(IDs.get(i), (Value)comboBoxes.get(i).getSelectedItem());
+		return new Bid(domain,values);
 	}
 
-	public boolean isCellEditable(int row, int col)
-	{
-		return (col==2 && row<issues.size());
-	}
+
 }
+
 
 
 
@@ -348,15 +317,13 @@ class NegoInfo extends AbstractTableModel
 class MyCellRenderer implements TableCellRenderer {
 	NegoInfo negoinfo;
 	
-     public MyCellRenderer(NegoInfo n)
-     {
-    	 negoinfo=n;
-     }
+    public MyCellRenderer(NegoInfo n) {	negoinfo=n;  }
  
-     public Component getTableCellRendererComponent(JTable table, Object value,
+    	// the default converts everything to string...
+    public Component getTableCellRendererComponent(JTable table, Object value,
              boolean isSelected, boolean hasFocus, int row, int column) {
 		return negoinfo.getValueAt(row,column);   
-		}
+	}
 }
 
 
@@ -367,12 +334,11 @@ class MyCellRenderer implements TableCellRenderer {
 /********************************************************/
 
 
-class MyCellEditor extends DefaultCellEditor implements ActionListener
+class MyCellEditor extends DefaultCellEditor
 {
-	public int editrow=0;		// row that was edited in that last combo box.
 	NegoInfo negoinfo;
+	
     public MyCellEditor(NegoInfo  n)
-
     {
     	super(new JTextField("vaag")); // Java wants us to call super class, who cares...
 		negoinfo=n;
@@ -380,18 +346,7 @@ class MyCellEditor extends DefaultCellEditor implements ActionListener
 	
 	public Component getTableCellEditorComponent(JTable table, Object value, 
 		boolean isSelected, int row, int column)
-	{
-		editrow=row;
-		return negoinfo.getValueAt(row, column);
-	}
-
-	public void actionPerformed(ActionEvent e)
-	{
-		System.out.println("received combo action "+e+"\nactioncommand="+e.getActionCommand()+"\nparams="+e.paramString());
-		System.out.println("edited row:"+editrow);
-	}    
-    
-
+	{		return negoinfo.getValueAt(row, column);	}
 
 }
 
