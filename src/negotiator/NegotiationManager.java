@@ -93,7 +93,8 @@ public class NegotiationManager implements Runnable {
             System.exit(0);
         }
     }
-    protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) {
+    protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
+    {
         Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber);
         if(Main.fDebug) {
         	nego.run();	

@@ -31,8 +31,9 @@ import negotiator.utility.UtilitySpace;
 //TODO: Maybe move this class to negotiator.agents package?
 public class Agent {
     private     String          fName;
+    protected	Domain			domain;
     protected   UtilitySpace    utilitySpace;
-    private NegotiationTemplate fNT;
+    //private NegotiationTemplate fNT;
     
     //TODO: Check if we realy need this declaration!
     // Some declarations for 'ease of use' when defining agents.
@@ -42,12 +43,15 @@ public class Agent {
 
     
     /** Creates a new instance of Agent */
+    /* WARNING!!! Wouter: utilitySpace will be null for some time!!! 
+     * this may crash attempts to show info in the GUI window!!
+     */
     public Agent() {
         this.fName = null;
     }
     
-    protected void init(int sessionNumber, int sessionTotalNumber, NegotiationTemplate nt) {
-        this.fNT = nt;
+    protected void init(int sessionNumber, int sessionTotalNumber, Domain d) {
+    	domain=d;
         return;
     }
     
@@ -65,7 +69,7 @@ public class Agent {
     
     public void loadUtilitySpace(String fileName) {
         //load the utility space
-        utilitySpace = new UtilitySpace(fNT.getDomain(), fileName);
+        utilitySpace = new UtilitySpace(domain, fileName);
         return;
     }
     
@@ -84,8 +88,8 @@ public class Agent {
     	return utilitySpace.getMaxUtilityBid();
     }
     
-    public final NegotiationTemplate getNegotiationTemplate() {
-        return fNT;
+    public final Domain getDomain() {
+        return domain;
     }
     
 }

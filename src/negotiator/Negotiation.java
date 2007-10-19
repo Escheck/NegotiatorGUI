@@ -61,9 +61,9 @@ public class Negotiation implements Runnable {
         ArrayList<Bid> lAgentABids = new ArrayList<Bid>();
         ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();;
         try {
-            agentA.init(sessionNumber, sessionTotalNumber, nt);
+            agentA.init(sessionNumber, sessionTotalNumber,nt.getDomain());
             agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
-            agentB.init(sessionNumber, sessionTotalNumber, nt);
+            agentB.init(sessionNumber, sessionTotalNumber,nt.getDomain());
             agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;

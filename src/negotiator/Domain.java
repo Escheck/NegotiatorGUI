@@ -65,6 +65,7 @@ public class Domain {
     }
     */
     
+    /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG */
     public final Objective getIssue(int index) {
         return fObjectivesRoot.getChildAt(index);
     }

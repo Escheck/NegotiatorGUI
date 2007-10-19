@@ -36,7 +36,7 @@ public final class Bid {
 	// Class fields
 	Domain fDomain;
 
-	private HashMap<Integer, Value> fValues; // Wouter: the bid values 
+	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
 	/**
 	 * create a new bid in a domain. Partially checks the validity of the bid as well
