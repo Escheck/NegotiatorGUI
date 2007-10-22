@@ -80,6 +80,18 @@ public class IssueDiscrete extends Issue {
 	    return -1;
 	}
 	
+	/** 
+	 * @param value that is supposed to be one of the alternatives of this issue.
+	 * @return index holding that value, or -1 if value is not one of the alternatives.
+	 */
+	public int getValueIndex(ValueDiscrete value) {
+	    for(int i=0;i<numberOfValues;i++)
+	        if(issueValues.get(i).equals(value)) {
+	            return i;
+	        }
+	    return -1;
+	}
+	
 	/**
 	 * Removes all values from this Issue.
 	 *
