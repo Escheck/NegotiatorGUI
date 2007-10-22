@@ -269,6 +269,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	    		System.out.println("error getting max utility first bid:"+e.getMessage()); 
 	    		e.printStackTrace();
 	    	}
+    	makeComboBoxes(); // reset the whole shit...
 	    setComboBoxes(ourOldBid);
    	}
 	
@@ -281,7 +282,15 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
 			ArrayList<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
 			JComboBox cbox=new JComboBox();
-			for (ValueDiscrete val:values) cbox.addItem(val+"(32)");
+			EvaluatorDiscrete eval=null;
+			if (utilitySpace!=null) eval=(EvaluatorDiscrete)utilitySpace.getEvaluator(issue.getNumber());
+			for (ValueDiscrete val:values) {
+				String utilinfo="";
+				if (eval!=null) try { utilinfo="("+eval.getEvaluation(val)+")"; }
+				catch (Exception e) { System.out.println("no evaluator for "+val+"???"); }
+
+				cbox.addItem(val+utilinfo);
+			}
 			comboBoxes.add( cbox);
 			for (JComboBox b:comboBoxes) b.addActionListener(this);
 		}
