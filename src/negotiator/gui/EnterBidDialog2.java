@@ -280,7 +280,9 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			if (!(issue instanceof IssueDiscrete))
 				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
 			ArrayList<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
-			comboBoxes.add( new JComboBox(values.toArray()));
+			JComboBox cbox=new JComboBox();
+			for (ValueDiscrete val:values) cbox.addItem(val+"(32)");
+			comboBoxes.add( cbox);
 			for (JComboBox b:comboBoxes) b.addActionListener(this);
 		}
 	}
@@ -292,7 +294,11 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	void setComboBoxes(Bid bid)
 	{
 		for (int i=0; i<issues.size(); i++)
-			comboBoxes.get(i).setSelectedItem((bid.getValue(issues.get(i).getNumber())));	
+		{
+			IssueDiscrete iss=(IssueDiscrete)issues.get(i);
+			ValueDiscrete val=(ValueDiscrete)bid.getValue(iss.getNumber());
+			comboBoxes.get(i).setSelectedIndex(((IssueDiscrete)iss).getValueIndex(val));
+		}
 	}
 	
 	
@@ -374,7 +380,8 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		HashMap<Integer, Value> values =new HashMap<Integer, Value> ();
 		
 		for (int i=0; i<issues.size(); i++)
-			values.put(IDs.get(i), (Value)comboBoxes.get(i).getSelectedItem());
+			values.put(IDs.get(i), ((IssueDiscrete)issues.get(i)).getValue(comboBoxes.get(i).getSelectedIndex()));
+			//values.put(IDs.get(i), (Value)comboBoxes.get(i).getSelectedItem());
 		return new Bid(domain,values);
 	}
 
