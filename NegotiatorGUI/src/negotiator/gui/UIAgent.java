@@ -26,10 +26,11 @@ import negotiator.Domain;
  * @author dmytro
  */
 public class UIAgent extends Agent{
-    private Action opponentAction;
-    private EnterBidDialog ui;
-    private Bid myPreviousBid;
+    private Action opponentAction=null;
+    private EnterBidDialog ui=null;
+    private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
+    
     public UIAgent() {
         ui = new EnterBidDialog(this, null, true);
     }
