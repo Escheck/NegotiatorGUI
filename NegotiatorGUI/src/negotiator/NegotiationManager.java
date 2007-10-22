@@ -118,7 +118,7 @@ public class NegotiationManager implements Runnable {
         }
         NegotiationOutcome no = null;
         if(nego.no!=null) no = nego.no;
-        else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0");
+        else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","null negotiation outcome??");
         
         sf.addNegotiationOutcome(nego.no);        
         try {

@@ -171,6 +171,13 @@ public class UtilitySpace {
         return financialRat*financialUtility+(1-financialRat)*utility;
     }
     
+    /**
+     * gets the utility of one issue in the bid.
+     * @param pIssueIndex
+     * @param bid
+     * @return
+     * @throws Exception
+     */
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     	ISSUETYPE vtype;
     	Value tmpval = bid.getValue(pIssueIndex);
@@ -899,10 +906,16 @@ public class UtilitySpace {
     public Double getCost(Bid bid) throws Exception
     {
     	Double totalCost=0.0;
+    	Double costofissue;
     	for (Issue issue: domain.getIssues())
     	{
     		int ID=issue.getNumber();
-    		totalCost += getEvaluator(ID).getCost(this, bid, ID);
+    		try {costofissue=getEvaluator(ID).getCost(this, bid, ID); }
+    		catch (Exception e) { 
+    			System.out.println("getcost:"+e.getMessage()+". using 0");
+    			costofissue=0.; 
+    		}
+    		totalCost += costofissue;;
     	}
     	return totalCost;
     }
