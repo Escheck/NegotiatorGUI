@@ -48,15 +48,15 @@ public class EnterBidDialog2 extends JDialog {
     private JButton buttonBid=new JButton("       Do Bid       ");
     private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Negotiation");
-    private JButton buttonAccept=new JButton("    Accept Bid    ");
+    private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
     public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us) {
         super(parent, modal);
 		if (d==null) throw new NullPointerException("null domain?");
-        negoinfo=new NegoInfo(null,null,d, us);
         this.agent = agent;
+        negoinfo=new NegoInfo(null,null,d, us);
         initThePanel();
     }
     
@@ -196,7 +196,8 @@ public class EnterBidDialog2 extends JDialog {
         	negotiationMessages.setText("Opponent proposes the following bid:");
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
         }
-        negoinfo.ourOldBid=myPreviousBid;
+        negoinfo.setOurBid(myPreviousBid);
+        
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
         BidTable.setDefaultEditor(BidTable.getColumnClass(0),new MyCellEditor(negoinfo));
@@ -258,7 +259,18 @@ class NegoInfo extends AbstractTableModel implements ActionListener
    	private String[] colNames={"Issue","Last Bid of Opponent","Your bid"};
    	public String getColumnName(int col) { return colNames[col]; }
 	
-	
+
+   	public void setOurBid(Bid bid)
+   	{ 		
+   		ourOldBid=bid;
+	    if (bid==null)
+	    	try { ourOldBid=utilitySpace.getMaxUtilityBid(); }
+	    	catch (Exception e) { 
+	    		System.out.println("error getting max utility first bid:"+e.getMessage()); 
+	    		e.printStackTrace();
+	    	}
+	    setComboBoxes(ourOldBid);
+   	}
 	
 	void makeComboBoxes()
 	{
@@ -272,6 +284,18 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			for (JComboBox b:comboBoxes) b.addActionListener(this);
 		}
 	}
+	
+	/**
+	 * set the initial combo box selections according to ourOldBid
+	 * Note, we can only handle Discrete evaluators right now. 
+	 */
+	void setComboBoxes(Bid bid)
+	{
+		for (int i=0; i<issues.size(); i++)
+			comboBoxes.get(i).setSelectedItem((bid.getValue(issues.get(i).getNumber())));	
+	}
+	
+	
 	
 	/**
 	 * get the currently chosen evaluation value of given row in the table. 

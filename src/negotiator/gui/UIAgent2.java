@@ -25,10 +25,11 @@ import negotiator.utility.UtilitySpace;
  * @author W.Pasman, modified version of Dmytro's UIAgent
  */
 public class UIAgent2 extends Agent{
-    private Action opponentAction;
-    private EnterBidDialog2 ui;
-    private Bid myPreviousBid;
+    private Action opponentAction=null;
+    private EnterBidDialog2 ui=null;
+    private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
+    
     public UIAgent2() {
     }
     
