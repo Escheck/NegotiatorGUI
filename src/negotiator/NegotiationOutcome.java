@@ -19,18 +19,21 @@ public class NegotiationOutcome {
     public String agentBname;
     public String agentAutility;
     public String agentButility;
+    public String ErrorRemarks; // non-null if something happens crashing the negotiation
 
     /** Creates a new instance of NegotiationOutcome */
     public NegotiationOutcome(int sessionNumber, 
                     String agentAname,
                     String agentBname,
                     String agentAutility,
-                    String agentButility) {
+                    String agentButility,
+                    String err) {
         this.sessionNumber = sessionNumber;
         this.agentAutility = agentAutility;
         this.agentButility = agentButility;
         this.agentAname = agentAname;
-        this.agentBname = agentBname;        
+        this.agentBname = agentBname;    
+        ErrorRemarks=err;
     }
     public String toString() {
         return String.valueOf(sessionNumber) + ";"+agentAname + ";" + agentBname + ";"+agentAutility+ ";"+agentButility;

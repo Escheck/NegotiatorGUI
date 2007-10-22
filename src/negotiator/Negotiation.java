@@ -99,27 +99,30 @@ public class Negotiation implements Runnable {
                                 Main.logger.add(((Accept)action).toString());
                                 double agentAUtility = agentA.getUtility(accept.getBid());
                                 double agentBUtility = agentB.getUtility(accept.getBid());
+                                String mess=null;
+                                if (lAgentABids.isEmpty() && lAgentBBids.isEmpty())
+                                	mess="Accept was done by "+agent.getName()+" before any bid was made";
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
                                            String.valueOf(agentAUtility),
-                                           String.valueOf(agentBUtility));
+                                           String.valueOf(agentBUtility),mess);
                            } else { // accept.getBid==null
-                                Main.logger.add("Agents ended the negotiation without agreement");
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
                                                             String.valueOf(0),
-                                                            String.valueOf(0));
+                                                            String.valueOf(0),
+                                   "Accept was done by "+agent.getName()+" but there is no bid.");
                                 checkAgentActivity(agent) ;
                            }
                        } else { // action instanceof endnegotiation
-                            Main.logger.add("Agents ended the negotiation without agreement");
                             no = new NegotiationOutcome(sessionNumber, 
                                                        agentA.getClass().getCanonicalName(),
                                                        agentB.getClass().getCanonicalName(),
                                                        String.valueOf(0),
-                                                       String.valueOf(0));
+                                                       String.valueOf(0),
+                                      "Agent "+agent.getName()+" ended the negotiation without agreement");
                                 
                             
                        }
@@ -163,12 +166,12 @@ public class Negotiation implements Runnable {
                  
                 } catch(Exception e) {
                     if(e instanceof InterruptedException) {
-                        Main.logger.add("Negotiation was interrupted!!!");
                         no = new NegotiationOutcome(sessionNumber, 
                                                    agentA.getClass().getCanonicalName(),
                                                    agentB.getClass().getCanonicalName(),
                                                     String.valueOf(0),
-                                                    String.valueOf(0));
+                                                    String.valueOf(0),
+                                                    "Negotiation was interrupted!");
                     }
                 	e.printStackTrace();                    
                     System.exit(-1);

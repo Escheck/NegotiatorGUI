@@ -76,7 +76,7 @@ public class SessionFrame extends javax.swing.JFrame {
             this.agentBName = agentBName;
             sessionOutcomes = new Vector();
         }
-        public int getColumnCount() {return 3;}
+        public int getColumnCount() {return 4;}
 
         public int getRowCount() {return sessionOutcomes.size();}
 
@@ -84,8 +84,9 @@ public class SessionFrame extends javax.swing.JFrame {
             String name;
             switch(col) {
                 case 0: name = "Session #";break;
-                case 1: name =agentAName;break;
-                case 2: name = agentBName;break;
+                case 1: name ="Utility for "+agentAName;break;
+                case 2: name ="Utility for "+ agentBName;break;
+                case 3: name ="ErrorRemarks";break;
                 default: name = "";
             }
             return name;
@@ -99,6 +100,7 @@ public class SessionFrame extends javax.swing.JFrame {
                 case 0: value = nt.sessionNumber;break;
                 case 1: value = nt.agentAutility;break;
                 case 2: value = nt.agentButility;break;
+                case 3: value = nt.ErrorRemarks;break;
                 default:value ="";
             }
             return value;
