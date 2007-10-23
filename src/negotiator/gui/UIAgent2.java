@@ -61,4 +61,6 @@ public class UIAgent2 extends Agent{
         return;
     }
   
+    public boolean isUIAgent() { return true; }
+
 }

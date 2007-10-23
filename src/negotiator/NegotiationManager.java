@@ -30,7 +30,10 @@ public class NegotiationManager implements Runnable {
     private Agent agentB;
     private int numberOfSessions;
     private NegotiationTemplate nt;
-    private static int NEGOTIATION_TIMOUT = 120;
+    
+    // following contains default for nego between two machine agents.
+    // the timeout is changed if one of the two agents isUIAgent().
+    private int NEGOTIATION_TIMOUT = 120; //Default (seconds) 
     private String agentAclassName;
     private String agentBclassName;
     SessionFrame sf;
@@ -80,6 +83,8 @@ public class NegotiationManager implements Runnable {
             e2.printStackTrace();
             
         }
+        
+        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=60*20;
     }
     
     public void run() {
@@ -113,6 +118,8 @@ public class NegotiationManager implements Runnable {
         		try {
         			negoThread.stop();
         		} catch (Exception e) {
+        			System.out.println("stopped the negotiation: TIME-OUT.");
+        			e.printStackTrace();
         		}
         	}
         }

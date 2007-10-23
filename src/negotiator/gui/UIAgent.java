@@ -61,5 +61,8 @@ public class UIAgent extends Agent{
         utilitySpace = new UtilitySpace(domain, fileName);
         return;
     }
+    
+    public boolean isUIAgent() { return true; }
+
   
 }
