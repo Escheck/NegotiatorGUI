@@ -9,6 +9,8 @@ package negotiator.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.TextArea;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.Color;
@@ -45,10 +47,10 @@ public class EnterBidDialog2 extends JDialog {
     private JTextArea negotiationMessages=new JTextArea("NO MESSAGES YET");  
     // Wouter: we have some whitespace in the buttons,
     // that makes nicer buttons and also artificially increases the window size.
-    private JButton buttonBid=new JButton("       Do Bid       ");
+    private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
     private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Negotiation");
-    private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
+    private JButton buttonBid=new JButton("       Do Bid       ");
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
@@ -95,10 +97,10 @@ public class EnterBidDialog2 extends JDialog {
 
         	// create south panel: the buttons:
         buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.add(buttonBid);
-        buttonPanel.add(buttonSkip);
         buttonPanel.add(buttonEnd);
         buttonPanel.add(buttonAccept);
+        buttonPanel.add(buttonSkip);
+        buttonPanel.add(buttonBid);
         pane.add(buttonPanel,"South");
         buttonBid.setSelected(true);
 
@@ -286,7 +288,11 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			if (utilitySpace!=null) eval=(EvaluatorDiscrete)utilitySpace.getEvaluator(issue.getNumber());
 			for (ValueDiscrete val:values) {
 				String utilinfo="";
-				if (eval!=null) try { utilinfo="("+eval.getEvaluation(val)+")"; }
+				if (eval!=null) try { 
+					//utilinfo="("+eval.getEvaluation(val)+")"; 
+					utilinfo="("+eval.getValue(val)+")"; 
+
+				}
 				catch (Exception e) { System.out.println("no evaluator for "+val+"???"); }
 
 				cbox.addItem(val+utilinfo);
@@ -336,6 +342,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		if (row==issues.size())
 		{
 			if (col==0) return new JLabel("COST (in your utilspace):");
+			
 			if (utilitySpace==null) return new JLabel("No UtilSpace");
 			Bid bid;
 			if (col==1) bid=opponentOldBid; 
@@ -347,7 +354,10 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 				System.out.println("Exception during cost calculation:"+e.getMessage()); 
 				//e.printStackTrace();
 				val="XXX"; }
-			return new JTextArea(val);
+			
+			JTextArea result=new JTextArea(val);
+			if (utilitySpace.constraintsViolated(bid)) result.setBackground(Color.red);
+			return result;
 		}
 		if (row==issues.size()+1)
 		{
@@ -357,7 +367,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			if (col==1) bid=opponentOldBid; 
 			else  try {bid=getBid(); } 
 			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
-			JProgressBar bar=new JProgressBar(0,100);
+			JProgressBar bar=new JProgressBar(0,100); bar.setStringPainted(true);
 			try	{ 
 				bar.setValue((int)(0.5+100.0*utilitySpace.getUtility(bid)));	
 				bar.setIndeterminate(false);

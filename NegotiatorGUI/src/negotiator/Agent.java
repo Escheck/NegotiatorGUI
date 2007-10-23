@@ -92,4 +92,12 @@ public class Agent {
         return domain;
     }
     
+    /**
+     * @author W.Pasman
+     * determine if this agent is communicating with the user about nego steps.
+     * @return true if a human user is directly communicating with the agent in order
+     * to steer the nego. This flag is used to determine the timeout for the
+     * negotiation (larger with human users).
+     */
+    public boolean isUIAgent() { return false; }
 }

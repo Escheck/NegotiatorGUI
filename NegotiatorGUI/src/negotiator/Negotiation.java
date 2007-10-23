@@ -173,13 +173,15 @@ public class Negotiation implements Runnable {
                                                     String.valueOf(0),
                                                     "Negotiation was interrupted!");
                     }
+                	System.out.println("Nego was interrupted in deep level");
                 	e.printStackTrace();                    
                     System.exit(-1);
                     
                 }
             }
-        } catch (Exception e) {
-                    if(e instanceof InterruptedException) {
+        } catch (Error e) {
+                    if(e instanceof ThreadDeath) {
+                    	System.out.println("Nego was interrupted");
                         Main.logger.add("Negotiation was interrupted!!!");
                     }    
                     e.printStackTrace();
@@ -209,4 +211,11 @@ public class Negotiation implements Runnable {
         } catch (Exception e) {  System.out.println("Exception in negotiation:"+e.getMessage());}
         return;
     }
+    
+    /** this is called when an instant stop is needed, particularly
+     * when the time is up for this negotiation.
+     * If you do not implement this, your thread will be killed 
+     * within 1 second and utility will be 0.
+     */
+   public void stop() { };   
 }

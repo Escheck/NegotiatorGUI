@@ -147,10 +147,17 @@ public class UtilitySpace {
 //        return domain.getNumberOfIssues();
 //    }
     
+    /**
+     * update 23oct. If a hard constraint is violated, the utility should be 0.
+     * 
+     */
     public final double getUtility(Bid bid) throws Exception
     {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
+        
+        if (constraintsViolated(bid)) return 0.;
+        
         Objective root = domain.getObjectivesRoot();
         Enumeration issueEnum = root.getPreorderIssueEnumeration();
         while(issueEnum.hasMoreElements()){
@@ -169,6 +176,26 @@ public class UtilitySpace {
         	}
         }
         return financialRat*financialUtility+(1-financialRat)*utility;
+    }
+    
+    
+    /**
+     * @author W.Pasman
+     * CHeck that the constraints are not violated.
+     * This is an ad-hoc solution, we need structural support 
+     * for constraints. Soft, hard constraints, a constraint space etc.
+     * @param bid the bid to be checked
+     * @return true if the bid violates constraint, else false.
+     */
+    public boolean constraintsViolated(Bid bid)
+    {
+    	Double cost=0.;
+    	try { cost=getCost(bid); } catch (Exception e) 
+    	{ 
+    		System.out.println("can not compute cost:"+e.getMessage()+"- assuming constraints violated");
+    		return true; 
+    	}
+    	return cost>1200.;
     }
     
     /**
