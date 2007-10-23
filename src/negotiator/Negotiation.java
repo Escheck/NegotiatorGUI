@@ -57,7 +57,9 @@ public class Negotiation implements Runnable {
         else agentBtookAction = true;
         
     }
+    
     public void run() {
+        Agent currentAgent;
         ArrayList<Bid> lAgentABids = new ArrayList<Bid>();
         ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();;
         try {
@@ -68,25 +70,25 @@ public class Negotiation implements Runnable {
             stopNegotiation = false;
             Action action = null;
             Agent agents[] = {agentA, agentB};
-            Agent agent = getRandomAgent(agents) ;
-            Main.logger.add("Agent " + agent.getName() + " begins");
+            currentAgent = getRandomAgent(agents) ;
+            Main.logger.add("Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
                 try {
                    //inform agent about last action of his opponent
-                   agent.ReceiveMessage(action);
+                   currentAgent.ReceiveMessage(action);
                    //get next action of the agent that has its turn now
-                   action = agent.chooseAction();
+                   action = currentAgent.chooseAction();
                    if(action==null) {
-                       Main.logger.add("Agent " + agent.getName() + " did not choose any action.");                       
+                       Main.logger.add("Agent " + currentAgent.getName() + " did not choose any action.");                       
                    } else
                    //
                    if (action instanceof Offer) {
-                       Main.logger.add("Agent " + agent.getName() + " sent the following offer:");                       
+                       Main.logger.add("Agent " + currentAgent.getName() + " sent the following offer:");                       
                        Bid bid = ((Offer)action).getBid();
                        Main.logger.add(action.toString());
                        Main.logger.add("Utility of " + agentA.getName() +": " + agentA.getUtility(bid));
                        Main.logger.add("Utility of " + agentB.getName() +": " + agentB.getUtility(bid));
-                       checkAgentActivity(agent) ;
+                       checkAgentActivity(currentAgent) ;
                    } else                   
                    if ((action instanceof Accept)||
                        (action instanceof EndNegotiation)) {
@@ -101,7 +103,7 @@ public class Negotiation implements Runnable {
                                 double agentBUtility = agentB.getUtility(accept.getBid());
                                 String mess=null;
                                 if (lAgentABids.isEmpty() && lAgentBBids.isEmpty())
-                                	mess="Accept was done by "+agent.getName()+" before any bid was made";
+                                	mess="Accept was done by "+currentAgent.getName()+" before any bid was made";
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
@@ -113,8 +115,8 @@ public class Negotiation implements Runnable {
                                            agentB.getClass().getCanonicalName(),
                                                             String.valueOf(0),
                                                             String.valueOf(0),
-                                   "Accept was done by "+agent.getName()+" but there is no bid.");
-                                checkAgentActivity(agent) ;
+                                   "Accept was done by "+currentAgent.getName()+" but there is no bid.");
+                                checkAgentActivity(currentAgent) ;
                            }
                        } else { // action instanceof endnegotiation
                             no = new NegotiationOutcome(sessionNumber, 
@@ -122,17 +124,17 @@ public class Negotiation implements Runnable {
                                                        agentB.getClass().getCanonicalName(),
                                                        String.valueOf(0),
                                                        String.valueOf(0),
-                                      "Agent "+agent.getName()+" ended the negotiation without agreement");
+                                      "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                                 
                             
                        }
-                       if(agent.equals(agentA)) {
+                       if(currentAgent.equals(agentA)) {
                     	   if(action instanceof Offer) {
                     		   lAgentABids.add(((Offer)action).getBid());
                     	   } if(action instanceof Accept) {
                     		   lAgentABids.add(((Accept)action).getBid());
                     	   }
-                    	   agent = agentB;
+                    	   currentAgent = agentB;
                        }
                        else{
                     	   if(action instanceof Offer) {
@@ -140,19 +142,19 @@ public class Negotiation implements Runnable {
                     	   } if(action instanceof Accept) {
                     		   lAgentBBids.add(((Accept)action).getBid());
                     	   }
-                    	   agent = agentA;
+                    	   currentAgent = agentA;
                        }
-                       agent.ReceiveMessage(action);
+                       currentAgent.ReceiveMessage(action);
                    }
                  
                    //change agents
-                   if(agent.equals(agentA)) {
+                   if(currentAgent.equals(agentA)) {
                 	   if(action instanceof Offer) {
                 		   lAgentABids.add(((Offer)action).getBid());
                 	   } if(action instanceof Accept) {
                 		   lAgentABids.add(((Accept)action).getBid());
                 	   }
-                	   agent = agentB;
+                	   currentAgent = agentB;
                    }
                    else{
                 	   if(action instanceof Offer) {
@@ -160,7 +162,7 @@ public class Negotiation implements Runnable {
                 	   } else if(action instanceof Accept) {
                 		   lAgentBBids.add(((Accept)action).getBid());
                 	   }
-                	   agent = agentA;
+                	   currentAgent = agentA;
                    }
 
                  
@@ -180,12 +182,11 @@ public class Negotiation implements Runnable {
                 }
             }
         } catch (Error e) {
-                    if(e instanceof ThreadDeath) {
-                    	System.out.println("Nego was interrupted");
-                        Main.logger.add("Negotiation was interrupted!!!");
-                    }    
-                    e.printStackTrace();
-                    
+            if(e instanceof ThreadDeath) {
+            	System.out.println("Nego was timed out");
+                Main.logger.add("Negotiation was timed out. Both parties get util=0");
+            }     
+            
                 
         }
         synchronized (Main.nm) {
@@ -208,14 +209,8 @@ public class Negotiation implements Runnable {
 	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
 	        Main.fChart.show();
 	        Main.logger.add("Session is finished");
-        } catch (Exception e) {  System.out.println("Exception in negotiation:"+e.getMessage());}
+        } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());}
         return;
     }
     
-    /** this is called when an instant stop is needed, particularly
-     * when the time is up for this negotiation.
-     * If you do not implement this, your thread will be killed 
-     * within 1 second and utility will be 0.
-     */
-   public void stop() { };   
 }

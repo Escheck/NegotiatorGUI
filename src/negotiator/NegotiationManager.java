@@ -33,7 +33,7 @@ public class NegotiationManager implements Runnable {
     
     // following contains default for nego between two machine agents.
     // the timeout is changed if one of the two agents isUIAgent().
-    private int NEGOTIATION_TIMOUT = 120; //Default (seconds) 
+    private int NEGOTIATION_TIMOUT = 2; //Default 120 (seconds) 
     private String agentAclassName;
     private String agentBclassName;
     SessionFrame sf;
@@ -116,7 +116,7 @@ public class NegotiationManager implements Runnable {
         
         	if (negoThread.isAlive()) {
         		try {
-        			negoThread.stop();
+        			negoThread.stop(); // kill the stuff
         		} catch (Exception e) {
         			System.out.println("stopped the negotiation: TIME-OUT.");
         			e.printStackTrace();
@@ -125,9 +125,9 @@ public class NegotiationManager implements Runnable {
         }
         NegotiationOutcome no = null;
         if(nego.no!=null) no = nego.no;
-        else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","null negotiation outcome??");
+        else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");
         
-        sf.addNegotiationOutcome(nego.no);        
+        sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));
             out.write(Main.getCurrentTime() + ";" + no.toString()+"\n");

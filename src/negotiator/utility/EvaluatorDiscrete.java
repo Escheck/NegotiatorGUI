@@ -5,7 +5,9 @@ import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -280,5 +282,39 @@ public class EvaluatorDiscrete implements Evaluator {
 		Double cost= fCost.get(val);
 		if (cost==null) throw new NullPointerException("no cost associated with value "+val);
 		return cost;
+	}
+
+	public void addEvaluation (ValueDiscrete pValue, Integer pEval) {
+		this.fEval.put(pValue, pEval);
+	}
+	
+	public Value getMaxValue() {
+		  Iterator it = fEval.entrySet().iterator();
+		  Double lTmp = Double.NEGATIVE_INFINITY;
+		  ValueDiscrete lValue = null;
+	        while (it.hasNext()) {
+	        	Map.Entry<ValueDiscrete, Double> field = (Map.Entry<ValueDiscrete, Double>) (it.next());
+	        	if(field.getValue()>lTmp) {
+	        		lValue = field.getKey();
+	        		lTmp = field.getValue();
+	        	}
+	        } 
+		return lValue;
+	}
+
+	public Value getMinValue() {
+		  Iterator it = fEval.entrySet().iterator();
+		  Double lTmp = Double.POSITIVE_INFINITY;
+		  ValueDiscrete lValue = null;
+	        while (it.hasNext()) {
+	        	Map.Entry<ValueDiscrete, Double> field = (Map.Entry<ValueDiscrete, Double>) (it.next());
+	        	if(field.getValue()<lTmp) {
+	        		lValue = field.getKey();
+	        		lTmp = field.getValue();
+	        	}
+
+	        } 
+		return lValue;
+
 	}
 }
