@@ -57,9 +57,14 @@ public class EvaluatorReal implements Evaluator {
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		double utility;
 		double value = ((ValueReal)bid.getValue(index)).getValue();
+		utility = getEvaluation(value);
+		return utility;
+	}
+	public Double getEvaluation(double pValue) {
+		double utility;		
 		switch(this.type) {
 		case LINEAR:
-			utility = EVALFUNCTYPE.evalLinear(value, this.fParam.get(1), this.fParam.get(0));
+			utility = EVALFUNCTYPE.evalLinear(pValue, this.fParam.get(1), this.fParam.get(0));
 			if (utility<0)
 				utility = 0;
 			else if (utility > 1)
@@ -67,10 +72,18 @@ public class EvaluatorReal implements Evaluator {
 			return utility;
 		case CONSTANT:
 			return this.fParam.get(0);
+		case TRIANGULAR:
+			utility = EVALFUNCTYPE.evalTriangular(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2));
+			return utility;
+		case TRIANGULAR_VARIABLE_TOP:
+			utility = EVALFUNCTYPE.evalTriangularVariableTop(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2), this.fParam.get(3));
+			return utility;
 		default:
 			return -1.0;
 		}	
+		
 	}
+
 	public double getValueByEvaluation(double pUtility) {
 		double lValue = 0;
 		switch(this.type) {
@@ -219,4 +232,42 @@ public class EvaluatorReal implements Evaluator {
 		throw new Exception("getCost not implemented for EvaluatorReal");
 	}
 
+	public Value getMaxValue() {
+
+		  ValueReal lValue = null;
+			switch(this.type) {
+			case LINEAR:
+				if(getEvaluation(upperBound)>getEvaluation(lowerBound))
+					lValue = new ValueReal(upperBound);
+				else
+					lValue = new ValueReal(lowerBound);
+					
+				break;
+			default:
+				//TODO: DT: use discretization to find max value 
+			}
+		return lValue;
+	}
+
+	public Value getMinValue() {
+		  ValueReal lValue = null;
+			switch(this.type) {
+			case LINEAR:
+				if(getEvaluation(upperBound)<getEvaluation(lowerBound))
+					lValue = new ValueReal(upperBound);
+				else
+					lValue = new ValueReal(lowerBound);
+					
+				break;
+			default:
+				//TODO: DT: use discretization to find max value 
+			}
+		return lValue;
+	}
+	public void addParam(int index, double value) {
+		fParam.put(new Integer(index), new Double(value));
+	}
+	public void setType(EVALFUNCTYPE pType) {
+		type =pType;
+	}
 }
