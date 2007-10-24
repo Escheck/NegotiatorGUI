@@ -50,7 +50,7 @@ public class EnterBidDialog2 extends JDialog {
     private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
     private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Negotiation");
-    private JButton buttonBid=new JButton("       Do Bid       ");
+    private JButton buttonBid=new JButton("       Do Bid       ");
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
