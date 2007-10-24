@@ -261,16 +261,16 @@ public class Domain {
     }
     
 	// KH 070511: Moved to here since it is generic method that can be made available to all agents.
-	public final Bid getRandomBid() {
+	public final Bid getRandomBid()
+	{
        //Value[] values = new Value[this.getNumberOfIssues()];
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 		
-       Objective lIssue;
        int lNrOfOptions, lOptionIndex;
 
        // For each issue, compute a random value to return in bid.
-       for(int i=0;i<this.getNumberOfIssues();i++) {
-	        lIssue = this.getIssue(i);        	
+       int i;
+       for (Issue lIssue: getIssues()) {
 			switch(lIssue.getType()) {
 			case DISCRETE:
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
@@ -279,7 +279,7 @@ public class Domain {
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 				//values[i]= lIssueDiscrete.getValue(lOptionIndex);
-	            values.put(new Integer(i), lIssueDiscrete.getValue(lOptionIndex));
+	            values.put(lIssue.getNumber(), lIssueDiscrete.getValue(lOptionIndex));
 				break;
 			case INTEGER:
 		        lNrOfOptions = ((IssueInteger)lIssue).getUpperBound()-((IssueInteger)lIssue).getLowerBound()+1;
@@ -287,7 +287,7 @@ public class Domain {
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 	            //values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex);
-	            values.put(new Integer(i), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex));
+	            values.put(lIssue.getNumber(), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex));
 		        break;
 			case REAL:
 				IssueReal lIssueReal =(IssueReal)lIssue;
@@ -297,11 +297,15 @@ public class Domain {
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 				//values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex);
-	            values.put(new Integer(i), new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex));
+	            values.put(lIssue.getNumber(), new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex));
 				break;
 			}
 		}
+       try { 
         return new Bid(this,values);
+       }
+       catch (Exception e) { System.out.println("problem getrandombid:"+e.getMessage()) ; }
+       return null;
 	}
 	
 	/**

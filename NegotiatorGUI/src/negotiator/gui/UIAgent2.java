@@ -33,11 +33,20 @@ public class UIAgent2 extends Agent{
     public UIAgent2() {
     }
     
+    /**
+     * One agent will be kept alive over multiple sessions.
+     * Init will be called at the start of each nego session.
+     */
     protected void init(int sessionNumber, int sessionTotalNumber, Domain d)
     {
+    	System.out.println("init UIAgent2");
         super.init (sessionNumber, sessionTotalNumber, d);
+        System.out.println("closing old dialog of ");
+        if (ui!=null) { ui.dispose(); ui=null; }
+        System.out.println("old  dialog closed. Trying to open new dialog. ");
         try { ui = new EnterBidDialog2(this, null, true,domain,utilitySpace); }
-        catch (Exception e) {System.out.println("UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
+        catch (Exception e) {System.out.println("Problem in UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
+        System.out.println("finished init of UIAgent2");
     }
 
     public void ReceiveMessage(Action opponentAction) {
@@ -50,6 +59,7 @@ public class UIAgent2 extends Agent{
 
         return;
     }
+    
     public Action chooseAction() {
         Action action = ui.askUserForAction(opponentAction, myPreviousBid);
         if((action != null)&&(action instanceof Offer)) myPreviousBid=((Offer)action).getBid(); 
