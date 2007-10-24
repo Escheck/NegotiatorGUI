@@ -193,7 +193,9 @@ public class Negotiation implements Runnable {
         }
         
         
-        
+        //Wouter: old code to plot a graph. Currently disabled. 
+        // Probably will not work either, remember that the Negotiator is killed as soon
+        // as this run function exits.
         double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
         

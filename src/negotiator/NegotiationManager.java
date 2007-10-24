@@ -88,7 +88,7 @@ public class NegotiationManager implements Runnable {
             
         }
         
-        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=5;//60*20;
+        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=60*20;
     }
     
     public void run() {
