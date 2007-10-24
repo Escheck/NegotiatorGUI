@@ -20,7 +20,11 @@ import negotiator.xml.SimpleElement;
 /**
  *
  * @author Dmytro Tykhonov
- */
+ * 
+ *  Wouter: the agent objects stay instantiated over the negotiation sessions.
+ *  This is to enable them to learn from previuos sessions.
+ *  This means that the Agent objects may have to do some cleanup work when GUI windows are still open.
+ *  */
 
 // TODO: Make negotiation environment more robust.
 
@@ -84,7 +88,7 @@ public class NegotiationManager implements Runnable {
             
         }
         
-        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=60*20;
+        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=5;//60*20;
     }
     
     public void run() {
@@ -98,35 +102,41 @@ public class NegotiationManager implements Runnable {
             System.exit(0);
         }
     }
+    
+    
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
     {
         Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber);
         if(Main.fDebug) {
         	nego.run();	
         } else {
+			try { wait(10);  } catch (Exception e) {System.out.println("strange interrupts?!:");e.printStackTrace();}
+
         	negoThread = new Thread(nego);
         	negoThread.start();
+			try { wait(10);  } catch (Exception e) {System.out.println("ignoring interrupts");e.printStackTrace();}
         	try {
         		synchronized (this) {
         				wait(NEGOTIATION_TIMOUT*1000);
         		}
         	} catch (InterruptedException ie) {
-            
+        		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}
         	}
         
         	if (negoThread.isAlive()) {
         		try {
         			negoThread.stop(); // kill the stuff
+        			 // Wouter: this will throw an Error into the nego thread
+        			 // The nego thread will catch this and exit.
         		} catch (Exception e) {
-        			System.out.println("stopped the negotiation: TIME-OUT.");
+        			System.out.println("problem stopping the nego:"+e.getMessage());
         			e.printStackTrace();
+        		
         		}
-        	}
         }
         NegotiationOutcome no = null;
         if(nego.no!=null) no = nego.no;
         else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");
-        
         sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));
@@ -136,6 +146,8 @@ public class NegotiationManager implements Runnable {
         }
         
     }
+    
+    
     public void stopNegotiation() {
         if (negoThread.isAlive()) {
             try {

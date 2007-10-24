@@ -184,16 +184,18 @@ public class Negotiation implements Runnable {
         } catch (Error e) {
             if(e instanceof ThreadDeath) {
             	System.out.println("Nego was timed out");
-                Main.logger.add("Negotiation was timed out. Both parties get util=0");
+                // Main.logger.add("Negotiation was timed out. Both parties get util=0");
             }     
             
                 
         }
-        synchronized (Main.nm) {
-            Main.nm.notify();
-        }
+        
+        synchronized (Main.nm) {  Main.nm.notify();  }
+        
+        
         double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
+        
         try
         {
 	        for(int i=0;i< lAgentABids.size();i++) {
@@ -205,11 +207,15 @@ public class Negotiation implements Runnable {
 	        	lAgentBUtilities [i][1] = agentB.getUtility(lAgentBBids.get(i));
 	        }
 	        
+	        /*
+	       	if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
 	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
 	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
 	        Main.fChart.show();
-	        Main.logger.add("Session is finished");
-        } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());}
+	        */
+	        // Wouter: logger is causing crashes. Removed.......
+	        //synchronized(Main.logger) { Main.logger.add("Session is finished"); }
+        } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
         return;
     }
     
