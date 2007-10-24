@@ -375,7 +375,7 @@ public class UtilitySpace {
 		Object[] xml_weights = currentRoot.getChildByTagName("weight");
 		nrOfWeights = xml_weights.length; //assuming each 
 		HashMap<Integer, Double> tmpWeights = new HashMap<Integer, Double>();
-		System.out.println("nrOfWeights = " + nrOfWeights);
+		//System.out.println("nrOfWeights = " + nrOfWeights);
         for(int i = 0; i < nrOfWeights; i++){
         	index = Integer.valueOf(((SimpleElement)xml_weights[i]).getAttribute("index"));
         	double dval = Double.valueOf( ((SimpleElement)xml_weights[i]).getAttribute("value"));
@@ -392,7 +392,7 @@ public class UtilitySpace {
         Object[] xml_obj_issues = new Object[xml_issues.length + xml_objectives.length];
         int i_ind;
         for(i_ind = 0; i_ind < xml_issues.length; i_ind++){
-        	System.out.println("issues_index: " + i_ind + " vs length:" + xml_issues.length +" to fill something of lenght: "+ xml_obj_issues.length);
+        	//System.out.println("issues_index: " + i_ind + " vs length:" + xml_issues.length +" to fill something of lenght: "+ xml_obj_issues.length);
         	xml_obj_issues[i_ind] = xml_issues[i_ind];
         }
  /*     for(int o_ind = i_ind; o_ind < xml_obj_issues.length; o_ind++){ 
@@ -400,7 +400,7 @@ public class UtilitySpace {
         	xml_obj_issues[o_ind] = xml_objectives[o_ind];
         }
  */     for(int o_ind = 0; (o_ind + i_ind) < xml_obj_issues.length; o_ind++){ 
- 			System.out.println("objectives_index: " + o_ind + " vs length:" + xml_objectives.length +" to fill something of lenght: "+ xml_obj_issues.length);
+ 			//System.out.println("objectives_index: " + o_ind + " vs length:" + xml_objectives.length +" to fill something of lenght: "+ xml_obj_issues.length);
  			xml_obj_issues[(o_ind + i_ind) ] = xml_objectives[o_ind];
  		}  
 //        boolean issueWithCost = false;
@@ -464,12 +464,12 @@ public class UtilitySpace {
             try{
             	if(nrOfWeights != 0){
             		Integer indexInt = new Integer(index);
-            		System.out.println("Hashcode here is: " + indexInt.hashCode());
+            		//System.out.println("Hashcode here is: " + indexInt.hashCode());
             		double tmpdwt = tmpWeights.get(indexInt).doubleValue();
             		Objective tmpob = getDomain().getObjective(index);
             		fEvaluators.get(tmpob).setWeight(tmpdwt);
             		//fEvaluators.get(getDomain().getObjective(index)).setWeight(tmpWeights.get(index).doubleValue());
-            		System.out.println("set weight to " + tmpdwt);
+            		//System.out.println("set weight to " + tmpdwt);
             	}
             }catch(Exception e){
             	System.out.println("Evaluator-weight mismatch or no weight for this issue or objective.");
