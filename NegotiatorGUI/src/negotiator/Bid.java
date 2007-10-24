@@ -71,9 +71,15 @@ public final class Bid {
 	/**
 	 * @return the picked value for given issue idnumber 
 	 */
-	public Value getValue(int issueNr) {
-		
-		return fValues.get(issueNr);
+	public Value getValue(int issueNr) throws Exception
+	{
+		Value v=fValues.get(issueNr);
+		if (v==null) {
+			if (fDomain.getIssue(issueNr)==null) 
+				throw new Exception("Bid.getValue: issue "+issueNr+" does not exist at all");
+			throw new Exception("There is no evaluator for issue "+issueNr);
+		}
+		return v;
 	}
 
 	public void setValue(int issueIdex, Value pValue) {

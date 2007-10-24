@@ -54,11 +54,12 @@ public class EnterBidDialog2 extends JDialog {
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
-    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us) {
+    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us)  throws Exception
+    {
         super(parent, modal);
 		if (d==null) throw new NullPointerException("null domain?");
         this.agent = agent;
-        negoinfo=new NegoInfo(null,null,d, us);
+        negoinfo=new NegoInfo(null,null,d, us); 
         initThePanel();
     }
     
@@ -198,7 +199,8 @@ public class EnterBidDialog2 extends JDialog {
         	negotiationMessages.setText("Opponent proposes the following bid:");
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
         }
-        negoinfo.setOurBid(myPreviousBid);
+        try { negoinfo.setOurBid(myPreviousBid); }
+        catch (Exception e) { System.out.println("error in askUserForAction:"+e.getMessage()); e.printStackTrace(); }
         
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
@@ -237,7 +239,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
-	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws NullPointerException
+	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws Exception
 	{
 		//Wouter: just discovered that assert does nothing........... 
 		if (d==null) throw new NullPointerException("null domain?");
@@ -262,7 +264,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
    	public String getColumnName(int col) { return colNames[col]; }
 	
 
-   	public void setOurBid(Bid bid)
+   	public void setOurBid(Bid bid) throws Exception
    	{ 		
    		ourOldBid=bid;
 	    if (bid==null)
@@ -275,7 +277,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	    setComboBoxes(ourOldBid);
    	}
 	
-	void makeComboBoxes()
+	void makeComboBoxes() throws Exception
 	{
 		comboBoxes=new ArrayList<JComboBox>();
 		for (Issue issue:issues)
@@ -305,8 +307,9 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	/**
 	 * set the initial combo box selections according to ourOldBid
 	 * Note, we can only handle Discrete evaluators right now. 
+	 * @throws if there is a problem with the issues and evaluators.
 	 */
-	void setComboBoxes(Bid bid)
+	void setComboBoxes(Bid bid) throws Exception
 	{
 		for (int i=0; i<issues.size(); i++)
 		{
@@ -325,7 +328,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	 * returns null if the bid has no value in that row.
 	 * @throws probablly if rownr is out of range 0...issues.size()-1
 	 */
-	Value getCurrentEval(Bid bid,int rownr)
+	Value getCurrentEval(Bid bid,int rownr) throws Exception
 	{
 		if (bid==null) return null;
 		Integer ID=IDs.get(rownr); // get ID of the issue in question.
@@ -384,7 +387,9 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		case 0:
 			return new JTextArea(issues.get(row).getName());
 		case 1:
-			Value value= getCurrentEval(opponentOldBid,row);
+			Value value=null;
+			try {  value= getCurrentEval(opponentOldBid,row); }
+			catch (Exception e) {System.out.println("Err EnterBidDialog2.getValueAt: "+e.getMessage());}
 			if (value==null) return new JTextArea("-");
 			return new JTextArea(value.toString());
 		case 2:

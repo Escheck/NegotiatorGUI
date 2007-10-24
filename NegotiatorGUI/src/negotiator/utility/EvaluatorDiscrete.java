@@ -77,14 +77,16 @@ public class EvaluatorDiscrete implements Evaluator {
 	/**
 	 * @author W.Pasman
 	 * @return the largest alternative available
-	 * returns null if there are no alternatives.
+	 * @throws exception if there are no alternatives.
 	 */
-	public Integer getEvalMax()
+	public Integer getEvalMax() throws Exception
 	{
+		if (fEval==null) throw new NullPointerException("fEval==null");
 		Collection<Integer> alts=fEval.values();
 		Integer maximum=null;
 		for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
-
+		if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
+		if (maximum<=0) throw new Exception("Internal error: values <0 in evaluators.");
 		return maximum;
 	}
 	
@@ -114,11 +116,13 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @author W.Pasman
 	 * @param EvalValueL
 	 * @return normalized EvalValue
+	 * @throws exception if no evaluators or illegal values in evaluator.
 	 * 
 	 * ASSUMED that Max value is at least 1, becaues EVERY evaluatordiscrete is at least 1.
 	 */
-	public Double normalize(Integer EvalValueL)
+	public Double normalize(Integer EvalValueL) throws Exception
 	{
+		if (EvalValueL==null) throw new NullPointerException("EvalValuel=null");
 		return EvalValueL.doubleValue()/getEvalMax().doubleValue(); // this will throw if problem.
 	}
 	
