@@ -110,18 +110,20 @@ public class NegotiationManager implements Runnable {
         if(Main.fDebug) {
         	nego.run();	
         } else {
-			try { wait(10);  } catch (Exception e) {System.out.println("strange interrupts?!:");e.printStackTrace();}
-
         	negoThread = new Thread(nego);
-        	negoThread.start();
-			try { wait(10);  } catch (Exception e) {System.out.println("ignoring interrupts");e.printStackTrace();}
+            //System.out.println("nego start. "+System.currentTimeMillis()/1000);
+            negoThread.start();
         	try {
         		synchronized (this) {
-        				wait(NEGOTIATION_TIMOUT*1000);
+        			System.out.println("waiting NEGO_TIMEOUT="+NEGOTIATION_TIMOUT);
+    				wait(NEGOTIATION_TIMOUT*1000);
+    				//Thread.sleep(NEGOTIATION_TIMOUT*1000);
         		}
         	} catch (InterruptedException ie) {
         		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}
         	}
+        	//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
+        	//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
         
         	if (negoThread.isAlive()) {
         		try {

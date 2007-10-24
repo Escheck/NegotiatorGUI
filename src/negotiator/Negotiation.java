@@ -181,16 +181,17 @@ public class Negotiation implements Runnable {
                     
                 }
             }
+            System.out.println("NOTIFY NEGOMANAGER NOW!");
+            synchronized (Main.nm) {  Main.nm.notify();  }
+            
         } catch (Error e) {
             if(e instanceof ThreadDeath) {
             	System.out.println("Nego was timed out");
                 // Main.logger.add("Negotiation was timed out. Both parties get util=0");
             }     
-            
-                
+             
         }
         
-        synchronized (Main.nm) {  Main.nm.notify();  }
         
         
         double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
