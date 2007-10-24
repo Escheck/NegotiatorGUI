@@ -20,6 +20,7 @@ import negotiator.actions.*;
 public class Negotiation implements Runnable {
     protected Agent         agentA;
     protected Agent         agentB;
+    private Bid lastBid=null;				// the last bid that has been done
     public boolean stopNegotiation;
     private NegotiationTemplate nt;
     private int sessionNumber;
@@ -37,6 +38,12 @@ public class Negotiation implements Runnable {
         this.sessionNumber=sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
         this.nt = nt;
+    }
+    
+    public Agent otherAgent(Agent ag)
+    {
+    	if (ag==agentA) return agentB;
+    	return agentA;    	
     }
     /** T
      * 
@@ -79,15 +86,16 @@ public class Negotiation implements Runnable {
                    //get next action of the agent that has its turn now
                    action = currentAgent.chooseAction();
                    if(action==null) {
-                       Main.logger.add("Agent " + currentAgent.getName() + " did not choose any action.");                       
+                       Main.logger.add("Agent " + currentAgent.getName() + " did not choose any action."); 
+                       lastBid=null;
                    } else
                    //
                    if (action instanceof Offer) {
                        Main.logger.add("Agent " + currentAgent.getName() + " sent the following offer:");                       
-                       Bid bid = ((Offer)action).getBid();
+                       lastBid  = ((Offer)action).getBid();
                        Main.logger.add(action.toString());
-                       Main.logger.add("Utility of " + agentA.getName() +": " + agentA.getUtility(bid));
-                       Main.logger.add("Utility of " + agentB.getName() +": " + agentB.getUtility(bid));
+                       Main.logger.add("Utility of " + agentA.getName() +": " + agentA.utilitySpace.getUtility(lastBid));
+                       Main.logger.add("Utility of " + agentB.getName() +": " + agentB.utilitySpace.getUtility(lastBid));
                        checkAgentActivity(currentAgent) ;
                    } else                   
                    if ((action instanceof Accept)||
@@ -96,26 +104,23 @@ public class Negotiation implements Runnable {
                        
                        if (action instanceof Accept) {
                            Accept accept = (Accept)action;
-                           if(accept.getBid()!=null) {
+                           if(lastBid!=null) {
                                 Main.logger.add("Agents accepted the following bid:");
                                 Main.logger.add(((Accept)action).toString());
-                                double agentAUtility = agentA.getUtility(accept.getBid());
-                                double agentBUtility = agentB.getUtility(accept.getBid());
-                                String mess=null;
-                                if (lAgentABids.isEmpty() && lAgentBBids.isEmpty())
-                                	mess="Accept was done by "+currentAgent.getName()+" before any bid was made";
+                                double agentAUtility = agentA.getUtility(lastBid);
+                                double agentBUtility = agentB.getUtility(lastBid);
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
                                            String.valueOf(agentAUtility),
-                                           String.valueOf(agentBUtility),mess);
+                                           String.valueOf(agentBUtility),null);
                            } else { // accept.getBid==null
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
                                                             String.valueOf(0),
                                                             String.valueOf(0),
-                                   "Accept was done by "+currentAgent.getName()+" but there is no bid.");
+                                   "Accept was done by "+currentAgent.getName()+" but opponent did not make a last bid.");
                                 checkAgentActivity(currentAgent) ;
                            }
                        } else { // action instanceof endnegotiation
@@ -128,40 +133,36 @@ public class Negotiation implements Runnable {
                                 
                             
                        }
+                       
+                       // Wouter: it seems that the following is not at the right place here.
+                       // it may happen that timeout occurs right here, causing a succesful nego outcome
+                       // but no update of lAgentXBids
                        if(currentAgent.equals(agentA)) {
                     	   if(action instanceof Offer) {
                     		   lAgentABids.add(((Offer)action).getBid());
-                    	   } if(action instanceof Accept) {
-                    		   lAgentABids.add(((Accept)action).getBid());
-                    	   }
+                    	   }                    	   
                     	   currentAgent = agentB;
                        }
                        else{
                     	   if(action instanceof Offer) {
                     		   lAgentBBids.add(((Offer)action).getBid());
-                    	   } if(action instanceof Accept) {
-                    		   lAgentBBids.add(((Accept)action).getBid());
                     	   }
                     	   currentAgent = agentA;
                        }
                        currentAgent.ReceiveMessage(action);
                    }
                  
-                   //change agents
+                   //save last results
                    if(currentAgent.equals(agentA)) {
                 	   if(action instanceof Offer) {
                 		   lAgentABids.add(((Offer)action).getBid());
-                	   } if(action instanceof Accept) {
-                		   lAgentABids.add(((Accept)action).getBid());
-                	   }
-                	   currentAgent = agentB;
+                	   } 
+                	   currentAgent = agentB; //Wouter: seems rather useless, we finished the nego???
                    }
                    else{
                 	   if(action instanceof Offer) {
                 		   lAgentBBids.add(((Offer)action).getBid());
-                	   } else if(action instanceof Accept) {
-                		   lAgentBBids.add(((Accept)action).getBid());
-                	   }
+                	   } 
                 	   currentAgent = agentA;
                    }
 
@@ -181,7 +182,6 @@ public class Negotiation implements Runnable {
                     
                 }
             }
-            System.out.println("NOTIFY NEGOMANAGER NOW!");
             synchronized (Main.nm) {  Main.nm.notify();  }
             
         } catch (Error e) {
