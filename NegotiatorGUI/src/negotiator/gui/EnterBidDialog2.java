@@ -189,8 +189,8 @@ public class EnterBidDialog2 extends JDialog {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
-        	negotiationMessages.setText("Opponent accepted the following bid:");
-        	negoinfo.opponentOldBid = ((Accept)opponentAction).getBid();
+        	negotiationMessages.setText("Opponent accepted your last bid!");
+        	negoinfo.opponentOldBid = myPreviousBid;
         }
         if(opponentAction instanceof EndNegotiation) {
         	negotiationMessages.setText("Opponent cancels the negotiation.");

@@ -17,16 +17,14 @@ import negotiator.Agent;
  */
 public class Accept extends Action {
     
-    protected Bid fBid;
+    // protected Bid fBid; //Wouter: NO you accept PREVIOUS bid, not current bid!!
     /** Creates a new instance of AcceptBid */
     public Accept(Agent agent, Bid bid) {
         super(agent);
-        this.fBid = bid;
     }
-    public Bid getBid() {
-        return fBid;
-    }
+    //public Bid getBid() {  return fBid; }
+
     public String toString() {
-        return "(Accept: " + fBid.toString() + ")";
+        return "(Accept)";
     }    
 }
