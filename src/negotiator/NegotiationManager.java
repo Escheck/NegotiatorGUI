@@ -33,7 +33,7 @@ public class NegotiationManager implements Runnable {
     
     // following contains default for nego between two machine agents.
     // the timeout is changed if one of the two agents isUIAgent().
-    private int NEGOTIATION_TIMOUT = 2; //Default 120 (seconds) 
+    private int NEGOTIATION_TIMOUT = 120; //Default 120 (seconds) 
     private String agentAclassName;
     private String agentBclassName;
     SessionFrame sf;

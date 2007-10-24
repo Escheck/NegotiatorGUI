@@ -33,9 +33,11 @@ public class UIAgent2 extends Agent{
     public UIAgent2() {
     }
     
-    protected void init(int sessionNumber, int sessionTotalNumber, Domain d) {
+    protected void init(int sessionNumber, int sessionTotalNumber, Domain d)
+    {
         super.init (sessionNumber, sessionTotalNumber, d);
-        ui = new EnterBidDialog2(this, null, true,domain,utilitySpace);
+        try { ui = new EnterBidDialog2(this, null, true,domain,utilitySpace); }
+        catch (Exception e) {System.out.println("UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
     }
 
     public void ReceiveMessage(Action opponentAction) {
@@ -61,6 +63,6 @@ public class UIAgent2 extends Agent{
         return;
     }
   
-    //public boolean isUIAgent() { return true; }
+    public boolean isUIAgent() { return true; }
 
 }
