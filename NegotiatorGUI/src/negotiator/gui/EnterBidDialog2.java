@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.TextArea;
+import negotiator.exceptions.Warning;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -354,8 +355,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			String val;
 			try	{val=utilitySpace.getCost(bid).toString();	}
 			catch (Exception e) { 
-				System.out.println("Exception during cost calculation:"+e.getMessage()); 
-				//e.printStackTrace();
+				new Warning("Exception during cost calculation:"+e.getMessage(),false,1); 
 				val="XXX"; }
 			
 			JTextArea result=new JTextArea(val);
@@ -376,8 +376,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 				bar.setIndeterminate(false);
 			}
 			catch (Exception e) { 
-				System.out.println("Exception during cost calculation:"+e.getMessage()); 
-				//e.printStackTrace();
+				new Warning("Exception during cost calculation:"+e.getMessage(),false,1); 
 				bar.setIndeterminate(true); }
 
 			return bar;
