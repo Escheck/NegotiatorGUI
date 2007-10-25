@@ -23,6 +23,7 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.*;
 import negotiator.xml.*;
+import negotiator.exceptions.Warning;
 
 /**
  *
@@ -939,7 +940,7 @@ public class UtilitySpace {
     		int ID=issue.getNumber();
     		try {costofissue=getEvaluator(ID).getCost(this, bid, ID); }
     		catch (Exception e) { 
-    			System.out.println("getcost:"+e.getMessage()+". using 0");
+    			new Warning("getcost:"+e.getMessage()+". using 0",false,1);
     			costofissue=0.; 
     		}
     		totalCost += costofissue;;
