@@ -19,7 +19,7 @@ public class Accept extends Action {
     
     // protected Bid fBid; //Wouter: NO you accept PREVIOUS bid, not current bid!!
     /** Creates a new instance of AcceptBid */
-    public Accept(Agent agent, Bid bid) {
+    public Accept(Agent agent) {
         super(agent);
     }
     //public Bid getBid() {  return fBid; }

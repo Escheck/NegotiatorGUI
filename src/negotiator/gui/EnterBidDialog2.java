@@ -163,7 +163,7 @@ public class EnterBidDialog2 extends JDialog {
         Bid bid=getBid();
         if (bid!=null) {
         	System.out.println("Accept performed");
-        	selectedAction=new Accept(agent,bid);
+        	selectedAction=new Accept(agent);
         	setVisible(false);
         }
     }
