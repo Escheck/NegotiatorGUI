@@ -129,8 +129,9 @@ public class NegotiationManager implements Runnable {
         	if (negoThread.isAlive()) {
         		try {
         			negoThread.stop(); // kill the stuff
-        			 // Wouter: this will throw an Error into the nego thread
-        			 // The nego thread will catch this and exit.
+        			 // Wouter: this will throw a ThreadDeath Error into the nego thread
+        			 // The nego thread will catch this and exit immediately.
+        			 // Maybe it should not even try to catch that.
         		} catch (Exception e) {
         			System.out.println("problem stopping the nego:"+e.getMessage());
         			e.printStackTrace();
