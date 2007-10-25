@@ -100,7 +100,7 @@ public class EnterBidDialog2 extends JDialog {
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(buttonEnd);
         buttonPanel.add(buttonAccept);
-        buttonPanel.add(buttonSkip);
+        //buttonPanel.add(buttonSkip);
         buttonPanel.add(buttonBid);
         pane.add(buttonPanel,"South");
         buttonBid.setSelected(true);
@@ -111,11 +111,11 @@ public class EnterBidDialog2 extends JDialog {
                 buttonBidActionPerformed(evt);
             }
         });
-        buttonSkip.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonSkipActionPerformed(evt);
-            }
-        });
+        //buttonSkip.addActionListener(new java.awt.event.ActionListener() {
+        //    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        //        buttonSkipActionPerformed(evt);
+        //    }
+        //});
         buttonEnd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonEndActionPerformed(evt);

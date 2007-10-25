@@ -74,38 +74,12 @@ public class Agent {
         return fName;
     }
 
-    /*
-    public void loadUtilitySpace(String fileName) {
-        //load the utility space
-        utilitySpace = new UtilitySpace(domain, fileName);
-        return;
-    }
-    */
     
     public final void setName(String pName) {
         if(this.fName==null) this.fName = pName;
         return;
     }
     
-    /*
-    public final double getUtility(Bid bid) throws Exception
-    {
-        return utilitySpace.getUtility(bid);
-    }
-    */
-    
-    /*
-    public final Bid getMaxUtilityBid() throws Exception
-    {
-    	return utilitySpace.getMaxUtilityBid();
-    }
-    */
-    
-    /*
-    public final Domain getDomain() {
-        return domain;
-    }
-    */
     
     /**
      * @author W.Pasman

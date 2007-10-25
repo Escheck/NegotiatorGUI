@@ -46,7 +46,7 @@ public class Negotiation implements Runnable {
     	if (ag==agentA) return agentB;
     	return agentA;    	
     }
-    /** T
+    /**
      * 
      * his method returns random element of the agents array.
      */
@@ -79,6 +79,7 @@ public class Negotiation implements Runnable {
             //agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;
+            double agentAUtility,agentBUtility;
             Agent agents[] = {agentA, agentB};
             currentAgent = getRandomAgent(agents) ;
             Main.logger.add("Agent " + currentAgent.getName() + " begins");
@@ -89,10 +90,21 @@ public class Negotiation implements Runnable {
                    //get next action of the agent that has its turn now
                    action = currentAgent.chooseAction();
                    if(action==null) {
-                       Main.logger.add("Agent " + currentAgent.getName() + " did not choose any action."); 
-                       lastBid=null;
+                       Main.logger.add("Agent " + currentAgent.getName() + " returned null: Protocol error");
+                       if (lastBid==null) agentAUtility=agentBUtility=1.;
+                       else {
+                    	   agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                    	   agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                       }
+                       if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
+                       no = new NegotiationOutcome(sessionNumber, 
+                                  agentA.getClass().getCanonicalName(),
+                                  agentB.getClass().getCanonicalName(),
+                                  String.valueOf(agentAUtility),
+                                  String.valueOf(agentBUtility),"Null action by "+currentAgent.getName());
+                       stopNegotiation=true;
                    } else
-                   //
+                   
                    if (action instanceof Offer) {
                        Main.logger.add("Agent " + currentAgent.getName() + " sent the following offer:");                       
                        lastBid  = ((Offer)action).getBid();
@@ -110,8 +122,8 @@ public class Negotiation implements Runnable {
                            if(lastBid!=null) {
                                 Main.logger.add("Agents accepted the following bid:");
                                 Main.logger.add(((Accept)action).toString());
-                                double agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
-                                double agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                                agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                                agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
@@ -196,6 +208,12 @@ public class Negotiation implements Runnable {
         }
         
         
+        /*
+         * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
+         * Maybe even catching the ThreadDeath error is wrong. 
+         * If we do more processing, we risk getting a ThreadDeath exception
+         * causing Eclipse to pop up a dialog bringing us into the debugger.
+         * 
         //Wouter: old code to plot a graph. Currently disabled. 
         // Probably will not work either, remember that the Negotiator is killed as soon
         // as this run function exits.
@@ -213,15 +231,15 @@ public class Negotiation implements Runnable {
 	        	lAgentBUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentBBids.get(i));
 	        }
 	        
-	        /*
-	       	if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
+	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
 	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
 	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
 	        Main.fChart.show();
-	        */
+	        
 	        // Wouter: logger is causing crashes. Removed.......
 	        //synchronized(Main.logger) { Main.logger.add("Session is finished"); }
         } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
+        */
         return;
     }
     

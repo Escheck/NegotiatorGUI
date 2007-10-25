@@ -86,7 +86,7 @@ public class SessionFrame extends javax.swing.JFrame {
                 case 0: name = "Session #";break;
                 case 1: name ="Utility for "+agentAName;break;
                 case 2: name ="Utility for "+ agentBName;break;
-                case 3: name ="ErrorRemarks";break;
+                case 3: name ="Protocol ErrorRemarks";break;
                 default: name = "";
             }
             return name;
