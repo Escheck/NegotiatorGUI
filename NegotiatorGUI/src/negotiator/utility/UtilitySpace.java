@@ -28,12 +28,12 @@ import negotiator.BidIterator;
 
 /**
  *
- * @author Dmytro Tykhonov & Koen Hindriks 
  * 
  * Wouter: the utility space couples all objectives to weights and evaluators.
  * 
  * Wouter: this class is final to prevent users (students) to override the getUtility function
  * with their own version of UtilitySpace
+ * @author Dmytro Tykhonov & Koen Hindriks 
  */
 
 public final class UtilitySpace {
@@ -73,7 +73,6 @@ public final class UtilitySpace {
     }
     
     /**
-     * @author W.Pasman
      * create a default evaluator for a given Objective.
      * This function is placed here, and not in Objective, because
      * the Objectives should not be loaded with utility space functionality.
@@ -81,6 +80,7 @@ public final class UtilitySpace {
      * losing some modularity.
      * @param obj the objective to create an evaluator for
      * @return the defualt evaluator
+     * @author W.Pasman
      */
     public Evaluator DefaultEvaluator(Objective obj)
     {
@@ -244,10 +244,10 @@ public final class UtilitySpace {
     
 
     /**
-     * @author W.Pasman
      * Totally revised, brute-force search now.
      * @return a bid with the maximum utility value attainable in this util space
      * @throws Exception if there is no bid at all in this util space.
+     * @author W.Pasman
      */
 	public final Bid getMaxUtilityBid() throws Exception
 	{
@@ -823,7 +823,7 @@ public final class UtilitySpace {
 
 
     /**
-     * as we don't have the domain tree.
+     * as we don't have the domain tree we can't do the check as we hoped to do .
      * @param utilSubtreeP
      * @param domainSubtreeP
      * @return  Stringg containing explanation why not a subtree, or null.
@@ -862,7 +862,6 @@ public final class UtilitySpace {
      */
 
     /**
-     * @author W.Pasman
      * compute the cost of the given bid. 
      * There is also getCost in Evaluator but it currently only works for EvaluatorDiscrete.
      * Need more clarity on how to deal with this.
@@ -870,6 +869,7 @@ public final class UtilitySpace {
      * should be able to compute cost of the entire bid.
      * @throws if cost can not be computed for some reason.
      * @return computed cost
+     * @author W.Pasman
      */
     public Double getCost(Bid bid) throws Exception
     {

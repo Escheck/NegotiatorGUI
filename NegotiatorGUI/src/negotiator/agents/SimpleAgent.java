@@ -11,6 +11,7 @@ package negotiator.agents;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
 // import negotiator.exceptions.*;
+import negotiator.utility.UtilitySpace;
 
 /**
  *
@@ -39,9 +41,9 @@ public class SimpleAgent extends Agent{
         super();        
         return;
     }
-    @Override
-	protected void init(int sessionNumber, int sessionTotalNumber, NegotiationTemplate nt) {
-        super.init (sessionNumber, sessionTotalNumber, nt);
+    
+    protected void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, UtilitySpace us) {
+        super.init (sessionNumber, sessionTotalNumber, startTimeP,us);
         this.sessionNumber = sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
         actionOfPartner = null;
@@ -49,7 +51,6 @@ public class SimpleAgent extends Agent{
         return;
     }
 
-    @Override
 	public void ReceiveMessage(Action opponentAction) {
         this.actionOfPartner = opponentAction;
         return;
@@ -57,9 +58,10 @@ public class SimpleAgent extends Agent{
     
     private Bid getNextBid() throws Exception
     {
-//        Value[] values = new Value[getNegotiationTemplate().getDomain().getNumberOfIssues()];
     	HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>
-    	ArrayList<Issue> issues=getNegotiationTemplate().getDomain().getIssues();
+    	ArrayList<Issue> issues=utilitySpace.getDomain().getIssues();
+    	
+    	// create a random bid.
         for(Issue lIssue:issues) 
         {
 			switch(lIssue.getType()) {
@@ -70,7 +72,6 @@ public class SimpleAgent extends Agent{
 	            int optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
 	            System.out.println(optionIndex);
-//	            values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex);
 	            values.put(lIssue.getNumber(), new ValueInteger(((IssueInteger)lIssue).getLowerBound()+optionIndex));
 			case REAL: 
 				IssueReal lIssueReal =(IssueReal)lIssue;
@@ -78,7 +79,6 @@ public class SimpleAgent extends Agent{
 	            numberOfOptions =lIssueReal.getNumberOfDiscretizationSteps();
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
-//				values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex);
 	            values.put(lIssue.getNumber(), new ValueReal(lIssueReal.getLowerBound()+lOneStep*optionIndex));
 				break;
 			case DISCRETE:
@@ -86,12 +86,11 @@ public class SimpleAgent extends Agent{
 	            numberOfOptions =lIssueDiscrete.getNumberOfValues();
 	            optionIndex = Double.valueOf(java.lang.Math.random()*(numberOfOptions)).intValue();
 	            if (optionIndex >= numberOfOptions) optionIndex= numberOfOptions-1;
-//				values[i]= lIssueDiscrete.getValue(optionIndex);
 	            values.put(lIssue.getNumber(), lIssueDiscrete.getValue(optionIndex));
 				break;
-			}// switch
-		}//for
-        return new Bid(getNegotiationTemplate().getDomain(),values);
+			}
+		}
+        return new Bid(utilitySpace.getDomain(),values);
     }
     
     private Action chooseNextAction() 
@@ -104,21 +103,18 @@ public class SimpleAgent extends Agent{
         return (new Offer(this, nextBid));
     }
     
-    @Override
 	public Action chooseAction()
     {
         Action action = null;
         try { 
-
             if(actionOfPartner==null) {
-                //
                 action = chooseNextAction();
             } else {
                 if(actionOfPartner instanceof Offer) {
                     Bid partnerBid = ((Offer)actionOfPartner).getBid();
                     if(myPreviousBid!=null)
                         if(utilitySpace.getUtility(partnerBid)==utilitySpace.getUtility(myPreviousBid))
-                            action = new Accept(this, partnerBid);
+                            action = new Accept(this);
                         else action = chooseNextAction();                   
                     else {
                         action = chooseNextAction();                   
@@ -132,10 +128,6 @@ public class SimpleAgent extends Agent{
         return action;
     }
     
-    @Override
-	public void loadUtilitySpace(String fileName) {
-        utilitySpace = new SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
-        return;
-    }  
+ 
 
 }
