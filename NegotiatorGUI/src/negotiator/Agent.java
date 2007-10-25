@@ -11,6 +11,7 @@ package negotiator;
 
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
+/*
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -20,7 +21,10 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.utility.EvaluatorDiscrete;
+*/
 import negotiator.utility.UtilitySpace;
+
+import java.util.Date;
 
 /**
  *
@@ -30,10 +34,11 @@ import negotiator.utility.UtilitySpace;
 
 //TODO: Maybe move this class to negotiator.agents package?
 public class Agent {
-    private     String          fName;
-    protected	Domain			domain;
+    private     String          fName=null;
+    //protected	Domain			domain; // domain is inside the utility space.
     protected   UtilitySpace    utilitySpace;
-    //private NegotiationTemplate fNT;
+    protected	Date			startTime;
+    //private NegotiationTemplate fNT; Wouter: agents should not get access to that
     
     //TODO: Check if we realy need this declaration!
     // Some declarations for 'ease of use' when defining agents.
@@ -43,15 +48,17 @@ public class Agent {
 
     
     /** Creates a new instance of Agent */
-    /* WARNING!!! Wouter: utilitySpace will be null for some time!!! 
-     * this may crash attempts to show info in the GUI window!!
+    /* WARNING!!! Wouter: utilitySpace is null for now.
+     * Therefore we do not yet create any windows.
+     * Also, note that constructor of Agent has to have an empty parameter list,
+     * because there is no class loader with parameterized constructor
      */
     public Agent() {
-        this.fName = null;
     }
     
-    protected void init(int sessionNumber, int sessionTotalNumber, Domain d) {
-    	domain=d;
+    protected void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, UtilitySpace us) {
+        startTime=startTimeP;
+    	utilitySpace=us;
         return;
     }
     
@@ -66,31 +73,39 @@ public class Agent {
     public String getName() {
         return fName;
     }
-    
+
+    /*
     public void loadUtilitySpace(String fileName) {
         //load the utility space
         utilitySpace = new UtilitySpace(domain, fileName);
         return;
     }
+    */
     
     public final void setName(String pName) {
         if(this.fName==null) this.fName = pName;
         return;
     }
     
+    /*
     public final double getUtility(Bid bid) throws Exception
     {
         return utilitySpace.getUtility(bid);
     }
+    */
     
+    /*
     public final Bid getMaxUtilityBid() throws Exception
     {
     	return utilitySpace.getMaxUtilityBid();
     }
+    */
     
+    /*
     public final Domain getDomain() {
         return domain;
     }
+    */
     
     /**
      * @author W.Pasman

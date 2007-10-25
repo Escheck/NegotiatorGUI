@@ -55,12 +55,11 @@ public class EnterBidDialog2 extends JDialog {
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
-    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, Domain d,UtilitySpace us)  throws Exception
+    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
     {
         super(parent, modal);
-		if (d==null) throw new NullPointerException("null domain?");
         this.agent = agent;
-        negoinfo=new NegoInfo(null,null,d, us); 
+        negoinfo=new NegoInfo(null,null,us); 
         initThePanel();
     }
     
@@ -232,7 +231,6 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public Bid ourOldBid;			// Bid is hashmap <issueID,Value>. Our current bid is only in the comboboxes,
 									// use getBid().
 	public Bid opponentOldBid;
-	public Domain domain;
 	public UtilitySpace utilitySpace;	// WARNING: this may be null
 	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
 	// the issues, in row order as in the GUI. Init to empty, to enable 
@@ -240,14 +238,12 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
-	NegoInfo(Bid our,Bid opponent,Domain d, UtilitySpace us) throws Exception
+	NegoInfo(Bid our,Bid opponent, UtilitySpace us) throws Exception
 	{
 		//Wouter: just discovered that assert does nothing........... 
-		if (d==null) throw new NullPointerException("null domain?");
 		ourOldBid=our; opponentOldBid=opponent;
-		domain=d;
 		utilitySpace=us;
-		issues=d.getIssues();
+		issues=utilitySpace.getDomain().getIssues();
 		IDs=new ArrayList<Integer>();
 		for (int i=0; i<issues.size(); i++) IDs.add(issues.get(i).getNumber());
 		makeComboBoxes();
@@ -405,7 +401,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		for (int i=0; i<issues.size(); i++)
 			values.put(IDs.get(i), ((IssueDiscrete)issues.get(i)).getValue(comboBoxes.get(i).getSelectedIndex()));
 			//values.put(IDs.get(i), (Value)comboBoxes.get(i).getSelectedItem());
-		return new Bid(domain,values);
+		return new Bid(utilitySpace.getDomain(),values);
 	}
 
 	public void actionPerformed(ActionEvent e) {

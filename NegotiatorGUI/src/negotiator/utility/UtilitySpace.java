@@ -31,9 +31,11 @@ import negotiator.exceptions.Warning;
  * 
  * Wouter: the utility space couples all objectives to weights and evaluators.
  * 
+ * Wouter: this class is final to prevent users (students) to override the getUtility function
+ * with their own version of UtilitySpace
  */
 
-public class UtilitySpace {
+public final class UtilitySpace {
 	
 	// Class fields
     private Domain domain;
