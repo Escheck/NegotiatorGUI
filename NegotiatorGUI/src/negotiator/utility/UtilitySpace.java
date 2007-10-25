@@ -24,6 +24,7 @@ import negotiator.Domain;
 import negotiator.issue.*;
 import negotiator.xml.*;
 import negotiator.exceptions.Warning;
+import negotiator.BidIterator;
 
 /**
  *
@@ -241,90 +242,27 @@ public final class UtilitySpace {
     
     }
     
-    // KH 070511: Moved getMaxBid method to UtilitySpace class since it should be available to all agents.
+
     /**
-     * @throws particularly when an illegal bid is created
-     * @return (a) bid which has maximum utility in this utility space.
+     * @author W.Pasman
+     * Totally revised, brute-force search now.
+     * @return a bid with the maximum utility value attainable in this util space
+     * @throws Exception if there is no bid at all in this util space.
      */
 	public final Bid getMaxUtilityBid() throws Exception
 	{
-		int nrOfIssues = domain.getIssues().size();
-//		Value[] values = new Value[nrOfIssues];	//TODO hdv: Do something about these values. See proposal of 11-6-7
-		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
-//		Value[] maxValues = new Value[nrOfIssues]; //TODO hdv: Do something about these values. See proposal of 11-6-7.
-		HashMap<Integer, Value> maxValues = new HashMap<Integer, Value>();
-		Bid lBid, newBid;
-		ISSUETYPE type;
-		int lMax;
-		double umax,u2;
+		Bid maxBid=null; double maxutil=0.;
+		BidIterator bidit=new BidIterator(domain);
 
-		// QUESTION: Wouldn't it be better to allign issue indexes in template with ranges used in arrays.
-		// Now we use a range from 0 to nrOfIssue-1, which is different from indexes in templates.
-		
-		// get initial 'guess'
-		for (Issue issue: domain.getIssues()) {
-			type = issue.getType();
-			switch(type) {
-			case DISCRETE:
-//				values[i] = ((IssueDiscrete)issue).getValue(0);
-				values.put(new Integer(issue.getNumber()), ((IssueDiscrete)issue).getValue(0));
-				break;
-			case INTEGER:
-//				values[i] = new ValueInteger(((IssueInteger)issue).getLowerBound());
-				values.put(new Integer(issue.getNumber()), new ValueInteger(((IssueInteger)issue).getLowerBound()));
-//				maxValues[i] = new ValueInteger(((IssueInteger)issue).getUpperBound());
-				maxValues.put(new Integer(issue.getNumber()), new ValueInteger(((IssueInteger)issue).getUpperBound()));
-				break;
-			case REAL:
-//				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
-				values.put(new Integer(issue.getNumber()), new ValueReal(((IssueReal)issue).getLowerBound()));
-//				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
-				maxValues.put(new Integer(issue.getNumber()), new ValueReal(((IssueReal)issue).getUpperBound()));
-				break;
-			}
+		if (bidit.hasNext()) maxBid=bidit.next();
+		else throw new Exception("The domain does not contain any bids!");
+		while (bidit.hasNext())
+		{
+			Bid thisBid=bidit.next();
+			double thisutil=getUtility(thisBid);
+			if (thisutil>maxutil) { maxutil=thisutil; maxBid=thisBid;  }
 		}
-		
-		// ASSUMPTION: issues are (almost) independent, and utility de/in-creases linear for non-discrete issues.
-		for (Issue issue: domain.getIssues()) {
-			//lBid = initialBid;
-			type = issue.getType();
-			switch(type) {
-			case DISCRETE:
-				lMax = 0;
-				umax = ((EvaluatorDiscrete)this.getEvaluator(issue.getNumber())).getEvaluation(((IssueDiscrete)issue).getValue(0));
-				for (int j = 1; j < ((IssueDiscrete)issue).getNumberOfValues(); j++) {
-					// Assume issue independence here.
-					u2 = ((EvaluatorDiscrete)this.getEvaluator(issue.getNumber())).getEvaluation(((IssueDiscrete)issue).getValue(j));
-					if (umax<u2) {
-						lMax =j;
-						umax = u2;
-					}
-				}
-//				values[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
-				values.put(new Integer(issue.getNumber()), new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue()) );
-//				maxValues[i] = new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue());
-				maxValues.put(new Integer(issue.getNumber()), new ValueDiscrete(((IssueDiscrete)issue).getValue(lMax).getValue()));
-				
-				break;
-			case INTEGER:
-				// TODO: Add code.
-				break;
-			case REAL:
-				// assume indep & linear
-				
-//				values[i] = new ValueReal(((IssueReal)issue).getLowerBound());
-				values.put(new Integer(issue.getNumber()), new ValueReal(((IssueReal)issue).getLowerBound()));
-//				maxValues[i] = new ValueReal(((IssueReal)issue).getUpperBound());
-				maxValues.put(new Integer(issue.getNumber()), new ValueReal(((IssueReal)issue).getUpperBound()));
-				lBid = new Bid(domain,values);	//TODO hdv: Are these the only 3 places where the constructor of Bid is called?
-				newBid = new Bid(domain,maxValues);
-				if (this.getUtility(lBid)>this.getUtility(newBid))
-//					maxValues[i] = new ValueReal(((ValueReal)values.get(new Integer(i))).getValue());
-					maxValues.put(new Integer(issue.getNumber()), new ValueReal(((ValueReal)values.get(new Integer(issue.getNumber()))).getValue()));
-				break;
-			}
-		}
-		return new Bid(domain, maxValues);
+		return maxBid;
 	}
 
 	
