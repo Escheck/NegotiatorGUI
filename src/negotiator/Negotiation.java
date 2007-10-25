@@ -12,6 +12,7 @@ package negotiator;
 import java.util.ArrayList;
 
 import negotiator.actions.*;
+import java.util.Date;
 
 /**
  *
@@ -68,12 +69,14 @@ public class Negotiation implements Runnable {
     public void run() {
         Agent currentAgent;
         ArrayList<Bid> lAgentABids = new ArrayList<Bid>();
-        ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();;
+        ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();
+        Date startTime=new Date();
         try {
-            agentA.init(sessionNumber, sessionTotalNumber,nt.getDomain());
-            agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
-            agentB.init(sessionNumber, sessionTotalNumber,nt.getDomain());
-            agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
+        	
+            agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getAgentAUtilitySpace());
+            //agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
+            agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getAgentBUtilitySpace());
+            //agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;
             Agent agents[] = {agentA, agentB};
@@ -107,8 +110,8 @@ public class Negotiation implements Runnable {
                            if(lastBid!=null) {
                                 Main.logger.add("Agents accepted the following bid:");
                                 Main.logger.add(((Accept)action).toString());
-                                double agentAUtility = agentA.getUtility(lastBid);
-                                double agentBUtility = agentB.getUtility(lastBid);
+                                double agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                                double agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
                                 no = new NegotiationOutcome(sessionNumber, 
                                            agentA.getClass().getCanonicalName(),
                                            agentB.getClass().getCanonicalName(),
@@ -202,12 +205,12 @@ public class Negotiation implements Runnable {
         try
         {
 	        for(int i=0;i< lAgentABids.size();i++) {
-	        	lAgentAUtilities [i][0] = agentA.getUtility(lAgentABids.get(i));
-	        	lAgentAUtilities [i][1] = agentB.getUtility(lAgentABids.get(i));
+	        	lAgentAUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentABids.get(i));
+	        	lAgentAUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentABids.get(i));
 	        }
 	        for(int i=0;i< lAgentBBids.size();i++) {
-	        	lAgentBUtilities [i][0] = agentA.getUtility(lAgentBBids.get(i));
-	        	lAgentBUtilities [i][1] = agentB.getUtility(lAgentBBids.get(i));
+	        	lAgentBUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentBBids.get(i));
+	        	lAgentBUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentBBids.get(i));
 	        }
 	        
 	        /*

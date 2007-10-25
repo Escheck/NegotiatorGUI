@@ -103,12 +103,13 @@ public class NegotiationTemplate {
 				
 			}//if
 			if(fAnalysis!=null) showAnalysis();			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void showAnalysis(){
+	protected void showAnalysis() throws Exception
+	{
 		Chart lChart = new Chart();		
 /*		if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
 			fAnalysis.buildCompleteOutcomeSpace();*/

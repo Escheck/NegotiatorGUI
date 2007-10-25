@@ -54,6 +54,7 @@ public class NegotiationManager implements Runnable {
             int numberOfSession) {
         this.agentAclassName = agentAclassName;
         this.agentBclassName = agentBclassName;
+        // load the utility spaces
         nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace );
         this.numberOfSessions = numberOfSession;
         Main.logger.add("Loading agents...");
