@@ -52,6 +52,7 @@ public class BayesianAgent extends Agent {
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
+		fOpponentModel = new BayesianOpponentModel(utilitySpace);
 	}
 
 	// Class methods
