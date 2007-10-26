@@ -29,25 +29,23 @@ import negotiator.utility.UtilitySpace;
  * 
  */
 public class SimpleAgent2 extends Agent{
-    private Action actionOfPartner;
-    private int sessionNumber;
-    private int sessionTotalNumber;
-    private int[] myPreviousBidIndex;
-    private Bid myPreviousBid;
+    private Action actionOfPartner=null;
     private static final double MINIMUM_BID_UTILITY = 0.5;
-    double AVAILABLE_TIME=20*60; // seconds of total available time for this nego. 
+    
+    
+    	// just here to suggest possibilities, not used in this agent.
+    private int sessionNumber;			
+    private int sessionTotalNumber;
  
     
-    protected void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, UtilitySpace us) {
-        super.init (sessionNumber, sessionTotalNumber, startTimeP,us);
-        this.sessionNumber = sessionNumber;
-        this.sessionTotalNumber = sessionTotalNumber;
-        actionOfPartner = null;
-        myPreviousBid = null;
+    public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
+        super.init (sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
+        sessionNumber = sessionNumber;
+        sessionTotalNumber = sessionTotalNumber;
     }
 
 	public void ReceiveMessage(Action opponentAction) {
-        this.actionOfPartner = opponentAction;
+        actionOfPartner = opponentAction;
     }
     
  
@@ -60,12 +58,12 @@ public class SimpleAgent2 extends Agent{
             {
                 Bid partnerBid = ((Offer)actionOfPartner).getBid();
                 double offeredutil=utilitySpace.getUtility(partnerBid);
-                double time=((new Date()).getTime()-startTime.getTime())/(1000.*AVAILABLE_TIME);
+                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
                 double P=Paccept(offeredutil,time);
                 if (P>Math.random()) action = new Accept(this);
                 else action = chooseRandomBidAction();               
             }
-            Thread.sleep(1000);
+            Thread.sleep(1000); // just for fun
         } catch (Exception e) { 
         	System.out.println("Exception in ChooseAction:"+e.getMessage());
         	action=new Accept(this); // best guess if things go wrong. 
@@ -84,7 +82,6 @@ public class SimpleAgent2 extends Agent{
         try { nextBid = getRandomBid(); }
         catch (Exception e) { System.out.println("Problem with received bid:"+e.getMessage()+". cancelling bidding"); }
         if (nextBid == null) return (new Accept(this));                
-        myPreviousBid = nextBid;
         return (new Offer(this, nextBid));
     }
 	   
@@ -136,11 +133,11 @@ public class SimpleAgent2 extends Agent{
 	 */
 	double Paccept(double u, double t) throws Exception
 	{
-		if (u<0 || u>1) throw new Exception("utility "+u+" out of [0,1]");
-		if (t<0 || t>1) throw new Exception("time "+t+" out of [0,1]");
+		if (u<0 || u>1) throw new Exception("utility "+u+" outside [0,1]");
+		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
 		
 		if (t==0.5) return u;
-		return (u - 2*u*t + 2*(-1 + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1 + 2*t);
+		return (u - 2.*u*t + 2.*(-1. + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1. + 2*t);
 	}
 	
 	double sq(double x) { return x*x; }

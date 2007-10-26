@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import negotiator.actions.*;
 import java.util.Date;
+import negotiator.agents.Agent;
 
 /**
  *
@@ -33,7 +34,8 @@ public class Negotiation implements Runnable {
      * 
      * Creates a new instance of Negotiation 
      **/
-    public Negotiation(Agent agentA, Agent agentB, NegotiationTemplate nt, int sessionNumber, int sessionTotalNumber) {
+    public Negotiation(Agent agentA, Agent agentB, NegotiationTemplate nt, 
+    		int sessionNumber, int sessionTotalNumber) {
         this.agentA = agentA;
         this.agentB = agentB;
         this.sessionNumber=sessionNumber;
@@ -73,9 +75,9 @@ public class Negotiation implements Runnable {
         Date startTime=new Date();
         try {
         	
-            agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getAgentAUtilitySpace());
+            agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),nt.getAgentAUtilitySpace());
             //agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
-            agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getAgentBUtilitySpace());
+            agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),nt.getAgentBUtilitySpace());
             //agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;

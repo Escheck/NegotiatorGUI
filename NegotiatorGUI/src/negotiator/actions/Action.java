@@ -9,7 +9,7 @@
 
 package negotiator.actions;
 
-import negotiator.Agent;
+import negotiator.agents.Agent;
 
 /**
  *

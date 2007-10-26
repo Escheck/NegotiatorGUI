@@ -35,6 +35,10 @@ import negotiator.xml.SimpleElement;
 /**
  *
  * @author Dmytro Tykhonov
+ * 
+ * Wouter: this field holds the data needed for a negotiatin.
+ * I'm still not sure whether totalTime should be here,
+ * because the exact purpose of this template was not described.
  */
 public class NegotiationTemplate {
 /*    public static final int FAIR_DEVISION_PROBLEM = 1;
@@ -48,6 +52,7 @@ public class NegotiationTemplate {
     private SimpleElement fRoot;
 	private String fFileName;    
     private Analysis fAnalysis;
+    private int totalTime; // total availabel time for nego, in seconds.
     
     /** Creates a new instance of NegotiationTemplate 
      * @param negotiationType
@@ -56,17 +61,25 @@ public class NegotiationTemplate {
      * @param agentBUtilitySpaceFileName
      */
     
-	public NegotiationTemplate(int negotiationType, Domain domain, String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName) {
+    /*
+	public NegotiationTemplate(int negotiationType, Domain domain, Integer totTime,
+			String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName) {
 		this.agentAUtilitySpaceFileName = agentAUtilitySpaceFileName;
 		this.agentBUtilitySpaceFileName = agentBUtilitySpaceFileName;               
 //		this.negotiationType = negotiationType;
 		this.domain = domain;
+		totalTime=totTime;
 	}
-	public NegotiationTemplate(String fileName, String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName) {
+	*/
+	
+	public NegotiationTemplate(String fileName, String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName,
+			Integer totTime) 
+	{
 		fFileName = fileName;
 		this.agentAUtilitySpaceFileName = agentAUtilitySpaceFileName;
 		this.agentBUtilitySpaceFileName = agentBUtilitySpaceFileName;      	
 		loadFromFile(fileName);
+		totalTime=totTime;
 	}
 	/**
 	 * @param fileName
@@ -204,4 +217,8 @@ public class NegotiationTemplate {
     	return domain.toXML(); 		
     }
 
+     /**
+      * @return total available time for entire nego, in seconds.
+      */
+    public Integer getTotalTime() { return totalTime; }
 }

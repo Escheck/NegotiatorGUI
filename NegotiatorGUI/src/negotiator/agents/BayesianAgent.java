@@ -1,6 +1,8 @@
 package negotiator.agents;
 
-import negotiator.Agent;
+import java.util.Date;
+
+import negotiator.agents.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.NegotiationTemplate;
@@ -11,6 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.agents.BayesianOpponentModel.*;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
+import negotiator.utility.UtilitySpace;
 import negotiator.Domain;
 
 
@@ -39,8 +42,9 @@ public class BayesianAgent extends Agent {
 		super();
 	}
 
-	protected void init(int sessionNumber, int sessionTotalNumber,Domain d) {		
-		super.init(sessionNumber, sessionTotalNumber, d);
+	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+			Integer totalTimeP, UtilitySpace us) {
+		super.init(sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
 		myName = super.getName();
 		this.sessionNumber = sessionNumber;
 		this.sessionTotalNumber = sessionTotalNumber;
@@ -146,7 +150,7 @@ public class BayesianAgent extends Agent {
 						.getUtility(myLastBid))
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
-					lAction = new Accept(this, lOppntBid);
+					lAction = new Accept(this);
 				else
 					// Propose counteroffer. Get next bid.
 					lAction = proposeNextBid(lOppntBid);
@@ -156,16 +160,9 @@ public class BayesianAgent extends Agent {
 						.getUtility(myLastBid))
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
-					lAction = new Accept(this, lOppntBid);			
+					lAction = new Accept(this);			
 				break;
-			case ACCEPT: // Presumably, opponent accepted last bid, but let's
-				// check...
-				lOppntBid = ((Accept) messageOpponent).getBid();
-				if (lOppntBid.equals(myLastBid))
-					lAction = new Accept(this, myLastBid);
-				else
-					lAction = new Offer(this, myLastBid);
-				break;
+			case ACCEPT:
 			case BREAKOFF:
 				// nothing left to do. Negotiation ended, which should be checked by
 				// Negotiator...
@@ -201,22 +198,13 @@ public class BayesianAgent extends Agent {
 		return lActionType;
 	}
 
-	public void loadUtilitySpace(String fileName) {
-
-		utilitySpace = new SimpleUtilitySpace(domain, fileName);
-
-		//load similarity info from the utility space
-//		fSimilarity = new Similarity(utilitySpace.getDomain());
-//		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
-		fOpponentModel = new BayesianOpponentModel(utilitySpace);
-	}
 
 	private Bid getBidRandomWalk(double targetUtility) {
 		Bid lBid = null, lBestBid = null;
 
 		// Return bid that gets closest to target utility in a "random walk"
 		// search.
-		lBestBid = domain.getRandomBid();
+		lBestBid = utilitySpace.getDomain().getRandomBid();
 		return lBestBid;
 	}
 
