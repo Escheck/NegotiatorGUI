@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import negotiator.gui.SessionFrame;
 import negotiator.xml.SimpleElement;
+import negotiator.agents.Agent;
 /**
  *
  * @author Dmytro Tykhonov
@@ -37,7 +38,8 @@ public class NegotiationManager implements Runnable {
     
     // following contains default for nego between two machine agents.
     // the timeout is changed if one of the two agents isUIAgent().
-    private int NEGOTIATION_TIMOUT = 120; //Default 120 (seconds) 
+    private int NON_GUI_NEGO_TIME = 120; //Default 120 (seconds) 
+    private int GUI_NEGO_TIME=60*20; 	// Nego time if a GUI is involved in the nego
     private String agentAclassName;
     private String agentBclassName;
     SessionFrame sf;
@@ -55,8 +57,7 @@ public class NegotiationManager implements Runnable {
         this.agentAclassName = agentAclassName;
         this.agentBclassName = agentBclassName;
         // load the utility spaces
-        nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace );
-        this.numberOfSessions = numberOfSession;
+        numberOfSessions = numberOfSession;
         Main.logger.add("Loading agents...");
         agentA = null;
         agentB = null;
@@ -88,8 +89,10 @@ public class NegotiationManager implements Runnable {
             e2.printStackTrace();
             
         }
-        
-        if (agentA.isUIAgent() || agentB.isUIAgent()) NEGOTIATION_TIMOUT=60*20;
+         // we can determine total nego time only after agents were loaded:
+        Integer totTime=NON_GUI_NEGO_TIME;
+        if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=GUI_NEGO_TIME;
+        nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace,totTime);        
     }
     
     public void run() {
@@ -116,9 +119,9 @@ public class NegotiationManager implements Runnable {
             negoThread.start();
         	try {
         		synchronized (this) {
-        			System.out.println("waiting NEGO_TIMEOUT="+NEGOTIATION_TIMOUT);
-    				wait(NEGOTIATION_TIMOUT*1000);
-    				//Thread.sleep(NEGOTIATION_TIMOUT*1000);
+        			System.out.println("waiting NEGO_TIMEOUT="+nt.getTotalTime());
+        			 // wait will unblock early if negotiation is finished in time.
+    				wait(nt.getTotalTime()*1000);
         		}
         	} catch (InterruptedException ie) {
         		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}

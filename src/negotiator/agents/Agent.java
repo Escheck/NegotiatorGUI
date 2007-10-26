@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package negotiator;
+package negotiator.agents;
 
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
@@ -34,10 +34,11 @@ import java.util.Date;
 
 //TODO: Maybe move this class to negotiator.agents package?
 public class Agent {
-    private     String          fName=null;
+    private String          fName=null;
     //protected	Domain			domain; // domain is inside the utility space.
-    protected   UtilitySpace    utilitySpace;
-    protected	Date			startTime;
+    public  UtilitySpace    utilitySpace;
+    public	Date			startTime;
+    public Integer			totalTime; // total time to complete entire nego, in seconds.
     //private NegotiationTemplate fNT; Wouter: agents should not get access to that
     
     //TODO: Check if we realy need this declaration!
@@ -56,8 +57,10 @@ public class Agent {
     public Agent() {
     }
     
-    protected void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, UtilitySpace us) {
+    public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+    		Integer totalTimeP, UtilitySpace us) {
         startTime=startTimeP;
+        totalTime=totalTimeP;
     	utilitySpace=us;
         return;
     }

@@ -248,7 +248,11 @@ public class MainFrame extends javax.swing.JFrame {
                 Integer.valueOf(fieldNumberOfSession.getText()));*/
     	//Temporarily just create a TreePanel with an empty domain and utilitySpace, because reading the utilitySpaces
     	//doesn't work properly yet (Herbert is working on that)
-    	NegotiationTemplate template = new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText());
+    	//Wouter: quick hack: set nego time to 0.
+    	// I don't see why the showModel needs a nego template at all, showModel is about editing the
+    	// datastructures, not the negotiation template?
+    	NegotiationTemplate template = 
+    		new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText(),0);
     	TreeFrame treeFrame = new TreeFrame(template.getDomain(), template.getAgentAUtilitySpace());
     	//TreeFrame treeFrame = new TreeFrame(new NegotiatorTreeTableModel(new negotiator.issue.Objective()));
 		

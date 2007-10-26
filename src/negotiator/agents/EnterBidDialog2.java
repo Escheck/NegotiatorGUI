@@ -4,7 +4,7 @@
  * Created on November 16, 2006, 10:18 AM
  */
 
-package negotiator.gui;
+package negotiator.agents;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventObject;
 import javax.swing.table.AbstractTableModel;
-import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.utility.UtilitySpace;

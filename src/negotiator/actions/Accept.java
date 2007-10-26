@@ -10,7 +10,7 @@
 package negotiator.actions;
 
 import negotiator.Bid;
-import negotiator.Agent;
+import negotiator.agents.Agent;
 /**
  *
  * @author Dmytro Tykhonov
