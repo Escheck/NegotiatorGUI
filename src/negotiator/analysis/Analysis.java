@@ -98,24 +98,39 @@ public class Analysis {
 			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));            	
 			for(int i=0;i<lXMLParetoBids.length;i++) {
 				//TODO: COMPLETED DT fix the loading bid from XML in Analysis 
-				Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[i]));            	
-				fPareto.add(lBid);
+				try {
+					Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[i]));            	
+					fPareto.add(lBid);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 			}
 		}
 		sortParetoFrontier();		
 		//	read Nash
 		if(lXMLAnalysis.getChildByTagName("nash").length>0) {
 			SimpleElement lXMLPareto = (SimpleElement)(lXMLAnalysis.getChildByTagName("nash")[0]);
-			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));            	
-			Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[0]));            	
-			fNashProduct = lBid;
+			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));
+			try {
+				Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[0]));            	
+				fNashProduct = lBid;
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		}		
 		//read Kalai-Smorodinsky
 		if(lXMLAnalysis.getChildByTagName("kalai_smorodinsky").length>0) {										   
 			SimpleElement lXMLPareto = (SimpleElement)(lXMLAnalysis.getChildByTagName("kalai_smorodinsky")[0]);
-			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));            	
-			Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[0]));            	
-			fKalaiSmorodinsky = lBid;
+			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));  
+			try {
+				Bid lBid = new Bid(getDomain(), (SimpleElement)(lXMLParetoBids[0]));            	
+				fKalaiSmorodinsky = lBid;
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
 		}		
 
 
