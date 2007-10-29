@@ -70,8 +70,12 @@ public class Domain {
         return fObjectivesRoot.getChildAt(index);
     }
     
-    public final Objective getObjective(int index){
-    	return fObjectivesRoot.getObjective(index); 
+     /**
+      * @param ID (number) of the objective
+      * @return the objective with given ID
+      */
+    public final Objective getObjective(int ID){
+    	return fObjectivesRoot.getObjective(ID); 
     }
     
     public final Objective getObjectivesRoot(){

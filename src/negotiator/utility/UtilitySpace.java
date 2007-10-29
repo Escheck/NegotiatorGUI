@@ -72,6 +72,22 @@ public final class UtilitySpace {
         }
     }
     
+    // clone a utility space
+    public UtilitySpace(UtilitySpace us)
+    {
+    	domain=us.getDomain();
+    	fEvaluators = new HashMap<Objective, Evaluator>();
+
+    	// and clone the evaluators
+    	for (Objective obj:domain.getObjectives())
+    	{
+    		Evaluator e=us.getEvaluator(obj.getNumber());
+    		if (e!=null) fEvaluators.put(obj, e.clone());
+    		// else incomplete. But that is allowed I think.
+    		// especially, objectives (the non-Issues) won't generally have an evlauator.
+    	}
+    }
+    
     /**
      * create a default evaluator for a given Objective.
      * This function is placed here, and not in Objective, because

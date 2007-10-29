@@ -64,4 +64,6 @@ public interface Evaluator {
 	 * @return the cost
 	 */
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception;
+	
+	public Evaluator clone();
 }

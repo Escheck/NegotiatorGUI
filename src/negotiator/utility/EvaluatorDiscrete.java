@@ -162,8 +162,9 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param evaluation The evaluation of the value
 	 * @param cost The cost.
 	 */
+	/*
 	public void set_Value(String name, double evaluation, double cost){
-	/*	Double valEval = fEval.get(new ValueDiscrete(name));
+		Double valEval = fEval.get(new ValueDiscrete(name));
 		if(valEval == 0)		{
 		Value val = new ValueDiscrete(name);
 		}
@@ -172,8 +173,8 @@ public class EvaluatorDiscrete implements Evaluator {
 			maxCost = cost;
 			fCost.put((ValueDiscrete)val, new Double(cost));
 		}
-	*/	
 	}
+	*/
 	
 	/**
 	 * Sets the evaluation for Value <code>val</code>. If this value doesn't exist yet in this Evaluator,
@@ -321,4 +322,21 @@ public class EvaluatorDiscrete implements Evaluator {
 		return lValue;
 
 	}
+	
+	public EvaluatorDiscrete clone()
+	{
+		EvaluatorDiscrete ed=new EvaluatorDiscrete();
+		ed.setWeight(fweight);
+		ed.setMaxCost(getMaxCost());
+		try{
+			for (ValueDiscrete val:fEval.keySet())
+				ed.setEvaluation(val, fEval.get(val));
+			for (ValueDiscrete val:fCost.keySet())
+				ed.setCost(val, fCost.get(val));
+		}
+		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
+
+		return ed;
+	}
+	
 }
