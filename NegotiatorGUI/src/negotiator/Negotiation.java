@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import negotiator.actions.*;
 import java.util.Date;
 import negotiator.agents.Agent;
+import negotiator.utility.UtilitySpace;
 
 /**
  *
@@ -74,10 +75,13 @@ public class Negotiation implements Runnable {
         ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();
         Date startTime=new Date();
         try {
-        	
-            agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),nt.getAgentAUtilitySpace());
+        	 // note, we clone the utility spaces for security reasons, so that the agent
+        	 // can not damage them.
+            agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),
+            		new UtilitySpace(nt.getAgentAUtilitySpace()));
             //agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
-            agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),nt.getAgentBUtilitySpace());
+            agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),
+            		new UtilitySpace(nt.getAgentBUtilitySpace()));
             //agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;
