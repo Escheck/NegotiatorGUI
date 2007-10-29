@@ -754,15 +754,15 @@ public final class UtilitySpace {
     				//fill this issue with the relevant weights to items.
     				Object[] items = issueL.getChildByTagName("item");
     				for(int itemInd = 0; itemInd < items.length; itemInd++){
-    					SimpleElement tmpItem = (SimpleElement) items[itemInd];
+    					//SimpleElement tmpItem = (SimpleElement) items[itemInd];
     					IssueDiscrete theIssue = (IssueDiscrete)domain.getObjective(childIndex);
     				
     					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
     					Integer eval = dev.getValue(theIssue.getValue(itemInd));
-    					tmpItem.setAttribute("evaluation", ""+eval);
+    					((SimpleElement)items[itemInd]).setAttribute("evaluation", ""+eval);
     					
     					Double cost = dev.getCost(theIssue.getValue(itemInd));
-    					if (cost!=null) tmpItem.setAttribute("cost", ""+cost);
+    					if (cost!=null) ((SimpleElement)items[itemInd]).setAttribute("cost", ""+cost);
 
     					
     					//String desc = dev.getDesc(theIssue.getValue(itemInd));
