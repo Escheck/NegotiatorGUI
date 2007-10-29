@@ -29,31 +29,17 @@ import java.util.Date;
 /**
  *
  * @author Dmytro Tykhonov
+ * @author W.Pasman
  * 
  */
 
-//TODO: Maybe move this class to negotiator.agents package?
 public class Agent {
     private String          fName=null;
-    //protected	Domain			domain; // domain is inside the utility space.
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-    //private NegotiationTemplate fNT; Wouter: agents should not get access to that
     
-    //TODO: Check if we realy need this declaration!
-    // Some declarations for 'ease of use' when defining agents.
-    public static final ISSUETYPE discrete = ISSUETYPE.DISCRETE;
-    public static final ISSUETYPE integer = ISSUETYPE.DISCRETE;
-    public static final ISSUETYPE real = ISSUETYPE.REAL;
-
     
-    /** Creates a new instance of Agent */
-    /* WARNING!!! Wouter: utilitySpace is null for now.
-     * Therefore we do not yet create any windows.
-     * Also, note that constructor of Agent has to have an empty parameter list,
-     * because there is no class loader with parameterized constructor
-     */
     public Agent() {
     }
     

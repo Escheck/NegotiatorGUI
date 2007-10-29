@@ -9,38 +9,45 @@
 
 package negotiator.agents;
 
-import java.util.Date;
-
 import javax.swing.JOptionPane;
 
 import negotiator.Bid;
-import negotiator.NegotiationTemplate;
+import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
-import negotiator.Domain;
+import java.util.Date;
 
 /**
  *
- * @author dmytro
+ * @author W.Pasman, modified version of Dmytro's UIAgent
  */
 public class UIAgent extends Agent{
     private Action opponentAction=null;
-    private EnterBidDialog ui=null;
+    private EnterBidDialog2 ui=null;
     private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
     
-    public UIAgent() {
-        ui = new EnterBidDialog(this, null, true);
-    }
     
-   public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-    		Integer totalTimeP, UtilitySpace us) {
-        super.init (sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
+    /**
+     * One agent will be kept alive over multiple sessions.
+     * Init will be called at the start of each nego session.
+     */
+ 
+    public void init(int sessionNumber, int sessionTotalNumber, Date startT, Integer totalTimeP, UtilitySpace us)
+    {
+    	System.out.println("init UIAgent2");
+        super.init (sessionNumber, sessionTotalNumber, startT,totalTimeP, us);
+        System.out.println("closing old dialog of ");
+        if (ui!=null) { ui.dispose(); ui=null; }
+        System.out.println("old  dialog closed. Trying to open new dialog. ");
+        try { ui = new EnterBidDialog2(this, null, true,us); }
+        catch (Exception e) {System.out.println("Problem in UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
+        System.out.println("finished init of UIAgent2");
     }
-    
+
     public void ReceiveMessage(Action opponentAction) {
         this.opponentAction = opponentAction;
         if(opponentAction instanceof Accept)
@@ -53,12 +60,13 @@ public class UIAgent extends Agent{
     }
     
     public Action chooseAction() {
-        Action action = ui.askUserForAction(opponentAction, myPreviousBid, utilitySpace.getDomain());
+        Action action = ui.askUserForAction(opponentAction, myPreviousBid);
         if((action != null)&&(action instanceof Offer)) myPreviousBid=((Offer)action).getBid(); 
         return action;
     }
 
-    public boolean isUIAgent() { return true; }
 
   
+    public boolean isUIAgent() { return true; }
+
 }

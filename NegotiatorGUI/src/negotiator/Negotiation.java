@@ -91,90 +91,54 @@ public class Negotiation implements Runnable {
                    currentAgent.ReceiveMessage(action);
                    //get next action of the agent that has its turn now
                    action = currentAgent.chooseAction();
-                   if(action==null) {
-                       Main.logger.add("Agent " + currentAgent.getName() + " returned null: Protocol error");
-                       if (lastBid==null) agentAUtility=agentBUtility=1.;
-                       else {
-                    	   agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
-                    	   agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
-                       }
-                       if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
-                       no = new NegotiationOutcome(sessionNumber, 
-                                  agentA.getClass().getCanonicalName(),
-                                  agentB.getClass().getCanonicalName(),
-                                  String.valueOf(agentAUtility),
-                                  String.valueOf(agentBUtility),"Null action by "+currentAgent.getName());
+                   if(action instanceof EndNegotiation) 
+                   {
                        stopNegotiation=true;
-                   } else
-                   
-                   if (action instanceof Offer) {
+                	   no = new NegotiationOutcome(sessionNumber, 
+                               agentA.getClass().getCanonicalName(),
+                               agentB.getClass().getCanonicalName(),
+                               String.valueOf(0),
+                               String.valueOf(0),
+                               "Agent "+currentAgent.getName()+" ended the negotiation without agreement");   
+                       checkAgentActivity(currentAgent) ;
+                   }
+                   else if (action instanceof Offer) {
                        Main.logger.add("Agent " + currentAgent.getName() + " sent the following offer:");                       
                        lastBid  = ((Offer)action).getBid();
                        Main.logger.add(action.toString());
                        Main.logger.add("Utility of " + agentA.getName() +": " + agentA.utilitySpace.getUtility(lastBid));
                        Main.logger.add("Utility of " + agentB.getName() +": " + agentB.utilitySpace.getUtility(lastBid));
                        checkAgentActivity(currentAgent) ;
-                   } else                   
-                   if ((action instanceof Accept)||
-                       (action instanceof EndNegotiation)) {
+                   }                   
+                   else if (action instanceof Accept) {
                        stopNegotiation = true;
-                       
-                       if (action instanceof Accept) {
-                           Accept accept = (Accept)action;
-                           if(lastBid!=null) {
-                                Main.logger.add("Agents accepted the following bid:");
-                                Main.logger.add(((Accept)action).toString());
-                                agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
-                                agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
-                                no = new NegotiationOutcome(sessionNumber, 
-                                           agentA.getClass().getCanonicalName(),
-                                           agentB.getClass().getCanonicalName(),
-                                           String.valueOf(agentAUtility),
-                                           String.valueOf(agentBUtility),null);
-                           } else { // accept.getBid==null
-                                no = new NegotiationOutcome(sessionNumber, 
-                                           agentA.getClass().getCanonicalName(),
-                                           agentB.getClass().getCanonicalName(),
-                                                            String.valueOf(0),
-                                                            String.valueOf(0),
-                                   "Accept was done by "+currentAgent.getName()+" but opponent did not make a last bid.");
-                                checkAgentActivity(currentAgent) ;
-                           }
-                       } else { // action instanceof endnegotiation
-                            no = new NegotiationOutcome(sessionNumber, 
-                                                       agentA.getClass().getCanonicalName(),
-                                                       agentB.getClass().getCanonicalName(),
-                                                       String.valueOf(0),
-                                                       String.valueOf(0),
-                                      "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
-                                
-                            
-                       }
-                       
-                       // Wouter: it seems that the following is not at the right place here.
-                       // it may happen that timeout occurs right here, causing a succesful nego outcome
-                       // but no update of lAgentXBids
-                       if(currentAgent.equals(agentA)) {
-                    	   if(action instanceof Offer) {
-                    		   lAgentABids.add(((Offer)action).getBid());
-                    	   }                    	   
-                    	   currentAgent = agentB;
-                       }
-                       else{
-                    	   if(action instanceof Offer) {
-                    		   lAgentBBids.add(((Offer)action).getBid());
-                    	   }
-                    	   currentAgent = agentA;
-                       }
-                       currentAgent.ReceiveMessage(action);
+                       Accept accept = (Accept)action;
+                       if(lastBid==null)
+                    	   throw new Exception("Accept was done by "+
+                    			   currentAgent.getName()+" but no bid was done yet.");
+                        Main.logger.add("Agents accepted the following bid:");
+                        Main.logger.add(((Accept)action).toString());
+                        agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                        agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                        no = new NegotiationOutcome(sessionNumber, 
+                                   agentA.getClass().getCanonicalName(),
+                                   agentB.getClass().getCanonicalName(),
+                                   String.valueOf(agentAUtility),
+                                   String.valueOf(agentBUtility),null);
+                        checkAgentActivity(currentAgent) ;
+                        otherAgent(currentAgent).ReceiveMessage(action);
+                      
+                   } else {  // action instanceof unknown action, e.g. null.
+                	   throw new Exception("unknown action by agent "+currentAgent.getName());
                    }
+                       
                  
-                   //save last results
+                   //save last results and swap to other agent
                    if(currentAgent.equals(agentA)) {
                 	   if(action instanceof Offer) {
                 		   lAgentABids.add(((Offer)action).getBid());
                 	   } 
-                	   currentAgent = agentB; //Wouter: seems rather useless, we finished the nego???
+                	   currentAgent = agentB; 
                    }
                    else{
                 	   if(action instanceof Offer) {
@@ -185,27 +149,37 @@ public class Negotiation implements Runnable {
 
                  
                 } catch(Exception e) {
-                    if(e instanceof InterruptedException) {
-                        no = new NegotiationOutcome(sessionNumber, 
-                                                   agentA.getClass().getCanonicalName(),
-                                                   agentB.getClass().getCanonicalName(),
-                                                    String.valueOf(0),
-                                                    String.valueOf(0),
-                                                    "Negotiation was interrupted!");
-                    }
-                	System.out.println("Nego was interrupted in deep level");
-                	e.printStackTrace();                    
-                    System.exit(-1);
-                    
+                   stopNegotiation=true;
+             	   Main.logger.add("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
+                   if (lastBid==null) agentAUtility=agentBUtility=1.;
+                   else {
+                	   agentAUtility=agentBUtility=0.;
+                	   // handle both getUtility calls apart, if one crashes
+                	   // the other should not be affected.
+                	   try {
+                		   agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                	   }  catch (Exception e1) {}
+                	   try {
+                    	   agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                	   }  catch (Exception e1) {}
+                   }
+                   if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
+                   no = new NegotiationOutcome(sessionNumber, 
+                      agentA.getClass().getCanonicalName(),
+                      agentB.getClass().getCanonicalName(),
+                      String.valueOf(agentAUtility),
+                      String.valueOf(agentBUtility),
+                      "Agent " + currentAgent.getName() +":"+e.getMessage());
                 }
             }
-            synchronized (Main.nm) {  Main.nm.notify();  }
             
+            // nego finished by Accept or illegal action.
+            synchronized (Main.nm) {  Main.nm.notify();  }            
         } catch (Error e) {
             if(e instanceof ThreadDeath) {
             	System.out.println("Nego was timed out");
                 // Main.logger.add("Negotiation was timed out. Both parties get util=0");
-            }     
+           }     
              
         }
         

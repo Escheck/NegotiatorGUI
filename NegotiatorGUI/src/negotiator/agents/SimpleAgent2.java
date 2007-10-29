@@ -9,10 +9,7 @@
 
 package negotiator.agents;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Vector;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,15 +17,16 @@ import java.util.Random;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
-// import negotiator.exceptions.*;
 import negotiator.utility.UtilitySpace;
+
 
 /**
  *
  * @author W.Pasman
  * 
  */
-public class SimpleAgent2 extends Agent{
+public class SimpleAgent2 extends Agent
+{
     private Action actionOfPartner=null;
     private static final double MINIMUM_BID_UTILITY = 0.5;
     
