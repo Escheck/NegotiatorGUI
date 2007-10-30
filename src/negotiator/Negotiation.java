@@ -178,7 +178,43 @@ public class Negotiation implements Runnable {
             }
             
             // nego finished by Accept or illegal action.
-            synchronized (Main.nm) {  Main.nm.notify();  }            
+            synchronized (Main.nm) {  Main.nm.notify();  }
+            /*
+             * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
+             * Maybe even catching the ThreadDeath error is wrong. 
+             * If we do more processing, we risk getting a ThreadDeath exception
+             * causing Eclipse to pop up a dialog bringing us into the debugger.
+             * 
+            //Wouter: old code to plot a graph. Currently disabled. 
+            // Probably will not work either, remember that the Negotiator is killed as soon
+            // as this run function exits.
+             */
+            double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
+            double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
+            
+            try
+            {
+    	        for(int i=0;i< lAgentABids.size();i++) {
+    	        	lAgentAUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentABids.get(i));
+    	        	lAgentAUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentABids.get(i));
+    	        }
+    	        for(int i=0;i< lAgentBBids.size();i++) {
+    	        	lAgentBUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentBBids.get(i));
+    	        	lAgentBUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentBBids.get(i));
+    	        }
+    	        
+    	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
+    	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
+    	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
+    	        Main.fChart.show();
+    	        
+    	        // Wouter: logger is causing crashes. Removed.......
+    	        //synchronized(Main.logger) { Main.logger.add("Session is finished"); }
+            } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
+            
+            
+              
+            
         } catch (Error e) {
             if(e instanceof ThreadDeath) {
             	System.out.println("Nego was timed out");
@@ -188,38 +224,6 @@ public class Negotiation implements Runnable {
         }
         
         
-        /*
-         * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
-         * Maybe even catching the ThreadDeath error is wrong. 
-         * If we do more processing, we risk getting a ThreadDeath exception
-         * causing Eclipse to pop up a dialog bringing us into the debugger.
-         * 
-        //Wouter: old code to plot a graph. Currently disabled. 
-        // Probably will not work either, remember that the Negotiator is killed as soon
-        // as this run function exits.
-        double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
-        double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
-        
-        try
-        {
-	        for(int i=0;i< lAgentABids.size();i++) {
-	        	lAgentAUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentABids.get(i));
-	        	lAgentAUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentABids.get(i));
-	        }
-	        for(int i=0;i< lAgentBBids.size();i++) {
-	        	lAgentBUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentBBids.get(i));
-	        	lAgentBUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentBBids.get(i));
-	        }
-	        
-	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
-	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
-	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-	        Main.fChart.show();
-	        
-	        // Wouter: logger is causing crashes. Removed.......
-	        //synchronized(Main.logger) { Main.logger.add("Session is finished"); }
-        } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
-        */
         return;
     }
     

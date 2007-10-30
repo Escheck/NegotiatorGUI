@@ -197,29 +197,43 @@ public final class Bid {
 	public SimpleElement toXML() {
 
 		SimpleElement lXMLBid = new SimpleElement("bid");
-		/*
-		 * TODO hdv rewrite this to use the hashmap. for(int i=0;i<fValues.length;i++) {
-		 * SimpleElement lXMLIssue = new SimpleElement("issue");
-		 * lXMLIssue.setAttribute("type",
-		 * Issue.convertToString(fDomain.getIssue(i).getType()));
-		 * lXMLIssue.setAttribute("index", String.valueOf(i+1));
-		 * lXMLBid.addChildElement(lXMLIssue); SimpleElement lXMLItem=null;
-		 * 
-		 * switch(fValues[i].getType()) { case DISCRETE: ValueDiscrete lDiscVal =
-		 * (ValueDiscrete)(fValues[i]); lXMLItem = new SimpleElement("item");
-		 * lXMLItem.setAttribute("value", lDiscVal.getValue()); break; //TODO:
-		 * COMPLETE DT implement toXML method in Bid for the rest of the
-		 * issue/value types case INTEGER: ValueInteger lIntVal =
-		 * (ValueInteger)(fValues[i]); lXMLItem = new SimpleElement("value");
-		 * lXMLItem.setText(String.valueOf(lIntVal.getValue())); break; case
-		 * REAL: ValueReal lRealVal = (ValueReal)(fValues[i]); lXMLItem = new
-		 * SimpleElement("value");
-		 * lXMLItem.setText(String.valueOf(lRealVal.getValue())); break; // case
-		 * PRICE: // ValueReal lPriceVal = (ValueReal)(fValues[i]); // lXMLValue =
-		 * new SimpleElement("value"); //
-		 * lXMLValue.setText(String.valueOf(lPriceVal.getValue())); // break; }
-		 * lXMLIssue.addChildElement(lXMLItem); }
-		 */return lXMLBid;
+
+		// TODO hdv rewrite this to use the hashmap.
+
+		for(Issue lIssue : fDomain.getIssues()) {
+
+			Value lVal = fValues.get(lIssue.getNumber());
+			SimpleElement lXMLIssue = new SimpleElement("issue");
+			lXMLIssue.setAttribute("type",
+					Issue.convertToString(lIssue.getType()));
+			lXMLIssue.setAttribute("index", String.valueOf(lIssue.getNumber()));
+			lXMLBid.addChildElement(lXMLIssue); SimpleElement lXMLItem=null;		 
+			switch(lVal.getType()) { 
+			case DISCRETE: 
+				ValueDiscrete lDiscVal = (ValueDiscrete)(lVal); 
+				lXMLItem = new SimpleElement("item");		  
+				lXMLItem.setAttribute("value", lDiscVal.getValue()); 
+				break; 
+				//TODO:/COMPLETE DT implement toXML method in Bid for the rest of theissue/value types 
+			case INTEGER: 
+				ValueInteger lIntVal =(ValueInteger)(lVal); 
+				lXMLItem = new SimpleElement("value");
+				lXMLItem.setText(String.valueOf(lIntVal.getValue())); 
+				break; 
+			case REAL: 
+				ValueReal lRealVal = (ValueReal)(lVal); 
+				lXMLItem = new  SimpleElement("value");
+				lXMLItem.setText(String.valueOf(lRealVal.getValue())); 
+				break; 
+				// case PRICE: 
+				// ValueReal lPriceVal = (ValueReal)(fValues[i]); 
+				// lXMLValue =  new SimpleElement("value"); 
+				// lXMLValue.setText(String.valueOf(lPriceVal.getValue())); 
+				// break; 
+			}//switch
+			lXMLIssue.addChildElement(lXMLItem); 
+		}
+		return lXMLBid;
 	}
 	// TODO can we save indexes to Strings?
 	/*

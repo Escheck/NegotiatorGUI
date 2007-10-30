@@ -49,7 +49,7 @@ public class Chart {
 		props.put("plot/coordinateSystem/yAxis/minimum", "0");
 		props.put("plot/coordinateSystem/yAxis/maximum", "1");
 		props.put("plot/coordinateSystem/yAxis/ticLabelFormat", "%.1f%");
-		props.put("plot/curveFactory/definitions" , "def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
+		props.put("plot/curveFactory/definitions" , "def1 def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
 		props.put("plot/curveFactory/def1/initialHintForNextPoint/className",
 		"jcckit.plot.ShapeAttributesHint");
 		props.put("plot/curveFactory/def1/initialHintForNextPoint/initialAttributes/fillColor", 
