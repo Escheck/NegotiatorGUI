@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import negotiator.actions.*;
 import java.util.Date;
-import negotiator.agents.Agent;
 import negotiator.utility.UtilitySpace;
 
 /**

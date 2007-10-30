@@ -4,7 +4,7 @@
  * Created on November 16, 2006, 10:18 AM
  */
 
-package negotiator.gui;
+package agents;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -32,12 +32,12 @@ import negotiator.issue.*;
  *
  * @author  dmytro
  */
-public class EnterBidDialog extends javax.swing.JDialog {
+public class EnterBidDialogOld extends javax.swing.JDialog {
     private Action selectedAction;
     private Agent agent;
     private Bid opponentBid ;
     /** Creates new form EnterBidDialog */
-    public EnterBidDialog(Agent agent, java.awt.Frame parent, boolean modal) {
+    public EnterBidDialogOld(Agent agent, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.agent = agent;
         initComponents();

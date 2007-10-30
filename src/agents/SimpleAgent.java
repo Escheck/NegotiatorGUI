@@ -1,13 +1,5 @@
-/*
- * MyAgent.java
- *
- * Created on November 6, 2006, 9:55 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
+package agents;
 
-package negotiator.agents;
 
 import java.util.Date;
 import java.util.HashMap;

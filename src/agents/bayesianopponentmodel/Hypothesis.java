@@ -1,4 +1,4 @@
-package negotiator.agents.BayesianOpponentModel;
+package agents.bayesianopponentmodel;
 
 public class Hypothesis {
 	private double fProbability;

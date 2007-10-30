@@ -1,8 +1,10 @@
-package negotiator.agents;
+package agents;
 
 import java.util.Date;
 
-import negotiator.agents.Agent;
+import agents.bayesianopponentmodel.BayesianOpponentModel;
+
+import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.NegotiationTemplate;
