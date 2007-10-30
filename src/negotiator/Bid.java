@@ -82,9 +82,9 @@ public final class Bid {
 		return v;
 	}
 
-	public void setValue(int issueIdex, Value pValue) {
-		if (fValues.get(issueIdex).getType() == pValue.getType()) {
-			fValues.put(issueIdex, pValue);
+	public void setValue(int issueId, Value pValue) {
+		if (fValues.get(issueId).getType() == pValue.getType()) {
+			fValues.put(issueId, pValue);
 		} /*
 			 * TODO Throw an excpetion. else throw new
 			 * BidDoesNotExistInDomainException();
