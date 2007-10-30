@@ -11,7 +11,7 @@
 	<property name="tmp" location="tmp"/>
 	<property name="dep" location="dep"/>
 	<target name="cleanup">
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${tmp}"/>
 		</delete>				
 	</target>
@@ -28,7 +28,7 @@
 		<unzip src="${dep}/jcckit.jar" dest="${tmp}"/> 		
 	</target>		
 	<target name ="makeNegoEditorJar" description="Create a jar for the Negotiation Editor" depends="cleanup, unpackJTreeTable">
-	     <delete file="${dist}/negoeditor.jar"/>
+	     <delete file="${dist}/negoeditor.jar" quiet="true"/>
          <jar destfile="${dist}/negoeditor.jar"  >
 			<fileset dir="${build}" excludes="negotiator/actions"/>
 			<fileset dir="${tmp}"/>
@@ -40,7 +40,7 @@
 		<ant target="cleanup"/>
     </target>
 	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit">
-   		<delete file="${dist}/negosimulator.jar"/>
+   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}"/>
 			<fileset dir="${tmp}"/>
