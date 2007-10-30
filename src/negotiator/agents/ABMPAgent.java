@@ -88,7 +88,7 @@ public class ABMPAgent extends Agent {
 		return new Offer(this, getMaxUtilityBid());
 	}
 
-	private Action proposeNextBid(Bid lOppntBid) {
+	private Action proposeNextBid(Bid lOppntBid) throws Exception{
 		Bid lBid = null;
 		double lMyUtility, lOppntUtility, lTargetUtility;
 		// Both parties have made an initial bid. Compute associated utilities from my point of view.

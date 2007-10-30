@@ -38,8 +38,7 @@ public class Chart {
 
 	private GraphicsPlotCanvas createPlotCanvas() {
 		Properties props = new Properties();
-		ConfigParameters config
-		= new ConfigParameters(new PropertiesBasedConfigData(props));
+		ConfigParameters config	= new ConfigParameters(new PropertiesBasedConfigData(props));
 		props.put("plot/legendVisible", "false");
 		props.put("plot/coordinateSystem/xAxis/minimum", "0");
 		props.put("plot/coordinateSystem/xAxis/maximum", "1");
@@ -50,16 +49,15 @@ public class Chart {
 		props.put("plot/coordinateSystem/yAxis/maximum", "1");
 		props.put("plot/coordinateSystem/yAxis/ticLabelFormat", "%.1f%");
 		props.put("plot/curveFactory/definitions" , "def1 def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
-		props.put("plot/curveFactory/def1/initialHintForNextPoint/className",
-		"jcckit.plot.ShapeAttributesHint");
-		props.put("plot/curveFactory/def1/initialHintForNextPoint/initialAttributes/fillColor", 
-		"0x50a");
+		props.put("plot/curveFactory/def1/initialHintForNextPoint/className", "jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def1/initialHintForNextPoint/initialAttributes/fillColor",	"0x50a");
 //		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
 //		"0.0 0.0 0.018");
+		
+		//the bids		
 		props.put("plot/curveFactory/def1/withLine", "false");
-		props.put("plot/curveFactory/def1/symbolFactory/className", 
-		"jcckit.plot.CircleSymbolFactory");
-		props.put("plot/curveFactory/def1/symbolFactory/size", "0.007");
+		props.put("plot/curveFactory/def1/symbolFactory/className", "jcckit.plot.CircleSymbolFactory");
+		props.put("plot/curveFactory/def1/symbolFactory/size", "0.005");
 		
 		//Pareto
 		props.put("plot/curveFactory/def2/", "defaultDefinition/");
@@ -69,31 +67,24 @@ public class Chart {
 		props.put("plot/curveFactory/def2/symbolFactory/attributes/fillColor", "0x8000");
 		props.put("plot/curveFactory/def2/symbolFactory/attributes/lineColor" , "");
 		
-		//Nash
-		
-		props.put("plot/curveFactory/def3/initialHintForNextPoint/className",
-		"jcckit.plot.ShapeAttributesHint");
-		props.put("plot/curveFactory/def3/initialHintForNextPoint/initialAttributes/fillColor", 
-		"0x00FF00");
+		//Nash		
+		props.put("plot/curveFactory/def3/initialHintForNextPoint/className", "jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def3/initialHintForNextPoint/initialAttributes/fillColor",	"0x00FF00");
 //		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
 //		"0.0 0.0 0.018");
 		props.put("plot/curveFactory/def3/withLine", "false");
-		props.put("plot/curveFactory/def3/symbolFactory/className", 
-		"jcckit.plot.SquareSymbolFactory");
-		
+		props.put("plot/curveFactory/def3/symbolFactory/className", "jcckit.plot.SquareSymbolFactory");
 		props.put("plot/curveFactory/def3/symbolFactory/size", "0.007");
+		
 		//Kalai
-		props.put("plot/curveFactory/def4/initialHintForNextPoint/className",
-		"jcckit.plot.ShapeAttributesHint");
-		props.put("plot/curveFactory/def4/initialHintForNextPoint/initialAttributes/fillColor", 
-		"0xFF0000");
+		props.put("plot/curveFactory/def4/initialHintForNextPoint/className","jcckit.plot.ShapeAttributesHint");
+		props.put("plot/curveFactory/def4/initialHintForNextPoint/initialAttributes/fillColor",	"0xFF0000");
 //		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
 //		"0.0 0.0 0.018");
 		props.put("plot/curveFactory/def4/withLine", "false");
-		props.put("plot/curveFactory/def4/symbolFactory/className", 
-		"jcckit.plot.SquareSymbolFactory");
-		
+		props.put("plot/curveFactory/def4/symbolFactory/className","jcckit.plot.SquareSymbolFactory");		
 		props.put("plot/curveFactory/def4/symbolFactory/size", "0.007");
+		
 		//Negotiation paths
 		props.put("plot/curveFactory/def5/", "defaultDefinition/");
 		props.put("plot/curveFactory/def6/", "defaultDefinition/");		  
