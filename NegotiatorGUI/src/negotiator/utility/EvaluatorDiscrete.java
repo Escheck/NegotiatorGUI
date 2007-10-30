@@ -31,7 +31,9 @@ public class EvaluatorDiscrete implements Evaluator {
 		fweight = 0;
 	}
 
-	// Class methods
+	/**
+	 * @returns the weight for this evaluator, a value between 0 and 1.
+	 */	
 	public double getWeight(){
 		return fweight;
 	}
@@ -76,7 +78,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	/**
 	 * @author W.Pasman
-	 * @return the largest alternative available
+	 * @return the largest evaluation value available
 	 * @throws exception if there are no alternatives.
 	 */
 	public Integer getEvalMax() throws Exception
@@ -101,10 +103,10 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * The function evaluates "bid[idnumber]" as a discrete evaluator.
 	 * BUT if bid[idnumber] is not a discrete evaluator in the first place, very weird things may happen.
 	 */
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception
+	public Double getEvaluation(UtilitySpace uspace, Bid bid, int ID) throws Exception
 	{
 		//Added by Dmytro on 09/05/2007
-		return normalize(fEval.get(((ValueDiscrete)bid.getValue(index))));
+		return normalize(fEval.get(((ValueDiscrete)bid.getValue(ID))));
 	}
 	
 	public Double getEvaluation(ValueDiscrete altP) throws Exception 
@@ -293,6 +295,9 @@ public class EvaluatorDiscrete implements Evaluator {
 		this.fEval.put(pValue, pEval);
 	}
 	
+	/**
+	 * @return value that has maximum utility
+	 */
 	public Value getMaxValue() {
 		  Iterator it = fEval.entrySet().iterator();
 		  Double lTmp = Double.NEGATIVE_INFINITY;

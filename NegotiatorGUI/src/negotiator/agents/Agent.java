@@ -51,10 +51,19 @@ public class Agent {
         return;
     }
     
+    /**
+     * informs you which action the opponent did
+     * @param opponentAction
+     */
     public void ReceiveMessage(Action opponentAction) {
         return;
     }
     
+    /**
+     * this function is called after ReceiveMessage,
+     * with an Offer-action.
+     * @return (should return) the bid-action the agent wants to make.
+     */
     public Action chooseAction() {
         return null;
     }

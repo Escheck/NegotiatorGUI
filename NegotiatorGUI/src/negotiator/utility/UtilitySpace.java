@@ -72,7 +72,7 @@ public final class UtilitySpace {
         }
     }
     
-    // clone a utility space
+    /** @return a clone of another utility space */
     public UtilitySpace(UtilitySpace us)
     {
     	domain=us.getDomain();
@@ -133,6 +133,7 @@ public final class UtilitySpace {
     	
     	Enumeration<Objective> children = currentRoot.children();
     	
+    	// Wouter: there is nothing recursive here. This function seems broken
     	while(children.hasMoreElements() && normalised){
     		
     		Objective tmpObj = children.nextElement();
@@ -143,12 +144,12 @@ public final class UtilitySpace {
     	return (normalised && lSum==1);
     }
     
+    /**Wouter: I think this should not be used anymore*/
     public final int getNrOfEvaluators() {
     	return fEvaluators.size();
     }
     
     /**
-     * Returns an evaluator for an Objective or Issue
      * @param index The IDnumber of the Objective or Issue
      * @return An Evaluator for the Objective or Issue.
      */
@@ -228,7 +229,7 @@ public final class UtilitySpace {
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     	ISSUETYPE vtype;
     	Value tmpval = bid.getValue(pIssueIndex);
-    	assert (tmpval!=null);
+    	assert (tmpval!=null); //Wouter: I dont think this does anything.
     	vtype = tmpval.getType();
     	
   /* hdevos: used to be this: 	
@@ -458,23 +459,23 @@ public final class UtilitySpace {
 
 	/**
 	 * 
-	 * @param issuesIndex The Issue or Objective to get the weight from
+	 * @param issueID The Issue or Objective to get the weight from
 	 * @return The weight, or -1 if the objective doesn't exist.
 	 */
-	public double getWeight(int issuesIndex) {
+	public double getWeight(int issueID) {
         //return weights[issuesIndex]; //old
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
-		Objective ob = domain.getObjective(issuesIndex);
+		Objective ob = domain.getObjective(issueID);
 		if(ob != null){
-			System.out.println("Obje index "+ issuesIndex +" != null");
+			System.out.println("Obje index "+ issueID +" != null");
 			Evaluator ev = fEvaluators.get(ob);
 			if(ev != null){
-				System.out.println("Weight " + issuesIndex + " should be " + ev.getWeight());
+				System.out.println("Weight " + issueID + " should be " + ev.getWeight());
 				return ev.getWeight();
 			}
 		}
 		else
-			System.out.println("Obje "+ issuesIndex +" == null");
+			System.out.println("Obje "+ issueID +" == null");
 		return 0.0; //fallthrough.
     }
     
@@ -763,7 +764,6 @@ public final class UtilitySpace {
     					
     					Double cost = dev.getCost(theIssue.getValue(itemInd));
     					if (cost!=null) ((SimpleElement)items[itemInd]).setAttribute("cost", ""+cost);
-
     					
     					//String desc = dev.getDesc(theIssue.getValue(itemInd));
     					//if (desc!=null) tmpItem.setAttribute("description", ""+desc);

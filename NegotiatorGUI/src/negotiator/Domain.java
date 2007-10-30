@@ -22,20 +22,16 @@ import java.util.ArrayList;
 /**
  *
  * @author Dmytro Tykhonov & Koen Hindriks
+ * Numerous modifications W.Pasman
  * 
  */
 
 public class Domain {
 	
-	// Class fields
-    //private int fNumberOfIssues; // idem: removed.
-    //private Issue fIssues[]; Wouter: What's this?? Dmytro: this is OLD. delete please.
     private Objective fObjectivesRoot;
     
-    // Constructor
     public Domain(){
     	fObjectivesRoot = null;
-    	//fNumberOfIssues=0;
     }
     
     public Domain(SimpleElement root) {
@@ -65,7 +61,9 @@ public class Domain {
     }
     */
     
-    /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG */
+    /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG
+     *  A better name would be getChild 
+     */
     public final Objective getIssue(int index) {
         return fObjectivesRoot.getChildAt(index);
     }
@@ -90,9 +88,8 @@ public class Domain {
     	fObjectivesRoot = ob;
     }
     
-    //added by Herbert
     /**
-     * 
+     * @author Herbert
      * @param pRoot The SimpleElement that contains the root of the Objective tree.
      */
     private final void loadTreeFromXML(SimpleElement pRoot){
@@ -264,7 +261,10 @@ public class Domain {
     	return currentParent;
     }
     
-	// KH 070511: Moved to here since it is generic method that can be made available to all agents.
+	/** KH 070511: Moved to here since it is generic method that can be made available to all agents.
+	 * Wouter: NOTE, it is NOT checked whether the bid has a utility>0.
+	 * @return a random bid
+	 */
 	public final Bid getRandomBid()
 	{
        //Value[] values = new Value[this.getNumberOfIssues()];
