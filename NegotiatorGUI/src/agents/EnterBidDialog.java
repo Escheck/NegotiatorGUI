@@ -4,7 +4,7 @@
  * Created on November 16, 2006, 10:18 AM
  */
 
-package negotiator.agents;
+package agents;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventObject;
 import javax.swing.table.AbstractTableModel;
+
+import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.utility.UtilitySpace;
@@ -39,7 +41,7 @@ import negotiator.utility.EvaluatorDiscrete;
  *
  * @author  W.Pasman
  */
-public class EnterBidDialog2 extends JDialog {
+public class EnterBidDialog extends JDialog {
 	
 	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
@@ -54,7 +56,7 @@ public class EnterBidDialog2 extends JDialog {
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
-    public EnterBidDialog2(Agent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
+    public EnterBidDialog(Agent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
     {
         super(parent, modal);
         this.agent = agent;

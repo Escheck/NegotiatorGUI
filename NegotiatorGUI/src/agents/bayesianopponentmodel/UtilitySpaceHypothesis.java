@@ -1,4 +1,4 @@
-package negotiator.agents.BayesianOpponentModel;
+package agents.bayesianopponentmodel;
 
 import negotiator.Bid;
 import negotiator.Domain;

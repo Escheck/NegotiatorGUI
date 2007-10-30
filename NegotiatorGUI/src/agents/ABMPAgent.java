@@ -5,7 +5,7 @@
  *
  */
 
-package negotiator.agents;
+package agents;
 
 import java.util.Collections;
 import java.util.Comparator;

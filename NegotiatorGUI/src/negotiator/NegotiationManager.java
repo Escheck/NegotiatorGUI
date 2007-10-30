@@ -17,7 +17,6 @@ import java.io.IOException;
 
 import negotiator.gui.SessionFrame;
 import negotiator.xml.SimpleElement;
-import negotiator.agents.Agent;
 /**
  *
  * @author Dmytro Tykhonov

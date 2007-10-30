@@ -8,7 +8,7 @@
  */
 
 package negotiator.actions;
-import negotiator.agents.Agent;
+import negotiator.Agent;
 /**
  *
  * @author Dmytro Tykhonov

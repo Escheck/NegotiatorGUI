@@ -7,12 +7,13 @@
  * and open the template in the editor.
  */
 
-package negotiator.agents;
+package agents;
 
 import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationTemplate;
 import negotiator.actions.Accept;
@@ -28,12 +29,12 @@ import negotiator.Domain;
  */
 public class UIAgentOld extends Agent{
     private Action opponentAction=null;
-    private EnterBidDialog ui=null;
+    private EnterBidDialogOld ui=null;
     private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
     
     public UIAgentOld() {
-        ui = new EnterBidDialog(this, null, true);
+        ui = new EnterBidDialogOld(this, null, true);
     }
     
    public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 

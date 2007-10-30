@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package negotiator.agents;
+package negotiator;
 
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;

@@ -1,6 +1,7 @@
-package negotiator.agents.BayesianOpponentModel;
+package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
+
 
 
 import negotiator.Bid;

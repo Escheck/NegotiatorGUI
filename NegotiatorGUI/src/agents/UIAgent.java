@@ -7,10 +7,11 @@
  * and open the template in the editor.
  */
 
-package negotiator.agents;
+package agents;
 
 import javax.swing.JOptionPane;
 
+import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.actions.Accept;
@@ -26,7 +27,7 @@ import java.util.Date;
  */
 public class UIAgent extends Agent{
     private Action opponentAction=null;
-    private EnterBidDialog2 ui=null;
+    private EnterBidDialog ui=null;
     private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
     
@@ -43,7 +44,7 @@ public class UIAgent extends Agent{
         System.out.println("closing old dialog of ");
         if (ui!=null) { ui.dispose(); ui=null; }
         System.out.println("old  dialog closed. Trying to open new dialog. ");
-        try { ui = new EnterBidDialog2(this, null, true,us); }
+        try { ui = new EnterBidDialog(this, null, true,us); }
         catch (Exception e) {System.out.println("Problem in UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
         System.out.println("finished init of UIAgent2");
     }
