@@ -1,5 +1,9 @@
 package negotiator.analysis;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +18,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.utility.UtilitySpace;
+import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -33,7 +38,8 @@ public class Analysis {
 	private SimpleElement fRoot;  
 	private NegotiationTemplate fNegotiationTemplate;
 	private ArrayList<Bid> fCompleteSpace=null;
-	public Analysis(NegotiationTemplate pTemplate, boolean pPerformCalculations) {
+	private long fHashCode;
+	public Analysis(NegotiationTemplate pTemplate, boolean pPerformCalculations) {		
 		fNegotiationTemplate = pTemplate;
 		fPareto = new ArrayList<Bid>();		
 		if(pPerformCalculations) {
@@ -56,6 +62,34 @@ public class Analysis {
 		fRoot = pRoot;
 		fPareto = new ArrayList<Bid>();
 		loadFromXML(fRoot);
+	}
+	public static Analysis getInstance(NegotiationTemplate pTemplate) {
+		Analysis lAnalysis;
+		//check if we have the analysis in the cache
+		String lCacheFileName = pTemplate.getAgentAUtilitySpaceFileName()+"_" + pTemplate.getAgentAUtilitySpaceFileName()+".xml";
+		if((new File(lCacheFileName)).exists()) {
+			//check if the hash code of the utility space is the same as in the cache
+			SimpleDOMParser parser = new SimpleDOMParser();
+			SimpleElement lRoot =null;
+			try {
+				BufferedReader file = new BufferedReader(new FileReader(new File(lCacheFileName)));
+				lRoot = (new SimpleDOMParser()).parse(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+			lAnalysis = new Analysis(pTemplate, lRoot);			
+			if(lAnalysis.getHashCode()!=getHashCodeFromTemplate(pTemplate))
+				lAnalysis = new Analysis(pTemplate, true);
+		} else { 		
+			lAnalysis = new Analysis(pTemplate, true);
+		}
+		return lAnalysis;
+	}
+	private static long getHashCodeFromTemplate(NegotiationTemplate pTemplate) {
+		long lCode=0
+		pTemplate.getAgentAUtilitySpace().get;
+		return lCode;
 	}
 	public int  getTotalNumberOfBids() {
 		int lTotalNumberofBids=1;
@@ -95,6 +129,7 @@ public class Analysis {
 	}
 	protected void loadFromXML(SimpleElement pXMLAnalysis) {
 		SimpleElement lXMLAnalysis = pXMLAnalysis;
+		fHashCode = Long.valueOf(lXMLAnalysis.getAttribute("hashCode"));
 		//read Paretto
 		if(lXMLAnalysis.getChildByTagName("pareto").length>0) {
 			SimpleElement lXMLPareto = (SimpleElement)(lXMLAnalysis.getChildByTagName("pareto")[0]);
@@ -298,6 +333,9 @@ public class Analysis {
 	}
 	private void sortParetoFrontier() {
 		Collections.sort(fPareto, new BidComparator());
+	}
+	public long getHashCode() {
+		return fHashCode;
 	}
 	protected  class BidComparator implements java.util.Comparator
 	{

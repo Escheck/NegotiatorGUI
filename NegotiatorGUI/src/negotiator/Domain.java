@@ -349,4 +349,28 @@ public class Domain {
 		return issuelist;
 	}
 	
+	/**
+	 * get number of all possible bids. Does not care of constraints. 
+	 * 
+	 * Not finished!!!
+	 * 
+	 * @return long number of all possible bids in the domain. 
+	 */
+	public long getNumberOfPossibleBids() {
+		long lNumberOfPossibleBids = (long)1;
+		ArrayList<Issue> lIssues = getIssues();
+		for(Issue lIssue : lIssues) {
+			switch(lIssue.getType()) {
+			case DISCRETE:
+				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueDiscrete)lIssue).getNumberOfValues();
+				break;
+				//TODO: Finish getNumberOfPossibleBids() for Integer, Real and Price issues
+/*			case INTEGER:
+				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueInteger)lIssue).get;
+				break;
+			}*/
+			}//switch
+		}
+		return lNumberOfPossibleBids;
+	}
 }

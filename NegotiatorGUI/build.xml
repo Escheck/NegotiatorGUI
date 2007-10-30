@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	An Ant script to make distributives for the Negotiator. 
-	Use makeAllJars to build all packages.
-	
+	An Ant script to make distributives for the Negotiator: 
+	- Use makeAllJars to build all packages.
+	- Use makeDistributiveForStudents to build zip package that 
+	  can be distributed to the sutdents of AI course
 --> 
 	
 <project name="Negotiator" default="makeAllJars" basedir=".">
@@ -52,5 +53,24 @@
 		<ant target="cleanup"/>
     </target>
 	<target name ="makeAllJars" description="Creates all jar files" depends="makeNegoEditorJar, makeNegoSimulatorJar"/>
+	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeAllJars">
+		<zip destfile="${dist}/negotiator14Nov.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar"/>
+			<zipfileset dir="${dist}" includes="negoeditor.jar"/>
+			<zipfileset dir="etc/templates/partydomain" prefix="templates/partydomain"/>
+		</zip>
+	</target>
+	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeAllJars">
+		<zip destfile="${dist}/negotiator4Nov.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
+			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
+			<zipfileset dir="etc/templates" includes="inheritance*.*" prefix="negotiator/templates/"/>
+			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
+			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
+			<zipfileset dir="src/negotiator/agents" includes="SimpleAgent.java" prefix="negotiator"/>
+			<zipfileset dir="${build}/negotiator/agents" includes="SimpleAgent.class" prefix="negotiator"/>
+		</zip>
+	</target>
+
 </project> 
 
