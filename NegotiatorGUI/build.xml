@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	An Ant script to make distributives for the Negotiator. 
+	Use makeAllJars to build all packages.
+	
+--> 
+	
+<project name="Negotiator" default="makeAllJars" basedir=".">
+	<property name="dist" location="dist"/> 
+	<property name="build" location="bin"/>
+	<property name="tmp" location="tmp"/>
+	<property name="dep" location="dep"/>
+	<target name="cleanup">
+		<delete includeemptydirs="true">
+			<fileset dir="${tmp}"/>
+		</delete>				
+	</target>
+	<target name="makeTempDir">
+		<mkdir dir="${tmp}"/>
+	</target>
+	<target name="unpackJTreeTable" depends="makeTempDir">		
+		<unzip src="${dep}/jtreetable.jar" dest="${tmp}"/>
+	</target>
+	<target name="unpackAbsoluteLayout" depends="makeTempDir">
+		<unzip src="${dep}/absolutelayout.jar" dest="${tmp}"/>
+	</target>
+	<target name="unpackJCCKit" depends="makeTempDir">
+		<unzip src="${dep}/jcckit.jar" dest="${tmp}"/> 		
+	</target>		
+	<target name ="makeNegoEditorJar" description="Create a jar for the Negotiation Editor" depends="cleanup, unpackJTreeTable">
+	     <delete file="${dist}/negoeditor.jar"/>
+         <jar destfile="${dist}/negoeditor.jar"  >
+			<fileset dir="${build}" excludes="negotiator/actions"/>
+			<fileset dir="${tmp}"/>
+	    	<manifest>
+      			<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="negotiator/MainEditor"/>
+    		</manifest>		
+		</jar>	         
+		<ant target="cleanup"/>
+    </target>
+	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit">
+   		<delete file="${dist}/negosimulator.jar"/>
+         <jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}"/>
+			<fileset dir="${tmp}"/>
+	    	<manifest>
+      			<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="negotiator/Main"/>
+    		</manifest>		
+		</jar>	         
+		<ant target="cleanup"/>
+    </target>
+	<target name ="makeAllJars" description="Creates all jar files" depends="makeNegoEditorJar, makeNegoSimulatorJar"/>
+</project> 
+
