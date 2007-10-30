@@ -44,7 +44,10 @@ public class Analysis {
 			} catch (AnalysisException e) {
 				// TODO: handle exception
 				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			
 			if(getTotalNumberOfBids()<100000) buildCompleteOutcomeSpace();
 		}
 	}
@@ -56,7 +59,7 @@ public class Analysis {
 	}
 	public int  getTotalNumberOfBids() {
 		int lTotalNumberofBids=1;
-		for(int i=0;i<fNegotiationTemplate.getDomain().getNumberOfIssues();i++) {
+		for(int i=0;i<fNegotiationTemplate.getDomain().getIssues().size();i++) {
 			switch(fNegotiationTemplate.getDomain().getIssue(i).getType()) {
 			case DISCRETE:
 				lTotalNumberofBids = lTotalNumberofBids*((IssueDiscrete)(fNegotiationTemplate.getDomain().getIssue(i))).getNumberOfValues();
@@ -146,7 +149,7 @@ public class Analysis {
 		return fNegotiationTemplate.getAgentBUtilitySpace();
 	}
 
-	private boolean checkSolutionVSParetoFrontier(Bid pBid) {
+	private boolean checkSolutionVSParetoFrontier(Bid pBid) throws Exception {
 		boolean lIsStillASolution = true;
 		for (Iterator<Bid> lBidIter = fPareto.iterator(); lBidIter.hasNext();) {
 			Bid lBid = lBidIter.next();
@@ -157,7 +160,7 @@ public class Analysis {
 		}
 		return lIsStillASolution;
 	}
-	private boolean checkSolutionVSOtherBids(Bid pBid) {
+	private boolean checkSolutionVSOtherBids(Bid pBid) throws Exception {
 		boolean lIsStillASolution = true;
 		BidIterator lBidIter = new BidIterator(getDomain());
 		while(lBidIter.hasNext()) {
@@ -175,10 +178,18 @@ public class Analysis {
 		BidIterator lBidIter = new BidIterator(getDomain());
 		while(lBidIter.hasNext()) {
 			Bid lBid = lBidIter.next();
-			System.out.println("checking bid "+lBid.toString());			
-			if(!checkSolutionVSParetoFrontier(lBid)) continue;
-			if(checkSolutionVSOtherBids(lBid)) 
-				fPareto.add(lBid);
+			System.out.println("checking bid "+lBid.toString());
+			try {
+				if(!checkSolutionVSParetoFrontier(lBid)) continue;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if(checkSolutionVSOtherBids(lBid)) fPareto.add(lBid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		sortParetoFrontier();    	
 		Main.logger.add("Finished building Pareto Frontier.");
@@ -200,7 +211,7 @@ public class Analysis {
 	 * 
 	 * @throws AnalysisException
 	 */
-	public void calculateNash() throws AnalysisException {
+	public void calculateNash() throws AnalysisException, Exception {
 		//FIXME Nash for the car example seems to be wrong.
 		if(fPareto.size()<1) 
 			throw new AnalysisException("Nash product: Pareto frontier is unavailable.");
@@ -231,7 +242,7 @@ public class Analysis {
 	 * 
 	 * @throws AnalysisException
 	 */
-	public void calculateKalaiSmorodinsky() throws AnalysisException {
+	public void calculateKalaiSmorodinsky() throws AnalysisException, Exception {
 		if(fPareto.size()<1) 
 			throw new AnalysisException("Nash product: Pareto frontier is unavailable.");
 		else {
@@ -298,8 +309,13 @@ public class Analysis {
 			if(!(o2 instanceof Bid)) {
 				throw new ClassCastException();
 			}
-			double d1 = fNegotiationTemplate.getAgentAUtilitySpace().getUtility((Bid)o1);
-			double d2 = fNegotiationTemplate.getAgentAUtilitySpace().getUtility((Bid)o2);
+			double d1=0 , d2=0;
+			try {
+				d1 = fNegotiationTemplate.getAgentAUtilitySpace().getUtility((Bid)o1);
+				d2 = fNegotiationTemplate.getAgentAUtilitySpace().getUtility((Bid)o2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			if (d1 < d2) {
 				return -1; 
