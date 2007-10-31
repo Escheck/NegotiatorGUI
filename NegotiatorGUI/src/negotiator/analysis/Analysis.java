@@ -114,8 +114,8 @@ public class Analysis {
 	 * @return
 	 */
 	private static long getHashCodeFromTemplate(NegotiationTemplate pTemplate) {
-		long lCode=0
-		pTemplate.getAgentAUtilitySpace().get;
+		long lCode=0;
+		pTemplate.getAgentAUtilitySpace().hashCode();
 		return lCode;
 	}
 	/**

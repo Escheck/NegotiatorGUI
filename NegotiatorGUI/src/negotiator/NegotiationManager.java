@@ -143,11 +143,12 @@ public class NegotiationManager implements Runnable {
         		}
         }
         // add path to the analysis chart
-        nt.getAnalysis().addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
-        NegotiationOutcome no = null;
-        if(nego.no!=null) no = nego.no;
-        else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");
-        sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
+        if (nt.getAnalysis()!=null)
+        	nt.getAnalysis().addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
+    	NegotiationOutcome no = null;
+    	if(nego.no!=null) no = nego.no;
+    	else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");
+    	sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));
             out.write(Main.getCurrentTime() + ";" + no.toString()+"\n");

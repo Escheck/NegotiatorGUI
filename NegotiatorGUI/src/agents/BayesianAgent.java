@@ -12,7 +12,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.agents.BayesianOpponentModel.*;
+import agents.bayesianopponentmodel.*;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;

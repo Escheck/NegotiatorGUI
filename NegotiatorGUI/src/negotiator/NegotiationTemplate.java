@@ -95,7 +95,7 @@ public class NegotiationTemplate {
 			domain = new Domain(xml_utility_space);
 			loadAgentsUtilitySpaces();			
 			if(fRoot.getChildByTagName("analysis").length>0) {
-				fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
+				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
 			} else {
 				//propose to build an analysis
 				Object[] options = {"Yes","No"};                  
