@@ -367,14 +367,13 @@ public final class UtilitySpace {
             index = Integer.valueOf(((SimpleElement)xml_obj_issues[i]).getAttribute("index"));
             type = ((SimpleElement)xml_obj_issues[i]).getAttribute("type");
             etype = ((SimpleElement)xml_obj_issues[i]).getAttribute("etype");
-            if (type.equals(etype)) {
-            	if (type==null) { // No value type specified.
-            		System.out.println("Evaluator type not specified in utility template file.");
-            		// TODO: Define exception.
-                	evalType = EVALUATORTYPE.DISCRETE;
-            	} else { // Both "type" as well as "vtype" attribute, but consistent.
+            if (type==null) { // No value type specified.
+        		new Warning("Evaluator type not specified in utility template file.");
+        		// TODO: Define exception.
+            	evalType = EVALUATORTYPE.DISCRETE;
+        	}
+            else if (type.equals(etype)) {
             		evalType = EVALUATORTYPE.convertToType(type);
-            	}
             } else if (etype!=null && type==null) {
             	evalType = EVALUATORTYPE.convertToType(etype);
             } else if (type!=null && etype==null) { // Used label "type" instead of label "vtype".

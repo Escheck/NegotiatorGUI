@@ -12,6 +12,7 @@ package negotiator;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 import negotiator.xml.SimpleDOMParser;
+import negotiator.exceptions.Warning;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -165,13 +166,13 @@ public class Domain {
             String type = childIssues.getAttribute("type");
             String vtype = childIssues.getAttribute("vtype");
             ISSUETYPE issueType;
-            if (type.equals(vtype)) {
-            	if (type==null) { // No value type specified.
-            		System.out.println("Type not specified in template file.");
-                	issueType = ISSUETYPE.DISCRETE;
-            	} else { // Both "type" as well as "vtype" attribute, but consistent.
+        	if (type==null) { // No value type specified.
+        		new Warning("Type not specified in template file.");
+            	issueType = ISSUETYPE.DISCRETE;
+        	}
+        	else if (type.equals(vtype)) {
+            	// Both "type" as well as "vtype" attribute, but consistent.
             		issueType = ISSUETYPE.convertToType(type);
-            	}
             } else if (vtype!=null && type==null) {
             	issueType = ISSUETYPE.convertToType(vtype);
             } else if (type!=null && vtype==null) { // Used label "type" instead of label "vtype".

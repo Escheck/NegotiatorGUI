@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 	An Ant script to make distributives for the Negotiator: 
-	- Use makeAllJars to build all packages.
+	- Go to the "Outline" window that appears when you open this
+		.xml file in Eclipse.
+	- Right-click makeAllJars, select Run/Ant Build to build all packages.
 	- Use makeDistributiveForStudents to build zip package that 
 	  can be distributed to the sutdents of AI course
+	- Right-click MakeDistributiveForStudentsOn4Nov to create the 4nov zip file.
+	
+	The files negoeditor.jar, negosimulator.jar and negotiator4Nov.zip will
+	appear in the dist directory after you did this.
 --> 
 	
 <project name="Negotiator" default="makeAllJars" basedir=".">
@@ -41,7 +47,7 @@
 		<ant target="cleanup"/>
     </target>
 	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpeAgent">
+		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpleAgent">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}"/>
@@ -66,7 +72,7 @@
 		<zip destfile="${dist}/negotiator4Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
-			<zipfileset dir="etc/templates" includes="inheritance*.*" prefix="negotiator/templates/inheritancedomain"/>
+			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
 			<zipfileset dir="." includes="SimpleAgent.*" prefix="negotiator"/>
@@ -75,9 +81,10 @@
 		</zip>
 	</target>
 
-	<target name ="compilesimpeAgent">
+	<target name ="compilesimpleAgent">
 		<javac srcdir="." includes="SimpleAgent.java" classpath="${build}">
 		</javac>
 	</target>
+	
 </project> 
 
