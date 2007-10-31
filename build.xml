@@ -75,8 +75,7 @@
 			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
-			<zipfileset dir="." includes="SimpleAgent.*" prefix="negotiator"/>
-			<zipfileset dir="${build}/agents" includes="SimpleAgent.class" prefix="negotiator/agents"/>
+			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain"/>
 		</zip>
 	</target>
