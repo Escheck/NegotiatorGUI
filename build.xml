@@ -40,7 +40,8 @@
 		</jar>	         
 		<ant target="cleanup"/>
     </target>
-	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit">
+	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" 
+		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpeAgent">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}"/>
@@ -48,6 +49,7 @@
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
 				<attribute name="Main-Class" value="negotiator/Main"/>
+				<attribute name="Class-Path" value="."/>
     		</manifest>		
 		</jar>	         
 		<ant target="cleanup"/>
@@ -64,14 +66,18 @@
 		<zip destfile="${dist}/negotiator4Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
-			<zipfileset dir="etc/templates" includes="inheritance*.*" prefix="negotiator/templates/"/>
+			<zipfileset dir="etc/templates" includes="inheritance*.*" prefix="negotiator/templates/inheritancedomain"/>
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
-			<zipfileset dir="src/agents" includes="SimpleAgent.java" prefix="negotiator/agents"/>
+			<zipfileset dir="." includes="SimpleAgent.*" prefix="negotiator"/>
 			<zipfileset dir="${build}/agents" includes="SimpleAgent.class" prefix="negotiator/agents"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="templates/partydomain"/>
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain"/>
 		</zip>
 	</target>
 
+	<target name ="compilesimpeAgent">
+		<javac srcdir="." includes="SimpleAgent.java" classpath="${build}">
+		</javac>
+	</target>
 </project> 
 
