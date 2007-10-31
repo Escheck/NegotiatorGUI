@@ -11,6 +11,7 @@ package negotiator;
 
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -109,6 +110,7 @@ public class NegotiationManager implements Runnable {
     
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
     {
+    	
         Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber);
         if(Main.fDebug) {
         	nego.run();	
@@ -140,6 +142,8 @@ public class NegotiationManager implements Runnable {
         		
         		}
         }
+        // add path to the analysis chart
+        nt.getAnalysis().addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
         NegotiationOutcome no = null;
         if(nego.no!=null) no = nego.no;
         else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");

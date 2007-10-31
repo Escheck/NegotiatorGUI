@@ -14,6 +14,9 @@ import jcckit.util.ConfigParameters;
 import jcckit.util.PropertiesBasedConfigData;
 
 /**
+ * 
+ * See http://jcckit.sourceforge.net/ how to use the JCCKit.
+ * 
  * @author Dmytro Tykhonov
  *
  */
@@ -23,13 +26,10 @@ public class Chart {
 	DataPlot fDataPlot;
 	public Chart() {
 		GraphicsPlotCanvas fPlotCanvas = createPlotCanvas();
-
 		fDataPlot = new DataPlot();
 		fPlotCanvas.connect(fDataPlot);
 		fFrame = new JFrame();
 		fFrame.setSize(300,300);
-
-
 		fFrame.setLayout(new BorderLayout());
 		fFrame.add(fPlotCanvas.getGraphicsCanvas(), BorderLayout.CENTER);
 //		fFrame.add(createControlPanel(), BorderLayout.SOUTH);
@@ -40,6 +40,7 @@ public class Chart {
 		Properties props = new Properties();
 		ConfigParameters config	= new ConfigParameters(new PropertiesBasedConfigData(props));
 		props.put("plot/legendVisible", "false");
+		//scale the X and Y axis from 0 and 1
 		props.put("plot/coordinateSystem/xAxis/minimum", "0");
 		props.put("plot/coordinateSystem/xAxis/maximum", "1");
 		props.put("plot/coordinateSystem/xAxis/axisLabel", "Agent A");
@@ -48,7 +49,9 @@ public class Chart {
 		props.put("plot/coordinateSystem/yAxis/minimum", "0");
 		props.put("plot/coordinateSystem/yAxis/maximum", "1");
 		props.put("plot/coordinateSystem/yAxis/ticLabelFormat", "%.1f%");
+		//TODO: check if we are going to plot all bids the use this line, use the commented one otherwise
 		props.put("plot/curveFactory/definitions" , "def1 def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
+//		props.put("plot/curveFactory/definitions" , "def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
 		props.put("plot/curveFactory/def1/initialHintForNextPoint/className", "jcckit.plot.ShapeAttributesHint");
 		props.put("plot/curveFactory/def1/initialHintForNextPoint/initialAttributes/fillColor",	"0x50a");
 //		props.put("plot/curveFactory/curve/initialHintForNextPoint/fillColorHSBIncrement", 
@@ -99,6 +102,11 @@ public class Chart {
 		props.put("plot/curveFactory/def15/", "defaultDefinition/");
 		return new GraphicsPlotCanvas(config);
 	}
+	/**
+	 * Adds a new curve with coordinate double[][] pValues
+	 * @param pCurveName name of the curve
+	 * @param pValues the coordinates.
+	 */
 	public void addCurve(String pCurveName, double[][] pValues) {
 		try {
 			DataCurve curve = new DataCurve(pCurveName);
