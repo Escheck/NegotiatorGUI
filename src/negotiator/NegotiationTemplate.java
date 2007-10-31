@@ -52,8 +52,8 @@ public class NegotiationTemplate {
     private SimpleElement fRoot;
 	private String fFileName;    
     private Analysis fAnalysis;
-    private int totalTime; // total availabel time for nego, in seconds.
-    
+    private int totalTime; // total available time for nego, in seconds.
+
     /** Creates a new instance of NegotiationTemplate 
      * @param negotiationType
      * @param domain
@@ -109,9 +109,10 @@ public class NegotiationTemplate {
 						options);
 				if(n==0) {
 	
-					fAnalysis = new Analysis(this, true);
-					fRoot.addChildElement(fAnalysis.getXMLRoot());
-					fRoot.saveToFile(fFileName);
+					fAnalysis = Analysis.getInstance(this);
+					//fRoot.addChildElement(fAnalysis.getXMLRoot());
+					//  save the analysis to the cache
+					fAnalysis.saveToCache();
 				}
 				
 			}//if
@@ -120,14 +121,18 @@ public class NegotiationTemplate {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * 
+	 * Show the analysis window. Couples the analysis object with the chart window 
+	 * 
+	 * @throws Exception
+	 */
 	protected void showAnalysis() throws Exception
 	{
 		Chart lChart = new Chart();		
 /*		if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
 			fAnalysis.buildCompleteOutcomeSpace();*/
-		if(fAnalysis.isCompleteSpaceBuilt()) {
-			
+		if(fAnalysis.isCompleteSpaceBuilt()) {			
 			double[][] lAllBids = new double[fAnalysis.getTotalNumberOfBids()][2];
 			for(int i=0;i<fAnalysis.getTotalNumberOfBids();i++) {
 				lAllBids[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getBidFromCompleteSpace(i));
@@ -136,7 +141,6 @@ public class NegotiationTemplate {
 			lChart.addCurve("All Outcomes", lAllBids);		
 	
 		}
-
 		double[][] lParetoPoints = new double[fAnalysis.getParetoCount()][2];
 		for(int i=0;i<fAnalysis.getParetoCount();i++) {
 			lParetoPoints[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getParetoBid(i));
@@ -221,4 +225,8 @@ public class NegotiationTemplate {
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
+    public Analysis getAnalysis() {
+    	return fAnalysis;
+    }
+
 }

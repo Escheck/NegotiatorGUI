@@ -39,30 +39,50 @@ public class Analysis {
 	private NegotiationTemplate fNegotiationTemplate;
 	private ArrayList<Bid> fCompleteSpace=null;
 	private long fHashCode;
-	public Analysis(NegotiationTemplate pTemplate, boolean pPerformCalculations) {		
-		fNegotiationTemplate = pTemplate;
+	
+	/**
+	 * Create Analysis object for the negotiation template and calculate Pareto, Nash, Kalai
+	 * 
+	 * @param pTemplate - the template with domain and utilities
+	 * 
+	 */
+	public Analysis(NegotiationTemplate pTemplate) {		
+		fNegotiationTemplate = pTemplate;		
 		fPareto = new ArrayList<Bid>();		
-		if(pPerformCalculations) {
-			buildParetoFrontier();
-			try {
-				calculateKalaiSmorodinsky();
-				calculateNash();
-			} catch (AnalysisException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			if(getTotalNumberOfBids()<100000) buildCompleteOutcomeSpace();
-		}
+		buildParetoFrontier();
+		try {
+			calculateKalaiSmorodinsky();
+			calculateNash();
+		} catch (AnalysisException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		if(getTotalNumberOfBids()<100000) buildCompleteOutcomeSpace();
+		fRoot.setAttribute("hash_code", String.valueOf(getHashCodeFromTemplate(pTemplate)));
+		
 	}
+	/**
+	 * Load the analysis data from pRoot file (from cache). 
+	 * 
+	 * @param pTemplate
+	 * @param pRoot
+	 */
 	public Analysis(NegotiationTemplate pTemplate, SimpleElement pRoot) {
 		fNegotiationTemplate = pTemplate;
 		fRoot = pRoot;
 		fPareto = new ArrayList<Bid>();
 		loadFromXML(fRoot);
+		if(getTotalNumberOfBids()<100000) buildCompleteOutcomeSpace();		
 	}
+	/**
+	 * Use this method to get an instance of Analysis. The method check the cache for existing analysis.
+	 * Otherwise, calculate all optimality criteria.
+	 * 
+	 * @param pTemplate - the template for which the analysis has to be made/loaded
+	 * @return
+	 */
 	public static Analysis getInstance(NegotiationTemplate pTemplate) {
 		Analysis lAnalysis;
 		//check if we have the analysis in the cache
@@ -80,17 +100,29 @@ public class Analysis {
 			}
 			lAnalysis = new Analysis(pTemplate, lRoot);			
 			if(lAnalysis.getHashCode()!=getHashCodeFromTemplate(pTemplate))
-				lAnalysis = new Analysis(pTemplate, true);
+				lAnalysis = new Analysis(pTemplate);
 		} else { 		
-			lAnalysis = new Analysis(pTemplate, true);
+			lAnalysis = new Analysis(pTemplate);
 		}
 		return lAnalysis;
 	}
+	/**
+	 * 
+	 * Calculate the hash code of the negotiation template.
+	 * 
+	 * @param pTemplate
+	 * @return
+	 */
 	private static long getHashCodeFromTemplate(NegotiationTemplate pTemplate) {
 		long lCode=0
 		pTemplate.getAgentAUtilitySpace().get;
 		return lCode;
 	}
+	/**
+	 * TODO: Check if this method is still needed.
+	 * 
+	 * @return
+	 */
 	public int  getTotalNumberOfBids() {
 		int lTotalNumberofBids=1;
 		for(int i=0;i<fNegotiationTemplate.getDomain().getIssues().size();i++) {
@@ -116,6 +148,10 @@ public class Analysis {
 		}//for
 		return lTotalNumberofBids;
 	}
+	/**
+	 * Builds all possible bid and saves in the fCompleteSpace.
+	 * 
+	 */
 	public void buildCompleteOutcomeSpace() {
 		//calculate total number of bids
 		fCompleteSpace = new ArrayList<Bid>();
@@ -127,6 +163,11 @@ public class Analysis {
 		}//for
 
 	}
+	/** 
+	 * Loads analysis object from an XML file.
+	 * 
+	 * @param pXMLAnalysis - <analysis> node in the XML file.
+	 */
 	protected void loadFromXML(SimpleElement pXMLAnalysis) {
 		SimpleElement lXMLAnalysis = pXMLAnalysis;
 		fHashCode = Long.valueOf(lXMLAnalysis.getAttribute("hashCode"));
@@ -170,8 +211,6 @@ public class Analysis {
 				e.printStackTrace();
 			}
 		}		
-
-
 	}
 
 	protected Domain getDomain() {
@@ -183,7 +222,13 @@ public class Analysis {
 	protected UtilitySpace getAgentBUtilitySpace() {
 		return fNegotiationTemplate.getAgentBUtilitySpace();
 	}
-
+	/**
+	 * Checks the bid against current Pareto set
+	 * 
+	 * @param pBid
+	 * @return true if bid is located to the North-East from the current Pareto frontier.
+	 * @throws Exception
+	 */
 	private boolean checkSolutionVSParetoFrontier(Bid pBid) throws Exception {
 		boolean lIsStillASolution = true;
 		for (Iterator<Bid> lBidIter = fPareto.iterator(); lBidIter.hasNext();) {
@@ -195,6 +240,13 @@ public class Analysis {
 		}
 		return lIsStillASolution;
 	}
+	/**
+	 * Checks the bid against all other bids in the space.
+	 * 
+	 * @param pBid
+	 * @return true if bid is Pareto efficient
+	 * @throws Exception
+	 */
 	private boolean checkSolutionVSOtherBids(Bid pBid) throws Exception {
 		boolean lIsStillASolution = true;
 		BidIterator lBidIter = new BidIterator(getDomain());
@@ -207,6 +259,10 @@ public class Analysis {
 		}
 		return lIsStillASolution;
 	}
+	/**
+	 * Builds Pareto frontier for the negotiation template
+	 * 
+	 */
 	public void buildParetoFrontier() {
 		Main.logger.add("Building Pareto Frontier...");
 		//loadAgentsUtilitySpaces();
@@ -243,7 +299,7 @@ public class Analysis {
 	}
 	/**
 	 *  Calculate Nash product. Assumes that Pareto frontier is already built.
-	 * 
+	 *  CHECK this assumption
 	 * @throws AnalysisException
 	 */
 	public void calculateNash() throws AnalysisException, Exception {
@@ -284,7 +340,6 @@ public class Analysis {
 			Bid lMinAssymetryBid = fPareto.get(0);
 			double lMinAssymetryUtility = Math.abs(fNegotiationTemplate.getAgentAUtilitySpace().getUtility(lMinAssymetryBid)-
 					fNegotiationTemplate.getAgentBUtilitySpace().getUtility(lMinAssymetryBid));    			
-
 			for(int i =1;i<fPareto.size();i++) {
 				Bid lTempBid = fPareto.get(i);
 				double lTempUtility = Math.abs(fNegotiationTemplate.getAgentAUtilitySpace().getUtility(lTempBid)-
@@ -300,8 +355,42 @@ public class Analysis {
 		fRoot.addChildElement(lXMLKalai);
 		SimpleElement lXMLBid = fKalaiSmorodinsky.toXML();
 		lXMLKalai.addChildElement(lXMLBid);    		
-
 		return;
+	}
+	/**
+	 * 
+	 * Call this method to draw the negotiation paths on the chart with analysis.
+	 * 
+	 * @param pAgentABids
+	 * @param pAgentBBids
+	 */
+	public void addNegotiationPaths(int sessionNumber, ArrayList<Bid> pAgentABids, ArrayList<Bid> pAgentBBids) {
+        double[][] lAgentAUtilities = new double[pAgentABids.size()][2];
+        double[][] lAgentBUtilities = new double[pAgentBBids.size()][2];        
+        try
+        {
+	        for(int i=0;i< pAgentABids.size();i++) {
+	        	lAgentAUtilities [i][0] = fNegotiationTemplate.getAgentAUtilitySpace().getUtility(pAgentABids.get(i));
+	        	lAgentAUtilities [i][1] = fNegotiationTemplate.getAgentBUtilitySpace().getUtility(pAgentABids.get(i));
+	        }
+	        for(int i=0;i< pAgentBBids.size();i++) {
+	        	lAgentBUtilities [i][0] = fNegotiationTemplate.getAgentAUtilitySpace().getUtility(pAgentBBids.get(i));
+	        	lAgentBUtilities [i][1] = fNegotiationTemplate.getAgentBUtilitySpace().getUtility(pAgentBBids.get(i));
+	        }
+	        
+	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
+	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
+	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
+	        Main.fChart.show();
+        } catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+		
+	}
+	public void saveToCache() {
+		String lCacheFileName = fNegotiationTemplate.getAgentAUtilitySpaceFileName()+"_" + fNegotiationTemplate.getAgentAUtilitySpaceFileName()+".xml";		
+		fRoot.saveToFile(lCacheFileName );
 	}
 	/**
 	 * @return the fKalaiSmorodinsky
@@ -337,6 +426,12 @@ public class Analysis {
 	public long getHashCode() {
 		return fHashCode;
 	}
+	/**
+	 * Use this class to compare two bids to sort them for the Pareto chart.
+	 * 
+	 * @author dmytro
+	 *
+	 */
 	protected  class BidComparator implements java.util.Comparator
 	{
 		public int compare(Object o1,Object o2) throws ClassCastException
@@ -365,5 +460,6 @@ public class Analysis {
 				return 0;
 			}
 		}
-	}     
+	}
+	
 }

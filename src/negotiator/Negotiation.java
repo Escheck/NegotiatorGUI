@@ -30,6 +30,11 @@ public class Negotiation implements Runnable {
     public NegotiationOutcome no;
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
+
+    
+    private ArrayList<Bid> fAgentABids;
+    private ArrayList<Bid> fAgentBBids;
+    
     /** 
      * 
      * Creates a new instance of Negotiation 
@@ -41,6 +46,8 @@ public class Negotiation implements Runnable {
         this.sessionNumber=sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
         this.nt = nt;
+        this.fAgentABids = new ArrayList<Bid>();
+        this.fAgentBBids = new ArrayList<Bid>();
     }
     
     public Agent otherAgent(Agent ag)
@@ -70,8 +77,6 @@ public class Negotiation implements Runnable {
     
     public void run() {
         Agent currentAgent;
-        ArrayList<Bid> lAgentABids = new ArrayList<Bid>();
-        ArrayList<Bid> lAgentBBids = new ArrayList<Bid>();
         Date startTime=new Date();
         try {
         	 // note, we clone the utility spaces for security reasons, so that the agent
@@ -139,13 +144,13 @@ public class Negotiation implements Runnable {
                    //save last results and swap to other agent
                    if(currentAgent.equals(agentA)) {
                 	   if(action instanceof Offer) {
-                		   lAgentABids.add(((Offer)action).getBid());
+                		   fAgentABids.add(((Offer)action).getBid());
                 	   } 
                 	   currentAgent = agentB; 
                    }
                    else{
                 	   if(action instanceof Offer) {
-                		   lAgentBBids.add(((Offer)action).getBid());
+                		   fAgentBBids.add(((Offer)action).getBid());
                 	   } 
                 	   currentAgent = agentA;
                    }
@@ -188,31 +193,11 @@ public class Negotiation implements Runnable {
             // Probably will not work either, remember that the Negotiator is killed as soon
             // as this run function exits.
              */
-            double[][] lAgentAUtilities = new double[lAgentABids.size()][2];
-            double[][] lAgentBUtilities = new double[lAgentBBids.size()][2];
-            
-            try
-            {
-    	        for(int i=0;i< lAgentABids.size();i++) {
-    	        	lAgentAUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentABids.get(i));
-    	        	lAgentAUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentABids.get(i));
-    	        }
-    	        for(int i=0;i< lAgentBBids.size();i++) {
-    	        	lAgentBUtilities [i][0] = nt.getAgentAUtilitySpace().getUtility(lAgentBBids.get(i));
-    	        	lAgentBUtilities [i][1] = nt.getAgentBUtilitySpace().getUtility(lAgentBBids.get(i));
-    	        }
-    	        
-    	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
-    	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
-    	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-    	        Main.fChart.show();
-    	        
+
     	        // Wouter: logger is causing crashes. Removed.......
     	        //synchronized(Main.logger) { Main.logger.add("Session is finished"); }
-            } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
+//            } catch (Exception e) {  System.out.println("Exception in negotiation (interrupt?):"+e.getMessage());e.printStackTrace();}
             
-            
-              
             
         } catch (Error e) {
             if(e instanceof ThreadDeath) {
@@ -221,9 +206,16 @@ public class Negotiation implements Runnable {
            }     
              
         }
-        
-        
-        return;
+
     }
+
+	public ArrayList<Bid> getAgentABids() {
+		return fAgentABids;
+	}
+	
+	public ArrayList<Bid> getAgentBBids() {
+		return fAgentBBids;
+	}
+	
     
 }
