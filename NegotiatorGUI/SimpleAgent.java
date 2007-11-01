@@ -29,10 +29,10 @@ public class SimpleAgent extends Agent
     /**
      * init is called when a next session starts with the same opponent.
      */
-    public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-        super.init (sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
-        sessionNumber = sessionNumber;
-        sessionTotalNumber = sessionTotalNumber;
+    public void init(int sessionNumberP, int sessionTotalNumberP, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
+        super.init (sessionNumberP, sessionTotalNumberP, startTimeP,totalTimeP,us);
+        sessionNumber = sessionNumberP;
+        sessionTotalNumber = sessionTotalNumberP;
     }
 
 	public void ReceiveMessage(Action opponentAction) {

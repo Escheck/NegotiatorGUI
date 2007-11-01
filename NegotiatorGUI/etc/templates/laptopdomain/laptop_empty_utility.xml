@@ -1,11 +1,11 @@
 <utility_space> 
-<objective index="1" etype="objective" type="objective" description="" name="Laptop"> 
+<objective index="1" etype="objective" type="objective" description="" name="LaptopDomain"> 
 <issue index="2" etype="discrete" type="discrete" vtype="discrete" name="Laptop"> 
-<item index="1" value="Dell" cost="700" description="the cheap laptop" evaluation="null"> 
+<item index="1" value="Dell" cost="700" description="cheap laptop" evaluation="null"> 
 </item> 
-<item index="2" value="Macintosh" cost="800" description="the design laptop" evaluation="null"> 
+<item index="2" value="Macintosh" cost="800" description="quality laptop" evaluation="null"> 
 </item> 
-<item index="3" value="HP" cost="900" description="the gamer laptop" evaluation="null"> 
+<item index="3" value="HP" cost="900" description="gamer laptop" evaluation="null"> 
 </item> 
 </issue> 
 <issue index="3" etype="discrete" type="discrete" vtype="discrete" name="Harddisk"> 

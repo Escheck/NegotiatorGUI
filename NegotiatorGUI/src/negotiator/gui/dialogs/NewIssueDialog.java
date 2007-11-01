@@ -279,6 +279,9 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		return values;
 	}
 	
+	
+
+	
 	/**
 	 * Gets the evaluations for the discrete issue from the input field in this dialog. 
 	 * @return An  arrayList with the evaluations. 
@@ -303,6 +306,32 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		return evalues;
 	}
+	
+	/**
+	 * Gets the costs for the discrete issue from the input field in this dialog. 
+	 * @return An  arrayList with the costs. 
+	 * Now returns elements with value 0 to indicate non-entered (empty field) values.
+	 * Cost can not be edited anyway so not returned now.
+	 * @throws InvalidInputException 
+	 */
+	protected ArrayList<Double> getDiscreteCosts() throws InvalidInputException, ClassCastException {
+		String[] evalueStrings = discreteCostEvaluationArea.getText().split("\n",-1);
+		for (String i:evalueStrings) System.out.println(">"+i);
+
+		ArrayList<Double> costs=new ArrayList<Double>();
+		for(int i = 0; i<evalueStrings.length; i++)
+		{
+			Double value=0.;
+			if(!evalueStrings[i].equals(""))
+			{
+				value=Double.valueOf(evalueStrings[i]);
+				if (value<0) throw new InvalidInputException("Encountered "+value+". Negative cost are not allowed");
+			}
+			costs.add(value); 
+		}
+		return costs;
+	}
+	
 	
 	protected int getIntegerMin() throws InvalidInputException {
 		if(!integerMinField.getText().equals(""))
@@ -388,8 +417,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		boolean newIssue = (issue == null); //Defines if a new Issue is added, or if an existing Issue is being edited.
 	
 		// Wouter: added: they threw away the old evaluator... bad because you loose the weight settings of the evaluator.
-		// Wouter; code is ugly. They create a NEW evaluator anyway. And at  the end they check whethere there is a util space
+		// Wouter; code is ugly. They create a NEW evaluator anyway. 
+		// And at  the end they check whethere there is a util space
 		// anyway, and if not they throw away the new evaluator.....
+		// Also we are paying here for the mix between domain and utility space editor-in-one
 		UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 		Evaluator evaluator=null;
 		if (uts!=null && issue!=null) evaluator=uts.getEvaluator(issue.getNumber());
@@ -403,7 +434,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 			return null;
 		}
-		//If no issue is given to be modified, construct a new one that is the child of the selected Objective.
+		//If no issue is given to be modified, 
+		//construct a new one that is the child of the selected Objective.
 		if (newIssue) {
 			try {
 				selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
@@ -424,6 +456,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			//EvaluatorDiscrete evDis = null;
 			String[] values;
 			ArrayList<Integer> evalues = null;
+			ArrayList<Double> costs=null;
 			try {
 				values = getDiscreteValues(); 
 			}
@@ -434,10 +467,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			try{
 				evalues = getDiscreteEvalutions();
 				if (evalues==null) System.out.println("No evalues");
-				//if(evalues != null){
-					//evDis = new EvaluatorDiscrete();
-					//evDis.setWeight(0.0);
-				//}
+				costs=getDiscreteCosts();
 			}catch (Exception f){ //Can also be a casting exception.
 					JOptionPane.showMessageDialog(this, "Problem reading evaluation values:"+f.getMessage());
 			}
@@ -463,7 +493,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 					for (int i=0; i<v_enum.size(); i++) 
 					{
 						if (i < evalues.size() && evalues.get(i)!=0) // evalues field is 0 if error occured at that field.
+						{
 							((EvaluatorDiscrete) evaluator).setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
+							((EvaluatorDiscrete) evaluator).setCost(((ValueDiscrete)v_enum.get(i)), costs.get(i));
+						}
 					}
 				}
 				catch (Exception e) {JOptionPane.showMessageDialog(this, e.getMessage()); }
