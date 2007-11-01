@@ -10,6 +10,10 @@
 	
 	The files negoeditor.jar, negosimulator.jar and negotiator4Nov.zip will
 	appear in the dist directory after you did this.
+	
+	Check for the ant user manual
+	http://ant.apache.org/manual/index.html
+	
 --> 
 	
 <project name="Negotiator" default="makeAllJars" basedir=".">
@@ -34,10 +38,13 @@
 	<target name="unpackJCCKit" depends="makeTempDir">
 		<unzip src="${dep}/jcckit.jar" dest="${tmp}"/> 		
 	</target>		
-	<target name ="makeNegoEditorJar" description="Create a jar for the Negotiation Editor" depends="cleanup, unpackJTreeTable">
+	
+	
+	<target name ="makeNegoEditorJar" description="Create a jar for the Negotiation Editor" 
+		depends="cleanup, unpackJTreeTable">
 	     <delete file="${dist}/negoeditor.jar" quiet="true"/>
          <jar destfile="${dist}/negoeditor.jar"  >
-			<fileset dir="${build}" excludes="negotiator/actions"/>
+			<fileset dir="${build}" excludes="agents/, negotiator/actions"/>
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -46,11 +53,14 @@
 		</jar>	         
 		<ant target="cleanup"/>
     </target>
+	
+	
 	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" 
 		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpleAgent">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
-			<fileset dir="${build}"/>
+			<fileset dir="${build}" 
+				excludes="agents/bayesianopponentmodel/, agents/ABMP*, agents/Bayesian*, agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*" />
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -60,6 +70,8 @@
 		</jar>	         
 		<ant target="cleanup"/>
     </target>
+	
+	
 	<target name ="makeAllJars" description="Creates all jar files" depends="makeNegoEditorJar, makeNegoSimulatorJar"/>
 	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeAllJars">
 		<zip destfile="${dist}/negotiator14Nov.zip">
@@ -76,7 +88,7 @@
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
 			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain"/>
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
 		</zip>
 	</target>
 

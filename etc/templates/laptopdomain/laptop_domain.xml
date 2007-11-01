@@ -1,16 +1,16 @@
 <negotiation_template number_of_sessions="3"> 
 <agent class="agents.UIAgent" name="seller" utility_space="laptop_seller_utility.xml"> 
 </agent> 
-<agent class="agents.UIAgent" name="Agent B Name" utility_space="laptop_buyer_utility.xml"> 
+<agent class="agents.UIAgent" name="buyer" utility_space="laptop_buyer_utility.xml"> 
 </agent> 
 <utility_space number_of_issues="0"> 
-<objective index="1" etype="objective" type="objective" description="" name="Laptop"> 
+<objective index="1" etype="objective" type="objective" description="" name="LaptopDomain"> 
 <issue index="2" etype="discrete" type="discrete" vtype="discrete" name="Laptop"> 
-<item index="1" value="Dell" cost="700" description="the cheap laptop"> 
+<item index="1" value="Dell" cost="700" description="cheap laptop"> 
 </item> 
-<item index="2" value="Macintosh" cost="800" description="the design laptop"> 
+<item index="2" value="Macintosh" cost="800" description="quality laptop"> 
 </item> 
-<item index="3" value="HP" cost="900" description="the gamer laptop"> 
+<item index="3" value="HP" cost="900" description="gamer laptop"> 
 </item> 
 </issue> 
 <issue index="3" etype="discrete" type="discrete" vtype="discrete" name="Harddisk"> 
