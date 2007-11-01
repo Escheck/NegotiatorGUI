@@ -35,24 +35,35 @@ public class Domain {
     	fObjectivesRoot = null;
     }
     
-    public Domain(SimpleElement root) {
+    public Domain(SimpleElement root)
+    {
     	loadTreeFromXML(root);
     }
     
-    public Domain(String filename) {
+    public Domain(String filename) throws Exception
+    {
     	this(new File(filename));
     }
     
-    public Domain(File filename){
+    /**
+     * read a domain from a file.
+     * @param filename
+     * @throws Exception if 
+     */
+    public Domain(File filename) throws Exception
+    {
     	SimpleDOMParser parser = new SimpleDOMParser();
-    	try{
     		BufferedReader file = new BufferedReader(new FileReader(filename));                  
     		SimpleElement root = parser.parse(file);
-    		SimpleElement xml_utility_space = (SimpleElement)(root.getChildByTagName("utility_space")[0]);
+    		
+    		SimpleElement xml_utility_space;
+    		try { 
+    			xml_utility_space = 
+    				(SimpleElement)(root.getChildByTagName("utility_space")[0]); 
+    		} 
+    		catch (Exception err) 
+    		{ throw new Exception("Can't read from "+filename+", incorrect format of file"); }
     		loadTreeFromXML(xml_utility_space);
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
     }
     
     // Class methods

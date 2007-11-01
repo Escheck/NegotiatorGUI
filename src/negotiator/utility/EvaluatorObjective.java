@@ -16,6 +16,15 @@ public class EvaluatorObjective implements Evaluator {
 	public EvaluatorObjective() {
 		fweight = 0; //needs to be set later on.
 	}
+	
+	/** clone */ 
+	public EvaluatorObjective(EvaluatorObjective e) {
+		fweight = e.getWeight();
+		fweightLock=e.weightLocked();
+		hasWeightP=e.getHasWeight();
+	}
+	
+	public EvaluatorObjective clone() { return new EvaluatorObjective(this);}
 
 	// Class methods
 	public double getWeight(){
@@ -106,5 +115,7 @@ public class EvaluatorObjective implements Evaluator {
 	{
 		throw new Exception("getCost not implemented for EvaluatorObjective");
 	}
+	
+
 
 }

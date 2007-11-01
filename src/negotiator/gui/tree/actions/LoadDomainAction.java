@@ -19,7 +19,6 @@ public class LoadDomainAction extends AbstractAction {
 	private File openedFile;
 	private final JFileChooser fileChooser;
 	
-	//Consturctors
 	public LoadDomainAction (TreeFrame parent, JFileChooser fileChooser) {
 		super("Open Domain");
 		this.parent = parent;
@@ -32,12 +31,15 @@ public class LoadDomainAction extends AbstractAction {
 		int result = fileChooser.showOpenDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			openedFile = fileChooser.getSelectedFile();
-			loadDomain(openedFile);
+			try { loadDomain(openedFile); }
+			catch (Exception err) { 
+				System.out.println("Error occured during loading:"+err.getMessage());
+			}
 		}
 	}
 	
 
-	private void loadDomain(File file) {
+	private void loadDomain(File file) throws Exception{
 		Domain domain = new Domain(file);
 		parent.clearTreeTable(domain);
 	}
