@@ -72,8 +72,10 @@ public class NegotiationTemplate {
 	}
 	*/
 	
-	public NegotiationTemplate(String fileName, String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName,
+	public NegotiationTemplate(String fileName, 
+			String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName,
 			Integer totTime) 
+	throws Exception
 	{
 		fFileName = fileName;
 		this.agentAUtilitySpaceFileName = agentAUtilitySpaceFileName;
@@ -84,42 +86,39 @@ public class NegotiationTemplate {
 	/**
 	 * @param fileName
 	 */
-	private void loadFromFile(String fileName) {
+	private void loadFromFile(String fileName)  throws Exception
+	{
 		SimpleDOMParser parser = new SimpleDOMParser();
-		try {
-			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
-			fRoot = parser.parse(file);
-			/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-            else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
-			SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
-			domain = new Domain(xml_utility_space);
-			loadAgentsUtilitySpaces();			
-			if(fRoot.getChildByTagName("analysis").length>0) {
-				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
-			} else {
-				//propose to build an analysis
-				Object[] options = {"Yes","No"};                  
-				int n = JOptionPane.showOptionDialog(Main.mf,
-						"You have no analysis available for this template. Do you want build it?",
-						"No Analysis",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						options,
-						options);
-				if(n==0) {
-	
-					fAnalysis = Analysis.getInstance(this);
-					//fRoot.addChildElement(fAnalysis.getXMLRoot());
-					//  save the analysis to the cache
-					fAnalysis.saveToCache();
-				}
-				
-			}//if
-			if(fAnalysis!=null) showAnalysis();			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
+		fRoot = parser.parse(file);
+		/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
+        else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
+		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
+		domain = new Domain(xml_utility_space);
+		loadAgentsUtilitySpaces();
+		if(fRoot.getChildByTagName("analysis").length>0) {
+			//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
+		} else {
+			//propose to build an analysis
+			Object[] options = {"Yes","No"};                  
+			int n = JOptionPane.showOptionDialog(Main.mf,
+					"You have no analysis available for this template. Do you want build it?",
+					"No Analysis",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					null,
+					options,
+					options);
+			if(n==0) {
+
+				fAnalysis = Analysis.getInstance(this);
+				//fRoot.addChildElement(fAnalysis.getXMLRoot());
+				//  save the analysis to the cache
+				fAnalysis.saveToCache();
+			}
+			
+		}//if
+		if(fAnalysis!=null) showAnalysis();			
 	}
 	/**
 	 * 
@@ -158,7 +157,8 @@ public class NegotiationTemplate {
 		Main.fChart = lChart;
 		lChart.show();
 	}
-	protected void loadAgentsUtilitySpaces() {
+	protected void loadAgentsUtilitySpaces() throws Exception
+	{
 		//load the utility space
 		fAgentAUtilitySpace = new UtilitySpace(getDomain(), agentAUtilitySpaceFileName);
 		fAgentBUtilitySpace = new UtilitySpace(getDomain(), agentBUtilitySpaceFileName);

@@ -43,7 +43,9 @@ public class NegotiationManager implements Runnable {
     private String agentAclassName;
     private String agentBclassName;
     SessionFrame sf;
-    /** Creates a new instance of NegotiationManager */
+    /** Creates a new instance of NegotiationManager
+     * throws if exception occurs, particularly with creation of nego template.
+     */
     public NegotiationManager(/*URL agentAclass,*/ 
             String agentAclassName, 
             String agentAName,
@@ -53,7 +55,8 @@ public class NegotiationManager implements Runnable {
             String agentBName,
             String agentBUtilitySpace,
             String negotiationTemplateFileName,
-            int numberOfSession) {
+            int numberOfSession) throws Exception
+    {
         this.agentAclassName = agentAclassName;
         this.agentBclassName = agentBclassName;
         // load the utility spaces
@@ -62,33 +65,19 @@ public class NegotiationManager implements Runnable {
         agentA = null;
         agentB = null;
         
-        // TODO: load reservation value somewhere if present in utility template file.
         try {
+        // TODO: load reservation value somewhere if present in utility template file.
             java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
             agentA = (Agent)(loaderA.loadClass(agentAclassName/*"agentexample.MyAgent"*/).newInstance());
             agentA.setName(agentAName);
-        } catch(ClassNotFoundException e1) {
-            e1.printStackTrace();                        
-            return;
-        } catch(InstantiationException e2) {
-            e2.printStackTrace();                        
-            return;
-        } catch(IllegalAccessException e2) {
-            e2.printStackTrace();            
-            return;
-        }
+        } catch (Exception e) { throw new Exception("error "+e.getClass()+" while loading '"+agentAName+"': "+e.getMessage()); }
+        
         try {
             java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
             agentB = (Agent)(loaderB.loadClass(agentBclassName/*"agentexample.MyAgent"*/).newInstance());
             agentB.setName(agentBName);
-        } catch(ClassNotFoundException e1) {
-            e1.printStackTrace();                        
-        } catch(InstantiationException e2) {
-            e2.printStackTrace();                        
-        } catch(IllegalAccessException e2) {
-            e2.printStackTrace();
-            
-        }
+        }         catch (Exception e) { throw new Exception("error "+e.getClass()+" while loading '"+agentAName+"': "+e.getMessage()); }
+        
          // we can determine total nego time only after agents were loaded:
         Integer totTime=NON_GUI_NEGO_TIME;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=GUI_NEGO_TIME;

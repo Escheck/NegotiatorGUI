@@ -29,15 +29,20 @@ public class LoadUtilitySpaceAction extends AbstractAction {
 	}
 	
 	//Methods
-	public void actionPerformed(ActionEvent e) {
-		int result = fileChooser.showOpenDialog(parent);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			openedFile = fileChooser.getSelectedFile();
-			loadUtilitySpace(openedFile);
+	public void actionPerformed(ActionEvent e) 
+	{
+		try {
+			int result = fileChooser.showOpenDialog(parent);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				openedFile = fileChooser.getSelectedFile();
+				loadUtilitySpace(openedFile);
+			}
 		}
+		catch (Exception err) { System.out.println("Error loading utilspace:"); err.printStackTrace();}
 	}
 	
-	private void loadUtilitySpace(File file) {
+	private void loadUtilitySpace(File file) throws Exception
+	{
 		Domain domain = parent.getNegotiatorTreeTableModel().getDomain();
 		parent.clearTreeTable(domain, new UtilitySpace(domain, file.getPath()));
 	}
