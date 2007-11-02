@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import negotiator.gui.SessionFrame;
 import negotiator.xml.SimpleElement;
+import negotiator.utility.UtilitySpace;
 /**
  *
  * @author Dmytro Tykhonov
@@ -81,7 +82,9 @@ public class NegotiationManager implements Runnable {
          // we can determine total nego time only after agents were loaded:
         Integer totTime=NON_GUI_NEGO_TIME;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=GUI_NEGO_TIME;
-        nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace,totTime);        
+        nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace,totTime); 
+        nt.getAgentAUtilitySpace().checkReadyForNegotiation(agentAName, nt.getDomain());
+        nt.getAgentBUtilitySpace().checkReadyForNegotiation(agentBName, nt.getDomain());
     }
     
     public void run() {

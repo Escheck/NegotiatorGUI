@@ -66,12 +66,18 @@ public class Domain {
     		loadTreeFromXML(xml_utility_space);
     }
     
-    // Class methods
-    /*
-    public final int getNumberOfIssues() {
-        return fNumberOfIssues;
+
+    /**
+     * check if two domains are equal.
+     * Checks for full structural equality, just all issues having the same name is not enough.
+     * @param d
+     * @return true if equal, else false. returns false also when fObjectivesRoot=null 
+     */
+    public boolean equals(Domain d)
+    {
+    	if (fObjectivesRoot==null) return false;
+    	return fObjectivesRoot.equals(d.getObjectivesRoot());
     }
-    */
     
     /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG
      *  A better name would be getChild 

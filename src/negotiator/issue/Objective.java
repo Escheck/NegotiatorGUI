@@ -53,6 +53,33 @@ public class Objective implements MutableTreeNode
 	
 	//Methods
 	
+	/** 
+	 * @return true if given object is an Objective and
+	 * number, name, and children are the same 
+	 * we don't care about the description and user objects.
+	 */
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof Objective)) return false;
+		return equalContents((Objective)o);
+	}
+	
+	/**
+	 * check the contents but don't check for the class type anymore.
+	 * @param obj the objective to be compared
+	 * @return true if number, name, and children are the same 
+	 * we don't care about the description and user objects.
+	 */
+	public boolean equalContents(Objective obj)
+	{
+		if (number!=obj.getNumber() || (!name.equals(obj.getName()))) return false;
+		
+		for (Objective child:children)
+			if (!(child.equals(obj.getChildWithID(child.getNumber())))) return false;
+		return true;		
+
+	}
+	
 	/**
 	 * @return the name of this node.
 	 */

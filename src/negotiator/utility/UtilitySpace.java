@@ -115,7 +115,8 @@ public final class UtilitySpace {
     	}
     	return null;
     }
-    // Class methods
+
+        
     
     /**
      * Checks the normalization throughout the tree. Will eventually replace checkNormalization 
@@ -143,8 +144,27 @@ public final class UtilitySpace {
     		lSum += (fEvaluators.get(tmpObj)).getWeight();
     		
     	}
-    	
-    	return (normalised && lSum==1);
+    	System.out.println("sum="+lSum);
+    	return (normalised && lSum>.9998 && lSum<1.0002);
+    }
+    
+    /**
+     * @author W.Pasman
+     * check if this utility space is ready for negotiation.
+     * @param d is the domain in which nego is taking place
+     * throws if problem occurs.
+     */
+    public void checkReadyForNegotiation(String agentName, Domain dom) throws Exception
+    {
+        // check if utility spaces are instance of the domain
+        // following checks normally succeed, as the domain of the domain space is enforced in the loader.
+        if (!(dom.equals(domain)))
+        	throw new Exception("domain of agent "+agentName+"does not match the negotiation domain");
+        String err=IsComplete();
+        if (err!=null) throw new Exception("utility space of agent "+agentName+" is incomplete\n"+err);
+        
+        // TODO 
+         if (!checkTreeNormalization())  throw new Exception("utility space of agent "+agentName+" is not normalized\n");
     }
     
     /**Wouter: I think this should not be used anymore*/
@@ -298,9 +318,12 @@ public final class UtilitySpace {
         SimpleElement root = parser.parse(file);
         return loadTreeRecursive(root);
    	}
+	
+	
 	/**
+	 * @author hdevos
 	 * Loads the weights and issues for the evaluators.
-	 * @param root The current root of the Objective tree.
+	 * @param root The current root of the XML structure.
 	 */
 	private final boolean loadTreeRecursive(SimpleElement currentRoot){
 		//TODO hdevos:
@@ -812,7 +835,7 @@ public final class UtilitySpace {
     * @author W.Pasman
      * @return null if util space is complete, else returns string containging explanation why not.
      */
-    public String UtilSpaceIsComplete() 
+    public String IsComplete() 
 	// Oh damn, problem, we don't have the domain template here anymore.
     // so how can we check domain compativility?
     // only we can check that all fields are filled.........
