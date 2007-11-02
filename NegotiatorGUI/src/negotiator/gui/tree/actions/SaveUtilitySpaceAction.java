@@ -32,7 +32,7 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 		
 		// check first for problems.
 		UtilitySpace us=parent.getNegotiatorTreeTableModel().getUtilitySpace();
-		String warning=us.UtilSpaceIsComplete();
+		String warning=us.IsComplete();
 		if (warning!=null){
 				int choice=JOptionPane.showConfirmDialog(null, "Utility space is not complete: "+warning+". Save anyway?");
 				if (choice!=JOptionPane.OK_OPTION) return;

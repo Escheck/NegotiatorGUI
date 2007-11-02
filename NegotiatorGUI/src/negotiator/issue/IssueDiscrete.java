@@ -55,7 +55,16 @@ public class IssueDiscrete extends Issue {
 	    }
 	}
 	
-	// Class methods
+
+	
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof IssueDiscrete)) return false;
+		if (!equalContents((Objective)o)) return false; // check the basic things like name
+		 // NOTE, we use .equals on issueValues which is an ArrayList.
+		 // therefore the ORDER of the issues is critical as well (as it should)
+		return issueValues.equals( ((IssueDiscrete)o).getValues());
+	}
 	public int getNumberOfValues() {
 	    return issueValues.size();
 	}
