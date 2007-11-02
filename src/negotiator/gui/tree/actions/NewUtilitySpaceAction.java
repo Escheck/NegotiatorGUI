@@ -25,8 +25,13 @@ public class NewUtilitySpaceAction extends AbstractAction {
 	}
 	
 	//Methods
-	public void actionPerformed(ActionEvent e) {
-		Domain domain = parent.getNegotiatorTreeTableModel().getDomain();
-		parent.clearTreeTable(domain, new UtilitySpace(domain, ""));
+	public void actionPerformed(ActionEvent e)
+	{
+		try
+		{
+			Domain domain = parent.getNegotiatorTreeTableModel().getDomain();
+			parent.clearTreeTable(domain, new UtilitySpace(domain, ""));
+		}
+		catch (Exception err) { System.out.println("Error creating utility space:");err.printStackTrace();}
 	}
 }

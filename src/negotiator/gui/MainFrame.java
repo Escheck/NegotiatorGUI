@@ -236,34 +236,27 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonShowModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonShowModelActionPerformed
-// TODO At the moment it is hardcoded that the utilitySpace from Agent A is used in the GUI. Change this later (maybe 2 separate buttons?)
-    	/*NegotiationManager manager = new NegotiationManager(
-                fieldAgentAClassName.getText(),
-                fieldAgentAName.getText(),
-                fieldAgentAUtilitySpace.getText(),
-                fieldAgentBClassName.getText(), 
-                fieldAgentBName.getText(),
-                fieldAgentBUtilitySpace.getText(),
-                fieldNegotiationTemplate.getText(), 
-                Integer.valueOf(fieldNumberOfSession.getText()));*/
+    	// TODO At the moment it is hardcoded that the utilitySpace from Agent A is used in the GUI. Change this later (maybe 2 separate buttons?)
     	//Temporarily just create a TreePanel with an empty domain and utilitySpace, because reading the utilitySpaces
     	//doesn't work properly yet (Herbert is working on that)
     	//Wouter: quick hack: set nego time to 0.
     	// I don't see why the showModel needs a nego template at all, showModel is about editing the
     	// datastructures, not the negotiation template?
-    	NegotiationTemplate template = 
-    		new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText(),0);
-    	TreeFrame treeFrame = new TreeFrame(template.getDomain(), template.getAgentAUtilitySpace());
-    	//TreeFrame treeFrame = new TreeFrame(new NegotiatorTreeTableModel(new negotiator.issue.Objective()));
+    	try {
+    		NegotiationTemplate template = 
+    			new NegotiationTemplate(fieldNegotiationTemplate.getText(),fieldAgentAUtilitySpace.getText(),fieldAgentBUtilitySpace.getText(),0);
+    		TreeFrame treeFrame = new TreeFrame(template.getDomain(), template.getAgentAUtilitySpace());
 		
-    	//javax.swing.JFrame frame = new javax.swing.JFrame();
-    	//frame.getContentPane().add(treeFrame);
-		//mainFrame.getContentPane().add(new WeightSlider());
-		
-		treeFrame.pack();
-		treeFrame.setVisible(true);
-    }//GEN-LAST:event_buttonShowModelActionPerformed
-
+    		treeFrame.pack();
+    		treeFrame.setVisible(true);
+    	}
+    	catch (Exception err)
+    	{
+    		JOptionPane.showMessageDialog(this, "ShowModel failed:"+err.getMessage());
+    		err.printStackTrace();
+    	}
+    }
+    
     private void buttonBrowseNegotiationTemplateActionPerformed(java.awt.event.ActionEvent evt) 
     {//GEN-FIRST:event_buttonBrowseNegotiationTemplateActionPerformed
 
@@ -300,20 +293,28 @@ public class MainFrame extends javax.swing.JFrame {
             output.setText(fileChooser.getSelectedFile().toURI().toString() );
         }
     }
-    private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStartActionPerformed
-        Main.nm = new NegotiationManager(
-                        fieldAgentAClassName.getText(),
-                        fieldAgentAName.getText(),
-                        fieldAgentAUtilitySpace.getText(),
-                        fieldAgentBClassName.getText(), 
-                        fieldAgentBName.getText(),
-                        fieldAgentBUtilitySpace.getText(),
-                        fieldNegotiationTemplate.getText(), 
-                        Integer.valueOf(fieldNumberOfSession.getText()));
-       negoManagerThread = new Thread(Main.nm);
-       negoManagerThread.start();
+    private void buttonStartActionPerformed(java.awt.event.ActionEvent evt) {
+    	try
+    	{
+		    Main.nm = new NegotiationManager(
+		                    fieldAgentAClassName.getText(),
+		                    fieldAgentAName.getText(),
+		                    fieldAgentAUtilitySpace.getText(),
+		                    fieldAgentBClassName.getText(), 
+		                    fieldAgentBName.getText(),
+		                    fieldAgentBUtilitySpace.getText(),
+		                    fieldNegotiationTemplate.getText(), 
+		                    Integer.valueOf(fieldNumberOfSession.getText()));
+		   negoManagerThread = new Thread(Main.nm);
+		   negoManagerThread.start();
+    	}
+    	catch (Exception err)
+    	{
+    		JOptionPane.showMessageDialog(this, "ShowModel failed:"+err.getMessage());
+    		err.printStackTrace();
+    	}
 
-    }//GEN-LAST:event_buttonStartActionPerformed
+    }
 
     private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopActionPerformed
         if (Main.nm!=null) Main.nm.stopNegotiation();

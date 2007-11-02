@@ -58,9 +58,12 @@ public final class UtilitySpace {
     /**
      * Ceate new default util space for a given domain.
      * @param domain
-     * @param fileName to read domain from. set to "" if no file available.
+     * @param fileName to read domain from. 
+     * Set fileName to "" if no file available, in which case default evaluators are loaded..
+     * @throws if error occurs, e.g. if domain does not match the util space, or file not found.
      */
-    public UtilitySpace(Domain domain, String fileName) {
+    public UtilitySpace(Domain domain, String fileName) throws Exception
+    {
         this.domain = domain;
     	fEvaluators = new HashMap<Objective, Evaluator>();
         if(!fileName.equals(""))
@@ -283,26 +286,17 @@ public final class UtilitySpace {
 	}
 
 	
-	//added by Herbert
 	/**
+	 * @author Herbert. Modified Wouter.
 	 * @param filename The name of the xml file to parse.
+	 * @throws exception if error occurs, e.g. file not found
 	 */
-	private final boolean loadTreeFromFile(String filename){
-    //	double weightsSum = 0;
-    //	EVALUATORTYPE evalType;
-    //	String type, etype;
-       // Evaluator lEvaluator=null;
-     //   int nrOfIssues=0, indexEvalPrice=-1;
-        
+	private final boolean loadTreeFromFile(String filename) throws Exception
+	{        
         SimpleDOMParser parser = new SimpleDOMParser();
-        try{
-            BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
-            SimpleElement root = parser.parse(file);
-            return loadTreeRecursive(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+        BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
+        SimpleElement root = parser.parse(file);
+        return loadTreeRecursive(root);
    	}
 	/**
 	 * Loads the weights and issues for the evaluators.
