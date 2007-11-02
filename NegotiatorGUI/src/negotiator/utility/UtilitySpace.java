@@ -164,7 +164,7 @@ public final class UtilitySpace {
         if (err!=null) throw new Exception("utility space of agent "+agentName+" is incomplete\n"+err);
         
         // TODO 
-         if (!checkTreeNormalization())  throw new Exception("utility space of agent "+agentName+" is not normalized\n");
+         if (!checkTreeNormalization())  throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
     }
     
     /**Wouter: I think this should not be used anymore*/
