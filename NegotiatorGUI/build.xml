@@ -21,14 +21,20 @@
 	<property name="build" location="bin"/>
 	<property name="tmp" location="tmp"/>
 	<property name="dep" location="dep"/>
+	
+	
 	<target name="cleanup">
 		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${tmp}"/>
 		</delete>				
 	</target>
+	
+	
 	<target name="makeTempDir">
 		<mkdir dir="${tmp}"/>
 	</target>
+	
+	
 	<target name="unpackJTreeTable" depends="makeTempDir">		
 		<unzip src="${dep}/jtreetable.jar" dest="${tmp}"/>
 	</target>
@@ -55,6 +61,10 @@
     </target>
 	
 	
+	<!-- WARNING. Both makeNegoSimulatorJar and makeNegoSimulatorWithBayesJar create a file
+	 named negosimulator.jar. Running them both will not work properly
+	-->
+
 	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" 
 		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpleAgent">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
@@ -71,16 +81,47 @@
 		<ant target="cleanup"/>
     </target>
 	
+	<target name ="makeNegoSimulatorWithBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" 
+		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJCCKit, compilesimpleAgent">
+   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
+         <jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" 
+				excludes="agents/ABMP*,  agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*" />
+			<fileset dir="${tmp}"/>
+	    	<manifest>
+      			<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="negotiator/Main"/>
+				<attribute name="Class-Path" value="."/>
+    		</manifest>		
+		</jar>	         
+		<ant target="cleanup"/>
+    </target>
+
 	
-	<target name ="makeAllJars" description="Creates all jar files" depends="makeNegoEditorJar, makeNegoSimulatorJar"/>
-	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeAllJars">
+	
+
+	<target name ="compilesimpleAgent">
+		<javac srcdir="." includes="SimpleAgent.java" classpath="${build}">
+		</javac>
+	</target>
+		
+	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeNegoEditorJar, makeNegoSimulatorWithBayesJar">
 		<zip destfile="${dist}/negotiator14Nov.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar"/>
-			<zipfileset dir="${dist}" includes="negoeditor.jar"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="templates/partydomain"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
+			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain" 
+					includes="party_domain.xml, party_utility_empty.xml" />
+			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
+			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
+			<zipfileset dir="doc" includes="14novguide.pdf" prefix="negotiator"/>
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
+			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
 		</zip>
 	</target>
-	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeAllJars">
+	
+	
+	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeNegoEditorJar, makeNegoSimulatorJar">
 		<zip destfile="${dist}/negotiator4Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
@@ -92,10 +133,6 @@
 		</zip>
 	</target>
 
-	<target name ="compilesimpleAgent">
-		<javac srcdir="." includes="SimpleAgent.java" classpath="${build}">
-		</javac>
-	</target>
 	
-</project> 
+</project>
 
