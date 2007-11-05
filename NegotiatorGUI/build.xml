@@ -86,7 +86,7 @@
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="doc" includes="guide.pdf" prefix="negotiator"/>
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
 			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
 		</zip>
