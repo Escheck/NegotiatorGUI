@@ -164,7 +164,11 @@ public class NegotiationTemplate {
 	{
 		//load the utility space
 		fAgentAUtilitySpace = new UtilitySpace(getDomain(), agentAUtilitySpaceFileName);
+		System.out.println("utility space statistics for "+"Agent "+agentAUtilitySpaceFileName);
+		fAgentAUtilitySpace.showStatistics();
 		fAgentBUtilitySpace = new UtilitySpace(getDomain(), agentBUtilitySpaceFileName);
+		System.out.println("utility space statistics for "+"Agent "+agentBUtilitySpaceFileName);
+		fAgentBUtilitySpace.showStatistics();
 		return;
 
 	}

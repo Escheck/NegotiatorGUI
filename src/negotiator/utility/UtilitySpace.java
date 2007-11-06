@@ -30,6 +30,8 @@ import negotiator.BidIterator;
  *
  * 
  * Wouter: the utility space couples all objectives to weights and evaluators.
+ * A utilityspace currently is not bound to one agent.
+ * I can see some security issues with that...
  * 
  * Wouter: this class is final to prevent users (students) to override the getUtility function
  * with their own version of UtilitySpace
@@ -56,7 +58,7 @@ public final class UtilitySpace {
     }
     
     /**
-     * Ceate new default util space for a given domain.
+     * Create new default util space for a given domain.
      * @param domain
      * @param fileName to read domain from. 
      * Set fileName to "" if no file available, in which case default evaluators are loaded..
@@ -918,6 +920,15 @@ public final class UtilitySpace {
     		totalCost += costofissue;;
     	}
     	return totalCost;
+    }
+    
+    public void showStatistics()
+    {
+    	for (Objective obj: fEvaluators.keySet())
+    	{
+    		System.out.print("Objective "+obj.getName()+" ");
+    		fEvaluators.get(obj).showStatistics();
+    	}
     }
 
 }
