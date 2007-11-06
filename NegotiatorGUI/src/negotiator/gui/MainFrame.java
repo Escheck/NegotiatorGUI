@@ -2,6 +2,10 @@
  * MainFrame.java
  *
  * Created on November 6, 2006, 3:58 PM
+ * Wouter: this file was once created using a GUI editor.
+ * But now we edit it manually.
+ * 
+ * TODO make the window resizable. Size is too small on Mac and button texts do not fit.
  */
 
 package negotiator.gui;
@@ -316,16 +320,15 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
-    private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopActionPerformed
-        if (Main.nm!=null) Main.nm.stopNegotiation();
+    private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (Main.nm!=null) Main.nm.stopNegotiation();
         if (negoManagerThread!=null) negoManagerThread.stop();
         Main.logger.add("All sessions have been stoped!!!");
-    }//GEN-LAST:event_buttonStopActionPerformed
+    }
 
-    private void fieldNumberOfSessionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNumberOfSessionActionPerformed
-
-    }//GEN-LAST:event_fieldNumberOfSessionActionPerformed
-    
+    private void fieldNumberOfSessionActionPerformed(java.awt.event.ActionEvent evt) {
+    	
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBrowseAgentAUtilitySpace;

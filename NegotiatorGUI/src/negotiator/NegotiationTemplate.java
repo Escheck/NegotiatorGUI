@@ -96,28 +96,31 @@ public class NegotiationTemplate {
 		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
 		domain = new Domain(xml_utility_space);
 		loadAgentsUtilitySpaces();
-		if(fRoot.getChildByTagName("analysis").length>0) {
-			//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
-		} else {
-			//propose to build an analysis
-			Object[] options = {"Yes","No"};                  
-			int n = JOptionPane.showOptionDialog(Main.mf,
-					"You have no analysis available for this template. Do you want build it?",
-					"No Analysis",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE,
-					null,
-					options,
-					options);
-			if(n==0) {
-
-				fAnalysis = Analysis.getInstance(this);
-				//fRoot.addChildElement(fAnalysis.getXMLRoot());
-				//  save the analysis to the cache
-				fAnalysis.saveToCache();
-			}
-			
-		}//if
+		if (Main.analysisEnabled)
+		{
+			if(fRoot.getChildByTagName("analysis").length>0) {
+				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
+			} else {
+				//propose to build an analysis
+				Object[] options = {"Yes","No"};                  
+				int n = JOptionPane.showOptionDialog(Main.mf,
+						"You have no analysis available for this template. Do you want build it?",
+						"No Analysis",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE,
+						null,
+						options,
+						options);
+				if(n==0) {
+	
+					fAnalysis = Analysis.getInstance(this);
+					//fRoot.addChildElement(fAnalysis.getXMLRoot());
+					//  save the analysis to the cache
+					fAnalysis.saveToCache();
+				}
+				
+			}//if
+		}
 		if(fAnalysis!=null) showAnalysis();			
 	}
 	/**

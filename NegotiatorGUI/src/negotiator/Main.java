@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
+import negotiator.exceptions.Warning;
 
 
 
@@ -31,6 +32,7 @@ public class Main {
     public static boolean fDebug;
     public static MainFrame mf;
     public static Chart fChart = null;
+    public static boolean analysisEnabled=false; // set to true to enable the realtime analysis tool.
     public Main() {
     }
     
@@ -49,7 +51,7 @@ public class Main {
                 logger = new Logger(mf.getOutputArea());
                 if(batchMode) mf.getButtonStart().doClick();
                 mf.setVisible(true);
-                
+                if (!analysisEnabled) new Warning("analysis is disabled.");
             }
         });
     }
