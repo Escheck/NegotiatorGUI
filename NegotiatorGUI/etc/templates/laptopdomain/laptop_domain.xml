@@ -1,5 +1,5 @@
-<negotiation_template number_of_sessions="3"> 
-<agent class="agents.UIAgent" name="seller" utility_space="laptop_seller_utility.xml"> 
+<negotiation_template number_of_sessions="1"> 
+<agent class="agents.BayesianAgent" name="seller" utility_space="laptop_seller_utility.xml"> 
 </agent> 
 <agent class="agents.UIAgent" name="buyer" utility_space="laptop_buyer_utility.xml"> 
 </agent> 

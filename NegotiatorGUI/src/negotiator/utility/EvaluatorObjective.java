@@ -116,6 +116,7 @@ public class EvaluatorObjective implements Evaluator {
 		throw new Exception("getCost not implemented for EvaluatorObjective");
 	}
 	
+	public void showStatistics() { System.out.println("weight="+fWeight); }
 
 
 }

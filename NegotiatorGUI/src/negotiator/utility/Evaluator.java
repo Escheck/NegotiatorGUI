@@ -66,4 +66,7 @@ public interface Evaluator {
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception;
 	
 	public Evaluator clone();
+	
+	// print statistics of this evaluator. For analysis 
+	public void showStatistics();
 }

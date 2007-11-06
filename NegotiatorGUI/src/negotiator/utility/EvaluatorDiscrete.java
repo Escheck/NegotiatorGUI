@@ -300,10 +300,10 @@ public class EvaluatorDiscrete implements Evaluator {
 	 */
 	public Value getMaxValue() {
 		  Iterator it = fEval.entrySet().iterator();
-		  Double lTmp = Double.NEGATIVE_INFINITY;
+		  Integer lTmp = Integer.MIN_VALUE;
 		  ValueDiscrete lValue = null;
 	        while (it.hasNext()) {
-	        	Map.Entry<ValueDiscrete, Double> field = (Map.Entry<ValueDiscrete, Double>) (it.next());
+	        	Map.Entry<ValueDiscrete, Integer> field = (Map.Entry<ValueDiscrete, Integer>) (it.next());
 	        	if(field.getValue()>lTmp) {
 	        		lValue = field.getKey();
 	        		lTmp = field.getValue();
@@ -314,10 +314,10 @@ public class EvaluatorDiscrete implements Evaluator {
 
 	public Value getMinValue() {
 		  Iterator it = fEval.entrySet().iterator();
-		  Double lTmp = Double.POSITIVE_INFINITY;
+		  Integer lTmp = Integer.MAX_VALUE;
 		  ValueDiscrete lValue = null;
 	        while (it.hasNext()) {
-	        	Map.Entry<ValueDiscrete, Double> field = (Map.Entry<ValueDiscrete, Double>) (it.next());
+	        	Map.Entry<ValueDiscrete, Integer> field = (Map.Entry<ValueDiscrete, Integer>) (it.next());
 	        	if(field.getValue()<lTmp) {
 	        		lValue = field.getKey();
 	        		lTmp = field.getValue();
@@ -344,4 +344,8 @@ public class EvaluatorDiscrete implements Evaluator {
 		return ed;
 	}
 	
+	public void showStatistics()
+	{
+		System.out.println("weight="+getWeight()+" min="+getMinValue()+" max="+getMaxValue());		
+	}
 }

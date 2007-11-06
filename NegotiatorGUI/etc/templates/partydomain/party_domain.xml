@@ -1,7 +1,7 @@
 <negotiation_template number_of_sessions="1"> 
-<agent class="agents.UIAgent" name="catholijn" utility_space="party_utility_cath.xml">
+<agent class="agents.UIAgent" name="you" utility_space="party_XXXXXXX_utility.xml">
 </agent>
-<agent class="agents.UIAgent" name="koen" utility_space="party_utility_kh.xml">
+<agent class="agents.BayesianAgent" name="opponent" utility_space="party_YYYYYYY_utility.xml">
 </agent>
 <utility_space number_of_issues="0"> 
 <objective index="1" etype="objective" type="objective" description="" name="Party"> 
