@@ -43,6 +43,7 @@ public class NegotiationManager implements Runnable {
     private int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
     private String agentAclassName;
     private String agentBclassName;
+    private boolean agentAStarts; // true if agent A should start the nego.
     SessionFrame sf;
     /** Creates a new instance of NegotiationManager
      * throws if exception occurs, particularly with creation of nego template.
@@ -56,10 +57,12 @@ public class NegotiationManager implements Runnable {
             String agentBName,
             String agentBUtilitySpace,
             String negotiationTemplateFileName,
-            int numberOfSession) throws Exception
+            int numberOfSession,
+            boolean agentAStartsP) throws Exception
     {
         this.agentAclassName = agentAclassName;
         this.agentBclassName = agentBclassName;
+        agentAStarts=agentAStartsP;
         // load the utility spaces
         numberOfSessions = numberOfSession;
         Main.logger.add("Loading agents...");
@@ -103,7 +106,7 @@ public class NegotiationManager implements Runnable {
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
     {
     	
-        Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber);
+        Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts);
         if(Main.fDebug) {
         	nego.run();	
         } else {

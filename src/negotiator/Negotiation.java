@@ -30,7 +30,7 @@ public class Negotiation implements Runnable {
     public NegotiationOutcome no;
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
-
+    boolean agentAStarts=false;
     
     private ArrayList<Bid> fAgentABids;
     private ArrayList<Bid> fAgentBBids;
@@ -40,7 +40,7 @@ public class Negotiation implements Runnable {
      * Creates a new instance of Negotiation 
      **/
     public Negotiation(Agent agentA, Agent agentB, NegotiationTemplate nt, 
-    		int sessionNumber, int sessionTotalNumber) {
+    		int sessionNumber, int sessionTotalNumber, boolean agentAStartsP) {
         this.agentA = agentA;
         this.agentB = agentB;
         this.sessionNumber=sessionNumber;
@@ -48,6 +48,7 @@ public class Negotiation implements Runnable {
         this.nt = nt;
         this.fAgentABids = new ArrayList<Bid>();
         this.fAgentBBids = new ArrayList<Bid>();
+        agentAStarts=agentAStartsP;
     }
     
     public Agent otherAgent(Agent ag)
@@ -79,19 +80,22 @@ public class Negotiation implements Runnable {
         Agent currentAgent;
         Date startTime=new Date();
         try {
-        	 // note, we clone the utility spaces for security reasons, so that the agent
+            double agentAUtility,agentBUtility;
+
+            // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
             agentA.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),
             		new UtilitySpace(nt.getAgentAUtilitySpace()));
-            //agentA.loadUtilitySpace(nt.getAgentAUtilitySpaceFileName());
             agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),
             		new UtilitySpace(nt.getAgentBUtilitySpace()));
-            //agentB.loadUtilitySpace(nt.getAgentBUtilitySpaceFileName());
             stopNegotiation = false;
             Action action = null;
-            double agentAUtility,agentBUtility;
-            Agent agents[] = {agentA, agentB};
-            currentAgent = getRandomAgent(agents) ;
+
+            if (agentAStarts) currentAgent=agentA;
+            else {            
+            	Agent agents[] = {agentA, agentB};
+            	currentAgent = getRandomAgent(agents) ; 
+            }
             Main.logger.add("Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
                 try {
