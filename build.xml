@@ -50,7 +50,7 @@
 		depends="cleanup, unpackJTreeTable">
 	     <delete file="${dist}/negoeditor.jar" quiet="true"/>
          <jar destfile="${dist}/negoeditor.jar"  >
-			<fileset dir="${build}" excludes="agents/, negotiator/actions"/>
+			<fileset dir="${build}" excludes="agents/, negotiator/actions, negotiator/CheckPartyUtility*"/>
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -70,7 +70,7 @@
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}" 
-				excludes="agents/bayesianopponentmodel/, agents/ABMP*, agents/Bayesian*, agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*" />
+				excludes="agents/bayesianopponentmodel/, agents/ABMP*, agents/Bayesian*, agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*, negotiator/CheckPartyUtility*" />
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -86,7 +86,7 @@
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}" 
-				excludes="agents/ABMP*,  agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*" />
+				excludes="agents/ABMP*,  agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*, negotiator/CheckPartyUtility*" />
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
