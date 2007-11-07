@@ -25,6 +25,8 @@ import negotiator.issue.*;
  *
  * @author W.Pasman
  * Checks all selected files for conformity with the Party domain. 
+ * Checked is that the selected file is ready to run (has all evaluators set)
+ * and that all costs correspond to those in party_empty_utility.xml
  * You select them one by one, and if one fails the check the application stops with explanation.
  */
 public class CheckPartyUtilityXML extends JPanel
