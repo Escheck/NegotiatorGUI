@@ -16,7 +16,7 @@
 	
 --> 
 	
-<project name="Negotiator" default="makeAllJars" basedir=".">
+<project name="Negotiator" default="makeDistributiveForStudentsOn4Nov" basedir=".">
 	<property name="dist" location="dist"/> 
 	<property name="build" location="bin"/>
 	<property name="tmp" location="tmp"/>

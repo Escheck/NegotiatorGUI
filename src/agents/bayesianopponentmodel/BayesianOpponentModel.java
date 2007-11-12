@@ -21,7 +21,7 @@ public class BayesianOpponentModel {
 	private double fPreviousBidUtility;
 	private double EXPECTED_CONCESSION_STEP = 0.015;
 	private double SIGMA = 0.35;
-	private boolean USE_DOMAIN_KNOWLEDGE = true;
+	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
 	public BayesianOpponentModel(UtilitySpace pUtilitySpace) {
 		//

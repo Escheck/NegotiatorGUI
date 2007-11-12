@@ -19,10 +19,13 @@ public class BayesianOpponentModel4 {
 	private ArrayList<Bid> fBiddingHistory;
 //	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
+	ArrayList<Issue> issues;
 	public BayesianOpponentModel4(UtilitySpace pUtilitySpace) {
 		//
+
 		fPreviousBidUtility = 1;
 		fDomain = pUtilitySpace.getDomain();
+		issues=fDomain.getIssues();
 		fUS = pUtilitySpace;
 		fBiddingHistory = new ArrayList<Bid>();
 		
@@ -34,7 +37,7 @@ public class BayesianOpponentModel4 {
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
 		int lTotalTriangularFns = 4;		
 		for(int i =0; i<fUS.getNrOfEvaluators();i++) {
-			switch(fUS.getEvaluator(i).getType()) {
+			switch(fUS.getEvaluator(issues.get(i).getNumber()).getType()) {
 			case PRICE:
 				ArrayList<EvaluatorHypothesis> lEvalHyps = new ArrayList<EvaluatorHypothesis>();
 				fEvaluatorHyps.add(lEvalHyps);
@@ -169,7 +172,7 @@ public class BayesianOpponentModel4 {
 				break;
 			}//switch
 		}
-		printEvalsDistribution();		
+		//printEvalsDistribution();		
 	}
 	void initWeightHyps() {
 		int lWeightHypsNumber = 11;
@@ -207,7 +210,7 @@ public class BayesianOpponentModel4 {
 		double lExpectedEval = 0;
 		for(int j=0;j<fEvaluatorHyps.get(pIssueNumber).size();j++) {
 			lExpectedEval = lExpectedEval + fEvaluatorHyps.get(pIssueNumber).get(j).getProbability() *
-								(Double)(fEvaluatorHyps.get(pIssueNumber).get(j).getEvaluator().getEvaluation(fUS, pBid,pIssueNumber));
+								fEvaluatorHyps.get(pIssueNumber).get(j).getEvaluator().getEvaluation(fUS, pBid,issues.get(pIssueNumber).getNumber());
 		}
 		return lExpectedEval;
 		
@@ -299,12 +302,12 @@ public class BayesianOpponentModel4 {
 			double lN = 0;			
 			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) {
 				EvaluatorHypothesis lHyp =fEvaluatorHyps.get(i).get(j); 
-				lN += lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(Double)(lHyp.getEvaluator().getEvaluation(fUS, lBid, i)), fPreviousBidUtility);					
+				lN += lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(lHyp.getEvaluator().getEvaluation(fUS, lBid, issues.get(i).getNumber())), fPreviousBidUtility);					
 			}
 			//2. update probabilities				
 			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) {
 				EvaluatorHypothesis lHyp =fEvaluatorHyps.get(i).get(j); 
-				lEvaluatorHyps.get(i).get(j).setProbability(lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(Double)(lHyp.getEvaluator().getEvaluation(fUS, lBid, i)), fPreviousBidUtility)/lN);					
+				lEvaluatorHyps.get(i).get(j).setProbability(lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(lHyp.getEvaluator().getEvaluation(fUS, lBid, issues.get(i).getNumber())), fPreviousBidUtility)/lN);					
 			}
 		}			
 		fEvaluatorHyps = lEvaluatorHyps;
@@ -367,7 +370,7 @@ public class BayesianOpponentModel4 {
 			}
 			
 		}
-		//print all weights
+/*		//print all weights
 		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
 			System.out.print(String.format("%1.2f", getExpectedWeight(i))+";");			
 		}
@@ -376,14 +379,14 @@ public class BayesianOpponentModel4 {
 			System.out.print(lBestEvals[i].getDesc()+";");			
 		}
 		System.out.println();
-		
+	*/	
 	}
 	void printEvalsDistribution() {
-		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
+/*		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
 			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) 
 				System.out.print(String.format("%1.2f", fEvaluatorHyps.get(i).get(j).getProbability())+";");
 			System.out.println();
-		}
+		}*/
 		
 	}
 }

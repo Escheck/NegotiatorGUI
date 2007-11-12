@@ -1,0 +1,41 @@
+package agents.similarity;
+
+import java.util.ArrayList;
+
+import negotiator.Bid;
+import negotiator.Domain;
+import negotiator.xml.SimpleElement;
+
+public class Similarity {
+	private Domain fDomain;
+    private double fWeights[];
+    private ArrayList<SimilarityFunction> fSimilarityFunctions;
+	
+	public Similarity(Domain pDomain) {
+		fDomain = pDomain;
+		fSimilarityFunctions = new ArrayList<SimilarityFunction>();
+	}
+
+    public final double getSimilarity(Bid pMyBid, Bid pOpponentBid) {
+        double lSimilarity=0;
+        for(int i=0;i<fSimilarityFunctions.size();i++) {
+        	lSimilarity += fWeights[i]*fSimilarityFunctions.get(i).getSimilarityValue(pMyBid, pOpponentBid);
+        }
+        
+        return lSimilarity;
+    }
+        
+    public void loadFromXML(SimpleElement pRoot) {
+    	Object[] lXMLIssue = pRoot.getChildByTagName("issue");
+		fWeights = new double[lXMLIssue.length];    	
+    	for(int j=0;j<lXMLIssue.length;j++) {
+    		Object[] lXMLSimFn = ((SimpleElement)(lXMLIssue[j])).getChildByTagName("similarity_function");
+    		if(lXMLSimFn==null) continue;
+   			SimilarityFunction lSimFn = new SimilarityFunction(fDomain);
+   			//	load weights
+   			fWeights[j] =Double.valueOf(((SimpleElement)(lXMLSimFn[0])).getAttribute("weight"));
+   			lSimFn.loadFromXML((SimpleElement)(lXMLSimFn[0]),j);
+   			fSimilarityFunctions.add(lSimFn);
+    	}//for
+    }
+}
