@@ -29,7 +29,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		fCost = new HashMap<ValueDiscrete, Double>();
 		
 		fweight = 0;
-	}
+	} 
 
 	/**
 	 * @returns the weight for this evaluator, a value between 0 and 1.

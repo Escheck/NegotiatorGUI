@@ -27,7 +27,7 @@ public class ABMPExactAgent extends Agent {
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private static final double BREAK_OFF_POINT = 0.5;
-	private double[] lIssueWeight;
+//	private double[] lIssueWeight;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 
 	private static final double ACCURACY = 0.005;
@@ -59,18 +59,27 @@ public class ABMPExactAgent extends Agent {
 	}
 
 	private Action proposeInitialBid() {
-		Bid lBid = getMaxUtilityBid();
-		// Return (one of the) possible bid(s) with maximal utility.
-		myLastBid = lBid;
+		Bid lBid = null;
+		try {
+			lBid = utilitySpace.getMaxUtilityBid();		
+			// Return (one of the) possible bid(s) with maximal utility.
+			myLastBid = lBid;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new Offer(this, lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) {
 		Bid lBid = null;
-		double lMyUtility, lOppntUtility, lTargetUtility;
+		double lMyUtility=0, lOppntUtility=0, lTargetUtility;
 		// Both parties have made an initial bid. Compute associated utilities from my point of view.
-		lMyUtility = utilitySpace.getUtility(myLastBid);
-		lOppntUtility = utilitySpace.getUtility(lOppntBid);
+		try {
+			lMyUtility = utilitySpace.getUtility(myLastBid);
+			lOppntUtility = utilitySpace.getUtility(lOppntBid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		lTargetUtility = getTargetUtility(lMyUtility, lOppntUtility);
 		lBid = getBidExact(lTargetUtility);
 		myLastBid = lBid;
@@ -91,17 +100,12 @@ public class ABMPExactAgent extends Agent {
 				lAction = proposeInitialBid();
 			else if (utilitySpace.getUtility(lOppntBid) >= utilitySpace.getUtility(myLastBid))
 				// Opponent bids equally, or outbids my previous bid, so lets accept
-				lAction = new Accept(this, lOppntBid);
+				lAction = new Accept(this);
 			else
 				// Propose counteroffer. Get next bid.
 				lAction = proposeNextBid(lOppntBid);
 			break;
 		case ACCEPT: // Presumably, opponent accepted last bid, but let's check...
-			lOppntBid = ((Accept) messageOpponent).getBid();
-			if (lOppntBid.equals(myLastBid))
-				lAction = new Accept(this, myLastBid);
-			else
-				lAction = new Offer(this, myLastBid);
 			break;
 		case BREAKOFF:
 			// nothing left to do.
@@ -132,20 +136,6 @@ public class ABMPExactAgent extends Agent {
 		return lActionType;
 	}
 
-	public void loadUtilitySpace(String fileName) {
-		double[] lWeights;
-		
-		utilitySpace = new SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
-	
-		nrOfIssues = getNegotiationTemplate().getDomain().getNumberOfIssues();
-		lIssueWeight = new double[nrOfIssues];
-		lWeights = new double[nrOfIssues];
-		for (int i=0; i<nrOfIssues; i++) {
-			lIssueWeight[i] = this.utilitySpace.getWeight(i);
-			lWeights[i] = lIssueWeight[i];
-		}
-	}
-
 	private Bid getBidExact(double targetUtility) {
 		Bid lBid = null;
 		double lUtility = -1;
@@ -153,8 +143,12 @@ public class ABMPExactAgent extends Agent {
 		// Return first bid found in a random walk that does not deviate more
 		// than ACCURACY from target utility.
 		while (Math.abs(targetUtility - lUtility) > ACCURACY) {
-			lBid = getNegotiationTemplate().getDomain().getRandomBid();
-			lUtility = utilitySpace.getUtility(lBid);
+			lBid = utilitySpace.getDomain().getRandomBid();
+			try{
+				lUtility = utilitySpace.getUtility(lBid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return lBid;
 	}

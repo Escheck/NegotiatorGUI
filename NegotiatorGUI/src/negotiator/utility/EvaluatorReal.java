@@ -5,6 +5,7 @@ import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class EvaluatorReal implements Evaluator {
 	
@@ -55,8 +56,14 @@ public class EvaluatorReal implements Evaluator {
 		return fweightLock;
 	}	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
-		double utility;
-		double value = ((ValueReal)bid.getValue(index)).getValue();
+		double utility;		
+		double value =-1;
+		try {
+			value  = ((ValueReal)bid.getValue(index)).getValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		utility = getEvaluation(value);
 		return utility;
 	}
@@ -270,4 +277,21 @@ public class EvaluatorReal implements Evaluator {
 	public void setType(EVALFUNCTYPE pType) {
 		type =pType;
 	}
+	public EvaluatorReal clone()
+	{
+		EvaluatorReal ed=new EvaluatorReal();
+		ed.setWeight(fweight);
+		try{
+			for (Entry<Integer, Double> entry:fParam.entrySet())
+				ed.addParam(new Integer(entry.getKey()), new Double(entry.getValue()));
+		}
+		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
+
+		return ed;
+	}
+	public void showStatistics()
+	{
+		System.out.println("weight="+getWeight()+" min="+getMinValue()+" max="+getMaxValue());		
+	}
+	
 }

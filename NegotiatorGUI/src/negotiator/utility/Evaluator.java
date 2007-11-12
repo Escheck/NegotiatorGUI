@@ -39,7 +39,7 @@ public interface Evaluator {
 	* Providing the complete bid as a paramater to the method allows for issue dependencies.
 	* @throws exception if problem, for instance illegal evaluation values.
 	*/
-	public Object getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception;
+	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception;
 	
 	public EVALUATORTYPE getType();
 	

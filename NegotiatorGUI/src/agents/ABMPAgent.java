@@ -9,6 +9,7 @@ package agents;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Vector;
 import java.util.HashMap;
 
@@ -31,7 +32,7 @@ public class ABMPAgent extends Agent {
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private static final double BREAK_OFF_POINT = 0.5;
-	private double[] fIssueWeight;
+//	private double[] fIssueWeight;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 
 	// Paraters used in ABMP strategy
@@ -64,15 +65,13 @@ public class ABMPAgent extends Agent {
 		super();
 	}
 
-	protected void init(int sessionNumber, int sessionTotalNumber,NegotiationTemplate nt) {		
-		super.init(sessionNumber, sessionTotalNumber, nt);
-		myName = super.getName();
-		this.sessionNumber = sessionNumber;
-		this.sessionTotalNumber = sessionTotalNumber;
-
+	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+    		Integer totalTimeP, UtilitySpace us) {
+		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;
+		
 	}
 
 	public void ReceiveMessage(Action opponentAction) {
@@ -80,12 +79,16 @@ public class ABMPAgent extends Agent {
 	}
 
 	private Action proposeInitialBid() {
-		Bid lBid;
+		Bid lBid = null;
 		
 		// Return (one of the) possible bid(s) with maximal utility.
-		lBid = getMaxUtilityBid();
+		try {
+		lBid =utilitySpace.getMaxUtilityBid();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		myLastBid = lBid;
-		return new Offer(this, getMaxUtilityBid());
+		return new Offer(this, lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) throws Exception{
@@ -112,20 +115,25 @@ public class ABMPAgent extends Agent {
 			if (myLastAction == null)
 				// Other agent started, lets propose my initial bid.
 				lAction = proposeInitialBid();
-			else if (utilitySpace.getUtility(lOppntBid) >= (utilitySpace.getUtility(myLastBid))-UTIlITYGAPSIZE)
-				// Opponent bids equally, or outbids my previous bid, so lets accept.
-				lAction = new Accept(this, lOppntBid);
-			else
-				// Propose counteroffer. Get next bid.
-				lAction = proposeNextBid(lOppntBid);
+			else {
+				try {
+					if (utilitySpace.getUtility(lOppntBid) >= (utilitySpace.getUtility(myLastBid))-UTIlITYGAPSIZE)
+						// 	Opponent bids equally, or outbids my previous bid, so lets accept.
+						lAction = new Accept(this);
+					else
+						// 	Propose counteroffer. Get next bid.
+						try {
+							lAction = proposeNextBid(lOppntBid);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			break;
 		case ACCEPT: // Presumably, opponent accepted last bid, but let's check...
-			lOppntBid = ((Accept) messageOpponent).getBid();
-			if (lOppntBid.equals(myLastBid))
-				lAction = new Accept(this, myLastBid);
-			else
-				lAction = new Offer(this, myLastBid);
-			break;
 		case BREAKOFF:
 			// nothing left to do. Negotiation ended, which should be checked by
 			// Negotiator...
@@ -157,20 +165,10 @@ public class ABMPAgent extends Agent {
 		return lActionType;
 	}
 
-	public void loadUtilitySpace(String fileName) {
-		
-		utilitySpace = new SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
-	
-		nrOfIssues = getNegotiationTemplate().getDomain().getNumberOfIssues();
-		fIssueWeight = new double[nrOfIssues];
-		for (int i=0; i<nrOfIssues; i++) {
-			fIssueWeight[i] = this.utilitySpace.getWeight(i);
-		}
-	}
 
 	// ABMP Specific Code
 
-	private Bid getBidABMPsimple(double targetUtility) {
+	private Bid getBidABMPsimple(double targetUtility) throws Exception {
 		//Value[] lIssueIndex = new Value[nrOfIssues];
 		HashMap<Integer, Value> lIssueIndex = new HashMap<Integer, Value>();
 		double[] lIssueAlpha = new double[nrOfIssues];
@@ -210,8 +208,8 @@ public class ABMPAgent extends Agent {
 		int lNrOfRealIssues = 0;
 		for (int i = 0; i < nrOfIssues; i++) {
 			lUtility = 1; // ASSUMPTION: Max utility = 1.
-			Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);
-			if(lIssue.getType() == discrete) {
+			Objective lIssue = utilitySpace.getDomain().getIssue(i);
+			if(lIssue.getType() == ISSUETYPE.DISCRETE) {
 				IssueDiscrete lIssueDiscrete =(IssueDiscrete)lIssue;
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
 					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation(lIssueDiscrete.getValue(j));
@@ -222,7 +220,7 @@ public class ABMPAgent extends Agent {
 					}//if
 				}//for
 	//FIXME		lTotalConcession += fIssueWeight[i]*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation((ValueDiscrete)lIssueIndex[i]));
-			} else if (lIssue.getType() == real)
+			} else if (lIssue.getType() == ISSUETYPE.REAL)
 				lNrOfRealIssues += 1;
 		}
 		
@@ -237,8 +235,8 @@ public class ABMPAgent extends Agent {
 		double lRestUtitility = lUtilityGap + lTotalConcession;
 		// Distribute remaining utility of real and/or price issues. Integers still to be done. See above.
 		for (int i = 0; i < nrOfIssues; i++) {
-			Objective lIssue = getNegotiationTemplate().getDomain().getIssue(i);
-			if(lIssue.getType() == real) {
+			Objective lIssue = utilitySpace.getDomain().getIssue(i);
+			if(lIssue.getType() == ISSUETYPE.REAL) {
 				lTE[i] += lRestUtitility/lNrOfRealIssues;
 				switch(utilitySpace.getEvaluator(i).getType()) {
 				case REAL:
@@ -251,7 +249,7 @@ public class ABMPAgent extends Agent {
 					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(i));
 //					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound());
 					lIssueIndex.put(new Integer(i), new ValueReal(lPriceEvaluator.getLowerBound()));
-					Bid lTempBid = new Bid(getNegotiationTemplate().getDomain(), lIssueIndex);
+					Bid lTempBid = new Bid(utilitySpace.getDomain(), lIssueIndex);
 //					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
 					lIssueIndex.put(new Integer(i), lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]));
 					break;
@@ -259,7 +257,7 @@ public class ABMPAgent extends Agent {
 			}
 		}
 		
-		return new Bid(getNegotiationTemplate().getDomain(), lIssueIndex);
+		return new Bid(utilitySpace.getDomain(), lIssueIndex);
 	}
 
 	private double getTargetUtility(double myUtility, double oppntUtility) {
