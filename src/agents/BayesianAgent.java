@@ -353,6 +353,7 @@ public class BayesianAgent extends Agent {
 		{ 
 			System.out.println("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
+			lAction = new Accept(this);
 		}
 		myLastAction = lAction;
 		return lAction;
