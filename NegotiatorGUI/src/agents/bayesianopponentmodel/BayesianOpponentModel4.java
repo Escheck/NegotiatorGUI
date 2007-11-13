@@ -314,12 +314,19 @@ public class BayesianOpponentModel4 {
 	//	}
 		printEvalsDistribution();
 	}
+	private boolean haveSeenBefore(Bid pBid) {
+		for(Bid tmpBid : fBiddingHistory) {
+			if(pBid.equals(tmpBid)) return true;
+		}
+		return false;
+	}
 	public void updateBeliefs(Bid pBid) throws Exception{
+		if(haveSeenBefore(pBid)) return;
 		fBiddingHistory.add(pBid);
-				
+		
 		//do not update the bids if it is the first bid		
 		if(fBiddingHistory.size()>1) {
-			if(pBid.equals(fBiddingHistory.get(fBiddingHistory.size()-2))) return;
+			
 			//update the weights
 			updateWeights();
 			//update evaluation functions
