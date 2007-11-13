@@ -142,7 +142,13 @@ public class NegotiationManager implements Runnable {
         	nt.getAnalysis().addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
     	NegotiationOutcome no = null;
     	if(nego.no!=null) no = nego.no;
-    	else no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)");
+    	else
+    		no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)",
+    			nego.fAgentABids,nego.fAgentBBids,1.,1.,
+                agentAStarts,
+                nt.getAgentAUtilitySpaceFileName(),
+                nt.getAgentBUtilitySpaceFileName());
+    		// don't bother about max utility, both have zero anyway.
     	sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));

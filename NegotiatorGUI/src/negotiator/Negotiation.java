@@ -32,8 +32,8 @@ public class Negotiation implements Runnable {
     boolean agentBtookAction = false;
     boolean agentAStarts=false;
     
-    private ArrayList<Bid> fAgentABids;
-    private ArrayList<Bid> fAgentBBids;
+    public ArrayList<Bid> fAgentABids;
+    public ArrayList<Bid> fAgentBBids;
     
     /** 
      * 
@@ -81,6 +81,8 @@ public class Negotiation implements Runnable {
         Date startTime=new Date();
         try {
             double agentAUtility,agentBUtility;
+            UtilitySpace spaceA=nt.getAgentAUtilitySpace();
+            UtilitySpace spaceB=nt.getAgentBUtilitySpace();
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
@@ -111,7 +113,14 @@ public class Negotiation implements Runnable {
                                agentB.getClass().getCanonicalName(),
                                String.valueOf(0),
                                String.valueOf(0),
-                               "Agent "+currentAgent.getName()+" ended the negotiation without agreement");   
+                               "Agent "+currentAgent.getName()+" ended the negotiation without agreement",
+                               fAgentABids,fAgentBBids,
+                               spaceA.getUtility(spaceA.getMaxUtilityBid()),
+                               spaceB.getUtility(spaceB.getMaxUtilityBid()),
+                               agentAStarts,
+                               nt.getAgentAUtilitySpaceFileName(),
+                               nt.getAgentBUtilitySpaceFileName()
+                               );   
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
@@ -136,7 +145,12 @@ public class Negotiation implements Runnable {
                                    agentA.getClass().getCanonicalName(),
                                    agentB.getClass().getCanonicalName(),
                                    String.valueOf(agentAUtility),
-                                   String.valueOf(agentBUtility),null);
+                                   String.valueOf(agentBUtility),null,fAgentABids,fAgentBBids,
+                                   spaceA.getUtility(spaceA.getMaxUtilityBid()),
+                                   spaceB.getUtility(spaceB.getMaxUtilityBid()),
+                                   agentAStarts,
+                                   nt.getAgentAUtilitySpaceFileName(),
+                                   nt.getAgentBUtilitySpaceFileName());
                         checkAgentActivity(currentAgent) ;
                         otherAgent(currentAgent).ReceiveMessage(action);
                       
@@ -181,7 +195,12 @@ public class Negotiation implements Runnable {
                       agentB.getClass().getCanonicalName(),
                       String.valueOf(agentAUtility),
                       String.valueOf(agentBUtility),
-                      "Agent " + currentAgent.getName() +":"+e.getMessage());
+                      "Agent " + currentAgent.getName() +":"+e.getMessage(),fAgentABids,fAgentBBids,
+                      1.,1.,
+                      agentAStarts,
+                      nt.getAgentAUtilitySpaceFileName(),
+                      nt.getAgentBUtilitySpaceFileName());
+                   // don't compute the max utility, we're in exception which is already bad enough.
                 }
             }
             

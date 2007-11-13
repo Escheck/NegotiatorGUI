@@ -124,7 +124,8 @@ public class SimpleAgent extends Agent
 	 */
 	double Paccept(double u, double t) throws Exception
 	{
-		if (u<0 || u>1) throw new Exception("utility "+u+" outside [0,1]");
+		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
+		 // normalization may be slightly off, therefore we have a broad boundary up to 1.05
 		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
 		
 		if (t==0.5) return u;
