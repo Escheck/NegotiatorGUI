@@ -462,7 +462,7 @@ public class BayesianAgent extends Agent {
 	 */
 	private double Paccept(double u, double t) throws Exception
 	{
-		if (u<0 || u>1) throw new Exception("utility "+u+" outside [0,1]");
+		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
 		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
 		
 		if (t==0.5) return u;
