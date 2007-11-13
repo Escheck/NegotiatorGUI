@@ -319,6 +319,7 @@ public class BayesianOpponentModel4 {
 				
 		//do not update the bids if it is the first bid		
 		if(fBiddingHistory.size()>1) {
+			if(pBid.equals(fBiddingHistory.get(fBiddingHistory.size()-2))) return;
 			//update the weights
 			updateWeights();
 			//update evaluation functions

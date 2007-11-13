@@ -91,7 +91,7 @@ public class BayesianAgent extends Agent {
 			log("Try to match opponent's concession in his space:");
 			double lDeltaOppUtil = fOpponentModel.getExpectedUtility(pOppntBid)-
 								   fOpponentModel.getExpectedUtility(fOpponentPreviousBid);
-			double lTargetUtilInOpponentSpace = fOpponentModel.getExpectedUtility(myLastBid) + lDeltaOppUtil;
+			double lTargetUtilInOpponentSpace = fOpponentModel.getExpectedUtility(myLastBid) - lDeltaOppUtil;
 			log("Opp's change in utility:" + String.format("%1.5f", lDeltaOppUtil));
 			log("My target utility in opp's utility space:" + String.format("%1.5f", lTargetUtilInOpponentSpace));
 			//find a bid around lTargetUtilInOpponentSpace that maximizes my utility
@@ -310,12 +310,12 @@ public class BayesianAgent extends Agent {
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
 				else {
-	                double offeredutil=utilitySpace.getUtility(lOppntBid);
+/*	                double offeredutil=utilitySpace.getUtility(lOppntBid);
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
-	                if (P>Math.random()) 					
-//					if (utilitySpace.getUtility(lOppntBid) >= utilitySpace
-//						.getUtility(myLastBid))
+	                if (P>Math.random()) 				*/	
+					if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace
+						.getUtility(myLastBid))
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
 	                	lAction = new Accept(this);
@@ -324,7 +324,7 @@ public class BayesianAgent extends Agent {
 	                	lAction = proposeNextBid(lOppntBid);
 	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                	// if yes then accept last bid of the opponent.
-	                	if (utilitySpace.getUtility(lOppntBid) >= utilitySpace.getUtility(myLastBid))
+	                	if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid))
 	                		// Opponent bids equally, or outbids my previous bid, so lets
 	                		// accept
 	                		lAction = new Accept(this);
@@ -353,7 +353,7 @@ public class BayesianAgent extends Agent {
 		{ 
 			System.out.println("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
-			lAction = new Accept(this);
+			lAction = new Offer(this, myLastBid);
 		}
 		myLastAction = lAction;
 		return lAction;
