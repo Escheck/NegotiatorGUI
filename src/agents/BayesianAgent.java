@@ -38,7 +38,7 @@ public class BayesianAgent extends Agent {
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
 	
-	private boolean fDebug = true;
+	private boolean fDebug = false;
 	// Class constructor
 	public BayesianAgent() {
 		super();

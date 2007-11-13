@@ -32,7 +32,7 @@ public class Main {
     public static boolean fDebug;
     public static MainFrame mf;
     public static Chart fChart = null;
-    public static boolean analysisEnabled=false; // set to true to enable the realtime analysis tool.
+    public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
     public Main() {
     }
     
