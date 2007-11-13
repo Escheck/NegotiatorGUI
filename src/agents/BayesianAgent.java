@@ -35,7 +35,7 @@ public class BayesianAgent extends Agent {
 	private int fSmartSteps;
 	private BayesianOpponentModel4 fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.03;
-	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
+	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
 	
 	private boolean fDebug = true;
@@ -96,7 +96,8 @@ public class BayesianAgent extends Agent {
 			log("My target utility in opp's utility space:" + String.format("%1.5f", lTargetUtilInOpponentSpace));
 			//find a bid around lTargetUtilInOpponentSpace that maximizes my utility
 			try {
-				lNextBid = getMaxBidForOppUtil(lTargetUtilInOpponentSpace);
+				ArrayList<Bid> lPareto = buildParetoFrontier();				
+				lNextBid = getMaxBidForOppUtilUsingPareto(lTargetUtilInOpponentSpace, lPareto);
 				if(utilitySpace.getUtility(lNextBid)<utilitySpace.getUtility(myLastBid)) {
 					//try to make a smart move
 					log("Try to make a smart move");
@@ -105,7 +106,7 @@ public class BayesianAgent extends Agent {
 						// if not possible make a concession using a circle of lDeltaOppUtil radius
 						log("Smart move is impossible. Make a concession using a circle of radius " +  String.format("%1.5f", lDeltaOppUtil));
 						// build Pareto Frontier
-						ArrayList<Bid> lPareto = buildParetoFrontier();
+
 						lNextBid = getBidOfRadiusOnFrontier(lPareto, myLastBid, Math.abs(lDeltaOppUtil));
 					}
 				}
@@ -214,6 +215,22 @@ public class BayesianAgent extends Agent {
 		}
 		return getTradeOff(lTargetUtility, pOppntBid);
 	}
+	private Bid getMaxBidForOppUtilUsingPareto(double pOppUtil, ArrayList<Bid> pFrontier) throws Exception 
+	{
+		Bid lBid=null;
+		double lBidOppU=-1;
+//		ArrayList<Bid> lCircle = new ArrayList<Bid>();
+		for(Bid tmpBid : pFrontier) {
+			double tmpBidOppU = fOpponentModel.getExpectedUtility(tmpBid);
+			if(Math.abs(tmpBidOppU-pOppUtil)<Math.abs(lBidOppU-pOppUtil)) { 
+				lBid = tmpBid;
+				lBidOppU=tmpBidOppU;
+			}		
+		} //while
+		return lBid;
+		
+	}
+	
 	/**
 	 * Search for a bid with a given target utility in opponent space according to
 	 * the learned model and maximal utility for my self.
@@ -292,23 +309,29 @@ public class BayesianAgent extends Agent {
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
-				else if (utilitySpace.getUtility(lOppntBid) >= utilitySpace
-						.getUtility(myLastBid))
+				else {
+	                double offeredutil=utilitySpace.getUtility(lOppntBid);
+	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+	                double P=Paccept(offeredutil,time);
+	                if (P>Math.random()) 					
+//					if (utilitySpace.getUtility(lOppntBid) >= utilitySpace
+//						.getUtility(myLastBid))
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
-					lAction = new Accept(this);
-				else
-					// Propose counteroffer. Get next bid.
-					lAction = proposeNextBid(lOppntBid);
-				// Check if utility of the new bid is lower than utility of the opponent's last bid
-				// if yes then accept last bid of the opponent.
-				if (utilitySpace.getUtility(lOppntBid) >= utilitySpace
-						.getUtility(myLastBid))
-					// Opponent bids equally, or outbids my previous bid, so lets
-					// accept
-					lAction = new Accept(this);
-				//remember current bid of the opponent as its previous bid
-				fOpponentPreviousBid = lOppntBid;
+	                	lAction = new Accept(this);
+	                else {
+	                	// Propose counteroffer. Get next bid.
+	                	lAction = proposeNextBid(lOppntBid);
+	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
+	                	// if yes then accept last bid of the opponent.
+	                	if (utilitySpace.getUtility(lOppntBid) >= utilitySpace.getUtility(myLastBid))
+	                		// Opponent bids equally, or outbids my previous bid, so lets
+	                		// accept
+	                		lAction = new Accept(this);
+	                }
+	                //remember current bid of the opponent as its previous bid
+	                fOpponentPreviousBid = lOppntBid;
+				}
 				break;
 			case ACCEPT:
 			case BREAKOFF:
@@ -425,5 +448,27 @@ public class BayesianAgent extends Agent {
 		}
 		return lIsStillASolution;
 	}
+	/**
+	 * This function determines the accept probability for an offer.
+	 * At t=0 it will prefer high-utility offers.
+	 * As t gets closer to 1, it will accept lower utility offers with increasing probability.
+	 * it will never accept offers with utility 0.
+	 * @param u is the utility 
+	 * @param t is the time as fraction of the total available time 
+	 * (t=0 at start, and t=1 at end time)
+	 * @return the probability of an accept at time t
+	 * @throws Exception if you use wrong values for u or t.
+	 * 
+	 */
+	private double Paccept(double u, double t) throws Exception
+	{
+		if (u<0 || u>1) throw new Exception("utility "+u+" outside [0,1]");
+		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
+		
+		if (t==0.5) return u;
+		return (u - 2.*u*t + 2.*(-1. + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1. + 2*t);
+	}
+	
+	private double sq(double x) { return x*x; }
 	
 }
