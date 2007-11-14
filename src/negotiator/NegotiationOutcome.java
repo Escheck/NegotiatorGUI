@@ -63,11 +63,16 @@ public class NegotiationOutcome {
     
     
     public String toString() {
+    	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
         return String.valueOf(sessionNumber) + " agentAName="+agentAname + " agentBName=" + agentBname + 
         " agentAutility="+agentAutility+ " agentButility="+agentButility+
         " errors='"+ErrorRemarks+"'"+
-        " agentAbids="+AgentABids+" agentBbids="+AgentBBids+
-        " agentAmaxUtil="+agentAmaxUtil+ " agentBmaxUtil="+agentBmaxUtil;
+        " agentAmaxUtil="+agentAmaxUtil+ " agentBmaxUtil="+agentBmaxUtil+
+        " startingAgent="+startingagent+
+        " agentAutilspacefilename="+agentAutilSpaceName+
+        " agentButilspacefilename="+agentButilSpaceName +
+        " agentAbids="+AgentABids+" agentBbids="+AgentBBids
+        		;
 
     }
    
