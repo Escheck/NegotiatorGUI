@@ -101,7 +101,7 @@ public final class Bid {
         	if(tmpobj != null){
         		String nm = fDomain.getObjective(ind).getName();
         		s += nm + ": " +
-        			fValues.get(ind) ;
+        			fValues.get(ind) +"; ";
         	}else{
         		System.out.println("objective with index " + ind + " does not exist");
         	}
