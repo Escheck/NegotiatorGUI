@@ -360,6 +360,8 @@ public class MainFrame extends javax.swing.JFrame {
 		                    Integer.valueOf(fieldNumberOfSession.getText()),
 		                    agentAStarts.isSelected());
 		   negoManagerThread = new Thread(Main.nm);
+		   
+		   
 		   negoManagerThread.start();
     	}
     	catch (Exception err)

@@ -35,13 +35,15 @@ import negotiator.BidIterator;
  * 
  * Wouter: this class is final to prevent users (students) to override the getUtility function
  * with their own version of UtilitySpace
+ * 
+ * Wouter 15nov: un-done the final, students may hack what they want, but they work with a copy anyway.
  * @author Dmytro Tykhonov & Koen Hindriks 
  */
 
-public final class UtilitySpace {
+public class UtilitySpace {
 	
 	// Class fields
-    private Domain domain;
+    protected Domain domain;
     
     
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
@@ -197,7 +199,7 @@ public final class UtilitySpace {
      * update 23oct. If a hard constraint is violated, the utility should be 0.
      * 
      */
-    public final double getUtility(Bid bid) throws Exception
+    public double getUtility(Bid bid) throws Exception
     {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
