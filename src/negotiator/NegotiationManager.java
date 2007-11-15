@@ -15,10 +15,14 @@ import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
+//import negotiator.gui.BidSpace;
 import negotiator.gui.SessionFrame;
 import negotiator.xml.SimpleElement;
 import negotiator.utility.UtilitySpace;
+import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 /**
  *
  * @author Dmytro Tykhonov
@@ -88,6 +92,15 @@ public class NegotiationManager implements Runnable {
         nt = new NegotiationTemplate(negotiationTemplateFileName,agentAUtilitySpace,agentBUtilitySpace,totTime); 
         nt.getAgentAUtilitySpace().checkReadyForNegotiation(agentAName, nt.getDomain());
         nt.getAgentBUtilitySpace().checkReadyForNegotiation(agentBName, nt.getDomain());
+        
+		   /*
+		    * test the BidSpace, temporary hack!!!
+		    */
+
+		   BidSpace bs=new BidSpace(nt.getAgentAUtilitySpace(),nt.getAgentBUtilitySpace());
+		   ArrayList<BidPoint> frontier=bs.getParetoFrontier();
+		   System.out.println("NegoManager check pareto frontier:");
+		   for (BidPoint p:frontier) System.out.println(","+p);
     }
     
     public void run() {

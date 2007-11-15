@@ -92,7 +92,7 @@ public final class Bid {
 	}
 
 	public String toString() {
-        String s = "Bid = ";
+        String s = "Bid[";
         Set<Entry<Integer, Value>> value_set = fValues.entrySet();
         Iterator value_it = value_set.iterator();
         while(value_it.hasNext()){
@@ -101,12 +101,13 @@ public final class Bid {
         	if(tmpobj != null){
         		String nm = fDomain.getObjective(ind).getName();
         		s += nm + ": " +
-        			fValues.get(ind) +"; ";
+        			fValues.get(ind) +", ";
         	}else{
         		System.out.println("objective with index " + ind + " does not exist");
         	}
         		
         }
+        s=s+"]";
         return s;
     }
 

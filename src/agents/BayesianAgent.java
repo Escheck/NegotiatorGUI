@@ -18,7 +18,32 @@ import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import negotiator.Domain;
+import negotiator.analysis.BidSpace;
 
+
+/**
+ * Wrapper for opponentmodelspace, so that it is a neat utilityspace that we can give to the bidspace. 
+ * @author wouter
+ *
+ */
+class OpponentModelUtilSpace extends UtilitySpace
+{
+	BayesianOpponentModel4 opponentmodel;
+	
+	OpponentModelUtilSpace(BayesianOpponentModel4 opmod)
+	{
+		domain=opmod.getDomain();
+		opponentmodel=opmod;
+	}
+	
+	public double getUtility(Bid b)
+	{ 
+		double u=0.;
+		try { u=opponentmodel.getExpectedUtility(b); } 
+		catch (Exception e) {System.out.println("getExpectedUtility failed. returning 0");u=0.;}
+		return u;
+	}
+}
 
 public class BayesianAgent extends Agent {
 
@@ -38,7 +63,7 @@ public class BayesianAgent extends Agent {
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
 	
-	private boolean fDebug = false;
+	private boolean fDebug = true;
 	// Class constructor
 	public BayesianAgent() {
 		super();
@@ -68,6 +93,9 @@ public class BayesianAgent extends Agent {
 		myLastBid = lBid;
 		return new Offer(this, lBid);
 	}
+	
+
+	
 	/**
 	 * 
 	 * @param pOppntBid
@@ -96,7 +124,9 @@ public class BayesianAgent extends Agent {
 			log("My target utility in opp's utility space:" + String.format("%1.5f", lTargetUtilInOpponentSpace));
 			//find a bid around lTargetUtilInOpponentSpace that maximizes my utility
 			try {
-				ArrayList<Bid> lPareto = buildParetoFrontier();				
+				//ArrayList<Bid> lPareto = buildParetoFrontier();
+				BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
+				ArrayList<Bid> lPareto=bs.getParetoFrontierBids();
 				lNextBid = getMaxBidForOppUtilUsingPareto(lTargetUtilInOpponentSpace, lPareto);
 				if(utilitySpace.getUtility(lNextBid)<utilitySpace.getUtility(myLastBid)) {
 					//try to make a smart move
@@ -390,6 +420,7 @@ public class BayesianAgent extends Agent {
 	 */
 	public ArrayList<Bid> buildParetoFrontier() {
 		log("Building Pareto Frontier...");
+		System.out.println("buildParetoFrontier() starts at "+(new Date()));
 		//loadAgentsUtilitySpaces();
 		ArrayList<Bid> lPareto=new ArrayList<Bid>();
 		BidIterator lBidIter = new BidIterator(utilitySpace.getDomain());
@@ -406,8 +437,8 @@ public class BayesianAgent extends Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
+		System.out.println("buildParetoFrontier() finishes at "+(new Date()));
 		//sortParetoFrontier();    	
 		log("Finished building Pareto Frontier.");
 		return lPareto;
@@ -416,7 +447,8 @@ public class BayesianAgent extends Agent {
 	 * Checks the bid against current Pareto set
 	 * 
 	 * @param pBid
-	 * @return true if bid is located to the North-East from the current Pareto frontier.
+	 * @return false if bid is located to the South-West from the current Pareto frontier.
+	 * return true otherwise.
 	 * @throws Exception
 	 */
 	private boolean checkSolutionVSParetoFrontier(ArrayList<Bid>pPareto, Bid pBid) throws Exception {

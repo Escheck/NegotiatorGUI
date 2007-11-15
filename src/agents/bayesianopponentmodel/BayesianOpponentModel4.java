@@ -343,6 +343,13 @@ public class BayesianOpponentModel4 {
 		printBestHyp();
 	}
 	
+	/**
+	 * Plan: cache the results for pBid in a Hash table.
+	 * empty the hash table whenever updateWeights or updateEvaluationFns is called.
+	 * @param pBid
+	 * @return weeighted utility where weights represent likelihood of each hypothesis
+	 * @throws Exception
+	 */
 	public double getExpectedUtility(Bid pBid) throws Exception
 	{
 		//calculate expected utility
@@ -356,6 +363,8 @@ public class BayesianOpponentModel4 {
 		}
 		return u;
 	}
+	
+	
 	private void printBestHyp() {
 		double[] lBestWeights = new double[fUS.getDomain().getIssues().size()];
 		EvaluatorHypothesis[] lBestEvals = new EvaluatorHypothesis[fUS.getDomain().getIssues().size()];
@@ -397,4 +406,7 @@ public class BayesianOpponentModel4 {
 		}*/
 		
 	}
+	
+	
+	public Domain getDomain() { return fDomain; }
 }

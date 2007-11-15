@@ -171,7 +171,7 @@ public class Analysis {
 	protected void loadFromXML(SimpleElement pXMLAnalysis) {
 		SimpleElement lXMLAnalysis = pXMLAnalysis;
 		fHashCode = Long.valueOf(lXMLAnalysis.getAttribute("hashCode"));
-		//read Paretto
+		//read Pareto
 		if(lXMLAnalysis.getChildByTagName("pareto").length>0) {
 			SimpleElement lXMLPareto = (SimpleElement)(lXMLAnalysis.getChildByTagName("pareto")[0]);
 			Object[] lXMLParetoBids = (lXMLPareto.getChildByTagName("bid"));            	
@@ -269,7 +269,7 @@ public class Analysis {
 		BidIterator lBidIter = new BidIterator(getDomain());
 		while(lBidIter.hasNext()) {
 			Bid lBid = lBidIter.next();
-			System.out.println("checking bid "+lBid.toString());
+			//System.out.println("checking bid "+lBid.toString());
 			try {
 				if(!checkSolutionVSParetoFrontier(lBid)) continue;
 			} catch (Exception e) {
@@ -294,7 +294,13 @@ public class Analysis {
 			SimpleElement lXMLBid = fPareto.get(i).toXML();
 			lXMLPareto.addChildElement(lXMLBid);    		
 		}
-
+		try{
+		System.out.println("fPareto=");
+		for (Bid b: fPareto) 
+			System.out.println("("+
+					getAgentAUtilitySpace().getUtility(b)+","+
+					getAgentBUtilitySpace().getUtility(b));
+		} catch (Exception e) { System.out.println("gaaaaaaaaap"); }
 		return;
 	}
 	/**
