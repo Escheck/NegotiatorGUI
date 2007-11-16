@@ -340,15 +340,22 @@ public class BayesianAgent extends Agent {
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
 				else {
-/*	                double offeredutil=utilitySpace.getUtility(lOppntBid);
+	                double offeredutil=utilitySpace.getUtility(lOppntBid);
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
-	                if (P>Math.random()) 				*/	
-					if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace
-						.getUtility(myLastBid))
+	                System.out.println("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
+	                if (.1*P>Math.random()) 
+	                	// Wouter: because this agent is now so fast, it can do a lot of bids per second.
+	                	// therefore P>Math.random is too high. TODO  It should better be something like
+	                	// P*timesincelastbid>Math.random().
+	                {
+/*					if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace 
+						.getUtility(myLastBid))  */
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
 	                	lAction = new Accept(this);
+	                	System.out.println("randomly accepted");
+	                }
 	                else {
 	                	// Propose counteroffer. Get next bid.
 	                	lAction = proposeNextBid(lOppntBid);
@@ -493,10 +500,12 @@ public class BayesianAgent extends Agent {
 	 * @throws Exception if you use wrong values for u or t.
 	 * 
 	 */
-	private double Paccept(double u, double t) throws Exception
+	private double Paccept(double u, double t1) throws Exception
 	{
+		double t=t1*t1*t1; // get more relaxed more to the end.
 		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
 		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
+		if (u>1.) u=1.;
 		
 		if (t==0.5) return u;
 		return (u - 2.*u*t + 2.*(-1. + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1. + 2*t);
