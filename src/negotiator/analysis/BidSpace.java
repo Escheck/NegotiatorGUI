@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 
  * 
- * @author W.Pasman 15nov06
+ * @author W.Pasman 15nov07
  * BidSpace is a class that can store and do analysis of a space of bids.
  * There seems lot of overlap with the Analysis class.
  * But to be safe I did not try to modify the Analysis class and introduced a new class.
@@ -103,11 +103,8 @@ public class BidSpace {
 		for (int i=0; i<n/2; i++) points1.add(points.get(i));
 		for (int i=n/2; i<n; i++) points2.add(points.get(i));
 		
-		// enter recursion
 		ArrayList<BidPoint> pareto1=computeParetoFrontier(points1);
 		ArrayList<BidPoint> pareto2=computeParetoFrontier(points2);
-		
-		// and finally merge the results
 		return mergeParetoFrontiers(pareto1,pareto2);
 	}
 	
@@ -119,13 +116,14 @@ public class BidSpace {
 	 */
 	public ArrayList<BidPoint> mergeParetoFrontiers(ArrayList<BidPoint> pareto1,ArrayList<BidPoint> pareto2)
 	{
-		//System.out.println("merging frontiers "+pareto1+"\n and "+pareto2);
 		if (pareto1.size()==0) return pareto2;
 		if (pareto2.size()==0) return pareto1;
-		
-		 // make sure that the first pareto list has the left most point.
+
+		 // clone because we will remove elements from the list but we want to keep the orig lists.
+		 // This looks bit ugly....
 		ArrayList<BidPoint> list1=(ArrayList<BidPoint>)(pareto1.clone()); 
-		ArrayList<BidPoint> list2=(ArrayList<BidPoint>)(pareto2.clone()); // YUK YUK
+		ArrayList<BidPoint> list2=(ArrayList<BidPoint>)(pareto2.clone());
+		 // make sure that the first pareto list has the left most point.
 		if (list1.get(0).utilityA>list2.get(0).utilityA) 
 		{
 			ArrayList<BidPoint> list3;
@@ -140,13 +138,9 @@ public class BidSpace {
 		 // it must be OK with list 1 because that is already a pareto frontier.
 		if (firstpoint.utilityB>list2.get(0).utilityB) { 
 				 // left point must be higher than next
-				//System.out.println("   adding "+firstpoint+" to "+newpareto);
 				newpareto.add(0,firstpoint);
 		}
-		//else System.out.println("   removed "+firstpoint);
 		
-		//System.out.println("merged frontiers "+pareto1+"\n and "+pareto2);
-		//System.out.println("result is "+newpareto);
 		return newpareto;
 	}
 	
