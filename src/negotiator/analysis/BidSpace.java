@@ -4,6 +4,7 @@ package negotiator.analysis;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.utility.UtilitySpace;
+import negotiator.xml.SimpleElement;
 import negotiator.Domain;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class BidSpace {
 	Domain domain; // equals to utilspaceA.domain = utilspaceB.domain
 	ArrayList<BidPoint> bidpoints;
 	ArrayList<BidPoint> paretoFrontier=null; // not yet set.
+	BidPoint kalaiSmorodinsky=null; // null if not set.
+	BidPoint nash=null; // null if not set.
 	
 	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB) throws Exception
 	{
@@ -151,4 +154,51 @@ public class BidSpace {
 		for (BidPoint p:points) bids.add(p.bid);
 		return bids;
 	}
+	
+	
+	/**
+	 * Calculates Kalai-Smorodinsky optimal outcome. Assumes that Pareto frontier is already built.
+	 * Kalai-Smorodinsky is the point on paretofrontier 
+	 * that has least difference in utilities for A and B
+	 * @author Dmytro Tykhonov, cleanup by W.Pasman
+	 * @returns the kalaiSmorodinsky BidPoint.
+	 * @throws AnalysisException
+	 */
+	public BidPoint getKalaiSmorodinsky() throws Exception 
+	{	
+		if (kalaiSmorodinsky!=null) return kalaiSmorodinsky;
+		if(getParetoFrontier().size()<1) 
+			throw new AnalysisException("kalaiSmorodinsky product: Pareto frontier is unavailable.");
+		double minassymetry=2; // every point in space will have lower assymetry than this.
+		for (BidPoint p:paretoFrontier)
+		{
+			double asymofp = Math.abs(p.utilityA-p.utilityB);
+			if (asymofp<minassymetry) { kalaiSmorodinsky=p; minassymetry=asymofp; }
+		}
+		return kalaiSmorodinsky;
+	}
+	
+	
+	
+	/**
+	 * Calculates Nash optimal outcome. Assumes that Pareto frontier is already built.
+	 * Nash is the point on paretofrontier that has max product of utilities for A and B
+	 * @author Dmytro Tykhonov, cleanup by W.Pasman
+	 * @returns the Nash BidPoint.
+	 * @throws AnalysisException
+	 */
+	public BidPoint calculateNash() throws Exception 
+	{
+		if (nash!=null) return nash;
+		if(getParetoFrontier().size()<1) 
+			throw new AnalysisException("Nash product: Pareto frontier is unavailable.");
+		double maxp = -1;
+		for (BidPoint p:paretoFrontier)
+		{
+			double utilofp = p.utilityA*p.utilityB;
+			if (utilofp>maxp) { nash=p; maxp=utilofp; }
+		}
+		return nash;
+	}
+	
 }
