@@ -19,6 +19,8 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import negotiator.analysis.Analysis;
+import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
 import negotiator.issue.Issue;
@@ -51,7 +53,8 @@ public class NegotiationTemplate {
     private UtilitySpace fAgentBUtilitySpace;
     private SimpleElement fRoot;
 	private String fFileName;    
-    private Analysis fAnalysis;
+    //private Analysis fAnalysis;
+	private BidSpace bidSpace=null;
     private int totalTime; // total available time for nego, in seconds.
 
     /** Creates a new instance of NegotiationTemplate 
@@ -112,24 +115,27 @@ public class NegotiationTemplate {
 						options,
 						options);
 				if(n==0) {
-	
-					fAnalysis = Analysis.getInstance(this);
-					//fRoot.addChildElement(fAnalysis.getXMLRoot());
+					bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
+					//fAnalysis = Analysis.getInstance(this);
 					//  save the analysis to the cache
-					fAnalysis.saveToCache();
+					//fAnalysis.saveToCache();
 				}
 				
 			}//if
 		}
-		if(fAnalysis!=null) showAnalysis();			
+		//if(fAnalysis!=null) showAnalysis();	
+		if (bidSpace!=null) showAnalysis();
 	}
+
+	
+	
 	/**
 	 * 
 	 * Show the analysis window. Couples the analysis object with the chart window 
 	 * 
 	 * @throws Exception
 	 */
-	protected void showAnalysis() throws Exception
+	protected void showAnalysisOld() throws Exception
 	{
 		Chart lChart = new Chart();		
 /*		if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
@@ -160,6 +166,81 @@ public class NegotiationTemplate {
 		Main.fChart = lChart;
 		lChart.show();
 	}
+	
+	
+	/**
+	 * 
+	 * Show the analysis window. Couples the analysis object with the chart window 
+	 * 
+	 * @throws Exception
+	 */
+	protected void showAnalysis() throws Exception
+	{
+		int i;
+		if (bidSpace==null) throw new NullPointerException("bidspace=null, cant show analysis");
+		Chart lChart = new Chart();
+
+		i=0;
+		double[][] lAllBids = new double[bidSpace.bidPoints.size()][2];
+		for(BidPoint p: bidSpace.bidPoints) 
+		  { lAllBids[i][0]= p.utilityA; lAllBids[i][1]= p.utilityB; i++;}
+		lChart.addCurve("All Outcomes", lAllBids);		
+	
+		i=0;
+		double[][] lParetoPoints=new double[bidSpace.getParetoFrontier().size()][2];
+		for (BidPoint p:bidSpace.getParetoFrontier())
+		  { lParetoPoints[i][0]= p.utilityA; lParetoPoints[i][1]= p.utilityB; i++;}
+		lChart.addCurve("Pareto frontier", lParetoPoints);		
+
+		BidPoint nash=bidSpace.getNash();
+		double[][] lNash = new double[1][2];
+		lNash[0][0]= nash.utilityA;	lNash[0][1]= nash.utilityB;	
+		lChart.addCurve("Nash product", lNash);
+		
+		
+		double[][] lKalaiSmorodinsky = new double[1][2];
+		BidPoint kalai=bidSpace.getKalaiSmorodinsky();
+
+		lKalaiSmorodinsky[0][0]= kalai.utilityA; lKalaiSmorodinsky[0][1]=kalai.utilityB;		
+		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);
+		Main.fChart = lChart;
+		lChart.show();
+	}
+	
+	
+	/**
+	 * 
+	 * Call this method to draw the negotiation paths on the chart with analysis.
+	 * Wouter: moved to here from Analysis. 
+	 * @param pAgentABids
+	 * @param pAgentBBids
+	 */
+	public void addNegotiationPaths(int sessionNumber, ArrayList<Bid> pAgentABids, ArrayList<Bid> pAgentBBids) {
+        double[][] lAgentAUtilities = new double[pAgentABids.size()][2];
+        double[][] lAgentBUtilities = new double[pAgentBBids.size()][2];        
+        try
+        {
+	        for(int i=0;i< pAgentABids.size();i++) {
+	        	lAgentAUtilities [i][0] = getAgentAUtilitySpace().getUtility(pAgentABids.get(i));
+	        	lAgentAUtilities [i][1] = getAgentBUtilitySpace().getUtility(pAgentABids.get(i));
+	        }
+	        for(int i=0;i< pAgentBBids.size();i++) {
+	        	lAgentBUtilities [i][0] = getAgentAUtilitySpace().getUtility(pAgentBBids.get(i));
+	        	lAgentBUtilities [i][1] = getAgentBUtilitySpace().getUtility(pAgentBBids.get(i));
+	        }
+	        
+	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
+	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
+	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
+	        Main.fChart.show();
+        } catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+		
+	}
+	
+	
 	protected void loadAgentsUtilitySpaces() throws Exception
 	{
 		//load the utility space
@@ -232,8 +313,6 @@ public class NegotiationTemplate {
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
-    public Analysis getAnalysis() {
-    	return fAnalysis;
-    }
+    public BidSpace getBidSpace() { return bidSpace; }
 
 }

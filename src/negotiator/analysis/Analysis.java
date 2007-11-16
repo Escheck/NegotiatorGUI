@@ -367,9 +367,11 @@ public class Analysis {
 	 * 
 	 * Call this method to draw the negotiation paths on the chart with analysis.
 	 * 
+	 * Wouter: This seems at the wrong place. NegoTemplate is managing the chart!
 	 * @param pAgentABids
 	 * @param pAgentBBids
 	 */
+	/*
 	public void addNegotiationPaths(int sessionNumber, ArrayList<Bid> pAgentABids, ArrayList<Bid> pAgentBBids) {
         double[][] lAgentAUtilities = new double[pAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[pAgentBBids.size()][2];        
@@ -394,6 +396,7 @@ public class Analysis {
 		}
 		
 	}
+	*/
 	public void saveToCache() {
 		String lCacheFileName = fNegotiationTemplate.getAgentAUtilitySpaceFileName()+"_" + fNegotiationTemplate.getAgentAUtilitySpaceFileName()+".xml";		
 		fRoot.saveToFile(lCacheFileName );

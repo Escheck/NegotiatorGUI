@@ -151,8 +151,8 @@ public class NegotiationManager implements Runnable {
         		}
         }
         // add path to the analysis chart
-        if (nt.getAnalysis()!=null)
-        	nt.getAnalysis().addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
+        if (nt.getBidSpace()!=null)
+        	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
     	NegotiationOutcome no = null;
     	if(nego.no!=null) no = nego.no;
     	else

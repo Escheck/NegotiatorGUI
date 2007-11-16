@@ -3,6 +3,7 @@ package negotiator.analysis;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
+import negotiator.Main;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import negotiator.Domain;
@@ -22,7 +23,7 @@ public class BidSpace {
 	UtilitySpace utilspaceA;
 	UtilitySpace utilspaceB;
 	Domain domain; // equals to utilspaceA.domain = utilspaceB.domain
-	ArrayList<BidPoint> bidpoints;
+	public ArrayList<BidPoint> bidPoints;
 	ArrayList<BidPoint> paretoFrontier=null; // not yet set.
 	BidPoint kalaiSmorodinsky=null; // null if not set.
 	BidPoint nash=null; // null if not set.
@@ -69,11 +70,11 @@ public class BidSpace {
 	 */
 	void BuildSpace() throws Exception
 	{
-		bidpoints=new ArrayList<BidPoint>();
+		bidPoints=new ArrayList<BidPoint>();
 		BidIterator lBidIter = new BidIterator(domain);
 		while(lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();
-			bidpoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+			bidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
 		}
 	}
 	
@@ -82,7 +83,7 @@ public class BidSpace {
 		if (paretoFrontier==null)
 		{
 	        System.out.println("ParetoFrontier start computation:"+(new Date()));
-	        paretoFrontier=computeParetoFrontier(bidpoints);
+	        paretoFrontier=computeParetoFrontier(bidPoints);
 	        System.out.println("ParetoFrontier end computation:"+(new Date()));
 		}
 		return paretoFrontier;
@@ -187,7 +188,7 @@ public class BidSpace {
 	 * @returns the Nash BidPoint.
 	 * @throws AnalysisException
 	 */
-	public BidPoint calculateNash() throws Exception 
+	public BidPoint getNash() throws Exception 
 	{
 		if (nash!=null) return nash;
 		if(getParetoFrontier().size()<1) 
@@ -200,5 +201,4 @@ public class BidSpace {
 		}
 		return nash;
 	}
-	
 }
