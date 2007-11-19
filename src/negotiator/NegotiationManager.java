@@ -183,6 +183,8 @@ public class NegotiationManager implements Runnable {
         }
         return;
     }
+    
+    
     public void startNegotiation() {
         sf = new SessionFrame(agentA.getName(), agentB.getName());
         sf.setVisible(true);
