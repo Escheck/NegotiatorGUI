@@ -120,6 +120,12 @@
 		</javac>
 	</target>
 		
+	<target name ="compilesimpleAgent2">
+		<javac srcdir="." includes="SimpleAgt2.java" classpath="${build}">
+		</javac>
+	</target>
+			
+		
 	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeNegoEditorJar, makeNegoSimulatorWithBayesJar">
 		<zip destfile="${dist}/negotiator14Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
@@ -132,7 +138,8 @@
 		</zip>
 	</target>
 	
-	
+
+
 	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeNegoEditorJar, makeNegoSimulatorJar">
 		<zip destfile="${dist}/negotiator4Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>

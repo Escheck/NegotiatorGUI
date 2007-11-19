@@ -16,7 +16,7 @@ public class BayesianOpponentModel4 {
 	private ArrayList<ArrayList<WeightHypothesis2>> fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 //	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;
-	private ArrayList<Bid> fBiddingHistory;
+	public ArrayList<Bid> fBiddingHistory; // previous bids of the opponent, not our bids.
 //	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
 	ArrayList<Issue> issues;

@@ -148,7 +148,7 @@ public class UtilitySpace {
     		lSum += (fEvaluators.get(tmpObj)).getWeight();
     		
     	}
-    	System.out.println("sum="+lSum);
+    	//System.out.println("sum="+lSum);
     	return (normalised && lSum>.9998 && lSum<1.0002);
     }
     

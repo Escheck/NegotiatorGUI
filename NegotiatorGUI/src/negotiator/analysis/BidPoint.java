@@ -23,4 +23,9 @@ public class BidPoint {
 	{
 		return "BidPoint ["+/*bid+*/",utilA["+utilityA+"],utilB["+utilityB+"]]";
 	}
+	
+	boolean equals(BidPoint pt)
+	{
+		return bid.equals(pt.bid);
+	}
 }

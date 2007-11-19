@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.analysis.BidPoint;
 import negotiator.BidIterator;
 import negotiator.Main;
 import negotiator.actions.Accept;
@@ -62,6 +63,7 @@ public class BayesianAgent extends Agent {
 	private static final double CONCESSIONFACTOR = 0.03;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
+	private ArrayList<Bid> myPreviousBids=new ArrayList<Bid>();
 	
 	private boolean fDebug = true;
 	// Class constructor
@@ -99,54 +101,101 @@ public class BayesianAgent extends Agent {
 	/**
 	 * 
 	 * @param pOppntBid
-	 * @return
+	 * @return a counterbid that has max util for us and an opponent utility that is equal
+	 * to 1-estimated utility of opponent's last bid.
+	 * Or, if that bid was done already before, another bid that has same utility in our space
+	 * as that counterbid.
 	 * @throws Exception
 	 */
 	private Bid getNextBid(Bid pOppntBid) throws Exception 
 	{
 		log("Get next bid ...");
 		Bid lNextBid = null;
-		//
 		if(fOpponentPreviousBid==null) {
-			try {
-				log("My second bid. No second bid of opponent is available.");
-				lNextBid = getBidOfRadius(myLastBid, 0.1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			log("My second bid. No second bid of opponent is available.");
+			lNextBid = getBidOfRadius(myLastBid, 0.1);
 		} else {
 			//try to match opponent's concession in his space
+			// we assume bid 0 is the max utility for opponent and that's the reference point for all
+			// his subsequent bids.
 			log("Try to match opponent's concession in his space:");
-			double lDeltaOppUtil = fOpponentModel.getExpectedUtility(pOppntBid)-
-								   fOpponentModel.getExpectedUtility(fOpponentPreviousBid);
-			double lTargetUtilInOpponentSpace = fOpponentModel.getExpectedUtility(myLastBid) - lDeltaOppUtil;
-			log("Opp's change in utility:" + String.format("%1.5f", lDeltaOppUtil));
-			log("My target utility in opp's utility space:" + String.format("%1.5f", lTargetUtilInOpponentSpace));
-			//find a bid around lTargetUtilInOpponentSpace that maximizes my utility
-			try {
-				//ArrayList<Bid> lPareto = buildParetoFrontier();
-				BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
-				ArrayList<Bid> lPareto=bs.getParetoFrontierBids();
-				lNextBid = getMaxBidForOppUtilUsingPareto(lTargetUtilInOpponentSpace, lPareto);
-				if(utilitySpace.getUtility(lNextBid)<utilitySpace.getUtility(myLastBid)) {
-					//try to make a smart move
-					log("Try to make a smart move");
-					lNextBid = getSmartBid(myLastBid);
-					if(lNextBid==null) {
-						// if not possible make a concession using a circle of lDeltaOppUtil radius
-						log("Smart move is impossible. Make a concession using a circle of radius " +  String.format("%1.5f", lDeltaOppUtil));
-						// build Pareto Frontier
+			//double opponentUtil = fOpponentModel.getExpectedUtility(fOpponentModel.fBiddingHistory.get(0))-
+								//fOpponentModel.getExpectedUtility(pOppntBid);
+			double opponentUtil = fOpponentModel.getExpectedUtility(pOppntBid);
 
-						lNextBid = getBidOfRadiusOnFrontier(lPareto, myLastBid, Math.abs(lDeltaOppUtil));
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (opponentUtil<0) throw new Exception("Something's wrong. First bid has not max utility!");
+			 // negative means concession 
+			double ourTargetUtilInOppModel=1-opponentUtil;
+			log("Opp's current utility:" + String.format("%1.5f", opponentUtil));
+			log("My target utility in opp.model :" + String.format("%1.5f", ourTargetUtilInOppModel));
+			//find a bid in bidspace that  maximizes our utility and has also utility ourTargetUtilInOppModel
+			lNextBid= getMaxBidForOppUtil(ourTargetUtilInOppModel);
+			BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
+			if (myLastBid!=null && lNextBid.equals(myLastBid))
+			{
+				 // avoid deadlock: search for other bids with same utility in our space
+				log("The best bid already was done before. Searching similar bid");
+				lNextBid=getNewBidWithUtil(utilitySpace.getUtility(lNextBid),bs);
+				log("Similar bid:"+lNextBid);
 			}
+			
+			/*
+			if(utilitySpace.getUtility(lNextBid)<utilitySpace.getUtility(myLastBid)) 
+			{
+				//try to make a smart move
+				log("Try to make a smart move");
+				lNextBid = getSmartBid(myLastBid);
+				
+				if(lNextBid==null) {
+					// make a concession using a circle of lDeltaOppUtil radius
+					log("Smart move is impossible. Make a concession using a circle of radius " +  String.format("%1.5f", lDeltaOppUtil));
+					
+					if (lDeltaOppUtil<0)
+						 // opponent did concession, we do concession of same size 
+						lNextBid = getBidAtDistance(bs.getParetoFrontier(), myLastBid, -lDeltaOppUtil);
+					else
+						// opponent did not do concession, we do no concessino either
+						lNextBid=getBidAtDistance(bs.bidPoints,myLastBid,0.); // do no concession but try give another bid
+				}
+			}
+			*/
 		}
 		return lNextBid;
 	}
 	
+	/**
+	 * get a new bid (not done before) that has ourUtility for us.
+	 * 
+	 * @param ourUtility
+	 * @return  the bid with max opponent utility that is close to ourUtility.
+	 * or null if there is no such bid.
+	 */
+	Bid getNewBidWithUtil(double ourUtility,BidSpace bs)
+	{
+		BidPoint bestbid=null;
+		double bestbidutil=0;
+		for (BidPoint p:bs.bidPoints)
+		{
+			if (Math.abs(ourUtility-p.utilityA)<ALLOWED_UTILITY_DEVIATION
+					&& p.utilityB>bestbidutil && !myPreviousBids.contains(p.bid))
+			{
+				bestbid=p;
+				bestbidutil=p.utilityB;
+			}
+		}
+		if (bestbid==null) return null;
+		return bestbid.bid;
+	}
+	
+	
+		/**
+		 * Wouter: Try to find a bid that has same utility for ourself
+		 * but max utility for opponent.
+		 * @author Dmytro
+		 * @param pBid
+		 * @return
+		 * @throws Exception
+		 */
 	private Bid getSmartBid(Bid pBid) throws Exception {
 		Bid lBid=null;
 		double lExpectedUtility = -1;
@@ -165,16 +214,18 @@ public class BayesianAgent extends Agent {
 					lBid = tmpBid;
 				}
 			}				
-		} //while
+		} 		
 		//check if really found a better bid. if not return null
 		if(fOpponentModel.getExpectedUtility(lBid)>(fOpponentModel.getExpectedUtility(pBid)+0.04))
 			return lBid;
 		else
 			return null;
-		
 	}
+	
+	
 	/**
 	 * Finds a Pareto efficient bid on the circle of radius pRadius with a center in pBid bid. 
+	 * @author Dmytro Tykhonov, W.Pasman
 	 * @param pBid - bid that defines the circle 
 	 * @param pRadius - radius of the circle
 	 * @return a Pareto efficient bid on the circle 
@@ -192,7 +243,7 @@ public class BayesianAgent extends Agent {
 			double tmpBidMyU  = utilitySpace.getUtility(tmpBid);
 			double lRSquare   = (tmpBidOppU-pBidOppU)*(tmpBidOppU-pBidOppU)+
 					   		    (tmpBidMyU - pBidMyU)*(tmpBidMyU - pBidMyU);
-			if(Math.abs(lRSquare-pRadius*pRadius)<ALLOWED_UTILITY_DEVIATION) {
+			if(Math.abs(lRSquare-pRadius*pRadius)<sq(ALLOWED_UTILITY_DEVIATION)) {
 //				lCircle.add(tmpBid);
 				if(lBid==null) {
 					lBid = tmpBid;
@@ -205,29 +256,41 @@ public class BayesianAgent extends Agent {
 		} //while
 		return lBid;
 	}
-	private Bid getBidOfRadiusOnFrontier(ArrayList<Bid> pFrontier, Bid pBid, double pRadius) throws Exception {
-		Bid lBid=null;				
-//		ArrayList<Bid> lCircle = new ArrayList<Bid>();
+	
+	/** check the points in given bid list, and find point closest to given radius.
+	 * You can use this function to check any list of bidpoints, either the (guessed) pareto frontier
+	 * or just the entire bidspace. 
+	 * @author W.Pasman
+	 * @param bidpoints is the list of points to be checked.
+	 * @param pBid
+	 * @param targetRadius
+	 * @return bid that is at distance pRadius from pBid as close as possible, but NOT equal to pBid 
+	 * @throws Exception
+	 */
+	private Bid getBidAtDistance(ArrayList<BidPoint> bidpoints, Bid pBid, double targetRadius) throws Exception 
+	{
+		if (targetRadius<0) throw new Exception ("targetRadius<0");
+		double targetRadius2=sq(targetRadius); // target radius squared.
+		BidPoint nearestbid=null;			
+		double smallestDeltaSoFar = 999.; // square of closest bid so far. any bid will be closer than this.
+		
 		double pBidOppU = fOpponentModel.getExpectedUtility(pBid);
-		double pBidMyU  = utilitySpace.getUtility(pBid);		
-		double lRadius = -1;
-		for(Bid tmpBid : pFrontier) {
-			double tmpBidOppU = fOpponentModel.getExpectedUtility(tmpBid);
-			double tmpBidMyU  = utilitySpace.getUtility(tmpBid);
-			double lRSquare   = (tmpBidOppU-pBidOppU)*(tmpBidOppU-pBidOppU)+
-					   		    (tmpBidMyU - pBidMyU)*(tmpBidMyU - pBidMyU);
-			if(lBid==null) {
-				lBid = tmpBid;
-				lRadius = Math.sqrt(lRSquare); 
-			} else {
-				if((tmpBidMyU<pBidMyU)&&(Math.abs(lRadius-pRadius)>Math.abs(Math.sqrt(lRSquare)-pRadius))) { 
-					lBid = tmpBid;
-					lRadius = Math.sqrt(lRSquare);
-				}
-			}
-				
-		} //while
-		return lBid;
+		double pBidMyU  = utilitySpace.getUtility(pBid);	
+		
+		double tmpBidOppU, tmpBidMyU, r2, delta;
+		for(BidPoint b : bidpoints) {
+			if (b.equals(pBid)) continue; // skip the pBid itself
+			//tmpBidOppU = fOpponentModel.getExpectedUtility(b);
+			tmpBidOppU = b.utilityB;
+			tmpBidMyU  = b.utilityA;
+			r2 = sq(tmpBidOppU-pBidOppU)+sq(tmpBidMyU - pBidMyU);
+			delta=Math.abs(r2-targetRadius2);
+			if (delta<smallestDeltaSoFar)
+				nearestbid = b;
+				smallestDeltaSoFar = delta; 
+			}				
+		if (nearestbid==null) throw new Exception("bid space seems empty??");
+		return nearestbid.bid;
 	}
 	
 	private Bid getNextBidSmart(Bid pOppntBid) throws Exception 
@@ -245,19 +308,26 @@ public class BayesianAgent extends Agent {
 		}
 		return getTradeOff(lTargetUtility, pOppntBid);
 	}
-	private Bid getMaxBidForOppUtilUsingPareto(double pOppUtil, ArrayList<Bid> pFrontier) throws Exception 
+	
+	/**
+	 * Search a bid in given space close to given utility.
+	 * @param targetutil
+	 * @param bids
+	 * @return the bid having opponent utility as close as possible to pOppUtil
+	 * @throws Exception
+	 */
+	private Bid getBidWithUtil(double targetutil, ArrayList<BidPoint> bids) throws Exception 
 	{
-		Bid lBid=null;
+		BidPoint lBid=null;
 		double lBidOppU=-1;
-//		ArrayList<Bid> lCircle = new ArrayList<Bid>();
-		for(Bid tmpBid : pFrontier) {
-			double tmpBidOppU = fOpponentModel.getExpectedUtility(tmpBid);
-			if(Math.abs(tmpBidOppU-pOppUtil)<Math.abs(lBidOppU-pOppUtil)) { 
-				lBid = tmpBid;
-				lBidOppU=tmpBidOppU;
+		for(BidPoint b : bids) {
+			double util = b.utilityB;
+			if(Math.abs(util-targetutil)<Math.abs(lBidOppU-targetutil)) { 
+				lBid = b;
+				lBidOppU=util;
 			}		
-		} //while
-		return lBid;
+		}
+		return lBid.bid;
 		
 	}
 	
@@ -268,7 +338,7 @@ public class BayesianAgent extends Agent {
 	 * 
 	 * @param pOppUtil - target utility in opponent's space 
 	 * @return bid with maximal utility in own space and the target utility in the opponent's space
-	 * @throws Exception
+	 * @throws Exception if there is no bid (should be rare!)
 	 */
 	private Bid getMaxBidForOppUtil(double pOppUtil) throws Exception 
 	{
@@ -289,6 +359,7 @@ public class BayesianAgent extends Agent {
 				}
 			}				
 		} //while
+		if (lBid==null) throw new Exception("there is no bid with opponent utility "+pOppUtil);
 		return lBid;
 		
 	}
@@ -313,18 +384,23 @@ public class BayesianAgent extends Agent {
 		} //while
 		return lBid;
 	}
-	private Action proposeNextBid(Bid pOppntBid) throws Exception
+	
+	
+	private Bid proposeNextBid(Bid pOppntBid) throws Exception
 	{
 		Bid lBid = null;
 		switch(fStrategy) {
 		case SMART:
 			lBid = getNextBid(pOppntBid);
 			break;
+		default:
+			throw new Exception("unknown strategy "+fStrategy);
 		}
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return  lBid;
 	}
 
+	
 	public Action chooseAction()
 	{
 		Action lAction = null;
@@ -344,27 +420,25 @@ public class BayesianAgent extends Agent {
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
 	                System.out.println("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
-	                if (.1*P>Math.random()) 
-	                	// Wouter: because this agent is now so fast, it can do a lot of bids per second.
-	                	// therefore P>Math.random is too high. TODO  It should better be something like
-	                	// P*timesincelastbid>Math.random().
-	                {
-/*					if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace 
-						.getUtility(myLastBid))  */
-					// Opponent bids equally, or outbids my previous bid, so lets
-					// accept
+	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid))  
+	               {
+						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(this);
 	                	System.out.println("randomly accepted");
 	                }
 	                else {
+	                	Bid lnextBid = proposeNextBid(lOppntBid);
+	                	lAction=new Offer(this,lnextBid);
 	                	// Propose counteroffer. Get next bid.
-	                	lAction = proposeNextBid(lOppntBid);
 	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                	// if yes then accept last bid of the opponent.
-	                	if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid))
-	                		// Opponent bids equally, or outbids my previous bid, so lets
-	                		// accept
+	                	if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
+	                	{
+	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
 	                		lAction = new Accept(this);
+	                		System.out.println("opponent's bid higher than util of my last bid! accepted");
+	                	} 
+
 	                }
 	                //remember current bid of the opponent as its previous bid
 	                fOpponentPreviousBid = lOppntBid;
@@ -393,6 +467,8 @@ public class BayesianAgent extends Agent {
 			lAction = new Offer(this, myLastBid);
 		}
 		myLastAction = lAction;
+		if (myLastAction instanceof Offer)
+			myPreviousBids.add( ((Offer)myLastAction).getBid());
 		return lAction;
 	}
 	private ACTIONTYPE getActionType(Action lAction) {
@@ -413,6 +489,9 @@ public class BayesianAgent extends Agent {
 		// higher this factor.
 		return CONCESSIONFACTOR;
 	}
+
+	
+	
 	/**
 	 * Prints out debug information only if the fDebug = true
 	 * @param pMessage - debug informaton to print
@@ -421,73 +500,11 @@ public class BayesianAgent extends Agent {
 		if(fDebug) 
 			System.out.println(pMessage);
 	}
-	/**
-	 * Builds Pareto frontier for the negotiation template
-	 * 
-	 */
-	public ArrayList<Bid> buildParetoFrontier() {
-		log("Building Pareto Frontier...");
-		System.out.println("buildParetoFrontier() starts at "+(new Date()));
-		//loadAgentsUtilitySpaces();
-		ArrayList<Bid> lPareto=new ArrayList<Bid>();
-		BidIterator lBidIter = new BidIterator(utilitySpace.getDomain());
-		while(lBidIter.hasNext()) {
-			Bid lBid = lBidIter.next();
-			//log("checking bid "+lBid.toString());
-			try {
-				if(!checkSolutionVSParetoFrontier(lPareto,lBid)) continue;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				if(checkSolutionVSOtherBids(lBid)) lPareto.add(lBid);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("buildParetoFrontier() finishes at "+(new Date()));
-		//sortParetoFrontier();    	
-		log("Finished building Pareto Frontier.");
-		return lPareto;
-	}
-	/**
-	 * Checks the bid against current Pareto set
-	 * 
-	 * @param pBid
-	 * @return false if bid is located to the South-West from the current Pareto frontier.
-	 * return true otherwise.
-	 * @throws Exception
-	 */
-	private boolean checkSolutionVSParetoFrontier(ArrayList<Bid>pPareto, Bid pBid) throws Exception {
-		boolean lIsStillASolution = true;
-		for (Iterator<Bid> lBidIter = pPareto.iterator(); lBidIter.hasNext();) {
-			Bid lBid = lBidIter.next();
-//			System.out.println("checking bid "+lBid.indexesToString() +" vs " + pBid.indexesToString());    	      
-			if((utilitySpace.getUtility(pBid)<utilitySpace.getUtility(lBid))&&
-					(fOpponentModel.getExpectedUtility(pBid)<fOpponentModel.getExpectedUtility(lBid)))
-				return false;
-		}
-		return lIsStillASolution;
-	}
-	/**
-	 * Checks the bid against all other bids in the space.
-	 * 
-	 * @param pBid
-	 * @return true if bid is Pareto efficient
-	 * @throws Exception
-	 */
-	private boolean checkSolutionVSOtherBids(Bid pBid) throws Exception {
-		boolean lIsStillASolution = true;
-		BidIterator lBidIter = new BidIterator(utilitySpace.getDomain());
-		while(lBidIter.hasNext()) {
-			Bid lBid = lBidIter.next();
-//			System.out.println("checking bid "+lBid.indexesToString() +" vs " + pBid.indexesToString());
-			if((utilitySpace.getUtility(pBid)<utilitySpace.getUtility(lBid))&&
-					(fOpponentModel.getExpectedUtility(pBid)<fOpponentModel.getExpectedUtility(lBid)))
-				return false;
-		}
-		return lIsStillASolution;
-	}
+
+	
+
+
+	
 	/**
 	 * This function determines the accept probability for an offer.
 	 * At t=0 it will prefer high-utility offers.

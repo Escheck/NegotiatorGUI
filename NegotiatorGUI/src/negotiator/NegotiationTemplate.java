@@ -132,7 +132,7 @@ public class NegotiationTemplate {
 	/**
 	 * 
 	 * Show the analysis window. Couples the analysis object with the chart window 
-	 * 
+	 * Wouter: old vesion by Dmytro.
 	 * @throws Exception
 	 */
 	protected void showAnalysisOld() throws Exception
@@ -171,6 +171,7 @@ public class NegotiationTemplate {
 	/**
 	 * 
 	 * Show the analysis window. Couples the analysis object with the chart window 
+	 * Wouter: this version uses the BidSpace instead of the Analysis.
 	 * 
 	 * @throws Exception
 	 */
