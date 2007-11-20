@@ -212,7 +212,8 @@ public class BidSpace {
 	 * 
 	 * @param opponentUtility
 	 * @return the utility of us on the pareto curve
-	 * @throws exception if getPareto fails.
+	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier contains utilityB=NAN.
+	 * Still unclear why utilB evaluates to NAN though...
 	 */
 	public double OurUtilityOnPareto(double opponentUtility) throws Exception
 	{
@@ -265,16 +266,18 @@ public class BidSpace {
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			for (Bid b:excludeList) { if (b.equals(p.bid)) contains=true; }
-			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; //ArrayList.contains does not use .equals!??
+			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
+			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; 
+			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
+			// although manual claims that indexOf is using equals???
 			if (contains) continue;
 			r=weightA*sq(p.utilityA-utilA)+weightB*(p.utilityB-utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
 		System.out.println("point found="+bestPoint.bid);
-		System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
-		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
-		System.out.println();
+		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
+		//if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
+		//System.out.println();
 		return bestPoint;
 	}
 	

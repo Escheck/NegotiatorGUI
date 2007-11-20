@@ -399,7 +399,8 @@ public class BayesianAgent extends Agent {
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
 	                System.out.println("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
-	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid))  
+	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)
+	            	|| P>Math.random() )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(this);
