@@ -21,7 +21,7 @@ public class BidPoint {
 	
 	public String toString()
 	{
-		return "BidPoint ["+/*bid+*/",utilA["+utilityA+"],utilB["+utilityB+"]]";
+		return "BidPoint ["+bid+" utilA["+utilityA+"],utilB["+utilityB+"]]";
 	}
 	
 	boolean equals(BidPoint pt)

@@ -40,8 +40,8 @@ class OpponentModelUtilSpace extends UtilitySpace
 	public double getUtility(Bid b)
 	{ 
 		double u=0.;
-		try { u=opponentmodel.getExpectedUtility(b); } 
-		catch (Exception e) {System.out.println("getExpectedUtility failed. returning 0");u=0.;}
+		try { u=opponentmodel.getNormalizedUtility(b); } 
+		catch (Exception e) {System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
 		return u;
 	}
 }
@@ -109,58 +109,34 @@ public class BayesianAgent extends Agent {
 	 */
 	private Bid getNextBid(Bid pOppntBid) throws Exception 
 	{
+		if (pOppntBid==null) throw new NullPointerException("pOpptBid=null");
+		if (myLastBid==null) throw new Exception("myLastBid==null");
 		log("Get next bid ...");
-		Bid lNextBid = null;
-		if(fOpponentPreviousBid==null) {
-			log("My second bid. No second bid of opponent is available.");
-			lNextBid = getBidOfRadius(myLastBid, 0.1);
-		} else {
-			//try to match opponent's concession in his space
-			// we assume bid 0 is the max utility for opponent and that's the reference point for all
-			// his subsequent bids.
-			log("Try to match opponent's concession in his space:");
-			//double opponentUtil = fOpponentModel.getExpectedUtility(fOpponentModel.fBiddingHistory.get(0))-
-								//fOpponentModel.getExpectedUtility(pOppntBid);
-			double opponentUtil = fOpponentModel.getExpectedUtility(pOppntBid);
-
-			if (opponentUtil<0) throw new Exception("Something's wrong. First bid has not max utility!");
-			 // negative means concession 
-			double ourTargetUtilInOppModel=1-opponentUtil;
-			log("Opp's current utility:" + String.format("%1.5f", opponentUtil));
-			log("My target utility in opp.model :" + String.format("%1.5f", ourTargetUtilInOppModel));
-			//find a bid in bidspace that  maximizes our utility and has also utility ourTargetUtilInOppModel
-			lNextBid= getMaxBidForOppUtil(ourTargetUtilInOppModel);
-			BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
-			if (myLastBid!=null && lNextBid.equals(myLastBid))
-			{
-				 // avoid deadlock: search for other bids with same utility in our space
-				log("The best bid already was done before. Searching similar bid");
-				lNextBid=getNewBidWithUtil(utilitySpace.getUtility(lNextBid),bs);
-				log("Similar bid:"+lNextBid);
-			}
-			
-			/*
-			if(utilitySpace.getUtility(lNextBid)<utilitySpace.getUtility(myLastBid)) 
-			{
-				//try to make a smart move
-				log("Try to make a smart move");
-				lNextBid = getSmartBid(myLastBid);
-				
-				if(lNextBid==null) {
-					// make a concession using a circle of lDeltaOppUtil radius
-					log("Smart move is impossible. Make a concession using a circle of radius " +  String.format("%1.5f", lDeltaOppUtil));
-					
-					if (lDeltaOppUtil<0)
-						 // opponent did concession, we do concession of same size 
-						lNextBid = getBidAtDistance(bs.getParetoFrontier(), myLastBid, -lDeltaOppUtil);
-					else
-						// opponent did not do concession, we do no concessino either
-						lNextBid=getBidAtDistance(bs.bidPoints,myLastBid,0.); // do no concession but try give another bid
-				}
-			}
-			*/
+		
+		
+		BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
+		//System.out.println("Bidspace:\n"+bs);
+		
+		 // compute opponent's concession
+		double opponentConcession=0.;
+		if(fOpponentPreviousBid==null) opponentConcession=0;
+		else
+		{		
+			double opponentUtil = fOpponentModel.getNormalizedUtility(pOppntBid);
+			double opponentFirstBidUtil=fOpponentModel.getNormalizedUtility(fOpponentModel.fBiddingHistory.get(0));
+			opponentConcession=opponentUtil-opponentFirstBidUtil;
 		}
-		return lNextBid;
+		
+		 // determine our bid point
+		double OurFirstBidOppUtil=fOpponentModel.getNormalizedUtility(myPreviousBids.get(0));
+		double OurTargetBidOppUtil=OurFirstBidOppUtil-opponentConcession;
+		if (OurTargetBidOppUtil>1) OurTargetBidOppUtil=1.;
+		if (OurTargetBidOppUtil<0) OurTargetBidOppUtil=0.;
+		
+		// find the target on the pareto curve
+		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
+		
+		return bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.9,.2,myPreviousBids).bid;
 	}
 	
 	/**
@@ -208,7 +184,7 @@ public class BayesianAgent extends Agent {
 //			System.out.println(String.valueOf(i++));
 			if(Math.abs(utilitySpace.getUtility(tmpBid)-lUtility)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpExpecteUtility = fOpponentModel.getExpectedUtility(tmpBid);
+				double lTmpExpecteUtility = fOpponentModel.getNormalizedUtility(tmpBid);
 				if(lTmpExpecteUtility > lExpectedUtility) {
 					lExpectedUtility= lTmpExpecteUtility ;
 					lBid = tmpBid;
@@ -216,7 +192,7 @@ public class BayesianAgent extends Agent {
 			}				
 		} 		
 		//check if really found a better bid. if not return null
-		if(fOpponentModel.getExpectedUtility(lBid)>(fOpponentModel.getExpectedUtility(pBid)+0.04))
+		if(fOpponentModel.getNormalizedUtility(lBid)>(fOpponentModel.getNormalizedUtility(pBid)+0.04))
 			return lBid;
 		else
 			return null;
@@ -235,11 +211,11 @@ public class BayesianAgent extends Agent {
 		Bid lBid=null;		
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
 //		ArrayList<Bid> lCircle = new ArrayList<Bid>();
-		double pBidOppU = fOpponentModel.getExpectedUtility(pBid);
+		double pBidOppU = fOpponentModel.getNormalizedUtility(pBid);
 		double pBidMyU  = utilitySpace.getUtility(pBid);		
 		while(lIter.hasNext()) {
 			Bid tmpBid = lIter.next();
-			double tmpBidOppU = fOpponentModel.getExpectedUtility(tmpBid);
+			double tmpBidOppU = fOpponentModel.getNormalizedUtility(tmpBid);
 			double tmpBidMyU  = utilitySpace.getUtility(tmpBid);
 			double lRSquare   = (tmpBidOppU-pBidOppU)*(tmpBidOppU-pBidOppU)+
 					   		    (tmpBidMyU - pBidMyU)*(tmpBidMyU - pBidMyU);
@@ -249,7 +225,7 @@ public class BayesianAgent extends Agent {
 					lBid = tmpBid;
 				} else {
 					if((tmpBidMyU>utilitySpace.getUtility(lBid))&&
-					   (tmpBidOppU>fOpponentModel.getExpectedUtility(lBid))) 
+					   (tmpBidOppU>fOpponentModel.getNormalizedUtility(lBid))) 
 					lBid = tmpBid;
 				}
 			}				
@@ -274,13 +250,13 @@ public class BayesianAgent extends Agent {
 		BidPoint nearestbid=null;			
 		double smallestDeltaSoFar = 999.; // square of closest bid so far. any bid will be closer than this.
 		
-		double pBidOppU = fOpponentModel.getExpectedUtility(pBid);
+		double pBidOppU = fOpponentModel.getNormalizedUtility(pBid);
 		double pBidMyU  = utilitySpace.getUtility(pBid);	
 		
 		double tmpBidOppU, tmpBidMyU, r2, delta;
 		for(BidPoint b : bidpoints) {
 			if (b.equals(pBid)) continue; // skip the pBid itself
-			//tmpBidOppU = fOpponentModel.getExpectedUtility(b);
+			//tmpBidOppU = fOpponentModel.getNormalizedUtility(b);
 			tmpBidOppU = b.utilityB;
 			tmpBidMyU  = b.utilityA;
 			r2 = sq(tmpBidOppU-pBidOppU)+sq(tmpBidMyU - pBidMyU);
@@ -336,6 +312,9 @@ public class BayesianAgent extends Agent {
 	 * the learned model and maximal utility for my self.
 	 * Uses ALLOWED_UTILITY_DEVIATION to allow some deviation from the target utility
 	 * 
+	 * Wouter: modified 20nov, as it appears that bid spaces in practice have gaps.
+	 * Awaiting Dmytro's feedback on this, I propose to 
+	 * 
 	 * @param pOppUtil - target utility in opponent's space 
 	 * @return bid with maximal utility in own space and the target utility in the opponent's space
 	 * @throws Exception if there is no bid (should be rare!)
@@ -350,7 +329,7 @@ public class BayesianAgent extends Agent {
 			Bid tmpBid = lIter.next();
 //			System.out.println(tmpBid);
 //			System.out.println(String.valueOf(i++));
-			if(Math.abs(fOpponentModel.getExpectedUtility(tmpBid)-pOppUtil)<ALLOWED_UTILITY_DEVIATION) {
+			if(Math.abs(fOpponentModel.getNormalizedUtility(tmpBid)-pOppUtil)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
 				double lTmpUtility = utilitySpace.getUtility(tmpBid);
 				if(lTmpUtility > lUtility) {
@@ -375,7 +354,7 @@ public class BayesianAgent extends Agent {
 //			System.out.println(String.valueOf(i++));
 			if(Math.abs(utilitySpace.getUtility(tmpBid)-pUtility)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpExpecteUtility = fOpponentModel.getExpectedUtility(tmpBid);
+				double lTmpExpecteUtility = fOpponentModel.getNormalizedUtility(tmpBid);
 				if(lTmpExpecteUtility > lExpectedUtility) {
 					lExpectedUtility= lTmpExpecteUtility ;
 					lBid = tmpBid;

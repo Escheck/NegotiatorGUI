@@ -63,6 +63,7 @@ public class BidSpace {
 		BuildSpace();
 	}
 	
+	
 	/*
 	 * Create the space with all bid points from the two util spaces.
 	 * @throws exception if utility can not be computed for some poitn.
@@ -78,6 +79,11 @@ public class BidSpace {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return pareto frontier. The order is  ascending utilityA.
+	 * @throws Exception
+	 */
 	public ArrayList<BidPoint> getParetoFrontier() throws Exception
 	{
 		if (paretoFrontier==null)
@@ -116,7 +122,7 @@ public class BidSpace {
 	 * @author W.Pasman
 	 * @param pareto1 the first pareto frontier: list of bidpoints with increasing utility for A, decreasing for B
 	 * @param pareto2 the second pareto frontier:...
-	 * @return new pareto frontier being the merged frontier of the two.
+	 * @return new pareto frontier being the merged frontier of the two. Sorted in increasing utilityA direction
 	 */
 	public ArrayList<BidPoint> mergeParetoFrontiers(ArrayList<BidPoint> pareto1,ArrayList<BidPoint> pareto2)
 	{
@@ -201,4 +207,76 @@ public class BidSpace {
 		}
 		return nash;
 	}
+	
+	/**
+	 * 
+	 * @param opponentUtility
+	 * @return the utility of us on the pareto curve
+	 * @throws exception if getPareto fails.
+	 */
+	public double OurUtilityOnPareto(double opponentUtility) throws Exception
+	{
+		if (opponentUtility<0. || opponentUtility>1.)
+			throw new Exception("opponentUtil "+opponentUtility+" is out of [0,1].");
+		ArrayList<BidPoint> pareto=getParetoFrontier();
+		// our utility is along A axis, opp util along B axis.
+
+		//add endpoints to pareto curve such that utilB spans [0,1] entirely
+		if (pareto.get(0).utilityB<1) pareto.add(0,new BidPoint(null,0.,1.));
+		if (pareto.get(pareto.size()-1).utilityB>0) pareto.add(new BidPoint(null,1.,0.));
+		if (pareto.size()<2) throw new Exception("Pareto has only 1 point?!"+pareto);
+		// pareto is monotonically descending in utilB direction.
+		int i=0;
+		while (! (pareto.get(i).utilityB>=opponentUtility && opponentUtility>pareto.get(i+1).utilityB)) 
+			i++;
+		
+		double oppUtil1=pareto.get(i).utilityB; // this is the high value
+		double oppUtil2=pareto.get(i+1).utilityB; // the low value
+		double f=(opponentUtility-oppUtil1)/(oppUtil2-oppUtil1); // f in [0,1] is relative distance from point i.
+		// close to point i means f~0. close to i+1 means f~1
+		double lininterpol=(1-f)*pareto.get(i).utilityA+f*pareto.get(i+1).utilityA;
+		return lininterpol;
+	}
+	
+	public String toString()
+	{
+		return bidPoints.toString();
+	}
+		
+	/**
+	 * find the bid with the minimal distance weightA*DeltaUtilA^2+weightB*DeltaUtilB^2
+	 * where DeltaUtilA is the difference between given utilA and the actual util of bid
+	 * @author W.Pasman
+	 * @param utilA the agent-A utility of the point to be found
+	 * @param utilB the agent-B utility of the point to be found
+	 * @param weightA weight in A direction
+	 * @param weightB weight in B direction
+	 * @param excludeList Bids to be excluded from the search.
+	 * @return best point, or null if none remaining.
+	 */
+	public BidPoint NearestBidPoint(double utilA,double utilB,double weightA,double weightB,
+			ArrayList<Bid> excludeList)
+	{
+		System.out.println("determining nearest bid to "+utilA+","+utilB);
+		System.out.println("excludes="+excludeList);
+		double mindist=9.; // paretospace distances are always smaller than 2
+		BidPoint bestPoint=null;
+		double r;
+		for (BidPoint p:bidPoints)
+		{
+			boolean contains=false;
+			for (Bid b:excludeList) { if (b.equals(p.bid)) contains=true; }
+			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; //ArrayList.contains does not use .equals!??
+			if (contains) continue;
+			r=weightA*sq(p.utilityA-utilA)+weightB*(p.utilityB-utilB);
+			if (r<mindist) { mindist=r; bestPoint=p; }
+		}
+		System.out.println("point found="+bestPoint.bid);
+		System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
+		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
+		System.out.println();
+		return bestPoint;
+	}
+	
+	public double sq(double x) { return x*x; }
 }
