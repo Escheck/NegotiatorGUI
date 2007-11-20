@@ -8,6 +8,7 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.*;
 import negotiator.utility.*;
+import negotiator.BidIterator;
 
 public class BayesianOpponentModel4 {
 	
@@ -20,6 +21,10 @@ public class BayesianOpponentModel4 {
 //	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
 	ArrayList<Issue> issues;
+	Double minUtility=null,maxUtility=null;
+	
+	
+	
 	public BayesianOpponentModel4(UtilitySpace pUtilitySpace) {
 		//
 
@@ -340,6 +345,7 @@ public class BayesianOpponentModel4 {
 //		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-0.02;
+		findMinMaxUtility();
 		printBestHyp();
 	}
 	
@@ -364,6 +370,12 @@ public class BayesianOpponentModel4 {
 		return u;
 	}
 	
+	public double getNormalizedUtility(Bid pBid) throws Exception
+	{
+		double u=getExpectedUtility(pBid);
+		if (minUtility==null || maxUtility==null) findMinMaxUtility();
+		return (u-minUtility)/(maxUtility-minUtility);
+	}
 	
 	private void printBestHyp() {
 		double[] lBestWeights = new double[fUS.getDomain().getIssues().size()];
@@ -405,6 +417,19 @@ public class BayesianOpponentModel4 {
 			System.out.println();
 		}*/
 		
+	}
+	
+	private void findMinMaxUtility() throws Exception
+	{
+		BidIterator biditer=new BidIterator(fDomain);
+		 minUtility=1.;  maxUtility=0.; double u;
+		while (biditer.hasNext())
+		{
+			Bid b=biditer.next();
+			u=getExpectedUtility(b);
+			if (minUtility>u) minUtility=u;
+			if (maxUtility<u) maxUtility=u;
+		}
 	}
 	
 	

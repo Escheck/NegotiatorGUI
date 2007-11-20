@@ -112,6 +112,7 @@ public final class Bid {
     }
 
 	public boolean equals(Bid pBid) {
+		//System.out.println("comparing "+this+" with "+pBid);
 		/*
 		 * for(int i=0;i<fValues.length;i++) {
 		 * if(!fValues[i].equals(pBid.getValue(i))) { return false; } }
