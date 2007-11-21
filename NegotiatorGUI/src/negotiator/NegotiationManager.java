@@ -167,6 +167,8 @@ public class NegotiationManager implements Runnable {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));
             out.write(Main.getCurrentTime() + ";" + no.toString()+"\n");
             out.close();
+            
+            System.out.println("outcome xml:"+no.toXML());
         } catch (IOException e) {
         }
         

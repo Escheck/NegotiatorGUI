@@ -11,6 +11,8 @@ package negotiator;
 
 import java.util.ArrayList;
 
+import negotiator.xml.SimpleElement;
+
 /**
  *
  * @author dmytro
@@ -22,8 +24,8 @@ public class NegotiationOutcome {
     public String agentAutility;
     public String agentButility;
     public String ErrorRemarks; // non-null if something happens crashing the negotiation
-    public ArrayList<Bid> AgentABids;
-    public ArrayList<Bid> AgentBBids;
+    public ArrayListXML<Bid> AgentABids;
+    public ArrayListXML<Bid> AgentBBids;
     public Double agentAmaxUtil;
     public Double agentBmaxUtil;
     public boolean agentAstarts; // true if A starts, false if B starts
@@ -51,8 +53,8 @@ public class NegotiationOutcome {
         this.agentButility = agentButility;
         this.agentAname = agentAname;
         this.agentBname = agentBname;    
-        AgentABids=AgentABidsP;
-        AgentBBids=AgentBBidsP;
+        AgentABids=new ArrayListXML<Bid>(AgentABidsP);
+        AgentBBids=new ArrayListXML<Bid>(AgentBBidsP);
         ErrorRemarks=err;
         agentAmaxUtil=agentAmaxUtilP;
         agentBmaxUtil=agentBmaxUtilP;
@@ -75,5 +77,39 @@ public class NegotiationOutcome {
         		;
 
     }
-   
+
+    /**
+     * 
+     * @param agentX is "A" or "B"
+     * @param agentName is the given name to that agent.
+     * @param utilspacefilename is the filename holding the utility.xml file
+     * @param bids is the arraylist of bids made by that agent.
+     * @return
+     */
+    SimpleElement resultsOfAgent(String agentX,String agentName, String utilspacefilename,
+    		String agentAUtil,String agentAMaxUtil, ArrayListXML<Bid> bids)
+    {
+    	SimpleElement outcome=new SimpleElement("resultsOfAgent");
+    	outcome.setAttribute("agent", agentX);
+    	outcome.setAttribute("agentName", agentName);
+    	outcome.setAttribute("utilspace", utilspacefilename);
+    	outcome.setAttribute("finalUtility",agentAUtil);
+    	outcome.setAttribute("maxUtility",agentAMaxUtil);
+    	outcome.addChildElement(bids.toXML());
+    	return outcome;
+    }
+    
+    public SimpleElement toXML()
+    {
+    	SimpleElement outcome = new SimpleElement("NegotiationOutcome");
+    	outcome.setAttribute("errors",ErrorRemarks);
+    	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
+    	outcome.setAttribute("startingAgent",startingagent);
+    	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAutilSpaceName,
+    			agentAutility,""+agentAmaxUtil,AgentABids));
+    	outcome.addChildElement(resultsOfAgent("B",agentBname,agentButilSpaceName,
+    			agentButility,""+agentBmaxUtil,AgentBBids));
+    
+		return outcome;
+    }
 }
