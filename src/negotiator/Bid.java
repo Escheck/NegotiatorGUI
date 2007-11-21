@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * and value is the picked alternative.
  */
 
-public final class Bid {
+public final class Bid implements XMLable{
 
 	// Class fields
 	Domain fDomain;
