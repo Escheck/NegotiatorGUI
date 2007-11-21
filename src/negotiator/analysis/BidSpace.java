@@ -88,9 +88,9 @@ public class BidSpace {
 	{
 		if (paretoFrontier==null)
 		{
-	        System.out.println("ParetoFrontier start computation:"+(new Date()));
+	        //System.out.println("ParetoFrontier start computation:"+(new Date()));
 	        paretoFrontier=computeParetoFrontier(bidPoints);
-	        System.out.println("ParetoFrontier end computation:"+(new Date()));
+	        //System.out.println("ParetoFrontier end computation:"+(new Date()));
 		}
 		return paretoFrontier;
 	}
@@ -271,7 +271,7 @@ public class BidSpace {
 			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
 			// although manual claims that indexOf is using equals???
 			if (contains) continue;
-			r=weightA*sq(p.utilityA-utilA)+weightB*(p.utilityB-utilB);
+			r=weightA*sq(p.utilityA-utilA)+weightB*sq(p.utilityB-utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
 		System.out.println("point found="+bestPoint.bid);

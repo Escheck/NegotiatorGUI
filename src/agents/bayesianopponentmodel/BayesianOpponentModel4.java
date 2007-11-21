@@ -319,7 +319,7 @@ public class BayesianOpponentModel4 {
 	//	}
 		printEvalsDistribution();
 	}
-	private boolean haveSeenBefore(Bid pBid) {
+	public boolean haveSeenBefore(Bid pBid) {
 		for(Bid tmpBid : fBiddingHistory) {
 			if(pBid.equals(tmpBid)) return true;
 		}
@@ -344,7 +344,7 @@ public class BayesianOpponentModel4 {
 		
 //		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
-		fPreviousBidUtility = fPreviousBidUtility-0.02;
+		fPreviousBidUtility = fPreviousBidUtility-0.01;
 		findMinMaxUtility();
 		printBestHyp();
 	}

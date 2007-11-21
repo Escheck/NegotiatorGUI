@@ -37,6 +37,7 @@ import negotiator.BidIterator;
  * with their own version of UtilitySpace
  * 
  * Wouter 15nov: un-done the final, students may hack what they want, but they work with a copy anyway.
+ * 
  * @author Dmytro Tykhonov & Koen Hindriks 
  */
 

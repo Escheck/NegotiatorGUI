@@ -126,17 +126,21 @@ public class BayesianAgent extends Agent {
 			double opponentFirstBidUtil=fOpponentModel.getNormalizedUtility(fOpponentModel.fBiddingHistory.get(0));
 			opponentConcession=opponentUtil-opponentFirstBidUtil;
 		}
+		System.out.println("opponent Concession:"+opponentConcession);
 		
 		 // determine our bid point
 		double OurFirstBidOppUtil=fOpponentModel.getNormalizedUtility(myPreviousBids.get(0));
 		double OurTargetBidOppUtil=OurFirstBidOppUtil-opponentConcession;
 		if (OurTargetBidOppUtil>1) OurTargetBidOppUtil=1.;
-		if (OurTargetBidOppUtil<0) OurTargetBidOppUtil=0.;
+		if (OurTargetBidOppUtil<OurFirstBidOppUtil) OurTargetBidOppUtil=OurFirstBidOppUtil;
+		System.out.println("our target opponent utility="+OurTargetBidOppUtil);
 		
 		// find the target on the pareto curve
 		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
 		
-		return bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.9,.2,myPreviousBids).bid;
+		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
+		System.out.println("found bid "+bp);
+		return bp.bid;
 	}
 	
 	/**
@@ -385,11 +389,13 @@ public class BayesianAgent extends Agent {
 		Action lAction = null;
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
+		
 		try	{
 			lActionType = getActionType(messageOpponent);
 			switch (lActionType) {
 			case OFFER: // Offer received from opponent
 				lOppntBid = ((Offer) messageOpponent).getBid();
+				if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
 				fOpponentModel.updateBeliefs(lOppntBid);
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
@@ -400,7 +406,7 @@ public class BayesianAgent extends Agent {
 	                double P=Paccept(offeredutil,time);
 	                System.out.println("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)
-	            	|| P>Math.random() )	   
+	            	/*|| .05*P>Math.random()*/ )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(this);
