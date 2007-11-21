@@ -137,11 +137,23 @@
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
 		</zip>
 	</target>
-	
 
-
+	<!--This is the home-version excluding the Bayesian Agent-->
 	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeNegoEditorJar, makeNegoSimulatorJar">
 		<zip destfile="${dist}/negotiator4Nov.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
+			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
+			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
+			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
+			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
+			<zipfileset dir="etc/templates/laptopdomainNoBayes" prefix="negotiator/templates/laptopdomain"/>
+		</zip>
+	</target>
+
+	<!--This is the home-version including the Bayesian Agent-->
+	<target name ="makeDistributiveForStudentsOn21Nov" depends="makeNegoEditorJar, makeNegoSimulatorWithBayesJar">
+		<zip destfile="${dist}/negotiator21Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>

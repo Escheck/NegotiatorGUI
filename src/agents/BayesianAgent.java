@@ -65,7 +65,7 @@ public class BayesianAgent extends Agent {
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
 	private ArrayList<Bid> myPreviousBids=new ArrayList<Bid>();
 	
-	private boolean fDebug = true;
+	private boolean fDebug = false;
 	// Class constructor
 	public BayesianAgent() {
 		super();
@@ -126,20 +126,20 @@ public class BayesianAgent extends Agent {
 			double opponentFirstBidUtil=fOpponentModel.getNormalizedUtility(fOpponentModel.fBiddingHistory.get(0));
 			opponentConcession=opponentUtil-opponentFirstBidUtil;
 		}
-		System.out.println("opponent Concession:"+opponentConcession);
+		log("opponent Concession:"+opponentConcession);
 		
 		 // determine our bid point
 		double OurFirstBidOppUtil=fOpponentModel.getNormalizedUtility(myPreviousBids.get(0));
 		double OurTargetBidOppUtil=OurFirstBidOppUtil-opponentConcession;
 		if (OurTargetBidOppUtil>1) OurTargetBidOppUtil=1.;
 		if (OurTargetBidOppUtil<OurFirstBidOppUtil) OurTargetBidOppUtil=OurFirstBidOppUtil;
-		System.out.println("our target opponent utility="+OurTargetBidOppUtil);
+		log("our target opponent utility="+OurTargetBidOppUtil);
 		
 		// find the target on the pareto curve
 		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
 		
 		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
-		System.out.println("found bid "+bp);
+		log("found bid "+bp);
 		return bp.bid;
 	}
 	
@@ -404,13 +404,13 @@ public class BayesianAgent extends Agent {
 	                double offeredutil=utilitySpace.getUtility(lOppntBid);
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
-	                System.out.println("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
+	                log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(this);
-	                	System.out.println("randomly accepted");
+	                	log("randomly accepted");
 	                }
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
@@ -422,7 +422,7 @@ public class BayesianAgent extends Agent {
 	                	{
 	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
 	                		lAction = new Accept(this);
-	                		System.out.println("opponent's bid higher than util of my last bid! accepted");
+	                		log("opponent's bid higher than util of my last bid! accepted");
 	                	} 
 
 	                }
@@ -448,7 +448,7 @@ public class BayesianAgent extends Agent {
 		}
 		catch (Exception e)
 		{ 
-			System.out.println("Exception in chooseAction:"+e.getMessage());
+			log("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
 			lAction = new Offer(this, myLastBid);
 		}
