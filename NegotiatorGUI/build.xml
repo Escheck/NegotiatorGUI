@@ -101,7 +101,7 @@
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}" 
-				excludes="agents/ABMP*,  agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*, negotiator/CheckPartyUtility*" />
+				includes="negotiator/**,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*, agents/EnterBidDialog*,agents/OpponentModelUtil*" />
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -157,10 +157,12 @@
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain" 
+								includes="party_domain.xml, party_utility_empty.xml" />
 			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
 			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/laptopdomainNoBayes" prefix="negotiator/templates/laptopdomain"/>
 		</zip>
 	</target>
 
