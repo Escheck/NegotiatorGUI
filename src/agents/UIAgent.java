@@ -39,7 +39,7 @@ public class UIAgent extends Agent{
  
     public void init(int sessionNumber, int sessionTotalNumber, Date startT, Integer totalTimeP, UtilitySpace us)
     {
-    	System.out.println("init UIAgent2");
+    	System.out.println("init UIAgent");
         super.init (sessionNumber, sessionTotalNumber, startT,totalTimeP, us);
         System.out.println("closing old dialog of ");
         if (ui!=null) { ui.dispose(); ui=null; }
