@@ -164,12 +164,12 @@ public class NegotiationManager implements Runnable {
     		// don't bother about max utility, both have zero anyway.
     	sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.csv",true));
-            out.write(Main.getCurrentTime() + ";" + no.toString()+"\n");
+            BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
+            out.write(""+no.toXML());
             out.close();
-            
-            System.out.println("outcome xml:"+no.toXML());
-        } catch (IOException e) {
+        } catch (Exception e) {
+        	System.out.println("Exception during writing outcomes:"+e);
+        	e.printStackTrace();
         }
         
     }

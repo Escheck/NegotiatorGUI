@@ -10,6 +10,7 @@
 package negotiator;
 
 import java.util.ArrayList;
+import negotiator.analysis.BidPoint;
 
 import negotiator.xml.SimpleElement;
 
@@ -24,8 +25,8 @@ public class NegotiationOutcome {
     public String agentAutility;
     public String agentButility;
     public String ErrorRemarks; // non-null if something happens crashing the negotiation
-    public ArrayListXML<Bid> AgentABids;
-    public ArrayListXML<Bid> AgentBBids;
+    public ArrayListXML<BidPoint> AgentABids;
+    public ArrayListXML<BidPoint> AgentBBids;
     public Double agentAmaxUtil;
     public Double agentBmaxUtil;
     public boolean agentAstarts; // true if A starts, false if B starts
@@ -39,8 +40,8 @@ public class NegotiationOutcome {
                     String agentAutility,
                     String agentButility,
                     String err,
-                    ArrayList<Bid> AgentABidsP,
-                    ArrayList<Bid> AgentBBidsP,
+                    ArrayList<BidPoint> AgentABidsP,
+                    ArrayList<BidPoint> AgentBBidsP,
                     Double agentAmaxUtilP,
                     Double agentBmaxUtilP,
                     boolean agentAstartsP, // true if A starts, false if B starts
@@ -53,8 +54,8 @@ public class NegotiationOutcome {
         this.agentButility = agentButility;
         this.agentAname = agentAname;
         this.agentBname = agentBname;    
-        AgentABids=new ArrayListXML<Bid>(AgentABidsP);
-        AgentBBids=new ArrayListXML<Bid>(AgentBBidsP);
+        AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
+        AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
         ErrorRemarks=err;
         agentAmaxUtil=agentAmaxUtilP;
         agentBmaxUtil=agentBmaxUtilP;
@@ -87,7 +88,7 @@ public class NegotiationOutcome {
      * @return
      */
     SimpleElement resultsOfAgent(String agentX,String agentName, String utilspacefilename,
-    		String agentAUtil,String agentAMaxUtil, ArrayListXML<Bid> bids)
+    		String agentAUtil,String agentAMaxUtil, ArrayListXML<BidPoint> bids)
     {
     	SimpleElement outcome=new SimpleElement("resultsOfAgent");
     	outcome.setAttribute("agent", agentX);
@@ -102,6 +103,7 @@ public class NegotiationOutcome {
     public SimpleElement toXML()
     {
     	SimpleElement outcome = new SimpleElement("NegotiationOutcome");
+    	outcome.setAttribute("currentTime", ""+Main.getCurrentTime());
     	outcome.setAttribute("errors",ErrorRemarks);
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
     	outcome.setAttribute("startingAgent",startingagent);
