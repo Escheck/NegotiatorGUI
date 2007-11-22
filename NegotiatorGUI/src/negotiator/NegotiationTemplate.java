@@ -135,11 +135,12 @@ public class NegotiationTemplate {
 	 * Wouter: old vesion by Dmytro.
 	 * @throws Exception
 	 */
+	/*
 	protected void showAnalysisOld() throws Exception
 	{
 		Chart lChart = new Chart();		
-/*		if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
-			fAnalysis.buildCompleteOutcomeSpace();*/
+		//if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
+		//	fAnalysis.buildCompleteOutcomeSpace();
 		if(fAnalysis.isCompleteSpaceBuilt()) {			
 			double[][] lAllBids = new double[fAnalysis.getTotalNumberOfBids()][2];
 			for(int i=0;i<fAnalysis.getTotalNumberOfBids();i++) {
@@ -166,7 +167,7 @@ public class NegotiationTemplate {
 		Main.fChart = lChart;
 		lChart.show();
 	}
-	
+	*/
 	
 	/**
 	 * 
@@ -216,19 +217,26 @@ public class NegotiationTemplate {
 	 * @param pAgentABids
 	 * @param pAgentBBids
 	 */
-	public void addNegotiationPaths(int sessionNumber, ArrayList<Bid> pAgentABids, ArrayList<Bid> pAgentBBids) {
+	public void addNegotiationPaths(int sessionNumber, ArrayList<BidPoint> pAgentABids, ArrayList<BidPoint> pAgentBBids) 
+	{
         double[][] lAgentAUtilities = new double[pAgentABids.size()][2];
         double[][] lAgentBUtilities = new double[pAgentBBids.size()][2];        
         try
         {
-	        for(int i=0;i< pAgentABids.size();i++) {
-	        	lAgentAUtilities [i][0] = getAgentAUtilitySpace().getUtility(pAgentABids.get(i));
-	        	lAgentAUtilities [i][1] = getAgentBUtilitySpace().getUtility(pAgentABids.get(i));
-	        }
-	        for(int i=0;i< pAgentBBids.size();i++) {
-	        	lAgentBUtilities [i][0] = getAgentAUtilitySpace().getUtility(pAgentBBids.get(i));
-	        	lAgentBUtilities [i][1] = getAgentBUtilitySpace().getUtility(pAgentBBids.get(i));
-	        }
+        	int i=0;
+        	for (BidPoint p:pAgentABids)
+        	{
+	        	lAgentAUtilities [i][0] = p.utilityA;
+	        	lAgentAUtilities [i][1] = p.utilityB;
+	        	i++;
+        	}
+        	i=0;
+        	for (BidPoint p:pAgentBBids)
+        	{
+	        	lAgentBUtilities [i][0] = p.utilityA;
+	        	lAgentBUtilities [i][1] = p.utilityB;
+	        	i++;
+        	}
 	        
 	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
 	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import negotiator.actions.*;
 import java.util.Date;
 import negotiator.utility.UtilitySpace;
+import negotiator.analysis.BidPoint;
 
 /**
  *
@@ -32,8 +33,9 @@ public class Negotiation implements Runnable {
     boolean agentBtookAction = false;
     boolean agentAStarts=false;
     
-    public ArrayList<Bid> fAgentABids;
-    public ArrayList<Bid> fAgentBBids;
+    
+    public ArrayList<BidPoint> fAgentABids;
+    public ArrayList<BidPoint> fAgentBBids;
     
     /** 
      * 
@@ -46,8 +48,8 @@ public class Negotiation implements Runnable {
         this.sessionNumber=sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
         this.nt = nt;
-        this.fAgentABids = new ArrayList<Bid>();
-        this.fAgentBBids = new ArrayList<Bid>();
+        this.fAgentABids = new ArrayList<BidPoint>();
+        this.fAgentBBids = new ArrayList<BidPoint>();
         agentAStarts=agentAStartsP;
     }
     
@@ -160,16 +162,21 @@ public class Negotiation implements Runnable {
                        
                  
                    //save last results and swap to other agent
-                   if(currentAgent.equals(agentA)) {
-                	   if(action instanceof Offer) {
-                		   fAgentABids.add(((Offer)action).getBid());
-                	   } 
+                   BidPoint p=null;
+                   if (action instanceof Offer)
+                   {
+            		   Bid b=((Offer)action).getBid();
+            		   p=new BidPoint(b,
+            				   nt.getAgentAUtilitySpace().getUtility(b),
+            				   nt.getAgentBUtilitySpace().getUtility(b));
+                   }
+                   if(currentAgent.equals(agentA))
+                   {
+                	   if(action instanceof Offer) fAgentABids.add(p);
                 	   currentAgent = agentB; 
                    }
                    else{
-                	   if(action instanceof Offer) {
-                		   fAgentBBids.add(((Offer)action).getBid());
-                	   } 
+                	   if(action instanceof Offer) fAgentBBids.add(p);
                 	   currentAgent = agentA;
                    }
 
@@ -232,11 +239,11 @@ public class Negotiation implements Runnable {
 
     }
 
-	public ArrayList<Bid> getAgentABids() {
+	public ArrayList<BidPoint> getAgentABids() {
 		return fAgentABids;
 	}
 	
-	public ArrayList<Bid> getAgentBBids() {
+	public ArrayList<BidPoint> getAgentBBids() {
 		return fAgentBBids;
 	}
 	
