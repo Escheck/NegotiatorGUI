@@ -81,5 +81,4 @@ public class Main {
 	public static boolean isDebug() {
 		return fDebug;
 	}
-    
 }

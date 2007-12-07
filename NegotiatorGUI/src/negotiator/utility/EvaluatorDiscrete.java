@@ -280,6 +280,7 @@ public class EvaluatorDiscrete implements Evaluator {
 
 	/**
 	 * throws exception if problem with computation.
+	 * @return  the cost of issue with given id. May throw if the bid is incomplete or utilityspace has problems
 	 */
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
 	{

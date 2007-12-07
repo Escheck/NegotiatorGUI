@@ -26,15 +26,13 @@ import negotiator.xml.*;
  */
 public class Main {
     
-    /** Creates a new instance of Main */
-    public Main() {
-    }
-    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+    	 Boolean status = (new File("etc/templates/tournament")).mkdir();
+    	 System.out.println("created etc/templates/tournament directory:"+status);
         loadGroups("src_TournamentBuilder/competition.xml");
     }
     public static void loadGroups(String fileName) {
@@ -70,7 +68,7 @@ public class Main {
                                  agentAclassname);
 
             
-                    out.write("java -cp bin;. negotiator.Main \"etc/templates/tournament/ampo_vs_city_" + agentBname+"_vs_"+agentAname +".xml\" -b >output/ampo_vs_city_" + agentBname+"_vs_"+agentAname+".txt \n");
+                    out.write("java -cp negosimulator.jar;. negotiator.Main \"etc/templates/tournament/ampo_vs_city_" + agentBname+"_vs_"+agentAname +".xml\" -b >output/ampo_vs_city_" + agentBname+"_vs_"+agentAname+".txt \n");
                     
                 }
             }

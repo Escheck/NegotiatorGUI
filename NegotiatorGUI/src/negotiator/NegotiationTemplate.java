@@ -99,7 +99,7 @@ public class NegotiationTemplate {
 		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
 		domain = new Domain(xml_utility_space);
 		loadAgentsUtilitySpaces();
-		if (Main.analysisEnabled)
+		if (Main.analysisEnabled && !Main.batchMode)
 		{
 			if(fRoot.getChildByTagName("analysis").length>0) {
 				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
