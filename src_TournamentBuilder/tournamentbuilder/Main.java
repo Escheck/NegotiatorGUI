@@ -23,22 +23,42 @@ import negotiator.xml.*;
 /**
  *
  * @author Dmytro Tykhonov
+ * @author W.Pasman (modified 10dec07)
  */
 public class Main {
     
     /**
      * @param args the command line arguments
      */
+	
+	static String RESULTSFILE="tournamentresults.xml";
+	static String SCRIPTFILE="run_tournament.bat";
+	static String COMPETITORFILE="src_TournamentBuilder/competition.xml";
+	static String TOURNAMENTXMLDIR="tournamentxml";
+	static String TOURNAMENTXMLPATH="etc/templates/"+TOURNAMENTXMLDIR;
+	static String NEGOTEMPLATE="party"; 
+		// leave out the ".xml" here, we use this for name generation too.
+		// this xml file should be in the tournamentbuilder directory.
+		// it is modified version of the domain template, prepared for the tournament.
+	
     public static void main(String[] args) {
         // TODO code application logic here
-    	 Boolean status = (new File("etc/templates/tournament")).mkdir();
-    	 System.out.println("created etc/templates/tournament directory:"+status);
-        loadGroups("src_TournamentBuilder/competition.xml");
+    	 Boolean status = (new File(TOURNAMENTXMLDIR)).mkdir();
+    	 if (status) System.out.print("created ");
+    	 else System.out.print("reusing the existing ");
+    	 System.out.println(TOURNAMENTXMLDIR+" directory");
+    	 loadGroups(COMPETITORFILE);
     }
+    
+    
     public static void loadGroups(String fileName) {
         SimpleDOMParser parser = new SimpleDOMParser();
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("run_tournament.bat"));
+            BufferedWriter out = new BufferedWriter(new FileWriter(SCRIPTFILE,false));
+            out.write("if (-f "+RESULTSFILE+") echo \"warning: file "+RESULTSFILE+" already exists. appending\"\n");
+            out.write("echo '<?xml-stylesheet type=\"text/xsl\" href=\"outcomes.xsl\"?>' >>"+RESULTSFILE+"\n");
+            out.write("echo \"<Tournament>\" >>"+RESULTSFILE+"\n");
+            
             BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
             SimpleElement root = parser.parse(file);
             Object[] groups = root.getChildElements();
@@ -54,30 +74,36 @@ public class Main {
 //                    if (!(agentBclassname.equals("negotiation.group16.CurzonAgent")||(agentAclassname.equals("negotiation.group16.CurzonAgent")))) continue; 
 
                     if (i!=j) {                    
-                        makeTemplate("etc/templates/ampo_vs_city_template.xml", 
-                                     "etc/templates/tournament/ampo_vs_city_"+agentAname+"_vs_"+agentBname+".xml",
+                        makeTemplate("src_TournamentBuilder/tournamentbuilder/"+NEGOTEMPLATE+".xml", 
+                                     TOURNAMENTXMLPATH+"/"+NEGOTEMPLATE+"_"+agentAname+"_vs_"+agentBname+".xml",
                                      agentAclassname,
                                      agentBclassname);
            
-                        out.write("java -cp bin;. negotiator.Main \"etc/templates/tournament/ampo_vs_city_" + agentAname+"_vs_"+agentBname +".xml\" -b >output/ampo_vs_city_" + agentAname+"_vs_"+agentBname+".txt \n");
+                        //out.write("java -cp bin;. negotiator.Main \"etc/templates/tournament/ampo_vs_city_" + agentAname+"_vs_"+agentBname +".xml\" -b >output/ampo_vs_city_" + agentAname+"_vs_"+agentBname+".txt \n");
+                        out.write("java -jar negosimulator.jar \"etc/templates/tournament/ampo_vs_city_" + agentAname+"_vs_"+agentBname +".xml\" -b >output/ampo_vs_city_" + agentAname+"_vs_"+agentBname+".txt -b\n");
+                        out.write("cat outcomes.xml >>"+RESULTSFILE+"\n");
+                        out.write("rm outcomes.xml\n");
                     }
-                   
-                    makeTemplate("etc/templates/ampo_vs_city_template.xml", 
-                                 "etc/templates/tournament/ampo_vs_city_"+agentBname+"_vs_"+agentAname+".xml",
+                    /*
+                    makeTemplate(NEGOTEMPLATE+".xml", 
+                                 TOURNAMENTXMLPATH+"/"+NEGOTEMPLATE+"_"+agentBname+"_vs_"+agentAname+".xml",
                                  agentBclassname,
                                  agentAclassname);
-
+					*/
             
                     out.write("java -cp negosimulator.jar;. negotiator.Main \"etc/templates/tournament/ampo_vs_city_" + agentBname+"_vs_"+agentAname +".xml\" -b >output/ampo_vs_city_" + agentBname+"_vs_"+agentAname+".txt \n");
                     
                 }
             }
+            out.write("echo \"</Tournament>\" >>"+RESULTSFILE+"\n");
             out.close();            
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
+    
+    
     private static void makeTemplate(String templateSourceName, String templateDestName, String agentAname, String agentBname) {
         SimpleDOMParser parser = new SimpleDOMParser();
         try {
@@ -95,6 +121,8 @@ public class Main {
             e.printStackTrace();
         }
     }
+    
+    
     public static String substitute( String name, String src, String dest ) {
         if( name == null || src == null || name.length() == 0 ) {
           return name;
