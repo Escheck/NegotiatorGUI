@@ -1,40 +1,11 @@
 <groups>
 	<group id="2">
-		<agent name="PimpinAgent" classname="negotiation.group2.PimpinAgent"/>
+		<agent name="PimpinAgent" classname="SimpleAgent"/>
 	</group>
 	<group id="3">
-		<agent name="AgentTrump" classname="negotiation.group3.AgentTrump"/>
+		<agent name="AgentTrump" classname="AgentTrump"/>
 	</group>
 	<group id="4">
-		<agent name="Agent004mv" classname="negotiation.group4.Agent004mv"/>
+		<agent name="Agent004mv" classname="agents.BayesianAgent"/>
 	</group>
-	<group id="5">
-		<agent name="AgentOrange" classname="negotiation.group5.AgentOrange"/>
-	</group>
-
-	<group id="6">
-		<agent name="ChrisSabian5" classname="negotiation.group6.ChrisSabian5"/>
-	</group>
-	<group id="11">
-		<agent name="ChrisSabianAgent" classname="negotiation.group11.ChrisSabianAgent"/>
-	</group> 
-	<group id="13">
-		<agent name="Jamm" classname="negotiation.group13.Jamm"/>
-	</group> 
-	<group id="15">
-		<agent name="MyAgent" classname="negotiation.group15.MyAgent"/>
-	</group> 
-	<group id="16">
-		<agent name="CurzonAgent" classname="negotiation.group16.CurzonAgent"/>
-	</group> 
-	<group id="18">
-		<agent name="SamuelJackson" classname="negotiation.group18.SamuelJackson"/>
-	</group> 
-	<group id="19">
-		<agent name="simpleagent5" classname="negotiation.group19.SimpleAgent5"/>
-	</group> 
-	<group id="20">
-		<agent name="simpleagent20" classname="negotiation.group0.SimpleAgent"/>
-	</group> 
-
 </groups>
