@@ -15,11 +15,10 @@
 			<tr>
 				<td> Time </td>
 				<td> Starts </td>
-				<td> Agt </td>
-				<td> Util </td>
-				<td> Max Util </td>
-				<td> classname </td>
-				<td> utilfile </td>
+				<td> Agt Class </td>
+				<td> Name </td>
+				<td> Normalized Util </td>
+				<td> utilspace </td>
 			</tr>
 			<xsl:for-each select="/Tournament/NegotiationOutcome/resultsOfAgent">
 				<tr>
@@ -51,7 +50,7 @@
 							<xsl:attribute name="class">clsEven</xsl:attribute>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:for-each select="@*">
+					<xsl:for-each select="@agentClass|@agentName|@normalizedUtility|@utilspace">
 						<td>
 							<xsl:value-of select="."/>
 						</td>

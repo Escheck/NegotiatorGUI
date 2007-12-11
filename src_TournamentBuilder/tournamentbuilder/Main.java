@@ -35,9 +35,7 @@ public class Main {
 	static int LOW_UTIL_NR=11;
 	static int HIGH_UTIL_NR=40;    // util files are named <NEGOTEMPLATE>_<XX>_utility.xml
 									// with XX a number between LOW_UTIL_NR and HIGH_UTIL_NR inclusive.
-	
-	
-	
+		
 	
 	static String ROOT="src_TournamentBuilder/";	// root dir of the tournament builder.
 	static String RESULTSFILE="tournamentresults.xml";

@@ -156,7 +156,9 @@ public class NegotiationManager implements Runnable {
     	NegotiationOutcome no = null;
     	if(nego.no!=null) no = nego.no;
     	else
-    		no = new NegotiationOutcome(sessionNumber,agentAclassName, agentBclassName, "0","0","nego result was null(aborted)",
+    		no = new NegotiationOutcome(sessionNumber,
+    				agentA.getName(),agentB.getName(),
+    				agentAclassName, agentBclassName, 0.,0.,"nego result was null(aborted)",
     			nego.fAgentABids,nego.fAgentBBids,1.,1.,
                 agentAStarts,
                 nt.getAgentAUtilitySpaceFileName(),
