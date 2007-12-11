@@ -42,7 +42,7 @@ public class Main {
 	static String ROOT="src_TournamentBuilder/";	// root dir of the tournament builder.
 	static String RESULTSFILE="tournamentresults.xml";
 	static String SCRIPTFILE=ROOT+"run_tournament.bat";
-	static String COMPETITORFILE=ROOT+"competition.xml";
+	static String COMPETITORFILE=ROOT+"groups.xml";
 	static String TOURNAMENTXMLDIR="tournamentxml"; // ROOT will be prepended where necessary. 
 		// leave out the ".xml" here, we use this for name generation too.
 		// this xml file should be in the src_Tournament directory.

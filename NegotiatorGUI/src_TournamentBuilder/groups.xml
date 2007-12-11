@@ -1,9 +1,9 @@
 <groups>
 	<group id="2">
-		<agent name="PimpinAgent" classname="SimpleAgent"/>
+		<agent name="PimpinAgent" classname="group2.SimpleAgent"/>
 	</group>
 	<group id="3">
-		<agent name="AgentTrump" classname="AgentTrump"/>
+		<agent name="AgentTrump" classname="group3.AgentTrump"/>
 	</group>
 	<group id="4">
 		<agent name="Agent004mv" classname="agents.BayesianAgent"/>
