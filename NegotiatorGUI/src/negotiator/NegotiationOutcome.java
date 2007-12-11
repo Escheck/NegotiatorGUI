@@ -20,16 +20,21 @@ import negotiator.xml.SimpleElement;
  */
 public class NegotiationOutcome {
     public int sessionNumber;
-    public String agentAname;
+    public String agentAname; 	// the name of the agent
     public String agentBname;
-    public String agentAutility;
-    public String agentButility;
+    public String agentAclass;	// the class file cotnaining that agent.
+    public String agentBclass; 
+    public Double agentAutility;
+    public Double agentButility;
     public String ErrorRemarks; // non-null if something happens crashing the negotiation
     public ArrayListXML<BidPoint> AgentABids;
     public ArrayListXML<BidPoint> AgentBBids;
     public Double agentAmaxUtil;
     public Double agentBmaxUtil;
     public boolean agentAstarts; // true if A starts, false if B starts
+    	// IMPORTANT. Note that this boolean differs from the agentAStarts flag that indicates whether
+    	// agent A is FORCED to use as starting agent. agentA may still be chosen to start if
+    	// that flag is not set.
     public String agentAutilSpaceName;
     public String agentButilSpaceName;
 
@@ -37,14 +42,16 @@ public class NegotiationOutcome {
     public NegotiationOutcome(int sessionNumber, 
                     String agentAname,
                     String agentBname,
-                    String agentAutility,
-                    String agentButility,
+                    String agentAclass,
+                    String agentBclass,
+                    Double agentAutility,
+                    Double agentButility,
                     String err,
                     ArrayList<BidPoint> AgentABidsP,
                     ArrayList<BidPoint> AgentBBidsP,
                     Double agentAmaxUtilP,
                     Double agentBmaxUtilP,
-                    boolean agentAstartsP, // true if A starts, false if B starts
+                    boolean startingWithA, // true if A starts, false if B starts
                     String agentAutilSpaceNameP,
                     String agentButilSpaceNameP
                     ) 
@@ -53,13 +60,15 @@ public class NegotiationOutcome {
         this.agentAutility = agentAutility;
         this.agentButility = agentButility;
         this.agentAname = agentAname;
-        this.agentBname = agentBname;    
+        this.agentBname = agentBname;
+        this.agentAclass=agentAclass;
+        this.agentBclass=agentBclass;
         AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
         AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
         ErrorRemarks=err;
         agentAmaxUtil=agentAmaxUtilP;
         agentBmaxUtil=agentBmaxUtilP;
-        agentAstarts=agentAstartsP;
+        agentAstarts=startingWithA;
         agentAutilSpaceName=agentAutilSpaceNameP;
         agentButilSpaceName=agentButilSpaceNameP;
     }
@@ -87,15 +96,19 @@ public class NegotiationOutcome {
      * @param bids is the arraylist of bids made by that agent.
      * @return
      */
-    SimpleElement resultsOfAgent(String agentX,String agentName, String utilspacefilename,
-    		String agentAUtil,String agentAMaxUtil, ArrayListXML<BidPoint> bids)
+    SimpleElement resultsOfAgent(String agentX,String agentName, String agentClass, String utilspacefilename,
+    		Double agentAUtil,Double agentAMaxUtil, ArrayListXML<BidPoint> bids)
     {
     	SimpleElement outcome=new SimpleElement("resultsOfAgent");
     	outcome.setAttribute("agent", agentX);
     	outcome.setAttribute("agentName", agentName);
+    	outcome.setAttribute("agentClass", agentClass);
     	outcome.setAttribute("utilspace", utilspacefilename);
-    	outcome.setAttribute("finalUtility",agentAUtil);
-    	outcome.setAttribute("maxUtility",agentAMaxUtil);
+    	outcome.setAttribute("finalUtility",""+agentAUtil);
+    	outcome.setAttribute("maxUtility",""+agentAMaxUtil);
+    	Double normalized=0.; if (agentAMaxUtil>0) { normalized=agentAUtil/agentAMaxUtil; }
+    	outcome.setAttribute("normalizedUtility",""+normalized);
+
     	outcome.addChildElement(bids.toXML());
     	return outcome;
     }
@@ -107,10 +120,10 @@ public class NegotiationOutcome {
     	outcome.setAttribute("errors",ErrorRemarks);
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
     	outcome.setAttribute("startingAgent",startingagent);
-    	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAutilSpaceName,
-    			agentAutility,""+agentAmaxUtil,AgentABids));
-    	outcome.addChildElement(resultsOfAgent("B",agentBname,agentButilSpaceName,
-    			agentButility,""+agentBmaxUtil,AgentBBids));
+    	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
+    			agentAutility,agentAmaxUtil,AgentABids));
+    	outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
+    			agentButility,agentBmaxUtil,AgentBBids));
     
 		return outcome;
     }
