@@ -8,11 +8,7 @@ import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.analysis.BidPoint;
 import negotiator.BidIterator;
-import negotiator.Main;
-import negotiator.actions.Accept;
-import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
+import negotiator.actions.*;
 import agents.bayesianopponentmodel.*;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
@@ -49,12 +45,12 @@ class OpponentModelUtilSpace extends UtilitySpace
 public class BayesianAgent extends Agent {
 
 	private Action messageOpponent;
-	//private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private Bid fOpponentPreviousBid = null;
-//	private Similarity fSimilarity;
+	
 	private static final double BREAK_OFF_POINT = 0.5;
+
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM};
 	private STRATEGY fStrategy = STRATEGY.SMART;
@@ -66,6 +62,7 @@ public class BayesianAgent extends Agent {
 	private ArrayList<Bid> myPreviousBids=new ArrayList<Bid>();
 	
 	private boolean fDebug = false;
+
 	// Class constructor
 	public BayesianAgent() {
 		super();
@@ -308,7 +305,6 @@ public class BayesianAgent extends Agent {
 			}		
 		}
 		return lBid.bid;
-		
 	}
 	
 	/**
