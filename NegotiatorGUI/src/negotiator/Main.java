@@ -33,6 +33,8 @@ public class Main {
     public static MainFrame mf;
     public static Chart fChart = null;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
+    public static boolean experimentalSetup=true;//set to true to allow agent to access negotiation environment
+     
     public Main() {
     }
     
@@ -57,12 +59,11 @@ public class Main {
     }
     private static void checkArguments(String[] args){
     	for(int i=0;i<args.length;i++) {
-    		if(args[i].equals("-d")) fDebug = true;
+    		if(args[i].equals("-d")) fDebug = true;    		
     	}
     }
     public static String getCurrentTime() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-    
         String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         java.text.SimpleDateFormat sdf = 
               new java.text.SimpleDateFormat(DATE_FORMAT);
@@ -74,8 +75,6 @@ public class Main {
         sdf.setTimeZone(TimeZone.getDefault());          
           
         return sdf.format(cal.getTime());
-        
-
     }
 
 	public static boolean isDebug() {

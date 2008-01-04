@@ -204,7 +204,7 @@ public class BayesianOpponentModel4 {
 		//TODO: check this condition
 //		if(pPreviousBidUtility<pUtility) return 0;
 //		else {
-			double lSigma = 0.3;
+			double lSigma = 0.25;
 			double x = (pPreviousBidUtility - pUtility)/pPreviousBidUtility ; 
 			double lResult = 1.0/(lSigma*Math.sqrt(2.0*Math.PI)) *Math.exp(-(x*x)/(2.0*lSigma*lSigma));			
 			return lResult;
@@ -344,7 +344,7 @@ public class BayesianOpponentModel4 {
 		
 //		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
-		fPreviousBidUtility = fPreviousBidUtility-0.01;
+		fPreviousBidUtility = fPreviousBidUtility-0.003;
 		findMinMaxUtility();
 		printBestHyp();
 	}
@@ -431,7 +431,6 @@ public class BayesianOpponentModel4 {
 			if (maxUtility<u) maxUtility=u;
 		}
 	}
-	
-	
+		
 	public Domain getDomain() { return fDomain; }
 }

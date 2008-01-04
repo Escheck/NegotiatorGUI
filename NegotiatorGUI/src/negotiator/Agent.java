@@ -38,7 +38,7 @@ public class Agent {
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-    
+    protected Negotiation 	fNegotiation;// can be accessed only in the expermental setup 
     
     public Agent() {
     }
@@ -87,4 +87,7 @@ public class Agent {
      * negotiation (larger with human users).
      */
     public boolean isUIAgent() { return false; }
+    public final void setNegotiationEnviroment(Negotiation pNegotiation) {
+    	fNegotiation = pNegotiation;   	
+    }
 }

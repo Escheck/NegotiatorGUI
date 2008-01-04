@@ -209,7 +209,7 @@ public class BidSpace {
 	}
 	
 	/**
-	 * 
+	 * Calculate own coordinate 
 	 * @param opponentUtility
 	 * @return the utility of us on the pareto curve
 	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier contains utilityB=NAN.
@@ -266,7 +266,7 @@ public class BidSpace {
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
+			//for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
 			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; 
 			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
 			// although manual claims that indexOf is using equals???
