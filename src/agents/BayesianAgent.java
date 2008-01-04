@@ -75,7 +75,7 @@ public class BayesianAgent extends Agent {
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
-		fOpponentModel = new BayesianOpponentModel4(utilitySpace);
+		fOpponentModel = new BayesianOpponentModel4(utilitySpace);		
 	}
 
 	// Class methods
@@ -391,8 +391,13 @@ public class BayesianAgent extends Agent {
 			switch (lActionType) {
 			case OFFER: // Offer received from opponent
 				lOppntBid = ((Offer) messageOpponent).getBid();
-				if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
+				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
+				double lDistance = calculateDistance();
+				System.out.println(getName() + ": distance between the learned space and the original one is " + String.valueOf(lDistance));
+			
 				fOpponentModel.updateBeliefs(lOppntBid);
+				lDistance = calculateDistance();
+				System.out.println(getName() + ": distance between the learned space and the original one is " + String.valueOf(lDistance));
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
@@ -511,5 +516,25 @@ public class BayesianAgent extends Agent {
 	}
 	
 	private double sq(double x) { return x*x; }
+	private double calculateDistance() {
+		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
+		double lDistance = 0;
+		while(lIter.hasNext()) {
+			Bid tmpBid = lIter.next();
+			try {
+				lDistance = lDistance + Math.abs(fOpponentModel.getNormalizedUtility(tmpBid)-fNegotiation.getOpponentUtility(this, tmpBid));
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+		} //while
+		lDistance = lDistance / utilitySpace.getDomain().getNumberOfPossibleBids();
+		return lDistance;
+	}
+	private double calculateWeghtsDistance() {
+		double lDistance = 0;
+		for(int i=0;i<utilitySpace.)
+		
+		return lDistance;
+	}
 	
 }

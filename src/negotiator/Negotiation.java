@@ -96,9 +96,17 @@ public class Negotiation implements Runnable {
             		new UtilitySpace(nt.getAgentAUtilitySpace()));
             agentB.init(sessionNumber, sessionTotalNumber,startTime,nt.getTotalTime(),
             		new UtilitySpace(nt.getAgentBUtilitySpace()));
+            //allow agent to access the environment if this is a run in the experimental setup
+            if(Main.experimentalSetup) {
+            	agentA.setNegotiationEnviroment(this);            	
+            	agentB.setNegotiationEnviroment(this);
+            } else {
+            	agentA.setNegotiationEnviroment(null);            	
+            	agentB.setNegotiationEnviroment(null);            	
+            }
             stopNegotiation = false;
             Action action = null;
-
+            
             currentAgent=agentA;
             if (!agentAStarts && new Random().nextInt(2)==1) 
             {
@@ -253,5 +261,10 @@ public class Negotiation implements Runnable {
 		return fAgentBBids;
 	}
 	
-    
+    public double getOpponentUtility(Agent pAgent, Bid pBid) throws Exception{
+    	if(pAgent.equals(agentA)) 
+    		return agentB.utilitySpace.getUtility(pBid);
+    	else
+    		return agentA.utilitySpace.getUtility(pBid);
+    }
 }

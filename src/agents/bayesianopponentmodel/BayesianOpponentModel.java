@@ -359,7 +359,7 @@ public class BayesianOpponentModel {
 			return n * factorial( n - 1 );
 	}
 	
-
+	public Domain getDomain() { return fDomain; }
 	protected  class HypsComparator implements java.util.Comparator
 	{
 		public int compare(Object o1,Object o2) throws ClassCastException
