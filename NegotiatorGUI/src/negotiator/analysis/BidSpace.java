@@ -266,7 +266,7 @@ public class BidSpace {
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			//for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
+			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
 			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; 
 			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
 			// although manual claims that indexOf is using equals???
@@ -276,7 +276,7 @@ public class BidSpace {
 		}
 		System.out.println("point found="+bestPoint.bid);
 		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
-		//if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
+		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
 		//System.out.println();
 		return bestPoint;
 	}

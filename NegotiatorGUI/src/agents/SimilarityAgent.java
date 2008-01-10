@@ -1,6 +1,7 @@
 package agents;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -17,6 +18,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueReal;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorReal;
+import negotiator.utility.UtilitySpace;
 
 
 public class SimilarityAgent extends Agent {
@@ -43,16 +45,15 @@ public class SimilarityAgent extends Agent {
 		super();
 	}
 
-	protected void init(int sessionNumber, int sessionTotalNumber,NegotiationTemplate nt) {		
-		super.init(sessionNumber, sessionTotalNumber, nt);
-		myName = super.getName();
-		this.sessionNumber = sessionNumber;
-		this.sessionTotalNumber = sessionTotalNumber;
+	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+		Integer totalTimeP, UtilitySpace us) {
+		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
 	}
+
 
 	// Class methods
 	public void ReceiveMessage(Action opponentAction) {
@@ -60,7 +61,7 @@ public class SimilarityAgent extends Agent {
 	}
 
 	private Action proposeInitialBid() {
-		Bid lBid;
+		Bid lBid = null;
 /*		Value[] values = new Value[4];
 		if(myName.equals("Buyer"))	{
 			values[0] = new ValueReal(0.6);
@@ -75,8 +76,12 @@ public class SimilarityAgent extends Agent {
 		}
 		lBid = new Bid(utilitySpace.getDomain(), values);*/
 		// Return (one of the) possible bid(s) with maximal utility.
-		lBid = utilitySpace.getMaxUtilityBid();
-		lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.96, utilitySpace.getUtility(lBid));
+		try {
+			lBid = utilitySpace.getMaxUtilityBid();
+			lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.96, utilitySpace.getUtility(lBid));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		fSmartSteps=NUMBER_OF_SMART_STEPS+1;
 		myLastBid = lBid;
 		
@@ -252,12 +257,13 @@ public class SimilarityAgent extends Agent {
 		return new Offer(this, lBid);
 	}
 
-	public Action chooseAction() {
+	public Action chooseAction(){
 		Action lAction = null;
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
 
 		lActionType = getActionType(messageOpponent);
+		try{
 		switch (lActionType) {
 		case OFFER: // Offer received from opponent
 			lOppntBid = ((Offer) messageOpponent).getBid();
@@ -297,7 +303,9 @@ public class SimilarityAgent extends Agent {
 				lAction = myLastAction;
 			break;
 		}
-
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		myLastAction = lAction;
 		return lAction;
 	}
@@ -314,22 +322,16 @@ public class SimilarityAgent extends Agent {
 	}
 
 	public void loadUtilitySpace(String fileName) {
-		double[] lWeights;
+		
 		
 	
-		nrOfIssues = utilitySpace.getDomain().getNumberOfIssues();
-		lIssueWeight = new double[nrOfIssues];
-		lWeights = new double[nrOfIssues];
-		for (int i=0; i<nrOfIssues; i++) {
-			lIssueWeight[i] = this.utilitySpace.getWeight(i);
-			lWeights[i] = lIssueWeight[i];
-		}
+		
 		//load similarity info from the utility space
 		fSimilarity = new Similarity(utilitySpace.getDomain());
 		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
 	}
 
-	private Bid getBidRandomWalk(double lowerBound, double upperBoud) {
+	private Bid getBidRandomWalk(double lowerBound, double upperBoud) throws Exception{
 		Bid lBid = null, lBestBid = null;
 
 		// Return bid that gets closest to target utility in a "random walk"

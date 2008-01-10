@@ -15,6 +15,7 @@ import negotiator.actions.*;
 import java.util.Date;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidPoint;
+import negotiator.xml.*;
 import java.util.Random;
 
 /**
@@ -33,7 +34,7 @@ public class Negotiation implements Runnable {
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
     boolean agentAStarts=false;
-    
+    SimpleElement additionalLog = new SimpleElement("additional_log");
     
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
@@ -134,7 +135,8 @@ public class Negotiation implements Runnable {
                                spaceB.getUtility(spaceB.getMaxUtilityBid()),
                                startingWithA, 
                                nt.getAgentAUtilitySpaceFileName(),
-                               nt.getAgentBUtilitySpaceFileName()
+                               nt.getAgentBUtilitySpaceFileName(),
+                               additionalLog
                                );   
                        checkAgentActivity(currentAgent) ;
                    }
@@ -166,7 +168,8 @@ public class Negotiation implements Runnable {
                                    spaceB.getUtility(spaceB.getMaxUtilityBid()),
                                    startingWithA,
                                    nt.getAgentAUtilitySpaceFileName(),
-                                   nt.getAgentBUtilitySpaceFileName());
+                                   nt.getAgentBUtilitySpaceFileName(),
+                                   additionalLog);
                         checkAgentActivity(currentAgent) ;
                         otherAgent(currentAgent).ReceiveMessage(action);
                       
@@ -220,7 +223,8 @@ public class Negotiation implements Runnable {
                       1.,1.,
                       startingWithA,
                       nt.getAgentAUtilitySpaceFileName(),
-                      nt.getAgentBUtilitySpaceFileName());
+                      nt.getAgentBUtilitySpaceFileName(),
+                      additionalLog);
                    // don't compute the max utility, we're in exception which is already bad enough.
                 }
             }
@@ -266,5 +270,10 @@ public class Negotiation implements Runnable {
     		return agentB.utilitySpace.getUtility(pBid);
     	else
     		return agentA.utilitySpace.getUtility(pBid);
+    }
+    public void addAdditionalLog(SimpleElement pElem) {
+    	if(pElem!=null)
+    		additionalLog.addChildElement(pElem);
+    	
     }
 }

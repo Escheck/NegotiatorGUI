@@ -37,6 +37,7 @@ public class NegotiationOutcome {
     	// that flag is not set.
     public String agentAutilSpaceName;
     public String agentButilSpaceName;
+    public SimpleElement additional;
 
     /** Creates a new instance of NegotiationOutcome */
     public NegotiationOutcome(int sessionNumber, 
@@ -53,7 +54,8 @@ public class NegotiationOutcome {
                     Double agentBmaxUtilP,
                     boolean startingWithA, // true if A starts, false if B starts
                     String agentAutilSpaceNameP,
-                    String agentButilSpaceNameP
+                    String agentButilSpaceNameP,
+                    SimpleElement additional
                     ) 
     {
         this.sessionNumber = sessionNumber;
@@ -63,6 +65,7 @@ public class NegotiationOutcome {
         this.agentBname = agentBname;
         this.agentAclass=agentAclass;
         this.agentBclass=agentBclass;
+        this.additional = additional;
         AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
         AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
         ErrorRemarks=err;
@@ -106,7 +109,7 @@ public class NegotiationOutcome {
     	outcome.setAttribute("utilspace", utilspacefilename);
     	outcome.setAttribute("finalUtility",""+agentAUtil);
     	outcome.setAttribute("maxUtility",""+agentAMaxUtil);
-    	Double normalized=0.; if (agentAMaxUtil>0) { normalized=agentAUtil/agentAMaxUtil; }
+    	Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
     	outcome.setAttribute("normalizedUtility",""+normalized);
 
     	outcome.addChildElement(bids.toXML());
@@ -124,7 +127,7 @@ public class NegotiationOutcome {
     			agentAutility,agentAmaxUtil,AgentABids));
     	outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
     			agentButility,agentBmaxUtil,AgentBBids));
-    
+    	if(additional!=null) outcome.addChildElement(additional);
 		return outcome;
     }
 }

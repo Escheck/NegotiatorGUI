@@ -45,7 +45,10 @@ public class UtilitySpace {
 	
 	// Class fields
     protected Domain domain;
-    
+    //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
+    // in the Similarity agent
+    private SimpleElement fXMLRoot;
+    public SimpleElement getXMLRoot() { return fXMLRoot;}
     
     // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
 //    private Map<Issue,Evaluator> fEvaluators;
@@ -321,6 +324,7 @@ public class UtilitySpace {
         SimpleDOMParser parser = new SimpleDOMParser();
         BufferedReader file = new BufferedReader(new FileReader(new File(filename)));                  
         SimpleElement root = parser.parse(file);
+        fXMLRoot = root;
         return loadTreeRecursive(root);
    	}
 	

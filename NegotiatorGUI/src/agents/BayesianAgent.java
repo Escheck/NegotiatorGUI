@@ -10,6 +10,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.BidIterator;
 import negotiator.actions.*;
 import agents.bayesianopponentmodel.*;
+import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
@@ -62,7 +63,7 @@ public class BayesianAgent extends Agent {
 	private ArrayList<Bid> myPreviousBids=new ArrayList<Bid>();
 	
 	private boolean fDebug = false;
-
+	private int fRound;
 	// Class constructor
 	public BayesianAgent() {
 		super();
@@ -76,6 +77,7 @@ public class BayesianAgent extends Agent {
 		myLastAction = null;
 		fSmartSteps = 0;
 		fOpponentModel = new BayesianOpponentModel4(utilitySpace);		
+		fRound =0;
 	}
 
 	// Class methods
@@ -392,12 +394,12 @@ public class BayesianAgent extends Agent {
 			case OFFER: // Offer received from opponent
 				lOppntBid = ((Offer) messageOpponent).getBid();
 				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
-				double lDistance = calculateDistance();
-				System.out.println(getName() + ": distance between the learned space and the original one is " + String.valueOf(lDistance));
-			
+				//double lDistance = calculateEuclideanDistanceUtilitySpace();
+				
+				if(myLastAction==null) dumpDistancesToLog(0);
 				fOpponentModel.updateBeliefs(lOppntBid);
-				lDistance = calculateDistance();
-				System.out.println(getName() + ": distance between the learned space and the original one is " + String.valueOf(lDistance));
+				dumpDistancesToLog(fRound++);
+				
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
@@ -476,8 +478,6 @@ public class BayesianAgent extends Agent {
 		// higher this factor.
 		return CONCESSIONFACTOR;
 	}
-
-	
 	
 	/**
 	 * Prints out debug information only if the fDebug = true
@@ -488,10 +488,6 @@ public class BayesianAgent extends Agent {
 			System.out.println(pMessage);
 	}
 
-	
-
-
-	
 	/**
 	 * This function determines the accept probability for an offer.
 	 * At t=0 it will prefer high-utility offers.
@@ -516,13 +512,13 @@ public class BayesianAgent extends Agent {
 	}
 	
 	private double sq(double x) { return x*x; }
-	private double calculateDistance() {
+	private double calculateEuclideanDistanceUtilitySpace() {
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
 		double lDistance = 0;
 		while(lIter.hasNext()) {
 			Bid tmpBid = lIter.next();
 			try {
-				lDistance = lDistance + Math.abs(fOpponentModel.getNormalizedUtility(tmpBid)-fNegotiation.getOpponentUtility(this, tmpBid));
+				lDistance = lDistance + sq(fOpponentModel.getNormalizedUtility(tmpBid)-fNegotiation.getOpponentUtility(this, tmpBid));
 			} catch (Exception e) {				
 				e.printStackTrace();
 			}
@@ -530,11 +526,135 @@ public class BayesianAgent extends Agent {
 		lDistance = lDistance / utilitySpace.getDomain().getNumberOfPossibleBids();
 		return lDistance;
 	}
-	private double calculateWeghtsDistance() {
+	
+	private double calculateEuclideanDistanceWeghts() {
 		double lDistance = 0;
-		for(int i=0;i<utilitySpace.)
-		
+		int i=0;
+		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			lDistance = lDistance +sq(utilitySpace.getWeight(lIssue.getNumber())-fOpponentModel.getExpectedWeight(i));
+			i++;
+		}		
+		return lDistance/(double)i;
+	}
+	
+	private double calculatePearsonDistanceUtilitySpace() {
+		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
+		double lDistance = 0;
+		double lAverageLearnedUtil=0;
+		double lAverageOriginalUtil=0;
+		//calculate average values
+		while(lIter.hasNext()) {
+			Bid tmpBid = lIter.next();
+			try {
+				lAverageLearnedUtil = lAverageLearnedUtil + fOpponentModel.getNormalizedUtility(tmpBid);
+				lAverageOriginalUtil = lAverageOriginalUtil + fNegotiation.getOpponentUtility(this, tmpBid);
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+		} //while
+		lAverageLearnedUtil = lAverageLearnedUtil/(double)(utilitySpace.getDomain().getNumberOfPossibleBids());
+		lAverageOriginalUtil = lAverageOriginalUtil/ (double)(utilitySpace.getDomain().getNumberOfPossibleBids());
+		//calculate the distance itself
+		lIter = new BidIterator(utilitySpace.getDomain());
+		while(lIter.hasNext()) {
+			Bid tmpBid = lIter.next();
+			try {
+				lDistance = lDistance + (fOpponentModel.getNormalizedUtility(tmpBid)-lAverageLearnedUtil)*
+										(fNegotiation.getOpponentUtility(this, tmpBid)-lAverageOriginalUtil);
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+		} //while
+		lDistance = Math.sqrt( lDistance )/ utilitySpace.getDomain().getNumberOfPossibleBids();
 		return lDistance;
 	}
 	
+	private double calculatePearsonDistanceWeghts() {
+		double lDistance = 0;
+		double lAverageLearnedWeight=0;
+		double lAverageOriginalWeight=0;
+		int i=0;
+		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			lAverageLearnedWeight = lAverageLearnedWeight +fOpponentModel.getExpectedWeight(i);
+			lAverageOriginalWeight = lAverageOriginalWeight + utilitySpace.getWeight(lIssue.getNumber());
+			i++;
+		}			
+		//calculate the distance itself
+		i=0;
+		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			lDistance = lDistance +(utilitySpace.getWeight(lIssue.getNumber())- lAverageOriginalWeight)*(fOpponentModel.getExpectedWeight(i)-lAverageLearnedWeight);
+			i++;
+		}		
+		return lDistance/(double)i;
+	}
+		
+	private double calculateRankingDistanceUtilitySpace() {
+		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
+		double lDistance = 0;
+		while(lIter.hasNext()) {
+			Bid tmpBid = lIter.next();
+			BidIterator lInternalIterator = new BidIterator(utilitySpace.getDomain());
+			while(lInternalIterator.hasNext()) {
+				Bid tmpBid2 = lInternalIterator.next();
+				if(tmpBid.equals(tmpBid2)) continue;
+				try {
+					double tmpBidLearnedUtil = fOpponentModel.getNormalizedUtility(tmpBid);
+					double tmpBidOriginalUtil = fNegotiation.getOpponentUtility(this, tmpBid);
+					double tmpBid2LearnedUtil = fOpponentModel.getNormalizedUtility(tmpBid2);
+					double tmpBid2OriginalUtil = fNegotiation.getOpponentUtility(this, tmpBid2);
+					if(((tmpBidLearnedUtil<tmpBid2LearnedUtil)&&(tmpBidOriginalUtil>tmpBid2OriginalUtil))||
+					   ((tmpBidLearnedUtil>tmpBid2LearnedUtil)&&(tmpBidOriginalUtil<tmpBid2OriginalUtil))) 
+						lDistance++;
+				} catch (Exception e) {				
+					e.printStackTrace();
+				}
+			}
+		} //while
+		lDistance = lDistance / (utilitySpace.getDomain().getNumberOfPossibleBids()*(utilitySpace.getDomain().getNumberOfPossibleBids()-1));
+		return lDistance;
+	}
+	private double calculateRankingDistanceWeghts() {
+		double lDistance = 0;
+		int i=0;
+		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			int j=-1;
+			for(Issue lIssue2 : utilitySpace.getDomain().getIssues()) {
+				j++;
+				if(lIssue.getNumber()==lIssue2.getNumber()) continue;
+				double tmpWeightLearned = fOpponentModel.getExpectedWeight(i);
+				double tmpWeightOriginal = utilitySpace.getWeight(lIssue.getNumber());
+				double tmpWeight2Learned = fOpponentModel.getExpectedWeight(j);
+				double tmpWeight2Original = utilitySpace.getWeight(lIssue2.getNumber());
+				if(((tmpWeightLearned<tmpWeight2Learned)&&(tmpWeightOriginal>tmpWeight2Original))||
+				   ((tmpWeightLearned>tmpWeight2Learned)&&(tmpWeightOriginal<tmpWeight2Original))) 
+							lDistance++;
+
+			}
+			
+			i++;
+		}		
+		return lDistance/(double)(utilitySpace.getDomain().getIssues().size()*(utilitySpace.getDomain().getIssues().size()-1));
+	}
+		
+	protected void dumpDistancesToLog(int pRound) {
+		System.out.println(getName() + ": calculating distance between the learned space and the original one ...");
+		double lEuclideanDistUtil 		= calculateEuclideanDistanceUtilitySpace();
+		double lEuclideanDistWeights 	= calculateEuclideanDistanceWeghts();
+		//double lRankingDistUtil 		= calculateRankingDistanceUtilitySpace();
+		//double lRankingDistWeights 		= calculateRankingDistanceWeghts();
+		double lPearsonDistUtil			= calculatePearsonDistanceUtilitySpace();
+		double lPearsonDistWeights		= calculatePearsonDistanceWeghts();
+		SimpleElement lLearningPerformance = new SimpleElement("learning_performance");
+		lLearningPerformance.setAttribute("round", String.valueOf(pRound));
+		lLearningPerformance.setAttribute("euclidean_distance_utility_space", String.valueOf(lEuclideanDistUtil));
+		lLearningPerformance.setAttribute("euclidean_distance_weights", String.valueOf(lEuclideanDistWeights));
+		//lLearningPerformance.setAttribute("ranking_distance_utility_space", String.valueOf(lRankingDistUtil));
+		//lLearningPerformance.setAttribute("ranking_distance_weights", String.valueOf(lRankingDistWeights));
+		lLearningPerformance.setAttribute("pearson_distance_utility_space", String.valueOf(lPearsonDistUtil));
+		lLearningPerformance.setAttribute("pearson_distance_weights", String.valueOf(lPearsonDistWeights));
+		System.out.println(getName() + ": finished calculating distance between the learned space and the original one ");
+		System.out.println(lLearningPerformance.toString());
+		fNegotiation.addAdditionalLog(lLearningPerformance);
+		
+	}
 }
