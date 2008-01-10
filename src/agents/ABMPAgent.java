@@ -7,6 +7,7 @@
 
 package agents;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class ABMPAgent extends Agent {
 	private Action messageOpponent;
 	private int sessionNumber;
 	private int sessionTotalNumber;
-	private int nrOfIssues;
+	//private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private static final double BREAK_OFF_POINT = 0.5;
@@ -171,33 +172,37 @@ public class ABMPAgent extends Agent {
 	private Bid getBidABMPsimple(double targetUtility) throws Exception {
 		//Value[] lIssueIndex = new Value[nrOfIssues];
 		HashMap<Integer, Value> lIssueIndex = new HashMap<Integer, Value>();
-		double[] lIssueAlpha = new double[nrOfIssues];
-		double[] lBE = new double[nrOfIssues];
-		double[] lBTE = new double[nrOfIssues];
-		double[] lTE = new double[nrOfIssues];
+		ArrayList<Issue> issues=utilitySpace.getDomain().getIssues();
+		double[] lIssueAlpha = new double[issues.size()];
+		double[] lBE = new double[issues.size()];
+		double[] lBTE = new double[issues.size()];
+		double[] lTE = new double[issues.size()];
 		double lUtility = 0, lNF = 0, lAlpha, lUtilityGap, lTotalConcession = 0;
-
+	   
+	    
 		// ASSUMPTION: Method computes a second bid. Method proposeInitialBid is used to compute first bid.
 		lUtilityGap = targetUtility - utilitySpace.getUtility(myLastBid);
-		for (int i = 0; i < nrOfIssues; i++) {
-			lBE[i] = (Double)(utilitySpace.getEvaluator(i).getEvaluation(utilitySpace, myLastBid, i));
+		for (int i = 0; i < issues.size(); i++) {
+			lBE[i] = (Double)(utilitySpace.getEvaluator(issues.get(i).getNumber()).getEvaluation(utilitySpace, myLastBid, issues.get(i).getNumber()));
 		}
 
 		// STEP 1: Retrieve issue value for last bid and compute concession on each issue.
-		for (int i = 0; i < nrOfIssues; i++) {
-			lAlpha = (1 - fIssueWeight[i]) * lBE[i]; // CHECK: (1 - lBE[i]); This factor is not right??
-			lNF = lNF + fIssueWeight[i] * lAlpha;
+		int i=0;
+		for (Issue lIssue : issues) {
+			lAlpha = (1 - utilitySpace.getWeight(lIssue.getNumber())) * lBE[i]; // CHECK: (1 - lBE[i]); This factor is not right??
+			lNF = lNF + utilitySpace.getWeight(lIssue.getNumber()) * lAlpha;
 			lIssueAlpha[i] = lAlpha;
+			i++;
 		}
 
 		// Compute basic target evaluations per issue
-		for (int i = 0; i < nrOfIssues; i++) {
+		for( i = 0; i < issues.size(); i++) {
 			lBTE[i] = lBE[i] + (lIssueAlpha[i] / lNF) * lUtilityGap;
 		}
 
 		// STEP 2: Add configuration tolerance for opponent's bid
-		for (int i = 0; i < nrOfIssues; i++) {
-			lUtility =(Double)(utilitySpace.getEvaluator(i).getEvaluation(utilitySpace,((Offer) messageOpponent).getBid(), i));
+		for ( i = 0; i < issues.size(); i++) {
+			lUtility =(Double)(utilitySpace.getEvaluator(issues.get(i).getNumber()).getEvaluation(utilitySpace,((Offer) messageOpponent).getBid(), issues.get(i).getNumber()));
 			lTE[i] = (1 - CONFTOLERANCE) * lBTE[i] + CONFTOLERANCE * lUtility;
 		}
 
@@ -206,16 +211,16 @@ public class ABMPAgent extends Agent {
 		// First determine new values for discrete-valued issues.
 		double lEvalValue;
 		int lNrOfRealIssues = 0;
-		for (int i = 0; i < nrOfIssues; i++) {
+		for (i = 0; i < issues.size(); i++) {
 			lUtility = 1; // ASSUMPTION: Max utility = 1.
-			Objective lIssue = utilitySpace.getDomain().getIssue(i);
+			Objective lIssue = issues.get(i);
 			if(lIssue.getType() == ISSUETYPE.DISCRETE) {
 				IssueDiscrete lIssueDiscrete =(IssueDiscrete)lIssue;
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
-					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation(lIssueDiscrete.getValue(j));
+					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(lIssue.getNumber())).getEvaluation(lIssueDiscrete.getValue(j));
 					if (Math.abs(lTE[i] - lEvalValue) < lUtility) {
 //						lIssueIndex[i] = lIssueDiscrete.getValue(j);
-						lIssueIndex.put(new Integer(i), lIssueDiscrete.getValue(i));
+						lIssueIndex.put(new Integer(lIssue.getNumber()), lIssueDiscrete.getValue(i));
 						lUtility = Math.abs(lTE[i]- lEvalValue);
 					}//if
 				}//for
@@ -234,24 +239,24 @@ public class ABMPAgent extends Agent {
 		// not important. Low priority.
 		double lRestUtitility = lUtilityGap + lTotalConcession;
 		// Distribute remaining utility of real and/or price issues. Integers still to be done. See above.
-		for (int i = 0; i < nrOfIssues; i++) {
-			Objective lIssue = utilitySpace.getDomain().getIssue(i);
+		for ( i = 0; i < issues.size(); i++) {
+			Objective lIssue = issues.get(i);
 			if(lIssue.getType() == ISSUETYPE.REAL) {
 				lTE[i] += lRestUtitility/lNrOfRealIssues;
-				switch(utilitySpace.getEvaluator(i).getType()) {
+				switch(utilitySpace.getEvaluator(lIssue.getNumber()).getType()) {
 				case REAL:
-					EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(i));
+					EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssue.getNumber()));
 					double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
 //					lIssueIndex[i] = new ValueReal(r);
-					lIssueIndex.put(new Integer(i), new ValueReal(r));
+					lIssueIndex.put(new Integer(lIssue.getNumber()), new ValueReal(r));
 					break;
 				case PRICE:
-					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(i));
+					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(lIssue.getNumber()));
 //					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound());
-					lIssueIndex.put(new Integer(i), new ValueReal(lPriceEvaluator.getLowerBound()));
+					lIssueIndex.put(new Integer(lIssue.getNumber()), new ValueReal(lPriceEvaluator.getLowerBound()));
 					Bid lTempBid = new Bid(utilitySpace.getDomain(), lIssueIndex);
 //					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
-					lIssueIndex.put(new Integer(i), lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]));
+					lIssueIndex.put(new Integer(lIssue.getNumber()), lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]));
 					break;
 				}
 			}

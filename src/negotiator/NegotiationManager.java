@@ -138,7 +138,7 @@ public class NegotiationManager implements Runnable {
         	//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
         	//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
         
-        	if (negoThread.isAlive()) {
+        	if (negoThread!=null&&negoThread.isAlive()) {
         		try {
         			negoThread.stop(); // kill the stuff
         			 // Wouter: this will throw a ThreadDeath Error into the nego thread
@@ -162,7 +162,8 @@ public class NegotiationManager implements Runnable {
     			nego.fAgentABids,nego.fAgentBBids,1.,1.,
                 agentAStarts,
                 nt.getAgentAUtilitySpaceFileName(),
-                nt.getAgentBUtilitySpaceFileName());
+                nt.getAgentBUtilitySpaceFileName(),
+                nego.additionalLog);
     		// don't bother about max utility, both have zero anyway.
     	sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
