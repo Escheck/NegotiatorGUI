@@ -27,9 +27,9 @@ import negotiator.analysis.BidSpace;
  */
 class OpponentModelUtilSpace extends UtilitySpace
 {
-	BayesianOpponentModel4 opponentmodel;
+	OpponentModel opponentmodel;
 	
-	OpponentModelUtilSpace(BayesianOpponentModel4 opmod)
+	OpponentModelUtilSpace(OpponentModel opmod)
 	{
 		domain=opmod.getDomain();
 		opponentmodel=opmod;
@@ -57,7 +57,7 @@ public class BayesianAgent extends Agent {
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM};
 	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
-	private BayesianOpponentModel4 fOpponentModel;	
+	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.03;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
@@ -77,8 +77,11 @@ public class BayesianAgent extends Agent {
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
-		fOpponentModel = new BayesianOpponentModel4(utilitySpace);		
+		prepareOpponentModel();	
 		fRound =0;
+	}
+	protected void prepareOpponentModel() {
+		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
 	}
 
 	// Class methods
