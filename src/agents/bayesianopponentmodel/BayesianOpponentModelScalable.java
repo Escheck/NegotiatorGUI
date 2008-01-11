@@ -17,7 +17,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 	private ArrayList<ArrayList<WeightHypothesis2>> fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 //	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;
-	public ArrayList<Bid> fBiddingHistory; // previous bids of the opponent, not our bids.
+//	public ArrayList<Bid> fBiddingHistory; // previous bids of the opponent, not our bids.
 //	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
 	ArrayList<Issue> issues;
