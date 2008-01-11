@@ -9,20 +9,19 @@ import negotiator.Domain;
 import negotiator.issue.*;
 import negotiator.utility.*;
 
-public class BayesianOpponentModel {
+public class BayesianOpponentModel extends OpponentModel{
 	
-	private Domain fDomain;
 	private UtilitySpace fUS;
 	private WeightHypothesis[] fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
-	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;
-	private ArrayList<Bid> fBiddingHistory;
+	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;	
 	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
 	private double EXPECTED_CONCESSION_STEP = 0.015;
 	private double SIGMA = 0.35;
 	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
+	
 	public BayesianOpponentModel(UtilitySpace pUtilitySpace) {
 		//
 		if (pUtilitySpace==null) throw new NullPointerException("pUtilitySpace=null");
@@ -260,7 +259,7 @@ public class BayesianOpponentModel {
 			return lResult;
 		}
 	}
-	public void updateBeliefs(Bid pBid) {
+	public void updateBeliefs(Bid pBid) throws Exception{
 		fBiddingHistory.add(pBid);
 		//calculate full probability for the given bid
 		double lFullProb = 0;
@@ -280,6 +279,7 @@ public class BayesianOpponentModel {
 		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-EXPECTED_CONCESSION_STEP;
+		findMinMaxUtility();
 	}
 	
 	private void sortHyps() {
@@ -313,7 +313,7 @@ public class BayesianOpponentModel {
 		EvaluatorHypothesis[] lTmp = new EvaluatorHypothesis[fUS.getNrOfEvaluators()];
 		buildEvaluationHypsRecursive(fEvalHyps, lTmp, fUS.getNrOfEvaluators()-1);		
 	}
-	public double getExpectedUtility(Bid pBid) {
+	public double getExpectedUtility(Bid pBid)  throws Exception{
 		double lExpectedUtility = 0;
 		for(int i=0;i<fUSHyps.size();i++) {
 			UtilitySpaceHypothesis lUSHyp = fUSHyps.get(i);
@@ -324,6 +324,20 @@ public class BayesianOpponentModel {
 		return lExpectedUtility;
 		
 	}
+	
+	public double getExpectedWeight(int pIssueNumber) {
+		double lExpectedWeight = 0;
+		for(int i=0;i<fUSHyps.size();i++) {
+			UtilitySpaceHypothesis lUSHyp = fUSHyps.get(i);
+			double p = lUSHyp.getProbability();
+			double u = lUSHyp.getHeightHyp().getWeight(pIssueNumber);
+			lExpectedWeight += p*u;
+		}
+
+		return lExpectedWeight;
+	}	
+
+	
 	private UtilitySpaceHypothesis getMaxHyp() {
 		UtilitySpaceHypothesis lHyp = fUSHyps.get(0);
 		for(int i=0; i<fUSHyps.size();i++) {
@@ -359,7 +373,7 @@ public class BayesianOpponentModel {
 			return n * factorial( n - 1 );
 	}
 	
-	public Domain getDomain() { return fDomain; }
+
 	protected  class HypsComparator implements java.util.Comparator
 	{
 		public int compare(Object o1,Object o2) throws ClassCastException
