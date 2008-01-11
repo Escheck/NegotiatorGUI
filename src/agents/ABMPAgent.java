@@ -39,9 +39,9 @@ public class ABMPAgent extends Agent {
 	// Paraters used in ABMP strategy
 	// TODO: Include these parameters as agent parameters in agent's utility template.
 	// QUESTION: How to do that nicely, since these parameters are strategy specific?
-	private static final double NEGOTIATIONSPEED = 0.05; // TODO: Probably still somewhere a bug. When you set this too low (e.g. 0.05), no deal is reached and no concession is done!
-	private static final double CONCESSIONFACTOR = 0.8;
-	private static final double CONFTOLERANCE = 0;
+	private static final double NEGOTIATIONSPEED = 0.1; // TODO: Probably still somewhere a bug. When you set this too low (e.g. 0.05), no deal is reached and no concession is done!
+	private static final double CONCESSIONFACTOR = 0.95;
+	private static final double CONFTOLERANCE = 0.05;
 	private static final double UTIlITYGAPSIZE = 0.02; // Accept when utility gap is <= UTILITYGAPSIZE.
 	// CHECK: Utility gap size needed since concession steps get VERY small when opponent's last bid utility is
 	// close to own last bid utility.
@@ -220,11 +220,12 @@ public class ABMPAgent extends Agent {
 					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(lIssue.getNumber())).getEvaluation(lIssueDiscrete.getValue(j));
 					if (Math.abs(lTE[i] - lEvalValue) < lUtility) {
 //						lIssueIndex[i] = lIssueDiscrete.getValue(j);
-						lIssueIndex.put(new Integer(lIssue.getNumber()), lIssueDiscrete.getValue(i));
+						lIssueIndex.put(new Integer(lIssue.getNumber()), lIssueDiscrete.getValue(j));
 						lUtility = Math.abs(lTE[i]- lEvalValue);
 					}//if
 				}//for
-	//FIXME		lTotalConcession += fIssueWeight[i]*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(i)).getEvaluation((ValueDiscrete)lIssueIndex[i]));
+	
+				lTotalConcession += utilitySpace.getWeight(lIssue.getNumber())*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(lIssue.getNumber())).getEvaluation((ValueDiscrete)(lIssueIndex.get(lIssue.getNumber()))));
 			} else if (lIssue.getType() == ISSUETYPE.REAL)
 				lNrOfRealIssues += 1;
 		}
