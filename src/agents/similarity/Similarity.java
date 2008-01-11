@@ -35,7 +35,7 @@ public class Similarity {
    			SimilarityFunction lSimFn = new SimilarityFunction(fDomain);
    			//	load weights
    			fWeights[j] =Double.valueOf(((SimpleElement)(lXMLSimFn[0])).getAttribute("weight"));
-   			lSimFn.loadFromXML((SimpleElement)(lXMLSimFn[0]),j);
+   			lSimFn.loadFromXML((SimpleElement)(lXMLSimFn[0]),Integer.valueOf(((SimpleElement)(lXMLIssue[j])).getAttribute("index")));
    			fSimilarityFunctions.add(lSimFn);
     	}//for
     }

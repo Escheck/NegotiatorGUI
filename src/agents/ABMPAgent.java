@@ -40,8 +40,8 @@ public class ABMPAgent extends Agent {
 	// TODO: Include these parameters as agent parameters in agent's utility template.
 	// QUESTION: How to do that nicely, since these parameters are strategy specific?
 	private static final double NEGOTIATIONSPEED = 0.1; // TODO: Probably still somewhere a bug. When you set this too low (e.g. 0.05), no deal is reached and no concession is done!
-	private static final double CONCESSIONFACTOR = 0.95;
-	private static final double CONFTOLERANCE = 0.05;
+	private static final double CONCESSIONFACTOR = 1;
+	private static final double CONFTOLERANCE = 0;
 	private static final double UTIlITYGAPSIZE = 0.02; // Accept when utility gap is <= UTILITYGAPSIZE.
 	// CHECK: Utility gap size needed since concession steps get VERY small when opponent's last bid utility is
 	// close to own last bid utility.

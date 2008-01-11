@@ -97,6 +97,7 @@ public class UtilitySpace {
     		// else incomplete. But that is allowed I think.
     		// especially, objectives (the non-Issues) won't generally have an evlauator.
     	}
+    	fXMLRoot = us.getXMLRoot();
     }
     
     /**

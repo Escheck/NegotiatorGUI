@@ -52,6 +52,10 @@ public class SimilarityAgent extends Agent {
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
+		//load similarity info from the utility space
+		fSimilarity = new Similarity(utilitySpace.getDomain());
+		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
+		
 	}
 
 
@@ -232,7 +236,7 @@ public class SimilarityAgent extends Agent {
 			Bid tmpBid = lIter.next();
 			double lUtil = 0;
 			try {
-				utilitySpace.getUtility(tmpBid);
+				lUtil = utilitySpace.getUtility(tmpBid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -293,7 +297,7 @@ public class SimilarityAgent extends Agent {
 			// nothing left to do. Negotiation ended, which should be checked by
 			// Negotiator...
 			break;
-		default:
+		default: 
 			// I am starting, but not sure whether Negotiator checks this, so
 			// lets check also myLastAction...
 			if (myLastAction == null)
@@ -321,15 +325,6 @@ public class SimilarityAgent extends Agent {
 		return lActionType;
 	}
 
-	public void loadUtilitySpace(String fileName) {
-		
-		
-	
-		
-		//load similarity info from the utility space
-		fSimilarity = new Similarity(utilitySpace.getDomain());
-		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
-	}
 
 	private Bid getBidRandomWalk(double lowerBound, double upperBoud) throws Exception{
 		Bid lBid = null, lBestBid = null;
