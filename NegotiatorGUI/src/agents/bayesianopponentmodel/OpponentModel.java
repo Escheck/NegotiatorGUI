@@ -21,16 +21,21 @@ public class OpponentModel {
 	}
 	public void updateBeliefs(Bid pBid) throws Exception { };
 	public double getExpectedWeight(int pIssueNumber) { return 0;}
+	
 	protected void findMinMaxUtility() throws Exception
 	{
 		BidIterator biditer=new BidIterator(fDomain);
-		 minUtility=1.;  maxUtility=0.; double u;
+		minUtility=1.;  maxUtility=0.; double u;
+		int i=0;
 		while (biditer.hasNext())
 		{
 			Bid b=biditer.next();
 			u=getExpectedUtility(b);
+			
 			if (minUtility>u) minUtility=u;
 			if (maxUtility<u) maxUtility=u;
+			i++;
+//			System.out.println(String.valueOf(i));
 		}
 	}
 }
