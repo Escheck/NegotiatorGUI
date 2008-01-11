@@ -33,7 +33,7 @@ public class SimilarityFunction {
 			//load weights
 			fWeights[i] =Double.valueOf(((SimpleElement)(lXMLCriteriaFn[i])).getAttribute("weight"));			
 			Criteria lCriteria  =null;
-    		switch(fDomain.getIssue(pIssueIndex).getType()) {
+    		switch(fDomain.getObjective(pIssueIndex).getType()) {
     		case REAL:
     			lCriteria  = new CriteriaReal(fDomain, pIssueIndex);
     			lCriteria.loadFromXML((SimpleElement)(lXMLCriteriaFn[i]));

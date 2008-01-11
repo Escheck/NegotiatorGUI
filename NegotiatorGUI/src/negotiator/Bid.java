@@ -243,4 +243,16 @@ public final class Bid implements XMLable
 	 * public String indexesToString() { String result =""; for(int i=0;i<fValuesIndexes.length;i++) {
 	 * result += String.valueOf(fValuesIndexes[i])+";"; } return result; }
 	 */
+
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		int code=0;
+		for(Entry<Integer, Value> lEntry : fValues.entrySet()) {
+			code = code + lEntry.getValue().hashCode();  
+		}
+		return code;//fValues.hashCode();
+	}
+	
 }
