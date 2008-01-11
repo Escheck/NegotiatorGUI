@@ -401,9 +401,10 @@ public class BayesianAgent extends Agent {
 				//double lDistance = calculateEuclideanDistanceUtilitySpace();
 				
 				if(myLastAction==null) dumpDistancesToLog(0);
+				System.out.print("Updating beliefs ...");
 				fOpponentModel.updateBeliefs(lOppntBid);
 				dumpDistancesToLog(fRound++);
-				
+				System.out.println("Done!");
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
@@ -654,16 +655,22 @@ public class BayesianAgent extends Agent {
 		return lDistance;
 	}
 	private double calculateRankingDistanceWeghts() {
-		double lDistance = 0;
+		double lExpectedWeights[] = new double[utilitySpace.getDomain().getIssues().size()];
 		int i=0;
+		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			lExpectedWeights[i]=fOpponentModel.getExpectedWeight(i);
+			i++;
+		}	
+		double lDistance = 0;
+		i=0;
 		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
 			int j=-1;
 			for(Issue lIssue2 : utilitySpace.getDomain().getIssues()) {
 				j++;
 				if(lIssue.getNumber()==lIssue2.getNumber()) continue;
-				double tmpWeightLearned = fOpponentModel.getExpectedWeight(i);
+				double tmpWeightLearned = lExpectedWeights[i];
 				double tmpWeightOriginal = utilitySpace.getWeight(lIssue.getNumber());
-				double tmpWeight2Learned = fOpponentModel.getExpectedWeight(j);
+				double tmpWeight2Learned = lExpectedWeights[j];
 				double tmpWeight2Original = utilitySpace.getWeight(lIssue2.getNumber());
 				if(((tmpWeightLearned<tmpWeight2Learned)&&(tmpWeightOriginal>tmpWeight2Original))||
 				   ((tmpWeightLearned>tmpWeight2Learned)&&(tmpWeightOriginal<tmpWeight2Original))) 
@@ -677,7 +684,7 @@ public class BayesianAgent extends Agent {
 	}
 
 	protected void dumpDistancesToLog(int pRound) {
-		System.out.println(getName() + ": calculating distance between the learned space and the original one ...");
+		System.out.print(getName() + ": calculating distance between the learned space and the original one ...");
 		double lEuclideanDistUtil 		= calculateEuclideanDistanceUtilitySpace();
 		double lEuclideanDistWeights 	= calculateEuclideanDistanceWeghts();
 		double lRankingDistUtil 		= calculateRankingDistanceUtilitySpace();
@@ -692,7 +699,7 @@ public class BayesianAgent extends Agent {
 		lLearningPerformance.setAttribute("ranking_distance_weights", String.valueOf(lRankingDistWeights));
 		lLearningPerformance.setAttribute("pearson_distance_utility_space", String.valueOf(lPearsonDistUtil));
 		lLearningPerformance.setAttribute("pearson_distance_weights", String.valueOf(lPearsonDistWeights));
-		System.out.println(getName() + ": finished calculating distance between the learned space and the original one ");
+		System.out.println("Done!");
 		System.out.println(lLearningPerformance.toString());
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
