@@ -591,9 +591,9 @@ public class BayesianAgent extends Agent {
 			int i = (new Random()).nextInt(lNumberOfPossibleBids-1);
 			int j = (new Random()).nextInt(lNumberOfPossibleBids-1);
 			if(((pLearnedUtil[i]>pLearnedUtil[j])&&(pOpponentUtil[i]>pOpponentUtil[j]))||
-					   ((pLearnedUtil[i]<pLearnedUtil[j])&&(pOpponentUtil[i]<pOpponentUtil[j]))||
-					   ((pLearnedUtil[i]==pLearnedUtil[j])&&(pOpponentUtil[i]==pOpponentUtil[j]))) {
-						
+			   ((pLearnedUtil[i]<pLearnedUtil[j])&&(pOpponentUtil[i]<pOpponentUtil[j]))||
+			   ((pLearnedUtil[i]==pLearnedUtil[j])&&(pOpponentUtil[i]==pOpponentUtil[j]))) {
+					
 					} else
 						lDistance++;
 			
@@ -604,27 +604,29 @@ public class BayesianAgent extends Agent {
 
 		double lDistance = 0;
 		int lNumberOfPossibleBids = (int)(utilitySpace.getDomain().getNumberOfPossibleBids()); 
-		int i=0;
+
 		try {		
-		while(i<lNumberOfPossibleBids/*lIter.hasNext()*/) {
-			int j=-1;
-			while(j<lNumberOfPossibleBids-1/*lInternalIterator.hasNext()*/) {
-				j++;
-				if(i==j) continue;
+			for(int i=0;i<lNumberOfPossibleBids-1;i++) {
+				for(int j=i+1;j<lNumberOfPossibleBids;j++) {
+					//if(i==j) continue;
+					if (Math.signum(pLearnedUtil[i]-pLearnedUtil[j])!=Math.signum(pOpponentUtil[i]-pOpponentUtil[j]))
+						lDistance++;
+					/*
 					if(((pLearnedUtil[i]>pLearnedUtil[j])&&(pOpponentUtil[i]>pOpponentUtil[j]))||
 					   ((pLearnedUtil[i]<pLearnedUtil[j])&&(pOpponentUtil[i]<pOpponentUtil[j]))||
 					   ((pLearnedUtil[i]==pLearnedUtil[j])&&(pOpponentUtil[i]==pOpponentUtil[j]))) {
-						
+
 					} else
 						lDistance++;
-			}
-			i++;
-		} //while
+					j++;
+					 */
+				} //for
+			} //for
 		} catch (Exception e) {				
 			e.printStackTrace();
 		}
 		
-		lDistance = lDistance / (utilitySpace.getDomain().getNumberOfPossibleBids()*(utilitySpace.getDomain().getNumberOfPossibleBids()-1));
+		lDistance = 2 * lDistance / (utilitySpace.getDomain().getNumberOfPossibleBids()*(utilitySpace.getDomain().getNumberOfPossibleBids()));
 		return lDistance;
 	}
 	private double calculateRankingDistanceWeghts(double pExpectedWeights[]) {
