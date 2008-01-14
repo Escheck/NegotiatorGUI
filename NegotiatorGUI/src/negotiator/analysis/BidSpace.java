@@ -75,6 +75,7 @@ public class BidSpace {
 		BidIterator lBidIter = new BidIterator(domain);
 		while(lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();
+//			System.out.println(bid.toString());
 			bidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
 		}
 	}

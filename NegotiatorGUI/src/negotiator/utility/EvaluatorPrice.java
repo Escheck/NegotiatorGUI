@@ -175,21 +175,20 @@ public class EvaluatorPrice implements Evaluator {
 	 * @param evalObj The object of which to set the evaluation properties.
 	 * @return The modified simpleElement with all evaluator properties set.
 	 */
-	public SimpleElement setXML(SimpleElement evalObj){
-		
-		
+	public SimpleElement setXML(SimpleElement evalObj){	
 		return evalObj;
 	}
 	
 	public String isComplete(Objective whichobj )
 	{
-		return "EvaluatorPrice: isComplete checker is not implemented";
+		return null;
 	}
 	
 	
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
 	{
-		throw new Exception("getCost not implemented for EvaluatorPrice");
+		//hrow new Exception("getCost not implemented for EvaluatorPrice");
+		return new Double(.0);
 	}
 	
 	public EvaluatorPrice clone() {
@@ -210,4 +209,5 @@ public class EvaluatorPrice implements Evaluator {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

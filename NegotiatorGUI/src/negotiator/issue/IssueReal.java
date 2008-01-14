@@ -16,7 +16,7 @@ public class IssueReal extends Issue {
 	RangeReal range;
 	//use this value for discrete operations in the analysis
 	//TODO make it template parameter
-	private int fNumberOfDiscretizationSteps = 100;
+	private int fNumberOfDiscretizationSteps = 31;
 	// Constructors
 	
 	public IssueReal(String name, int issueNumber, double min, double max) {
