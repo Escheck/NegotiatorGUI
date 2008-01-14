@@ -597,7 +597,7 @@ public class BayesianAgent extends Agent {
 			lDistance = lDistance +(utilitySpace.getWeight(lIssue.getNumber())- lAverageOriginalWeight)*(pExpectedWeight[i]-lAverageLearnedWeight);
 			i++;
 		}		
-		return lDistance/(double)i;
+		return Math.sqrt(lDistance)/(double)i;
 	}
 		
 	private double calculateRankingDistanceUtilitySpace(double[] pLearnedUtil, double[] pOpponentUtil) {
