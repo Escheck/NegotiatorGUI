@@ -97,10 +97,10 @@ public class NegotiationManager implements Runnable {
 		    * test the BidSpace, temporary hack!!!
 		    */
 
-		   BidSpace bs=new BidSpace(nt.getAgentAUtilitySpace(),nt.getAgentBUtilitySpace());
-		   ArrayList<BidPoint> frontier=bs.getParetoFrontier();
-		   System.out.println("NegoManager check pareto frontier:");
-		   for (BidPoint p:frontier) System.out.println(","+p);
+//		   BidSpace bs=new BidSpace(nt.getAgentAUtilitySpace(),nt.getAgentBUtilitySpace());
+//		   ArrayList<BidPoint> frontier=bs.getParetoFrontier();
+//		   System.out.println("NegoManager check pareto frontier:");
+//		   for (BidPoint p:frontier) System.out.println(","+p);
     }
     
     public void run() {

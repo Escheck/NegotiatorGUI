@@ -1,11 +1,13 @@
 package negotiator.utility;
 
+import java.util.Map.Entry;
+
 import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
 public class EvaluatorPrice implements Evaluator {
-	
+
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock;	
@@ -52,17 +54,23 @@ public class EvaluatorPrice implements Evaluator {
 	}
 	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
-		int nrOfEvals;
-		double price, costs = 0, maxCost = 0, profit, utility;
+
+		double price=0, costs = 0, maxCost = 0, profit, utility;
+		try	{
+			price = ((ValueReal)bid.getValue(index)).getValue();
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}
 		
-		price = ((ValueReal)bid.getValue(index)).getValue();
-		
-		// Collect costs for discrete-valued associated with other issues in bid.
-		nrOfEvals = uspace.getNrOfEvaluators();
-		for (int i=0; i<nrOfEvals; i++) {
-			if (uspace.getEvaluator(i).getType()==EVALUATORTYPE.DISCRETE) {
-				costs += ((EvaluatorDiscrete)uspace.getEvaluator(i)).getCost(bid.getValue(i));
-				maxCost += ((EvaluatorDiscrete)uspace.getEvaluator(i)).getMaxCost();
+		// Collect costs for discrete-valued associated with other issues in bid.		
+		for (Entry<Objective,Evaluator> lEntry : uspace.getEvaluators()) {
+			if (lEntry.getValue().getType()==EVALUATORTYPE.DISCRETE) {
+				try {
+					costs += ((EvaluatorDiscrete)lEntry.getValue()).getCost(bid.getValue(lEntry.getKey().getNumber()));
+					maxCost += ((EvaluatorDiscrete)lEntry.getValue()).getMaxCost();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -86,11 +94,14 @@ public class EvaluatorPrice implements Evaluator {
 		double lPrice = 0;
 		double costs = 0, maxCost = 0, profit, utility;
 		// Collect costs for discrete-valued associated with other issues in bid.
-		int nrOfEvals = uspace.getNrOfEvaluators();
-		for (int i=0; i<nrOfEvals; i++) {
-			if (uspace.getEvaluator(i).getType()==EVALUATORTYPE.DISCRETE) {
-				costs += ((EvaluatorDiscrete)uspace.getEvaluator(i)).getCost(bid.getValue(i));
-				maxCost += ((EvaluatorDiscrete)uspace.getEvaluator(i)).getMaxCost();
+		for (Entry<Objective,Evaluator> lEntry : uspace.getEvaluators()) {
+			if (lEntry.getValue().getType()==EVALUATORTYPE.DISCRETE) {
+				try {
+					costs += ((EvaluatorDiscrete)lEntry.getValue()).getCost(bid.getValue(lEntry.getKey().getNumber()));
+					maxCost += ((EvaluatorDiscrete)lEntry.getValue()).getMaxCost();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -180,5 +191,23 @@ public class EvaluatorPrice implements Evaluator {
 	{
 		throw new Exception("getCost not implemented for EvaluatorPrice");
 	}
+	
+	public EvaluatorPrice clone() {
+		EvaluatorPrice ed=new EvaluatorPrice();
+		ed.setWeight(fweight);
+		//ed.setMaxCost(getMaxCost());
+		ed.setLowerBound(lowerBound);
+		ed.setUpperBound(upperBound);
+		ed.setMaxMargin(maxMargin);
+		ed.setRationalityFactor(rationalityfactor);
+		return ed;
 
+	}
+	public void setMaxMargin(double pValue) {
+		maxMargin = pValue;
+	}
+	public void showStatistics() {
+		// TODO Auto-generated method stub
+		
+	}
 }
