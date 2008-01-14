@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
-import com.sun.tools.javac.tree.Tree.Catch;
 
 import negotiator.*;
 import negotiator.actions.*;
@@ -89,7 +88,7 @@ public class ABMPAgent2 extends Agent {
 		lBid = utilitySpace.getMaxUtilityBid();
 		lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.95, utilitySpace.getUtility(lBid));
 		myLastBid = lBid;
-		return new Offer(this, utilitySpace.getMaxUtilityBid());
+		return new Offer(this,lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) {

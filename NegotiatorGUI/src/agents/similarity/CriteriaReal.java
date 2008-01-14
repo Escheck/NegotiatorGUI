@@ -25,30 +25,35 @@ public class CriteriaReal implements Criteria {
 	}
 
 	public double getValue(Bid pBid) {
-		double utility;
-		double value = ((ValueReal)pBid.getValue(fIssueIndex)).getValue();
-		switch(this.type) {
-		case FARATIN:
-			IssueReal lIssue = (IssueReal) (fDomain.getIssue(fIssueIndex));
-			utility = EVALFUNCTYPE.evalFaratin(value, lIssue.getUpperBound(), lIssue.getLowerBound(), this.fParam.get(0), this.fParam.get(1));
-			/*if (utility<0)
-				utility = 0;
-			else if (utility > 1)
-				utility = 1;*/
-			return utility;
+		double utility=0;
+		try {
+			double value = ((ValueReal)pBid.getValue(fIssueIndex)).getValue();
+			switch(this.type) {
+			case FARATIN:
+				IssueReal lIssue = (IssueReal) (fDomain.getIssue(fIssueIndex));
+				utility = EVALFUNCTYPE.evalFaratin(value, lIssue.getUpperBound(), lIssue.getLowerBound(), this.fParam.get(0), this.fParam.get(1));
+				/*if (utility<0)
+					utility = 0;
+				else if (utility > 1)
+					utility = 1;*/
+				return utility;
 			
-		case LINEAR:
-			utility = EVALFUNCTYPE.evalLinear(value, this.fParam.get(1), this.fParam.get(0));
-			if (utility<0)
-				utility = 0;
-			else if (utility > 1)
-				utility = 1;
-			return utility;
-		case CONSTANT:
-			return this.fParam.get(0);
-		default:
-			return -1.0;
-		}	
+			case LINEAR:
+				utility = EVALFUNCTYPE.evalLinear(value, this.fParam.get(1), this.fParam.get(0));
+				if (utility<0)
+					utility = 0;
+				else if (utility > 1)
+					utility = 1;
+				return utility;
+			case CONSTANT:
+				return this.fParam.get(0);
+			default:
+				return -1.0;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return utility;
 	}
 
 	public EVALUATORTYPE getType() {

@@ -55,7 +55,7 @@ public class EvaluatorInteger implements Evaluator {
 		return fweightLock;
 	}	
 	
-	public Integer getEvaluation(UtilitySpace uspace, Bid bid, int index) {
+	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		Integer lTmp = ((ValueInteger)bid.getValue(index)).getValue();
 		switch(this.type) {
 		case LINEAR:

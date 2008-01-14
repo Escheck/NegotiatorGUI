@@ -61,7 +61,7 @@ public class BayesianAgent extends Agent {
 	private static final double CONCESSIONFACTOR = 0.03;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.05;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
-	private ArrayList<Bid> myPreviousBids=new ArrayList<Bid>();
+	private ArrayList<Bid> myPreviousBids;
 	
 	private boolean fDebug = false;
 	private int fRound;
@@ -77,7 +77,8 @@ public class BayesianAgent extends Agent {
 		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
-		prepareOpponentModel();	
+		myPreviousBids = new ArrayList<Bid>();
+		prepareOpponentModel();			
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
