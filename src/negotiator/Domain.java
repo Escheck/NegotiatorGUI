@@ -382,6 +382,9 @@ public class Domain {
 			case DISCRETE:
 				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueDiscrete)lIssue).getNumberOfValues();
 				break;
+			case REAL:
+				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueReal)lIssue).getNumberOfDiscretizationSteps();
+				break;
 				//TODO: Finish getNumberOfPossibleBids() for Integer, Real and Price issues
 /*			case INTEGER:
 				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueInteger)lIssue).get;

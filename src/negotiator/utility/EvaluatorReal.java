@@ -18,8 +18,7 @@ public class EvaluatorReal implements Evaluator {
 	HashMap<Integer, Double> fParam;
 		
 	public EvaluatorReal() {
-		fParam = new HashMap<Integer, Double>();
-		
+		fParam = new HashMap<Integer, Double>();		
 		fweight = 0;
 	}
 
@@ -121,7 +120,7 @@ public class EvaluatorReal implements Evaluator {
 	}
 	
 	public double getUpperBound() {
-		return lowerBound; //TODO hdv is this ok?
+		return upperBound; //TODO hdv is this ok?
 	}	
 	
 	/**
@@ -207,6 +206,7 @@ public class EvaluatorReal implements Evaluator {
 			// TODO: define exception.
 			switch(this.type) {
 			case LINEAR:
+				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));				
 				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
 				break;
 			case CONSTANT:
@@ -230,13 +230,14 @@ public class EvaluatorReal implements Evaluator {
 	
 	public String isComplete(Objective whichobj )
 	{
-		return "EvaluatorReal isComplete checker is not implemented";
+		return null;
 	}
 	
 	
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
 	{
-		throw new Exception("getCost not implemented for EvaluatorReal");
+		//throw new Exception("getCost not implemented for EvaluatorReal");
+		return new Double(0);
 	}
 
 	public Value getMaxValue() {
@@ -280,7 +281,10 @@ public class EvaluatorReal implements Evaluator {
 	public EvaluatorReal clone()
 	{
 		EvaluatorReal ed=new EvaluatorReal();
+		ed.setType(type);
 		ed.setWeight(fweight);
+		ed.setUpperBound(upperBound);
+		ed.setLowerBound(lowerBound);
 		try{
 			for (Entry<Integer, Double> entry:fParam.entrySet())
 				ed.addParam(new Integer(entry.getKey()), new Double(entry.getValue()));
