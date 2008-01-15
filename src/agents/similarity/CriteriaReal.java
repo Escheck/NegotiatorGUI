@@ -30,7 +30,7 @@ public class CriteriaReal implements Criteria {
 			double value = ((ValueReal)pBid.getValue(fIssueIndex)).getValue();
 			switch(this.type) {
 			case FARATIN:
-				IssueReal lIssue = (IssueReal) (fDomain.getIssue(fIssueIndex));
+				IssueReal lIssue = (IssueReal) (fDomain.getObjective(fIssueIndex));
 				utility = EVALFUNCTYPE.evalFaratin(value, lIssue.getUpperBound(), lIssue.getLowerBound(), this.fParam.get(0), this.fParam.get(1));
 				/*if (utility<0)
 					utility = 0;

@@ -60,11 +60,11 @@ public final class Bid implements XMLable
 		// Discussion 19oct: probably there only is this particular constructor because
 		// that enables to enforce this.
 		ArrayList<Issue> issues=domainP.getIssues();
-		for (Issue issue:issues)
+/*		for (Issue issue:issues)
 			if (bidP.get(new Integer(issue.getNumber()))==null)
 				throw new BidDoesNotExistInDomainException(
 						"bid for issue '"+issue.getName()+"' (issue #"+issue.getNumber()+") lacks");
-		
+		*/
 		fValues = bidP;
 	}
 

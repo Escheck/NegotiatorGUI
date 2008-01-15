@@ -271,6 +271,13 @@ public class Negotiation implements Runnable {
     	else
     		return agentA.utilitySpace.getUtility(pBid);
     }
+    public double getOpponentWeight(Agent pAgent, int pIssueID) throws Exception{
+    	if(pAgent.equals(agentA)) 
+    		return agentB.utilitySpace.getWeight(pIssueID);
+    	else
+    		return agentA.utilitySpace.getWeight(pIssueID);
+    }
+    
     public void addAdditionalLog(SimpleElement pElem) {
     	if(pElem!=null)
     		additionalLog.addChildElement(pElem);
