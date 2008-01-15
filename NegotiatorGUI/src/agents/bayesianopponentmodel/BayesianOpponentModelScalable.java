@@ -21,7 +21,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 //	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
 	ArrayList<Issue> issues;
-
+	private double[] fExpectedWeights;
 	
 	
 	
@@ -33,7 +33,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		issues=fDomain.getIssues();
 		fUS = pUtilitySpace;
 		fBiddingHistory = new ArrayList<Bid>();
-		
+		fExpectedWeights = new double[pUtilitySpace.getDomain().getIssues().size()];
 		fWeightHyps = new ArrayList<ArrayList<WeightHypothesis2>>();
 		//generate all possible ordering combinations of the weights
 
@@ -177,6 +177,9 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 				break;
 			}//switch
 		}
+		for(int i=0;i<fExpectedWeights.length;i++)
+			fExpectedWeights[i] = getExpectedWeight(i);
+
 		//printEvalsDistribution();		
 	}
 	void initWeightHyps() {
@@ -345,6 +348,8 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 //		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-0.003;
+		for(int i=0;i<fExpectedWeights.length;i++)
+			fExpectedWeights[i] = getExpectedWeight(i);
 		findMinMaxUtility();
 		printBestHyp();
 	}
@@ -362,9 +367,9 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		double u = 0;
 		for(int j=0;j<fDomain.getIssues().size();j++) {
 			//calculate expected weight of the issue
-			double w = 0 ;
-			for(int k=0;k<fWeightHyps.get(j).size();k++) 
-				w += fWeightHyps.get(j).get(k).getProbability()*fWeightHyps.get(j).get(k).getWeight();
+			double w = fExpectedWeights[j] ;
+/*			for(int k=0;k<fWeightHyps.get(j).size();k++) 
+				w += fWeightHyps.get(j).get(k).getProbability()*fWeightHyps.get(j).get(k).getWeight();(*/
 			u = u + w*getExpectedEvaluationValue(pBid, j);
 		}
 		return u;

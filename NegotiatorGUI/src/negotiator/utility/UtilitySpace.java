@@ -261,7 +261,7 @@ public class UtilitySpace {
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     	ISSUETYPE vtype;
     	Value tmpval = bid.getValue(pIssueIndex);
-    	assert (tmpval!=null); //Wouter: I dont think this does anything.
+    	//assert (tmpval!=null); //Wouter: I dont think this does anything.
     	vtype = tmpval.getType();
     	
   /* hdevos: used to be this: 	

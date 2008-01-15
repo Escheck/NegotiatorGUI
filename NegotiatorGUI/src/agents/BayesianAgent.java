@@ -538,10 +538,14 @@ public class BayesianAgent extends Agent {
 	private double calculateEuclideanDistanceWeghts(double[] pExpectedWeight) {
 		double lDistance = 0;
 		int i=0;
-		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
-			lDistance = lDistance +sq(utilitySpace.getWeight(lIssue.getNumber())-pExpectedWeight[i]);
-			i++;
-		}		
+		try {
+			for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+				lDistance = lDistance +sq(fNegotiation.getOpponentWeight(this, lIssue.getNumber()) -pExpectedWeight[i]);
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return lDistance/(double)i;
 	}
 	
@@ -557,12 +561,18 @@ public class BayesianAgent extends Agent {
 		lAverageLearnedUtil = lAverageLearnedUtil/(double)(utilitySpace.getDomain().getNumberOfPossibleBids());
 		lAverageOriginalUtil = lAverageOriginalUtil/ (double)(utilitySpace.getDomain().getNumberOfPossibleBids());
 		//calculate the distance itself
-		for(int i=0;i<pLearnedUtility.length;i++) 
+		double lSumX=0;
+		double lSumY=0;
+		for(int i=0;i<pLearnedUtility.length;i++) { 
 				lDistance = lDistance + (pLearnedUtility[i]-lAverageLearnedUtil)*
 										(pOpponentUtil[i]-lAverageOriginalUtil);
+				lSumX = lSumX + sq(pLearnedUtility[i]-lAverageLearnedUtil);
+				lSumY = lSumY + sq(pOpponentUtil[i]-lAverageOriginalUtil);
+				
+		}
 
-		lDistance = Math.sqrt( lDistance )/ utilitySpace.getDomain().getNumberOfPossibleBids();
-		return lDistance;
+		
+		return  lDistance/(Math.sqrt(lSumX*lSumY));
 	}
 	
 	private double calculatePearsonDistanceWeghts(double[] pExpectedWeight) {
@@ -570,18 +580,31 @@ public class BayesianAgent extends Agent {
 		double lAverageLearnedWeight=0;
 		double lAverageOriginalWeight=0;
 		int i=0;
-		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
-			lAverageLearnedWeight = lAverageLearnedWeight +pExpectedWeight[i];
-			lAverageOriginalWeight = lAverageOriginalWeight + utilitySpace.getWeight(lIssue.getNumber());
-			i++;
-		}			
+		try {
+			for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+				lAverageLearnedWeight = lAverageLearnedWeight +pExpectedWeight[i];
+				lAverageOriginalWeight = lAverageOriginalWeight + fNegotiation.getOpponentWeight(this, lIssue.getNumber());
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//calculate the distance itself
 		i=0;
-		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
-			lDistance = lDistance +(utilitySpace.getWeight(lIssue.getNumber())- lAverageOriginalWeight)*(pExpectedWeight[i]-lAverageLearnedWeight);
-			i++;
-		}		
-		return Math.sqrt(lDistance)/(double)i;
+		double lSumX=0;
+		double lSumY=0;
+		try {
+			for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+				lDistance = lDistance +(fNegotiation.getOpponentWeight(this, lIssue.getNumber())- lAverageOriginalWeight)*(pExpectedWeight[i]-lAverageLearnedWeight);
+				lSumX = lSumX + sq(fNegotiation.getOpponentWeight(this, lIssue.getNumber())- lAverageOriginalWeight);
+				lSumY = lSumY + sq(pExpectedWeight[i]-lAverageLearnedWeight);
+				i++;
+			}		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+		return lDistance/(Math.sqrt(lSumX*lSumY));
 	}
 	private double calculateRankingDistanceUtilitySpaceMonteCarlo(double[] pLearnedUtil, double[] pOpponentUtil) {
 		double lDistance = 0;
@@ -631,16 +654,25 @@ public class BayesianAgent extends Agent {
 	}
 	private double calculateRankingDistanceWeghts(double pExpectedWeights[]) {
 		double lDistance = 0;
-		int i=0;
-		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
-			int j=-1;
-			for(Issue lIssue2 : utilitySpace.getDomain().getIssues()) {
-				j++;
-				if(lIssue.getNumber()==lIssue2.getNumber()) continue;
+		double[] lOriginalWeights = new double[utilitySpace.getDomain().getIssues().size()];
+		int k=0;
+		try {
+			for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
+				lOriginalWeights[k] = fNegotiation.getOpponentWeight(this, lIssue.getNumber());
+				k++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		k=0;
+		int nrOfIssues = utilitySpace.getDomain().getIssues().size();
+		for(int i=0; i<nrOfIssues-1;i++) {			
+			for(int j=i+1;j<nrOfIssues;j++) {
+				k++;
 				double tmpWeightLearned = pExpectedWeights[i];
-				double tmpWeightOriginal = utilitySpace.getWeight(lIssue.getNumber());
+				double tmpWeightOriginal = lOriginalWeights[i];
 				double tmpWeight2Learned = pExpectedWeights[j];
-				double tmpWeight2Original = utilitySpace.getWeight(lIssue2.getNumber());
+				double tmpWeight2Original = lOriginalWeights[j];
 				if(((tmpWeightLearned>tmpWeight2Learned)&&(tmpWeightOriginal>tmpWeight2Original))||
 				   ((tmpWeightLearned<tmpWeight2Learned)&&(tmpWeightOriginal<tmpWeight2Original))||
 				   ((tmpWeightLearned==tmpWeight2Learned)&&(tmpWeightOriginal==tmpWeight2Original)))
@@ -649,11 +681,9 @@ public class BayesianAgent extends Agent {
 				} else
 							lDistance++;
 
-			}
-			
-			i++;
+			}			
 		}		
-		return lDistance/(double)(utilitySpace.getDomain().getIssues().size()*(utilitySpace.getDomain().getIssues().size()-1));
+		return ((double)lDistance)/((double)k);
 	}
 	
 	protected void dumpDistancesToLog(int pRound) {

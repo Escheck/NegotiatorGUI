@@ -23,7 +23,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	private HashMap<ValueDiscrete, Integer> fEval;
 	private HashMap<ValueDiscrete, Double> fCost;
 	private double maxCost = 0;
-	
+	private Integer evalMax= null;
 	public EvaluatorDiscrete() {
 		fEval = new HashMap<ValueDiscrete, Integer>();
 		fCost = new HashMap<ValueDiscrete, Double>();
@@ -83,13 +83,16 @@ public class EvaluatorDiscrete implements Evaluator {
 	 */
 	public Integer getEvalMax() throws Exception
 	{
-		if (fEval==null) throw new NullPointerException("fEval==null");
-		Collection<Integer> alts=fEval.values();
-		Integer maximum=null;
-		for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
-		if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
-		if (maximum<=0) throw new Exception("Internal error: values <0 in evaluators.");
-		return maximum;
+		if(evalMax==null) {
+			if (fEval==null) throw new NullPointerException("fEval==null");
+			Collection<Integer> alts=fEval.values();
+			Integer maximum=null;
+			for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
+			if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
+			if (maximum<=0) throw new Exception("Internal error: values <0 in evaluators.");
+			evalMax = maximum;
+			return maximum;
+		} else return evalMax;
 	}
 	
 	
@@ -248,6 +251,11 @@ public class EvaluatorDiscrete implements Evaluator {
             }
             String descStr=((SimpleElement)xml_items[j]).getAttribute("description");
         }
+		try {
+			Integer i = getEvalMax();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -294,6 +302,12 @@ public class EvaluatorDiscrete implements Evaluator {
 
 	public void addEvaluation (ValueDiscrete pValue, Integer pEval) {
 		this.fEval.put(pValue, pEval);
+		try {
+			Integer i = getEvalMax();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
