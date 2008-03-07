@@ -60,7 +60,7 @@ public class BayesianAgent extends Agent {
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.03;
-	private static final double ALLOWED_UTILITY_DEVIATION = 0.005;
+	private static final double ALLOWED_UTILITY_DEVIATION = 0.008;
 	private static final int NUMBER_OF_SMART_STEPS = 1; 
 	private ArrayList<Bid> myPreviousBids;
 	
@@ -353,7 +353,7 @@ public class BayesianAgent extends Agent {
 	private Bid getTradeOff(double pUtility, Bid pOppntBid) throws Exception
 	{
 		Bid lBid=null;
-		double lExpectedUtility = -1;
+		double lExpectedUtility = -100;
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
 //		int i=1;
 		while(lIter.hasNext()) {
@@ -589,6 +589,9 @@ public class BayesianAgent extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		lAverageLearnedWeight = lAverageLearnedWeight/(double)(i);
+		lAverageOriginalWeight= lAverageOriginalWeight/ (double)(i);
+		
 		//calculate the distance itself
 		i=0;
 		double lSumX=0;
