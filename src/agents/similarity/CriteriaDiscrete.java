@@ -34,7 +34,8 @@ public class CriteriaDiscrete implements Criteria {
 	}
 
 	public void loadFromXML(SimpleElement pRoot) {
-		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("item");
+
+		Object[] xml_items = (pRoot).getChildByTagName("item");
 		int nrOfValues = xml_items.length;
 		ValueDiscrete value;
 		for(int j=0;j<nrOfValues;j++) {

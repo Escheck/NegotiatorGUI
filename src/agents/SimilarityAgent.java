@@ -37,7 +37,7 @@ public class SimilarityAgent extends Agent {
 	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
 	private static final double CONCESSIONFACTOR = 0.03;
-	private static final double ALLOWED_UTILITY_DEVIATION = 0.003;
+	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
 	
 	// Class constructor

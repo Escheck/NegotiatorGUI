@@ -74,7 +74,15 @@ public class EvaluatorDiscrete implements Evaluator {
 		return fEval.get(alternativeP);
 	}
 	
-
+	private void calcEvalMax() throws Exception{
+		if (fEval==null) throw new NullPointerException("fEval==null");
+		Collection<Integer> alts=fEval.values();
+		Integer maximum=null;
+		for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
+		if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
+		if (maximum<0) throw new Exception("Internal error: values <0 in evaluators.");
+		evalMax = maximum;
+	}
 	
 	/**
 	 * @author W.Pasman
@@ -84,14 +92,8 @@ public class EvaluatorDiscrete implements Evaluator {
 	public Integer getEvalMax() throws Exception
 	{
 		if(evalMax==null) {
-			if (fEval==null) throw new NullPointerException("fEval==null");
-			Collection<Integer> alts=fEval.values();
-			Integer maximum=null;
-			for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
-			if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
-			if (maximum<=0) throw new Exception("Internal error: values <0 in evaluators.");
-			evalMax = maximum;
-			return maximum;
+			calcEvalMax();
+			return evalMax;
 		} else return evalMax;
 	}
 	
@@ -303,7 +305,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	public void addEvaluation (ValueDiscrete pValue, Integer pEval) {
 		this.fEval.put(pValue, pEval);
 		try {
-			Integer i = getEvalMax();
+			calcEvalMax();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

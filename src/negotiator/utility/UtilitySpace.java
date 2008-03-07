@@ -209,7 +209,7 @@ public class UtilitySpace {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
         
-        if (constraintsViolated(bid)) return 0.;
+        //if (constraintsViolated(bid)) return 0.;
         
         Objective root = domain.getObjectivesRoot();
         Enumeration issueEnum = root.getPreorderIssueEnumeration();
