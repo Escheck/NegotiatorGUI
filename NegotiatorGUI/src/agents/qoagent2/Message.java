@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 //file name: Message.java
 

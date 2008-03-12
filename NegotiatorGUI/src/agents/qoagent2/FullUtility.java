@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ public class FullUtility
 	public double dTimeEffect;
 	public double dStatusQuoValue;
 	public double dOptOutValue;
-	public ArrayList lstUtilityDetails; // list of UtilityDetails
+	public ArrayList lstUtilityDetails;
 	
 	public FullUtility()
 	{

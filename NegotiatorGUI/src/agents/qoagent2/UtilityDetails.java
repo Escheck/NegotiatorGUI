@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 import java.util.ArrayList;
 

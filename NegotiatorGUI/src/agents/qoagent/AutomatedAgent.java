@@ -43,7 +43,7 @@ public class AutomatedAgent {
     private AbstractAutomatedAgent m_abstractAgent = null;
 	
 	private AutomatedAgentMessages m_messages;
-	private AutomatedAgentCommunication m_communication;
+	//DT: private AutomatedAgentCommunication m_communication;
 	
 	public AutomatedAgentGameTime m_gtStopTurn, m_gtStopNeg; // timers till end of turn and end of negotiation
 	
@@ -114,10 +114,10 @@ public class AutomatedAgent {
 		m_AgentCore.initGenerateAgreement(m_AgentType);
 		
 		// initialize connection to server
-		m_communication = new AutomatedAgentCommunication(this, m_nPortNum);
+		//DT: m_communication = new AutomatedAgentCommunication(this, m_nPortNum);
 	
-		Thread CommunicationThread = new Thread(m_communication);
-		CommunicationThread.start();
+		//DT: Thread CommunicationThread = new Thread(m_communication);
+		//DT: CommunicationThread.start();
 	}
 
     public AutomatedAgentType getAgentType() {
@@ -166,7 +166,7 @@ public class AutomatedAgent {
 	 * % java AutomatedAgent <side_name> <port_num> <equilibrium_agent> <calc_for_all_agents> [<agent_name> <agent_id>] 
 	 * 
 	 */
-	public static void main(String[] args)
+/*	DT: public static void main(String[] args)
 	{
 		if (args.length < 2)
 		{
@@ -195,7 +195,7 @@ public class AutomatedAgent {
         // register with the server
 		agent.register();
 	}
-	
+*/	
 	/**
 	 * @return agent's name
 	 */
@@ -240,7 +240,7 @@ public class AutomatedAgent {
 			String sRegister = m_messages.formatMessage(AutomatedAgentMessages.REGISTER, m_sAgentId);
 		
 			// need to send message to server
-			m_communication.printMsg(sRegister);		
+			//DT: m_communication.printMsg(sRegister);		
 		}
 	}
 
@@ -252,7 +252,8 @@ public class AutomatedAgent {
      */    
 	public void printMessageToServer(String sMessage)
 	{
-		m_communication.printMsg(sMessage);
+		//DT: m_communication.printMsg(sMessage);
+		System.out.println("Agent tries to send a message to the server:" + sMessage);
 	}
 	
 	/**
@@ -261,7 +262,7 @@ public class AutomatedAgent {
 	 */
 	public void endNegotiation()
 	{
-		m_communication.endNegotiation();
+		//DT: m_communication.endNegotiation();
 	}
 	
 	/**
@@ -453,14 +454,14 @@ public class AutomatedAgent {
 	 * @see AutomatedAgentMessages
 	 * @see AutomatedAgentCommunication 
 	 */
-	public void register()
+/*	public void register()
 	{
 		setMsgId(1); // first msg sent
 		String sRegister = m_messages.formatMessage(AutomatedAgentMessages.REGISTER, m_sAgentId);
 		
 		// need to send message to server
 		m_communication.printMsg(sRegister);		
-	}
+	}*/
 		
 	/**
 	 * 

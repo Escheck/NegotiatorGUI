@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 import java.util.StringTokenizer;
 
@@ -260,13 +260,13 @@ class Issue
 		while(stValues.hasMoreTokens())
 		{
 			String value=stValues.nextToken();
-			if(value.equals(AutomatedAgentType.NOT_APPLICABLE_STR1))
+			if(value.equals(QOAgent.NOT_APPLICABLE_STR1))
 			{
 				break;
 			}
 			position++;
 		}
-		setValue(AutomatedAgentType.NOT_APPLICABLE_STR1); //set the value of the issue at the agent
+		setValue(QOAgent.NOT_APPLICABLE_STR1); //set the value of the issue at the agent
 		
 		//finds and sets corresponding utility value
 		String utilities = getUtilities();

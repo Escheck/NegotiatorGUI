@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 import java.util.StringTokenizer;
 
@@ -8,20 +8,17 @@ import java.util.StringTokenizer;
  */
 
 /**
- * Responsible for the generation of formatted messages for the 
- * automated agent
  * @author raz
  * @version 1.0
- * @see AutomatedAgent
- * @see AutomatedAgentCommunication
+ * @see QOAgent
+ * @see QCommunication
  */
-public class AutomatedAgentMessages 
+public class QMessages 
 {
-	// constants for response of message
+	// constants for probability update
 	public final static int MESSAGE_RECEIVED = 0;
 	public final static int MESSAGE_REJECTED = 1;
 	
-    //type of messages
 	public final static int REGISTER = 0;
 	public final static int THREAT = 1;
 	public final static int COMMENT = 2;
@@ -33,18 +30,14 @@ public class AutomatedAgentMessages
 	public final static int OPT_OUT = 8;
 	public final static int COUNTER_OFFER = 9;
 	
-	private AutomatedAgent m_agent;
-    private AgentTools agentTools = null;
-    private AbstractAutomatedAgent abstractAgent = null;
+	private QOAgent m_agent;
 	
 	/**
-	 * @param agent - saves the AutomatedAgent in the member variable
+	 * @param agent - saves the QOAgent in the member variable
 	 */
-	public AutomatedAgentMessages(AutomatedAgent agent, AgentTools agentTools, AbstractAutomatedAgent abstractAgent)
+	public QMessages(QOAgent agent)
 	{
 		m_agent = agent;
-        this.agentTools = agentTools;
-        this.abstractAgent = abstractAgent;
 	}
 
 	/**
@@ -55,8 +48,8 @@ public class AutomatedAgentMessages
 	 * @param sMsgBody - the message body: additional data for creating the message.
 	 * sMsgBody differs for the different message types
 	 * @return the formatted message
-	 * @see AutomatedAgent
-	 * @see AutomatedAgentCommunication
+	 * @see QOAgent
+	 * @see QCommunication
 	 */
 	public String formatMessage(int nMessageKind, String sMsgBody)
 	{
@@ -93,6 +86,8 @@ public class AutomatedAgentMessages
 				break;
 			case OFFER:
 			{
+				String sAttribute, sValue;
+				
 				sFormattedMsg = "type offer" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 
@@ -104,6 +99,8 @@ public class AutomatedAgentMessages
 				break;
 			case COUNTER_OFFER:
 			{
+				String sAttribute, sValue;
+				
 				sFormattedMsg = "type counter_offer" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 
@@ -126,7 +123,6 @@ public class AutomatedAgentMessages
 				// NOTE: In our scenario there are no actions
 				// that only for one side.
 				// We do not use the option of myIssueSet and yourIssueSet
-                // this explains the commented lines below
 				sAgentPromise += sMsgBody;
 
 				/*
@@ -165,6 +161,8 @@ public class AutomatedAgentMessages
 				break; 
 			case QUERY:
 			{
+				String sAttribute, sValue;
+				
 				sFormattedMsg = "type query" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 
@@ -182,12 +180,14 @@ public class AutomatedAgentMessages
 				" tag " + m_agent.getMsgId() + 
 				" answer AGREE" + 
 				" message " + sMsgBody + 
-				" reason "; // NOTE: No reason is supplied on accept;
+				" reason "; // NOTE: No reason is supplied;
 				
 				// save accepted msg
 				String sResponse = sFormattedMsg.substring(sFormattedMsg.indexOf("answer ")+7, sFormattedMsg.indexOf("reason")-1);
 				String sMessage = sResponse.substring(sResponse.indexOf("message ") + 8);
 				
+				//TODO: Do more than just save accepted offer?
+					
 				// message accepted - save message
 				// parse message by its type (offer, promise, query)
 				String sSavedMsg = "";
@@ -230,8 +230,8 @@ public class AutomatedAgentMessages
 				break;
 			default:
 			{
-				System.out.println("[AA]ERROR: Invalid message kind: " + nMessageKind + " [AutomatedAgentMessages::formatMessage(234)]");
-				System.err.println("[AA]ERROR: Invalid message kind: " + nMessageKind + " [AutomatedAgentMessages::formatMessage(234)]");
+				System.out.println("[QO]ERROR: Invalid message kind: " + nMessageKind + " [QMessages::formatMessage(199)]");
+				System.err.println("[QO]ERROR: Invalid message kind: " + nMessageKind + " [QMessages::formatMessage(199)]");
 			}
 				break;
 		}
@@ -245,24 +245,24 @@ public class AutomatedAgentMessages
 	 * target for the message. Assuming correctness of server routing messages.
 	 * @param sServerLine - the server's message
 	 * @return the parsed string - relevant only if "nak"
-	 * @see AutomatedAgent
-	 * @see AutomatedAgentCommunication
+	 * @see QOAgent
+	 * @see QCommunication
 	 */
 	public String parseMessage(String sServerLine)
 	{
-        String sParsedString = "";
+		String sParsedString = "";
 		
 		if (sServerLine.startsWith("type comment"))
 		{
 			String sComment=sServerLine.substring(sServerLine.indexOf(" body ")+6);
-			
-            abstractAgent.commentReceived(sComment);
+					
+			// TODO: use comments?
 		}
 		else if (sServerLine.startsWith("type threat"))
 		{
 			String sThreat=sServerLine.substring(sServerLine.indexOf(" body ")+6);
 					
-            abstractAgent.threatReceived(sThreat);
+			// TODO: use threats?
 		}
 		else if (sServerLine.startsWith("type endTurn"))
 		{
@@ -275,8 +275,10 @@ public class AutomatedAgentMessages
 			m_agent.m_gtStopTurn.setRun(false);
 			m_agent.m_gtStopNeg.setRun(false);
 			
-			System.out.println("[AA]Negotiation Ended");
-			System.err.println("[AA]Negotiation Ended");
+			String sEndNegDetails = sServerLine.substring(sServerLine.indexOf("whyEnded"));
+			
+			System.out.println("[QO]Negotiation Ended");
+			System.err.println("[QO]Negotiation Ended");
 			
 			m_agent.endNegotiation();
 			
@@ -293,21 +295,17 @@ public class AutomatedAgentMessages
 
 			if(sAnswerType.equals("AGREE"))
 			{
+				//TODO: Do more than just save accepted offer?
+				
 				// message accepted - save message
 				// parse message by its type (offer, promise, query)
 				String sSavedMsg = "";
-				if (sMessage.startsWith("type query")) {
+				if (sMessage.startsWith("type query"))
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentAgreed(QUERY, m_agent.getAgreementIndices(sSavedMsg), sMessage);
-                }
-				else if (sMessage.startsWith("type counter_offer")) {
+				else if (sMessage.startsWith("type counter_offer"))
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentAgreed(COUNTER_OFFER, m_agent.getAgreementIndices(sSavedMsg), sMessage);
-                }
-				else if (sMessage.startsWith("type offer")) {
+				else if (sMessage.startsWith("type offer"))
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentAgreed(OFFER, m_agent.getAgreementIndices(sSavedMsg), sMessage);
-                }
 				else if (sMessage.startsWith("type promise"))
 				{
 					String sPromise = sMessage.substring(sMessage.indexOf("myIssueSet ") + 11);
@@ -316,44 +314,51 @@ public class AutomatedAgentMessages
 
 					// parse to one agreement
 					sSavedMsg = sMyIssueSet + sYourIssueSet;
-                    
-                    abstractAgent.opponentAgreed(PROMISE, m_agent.getAgreementIndices(sSavedMsg), sMessage);
 				}
 
-				// only if accepted an offer (and not promise/query) - save it in the agreed offers
+				// only if accepted an offer - save it
+				// TODO: if our agent send queries/promises - need to offer it now [if it's still worthwhile for us]
 				 if ( sMessage.startsWith("type counter_offer") || sMessage.startsWith("type offer"))
 				 	m_agent.saveAcceptedMsg(sSavedMsg);
 			}
 			else if(sAnswerType.equals("DISAGREE"))
 			{
-                // parse message by its type (offer, promise, query)
+				// message rejected
+				// parse message by its type (offer, promise, query)
 				String sSavedMsg = "";
+				int nMessageType = -1;
 				if (sMessage.startsWith("type query"))
 				{
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentRejected(QUERY, m_agent.getAgreementIndices(sSavedMsg), sMessage);
+					nMessageType = QUERY;
 				}
 				else if (sMessage.startsWith("type counter_offer"))
 				{
+					nMessageType = OFFER;
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentRejected(COUNTER_OFFER, m_agent.getAgreementIndices(sSavedMsg), sMessage);
 				}
 				else if (sMessage.startsWith("type offer"))
 				{
+					nMessageType = OFFER;
 					sSavedMsg = sMessage.substring(sMessage.indexOf("issueSet ") + 9);
-                    abstractAgent.opponentRejected(OFFER, m_agent.getAgreementIndices(sSavedMsg), sMessage);
 				}
 				else if (sMessage.startsWith("type promise"))
 				{
+					nMessageType = PROMISE;
 					String sPromise = sMessage.substring(sMessage.indexOf("myIssueSet ") + 11);
 					String sMyIssueSet = sPromise.substring(0, sPromise.indexOf("yourIssueSet "));
 					String sYourIssueSet = sPromise.substring(sPromise.indexOf("yourIssueSet ") + 13);
 
 					// parse to one agreement
 					sSavedMsg = sMyIssueSet + sYourIssueSet;
-                    
-                    abstractAgent.opponentRejected(PROMISE, m_agent.getAgreementIndices(sSavedMsg), sMessage);
 				}
+				
+				// update opponent's probability
+				int CurrentAgreementIdx[] = new int[QAgentType.MAX_ISSUES];
+				CurrentAgreementIdx = m_agent.getAgreementIndices(sSavedMsg);
+				
+				// Update probability of opponent based on message
+				m_agent.updateOpponentProbability(CurrentAgreementIdx, nMessageType, MESSAGE_REJECTED);
 			}
 		}
 		else if (sServerLine.startsWith("type registered"))
@@ -376,7 +381,7 @@ public class AutomatedAgentMessages
 
 			lTotalSec -= nMinutes*60;
 
-			m_agent.m_gtStopTurn = new AutomatedAgentGameTime(false,nHours,nMinutes,(int)lTotalSec,m_agent,true);
+			m_agent.m_gtStopTurn = new QGameTime(false,nHours,nMinutes,(int)lTotalSec,m_agent,true);
 			m_agent.m_gtStopTurn.newGame(); // initializing the stop-watch
 
 			new Thread(m_agent.m_gtStopTurn).start();
@@ -389,7 +394,7 @@ public class AutomatedAgentMessages
 
 			lTotalSec -= nMinutes*60;
 
-			m_agent.m_gtStopNeg = new AutomatedAgentGameTime(false,nHours,nMinutes,(int)lTotalSec,m_agent,false);
+			m_agent.m_gtStopNeg = new QGameTime(false,nHours,nMinutes,(int)lTotalSec,m_agent,false);
 			m_agent.m_gtStopNeg.newGame(); // initializing the stop-watch
 
 			new Thread(m_agent.m_gtStopNeg).start();
@@ -398,14 +403,7 @@ public class AutomatedAgentMessages
 			
 			m_agent.setHasOpponent(true, sAgentID);
 			
-            String sOpponentSide = null;
-            AutomatedAgentType agentType = m_agent.getAgentType();
-            if (agentType.isTypeOf(AutomatedAgentType.SIDE_B_TYPE)) 
-                sOpponentSide = AutomatedAgent.SIDE_A_NAME;
-            else if (agentType.isTypeOf(AutomatedAgentType.SIDE_A_TYPE))
-                sOpponentSide = AutomatedAgent.SIDE_B_NAME;
-            
-            abstractAgent.initialize(agentType, sOpponentSide);
+			m_agent.calculateFirstOffer();
 		}
 		else if (sServerLine.startsWith("type agentOptOut"))
 		{
@@ -416,17 +414,18 @@ public class AutomatedAgentMessages
 		}
 		else if (sServerLine.equals("type log request error"))
 		{
-			// not relevant for the Automated Agent
+			// not relevant for the QOAgent
 		}
 		else if (sServerLine.startsWith("type log response"))
 		{
-			// not relevant for the Automated Agent
+			// not relevant for the QOAgent
 		}
 		else if (sServerLine.startsWith("type query"))
 		{
-		    //query received
-            
+			// query received
+			
 			// get message id
+			String sMsgId;
 			StringTokenizer st = new StringTokenizer(sServerLine);
 			
 			boolean bFound = false;
@@ -435,23 +434,23 @@ public class AutomatedAgentMessages
 				if (st.nextToken().equals("tag"))
 				{
 					bFound = true;
-					st.nextToken();
+					sMsgId = st.nextToken();
 				}
 			}
 	
 			String sQuery=sServerLine.substring(sServerLine.indexOf("issueSet ")+9);
 			
-			int CurrentAgreementIdx[] = new int[AutomatedAgentType.MAX_ISSUES];
+			int CurrentAgreementIdx[] = new int[QAgentType.MAX_ISSUES];
 			CurrentAgreementIdx = m_agent.getAgreementIndices(sQuery);
 			
-            agentTools.calculateResponse(AutomatedAgentMessages.QUERY, CurrentAgreementIdx, sServerLine);
-            //abstractAgent.queryReceived(CurrentAgreementIdx, sServerLine);
+			m_agent.calculateResponse(QUERY, CurrentAgreementIdx, sServerLine);
 		}
 		else if (sServerLine.startsWith("type counter_offer"))
 		{
 			// counter_offer received
 			
 			// get message id
+			String sMsgId;
 			StringTokenizer st = new StringTokenizer(sServerLine);
 			
 			boolean bFound = false;
@@ -460,23 +459,22 @@ public class AutomatedAgentMessages
 				if (st.nextToken().equals("tag"))
 				{
 					bFound = true;
-					st.nextToken();
+					sMsgId = st.nextToken();
 				}
 			}
 	
 			String sOffer=sServerLine.substring(sServerLine.indexOf("issueSet ")+9);
 			
-			int CurrentAgreementIdx[] = new int[AutomatedAgentType.MAX_ISSUES];
+			int CurrentAgreementIdx[] = new int[QAgentType.MAX_ISSUES];
 			CurrentAgreementIdx = m_agent.getAgreementIndices(sOffer);
-            
-            agentTools.calculateResponse(AutomatedAgentMessages.COUNTER_OFFER, CurrentAgreementIdx, sServerLine);
-            //abstractAgent.counterOfferReceived(CurrentAgreementIdx, sServerLine);
+			m_agent.calculateResponse(COUNTER_OFFER, CurrentAgreementIdx, sServerLine);
 		}
 		else if (sServerLine.startsWith("type offer"))
 		{
 			// offer received
 			
 			// get message id
+			String sMsgId;
 			StringTokenizer st = new StringTokenizer(sServerLine);
 			
 			boolean bFound = false;
@@ -485,23 +483,23 @@ public class AutomatedAgentMessages
 				if (st.nextToken().equals("tag"))
 				{
 					bFound = true;
-					st.nextToken();
+					sMsgId = st.nextToken();
 				}
 			}
 	
 			String sOffer=sServerLine.substring(sServerLine.indexOf("issueSet ")+9);
 
-			int CurrentAgreementIdx[] = new int[AutomatedAgentType.MAX_ISSUES];
+			int CurrentAgreementIdx[] = new int[QAgentType.MAX_ISSUES];
 			CurrentAgreementIdx = m_agent.getAgreementIndices(sOffer);
 			
-            agentTools.calculateResponse(AutomatedAgentMessages.OFFER, CurrentAgreementIdx, sServerLine);
-            //abstractAgent.offerReceived(CurrentAgreementIdx, sServerLine);
+			m_agent.calculateResponse(OFFER, CurrentAgreementIdx, sServerLine);
 		}
 		else if (sServerLine.startsWith("type promise"))
 		{
 			// promise received
 			
 			// get message id
+			String sMsgId;
 			StringTokenizer st = new StringTokenizer(sServerLine);
 			
 			boolean bFound = false;
@@ -510,7 +508,7 @@ public class AutomatedAgentMessages
 				if (st.nextToken().equals("tag"))
 				{
 					bFound = true;
-					st.nextToken();
+					sMsgId = st.nextToken();
 				}
 			}
 			
@@ -519,20 +517,19 @@ public class AutomatedAgentMessages
 			String sYourIssueSet=sPromise.substring(sPromise.indexOf("yourIssueSet ")+13);
 
 			// parse to one agreement
-			int CurrentAgreementIdxMine[] = new int[AutomatedAgentType.MAX_ISSUES];
-			int CurrentAgreementIdxYours[] = new int[AutomatedAgentType.MAX_ISSUES];
+			int CurrentAgreementIdxMine[] = new int[QAgentType.MAX_ISSUES];
+			int CurrentAgreementIdxYours[] = new int[QAgentType.MAX_ISSUES];
 			CurrentAgreementIdxMine = m_agent.getAgreementIndices(sMyIssueSet);
 			CurrentAgreementIdxYours = m_agent.getAgreementIndices(sYourIssueSet);
 
 			// combine indices
-			for (int i = 0; i < AutomatedAgentType.MAX_ISSUES; ++i)
+			for (int i = 0; i < QAgentType.MAX_ISSUES; ++i)
 			{
-				if (CurrentAgreementIdxYours[i] != AutomatedAgentType.NO_VALUE)
+				if (CurrentAgreementIdxYours[i] != QAgentType.NO_VALUE)
 					CurrentAgreementIdxMine[i] = CurrentAgreementIdxYours[i]; 
 			}
 			
-            agentTools.calculateResponse(AutomatedAgentMessages.PROMISE, CurrentAgreementIdxMine, sServerLine);
-            //abstractAgent.promiseReceived(CurrentAgreementIdxMine, sServerLine);
+			m_agent.calculateResponse(PROMISE, CurrentAgreementIdxMine, sServerLine);
 		}
 		else if (sServerLine.equals("nak") || sServerLine.equals("ack"))
 		{
@@ -540,8 +537,8 @@ public class AutomatedAgentMessages
 		}
 		else // other unknown message
 		{
-			System.out.println("[AA]Unknown Message Error: " + sServerLine + " [AutomatedAgentMessages::parseMessage(590)]");
-			System.err.println("[AA]Unknown Message Error: " + sServerLine + " [AutomatedAgentMessages::parseMessage(590)]");			
+			System.out.println("[QO]Unknown Message Error: " + sServerLine + " [QMessages::parseMessage(470)]");
+			System.err.println("[QO]Unknown Message Error: " + sServerLine + " [QMessages::parseMessage(470)]");			
 			
 			sParsedString = sServerLine;
 		}

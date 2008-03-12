@@ -1,3 +1,5 @@
+package agents.qoagent;
+
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
@@ -13,6 +15,7 @@ import java.util.StringTokenizer;
  * @see AutomatedAgent
  */
 public class AutomatedAgentType {
+	public final static String NOT_APPLICABLE_STR1 = "No agreement";
     public static final int VERY_SMALL_NUMBER = -9999;
     public static final int VERY_HIGH_NUMBER = 9999;
 
@@ -314,7 +317,7 @@ public class AutomatedAgentType {
 	{
 		String sIssueValue = getIssueValueStr(nIssueNum, nIssueNumIdx);
 		
-		if (sIssueValue.equals(ServerThread.NOT_APPLICABLE_STR1))
+		if (sIssueValue.equals(/* DT: ServerThread. */NOT_APPLICABLE_STR1))
 			return true;
 		else
 			return false;		

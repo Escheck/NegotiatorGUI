@@ -1,4 +1,4 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 //file name: Agent.java
 import java.util.*;
@@ -7,8 +7,8 @@ import java.net.*;
 
 /*****************************************************************
  * Class name: Agent
- * Goal: Each object of the class represents an agent (Side B = Zimbabwe/Job Can, 
- * Side A = England/Employer or a mediator). The class holds all the information 
+ * Goal: Each object of the class represents an agent (Zimbabwe, 
+ * England or a mediator). The class holds all the information 
  * of the agent along with his opponent's ID and name (and mediator's
  * ID and name - if exists). This class allows the server to set/get 
  * all necessary data of an agent in an efficient way.
@@ -16,8 +16,8 @@ import java.net.*;
 class Agent
 {
 	//general variables
-/*	DT: private ServerThread m_st; //Allows access to the agent's thread at the server
-	private MultiServer m_server; //Allows access to the server*/
+//DT:	private ServerThread m_st; //Allows access to the agent's thread at the server
+//DT:	private MultiServer m_server; //Allows access to the server
 	private Vector m_vecIssues; //The negotiation issues of the agent and their status
 	private boolean m_bHasOpponent; //Whether the agent has an opponent or not
 	private boolean m_bHasMediator; //Whether the agent has a mediator or not
@@ -25,10 +25,11 @@ class Agent
 	private int m_nCurrentTurn; //Current turn of the negotiation
 	private Socket m_socket = null; //The socket which allows the agent's thread in the 
 									//server to connect to the client program
-	private String m_sSide; //Holds the side of the agent (B = Zimbabwe/Job Can,A = England/Employer,Mediator)
+	private String m_sSide; //Holds the side of the agent (Zimbabwe,England,Mediator)
 	private PrintWriter m_out = null; //Allows writing to the socket
 	GameTimeServer m_gtEndTurn = null; //A stop watch for each turn
 	GameTimeServer m_gtEndNeg = null; //A stop watch for the entire negotiation
+	private InetAddress m_ip = null; //Holds the ip address of the client
 	private int m_nPort;
 	private double m_dScore; //the agent's score of the negotiation
 	private double m_dTimeEffect; // time effect for the entire agreement
@@ -48,7 +49,8 @@ class Agent
 	private String m_sMedName; //mediator's Name
 	
 	//The two sides in case that we are a mediator
-	private String m_sIdSideA,m_sIdSideB; //Ids
+	private String m_sIdReligious,m_sIdSecular; //Ids
+	private String m_sNameReligious,m_sNameSecular; //Names
 
 	public final static String TIME_EFFECT_STR = "Time-Effect";
 	public final static String OPT_OUT_STR = "Opt-Out";
@@ -66,17 +68,15 @@ class Agent
 	private int m_nOffersNum;
 	private int m_nPromisesNum;
 	private int m_nQueriesNum;
-	
-    /*****************************************************************
+	/*****************************************************************
 	* Method name: Agent()
 	* Goal: Constructor.
 	* Description: Initialize the class variables and reading the issues
 	* from the utility file.
 	* Input: A MultiServer object (to allow access to the server), 
 	*        a ServerThread object (to allow access to the agent's 
-	*		 thread at the server)
-    *        boolean which specifies whether the agent supports a mediator or not.
-    *        string - the side of the agent
+	*		 thread at the server), and a boolean which specifies whether
+	*		 the agent supports a mediator or not.
 	* Output: None.
 	******************************************************************/
 	public Agent(/* DT: MultiServer server,ServerThread st,*/ boolean SupportMed,String sSide)
@@ -97,15 +97,15 @@ class Agent
 		m_dStatusQuoValue = 0;
 		m_dOptOutValue = 0;
 		
-		m_sIdSideA=null;
-		m_sIdSideB=null;
+		m_sIdReligious=null;
+		m_sIdSecular=null;
 		m_sMedId=null;
 		
 		m_sSide=sSide;
 		m_bHasMediator=false;
 		m_bSupportMediator=SupportMed;
 //DT:		m_st=st;
-		//DT:		m_server=server;
+//DT:		m_server=server;
 		m_bHasOpponent=false;
 		m_nCurrentTurn=1;
 		m_nPort = 0;
@@ -182,7 +182,7 @@ class Agent
 	/*****************************************************************
 	* Method name: setScore()
 	* Goal: Setting the agent's score.
-	* Input: double(the score).
+	* Input: An integer(the score).
 	* Output: None.
 	****************************************************************/
 	public void setScore(double score)
@@ -194,7 +194,7 @@ class Agent
 	* Method name: getScore()
 	* Goal: Return the agent's score.
 	* Input: None.
-	* Output: double(the score).
+	* Output: An integer(the score).
 	***************************************************************/
 	public double getScore()
 	{
@@ -260,17 +260,6 @@ class Agent
 		return m_sName;
 	}
 	
-    /*****************************************************************
-    * Method name: setOpponentName()
-    * Goal: Setting the opponent's name.
-    * Input: A string.
-    * Output: None.
-    ****************************************************************/
-    public void setOpponentName(String sOppName)
-    {
-        m_sOppName = sOppName;
-    }
-        
 	/*****************************************************************
 	* Method name: getOpponentName()
 	* Goal: Return the opponent's name.
@@ -281,18 +270,7 @@ class Agent
 	{
 		return m_sOppName;
 	}
-
-    /*****************************************************************
-    * Method name: setMedName()
-    * Goal: Setting the mediator's name.
-    * Input: A string.
-    * Output: None.
-    ****************************************************************/
-    public void setMedName(String sMedName)
-    {
-        m_sMedName = sMedName;
-    }
-    
+	
 	/*****************************************************************
 	* Method name: getMedName()
 	* Goal: Return the mediator's name.
@@ -302,6 +280,72 @@ class Agent
 	public String getMedName()
 	{
 		return m_sMedName;
+	}
+	
+	/*****************************************************************
+	* Method name: getNameReligious()
+	* Goal: Return the England side name (in case the agent is a mediator).
+	* Input: None.
+	* Output: A string.
+	***************************************************************/
+	public String getNameReligious()
+	{
+		return m_sNameReligious;
+	}
+	
+	/*****************************************************************
+	* Method name: getNameSecular()
+	* Goal: Return the Zimbabwe side name (in case the agent is a mediator).
+	* Input: None.
+	* Output: A string.
+	***************************************************************/
+	public String getNameSecular()
+	{
+		return m_sNameSecular;
+	}
+	
+	/*****************************************************************
+	* Method name: setOpponentName()
+	* Goal: Setting the opponent's name.
+	* Input: A string.
+	* Output: None.
+	****************************************************************/
+	public void setOpponentName(String sOppName)
+	{
+		m_sOppName = sOppName;
+	}
+	
+	/*****************************************************************
+	* Method name: setMedName()
+	* Goal: Setting the mediator's name.
+	* Input: A string.
+	* Output: None.
+	****************************************************************/
+	public void setMedName(String sMedName)
+	{
+		m_sMedName = sMedName;
+	}
+	
+	/*****************************************************************
+	* Method name: setNameReligious()
+	* Goal: Setting the England side name (in case the agent is a mediator).
+	* Input: A string.
+	* Output: None.
+	****************************************************************/
+	public void setNameReligious(String sName)
+	{
+		m_sNameReligious = sName;
+	}
+	
+	/*****************************************************************
+	* Method name: setNameSecular()
+	* Goal: Setting the Zimbabwe side name (in case the agent is a mediator).
+	* Input: A string.
+	* Output: None.
+	****************************************************************/
+	public void setNameSecular(String sName)
+	{
+		m_sNameSecular = sName;
 	}
 	
 	/*****************************************************************
@@ -326,17 +370,6 @@ class Agent
 		m_gtEndNeg.newGame();
 	}
 
-    /*****************************************************************
-    * Method name: setSide()
-    * Goal: Setting the agent's side.
-    * Input: A string.
-    * Output: None.
-    ****************************************************************/
-    public void setSide(String sSide)
-    {
-        m_sSide = sSide;
-    }
-    
 	/*****************************************************************
 	* Method name: getSide()
 	* Goal: Return the agent's side.
@@ -349,6 +382,39 @@ class Agent
 	}
 	
 	/*****************************************************************
+	* Method name: setSide()
+	* Goal: Setting the agent's side.
+	* Input: A string.
+	* Output: None.
+	****************************************************************/
+	public void setSide(String sSide)
+	{
+		m_sSide = sSide;
+	}
+
+	/*****************************************************************
+	* Method name: setIp()
+	* Goal: Setting the agent's ip address.
+	* Input: An InetAddress object.
+	* Output: None.
+	****************************************************************/
+	public void setIp(InetAddress ip)
+	{
+		m_ip = ip;
+	}
+
+	/*****************************************************************
+	* Method name: setIssueAt()
+	* Goal: Inserting an Issue to the issues vectors at a specified index.
+	* Input: An integer (the index) and an Issue.
+	* Output: None.
+	****************************************************************/
+	public void setIssueAt(int index, Issue issue)
+	{
+		m_vecIssues.set(index, issue);	
+	}
+
+	/*****************************************************************
 	* Method name: setEndNeg()
 	* Goal: Initializing the end-negotiation stop watch.
 	* Input:  A boolean which specifies whether the stop watch counts up or not,
@@ -359,7 +425,7 @@ class Agent
 	****************************************************************/
 	public void setEndNeg(boolean bCountUp, int nHours, int nMinutes, int nSeconds, boolean bTurnOrNeg, int nMaxTurn)
 	{
-		m_gtEndNeg = new GameTimeServer(bCountUp,nHours,nMinutes,nSeconds,this,bTurnOrNeg,nMaxTurn /* DT: ,m_server,m_st */);
+		m_gtEndNeg = new GameTimeServer(bCountUp,nHours,nMinutes,nSeconds,this,bTurnOrNeg,nMaxTurn /* DT: ,m_server,m_st*/ );
 	}
 
 	/*****************************************************************
@@ -400,17 +466,6 @@ class Agent
 		m_gtEndTurn.setRun(bRun);
 	}
 	
-    /*****************************************************************
-    * Method name: setIssueAt()
-    * Goal: Inserting an Issue to the issues vectors at a specified index.
-    * Input: An integer (the index) and an Issue.
-    * Output: None.
-    ****************************************************************/
-    public void setIssueAt(int index, Issue issue)
-    {
-        m_vecIssues.set(index, issue);  
-    }
-
 	/*****************************************************************
 	* Method name: getIssuesNum()
 	* Goal: Return the number of issues of the negotiation.
@@ -500,25 +555,25 @@ class Agent
 	}
 	
 	/*****************************************************************
-	* Method name: getIdSideA()
-	* Goal: Return the England/Employer side ID (Side A) (in case the agent is a mediator).
+	* Method name: getIdReligious()
+	* Goal: Return the England side ID (in case the agent is a mediator).
 	* Input: None.
 	* Output: A String.
 	***************************************************************/
-	public String getIdSideA()
+	public String getIdReligious()
 	{
-		return m_sIdSideA;
+		return m_sIdReligious;
 	}
 	
 	/*****************************************************************
-	* Method name: getIdSideB()
-	* Goal: Return the Zimbabwe/Job Can side ID (Side B) (in case the agent is a mediator).
+	* Method name: getIdSecular()
+	* Goal: Return the Zimbabwe side ID (in case the agent is a mediator).
 	* Input: None.
 	* Output: A String.
 	***************************************************************/
-	public String getIdSideB()
+	public String getIdSecular()
 	{
-		return m_sIdSideB;
+		return m_sIdSecular;
 	}
 	
 	/*****************************************************************
@@ -544,25 +599,25 @@ class Agent
 	}
 	
 	/*****************************************************************
-	* Method name: setIdSideA()
-	* Goal: Setting the England/Employer side ID (Side A) (in case the agent is a mediator).
+	* Method name: setIdReligious()
+	* Goal: Setting the England side ID (in case the agent is a mediator).
 	* Input: A String.
 	* Output: None.
 	****************************************************************/
-	public void setIdSideA(String sId)
+	public void setIdReligious(String sId)
 	{
-		m_sIdSideA = sId;
+		m_sIdReligious = sId;
 	}
 	
 	/*****************************************************************
-	* Method name: setIdSideB()
-	* Goal: Setting the Zimbabwe/Job Can side ID (Side B) (in case the agent is a mediator).
+	* Method name: setIdSecular()
+	* Goal: Setting the Zimbabwe side ID (in case the agent is a mediator).
 	* Input: A String.
 	* Output: None.
 	****************************************************************/
-	public void setIdSideB(String sId)
+	public void setIdSecular(String sId)
 	{
-		m_sIdSideB = sId;
+		m_sIdSecular = sId;
 	}
 	
 	/*****************************************************************
@@ -728,277 +783,122 @@ class Agent
 	{
 		new Thread(m_gtEndTurn).start();
 	}
-
-    /*****************************************************************
-    * Method name: setPrefDetails()
-    * Goal: Setting the preference details of the player
-    * Input: String - list of preference details.
-    * Output: None.
-    ****************************************************************/    
+	
 	public void setPrefDetails(String sPrefDetails)
 	{
 		m_sPrefDetails = sPrefDetails;
 	}
 	
-    /*****************************************************************
-    * Method name: getPrefDetails()
-    * Goal: Get the preference details of the player
-    * Input: None.
-    * Output: String - list of preference details.
-    ****************************************************************/    
-    public String getPrefDetails()
+	public String getPrefDetails()
 	{
 		return m_sPrefDetails;
 	}
 	
-    /*****************************************************************
-     * Method name: getAgreementTimeEffect()
-     * Goal: Get the time effect for the agent
-     * Input: None.
-     * Output: double - time effect
-     ****************************************************************/    
 	public double getAgreementTimeEffect()
 	{
 		return m_dTimeEffect;
 	}
 	
-    /*****************************************************************
-        * Method name: getAgreementOptOutValue()
-        * Goal: Get opt out value for the agent
-        * Input: None.
-        * Output: double - opt out value
-        ****************************************************************/    
 	public double getAgreementOptOutValue()
 	{
 		return m_dOptOutValue;
 	}
 	
-    /*****************************************************************
-        * Method name: getAgreementStatusQuoValue()
-        * Goal: Get status quo value for the agent
-        * Input: None.
-        * Output: double - SQ value
-        ****************************************************************/    
-    public double getAgreementStatusQuoValue()
-    {
-        return m_dStatusQuoValue;
-    }
-    
-    /*****************************************************************
-     * Method name: setEndNegReason()
-     * Goal: Set the end reason for the negotiatoin
-     * Input: String - end reason
-     * Output: None
-     ****************************************************************/    
-    public void setEndNegReason(String sEndNegReason)
+	public void setEndNegReason(String sEndNegReason)
 	{
 		m_sEndNegReason = sEndNegReason;
 	}
 	
-    /*****************************************************************
-     * Method name: getEndNegReason()
-     * Goal: Get the end reason for the negotiation
-     * Input: None.
-     * Output: String - end reason
-     ****************************************************************/    
-    public String getEndNegReason()
+	public String getEndNegReason()
 	{
 		return m_sEndNegReason;
 	}
-
-    /*****************************************************************
-     * Method name: setOptOutNum()
-     * Goal: Set the number of opt outs during the negotiation
-     * Input: int - opt out number.
-     * Output: None
-     ****************************************************************/    
+	
 	public void setOptOutNum(int nOptOutNum)
 	{
 		m_nOptOutNum = nOptOutNum;
 	}
 
-    /*****************************************************************
-        * Method name: getOptOutNum()
-        * Goal: Get the number of opt out
-        * Input: None.
-        * Output: int - opt out number
-        ****************************************************************/    
 	public int getOptOutNum()
 	{
 		return m_nOptOutNum;
 	}
-
-    /*****************************************************************
-        * Method name: incrementResponsesNum()
-        * Goal: Incremenet the number of responses made
-        * Input: None.
-        * Output: None.
-        ****************************************************************/    
+	
 	public void incrementResponsesNum()
 	{
 		m_nResponsesNum++;
 	}
-
-    /*****************************************************************
-        * Method name: getResponsesNum()
-        * Goal: Get the number of responses made
-        * Input: None.
-        * Output: int - number of responses
-        ****************************************************************/    
+	
 	public int getResponsesNum()
 	{
 		return m_nResponsesNum++;
 	}
-
-    /*****************************************************************
-        * Method name: incrementAcceptsNum()
-        * Goal: Increment the number of accpets made
-        * Input: None.
-        * Output: None.
-        ****************************************************************/    
+	
 	public void incrementAcceptsNum()
 	{
 		m_nAcceptsNum++;
 	}
-
-    /*****************************************************************
-        * Method name: getAcceptsNum()
-        * Goal: Get the number of accpets made
-        * Input: None.
-        * Output: int - number of accepts
-        ****************************************************************/    
+	
 	public int getAcceptsNum()
 	{
 		return m_nAcceptsNum;
 	}
 
-    /*****************************************************************
-        * Method name: incrementRejectionsNum()
-        * Goal: Increment the number of rejections made
-        * Input: None.
-        * Output: None.
-        ****************************************************************/    
-    public void incrementRejectionsNum()
+	public void incrementRejectionsNum()
 	{
 		m_nRejectionsNum++;
 	}
 	
-    /*****************************************************************
-     * Method name: getRejectionsNum()
-     * Goal: Get the number of rejections made
-     * Input: None.
-     * Output: int - rejections num
-     ****************************************************************/    
-    public int getRejectionsNum()
+	public int getRejectionsNum()
 	{
 		return m_nRejectionsNum;
 	}
 
-    /*****************************************************************
-     * Method name: incrementThreatsNum()
-     * Goal: Increment the number of threats made
-     * Input: None.
-     * Output: None.
-     ****************************************************************/    
 	public void incrementThreatsNum()
 	{
 		m_nThreatsNum++;
 	}
-
-       /*****************************************************************
-     * Method name: getThreatsNum()
-     * Goal: Get the number of threats made
-     * Input: None.
-     * Output: int - rejections num
-     ****************************************************************/  
+	
 	public int getThreatsNum()
 	{
 		return m_nThreatsNum;
 	}
 
-      /*****************************************************************
-     * Method name: incrementCommentsNum()
-     * Goal: Increment the number of comments made
-     * Input: None.
-     * Output: None.
-     ****************************************************************/       
 	public void incrementCommentsNum()
 	{
 		m_nCommentsNum++;
 	}
-
-    /*****************************************************************
-     * Method name: getCommentsNum()
-     * Goal: Get the number of comments made
-     * Input: None.
-     * Output: int - comments number.
-     ****************************************************************/          
+	
 	public int getCommentsNum()
 	{
 		return m_nCommentsNum;
 	}
-
-    /*****************************************************************
-     * Method name: incrementQueriesNum()
-     * Goal: Increment the number of queries made
-     * Input: None.
-     * Output: None.
-     ****************************************************************/       
+	
 	public void incrementQueriesNum()
 	{
 		m_nQueriesNum++;
 	}
-
-       /*****************************************************************
-     * Method name: getQueriesNum()
-     * Goal: Get the number of queries made
-     * Input: None.
-     * Output: int - queries number.
-     ****************************************************************/           
+	
 	public int getQueriesNum()
 	{
 		return m_nQueriesNum;
 	}
-
-    /*****************************************************************
-     * Method name: incrementOffersNum()
-     * Goal: Increment the number of offers made
-     * Input: None.
-     * Output: None.
-     ****************************************************************/    
+	
 	public void incrementOffersNum()
 	{
 		m_nOffersNum++;
 	}
-
-    /*****************************************************************
-     * Method name: getOffersNum()
-     * Goal: Get the number of offers made
-     * Input: None.
-     * Output: int - offers number.
-     ****************************************************************/      
+	
 	public int getOffersNum()
 	{
 		return m_nOffersNum;
 	}
-
-       /*****************************************************************
-     * Method name: incrementPromisesNum()
-     * Goal: Increment the number of promises made
-     * Input: None.
-     * Output: None.
-     ****************************************************************/      
+	
 	public void incrementPromisesNum()
 	{
 		m_nPromisesNum++;
 	}
-
-       /*****************************************************************
-     * Method name: getPromisesNum()
-     * Goal: Get the number of promises made
-     * Input: None.
-     * Output: int - offers promises.
-     ****************************************************************/        
+	
 	public int getPromisesNum()
 	{
 		return m_nPromisesNum;

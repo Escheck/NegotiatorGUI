@@ -1,15 +1,15 @@
-package agents.qoagent;
+package agents.qoagent2;
 
 /*****************************************************************
- * Class name: AutomatedAgentGameTime
- * Goal: Creating the stop-watch for the automated agent.
+ * Class name: GameTime
+ * Goal: Creating the stop-watch and displaying it using threads.
  * Description: None.
  * Input: None.
  * Output: None.
  ****************************************************************/
-public class AutomatedAgentGameTime implements Runnable
+public class QGameTime implements Runnable
 {
-	private AutomatedAgent m_agent;
+	private QOAgent m_agent;
 	private int m_nMaxTurn;
 	private boolean m_bIsTurn;
 	private long m_nTime; // the timer
@@ -20,13 +20,13 @@ public class AutomatedAgentGameTime implements Runnable
 	private int m_nStartHours;
 
 /*****************************************************************
- * Method name: AutomatedAgentGameTime()
+ * Method name: GameTime()
  * Goal: Constructor.
  * Description: Initialize the class variables.
  * Input: None.
  * Output: None.
  ****************************************************************/
-	public AutomatedAgentGameTime(boolean bCountUp,int nHours,int nMinutes, int nSeconds,AutomatedAgent agent, boolean TurnOrNeg)
+	public QGameTime(boolean bCountUp,int nHours,int nMinutes, int nSeconds,QOAgent agent, boolean TurnOrNeg)
 	{
 		m_bIsTurn=TurnOrNeg;
 		m_agent = agent;
@@ -75,13 +75,13 @@ public class AutomatedAgentGameTime implements Runnable
 	}
 
 /*****************************************************************
- * Method name: AutomatedAgentGameTime()
+ * Method name: GameTime()
  * Goal: Constructor.
  * Description: Initialize the class variables.
  * Input: None.
  * Output: None.
  ****************************************************************/
-	public AutomatedAgentGameTime()
+	public QGameTime()
 	{
 		m_bCountUp = true;
 		m_bRun = false;
