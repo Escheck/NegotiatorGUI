@@ -37,7 +37,7 @@ public class QOAgent {
 	public final static String NOT_APPLICABLE_STR1 = "No agreement";	
 	final static String AGENT_NAME = "Automated_Agent";
 	final static String AGENT_ID = "000000";
-	
+	private agents.QOAgent m_Agent;
 	private String m_sAgentSide;
 	private String m_sAgentName;
 	private String m_sAgentId;
@@ -51,7 +51,7 @@ public class QOAgent {
 	private int m_nCurrentTurn;
 	private int m_nMsgId;
 	
-	private int m_nPortNum;
+//DT:	private int m_nPortNum;
 	private boolean m_bHasOpponent;
 	private long m_lSecondsForTurn;
 	
@@ -82,8 +82,9 @@ public class QOAgent {
 	 * @param sName - the name of the QOAgent
 	 * @param sId - the id of the QOAgent
 	 */
-	public QOAgent(String sSide, int nPortNum, String sSupportMediator, String sName, String sId)
+	public QOAgent(agents.QOAgent pAgent, String sSide,/*DT:  int nPortNum, */ String sSupportMediator, String sName, String sId)
 	{
+		m_Agent = pAgent;
 		m_sLogFileName = "";
 		m_bSendOffer = true;
 		m_bEquilibriumAgent = false;
@@ -101,7 +102,7 @@ public class QOAgent {
 		m_messages = new QMessages(this);	
 
 		m_sAgentSide = sSide;
-		m_nPortNum = nPortNum;
+//DT:		m_nPortNum = nPortNum;
 		m_sSupportMediator = sSupportMediator;
 		m_sAgentName = sName;
 		m_sAgentId = sId;
@@ -146,8 +147,9 @@ public class QOAgent {
 		m_comment = new QComment(this);
 */	}
 
-	public QOAgent(boolean bIsEquilibriumAgent, String sSide, int nPortNum, String sSupportMediator, String sName, String sId)
+	public QOAgent(agents.QOAgent pAgent, boolean bIsEquilibriumAgent, String sSide, /*DT: int nPortNum,*/ String sSupportMediator, String sName, String sId)
 	{
+		m_Agent = pAgent;
 		m_sLogFileName = "";
 		m_bSendOffer = true;
 		m_bEquilibriumAgent = bIsEquilibriumAgent;
@@ -165,7 +167,7 @@ public class QOAgent {
 		m_messages = new QMessages(this);	
 
 		m_sAgentSide = sSide;
-		m_nPortNum = nPortNum;
+		//DT:		m_nPortNum = nPortNum;
 		m_sSupportMediator = sSupportMediator;
 		m_sAgentName = sName;
 		m_sAgentId = sId;
@@ -213,7 +215,7 @@ public class QOAgent {
 	 * % java QOAgent <side_name> <port_num> <support_mediator> [<agent_name> <agent_id>] 
 	 * 
 	 */
-	public static void main(String[] args)
+/* DT:	public static void main(String[] args)
 	{
 		if (args.length < 5)
 		{
@@ -262,7 +264,7 @@ public class QOAgent {
 		// register with the server
 		agent.register();
 	}
-	
+*/	
 	public void setEquilibriumAgent(boolean bIsEquilibriumAgent)
 	{
 		m_bEquilibriumAgent = bIsEquilibriumAgent;
@@ -363,10 +365,10 @@ public class QOAgent {
 	/**
 	 * @return the port number
 	 */
-	public int getPort()
+/*	public int getPort()
 	{
 		return m_nPortNum;
-	}
+	}*/
 
 	/**
 	 * Sets whether the agent has an opponent already or not
@@ -541,8 +543,10 @@ public class QOAgent {
 		if (m_bSendOffer)
 		{
 			// create thread to send delayed message
-			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
+/* DT:			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
 			delayedMessageThread.start();
+*/			
+			m_Agent.prepareAction(QMessages.OFFER, sOffer);
 		}
 	}
 
@@ -575,8 +579,10 @@ public class QOAgent {
 		if (m_bSendOffer)
 		{
 			// create thread to send delayed message
-			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
+/* DT:			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
 			delayedMessageThread.start();
+*/			
+			m_Agent.prepareAction(QMessages.OFFER, sOffer);
 		}
 	}
 	
@@ -647,7 +653,7 @@ public class QOAgent {
 		String sRegister = m_messages.formatMessage(QMessages.REGISTER, m_sAgentId);
 		
 		// need to send message to server
-		m_communication.printMsg(sRegister);		
+//DT:		m_communication.printMsg(sRegister);		
 	}
 	
 	/**
@@ -657,9 +663,11 @@ public class QOAgent {
 	{
 		String sBestAgreement = m_AgentType.getBestAgreementStr();
 		
-		String sAgreementMsg = m_messages.formatMessage(QMessages.OFFER, sBestAgreement);
+/* DT:		String sAgreementMsg = m_messages.formatMessage(QMessages.OFFER, sBestAgreement);
 		
 		m_communication.printMsg(sAgreementMsg);
+*/
+		m_Agent.prepareAction(QMessages.OFFER, sBestAgreement);
 	}
 	
 	/**
@@ -732,12 +740,13 @@ public class QOAgent {
 		if (dAcceptedAgreementValue >= dOppOfferValueForAgent)
 		{
 			// reject offer
-			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
+/* DT:			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
 			
 			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sRejectMsg);
 			delayedMessageThread.start();			
 			//m_communication.printMsg(sRejectMsg);		
-			
+*/
+			m_Agent.prepareAction(QMessages.REJECT, sOriginalMessage);
 			return;
 		}
 		
@@ -768,12 +777,13 @@ public class QOAgent {
 			}
 			
 			// accept offer
-			String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
+/* DT:			String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
 			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sAcceptMsg);
 			delayedMessageThread.start();			
 
 			//m_communication.printMsg(sAcceptMsg);		
-			
+*/
+			m_Agent.prepareAction(QMessages.ACCEPT, sOriginalMessage);
 			// set flag not to propose offer if didn't propose yet this turn
 			m_bSendOffer = false;			
 		}
@@ -792,10 +802,11 @@ public class QOAgent {
 			if (dValueDifference <= OFFERS_VALUE_THRESHOLD)
 			{
 				// reject offer
-				String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
+/* DT:				String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
 				QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sRejectMsg);
 				delayedMessageThread.start();			
-
+*/
+				m_Agent.prepareAction(QMessages.REJECT, sOriginalMessage);
 				//m_communication.printMsg(sRejectMsg);					
 			}
 			else 
@@ -848,10 +859,11 @@ public class QOAgent {
 				if ( (dRandNum <= dOfferProbabilityValue) && (accept))//08-05-06
 				{
 					// accept offer
-					String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
+/* DT:					String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
 					QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sAcceptMsg);
 					delayedMessageThread.start();			
-
+*/
+					m_Agent.prepareAction(QMessages.ACCEPT, sOriginalMessage);
 					//m_communication.printMsg(sAcceptMsg);	
 					
 					// set flag not to propose offer if didn't propose yet this turn
@@ -860,9 +872,11 @@ public class QOAgent {
 				else
 				{
 					// reject offer
-					String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
+/*DT:					String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
 					QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sRejectMsg);
-					delayedMessageThread.start();			
+					delayedMessageThread.start();
+*/	
+					m_Agent.prepareAction(QMessages.REJECT, sOriginalMessage);
 					//m_communication.printMsg(sRejectMsg);						
 				}
 			} // end if-else - difference of offer and QO value for opponent
@@ -914,10 +928,12 @@ public class QOAgent {
 		if (dAcceptedAgreementValue >= dOppOfferValueForAgent)
 		{
 			// reject offer
-			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
+/* DT:			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
 			
 			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sRejectMsg);
-			delayedMessageThread.start();			
+			delayedMessageThread.start();
+*/
+			m_Agent.prepareAction(QMessages.REJECT, sOriginalMessage);
 			//m_communication.printMsg(sRejectMsg);		
 			
 			return;
@@ -950,10 +966,11 @@ public class QOAgent {
 			}
 			
 			// accept offer
-			String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
+/* DT:			String sAcceptMsg = m_messages.formatMessage(QMessages.ACCEPT, sOriginalMessage);
 			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sAcceptMsg);
 			delayedMessageThread.start();			
-
+*/
+			m_Agent.prepareAction(QMessages.ACCEPT, sOriginalMessage);
 			//m_communication.printMsg(sAcceptMsg);		
 			
 			// set flag not to propose offer if didn't propose yet this turn
@@ -962,9 +979,11 @@ public class QOAgent {
 		else
 		{
 			// reject offer
-			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
+/* DT:			String sRejectMsg = m_messages.formatMessage(QMessages.REJECT, sOriginalMessage);
 			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sRejectMsg);
-			delayedMessageThread.start();			
+			delayedMessageThread.start();
+*/						
+			m_Agent.prepareAction(QMessages.REJECT, sOriginalMessage);			
 			//m_communication.printMsg(sRejectMsg);						
 		} 
 	}

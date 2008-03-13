@@ -1,5 +1,7 @@
 package agents;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import negotiator.*;
 import negotiator.issue.*;
@@ -12,13 +14,18 @@ import agents.qoagent2.*;
 public class QOAgent extends Agent {
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private agents.qoagent2.QOAgent m_QOAgent;
-	
+	private boolean fFirstOffer;
+	private Action fNextAction;
 	@Override
 	public Action chooseAction() {
 		
-		Action action = null;
-		m_QOAgent.
-		return action;
+		if(fFirstOffer) {
+			m_QOAgent.calculateFirstOffer();
+			fFirstOffer=false;
+		} else {
+			m_QOAgent.incrementCurrentTurn();
+		}
+		return fNextAction;
 	}
 
 	@Override
@@ -26,7 +33,8 @@ public class QOAgent extends Agent {
 			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
 
 		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
-		m_QOAgent = new agents.qoagent2.QOAgent();
+		fFirstOffer=true;
+		m_QOAgent = new agents.qoagent2.QOAgent(this,false,"Zimbabwe","no","QOAgent","1");
 	}
 
 	@Override
@@ -68,6 +76,86 @@ public class QOAgent extends Agent {
 		else if (lAction instanceof EndNegotiation)
 			lActionType = ACTIONTYPE.BREAKOFF;
 		return lActionType;
+	}
+	public void prepareAction(int pMessageType, String pMessage) {
+		String sFormattedMsg = "";
+		Action lAction = null;
+		switch (pMessageType)
+		{
+			case QMessages.OFFER:
+			case QMessages.COUNTER_OFFER:
+			{
+				String sAttribute, sValue;
+				
+/*				sFormattedMsg = "type offer" +
+						" source " + m_agent.getAgentId() +
+						" target " + m_agent.getOpponentAgentId() + 
+						" tag " + m_agent.getMsgId() + 
+						" issueSet ";
+
+				sFormattedMsg += sMsgBody;*/
+				HashMap<Integer,Value> lValues = new HashMap<Integer, Value>();
+				
+				
+				// tokenize the agreement by issue separator
+				StringTokenizer st = new StringTokenizer(pMessage, QAgentsCore.ISSUE_SEPARATOR_STR);
+				
+				// the agreement string has the following structure:
+				// issue_value SEPARATOR issue_name SEPARATOR...
+				while (st.hasMoreTokens())
+				{
+					// get issue value
+					String sCurrentIssueValue = st.nextToken();
+				
+					String sCurrentIssueName = st.nextToken();
+					
+					
+					// find the issue name and set the index in the returned array
+					Issue lIssue = null;					
+					for(Issue lTmp : utilitySpace.getDomain().getIssues()) {
+						if(lTmp.getName().equals(sCurrentIssueName)) {
+							lIssue = lTmp;
+						}
+					}
+					IssueDiscrete lIssueDisc = (IssueDiscrete)lIssue;
+					//find the value
+					ValueDiscrete lValue = null;
+					for(ValueDiscrete lTmp : lIssueDisc.getValues()) {
+						if(lTmp.getValue().equals(sCurrentIssueValue)) {
+							lValue =lTmp;
+						}
+					}
+					lValues.put(lIssue.getNumber(), lValue);
+				} // end while - has more tokens
+				try {
+					Bid lBid = new Bid(utilitySpace.getDomain(),lValues);
+					lAction = new Offer(this, lBid);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+				break;
+			case QMessages.ACCEPT:
+			{
+				lAction = new Accept(this);
+			}
+				break;
+			case QMessages.REJECT:
+			{
+			}
+				break;
+			default:
+			{
+				System.out.println("[QO]ERROR: Invalid message kind: " + pMessageType + " [QMessages::formatMessage(199)]");
+
+			}
+				break;
+		}
+
+		fNextAction = lAction;
+		
+		
 	}
 
 }
