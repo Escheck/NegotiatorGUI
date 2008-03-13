@@ -1773,7 +1773,7 @@ public class QAgentsCore {
 		QAgentType compromiseType = new QAgentType(m_bEquilibriumAgent);
 		compromiseType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilityZimbabweCompromise.txt";
+		String sFileName = "utilitySide_BCompromise.txt";
 		
 		createAgentTypeFromFile(sFileName, compromiseType);
 		
@@ -1794,11 +1794,11 @@ public class QAgentsCore {
 		QAgentType shortTermType = new QAgentType(m_bEquilibriumAgent);
 		shortTermType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilityZimbabweShortTerm.txt";
+		String sFileName = "utilitySide_BShortTerm.txt";
 		
 		createAgentTypeFromFile(sFileName, shortTermType);
 				
-		shortTermType.setName("ZimShort");
+		shortTermType.setName("Side_BShort");
 		m_ZimbabweAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
 		
 		QAgentType agentTypeNextTurn = shortTermType;
@@ -1815,11 +1815,11 @@ public class QAgentsCore {
 		QAgentType longTermType = new QAgentType(m_bEquilibriumAgent);
 		longTermType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilityZimbabweLongTerm.txt";
+		String sFileName = "utilitySide_BLongTerm.txt";
 		
 		createAgentTypeFromFile(sFileName, longTermType);
 		
-		longTermType.setName("ZimLong");
+		longTermType.setName("Side_BLong");
 		m_ZimbabweAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
 		
 		QAgentType agentTypeNextTurn = longTermType;
@@ -1836,11 +1836,11 @@ public class QAgentsCore {
 		QAgentType compromiseType = new QAgentType(m_bEquilibriumAgent);
 		compromiseType.setAgentType(QAgentType.ENGLAND_TYPE);
 	
-		String sFileName = "utilityEnglandCompromise.txt";
+		String sFileName = "utilitySide_ACompromise.txt";
 		
 		createAgentTypeFromFile(sFileName, compromiseType);
 		
-		compromiseType.setName("EnglandComp");
+		compromiseType.setName("Side_AComp");
 		
 		m_EnglandAgentTypesList.set(COMPROMISE_TYPE_IDX, compromiseType);
 		
@@ -1858,11 +1858,11 @@ public class QAgentsCore {
 		QAgentType shortTermType = new QAgentType(m_bEquilibriumAgent);
 		shortTermType.setAgentType(QAgentType.ENGLAND_TYPE);
 		
-		String sFileName = "utilityEnglandShortTerm.txt";
+		String sFileName = "utilitySide_AShortTerm.txt";
 		
 		createAgentTypeFromFile(sFileName, shortTermType);
 		
-		shortTermType.setName("EnglandShort");
+		shortTermType.setName("Side_AShort");
 		m_EnglandAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
 
 		QAgentType agentTypeNextTurn = shortTermType;
@@ -1879,11 +1879,11 @@ public class QAgentsCore {
 		QAgentType longTermType = new QAgentType(m_bEquilibriumAgent);
 		longTermType.setAgentType(QAgentType.ENGLAND_TYPE);
 		
-		String sFileName = "utilityEnglandLongTerm.txt";
+		String sFileName = "utilitySide_ALongTerm.txt";
 		
 		createAgentTypeFromFile(sFileName, longTermType);
 		
-		longTermType.setName("EnglandLong");
+		longTermType.setName("Side_ALong");
 		m_EnglandAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
 		
 		QAgentType agentTypeNextTurn = longTermType;
