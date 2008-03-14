@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.UtilitySpace;
+
 
 /*
  * Created on 11/09/2004
@@ -1775,7 +1779,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_BCompromise.txt";
 		
-		createAgentTypeFromFile(sFileName, compromiseType);
+		createAgentTypeFromFile(utilitySpace, compromiseType);
 		
 		compromiseType.setName("ZimComp");
 		m_ZimbabweAgentTypesList.set(COMPROMISE_TYPE_IDX, compromiseType);
@@ -1796,7 +1800,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_BShortTerm.txt";
 		
-		createAgentTypeFromFile(sFileName, shortTermType);
+		createAgentTypeFromFile(utilitySpace, shortTermType);
 				
 		shortTermType.setName("Side_BShort");
 		m_ZimbabweAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
@@ -1838,7 +1842,7 @@ public class QAgentsCore {
 	
 		String sFileName = "utilitySide_ACompromise.txt";
 		
-		createAgentTypeFromFile(sFileName, compromiseType);
+		createAgentTypeFromFile(utilitySpace, compromiseType);
 		
 		compromiseType.setName("Side_AComp");
 		
@@ -1898,7 +1902,7 @@ public class QAgentsCore {
 	 * @param agentType - the returned agent
 	 * Note: this function is identical to readUtilityFile in the Client 	  
 	 */
-	private void createAgentTypeFromFile(String sFileName, QAgentType agentType)
+	private void createAgentTypeFromFile(UtilitySpace utilitySpace, QAgentType agentType)
 	{
 		BufferedReader br = null;
 		String line;
@@ -1910,42 +1914,16 @@ public class QAgentsCore {
 		dGeneralValues[STATUS_QUO_IND] = QAgentType.VERY_SMALL_NUMBER;
 		dGeneralValues[OPT_OUT_IND] = QAgentType.VERY_SMALL_NUMBER;
 		
-		try {
-			br = new BufferedReader(new FileReader(sFileName));
-		
-			line = br.readLine();
-			while (line != null)
-			{
-				// if comment line - continue
-				if (line.startsWith(COMMENT_CHAR_STR))
-					line = br.readLine();
-				else 
-				{
-					line = readUtilityDetails(br, line, agentType.m_fullUtility.lstUtilityDetails, dGeneralValues);
-					
-					agentType.m_fullUtility.dTimeEffect = dGeneralValues[TIME_EFFECT_IND];
-					agentType.m_fullUtility.dStatusQuoValue = dGeneralValues[STATUS_QUO_IND];
-					agentType.m_fullUtility.dOptOutValue = dGeneralValues[OPT_OUT_IND];
-				} // end if-else comment line? 
-			} // end while - read utility details
+		line = readUtilityDetails(utilitySpace, agentType.m_fullUtility.lstUtilityDetails, dGeneralValues);					
+		agentType.m_fullUtility.dTimeEffect = dGeneralValues[TIME_EFFECT_IND];
+		agentType.m_fullUtility.dStatusQuoValue = dGeneralValues[STATUS_QUO_IND];
+		agentType.m_fullUtility.dOptOutValue = dGeneralValues[OPT_OUT_IND];
 
-			// calculate luce numbers, best agreement and worst agreement at time 0
-			agentType.calculateValues(1);
+		// calculate luce numbers, best agreement and worst agreement at time 0
+		agentType.calculateValues(1);
 			
-			//agentType.printValuesToFile(sFileName);
+		//agentType.printValuesToFile(sFileName);
 			
-			br.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("[QO]Error reading " + sFileName + ": " + e.getMessage() + " [QAgentsCore::createAgentTypeFromFile(1059)]");
-			System.err.println("[QO]Error reading " + sFileName + ": " + e.getMessage() + " [QAgentsCore::createAgentTypeFromFile(1059)]");
-			e.printStackTrace();
-			System.exit(1);
-		} catch (IOException e1) {
-			System.out.println("[QO]Error reading from " + sFileName + ": " + e1.getMessage() + " [QAgentsCore::createAgentTypeFromFile(1065)]");
-			System.err.println("[QO]Error reading from " + sFileName + ": " + e1.getMessage() + " [QAgentsCore::createAgentTypeFromFile(105659)]");
-			e1.printStackTrace();
-			System.exit(1);
-		}
 	}		
 	
 	/**
@@ -1956,159 +1934,52 @@ public class QAgentsCore {
 	 * @param dGeneralValues - array of the general values
 	 * @return line - the new line
 	 */
-	public String readUtilityDetails(BufferedReader br, String line, ArrayList lstUtilityDetails, double dGeneralValues[])
+	public String readUtilityDetails(UtilitySpace utilitySpace, ArrayList lstUtilityDetails, double dGeneralValues[])
 	{
 		UtilityDetails utilityDetails = null;
 		
-		StringTokenizer st = new StringTokenizer(line);
-		
-		String sTitle = st.nextToken();
-		
-		if (sTitle.equals(GENERAL_DATA_SEPARATOR_STR)) // general details line
-		{
-			String sType = st.nextToken();
-			
-			String sValue = st.nextToken();
-			Double dTemp = new Double(sValue);
-			
-			if (sType.equals(TIME_EFFECT_STR))
+
 				dGeneralValues[TIME_EFFECT_IND] = dTemp.doubleValue();
-			if (sType.equals(STATUS_QUO_STR))
+
 				dGeneralValues[STATUS_QUO_IND] = dTemp.doubleValue();
-			if (sType.equals(OPT_OUT_STR))
+
 				dGeneralValues[OPT_OUT_IND] = dTemp.doubleValue();
 			
-			try {
-				line = br.readLine();
-			} catch (IOException e) {
-				System.out.println("[QO]IOException: Error reading file: " + e.getMessage() + " [QAgentsCore::readUtilityDetails(1105)]");
-				System.err.println("[QO]IOException: Error reading file: " + e.getMessage() + " [QAgentsCore::readUtilityDetails(1105)]");
-			}
-		}
-		else if (sTitle.equals(ISSUE_HEADER_STR))
-		{
 			utilityDetails = new UtilityDetails();
 			
 			// need to add new element to the utilityDetails list
 			
 			// get the title
-			sTitle = line.substring(1);
-			sTitle.trim();
+			negotiator.issue.IssueDiscrete lIssue;
 			
-			utilityDetails.sTitle = sTitle;
-
-			try {
-				do {
-					line = br.readLine();
-				} while ( (line != null) && (line.startsWith(COMMENT_CHAR_STR)));
-				
-				while (line != null && !line.startsWith(ISSUE_HEADER_STR))
-				{
-					// get the attribute name and side
-					UtilityIssue utilityIssue = new UtilityIssue();
-					utilityIssue.sAttributeName = line.substring(0, line.indexOf(ISSUE_SEPARATOR_STR));
-					String sTemp = line.substring(line.indexOf(ISSUE_SEPARATOR_STR) + 1);
-					utilityIssue.sSide = sTemp.substring(0, sTemp.indexOf(ISSUE_SEPARATOR_STR));
-					sTemp = sTemp.substring(sTemp.indexOf(ISSUE_SEPARATOR_STR) + 1);
-					utilityIssue.dAttributeWeight = new Double(sTemp).doubleValue();
+			utilityDetails.sTitle = lIssue.getName();
+				// get the attribute name and side
+				UtilityIssue utilityIssue = new UtilityIssue();
+				utilityIssue.sAttributeName = lIssue.getName();
+				utilityIssue.sSide = "Both";
+				utilityIssue.dAttributeWeight = utilitySpace.getWeight(lIssue.getNumber());
+				for(ValueDiscrete lValue : lIssue.getValues()) {					
 					
-					 do{ //skips comment lines
-				         line=br.readLine();
-				      }while((line!=null)&&(line.startsWith(COMMENT_CHAR_STR)));
-					
-					// read values line
-					if (line != null && !line.startsWith(ISSUE_HEADER_STR))
-					{
-						String sUtilityLine;
-						// read utility values line
-						 do{
-				            sUtilityLine=br.readLine();
-				         }while((sUtilityLine!=null)&&(sUtilityLine.startsWith(COMMENT_CHAR_STR)));
-						String sTimeEffectLine = "";
-						
-						StringTokenizer stUtilities = null;
-						StringTokenizer stTimeEffect = null;
-						
-						if (sUtilityLine != null && !sUtilityLine.startsWith(ISSUE_HEADER_STR))
-						{
-							stUtilities = new StringTokenizer(sUtilityLine, VALUES_UTILITY_SEPARATOR_STR);
-							
-							// read time effect line
-							 do{
-				                 sTimeEffectLine=br.readLine();
-				              }while((sTimeEffectLine!=null)&&(sTimeEffectLine.startsWith(COMMENT_CHAR_STR)));
-														
-							if (sTimeEffectLine != null && !sTimeEffectLine.startsWith(ISSUE_HEADER_STR))
-								stTimeEffect = new StringTokenizer(sTimeEffectLine);
-						}
-						
-						// get values
-						StringTokenizer stValues=new StringTokenizer(line, VALUES_NAMES_SEPARATOR_STR);
 						
 						// go over all values
-						while (stValues.hasMoreTokens())
-						{
 							UtilityValue utilityValue = new UtilityValue();
 							
-							utilityValue.sValue = stValues.nextToken();
+							utilityValue.sValue = lValue.getValue();
 							
 							// get corresponding utility value
-							if (stUtilities != null && stUtilities.hasMoreTokens())
-							{
-								utilityValue.dUtility = new Double(stUtilities.nextToken()).doubleValue();
+								utilityValue.dUtility = ((EvaluatorDiscrete)(utilitySpace.getEvaluator(lIssue.getNumber()))).getEvaluationNotNormalized(lValue);
 								//++utilityValue.dUtility += NORMALIZE_INCREMENTOR;//TODO: Currently not using normalize incrementor
-							}
-								
-							// get corresponding time effect value
-							if (stTimeEffect != null && stTimeEffect.hasMoreTokens())
-							{
-								utilityValue.dTimeEffect = new Double(stTimeEffect.nextToken()).doubleValue();
-							}
+							
+								utilityValue.dTimeEffect = new Double(0);
 							
 							utilityIssue.lstUtilityValues.add(utilityValue);
-						}
-						
-						// read explanation
-						 do{
-				              line=br.readLine();
-				         }while((line!=null)&&(line.startsWith(COMMENT_CHAR_STR)));
-						
-						if (line != null && !line.startsWith(ISSUE_HEADER_STR))
-						{
-							StringTokenizer stExp = new StringTokenizer(line);
-							int i = 0;
-							while (stExp.hasMoreTokens())
-							{
-								if (i < 6)
-								{
-									utilityIssue.sExplanation += stExp.nextToken() + " ";
-									i++;
-								}
-								else
-								{
-									utilityIssue.sExplanation += "\n" + stExp.nextToken() + " ";
-									i = 0;
-								}
-							}
-							
-							// read next line for the next iteration
-						 do{
-				               line=br.readLine();
-				         }while((line!=null)&&(line.startsWith(COMMENT_CHAR_STR)));
-						}
-					} // end if - line starts with ! (ISSUE_HEADER_STR)
+							utilityIssue.sExplanation = lIssue.getDescription();
+					} // end for
 					
 					utilityDetails.lstUtilityIssues.add(utilityIssue);
 				} // end while - reading attributes
-			} catch (IOException e) {
-				System.out.println("[QO]IOException: Error reading file: " + e.getMessage() + " [QAgentsCore::readUtilityDetails(1225)]");
-				System.err.println("[QO]IOException: Error reading file: " + e.getMessage() + " [QAgentsCore::readUtilityDetails(1225)]");
-			}
 					
 			lstUtilityDetails.add(utilityDetails);
-		} // end if - line starts new issue
-		
-		return line;		
 	}
 	
 	public void updateAgreementsValues(int nTimePeriod)

@@ -16,6 +16,7 @@ public class QOAgent extends Agent {
 	private agents.qoagent2.QOAgent m_QOAgent;
 	private boolean fFirstOffer;
 	private Action fNextAction;
+	private int fMessageId;
 	@Override
 	public Action chooseAction() {
 		
@@ -23,7 +24,7 @@ public class QOAgent extends Agent {
 			m_QOAgent.calculateFirstOffer();
 			fFirstOffer=false;
 		} else {
-			m_QOAgent.incrementCurrentTurn();
+//			m_QOAgent.incrementCurrentTurn();
 		}
 		return fNextAction;
 	}
@@ -34,6 +35,7 @@ public class QOAgent extends Agent {
 
 		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
 		fFirstOffer=true;
+		fMessageId = 1;
 		m_QOAgent = new agents.qoagent2.QOAgent(this,false,"Zimbabwe","no","QOAgent","1");
 	}
 
@@ -48,11 +50,15 @@ public class QOAgent extends Agent {
 		case OFFER: // Offer received from opponent
 			try {
 				lOppntBid = ((Offer) opponentAction).getBid();
-				sMessage = "type counter offer source 1 target 2 tag 2 issueSet ";
-				for(Issue lIssue: utilitySpace.getDomain().getIssues()) {
-					sMessage = sMessage + lOppntBid.getValue(lIssue.getNumber())+"*"+lIssue.getName();
+				if(fFirstOffer) {
+					sMessage = "type offer source 1 target 2 tag "+String.valueOf(fMessageId)+" issueSet ";
+				} else {
+					sMessage = "type counter_offer source 1 target 2 tag "+String.valueOf(fMessageId)+" issueSet ";
 				}
-				sMessage = sMessage + "*";
+				for(Issue lIssue: utilitySpace.getDomain().getIssues()) {
+					sMessage = sMessage + lOppntBid.getValue(lIssue.getNumber())+"*"+lIssue.getName()+"*";
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -96,9 +102,9 @@ public class QOAgent extends Agent {
 				sFormattedMsg += sMsgBody;*/
 				HashMap<Integer,Value> lValues = new HashMap<Integer, Value>();
 				
-				
+				String sOffer=pMessage.substring(pMessage.indexOf("issueSet ")+9);
 				// tokenize the agreement by issue separator
-				StringTokenizer st = new StringTokenizer(pMessage, QAgentsCore.ISSUE_SEPARATOR_STR);
+				StringTokenizer st = new StringTokenizer(sOffer, QAgentsCore.ISSUE_SEPARATOR_STR);
 				
 				// the agreement string has the following structure:
 				// issue_value SEPARATOR issue_name SEPARATOR...
@@ -143,8 +149,11 @@ public class QOAgent extends Agent {
 				break;
 			case QMessages.REJECT:
 			{
+				m_QOAgent.incrementCurrentTurn();
+				
+				return;
 			}
-				break;
+				
 			default:
 			{
 				System.out.println("[QO]ERROR: Invalid message kind: " + pMessageType + " [QMessages::formatMessage(199)]");

@@ -118,7 +118,15 @@ public class EvaluatorDiscrete implements Evaluator {
 	{
 		return normalize(fEval.get(altP));
 	}
-		
+	public Integer getEvaluationNotNormalized(UtilitySpace uspace, Bid bid, int ID) throws Exception
+	{
+		return fEval.get(((ValueDiscrete)bid.getValue(ID)));
+	}
+	public Integer getEvaluationNotNormalized(ValueDiscrete altP) throws Exception 
+	{
+		return fEval.get(altP);
+	}
+	
 	/** 
 	 * @author W.Pasman
 	 * @param EvalValueL
