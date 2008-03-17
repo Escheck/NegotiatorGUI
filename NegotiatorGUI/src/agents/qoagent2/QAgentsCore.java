@@ -80,6 +80,9 @@ public class QAgentsCore {
 	// inner class for calculating QO agreement
 	private QGenerateAgreement m_GenerateAgreement;
 	private boolean m_bEquilibriumAgent = false;
+
+	
+	private agents.QOAgent m_Agent;
 	
 	public class QGenerateAgreement
 	{
@@ -1601,8 +1604,9 @@ public class QAgentsCore {
 	 * Initializes the agent's core.
 	 * Creates the different England types and Zimbabwe types. 
 	 */
-	public QAgentsCore(String sFileName, String sNow)
+	public QAgentsCore(String sFileName, String sNow, agents.QOAgent agent)
 	{
+		m_Agent = agent;
 		m_bEquilibriumAgent = false;
 		m_sLogFileName = sFileName;
 		
@@ -1636,8 +1640,9 @@ public class QAgentsCore {
 		createZimbabweCompromiseType();
 	}
 
-	public QAgentsCore(String sFileName, String sNow, boolean bIsEquilibriumAgent)
+	public QAgentsCore(String sFileName, String sNow, boolean bIsEquilibriumAgent, agents.QOAgent agent)
 	{
+		m_Agent = agent;
 		m_bEquilibriumAgent = bIsEquilibriumAgent;
 		m_sLogFileName = sFileName;
 		
@@ -1779,7 +1784,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_BCompromise.txt";
 		
-		createAgentTypeFromFile(utilitySpace, compromiseType);
+		createAgentTypeFromFile(m_Agent.opponentModels[COMPROMISE_TYPE_IDX], compromiseType);
 		
 		compromiseType.setName("ZimComp");
 		m_ZimbabweAgentTypesList.set(COMPROMISE_TYPE_IDX, compromiseType);
@@ -1800,7 +1805,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_BShortTerm.txt";
 		
-		createAgentTypeFromFile(utilitySpace, shortTermType);
+		createAgentTypeFromFile(m_Agent.opponentModels[SHORT_TERM_TYPE_IDX], shortTermType);
 				
 		shortTermType.setName("Side_BShort");
 		m_ZimbabweAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
@@ -1821,7 +1826,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_BLongTerm.txt";
 		
-		createAgentTypeFromFile(sFileName, longTermType);
+		createAgentTypeFromFile(m_Agent.opponentModels[LONG_TERM_TYPE_IDX], longTermType);
 		
 		longTermType.setName("Side_BLong");
 		m_ZimbabweAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
@@ -1842,7 +1847,7 @@ public class QAgentsCore {
 	
 		String sFileName = "utilitySide_ACompromise.txt";
 		
-		createAgentTypeFromFile(utilitySpace, compromiseType);
+		createAgentTypeFromFile(m_Agent.opponentModels[COMPROMISE_TYPE_IDX], compromiseType);
 		
 		compromiseType.setName("Side_AComp");
 		
@@ -1864,7 +1869,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_AShortTerm.txt";
 		
-		createAgentTypeFromFile(sFileName, shortTermType);
+		createAgentTypeFromFile(m_Agent.opponentModels[SHORT_TERM_TYPE_IDX], shortTermType);
 		
 		shortTermType.setName("Side_AShort");
 		m_EnglandAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
@@ -1885,7 +1890,7 @@ public class QAgentsCore {
 		
 		String sFileName = "utilitySide_ALongTerm.txt";
 		
-		createAgentTypeFromFile(sFileName, longTermType);
+		createAgentTypeFromFile(m_Agent.opponentModels[LONG_TERM_TYPE_IDX], longTermType);
 		
 		longTermType.setName("Side_ALong");
 		m_EnglandAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
@@ -1904,7 +1909,7 @@ public class QAgentsCore {
 	 */
 	private void createAgentTypeFromFile(UtilitySpace utilitySpace, QAgentType agentType)
 	{
-		BufferedReader br = null;
+		//DT: BufferedReader br = null;
 		String line;
 		
 		double dGeneralValues[] = new double[GENERAL_VALUES_NUM];
@@ -1937,50 +1942,56 @@ public class QAgentsCore {
 	public String readUtilityDetails(UtilitySpace utilitySpace, ArrayList lstUtilityDetails, double dGeneralValues[])
 	{
 		UtilityDetails utilityDetails = null;
+
+
+		dGeneralValues[TIME_EFFECT_IND] = -6.;
+
+		dGeneralValues[STATUS_QUO_IND] = 306;
+
+		dGeneralValues[OPT_OUT_IND] = 215;
+
+		utilityDetails = new UtilityDetails();
+
+		// need to add new element to the utilityDetails list
+
+		// get the title
 		
+		for(negotiator.issue.Issue lTmp : utilitySpace.getDomain().getIssues()) {
+		negotiator.issue.IssueDiscrete lIssue = (negotiator.issue.IssueDiscrete )lTmp;
+		utilityDetails.sTitle = lIssue.getName();
+		// get the attribute name and side
+		UtilityIssue utilityIssue = new UtilityIssue();
+		utilityIssue.sAttributeName = lIssue.getName();
+		utilityIssue.sSide = "Both";
+		utilityIssue.dAttributeWeight = utilitySpace.getWeight(lIssue.getNumber());
+		for(ValueDiscrete lValue : lIssue.getValues()) {					
 
-				dGeneralValues[TIME_EFFECT_IND] = dTemp.doubleValue();
 
-				dGeneralValues[STATUS_QUO_IND] = dTemp.doubleValue();
+			// go over all values
+			UtilityValue utilityValue = new UtilityValue();
 
-				dGeneralValues[OPT_OUT_IND] = dTemp.doubleValue();
-			
-			utilityDetails = new UtilityDetails();
-			
-			// need to add new element to the utilityDetails list
-			
-			// get the title
-			negotiator.issue.IssueDiscrete lIssue;
-			
-			utilityDetails.sTitle = lIssue.getName();
-				// get the attribute name and side
-				UtilityIssue utilityIssue = new UtilityIssue();
-				utilityIssue.sAttributeName = lIssue.getName();
-				utilityIssue.sSide = "Both";
-				utilityIssue.dAttributeWeight = utilitySpace.getWeight(lIssue.getNumber());
-				for(ValueDiscrete lValue : lIssue.getValues()) {					
-					
-						
-						// go over all values
-							UtilityValue utilityValue = new UtilityValue();
-							
-							utilityValue.sValue = lValue.getValue();
-							
-							// get corresponding utility value
-								utilityValue.dUtility = ((EvaluatorDiscrete)(utilitySpace.getEvaluator(lIssue.getNumber()))).getEvaluationNotNormalized(lValue);
-								//++utilityValue.dUtility += NORMALIZE_INCREMENTOR;//TODO: Currently not using normalize incrementor
-							
-								utilityValue.dTimeEffect = new Double(0);
-							
-							utilityIssue.lstUtilityValues.add(utilityValue);
-							utilityIssue.sExplanation = lIssue.getDescription();
-					} // end for
-					
-					utilityDetails.lstUtilityIssues.add(utilityIssue);
-				} // end while - reading attributes
-					
-			lstUtilityDetails.add(utilityDetails);
-	}
+			utilityValue.sValue = lValue.getValue();
+
+			// get corresponding utility value
+			try {
+				utilityValue.dUtility = ((EvaluatorDiscrete)(utilitySpace.getEvaluator(lIssue.getNumber()))).getEvaluationNotNormalized(lValue);
+			//	++utilityValue.dUtility += NORMALIZE_INCREMENTOR;//TODO: Currently not using normalize incrementor
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			utilityValue.dTimeEffect = new Double(0);
+
+			utilityIssue.lstUtilityValues.add(utilityValue);
+			utilityIssue.sExplanation = lIssue.getDescription();
+		} // end for
+
+		utilityDetails.lstUtilityIssues.add(utilityIssue);
+	} // end while - reading attributes
+
+	lstUtilityDetails.add(utilityDetails);
+	return "";
+}
 	
 	public void updateAgreementsValues(int nTimePeriod)
 	{
