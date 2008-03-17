@@ -117,7 +117,7 @@ public class QOAgent {
 
 		m_sLogFileName = "logs\\QOData" + sNow + ".log";
 		m_sProbFileName = "logs\\prob" + sNow + ".";
-		m_AgentCore = new QAgentsCore(m_sLogFileName, sNow);
+		m_AgentCore = new QAgentsCore( m_sLogFileName, sNow, m_Agent);
 		
 		//	using long term type for england
 		//	using short term type for zimbabwe
@@ -182,7 +182,7 @@ public class QOAgent {
 
 		m_sLogFileName = "logs\\QOData" + sNow + ".log";
 		m_sProbFileName = "logs\\prob" + sNow + ".";
-		m_AgentCore = new QAgentsCore(m_sLogFileName, sNow, m_bEquilibriumAgent);
+		m_AgentCore = new QAgentsCore(m_sLogFileName, sNow, m_bEquilibriumAgent, m_Agent);
 		
 		//	using long term type for england
 		//	using short term type for zimbabwe

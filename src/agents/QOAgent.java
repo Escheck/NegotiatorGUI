@@ -17,6 +17,7 @@ public class QOAgent extends Agent {
 	private boolean fFirstOffer;
 	private Action fNextAction;
 	private int fMessageId;
+	public UtilitySpace[] opponentModels;
 	@Override
 	public Action chooseAction() {
 		
@@ -36,7 +37,16 @@ public class QOAgent extends Agent {
 		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
 		fFirstOffer=true;
 		fMessageId = 1;
+		opponentModels = new UtilitySpace[3];
+		try {
+			opponentModels[0] = new UtilitySpace(utilitySpace.getDomain(),getName()+"_long_term.xml");
+			opponentModels[1] = new UtilitySpace(utilitySpace.getDomain(),getName()+"_short_term.xml");
+			opponentModels[2] = new UtilitySpace(utilitySpace.getDomain(),getName()+"_compromise.xml");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		m_QOAgent = new agents.qoagent2.QOAgent(this,false,"Zimbabwe","no","QOAgent","1");
+		
 	}
 
 	@Override
