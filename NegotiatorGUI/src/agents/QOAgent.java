@@ -125,7 +125,6 @@ public class QOAgent extends Agent {
 				
 					String sCurrentIssueName = st.nextToken();
 					
-					
 					// find the issue name and set the index in the returned array
 					Issue lIssue = null;					
 					for(Issue lTmp : utilitySpace.getDomain().getIssues()) {
