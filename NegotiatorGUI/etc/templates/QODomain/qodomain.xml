@@ -1,7 +1,7 @@
 <negotiation_template number_of_sessions="1"> 
-<agent utility_space="Side_A_utility.xml" class="agents.QOAgent" name="Side A"> 
+<agent utility_space="Side_A_utility.xml" class="agents.QOAgent" name="Side_A"> 
 </agent> 
-<agent utility_space="Side_B_utility.xml" class="agents.UIAgent" name="Side B"> 
+<agent utility_space="Side_B_utility.xml" class="agents.UIAgent" name="Side_B"> 
 </agent> 
 <utility_space number_of_issues="0"> 
 <objective index="0" description="" name="root" type="objective" etype="objective"> 
