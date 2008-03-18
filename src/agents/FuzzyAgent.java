@@ -1,30 +1,37 @@
 package agents;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.Offer;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
 
 public class FuzzyAgent extends Agent {
 
 	
-	private static int deadline;
-	private static int deadlineB;
-	private static int deadlineS;
+	private static int deadline=100;
+	private static int deadlineB=100;
+	private static int deadlineS=100;
 	private static double[][] BuyOffer;
 	private static double[][] SellOffer;
 	private static int tacticB;
 	private static int tacticS;
 	
-	private static int tacticBStretch,tacticSStretch;
+	//private static int tacticBStretch,tacticSStretch;
 	private static double K=0.1;	
 	private static double MaxB=40;
 	private static double MinB=10;
-	private static double MinB2=10;
+//	private static double MinB2=10;
 	private static double MaxS=40;
-	private static double MaxS2=40;
+//	private static double MaxS2=40;
 	private static double MinS=10;
 
 	
@@ -34,11 +41,11 @@ public class FuzzyAgent extends Agent {
 	//parameters for stretch 260307
 	private static double BBuyStretch,BSellStretch;
 	private static int LBuy,LSell;
-	private static int LBuyStretch,LSellStretch;
+	//private static int LBuyStretch,LSellStretch;
 	private static int iteration=1;
-	private static double constant=0.05;
+	//private static double constant=0.05;
 	private static int MBuy,MSell;
-	private static int MBuyStretch,MSellStretch;
+	//private static int MBuyStretch,MSellStretch;
 	//private static boolean dealB=false;
 	//private static boolean dealS=false;
 	private static double AcceptedValue=0;
@@ -48,18 +55,51 @@ public class FuzzyAgent extends Agent {
 	private static double Scons,Bcons;
 	private static boolean CBuy=false;
 	private static boolean CSell=false;
-	private static double[][] Distance;
-	private static double DST;
+	//private static double[][] Distance;
+	//private static double DST;
 	private static double[] dist;
 	private static double percentageB1,percentageB2,percentageS1,percentageS2;
 	//A threshhold parameter which fetermines when we should and should not accept or propose crisp 230407
 	private static double threshholdB,threshholdS;
 	
+	private static final int BUYER=1;
+	private static final int SELLER=2;
+	private int fPlayingFor;
+	private int fRound;
 	
 	@Override
 	public Action chooseAction() {
 		// TODO Auto-generated method stub
-		return super.chooseAction();
+		double lNextBidValue = 0;
+		Action lAction = null;
+
+		switch (fPlayingFor) {
+		case BUYER:
+			deal = Buyer(fRound);
+			lNextBidValue = BuyOffer[fRound][0];
+			break;
+
+		case SELLER:
+			deal = Seller(fRound);
+			lNextBidValue = SellOffer[fRound][0];
+			break;
+		}
+		if(deal) lAction = new Accept(this);
+		
+		else {
+			HashMap<Integer,Value> lValues = new HashMap<Integer, Value>();
+			ValueReal lValue = new ValueReal(lNextBidValue);
+			lValues.put(utilitySpace.getDomain().getIssues().get(0).getNumber(), lValue);
+			try {
+				Bid lBid = new Bid(utilitySpace.getDomain(),lValues);
+				lAction = new Offer(this, lBid);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			
+		}			
+		return lAction;
 	}
 
 	@Override
@@ -67,12 +107,63 @@ public class FuzzyAgent extends Agent {
 			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
 		// TODO Auto-generated method stub
 		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+		fRound = 0;
+		dist=new double[deadline+1];
+		BuyOffer=new double[deadlineB+1][2];
+		SellOffer=new double[deadlineS+1][2];
+		BuyOffer[0][0]=MinB;
+		SellOffer[0][0]=MaxS;
+		BuyOffer[0][1]=BuyOffer[0][0]+(percentageB1*Bcons);
+		SellOffer[0][1]=SellOffer[0][0]-(percentageS1*Scons);
+		if(getName().equals("Buyer"))
+				fPlayingFor = BUYER;
+		else 
+			fPlayingFor = SELLER;
+		tacticB=1;
+		tacticS=1;
+		BBuy = 2;
+		LBuy = 2;
+		MBuy = 2;
+		BSell = 2;
+		LSell =2;
+		MSell =2;
+		Bcons = 0.1;
+		Scons = 0.1;
+		BBuyStretch = 0.1;
+		BSellStretch = 0.1;
+		//Initializing the value of the threshold for the first offers
+		threshholdB=ThreshFind(deadlineB,0,BuyOffer[0][0],BuyOffer[0][1]);
+		threshholdS=ThreshFind(deadlineS,0,SellOffer[0][0],SellOffer[0][1]);
+		
+		
 	}
 
 	@Override
 	public void ReceiveMessage(Action opponentAction) {
-		// TODO Auto-generated method stub
-		super.ReceiveMessage(opponentAction);
+		fRound++;
+		if (opponentAction instanceof Offer) {
+			Offer lOffer= (Offer) opponentAction;
+			Bid lBid = lOffer.getBid();
+			switch (fPlayingFor) {
+			case BUYER:
+				try {
+					SellOffer[fRound][0] = ((ValueReal)(lBid.getValue(utilitySpace.getDomain().getIssues().get(0).getNumber()))).getValue();
+					SellOffer[fRound][1] = SellOffer[fRound][0]+(percentageB1*Bcons);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			case SELLER:
+				try {
+					BuyOffer[fRound][0] = ((ValueReal)(lBid.getValue(utilitySpace.getDomain().getIssues().get(0).getNumber()))).getValue();
+					BuyOffer[fRound][1] = BuyOffer[fRound][0]-(percentageS1*Scons);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				break;
+			}//switch
+		}//if
 	}
 	public static double CalculateCost (double constant, int NoIteration)
 	{
