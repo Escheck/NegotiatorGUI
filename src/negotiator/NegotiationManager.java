@@ -130,7 +130,7 @@ public class NegotiationManager implements Runnable {
         		synchronized (this) {
         			System.out.println("waiting NEGO_TIMEOUT="+nt.getTotalTime());
         			 // wait will unblock early if negotiation is finished in time.
-    				wait(nt.getTotalTime()*1000);
+    				wait(nt.getTotalTime());
         		}
         	} catch (InterruptedException ie) {
         		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}

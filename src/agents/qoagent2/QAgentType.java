@@ -647,7 +647,7 @@ public class QAgentType {
 			
 			for (int j = 0; j < utilityDetails.lstUtilityIssues.size(); ++j)
 			{
-				if (nCurrentIssueNum == nIssueNum)
+				if ((nCurrentIssueNum == nIssueNum)&&(!bFound))
 				{
 					UtilityIssue utilityIssue = (UtilityIssue)utilityDetails.lstUtilityIssues.get(j);
 					

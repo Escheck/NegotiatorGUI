@@ -63,7 +63,7 @@ public class BayesianAgent extends Agent {
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.008;
 	private static final int NUMBER_OF_SMART_STEPS = 1; 
 	private ArrayList<Bid> myPreviousBids;
-	
+	private boolean fSkipDistanceCalc = true;
 	private boolean fDebug = false;
 	private int fRound;
 	// Class constructor
@@ -690,7 +690,7 @@ public class BayesianAgent extends Agent {
 	}
 	
 	protected void dumpDistancesToLog(int pRound) {
-			
+		if (fSkipDistanceCalc) return;	
 		System.out.print(getName() + ": calculating distance between the learned space and the original one ...");
 		
 		double lExpectedWeights[] = new double[utilitySpace.getDomain().getIssues().size()];

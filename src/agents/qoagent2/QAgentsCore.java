@@ -1963,7 +1963,7 @@ public class QAgentsCore {
 		UtilityIssue utilityIssue = new UtilityIssue();
 		utilityIssue.sAttributeName = lIssue.getName();
 		utilityIssue.sSide = "Both";
-		utilityIssue.dAttributeWeight = utilitySpace.getWeight(lIssue.getNumber());
+		utilityIssue.dAttributeWeight = utilitySpace.getWeight(lIssue.getNumber())*100;
 		for(ValueDiscrete lValue : lIssue.getValues()) {					
 
 
