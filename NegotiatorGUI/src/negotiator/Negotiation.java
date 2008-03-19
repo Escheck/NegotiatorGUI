@@ -201,6 +201,7 @@ public class Negotiation implements Runnable {
                 } catch(Exception e) {
                    stopNegotiation=true;
              	   Main.logger.add("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
+             	   e.printStackTrace();
                    if (lastBid==null) agentAUtility=agentBUtility=1.;
                    else {
                 	   agentAUtility=agentBUtility=0.;

@@ -25,7 +25,7 @@ public class QOAgent extends Agent {
 			m_QOAgent.calculateFirstOffer();
 			fFirstOffer=false;
 		} else {
-//			m_QOAgent.incrementCurrentTurn();
+			//m_QOAgent.incrementCurrentTurn();
 		}
 		return fNextAction;
 	}
@@ -130,6 +130,7 @@ public class QOAgent extends Agent {
 					for(Issue lTmp : utilitySpace.getDomain().getIssues()) {
 						if(lTmp.getName().equals(sCurrentIssueName)) {
 							lIssue = lTmp;
+							break;
 						}
 					}
 					IssueDiscrete lIssueDisc = (IssueDiscrete)lIssue;
@@ -138,6 +139,7 @@ public class QOAgent extends Agent {
 					for(ValueDiscrete lTmp : lIssueDisc.getValues()) {
 						if(lTmp.getValue().equals(sCurrentIssueValue)) {
 							lValue =lTmp;
+							break;
 						}
 					}
 					lValues.put(lIssue.getNumber(), lValue);
