@@ -96,6 +96,7 @@ public class QOAgent extends Agent {
 	public void prepareAction(int pMessageType, String pMessage) {
 		String sFormattedMsg = "";
 		Action lAction = null;
+		
 		switch (pMessageType)
 		{
 			case QMessages.OFFER:

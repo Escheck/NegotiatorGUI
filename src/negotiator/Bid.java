@@ -59,7 +59,7 @@ public final class Bid implements XMLable
 		// Discussion 16oct 16:03: No, ALL values have to be set.
 		// Discussion 19oct: probably there only is this particular constructor because
 		// that enables to enforce this.
-		ArrayList<Issue> issues=domainP.getIssues();
+		//ArrayList<Issue> issues=domainP.getIssues();
 /*		for (Issue issue:issues)
 			if (bidP.get(new Integer(issue.getNumber()))==null)
 				throw new BidDoesNotExistInDomainException(

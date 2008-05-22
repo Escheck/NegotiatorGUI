@@ -101,6 +101,16 @@ public class SimpleAgt2 extends Agent
 		            int optionIndex=randomnr.nextInt(lIssueDiscrete.getNumberOfValues());
 		            values.put(lIssue.getNumber(), lIssueDiscrete.getValue(optionIndex));
 					break;
+				case REAL:
+					IssueReal lIssueReal =(IssueReal)lIssue;
+					int lNrOfOptions =lIssueReal.getNumberOfDiscretizationSteps();
+					double lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lNrOfOptions;
+		            int lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
+		            if (lOptionIndex >= lNrOfOptions)
+		            	lOptionIndex= lNrOfOptions-1;
+					values.put(lIssueReal.getNumber(), new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex));
+					break;
+					
 				default: throw new Exception("issue type "+lIssue.getType()+" not supported by SimpleAgent2");
 				}
 			}

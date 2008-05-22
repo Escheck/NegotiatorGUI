@@ -59,7 +59,7 @@ public class FuzzyAgent extends Agent {
 	//private static double DST;
 	private static double[] dist;
 	private static double percentageB1,percentageB2,percentageS1,percentageS2;
-	//A threshhold parameter which fetermines when we should and should not accept or propose crisp 230407
+	//A threshhold parameter which determines when we should and should not accept or propose crisp 230407
 	private static double threshholdB,threshholdS;
 	
 	private static final int BUYER=1;
@@ -115,20 +115,20 @@ public class FuzzyAgent extends Agent {
 		SellOffer[0][0]=MaxS;
 		BuyOffer[0][1]=BuyOffer[0][0]+(percentageB1*Bcons);
 		SellOffer[0][1]=SellOffer[0][0]-(percentageS1*Scons);
-		if(getName().equals("Buyer"))
+		if(getName().equals("Seller"))
 				fPlayingFor = BUYER;
 		else 
 			fPlayingFor = SELLER;
 		tacticB=1;
 		tacticS=1;
-		BBuy = 2;
+		BBuy = 0.01;
 		LBuy = 2;
-		MBuy = 2;
-		BSell = 2;
+		MBuy = 2; 
+		BSell = 50;
 		LSell =2;
 		MSell =2;
-		Bcons = 0.1;
-		Scons = 0.1;
+		Bcons = 1;
+		Scons = 1;
 		BBuyStretch = 0.1;
 		BSellStretch = 0.1;
 		//Initializing the value of the threshold for the first offers

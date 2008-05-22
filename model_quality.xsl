@@ -13,6 +13,15 @@
 		<H2>Results Listing (in Alternating row colors) </H2>
 			<xsl:for-each select="/Tournament/NegotiationOutcome/additional_log">
 			<table border="1">
+				<xsl:for-each select="../resultsOfAgent">
+
+				<tr>
+					<td>Agent <xsl:value-of select="@agent"/></td>
+					<td> <xsl:value-of select="@agentClass"/></td>
+					<td colspan="4"> <xsl:value-of select="@utilspace"/></td>
+				</tr>
+				</xsl:for-each>
+
 				<tr>
 					<td colspan="3"> Utility Space </td>
 					<td colspan="3"> Weights </td>

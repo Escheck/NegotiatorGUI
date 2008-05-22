@@ -1,11 +1,39 @@
 <groups>
+	<group id="1">
+		<agent name="WorstAgent" classname="group004.WorstAgent"/>
+	</group>
 	<group id="2">
-		<agent name="PimpinAgent" classname="group2.SimpleAgent"/>
+		<agent name="MiniMe" classname="group5.MiniMe"/>
 	</group>
 	<group id="3">
-		<agent name="AgentTrump" classname="group3.AgentTrump"/>
+		<agent name="ChuckNorris" classname="group8.ChuckNorris"/>
 	</group>
 	<group id="4">
-		<agent name="Agent004mv" classname="agents.BayesianAgent"/>
+		<agent name="ChuckBasic" classname="group8.ChuckBasic"/>
 	</group>
+	<group id="5">
+		<agent name="AgentLeman" classname="group09.AgentLeman"/>
+	</group>
+	<group id="6">
+		<agent name="Goliath" classname="group11.Goliath"/>
+	</group>
+	<group id="7">
+		<agent name="Negoo" classname="group13.Negoo"/>
+	</group>
+	<group id="8">
+		<agent name="Sigourney" classname="group14.Sigourney"/>
+	</group>
+	<group id="9">
+		<agent name="DecUtilAgent" classname="agents.DecUtilAgent"/>
+	</group>
+	<group id="10">
+		<agent name="BayesianAgentOld" classname="group0.BayesianAgentOld"/>
+	</group>
+	<group id="11">
+		<agent name="BayesianAgent" classname="agents.BayesianAgent"/>
+	</group>
+	<group id="12">
+		<agent name="SimpleAgent" classname="SimpleAgent"/>
+	</group>
+
 </groups>
