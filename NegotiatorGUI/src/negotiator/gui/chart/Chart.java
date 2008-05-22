@@ -29,7 +29,7 @@ public class Chart {
 		fDataPlot = new DataPlot();
 		fPlotCanvas.connect(fDataPlot);
 		fFrame = new JFrame();
-		fFrame.setSize(300,300);
+		fFrame.setSize(400,400);
 		fFrame.setLayout(new BorderLayout());
 		fFrame.add(fPlotCanvas.getGraphicsCanvas(), BorderLayout.CENTER);
 //		fFrame.add(createControlPanel(), BorderLayout.SOUTH);
@@ -39,16 +39,20 @@ public class Chart {
 	private GraphicsPlotCanvas createPlotCanvas() {
 		Properties props = new Properties();
 		ConfigParameters config	= new ConfigParameters(new PropertiesBasedConfigData(props));
+		props.put("background", "0xffffff");
 		props.put("plot/legendVisible", "false");
 		//scale the X and Y axis from 0 and 1
 		props.put("plot/coordinateSystem/xAxis/minimum", "0");
 		props.put("plot/coordinateSystem/xAxis/maximum", "1");
 		props.put("plot/coordinateSystem/xAxis/axisLabel", "Agent A");
-		props.put("plot/coordinateSystem/xAxis/ticLabelFormat", "%.1f%");		
+		props.put("plot/coordinateSystem/xAxis/ticLabelFormat", "%.1f%");	
+		props.put("plot/coordinateSystem/xAxis/axisLength", "0.6");
 		props.put("plot/coordinateSystem/yAxis/axisLabel", "Agent B");
 		props.put("plot/coordinateSystem/yAxis/minimum", "0");
 		props.put("plot/coordinateSystem/yAxis/maximum", "1");
+		
 		props.put("plot/coordinateSystem/yAxis/ticLabelFormat", "%.1f%");
+		props.put("plot/coordinateSystem/yAxis/axisLength", "0.6");
 		//TODO: check if we are going to plot all bids the use this line, use the commented one otherwise
 		props.put("plot/curveFactory/definitions" , "def1 def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
 //		props.put("plot/curveFactory/definitions" , "def2 def3 def4 def5 def6 def7 def8 def9 def10 def11 def12 def13 def14 def15");
@@ -60,7 +64,7 @@ public class Chart {
 		//the bids		
 		props.put("plot/curveFactory/def1/withLine", "false");
 		props.put("plot/curveFactory/def1/symbolFactory/className", "jcckit.plot.CircleSymbolFactory");
-		props.put("plot/curveFactory/def1/symbolFactory/size", "0.005");
+		props.put("plot/curveFactory/def1/symbolFactory/size", "0.002");
 		
 		//Pareto
 		props.put("plot/curveFactory/def2/", "defaultDefinition/");

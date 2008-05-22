@@ -212,7 +212,7 @@ public class UtilitySpace {
         //if (constraintsViolated(bid)) return 0.;
         
         Objective root = domain.getObjectivesRoot();
-        Enumeration issueEnum = root.getPreorderIssueEnumeration();
+        Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();
         while(issueEnum.hasMoreElements()){
         	Objective is = (Objective)issueEnum.nextElement();
         	type = fEvaluators.get(is).getType();

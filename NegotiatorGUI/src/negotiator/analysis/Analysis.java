@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -434,6 +433,9 @@ public class Analysis {
 	}
 	public long getHashCode() {
 		return fHashCode;
+	}
+	public ArrayList<Bid> getPareto() {
+		return fPareto;
 	}
 	/**
 	 * Use this class to compare two bids to sort them for the Pareto chart.
