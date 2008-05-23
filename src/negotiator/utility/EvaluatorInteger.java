@@ -6,6 +6,7 @@ import negotiator.xml.SimpleElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class EvaluatorInteger implements Evaluator {
 	
@@ -56,7 +57,13 @@ public class EvaluatorInteger implements Evaluator {
 	}	
 	
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
-		Integer lTmp = ((ValueInteger)bid.getValue(index)).getValue();
+		Integer lTmp = null;
+		try {
+			lTmp = ((ValueInteger)bid.getValue(index)).getValue();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		switch(this.type) {
 		case LINEAR:
 			Double d = EVALFUNCTYPE.evalLinear(lTmp, this.fParam.get(1), this.fParam.get(0));
@@ -64,11 +71,11 @@ public class EvaluatorInteger implements Evaluator {
 				d=0.0;
 			else if (d>1)
 				d=1.0;
-			return d.intValue();
+			return d;
 		case CONSTANT:
-			return this.fParam.get(0);
+			return new Double(this.fParam.get(0));
 		default:
-			return -1;
+			return -1.;
 		}	
 	}
 	
@@ -197,4 +204,25 @@ public class EvaluatorInteger implements Evaluator {
 	{
 		throw new Exception("getCost not implemented for EvaluatorInteger");
 	}
+
+	public void showStatistics() {
+		// TODO Auto-generated method stub
+		
+	}
+	public EvaluatorInteger clone()
+	{
+		EvaluatorInteger ed=new EvaluatorInteger();
+		//ed.setType(type);
+		ed.setWeight(fweight);
+		ed.setUpperBound(upperBound);
+		ed.setLowerBound(lowerBound);
+		try{
+			for (Entry<Integer, Integer> entry:fParam.entrySet())
+				ed.fParam.put(new Integer(entry.getKey()), new Integer(entry.getValue()));
+		}
+		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
+
+		return ed;
+	}
+
 }
