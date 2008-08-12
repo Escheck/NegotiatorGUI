@@ -294,12 +294,12 @@ public class Analysis {
 			lXMLPareto.addChildElement(lXMLBid);    		
 		}
 		try{
-		System.out.println("fPareto=");
-		for (Bid b: fPareto) 
-			System.out.println("("+
-					getAgentAUtilitySpace().getUtility(b)+","+
-					getAgentBUtilitySpace().getUtility(b));
-		} catch (Exception e) { System.out.println("gaaaaaaaaap"); }
+			System.out.println("fPareto=");
+			for (Bid b: fPareto) 
+				System.out.println("("+
+						getAgentAUtilitySpace().getUtility(b)+","+
+						getAgentBUtilitySpace().getUtility(b));
+			} catch (Exception e) { System.out.println("gaaaaaaaaap"); }
 		return;
 	}
 	/**
