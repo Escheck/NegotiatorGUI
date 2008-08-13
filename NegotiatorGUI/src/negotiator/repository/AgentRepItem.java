@@ -26,7 +26,9 @@ public class AgentRepItem implements RepItem
 	String version; /** the version, should match the version as specified by the agent */
 	@XmlAttribute
 	String description; /** description of this agent */
-	
+
+	public AgentRepItem(){
+	}
 	public AgentRepItem(String aName, String cPath, String desc) {
 		agentName=aName; 
 		classPath=cPath;

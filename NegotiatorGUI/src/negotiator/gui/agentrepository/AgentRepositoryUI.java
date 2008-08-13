@@ -14,9 +14,8 @@ import javax.swing.JButton;
 import negotiator.repository.*;
 import java.util.ArrayList;
 import negotiator.exceptions.Warning;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import java.io.*;
+
+
 
 /**
  * A user interface to the agent repository 
@@ -35,19 +34,14 @@ public class AgentRepositoryUI extends JFrame
 	
 	public AgentRepositoryUI()
 	{
-		init_temp_repository();
 		try {
-		JAXBContext jaxbContext = JAXBContext.newInstance("negotiator.repository");
-
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-				   new Boolean(true));
-
-		marshaller.marshal(temp_agent_repos,
-				   new File("jaxbOutput.xml"));
+			temp_agent_repos = Repository.load("rep.xml");
 		} catch (Exception e) {
-			e.printStackTrace();
+			// TODO: handle exception
+			init_temp_repository();
+			Repository.save(temp_agent_repos);
 		}
+		
 		setTitle("Agent Repository");
 		setLayout(new BorderLayout());
 		
@@ -115,8 +109,6 @@ public class AgentRepositoryUI extends JFrame
 		dataModel.fireTableRowsDeleted(row, row);
 	}
 	
-	void addrow() {
-		System.out.println("add row "+table.getSelectedRow());	
 		//new AddAgentUI();
 	void addrow() throws Exception {
 		System.out.println("add row "+table.getSelectedRow());
