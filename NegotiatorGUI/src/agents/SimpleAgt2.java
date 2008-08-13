@@ -36,6 +36,7 @@ public class SimpleAgt2 extends Agent
         sessionTotalNumber = sessionTotalNumberP;
     }
 
+    public static String getVersion() { return "12"; }
 	public void ReceiveMessage(Action opponentAction) {
         actionOfPartner = opponentAction;
     }

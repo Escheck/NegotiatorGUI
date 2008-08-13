@@ -53,6 +53,7 @@ public class BayesianAgent extends Agent {
 	private Bid fOpponentPreviousBid = null;
 	
 	private static final double BREAK_OFF_POINT = 0.5;
+	
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
@@ -70,6 +71,8 @@ public class BayesianAgent extends Agent {
 	public BayesianAgent() {
 		super();
 	}
+
+	public static String getVersion() { return "1.0"; }
 
 	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
 			Integer totalTimeP, UtilitySpace us) {
