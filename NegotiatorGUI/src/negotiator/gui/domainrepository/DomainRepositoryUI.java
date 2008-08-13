@@ -62,6 +62,24 @@ public class DomainRepositoryUI extends JFrame
 				catch (Exception err)  { new Warning("remove failed:"+err);}
 			}
 		});
+		addprofilebutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try { addprofile(); }
+				catch (Exception err)  { new Warning("remove failed:"+err);}
+			}
+		});
+		removeprofilebutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try { removeprofile(); }
+				catch (Exception err)  { new Warning("remove failed:"+err);}
+			}
+		});
+		editbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try { editprofile(); }
+				catch (Exception err)  { new Warning("remove failed:"+err);}
+			}
+		});
 		buttons.add(adddomainbutton);
 		buttons.add(removedomainbutton);
 		buttons.add(addprofilebutton);
@@ -129,19 +147,39 @@ public class DomainRepositoryUI extends JFrame
 		ArrayList<RepItem> its=new ArrayList<RepItem>();
 		
 		DomainRepItem dri=new DomainRepItem("file:domain1");
-		dri.getProfiles().add(new ProfileRepItem("file:profilea"));
-		dri.getProfiles().add(new ProfileRepItem("file:profileb"));
+		dri.getProfiles().add(new ProfileRepItem("file:profilea",dri));
+		dri.getProfiles().add(new ProfileRepItem("file:profileb",dri));
 		its.add(dri);
 			
 		dri=new DomainRepItem("file:domain2");
-		dri.getProfiles().add(new ProfileRepItem("file:profilec"));
-		dri.getProfiles().add(new ProfileRepItem("file:profiled"));
-		dri.getProfiles().add(new ProfileRepItem("file:profilee"));
+		dri.getProfiles().add(new ProfileRepItem("file:profilec",dri));
+		dri.getProfiles().add(new ProfileRepItem("file:profiled",dri));
+		dri.getProfiles().add(new ProfileRepItem("file:profilee",dri));
 		its.add(dri);
 
 		return its;
 	}
+	
+	void addprofile() throws Exception {
+		
+	}
+	
+	void removeprofile() throws Exception {
+		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
+		if (selection==null) throw new Exception("please select a profile to remove first");
+		RepItem item=selection.getRepositoryItem();
+		if (!(item instanceof ProfileRepItem))
+			throw new Exception("please select a profile node");
+		System.out.println("remove profile " +item);
+		
+		DomainRepItem domain=((ProfileRepItem)item).getDomain();
+		domain.getProfiles().remove(item);
+		treemodel.removeNodeFromParent(selection);
+	}
 
+	void editprofile() throws Exception {
+		
+	}
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
 	{

@@ -10,12 +10,16 @@ package negotiator.repository;
 public class ProfileRepItem implements RepItem
 {
 	String fileName;
+	DomainRepItem domain;
 	
-	public ProfileRepItem(String file) {
+	public ProfileRepItem(String file,DomainRepItem dom) {
 		fileName=file;
+		domain=dom;
 	}
 	
 	public  String getFileName() { return fileName; }
+	
+	public DomainRepItem getDomain() { return domain; }
 	
 	public String toString() {
 		return "ProfileRepItem["+fileName+"]";
