@@ -33,7 +33,7 @@ import java.util.Date;
  * 
  */
 
-public class Agent {
+public abstract class Agent {
     private String          fName=null;
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
@@ -42,6 +42,8 @@ public class Agent {
     
     public Agent() {
     }
+
+    public static String getVersion() {return "unknown";};
     
     public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
     		Integer totalTimeP, UtilitySpace us) {
