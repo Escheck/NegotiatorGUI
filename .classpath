@@ -4,13 +4,13 @@
 	<classpathentry kind="lib" path="dep/absolutelayout.jar"/>
 	<classpathentry kind="lib" path="dep/jcckit.jar"/>
 	<classpathentry kind="lib" path="dep/jtreetable.jar"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="src_TournamentBuilder"/>
 	<classpathentry kind="lib" path="dep/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="dep/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="dep/activation.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb1-impl.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-xjc.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src_TournamentBuilder"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
