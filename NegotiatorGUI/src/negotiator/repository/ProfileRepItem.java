@@ -11,8 +11,15 @@ public class ProfileRepItem implements RepItem
 {
 	String fileName;
 	
-	ProfileRepItem(String file) {
+	public ProfileRepItem(String file) {
 		fileName=file;
 	}
+	
+	public  String getFileName() { return fileName; }
+	
+	public String toString() {
+		return "ProfileRepItem["+fileName+"]";
+	}
+	
 	
 }

@@ -58,4 +58,13 @@ public class Repository
 			}
 			return null;
 		}
+		
+		public String toString() {
+			String ret="{";
+			for (RepItem i: items) {
+				ret=ret+i+",";
+			}
+			ret=ret+"}";
+			return ret;
+		}
 }
