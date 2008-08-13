@@ -5,6 +5,7 @@ import java.net.URLClassLoader;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.io.File;
+import javax.xml.bind.annotation.*;
 
 /**
  * This repository item contains all info about an agent that can be loaded.
@@ -13,13 +14,17 @@ import java.io.File;
  * @author wouter
  *
  */
+@XmlRootElement
 public class AgentRepItem implements RepItem
 {
-	
+	@XmlAttribute
 	String agentName; /**  the key: unique name of the agent as it will be known in the nego system.
  * This is an arbitrary but unique label. */
+	@XmlAttribute
 	String classPath; /** file path including the class name */
+	@XmlAttribute
 	String version; /** the version, should match the version as specified by the agent */
+	@XmlAttribute
 	String description; /** description of this agent */
 	
 	public AgentRepItem(String aName, String cPath, String desc) {

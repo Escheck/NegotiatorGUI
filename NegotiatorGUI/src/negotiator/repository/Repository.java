@@ -1,9 +1,13 @@
 package negotiator.repository;
 
 import java.util.ArrayList;
+import javax.xml.bind.annotation.*;
 
+
+@XmlRootElement
 public class Repository
 {
+		@XmlElement
 		ArrayList<RepItem> items;
 		
 		public Repository() { 

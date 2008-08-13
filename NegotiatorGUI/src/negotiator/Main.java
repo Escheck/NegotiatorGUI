@@ -12,6 +12,8 @@ package negotiator;
 import java.util.TimeZone;
 import java.util.Calendar;
 
+import agents.BayesianAgent;
+
 import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
 import negotiator.exceptions.Warning;
@@ -42,7 +44,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+	
         batchMode = false;
         fDebug = false;
         checkArguments(args);
