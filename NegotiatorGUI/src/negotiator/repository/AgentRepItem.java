@@ -29,7 +29,7 @@ public class AgentRepItem implements RepItem
 	}
 	
 	public String getName() { return agentName; }
-	public String getPath() { return classPath; }
+	public String getClassPath() { return classPath; }
 	
 	/** getVersion is bit involved, need to call the agent getVersion() to get it */
 	private static final Class[] parameters = new Class[]{URL.class};
@@ -56,4 +56,6 @@ public class AgentRepItem implements RepItem
 		}
 	
 	public String getDescription() { return description; }
+	
+	public String toString() { return "AgentRepositoryItem["+agentName+","+classPath+","+description+"]"; }
 }
