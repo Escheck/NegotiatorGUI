@@ -9,24 +9,18 @@
 
 package negotiator;
 
-import java.net.URLClassLoader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.io.BufferedWriter;
+import negotiator.exceptions.*;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Date;
 
-//import negotiator.gui.BidSpace;
+import negotiator.actions.EndNegotiation;
 import negotiator.gui.SessionFrame;
 import negotiator.xml.SimpleElement;
-import negotiator.utility.UtilitySpace;
-import negotiator.analysis.BidPoint;
-import negotiator.analysis.BidSpace;
+import negotiator.tournament.NegotiationSession;
 /**
  *
  * @author Dmytro Tykhonov
- * 
+ * @modified Wouter 14aug08. 
  *  Wouter: the agent objects stay instantiated over the negotiation sessions.
  *  This is to enable them to learn from previuos sessions.
  *  This means that the Agent objects may have to do some cleanup work when GUI windows are still open.
@@ -49,6 +43,9 @@ public class NegotiationManager implements Runnable {
     private String agentBclassName;
     private boolean agentAStarts; // true if agent A should start the nego.
     SessionFrame sf;
+    
+    ActionEventListener actionEventListener; //null if no one subscribed.
+    
     /** Creates a new instance of NegotiationManager
      * throws if exception occurs, particularly with creation of nego template.
      */
@@ -119,7 +116,7 @@ public class NegotiationManager implements Runnable {
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
     {
     	
-        Negotiation nego = new Negotiation(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts);
+        NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener);
         if(Main.fDebug) {
         	nego.run();	
         } else {
@@ -156,14 +153,9 @@ public class NegotiationManager implements Runnable {
     	NegotiationOutcome no = null;
     	if(nego.no!=null) no = nego.no;
     	else
-    		no = new NegotiationOutcome(sessionNumber,
-    				agentA.getName(),agentB.getName(),
-    				agentAclassName, agentBclassName, 0.,0.,"nego result was null(aborted)",
-    			nego.fAgentABids,nego.fAgentBBids,1.,1.,
-                agentAStarts,
-                nt.getAgentAUtilitySpaceFileName(),
-                nt.getAgentBUtilitySpaceFileName(),
-                nego.additionalLog);
+    		try {
+    		nego.newOutcome(null, 0, 0, new EndNegotiation(null), "nego result was null(aborted)");
+    		} catch (Exception err) { new Warning("error during creation of new outcome:"+err); }
     		// don't bother about max utility, both have zero anyway.
     	sf.addNegotiationOutcome(no);        // add new result to the outcome list. 
         try {
@@ -171,8 +163,7 @@ public class NegotiationManager implements Runnable {
             out.write(""+no.toXML());
             out.close();
         } catch (Exception e) {
-        	System.out.println("Exception during writing outcomes:"+e);
-        	e.printStackTrace();
+        	new Warning("Exception during writing outcomes:"+e);
         }
         
     }
@@ -235,5 +226,18 @@ public class NegotiationManager implements Runnable {
     	Butil.saveToFile(filename);
     }
     
+    /** subscribe here to receive ActionEvents from negotiations. 
+     * only one subscription is possible.
+     * unsubscribe not available.
+     * Subscribe before starting a negotiation!
+     * 
+     * @author W.Pasman */
+    public void subscribe(ActionEventListener ael) throws Exception
+    {
+    	if (actionEventListener!=null)
+    		throw new RuntimeException("subscribe can be done only once");
+    	if (ael==null) throw new NullPointerException("null event listener!?");
+    	actionEventListener=ael;
+    }
     
 }

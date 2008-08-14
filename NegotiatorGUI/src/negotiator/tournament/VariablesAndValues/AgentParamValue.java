@@ -1,3 +1,4 @@
+package negotiator.tournament.VariablesAndValues;
 
 /**
  * This class contains a possible parameter value for a nego session 

@@ -4,7 +4,7 @@ import negotiator.actions.Action;
 import negotiator.tournament.NegotiationSession;
 
 /** This class records details about an action of an agent. 
- * It is passed as event to interested parties.
+ * It is passed as event to interested parties (currently the logger&data display GUI).
  * 
  * 
  * If there is a time-out or other protocol error,
@@ -14,7 +14,7 @@ import negotiator.tournament.NegotiationSession;
  * @author wouter
  *
  */
-class ActionEvent
+public class ActionEvent
 {
 	Agent actor;
 	Action act;   				// Bid, Accept, etc.
@@ -24,4 +24,23 @@ class ActionEvent
 	double normalizedUtilityA;
 	double normalizedUtilityB;
 	String errorRemarks;		// errors 
+	
+	public ActionEvent(Agent actorP,Action actP,int roundP,long elapsed,NegotiationSession sessionP,
+			double utilA,double utilB,String remarks)
+	{
+		actor=actorP;
+		act=actP;
+		round=roundP;
+		elapsedMilliseconds=elapsed;
+		session=sessionP;
+		normalizedUtilityA=utilA;
+		normalizedUtilityB=utilB;
+		errorRemarks=remarks;
+	}
+	
+	public String toString()
+	{
+		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+session+","+
+		normalizedUtilityA+","+normalizedUtilityB+","+errorRemarks+"]";
+	}
 }

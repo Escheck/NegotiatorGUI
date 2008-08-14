@@ -1,3 +1,5 @@
+package negotiator.tournament.VariablesAndValues;
+
 
 /**
  * ProfileVariable is a variable for a tournament,
@@ -10,7 +12,7 @@
  */
 public class ProfileVariable extends TournamentVariable
 {
-	public void addValue(ProfileValue v) throws Exception
+	public void addValue(TournamentValue v) throws Exception
 	{
 		if (!(v instanceof ProfileValue))
 			throw new IllegalArgumentException("Expected ProfileValue but received "+v);

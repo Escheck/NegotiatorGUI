@@ -202,7 +202,7 @@ public class UtilitySpace {
     
     /**
      * update 23oct. If a hard constraint is violated, the utility should be 0.
-     * 
+     * @param bid=???? seems 
      */
     public double getUtility(Bid bid) throws Exception
     {
