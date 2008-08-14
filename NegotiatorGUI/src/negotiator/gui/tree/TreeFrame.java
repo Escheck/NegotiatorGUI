@@ -139,7 +139,7 @@ public class TreeFrame extends JFrame {
 		//Do nothing on closing, since we might need different behaviour.
 		//See negotiator.gui.tree.actions.ExitAction
 		//this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE); 
+		//setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE); 
 		this.pack();
 		this.setVisible(true);
 		

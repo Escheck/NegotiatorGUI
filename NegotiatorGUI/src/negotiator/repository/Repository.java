@@ -10,6 +10,12 @@ import javax.xml.bind.annotation.*;
 import javax.xml.namespace.QName;
 import java.io.*;
 
+/**
+ * Repository contains a set of known files
+ * This can be agent files or domain+profile files.
+ * @author W.Pasman, Dmytro Tychonov
+ * 
+ */
 @XmlRootElement
 public class Repository
 {
@@ -20,7 +26,17 @@ public class Repository
 		public Repository() { 
 			items=new ArrayList<RepItem>();
 		}
-		public static Repository load(String fileName) throws Exception {
+		
+		public Repository(String fileName) throws Exception {
+			copyFrom(load(fileName));
+		}
+		
+		public void copyFrom(Repository rep) {
+			items=rep.getItems();
+		}
+		
+		/** @author Dmytro */
+		public Repository load(String fileName) throws Exception {
 			Repository rep = null;
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class);		
@@ -33,14 +49,16 @@ public class Repository
 				}
 			return rep;
 		}
-		public static void save(Repository rep) {
+
+		/** @author Dmytro */
+		public void save() {
 			try {
 				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, AgentRepItem.class);		
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 						   new Boolean(true));
 
-				marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, rep),new File("rep.xml"));
+				marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, this),new File("rep.xml"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
