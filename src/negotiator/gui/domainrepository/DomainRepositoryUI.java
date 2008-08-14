@@ -17,6 +17,7 @@ import javax.swing.JButton;
 
 import negotiator.Domain;
 import negotiator.repository.*;
+import negotiator.utility.UtilitySpace;
 
 import javax.swing.JFileChooser;
 import java.io.FileFilter;
@@ -94,7 +95,7 @@ public class DomainRepositoryUI extends JFrame
 		editbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try { edit(); }
-				catch (Exception err)  { new Warning("remove failed:"+err);}
+				catch (Exception err)  { new Warning("remove failed:"+err); err.printStackTrace();}
 			}
 		});
 		buttons.add(adddomainbutton);
@@ -215,20 +216,28 @@ public class DomainRepositoryUI extends JFrame
 		if (selection==null ) 
 			throw new Exception("please first select an item to be edited");
 		RepItem item=selection.getRepositoryItem();
-		String filename;
 		if (item instanceof DomainRepItem) {
-			filename=((DomainRepItem)item).getFileName();
+			String filename=((DomainRepItem)item).getFileName();
+			if (!(filename.startsWith("file:")))
+				throw new IllegalArgumentException("filename does not start with 'file:'");
+	    	Domain domain=new Domain(filename.substring(5));
+	    	TreeFrame treeFrame = new TreeFrame(domain);
 		}
 		else if (item instanceof ProfileRepItem) {
-			filename=((ProfileRepItem)item).getFileName();
+			String filename=((ProfileRepItem)item).getFileName();
+			if (!(filename.startsWith("file:")))
+				throw new IllegalArgumentException("filename does not start with 'file:'");
+			String domainfilename=((ProfileRepItem)item).getDomain().getFileName();
+			if (!(domainfilename.startsWith("file:")))
+				throw new IllegalArgumentException("domainfilename does not start with 'file:'");
+
+	    	Domain domain=new Domain(domainfilename.substring(5));
+	    	UtilitySpace us=new UtilitySpace(domain,filename.substring(5));
+	    	TreeFrame treeFrame=new TreeFrame(domain, us);
 		}
 		else
 			throw new IllegalStateException("found unknown node in tree: "+item);
 		
-		if (!(filename.startsWith("file:")))
-			throw new IllegalArgumentException("filename does not start with 'file:'");
-    	Domain domain=new Domain(filename.substring(5));
-    	TreeFrame treeFrame = new TreeFrame(domain);
 	}
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
@@ -237,6 +246,8 @@ public class DomainRepositoryUI extends JFrame
 		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
 	}
 }
+
+
 
 
 class MyTreeNode extends DefaultMutableTreeNode {
@@ -251,11 +262,17 @@ class MyTreeNode extends DefaultMutableTreeNode {
 	public String toString() {
 		if (repository_item==null) return "";
 		if (repository_item instanceof DomainRepItem)
-			return ((DomainRepItem)repository_item).getFileName();
+			return shortfilename(((DomainRepItem)repository_item).getFileName());
 		if (repository_item instanceof ProfileRepItem)
-			return ((ProfileRepItem)repository_item).getFileName();
+			return shortfilename( ((ProfileRepItem)repository_item).getFileName());
 		new Warning("encountered item "+repository_item+" of type "+repository_item.getClass());
 		return "ERR";
+	}
+	/** returns only the filename given a full path with separating '/' */
+	public String shortfilename(String filename) {
+		int lastslash=filename.lastIndexOf('/');
+		if (lastslash==-1) return filename;
+		return filename.substring(lastslash+1); 
 	}
 	
 	public RepItem getRepositoryItem() { return repository_item; }
