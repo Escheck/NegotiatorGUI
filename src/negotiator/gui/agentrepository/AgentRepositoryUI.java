@@ -36,7 +36,7 @@ public class AgentRepositoryUI extends JFrame
 	public AgentRepositoryUI()
 	{
 		try {
-			temp_agent_repos=new Repository();
+			temp_agent_repos=new Repository(FILENAME);
 		} catch (Exception e) {
 			temp_agent_repos=new Repository();
 			temp_agent_repos.setFilename(FILENAME);
