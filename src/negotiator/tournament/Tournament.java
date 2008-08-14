@@ -1,5 +1,7 @@
+package negotiator.tournament;
+
 import java.util.ArrayList;
-import negotiator.tournament.variables.*;
+import negotiator.tournament.VariablesAndValues.*;
 
 
 /**

@@ -1,14 +1,19 @@
 package negotiator.tournament;
 
+import negotiator.ActionEvent;
+import negotiator.Agent;
+
 import java.util.ArrayList;
 
 import negotiator.actions.*;
+
 import java.util.Date;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidPoint;
 import negotiator.xml.*;
 import java.util.Random;
 import negotiator.*;
+import negotiator.exceptions.Warning;
 
 
 /*
@@ -27,7 +32,12 @@ import negotiator.*;
 /**
  *
  * @author Dmytro Tykhonov
- * modified 14aug08 W.Pasman
+ * modified and partial cleanup 14aug08 W.Pasman
+ * 
+ * Wouter: TODO for better cleanup, separate PROTOCOL from the handling,
+ * so that others (eg logger) can independently analyse the events and determine
+ * what happened and proper utilities. 
+ * As a workaround, the utilities were now included into the ActionEvents.
  */
 public class NegotiationSession implements Runnable {
     protected Agent         agentA;
@@ -41,16 +51,20 @@ public class NegotiationSession implements Runnable {
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
     boolean agentAStarts=false;
-    SimpleElement additionalLog = new SimpleElement("additional_log");
+    public SimpleElement additionalLog = new SimpleElement("additional_log");
     ActionEventListener actionEventListener=null;
-    
+    boolean startingWithA=true;
+    Date startTime; // set when run() is called.
+    long startTimeMillies; //idem.
+
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
     
     /** 
      * 
      * Creates a new instance of Negotiation 
-     * @param actionEventListener is the callback point for bidding events.
+     * @param agentAStartsP = true to force start with agent A. with false, start agent is chosen randomly.
+     * @param actionEventListener is the callback point for bidding events. null means you won't be given call backs.
      **/
     public NegotiationSession(Agent agentA, Agent agentB, NegotiationTemplate nt, 
     		int sessionNumber, int sessionTotalNumber, boolean agentAStartsP,
@@ -96,8 +110,7 @@ public class NegotiationSession implements Runnable {
     
     public void run() {
         Agent currentAgent;
-        boolean startingWithA=true;
-        Date startTime=new Date();
+        startTime=new Date(); startTimeMillies=System.currentTimeMillis();
         try {
             double agentAUtility,agentBUtility;
             UtilitySpace spaceA=nt.getAgentAUtilitySpace();
@@ -137,19 +150,9 @@ public class NegotiationSession implements Runnable {
                    if(action instanceof EndNegotiation) 
                    {
                        stopNegotiation=true;
-                	   no = new NegotiationOutcome(sessionNumber, 
-                			   agentA.getName(),  agentB.getName(),
-                               agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
-                               0.,0.,
-                               "Agent "+currentAgent.getName()+" ended the negotiation without agreement",
-                               fAgentABids,fAgentBBids,
-                               spaceA.getUtility(spaceA.getMaxUtilityBid()),
-                               spaceB.getUtility(spaceB.getMaxUtilityBid()),
-                               startingWithA, 
-                               nt.getAgentAUtilitySpaceFileName(),
-                               nt.getAgentBUtilitySpaceFileName(),
-                               additionalLog
-                               );   
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
+                       newOutcome(currentAgent,0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
@@ -170,21 +173,9 @@ public class NegotiationSession implements Runnable {
                         Main.logger.add(((Accept)action).toString());
                         agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
                         agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
-                        no = new NegotiationOutcome(sessionNumber, 
-                        			agentA.getName(),agentB.getName(),
-                                   agentA.getClass().getCanonicalName(),
-                                   agentB.getClass().getCanonicalName(),
-                                   agentAUtility,
-                                   agentBUtility,null,fAgentABids,fAgentBBids,
-                                   spaceA.getUtility(spaceA.getMaxUtilityBid()),
-                                   spaceB.getUtility(spaceB.getMaxUtilityBid()),
-                                   startingWithA,
-                                   nt.getAgentAUtilitySpaceFileName(),
-                                   nt.getAgentBUtilitySpaceFileName(),
-                                   additionalLog);
+                        newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
                         checkAgentActivity(currentAgent) ;
-                        otherAgent(currentAgent).ReceiveMessage(action);
-                      
+                        otherAgent(currentAgent).ReceiveMessage(action);                      
                    } else {  // action instanceof unknown action, e.g. null.
                 	   throw new Exception("unknown action by agent "+currentAgent.getName());
                    }
@@ -199,14 +190,10 @@ public class NegotiationSession implements Runnable {
             				   nt.getAgentAUtilitySpace().getUtility(b),
             				   nt.getAgentBUtilitySpace().getUtility(b));
                    }
-                   if(currentAgent.equals(agentA))
-                   {
+                   if(currentAgent.equals(agentA))                    {
                 	   if(action instanceof Offer) fAgentABids.add(p);
-                	   currentAgent = agentB; 
-                   }
-                   else{
+                   } else{
                 	   if(action instanceof Offer) fAgentBBids.add(p);
-                	   currentAgent = agentA;
                    }
 
                  
@@ -227,19 +214,15 @@ public class NegotiationSession implements Runnable {
                 	   }  catch (Exception e1) {}
                    }
                    if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
-                   no = new NegotiationOutcome(sessionNumber, 
-            			   agentA.getName(),  agentB.getName(),
-                           agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
-                      agentAUtility,
-                      agentBUtility,
-                      "Agent " + currentAgent.getName() +":"+e.getMessage(),fAgentABids,fAgentBBids,
-                      1.,1.,
-                      startingWithA,
-                      nt.getAgentAUtilitySpaceFileName(),
-                      nt.getAgentBUtilitySpaceFileName(),
-                      additionalLog);
+                   try {
+                	   newOutcome(currentAgent, agentAUtility,agentBUtility,action, "Agent " + currentAgent.getName() +":"+e.getMessage());
+                   }
+                   catch (Exception err) { new Warning("exception raised during exception handling: "+err); }
                    // don't compute the max utility, we're in exception which is already bad enough.
                 }
+                
+                if(currentAgent.equals(agentA))     currentAgent = agentB; 
+                else   currentAgent = agentA;
             }
             
             // nego finished by Accept or illegal action.
@@ -295,5 +278,32 @@ public class NegotiationSession implements Runnable {
     	if(pElem!=null)
     		additionalLog.addChildElement(pElem);
     	
+    }
+    
+    
+    public void newOutcome(Agent currentAgent, double utilA, double utilB, Action action, String message) throws Exception {
+        UtilitySpace spaceA=nt.getAgentAUtilitySpace();
+        UtilitySpace spaceB=nt.getAgentBUtilitySpace();
+
+        
+    	no=new NegotiationOutcome(sessionNumber, 
+			   agentA.getName(),  agentB.getName(),
+            agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
+            utilA,utilB,
+            message,
+            fAgentABids,fAgentBBids,
+            spaceA.getUtility(spaceA.getMaxUtilityBid()),
+            spaceB.getUtility(spaceB.getMaxUtilityBid()),
+            startingWithA, 
+            nt.getAgentAUtilitySpaceFileName(),
+            nt.getAgentBUtilitySpaceFileName(),
+            additionalLog
+            );
+    	
+    	if (actionEventListener!=null) {
+        	actionEventListener.handleEvent(new ActionEvent(currentAgent,action,sessionNumber,
+        			System.currentTimeMillis()-startTimeMillies,this,utilA,utilB,message));
+    		
+    	}
     }
 }
