@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.*;
 import javax.swing.JButton;
+
+import negotiator.Domain;
 import negotiator.repository.*;
 import javax.swing.JFileChooser;
 import java.io.FileFilter;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import negotiator.repository.*;
 import negotiator.exceptions.Warning;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
+import negotiator.gui.tree.TreeFrame;
+import negotiator.issue.Objective;
 
 /**
  * A user interface to the agent repository 
@@ -76,7 +80,7 @@ public class DomainRepositoryUI extends JFrame
 		});
 		editbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try { editprofile(); }
+				try { edit(); }
 				catch (Exception err)  { new Warning("remove failed:"+err);}
 			}
 		});
@@ -112,7 +116,7 @@ public class DomainRepositoryUI extends JFrame
 	
 	void adddomain() { 
 		try {
-			System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
+			//System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
 			JFileChooser fd=new JFileChooser(); 
 		    //ExampleFileFilter filter = new ExampleFileFilter();
 		    //filter.addExtension("xml");
@@ -126,6 +130,7 @@ public class DomainRepositoryUI extends JFrame
 		        DomainRepItem newnode=new DomainRepItem(""+fd.getSelectedFile().toURL());
 		        temp_domain_repos.getItems().add(newnode);		        
 				treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
+				temp_domain_repos.save();
 		     }	
 		  }
 		catch (Exception e) { new Warning("add domain failed:"+e); }
@@ -177,8 +182,26 @@ public class DomainRepositoryUI extends JFrame
 		treemodel.removeNodeFromParent(selection);
 	}
 
-	void editprofile() throws Exception {
+	void edit() throws Exception {
+		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
+		if (selection==null ) 
+			throw new Exception("please first select an item to be edited");
+		RepItem item=selection.getRepositoryItem();
+		String filename;
+		if (item instanceof DomainRepItem) {
+			filename=((DomainRepItem)item).getFileName();
+		}
+		else if (item instanceof ProfileRepItem) {
+			filename=((ProfileRepItem)item).getFileName();
+		}
+		else
+			throw new IllegalStateException("found unknown node in tree: "+item);
 		
+		if (!(filename.startsWith("file:")))
+			throw new IllegalArgumentException("filename does not start with 'file:'");
+    	Domain domain=new Domain(filename.substring(5));
+    	TreeFrame treeFrame = new TreeFrame(domain);
+    	//treeFrame.setVisible(true);
 	}
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 

@@ -20,6 +20,8 @@ import negotiator.issue.Objective;
 
 /**
  *
+ * This is the editor for the profiles and domains.
+ *
  * @author W.Pasman (quick mod of Main.java 15oct07) 
  * Run with this as the main class to get directly into the tree editor.
  * Use the Main.java class to get the negotiation template interface as a start point.
