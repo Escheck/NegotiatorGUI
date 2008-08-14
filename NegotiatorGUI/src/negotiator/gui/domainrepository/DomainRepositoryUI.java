@@ -56,15 +56,13 @@ public class DomainRepositoryUI extends JFrame
 		} catch (Exception e) {
 			temp_domain_repos=new Repository();
 			temp_domain_repos.setFilename(FILENAME);
-			makedemorepository();
+			temp_domain_repos.getItems().addAll(makedemorepository());
 			temp_domain_repos.save();
 		}
 		
-		temp_domain_repos=new Repository("domainrepository.xml");
 		
 		setTitle("Negotiation Domains and Preference Profile Repository");
 		setLayout(new BorderLayout());
-		temp_domain_repos.getItems().addAll(makedemorepository());
 	
 		 // CREATE THE BUTTONS
 		JPanel buttons=new JPanel();

@@ -28,7 +28,8 @@ public class Repository
 			items=new ArrayList<RepItem>();
 		}
 		
-		public Repository(String fileName) throws Exception {
+		public Repository(String fn) throws Exception {
+			setFilename(fn);
 			copyFrom(load(fileName));
 		}
 		
@@ -45,27 +46,22 @@ public class Repository
 		/** @author Dmytro */
 		public Repository load(String fileName) throws Exception {
 			Repository rep = null;
-			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class);		
-				Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-				unmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
-				rep = (Repository)( unmarshaller.unmarshal(new File(fileName)));
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new Exception("Repository file not foud");
-				}
+			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class);		
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			unmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
+			rep = (Repository)( unmarshaller.unmarshal(new File(fileName)));
 			return rep;
 		}
 
 		/** @author Dmytro */
 		public void save() {
 			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, AgentRepItem.class);		
+				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, DomainRepItem.class,AgentRepItem.class,ProfileRepItem.class);		
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 						   new Boolean(true));
 
-				marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, this),new File("rep.xml"));
+				marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, this),new File(fileName));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -52,13 +52,14 @@ public class Warning {
 
 		Exception e=new Exception();
 		StackTraceElement[] elts=e.getStackTrace();
-		if (pShowStack)
+		if (pShowStack && elts.length>=3)
 		{
 			System.out.println();
 				// start stacktrace at 2: 0 and 1 are inside the Warning class and not useful.
 			for (int i=2; i<elts.length; i++) System.out.println(elts[i]);
 		} else {
-			System.out.print(" at "+elts[3]+"\n");
+			if (elts.length>=2) System.out.print(" at "+elts[2]+"\n");
+			else System.out.print(" at empty stack point?\n");
 		}
 		
 		if ((Integer)lWarnings == pSuppressAt)
