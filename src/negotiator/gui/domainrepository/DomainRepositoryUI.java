@@ -69,13 +69,14 @@ public class DomainRepositoryUI extends JFrame
 		buttons.setLayout(new BoxLayout(buttons,BoxLayout.Y_AXIS));
 		adddomainbutton.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				adddomain(); 
+				try { adddomain(); } 
+				catch (Exception err)  { new Warning("add domain failed:"+err);}
 			}
 		});
 		removedomainbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try { removedomain(); }
-				catch (Exception err)  { new Warning("remove failed:"+err);}
+				catch (Exception err)  { new Warning("remove domain failed:"+err);}
 			}
 		});
 		addprofilebutton.addActionListener(new ActionListener() {
@@ -126,26 +127,23 @@ public class DomainRepositoryUI extends JFrame
 		show();
 	}
 	
-	void adddomain() { 
-		try {
-			//System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
-			JFileChooser fd=new JFileChooser(); 
-		    //ExampleFileFilter filter = new ExampleFileFilter();
-		    //filter.addExtension("xml");
-		    //filter.setDescription("domain xml file");
-		    //fd.setFileFilter(filter);
-			//fd.setFileFilter(filter);
-		    int returnVal = fd.showOpenDialog(this);
-		    if(returnVal == JFileChooser.APPROVE_OPTION) {
-		        System.out.println("You chose to open this file: " +
-		             fd.getSelectedFile().toURL());
-		        DomainRepItem newnode=new DomainRepItem(""+fd.getSelectedFile().toURL());
-		        temp_domain_repos.getItems().add(newnode);		        
-				treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
-				temp_domain_repos.save();
-		     }	
-		  }
-		catch (Exception e) { new Warning("add domain failed:"+e); }
+	void adddomain() throws Exception { 
+		//System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
+		JFileChooser fd=new JFileChooser(); 
+	    //ExampleFileFilter filter = new ExampleFileFilter();
+	    //filter.addExtension("xml");
+	    //filter.setDescription("domain xml file");
+	    //fd.setFileFilter(filter);
+		//fd.setFileFilter(filter);
+	    int returnVal = fd.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	        System.out.println("You chose to open this file: " +
+	             fd.getSelectedFile().toURL());
+	        DomainRepItem newnode=new DomainRepItem(""+fd.getSelectedFile().toURL());
+	        temp_domain_repos.getItems().add(newnode);		        
+			treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
+			temp_domain_repos.save();
+	     }	
 	}
 	
 	void removedomain() throws Exception {
@@ -157,6 +155,7 @@ public class DomainRepositoryUI extends JFrame
 		System.out.println("remove domain " +item);
 		temp_domain_repos.getItems().remove(item);
 		treemodel.removeNodeFromParent(selection);
+		temp_domain_repos.save();
 	}
 	
 	ArrayList<RepItem> makedemorepository()
@@ -178,7 +177,23 @@ public class DomainRepositoryUI extends JFrame
 	}
 	
 	void addprofile() throws Exception {
+		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
+		if (selection==null) throw new Exception("please select a domain to add the profile to");
+		RepItem item=selection.getRepositoryItem();
+		if (!(item instanceof DomainRepItem))
+			throw new Exception("please select a domain node");
 		
+		JFileChooser fd=new JFileChooser(); 
+	    int returnVal = fd.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	        System.out.println("You chose to open this file: " +
+	             fd.getSelectedFile().toURL());
+	        // TODO check that selected profile indeed belongs to our domain.
+	        ProfileRepItem newnode=new ProfileRepItem(""+fd.getSelectedFile().toURL(),(DomainRepItem)item);
+	        ((DomainRepItem)item).getProfiles().add(newnode);		        
+			treemodel.insertNodeInto(new MyTreeNode(newnode), selection, selection.getChildCount());
+			temp_domain_repos.save();
+	     }	
 	}
 	
 	void removeprofile() throws Exception {
@@ -192,6 +207,7 @@ public class DomainRepositoryUI extends JFrame
 		DomainRepItem domain=((ProfileRepItem)item).getDomain();
 		domain.getProfiles().remove(item);
 		treemodel.removeNodeFromParent(selection);
+		temp_domain_repos.save();
 	}
 
 	void edit() throws Exception {
@@ -213,7 +229,6 @@ public class DomainRepositoryUI extends JFrame
 			throw new IllegalArgumentException("filename does not start with 'file:'");
     	Domain domain=new Domain(filename.substring(5));
     	TreeFrame treeFrame = new TreeFrame(domain);
-    	//treeFrame.setVisible(true);
 	}
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
