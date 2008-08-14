@@ -5,6 +5,7 @@
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
+ *  
  */
 
 package negotiator;
@@ -21,6 +22,7 @@ import java.util.Random;
 /**
  *
  * @author Dmytro Tykhonov
+ * @deprecated because we now have tournament.NegotiationSession.
  */
 public class Negotiation implements Runnable {
     protected Agent         agentA;

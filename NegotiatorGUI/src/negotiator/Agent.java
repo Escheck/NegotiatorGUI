@@ -25,7 +25,7 @@ import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
-
+import negotiator.tournament.NegotiationSession;
 /**
  *
  * @author Dmytro Tykhonov
@@ -38,7 +38,7 @@ public abstract class Agent {
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-    protected Negotiation 	fNegotiation;// can be accessed only in the expermental setup 
+    protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
     
     public Agent() {
     }
@@ -89,7 +89,7 @@ public abstract class Agent {
      * negotiation (larger with human users).
      */
     public boolean isUIAgent() { return false; }
-    public final void setNegotiationEnviroment(Negotiation pNegotiation) {
+    public final void setNegotiationEnviroment(NegotiationSession pNegotiation) {
     	fNegotiation = pNegotiation;   	
     }
 }
