@@ -26,7 +26,8 @@ public class AgentRepositoryUI extends JFrame
 {
 	
 	JButton addbutton, removebutton;
-	Repository temp_agent_repos=new Repository(); // TODO locate this somewhere better
+	Repository temp_agent_repos;
+	static String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
 	AbstractTableModel dataModel;
 	final JTable table;
 	
@@ -35,11 +36,12 @@ public class AgentRepositoryUI extends JFrame
 	public AgentRepositoryUI()
 	{
 		try {
-			temp_agent_repos = Repository.load("rep.xml");
+			temp_agent_repos=new Repository();
 		} catch (Exception e) {
-			// TODO: handle exception
+			temp_agent_repos=new Repository();
+			temp_agent_repos.setFilename(FILENAME);
 			init_temp_repository();
-			Repository.save(temp_agent_repos);
+			temp_agent_repos.save();
 		}
 		
 		setTitle("Agent Repository");
