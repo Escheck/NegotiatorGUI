@@ -17,6 +17,7 @@ import javax.swing.JButton;
 
 import negotiator.Domain;
 import negotiator.repository.*;
+
 import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
@@ -41,13 +42,26 @@ public class DomainRepositoryUI extends JFrame
 	JButton editbutton=new JButton("Edit");
 	
 
-	Repository temp_domain_repos=new Repository(); // TODO locate this somewhere better
+	Repository temp_domain_repos; // TODO locate this somewhere better
+	static String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
 	MyTreeNode root=new MyTreeNode(null);
 	JTree tree;
 	DefaultTreeModel treemodel;
 	
-	public DomainRepositoryUI()
+	public DomainRepositoryUI() throws Exception
 	{
+		
+		try {
+			temp_domain_repos=new Repository(FILENAME);
+		} catch (Exception e) {
+			temp_domain_repos=new Repository();
+			temp_domain_repos.setFilename(FILENAME);
+			makedemorepository();
+			temp_domain_repos.save();
+		}
+		
+		temp_domain_repos=new Repository("domainrepository.xml");
+		
 		setTitle("Negotiation Domains and Preference Profile Repository");
 		setLayout(new BorderLayout());
 		temp_domain_repos.getItems().addAll(makedemorepository());
@@ -206,7 +220,8 @@ public class DomainRepositoryUI extends JFrame
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
 	{
-	 new DomainRepositoryUI();
+		try {  new DomainRepositoryUI(); }
+		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
 	}
 }
 

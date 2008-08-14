@@ -22,6 +22,7 @@ public class Repository
 		@XmlElementWrapper
 		@XmlAnyElement
 		ArrayList<RepItem> items;
+		String fileName; // the filename of this repository.
 		
 		public Repository() { 
 			items=new ArrayList<RepItem>();
@@ -30,6 +31,12 @@ public class Repository
 		public Repository(String fileName) throws Exception {
 			copyFrom(load(fileName));
 		}
+		
+		public void setFilename(String fn) { 
+			fileName=fn;
+		}
+		
+		public String getFilename() { return fileName; }
 		
 		public void copyFrom(Repository rep) {
 			items=rep.getItems();
