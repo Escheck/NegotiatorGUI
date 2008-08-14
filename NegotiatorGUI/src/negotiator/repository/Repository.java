@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.*;
 import javax.xml.namespace.QName;
 import java.io.*;
 
@@ -19,8 +20,8 @@ import java.io.*;
 @XmlRootElement
 public class Repository
 {
-		@XmlElementWrapper
-		@XmlAnyElement
+
+		@XmlJavaTypeAdapter(RepositoryItemTypeAdapter.class)
 		ArrayList<RepItem> items;
 		String fileName; // the filename of this repository.
 		
@@ -79,7 +80,6 @@ public class Repository
 			}
 			return null;
 		}
-		
 		public String toString() {
 			String ret="{";
 			for (RepItem i: items) {
@@ -87,5 +87,6 @@ public class Repository
 			}
 			ret=ret+"}";
 			return ret;
+		
 		}
 }
