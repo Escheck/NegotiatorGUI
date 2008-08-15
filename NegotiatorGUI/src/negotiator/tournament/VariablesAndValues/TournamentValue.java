@@ -6,6 +6,6 @@ package negotiator.tournament.VariablesAndValues;
  * @author wouter
  *
  */
-abstract class TournamentValue
+public abstract class TournamentValue
 {
 }

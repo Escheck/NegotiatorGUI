@@ -23,7 +23,7 @@ public class Repository
 {
 
 		@XmlJavaTypeAdapter(RepositoryItemTypeAdapter.class)
-		ArrayList<RepItem> items;
+		ArrayList<RepItem> items; // the items in the domain, either AgentRepItems or DomainRepItems 
 		@XmlAttribute
 		String fileName; // the filename of this repository.
 		
