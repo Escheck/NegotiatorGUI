@@ -31,6 +31,11 @@ import negotiator.exceptions.Warning;
 
 /**
  *
+ * NegotiationSession is the run-time object / thread doing a session.
+ * As such it contains also the protocol.
+ * It also contains details regarding that run.
+ * Wouter: I think these three (runtime code; protocol; nego detail info) should be separated..
+ *
  * @author Dmytro Tykhonov
  * modified and partial cleanup 14aug08 W.Pasman
  * 

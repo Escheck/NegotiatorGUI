@@ -19,16 +19,15 @@ public class AgentRepItem implements RepItem
 {
 	@XmlAttribute
 	String agentName; /**  the key: unique name of the agent as it will be known in the nego system.
- * This is an arbitrary but unique label. */
+	 						* This is an arbitrary but unique label. */
 	@XmlAttribute
 	String classPath; /** file path including the class name */
-	@XmlAttribute
-	String version; /** the version, should match the version as specified by the agent */
 	@XmlAttribute
 	String description; /** description of this agent */
 
 	public AgentRepItem(){
 	}
+	
 	public AgentRepItem(String aName, String cPath, String desc) {
 		agentName=aName; 
 		classPath=cPath;
@@ -36,6 +35,7 @@ public class AgentRepItem implements RepItem
 	}
 	
 	public String getName() { return agentName; }
+	
 	public String getClassPath() { return classPath; }
 	
 	/** getVersion is bit involved, need to call the agent getVersion() to get it */
@@ -57,7 +57,7 @@ public class AgentRepItem implements RepItem
 	        //  return ""+agentClass.getMethod("getVersion").invoke(null, new Object[0]);
 			
 	       } catch(Exception e){
-	           new Warning("can't get version for "+agentName+":"+e); e.printStackTrace();
+	           new Warning("can't get version for "+agentName+" :"+e); //e.printStackTrace();
 	       }  		
 	       return "ERR";
 		}

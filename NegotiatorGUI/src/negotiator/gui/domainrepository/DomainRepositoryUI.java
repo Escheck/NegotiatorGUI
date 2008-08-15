@@ -1,6 +1,7 @@
 package negotiator.gui.domainrepository;
 
 import javax.swing.JFrame;
+import java.net.URL;
 import javax.swing.JTree;
 import javax.swing.tree.*;
 
@@ -43,25 +44,14 @@ public class DomainRepositoryUI extends JFrame
 	JButton editbutton=new JButton("Edit");
 	
 
-	Repository temp_domain_repos; // TODO locate this somewhere better
-	static String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
+	Repository domainrepository; // TODO locate this somewhere better
 	MyTreeNode root=new MyTreeNode(null);
 	JTree tree;
 	DefaultTreeModel treemodel;
 	
-	public DomainRepositoryUI() throws Exception
+	public DomainRepositoryUI(Repository domainrepos) throws Exception
 	{
-		
-		try {
-			temp_domain_repos=new Repository(FILENAME);
-		} catch (Exception e) {
-			temp_domain_repos=new Repository();
-			temp_domain_repos.setFilename(FILENAME);
-			temp_domain_repos.getItems().addAll(makedemorepository());
-			temp_domain_repos.save();
-		}
-		
-		
+		domainrepository=domainrepos;
 		setTitle("Negotiation Domains and Preference Profile Repository");
 		setLayout(new BorderLayout());
 	
@@ -106,7 +96,7 @@ public class DomainRepositoryUI extends JFrame
 		
 
 		// create the tree
-		for (RepItem repitem: temp_domain_repos.getItems()) {
+		for (RepItem repitem: domainrepository.getItems()) {
 			DomainRepItem dri=(DomainRepItem)repitem;
 			MyTreeNode newchild=new MyTreeNode(dri);
 			for (ProfileRepItem profileitem: dri.getProfiles())
@@ -140,10 +130,10 @@ public class DomainRepositoryUI extends JFrame
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	        System.out.println("You chose to open this file: " +
 	             fd.getSelectedFile().toURL());
-	        DomainRepItem newnode=new DomainRepItem(""+fd.getSelectedFile().toURL());
-	        temp_domain_repos.getItems().add(newnode);		        
+	        DomainRepItem newnode=new DomainRepItem(fd.getSelectedFile().toURL());
+	        domainrepository.getItems().add(newnode);		        
 			treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
-			temp_domain_repos.save();
+			domainrepository.save();
 	     }	
 	}
 	
@@ -154,29 +144,12 @@ public class DomainRepositoryUI extends JFrame
 		if (!(item instanceof DomainRepItem))
 			throw new Exception("please select a domain node");
 		System.out.println("remove domain " +item);
-		temp_domain_repos.getItems().remove(item);
+		domainrepository.getItems().remove(item);
 		treemodel.removeNodeFromParent(selection);
-		temp_domain_repos.save();
+		domainrepository.save();
 	}
 	
-	ArrayList<RepItem> makedemorepository()
-	{
-		ArrayList<RepItem> its=new ArrayList<RepItem>();
-		
-		DomainRepItem dri=new DomainRepItem("file:domain1");
-		dri.getProfiles().add(new ProfileRepItem("file:profilea",dri));
-		dri.getProfiles().add(new ProfileRepItem("file:profileb",dri));
-		its.add(dri);
-			
-		dri=new DomainRepItem("file:domain2");
-		dri.getProfiles().add(new ProfileRepItem("file:profilec",dri));
-		dri.getProfiles().add(new ProfileRepItem("file:profiled",dri));
-		dri.getProfiles().add(new ProfileRepItem("file:profilee",dri));
-		its.add(dri);
 
-		return its;
-	}
-	
 	void addprofile() throws Exception {
 		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
 		if (selection==null) throw new Exception("please select a domain to add the profile to");
@@ -190,10 +163,10 @@ public class DomainRepositoryUI extends JFrame
 	        System.out.println("You chose to open this file: " +
 	             fd.getSelectedFile().toURL());
 	        // TODO check that selected profile indeed belongs to our domain.
-	        ProfileRepItem newnode=new ProfileRepItem(""+fd.getSelectedFile().toURL(),(DomainRepItem)item);
+	        ProfileRepItem newnode=new ProfileRepItem(fd.getSelectedFile().toURL(),(DomainRepItem)item);
 	        ((DomainRepItem)item).getProfiles().add(newnode);		        
 			treemodel.insertNodeInto(new MyTreeNode(newnode), selection, selection.getChildCount());
-			temp_domain_repos.save();
+			domainrepository.save();
 	     }	
 	}
 	
@@ -208,7 +181,7 @@ public class DomainRepositoryUI extends JFrame
 		DomainRepItem domain=((ProfileRepItem)item).getDomain();
 		domain.getProfiles().remove(item);
 		treemodel.removeNodeFromParent(selection);
-		temp_domain_repos.save();
+		domainrepository.save();
 	}
 
 	void edit() throws Exception {
@@ -217,32 +190,35 @@ public class DomainRepositoryUI extends JFrame
 			throw new Exception("please first select an item to be edited");
 		RepItem item=selection.getRepositoryItem();
 		if (item instanceof DomainRepItem) {
-			String filename=((DomainRepItem)item).getFileName();
-			if (!(filename.startsWith("file:")))
-				throw new IllegalArgumentException("filename does not start with 'file:'");
-	    	Domain domain=new Domain(filename.substring(5));
+			URL filename=((DomainRepItem)item).getURL();
+	    	Domain domain=new Domain(filename.getFile());
 	    	TreeFrame treeFrame = new TreeFrame(domain);
 		}
 		else if (item instanceof ProfileRepItem) {
-			String filename=((ProfileRepItem)item).getFileName();
-			if (!(filename.startsWith("file:")))
-				throw new IllegalArgumentException("filename does not start with 'file:'");
-			String domainfilename=((ProfileRepItem)item).getDomain().getFileName();
-			if (!(domainfilename.startsWith("file:")))
-				throw new IllegalArgumentException("domainfilename does not start with 'file:'");
+			URL filename=((ProfileRepItem)item).getURL();
+			URL domainfilename=((ProfileRepItem)item).getDomain().getURL();
 
-	    	Domain domain=new Domain(domainfilename.substring(5));
-	    	UtilitySpace us=new UtilitySpace(domain,filename.substring(5));
+	    	Domain domain=new Domain(domainfilename.getFile());
+	    	UtilitySpace us=new UtilitySpace(domain,filename.getFile());
 	    	TreeFrame treeFrame=new TreeFrame(domain, us);
 		}
 		else
 			throw new IllegalStateException("found unknown node in tree: "+item);
 		
 	}
+	
+	
+	
+	/******************DEMO CODE************************/
+
+	
+	
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
 	{
-		try {  new DomainRepositoryUI(); }
+		try {
+			new DomainRepositoryUI(Repository.get_domain_repos()); 
+			}
 		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
 	}
 }
@@ -262,9 +238,9 @@ class MyTreeNode extends DefaultMutableTreeNode {
 	public String toString() {
 		if (repository_item==null) return "";
 		if (repository_item instanceof DomainRepItem)
-			return shortfilename(((DomainRepItem)repository_item).getFileName());
+			return shortfilename(((DomainRepItem)repository_item).getURL().getFile());
 		if (repository_item instanceof ProfileRepItem)
-			return shortfilename( ((ProfileRepItem)repository_item).getFileName());
+			return shortfilename( ((ProfileRepItem)repository_item).getURL().getFile());
 		new Warning("encountered item "+repository_item+" of type "+repository_item.getClass());
 		return "ERR";
 	}
