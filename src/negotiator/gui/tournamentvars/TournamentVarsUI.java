@@ -43,8 +43,8 @@ class TournamentVarsUI extends JFrame {
 	Repository domainrepository; // contains all available domains and profiles to pick from.
 	Repository agentrepository; // contains all available  agents to pick from.
 	
-	JButton addvarbutton=new JButton("Add Variable");
-	JButton removevarbutton=new JButton("Remove Variable");
+	JButton addvarbutton=new JButton("Add Parameter");
+	JButton removevarbutton=new JButton("Remove Parameter");
 	JButton editvarbutton=new JButton("Edit Variable");
 	
 	public TournamentVarsUI(Tournament t) throws Exception {
@@ -95,13 +95,21 @@ class TournamentVarsUI extends JFrame {
 		});
 		removevarbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				removerow(); }
+				try { removerow();}
+				catch (Exception err) { new Warning("remove failed: "+err); }
+				}
 		});		
 		editvarbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editrow(); }
+				try { 
+					int row=table.getSelectedRow();
+					editVariable(tournament.getVariables().get(row)); 
+					dataModel.fireTableRowsUpdated(row,row);
+				}
+				catch (Exception err) { new Warning("edit failed: "+err); }
+			}
 		});
-		
+
 		JPanel buttons=new JPanel();
 		buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
 
@@ -115,19 +123,32 @@ class TournamentVarsUI extends JFrame {
 		setVisible(true);
 	}
 	
-	void editrow() {
-		int row=table.getSelectedRow();
-		System.out.println("edit row "+row);
+
+
+	void editVariable(TournamentVariable v) throws Exception {
+		if (v instanceof ProfileVariable) { 
+			ArrayList<ProfileRepItem> newv=new ProfileVarUI((ProfileVariable)v,this).getResult();
+			System.out.println("result new vars="+newv);
+			 // make profilevalues for each selected profile and add to the set.
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
+			v.setValues(newtvs);
+		}
+		//else if (v instanceof AgentVariable) editAgentVarUI((AgentVariable)v);
+		//else if (v instanceof AgentParameterVariable) editAgentParameterVarUI((AgentParameterVariable)v);
+		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
 	
+
+	
+	
 	/** remove selected row from table */
-	void removerow() {
+	void removerow() throws Exception {
 		int row=table.getSelectedRow();
 		System.out.println("remove row "+row);
-		if (row<0 || row>tournament.getVariables().size()) {
-			new Warning("Please select one of the rows in the table.");
-			return;
-		}
+		if (row<=2 || row>tournament.getVariables().size())
+			throw new IllegalArgumentException("Please select a Parameter to be removed.");
+
 		tournament.getVariables().remove(row);
 		dataModel.fireTableRowsDeleted(row, row);
 	}
@@ -153,8 +174,10 @@ class TournamentVarsUI extends JFrame {
 	}
 	
 	
+	
+	/***************************CODE FOR RUNNING DEMO AND LOADING & CORRECTING EXAMPLE ********************/
 	/** make sure first three rows are Profile, AgentA, AgentB */
-	void correct_tournament(Tournament t)
+	static void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars=t.getVariables();
 		correctposition(vars,0,new ProfileVariable());
@@ -169,7 +192,7 @@ class TournamentVarsUI extends JFrame {
 	 * @param pos expected position
 	 * @param stub: TournamentVariable of the expected type, which is substituted if no object of required type is in the array at all.
 	 */
-	void correctposition(ArrayList<TournamentVariable> vars, int expectedpos, TournamentVariable stub) {
+	static void correctposition(ArrayList<TournamentVariable> vars, int expectedpos, TournamentVariable stub) {
 		// find the profile variable(s) and its position. Remove multiple occurences.
 		TournamentVariable v=null;
 		int pos=-1;
@@ -202,7 +225,8 @@ class TournamentVarsUI extends JFrame {
 	public static void main(String[] args) 
 	{
 		try {
-			Tournament t=new Tournament();
+			Tournament t=new Tournament(); // bit stupid to correct an empty one, but will be useful later.
+			correct_tournament(t);
 			new TournamentVarsUI(t); 
 		}
 		catch (Exception e) { new Warning("TournamentVarsUI failed to launch: "+e); }

@@ -13,13 +13,17 @@ import java.util.ArrayList;
  */
 public abstract class TournamentVariable
 {
-	ArrayList<TournamentValue> values; /** ordered list of values this var can take */
+	ArrayList<TournamentValue> values=new ArrayList<TournamentValue>(); /** ordered list of values this var can take */
 
 	 /** add given value to the array of values */
 	public abstract void addValue(TournamentValue value) throws Exception;
 	
 	public ArrayList<TournamentValue> getValues() {
 		return values;
+	}
+	
+	public void setValues(ArrayList<TournamentValue> newvals) {
+		values=newvals;
 	}
 	
 	/** 
