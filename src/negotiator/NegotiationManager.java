@@ -37,7 +37,8 @@ public class NegotiationManager implements Runnable {
     
     // following contains default for nego between two machine agents.
     // the timeout is changed if one of the two agents isUIAgent().
-    private int NON_GUI_NEGO_TIME = Integer.MAX_VALUE;//120; //Default 120 (seconds) 
+    // times are in SECONDS.
+    private int NON_GUI_NEGO_TIME = Integer.MAX_VALUE;//120; //Default 120 (seconds) Wouter: someone hacked this?
     private int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
     private String agentAclassName;
     private String agentBclassName;
@@ -127,7 +128,7 @@ public class NegotiationManager implements Runnable {
         		synchronized (this) {
         			System.out.println("waiting NEGO_TIMEOUT="+nt.getTotalTime());
         			 // wait will unblock early if negotiation is finished in time.
-    				wait(nt.getTotalTime());
+    				wait(nt.getTotalTime()*1000);
         		}
         	} catch (InterruptedException ie) {
         		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}

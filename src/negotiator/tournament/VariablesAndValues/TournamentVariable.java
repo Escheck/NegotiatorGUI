@@ -21,4 +21,12 @@ public abstract class TournamentVariable
 	public ArrayList<TournamentValue> getValues() {
 		return values;
 	}
+	
+	/** 
+	 * varToString converts the variable name into a string.
+	 * It shound NOT convert the values, only the variable name and its parameters (eg AgentParam[tau])
+	 * @return
+	 */
+	public abstract String varToString();
+	
 }

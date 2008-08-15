@@ -18,5 +18,8 @@ public class ProfileVariable extends TournamentVariable
 			throw new IllegalArgumentException("Expected ProfileValue but received "+v);
 		values.add(v);
 	}
-
+	
+	public String varToString() {
+		return "ProfileVar";
+	}
 }
