@@ -14,7 +14,7 @@ import javax.swing.JButton;
 import negotiator.repository.*;
 import java.util.ArrayList;
 import negotiator.exceptions.Warning;
-
+import java.net.URL;
 
 
 /**
@@ -26,24 +26,13 @@ public class AgentRepositoryUI extends JFrame
 {
 	
 	JButton addbutton, removebutton;
-	Repository temp_agent_repos;
-	static String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
+	Repository agentrepository;
 	AbstractTableModel dataModel;
 	final JTable table;
-	
 	 
-	
-	public AgentRepositoryUI()
+	public AgentRepositoryUI() throws Exception
 	{
-		try {
-			temp_agent_repos=new Repository(FILENAME);
-		} catch (Exception e) {
-			temp_agent_repos=new Repository();
-			temp_agent_repos.setFilename(FILENAME);
-			init_temp_repository();
-			temp_agent_repos.save();
-		}
-		
+		agentrepository = Repository.get_agent_repository();
 		setTitle("Agent Repository");
 		setLayout(new BorderLayout());
 		
@@ -54,10 +43,10 @@ public class AgentRepositoryUI extends JFrame
 				return columnnames.length; 
 			}
 			public int getRowCount() { 
-				return temp_agent_repos.getItems().size();
+				return agentrepository.getItems().size();
 			}
 			public Object getValueAt(int row, int col) { 
-			  	  AgentRepItem agt=(AgentRepItem)temp_agent_repos.getItems().get(row);
+			  	  AgentRepItem agt=(AgentRepItem)agentrepository.getItems().get(row);
 			  	  switch(col)
 			  	  {
 			  	  case 0:return agt.getName();
@@ -103,12 +92,14 @@ public class AgentRepositoryUI extends JFrame
 	void removerow() {
 		int row=table.getSelectedRow();
 		System.out.println("remove row "+row);
-		if (row<0 || row>temp_agent_repos.getItems().size()) {
+		if (row<0 || row>agentrepository.getItems().size()) {
 			new Warning("Please select one of the rows in the table.");
 			return;
 		}
-		temp_agent_repos.getItems().remove(row);
+		agentrepository.getItems().remove(row);
 		dataModel.fireTableRowsDeleted(row, row);
+		agentrepository.save();
+
 	}
 	
 		//new AddAgentUI();
@@ -119,27 +110,22 @@ public class AgentRepositoryUI extends JFrame
 		if (ari.getName().length()==0)
 			throw new IllegalArgumentException("empty agent name is not allowed");
 		if (ari!=null) {
-			int row=temp_agent_repos.getItems().size();
-			AgentRepItem otheragt=temp_agent_repos.getAgentOfClass(ari.getClassPath());
+			int row=agentrepository.getItems().size();
+			AgentRepItem otheragt=agentrepository.getAgentOfClass(ari.getClassPath());
 			if (otheragt!=null)
 				throw new IllegalArgumentException("Only one reference to a class is allowed, Agent "+otheragt.getName()+" is already of given class!");
-			temp_agent_repos.getItems().add(ari);
+			agentrepository.getItems().add(ari);
 			dataModel.fireTableRowsInserted(row, row);
+			agentrepository.save();
 		}
 	}
 	
 	
-	void init_temp_repository()
-	{
-		ArrayList<RepItem> items=temp_agent_repos.getItems();
-		items.add(new 	AgentRepItem("aap", "/Volumes/aap.class", "apy negotiator"));
-		items.add(new 	AgentRepItem("beer", "/Volumes/beer.class", "beary negotiator"));
-		items.add(new 	AgentRepItem("BayesianAgent", "agents.BayesianAgent", "simple agent"));
-	}
-	
+
 	/** run this for a demo of AgentReposUI */
 	public static void main(String[] args) 
 	{
-	 new AgentRepositoryUI();
+		try { new AgentRepositoryUI(); }
+		catch (Exception e) { new Warning("launch of AgentRepositoryUI failed: "+e); }
 	}
 }

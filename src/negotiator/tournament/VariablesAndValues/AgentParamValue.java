@@ -16,4 +16,7 @@ public class AgentParamValue extends TournamentValue
 	}
 	
 	public Double getValue() { return value; }
+	
+	public String toString() { return value.toString(); }
+	
 }

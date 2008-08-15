@@ -1,7 +1,8 @@
 package negotiator.repository;
 
 import java.util.ArrayList;
-
+import java.net.URL;
+import negotiator.exceptions.*;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -16,22 +17,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DomainRepItem implements RepItem
 {	
 	@XmlAttribute
-	String fileName;
+	URL url;
 	@XmlElementWrapper
 	@XmlAnyElement
 	ArrayList<ProfileRepItem> profiles=new ArrayList<ProfileRepItem>(); //default to empty profiles.
 
-	public DomainRepItem() { fileName="unknownfilename"; }
+	public DomainRepItem() { 
+		try { url=new URL("unknownfilename"); }
+		catch (Exception e) { new Warning("failed to set default URL"); }
+	}
 
-	public DomainRepItem(String file) {
-		fileName=file;
+	public DomainRepItem(URL newurl) {
+		url=newurl;
 	}
 	
-	public String getFileName() { return fileName; }
+	public URL getURL() { return url; }
 	
 	public ArrayList<ProfileRepItem> getProfiles()  { return profiles; }
 	
 	public String toString() {
-		return "DomainRepItem["+fileName+","+profiles+"]";
+		return "DomainRepItem["+url+","+profiles+"]";
 	}
 }
