@@ -150,7 +150,28 @@ class TournamentVarsUI extends JFrame {
 			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
 			v.setValues(newtvs);
 		}
-		//else if (v instanceof AgentParameterVariable) new ParameterVarUI(this);
+		else if (v instanceof AgentParameterVariable) {
+			
+			ArrayList<TournamentValue> newvalues=null;
+			String newvaluestr=new String(""+v.getValues());
+			// repeat asking the numbers until cancel or correct list was entered.
+			boolean error_occured;
+			do {
+				error_occured=false;
+				try {
+					newvaluestr=(String)new ParameterValueUI(this,""+v,newvaluestr).getResult();
+					if (newvaluestr==null) break;
+					System.out.println("new value="+newvaluestr);
+					String[] newstrings=newvaluestr.split(",");
+					newvalues=new ArrayList<TournamentValue>();
+					for (int i=0; i<newstrings.length; i++) {
+						newvalues.add(new AgentParamValue(Double.valueOf(newstrings[i])));
+					}
+					v.setValues(newvalues);
+				} catch (Exception err) { error_occured=true; new Warning("your numbers are not correctly formatted: "+err); }
+			}
+			while (error_occured);
+		}
 		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
 	
@@ -181,6 +202,7 @@ class TournamentVarsUI extends JFrame {
 		paramsAsArray.addAll(params);
 		AgentParam result=(AgentParam)new ParameterVarUI(this,paramsAsArray).getResult();
 		System.out.println("result="+result);
+		if (result==null) return; // cancel, error, whatever.
 		tournament.getVariables().add(new AgentParameterVariable(result));
 		int row=tournament.getVariables().size();
 		dataModel.fireTableRowsInserted(row,row);

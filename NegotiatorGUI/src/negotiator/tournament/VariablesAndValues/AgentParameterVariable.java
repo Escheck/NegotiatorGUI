@@ -30,7 +30,7 @@ public class AgentParameterVariable extends TournamentVariable
 	}
 
 	public String varToString() {
-		return "AgentParamValue:"+agentparam.name;
+		return "AgentParamVar:"+agentparam.name;
 	}
 	
 }
