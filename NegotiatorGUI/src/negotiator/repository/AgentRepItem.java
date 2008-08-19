@@ -51,8 +51,7 @@ public class AgentRepItem implements RepItem
 			URL urloffile=new File(classPath).toURL();
 			method.invoke(sysloader,new Object[]{ urloffile }); // load the new class.
 			*/
-			Class c=Class.forName(classPath);
-			return ""+c.getMethod("getVersion").invoke(null, new Object[0]);
+			return ""+callStaticAgentFunction( "getVersion",new Object[0]);
 			//Class agentClass=classLoader.loadClass(classPath);
 	        //  return ""+agentClass.getMethod("getVersion").invoke(null, new Object[0]);
 			
@@ -61,6 +60,19 @@ public class AgentRepItem implements RepItem
 	       }  		
 	       return "ERR";
 		}
+	
+	/** callAgentFunction can call a Static agent function without instantiating the agent. 
+	 * This is used to get the version and parameters from the agent class in general.
+	 * @return the object returned by that function
+	 * @throws any exception that the function can throw, or failures
+	 * by not finding the class, failure to load the description, etc.
+	 * @param methodname contains the name of the method, eg "getVersion"
+	 * @param params contains an array of parameters to the call, eg Object[0] for no parameters.
+	 */
+	public Object callStaticAgentFunction(String methodname, Object[] params) throws Exception {
+		Class c=Class.forName(classPath);
+		return c.getMethod(methodname).invoke(null, params);
+	}
 	
 	public String getDescription() { return description; }
 	

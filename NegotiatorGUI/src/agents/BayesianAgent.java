@@ -19,6 +19,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import negotiator.Domain;
 import negotiator.analysis.BidSpace;
+import negotiator.AgentParam;
 
 
 /**
@@ -71,9 +72,20 @@ public class BayesianAgent extends Agent {
 	public BayesianAgent() {
 		super();
 	}
+	
 
 	public static String getVersion() { return "1.0"; }
 
+	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
+	public static ArrayList<AgentParam> getParameters() { 
+		ArrayList<AgentParam> parameters=new ArrayList<AgentParam>();
+		parameters.add(new AgentParam(BayesianAgent.class.getName(),"risetime",0.,2.));
+		parameters.add(new AgentParam(BayesianAgent.class.getName(),"tau",1.,4.));
+		parameters.add(new AgentParam(BayesianAgent.class.getName(),"epsilon",-2.,2.));
+		parameters.add(new AgentParam(BayesianAgent.class.getName(),"beta",18.3,22.17));
+		return parameters;
+	}
+	
 	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
 			Integer totalTimeP, UtilitySpace us) {
 		super.init(sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);

@@ -8,6 +8,7 @@ import javax.swing.JTree;
 import javax.swing.tree.*;
 
 import javax.swing.JPanel;
+import java.awt.Panel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 
@@ -37,19 +38,18 @@ import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.repository.*;
 import javax.swing.JCheckBox;
+
+import negotiator.gui.DefaultOKCancelDialog;
 /**
  * This is a UI for editing a profile variable.
  * @author wouter
  *
  */
 
-class ProfileVarUI extends JDialog {
+class ProfileVarUI extends DefaultOKCancelDialog {
 	
-	JButton okbutton=new JButton("OK");
-	JButton cancelbutton=new JButton("Cancel");
-	ArrayList<MyCheckBox> checkboxes=new ArrayList<MyCheckBox>(); // copy of what's in the panel, for easy check-out
+	ArrayList<MyCheckBox> checkboxes; // copy of what's in the panel, for easy check-out
 
-	ArrayList<ProfileRepItem> result=null; // result after user has selected and pressed OK. Stays null if user presses cancel.
 	/**
 	 * Ask user which profiles he wants to be used. 
 	 * TODO copy old selection into the new checkboxes.
@@ -59,62 +59,36 @@ class ProfileVarUI extends JDialog {
 	 * @param owner is used to place the dialog properly over the owner's window.
 	 * @throws if domain repository has a problem
 	 */
-	public ProfileVarUI(ProfileVariable v,JFrame owner) throws Exception {
-		super(owner,"Profile Selector GUI",true); // modal dialog.
-		getContentPane().setLayout(new BorderLayout());
-
-			
-		 // actionlisteners MUST be added before putting buttons in panel!
-		okbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				System.out.println("OK pressed");
-				ok();
-				dispose();
+	public ProfileVarUI(ProfileVariable v,JFrame owner)  throws Exception {
+		super(owner,"Profile Selector GUI"); // modal dialog.
+	}
+	
+	public Panel getPanel() {		
+		Panel agentlist=new Panel();
+		try {
+			checkboxes=new ArrayList<MyCheckBox>(); // static initialization does NOT WORK now as getPanel is part of constructor!!
+			Repository domainrep=Repository.get_domain_repos();
+			agentlist.setLayout(new BoxLayout(agentlist,BoxLayout.Y_AXIS));
+			for (RepItem domain :domainrep.getItems()) {
+				for (ProfileRepItem profile: ((DomainRepItem)domain).getProfiles()) {
+					MyCheckBox cbox=new MyCheckBox(profile);
+					checkboxes.add(cbox);
+					agentlist.add(cbox);
+				}
 			}
-		});
-		
-		cancelbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				System.out.println("cancel pressed");
-				dispose();
-			}
-		});
-		
-		/* create list of all profiles and make combo boxes for each */
-
-		Repository domainrep=Repository.get_domain_repos();
-		
-		JPanel profileslist=new JPanel();
-		profileslist.setLayout(new BoxLayout(profileslist,BoxLayout.Y_AXIS));
-		for (RepItem domain :domainrep.getItems()) {
-			for (ProfileRepItem profile: ((DomainRepItem)domain).getProfiles()) {
-				MyCheckBox cbox=new MyCheckBox(profile);
-				checkboxes.add(cbox);
-				profileslist.add(cbox);
-			}
+		} catch (Exception e) {
+			new Warning("creation of content panel failed: "+e); e.printStackTrace();
 		}
-		add(new JScrollPane(profileslist),BorderLayout.CENTER);
-
-		JPanel buttonrow=new JPanel(new BorderLayout());
-		buttonrow.add(okbutton,BorderLayout.WEST);
-		buttonrow.add(cancelbutton,BorderLayout.EAST);
-
-		add(buttonrow,BorderLayout.SOUTH);
-
-		pack();
-		setVisible(true);
-		
+		return agentlist;
 	}
 
-	public void ok() {
-		result=new ArrayList<ProfileRepItem>();
+	public ArrayList<ProfileRepItem> ok() {
+		ArrayList<ProfileRepItem> result=new ArrayList<ProfileRepItem>();
 		for (MyCheckBox cbox: checkboxes) {
 			if (cbox.isSelected()) result.add(cbox.profileRepItem);
 		}
-	}
-	
-		
-	public ArrayList<ProfileRepItem> getResult() { return result; }
+		return result;
+	}		
 }
 
 class MyCheckBox extends JCheckBox {

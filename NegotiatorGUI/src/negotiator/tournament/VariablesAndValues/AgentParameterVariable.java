@@ -1,5 +1,6 @@
 package negotiator.tournament.VariablesAndValues;
 
+import negotiator.AgentParam;
 
 /**
  * ProfileVariable is a variable for a tournament,
@@ -12,30 +13,24 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class AgentParameterVariable extends TournamentVariable
 {
-	String name;
-	double min;
-	double max;
+	AgentParam agentparam; // the name and other info about the parameter
 	
-	public AgentParameterVariable(String nm, double minimum, double maximum) {
-		name=nm;
-		min=minimum;
-		max=maximum;
+	/** 
+	 * @param para the parameter info
+	 */
+	public AgentParameterVariable(AgentParam para) {
+		agentparam=para;
 	}
 	
 	public void addValue(TournamentValue v) throws Exception
 	{
-		if (!(v instanceof ProfileValue))
-			throw new IllegalArgumentException("Expected ProfileValue but received "+v);
+		if (!(v instanceof AgentParamValue))
+			throw new IllegalArgumentException("Expected AgentParamValue but received "+v);
 		values.add(v);
 	}
-	
-	public String getName() { return name; }
-	
-	public double getMinimum() { return min; }
-	public double getMaximum() { return max; }
-	
+
 	public String varToString() {
-		return "ProfileVar:"+name;
+		return "AgentParamValue:"+agentparam.name;
 	}
 	
 }

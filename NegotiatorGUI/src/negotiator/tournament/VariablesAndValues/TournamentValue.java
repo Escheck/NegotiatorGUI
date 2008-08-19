@@ -8,4 +8,5 @@ package negotiator.tournament.VariablesAndValues;
  */
 public abstract class TournamentValue
 {
+
 }
