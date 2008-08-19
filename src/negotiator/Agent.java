@@ -11,6 +11,8 @@ package negotiator;
 
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
+import java.util.ArrayList;
+
 /*
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -39,12 +41,13 @@ public abstract class Agent {
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
-    
+
     public Agent() {
     }
 
     public static String getVersion() {return "unknown";};
     
+    /** TODO: handle the parameters init */
     public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
     		Integer totalTimeP, UtilitySpace us) {
         startTime=startTimeP;
@@ -73,7 +76,25 @@ public abstract class Agent {
     public String getName() {
         return fName;
     }
+    
+    /**
+     * added W.Pasman 19aug08
+     * @return arraylist with all parameter names that this agent can handle
+     * defaults to an empty parameter list. Override when you use parameters.
+     */
+    public ArrayList<String> getParameters() { 
+    	return new ArrayList<String>(); 
+    	}
 
+    /** 
+     * set the values for the parameters for this agent.
+     * @throws IllegalArgumentException if number of parameters is incorrect.
+     * @param paramValues
+     * @throws Exception
+     */
+    public void setParameters(ArrayList<Double> paramValues) throws Exception 
+    { }
+    
     
     public final void setName(String pName) {
         if(this.fName==null) this.fName = pName;
