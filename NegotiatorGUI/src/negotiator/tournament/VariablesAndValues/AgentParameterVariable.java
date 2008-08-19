@@ -28,6 +28,8 @@ public class AgentParameterVariable extends TournamentVariable
 			throw new IllegalArgumentException("Expected AgentParamValue but received "+v);
 		values.add(v);
 	}
+	
+	public AgentParam getAgentParam() { return agentparam; }
 
 	public String varToString() {
 		return "AgentParamVar:"+agentparam.name;

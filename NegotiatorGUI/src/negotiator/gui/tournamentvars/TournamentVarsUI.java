@@ -153,7 +153,12 @@ class TournamentVarsUI extends JFrame {
 		else if (v instanceof AgentParameterVariable) {
 			
 			ArrayList<TournamentValue> newvalues=null;
-			String newvaluestr=new String(""+v.getValues());
+			String newvaluestr=new String(""+v.getValues()); // get old list, using ArrayList.toString.
+			 // remove the [ and ] that ArrayList will add
+			newvaluestr=newvaluestr.substring(1, newvaluestr.length()-1);
+			double minimum=((AgentParameterVariable)v).getAgentParam().min;
+			double maximum=((AgentParameterVariable)v).getAgentParam().max;
+			
 			// repeat asking the numbers until cancel or correct list was entered.
 			boolean error_occured;
 			do {
@@ -165,10 +170,15 @@ class TournamentVarsUI extends JFrame {
 					String[] newstrings=newvaluestr.split(",");
 					newvalues=new ArrayList<TournamentValue>();
 					for (int i=0; i<newstrings.length; i++) {
+						Double val=Double.valueOf(newstrings[i]);
+						if ( val < minimum)
+							throw new IllegalArgumentException("value "+val+" is smaller than minimum "+minimum);
+						if ( val > maximum)
+							throw new IllegalArgumentException("value "+val+" is larger than maximum "+maximum);
 						newvalues.add(new AgentParamValue(Double.valueOf(newstrings[i])));
 					}
 					v.setValues(newvalues);
-				} catch (Exception err) { error_occured=true; new Warning("your numbers are not correctly formatted: "+err); }
+				} catch (Exception err) { error_occured=true; new Warning("your numbers are not accepted: "+err); }
 			}
 			while (error_occured);
 		}
