@@ -42,7 +42,7 @@ class AgentParametersUI extends JDialog
 			  	  TournamentVariable var=variables.get(row);
 			  	  switch(col)
 			  	  {
-			  	  case 0:return var..getName();
+			  	  case 0:return agt.getName();
 			  	  case 1: return agt.getClassPath();
 			  	  case 2: return agt.getVersion();
 			  	  case 3: return agt.getDescription();
