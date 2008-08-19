@@ -129,6 +129,7 @@ class TournamentVarsUI extends JFrame {
 		if (v instanceof ProfileVariable) { 
 			ArrayList<ProfileRepItem> newv=new ProfileVarUI((ProfileVariable)v,this).getResult();
 			System.out.println("result new vars="+newv);
+			if (newv==null) return; // cancel pressed.
 			 // make profilevalues for each selected profile and add to the set.
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
@@ -147,7 +148,7 @@ class TournamentVarsUI extends JFrame {
 		int row=table.getSelectedRow();
 		System.out.println("remove row "+row);
 		if (row<=2 || row>tournament.getVariables().size())
-			throw new IllegalArgumentException("Please select a Parameter to be removed.");
+			throw new IllegalArgumentException("Please select a Parameter to be removed. You can not remove the Profile and Agent vars.");
 
 		tournament.getVariables().remove(row);
 		dataModel.fireTableRowsDeleted(row, row);
