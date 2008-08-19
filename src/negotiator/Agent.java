@@ -12,6 +12,7 @@ package negotiator;
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /*
 import negotiator.issue.Issue;
@@ -41,6 +42,9 @@ public abstract class Agent {
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
+    
+    
+    Hashtable<String,Double> parametervalues; // values for the parameters for this agent. Key is param name
 
     public Agent() {
     }
@@ -82,9 +86,13 @@ public abstract class Agent {
      * @return arraylist with all parameter names that this agent can handle
      * defaults to an empty parameter list. Override when you use parameters.
      */
-    public ArrayList<String> getParameters() { 
-    	return new ArrayList<String>(); 
+    public static ArrayList<AgentParam> getParameters() { 
+    	return new ArrayList<AgentParam>();
     	}
+    
+    public Hashtable<String,Double> getParameterValues() {
+    	return parametervalues;
+    }
 
     /** 
      * set the values for the parameters for this agent.
@@ -92,8 +100,9 @@ public abstract class Agent {
      * @param paramValues
      * @throws Exception
      */
-    public void setParameters(ArrayList<Double> paramValues) throws Exception 
-    { }
+    public void setParameter(String paramname, Double value) throws Exception { 
+    	parametervalues.put(paramname, value);
+    }
     
     
     public final void setName(String pName) {

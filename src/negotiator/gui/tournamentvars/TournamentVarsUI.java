@@ -25,6 +25,9 @@ import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
+
 import negotiator.repository.*;
 import negotiator.exceptions.Warning;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
@@ -34,10 +37,11 @@ import negotiator.issue.Objective;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.repository.*;
+import negotiator.AgentParam;
 
 class TournamentVarsUI extends JFrame {
 	
-	Tournament tournament;
+	Tournament tournament; // this contains the variables and their possible values.
 	AbstractTableModel dataModel;
 	final JTable table;
 	Repository domainrepository; // contains all available domains and profiles to pick from.
@@ -126,8 +130,10 @@ class TournamentVarsUI extends JFrame {
 
 
 	void editVariable(TournamentVariable v) throws Exception {
+		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
+		 // IMHO the strong typechecking gives maybe even more problems than it resolves...
 		if (v instanceof ProfileVariable) { 
-			ArrayList<ProfileRepItem> newv=new ProfileVarUI((ProfileVariable)v,this).getResult();
+			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI((ProfileVariable)v,this).getResult();
 			System.out.println("result new vars="+newv);
 			if (newv==null) return; // cancel pressed.
 			 // make profilevalues for each selected profile and add to the set.
@@ -135,7 +141,15 @@ class TournamentVarsUI extends JFrame {
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
 		}
-		//else if (v instanceof AgentVariable) editAgentVarUI((AgentVariable)v);
+		else if (v instanceof AgentVariable) {
+			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new AgentVarUI(this).getResult();//(AgentVariable)v);
+			System.out.println("result new vars="+newv);
+			if (newv==null) return; // cancel pressed.
+			// make agentvalues for each selected agent and add to the agentvariable
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
+			v.setValues(newtvs);
+		}
 		//else if (v instanceof AgentParameterVariable) editAgentParameterVarUI((AgentParameterVariable)v);
 		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
@@ -157,6 +171,11 @@ class TournamentVarsUI extends JFrame {
 		//new AddAgentUI();
 	void addrow() throws Exception {
 		System.out.println("add row "+table.getSelectedRow());
+		// get all available parameters of all available agents
+		HashSet<AgentParam> params=new HashSet<AgentParam>();
+		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
+		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
+		
 		
 		/*
 		AgentRepItem ari=(new AddAgentUI(this)).getAgentRepItem();
@@ -172,6 +191,25 @@ class TournamentVarsUI extends JFrame {
 			dataModel.fireTableRowsInserted(row, row);
 		}
 		*/
+	}
+	
+	 /** returns all parameters of given agent. 
+	  * agent is referred to via the values of the agentA and agentB parameters set in the tournament
+	  * @param v an ArrayList of AgentValues.
+	  * @return
+	  */
+	ArrayList<AgentParam> allparams(ArrayList<TournamentValue> values) throws Exception {
+		ArrayList<AgentParam> params=new ArrayList<AgentParam>();
+		for (TournamentValue v: values) {
+			if (!(v instanceof AgentValue)) 
+				throw new IllegalArgumentException("Expected AgentValue but found "+v);
+			AgentRepItem agentinrep=((AgentRepItem)((AgentValue)v).getValue());
+			Object result=agentinrep.callStaticAgentFunction("getParameters", new Object[0]);
+			if (!(result instanceof ArrayList ))
+				throw new Exception("Agent "+agentinrep+" did not return an ArrayList as result to calling getParameters!");
+			params.addAll((ArrayList<AgentParam>) result);
+		}
+		return params;
 	}
 	
 	
