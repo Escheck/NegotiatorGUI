@@ -18,8 +18,10 @@ import negotiator.repository.ProfileRepItem;
 /**
  * open a modal OK/Cancel dialog. 
  * you must implement ok() and getPanel() to make this working.
+ * Panel opens, gets result and returns result only  when you call getResult()
+ * Typical use: new YourOKCancelDialog(yourframe).getResult();
  * 
- * @author wouter
+ * @author wouter 19aug08
  *
  */
 public abstract class DefaultOKCancelDialog extends JDialog {
@@ -35,6 +37,26 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 	public DefaultOKCancelDialog(Frame owner, String title) {
 		super(owner,title,true); // modal dialog.
 		getContentPane().setLayout(new BorderLayout());
+	}
+	
+
+	/** this function computes the result of the dialog.
+	 * You may return null if the user entered illegal choices or somehow cancelled the dialog.
+	 * This function will only be called when user presses OK button, 
+	 * which also finishes the dialog and closes the dialog window.
+	 */
+	public abstract Object ok();
+	
+	/**
+	 * this fucnction returns the actual contents for the dialog panel
+	 * I implemented this as a function, because we need it before opening the window.
+	 * @return a Panel containing the actual dialog contents.
+	 * 
+	 */
+	public abstract Panel getPanel();
+	
+	/** call this to get the result. Do not override, instead override ok(). */
+	public Object getResult() { 
 		
 		 // actionlisteners MUST be added before putting buttons in panel!
 		okbutton.addActionListener(new ActionListener() {
@@ -63,28 +85,8 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 		add(getPanel(),BorderLayout.CENTER);
 
 		pack();
-		setVisible(true);
-	}
-
-	/** this function computes the result of the dialog.
-	 * You may return null if the user entered illegal choices or somehow cancelled the dialog.
-	 * This function will only be called when user presses OK button, 
-	 * which also finishes the dialog and closes the dialog window.
-	 */
-	public abstract Object ok();
-	
-	/**
-	 * this fucnction returns the actual contents for the dialog panel
-	 * I implemented this as a function, because the frame contents need to be determined in the constructor function.
-	 * However, the first thing *you* need to do in the constructor is to call the constructor of this
-	 * DefaultOKCancelDialog, leaving you no chance to compute the needed panel.
-	 * Therefore we call back on your function after the construction of this root panel.
-	 * NOTE your class constructor will NOT have been finished when this function is called!!!
-	 * We recommend to leave your constructor empty, apart from the call to the constructor of superclass
-	 * @return a Panel containing the actual dialog contents.
-	 * 
-	 */
-	public abstract Panel getPanel();
-	
-	public Object getResult() { return the_result; }
+		setVisible(true); // does this block until closing window?
+		System.out.println("NOW returning result");
+		return the_result; 
+		}
 }

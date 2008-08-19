@@ -1,3 +1,4 @@
+package negotiator;
 /**
  * This class stores info about a parameter of an agent.
  * You can get and set parameters using Agent.getParameter and agent.setParameter.
@@ -25,6 +26,9 @@ public class AgentParam {
 		if (!(o instanceof AgentParam)) return false;
 		AgentParam ap=(AgentParam)o;
 		return ap.agentclass.equals(agentclass) && ap.name.equals(name) && ap.min==min && ap.max==max;
+	}
+	public String toString() {
+		return agentclass+":"+name;
 	}
 	
 }

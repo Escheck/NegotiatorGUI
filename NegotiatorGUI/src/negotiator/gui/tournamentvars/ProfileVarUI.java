@@ -59,7 +59,7 @@ class ProfileVarUI extends DefaultOKCancelDialog {
 	 * @param owner is used to place the dialog properly over the owner's window.
 	 * @throws if domain repository has a problem
 	 */
-	public ProfileVarUI(ProfileVariable v,JFrame owner)  throws Exception {
+	public ProfileVarUI(JFrame owner)  throws Exception {
 		super(owner,"Profile Selector GUI"); // modal dialog.
 	}
 	

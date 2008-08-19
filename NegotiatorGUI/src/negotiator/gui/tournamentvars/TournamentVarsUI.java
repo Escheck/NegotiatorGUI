@@ -133,7 +133,7 @@ class TournamentVarsUI extends JFrame {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
 		 // IMHO the strong typechecking gives maybe even more problems than it resolves...
 		if (v instanceof ProfileVariable) { 
-			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI((ProfileVariable)v,this).getResult();
+			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI(this).getResult();
 			System.out.println("result new vars="+newv);
 			if (newv==null) return; // cancel pressed.
 			 // make profilevalues for each selected profile and add to the set.
@@ -150,7 +150,7 @@ class TournamentVarsUI extends JFrame {
 			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
 			v.setValues(newtvs);
 		}
-		//else if (v instanceof AgentParameterVariable) editAgentParameterVarUI((AgentParameterVariable)v);
+		//else if (v instanceof AgentParameterVariable) new ParameterVarUI(this);
 		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
 	
@@ -168,29 +168,23 @@ class TournamentVarsUI extends JFrame {
 		dataModel.fireTableRowsDeleted(row, row);
 	}
 	
-		//new AddAgentUI();
 	void addrow() throws Exception {
 		System.out.println("add row "+table.getSelectedRow());
 		// get all available parameters of all available agents
 		HashSet<AgentParam> params=new HashSet<AgentParam>();
+		 // Assumption: 1 and 2 in the list are the AgentVars. This is checked in allparams()
 		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
-		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
-		
-		
-		/*
-		AgentRepItem ari=(new AddAgentUI(this)).getAgentRepItem();
-		System.out.println("UI returned with "+ari);
-		if (ari.getName().length()==0)
-			throw new IllegalArgumentException("empty agent name is not allowed");
-		if (ari!=null) {
-			int row=temp_agent_repos.getItems().size();
-			AgentRepItem otheragt=temp_agent_repos.getAgentOfClass(ari.getClassPath());
-			if (otheragt!=null)
-				throw new IllegalArgumentException("Only one reference to a class is allowed, Agent "+otheragt.getName()+" is already of given class!");
-			temp_agent_repos.getItems().add(ari);
-			dataModel.fireTableRowsInserted(row, row);
-		}
-		*/
+		params.addAll(allparams(tournament.getVariables().get(2).getValues()));
+		System.out.println("available parameters:"+params);
+		 // launch editor for a variable.
+		ArrayList<AgentParam> paramsAsArray=new ArrayList<AgentParam>();
+		paramsAsArray.addAll(params);
+		AgentParam result=(AgentParam)new ParameterVarUI(this,paramsAsArray).getResult();
+		System.out.println("result="+result);
+		tournament.getVariables().add(new AgentParameterVariable(result));
+		int row=tournament.getVariables().size();
+		dataModel.fireTableRowsInserted(row,row);
+	
 	}
 	
 	 /** returns all parameters of given agent. 
