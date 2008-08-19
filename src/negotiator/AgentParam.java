@@ -22,6 +22,8 @@ public class AgentParam {
 		max=maxP;
 	}
 	
+	static final long serialVersionUID=0;
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof AgentParam)) return false;
 		AgentParam ap=(AgentParam)o;

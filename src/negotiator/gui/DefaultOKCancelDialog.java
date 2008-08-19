@@ -57,20 +57,19 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 	
 	/** call this to get the result. Do not override, instead override ok(). */
 	public Object getResult() { 
-		
 		 // actionlisteners MUST be added before putting buttons in panel!
 		okbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				//System.out.println("OK pressed");
 				the_result=ok();
-				dispose();
+				setVisible(false);
 			}
 		});
 		
 		cancelbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				//System.out.println("cancel pressed");
-				dispose();
+				setVisible(false);
 			}
 		});
 		
@@ -85,8 +84,7 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 		add(getPanel(),BorderLayout.CENTER);
 
 		pack();
-		setVisible(true); // does this block until closing window?
-		System.out.println("NOW returning result");
+		setVisible(true); // block until closing window.
 		return the_result; 
 		}
 }

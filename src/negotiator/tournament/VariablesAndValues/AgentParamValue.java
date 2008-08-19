@@ -11,7 +11,7 @@ public class AgentParamValue extends TournamentValue
 {
 	Double value;
 
-	AgentParamValue(Double v) {
+	public AgentParamValue(Double v) {
 		value=v;
 	}
 	
