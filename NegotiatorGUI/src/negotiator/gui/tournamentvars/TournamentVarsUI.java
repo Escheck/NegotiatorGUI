@@ -130,6 +130,12 @@ class TournamentVarsUI extends JFrame {
 				catch (Exception err) { new Warning("edit failed: "+err); }
 			}
 		});
+		startbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try { start();}
+				catch (Exception err) { new Warning("start failed: "+err); }
+				}
+		});	
 
 		//setLayout(new BorderLayout());
 		setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
@@ -293,6 +299,13 @@ class TournamentVarsUI extends JFrame {
 			params.addAll((ArrayList<AgentParam>) result);
 		}
 		return params;
+	}
+	
+	/** start negotiation.
+	 * Will build the negotiationsessions in the tournament but not yet do anything else.
+	 */
+	void start() throws Exception {
+		tournament.buildSessions();
 	}
 	
 	

@@ -375,7 +375,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {
     	if (Main.nm!=null) Main.nm.stopNegotiation();
         if (negoManagerThread!=null) negoManagerThread.stop();
-        Main.logger.add("All sessions have been stoped!!!");
+        Main.log("All sessions have been stoped!!!");
     }
 
     private void fieldNumberOfSessionActionPerformed(java.awt.event.ActionEvent evt) {

@@ -263,7 +263,7 @@ public class Analysis {
 	 * 
 	 */
 	public void buildParetoFrontier() {
-		Main.logger.add("Building Pareto Frontier...");
+		Main.log("Building Pareto Frontier...");
 		//loadAgentsUtilitySpaces();
 		BidIterator lBidIter = new BidIterator(getDomain());
 		while(lBidIter.hasNext()) {
@@ -282,7 +282,7 @@ public class Analysis {
 			
 		}
 		sortParetoFrontier();    	
-		Main.logger.add("Finished building Pareto Frontier.");
+		Main.log("Finished building Pareto Frontier.");
 		//make an XML representation of the analysis
 
 		fRoot = new SimpleElement("analysis");

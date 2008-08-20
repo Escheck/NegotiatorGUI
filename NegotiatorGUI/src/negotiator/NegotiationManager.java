@@ -67,7 +67,7 @@ public class NegotiationManager implements Runnable {
         agentAStarts=agentAStartsP;
         // load the utility spaces
         numberOfSessions = numberOfSession;
-        Main.logger.add("Loading agents...");
+        Main.log("Loading agents...");
         agentA = null;
         agentB = null;
         
@@ -117,7 +117,7 @@ public class NegotiationManager implements Runnable {
     protected void runNegotiationSession(int sessionNumber, int sessionTotalNumber) 
     {
     	
-        NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener);
+        NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
         if(Main.fDebug) {
         	nego.run();	
         } else {
@@ -185,9 +185,9 @@ public class NegotiationManager implements Runnable {
     public void startNegotiation() {
         sf = new SessionFrame(agentA.getName(), agentB.getName());
         sf.setVisible(true);
-        Main.logger.add("Starting negotiations...");
+        Main.log("Starting negotiations...");
         for(int i=0;i<numberOfSessions;i++) {
-            Main.logger.add("Starting session " + String.valueOf(i+1));
+            Main.log("Starting session " + String.valueOf(i+1));
             runNegotiationSession(i+1, numberOfSessions);
         }
     }

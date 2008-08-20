@@ -43,6 +43,8 @@ import negotiator.exceptions.Warning;
  * so that others (eg logger) can independently analyse the events and determine
  * what happened and proper utilities. 
  * As a workaround, the utilities were now included into the ActionEvents.
+ * TODO datastructure contains many parts that belong to (1) Tournament (2) logging (3) time keeping.
+ * I think these are not really part of a negotiationsession 
  */
 public class NegotiationSession implements Runnable {
     protected Agent         agentA;
@@ -61,6 +63,7 @@ public class NegotiationSession implements Runnable {
     boolean startingWithA=true;
     Date startTime; // set when run() is called.
     long startTimeMillies; //idem.
+    NegotiationManager nm;
 
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
@@ -73,7 +76,7 @@ public class NegotiationSession implements Runnable {
      **/
     public NegotiationSession(Agent agentA, Agent agentB, NegotiationTemplate nt, 
     		int sessionNumber, int sessionTotalNumber, boolean agentAStartsP,
-    		ActionEventListener ael
+    		ActionEventListener ael, NegotiationManager themanager
     	) {
         this.agentA = agentA;
         this.agentB = agentB;
@@ -84,6 +87,7 @@ public class NegotiationSession implements Runnable {
         this.fAgentBBids = new ArrayList<BidPoint>();
         agentAStarts=agentAStartsP;
         actionEventListener=ael;
+        nm=themanager;
     }
     
     public Agent otherAgent(Agent ag)
@@ -112,7 +116,7 @@ public class NegotiationSession implements Runnable {
         else agentBtookAction = true;
         
     }
-    
+
     public void run() {
         Agent currentAgent;
         startTime=new Date(); startTimeMillies=System.currentTimeMillis();
@@ -145,7 +149,7 @@ public class NegotiationSession implements Runnable {
             	startingWithA=false;
             }
         	System.out.println("starting with agent "+currentAgent);
-            Main.logger.add("Agent " + currentAgent.getName() + " begins");
+            Main.log("Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
                 try {
                    //inform agent about last action of his opponent
@@ -161,11 +165,11 @@ public class NegotiationSession implements Runnable {
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
-                       Main.logger.add("Agent " + currentAgent.getName() + " sent the following offer:");                       
+                       Main.log("Agent " + currentAgent.getName() + " sent the following offer:");                       
                        lastBid  = ((Offer)action).getBid();
-                       Main.logger.add(action.toString());
-                       Main.logger.add("Utility of " + agentA.getName() +": " + agentA.utilitySpace.getUtility(lastBid));
-                       Main.logger.add("Utility of " + agentB.getName() +": " + agentB.utilitySpace.getUtility(lastBid));
+                       Main.log(action.toString());
+                       Main.log("Utility of " + agentA.getName() +": " + agentA.utilitySpace.getUtility(lastBid));
+                       Main.log("Utility of " + agentB.getName() +": " + agentB.utilitySpace.getUtility(lastBid));
                        checkAgentActivity(currentAgent) ;
                    }                   
                    else if (action instanceof Accept) {
@@ -174,8 +178,8 @@ public class NegotiationSession implements Runnable {
                        if(lastBid==null)
                     	   throw new Exception("Accept was done by "+
                     			   currentAgent.getName()+" but no bid was done yet.");
-                        Main.logger.add("Agents accepted the following bid:");
-                        Main.logger.add(((Accept)action).toString());
+                        Main.log("Agents accepted the following bid:");
+                        Main.log(((Accept)action).toString());
                         agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
                         agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
@@ -204,7 +208,7 @@ public class NegotiationSession implements Runnable {
                  
                 } catch(Exception e) {
                    stopNegotiation=true;
-             	   Main.logger.add("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
+             	   Main.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
              	   e.printStackTrace();
                    if (lastBid==null) agentAUtility=agentBUtility=1.;
                    else {
@@ -231,7 +235,9 @@ public class NegotiationSession implements Runnable {
             }
             
             // nego finished by Accept or illegal action.
-            synchronized (Main.nm) {  Main.nm.notify();  }
+            //Wouter: reverse engineered: notify main class that we're ready.
+            synchronized (nm) {  nm.notify();  }
+           
             /*
              * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
              * Maybe even catching the ThreadDeath error is wrong. 

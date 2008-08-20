@@ -75,6 +75,9 @@ public class NegotiationTemplate {
 	}
 	*/
 	
+    /**
+     * @param fileName I think this is the domain file name.
+     */
 	public NegotiationTemplate(String fileName, 
 			String agentAUtilitySpaceFileName, String agentBUtilitySpaceFileName,
 			Integer totTime) 
@@ -87,7 +90,7 @@ public class NegotiationTemplate {
 		totalTime=totTime;
 	}
 	/**
-	 * @param fileName
+	 * @param fileName Wouter: I think this is the domain.xml file.
 	 */
 	private void loadFromFile(String fileName)  throws Exception
 	{

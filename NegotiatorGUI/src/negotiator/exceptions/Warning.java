@@ -20,19 +20,31 @@ public class Warning {
 	 * Default warning: Print warning message at most 5 times. Stack trace is not printed.
 	 */
 	public Warning(String pWarning) {
-		makeWarning(pWarning, false, 5);
+		makeWarning(pWarning, new Exception(),false,5);
 	}
 	
+	/** if you set showstack to true, stack dump will be made for location where WARNING occurs. 
+	 * Note that this is not useful if you are converting an exception into a warning. In that case,
+	 * you better use Warning(warning, Exception) */
 	public Warning(String pWarning, boolean pShowStack, int pSuppressAt) {
-		makeWarning(pWarning, pShowStack, pSuppressAt);
+		makeWarning(pWarning, new Exception(), pShowStack,pSuppressAt);
+	}
+	
+	public Warning(String pWarning, Exception err) {
+		makeWarning(pWarning,err,false,5);
+	}
+	
+	public Warning(String pWarning, Exception err, boolean pShowStack,int pSuppressAt) {
+		makeWarning(pWarning,err,pShowStack,pSuppressAt);
 	}
 	
 	// Class methods
 	/**
 	 * Add warning to static hashtable used to keep track of all warnings issued so far.
 	 * Only show warning if message has not appeared more than 'fSuppressAt' times.
+	 * @param e is exception that caused the problem. Use null to avoid stack dump. 
 	 */
-	public void makeWarning(String pWarning, boolean pShowStack, int pSuppressAt) {
+	public void makeWarning(String pWarning, Exception e, boolean pDumpStack,int pSuppressAt) {
 		
 		Object lWarnings = pPreviousMessages.get(pWarning);
 
@@ -48,17 +60,16 @@ public class Warning {
 		if ((Integer)lWarnings > pSuppressAt) return;
 
 		// Print message
-		System.out.print("WARNING: "+pWarning);
+		System.out.print("WARNING: "+pWarning+", "+e);
 
-		Exception e=new Exception();
 		StackTraceElement[] elts=e.getStackTrace();
-		if (pShowStack && elts.length>=3)
+		if (pDumpStack && elts.length>=3)
 		{
 			System.out.println();
 				// start stacktrace at 2: 0 and 1 are inside the Warning class and not useful.
-			for (int i=2; i<elts.length; i++) System.out.println(elts[i]);
+			for (int i=0; i<elts.length; i++) System.out.println(elts[i]);
 		} else {
-			if (elts.length>=2) System.out.print(" at "+elts[2]+"\n");
+			if (elts.length>0) System.out.print(" at "+elts[0]+"\n");
 			else System.out.print(" at empty stack point?\n");
 		}
 		

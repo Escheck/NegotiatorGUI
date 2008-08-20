@@ -59,6 +59,11 @@ public class Main {
             }
         });
     }
+    
+    /** Wouter: added 20aug as workaround for bug 436 on mantis. */
+    public static void log(String arg) {
+    	if (logger!=null) logger.add(arg);
+    }
     private static void checkArguments(String[] args){
     	for(int i=0;i<args.length;i++) {
     		if(args[i].equals("-d")) fDebug = true;    		
