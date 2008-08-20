@@ -18,7 +18,7 @@ public class BidChart {
 	private double [][] bidSeriesA;
 	private double [][] bidSeriesB;
 	private JFreeChart chart;
-	XYPlot plot;
+	private XYPlot plot;
 	//empty constructor 
 	public BidChart(){
 	}
@@ -98,44 +98,4 @@ public class BidChart {
         return new JFreeChart("Overlaid Plot Example", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
     }
-
-    /**
-     * Creates a sample datasets just for testing.
-     *
-     * @return The dataset.
-     */
-    private DefaultXYDataset createDataset1() {
-    	DefaultXYDataset dataset = new DefaultXYDataset();
-        // create dataset 1...
-    	final int NUMBEROFPOSSIBLEBIDS = 10000;
-    	double redSeries[][] = new double[2][NUMBEROFPOSSIBLEBIDS];
-		
-		//some sample data
-		for (int i=0;i<NUMBEROFPOSSIBLEBIDS;i++){
-			redSeries[0][i] = (float)Math.random();
-			redSeries[1][i] = (float)Math.random();
-		}
-		// set the labels for the graph:
-	    String redSeriesLabel = "possible bids";
-	    dataset.addSeries(redSeriesLabel, redSeries);
-        return dataset;
-
-    }
-    private DefaultXYDataset createDataset2(String label) {
-    	DefaultXYDataset dataset = new DefaultXYDataset();
-        // create dataset 1...
-    	double redSeries[][] = new double[2][5];
-		
-		//some sample data
-		for (int i=0;i<5;i++){
-			redSeries[0][i] = (float)Math.random();
-			redSeries[1][i] = (float)Math.random();
-		}
-		// set the labels for the graph:
-	    String redSeriesLabel = label;
-	    dataset.addSeries(redSeriesLabel, redSeries);
-        return dataset;
-
-    }
-
 }
