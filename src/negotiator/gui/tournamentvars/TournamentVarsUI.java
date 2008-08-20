@@ -1,14 +1,14 @@
 package negotiator.gui.tournamentvars;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.tree.*;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
 
-import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,6 +26,8 @@ import java.io.FileFilter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.awt.Dimension;
+
 
 
 import negotiator.repository.*;
@@ -52,6 +54,7 @@ class TournamentVarsUI extends JFrame {
 	JButton editvarbutton=new JButton("Edit Variable");
 	JButton upbutton=new JButton("Up");
 	JButton downbutton=new JButton("Down");
+	JButton startbutton=new JButton("Start");
 	
 	public TournamentVarsUI(Tournament t) throws Exception {
 		if (t==null) throw new NullPointerException("null tournament");
@@ -60,7 +63,6 @@ class TournamentVarsUI extends JFrame {
 		domainrepository=Repository.get_domain_repos();
 		agentrepository=Repository.get_agent_repository();
 		setTitle("Tournament Editor");
-		setLayout(new BorderLayout());
 
 		
 		dataModel = new AbstractTableModel() {
@@ -129,17 +131,27 @@ class TournamentVarsUI extends JFrame {
 			}
 		});
 
-		JPanel buttons=new JPanel();
-		buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
+		//setLayout(new BorderLayout());
+		setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
 
-		buttons.add(upbutton);
-		buttons.add(downbutton);
-		buttons.add(addvarbutton);
-		buttons.add(removevarbutton);
-		buttons.add(editvarbutton);
+		JPanel buttons=new JPanel();
+		buttons.setLayout(new BorderLayout());
 		
-		add(buttons,BorderLayout.SOUTH);
-		add(scrollpane,BorderLayout.CENTER);
+		JPanel updownpanel=new JPanel(new BorderLayout());
+		updownpanel.add(upbutton,BorderLayout.NORTH);
+		updownpanel.add(downbutton,BorderLayout.SOUTH);
+		
+		JPanel addremovepanel=new JPanel(new BorderLayout());
+		addremovepanel.add(addvarbutton,BorderLayout.NORTH);
+		addremovepanel.add(removevarbutton,BorderLayout.SOUTH);
+		
+		buttons.add(updownpanel,BorderLayout.WEST);
+		buttons.add(editvarbutton,BorderLayout.CENTER);
+		buttons.add(addremovepanel,BorderLayout.EAST);
+		buttons.add(startbutton,BorderLayout.SOUTH);
+
+		add(scrollpane); add(buttons);
+		setPreferredSize(new Dimension(300,300));
 		pack();
 		setVisible(true);
 	}

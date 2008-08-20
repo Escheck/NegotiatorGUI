@@ -14,7 +14,7 @@ public class Tournament
 {
 	int nrOfRunsPerSession;
 	
-	ArrayList<NegotiationSession> sessions;
+	ArrayList<NegotiationSession> sessions=null; // filled by buildSessions()
 	ArrayList<TournamentVariable> variables=new ArrayList<TournamentVariable>();
 	
 	/** called when you press start button in Tournament window.
