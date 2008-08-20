@@ -50,6 +50,8 @@ class TournamentVarsUI extends JFrame {
 	JButton addvarbutton=new JButton("Add Parameter");
 	JButton removevarbutton=new JButton("Remove Parameter");
 	JButton editvarbutton=new JButton("Edit Variable");
+	JButton upbutton=new JButton("Up");
+	JButton downbutton=new JButton("Down");
 	
 	public TournamentVarsUI(Tournament t) throws Exception {
 		if (t==null) throw new NullPointerException("null tournament");
@@ -91,6 +93,19 @@ class TournamentVarsUI extends JFrame {
 		JScrollPane scrollpane = new JScrollPane(table);
 	 	
 	      // CREATE THE BUTTONS
+		
+		upbutton.addActionListener(new ActionListener() {	
+			public void actionPerformed(ActionEvent e) {
+				try {up();}
+				catch (Exception err) { new Warning("up failed:"+err); }
+			}
+		});
+		downbutton.addActionListener(new ActionListener() {	
+			public void actionPerformed(ActionEvent e) {
+				try {down();}
+				catch (Exception err) { new Warning("down failed:"+err); }
+			}
+		});
 		addvarbutton.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				try {addrow();}
@@ -117,6 +132,8 @@ class TournamentVarsUI extends JFrame {
 		JPanel buttons=new JPanel();
 		buttons.setLayout(new BoxLayout(buttons,BoxLayout.X_AXIS));
 
+		buttons.add(upbutton);
+		buttons.add(downbutton);
 		buttons.add(addvarbutton);
 		buttons.add(removevarbutton);
 		buttons.add(editvarbutton);
@@ -190,11 +207,7 @@ class TournamentVarsUI extends JFrame {
 	
 	/** remove selected row from table */
 	void removerow() throws Exception {
-		int row=table.getSelectedRow();
-		System.out.println("remove row "+row);
-		if (row<=2 || row>tournament.getVariables().size())
-			throw new IllegalArgumentException("Please select a Parameter to be removed. You can not remove the Profile and Agent vars.");
-
+		int row=checkParameterSelected("You can not remove the Profile and Agent vars.");
 		tournament.getVariables().remove(row);
 		dataModel.fireTableRowsDeleted(row, row);
 	}
@@ -217,6 +230,38 @@ class TournamentVarsUI extends JFrame {
 		int row=tournament.getVariables().size();
 		dataModel.fireTableRowsInserted(row,row);
 	
+	}
+	
+	void up() throws Exception {
+		int row=checkParameterSelected("You can not move Profile and Agent vars");
+		if (row==3) throw new IllegalArgumentException("You can not move Profile and Agent vars"); // you can not move the highest one up.
+		 // swap row with row-1
+		ArrayList<TournamentVariable> vars=tournament.getVariables();
+		TournamentVariable tmp=vars.get(row);
+		vars.set(row, vars.get(row-1));
+		vars.set(row-1,tmp);
+		dataModel.fireTableRowsUpdated(row-1, row);
+	}
+	
+	void down() throws Exception {
+		int row=checkParameterSelected("You can not move Profile and Agent vars");
+		ArrayList<TournamentVariable> vars=tournament.getVariables();
+		if (row==vars.size()-1) return; // you can not move the last one down.
+		 // swap row with row+1
+		TournamentVariable tmp=vars.get(row);
+		vars.set(row, vars.get(row+1));
+		vars.set(row+1,tmp);
+		dataModel.fireTableRowsUpdated(row, row+1);
+	}
+	
+	
+	/** returns selected parameter row number, or throws if not.
+	 * The throw error message is "Please select a Parameter to be moved."+detailerrormessage. */
+	int checkParameterSelected(String detailerrormessage) throws Exception {
+		int row=table.getSelectedRow();
+		if (row<=2 || row>tournament.getVariables().size())
+			throw new IllegalArgumentException("Please select a Parameter to be moved. "+detailerrormessage);
+		return row;
 	}
 	
 	 /** returns all parameters of given agent. 
