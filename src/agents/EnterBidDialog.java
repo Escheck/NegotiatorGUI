@@ -9,6 +9,9 @@ package agents;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.TextArea;
 import negotiator.exceptions.Warning;
 
@@ -16,16 +19,21 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.Color;
 import java.util.Vector;
+
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventObject;
 import javax.swing.table.AbstractTableModel;
+import java.text.DecimalFormat;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -36,16 +44,21 @@ import negotiator.actions.Action;
 import negotiator.exceptions.BidDoesNotExistInDomainException;
 import negotiator.issue.*;
 import negotiator.utility.EvaluatorDiscrete;
+import negotiator.gui.chart.*;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart; 
 
 /**
  *
  * @author  W.Pasman
  */
+@SuppressWarnings("serial")
 public class EnterBidDialog extends JDialog {
 	
 	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
-    private Agent agent;    
+    private UIAgent agent;    
     private JTextArea negotiationMessages=new JTextArea("NO MESSAGES YET");  
     // Wouter: we have some whitespace in the buttons,
     // that makes nicer buttons and also artificially increases the window size.
@@ -56,11 +69,20 @@ public class EnterBidDialog extends JDialog {
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
-    public EnterBidDialog(Agent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
+    // alinas variables
+    private JTable BidHistoryTable;
+    private HistoryInfo historyinfo; // the table model	
+    private ChartPanel chartPanel;
+    private JPanel defaultChartPanel;
+    private ScatterPlot plot;
+    
+    
+    public EnterBidDialog(UIAgent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
     {
         super(parent, modal);
         this.agent = agent;
         negoinfo=new NegoInfo(null,null,us); 
+        historyinfo=new HistoryInfo(agent,null,null,us); 
         initThePanel();
     }
     
@@ -69,44 +91,101 @@ public class EnterBidDialog extends JDialog {
     // the field is protected and there is no getUtilitySpace function either.
     // therefore the Agent has to inform us when utilspace changes.
     public void setUtilitySpace(UtilitySpace us)
-    { negoinfo.utilitySpace=us; }
+    { 
+    	negoinfo.utilitySpace=us;
+    	historyinfo.utilitySpace=us;
+    }
     
     
     
     private void initThePanel() {
     	if (negoinfo==null) throw new NullPointerException("negoinfo is null");
     	Container pane=getContentPane();
-        pane.setLayout(new BorderLayout());
+    	//gridbag layout:
+    	GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints c = new GridBagConstraints();
+          
+        pane.setLayout(gridbag);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Choose action for agent "+agent.getName());
         //setSize(new java.awt.Dimension(600, 400));
         //setBounds(0,0,640,480);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;  
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 10, 0, 10);
+        //create panel for history of bids
+        BidHistoryTable = new  JTable(historyinfo);
+        BidHistoryTable.setGridColor(Color.lightGray);
+        // setting the columns that contain numbers to a small width:
+        BidHistoryTable.getColumnModel().getColumn(0).setMaxWidth(50);
+        BidHistoryTable.getColumnModel().getColumn(2).setMaxWidth(50);
+        BidHistoryTable.getColumnModel().getColumn(4).setMaxWidth(50);
+        JPanel tablepaneHistory=new JPanel(new BorderLayout());
+        tablepaneHistory.add(BidHistoryTable.getTableHeader(), "North");
+        tablepaneHistory.add(BidHistoryTable,"Center");
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        TitledBorder title = BorderFactory.createTitledBorder(blackline, "History of Bids:");
+        //for having the title in the center
+        //title.setTitleJustification(TitledBorder.CENTER);
+        tablepaneHistory.setBorder(title);
+        pane.add(tablepaneHistory,c);
+        
+        c.gridwidth = 1;                
+        c.gridheight = 4;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.insets = new Insets(10, 10, 10, 10);
+        //adding the chart  
+        defaultChartPanel = new JPanel();
+        title = BorderFactory.createTitledBorder(blackline, "Utilities of Bids per round:");
 
-    // create north field: the message field
-       pane.add(negotiationMessages,"North");
+        defaultChartPanel.setBorder(title);
+        pane.remove(defaultChartPanel);
+        pane.add(defaultChartPanel,c);
+
+        //user input:
+        JPanel userInputPanel = new JPanel();
+        userInputPanel.setLayout(new BoxLayout(userInputPanel, BoxLayout.Y_AXIS));
+        title = BorderFactory.createTitledBorder(blackline, "Please place your bid:");
+
+        userInputPanel.setBorder(title);
+        negotiationMessages.setBackground(Color.lightGray);
+        negotiationMessages.setEditable(false);
+        userInputPanel.add(negotiationMessages);
         
-        
-     // create center panel: the bid table
+        // create center panel: the bid table
         BidTable = new  JTable(negoinfo);
         //BidTable.setModel(negoinfo); // need a model for column size etc...
-       	 // Why doesn't this work???
+       	// Why doesn't this work???
         BidTable.setGridColor(Color.lightGray);
-        String[] values = new String[]{"item1", "item2", "item3"};
+        BidTable.setRowHeight(18);
         JPanel tablepane=new JPanel(new BorderLayout());
         tablepane.add(BidTable.getTableHeader(), "North");
         tablepane.add(BidTable,"Center");
-        pane.add(tablepane,"Center");
-
-        	// create south panel: the buttons:
+        userInputPanel.add(tablepane);
+        
+        // create the buttons:
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(buttonEnd);
         buttonPanel.add(buttonAccept);
-        //buttonPanel.add(buttonSkip);
         buttonPanel.add(buttonBid);
-        pane.add(buttonPanel,"South");
+        userInputPanel.add(buttonPanel);
+        
+        c.gridwidth = 1;           
+        c.gridheight = 1;
+        c.gridx = 1;
+        c.gridy = 3;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(10, 10, 10, 10);
+        pane.add(userInputPanel,c);
         buttonBid.setSelected(true);
 
-     // set action listeners for the buttons
+        // set action listeners for the buttons
         buttonBid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBidActionPerformed(evt);
@@ -182,16 +261,19 @@ public class EnterBidDialog extends JDialog {
      * @param nt is negotiation template.
      * @return our next negotionat action.
      */
-    			public negotiator.actions.Action 
+    public negotiator.actions.Action 
     askUserForAction(negotiator.actions.Action opponentAction, Bid myPreviousBid) 
     {
+    	historyinfo.nrOfBids=agent.historyOfBids.size();
         negoinfo.opponentOldBid=null;
+        
         if(opponentAction==null) {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
         	negotiationMessages.setText("Opponent accepted your last bid!");
         	negoinfo.opponentOldBid = myPreviousBid;
+        	
         }
         if(opponentAction instanceof EndNegotiation) {
         	negotiationMessages.setText("Opponent cancels the negotiation.");
@@ -199,34 +281,159 @@ public class EnterBidDialog extends JDialog {
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
+        	
         }
         try { negoinfo.setOurBid(myPreviousBid); }
         catch (Exception e) { System.out.println("error in askUserForAction:"+e.getMessage()); e.printStackTrace(); }
         
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer(negoinfo));
+        BidHistoryTable.setDefaultRenderer(BidHistoryTable.getColumnClass(0),
+        		new MyHistoryCellRenderer(historyinfo));
+        BidHistoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // needs some fixing so that the bids are visible properly
         BidTable.setDefaultEditor(BidTable.getColumnClass(0),new MyCellEditor(negoinfo));
+        
+        int round = agent.bidCounter; 
+        System.out.println("round# "+round+"/"+agent.historyOfBids.size());
+        
+        // create a new plot of the bid utilities for each round
+        double [][] myBidSeries = new double [2][round];
+        double [][] oppBidSeries = new double [2][round];
+		
+        if(round>0){
+        	System.out.println(agent.historyOfBids.get(0));
+	        for (int i=0;i<round;i++){
+	        	try {
+	        		System.out.println("i "+i);
+		        	Bid oppBid = agent.historyOfBids.get(i).getOppentBid();
+		        	Bid ourBid = agent.historyOfBids.get(i).getOurBid();
+		        	double utilOpp = 0;
+		        	double ourUtil = 0;
 
+		    		if (agent.utilSpace!=null){
+		    			if (oppBid!=null)utilOpp = agent.utilSpace.getUtility(oppBid);
+		    			ourUtil= agent.utilSpace.getUtility(ourBid);
+		    		}else{
+		    			System.out.println("agent.utilSpace=null");
+		    		}
+		        	
+		    		myBidSeries[0][i] = i+1;
+		        	myBidSeries[1][i] = ourUtil;
+		        	
+		        	oppBidSeries[0][i] = i+1;
+		        	oppBidSeries[1][i] = utilOpp;
+		        	
+	        	} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+        }
+        
+        // if there is a chart already, remove and draw new one
+        if (defaultChartPanel.getComponents().length>0)defaultChartPanel.remove(chartPanel);
+        plot = new ScatterPlot(myBidSeries, oppBidSeries);
+        JFreeChart chart = plot.getChart();
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(350, 350)); 
+        defaultChartPanel.add(chartPanel);
+        
         pack();
         setVisible(true); // this returns only after the panel closes.
-        
         return selectedAction;
     }
 }   
-    
+
+/********************************************************/
+
+/**
+ * @author Alina  
+ * HistoryInfo is the class that contains the former bids and fills the JTable for the 
+ * history with it.
+ */
+@SuppressWarnings("serial")
+class HistoryInfo extends AbstractTableModel{
+	public Bid ourOldBid;
+	public Bid oppOldBid;
+	public int nrOfBids=0;
+	private UIAgent agent;
+	private String[] colNames={"Round","Bid of your Opponent","u(opp)","Your Bid","u(own)"};
+	public String getColumnName(int col) { return colNames[col]; }
+	public UtilitySpace utilitySpace;
+	
+	HistoryInfo(UIAgent agent, Bid our,Bid opponent, UtilitySpace us) throws Exception
+	{
+		this.agent=agent;
+		utilitySpace=us;
+	}
+	
+	public int getColumnCount() {
+		return 5;
+	}
+
+	public int getRowCount() {
+		return 10; // needs to be dynamically changed, right now we will have a problem when there are more than 10 rounds
+	}
+
+	public Component getValueAt(int row, int col)
+	{		
+		
+		if(nrOfBids!=0 && row<nrOfBids){
+			//get the bids for the row-th round:
+			Bid oppBid = agent.historyOfBids.get(row).getOppentBid();
+			Bid ourBid = agent.historyOfBids.get(row).getOurBid();
+			
+			switch (col)
+			{
+			case 0:		
+				return new JLabel(Integer.toString(row+1));//roundcount
+			case 1:
+				String str1="No Bid yet.";
+				if(oppBid!=null){
+					str1 = new String(oppBid.toString());
+					str1 = str1.substring(4,str1.length()-3);
+				}
+				return new JTextArea(str1); // opponent bid as string 
+			case 2:
+				try{
+					double utilOpp=0.0;
+					if(oppBid!=null)
+						utilOpp = utilitySpace.getUtility(oppBid);//utility of opponent bid
+						
+					DecimalFormat df = new DecimalFormat("0.00");
+					return new JTextArea(df.format(utilOpp));
+				}catch (Exception e) { };
+			case 3:
+				String str2 = new String(ourBid.toString());
+				str2 = str2.substring(4,str2.length()-3);
+				return new JTextArea(str2); // our bid as string 
+			case 4:
+				try{
+					double utilOur = utilitySpace.getUtility(ourBid);//utility of our bid
+					DecimalFormat df = new DecimalFormat("0.00");
+					return new JTextArea(df.format(utilOur));
+				}catch (Exception e) { };
+			}	
+		}
+		
+		return null;
+	}
+	
+}
 
 /********************************************************/
 
 /**
  * NegoInfo is the class that contains all the negotiation data,
  * and handles the GUI, updating the JTable. This is the main 
- * interface to the actial JTable.
- * This is usualy called XXXModel but I dont like the 'model' in the name.
+ * interface to the actual JTable.
+ * This is usually called XXXModel but I dont like the 'model' in the name.
  * We implement actionlistener to hear the combo box events that
  * require re-rendering of the total cost and utility field.
  * We are pretty hard-wired for a 3-column table, with column 0 the
  * labels, column 1 the opponent bid and col2 our own bid.
  */
+@SuppressWarnings("serial")
 class NegoInfo extends AbstractTableModel implements ActionListener
 {
 	public Bid ourOldBid;			// Bid is hashmap <issueID,Value>. Our current bid is only in the comboboxes,
@@ -235,7 +442,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public UtilitySpace utilitySpace;	// WARNING: this may be null
 	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
 	// the issues, in row order as in the GUI. Init to empty, to enable 
-	// freshly initialized NegoInfo to give useful resuitsl to the GUI.
+	// freshly initialized NegoInfo to give useful results to the GUI.
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
@@ -423,12 +630,30 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 class MyCellRenderer implements TableCellRenderer {
 	NegoInfo negoinfo;
 	
+	
     public MyCellRenderer(NegoInfo n) {	negoinfo=n;  }
+    
  
     	// the default converts everything to string...
     public Component getTableCellRendererComponent(JTable table, Object value,
              boolean isSelected, boolean hasFocus, int row, int column) {
 		return negoinfo.getValueAt(row,column);   
+	}
+}
+
+/********************************************************************/
+
+class MyHistoryCellRenderer implements TableCellRenderer {
+	HistoryInfo historyinfo;
+	
+	
+    public MyHistoryCellRenderer(HistoryInfo n) {	historyinfo=n;  }
+    
+ 
+    	// the default converts everything to string...
+    public Component getTableCellRendererComponent(JTable table, Object value,
+             boolean isSelected, boolean hasFocus, int row, int column) {
+		return historyinfo.getValueAt(row,column);   
 	}
 }
 
