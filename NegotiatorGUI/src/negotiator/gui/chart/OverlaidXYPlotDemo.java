@@ -1,38 +1,31 @@
 package negotiator.gui.chart;
 
-import java.awt.Font;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.time.Day;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.date.SerialDate;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Stroke;
 
 /**
  * A demonstration application showing a time series chart overlaid with a vertical XY bar chart.
  */
 public class OverlaidXYPlotDemo extends ApplicationFrame {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Constructs a new demonstration application.
      *
      * @param title  the frame title.
@@ -66,11 +59,24 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
         final XYPlot plot = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
         
         // add a second dataset and renderer...
-        final XYDataset data2 = createDataset2();
+        final XYDataset data2 = createDataset2("pareto");
         final XYItemRenderer renderer2 = new XYLineAndShapeRenderer();
-        
+        renderer2.setSeriesPaint(0, Color.RED);
         plot.setDataset(1, data2);
         plot.setRenderer(1, renderer2);
+        
+        // add a third dataset and renderer...
+        final XYDataset data3 = createDataset2("bids AgentA");
+        final XYItemRenderer renderer3 = new XYLineAndShapeRenderer();
+        plot.setDataset(2, data3);
+        plot.setRenderer(2, renderer3);
+        
+        // add a third dataset and renderer...
+        final XYDataset data4 = createDataset2("bids AgentB");
+        final XYItemRenderer renderer4 = new XYLineAndShapeRenderer();
+        renderer4.setSeriesPaint(0, Color.ORANGE);
+        plot.setDataset(3, data4);
+        plot.setRenderer(3, renderer4);
         
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
@@ -87,7 +93,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
     private DefaultXYDataset createDataset1() {
     	DefaultXYDataset dataset = new DefaultXYDataset();
         // create dataset 1...
-    	final int NUMBEROFPOSSIBLEBIDS = 100000;
+    	final int NUMBEROFPOSSIBLEBIDS = 10000;
     	double redSeries[][] = new double[2][NUMBEROFPOSSIBLEBIDS];
 		
 		//some sample data
@@ -101,7 +107,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
         return dataset;
 
     }
-    private DefaultXYDataset createDataset2() {
+    private DefaultXYDataset createDataset2(String label) {
     	DefaultXYDataset dataset = new DefaultXYDataset();
         // create dataset 1...
     	double redSeries[][] = new double[2][5];
@@ -112,7 +118,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 			redSeries[1][i] = (float)Math.random();
 		}
 		// set the labels for the graph:
-	    String redSeriesLabel = "pareto";
+	    String redSeriesLabel = label;
 	    dataset.addSeries(redSeriesLabel, redSeries);
         return dataset;
 
