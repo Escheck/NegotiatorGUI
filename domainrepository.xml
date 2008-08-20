@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository fileName="domainrepository.xml">
+    <items>
+        <agentRepItems/>
+        <domainRepItem>
+            <domainRepItem url="file:domain1">
+                <profiles>
+                    <profileRepItem url="file:profilea"/>
+                    <profileRepItem url="file:profileb"/>
+                </profiles>
+            </domainRepItem>
+            <domainRepItem url="file:domain2">
+                <profiles>
+                    <profileRepItem url="file:profilec"/>
+                    <profileRepItem url="file:profiled"/>
+                    <profileRepItem url="file:profilee"/>
+                </profiles>
+            </domainRepItem>
+        </domainRepItem>
+    </items>
+    <filename>domainrepository.xml</filename>
+</repository>
