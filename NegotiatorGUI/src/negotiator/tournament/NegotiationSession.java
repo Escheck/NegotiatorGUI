@@ -168,8 +168,15 @@ public class NegotiationSession implements Runnable {
                        Main.log("Agent " + currentAgent.getName() + " sent the following offer:");                       
                        lastBid  = ((Offer)action).getBid();
                        Main.log(action.toString());
-                       Main.log("Utility of " + agentA.getName() +": " + agentA.utilitySpace.getUtility(lastBid));
-                       Main.log("Utility of " + agentB.getName() +": " + agentB.utilitySpace.getUtility(lastBid));
+                       double utilA=agentA.utilitySpace.getUtility(lastBid);
+                       double utilB=agentB.utilitySpace.getUtility(lastBid);
+                       Main.log("Utility of " + agentA.getName() +": " + utilA);
+                       Main.log("Utility of " + agentB.getName() +": " + utilB);
+	                   	if (actionEventListener!=null) {
+	                    	actionEventListener.handleEvent(new ActionEvent(currentAgent,action,sessionNumber,
+	                    			System.currentTimeMillis()-startTimeMillies,this,utilA,utilB,"bid by "+currentAgent.getName()));
+	                		
+	                	}
                        checkAgentActivity(currentAgent) ;
                    }                   
                    else if (action instanceof Accept) {
