@@ -122,4 +122,14 @@ public abstract class Agent {
     public final void setNegotiationEnviroment(NegotiationSession pNegotiation) {
     	fNegotiation = pNegotiation;   	
     }
+
+     /** load agent of given class with given name 
+      * @author W.Pasman
+      * @throws InstantiationException if class can not be instantiated (or even found??) */
+    public static Agent loadAgent(String agentAclassName, String agentName) throws Exception {
+        java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+        Agent agent = (Agent)(loaderA.loadClass(agentAclassName).newInstance());
+        agent.setName(agentName);
+    	return agent;
+    }
 }

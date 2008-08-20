@@ -114,9 +114,9 @@ public class Repository
 		{
 			ArrayList<RepItem> its=new ArrayList<RepItem>();
 			
-			DomainRepItem dri=new DomainRepItem(new URL("file:domain1"));
-			dri.getProfiles().add(new ProfileRepItem(new URL("file:profilea"),dri));
-			dri.getProfiles().add(new ProfileRepItem(new URL("file:profileb"),dri));
+			DomainRepItem dri=new DomainRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_domain.xml"));
+			dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_seller_utility.xml"),dri));
+			dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_empty_utility.xml"),dri));
 			its.add(dri);
 				
 			dri=new DomainRepItem(new URL("file:domain2"));
@@ -135,6 +135,7 @@ public class Repository
 			items.add(new 	AgentRepItem("aap", "/Volumes/aap.class", "apy negotiator"));
 			items.add(new 	AgentRepItem("beer", "/Volumes/beer.class", "beary negotiator"));
 			items.add(new 	AgentRepItem("BayesianAgent", "agents.BayesianAgent", "simple agent"));
+			items.add(new 	AgentRepItem("UI agent", "agents.UIAgent", "basic UI agent"));
 			return items;
 		}
 		

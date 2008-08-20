@@ -18,6 +18,8 @@ import negotiator.repository.Repository;
 import java.util.ArrayList;
 import negotiator.tournament.VariablesAndValues.*;
 
+/** Wouter: obsolete?? */
+
 class AgentParametersUI extends JDialog
 {
 	ArrayList<TournamentVariable> variables;
