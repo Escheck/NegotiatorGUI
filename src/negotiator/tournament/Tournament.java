@@ -24,6 +24,8 @@ import negotiator.repository.*;
 public class Tournament
 {
 	int nrOfRunsPerSession;
+	static final String AGENT_A_NAME="Agent A";
+	static final String AGENT_B_NAME="Agent B";
 	
 	ArrayList<TournamentVariable> variables=new ArrayList<TournamentVariable>();
 		// ASSSUMPTIONS: variable 0 is the ProfileVariable.
@@ -35,7 +37,7 @@ public class Tournament
 	/** called when you press start button in Tournament window.
 	 * This builds the sessions array from given Tournament vars 
 	 * @throws exception if something wrong with the variables, eg not set. */
-	public ArrayList<NegotiationSession> getSessions() throws Exception {
+	public ArrayList<NegotiationSession2> getSessions() throws Exception {
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents=getAgentVars();
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
@@ -51,7 +53,7 @@ public class Tournament
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
-		ArrayList<NegotiationSession>sessions =new ArrayList<NegotiationSession>();
+		ArrayList<NegotiationSession2>sessions =new ArrayList<NegotiationSession2>();
 		for (ProfileRepItem profileA: profiles) {
 			for (ProfileRepItem profileB: profiles) {
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
@@ -59,7 +61,7 @@ public class Tournament
 					AgentRepItem agentA=((AgentValue)agentAval).getValue();
 					for (TournamentValue agentBval: agentBvalues) {
 						AgentRepItem agentB=((AgentValue)agentBval).getValue();
-						sessions.addAll(allParameterCombis(agentA,agentB));
+						sessions.addAll(allParameterCombis(agentA,agentB,profileA,profileB));
 					}
 				}
 				
@@ -80,29 +82,54 @@ public class Tournament
 	 * @throws exception if one of the variables contains no values (which would prevent any 
 	 * running sessions to be created with that variable.
 	 */
-	ArrayList<NegotiationSession> allParameterCombis(AgentRepItem agentA,AgentRepItem agentB) throws Exception {
+	ArrayList<NegotiationSession2> allParameterCombis(AgentRepItem agentA,AgentRepItem agentB,
+			ProfileRepItem profileA, ProfileRepItem profileB) throws Exception {
 		ArrayList<AssignedParameterVariable> allparameters;
-		allparameters=getParametersOfAgent(agentA,"AgentA");
-		allparameters.addAll(getParametersOfAgent(agentB,"AgentB")); // are the run-time names somewhere?
-		ArrayList<NegotiationSession> sessions=new ArrayList<NegotiationSession>();
-		return allParameterCombis(allparameters,sessions);
+		allparameters=getParametersOfAgent(agentA,AGENT_A_NAME);
+		allparameters.addAll(getParametersOfAgent(agentB,AGENT_B_NAME)); // are the run-time names somewhere?
+		ArrayList<NegotiationSession2> sessions=new ArrayList<NegotiationSession2>();
+		sessionnr=0;
+		allParameterCombis(allparameters,sessions,profileA,profileB,agentA,agentB,new ArrayList<AssignedParamValue>());
+		return sessions;
 	}
 	
+	int sessionnr;
 	/**
-	 * appends all permutations of all NegotiationSessions to the given sessions array.
+	 * adds all permutations of all NegotiationSessions to the given sessions array.
+	 * Note, this is not threadsafe, if called from multiple threads the session number will screw up.
 	 * @param allparameters the parameters of the agents that were selected for this nego session.
 	 * @param sessions
 	 * @throws Exception
 	 */
-	void allParameterCombis(ArrayList<AssignedParameterVariable> allparameters, ArrayList<NegotiationSession> sessions,
-			Agent agentA, Agent agentB,) throws Exception {
-		
-		NegotiationSession(Agent agentA, Agent agentB, NegotiationTemplate nt, 
-	    		int sessionNumber, int sessionTotalNumber, boolean agentAStartsP,
-	    		ActionEventListener ael, NegotiationManager themanager
-	    	) 
-	    	
-		return sessions;
+	void allParameterCombis(ArrayList<AssignedParameterVariable> allparameters, ArrayList<NegotiationSession2> sessions,
+			ProfileRepItem profileA, ProfileRepItem profileB,
+			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
+		if (allparameters.isEmpty()) {
+			 // separate the parameters into those for agent A and B.
+			ArrayList<AgentParamValue> paramsA=new ArrayList<AgentParamValue>();
+			ArrayList<AgentParamValue> paramsB=new ArrayList<AgentParamValue>();
+			for (AssignedParamValue v: chosenvalues) {
+				if (v.agentname==AGENT_A_NAME) paramsA.add(v.value); 
+				else paramsB.add(v.value);
+			}
+			 // TODO compute total #sessions. Now fixed to 9999
+			sessions.add(new  NegotiationSession2(agentA, agentB, profileA,profileB,
+	    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false, null));
+		} else {
+			// pick next variable, and compute all permutations.
+			AssignedParameterVariable v=allparameters.get(0);
+			 // remove that variable from the list... using clone to avoid damaging the original being used higher up
+			ArrayList<AssignedParameterVariable> newparameters=(ArrayList<AssignedParameterVariable>)allparameters.clone();
+			newparameters.remove(0);
+			ArrayList<TournamentValue> tvalues=v.parameter.getValues();
+			if (tvalues.isEmpty()) throw new IllegalArgumentException("tournament parameter "+v.parameter+" has no values!");
+			 // recursively do all permutations for the remaining vars.
+			for (TournamentValue tv: tvalues) {
+				ArrayList<AssignedParamValue> newchosenvalues=(ArrayList<AssignedParamValue>) chosenvalues.clone();
+				newchosenvalues.add(new AssignedParamValue((AgentParamValue)tv,v.agentname));
+				allParameterCombis(newparameters, sessions, profileA,  profileB,agentA,  agentB,newchosenvalues);
+			}
+		}	    	
 	}
 
 	
@@ -167,5 +194,14 @@ class AssignedParameterVariable {
 	AssignedParameterVariable(AgentParameterVariable param,String name) {
 		parameter=param;
 		agentname=name;
+	}
+}
+
+class AssignedParamValue {
+	public AgentParamValue value;
+	public String agentname;
+	AssignedParamValue(AgentParamValue v,String name) {
+	value=v;
+	agentname=name;
 	}
 }

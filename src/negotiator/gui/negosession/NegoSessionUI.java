@@ -123,25 +123,9 @@ public class NegoSessionUI extends JFrame {
 			}
 		};
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",1, 1,false,ael);
-		
-		/*
-		NegotiationManager nm=new NegotiationManager( 
-	            agentAsel.agent.getClassPath(), 
-	            "agent A",
-	            agentAprofile.getURL().getFile(), 
-	            agentBsel.agent.getClassPath(), 
-	            "agent B",
-	            agentBprofile.getURL().getFile(), 
-	            domain.getURL().getFile(),
-	            1,
-	            false); 
-		nm.subscribe(ael);
-		Thread negoManagerThread = new Thread(nm);
-		*/
-
-		Thread negoManagerThread=new Thread(ns);
-		negoManagerThread.start();
+	    		"agent A", "agent B",null,null,1, 1,false,ael);
+		Thread negosession=new Thread(ns);
+		negosession.start();
 	}
 	
 	/** run this for a demo of NegoSessionUI */
