@@ -17,8 +17,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import negotiator.repository.*;
+
 import java.util.ArrayList;
-import negotiator.tournament.NegotiationSession;
+import negotiator.tournament.NegotiationSession2;
 import negotiator.NegotiationTemplate;
 
 /**
@@ -121,6 +122,10 @@ public class NegoSessionUI extends JFrame {
 				System.out.println("Caught event "+evt);
 			}
 		};
+		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
+	    		"agent A", "agent B",1, 1,false,ael);
+		
+		/*
 		NegotiationManager nm=new NegotiationManager( 
 	            agentAsel.agent.getClassPath(), 
 	            "agent A",
@@ -132,8 +137,10 @@ public class NegoSessionUI extends JFrame {
 	            1,
 	            false); 
 		nm.subscribe(ael);
-
 		Thread negoManagerThread = new Thread(nm);
+		*/
+
+		Thread negoManagerThread=new Thread(ns);
 		negoManagerThread.start();
 	}
 	

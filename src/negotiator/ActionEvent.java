@@ -20,19 +20,17 @@ public class ActionEvent
 	Action act;   				// Bid, Accept, etc.
 	int round;					// integer 0,1,2,...: round in the overall bidding.
 	long elapsedMilliseconds;	// milliseconds since start of nego. Using System.currentTimeMillis();
-	NegotiationSession session; // the session details of this bid round.
 	double normalizedUtilityA;
 	double normalizedUtilityB;
 	String errorRemarks;		// errors 
 	
-	public ActionEvent(Agent actorP,Action actP,int roundP,long elapsed,NegotiationSession sessionP,
+	public ActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
 			double utilA,double utilB,String remarks)
 	{
 		actor=actorP;
 		act=actP;
 		round=roundP;
 		elapsedMilliseconds=elapsed;
-		session=sessionP;
 		normalizedUtilityA=utilA;
 		normalizedUtilityB=utilB;
 		errorRemarks=remarks;
@@ -40,7 +38,7 @@ public class ActionEvent
 	
 	public String toString()
 	{
-		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+session+","+
+		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+
 		normalizedUtilityA+","+normalizedUtilityB+","+errorRemarks+"]";
 	}
 }

@@ -13,18 +13,6 @@ import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
 import java.util.ArrayList;
 import java.util.Hashtable;
-
-/*
-import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
-import negotiator.issue.IssueInteger;
-import negotiator.issue.IssueReal;
-import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
-import negotiator.issue.ValueInteger;
-import negotiator.issue.ValueReal;
-import negotiator.utility.EvaluatorDiscrete;
-*/
 import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
@@ -41,7 +29,9 @@ public abstract class Agent {
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-    protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
+     //protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
+     // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
+     // particularly we now have NegotiationSession2 replacing NegotiationSession.
     
     
     Hashtable<String,Double> parametervalues; // values for the parameters for this agent. Key is param name
@@ -119,9 +109,12 @@ public abstract class Agent {
      * negotiation (larger with human users).
      */
     public boolean isUIAgent() { return false; }
+    
+    /*
     public final void setNegotiationEnviroment(NegotiationSession pNegotiation) {
     	fNegotiation = pNegotiation;   	
     }
+    */
 
      /** load agent of given class with given name 
       * @author W.Pasman
