@@ -38,4 +38,9 @@ public class DomainRepItem implements RepItem
 	public String toString() {
 		return "DomainRepItem["+url+","+profiles+"]";
 	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof DomainRepItem)) return false;
+		return url.equals(((DomainRepItem)o).getURL());
+	}
 }

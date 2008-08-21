@@ -18,14 +18,23 @@ import javax.xml.bind.annotation.*;
 public class AgentRepItem implements RepItem
 {
 	@XmlAttribute
-	String agentName; /**  the key: unique name of the agent as it will be known in the nego system.
-	 						* This is an arbitrary but unique label. */
+	String agentName; /**  the key: short but unique name of the agent as it will be known in the nego system.
+	 						* This is an arbitrary but unique label for this TYPE of agent.
+	 						* Note that there may still be multiple actual agents of this type during a negotiation. */
 	@XmlAttribute
 	String classPath; /** file path including the class name */
 	@XmlAttribute
 	String description; /** description of this agent */
 
 	public AgentRepItem(){
+	}
+	
+	/**
+	 * @returns true if agentName and classPath equal. Note that agentName alone is sufficient to be equal as keys are unique.
+	 */
+	public boolean equals(Object o) {
+		if (!(o instanceof AgentRepItem)) return false;
+		return agentName.equals( ((AgentRepItem)o).agentName) && classPath.equals( ((AgentRepItem)o).classPath);
 	}
 	
 	public AgentRepItem(String aName, String cPath, String desc) {
