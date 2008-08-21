@@ -3,44 +3,24 @@ package negotiator.gui.tournamentvars;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JTree;
-import javax.swing.tree.*;
-
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.*;
 import javax.swing.JButton;
-
-import negotiator.Domain;
-import negotiator.repository.*;
-import negotiator.utility.UtilitySpace;
-import negotiator.tournament.NegotiationSession2;
-import javax.swing.JFileChooser;
-import java.io.FileFilter;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.Dimension;
 
-
-
-import negotiator.repository.*;
 import negotiator.exceptions.Warning;
-import negotiator.gui.agentrepository.AgentRepositoryUI;
-import negotiator.gui.domainrepository.DomainRepositoryUI;
-import negotiator.gui.tree.TreeFrame;
-import negotiator.issue.Objective;
-import negotiator.tournament.NegotiationSession;
+import negotiator.repository.*;
+import negotiator.tournament.NegotiationSession2;
+
 import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.*;
-import negotiator.repository.*;
 import negotiator.AgentParam;
 
 class TournamentVarsUI extends JFrame {
@@ -164,7 +144,7 @@ class TournamentVarsUI extends JFrame {
 		setVisible(true);
 	}
 	
-
+	/**********************button functionality************************/
 
 	void editVariable(TournamentVariable v) throws Exception {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
