@@ -1,5 +1,6 @@
 package negotiator.gui.tournamentvars;
 
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JTree;
@@ -20,7 +21,7 @@ import javax.swing.JButton;
 import negotiator.Domain;
 import negotiator.repository.*;
 import negotiator.utility.UtilitySpace;
-
+import negotiator.tournament.NegotiationSession2;
 import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
@@ -36,6 +37,7 @@ import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.tree.TreeFrame;
 import negotiator.issue.Objective;
+import negotiator.tournament.NegotiationSession;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.repository.*;
@@ -305,7 +307,12 @@ class TournamentVarsUI extends JFrame {
 	 * Will build the negotiationsessions in the tournament but not yet do anything else.
 	 */
 	void start() throws Exception {
-		tournament.buildSessions();
+		
+		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
+		for (NegotiationSession2 s: sessions) { 
+			Thread negosession=new Thread(s);
+			negosession.start(); 
+		}
 	}
 	
 	

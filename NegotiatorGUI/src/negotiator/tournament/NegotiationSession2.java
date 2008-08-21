@@ -1,10 +1,7 @@
 package negotiator.tournament;
 
-import negotiator.ActionEvent;
-import negotiator.Agent;
 import negotiator.Main;
 import negotiator.NegotiationOutcome;
-import negotiator.NegotiationTemplate;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,16 +9,13 @@ import java.util.ArrayList;
 
 import negotiator.actions.*;
 
-import java.util.Date;
-import negotiator.utility.UtilitySpace;
-import negotiator.analysis.BidPoint;
-import negotiator.xml.*;
+
 import java.util.Random;
 import negotiator.*;
 import negotiator.exceptions.Warning;
 import negotiator.gui.SessionFrame;
 import negotiator.repository.*;
-
+import negotiator.tournament.VariablesAndValues.*;
 
 
 
@@ -42,26 +36,39 @@ public class NegotiationSession2 implements Runnable {
     ProfileRepItem profileBrep;
     String agentAname;
     String agentBname;
+    ArrayList<AgentParamValue> agentAparams=new ArrayList<AgentParamValue> ();
+    ArrayList<AgentParamValue> agentBparams=new ArrayList<AgentParamValue> ();
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
     ActionEventListener actionEventListener;
-	AgentRepItem startingAgent;
+	String startingAgent; // agentAname or agnetBname
 	Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	NegotiationOutcome outcome;
 
     public static int NON_GUI_NEGO_TIME = 120;
     public static int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
 
+
     /** 
-     * 
      * Creates a new instance of Negotiation 
-     * @param agentAStartsP = true to force start with agent A. with false, start agent is chosen randomly.
-     * @param actionEventListener is the callback point for bidding events. null means you won't be given call backs.
-     * @param waiting_parent is the object that will be waiting on us after we got started , and will be called as waiting_parent.notify();
-     **/
+     * @param agtA AgentRepItem (agent descriptor) for agent A.
+     * @param agtB idem agent B.
+     * @param profA ProfileRep Item (the profile descriptor) for agent A.
+     * @param profB idem agent B.
+     * @param nameA the run-name for agent A. This is not the class name!
+     * @param nameB idem agent B.
+     * @param agtApar parameters for Agent A. null is equivalent to empty parameters list.
+     * @param agtBpar idem for agent B.
+     * @param sessionnr
+     * @param totalsessions
+     * @param forceStartA true to force start with agent A. with false, start agent is chosen randomly.
+     * @param ael is the callback point for bidding events. null means you won't be given call backs.
+     * @throws Exception
+     */
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
-    		String nameA, String nameB,int sessionnr, int totalsessions,boolean forceStartA,
+    		String nameA, String nameB,ArrayList<AgentParamValue> agtApar,ArrayList<AgentParamValue> agtBpar,
+    		int sessionnr, int totalsessions,boolean forceStartA,
     		ActionEventListener ael) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
@@ -69,13 +76,15 @@ public class NegotiationSession2 implements Runnable {
     	profileBrep=profB;
     	agentAname=nameA;
     	agentBname=nameB;
+    	if (agtApar!=null) agentAparams=agtApar;
+    	if (agtBpar!=null) agentBparams=agtBpar;
     	sessionNumber=sessionnr;
     	sessionTotalNumber=totalsessions;
     	startingWithA=forceStartA;
     	actionEventListener=ael;
-    	startingAgent=agentArep;
+    	startingAgent=agentAname;
     	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent=agentBrep;
+    		startingAgent=agentBname;
     	}
     	check();
     }
@@ -146,7 +155,7 @@ public class NegotiationSession2 implements Runnable {
         		}
         }
         // add path to the analysis chart
-        // TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyways.
+        // TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
         //if (nt.getBidSpace()!=null)
         //	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
         	
@@ -178,76 +187,8 @@ public class NegotiationSession2 implements Runnable {
         return;
     }
     
-    
-    /*
-	public ArrayList<BidPoint> getAgentABids() {
-		return fAgentABids;
-	}
-	
-	public ArrayList<BidPoint> getAgentBBids() {
-		return fAgentBBids;
-	}
-	
-    public double getOpponentUtility(Agent pAgent, Bid pBid) throws Exception{
-    	if(pAgent.equals(agentA)) 
-    		return agentB.utilitySpace.getUtility(pBid);
-    	else
-    		return agentA.utilitySpace.getUtility(pBid);
+    public String toString() {
+    	return "NegotiationSession["+agentArep.getName()+" versus "+agentBrep.getName()+"]";
     }
-    public double getOpponentWeight(Agent pAgent, int pIssueID) throws Exception{
-    	if(pAgent.equals(agentA)) 
-    		return agentB.utilitySpace.getWeight(pIssueID);
-    	else
-    		return agentA.utilitySpace.getWeight(pIssueID);
-    }
-    
-    public void addAdditionalLog(SimpleElement pElem) {
-    	if(pElem!=null)
-    		additionalLog.addChildElement(pElem);
-    	
-    }
-    
-    // This is the running method of the negotiation thread.
-      It contains the work flow of the negotiation. 
-     /
-    void checkAgentActivity(Agent agent) {
-        if(agent.equals(agentA)) agentAtookAction = true;
-        else agentBtookAction = true;
-        
-    }
-
-  
-    public Agent otherAgent(Agent ag)
-    {
-    	if (ag==agentA) return agentB;
-    	return agentA;    	
-    }
-  
-    
-    public void newOutcome(Agent currentAgent, double utilA, double utilB, Action action, String message) throws Exception {
-        UtilitySpace spaceA=nt.getAgentAUtilitySpace();
-        UtilitySpace spaceB=nt.getAgentBUtilitySpace();
-
-        
-    	no=new NegotiationOutcome(sessionNumber, 
-			   agentA.getName(),  agentB.getName(),
-            agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
-            utilA,utilB,
-            message,
-            fAgentABids,fAgentBBids,
-            spaceA.getUtility(spaceA.getMaxUtilityBid()),
-            spaceB.getUtility(spaceB.getMaxUtilityBid()),
-            startingWithA, 
-            nt.getAgentAUtilitySpaceFileName(),
-            nt.getAgentBUtilitySpaceFileName(),
-            additionalLog
-            );
-    	
-    	if (actionEventListener!=null) {
-        	actionEventListener.handleEvent(new ActionEvent(currentAgent,action,sessionNumber,
-        			System.currentTimeMillis()-startTimeMillies,utilA,utilB,message));
-    		
-    	}
-    }
-    */
+ 
 }
