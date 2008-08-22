@@ -15,23 +15,20 @@ import javax.xml.bind.annotation.*;
 public class DomainRepItem implements RepItem
 {	
 	@XmlAttribute
-	String url;	// URL is not accepted by JAXB xml thingie. We convert in getURL().
+	URL url;	// URL is not accepted by JAXB xml thingie. We convert in getURL().
 	@XmlElement(name="profile")
 	ArrayList<ProfileRepItem> profiles=new ArrayList<ProfileRepItem>(); //default to empty profiles.
 
 	public DomainRepItem() { 
-		url="file:unknownfilename";
+		try { url=new URL("file:unknownfilename"); }
+		catch (Exception e) { new Warning("default url failed!?",e); } 
 	}
 
 	public DomainRepItem(URL newurl)  {
-		url=newurl.toString();
+		url=newurl;
 	}
 	
-	public URL getURL() {
-		try { return new URL(url); } // should work, since we checked it.
-		catch (Exception e) { new Warning("failed to set default URL",e); }
-		return null;
-	}
+	public URL getURL() { return url;	}
 	
 	public ArrayList<ProfileRepItem> getProfiles()  { return profiles; }
 	

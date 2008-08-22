@@ -16,27 +16,23 @@ import javax.xml.bind.Unmarshaller;
 public class ProfileRepItem implements RepItem
 {
 	@XmlAttribute
-	String url; 	// URL is not accepted by JAXB xml thingie. We convert in getURL().
+	URL url; 	// URL is not accepted by JAXB xml thingie. We convert in getURL().
 	@XmlTransient
 	DomainRepItem domain;
 	
 	/** This creator is not for public use, only to keep XML parser happy... */
 	public ProfileRepItem() { 
 		try { 
-			url="file:uninstantiatedProfilerepitem"; 
+			url=new URL("file:uninstantiatedProfilerepitem"); 
 		} catch (Exception e) { new Warning("failed to set filename default value"+e); }
 	}
 	
 	public ProfileRepItem(URL file,DomainRepItem dom) {
-		url=file.toString();
+		url=file;
 		domain=dom;
 	}
 	
-	public  URL getURL() { 		
-		try { return new URL(url); } // should work, since we checked it.
-		catch (Exception e) { new Warning("failed to set default URL",e); }
-		return null; 
-	}
+	public  URL getURL() { return url; }
 	
 	public DomainRepItem getDomain() { return domain; }
 	
