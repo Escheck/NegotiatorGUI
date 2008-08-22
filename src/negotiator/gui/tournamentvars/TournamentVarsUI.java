@@ -2,6 +2,7 @@ package negotiator.gui.tournamentvars;
 
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -22,6 +23,7 @@ import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
+import negotiator.ActionEventListener;
 import negotiator.AgentParam;
 
 public class TournamentVarsUI extends JFrame {
@@ -38,6 +40,7 @@ public class TournamentVarsUI extends JFrame {
 	JButton upbutton=new JButton("Up");
 	JButton downbutton=new JButton("Down");
 	JButton startbutton=new JButton("Start");
+	JCheckBox enableLoggingBox=new JCheckBox("Logging&Graph",true);
 	
 	public TournamentVarsUI() throws Exception {
 		Tournament t=new Tournament(); // bit stupid to correct an empty one, but will be useful later.
@@ -138,10 +141,10 @@ public class TournamentVarsUI extends JFrame {
 		buttons.add(updownpanel,BorderLayout.WEST);
 		buttons.add(editvarbutton,BorderLayout.CENTER);
 		buttons.add(addremovepanel,BorderLayout.EAST);
-		buttons.add(startbutton,BorderLayout.SOUTH);
+		buttons.add(enableLoggingBox,BorderLayout.SOUTH);
 
-		add(scrollpane); add(buttons);
-		setPreferredSize(new Dimension(300,300));
+		add(scrollpane); add(buttons); add(startbutton);
+		//setPreferredSize(new Dimension(300,300));
 		pack();
 		setVisible(true);
 	}
@@ -185,7 +188,7 @@ public class TournamentVarsUI extends JFrame {
 				try {
 					newvaluestr=(String)new ParameterValueUI(this,""+v,newvaluestr).getResult();
 					if (newvaluestr==null) break;
-					System.out.println("new value="+newvaluestr);
+					//System.out.println("new value="+newvaluestr);
 					String[] newstrings=newvaluestr.split(",");
 					newvalues=new ArrayList<TournamentValue>();
 					for (int i=0; i<newstrings.length; i++) {
@@ -221,17 +224,16 @@ public class TournamentVarsUI extends JFrame {
 		 // Assumption: 1 and 2 in the list are the AgentVars. This is checked in allparams()
 		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
 		params.addAll(allparams(tournament.getVariables().get(2).getValues()));
-		System.out.println("available parameters:"+params);
+		//System.out.println("available parameters:"+params);
 		 // launch editor for a variable.
 		ArrayList<AgentParam> paramsAsArray=new ArrayList<AgentParam>();
 		paramsAsArray.addAll(params);
 		AgentParam result=(AgentParam)new ParameterVarUI(this,paramsAsArray).getResult();
-		System.out.println("result="+result);
+		//System.out.println("result="+result);
 		if (result==null) return; // cancel, error, whatever.
 		tournament.getVariables().add(new AgentParameterVariable(result));
 		int row=tournament.getVariables().size();
 		dataModel.fireTableRowsInserted(row,row);
-	
 	}
 	
 	void up() throws Exception {
@@ -290,7 +292,14 @@ public class TournamentVarsUI extends JFrame {
 	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
 	void start() throws Exception {
-		new Thread(new TournamentRunner(tournament)).start();
+		
+		ActionEventListener ael=new ActionEventListener() {
+			public void handleEvent(negotiator.ActionEvent evt) {
+				System.out.println("Caught event "+evt);
+			}
+		};
+		
+		new Thread(new TournamentRunner(tournament,ael)).start();
 	}
 	
 	
