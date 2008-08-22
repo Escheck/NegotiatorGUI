@@ -3,10 +3,8 @@ package negotiator.repository;
 import java.util.ArrayList;
 import java.net.URL;
 import negotiator.exceptions.*;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+
 /**
  * A DomainRepItem is a domain reference that can be put in the domain repository.
  * It contains only a unique reference to an xml file with the domain description.
@@ -17,21 +15,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DomainRepItem implements RepItem
 {	
 	@XmlAttribute
-	URL url;
-	@XmlElementWrapper
-	@XmlAnyElement
+	String url;	// URL is not accepted by JAXB xml thingie. We convert in getURL().
+	@XmlElement(name="profile")
 	ArrayList<ProfileRepItem> profiles=new ArrayList<ProfileRepItem>(); //default to empty profiles.
 
 	public DomainRepItem() { 
-		try { url=new URL("unknownfilename"); }
-		catch (Exception e) { new Warning("failed to set default URL"); }
+		url="file:unknownfilename";
 	}
 
-	public DomainRepItem(URL newurl) {
-		url=newurl;
+	public DomainRepItem(URL newurl)  {
+		url=newurl.toString();
 	}
 	
-	public URL getURL() { return url; }
+	public URL getURL() {
+		try { return new URL(url); } // should work, since we checked it.
+		catch (Exception e) { new Warning("failed to set default URL",e); }
+		return null;
+	}
 	
 	public ArrayList<ProfileRepItem> getProfiles()  { return profiles; }
 	

@@ -23,12 +23,8 @@ import negotiator.utility.UtilitySpace;
 import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
-import java.util.ArrayList;
-import negotiator.repository.*;
 import negotiator.exceptions.Warning;
-import negotiator.gui.agentrepository.AgentRepositoryUI;
-import negotiator.gui.tree.TreeFrame;
-import negotiator.issue.Objective;
+
 
 /**
  * A user interface to the agent repository 
