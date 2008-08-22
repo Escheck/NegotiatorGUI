@@ -155,7 +155,9 @@ public class TournamentVarsUI extends JFrame {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
 		 // IMHO the strong typechecking gives maybe even more problems than it resolves...
 		if (v instanceof ProfileVariable) { 
-			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI(this).getResult();
+			ArrayList<ProfileRepItem> oldv=new ArrayList<ProfileRepItem>();
+			for (TournamentValue tv:v.getValues()) oldv.add( ((ProfileValue)tv).getProfile() );
+			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI(this,oldv).getResult();
 			System.out.println("result new vars="+newv);
 			if (newv==null) return; // cancel pressed.
 			 // make profilevalues for each selected profile and add to the set.
