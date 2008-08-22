@@ -2,15 +2,25 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 import negotiator.exceptions.Warning;
+import negotiator.ActionEventListener;
 
 /**
  * TournamentRunner is a class that runs a tournament.
- * Use with new Thread(new TournamentRunner(tournament)).start();
+ * Use with new Thread(new TournamentRunner(tournament,ael)).start();
+ * You can use a null action event listener if you want to.
  */
 public class TournamentRunner implements Runnable {
     Tournament tournament;
+    ActionEventListener the_event_listener;
 	
-    public TournamentRunner(Tournament t) throws Exception {
+    /** 
+     * 
+     * @param t the tournament to be run
+     * @param ael the action event listener to use. If not null, the existing listener for each
+     * 	session will be overridden with this listener.
+     * @throws Exception
+     */
+    public TournamentRunner(Tournament t,ActionEventListener ael) throws Exception {
     	tournament=t;
     }
     
@@ -27,6 +37,7 @@ public class TournamentRunner implements Runnable {
     	try {
     		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
 			for (NegotiationSession2 s: sessions) {
+				if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 			}
     	} catch (Exception e) { new Warning("Fatail error cancelled tournament run:"+e); }

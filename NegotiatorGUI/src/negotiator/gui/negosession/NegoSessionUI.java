@@ -7,13 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import negotiator.ActionEventListener;
-import negotiator.Agent;
-import negotiator.Logger;
-import negotiator.Main;
-import negotiator.NegotiationManager;
-import negotiator.NegotiationTemplate;
+
 import negotiator.exceptions.Warning;
-import negotiator.gui.MainFrame;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -23,7 +18,6 @@ import negotiator.repository.*;
 
 import java.util.ArrayList;
 import negotiator.tournament.NegotiationSession2;
-import negotiator.NegotiationTemplate;
 
 /**
  * This shows a GUI enabling you to edit all settings for a nego sessino.

@@ -46,6 +46,7 @@ public class SessionRunner implements Runnable {
 
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
+    ActionEventListener the_event_listener;
 
      /** load the runtime objects to start negotiation */
     public SessionRunner(NegotiationSession2 s) throws Exception {

@@ -128,8 +128,9 @@ public class NegotiationSession2 implements Runnable {
     }
     
     
-    protected void runNegotiationSession(int sessionNumber)  throws Exception
+    protected void runNegotiationSession(int nr)  throws Exception
     {
+    	sessionNumber=nr;
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	SessionRunner sessionrunner=new SessionRunner(this);
     	totalTime=sessionrunner.totTime;
