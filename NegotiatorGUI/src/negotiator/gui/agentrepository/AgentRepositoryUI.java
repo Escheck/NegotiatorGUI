@@ -35,7 +35,7 @@ public class AgentRepositoryUI extends JFrame
 		agentrepository = Repository.get_agent_repository();
 		setTitle("Agent Repository");
 		setLayout(new BorderLayout());
-		
+
 		dataModel = new AbstractTableModel() {
 			final String columnnames[] = {"Agent Name","Filename (full path)","Version","Description"};
 			

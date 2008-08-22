@@ -24,7 +24,7 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.AgentParam;
 
-class TournamentVarsUI extends JFrame {
+public class TournamentVarsUI extends JFrame {
 	
 	Tournament tournament; // this contains the variables and their possible values.
 	AbstractTableModel dataModel;
@@ -39,8 +39,9 @@ class TournamentVarsUI extends JFrame {
 	JButton downbutton=new JButton("Down");
 	JButton startbutton=new JButton("Start");
 	
-	public TournamentVarsUI(Tournament t) throws Exception {
-		if (t==null) throw new NullPointerException("null tournament");
+	public TournamentVarsUI() throws Exception {
+		Tournament t=new Tournament(); // bit stupid to correct an empty one, but will be useful later.
+		correct_tournament(t);
 		
 		tournament=t;
 		domainrepository=Repository.get_domain_repos();
@@ -344,9 +345,8 @@ class TournamentVarsUI extends JFrame {
 	public static void main(String[] args) 
 	{
 		try {
-			Tournament t=new Tournament(); // bit stupid to correct an empty one, but will be useful later.
-			correct_tournament(t);
-			new TournamentVarsUI(t); 
+
+			new TournamentVarsUI(); 
 		}
 		catch (Exception e) { new Warning("TournamentVarsUI failed to launch: "+e); }
 	}

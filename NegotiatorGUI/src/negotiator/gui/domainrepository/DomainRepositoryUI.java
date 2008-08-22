@@ -49,9 +49,9 @@ public class DomainRepositoryUI extends JFrame
 	JTree tree;
 	DefaultTreeModel treemodel;
 	
-	public DomainRepositoryUI(Repository domainrepos) throws Exception
+	public DomainRepositoryUI() throws Exception
 	{
-		domainrepository=domainrepos;
+		domainrepository=Repository.get_domain_repos();
 		setTitle("Negotiation Domains and Preference Profile Repository");
 		setLayout(new BorderLayout());
 	
@@ -217,7 +217,7 @@ public class DomainRepositoryUI extends JFrame
 	public static void main(String[] args) 
 	{
 		try {
-			new DomainRepositoryUI(Repository.get_domain_repos()); 
+			new DomainRepositoryUI(); 
 			}
 		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
 	}
