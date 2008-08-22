@@ -49,7 +49,7 @@ public class Repository
 		/** @author Dmytro */
 		public Repository load(String fileName) throws Exception {
 			Repository rep = null;
-			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class);		
+			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class,ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class);		
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			unmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
 			rep = (Repository)( unmarshaller.unmarshal(new File(fileName)));
@@ -59,7 +59,7 @@ public class Repository
 		/** @author Dmytro */
 		public void save() {
 			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class, URL.class);		
+				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class);		
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 						   new Boolean(true));
