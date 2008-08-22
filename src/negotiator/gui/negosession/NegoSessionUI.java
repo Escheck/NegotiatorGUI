@@ -8,10 +8,13 @@ import javax.swing.JFrame;
 
 import negotiator.ActionEventListener;
 import negotiator.Agent;
+import negotiator.Logger;
 import negotiator.Main;
 import negotiator.NegotiationManager;
 import negotiator.NegotiationTemplate;
 import negotiator.exceptions.Warning;
+import negotiator.gui.MainFrame;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -124,6 +127,9 @@ public class NegoSessionUI extends JFrame {
 		};
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false,ael);
+		
+		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
+		 
 		Thread negosession=new Thread(ns);
 		negosession.start();
 	}

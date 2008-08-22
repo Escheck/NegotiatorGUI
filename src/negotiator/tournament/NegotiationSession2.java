@@ -99,17 +99,26 @@ public class NegotiationSession2 implements Runnable {
     private Thread negoThread = null;
     SessionFrame sf; // this will show the outcomes. Not really a job for NegoSession, TODO remove this,
  
+     /**
+      * Warning. You can call run() directly (instead of using Thread.start() )
+      * but be aware that run() will not return until the nego session
+      * has completed. That means that your interface will lock up until the session is complete.
+      * And if the negosession uses modal interfaces, this will lock up swing, because modal
+      * interfaces will not launch until the other swing interfaces have handled their events.
+      * (at least this is my current understanding, Wouter, 22aug08).
+      * See "java dialog deadlock" on the web...
+      */
     public void run() {
     	try { 
     		startNegotiation();
     		// only sleep if batch mode????
-    		Thread.sleep(5000); // 5 seconds waiting for what???
-    		// huh??           System.exit(0);
+    		Thread.sleep(1000); // 1 second delay before next nego starts. Used to be 5, is it needed anyway?
+    		// Wouter: huh?? removed this           System.exit(0);
         } catch (Exception e) { new Warning("Problem starting negotiation:"+e); }
     }
 
     public void startNegotiation() throws Exception {
-        sf = new SessionFrame(agentArep.getName(), agentBrep.getName());
+        sf = new SessionFrame(agentAname, agentBname);
         sf.setVisible(true);
         Main.log("Starting negotiations...");
         for(int i=0;i<sessionTotalNumber;i++) {
@@ -125,10 +134,10 @@ public class NegotiationSession2 implements Runnable {
     	SessionRunner sessionrunner=new SessionRunner(this);
     	totalTime=sessionrunner.totTime;
     	if(Main.fDebug) {
-    		sessionrunner.run();	
+    		sessionrunner.run();
         } else {
         	negoThread = new Thread(sessionrunner);
-            //System.out.println("nego start. "+System.currentTimeMillis()/1000);
+            System.out.println("nego start. "+System.currentTimeMillis()/1000);
             negoThread.start();
         	try {
         		synchronized (this) {

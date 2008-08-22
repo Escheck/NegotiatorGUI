@@ -20,6 +20,7 @@ import negotiator.repository.*;
 import negotiator.tournament.NegotiationSession2;
 
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.AgentParam;
 
@@ -284,15 +285,11 @@ class TournamentVarsUI extends JFrame {
 	}
 	
 	/** start negotiation.
-	 * Will build the negotiationsessions in the tournament but not yet do anything else.
+	 * Run it in different thread, so that we can return control to AWT/Swing
+	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
 	void start() throws Exception {
-		
-		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
-		for (NegotiationSession2 s: sessions) { 
-			Thread negosession=new Thread(s);
-			negosession.start(); 
-		}
+		new Thread(new TournamentRunner(tournament)).start();
 	}
 	
 	

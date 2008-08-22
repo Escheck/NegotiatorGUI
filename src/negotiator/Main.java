@@ -31,7 +31,7 @@ public class Main {
     public static String[] args;
     public static NegotiationManager nm;
     public static boolean batchMode ;
-    public static boolean fDebug;
+    public static boolean fDebug=false;
     public static MainFrame mf;
     public static Chart fChart = null;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
