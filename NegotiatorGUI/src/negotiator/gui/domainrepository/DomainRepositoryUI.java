@@ -24,6 +24,7 @@ import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
 import negotiator.exceptions.Warning;
+import negotiator.gui.tree.TreeFrame;
 
 
 /**
