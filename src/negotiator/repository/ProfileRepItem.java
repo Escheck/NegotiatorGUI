@@ -44,5 +44,8 @@ public class ProfileRepItem implements RepItem
 		this.domain = (DomainRepItem)parent;
 	}
 	
-	
+	public boolean equals(Object o) {
+		if (!(o instanceof ProfileRepItem)) return false;
+		return url.equals( ((ProfileRepItem)o).getURL());
+	}
 }
