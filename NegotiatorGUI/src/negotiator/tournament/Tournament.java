@@ -3,7 +3,7 @@ package negotiator.tournament;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.sun.jdi.InternalException;
+
 
 import negotiator.ActionEventListener;
 import negotiator.Agent;
@@ -175,7 +175,7 @@ public class Tournament
 				 return profiles;
 			}
 		}
-		throw new InternalException("tournament does not contain a profile variable");
+		throw new RuntimeException("tournament does not contain a profile variable");
 	}
 
 	
