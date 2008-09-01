@@ -6,6 +6,8 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+//import negotiator.ActionEventListener;
+import negotiator.Logger;
 import negotiator.NegotiationEventListener;
 
 import negotiator.events.LogMessageEvent;
@@ -20,6 +22,8 @@ import negotiator.repository.*;
 import java.util.ArrayList;
 import negotiator.tournament.NegotiationSession2;
 
+import negotiator.gui.progress.*;
+
 /**
  * This shows a GUI enabling you to edit all settings for a nego sessino.
  * @author wouter
@@ -30,6 +34,7 @@ public class NegoSessionUI extends JFrame {
 	JButton startbutton=new JButton("Start Negotiation");
 	JComboBox profileA,profileB; // profiles of the agents.
 	JComboBox agentAselection, agentBselection; // selection of the agent to represent A and B.
+	Logger logger;
 	
 	public NegoSessionUI() throws Exception {
 		getContentPane().setLayout(new GridLayout(0,2)); 
@@ -125,8 +130,11 @@ public class NegoSessionUI extends JFrame {
 				
 			}
 		};
+
+		NegotiationEventListener graphlistener=new ProgressUI();
+		
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",null,null,1, 1,false,ael);
+	    		"agent A", "agent B",null,null,1, 1,false,graphlistener);
 		
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 
