@@ -41,7 +41,7 @@ public class NegotiationSession2 implements Runnable {
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
-    ActionEventListener actionEventListener;
+    NegotiationEventListener actionEventListener;
 	String startingAgent; // agentAname or agnetBname
 	Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	NegotiationOutcome outcome;
@@ -69,7 +69,7 @@ public class NegotiationSession2 implements Runnable {
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,ArrayList<AgentParamValue> agtApar,ArrayList<AgentParamValue> agtBpar,
     		int sessionnr, int totalsessions,boolean forceStartA,
-    		ActionEventListener ael) throws Exception {
+    		NegotiationEventListener ael) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
     	profileArep=profA;

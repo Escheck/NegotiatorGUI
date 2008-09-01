@@ -1,5 +1,6 @@
-package negotiator;
+package negotiator.events;
 
+import negotiator.Agent;
 import negotiator.actions.Action;
 import negotiator.tournament.NegotiationSession;
 
@@ -14,7 +15,7 @@ import negotiator.tournament.NegotiationSession;
  * @author wouter
  *
  */
-public class ActionEvent
+public class ActionEvent extends NegotiationEvent
 {
 	Agent actor;
 	Action act;   				// Bid, Accept, etc.
@@ -24,9 +25,10 @@ public class ActionEvent
 	double normalizedUtilityB;
 	String errorRemarks;		// errors 
 	
-	public ActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
+	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed,
 			double utilA,double utilB,String remarks)
 	{
+		super(source);
 		actor=actorP;
 		act=actP;
 		round=roundP;
@@ -41,4 +43,37 @@ public class ActionEvent
 		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+
 		normalizedUtilityA+","+normalizedUtilityB+","+errorRemarks+"]";
 	}
+
+	public Agent getActor() {
+		return actor;
+	}
+
+	public Action getAct() {
+		return act;
+	}
+
+	public int getRound() {
+		return round;
+	}
+
+	public long getElapsedMilliseconds() {
+		return elapsedMilliseconds;
+	}
+
+	public double getNormalizedUtilityA() {
+		return normalizedUtilityA;
+	}
+	public String getAgentAsString() {
+		return actor.getName();
+	}
+
+	public double getNormalizedUtilityB() {
+		return normalizedUtilityB;
+	}
+
+	public String getErrorRemarks() {
+		return errorRemarks;
+	}
+	
+	
 }

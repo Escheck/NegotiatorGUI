@@ -6,8 +6,9 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import negotiator.ActionEventListener;
+import negotiator.NegotiationEventListener;
 
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 
 import java.awt.GridLayout;
@@ -114,9 +115,14 @@ public class NegoSessionUI extends JFrame {
 		if (domain!=agentBprofile.getDomain())
 			throw new IllegalArgumentException("profiles for agent A and B do not have the same domain. Please correct your profiles");
 		
-		ActionEventListener ael=new ActionEventListener() {
-			public void handleEvent(negotiator.ActionEvent evt) {
+		NegotiationEventListener ael=new NegotiationEventListener() {
+			public void handleActionEvent(negotiator.events.ActionEvent evt) {
 				System.out.println("Caught event "+evt);
+			}
+
+			public void handleLogMessageEvent(LogMessageEvent evt) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
