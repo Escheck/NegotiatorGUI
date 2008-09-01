@@ -420,10 +420,10 @@ public class BayesianAgent extends Agent {
 				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
 				//double lDistance = calculateEuclideanDistanceUtilitySpace();
 				
-				if(myLastAction==null) dumpDistancesToLog(0);
+				//if(myLastAction==null) dumpDistancesToLog(0);
 				System.out.print("Updating beliefs ...");
 				fOpponentModel.updateBeliefs(lOppntBid);
-				dumpDistancesToLog(fRound++);
+				//dumpDistancesToLog(fRound++);
 				System.out.println("Done!");
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
@@ -467,7 +467,7 @@ public class BayesianAgent extends Agent {
 				// I am starting, but not sure whether Negotiator checks this, so
 				// lets check also myLastAction...
 				if (myLastAction == null) {
-					dumpDistancesToLog(fRound++);				
+				//	dumpDistancesToLog(fRound++);				
 					lAction = proposeInitialBid();
 				} else
 					// simply repeat last action
@@ -538,7 +538,7 @@ public class BayesianAgent extends Agent {
 	}
 	
 	private double sq(double x) { return x*x; }
-	
+/*	
 	private double calculateEuclideanDistanceUtilitySpace(double[] pLearnedUtil, double[] pOpponentUtil) {		
 		double lDistance = 0;
 		try {
@@ -652,15 +652,7 @@ public class BayesianAgent extends Agent {
 					//if(i==j) continue;
 					if (Math.signum(pLearnedUtil[i]-pLearnedUtil[j])!=Math.signum(pOpponentUtil[i]-pOpponentUtil[j]))
 						lDistance++;
-					/*
-					if(((pLearnedUtil[i]>pLearnedUtil[j])&&(pOpponentUtil[i]>pOpponentUtil[j]))||
-					   ((pLearnedUtil[i]<pLearnedUtil[j])&&(pOpponentUtil[i]<pOpponentUtil[j]))||
-					   ((pLearnedUtil[i]==pLearnedUtil[j])&&(pOpponentUtil[i]==pOpponentUtil[j]))) {
-
-					} else
-						lDistance++;
-					j++;
-					 */
+					
 				} //for
 			} //for
 		} catch (Exception e) {				
@@ -768,5 +760,5 @@ public class BayesianAgent extends Agent {
 		System.out.println(lLearningPerformance.toString());
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
-	}
+	}*/
 }
