@@ -101,44 +101,39 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		table.setBorder(loweredetched);
 		pane.add(table, c);
 		
-		//the log panel
-		/*logText = new TextArea();
-		logText.setText(logging);
-		log = new JPanel(new BorderLayout());
-		log.setMinimumSize(new Dimension(150,500));
-		log.add(logText,"Center");*/
-		
-/**************create logging panel ************/        
-        
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textOutput = new javax.swing.JTextArea();
-        textOutput.setColumns(100);
-        textOutput.setLineWrap(true);
-        textOutput.setRows(50);
-        jScrollPane1.setViewportView(textOutput);
-        
-				
+		/**************create logging panel ************/    
 		// set the constraints
 		c.gridx = 0;
 		c.gridy = 0;
 		//c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.fill = GridBagConstraints.BOTH;
 		c.gridheight = 2;
-		// add to the pane
-		pane.add(jScrollPane1,c);
+		
+		logText = new TextArea();
+		logText.setText("");
+		log = new JPanel(new BorderLayout());
+		log.setMinimumSize(new Dimension(300,500));
+		log.add(logText,"Center");
+		pane.add(log,c);
+
+		/*
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textOutput = new javax.swing.JTextArea();
+        textOutput.setColumns(100);
+        textOutput.setLineWrap(true);
+        textOutput.setRows(50);
+        jScrollPane1.setViewportView(textOutput);
+		//pane.add(jScrollPane1,c);*/
 
 		setTitle("Progress");
-		setSize(550,600);
+		setSize(700,600);
 		setVisible(true);
 	}
 	
 	public void addLoggingText(String t){
-		logText.append(t);
+		//textOutput.append(t);
+		logText.append(t+"\n");
 	}
-	
-	public javax.swing.JTextArea getLogArea() {
-        return textOutput;
-    }	
 	
 	/** run this for a demo of ProgressnUI */
 	public static void main(String[] args) 
@@ -184,11 +179,10 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 	
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
-		//evt.getRound() is always 1
-		round+=1;
 		if(round>biddingTable.getModel().getRowCount()){
 			progressinfo.addRow();
 		}
+		round = evt.getRound();
 		biddingTable.getModel().setValueAt(round,round-1,0);
 		biddingTable.getModel().setValueAt(evt.getAgentAsString(),round-1,1);
 		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityA(),round-1,2);
@@ -197,8 +191,7 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 	}
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		// TODO Auto-generated method stub
-		
+		addLoggingText(evt.getMessage());		
 	}
 	
 }
