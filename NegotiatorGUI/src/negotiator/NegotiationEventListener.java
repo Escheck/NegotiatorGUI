@@ -1,6 +1,8 @@
 package negotiator;
 
 import negotiator.actions.Action;
+import negotiator.events.ActionEvent;
+import negotiator.events.LogMessageEvent;
 import negotiator.tournament.NegotiationSession;
 
 /** 
@@ -10,7 +12,7 @@ import negotiator.tournament.NegotiationSession;
  * @author wouter
  *
  */
-public interface ActionEventListener
+public interface NegotiationEventListener 
 {
 	 /** IMPORTANT:
 	  * in handleEvent, do not more than just storing the event and
@@ -19,7 +21,9 @@ public interface ActionEventListener
 	  * which will disturb the negotiation.
 	  * @param evt
 	  */
-	public void handleEvent(ActionEvent evt);
+	public void handleActionEvent(ActionEvent evt);
+	
+	public void handleLogMessageEvent(LogMessageEvent evt);
 }
 
 

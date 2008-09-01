@@ -1,6 +1,5 @@
 package negotiator.tournament;
 
-import negotiator.ActionEvent;
 import negotiator.Agent;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.xml.*;
 import java.util.Random;
 import negotiator.*;
+import negotiator.events.ActionEvent;
 import negotiator.exceptions.Warning;
 
 
@@ -59,7 +59,7 @@ public class NegotiationSession implements Runnable {
     boolean agentBtookAction = false;
     boolean agentAStarts=false;
     public SimpleElement additionalLog = new SimpleElement("additional_log");
-    ActionEventListener actionEventListener=null;
+    NegotiationEventListener actionEventListener=null;
     boolean startingWithA=true;
     Date startTime; // set when run() is called.
     long startTimeMillies; //idem.
@@ -76,7 +76,7 @@ public class NegotiationSession implements Runnable {
      **/
     public NegotiationSession(Agent agentA, Agent agentB, NegotiationTemplate nt, 
     		int sessionNumber, int sessionTotalNumber, boolean agentAStartsP,
-    		ActionEventListener ael, NegotiationManager themanager
+    		NegotiationEventListener ael, NegotiationManager themanager
     	) {
         this.agentA = agentA;
         this.agentB = agentB;
@@ -173,7 +173,7 @@ public class NegotiationSession implements Runnable {
                        Main.log("Utility of " + agentA.getName() +": " + utilA);
                        Main.log("Utility of " + agentB.getName() +": " + utilB);
 	                   	if (actionEventListener!=null) {
-	                    	actionEventListener.handleEvent(new ActionEvent(currentAgent,action,sessionNumber,
+	                    	actionEventListener.handleActionEvent(new ActionEvent(currentAgent,action,sessionNumber,
 	                    			System.currentTimeMillis()-startTimeMillies,this,utilA,utilB,"bid by "+currentAgent.getName()));
 	                		
 	                	}
@@ -319,7 +319,7 @@ public class NegotiationSession implements Runnable {
             );
     	
     	if (actionEventListener!=null) {
-        	actionEventListener.handleEvent(new ActionEvent(currentAgent,action,sessionNumber,
+        	actionEventListener.handleActionEvent(new ActionEvent(currentAgent,action,sessionNumber,
         			System.currentTimeMillis()-startTimeMillies,this,utilA,utilB,message));
     		
     	}

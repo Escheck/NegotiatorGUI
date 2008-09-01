@@ -2,7 +2,7 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 import negotiator.exceptions.Warning;
-import negotiator.ActionEventListener;
+import negotiator.NegotiationEventListener;
 
 /**
  * TournamentRunner is a class that runs a tournament.
@@ -11,7 +11,7 @@ import negotiator.ActionEventListener;
  */
 public class TournamentRunner implements Runnable {
     Tournament tournament;
-    ActionEventListener the_event_listener;
+    NegotiationEventListener the_event_listener;
 	
     /** 
      * 
@@ -20,7 +20,7 @@ public class TournamentRunner implements Runnable {
      * 	session will be overridden with this listener.
      * @throws Exception
      */
-    public TournamentRunner(Tournament t,ActionEventListener ael) throws Exception {
+    public TournamentRunner(Tournament t,NegotiationEventListener ael) throws Exception {
     	tournament=t;
     }
     

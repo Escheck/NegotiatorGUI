@@ -45,7 +45,7 @@ public class NegotiationManager implements Runnable {
     private boolean agentAStarts; // true if agent A should start the nego.
     SessionFrame sf;
     
-    ActionEventListener actionEventListener; //null if no one subscribed.
+    NegotiationEventListener actionEventListener; //null if no one subscribed.
     
     /** Creates a new instance of NegotiationManager
      * throws if exception occurs, particularly with creation of nego template.
@@ -233,7 +233,7 @@ public class NegotiationManager implements Runnable {
      * Subscribe before starting a negotiation!
      * 
      * @author W.Pasman */
-    public void subscribe(ActionEventListener ael) throws Exception
+    public void subscribe(NegotiationEventListener ael) throws Exception
     {
     	if (actionEventListener!=null)
     		throw new RuntimeException("subscribe can be done only once");

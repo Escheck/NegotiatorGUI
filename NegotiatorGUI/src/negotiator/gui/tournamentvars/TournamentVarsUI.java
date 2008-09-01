@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.Dimension;
 
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.repository.*;
 import negotiator.tournament.NegotiationSession2;
@@ -23,7 +24,7 @@ import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
-import negotiator.ActionEventListener;
+import negotiator.NegotiationEventListener;
 import negotiator.AgentParam;
 
 public class TournamentVarsUI extends JFrame {
@@ -295,9 +296,14 @@ public class TournamentVarsUI extends JFrame {
 	 */
 	void start() throws Exception {
 		
-		ActionEventListener ael=new ActionEventListener() {
-			public void handleEvent(negotiator.ActionEvent evt) {
+		NegotiationEventListener ael=new NegotiationEventListener() {
+			public void handleActionEvent(negotiator.events.ActionEvent evt) {
 				System.out.println("Caught event "+evt);
+			}
+
+			public void handleLogMessageEvent(LogMessageEvent evt) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		

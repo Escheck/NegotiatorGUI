@@ -1,6 +1,5 @@
 package negotiator.tournament;
 
-import negotiator.ActionEvent;
 import negotiator.Agent;
 import negotiator.NegotiationTemplate;
 
@@ -14,6 +13,8 @@ import negotiator.analysis.BidPoint;
 import negotiator.xml.*;
 import java.util.Random;
 import negotiator.*;
+import negotiator.events.ActionEvent;
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.repository.*;
 
@@ -46,7 +47,7 @@ public class SessionRunner implements Runnable {
 
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
-    ActionEventListener the_event_listener;
+    NegotiationEventListener the_event_listener;
 
      /** load the runtime objects to start negotiation */
     public SessionRunner(NegotiationSession2 s) throws Exception {
@@ -95,7 +96,8 @@ public class SessionRunner implements Runnable {
            	else currentAgent=agentB;
             
         	System.out.println("starting with agent "+currentAgent);
-            Main.log("Agent " + currentAgent.getName() + " begins");
+            //Main.log("Agent " + currentAgent.getName() + " begins");
+        	fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
                 try {
                    //inform agent about last action of his opponent
@@ -111,15 +113,19 @@ public class SessionRunner implements Runnable {
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
-                       Main.log("Agent " + currentAgent.getName() + " sent the following offer:");                       
-                       lastBid  = ((Offer)action).getBid();
-                       Main.log(action.toString());
+                       //Main.log("Agent " + currentAgent.getName() + " sent the following offer:");
+                       fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
+                       lastBid  = ((Offer)action).getBid();                       
+                       //Main.log(action.toString());
+                       fireLogMessage("Nego",action.toString());
                        double utilA=agentA.utilitySpace.getUtility(lastBid);
                        double utilB=agentB.utilitySpace.getUtility(lastBid);
-                       Main.log("Utility of " + agentA.getName() +": " + utilA);
-                       Main.log("Utility of " + agentB.getName() +": " + utilB);
+                       //Main.log("Utility of " + agentA.getName() +": " + utilA);
+                       fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
+                       //Main.log("Utility of " + agentB.getName() +": " + utilB);
+                       fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
 	                   	if (session.actionEventListener!=null) {
-	                    	session.actionEventListener.handleEvent(new ActionEvent(currentAgent,action,session.sessionNumber,
+	                    	session.actionEventListener.handleActionEvent(new ActionEvent(this, currentAgent,action,session.sessionNumber,
 	                    			System.currentTimeMillis()-startTimeMillies,utilA,utilB,"bid by "+currentAgent.getName()));
 	                	}
                        checkAgentActivity(currentAgent) ;
@@ -272,9 +278,14 @@ public class SessionRunner implements Runnable {
             );
     	
     	if (session.actionEventListener!=null) {
-        	session.actionEventListener.handleEvent(new ActionEvent(currentAgent,action,session.sessionNumber,
+        	session.actionEventListener.handleActionEvent(new ActionEvent(this, currentAgent,action,session.sessionNumber,
         			System.currentTimeMillis()-startTimeMillies,utilA,utilB,message));
     		
     	}
     }
+    private synchronized void fireLogMessage(String source, String log) { 
+    	if (session.actionEventListener!=null) 
+        	session.actionEventListener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
+		
+	}
 }

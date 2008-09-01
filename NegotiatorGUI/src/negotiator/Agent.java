@@ -118,11 +118,14 @@ public abstract class Agent {
 
      /** load agent of given class with given name 
       * @author W.Pasman
-      * @throws InstantiationException if class can not be instantiated (or even found??) */
-    public static Agent loadAgent(String agentAclassName, String agentName) throws Exception {
-        java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+      * @throws InstantiationException if class can not be instantiated (or even found??) 
+      * Not used at this moment.
+      * 
+      * */
+   /* public static Agent loadAgent(String agentAclassName, String agentName) throws Exception {
+        java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader();//new java.net.URLClassLoader(new URL[]{agentAclass});
         Agent agent = (Agent)(loaderA.loadClass(agentAclassName).newInstance());
         agent.setName(agentName);
     	return agent;
-    }
+    }*/
 }

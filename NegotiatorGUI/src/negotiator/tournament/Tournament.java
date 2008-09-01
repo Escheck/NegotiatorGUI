@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 
 
-import negotiator.ActionEventListener;
+import negotiator.NegotiationEventListener;
 import negotiator.Agent;
 import negotiator.NegotiationManager;
 import negotiator.NegotiationTemplate;

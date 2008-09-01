@@ -10,7 +10,7 @@ import java.awt.Event;
 import negotiator.exceptions.*;
 
 import javax.swing.JFrame;
-
+ 
 public class Main2 extends JFrame {
     public static void main(String[] args) {
     	new Main2();

@@ -31,15 +31,16 @@ import javax.swing.table.TableCellRenderer;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.chart.BidChart;
 import negotiator.gui.chart.ScatterPlot;
 import negotiator.gui.negosession.NegoSessionUI;
 import negotiator.utility.UtilitySpace;
-import negotiator.ActionEventListener;
+import negotiator.NegotiationEventListener;
 import negotiator.Bid;
 
-public class ProgressUI extends JFrame implements ActionEventListener {
+public class ProgressUI extends JFrame implements NegotiationEventListener {
 	private JPanel log;
 	private JTextArea textOutput;
 	private TextArea logText;
@@ -181,7 +182,7 @@ public class ProgressUI extends JFrame implements ActionEventListener {
 		myChart.setBidSeriesB(bidSeriesB);
 	}
 	
-	public void handleEvent(negotiator.ActionEvent evt) {
+	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
 		//evt.getRound() is always 1
 		round+=1;
@@ -190,9 +191,14 @@ public class ProgressUI extends JFrame implements ActionEventListener {
 		}
 		biddingTable.getModel().setValueAt(round,round-1,0);
 		biddingTable.getModel().setValueAt(evt.getAgentAsString(),round-1,1);
-		biddingTable.getModel().setValueAt(evt.getUtilA(),round-1,2);
-		biddingTable.getModel().setValueAt(evt.getUtilB(),round-1,3);
+		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityA(),round-1,2);
+		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityB(),round-1,3);
 		//opponent model?
+	}
+
+	public void handleLogMessageEvent(LogMessageEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
