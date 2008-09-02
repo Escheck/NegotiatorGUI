@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import negotiator.repository.*;
 import javax.swing.tree.TreeModel;
 import negotiator.exceptions.*;
-import javax.swing.tree.TreeModel;
+
 /**
  * Tree is not so simple. The DomainRepItem and ProfileRepItem are not so easy to navigate through,.
  * ProfileRepItem has no pointer to "parent". We need to have access to root item in order to find back that parent.

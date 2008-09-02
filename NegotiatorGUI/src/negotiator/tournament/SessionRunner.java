@@ -1,7 +1,8 @@
 package negotiator.tournament;
 
 import negotiator.Agent;
-import negotiator.NegotiationTemplate;
+import negotiator.Domain;
+//import negotiator.NegotiationTemplate;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,9 @@ import negotiator.actions.*;
 import java.util.Date;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 import negotiator.xml.*;
+
 import java.util.Random;
 import negotiator.*;
 import negotiator.events.ActionEvent;
@@ -34,7 +37,7 @@ public class SessionRunner implements Runnable {
     protected Agent         agentB;
     private Bid lastBid=null;				// the last bid that has been done
     public boolean stopNegotiation;
-    private NegotiationTemplate nt;
+   // private NegotiationTemplate nt;
     public NegotiationOutcome no;
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
@@ -49,6 +52,7 @@ public class SessionRunner implements Runnable {
     public ArrayList<BidPoint> fAgentBBids;
     NegotiationEventListener the_event_listener;
 
+
      /** load the runtime objects to start negotiation */
     public SessionRunner(NegotiationSession2 s) throws Exception {
     	session=s;
@@ -62,8 +66,10 @@ public class SessionRunner implements Runnable {
 
         totTime=session.NON_GUI_NEGO_TIME;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.GUI_NEGO_TIME;
-        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
-        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime); 
+//        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
+//        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime); 
+ 
+    	
         
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
@@ -79,15 +85,15 @@ public class SessionRunner implements Runnable {
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
         try {
             double agentAUtility,agentBUtility;
-            UtilitySpace spaceA=nt.getAgentAUtilitySpace();
-            UtilitySpace spaceB=nt.getAgentBUtilitySpace();
+            UtilitySpace spaceA=session.getAgentAUtilitySpace();
+            UtilitySpace spaceB=session.getAgentBUtilitySpace();
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.init(session.sessionNumber, session.sessionTotalNumber,startTime,nt.getTotalTime(),
-            		new UtilitySpace(nt.getAgentAUtilitySpace()));
-            agentB.init(session.sessionNumber, session.sessionTotalNumber,startTime,nt.getTotalTime(),
-            		new UtilitySpace(nt.getAgentBUtilitySpace()));
+            agentA.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            		new UtilitySpace(session.getAgentAUtilitySpace()));
+            agentB.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            		new UtilitySpace(session.getAgentBUtilitySpace()));
             
             stopNegotiation = false;
             Action action = null;
@@ -138,8 +144,8 @@ public class SessionRunner implements Runnable {
                     			   currentAgent.getName()+" but no bid was done yet.");
                         Main.log("Agents accepted the following bid:");
                         Main.log(((Accept)action).toString());
-                        agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
-                        agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                        agentAUtility = session.getAgentAUtilitySpace().getUtility(lastBid);
+                        agentBUtility = session.getAgentBUtilitySpace().getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
                         checkAgentActivity(currentAgent) ;
                         otherAgent(currentAgent).ReceiveMessage(action);                      
@@ -154,8 +160,8 @@ public class SessionRunner implements Runnable {
                    {
             		   Bid b=((Offer)action).getBid();
             		   p=new BidPoint(b,
-            				   nt.getAgentAUtilitySpace().getUtility(b),
-            				   nt.getAgentBUtilitySpace().getUtility(b));
+            				   session.getAgentAUtilitySpace().getUtility(b),
+            				   session.getAgentBUtilitySpace().getUtility(b));
                    }
                    if(currentAgent.equals(agentA))                    {
                 	   if(action instanceof Offer) fAgentABids.add(p);
@@ -174,10 +180,10 @@ public class SessionRunner implements Runnable {
                 	   // handle both getUtility calls apart, if one crashes
                 	   // the other should not be affected.
                 	   try {
-                		   agentAUtility = nt.getAgentAUtilitySpace().getUtility(lastBid);
+                		   agentAUtility = session.getAgentAUtilitySpace().getUtility(lastBid);
                 	   }  catch (Exception e1) {}
                 	   try {
-                    	   agentBUtility = nt.getAgentBUtilitySpace().getUtility(lastBid);
+                    	   agentBUtility = session.getAgentBUtilitySpace().getUtility(lastBid);
                 	   }  catch (Exception e1) {}
                    }
                    if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
@@ -259,8 +265,8 @@ public class SessionRunner implements Runnable {
   
     
     public void newOutcome(Agent currentAgent, double utilA, double utilB, Action action, String message) throws Exception {
-        UtilitySpace spaceA=nt.getAgentAUtilitySpace();
-        UtilitySpace spaceB=nt.getAgentBUtilitySpace();
+        UtilitySpace spaceA=session.getAgentAUtilitySpace();
+        UtilitySpace spaceB=session.getAgentBUtilitySpace();
 
         
     	no=new NegotiationOutcome(session.sessionNumber, 
@@ -272,8 +278,8 @@ public class SessionRunner implements Runnable {
             spaceA.getUtility(spaceA.getMaxUtilityBid()),
             spaceB.getUtility(spaceB.getMaxUtilityBid()),
             session.startingWithA, 
-            nt.getAgentAUtilitySpaceFileName(),
-            nt.getAgentBUtilitySpaceFileName(),
+            session.getAgentAUtilitySpaceFileName(),
+            session.getAgentBUtilitySpaceFileName(),
             additionalLog
             );
     	
