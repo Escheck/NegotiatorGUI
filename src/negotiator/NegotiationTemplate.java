@@ -42,7 +42,8 @@ import negotiator.xml.SimpleElement;
  * I'm still not sure whether totalTime should be here,
  * because the exact purpose of this template was not described.
  */
-public class NegotiationTemplate {
+public class NegotiationTemplateOLD
+{
 /*    public static final int FAIR_DEVISION_PROBLEM = 1;
     public static final int CONVENTIONAL_NEGOTIATION = 2;
     private int negotiationType;*/
