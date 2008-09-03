@@ -100,7 +100,6 @@ public class NegoGUIView extends FrameView {
     public void showAboutBox() {
         if (aboutBox == null) {
             JFrame mainFrame = NegoGUIApp.getApplication().getMainFrame();
-            aboutBox = new NegoGUIAboutBox(mainFrame);
             aboutBox.setLocationRelativeTo(mainFrame);
         }
         NegoGUIApp.getApplication().show(aboutBox);
