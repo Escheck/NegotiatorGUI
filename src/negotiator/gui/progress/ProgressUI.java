@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -31,11 +32,13 @@ import javax.swing.table.TableCellRenderer;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
+import negotiator.analysis.BidPoint;
 import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.chart.BidChart;
 import negotiator.gui.chart.ScatterPlot;
 import negotiator.gui.negosession.NegoSessionUI;
+import negotiator.tournament.NegotiationSession2;
 import negotiator.utility.UtilitySpace;
 import negotiator.NegotiationEventListener;
 import negotiator.Bid;
@@ -50,10 +53,12 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 	private ProgressInfo progressinfo; // the table model	
 	private JTable biddingTable;
 	private int round = 0;
+	BidChart bidChart;
+	NegotiationSession2 session;
 	
 	public ProgressUI ()
 	{
-		BidChart bidChart = new BidChart();
+		bidChart = new BidChart();
 		progressinfo = new ProgressInfo();
 		biddingTable = new  JTable(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
@@ -144,9 +149,9 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 			possibleBids [0][i]= Math.random();
 			possibleBids [1][i]= Math.random();
 		}
-		double[][] pareto = new double [2][4];;
-		double [][] bidSeriesA = new double [2][4];;
-		double [][] bidSeriesB = new double [2][4];;
+		double[][] pareto = new double [2][4];
+		double [][] bidSeriesA = new double [2][4];
+		double [][] bidSeriesB = new double [2][4];
 		
 		for(int i=0;i<4;i++){
 			double paretox = Math.random();
@@ -173,32 +178,43 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		} catch (Exception e) { new Warning("ProgressUI failed to launch: ",e); }
 		
 		//when the dataset is changes the chart is automatically updated
+		// for some strange reason this only works if possibleBids and pareto are already plotted
+		// otherwise the graph doesnt update 
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
 	}
-	
+	public void setNegotiationSession(NegotiationSession2 nego){
+		session = nego;
+	}
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
+		round+=1;
 		if(round>biddingTable.getModel().getRowCount()){
 			progressinfo.addRow();
 		}
-		round = evt.getRound();
+		//round = evt.getRound();
 		biddingTable.getModel().setValueAt(round,round-1,0);
 		biddingTable.getModel().setValueAt(evt.getAgentAsString(),round-1,1);
 		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityA(),round-1,2);
 		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityB(),round-1,3);
 		//opponent model?
+		
+		//adding graph data:
+		double [][] curveA = session.getNegotiationPathA();
+		double [][] curveB = session.getNegotiationPathB();
+		if(curveA!=null)
+			bidChart.setBidSeriesA(curveA);
+		if(curveB!=null)
+			bidChart.setBidSeriesB(curveB);		
 	}
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
 		addLoggingText(evt.getMessage());		
-	}
-	
+	}	
 }
 
-
 /********************************************************************/
-// alina: not sure where this class should be, so I put it here
+
 class ProgressInfo extends AbstractTableModel{
 	public Bid ourOldBid;
 	public Bid oppOldBid;
