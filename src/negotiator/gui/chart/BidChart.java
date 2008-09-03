@@ -19,8 +19,18 @@ public class BidChart {
 	private double [][] bidSeriesB;
 	private JFreeChart chart;
 	private XYPlot plot;
-	//empty constructor 
+	private DefaultXYDataset possibleBidData = new DefaultXYDataset();
+	private DefaultXYDataset bidData = new DefaultXYDataset();
+	
+	//empty constructor; but: don't you always know the possible bids and the pareto before the 1st bid? 
 	public BidChart(){
+		//new JFreeChart("Bids", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		chart = createOverlaidChart();
+		XYPlot plot = chart.getXYPlot();	    
+	    NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setRange(0,1);
+		NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis(); 
+		domainAxis.setRange(0,1);
 	}
 	public BidChart(double [][] possibleBids,double[][] pareto, double [][] bidSeriesA, double [][] bidSeriesB){
 		this.pareto = pareto;
@@ -28,6 +38,12 @@ public class BidChart {
 		this.bidSeriesA = bidSeriesA;
 		this.bidSeriesB = bidSeriesB;
 		chart = createOverlaidChart();
+		//set the axis maximum to 1 since utilities cannot be higher than 1
+		XYPlot plot = chart.getXYPlot();	    
+	    NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setRange(0,1);
+		NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis(); 
+		domainAxis.setRange(0,1);
 	}
 	//returning the chart 
 	public JFreeChart getChart(){
@@ -36,66 +52,83 @@ public class BidChart {
 	//set-Methods
 	public void setPareto(double [][] pareto){
 		this.pareto = pareto;
+		bidData.addSeries("pareto optimal bids",pareto);
 	}
 	public void setPossibleBids(double [][] possibleBids){
 		this.possibleBids = possibleBids;
+		possibleBidData.addSeries("all possible bids",possibleBids);
 	}
 	public void setBidSeriesA(double [][] bidSeriesA){
 		this.bidSeriesA = bidSeriesA;
+		bidData.addSeries("Agent A's bids",bidSeriesA);
 	}
 	public void setBidSeriesB(double [][] bidSeriesB){
 		this.bidSeriesB = bidSeriesB;
+		bidData.addSeries("Agent B's bids",bidSeriesB);
 	}
-		
+			
 	/**
      * Creates an overlaid chart.
      *
      * @return The chart.
      */
     private JFreeChart createOverlaidChart() {
-
+    	//create default plot, quick hack so that the graph panel is not empty
+    	if(possibleBids==null||pareto==null||bidSeriesA==null||bidSeriesB==null){
+    		double emptyDataset [][] = new double[2][0];
+    		bidData.addSeries("",emptyDataset);
+    		final XYItemRenderer renderer4 = new XYLineAndShapeRenderer();
+            //renderer1.setDotHeight(1);
+            //renderer1.setDotWidth(1);
+    		renderer4.setSeriesPaint(0, Color.WHITE);
+            NumberAxis domainAxis = new NumberAxis("Agent B");
+            ValueAxis rangeAxis = new NumberAxis("Agent A");
+            plot = new XYPlot(bidData, domainAxis, rangeAxis, renderer4);
+    	}
         // create plot ...
     	if (possibleBids!=null){
-    		DefaultXYDataset data1 = new DefaultXYDataset();
-    		data1.addSeries("all possible bids",possibleBids);
+    		possibleBidData.addSeries("all possible bids",possibleBids);
             // to get dots instead of a line we need a XYDotRenderer:
             final XYDotRenderer renderer1 = new XYDotRenderer();
             renderer1.setDotHeight(1);
             renderer1.setDotWidth(1);
-            
             NumberAxis domainAxis = new NumberAxis("Agent B");
             ValueAxis rangeAxis = new NumberAxis("Agent A");
-            plot = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
+            plot = new XYPlot(possibleBidData, domainAxis, rangeAxis, renderer1);
             
     	}
+
+    	if (pareto!=null){
+	        // add a second dataset and renderer...
+    		bidData.addSeries("pareto optimal bids",pareto);
+	        final XYItemRenderer renderer2 = new XYLineAndShapeRenderer();
+	        renderer2.setSeriesPaint(0, Color.RED);
+	        plot.setDataset(1, bidData);
+	        plot.setRenderer(1, renderer2);
+    	}
     	
-        // add a second dataset and renderer...
-        DefaultXYDataset data2 = new DefaultXYDataset();
-        data2.addSeries("pareto optimal bids",pareto);
-        final XYItemRenderer renderer2 = new XYLineAndShapeRenderer();
-        renderer2.setSeriesPaint(0, Color.RED);
-        plot.setDataset(1, data2);
-        plot.setRenderer(1, renderer2);
-        
-        // add a third dataset and renderer...
-        DefaultXYDataset data3 = new DefaultXYDataset();
-        data2.addSeries("Agent A's bids",bidSeriesA);
-        final XYItemRenderer renderer3 = new XYLineAndShapeRenderer();
-        plot.setDataset(2, data3);
-        plot.setRenderer(2, renderer3);
-        
-        // add a third dataset and renderer...
-        DefaultXYDataset data4 = new DefaultXYDataset();
-        data2.addSeries("Agent B's bids",bidSeriesB);
-        final XYItemRenderer renderer4 = new XYLineAndShapeRenderer();
-        renderer4.setSeriesPaint(0, Color.ORANGE);
-        plot.setDataset(3, data4);
-        plot.setRenderer(3, renderer4);
+    	if (bidSeriesA!=null){
+		    // add a third dataset and renderer...
+		    //DefaultXYDataset data3 = new DefaultXYDataset();
+    		bidData.addSeries("Agent A's bids",bidSeriesA);
+		    final XYItemRenderer renderer3 = new XYLineAndShapeRenderer();
+		    plot.setDataset(2, bidData);
+		    plot.setRenderer(2, renderer3);
+    	}
+    	if (bidSeriesB!=null){
+	        // add a third dataset and renderer...
+	        //DefaultXYDataset data4 = new DefaultXYDataset();
+    		bidData.addSeries("Agent B's bids",bidSeriesB);
+	        final XYItemRenderer renderer4 = new XYLineAndShapeRenderer();
+	        renderer4.setSeriesPaint(0, Color.ORANGE);
+	        plot.setDataset(3, bidData);
+	        plot.setRenderer(3, renderer4);
+    	}
         
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
         // return a new chart containing the overlaid plot...
-        return new JFreeChart("Overlaid Plot Example", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        return new JFreeChart("Bids", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
     }
 }
