@@ -4,6 +4,12 @@
 
 package negotiator.gui;
 
+import negotiator.gui.agentrepository.AgentRepositoryUI;
+import negotiator.gui.domainrepository.DomainRepositoryUI;
+import negotiator.gui.negosession.NegoSessionUI;
+import negotiator.gui.negosession.NegoSessionUI2;
+import negotiator.repository.DomainRepItem;
+
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -79,6 +85,15 @@ public class NegoGUIView extends FrameView {
                 }
             }
         });
+        
+        //custom
+        try{
+        	AgentRepositoryUI agentRep = new AgentRepositoryUI(tableAgents);
+        	DomainRepositoryUI domainRep = new DomainRepositoryUI(treeDomains);
+        } catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
     }
 
     @Action
@@ -121,6 +136,8 @@ public class NegoGUIView extends FrameView {
         jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        newMenu = new javax.swing.JMenu();
+        newSessionMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
@@ -283,6 +300,15 @@ public class NegoGUIView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
+        newMenu.setText(resourceMap.getString("newMenu.text")); // NOI18N
+        newMenu.setName("newMenu"); // NOI18N
+
+        newSessionMenuItem.setAction(actionMap.get("newNegoSession")); // NOI18N
+        newSessionMenuItem.setName("newSessionMenuItem"); // NOI18N
+        newMenu.add(newSessionMenuItem);
+
+        fileMenu.add(newMenu);
+
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenu.add(openMenuItem);
@@ -344,6 +370,19 @@ public class NegoGUIView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Action
+    public void newNegoSession() {
+    	JFrame frame = new JFrame();
+    	try {  
+    		NegoSessionUI2 sessionUI = new NegoSessionUI2();
+                
+    		tabpaneMain.addTab("Session", frame);
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		} 
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton copyToolBarButton;
     private javax.swing.JButton cutToolBarButton;
@@ -358,6 +397,8 @@ public class NegoGUIView extends FrameView {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu newMenu;
+    private javax.swing.JMenuItem newSessionMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JButton openToolBarButton1;
     private javax.swing.JButton pasteToolBarButton;

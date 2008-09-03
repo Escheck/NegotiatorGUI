@@ -22,20 +22,55 @@ import java.net.URL;
  * @author wouter
  *
  */
-public class AgentRepositoryUI extends JFrame
+public class AgentRepositoryUI 
 {
 	
+	JFrame frame;
 	JButton addbutton, removebutton;
 	Repository agentrepository;
 	AbstractTableModel dataModel;
 	final JTable table;
-	 
+	public AgentRepositoryUI(JTable  pTable) {
+		this.table = pTable;
+		agentrepository = Repository.get_agent_repository();
+		initTable();
+		table.setModel(dataModel);
+	}
 	public AgentRepositoryUI() throws Exception
 	{
 		agentrepository = Repository.get_agent_repository();
-		setTitle("Agent Repository");
-		setLayout(new BorderLayout());
-
+		frame = new JFrame();
+		frame.setTitle("Agent Repository");
+		frame.setLayout(new BorderLayout());
+		initTable();
+		table = new JTable(dataModel);
+		table.setShowGrid(true);
+		
+		JScrollPane scrollpane = new JScrollPane(table);
+	 	
+	      // CREATE THE BUTTONS
+		JPanel buttons=new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		addbutton=new JButton("Add Agent");
+		addbutton.addActionListener(new ActionListener() {	
+			public void actionPerformed(ActionEvent e) {
+				try {addrow();}
+				catch (Exception err) { new Warning("add failed:"+err); }
+			}
+		});
+		removebutton=new JButton("Remove Agent");
+		removebutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removerow(); }
+		});
+		buttons.add(addbutton);
+		buttons.add(removebutton);
+		
+		frame.add(buttons,BorderLayout.SOUTH);
+		frame.add(scrollpane,BorderLayout.CENTER);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	private void initTable() {
 		dataModel = new AbstractTableModel() {
 			final String columnnames[] = {"Agent Name","Filename (full path)","Version","Description"};
 			
@@ -61,35 +96,10 @@ public class AgentRepositoryUI extends JFrame
 			  	  return columnnames[column];
 			}
 		};
-		table = new JTable(dataModel);
-		table.setShowGrid(true);
-		JScrollPane scrollpane = new JScrollPane(table);
-	 	
-	      // CREATE THE BUTTONS
-		JPanel buttons=new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		addbutton=new JButton("Add Agent");
-		addbutton.addActionListener(new ActionListener() {	
-			public void actionPerformed(ActionEvent e) {
-				try {addrow();}
-				catch (Exception err) { new Warning("add failed:"+err); }
-			}
-		});
-		removebutton=new JButton("Remove Agent");
-		removebutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				removerow(); }
-		});
-		buttons.add(addbutton);
-		buttons.add(removebutton);
 		
-		add(buttons,BorderLayout.SOUTH);
-		add(scrollpane,BorderLayout.CENTER);
-		pack();
-		setVisible(true);
 	}
-	
 	/** remove selected row from table */
-	void removerow() {
+	public void removerow() {
 		int row=table.getSelectedRow();
 		System.out.println("remove row "+row);
 		if (row<0 || row>agentrepository.getItems().size()) {
@@ -103,9 +113,9 @@ public class AgentRepositoryUI extends JFrame
 	}
 	
 		//new AddAgentUI();
-	void addrow() throws Exception {
+	public void addrow() throws Exception {
 		System.out.println("add row "+table.getSelectedRow());
-		AgentRepItem ari=(new AddAgentUI(this)).getAgentRepItem();
+		AgentRepItem ari=(new AddAgentUI(frame)).getAgentRepItem();
 		System.out.println("UI returned with "+ari);
 		if (ari.getName().length()==0)
 			throw new IllegalArgumentException("empty agent name is not allowed");
