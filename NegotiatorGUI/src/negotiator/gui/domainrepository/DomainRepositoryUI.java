@@ -32,7 +32,7 @@ import negotiator.gui.tree.TreeFrame;
  * @author wouter
  *
  */
-public class DomainRepositoryUI extends JFrame
+public class DomainRepositoryUI 
 {
 	JButton	adddomainbutton=new JButton("Add Domain");
 	JButton	removedomainbutton=new JButton("Remove Domain");
@@ -42,15 +42,23 @@ public class DomainRepositoryUI extends JFrame
 	
 
 	Repository domainrepository; // TODO locate this somewhere better
+	JFrame frame;
 	MyTreeNode root=new MyTreeNode(null);
 	JTree tree;
 	DefaultTreeModel treemodel;
-	
+	public DomainRepositoryUI(JTree pTree) throws Exception
+	{
+		this.tree = pTree;
+		domainrepository=Repository.get_domain_repos();
+		initTree();
+		tree.setModel(treemodel);
+	}	
 	public DomainRepositoryUI() throws Exception
 	{
 		domainrepository=Repository.get_domain_repos();
-		setTitle("Negotiation Domains and Preference Profile Repository");
-		setLayout(new BorderLayout());
+		frame = new JFrame();
+		frame.setTitle("Negotiation Domains and Preference Profile Repository");
+		frame.setLayout(new BorderLayout());
 	
 		 // CREATE THE BUTTONS
 		JPanel buttons=new JPanel();
@@ -90,8 +98,16 @@ public class DomainRepositoryUI extends JFrame
 		buttons.add(addprofilebutton);
 		buttons.add(removeprofilebutton);
 		buttons.add(editbutton);
-		
+		tree=new JTree();
+		initTree();
+		JScrollPane scrollpane = new JScrollPane(tree);
 
+		frame.add(buttons,BorderLayout.EAST);
+		frame.add(scrollpane,BorderLayout.CENTER);
+		frame.pack();
+		frame.show();
+	}
+	private void initTree(){
 		// create the tree
 		for (RepItem repitem: domainrepository.getItems()) {
 			DomainRepItem dri=(DomainRepItem)repitem;
@@ -104,17 +120,12 @@ public class DomainRepositoryUI extends JFrame
 		}
 			
 		treemodel=new DefaultTreeModel(root);
-		tree=new JTree(treemodel);
+		tree.setModel(treemodel);
+		
 		tree.setRootVisible(false);
 		tree.setShowsRootHandles(true) ;
-		JScrollPane scrollpane = new JScrollPane(tree);
-
-		add(buttons,BorderLayout.EAST);
-		add(scrollpane,BorderLayout.CENTER);
-		pack();
-		show();
-	}
 	
+	}
 	void adddomain() throws Exception { 
 		//System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
 		JFileChooser fd=new JFileChooser(); 
@@ -123,7 +134,7 @@ public class DomainRepositoryUI extends JFrame
 	    //filter.setDescription("domain xml file");
 	    //fd.setFileFilter(filter);
 		//fd.setFileFilter(filter);
-	    int returnVal = fd.showOpenDialog(this);
+	    int returnVal = fd.showOpenDialog(frame);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	        System.out.println("You chose to open this file: " +
 	             fd.getSelectedFile().toURL());
@@ -155,7 +166,7 @@ public class DomainRepositoryUI extends JFrame
 			throw new Exception("please select a domain node");
 		
 		JFileChooser fd=new JFileChooser(); 
-	    int returnVal = fd.showOpenDialog(this);
+	    int returnVal = fd.showOpenDialog(frame);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	        System.out.println("You chose to open this file: " +
 	             fd.getSelectedFile().toURL());
