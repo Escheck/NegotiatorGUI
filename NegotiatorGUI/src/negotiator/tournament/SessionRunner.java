@@ -130,6 +130,17 @@ public class SessionRunner implements Runnable {
                        fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
                        //Main.log("Utility of " + agentB.getName() +": " + utilB);
                        fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
+                       //save last results 
+                       BidPoint p=null;
+               		   Bid b=((Offer)action).getBid();
+               		   p=new BidPoint(b,
+               				   session.getAgentAUtilitySpace().getUtility(b),
+               				   session.getAgentBUtilitySpace().getUtility(b));
+                       if(currentAgent.equals(agentA))                    {
+                    	   fAgentABids.add(p);
+                       } else{
+                    	   fAgentBBids.add(p);
+                       }
 	                   	if (session.actionEventListener!=null) {
 	                    	session.actionEventListener.handleActionEvent(new ActionEvent(this, currentAgent,action,session.sessionNumber,
 	                    			System.currentTimeMillis()-startTimeMillies,utilA,utilB,"bid by "+currentAgent.getName()));
@@ -154,20 +165,6 @@ public class SessionRunner implements Runnable {
                    }
                        
                  
-                   //save last results and swap to other agent
-                   BidPoint p=null;
-                   if (action instanceof Offer)
-                   {
-            		   Bid b=((Offer)action).getBid();
-            		   p=new BidPoint(b,
-            				   session.getAgentAUtilitySpace().getUtility(b),
-            				   session.getAgentBUtilitySpace().getUtility(b));
-                   }
-                   if(currentAgent.equals(agentA))                    {
-                	   if(action instanceof Offer) fAgentABids.add(p);
-                   } else{
-                	   if(action instanceof Offer) fAgentBBids.add(p);
-                   }
 
                  
                 } catch(Exception e) {
@@ -193,7 +190,7 @@ public class SessionRunner implements Runnable {
                    catch (Exception err) { new Warning("exception raised during exception handling: "+err); }
                    // don't compute the max utility, we're in exception which is already bad enough.
                 }
-                
+                // swap to other agent
                 if(currentAgent.equals(agentA))     currentAgent = agentB; 
                 else   currentAgent = agentA;
             }
