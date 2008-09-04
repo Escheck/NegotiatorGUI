@@ -33,6 +33,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.chart.BidChart;
@@ -133,6 +134,34 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		setTitle("Progress");
 		setSize(700,600);
 		setVisible(true);
+		
+	}
+	
+	private double[][] getAllBidsInBidSpace(){
+		//save the possible bids in double [][] and display in graph 
+		double [][] possibleBids=null;
+		BidSpace bs = session.getBidSpace();
+		if(bs==null)System.out.println("bidspace == null");
+		try {
+			ArrayList paretoBids = bs.getParetoFrontier();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
+		if(allBids!=null){
+			possibleBids = new double [2][allBids.size()];
+			System.out.println(allBids.size());
+			
+			int i=0;
+			for(BidPoint p: bs.bidPoints) 
+			  {possibleBids[0][i]= p.utilityA; possibleBids[1][i]= p.utilityB; i++;}
+			bidChart.setPossibleBids(possibleBids);
+		}else{
+			System.out.println("possibleBids is null");
+		}
+		
+		return possibleBids;
 	}
 	
 	public void addLoggingText(String t){
@@ -171,20 +200,23 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 			bidSeriesB [1][i]= Math.random();
 		}
 		
-		BidChart myChart = new BidChart(possibleBids,pareto,null,null);
+		BidChart myChart = new BidChart();
+		//BidChart myChart = new BidChart(possibleBids,null,null,null);
 		JTable myTable = new JTable(5,5);
 		try {
 			new ProgressUI("Logging started...",myChart,myTable); 
 		} catch (Exception e) { new Warning("ProgressUI failed to launch: ",e); }
 		
 		//when the dataset is changes the chart is automatically updated
-		// for some strange reason this only works if possibleBids and pareto are already plotted
-		// otherwise the graph doesnt update 
+		myChart.setPossibleBids(possibleBids);
+		myChart.setPareto(pareto);
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
+		
 	}
 	public void setNegotiationSession(NegotiationSession2 nego){
 		session = nego;
+		bidChart.setPossibleBids(getAllBidsInBidSpace());
 	}
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
@@ -205,7 +237,8 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		if(curveA!=null)
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
-			bidChart.setBidSeriesB(curveB);		
+			bidChart.setBidSeriesB(curveB);	
+		
 	}
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
