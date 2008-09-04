@@ -134,6 +134,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
         final OverlaidXYPlotDemo demo = new OverlaidXYPlotDemo("Overlaid XYPlot Demo");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setSize(500,500);
         demo.setVisible(true);
 
     }

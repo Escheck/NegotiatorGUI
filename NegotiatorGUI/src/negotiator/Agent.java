@@ -16,7 +16,7 @@ import java.util.Hashtable;
 import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
-import negotiator.tournament.NegotiationSession;
+import negotiator.tournament.NegotiationSession2;
 /**
  *
  * @author Dmytro Tykhonov

@@ -281,7 +281,6 @@ public class EnterBidDialogExtended extends JDialog {
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
-        	
         }
         try { negoinfo.setOurBid(myPreviousBid); }
         catch (Exception e) { System.out.println("error in askUserForAction:"+e.getMessage()); e.printStackTrace(); }

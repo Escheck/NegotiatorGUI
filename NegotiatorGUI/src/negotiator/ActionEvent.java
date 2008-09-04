@@ -1,8 +1,7 @@
-package negotiator.events;
+package negotiator;
 
-import negotiator.Agent;
 import negotiator.actions.Action;
-
+import negotiator.tournament.NegotiationSession;
 
 /** This class records details about an action of an agent. 
  * It is passed as event to interested parties (currently the logger&data display GUI).
@@ -15,7 +14,7 @@ import negotiator.actions.Action;
  * @author wouter
  *
  */
-public class ActionEvent extends NegotiationEvent
+public class ActionEvent
 {
 	Agent actor;
 	Action act;   				// Bid, Accept, etc.
@@ -25,10 +24,9 @@ public class ActionEvent extends NegotiationEvent
 	double normalizedUtilityB;
 	String errorRemarks;		// errors 
 	
-	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed,
+	public ActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
 			double utilA,double utilB,String remarks)
 	{
-		super(source);
 		actor=actorP;
 		act=actP;
 		round=roundP;
@@ -43,37 +41,23 @@ public class ActionEvent extends NegotiationEvent
 		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+
 		normalizedUtilityA+","+normalizedUtilityB+","+errorRemarks+"]";
 	}
-
-	public Agent getActor() {
-		return actor;
-	}
-
-	public Action getAct() {
-		return act;
-	}
-
-	public int getRound() {
-		return round;
-	}
-
-	public long getElapsedMilliseconds() {
-		return elapsedMilliseconds;
-	}
-
-	public double getNormalizedUtilityA() {
+	
+	//alina: it would be nice to be able to access the fields and not always the whole string.
+	public double getUtilA(){
 		return normalizedUtilityA;
 	}
-	public String getAgentAsString() {
-		return actor.getName();
-	}
-
-	public double getNormalizedUtilityB() {
+	public double getUtilB(){
 		return normalizedUtilityB;
 	}
-
-	public String getErrorRemarks() {
-		return errorRemarks;
+	public String getAgentAsString(){
+		String a = ""+actor.getClass();
+		if(a.substring(0,12).equals("class agents")){
+			return a.substring(13);
+		}else{
+			return a.substring(6);
+		}
 	}
-	
-	
+	public int getRound(){
+		return round;
+	}
 }
