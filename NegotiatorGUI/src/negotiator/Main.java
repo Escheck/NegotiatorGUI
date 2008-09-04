@@ -29,7 +29,7 @@ public class Main {
     /** Creates a new instance of Main */
     public static Logger logger;
     public static String[] args;
-    public static NegotiationManager nm;
+    //public static NegotiationManager nm;
     public static boolean batchMode ;
     public static boolean fDebug=false;
     public static MainFrame mf;

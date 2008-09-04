@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import negotiator.NegotiationOutcome;
-import negotiator.NegotiationTemplate;
+
 
 /**
  *
@@ -68,7 +68,7 @@ public class SessionFrame extends javax.swing.JFrame {
 
    class SessionOutcomesTableModel extends AbstractTableModel {
         private Vector sessionOutcomes;
-        private NegotiationTemplate nt;
+//        private NegotiationTemplate nt;
         private String agentAName;
         private String agentBName;
         public SessionOutcomesTableModel (String agentAName, String agentBName)  {
