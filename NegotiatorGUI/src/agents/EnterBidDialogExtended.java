@@ -74,7 +74,8 @@ public class EnterBidDialogExtended extends JDialog {
     private HistoryInfo historyinfo; // the table model	
     private ChartPanel chartPanel;
     private JPanel defaultChartPanel;
-    private ScatterPlot plot;
+    //private ScatterPlot plot;
+    private UtilityPlot plot;
     
     
     public EnterBidDialogExtended(UIAgentExtended agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
@@ -331,7 +332,8 @@ public class EnterBidDialogExtended extends JDialog {
         
         // if there is a chart already, remove and draw new one
         if (defaultChartPanel.getComponents().length>0)defaultChartPanel.remove(chartPanel);
-        plot = new ScatterPlot(myBidSeries, oppBidSeries);
+        //plot = new ScatterPlot(myBidSeries, oppBidSeries);
+        plot = new UtilityPlot(myBidSeries, oppBidSeries);
         JFreeChart chart = plot.getChart();
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(350, 350)); 
