@@ -10,11 +10,16 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
+import negotiator.NegotiationEventListener;
+import negotiator.events.LogMessageEvent;
+import negotiator.gui.progress.ProgressUI;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
+import negotiator.tournament.NegotiationSession2;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -56,6 +61,48 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 		
 		
     }
+    
+	/** TODO use the parameters. */
+	public void start() throws Exception {
+		
+		ProfileRepItem agentAprofile=((ProfileComboBoxItem)cmbPrefProfileA.getSelectedItem()).profile;
+		if (agentAprofile==null) throw new NullPointerException("Please select a profile for agent A");
+		
+		ProfileRepItem agentBprofile=((ProfileComboBoxItem)cmbPrefProfileB.getSelectedItem()).profile;
+		if (agentBprofile==null) throw new NullPointerException("Please select a profile for agent B");
+		
+		AgentComboBoxItem agentAsel=((AgentComboBoxItem)cmbAgentA.getSelectedItem());
+		if (agentAsel==null) throw new NullPointerException("Please select agent A");
+		AgentComboBoxItem agentBsel=((AgentComboBoxItem)cmbAgentB.getSelectedItem());
+		if (agentBsel==null) throw new NullPointerException("Please select agent B");
+		
+		 // determine the domain
+		DomainRepItem domain=agentAprofile.getDomain();
+		if (domain!=agentBprofile.getDomain())
+			throw new IllegalArgumentException("profiles for agent A and B do not have the same domain. Please correct your profiles");
+		
+		NegotiationEventListener ael=new NegotiationEventListener() {
+			public void handleActionEvent(negotiator.events.ActionEvent evt) {
+				System.out.println("Caught event "+evt);
+			}
+
+			public void handleLogMessageEvent(LogMessageEvent evt) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+
+		NegotiationEventListener graphlistener=new ProgressUI();
+		
+		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
+	    		"agent A", "agent B",null,null,1, 1,false,graphlistener);
+		
+		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
+		 
+		Thread negosession=new Thread(ns);
+		negosession.start();
+	}
+    
 	public ArrayList<ProfileRepItem> getProfiles() throws Exception
 	{
 		Repository domainrep=Repository.get_domain_repos();
@@ -173,6 +220,8 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
         cmbProtocol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alternating offers" }));
         cmbProtocol.setName("cmbProtocol"); // NOI18N
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getActionMap(NegoSessionUI2.class, this);
+        btnStart.setAction(actionMap.get("startSession")); // NOI18N
         btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
         btnStart.setName("btnStart"); // NOI18N
 
@@ -301,6 +350,15 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @Action
+    public void startSession() {
+    	try {
+    		start();
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnParamsAgentA;
