@@ -6,6 +6,16 @@
 
 package negotiator.gui.negosession;
 
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+
+import negotiator.repository.AgentRepItem;
+import negotiator.repository.DomainRepItem;
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.RepItem;
+import negotiator.repository.Repository;
+
 /**
  *
  * @author  dmytro
@@ -13,9 +23,50 @@ package negotiator.gui.negosession;
 public class NegoSessionUI2 extends javax.swing.JPanel {
 
     /** Creates new form NegoSessionUI2 */
-    public NegoSessionUI2() {
+    public NegoSessionUI2() { 
         initComponents();
+        try {
+        	initValues();
+        } catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
     }
+
+    private void initValues() throws Exception {
+		Repository agent_rep=Repository.get_agent_repository();
+		ArrayList<AgentComboBoxItem> agentslist=new ArrayList<AgentComboBoxItem>();
+		for (RepItem agt: agent_rep.getItems()) {
+			agentslist.add(new AgentComboBoxItem((AgentRepItem)agt));
+		}
+		ArrayList<ProfileComboBoxItem> profileslist=new ArrayList<ProfileComboBoxItem>();
+		
+		cmbPrefProfileA.removeAllItems();
+		cmbPrefProfileB.removeAllItems();
+		for (RepItem prof: getProfiles()) {
+			cmbPrefProfileA.addItem(new ProfileComboBoxItem((ProfileRepItem)prof));
+			cmbPrefProfileB.addItem(new ProfileComboBoxItem((ProfileRepItem)prof));
+		}
+		cmbAgentA.removeAllItems();
+		cmbAgentB.removeAllItems();
+		for (RepItem agt: agent_rep.getItems()) {
+			cmbAgentA.addItem(new AgentComboBoxItem((AgentRepItem)agt));
+			cmbAgentB.addItem(new AgentComboBoxItem((AgentRepItem)agt));
+		}
+		
+		
+    }
+	public ArrayList<ProfileRepItem> getProfiles() throws Exception
+	{
+		Repository domainrep=Repository.get_domain_repos();
+		ArrayList<ProfileRepItem> profiles=new ArrayList<ProfileRepItem>();
+		for (RepItem domain:domainrep.getItems()) {
+			if (!(domain instanceof DomainRepItem))
+				throw new IllegalStateException("Found a non-DomainRepItem in domain repository:"+domain);
+			for (ProfileRepItem profile:((DomainRepItem)domain).getProfiles())	profiles.add(profile);
+		}
+		return profiles;
+	}
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -32,12 +83,20 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        cmbPrefProfileA = new javax.swing.JComboBox();
+        cmbAgentA = new javax.swing.JComboBox();
+        txtParamsAgentA = new javax.swing.JTextField();
+        btnParamsAgentA = new javax.swing.JButton();
+        cmbProtocol = new javax.swing.JComboBox();
         btnStart = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cmbPrefProfileB = new javax.swing.JComboBox();
+        cmbAgentB = new javax.swing.JComboBox();
+        txtParamsAgentB = new javax.swing.JTextField();
+        btnParamsAgentB = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
@@ -60,17 +119,18 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setName("jComboBox2"); // NOI18N
+        cmbPrefProfileA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPrefProfileA.setName("cmbPrefProfileA"); // NOI18N
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.setName("jComboBox3"); // NOI18N
+        cmbAgentA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbAgentA.setName("cmbAgentA"); // NOI18N
 
-        jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-        jTextField1.setName("jTextField1"); // NOI18N
+        txtParamsAgentA.setEditable(false);
+        txtParamsAgentA.setText(resourceMap.getString("txtParamsAgentA.text")); // NOI18N
+        txtParamsAgentA.setName("txtParamsAgentA"); // NOI18N
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
+        btnParamsAgentA.setText(resourceMap.getString("btnParamsAgentA.text")); // NOI18N
+        btnParamsAgentA.setName("btnParamsAgentA"); // NOI18N
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -84,12 +144,12 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
                     .add(jLabel4))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jComboBox3, 0, 227, Short.MAX_VALUE)
-                    .add(jComboBox2, 0, 227, Short.MAX_VALUE)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 196, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(cmbAgentA, 0, 227, Short.MAX_VALUE)
+                    .add(cmbPrefProfileA, 0, 227, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .add(txtParamsAgentA, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(btnParamsAgentA, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -97,24 +157,87 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
             .add(jPanel2Layout.createSequentialGroup()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
-                    .add(jComboBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(cmbPrefProfileA, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel3)
-                    .add(jComboBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(cmbAgentA, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4)
-                    .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jButton1))
+                    .add(btnParamsAgentA)
+                    .add(txtParamsAgentA, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setName("jComboBox1"); // NOI18N
+        cmbProtocol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alternating offers" }));
+        cmbProtocol.setName("cmbProtocol"); // NOI18N
 
         btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
         btnStart.setName("btnStart"); // NOI18N
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
+        jPanel3.setName("jPanel3"); // NOI18N
+
+        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+
+        jLabel6.setText(resourceMap.getString("jLabel6.text")); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        cmbPrefProfileB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPrefProfileB.setName("cmbPrefProfileB"); // NOI18N
+
+        cmbAgentB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbAgentB.setName("cmbAgentB"); // NOI18N
+
+        txtParamsAgentB.setEditable(false);
+        txtParamsAgentB.setText(resourceMap.getString("txtParamsAgentB.text")); // NOI18N
+        txtParamsAgentB.setName("txtParamsAgentB"); // NOI18N
+
+        btnParamsAgentB.setText(resourceMap.getString("btnParamsAgentB.text")); // NOI18N
+        btnParamsAgentB.setName("btnParamsAgentB"); // NOI18N
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel5)
+                    .add(jLabel6)
+                    .add(jLabel7))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(cmbAgentB, 0, 227, Short.MAX_VALUE)
+                    .add(cmbPrefProfileB, 0, 227, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .add(txtParamsAgentB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(btnParamsAgentB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel5)
+                    .add(cmbPrefProfileB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel6)
+                    .add(cmbAgentB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel7)
+                    .add(btnParamsAgentB)
+                    .add(txtParamsAgentB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,11 +253,16 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
                         .add(jPanel1Layout.createSequentialGroup()
                             .add(jLabel1)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                            .add(jComboBox1, 0, 228, Short.MAX_VALUE)
+                            .add(cmbProtocol, 0, 228, Short.MAX_VALUE)
                             .add(29, 29, 29)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(btnStart, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -142,12 +270,17 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(cmbProtocol, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
                 .add(btnStart)
                 .addContainerGap())
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .add(174, 174, 174)
+                    .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(54, Short.MAX_VALUE)))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -170,18 +303,26 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnParamsAgentA;
+    private javax.swing.JButton btnParamsAgentB;
     private javax.swing.JButton btnStart;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox cmbAgentA;
+    private javax.swing.JComboBox cmbAgentB;
+    private javax.swing.JComboBox cmbPrefProfileA;
+    private javax.swing.JComboBox cmbPrefProfileB;
+    private javax.swing.JComboBox cmbProtocol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField txtParamsAgentA;
+    private javax.swing.JTextField txtParamsAgentB;
     // End of variables declaration//GEN-END:variables
 
 }
