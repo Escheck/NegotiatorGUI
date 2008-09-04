@@ -131,7 +131,7 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
         jScrollPane1.setViewportView(textOutput);
 		//pane.add(jScrollPane1,c);*/
 
-		//setTe("Progress");
+		//setTitle("Progress");
 		setSize(700,600);
 		setVisible(true);
 		
@@ -142,25 +142,26 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		double [][] possibleBids=null;
 		BidSpace bs = session.getBidSpace();
 		if(bs==null)System.out.println("bidspace == null");
-		try {
-			ArrayList paretoBids = bs.getParetoFrontier();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else{
+			try {
+				ArrayList paretoBids = bs.getParetoFrontier();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
+			if(allBids!=null){
+				possibleBids = new double [2][allBids.size()];
+				System.out.println(allBids.size());
+				
+				int i=0;
+				for(BidPoint p: bs.bidPoints) 
+				  {possibleBids[0][i]= p.utilityA; possibleBids[1][i]= p.utilityB; i++;}
+				bidChart.setPossibleBids(possibleBids);
+			}else{
+				System.out.println("possibleBids is null");
+			}
 		}
-		ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
-		if(allBids!=null){
-			possibleBids = new double [2][allBids.size()];
-			System.out.println(allBids.size());
-			
-			int i=0;
-			for(BidPoint p: bs.bidPoints) 
-			  {possibleBids[0][i]= p.utilityA; possibleBids[1][i]= p.utilityB; i++;}
-			bidChart.setPossibleBids(possibleBids);
-		}else{
-			System.out.println("possibleBids is null");
-		}
-		
 		return possibleBids;
 	}
 	
@@ -214,7 +215,10 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 	}
 	public void setNegotiationSession(NegotiationSession2 nego){
 		session = nego;
-		bidChart.setPossibleBids(getAllBidsInBidSpace());
+		double [][] pb = getAllBidsInBidSpace();
+		if(pb!=null)
+			bidChart.setPossibleBids(pb);
+	
 	}
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
