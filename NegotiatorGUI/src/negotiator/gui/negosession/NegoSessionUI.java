@@ -29,23 +29,15 @@ import negotiator.gui.progress.*;
  * @author wouter
  *
  */
-public class NegoSessionUI {
+public class NegoSessionUI extends JFrame {
 	
 	JButton startbutton=new JButton("Start Negotiation");
 	JComboBox profileA,profileB; // profiles of the agents.
 	JComboBox agentAselection, agentBselection; // selection of the agent to represent A and B.
 	Logger logger;
-	JFrame frame;
-	public NegoSessionUI(JFrame pFrame) throws Exception {
-		this.frame = pFrame;
-		initFrame();
-	}
+	
 	public NegoSessionUI() throws Exception {
-		frame = new JFrame();
-		initFrame();
-	}
-	private void initFrame() throws Exception {
-		frame.getContentPane().setLayout(new GridLayout(0,2)); 
+		getContentPane().setLayout(new GridLayout(0,2)); 
 		
 		startbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -54,8 +46,8 @@ public class NegoSessionUI {
 			}
 		});
 		
-		frame.add(new JLabel("Protocol")); // Don't use the awt.Label, its height shows incorrect and renders incorrect within Swing.
-		frame.add(new JComboBox(new String[] {"alternating turns"}));
+		add(new JLabel("Protocol")); // Don't use the awt.Label, its height shows incorrect and renders incorrect within Swing.
+		add(new JComboBox(new String[] {"alternating turns"}));
 		
 		Repository agent_rep=Repository.get_agent_repository();
 		ArrayList<AgentComboBoxItem> agentslist=new ArrayList<AgentComboBoxItem>();
@@ -65,38 +57,38 @@ public class NegoSessionUI {
 		ArrayList<ProfileComboBoxItem> profileslist=new ArrayList<ProfileComboBoxItem>();
 		for (RepItem prof: getProfiles()) profileslist.add(new ProfileComboBoxItem((ProfileRepItem)prof));
 		
-		frame.add(new JSeparator(JSeparator.HORIZONTAL));
-		frame.add(new JSeparator(JSeparator.HORIZONTAL));
-		frame.add(new JLabel("Party A settings"));
-		frame.add(new JLabel(""));		
-		frame.add(new JLabel("Preferences Profile"));
+		add(new JSeparator(JSeparator.HORIZONTAL));
+		add(new JSeparator(JSeparator.HORIZONTAL));
+		add(new JLabel("Party A settings"));
+		add(new JLabel(""));		
+		add(new JLabel("Preferences Profile"));
 		profileA=new JComboBox(profileslist.toArray());
-		frame.add(profileA);
-		frame.add(new JLabel("Agent Name"));
+		add(profileA);
+		add(new JLabel("Agent Name"));
 		agentAselection=new JComboBox(agentslist.toArray());
-		frame.add(agentAselection);
-		frame.add(new JLabel("Parameters"));
-		frame.add(new JComboBox(new String[] {"1","2"}));
+		add(agentAselection);
+		add(new JLabel("Parameters"));
+		add(new JComboBox(new String[] {"1","2"}));
 
-		frame.add(new JSeparator(JSeparator.HORIZONTAL));
-		frame.add(new JSeparator(JSeparator.HORIZONTAL));
-		frame.add(new JLabel("Party B settings"));
-		frame.add(new JLabel(""));
-		frame.add(new JLabel("Preferences Profile"));
+		add(new JSeparator(JSeparator.HORIZONTAL));
+		add(new JSeparator(JSeparator.HORIZONTAL));
+		add(new JLabel("Party B settings"));
+		add(new JLabel(""));
+		add(new JLabel("Preferences Profile"));
 		profileB=new JComboBox(profileslist.toArray());
-		frame.add(profileB);
-		frame.add(new JLabel("Agent Name"));
+		add(profileB);
+		add(new JLabel("Agent Name"));
 		agentBselection=new JComboBox(agentslist.toArray());
-		frame.add(agentBselection);
-		frame.add(new JLabel("Parameters"));
-		frame.add(new JComboBox(new String[] {"1","2"}));
+		add(agentBselection);
+		add(new JLabel("Parameters"));
+		add(new JComboBox(new String[] {"1","2"}));
 		
-		frame.add(new JLabel(""));
-		frame.add(startbutton);
-		frame.pack();
-		frame.setVisible(true);
-
+		add(new JLabel(""));
+		add(startbutton);
+		pack();
+		setVisible(true);
 	}
+	
 	public ArrayList<ProfileRepItem> getProfiles() throws Exception
 	{
 		Repository domainrep=Repository.get_domain_repos();
@@ -139,11 +131,11 @@ public class NegoSessionUI {
 			}
 		};
 
-		NegotiationEventListener graphlistener=new ProgressUI();
-		
+		//NegotiationEventListener graphlistener=new ProgressUI();
+		ProgressUI graphlistener=new ProgressUI();
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false,graphlistener);
-		
+		graphlistener.setNegotiationSession(ns);
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 
 		Thread negosession=new Thread(ns);
