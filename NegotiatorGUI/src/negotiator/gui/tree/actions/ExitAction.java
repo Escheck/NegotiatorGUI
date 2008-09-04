@@ -1,6 +1,9 @@
 package negotiator.gui.tree.actions;
 
 import javax.swing.*;
+
+import negotiator.gui.tree.TreeFrame;
+
 import java.awt.event.*;
 
 /**
@@ -12,16 +15,16 @@ import java.awt.event.*;
 public class ExitAction extends AbstractAction {
 	
 	//Attributes
-	private JFrame frame;
+	private TreeFrame frame;
 	
 	//Constructors
-	public ExitAction(JFrame frame) {
+	public ExitAction(TreeFrame frame) {
 		super("Exit");
 		this.frame = frame;
 	}
 	
 	//Methods
 	public void actionPerformed(ActionEvent e) {
-		frame.dispose();
+//		frame.dispose();
 	}
 }

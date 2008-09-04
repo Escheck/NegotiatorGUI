@@ -6,9 +6,7 @@ package negotiator.gui;
 
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
-import negotiator.gui.negosession.NegoSessionUI;
 import negotiator.gui.negosession.NegoSessionUI2;
-import negotiator.repository.DomainRepItem;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -21,6 +19,12 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.tree.TreePath;
+import negotiator.Domain;
+import negotiator.gui.domainrepository.MyTreeNode;
+import negotiator.gui.tree.TreeFrame;
+import negotiator.repository.DomainRepItem;
+import negotiator.repository.RepItem;
 
 /**
  * The application's main frame.
@@ -163,6 +167,11 @@ public class NegoGUIView extends FrameView {
 
         treeDomains.setMinimumSize(new java.awt.Dimension(100, 100));
         treeDomains.setName("treeDomains"); // NOI18N
+        treeDomains.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeDomainsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(treeDomains);
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getResourceMap(NegoGUIView.class);
@@ -369,13 +378,44 @@ public class NegoGUIView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeDomainsMouseClicked
+// TODO add your handling code here:
+         int selRow = treeDomains.getRowForLocation(evt.getX(), evt.getY());
+         TreePath selPath = treeDomains.getPathForLocation(evt.getX(), evt.getY());
+         if(selRow != -1) {
+             if(evt.getClickCount() == 1) {
+
+             }
+             else if(evt.getClickCount() == 2) {
+                if(selPath!=null) {
+                    TreeFrame tf;
+                    MyTreeNode node = (MyTreeNode)(selPath.getLastPathComponent());
+                    RepItem repItem = node.getRepositoryItem();
+                    if(repItem instanceof DomainRepItem) {
+                        try {
+                            Domain domain = new Domain( ((DomainRepItem) repItem).getURL().getFile());
+                            tf = new TreeFrame(domain);
+                            tabpaneMain.addTab("Domain", tf);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        
+                        }
+                        
+                    }                
+                }
+             }
+         }
+    
+}//GEN-LAST:event_treeDomainsMouseClicked
+
     @Action
     public void newNegoSession() {
-    	JFrame frame = new JFrame();
+    	//JFrame frame = new JFrame();
     	try {  
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();
                 
-    		tabpaneMain.addTab("Session", frame);
+    		tabpaneMain.addTab("Session", sessionUI);
+    		tabpaneMain.setSelectedComponent(sessionUI);
     	} catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();

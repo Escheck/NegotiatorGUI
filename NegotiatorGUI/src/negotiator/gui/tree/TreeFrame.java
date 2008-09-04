@@ -28,7 +28,7 @@ import negotiator.issue.*;
  * 
  */
 
-public class TreeFrame extends JFrame {
+public class TreeFrame extends JPanel {
 	
 	//Attributes
 	private static final Color UNSELECTED = Color.WHITE;
@@ -92,9 +92,9 @@ public class TreeFrame extends JFrame {
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
 		model = treeModel;
 		
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new BorderLayout());
-		this.setContentPane(contentPane);
+		//JPanel contentPane = new JPanel();
+		setLayout(new BorderLayout());
+		//this.setContentPane(contentPane);
 		
 		//Initialize the table
 		initTable(model);
@@ -134,14 +134,14 @@ public class TreeFrame extends JFrame {
 		infoPanel = new SelectedInfoPanel();
 		controlPanel.add(infoPanel);
 		
-		this.getContentPane().add(controlPanel, BorderLayout.PAGE_END);
+		add(controlPanel, BorderLayout.PAGE_END);
 		
 		//Do nothing on closing, since we might need different behaviour.
 		//See negotiator.gui.tree.actions.ExitAction
 		//this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE); 
-		this.pack();
-		this.setVisible(true);
+//		this.pack();
+//		this.setVisible(true);
 		
 		if (size != null)
 			this.setSize(size);
@@ -188,7 +188,7 @@ public class TreeFrame extends JFrame {
 		
 		JScrollPane treePane = new JScrollPane(treeTable);
 		treePane.setBackground(treeTable.getBackground());
-		this.getContentPane().add(treePane, BorderLayout.CENTER);
+		add(treePane, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -243,7 +243,7 @@ public class TreeFrame extends JFrame {
 		editMenu.add(editAct);
 		editMenu.add(delAct);
 		
-		this.setJMenuBar(menuBar);
+		//this.setJMenuBar(menuBar);
 	}
 	
 	private void initFileChooser() {
