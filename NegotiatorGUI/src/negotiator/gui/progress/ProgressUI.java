@@ -136,6 +136,29 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		setVisible(true);
 		
 	}
+	private double[][] getPareto(){
+		double [][] pareto=null;
+		ArrayList <BidPoint>paretoBids = null;
+		BidSpace bs = session.getBidSpace();
+		if(bs==null)System.out.println("bidspace == null");
+		else{
+			try {
+				paretoBids = bs.getParetoFrontier();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if(paretoBids!=null){
+				pareto = new double [2][paretoBids.size()];
+				for(int i=0; i<paretoBids.size();i++) 
+				  {
+					pareto[0][i]= paretoBids.get(i).utilityA;
+					pareto[1][i]= paretoBids.get(i).utilityB;
+				  }
+			}
+		}
+		return pareto;
+	}
 	
 	private double[][] getAllBidsInBidSpace(){
 		//save the possible bids in double [][] and display in graph 
@@ -143,21 +166,13 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		BidSpace bs = session.getBidSpace();
 		if(bs==null)System.out.println("bidspace == null");
 		else{
-			try {
-				ArrayList paretoBids = bs.getParetoFrontier();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
 			if(allBids!=null){
 				possibleBids = new double [2][allBids.size()];
-				System.out.println(allBids.size());
-				
 				int i=0;
 				for(BidPoint p: bs.bidPoints) 
 				  {possibleBids[0][i]= p.utilityA; possibleBids[1][i]= p.utilityB; i++;}
-				bidChart.setPossibleBids(possibleBids);
+				//bidChart.setPossibleBids(possibleBids);
 			}else{
 				System.out.println("possibleBids is null");
 			}
@@ -213,13 +228,17 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
 	}
+	
 	public void setNegotiationSession(NegotiationSession2 nego){
 		session = nego;
 		double [][] pb = getAllBidsInBidSpace();
 		if(pb!=null)
 			bidChart.setPossibleBids(pb);
-	
+		double [][] paretoB = getPareto();
+		if(paretoB!=null)
+			bidChart.setPareto(paretoB);
 	}
+	
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
 		round+=1;
