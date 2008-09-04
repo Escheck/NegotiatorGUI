@@ -13,6 +13,8 @@ import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
+
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -99,7 +101,14 @@ public class NegoGUIView extends FrameView {
         	e.printStackTrace();
 		}
     }
-
+    public void replaceTab(String title, Component oldComp, Component newComp) {
+    	tabpaneMain.remove(oldComp);
+    	addTab(title, newComp);
+    }
+    public void addTab(String title, Component comp) {
+    	tabpaneMain.addTab(title, comp);
+    	tabpaneMain.setSelectedComponent(comp);
+    }
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -413,15 +422,15 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	//JFrame frame = new JFrame();
     	try {  
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();
-                
-    		tabpaneMain.addTab("Session", sessionUI);
-    		tabpaneMain.setSelectedComponent(sessionUI);
+    		
+    		addTab("Session", sessionUI);
+    		
     	} catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();
 		} 
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton copyToolBarButton;
     private javax.swing.JButton cutToolBarButton;
