@@ -24,7 +24,7 @@ public class BidChart {
 	private DefaultXYDataset bidderAData = new DefaultXYDataset();
 	private DefaultXYDataset bidderBData = new DefaultXYDataset();
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
-	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer();
+	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
 	
@@ -40,9 +40,9 @@ public class BidChart {
 	public void BidChart1(){
 		chart = createOverlaidChart();  
 		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setRange(0,1);
+		rangeAxis.setRange(0,1.1);
 		NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis(); 
-		domainAxis.setRange(0,1);
+		domainAxis.setRange(0,1.1);
 	}
 	//returning the chart 
 	public JFreeChart getChart(){
