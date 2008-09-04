@@ -44,7 +44,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.NegotiationEventListener;
 import negotiator.Bid;
 
-public class ProgressUI extends JFrame implements NegotiationEventListener {
+public class ProgressUI extends JPanel implements NegotiationEventListener {
 	private JPanel log;
 	private JTextArea textOutput;
 	private TextArea logText;
@@ -71,7 +71,7 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 	}
 
 	public void ProgressUI1 (String logging,BidChart bidChart, JTable bidTable){
-		Container pane = this.getContentPane();
+		Container pane = this;
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
@@ -131,7 +131,7 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
         jScrollPane1.setViewportView(textOutput);
 		//pane.add(jScrollPane1,c);*/
 
-		setTitle("Progress");
+		//setTe("Progress");
 		setSize(700,600);
 		setVisible(true);
 		

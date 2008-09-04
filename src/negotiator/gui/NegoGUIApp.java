@@ -12,12 +12,13 @@ import org.jdesktop.application.SingleFrameApplication;
  * The main class of the application.
  */
 public class NegoGUIApp extends SingleFrameApplication {
-
+	public static NegoGUIView negoGUIView = null;
     /**
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new NegoGUIView(this));
+    	negoGUIView = new NegoGUIView(this);
+        show(negoGUIView);
     }
 
     /**

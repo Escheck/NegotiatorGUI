@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 
 import negotiator.NegotiationEventListener;
 import negotiator.events.LogMessageEvent;
+import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
@@ -92,11 +93,12 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 			}
 		};
 
-		NegotiationEventListener graphlistener=new ProgressUI();
 		
+		ProgressUI graphlistener=new ProgressUI();
+		NegoGUIApp.negoGUIView.replaceTab("Progress", this, graphlistener);
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false,graphlistener);
-		
+		graphlistener.setNegotiationSession(ns);
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 
 		Thread negosession=new Thread(ns);
