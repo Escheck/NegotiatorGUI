@@ -201,7 +201,6 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		}
 		
 		BidChart myChart = new BidChart();
-		//BidChart myChart = new BidChart(possibleBids,null,null,null);
 		JTable myTable = new JTable(5,5);
 		try {
 			new ProgressUI("Logging started...",myChart,myTable); 
@@ -209,10 +208,9 @@ public class ProgressUI extends JFrame implements NegotiationEventListener {
 		
 		//when the dataset is changes the chart is automatically updated
 		myChart.setPossibleBids(possibleBids);
-		myChart.setPareto(pareto);
+		//myChart.setPareto(pareto);
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
-		
 	}
 	public void setNegotiationSession(NegotiationSession2 nego){
 		session = nego;
