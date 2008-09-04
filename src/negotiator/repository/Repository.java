@@ -114,9 +114,14 @@ public class Repository
 		{
 			ArrayList<RepItem> its=new ArrayList<RepItem>();
 			
-			DomainRepItem dri=new DomainRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_domain.xml"));
-			dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_seller_utility.xml"),dri));
-			dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_empty_utility.xml"),dri));
+			//DomainRepItem dri=new DomainRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_domain.xml"));
+			DomainRepItem dri=new DomainRepItem(new URL("file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_domain.xml"));
+			
+			
+			//dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_seller_utility.xml"),dri));
+			//dri.getProfiles().add(new ProfileRepItem(new URL("file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_empty_utility.xml"),dri));
+			dri.getProfiles().add(new ProfileRepItem(new URL("file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml"),dri));
+			dri.getProfiles().add(new ProfileRepItem(new URL("file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_empty_utility.xml"),dri));
 			its.add(dri);
 				
 			dri=new DomainRepItem(new URL("file:domain2"));

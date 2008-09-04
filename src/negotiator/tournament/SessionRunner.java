@@ -164,9 +164,21 @@ public class SessionRunner implements Runnable {
                 	   throw new Exception("unknown action by agent "+currentAgent.getName());
                    }
                        
-                 
+                   //save last results and swap to other agent
+                   BidPoint p=null;
+                   if (action instanceof Offer)
+                   {
+            		   Bid b=((Offer)action).getBid();
+            		   p=new BidPoint(b,
+            				   session.getAgentAUtilitySpace().getUtility(b),
+            				   session.getAgentBUtilitySpace().getUtility(b));
+                   }
+                   if(currentAgent.equals(agentA))                    {
+                	   if(action instanceof Offer) fAgentABids.add(p);
+                   } else{
+                	   if(action instanceof Offer) fAgentBBids.add(p);
+                   }
 
-                 
                 } catch(Exception e) {
                    stopNegotiation=true;
              	   Main.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());

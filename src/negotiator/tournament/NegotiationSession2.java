@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import negotiator.Domain;
+
 import negotiator.Main;
 import negotiator.NegotiationOutcome;
 
@@ -78,6 +79,8 @@ public class NegotiationSession2 implements Runnable {
 	private BidSpace bidSpace=null;
     //private int totalTime; // total available time for nego, in seconds.
     
+	
+	SessionRunner sessionrunner;
     /** END OF fields copied from the NegotiationTemplate class */
     
     
@@ -133,7 +136,7 @@ public class NegotiationSession2 implements Runnable {
 
     /***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
     private Thread negoThread = null;
-    SessionFrame sf; // this will show the outcomes. Not really a job for NegoSession, TODO remove this,
+    //SessionFrame sf; // this will show the outcomes. Not really a job for NegoSession, TODO remove this,
  
      /**
       * Warning. You can call run() directly (instead of using Thread.start() )
@@ -154,8 +157,8 @@ public class NegotiationSession2 implements Runnable {
     }
 
     public void startNegotiation() throws Exception {
-        sf = new SessionFrame(agentAname, agentBname);
-        sf.setVisible(true);
+        //sf = new SessionFrame(agentAname, agentBname);
+        //sf.setVisible(true);
         Main.log("Starting negotiations...");
         for(int i=0;i<sessionTotalNumber;i++) {
             Main.log("Starting session " + String.valueOf(i+1));
@@ -168,7 +171,8 @@ public class NegotiationSession2 implements Runnable {
     {
     	sessionNumber=nr;
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
-    	SessionRunner sessionrunner=new SessionRunner(this);
+    	//SessionRunner sessionrunner=new SessionRunner(this);
+    	sessionrunner=new SessionRunner(this);
     	totalTime=sessionrunner.totTime;
     	if(Main.fDebug) {
     		sessionrunner.run();
@@ -212,7 +216,7 @@ public class NegotiationSession2 implements Runnable {
     		// don't bother about max utility, both have zero anyway.
     	}
     		outcome=sessionrunner.no;
-    		sf.addNegotiationOutcome(outcome);        // add new result to the outcome list. 
+    		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list. 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
             out.write(""+outcome.toXML());
@@ -361,7 +365,7 @@ public class NegotiationSession2 implements Runnable {
 		lKalaiSmorodinsky[0][0]= kalai.utilityA; lKalaiSmorodinsky[0][1]=kalai.utilityB;		
 		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);
 		Main.fChart = lChart;
-		lChart.show();
+		//lChart.show();
 	}
 	
 	
@@ -404,6 +408,43 @@ public class NegotiationSession2 implements Runnable {
 		
 	}
 	
+	//alinas code
+	public double[][] getNegotiationPathA(){
+		System.out.println("fAgentABids "+sessionrunner.fAgentABids.size());
+		double[][] lAgentAUtilities = new double[2][sessionrunner.fAgentABids.size()];
+		try
+        {
+			int i=0;
+	    	for (BidPoint p:sessionrunner.fAgentABids)
+	    	{
+	        	lAgentAUtilities [0][i] = p.utilityA;
+	        	lAgentAUtilities [1][i] = p.utilityB;
+	        	i++;
+	    	}
+        } catch (Exception e) {
+			e.printStackTrace();
+        	return null;
+		}
+    	
+		return lAgentAUtilities; 
+	}
+	public double[][] getNegotiationPathB(){
+		System.out.println("fAgentBBids "+sessionrunner.fAgentBBids.size());
+		double[][] lAgentBUtilities = new double [2][sessionrunner.fAgentBBids.size()];  
+		try{
+			int i=0;
+	    	for (BidPoint p:sessionrunner.fAgentBBids)
+	    	{
+	        	lAgentBUtilities [0][i] = p.utilityA;
+	        	lAgentBUtilities [1][i] = p.utilityB;
+	        	i++;
+	    	}
+	 	} catch (Exception e) {
+		   	e.printStackTrace();
+		   	return null;
+		}
+		return lAgentBUtilities;
+	}
 	
 	protected void loadAgentsUtilitySpaces() throws Exception
 	{
