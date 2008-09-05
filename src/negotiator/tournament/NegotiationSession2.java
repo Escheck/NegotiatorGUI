@@ -50,10 +50,10 @@ public class NegotiationSession2 implements Runnable {
 	AgentRepItem agentBrep;
     ProfileRepItem profileArep;
     ProfileRepItem profileBrep;
-    String agentAname;
-    String agentBname;
-    ArrayList<AgentParamValue> agentAparams=new ArrayList<AgentParamValue> ();
-    ArrayList<AgentParamValue> agentBparams=new ArrayList<AgentParamValue> ();
+    private String agentAname;
+    private String agentBname;
+    private ArrayList<AgentParamValue> agentAparams=new ArrayList<AgentParamValue> ();
+    private ArrayList<AgentParamValue> agentBparams=new ArrayList<AgentParamValue> ();
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
@@ -108,17 +108,17 @@ public class NegotiationSession2 implements Runnable {
     	agentBrep=agtB;
     	profileArep=profA;
     	profileBrep=profB;
-    	agentAname=nameA;
-    	agentBname=nameB;
-    	if (agtApar!=null) agentAparams=agtApar;
-    	if (agtBpar!=null) agentBparams=agtBpar;
+    	setAgentAname(nameA);
+    	setAgentBname(nameB);
+    	if (agtApar!=null) setAgentAparams(agtApar);
+    	if (agtBpar!=null) setAgentBparams(agtBpar);
     	sessionNumber=sessionnr;
     	sessionTotalNumber=totalsessions;
     	startingWithA=forceStartA;
     	actionEventListener=ael;
-    	startingAgent=agentAname;
+    	startingAgent=getAgentAname();
     	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent=agentBname;
+    		startingAgent=getAgentBname();
     	}
    		fFileName = profileArep.getDomain().getURL().getFile();
 		this.agentAUtilitySpaceFileName = profileArep.getURL().getFile();
@@ -519,5 +519,46 @@ public class NegotiationSession2 implements Runnable {
       */
     public Integer getTotalTime() { return totalTime; }
     public BidSpace getBidSpace() { return bidSpace; }
-    
+
+
+	public void setAgentAname(String agentAname) {
+		this.agentAname = agentAname;
+	}
+
+
+	public String getAgentAname() {
+		return agentAname;
+	}
+
+
+	public void setAgentBname(String agentBname) {
+		this.agentBname = agentBname;
+	}
+
+
+	public String getAgentBname() {
+		return agentBname;
+	}
+
+
+	public void setAgentAparams(ArrayList<AgentParamValue> agentAparams) {
+		this.agentAparams = agentAparams;
+	}
+
+
+	public ArrayList<AgentParamValue> getAgentAparams() {
+		return agentAparams;
+	}
+
+
+	public void setAgentBparams(ArrayList<AgentParamValue> agentBparams) {
+		this.agentBparams = agentBparams;
+	}
+
+
+	public ArrayList<AgentParamValue> getAgentBparams() {
+		return agentBparams;
+	}
+
+
 }
