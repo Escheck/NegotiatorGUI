@@ -53,9 +53,9 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 	private JPanel chart;
 	private ProgressInfo progressinfo; // the table model	
 	private JTable biddingTable;
-	private int round = 0;
-	BidChart bidChart;
-	NegotiationSession2 session;
+	protected int round = 0;
+	private BidChart bidChart;
+	protected NegotiationSession2 session;
 	
 	public ProgressUI ()
 	{
@@ -270,10 +270,10 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 /********************************************************************/
 
 class ProgressInfo extends AbstractTableModel{
-	public Bid ourOldBid;
-	public Bid oppOldBid;
+	//public Bid ourOldBid;
+	//public Bid oppOldBid;
+	//public UtilitySpace utilitySpace;
 	private String[] colNames={"Round","Side","utilA","utilB","Opp. model"};
-	public UtilitySpace utilitySpace;
 	private Object[][] data;
 	
 	public ProgressInfo() 
