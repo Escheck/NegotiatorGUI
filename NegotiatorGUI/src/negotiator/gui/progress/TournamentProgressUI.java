@@ -11,8 +11,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import negotiator.Domain;
 import negotiator.NegotiationEventListener;
+import negotiator.actions.Accept;
+import negotiator.actions.EndNegotiation;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 
@@ -53,27 +56,7 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 
 	public void handleActionEvent(ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
-		if (evt.getAct().equals("(EndNegotiation)")| evt.getAct().equals("(Accept)")){
-			session+=1;
-			if(session>resultTable.getModel().getRowCount()){
-				resultTableModel.addRow();
-			}
-			//fill the table
-			String agentAParams="";String agentBParams="";
-			
-			int i=0;
-			for(AgentParamValue p: negoSession.getAgentAparams()) 
-			  {agentAParams+=p; i++;}
-			i=0;
-			for(AgentParamValue p: negoSession.getAgentBparams()) 
-			  {agentBParams+=p; i++;}
-	
-			resultTable.getModel().setValueAt(negoSession.getProfileArep(),session-1,0);//profile 1
-			resultTable.getModel().setValueAt(negoSession.getProfileBrep(),session-1,1);//profile 2
-			resultTable.getModel().setValueAt(negoSession.getAgentAname(),session-1,2);//agent a
-			resultTable.getModel().setValueAt(negoSession.getAgentBname(),session-1,3);//agent b
-			resultTable.getModel().setValueAt(agentAParams,session-1,4);//agent a param
-			resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent b param
+		if ((evt.getAct() instanceof EndNegotiation)| (evt.getAct()instanceof Accept)){
 			resultTable.getModel().setValueAt(sessionProgress.round,session-1,6);//rounds
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityA(),session-1,7);//util a
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
@@ -82,6 +65,33 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 	}
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		// do nothing, we are not logging here		
+		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
+	}
+
+
+	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
+		session+=1;
+		if(session>resultTable.getModel().getRowCount()){
+			resultTableModel.addRow();
+		}
+		//fill the table
+		String agentAParams="";String agentBParams="";
+		
+		int i=0;
+		for(AgentParamValue p: negoSession.getAgentAparams()) 
+		  {agentAParams+=p; i++;}
+		i=0;
+		for(AgentParamValue p: negoSession.getAgentBparams()) 
+		  {agentBParams+=p; i++;}
+		resultTable.getModel().setValueAt(negoSession.getProfileArep(),session-1,0);//profile 1
+		resultTable.getModel().setValueAt(negoSession.getProfileBrep(),session-1,1);//profile 2
+		resultTable.getModel().setValueAt(negoSession.getAgentAname(),session-1,2);//agent a
+		resultTable.getModel().setValueAt(negoSession.getAgentBname(),session-1,3);//agent b
+		resultTable.getModel().setValueAt(agentAParams,session-1,4);//agent a param
+		resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent b param
+		
+		//clear the ProgressGUI
+		sessionProgress.resetGUI();
 	}
 }
