@@ -31,7 +31,7 @@ public class Tournament
 		// variable 1 is AgentVariable for agent A.
 		// variable 2 is AgentVariable for agent B.
 		// rest is AgentParameterVariables.
-	ArrayList<NegotiationSession> sessions=null;
+	ArrayList<NegotiationSession2> sessions=null;
 	
 	/** called when you press start button in Tournament window.
 	 * This builds the sessions array from given Tournament vars 
