@@ -58,11 +58,11 @@ public class SessionRunner implements Runnable {
     	session=s;
 		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
-		    agentA.setName(session.agentAname);
+		    agentA.setName(session.getAgentAname());
 		
 	    java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
 	    agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
-	    agentB.setName(session.agentBname);
+	    agentB.setName(session.getAgentBname());
 
         totTime=session.NON_GUI_NEGO_TIME;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.GUI_NEGO_TIME;
