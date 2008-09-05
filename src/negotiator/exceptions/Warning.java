@@ -88,15 +88,20 @@ public class Warning {
 
 		//StackTraceElement[] elts=e.getStackTrace();
 		ArrayList<StackTraceElement> elts=new ArrayList<StackTraceElement>(Arrays.asList(e.getStackTrace()));
+		ArrayList<StackTraceElement> tmp = new ArrayList<StackTraceElement>(elts);
 		if (e instanceof MyWarningException) {
-			elts.remove(0); // remove the warning itself from the trace.
+			
+			tmp.remove(0); // remove the warning itself from the trace.
 		}
+		while((!tmp.isEmpty())&&(tmp.get(0).toString().indexOf(':')==-1)) tmp.remove(0);
+		if(tmp.isEmpty())   tmp=elts;
+		
 		if (pDumpStack )
 		{
 			System.out.println();
-			for (StackTraceElement elt:elts) System.out.println(elt);
+			for (StackTraceElement elt:tmp) System.out.println(elt);
 		} else {
-			if (!(elts.isEmpty())) System.out.print(" at "+elts.get(0)+"\n");
+			if (!(tmp.isEmpty())) System.out.print(" at "+tmp.get(0)+"\n");
 			else System.out.print(" at empty stack point?\n");
 		}
 		
