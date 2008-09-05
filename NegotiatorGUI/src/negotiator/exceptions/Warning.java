@@ -1,15 +1,26 @@
 package negotiator.exceptions;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
+
 
 /** 
  * Warning objects handle warning messages. These objects also count how many times a particular type of message
  * has been issued already.
  * You can ask for a stack dump as well.
+ * This class is identical to the Warning class in the GOAL system since 5sept08 W.Pasman
  * @author W.Pasman
+ * 
  */
 
 public class Warning {
+	
+	public final static int DEFAULT_SUPPRESSION_NUMBER=5;
+	
+	
+	protected class MyWarningException extends Exception {}
 	
 	// Class fields
 	static Hashtable<String,Integer>
@@ -19,21 +30,34 @@ public class Warning {
 	/**
 	 * Default warning: Print warning message at most 5 times. Stack trace is not printed.
 	 */
-	public Warning(String pWarning) {
-		makeWarning(pWarning, new Exception(),false,5);
+	public Warning(String warning) {
+		makeWarning(warning, new MyWarningException(),false,DEFAULT_SUPPRESSION_NUMBER);
+	}
+	
+	/** if you set showstack to true, stack dump will be made for location where WARNING occurs.
+	 * The location of the error will be reported as the code location where this warning is placed. 
+	 * Note that this is not useful if you are converting an exception into a warning. In that case,
+	 * you better use Warning(warning, Exception).
+	 * @param warning is the message to be shown
+	 * @param showstack is true if you want to show a stack dump as well
+	 * @param suppressat is the maximum number of this warning you want to appear */
+	public Warning(String warning, boolean showstack, int suppressat) {
+		makeWarning(warning, new MyWarningException(), showstack,suppressat);
+	}
+	
+	public Warning(String pWarning, Exception err) {
+		makeWarning(pWarning,err,false,DEFAULT_SUPPRESSION_NUMBER);
 	}
 	
 	/** if you set showstack to true, stack dump will be made for location where WARNING occurs. 
 	 * Note that this is not useful if you are converting an exception into a warning. In that case,
-	 * you better use Warning(warning, Exception) */
-	public Warning(String pWarning, boolean pShowStack, int pSuppressAt) {
-		makeWarning(pWarning, new Exception(), pShowStack,pSuppressAt);
-	}
-	
-	public Warning(String pWarning, Exception err) {
-		makeWarning(pWarning,err,false,5);
-	}
-	
+	 * you better use Warning(warning, Exception) 
+	 * @param warning is the message to be shown
+	 * @param err is the exception that caused the rise of this warning. this will be used
+	 * to inform the user about where the problem occured.
+	 * @param showstack is true if you want to show a stack dump as well
+	 * @param suppressat is the maximum number of this warning you want to appear 
+	 */
 	public Warning(String pWarning, Exception err, boolean pShowStack,int pSuppressAt) {
 		makeWarning(pWarning,err,pShowStack,pSuppressAt);
 	}
@@ -62,14 +86,17 @@ public class Warning {
 		// Print message
 		System.out.print("WARNING: "+pWarning+", "+e);
 
-		StackTraceElement[] elts=e.getStackTrace();
-		if (pDumpStack && elts.length>=3)
+		//StackTraceElement[] elts=e.getStackTrace();
+		ArrayList<StackTraceElement> elts=new ArrayList<StackTraceElement>(Arrays.asList(e.getStackTrace()));
+		if (e instanceof MyWarningException) {
+			elts.remove(0); // remove the warning itself from the trace.
+		}
+		if (pDumpStack )
 		{
 			System.out.println();
-				// start stacktrace at 2: 0 and 1 are inside the Warning class and not useful.
-			for (int i=0; i<elts.length; i++) System.out.println(elts[i]);
+			for (StackTraceElement elt:elts) System.out.println(elt);
 		} else {
-			if (elts.length>0) System.out.print(" at "+elts[0]+"\n");
+			if (!(elts.isEmpty())) System.out.print(" at "+elts.get(0)+"\n");
 			else System.out.print(" at empty stack point?\n");
 		}
 		
