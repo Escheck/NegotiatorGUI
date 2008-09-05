@@ -1,7 +1,7 @@
 package negotiator;
 
 import negotiator.actions.Action;
-import negotiator.tournament.NegotiationSession;
+import negotiator.tournament.NegotiationSession2;
 
 /** This class records details about an action of an agent. 
  * It is passed as event to interested parties (currently the logger&data display GUI).

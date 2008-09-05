@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 
 import negotiator.NegotiationEventListener;
 import negotiator.events.LogMessageEvent;
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI;
 import negotiator.repository.AgentRepItem;
@@ -88,6 +89,11 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 			}
 
 			public void handleLogMessageEvent(LogMessageEvent evt) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
 				// TODO Auto-generated method stub
 				
 			}

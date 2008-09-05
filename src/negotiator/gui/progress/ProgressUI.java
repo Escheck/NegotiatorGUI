@@ -35,6 +35,7 @@ import org.jfree.chart.JFreeChart;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.chart.BidChart;
 import negotiator.gui.chart.ScatterPlot;
@@ -264,6 +265,11 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
 		addLoggingText(evt.getMessage());		
+	}
+
+	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
 

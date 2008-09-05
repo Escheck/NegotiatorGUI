@@ -3,7 +3,7 @@ package negotiator.gui.tree.actions;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
-import negotiator.*;
+import negotiator.Domain;
 import negotiator.gui.tree.*;
 import negotiator.utility.*;
 
