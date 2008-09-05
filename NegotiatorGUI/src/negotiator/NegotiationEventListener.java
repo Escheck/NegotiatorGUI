@@ -3,6 +3,7 @@ package negotiator;
 import negotiator.actions.Action;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.tournament.NegotiationSession2;
 
 /** 
@@ -24,6 +25,8 @@ public interface NegotiationEventListener
 	public void handleActionEvent(ActionEvent evt);
 	
 	public void handleLogMessageEvent(LogMessageEvent evt);
+	
+	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt);
 }
 
 

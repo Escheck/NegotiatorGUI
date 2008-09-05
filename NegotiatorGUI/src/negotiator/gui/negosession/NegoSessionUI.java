@@ -11,6 +11,7 @@ import negotiator.Logger;
 import negotiator.NegotiationEventListener;
 
 import negotiator.events.LogMessageEvent;
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 
 import java.awt.GridLayout;
@@ -126,6 +127,11 @@ public class NegoSessionUI extends JFrame {
 			}
 
 			public void handleLogMessageEvent(LogMessageEvent evt) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
 				// TODO Auto-generated method stub
 				
 			}
