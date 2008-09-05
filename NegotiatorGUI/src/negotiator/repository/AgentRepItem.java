@@ -65,7 +65,7 @@ public class AgentRepItem implements RepItem
 	        //  return ""+agentClass.getMethod("getVersion").invoke(null, new Object[0]);
 			
 	       } catch(Exception e){
-	           new Warning("can't get version for "+agentName+" :"+e); //e.printStackTrace();
+	           new Warning("can't get version for "+agentName+" :",e); //e.printStackTrace();
 	       }  		
 	       return "ERR";
 		}

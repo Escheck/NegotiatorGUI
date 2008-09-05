@@ -19,11 +19,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import javax.swing.Icon;
-import javax.swing.JDialog;
+import javax.swing.JDialog; 
 import javax.swing.JFrame;
 import javax.swing.tree.TreePath;
 import negotiator.Domain;
 import negotiator.gui.domainrepository.MyTreeNode;
+import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.RepItem;
@@ -150,6 +151,7 @@ public class NegoGUIView extends FrameView {
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenu();
         newSessionMenuItem = new javax.swing.JMenuItem();
+        newTournamentMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
@@ -324,6 +326,10 @@ public class NegoGUIView extends FrameView {
         newSessionMenuItem.setName("newSessionMenuItem"); // NOI18N
         newMenu.add(newSessionMenuItem);
 
+        newTournamentMenuItem.setAction(actionMap.get("newTournamentAction")); // NOI18N
+        newTournamentMenuItem.setName("newTournamentMenuItem"); // NOI18N
+        newMenu.add(newTournamentMenuItem);
+
         fileMenu.add(newMenu);
 
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
@@ -421,14 +427,24 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public void newNegoSession() {
     	//JFrame frame = new JFrame();
     	try {  
-    		NegoSessionUI2 sessionUI = new NegoSessionUI2();
-    		
+    		NegoSessionUI2 sessionUI = new NegoSessionUI2();    		
     		addTab("Session", sessionUI);
     		
     	} catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();
 		} 
+    }
+
+    @Action
+    public void newTournamentAction() {
+        try {
+            TournamentUI tournamentUI = new TournamentUI();
+            addTab("Tournament", tournamentUI);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -447,6 +463,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu newMenu;
     private javax.swing.JMenuItem newSessionMenuItem;
+    private javax.swing.JMenuItem newTournamentMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JButton openToolBarButton1;
     private javax.swing.JButton pasteToolBarButton;

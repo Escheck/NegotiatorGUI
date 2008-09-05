@@ -318,6 +318,14 @@
                     <Property name="name" type="java.lang.String" value="newSessionMenuItem" noResource="true"/>
                   </Properties>
                 </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="newTournamentMenuItem">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="negotiator.gui.NegoGUIView" id="newTournamentAction" methodName="newTournamentAction"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="newTournamentMenuItem" noResource="true"/>
+                  </Properties>
+                </MenuItem>
               </SubComponents>
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
