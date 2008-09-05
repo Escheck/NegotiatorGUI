@@ -9,31 +9,27 @@ package agents;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.TextArea;
+
 import negotiator.exceptions.Warning;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.*; 
 import java.awt.Color;
-import java.util.Vector;
-import javax.swing.event.TableModelListener;
-import javax.swing.event.TableModelEvent;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventObject;
+
 import javax.swing.table.AbstractTableModel;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Domain;
+
 import negotiator.utility.UtilitySpace;
 import negotiator.actions.*;
-import negotiator.actions.Action;
-import negotiator.exceptions.BidDoesNotExistInDomainException;
+
 import negotiator.issue.*;
 import negotiator.utility.EvaluatorDiscrete;
 
@@ -99,7 +95,7 @@ public class EnterBidDialog extends JDialog {
 
         	// create south panel: the buttons:
         buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.add(buttonEnd);
+        buttonPanel.add(buttonEnd); 
         buttonPanel.add(buttonAccept);
         //buttonPanel.add(buttonSkip);
         buttonPanel.add(buttonBid);

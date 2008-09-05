@@ -6,32 +6,21 @@ import java.util.Date;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.NegotiationTemplate;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import agents.similarity.Similarity;
-import negotiator.issue.IssueDiscrete;
-import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
-import negotiator.issue.ValueReal;
-import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
 
 public class SimilarityAgent extends Agent {
-	private String myName;
+	
 	private Action messageOpponent;
-	private int sessionNumber;
-	private int sessionTotalNumber;
-	private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private Similarity fSimilarity;
-	private static final double BREAK_OFF_POINT = 0.5;
-	private double[] lIssueWeight;
+	private static final double BREAK_OFF_POINT = 0.5;;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM};
 	private STRATEGY fStrategy = STRATEGY.SMART;
@@ -63,7 +52,7 @@ public class SimilarityAgent extends Agent {
 	public void ReceiveMessage(Action opponentAction) {
 		messageOpponent = opponentAction;
 	}
-
+	public static String getVersion() {return "1.0";};
 	private Action proposeInitialBid() {
 		Bid lBid = null;
 /*		Value[] values = new Value[4];
