@@ -48,8 +48,8 @@ import negotiator.xml.SimpleElement;
 public class NegotiationSession2 implements Runnable {
 	AgentRepItem agentArep;
 	AgentRepItem agentBrep;
-    ProfileRepItem profileArep;
-    ProfileRepItem profileBrep;
+    private ProfileRepItem profileArep;
+    private ProfileRepItem profileBrep;
     private String agentAname;
     private String agentBname;
     private ArrayList<AgentParamValue> agentAparams=new ArrayList<AgentParamValue> ();
@@ -106,8 +106,8 @@ public class NegotiationSession2 implements Runnable {
     		NegotiationEventListener ael) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
-    	profileArep=profA;
-    	profileBrep=profB;
+    	setProfileArep(profA);
+    	setProfileBrep(profB);
     	setAgentAname(nameA);
     	setAgentBname(nameB);
     	if (agtApar!=null) setAgentAparams(agtApar);
@@ -120,9 +120,9 @@ public class NegotiationSession2 implements Runnable {
     	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
     		startingAgent=getAgentBname();
     	}
-   		fFileName = profileArep.getDomain().getURL().getFile();
-		this.agentAUtilitySpaceFileName = profileArep.getURL().getFile();
-		this.agentBUtilitySpaceFileName = profileBrep.getURL().getFile();      	
+   		fFileName = getProfileArep().getDomain().getURL().getFile();
+		this.agentAUtilitySpaceFileName = getProfileArep().getURL().getFile();
+		this.agentBUtilitySpaceFileName = getProfileBrep().getURL().getFile();      	
 		loadFromFile(fFileName);
     	
     	check();
@@ -130,8 +130,8 @@ public class NegotiationSession2 implements Runnable {
    
     
     void check() throws Exception {
-    	if (!(profileArep.getDomain().equals(profileBrep.getDomain())))
-    		throw new IllegalArgumentException("profiles "+profileArep+" and "+profileBrep+" have a different domain.");
+    	if (!(getProfileArep().getDomain().equals(getProfileBrep().getDomain())))
+    		throw new IllegalArgumentException("profiles "+getProfileArep()+" and "+getProfileBrep()+" have a different domain.");
     }
 
     /***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
@@ -558,6 +558,26 @@ public class NegotiationSession2 implements Runnable {
 
 	public ArrayList<AgentParamValue> getAgentBparams() {
 		return agentBparams;
+	}
+
+
+	public void setProfileArep(ProfileRepItem profileArep) {
+		this.profileArep = profileArep;
+	}
+
+
+	public ProfileRepItem getProfileArep() {
+		return profileArep;
+	}
+
+
+	public void setProfileBrep(ProfileRepItem profileBrep) {
+		this.profileBrep = profileBrep;
+	}
+
+
+	public ProfileRepItem getProfileBrep() {
+		return profileBrep;
 	}
 
 
