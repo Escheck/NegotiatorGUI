@@ -49,6 +49,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	}
 	
 	public NewObjectiveDialog(TreeFrame owner, boolean modal, String name) {
+		super(owner, modal, name);
 		super(owner, name, modal);
 		
 		this.treeFrame = owner;

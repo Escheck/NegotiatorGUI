@@ -1,6 +1,8 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+
+import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.NegotiationEventListener;
 
@@ -22,6 +24,7 @@ public class TournamentRunner implements Runnable {
      */
     public TournamentRunner(Tournament t,NegotiationEventListener ael) throws Exception {
     	tournament=t;
+    	the_event_listener = ael;
     }
     
     /**
@@ -38,6 +41,7 @@ public class TournamentRunner implements Runnable {
     		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
 			for (NegotiationSession2 s: sessions) {
 				if (the_event_listener!=null) s.actionEventListener=the_event_listener;
+				if (the_event_listener!=null) the_event_listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,s)); 
 				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 			}
     	} catch (Exception e) { new Warning("Fatail error cancelled tournament run:"+e); }
