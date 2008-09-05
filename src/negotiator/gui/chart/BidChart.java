@@ -69,6 +69,10 @@ public class BidChart {
 		this.bidSeriesB = bidSeriesB;
 		bidderBData.addSeries("Agent B's bids",bidSeriesB);
 	}
+	
+	public void removeAllPlots(){
+		chart = createOverlaidChart();
+	}
 			
 	/**
      * Creates an overlaid chart.
