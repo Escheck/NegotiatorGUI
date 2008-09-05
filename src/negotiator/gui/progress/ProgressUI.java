@@ -262,7 +262,15 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 			bidChart.setBidSeriesB(curveB);	
 		
 	}
-
+	public void resetGUI(){
+		//clear TextArea:
+		logText.setText("");
+		//clear graph
+		bidChart.removeAllPlots();
+		//clear table
+		progressinfo.reset();
+	}
+	
 	public void handleLogMessageEvent(LogMessageEvent evt) {
 		addLoggingText(evt.getMessage());		
 	}
@@ -302,6 +310,11 @@ class ProgressInfo extends AbstractTableModel{
 		fireTableDataChanged();
 	}
 	
+	public void reset()
+	{
+		data = new Object [6][colNames.length];
+	}
+
 	public int getColumnCount() {
         return colNames.length;
     }
