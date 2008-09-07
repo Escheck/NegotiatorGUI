@@ -21,8 +21,8 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog; 
 import javax.swing.JFrame;
-import javax.swing.tree.TreePath;
-import negotiator.Domain;
+import javax.swing.tree.TreePath; 
+import negotiator.Domain; 
 import negotiator.gui.domainrepository.MyTreeNode;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
@@ -33,7 +33,7 @@ import negotiator.repository.RepItem;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
-
+	private NegoGUIComponent activeComponent = null;
     public NegoGUIView(SingleFrameApplication app) {
         super(app);
 
@@ -146,12 +146,17 @@ public class NegoGUIView extends FrameView {
         cutToolBarButton = new javax.swing.JButton();
         copyToolBarButton = new javax.swing.JButton();
         pasteToolBarButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        addToolBarButton = new javax.swing.JButton();
+        removeToolBarButton = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         newMenu = new javax.swing.JMenu();
         newSessionMenuItem = new javax.swing.JMenuItem();
         newTournamentMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        newPrefProfileMenuItem = new javax.swing.JMenuItem();
+        newDomainMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
@@ -196,7 +201,7 @@ public class NegoGUIView extends FrameView {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
         );
 
         jSplitPane2.setTopComponent(jPanel1);
@@ -228,11 +233,11 @@ public class NegoGUIView extends FrameView {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel2);
@@ -270,6 +275,11 @@ public class NegoGUIView extends FrameView {
         cutToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cutToolBarButton.setName("cutToolBarButton"); // NOI18N
         cutToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        cutToolBarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutToolBarButtonActionPerformed(evt);
+            }
+        });
         toolBar.add(cutToolBarButton);
 
         copyToolBarButton.setAction(actionMap.get("copy"));
@@ -288,12 +298,26 @@ public class NegoGUIView extends FrameView {
         pasteToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(pasteToolBarButton);
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(jButton1);
+        addToolBarButton.setAction(actionMap.get("addButtonAction")); // NOI18N
+        addToolBarButton.setFont(resourceMap.getFont("addToolBarButton.font")); // NOI18N
+        addToolBarButton.setText(resourceMap.getString("addToolBarButton.text")); // NOI18N
+        addToolBarButton.setFocusable(false);
+        addToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        addToolBarButton.setName("addToolBarButton"); // NOI18N
+        addToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(addToolBarButton);
+
+        removeToolBarButton.setAction(actionMap.get("removeButtonAction")); // NOI18N
+        removeToolBarButton.setFont(resourceMap.getFont("removeToolBarButton.font")); // NOI18N
+        removeToolBarButton.setText(resourceMap.getString("removeToolBarButton.text")); // NOI18N
+        removeToolBarButton.setFocusable(false);
+        removeToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        removeToolBarButton.setName("removeToolBarButton"); // NOI18N
+        removeToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(removeToolBarButton);
+
+        jSeparator2.setName("jSeparator2"); // NOI18N
+        toolBar.add(jSeparator2);
 
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -307,11 +331,11 @@ public class NegoGUIView extends FrameView {
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
                 .add(45, 45, 45)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE))
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
             .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(mainPanelLayout.createSequentialGroup()
                     .add(toolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(666, Short.MAX_VALUE)))
+                    .addContainerGap(663, Short.MAX_VALUE)))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -329,6 +353,19 @@ public class NegoGUIView extends FrameView {
         newTournamentMenuItem.setAction(actionMap.get("newTournamentAction")); // NOI18N
         newTournamentMenuItem.setName("newTournamentMenuItem"); // NOI18N
         newMenu.add(newTournamentMenuItem);
+
+        jSeparator1.setName("jSeparator1"); // NOI18N
+        newMenu.add(jSeparator1);
+
+        newPrefProfileMenuItem.setAction(actionMap.get("newPrefProfile")); // NOI18N
+        newPrefProfileMenuItem.setText(resourceMap.getString("newPrefProfileMenuItem.text")); // NOI18N
+        newPrefProfileMenuItem.setName("newPrefProfileMenuItem"); // NOI18N
+        newMenu.add(newPrefProfileMenuItem);
+
+        newDomainMenuItem.setAction(actionMap.get("newDomain")); // NOI18N
+        newDomainMenuItem.setText(resourceMap.getString("newDomainMenuItem.text")); // NOI18N
+        newDomainMenuItem.setName("newDomainMenuItem"); // NOI18N
+        newMenu.add(newDomainMenuItem);
 
         fileMenu.add(newMenu);
 
@@ -370,7 +407,7 @@ public class NegoGUIView extends FrameView {
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 431, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 435, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -423,13 +460,17 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     
 }//GEN-LAST:event_treeDomainsMouseClicked
 
+	private void cutToolBarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutToolBarButtonActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_cutToolBarButtonActionPerformed
+
     @Action
     public void newNegoSession() {
     	//JFrame frame = new JFrame();
     	try {  
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();    		
     		addTab("Session", sessionUI);
-    		
+    		activeComponent = sessionUI;
     	} catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();
@@ -439,35 +480,59 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     @Action
     public void newTournamentAction() {
         try {
-            TournamentUI tournamentUI = new TournamentUI();
+            TournamentUI tournamentUI = new TournamentUI();            
             addTab("Tournament", tournamentUI);
+            activeComponent = tournamentUI;
         } catch (Exception e) {
             e.printStackTrace();
         }
         
     }
+
+    @Action
+    public void newPrefProfile() {
+    }
+
+    @Action
+    public void newDomain() {
+    }
+
+    @Action
+    public void addButtonAction() {
+        if(activeComponent!=null) activeComponent.addAction();
+    }
+
+    @Action
+    public void removeButtonAction() {
+        if(activeComponent!=null) activeComponent.removeAction();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addToolBarButton;
     private javax.swing.JButton copyToolBarButton;
     private javax.swing.JButton cutToolBarButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem newDomainMenuItem;
     private javax.swing.JMenu newMenu;
+    private javax.swing.JMenuItem newPrefProfileMenuItem;
     private javax.swing.JMenuItem newSessionMenuItem;
     private javax.swing.JMenuItem newTournamentMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JButton openToolBarButton1;
     private javax.swing.JButton pasteToolBarButton;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JButton removeToolBarButton;
     private javax.swing.JButton saveToolBarButton;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;

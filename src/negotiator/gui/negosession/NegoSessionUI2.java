@@ -8,12 +8,14 @@ package negotiator.gui.negosession;
 
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import negotiator.NegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
+import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
@@ -27,7 +29,7 @@ import org.jdesktop.application.Action;
  *
  * @author  dmytro
  */
-public class NegoSessionUI2 extends javax.swing.JPanel {
+public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUIComponent {
 
     /** Creates new form NegoSessionUI2 */
     public NegoSessionUI2() { 
@@ -390,5 +392,24 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
     private javax.swing.JTextField txtParamsAgentA;
     private javax.swing.JTextField txtParamsAgentB;
     // End of variables declaration//GEN-END:variables
+	public void addAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void editAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public JButton[] getButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeAction() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
