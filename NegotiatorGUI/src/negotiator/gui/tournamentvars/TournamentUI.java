@@ -9,6 +9,7 @@ package negotiator.gui.tournamentvars;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
@@ -18,6 +19,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
+import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI;
 import negotiator.gui.progress.TournamentProgressUI;
 import negotiator.repository.AgentRepItem;
@@ -40,7 +42,7 @@ import org.jdesktop.application.Action;
  *
  * @author  dmytro
  */
-public class TournamentUI extends javax.swing.JPanel {
+public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent {
 
 	
 	Tournament tournament; // this contains the variables and their possible values.
@@ -90,7 +92,7 @@ public class TournamentUI extends javax.swing.JPanel {
 			}
 		};
 		jTable1.setModel(dataModel);
-        
+        jTable1.getColumnModel().getColumn(0).setWidth(50);
     }
 
 	/**********************button functionality************************/
@@ -345,6 +347,11 @@ public class TournamentUI extends javax.swing.JPanel {
             }
         ));
         jTable1.setName("jTable1"); // NOI18N
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getActionMap(TournamentUI.class, this);
@@ -391,6 +398,19 @@ public class TournamentUI extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+// TODO add your handling code here:
+    if(evt.getClickCount()>1) {
+    	 TournamentVariable tv = tournament.getVariables().get(jTable1.getSelectedRow());
+    	 try {
+			editVariable(tv);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+}//GEN-LAST:event_jTable1MouseClicked
+
     @Action
     public void startTournament() {
     	try {
@@ -408,5 +428,36 @@ public class TournamentUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+	public void addAction() {
+		// TODO Auto-generated method stub
+		try {
+			addrow();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void editAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public JButton[] getButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeAction() {
+		// TODO Auto-generated method stub
+		try {
+			removerow();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

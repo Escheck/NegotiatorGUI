@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 
 import negotiator.*;
 import negotiator.exceptions.Warning;
-import negotiator.gui.MainFrame;
+
 import negotiator.gui.SessionFrame;
 import negotiator.gui.chart.Chart;
 import negotiator.repository.*;
