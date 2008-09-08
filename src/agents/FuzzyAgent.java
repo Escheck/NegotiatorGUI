@@ -101,7 +101,7 @@ public class FuzzyAgent extends Agent {
 		}			
 		return lAction;
 	}
-
+	public static String getVersion() { return "1.0"; }
 	@Override
 	public void init(int sessionNumber, int sessionTotalNumber,
 			Date startTimeP, Integer totalTimeP, UtilitySpace us) {

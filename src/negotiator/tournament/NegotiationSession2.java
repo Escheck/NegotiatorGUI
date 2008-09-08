@@ -2,6 +2,7 @@ package negotiator.tournament;
 
 import negotiator.Domain;
 
+import negotiator.Agent;
 import negotiator.Main;
 import negotiator.NegotiationOutcome; 
 
@@ -23,6 +24,8 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import negotiator.*;
+import negotiator.events.ActionEvent;
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 
 import negotiator.gui.SessionFrame;
@@ -57,7 +60,7 @@ public class NegotiationSession2 implements Runnable {
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
-    NegotiationEventListener actionEventListener;
+    ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
 	Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	NegotiationOutcome outcome;
@@ -102,8 +105,7 @@ public class NegotiationSession2 implements Runnable {
      */
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,ArrayList<AgentParamValue> agtApar,ArrayList<AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA,
-    		NegotiationEventListener ael) throws Exception {
+    		int sessionnr, int totalsessions,boolean forceStartA) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
     	setProfileArep(profA);
@@ -115,7 +117,7 @@ public class NegotiationSession2 implements Runnable {
     	sessionNumber=sessionnr;
     	sessionTotalNumber=totalsessions;
     	startingWithA=forceStartA;
-    	actionEventListener=ael;
+    	//actionEventListener.add(ael);
     	startingAgent=getAgentAname();
     	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
     		startingAgent=getAgentBname();
@@ -127,8 +129,8 @@ public class NegotiationSession2 implements Runnable {
     	
     	check();
     }
-    public void setNegotiationEventListener(NegotiationEventListener listener) {
-    	actionEventListener = listener;
+    public void addNegotiationEventListener(NegotiationEventListener listener) {
+    	actionEventListener.add(listener);
     }
     
     void check() throws Exception {
@@ -285,7 +287,7 @@ public class NegotiationSession2 implements Runnable {
 			}//if
 		}
 		//if(fAnalysis!=null) showAnalysis();	
-		if (bidSpace!=null) showAnalysis();
+		//if (bidSpace!=null) showAnalysis();
 	}
 
 	
@@ -581,5 +583,17 @@ public class NegotiationSession2 implements Runnable {
 		return profileBrep;
 	}
 
+	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
+			double utilA,double utilB,String remarks) {
+		for(NegotiationEventListener listener : actionEventListener) {
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, remarks ));
+		}
+	}
+    public synchronized void fireLogMessage(String source, String log) { 
+    	for(NegotiationEventListener listener : actionEventListener) { 
+        	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
+    	}
+		
+	}
 
 }

@@ -120,27 +120,11 @@ public class NegoSessionUI extends JFrame {
 		DomainRepItem domain=agentAprofile.getDomain();
 		if (domain!=agentBprofile.getDomain())
 			throw new IllegalArgumentException("profiles for agent A and B do not have the same domain. Please correct your profiles");
-		
-		NegotiationEventListener ael=new NegotiationEventListener() {
-			public void handleActionEvent(negotiator.events.ActionEvent evt) {
-				System.out.println("Caught event "+evt);
-			}
-
-			public void handleLogMessageEvent(LogMessageEvent evt) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
 
 		//NegotiationEventListener graphlistener=new ProgressUI();
 		ProgressUI graphlistener=new ProgressUI();
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",null,null,1, 1,false,graphlistener);
+	    		"agent A", "agent B",null,null,1, 1,false);
 		graphlistener.setNegotiationSession(ns);
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 

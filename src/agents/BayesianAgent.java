@@ -74,7 +74,7 @@ public class BayesianAgent extends Agent {
 	}
 	
 
-	public static String getVersion() { return "1.0"; }
+	public static String getVersion() { return "2.0"; }
 
 	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
 	public static ArrayList<AgentParam> getParameters() { 

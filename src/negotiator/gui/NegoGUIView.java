@@ -143,11 +143,10 @@ public class NegoGUIView extends FrameView {
         toolBar = new javax.swing.JToolBar();
         openToolBarButton1 = new javax.swing.JButton();
         saveToolBarButton = new javax.swing.JButton();
-        cutToolBarButton = new javax.swing.JButton();
-        copyToolBarButton = new javax.swing.JButton();
-        pasteToolBarButton = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
         addToolBarButton = new javax.swing.JButton();
         removeToolBarButton = new javax.swing.JButton();
+        editToolBarButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
@@ -201,7 +200,7 @@ public class NegoGUIView extends FrameView {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
         );
 
         jSplitPane2.setTopComponent(jPanel1);
@@ -237,7 +236,7 @@ public class NegoGUIView extends FrameView {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel2);
@@ -268,35 +267,8 @@ public class NegoGUIView extends FrameView {
         saveToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(saveToolBarButton);
 
-        cutToolBarButton.setAction(actionMap.get("cut"));
-        cutToolBarButton.setIcon(resourceMap.getIcon("cutToolBarButton.icon")); // NOI18N
-        cutToolBarButton.setToolTipText(resourceMap.getString("cutToolBarButton.toolTipText")); // NOI18N
-        cutToolBarButton.setFocusable(false);
-        cutToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        cutToolBarButton.setName("cutToolBarButton"); // NOI18N
-        cutToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        cutToolBarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cutToolBarButtonActionPerformed(evt);
-            }
-        });
-        toolBar.add(cutToolBarButton);
-
-        copyToolBarButton.setAction(actionMap.get("copy"));
-        copyToolBarButton.setIcon(resourceMap.getIcon("copyToolBarButton.icon")); // NOI18N
-        copyToolBarButton.setFocusable(false);
-        copyToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        copyToolBarButton.setName("copyToolBarButton"); // NOI18N
-        copyToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(copyToolBarButton);
-
-        pasteToolBarButton.setAction(actionMap.get("paste"));
-        pasteToolBarButton.setIcon(resourceMap.getIcon("pasteToolBarButton.icon")); // NOI18N
-        pasteToolBarButton.setFocusable(false);
-        pasteToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        pasteToolBarButton.setName("pasteToolBarButton"); // NOI18N
-        pasteToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(pasteToolBarButton);
+        jSeparator3.setName("jSeparator3"); // NOI18N
+        toolBar.add(jSeparator3);
 
         addToolBarButton.setAction(actionMap.get("addButtonAction")); // NOI18N
         addToolBarButton.setFont(resourceMap.getFont("addToolBarButton.font")); // NOI18N
@@ -316,6 +288,13 @@ public class NegoGUIView extends FrameView {
         removeToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(removeToolBarButton);
 
+        editToolBarButton.setAction(actionMap.get("editAction")); // NOI18N
+        editToolBarButton.setFocusable(false);
+        editToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        editToolBarButton.setName("editToolBarButton"); // NOI18N
+        editToolBarButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(editToolBarButton);
+
         jSeparator2.setName("jSeparator2"); // NOI18N
         toolBar.add(jSeparator2);
 
@@ -331,11 +310,11 @@ public class NegoGUIView extends FrameView {
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
                 .add(45, 45, 45)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE))
             .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(mainPanelLayout.createSequentialGroup()
                     .add(toolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(663, Short.MAX_VALUE)))
+                    .addContainerGap(666, Short.MAX_VALUE)))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -407,7 +386,7 @@ public class NegoGUIView extends FrameView {
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 435, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 431, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -460,10 +439,6 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     
 }//GEN-LAST:event_treeDomainsMouseClicked
 
-	private void cutToolBarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutToolBarButtonActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_cutToolBarButtonActionPerformed
-
     @Action
     public void newNegoSession() {
     	//JFrame frame = new JFrame();
@@ -509,17 +484,21 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public void removeButtonAction() {
         if(activeComponent!=null) activeComponent.removeAction();
     }
+
+    @Action
+    public void editAction() {
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToolBarButton;
-    private javax.swing.JButton copyToolBarButton;
-    private javax.swing.JButton cutToolBarButton;
+    private javax.swing.JButton editToolBarButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -533,7 +512,6 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JMenuItem newTournamentMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JButton openToolBarButton1;
-    private javax.swing.JButton pasteToolBarButton;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton removeToolBarButton;
     private javax.swing.JButton saveToolBarButton;

@@ -9,7 +9,6 @@
 
 package agents;
 
-import javax.swing.JOptionPane;
 import javax.swing.*;
 
 import java.awt.*;
@@ -47,7 +46,7 @@ public class UIAgentExtended extends Agent{
      * One agent will be kept alive over multiple sessions.
      * Init will be called at the start of each nego session.
      */
- 
+    public static String getVersion() { return "2.0"; }
     public void init(int sessionNumber, int sessionTotalNumber, Date startT, Integer totalTimeP, UtilitySpace us)
     {
     	

@@ -103,7 +103,7 @@ public class SessionRunner implements Runnable {
             
         	System.out.println("starting with agent "+currentAgent);
             //Main.log("Agent " + currentAgent.getName() + " begins");
-        	fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
+        	session.fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
                 try {
                    //inform agent about last action of his opponent
@@ -120,16 +120,16 @@ public class SessionRunner implements Runnable {
                    }
                    else if (action instanceof Offer) {
                        //Main.log("Agent " + currentAgent.getName() + " sent the following offer:");
-                       fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
+                       session.fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
                        lastBid  = ((Offer)action).getBid();                       
                        //Main.log(action.toString());
-                       fireLogMessage("Nego",action.toString());
+                       session.fireLogMessage("Nego",action.toString());
                        double utilA=agentA.utilitySpace.getUtility(lastBid);
                        double utilB=agentB.utilitySpace.getUtility(lastBid);
                        //Main.log("Utility of " + agentA.getName() +": " + utilA);
-                       fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
+                       session.fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
                        //Main.log("Utility of " + agentB.getName() +": " + utilB);
-                       fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
+                       session.fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
                        //save last results 
                        BidPoint p=null;
                		   Bid b=((Offer)action).getBid();
@@ -141,10 +141,9 @@ public class SessionRunner implements Runnable {
                        } else{
                     	   fAgentBBids.add(p);
                        }
-	                   	if (session.actionEventListener!=null) {
-	                    	session.actionEventListener.handleActionEvent(new ActionEvent(this, currentAgent,action,session.sessionNumber,
-	                    			System.currentTimeMillis()-startTimeMillies,utilA,utilB,"bid by "+currentAgent.getName()));
-	                	}
+	                   session.fireNegotiationActionEvent(currentAgent,action,session.sessionNumber,
+	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,"bid by "+currentAgent.getName());
+	                	
                        checkAgentActivity(currentAgent) ;
                    }                   
                    else if (action instanceof Accept) {
@@ -292,15 +291,9 @@ public class SessionRunner implements Runnable {
             additionalLog
             );
     	
-    	if (session.actionEventListener!=null) {
-        	session.actionEventListener.handleActionEvent(new ActionEvent(this, currentAgent,action,session.sessionNumber,
-        			System.currentTimeMillis()-startTimeMillies,utilA,utilB,message));
+    	session.fireNegotiationActionEvent(currentAgent,action,session.sessionNumber,
+        	System.currentTimeMillis()-startTimeMillies,utilA,utilB,message);
     		
-    	}
+    	
     }
-    private synchronized void fireLogMessage(String source, String log) { 
-    	if (session.actionEventListener!=null) 
-        	session.actionEventListener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
-		
-	}
 }

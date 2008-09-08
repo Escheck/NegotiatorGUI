@@ -113,7 +113,7 @@ public class Tournament
 			}
 			 // TODO compute total #sessions. Now fixed to 9999
 			sessions.add(new  NegotiationSession2(agentA, agentB, profileA,profileB,
-	    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false, null));
+	    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false));
 		} else {
 			// pick next variable, and compute all permutations.
 			AssignedParameterVariable v=allparameters.get(0);
@@ -127,7 +127,7 @@ public class Tournament
 				ArrayList<AssignedParamValue> newchosenvalues=(ArrayList<AssignedParamValue>) chosenvalues.clone();
 				newchosenvalues.add(new AssignedParamValue((AgentParamValue)tv,v.agentname));
 				allParameterCombis(newparameters, sessions, profileA,  profileB,agentA,  agentB,newchosenvalues);
-			}
+			} 
 		}	    	
 	}
 
