@@ -95,11 +95,9 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 		}
 		resultTable.getModel().setValueAt(negoSession.getProfileArep(),session-1,0);//profile 1
 		resultTable.getModel().setValueAt(negoSession.getProfileBrep(),session-1,1);//profile 2
-		resultTable.getModel().setValueAt(negoSession.getAgentAname(),session-1,2);//agent a
-		resultTable.getModel().setValueAt(negoSession.getAgentBname(),session-1,3);//agent b
-	//	resultTable.getModel().setValueAt(agentAParams,session-1,4);//agent a param
-//		resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent b param
-		
+		resultTable.getModel().setValueAt(negoSession.getAgentAStrategyName(),session-1,2);//agent a
+		resultTable.getModel().setValueAt(negoSession.getAgentBStrategyName(),session-1,3);//agent b
+	    
 		//clear the ProgressGUI
 		System.out.println("resetting the GUI after NegotiationSessionEvent.");
 		sessionProgress.resetGUI();
