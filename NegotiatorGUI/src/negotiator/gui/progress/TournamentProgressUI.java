@@ -79,7 +79,7 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 		String agentAParams="";String agentBParams="";
 		negoSession = evt.getSession();
 		sessionProgress.session = negoSession;
-		negoSession.setNegotiationEventListener(sessionProgress);
+		negoSession.addNegotiationEventListener(sessionProgress);
 		int i=0;
 		if(!(negoSession.getAgentAparams()==null)) {
 			for(AgentParamValue p: negoSession.getAgentAparams()) 

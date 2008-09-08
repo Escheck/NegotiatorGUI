@@ -30,7 +30,8 @@ public class UIAgent extends Agent{
     private EnterBidDialog ui=null;
     private Bid myPreviousBid=null;
     /** Creates a new instance of UIAgent */
-    
+
+    public static String getVersion() { return "1.0"; }
     
     /**
      * One agent will be kept alive over multiple sessions.

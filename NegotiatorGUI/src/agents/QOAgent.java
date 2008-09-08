@@ -29,7 +29,7 @@ public class QOAgent extends Agent {
 		}
 		return fNextAction;
 	}
-
+	public static String getVersion() { return "1.0"; }
 	@Override
 	public void init(int sessionNumber, int sessionTotalNumber,
 			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
