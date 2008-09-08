@@ -1,6 +1,7 @@
 package negotiator.gui.chart;
 
 import java.awt.Color;
+import java.awt.geom.Ellipse2D;
 
 import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
@@ -29,6 +30,8 @@ public class BidChart {
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
 	final XYDotRenderer nashRenderer = new XYDotRenderer();
 	final XYDotRenderer kalaiRenderer = new XYDotRenderer();
+	final XYDotRenderer agreementRenderer = new XYDotRenderer();
+	//final XYItemRenderer agreementRenderer = new XYLineAndShapeRenderer(false, true);
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
@@ -82,7 +85,7 @@ public class BidChart {
 		nashData.addSeries("Kalai Point",kalai);
 	}
 	public void setAgreementPoint(double[][]agreement){
-		nashData.addSeries("Nash Point",agreement);
+		agreementData.addSeries("Agreement",agreement);
 	}
 	
 	public void removeAllPlots(){
@@ -90,6 +93,9 @@ public class BidChart {
 			bidderAData.removeSeries("Agent A's bids");
 		if(bidderBData.getSeriesCount()!=0)
 			bidderBData.removeSeries("Agent B's bids");
+		if(agreementData.getSeriesCount()!=0)
+			agreementData.removeSeries("Agreement");
+		
 	}
 			
 	/**
@@ -111,6 +117,10 @@ public class BidChart {
         paretoRenderer.setSeriesPaint(0, Color.RED);
         lineARenderer.setSeriesPaint(0, Color.GREEN);
         lineBRenderer.setSeriesPaint(0, Color.BLUE);
+        agreementRenderer.setDotHeight(10);
+        agreementRenderer.setDotWidth(10);
+        //agreementRenderer.setSeriesShape(0, new Ellipse2D.Float(10.0f, 10.0f, 10.0f, 10.0f));
+        agreementRenderer.setSeriesPaint(0, Color.RED);
         
 		//create default plot, quick hack so that the graph panel is not empty
     	if(possibleBids!=null){
@@ -133,7 +143,7 @@ public class BidChart {
 	    plot.setDataset(6, kalaiData);
 	    plot.setRenderer(6, kalaiRenderer);
 	    plot.setDataset(7, agreementData);
-	    plot.setRenderer(7, dotRenderer);
+	    plot.setRenderer(7, agreementRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         return new JFreeChart("Bids", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
