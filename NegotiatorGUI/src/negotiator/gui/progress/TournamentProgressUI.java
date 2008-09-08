@@ -57,6 +57,7 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 	public void handleActionEvent(ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		if ((evt.getAct() instanceof EndNegotiation)| (evt.getAct()instanceof Accept)){
+			System.out.println("end or accept --> fill table");
 			resultTable.getModel().setValueAt(sessionProgress.round,session-1,6);//rounds
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityA(),session-1,7);//util a
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
