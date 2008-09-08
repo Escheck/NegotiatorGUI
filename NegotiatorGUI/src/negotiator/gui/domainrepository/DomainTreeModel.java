@@ -2,7 +2,9 @@ package negotiator.gui.domainrepository;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.*;
+
 import java.util.ArrayList;
 import negotiator.repository.*;
 import javax.swing.tree.TreeModel;
@@ -51,8 +53,8 @@ class DomainTreeModel implements TreeModel {
   }
   public int getIndexOfChild(Object parent, Object child) 
   {
-	  if (parent)
-		  
+	 // if (parent)
+		  return 0;
   }
   
   public Object getChild(Object parent, int index)
@@ -62,8 +64,9 @@ class DomainTreeModel implements TreeModel {
 	  } else {
 		  if (!(parent instanceof DomainTreeModel))
 			  throw new IllegalStateException("Encountered parent node "+item+" of class "+parent.getClass());
-		  	parent
+		//  	parent
 	  }
+	  return null;
   }
   
   public boolean isLeaf() {
@@ -71,10 +74,41 @@ class DomainTreeModel implements TreeModel {
   }
 
   public int getChildCount() {
-    if (!areChildrenDefined)
+  /*  if (!areChildrenDefined)
       defineChildNodes();
-    return(super.getChildCount());
+    return(super.getChildCount());*/
+	  return 0;
   }
+
+public void addTreeModelListener(TreeModelListener arg0) {
+	// TODO Auto-generated method stub
+	
+}
+
+public int getChildCount(Object arg0) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+public Object getRoot() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public boolean isLeaf(Object arg0) {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+public void removeTreeModelListener(TreeModelListener arg0) {
+	// TODO Auto-generated method stub
+	
+}
+
+public void valueForPathChanged(TreePath arg0, Object arg1) {
+	// TODO Auto-generated method stub
+	
+}
 
 
  

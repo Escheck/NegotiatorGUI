@@ -16,7 +16,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
-import negotiator.gui.progress.ProgressUI;
+import negotiator.gui.progress.ProgressUI2;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -102,7 +102,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		};
 
 		
-		ProgressUI graphlistener=new ProgressUI();
+		ProgressUI2 graphlistener=new ProgressUI2();
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, graphlistener);
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false);
