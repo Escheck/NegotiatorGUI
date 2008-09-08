@@ -71,7 +71,10 @@ public class BidChart {
 	}
 	
 	public void removeAllPlots(){
-		chart = createOverlaidChart();
+		if(bidderAData.getSeriesCount()!=0)
+			bidderAData.removeSeries("Agent A's bids");
+		if(bidderBData.getSeriesCount()!=0)
+			bidderBData.removeSeries("Agent B's bids");
 	}
 			
 	/**
