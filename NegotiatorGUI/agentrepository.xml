@@ -2,11 +2,10 @@
 <repository fileName="agentrepository.xml">
     <items>
         <agentRepItems>
-            <agentRepItem description="apy negotiator" classPath="/Volumes/aap.class" agentName="aap"/>
-            <agentRepItem description="beary negotiator" classPath="/Volumes/beer.class" agentName="beer"/>
             <agentRepItem description="simple agent" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
-            <agentRepItem description="" classPath="agents.UIAgent" agentName="UIAgent"/>
-            <agentRepItem description="UI agent with advanced GUI (by Alina)" classPath="agents.UIAgentExtended" agentName="UIAgent Extended"/>
+            <agentRepItem description="basic UI agent" classPath="agents.UIAgent" agentName="UI agent"/>
+            <agentRepItem description="simple random bid agent" classPath="agents.SimpleAgt2" agentName="simpleAgt"/>
+            <agentRepItem description="basic UI agent with additional reporting functionality" classPath="agents.UIAgentExtended" agentName="UI Agent extended version"/>
         </agentRepItems>
         <domainRepItem/>
     </items>
