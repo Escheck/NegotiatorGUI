@@ -101,5 +101,6 @@ public class TournamentProgressUI extends JPanel implements NegotiationEventList
 		//clear the ProgressGUI
 		System.out.println("resetting the GUI after NegotiationSessionEvent.");
 		sessionProgress.resetGUI();
+		sessionProgress.setNegotiationSession(negoSession);
 	}
 }

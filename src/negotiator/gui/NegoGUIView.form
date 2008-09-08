@@ -215,7 +215,9 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="openToolBarButton1">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="openToolBarButton1.icon"/>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="negotiator.gui.NegoGUIView" id="opnFileAction" methodName="opnFileAction"/>
+                </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="name" type="java.lang.String" value="openToolBarButton1" noResource="true"/>
@@ -259,7 +261,6 @@
                   <action class="negotiator.gui.NegoGUIView" id="removeButtonAction" methodName="removeButtonAction"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" resourceKey="removeToolBarButton.font"/>
-                <Property name="text" type="java.lang.String" resourceKey="removeToolBarButton.text"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="name" type="java.lang.String" value="removeToolBarButton" noResource="true"/>
