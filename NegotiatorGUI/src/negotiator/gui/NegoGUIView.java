@@ -250,14 +250,14 @@ public class NegoGUIView extends FrameView {
         toolBar.setRollover(true);
         toolBar.setName("toolBar"); // NOI18N
 
-        openToolBarButton1.setIcon(resourceMap.getIcon("openToolBarButton1.icon")); // NOI18N
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getActionMap(NegoGUIView.class, this);
+        openToolBarButton1.setAction(actionMap.get("opnFileAction")); // NOI18N
         openToolBarButton1.setFocusable(false);
         openToolBarButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         openToolBarButton1.setName("openToolBarButton1"); // NOI18N
         openToolBarButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(openToolBarButton1);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getActionMap(NegoGUIView.class, this);
         saveToolBarButton.setAction(actionMap.get("save")); // NOI18N
         saveToolBarButton.setIcon(resourceMap.getIcon("saveToolBarButton.icon")); // NOI18N
         saveToolBarButton.setToolTipText(resourceMap.getString("saveToolBarButton.toolTipText")); // NOI18N
@@ -281,7 +281,6 @@ public class NegoGUIView extends FrameView {
 
         removeToolBarButton.setAction(actionMap.get("removeButtonAction")); // NOI18N
         removeToolBarButton.setFont(resourceMap.getFont("removeToolBarButton.font")); // NOI18N
-        removeToolBarButton.setText(resourceMap.getString("removeToolBarButton.text")); // NOI18N
         removeToolBarButton.setFocusable(false);
         removeToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeToolBarButton.setName("removeToolBarButton"); // NOI18N
@@ -487,6 +486,10 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
     @Action
     public void editAction() {
+    }
+
+    @Action
+    public void opnFileAction() {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
