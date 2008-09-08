@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,6 +16,9 @@ import javax.swing.JButton;
 import negotiator.repository.*;
 import java.util.ArrayList;
 import negotiator.exceptions.Warning;
+import negotiator.gui.NegoGUIApp;
+import negotiator.gui.NegoGUIComponent;
+
 import java.net.URL;
 
 
@@ -22,7 +27,7 @@ import java.net.URL;
  * @author wouter
  *
  */
-public class AgentRepositoryUI 
+public class AgentRepositoryUI implements NegoGUIComponent 
 {
 	
 	JFrame frame;
@@ -35,6 +40,20 @@ public class AgentRepositoryUI
 		agentrepository = Repository.get_agent_repository();
 		initTable();
 		table.setModel(dataModel);
+		final NegoGUIComponent comp = this;
+		table.addFocusListener(new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				NegoGUIApp.negoGUIView.setActiveComponent(comp);
+			}
+
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		
+		});
 	}
 	public AgentRepositoryUI() throws Exception
 	{
@@ -137,5 +156,26 @@ public class AgentRepositoryUI
 	{
 		try { new AgentRepositoryUI(); }
 		catch (Exception e) { new Warning("launch of AgentRepositoryUI failed: "+e); }
+	}
+	public void addAction() {
+		// TODO Auto-generated method stub
+		try {
+			addrow();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void editAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	public JButton[] getButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void removeAction() {
+		// TODO Auto-generated method stub
+		removerow();
 	}
 }

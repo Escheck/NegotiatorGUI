@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,6 +26,8 @@ import javax.swing.JFileChooser;
 import java.io.FileFilter;
 
 import negotiator.exceptions.Warning;
+import negotiator.gui.NegoGUIApp;
+import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.TreeFrame;
 
 
@@ -32,7 +36,7 @@ import negotiator.gui.tree.TreeFrame;
  * @author wouter
  *
  */
-public class DomainRepositoryUI 
+public class DomainRepositoryUI implements NegoGUIComponent 
 {
 	JButton	adddomainbutton=new JButton("Add Domain");
 	JButton	removedomainbutton=new JButton("Remove Domain");
@@ -52,6 +56,20 @@ public class DomainRepositoryUI
 		domainrepository=Repository.get_domain_repos();
 		initTree();
 		tree.setModel(treemodel);
+		final NegoGUIComponent comp = this;
+		tree.addFocusListener(new FocusListener() {
+
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				NegoGUIApp.negoGUIView.setActiveComponent(comp); 
+			}
+
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}	
 	public DomainRepositoryUI() throws Exception
 	{
@@ -228,6 +246,51 @@ public class DomainRepositoryUI
 			new DomainRepositoryUI(); 
 			}
 		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
+	}
+	public void addAction() {
+		// TODO Auto-generated method stub
+		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
+		if (selection==null) {
+			try {
+				adddomain();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		RepItem item=selection.getRepositoryItem();
+		if (!(item instanceof DomainRepItem)) {
+			try {
+				adddomain();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else { 
+			try {
+				addprofile();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	public void editAction() {
+		// TODO Auto-generated method stub
+		try {
+			edit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public JButton[] getButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void removeAction() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

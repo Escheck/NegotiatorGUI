@@ -470,7 +470,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	try {  
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();    		
     		addTab("Session", sessionUI);
-    		activeComponent = sessionUI;
+    		setActiveComponent(sessionUI);
     	} catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();
@@ -482,13 +482,16 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
         try {
             TournamentUI tournamentUI = new TournamentUI();            
             addTab("Tournament", tournamentUI);
-            activeComponent = tournamentUI;
+            setActiveComponent(tournamentUI);
         } catch (Exception e) {
             e.printStackTrace();
         }
         
     }
-
+    public void setActiveComponent(NegoGUIComponent comp) {
+    	activeComponent = comp;
+    }
+    
     @Action
     public void newPrefProfile() {
     }
