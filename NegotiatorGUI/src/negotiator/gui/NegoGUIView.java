@@ -103,12 +103,12 @@ public class NegoGUIView extends FrameView {
 		}
     }
     public void replaceTab(String title, Component oldComp, Component newComp) {
-    	tabpaneMain.remove(oldComp);
+    	closeTabbedPane1.remove(oldComp);
     	addTab(title, newComp);
     }
     public void addTab(String title, Component comp) {
-    	tabpaneMain.addTab(title, comp);
-    	tabpaneMain.setSelectedComponent(comp);
+    	closeTabbedPane1.addTab(title, comp);    	
+    	closeTabbedPane1.setSelectedComponent(comp);
     }
     @Action
     public void showAboutBox() {
@@ -139,7 +139,7 @@ public class NegoGUIView extends FrameView {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAgents = new javax.swing.JTable();
-        tabpaneMain = new javax.swing.JTabbedPane();
+        closeTabbedPane1 = new negotiator.gui.tab.CloseTabbedPane();
         toolBar = new javax.swing.JToolBar();
         openToolBarButton1 = new javax.swing.JButton();
         saveToolBarButton = new javax.swing.JButton();
@@ -243,8 +243,8 @@ public class NegoGUIView extends FrameView {
 
         jSplitPane1.setLeftComponent(jSplitPane2);
 
-        tabpaneMain.setName("tabpaneMain"); // NOI18N
-        jSplitPane1.setRightComponent(tabpaneMain);
+        closeTabbedPane1.setName("closeTabbedPane1"); // NOI18N
+        jSplitPane1.setRightComponent(closeTabbedPane1);
 
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
@@ -425,7 +425,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
                         try {
                             Domain domain = new Domain( ((DomainRepItem) repItem).getURL().getFile());
                             tf = new TreeFrame(domain);
-                            tabpaneMain.addTab("Domain", tf);
+                            addTab("Domain", tf);
                         } catch (Exception e) {
                             e.printStackTrace();
                         
@@ -494,6 +494,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToolBarButton;
+    private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
     private javax.swing.JButton editToolBarButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -522,7 +523,6 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JTable tableAgents;
-    private javax.swing.JTabbedPane tabpaneMain;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JTree treeDomains;
     // End of variables declaration//GEN-END:variables
