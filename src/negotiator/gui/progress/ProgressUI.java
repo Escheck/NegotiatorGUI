@@ -232,12 +232,34 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 	
 	public void setNegotiationSession(NegotiationSession2 nego){
 		session = nego;
+		BidSpace bs = session.getBidSpace();
 		double [][] pb = getAllBidsInBidSpace();
-		if(pb!=null)
-			bidChart.setPossibleBids(pb);
-		double [][] paretoB = getPareto();
-		if(paretoB!=null)
-			bidChart.setPareto(paretoB);
+		double [][] nash = new double [2][1];
+		double [][] kalai = new double [2][1];
+		try {
+			if(pb!=null)
+				bidChart.setPossibleBids(pb);
+			double [][] paretoB = getPareto();
+			if(paretoB!=null)
+				bidChart.setPareto(paretoB);
+
+			//nash
+			BidPoint bp1= bs.getNash();
+			nash[0][0]= bp1.utilityA;
+			nash[1][0]= bp1.utilityB;
+			if(nash!=null)
+				bidChart.setNash(nash);	
+			//kalai
+			BidPoint bp2 = bs.getKalaiSmorodinsky();
+			kalai[0][0]= bp2.utilityA;
+			kalai[1][0]= bp2.utilityB;
+			if(kalai!=null)
+				bidChart.setKalai(kalai);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
