@@ -12,7 +12,7 @@ package negotiator;
 import java.util.TimeZone;
 import java.util.Calendar;
 
-import negotiator.gui.MainFrame;
+//import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
 import negotiator.gui.tree.TreeFrame;
 import negotiator.issue.Objective;
@@ -33,7 +33,7 @@ public class MainEditor {
     //public static NegotiationManager nm;
     //public static boolean batchMode ;
     //public static boolean fDebug;
-    public static MainFrame mf;
+//    public static MainFrame mf;
     public static Chart fChart = null;
     public MainEditor() {
     }

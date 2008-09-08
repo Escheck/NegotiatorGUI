@@ -57,7 +57,9 @@ class ProfileVarUI extends DefaultOKCancelDialog {
 			if (cbox.isSelected()) result.add(cbox.profileRepItem);
 		}
 		return result;
-	}		
+	}
+
+
 }
 
 class MyCheckBox extends JCheckBox {
