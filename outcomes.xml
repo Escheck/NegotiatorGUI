@@ -18334,3 +18334,5955 @@
 <additional_log> 
 </additional_log> 
 </NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:35:46" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7479580454379472" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.747996792784998" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.747996792784998"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.747996792784998"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7479580454379472" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.747996792784998" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7032434193947121" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7032434193947121" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:36:21" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:36:23" errors="Agent Agent B:Accept was done by Agent B but no bid was done yet." startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.0" finalUtility="1.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:36:48" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7597710158916876" agentName="Agent A" maxUtility="1.0" finalUtility="0.7597710158916876" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7597710158916876" agentName="Agent B" maxUtility="1.0" finalUtility="0.7597710158916876" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:38:06" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7561473202753539" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.7561864918610048" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7561864918610048"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7561864918610048"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7561473202753539" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.7561864918610048" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.851647611783233" utilityA="0.851647611783233"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.851647611783233" utilityA="0.851647611783233"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:38:43" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5853752878953861" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.5854056127773408" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.15508191385797693" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.15508191385797693" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.3555082406134801" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.3555082406134801" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.3555082406134801" agentName="Agent B" maxUtility="1.0" finalUtility="0.3555082406134801" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5957372247217925" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5957372247217925" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.3555082406134801" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.3555082406134801" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:39:01" errors="Agent Agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.3333506013905847" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.3333506013905847" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.5957372247217925"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.5957372247217925"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:39:10" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8747335457778105" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8747335457778105" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:41:24" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7337717927258832" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.7338098051658619" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.5854056127773408"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.9411329008630686"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.9411329008630686"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7337717927258832" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.7338098051658619" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="8"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6077822994724837" utilityA="0.6077822994724837"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6077822994724837" utilityA="0.6077822994724837"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:41:39" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5182701618361695" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.5182970103926483" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.544668389385452" utilityA="0.5182970103926483"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.544668389385452" utilityA="0.5182970103926483"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.544668389385452" agentName="Agent B" maxUtility="1.0" finalUtility="0.544668389385452" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:41:55" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.6699348436076416" agentName="Agent A" maxUtility="1.0" finalUtility="0.6699348436076416" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5406736970877913" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5406736970877913" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.45937810708396276" utilityA="0.6699348436076416"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.45937810708396276" utilityA="0.6699348436076416"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.4593543106143597" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.45937810708396276" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="0.21513915988505505"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="0.21513915988505505"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:42:04" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:45:42" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.BayesianAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:46:02" errors="Agent agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:47:02" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5771860130579795" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.577215913701334" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.5771860130579795" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.577215913701334" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.577215913701334" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.577215913701334" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:47:08" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.6077508154448568" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.6077822994724837" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.9101638277159539" utilityA="0.6077822994724837"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.9101638277159539" utilityA="0.6077822994724837"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.9101638277159539" agentName="Agent B" maxUtility="1.0" finalUtility="0.9101638277159539" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:47:35" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.8198282619187657" agentName="Agent A" maxUtility="1.0" finalUtility="0.8198282619187657" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="18"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5995926003964769" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5995926003964769" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.48175479377910574" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.48175479377910574" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.725620106089855" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.3333506013905847" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.3333506013905847" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.6667012027811694" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.6667012027811694" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.6301263429943277" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.6301589861676269" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="20"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.6194019351632626"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.6194019351632626"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.8151053951696904" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.5406736970877913" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.5406736970877913" utilityA="0.8747335457778105"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.851647611783233" utilityA="0.3953108979662893"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.851647611783233" utilityA="0.3953108979662893"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:47:52" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.0" finalUtility="1.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="10"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.6047256354125301"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9101638277159539" utilityA="0.9101638277159539"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9101638277159539" utilityA="0.9101638277159539"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.7597710158916876"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.6345045616694982"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.6345045616694982"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.0" finalUtility="1.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="12"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.5957372247217925" utilityA="0.5957372247217925"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.5957372247217925" utilityA="0.5957372247217925"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.544668389385452" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.544668389385452" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:50:46" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7032069903390059" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.7032434193947121" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7032434193947121" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7032434193947121" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7032069903390059" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.7032434193947121" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:50:53" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5995615406074501" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.5995926003964769" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.21513915988505505" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.21513915988505505" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7995736732444969" agentName="Agent B" maxUtility="1.0" finalUtility="0.7995736732444969" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:51:00" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.9101638277159539" agentName="Agent A" maxUtility="1.0" finalUtility="0.9101638277159539" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5995926003964769" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5995926003964769" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6077822994724837" utilityA="0.9101638277159539"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6077822994724837" utilityA="0.9101638277159539"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.6077508154448568" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.6077822994724837" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.23024178639129061"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.23024178639129061"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5854056127773408" utilityA="0.3555082406134801"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:51:07" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.0" finalUtility="1.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.7848973734937645"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="1.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.0" finalUtility="1.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.7097375009604509"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:58:03" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:58:30" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5771860130579795" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.577215913701334" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.23024178639129061" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.23024178639129061" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.15508191385797693" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.15508191385797693" utilityA="0.7032434193947121"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.46950851685213835" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.46950851685213835" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.46950851685213835" agentName="Agent B" maxUtility="1.0" finalUtility="0.46950851685213835" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="8"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="0.48175479377910574"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.46950851685213835" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.46950851685213835" utilityA="0.577215913701334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:58:41" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 11:58:44" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:54:43" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8740242984783759" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:55:08" errors="Agent Agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.8740242984783759"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7561864918610048"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7561864918610048"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="8"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.6667012027811694"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7848973734937645" utilityA="0.6667012027811694"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6699348436076416" utilityA="0.45937810708396276"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.3922695046992703"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.3922695046992703"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:55:14" errors="Agent Agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7927287084745475" utilityA="0.470470770499603"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7927287084745475" utilityA="0.470470770499603"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:55:19" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.5593446891361845" agentName="Agent A" maxUtility="1.0" finalUtility="0.5593446891361845" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.5593446891361845" agentName="Agent B" maxUtility="1.0" finalUtility="0.5593446891361845" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.5593446891361845"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.5593446891361845"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:58:09" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.8821682975563804" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.882213997554383" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.8821682975563804" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.882213997554383" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:58:24" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8747335457778105" utilityA="0.5406736970877913"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8747335457778105" utilityA="0.5406736970877913"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.3953108979662893" utilityA="0.851647611783233"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.3953108979662893" utilityA="0.851647611783233"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.4155654866405582" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.4155654866405582" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7597710158916876" utilityA="0.3333506013905847"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:58:27" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 12:58:29" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:05:07" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:05:11" errors="Agent Agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6047256354125301" utilityA="0.8151053951696904"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:08:29" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="1.000051804171754" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:08:32" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:08:35" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:08:37" errors="Agent Agent B:Accept was done by Agent B but no bid was done yet." startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="1.0" agentName="Agent A" maxUtility="1.0" finalUtility="1.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:11:44" errors="Agent Agent A ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:11:50" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.3922491845551432" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.3922695046992703" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.6345045616694982" agentName="Agent B" maxUtility="1.0" finalUtility="0.6345045616694982" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.3922695046992703"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.3922695046992703"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:11:53" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.6194019351632626" agentName="Agent A" maxUtility="1.0" finalUtility="0.6194019351632626" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7479580454379472" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.747996792784998" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.6194019351632626"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.747996792784998" utilityA="0.6194019351632626"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:11:56" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7299920896347196" agentName="Agent A" maxUtility="1.0" finalUtility="0.7299920896347196" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7299920896347196" agentName="Agent B" maxUtility="1.0" finalUtility="0.7299920896347196" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7299920896347196" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:14:38" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7337717927258832" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.7338098051658619" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7337717927258832" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.7338098051658619" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7338098051658619" utilityA="0.7338098051658619"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:14:47" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.6301263429943277" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.6301589861676269" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6194019351632626" utilityA="0.747996792784998"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6194019351632626" utilityA="0.747996792784998"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.6301589861676269"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.6301589861676269"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.8198282619187657" agentName="Agent B" maxUtility="1.0" finalUtility="0.8198282619187657" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.6301589861676269"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8198282619187657" utilityA="0.6301589861676269"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.4511884080079559"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:14:58" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7299920896347196" agentName="Agent A" maxUtility="1.0" finalUtility="0.7299920896347196" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5182970103926483" utilityA="0.544668389385452"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6301589861676269" utilityA="0.8198282619187657"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.7561864918610048" utilityA="0.7299920896347196"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7561473202753539" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.7561864918610048" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7927287084745475" utilityA="0.470470770499603"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7927287084745475" utilityA="0.470470770499603"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9411329008630686" utilityA="0.29029903241836874"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6890778894763124" utilityA="0.6945618076965763"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6890778894763124" utilityA="0.6945618076965763"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:15:07" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.7995736732444969" agentName="Agent A" maxUtility="1.0" finalUtility="0.7995736732444969" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.6345045616694982"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6345045616694982" utilityA="0.6345045616694982"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.5593446891361845"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5593446891361845" utilityA="0.5593446891361845"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.7995736732444969" agentName="Agent B" maxUtility="1.0" finalUtility="0.7995736732444969" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="6"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5295657628792164" utilityA="0.5295657628792164"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6945618076965763" utilityA="0.6945618076965763"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6945618076965763" utilityA="0.6945618076965763"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.7995736732444969"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:20:45" errors="null" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.644291139117196" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.6443245160860265" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6443245160860265" utilityA="0.6443245160860265"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="23'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.644291139117196" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.6443245160860265" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.882213997554383"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:20:54" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7097375009604509" utilityA="0.725620106089855"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.7995736732444969" utilityA="0.5995926003964769"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Macintosh"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="120 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:21:04" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.45937810708396276" utilityA="0.6699348436076416"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.45937810708396276" utilityA="0.6699348436076416"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Dell"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="80 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.000051804171754" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml" agent="B"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.882213997554383" utilityA="0.4155654866405582"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="20'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2008-09-08 13:21:06" errors="Agent Agent B ended the negotiation without agreement" startingAgent="agentB"> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent A" maxUtility="1.0" finalUtility="0.0" agentClass="agents.SimpleAgt2" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="A"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent normalizedUtility="0.0" agentName="Agent B" maxUtility="1.0" finalUtility="0.0" agentClass="agents.UIAgent" utilspace="/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml" agent="B"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
