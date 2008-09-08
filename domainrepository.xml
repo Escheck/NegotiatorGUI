@@ -3,18 +3,15 @@
     <items>
         <agentRepItems/>
         <domainRepItem>
-            <domainRepItem url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_domain.xml">
-                <profile url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_seller_utility.xml"/>
-                <profile url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/laptopdomain/laptop_empty_utility.xml"/>
+            <domainRepItem url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_domain.xml">
+                <profile url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml"/>
+                <profile url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_empty_utility.xml"/>
+                <profile url="file:/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml"/>
             </domainRepItem>
             <domainRepItem url="file:domain2">
                 <profile url="file:profilec"/>
                 <profile url="file:profiled"/>
                 <profile url="file:profilee"/>
-            </domainRepItem>
-            <domainRepItem url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/laptopdomain/laptop_domain.xml">
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/laptopdomain/laptop_buyer_utility.xml"/>
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/laptopdomain/laptop_seller_utility.xml"/>
             </domainRepItem>
         </domainRepItem>
     </items>

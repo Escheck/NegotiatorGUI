@@ -269,6 +269,7 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		bidChart.removeAllPlots();
 		//clear table
 		progressinfo.reset();
+		round = 0;
 	}
 	
 	public void handleLogMessageEvent(LogMessageEvent evt) {
@@ -312,6 +313,7 @@ class ProgressInfo extends AbstractTableModel{
 	
 	public void reset()
 	{
+		System.out.println("reset the JTable now.");
 		data = new Object [6][colNames.length];
 	}
 

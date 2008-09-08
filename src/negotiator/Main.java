@@ -14,7 +14,6 @@ import java.util.Calendar;
 
 import agents.BayesianAgent;
 
-import negotiator.gui.MainFrame;
 import negotiator.gui.chart.Chart;
 import negotiator.exceptions.Warning;
 
@@ -32,7 +31,7 @@ public class Main {
     //public static NegotiationManager nm;
     public static boolean batchMode ;
     public static boolean fDebug=false;
-    public static MainFrame mf;
+    //public static MainFrame mf;
     public static Chart fChart = null;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
     public static boolean experimentalSetup=true;//set to true to allow agent to access negotiation environment
@@ -49,7 +48,7 @@ public class Main {
         fDebug = false;
         checkArguments(args);
         Main.args = args;
-        java.awt.EventQueue.invokeLater(new Runnable() {
+      /*  java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 mf = new MainFrame(Main.args);
                 logger = new Logger(mf.getOutputArea());
@@ -57,7 +56,7 @@ public class Main {
                 mf.setVisible(true);
                 if (!analysisEnabled) new Warning("analysis is disabled.");
             }
-        });
+        });*/
     }
     
     /** Wouter: added 20aug as workaround for bug 436 on mantis. */

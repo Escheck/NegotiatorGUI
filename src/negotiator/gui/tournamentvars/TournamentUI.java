@@ -241,26 +241,12 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 */
 	void start() throws Exception {
 		
-		NegotiationEventListener ael=new NegotiationEventListener() {
-			public void handleActionEvent(negotiator.events.ActionEvent evt) {
-				System.out.println("Caught event "+evt);
-			}
 
-			public void handleLogMessageEvent(LogMessageEvent evt) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
 		ProgressUI progressUI = new ProgressUI();
 		TournamentProgressUI tournamentProgressUI=new TournamentProgressUI(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, tournamentProgressUI);
 		
-		new Thread(new TournamentRunner(tournament,ael)).start();
+		new Thread(new TournamentRunner(tournament,tournamentProgressUI)).start();
 		
 	}
 	

@@ -127,7 +127,9 @@ public class NegotiationSession2 implements Runnable {
     	
     	check();
     }
-   
+    public void setNegotiationEventListener(NegotiationEventListener listener) {
+    	actionEventListener = listener;
+    }
     
     void check() throws Exception {
     	if (!(getProfileArep().getDomain().equals(getProfileBrep().getDomain())))
@@ -161,7 +163,7 @@ public class NegotiationSession2 implements Runnable {
         //sf.setVisible(true);
        // Main.log("Starting negotiations...");
         for(int i=0;i<sessionTotalNumber;i++) {
-            Main.log("Starting session " + String.valueOf(i+1));
+            //Main.log("Starting session " + String.valueOf(i+1));
             runNegotiationSession(i+1);
         }
     }
