@@ -81,7 +81,12 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 				TournamentVariable var=tournament.getVariables().get(row);
 			  	switch(col)
 			  	{
-			  	case 0:return var.varToString();
+			  	case 0: {
+			  		String res =var.varToString();
+			  		if(row==1) res += " side A";
+			  		else if (row == 2) res += " side B";
+			  		return res;			  	
+			  	}
 			  	case 1:return var.getValues().toString();
 			  	default: new Warning("Illegal column in table "+col);
 			  	}
@@ -92,7 +97,12 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			}
 		};
 		jTable1.setModel(dataModel);
-        jTable1.getColumnModel().getColumn(0).setWidth(50);
+		jTable1.getColumnModel().getColumn(0).setMaxWidth(150);
+        //jTable1.getColumnModel().getColumn(0).setWidth(150);
+		jTable1.getColumnModel().getColumn(0).setMinWidth(140);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+        
+        
     }
 
 	/**********************button functionality************************/

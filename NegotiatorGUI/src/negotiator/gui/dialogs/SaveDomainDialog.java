@@ -48,7 +48,8 @@ public class SaveDomainDialog extends JDialog implements ActionListener {
 	}
 	
 	public SaveDomainDialog(TreeFrame owner, boolean modal, JTreeTable treeTable, String name, JFileChooser fileChooser) {
-		super(owner, name, modal);
+		//super(owner, name, modal);
+		super();
 		this.fileChooser = fileChooser;
 		this.parent = owner;
 		init();

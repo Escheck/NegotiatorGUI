@@ -35,6 +35,7 @@ public class Tournament
 	
 	/** called when you press start button in Tournament window.
 	 * This builds the sessions array from given Tournament vars 
+	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. */
 	public ArrayList<NegotiationSession2> getSessions() throws Exception {
 		// get agent A and B value(s)
@@ -56,6 +57,7 @@ public class Tournament
 		for (ProfileRepItem profileA: profiles) {
 			for (ProfileRepItem profileB: profiles) {
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
+				if (profileA.equals(profileB)) continue;
 				for (TournamentValue agentAval: agentAvalues ) {
 					AgentRepItem agentA=((AgentValue)agentAval).getValue();
 					for (TournamentValue agentBval: agentBvalues) {

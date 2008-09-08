@@ -20,6 +20,6 @@ public class ProfileVariable extends TournamentVariable
 	}
 	
 	public String varToString() {
-		return "ProfileVar";
+		return "Preference profiles";
 	}
 }

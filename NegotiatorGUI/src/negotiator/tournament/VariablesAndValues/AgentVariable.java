@@ -20,6 +20,6 @@ public class AgentVariable extends TournamentVariable
 	}
 	
 	public String varToString() {
-		return "AgentVar";
+		return "Agent";
 	}
 }
