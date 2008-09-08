@@ -190,9 +190,9 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JTabbedPane" name="tabpaneMain">
+            <Container class="negotiator.gui.tab.CloseTabbedPane" name="closeTabbedPane1">
               <Properties>
-                <Property name="name" type="java.lang.String" value="tabpaneMain" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="closeTabbedPane1" noResource="true"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
