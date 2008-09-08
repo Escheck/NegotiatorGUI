@@ -596,4 +596,11 @@ public class NegotiationSession2 implements Runnable {
 		
 	}
 
+    public String getAgentAStrategyName() {
+    	return agentArep.getName();
+    }
+    public String getAgentBStrategyName() {
+    	return agentBrep.getName();
+    }
+
 }
