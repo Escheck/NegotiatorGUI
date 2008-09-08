@@ -23,7 +23,12 @@ public class BidChart {
 	private DefaultXYDataset paretoData = new DefaultXYDataset();
 	private DefaultXYDataset bidderAData = new DefaultXYDataset();
 	private DefaultXYDataset bidderBData = new DefaultXYDataset();
+	private DefaultXYDataset nashData = new DefaultXYDataset();
+	private DefaultXYDataset kalaiData = new DefaultXYDataset();
+	private DefaultXYDataset agreementData = new DefaultXYDataset();
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
+	final XYDotRenderer nashRenderer = new XYDotRenderer();
+	final XYDotRenderer kalaiRenderer = new XYDotRenderer();
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
@@ -70,6 +75,16 @@ public class BidChart {
 		bidderBData.addSeries("Agent B's bids",bidSeriesB);
 	}
 	
+	public void setNash(double[][]nash){
+		nashData.addSeries("Nash Point",nash);
+	}
+	public void setKalai(double[][]kalai){
+		nashData.addSeries("Kalai Point",kalai);
+	}
+	public void setAgreementPoint(double[][]agreement){
+		nashData.addSeries("Nash Point",agreement);
+	}
+	
 	public void removeAllPlots(){
 		if(bidderAData.getSeriesCount()!=0)
 			bidderAData.removeSeries("Agent A's bids");
@@ -87,6 +102,12 @@ public class BidChart {
         ValueAxis rangeAxis = new NumberAxis("Agent A");
         dotRenderer.setDotHeight(2);
         dotRenderer.setDotWidth(2);
+        nashRenderer.setDotHeight(5);
+        nashRenderer.setDotWidth(5);
+        nashRenderer.setSeriesPaint(0,Color.black);
+        kalaiRenderer.setDotHeight(5);
+        kalaiRenderer.setDotWidth(5);
+        kalaiRenderer.setSeriesPaint(0,Color.pink);
         paretoRenderer.setSeriesPaint(0, Color.RED);
         lineARenderer.setSeriesPaint(0, Color.GREEN);
         lineBRenderer.setSeriesPaint(0, Color.BLUE);
@@ -106,6 +127,13 @@ public class BidChart {
 	    plot.setRenderer(3, lineARenderer);
 	    plot.setDataset(4, bidderBData);
 	    plot.setRenderer(4, lineBRenderer);
+	   
+	    plot.setDataset(5, nashData);
+	    plot.setRenderer(5, nashRenderer);
+	    plot.setDataset(6, kalaiData);
+	    plot.setRenderer(6, kalaiRenderer);
+	    plot.setDataset(7, agreementData);
+	    plot.setRenderer(7, dotRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         return new JFreeChart("Bids", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
