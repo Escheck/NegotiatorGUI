@@ -3,7 +3,7 @@ package negotiator.tournament;
 import negotiator.Domain;
 
 import negotiator.Main;
-import negotiator.NegotiationOutcome;
+import negotiator.NegotiationOutcome; 
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -159,7 +159,7 @@ public class NegotiationSession2 implements Runnable {
     public void startNegotiation() throws Exception {
         //sf = new SessionFrame(agentAname, agentBname);
         //sf.setVisible(true);
-        Main.log("Starting negotiations...");
+       // Main.log("Starting negotiations...");
         for(int i=0;i<sessionTotalNumber;i++) {
             Main.log("Starting session " + String.valueOf(i+1));
             runNegotiationSession(i+1);
@@ -265,7 +265,7 @@ public class NegotiationSession2 implements Runnable {
 			} else {
 				//propose to build an analysis
 				Object[] options = {"Yes","No"};                  
-				int n = JOptionPane.showOptionDialog(Main.mf,
+				int n = JOptionPane.showOptionDialog(null,
 						"You have no analysis available for this template. Do you want build it?",
 						"No Analysis",
 						JOptionPane.YES_NO_OPTION,
@@ -465,14 +465,13 @@ public class NegotiationSession2 implements Runnable {
 	 * @param mf points to the MainFrame GUI that currently also holds the application data (...)
 	 * @throws Exception if there are problems reading the file.
 	 */
-	public static void loadParamsFromFile (String fileName, MainFrame mf) throws Exception
+	/*public static void loadParamsFromFile (String fileName, MainFrame mf) throws Exception
 	{
 		SimpleDOMParser parser = new SimpleDOMParser();
 		try {
 			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));		
 			SimpleElement root = parser.parse(file);
-/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-            else this.negotiationType = CONVENTIONAL_NEGOTIATION;*/
+
             mf.setNemberOfSessions(root.getAttribute("number_of_sessions"));
             SimpleElement xml_agentA = (SimpleElement)(root.getChildByTagName("agent")[0]);
             mf.setAgentAName(xml_agentA.getAttribute("name"));
@@ -486,7 +485,7 @@ public class NegotiationSession2 implements Runnable {
             throw new IOException("Problem loading parameters from "+fileName+": "+e.getMessage());
         }
     }
-    
+    */
     
     public Domain getDomain() {
         return domain;
