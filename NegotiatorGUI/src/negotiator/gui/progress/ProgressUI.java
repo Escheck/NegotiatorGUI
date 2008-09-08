@@ -32,6 +32,8 @@ import javax.swing.table.TableCellRenderer;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
+import negotiator.actions.Accept;
+import negotiator.actions.EndNegotiation;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
@@ -282,6 +284,13 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
+		if ((evt.getAct()instanceof Accept)){
+			double [][]ap = new double [2][1];
+			ap[0][0]= evt.getNormalizedUtilityA();
+			ap[1][0]= evt.getNormalizedUtilityB();
+			bidChart.setAgreementPoint(ap);
+		}
+
 		
 	}
 	public void resetGUI(){
