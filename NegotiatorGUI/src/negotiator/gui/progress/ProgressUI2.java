@@ -50,6 +50,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	protected NegotiationSession2 session;
 	private TextArea logText;
 	private JPanel chart;
+	
     /** Creates new form ProgressUI2 */
     public ProgressUI2() {
         initComponents();
@@ -267,7 +268,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	
 	public void addLoggingText(String t){
 		textOutput.append(t+"\n");
-		//logText.append(t+"\n");
+		session.setLog(textOutput.getText());
 	}
 	
 	/** run this for a demo of ProgressnUI */
@@ -312,6 +313,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//myChart.setPareto(pareto);
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
+	}
+	public void setLogText(String str){
+		textOutput.setText(str);
 	}
 	
 	public void setNegotiationSession(NegotiationSession2 nego){
@@ -387,7 +391,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		addLoggingText(evt.getMessage());		
+		addLoggingText(evt.getMessage());	
 	}
 
 	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
