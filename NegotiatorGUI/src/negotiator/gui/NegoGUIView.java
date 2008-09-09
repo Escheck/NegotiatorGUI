@@ -17,6 +17,8 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog; 
@@ -24,10 +26,14 @@ import javax.swing.JFrame;
 import javax.swing.tree.TreePath; 
 import negotiator.Domain; 
 import negotiator.gui.domainrepository.MyTreeNode;
+import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
+import negotiator.issue.Objective;
 import negotiator.repository.DomainRepItem;
+import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
+import negotiator.utility.UtilitySpace;
 
 /**
  * The application's main frame.
@@ -101,6 +107,15 @@ public class NegoGUIView extends FrameView {
 			// TODO: handle exception
         	e.printStackTrace();
 		}
+        CloseListener cl = new CloseListener() {
+
+			public void closeOperation(MouseEvent e, int overTabIndex) {
+				// TODO Auto-generated method stub
+				closeTabbedPane1.remove(overTabIndex);
+				
+			}
+        };
+        closeTabbedPane1.addCloseListener(cl);
     }
     public void replaceTab(String title, Component oldComp, Component newComp) {
     	closeTabbedPane1.remove(oldComp);
@@ -429,8 +444,19 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
                         } catch (Exception e) {
                             e.printStackTrace();
                         
-                        }
+                        }                        
+                    } else if(repItem instanceof ProfileRepItem) {
+                        try {
+                        	MyTreeNode parentNode = (MyTreeNode)(node.getParent());
+                            Domain domain = new Domain( ((DomainRepItem) (parentNode.getRepositoryItem()) ).getURL().getFile());
+                            UtilitySpace utilitySpace = new UtilitySpace(domain, ((ProfileRepItem) repItem).getURL().getFile());
+                            
+                            tf = new TreeFrame(domain,utilitySpace);
+                            addTab("Profile", tf);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         
+                        }                        
                     }                
                 }
              }
@@ -468,10 +494,31 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     
     @Action
     public void newPrefProfile() {
+    	TreePath selPath = treeDomains.getSelectionPath();
+    	if(selPath!=null) {
+    		TreeFrame tf;
+    		MyTreeNode node = (MyTreeNode)(selPath.getLastPathComponent());
+    		RepItem repItem = node.getRepositoryItem();
+    		if(repItem instanceof DomainRepItem) {
+    			try {
+    				Domain domain = new Domain( ((DomainRepItem) repItem).getURL().getFile());
+    				tf = new TreeFrame(domain, new UtilitySpace(domain, ""));
+    				addTab("Domain", tf);
+    			} catch (Exception e) {
+    				e.printStackTrace();
+
+    			}                        
+    		}
+    	}
     }
 
     @Action
     public void newDomain() {
+		Objective newRoot = new Objective(null, "root", 0);
+		Domain domain = new Domain();
+		domain.setObjectivesRoot(newRoot);
+    	TreeFrame tf = new TreeFrame(domain);
+    	addTab("Domain", tf);
     }
 
     @Action
