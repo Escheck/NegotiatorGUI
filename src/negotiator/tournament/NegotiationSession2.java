@@ -268,7 +268,7 @@ public class NegotiationSession2 implements Runnable {
 				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
 			} else {
 				//propose to build an analysis
-				Object[] options = {"Yes","No"};                  
+/*				Object[] options = {"Yes","No"};                  
 				int n = JOptionPane.showOptionDialog(null,
 						"You have no analysis available for this template. Do you want build it?",
 						"No Analysis",
@@ -277,12 +277,12 @@ public class NegotiationSession2 implements Runnable {
 						null,
 						options,
 						options);
-				if(n==0) {
+				if(n==0) {*/
 					bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
 					//fAnalysis = Analysis.getInstance(this);
 					//  save the analysis to the cache
 					//fAnalysis.saveToCache();
-				}
+				//}
 				
 			}//if
 		}
