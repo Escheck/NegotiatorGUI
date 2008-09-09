@@ -65,6 +65,7 @@ public class ProgressUI extends JPanel implements NegotiationEventListener {
 		bidChart = new BidChart();
 		progressinfo = new ProgressInfo();
 		biddingTable = new  JTable(progressinfo);
+		biddingTable.setRowSelectionAllowed(true);
 		biddingTable.setGridColor(Color.lightGray);
 		ProgressUI1("initialized...",bidChart,biddingTable);
 	}
