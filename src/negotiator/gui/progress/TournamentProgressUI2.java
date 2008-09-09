@@ -7,6 +7,8 @@
 package negotiator.gui.progress;
 
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -14,6 +16,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
+import negotiator.gui.progress.TournamentProgressUI.SelectionListener;
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 
@@ -35,6 +38,11 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		String[] colNames={"Domain1","Domain2","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","Details"};
 		resultTableModel = new NegoTableModel (colNames);
 		resultTable.setModel(resultTableModel);
+		//add a listener to receive selection events:
+	    SelectionListener listener = new SelectionListener(resultTable);
+	    resultTable.getSelectionModel().addListSelectionListener(listener);
+	    resultTable.getColumnModel().getSelectionModel()
+	        .addListSelectionListener(listener);		
 		//pnlSession.add(sessionProgress);
     }
 
@@ -192,4 +200,33 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		sessionProgress.resetGUI();
 		sessionProgress.setNegotiationSession(negoSession);
 	}
+	public class SelectionListener implements ListSelectionListener {
+        JTable table;
+    
+        // It is necessary to keep the table since it is not possible
+        // to determine the table from the event's source
+        SelectionListener(JTable table) {
+            this.table = table;
+        }
+        public void valueChanged(ListSelectionEvent e) {
+            // If cell selection is enabled, both row and column change events are fired
+            if (e.getSource() == table.getSelectionModel()
+                  && table.getRowSelectionAllowed()) {
+                // Column selection changed
+                int first = e.getFirstIndex();
+                int last = e.getLastIndex();
+                System.out.println("selection event happened 1;"+first+" "+last);
+            } else if (e.getSource() == table.getColumnModel().getSelectionModel()
+                   && table.getColumnSelectionAllowed() ){
+                // Row selection changed
+                int first = e.getFirstIndex();
+                int last = e.getLastIndex();
+                System.out.println("selection event happened 2;"+first+" "+last);
+            }
+    
+            if (e.getValueIsAdjusting()) {
+                // The mouse button has not yet been released
+            }
+        }
+    }
 }
