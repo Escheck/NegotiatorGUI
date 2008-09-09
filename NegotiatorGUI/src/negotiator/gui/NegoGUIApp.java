@@ -18,7 +18,7 @@ public class NegoGUIApp extends SingleFrameApplication {
      */
     @Override protected void startup() {
     	negoGUIView = new NegoGUIView(this);
-        show(negoGUIView);
+        show(negoGUIView); 
     }
 
     /**
@@ -33,7 +33,7 @@ public class NegoGUIApp extends SingleFrameApplication {
      * A convenient static getter for the application instance.
      * @return the instance of NegoGUIApp
      */
-    public static NegoGUIApp getApplication() {
+    public static NegoGUIApp getApplication() { 
         return Application.getInstance(NegoGUIApp.class);
     }
 
