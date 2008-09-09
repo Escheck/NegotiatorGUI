@@ -50,7 +50,7 @@ public class TournamentRunner implements Runnable {
     
     private void fireNegotiationSessionEvent(NegotiationSession2 session ) {
     	for(NegotiationEventListener listener :  negotiationEventListeners) 
-    		listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
+    		if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
     }
 
 }
