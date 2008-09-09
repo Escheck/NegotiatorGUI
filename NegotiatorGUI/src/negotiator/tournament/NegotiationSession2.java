@@ -413,7 +413,9 @@ public class NegotiationSession2 implements Runnable {
 		}
 		
 	}
-	
+	public int getNrOfBids(){
+		return sessionrunner.fAgentABids.size()+sessionrunner.fAgentBBids.size();
+	}
 	//alinas code
 	public double[][] getNegotiationPathA(){
 		System.out.println("fAgentABids "+sessionrunner.fAgentABids.size());
@@ -530,7 +532,9 @@ public class NegotiationSession2 implements Runnable {
     public Integer getTotalTime() { return totalTime; }
     public BidSpace getBidSpace() { return bidSpace; }
 
-
+    public String getStartingAgent(){
+    	return startingAgent;
+    }
 	public void setAgentAname(String agentAname) {
 		this.agentAname = agentAname;
 	}

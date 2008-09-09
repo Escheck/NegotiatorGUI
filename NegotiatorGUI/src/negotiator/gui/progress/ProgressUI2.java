@@ -393,7 +393,39 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		ap[0][0]= curveA[0][curveA.length-1];
 		ap[1][0]= curveA[1][curveA.length-1];
 		bidChart.setAgreementPoint(ap);
+	}
+	
+	public void addTableData(){
+		System.out.println("updating the table...");
+		double [][] curveA = session.getNegotiationPathA();
+		double [][] curveB = session.getNegotiationPathB();
+		String starter = session.getStartingAgent();
+		System.out.println("starting agent "+ starter);
+		String second="";
+		if(starter.equals("Agent A")){
+			second = "Agent B";
+		}else{
+			second = "Agent A";
+		}
 		
+		for(int i=0;i<session.getNrOfBids();i++){
+			if(i>biddingTable.getModel().getRowCount()){
+				progressinfo.addRow();
+			}
+			//round = evt.getRound();
+			biddingTable.getModel().setValueAt(i+1,i,0);
+			if (i%2 != 0){
+				biddingTable.getModel().setValueAt(starter,i,1);
+			}else{
+				biddingTable.getModel().setValueAt(second,i,1);
+			}
+			try{
+				biddingTable.getModel().setValueAt(curveA[0][i],i,2);
+				biddingTable.getModel().setValueAt(curveB[0][i],i,3);
+			}catch(ArrayIndexOutOfBoundsException e){
+				System.out.println("out of bounds");
+			}
+		}
 	}
 	
 	public void resetGUI(){
