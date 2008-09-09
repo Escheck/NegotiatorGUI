@@ -243,6 +243,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         	selectedSessionUI = new ProgressUI2();
         	selectedSessionUI.setNegotiationSession(ng);
         	selectedSessionUI.setLogText(ng.getLog());
+        	selectedSessionUI.addGraph();
         }
     }
 }
