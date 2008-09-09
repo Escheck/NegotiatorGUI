@@ -56,6 +56,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		bidChart = new BidChart();
 		progressinfo = new ProgressInfo();
 		//biddingTable = new  JTable(progressinfo);
+		biddingTable.setModel(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
 		ProgressUI1("initialized...",bidChart,biddingTable);
 
@@ -265,8 +266,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	public void addLoggingText(String t){
-		//textOutput.append(t);
-		logText.append(t+"\n");
+		textOutput.append(t+"\n");
+		//logText.append(t+"\n");
 	}
 	
 	/** run this for a demo of ProgressnUI */
@@ -376,7 +377,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	public void resetGUI(){
 		//clear TextArea:
-		logText.setText("");
+		//logText.setText("");
+		textOutput.setText("");
 		//clear graph
 		bidChart.removeAllPlots();
 		//clear table
