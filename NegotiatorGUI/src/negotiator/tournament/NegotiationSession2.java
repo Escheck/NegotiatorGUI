@@ -64,7 +64,9 @@ public class NegotiationSession2 implements Runnable {
 	String startingAgent; // agentAname or agnetBname
 	Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	NegotiationOutcome outcome;
-
+	private String log;
+	
+	
     public static int NON_GUI_NEGO_TIME = 120;
     public static int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
 
@@ -512,7 +514,12 @@ public class NegotiationSession2 implements Runnable {
 		return fAgentBUtilitySpace;
 	}
 	
-	 
+	public void setLog(String str){
+		log = str;
+	}
+	public String getLog(){
+		return log;
+	}
     public SimpleElement domainToXML(){
     	return domain.toXML(); 		
     }
