@@ -190,18 +190,6 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="negotiator.gui.tab.CloseTabbedPane" name="closeTabbedPane1">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="closeTabbedPane1" noResource="true"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                  <JSplitPaneConstraints position="right"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
-            </Container>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JToolBar" name="toolBar">
@@ -227,10 +215,8 @@
             <Component class="javax.swing.JButton" name="saveToolBarButton">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="documenteditor.DocumentEditorView" id="save" methodName="save"/>
+                  <action class="negotiator.gui.NegoGUIView" id="saveFileAction" methodName="saveFileAction"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="saveToolBarButton.icon"/>
-                <Property name="toolTipText" type="java.lang.String" resourceKey="saveToolBarButton.toolTipText"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="name" type="java.lang.String" value="saveToolBarButton" noResource="true"/>

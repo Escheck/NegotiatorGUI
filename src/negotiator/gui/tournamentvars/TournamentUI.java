@@ -20,8 +20,8 @@ import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
-import negotiator.gui.progress.ProgressUI;
-import negotiator.gui.progress.TournamentProgressUI;
+import negotiator.gui.progress.ProgressUI2;
+import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
@@ -252,10 +252,10 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	void start() throws Exception {
 		
 
-		ProgressUI progressUI = new ProgressUI();
-		TournamentProgressUI tournamentProgressUI=new TournamentProgressUI(progressUI );
+		ProgressUI2 progressUI = new ProgressUI2();
+		TournamentProgressUI2 tournamentProgressUI=new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, tournamentProgressUI);
-		
+		 
 		new Thread(new TournamentRunner(tournament,tournamentProgressUI)).start();
 		
 	}

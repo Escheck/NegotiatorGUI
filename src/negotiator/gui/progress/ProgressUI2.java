@@ -113,20 +113,21 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 
         setName("Form"); // NOI18N
 
+        jSplitPane1.setDividerSize(3);
         jSplitPane1.setName("jSplitPane1"); // NOI18N
 
+        jSplitPane3.setDividerSize(3);
         jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane3.setName("jSplitPane3"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getResourceMap(ProgressUI2.class);
-        pnlChart.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("pnlChart.border.title"))); // NOI18N
+        pnlChart.setBorder(javax.swing.BorderFactory.createTitledBorder("Negotiation dynamics chart"));
         pnlChart.setName("pnlChart"); // NOI18N
 
         org.jdesktop.layout.GroupLayout pnlChartLayout = new org.jdesktop.layout.GroupLayout(pnlChart);
         pnlChart.setLayout(pnlChartLayout);
         pnlChartLayout.setHorizontalGroup(
             pnlChartLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 373, Short.MAX_VALUE)
+            .add(0, 375, Short.MAX_VALUE)
         );
         pnlChartLayout.setVerticalGroup(
             pnlChartLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -135,7 +136,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 
         jSplitPane3.setTopComponent(pnlChart);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Exchanged offers"));
         jPanel3.setName("jPanel3"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
@@ -158,18 +159,18 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
         );
 
         jSplitPane3.setRightComponent(jPanel3);
 
         jSplitPane1.setRightComponent(jSplitPane3);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Negotiation log"));
         jPanel1.setName("jPanel1"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
