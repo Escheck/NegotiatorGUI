@@ -6,6 +6,8 @@
 
 package negotiator.gui.progress;
 
+import java.util.ArrayList;
+
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -27,10 +29,12 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 public class TournamentProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener{
 	private NegoTableModel resultTableModel; // the table model	
 	private NegotiationSession2 negoSession;
+	private ArrayList <NegotiationSession2> sessionArray;
 	private int session;
 	private ProgressUI2 sessionProgress;
     /** Creates new form TournamentProgressUI2 */
     public TournamentProgressUI2(ProgressUI2 pUI) {
+    	sessionArray = new ArrayList<NegotiationSession2>();
     	jPanel1 = pUI;
         initComponents(); 
 		sessionProgress = pUI;
@@ -178,6 +182,10 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		negoSession = evt.getSession();
 		sessionProgress.session = negoSession;
 		negoSession.addNegotiationEventListener(sessionProgress);
+		
+		//add the current session to the array
+		sessionArray.add(negoSession);
+		
 		int i=0;
 		if(!(negoSession.getAgentAparams()==null)) {
 			for(AgentParamValue p: negoSession.getAgentAparams()) 
@@ -200,33 +208,22 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		sessionProgress.resetGUI();
 		sessionProgress.setNegotiationSession(negoSession);
 	}
+	
 	public class SelectionListener implements ListSelectionListener {
         JTable table;
-    
         // It is necessary to keep the table since it is not possible
         // to determine the table from the event's source
         SelectionListener(JTable table) {
             this.table = table;
         }
         public void valueChanged(ListSelectionEvent e) {
-            // If cell selection is enabled, both row and column change events are fired
             if (e.getSource() == table.getSelectionModel()
                   && table.getRowSelectionAllowed()) {
-                // Column selection changed
-                int first = e.getFirstIndex();
-                int last = e.getLastIndex();
-                System.out.println("selection event happened 1;"+first+" "+last);
-            } else if (e.getSource() == table.getColumnModel().getSelectionModel()
-                   && table.getColumnSelectionAllowed() ){
-                // Row selection changed
-                int first = e.getFirstIndex();
-                int last = e.getLastIndex();
-                System.out.println("selection event happened 2;"+first+" "+last);
-            }
-    
-            if (e.getValueIsAdjusting()) {
-                // The mouse button has not yet been released
-            }
+                int row = table.getSelectedRow();
+                System.out.println("selection event happened;row "+row+" selected.");
+                //show ProgressUI for selected session:
+                negoSession = sessionArray.get(row);
+            } 
         }
     }
 }
