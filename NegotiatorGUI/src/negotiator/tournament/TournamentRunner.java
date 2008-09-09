@@ -45,7 +45,7 @@ public class TournamentRunner implements Runnable {
 				fireNegotiationSessionEvent(s);
 				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 			}
-    	} catch (Exception e) { new Warning("Fatail error cancelled tournament run:"+e); }
+    	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
     }
     
     private void fireNegotiationSessionEvent(NegotiationSession2 session ) {
