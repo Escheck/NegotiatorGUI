@@ -29,6 +29,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 import negotiator.NegotiationEventListener;
+import negotiator.actions.Accept;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
@@ -219,7 +220,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
     private javax.swing.JTextArea textOutput;
     // End of variables declaration//GEN-END:variables
 
-	private double[][] getPareto(){
+    private double[][] getPareto(){
 		double [][] pareto=null;
 		ArrayList <BidPoint>paretoBids = null;
 		BidSpace bs = session.getBidSpace();
@@ -265,7 +266,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	
 	public void addLoggingText(String t){
 		//textOutput.append(t);
-		textOutput.append(t+"\n");
+		logText.append(t+"\n");
 	}
 	
 	/** run this for a demo of ProgressnUI */
@@ -364,6 +365,13 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
+		if ((evt.getAct()instanceof Accept)){
+			double [][]ap = new double [2][1];
+			ap[0][0]= evt.getNormalizedUtilityA();
+			ap[1][0]= evt.getNormalizedUtilityB();
+			bidChart.setAgreementPoint(ap);
+		}
+
 		
 	}
 	public void resetGUI(){
@@ -384,6 +392,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		// TODO Auto-generated method stub
 		
 	}	
+
+
 }
 
 
