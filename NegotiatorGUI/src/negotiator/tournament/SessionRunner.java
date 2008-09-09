@@ -198,7 +198,7 @@ public class SessionRunner implements Runnable {
                    try {
                 	   newOutcome(currentAgent, agentAUtility,agentBUtility,action, "Agent " + currentAgent.getName() +":"+e.getMessage());
                    }
-                   catch (Exception err) { new Warning("exception raised during exception handling: "+err); }
+                   catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
                    // don't compute the max utility, we're in exception which is already bad enough.
                 }
                 // swap to other agent
