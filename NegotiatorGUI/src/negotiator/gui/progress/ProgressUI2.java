@@ -370,6 +370,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
+		
 		if ((evt.getAct()instanceof Accept)){
 			double [][]ap = new double [2][1];
 			ap[0][0]= evt.getNormalizedUtilityA();
@@ -379,6 +380,22 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 
 		
 	}
+	public void addGraph(){
+		//adding graph data:
+		double [][] curveA = session.getNegotiationPathA();
+		double [][] curveB = session.getNegotiationPathB();
+		if(curveA!=null)
+			bidChart.setBidSeriesA(curveA);
+		if(curveB!=null)
+			bidChart.setBidSeriesB(curveB);	
+		
+		double [][]ap = new double [2][1];
+		ap[0][0]= curveA[0][curveA.length-1];
+		ap[1][0]= curveA[1][curveA.length-1];
+		bidChart.setAgreementPoint(ap);
+		
+	}
+	
 	public void resetGUI(){
 		//clear TextArea:
 		//logText.setText("");
