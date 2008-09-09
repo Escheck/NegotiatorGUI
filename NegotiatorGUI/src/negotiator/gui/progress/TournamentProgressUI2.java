@@ -18,6 +18,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
+import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.TournamentProgressUI.SelectionListener;
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -32,6 +33,9 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	private ArrayList <NegotiationSession2> sessionArray;
 	private int session;
 	private ProgressUI2 sessionProgress;
+	private ProgressUI2 selectedSessionUI; 
+	private ProgressUI2 oldUI;
+	
     /** Creates new form TournamentProgressUI2 */
     public TournamentProgressUI2(ProgressUI2 pUI) {
     	sessionArray = new ArrayList<NegotiationSession2>();
@@ -220,10 +224,25 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
             if (e.getSource() == table.getSelectionModel()
                   && table.getRowSelectionAllowed()) {
                 int row = table.getSelectedRow();
-                System.out.println("selection event happened;row "+row+" selected.");
+                //System.out.println("selection event happened;row "+row+" selected.");
                 //show ProgressUI for selected session:
-                negoSession = sessionArray.get(row);
-            } 
+                NegotiationSession2 ng =  sessionArray.get(row);
+                //System.out.println(ng.getLog());
+                
+                if (selectedSessionUI!= null){
+                	oldUI = selectedSessionUI; 
+                	fillGUI(ng);
+                    NegoGUIApp.negoGUIView.replaceTab("selected Session", oldUI,selectedSessionUI);
+                }else{
+                	fillGUI(ng);
+                    NegoGUIApp.negoGUIView.addTab("selected Session", selectedSessionUI);
+                }    
+            }
+        }
+        private void fillGUI(NegotiationSession2 ng){
+        	selectedSessionUI = new ProgressUI2();
+        	selectedSessionUI.setNegotiationSession(ng);
+        	selectedSessionUI.setLogText(ng.getLog());
         }
     }
 }
