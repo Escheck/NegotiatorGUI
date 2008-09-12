@@ -95,16 +95,16 @@ public class RandomWalkABMPAgent extends Agent {
 					.getUtility(myLastBid))
 				// Opponent bids equally, or outbids my previous bid, so lets
 				// accept
-				lAction = new Accept(this, lOppntBid);
+				lAction = new Accept(this);
 			else
 				// Propose counteroffer. Get next bid.
 				lAction = proposeNextBid(lOppntBid);
 			break;
 		case ACCEPT: // Presumably, opponent accepted last bid, but let's
 			// check...
-			lOppntBid = ((Accept) messageOpponent).getBid();
+			//lOppntBid = ((Accept) messageOpponent).getBid();
 			if (lOppntBid.equals(myLastBid))
-				lAction = new Accept(this, myLastBid);
+				lAction = new Accept(this);
 			else
 				lAction = new Offer(this, myLastBid);
 			break;
@@ -139,19 +139,6 @@ public class RandomWalkABMPAgent extends Agent {
 		return lActionType;
 	}
 
-	public void loadUtilitySpace(String fileName) {
-		double[] lWeights;
-		
-		utilitySpace = new SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
-	
-		nrOfIssues = getNegotiationTemplate().getDomain().getNumberOfIssues();
-		lIssueWeight = new double[nrOfIssues];
-		lWeights = new double[nrOfIssues];
-		for (int i=0; i<nrOfIssues; i++) {
-			lIssueWeight[i] = this.utilitySpace.getWeight(i);
-			lWeights[i] = lIssueWeight[i];
-		}
-	}
 
 	private Bid getBidRandomWalk(double targetUtility) {
 		Bid lBid = null, lBestBid = null;

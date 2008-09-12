@@ -250,6 +250,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//save the possible bids in double [][] and display in graph 
 		double [][] possibleBids=null;
 		BidSpace bs = session.getBidSpace();
+		if(bs.bidPoints.size()>300000) return possibleBids;
 		if(bs==null)System.out.println("bidspace == null");
 		else{
 			ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
