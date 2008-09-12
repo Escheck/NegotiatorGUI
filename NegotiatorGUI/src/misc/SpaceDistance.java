@@ -4,7 +4,7 @@ import java.util.Random;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.NegotiationTemplate;
+
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
@@ -22,10 +22,10 @@ public class SpaceDistance {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			NegotiationTemplate nt = 
+/*			NegotiationTemplate nt = 
 				new NegotiationTemplate("D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_domain_template.xml",
 										"D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_buyer_utilityspace.xml",
-										"D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_dealer_utilityspace.xml",1000);	
+										"D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_dealer_utilityspace.xml",1000);*/	
 			UtilitySpace utilitySpaceA =  new UtilitySpace(nt.getDomain(), nt.getAgentAUtilitySpaceFileName());
 			UtilitySpace utilitySpaceB =  new UtilitySpace(nt.getDomain(), nt.getAgentBUtilitySpaceFileName());
 			SpaceDistance dist = new SpaceDistance(utilitySpaceA, utilitySpaceB);

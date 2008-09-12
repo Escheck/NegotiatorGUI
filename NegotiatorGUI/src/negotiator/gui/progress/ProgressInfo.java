@@ -22,7 +22,7 @@ class ProgressInfo extends AbstractTableModel{
 		for(int j=0;j<temp.length-1;j++){
 			for(int i=0;i<colNames.length;i++){
 				temp [j][i] = data [j][i];
-				System.out.println("temp data "+temp [j][i]);
+				//System.out.println("temp data "+temp [j][i]);
 			}
 		}
 		data = temp;

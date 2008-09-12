@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.gui.TableFrame;
+
 
 public class BiddingHistoryAnalysis {
 	public enum STEP_CLASS { UNKNOWN, FORTUNATE, UNFORTUNATE, CONCESSION, NICE, SILENT, SELFISH;}

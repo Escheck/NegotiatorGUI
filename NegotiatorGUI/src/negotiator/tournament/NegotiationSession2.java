@@ -200,7 +200,7 @@ public class NegotiationSession2 implements Runnable {
         
         	if (negoThread!=null&&negoThread.isAlive()) {
         		try {
-        			negoThread.stop(); // kill the stuff
+//        			negoThread.stop(); // kill the stuff
         			 // Wouter: this will throw a ThreadDeath Error into the nego thread
         			 // The nego thread will catch this and exit immediately.
         			 // Maybe it should not even try to catch that.
