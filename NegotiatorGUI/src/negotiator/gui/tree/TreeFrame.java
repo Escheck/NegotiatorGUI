@@ -9,6 +9,7 @@ import javax.swing.table.*;
 import jtreetable.*;
 import negotiator.*;
 import negotiator.utility.*;
+import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.actions.*;
 import negotiator.issue.*;
 
@@ -28,7 +29,7 @@ import negotiator.issue.*;
  * 
  */
 
-public class TreeFrame extends JPanel {
+public class TreeFrame extends JPanel implements NegoGUIComponent{
 	
 	//Attributes
 	private static final Color UNSELECTED = Color.WHITE;
@@ -397,4 +398,29 @@ public class TreeFrame extends JPanel {
         	System.out.println("blaat");
         }
     }
+
+	public void addAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void editAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public JButton[] getButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveAction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -456,4 +456,9 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 		}
 	}
 
+	public void saveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

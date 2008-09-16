@@ -175,7 +175,23 @@ public class DomainRepositoryUI implements NegoGUIComponent
 		domainrepository.save();
 	}
 	
+	
+	public void addprofile(URL fileName) throws Exception {
+		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
+		if (selection==null) throw new Exception("please select a domain to add the profile to");
+		RepItem item=selection.getRepositoryItem();
+		if (!(item instanceof DomainRepItem))
+			throw new Exception("please select a domain node");
+		
+        // TODO check that selected profile indeed belongs to our domain.
+        ProfileRepItem newnode=new ProfileRepItem(fileName,(DomainRepItem)item);
+        ((DomainRepItem)item).getProfiles().add(newnode);		        
+		treemodel.insertNodeInto(new MyTreeNode(newnode), selection, selection.getChildCount());
+		domainrepository.save();
+	    
+	}
 
+	
 	void addprofile() throws Exception {
 		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
 		if (selection==null) throw new Exception("please select a domain to add the profile to");
@@ -292,6 +308,11 @@ public class DomainRepositoryUI implements NegoGUIComponent
 		// TODO Auto-generated method stub
 		
 	}
+	public void saveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
 
 

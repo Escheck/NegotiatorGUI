@@ -413,4 +413,9 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		
 	}
 
+	public void saveAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

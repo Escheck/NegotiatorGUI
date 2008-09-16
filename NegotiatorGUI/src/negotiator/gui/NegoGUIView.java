@@ -39,6 +39,8 @@ import negotiator.utility.UtilitySpace;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
+	private AgentRepositoryUI agentRep = null;
+	private DomainRepositoryUI domainRep = null;
 	private NegoGUIComponent activeComponent = null;
     public NegoGUIView(SingleFrameApplication app) {
         super(app);
@@ -101,8 +103,8 @@ public class NegoGUIView extends FrameView {
         
         //custom
         try{
-        	AgentRepositoryUI agentRep = new AgentRepositoryUI(tableAgents);
-        	DomainRepositoryUI domainRep = new DomainRepositoryUI(treeDomains);
+        	agentRep = new AgentRepositoryUI(tableAgents);
+        	domainRep = new DomainRepositoryUI(treeDomains);
         } catch (Exception e) {
 			// TODO: handle exception
         	e.printStackTrace();
@@ -124,6 +126,9 @@ public class NegoGUIView extends FrameView {
     public void addTab(String title, Component comp) {
     	closeTabbedPane1.addTab(title, comp);    	
     	closeTabbedPane1.setSelectedComponent(comp);
+    }
+    public DomainRepositoryUI getDomainRepositoryUI() {
+    	return domainRep;
     }
     @Action
     public void showAboutBox() {
@@ -533,6 +538,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
     @Action
     public void editAction() {
+    	 if(activeComponent!=null) activeComponent.editAction();
     }
 
     @Action
