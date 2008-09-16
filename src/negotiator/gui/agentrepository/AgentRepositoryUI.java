@@ -178,4 +178,8 @@ public class AgentRepositoryUI implements NegoGUIComponent
 		// TODO Auto-generated method stub
 		removerow();
 	}
+	public void saveAction() {
+		// TODO Auto-generated method stub
+		
+	}
 }

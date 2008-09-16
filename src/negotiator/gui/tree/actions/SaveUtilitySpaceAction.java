@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
 
+import negotiator.gui.NegoGUIApp;
+import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.tree.*;
+import negotiator.repository.Repository;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -42,7 +45,15 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 		if (result == JFileChooser.APPROVE_OPTION) {
 			openedFile = fileChooser.getSelectedFile();
 			saveUtilitySpace(openedFile);
+			try {
+				DomainRepositoryUI domainRep = NegoGUIApp.negoGUIView.getDomainRepositoryUI();
+				domainRep.addprofile(openedFile.toURL());
+			} catch (Exception exc) {
+				// TODO: handle exception
+				exc.printStackTrace();
+			}
 		}
+		
 	}
 	
 	private void saveUtilitySpace(File file) {

@@ -10,4 +10,6 @@ public interface NegoGUIComponent {
 	public void removeAction();
 	
 	public void editAction();
+	
+	public void saveAction();
 }
