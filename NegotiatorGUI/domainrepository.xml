@@ -3,15 +3,30 @@
     <items>
         <agentRepItems/>
         <domainRepItem>
-            <domainRepItem url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_domain.xml">
-                <profile url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_seller_utility.xml"/>
-                <profile url="file:H:/Negotiator/negotiator/templates/laptopdomain/laptop_empty_utility.xml"/>
-                <profile url="file:/H:/WindowsConfig/My Documents/laptopdomain/laptop_buyer_utility.xml"/>
+            <domainRepItem url="file:etc/templates/laptopdomain/laptop_domain.xml">
+                <profile url="file:etc/templates/laptopdomain/laptop_seller_utility.xml"/>
+                <profile url="file:etc/templates/laptopdomain/laptop_buyer_utility.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:domain2">
-                <profile url="file:profilec"/>
-                <profile url="file:profiled"/>
-                <profile url="file:profilee"/>
+            <domainRepItem url="file:etc/templates/partydomain/party_domain.xml">
+                <profile url="file:etc/templates/partydomain/party_utility_kh.xml"/>
+                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/partydomain/party_utility_cath.xml"/>
+                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/partydomain/party_bartluijten_utility.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/SON/son_domain.xml">
+                <profile url="file:etc/templates/SON/son_buyer.xml"/>
+                <profile url="file:etc/templates/SON/son_seller.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
+                <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_city_space.xml"/>
+                <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_ampo_space.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
+                <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
+                <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/2nd_hand_car/car_domain.xml">
+                <profile url="file:etc/templates/2nd_hand_car/car_buyer.xml"/>
+                <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
         </domainRepItem>
     </items>
