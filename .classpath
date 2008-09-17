@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="dep/absolutelayout.jar"/>
-	<classpathentry kind="lib" path="dep/jcckit.jar"/>
 	<classpathentry kind="lib" path="dep/jtreetable.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="dep/jsr173_1.0_api.jar"/>
