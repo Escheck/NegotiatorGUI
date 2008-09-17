@@ -29,7 +29,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 
 import negotiator.gui.SessionFrame;
-import negotiator.gui.chart.Chart;
+
 import negotiator.repository.*;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.utility.UtilitySpace;
@@ -340,7 +340,7 @@ public class NegotiationSession2 implements Runnable {
 	 * 
 	 * @throws Exception
 	 */
-	protected void showAnalysis() throws Exception
+	/*protected void showAnalysis() throws Exception
 	{
 		int i;
 		if (bidSpace==null) throw new NullPointerException("bidspace=null, cant show analysis");
@@ -372,7 +372,7 @@ public class NegotiationSession2 implements Runnable {
 		Main.fChart = lChart;
 		//lChart.show();
 	}
-	
+	*/
 	
 	/**
 	 * 
@@ -402,10 +402,10 @@ public class NegotiationSession2 implements Runnable {
 	        	i++;
         	}
 	        
-	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
+/*	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
 	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
 	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-	        Main.fChart.show();
+	        Main.fChart.show();*/
         } catch (Exception e) {
 			// TODO: handle exception
         	e.printStackTrace();
