@@ -3,8 +3,6 @@ package negotiator.tournament;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.sun.jdi.event.ThreadDeathEvent;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Main;
