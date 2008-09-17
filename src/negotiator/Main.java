@@ -12,11 +12,6 @@ package negotiator;
 import java.util.TimeZone;
 import java.util.Calendar;
 
-import agents.BayesianAgent;
-
-import negotiator.gui.chart.Chart;
-import negotiator.exceptions.Warning;
-
 
 
 /**
@@ -32,7 +27,7 @@ public class Main {
     public static boolean batchMode ;
     public static boolean fDebug=false;
     //public static MainFrame mf;
-    public static Chart fChart = null;
+    //public static Chart fChart = null;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
     public static boolean experimentalSetup=true;//set to true to allow agent to access negotiation environment
      

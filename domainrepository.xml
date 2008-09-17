@@ -9,8 +9,8 @@
             </domainRepItem>
             <domainRepItem url="file:etc/templates/partydomain/party_domain.xml">
                 <profile url="file:etc/templates/partydomain/party_utility_kh.xml"/>
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/partydomain/party_utility_cath.xml"/>
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/partydomain/party_bartluijten_utility.xml"/>
+                <profile url="file:etc/templates/partydomain/party_utility_cath.xml"/>
+                <profile url="file:etc/templates/partydomain/party_bartluijten_utility.xml"/>
             </domainRepItem>
             <domainRepItem url="file:etc/templates/SON/son_domain.xml">
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
