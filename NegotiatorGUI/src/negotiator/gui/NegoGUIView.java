@@ -132,11 +132,11 @@ public class NegoGUIView extends FrameView {
     }
     @Action
     public void showAboutBox() {
-        if (aboutBox == null) {
+        /*if (aboutBox == null) {
             JFrame mainFrame = NegoGUIApp.getApplication().getMainFrame();
             aboutBox.setLocationRelativeTo(mainFrame);
         }
-        NegoGUIApp.getApplication().show(aboutBox);
+        NegoGUIApp.getApplication().show(aboutBox);*/
     }
 
     /** This method is called from within the constructor to

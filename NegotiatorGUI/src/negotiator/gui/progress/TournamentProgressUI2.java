@@ -221,7 +221,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
             this.table = table;
         }
         public void valueChanged(ListSelectionEvent e) {
-            if (e.getSource() == table.getSelectionModel()
+            /*if (e.getSource() == table.getSelectionModel()
                   && table.getRowSelectionAllowed()) {
                 int row = table.getSelectedRow();
                 //System.out.println("selection event happened;row "+row+" selected.");
@@ -237,7 +237,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
                 	fillGUI(ng);
                     NegoGUIApp.negoGUIView.addTab("selected Session", selectedSessionUI);
                 }    
-            }
+            }*/
         }
         private void fillGUI(NegotiationSession2 ng){
         	selectedSessionUI = new ProgressUI2();
