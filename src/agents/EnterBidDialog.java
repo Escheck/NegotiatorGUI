@@ -197,7 +197,7 @@ public class EnterBidDialog extends JDialog {
         	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
         }
         try { negoinfo.setOurBid(myPreviousBid); }
-        catch (Exception e) { System.out.println("error in askUserForAction:"+e.getMessage()); e.printStackTrace(); }
+        catch (Exception e) { new Warning("error in askUserForAction:",e,true,2); }
         
         BidTable.setDefaultRenderer(BidTable.getColumnClass(0),
         		new MyCellRenderer1(negoinfo));
@@ -205,7 +205,7 @@ public class EnterBidDialog extends JDialog {
 
         pack();
         setVisible(true); // this returns only after the panel closes.
-        
+         // Wouter: this WILL return normally if Thread is killed, and the ThreadDeath exception will disappear.
         return selectedAction;
     }
 }   

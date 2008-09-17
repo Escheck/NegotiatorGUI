@@ -24286,3 +24286,447 @@
 <additional_log> 
 </additional_log> 
 </NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-09-16 17:19:13" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.UIAgent" agent="A" finalUtility="1.000051804171754" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="1.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.UIAgentExtended" agent="B" finalUtility="1.000051804171754" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="1.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 10:19:24" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 10:21:36" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 10:23:52" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 10:25:43" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 10:29:24" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 10:32:17" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 10:43:44" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent A:unknown action by agent agent A" currentTime="2008-09-17 11:08:06" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="1.000051804171754" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="1.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 11:14:20" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 11:15:48" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 11:23:30" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B:unknown action by agent agent B" currentTime="2008-09-17 11:26:59" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="1.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.9999481985117791" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 11:43:49" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="nego result was null(aborted)" currentTime="2008-09-17 12:03:45" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="negotiation was timed out" currentTime="2008-09-17 12:23:18" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_buyer_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="negotiation was timed out" currentTime="2008-09-17 12:24:09" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-09-17 12:24:51" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="A" finalUtility="1.000051804171754" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="1.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="1.000051804171754" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="1.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.000051804171754" utilityA="1.000051804171754"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="HP"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="60 Gb"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="19'' LCD"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="negotiation was timed out" currentTime="2008-09-17 12:25:16" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.SlowUIAgent" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 

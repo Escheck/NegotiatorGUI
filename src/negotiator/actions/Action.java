@@ -12,13 +12,16 @@ package negotiator.actions;
 import negotiator.Agent;
 
 /**
- *
  * @author Dmytro Tykhonov
+ * 
  */
 public class Action {
     protected   Agent       agent;
     
-    /** Creates a new instance of Action */
+    /** Creates a new instance of Action 
+     * @param agent is the agent performing the action. 
+     * Note that by referring to the agent class object we effectively prevent the agent
+     * from garbage collection. */
     public Action(Agent agent) {
         this.agent = agent;
     }

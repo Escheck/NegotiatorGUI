@@ -1,32 +1,27 @@
 package negotiator.tournament;
 
-import negotiator.Agent;
-import negotiator.Domain;
-//import negotiator.NegotiationTemplate;
-
 import java.util.ArrayList;
-
-import negotiator.actions.*;
-
 import java.util.Date;
-import negotiator.utility.UtilitySpace;
-import negotiator.analysis.BidPoint;
-import negotiator.analysis.BidSpace;
-import negotiator.xml.*;
 
-import java.util.Random;
-import negotiator.*;
-import negotiator.events.ActionEvent;
-import negotiator.events.LogMessageEvent;
+import com.sun.jdi.event.ThreadDeathEvent;
+
+import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.Main;
+import negotiator.NegotiationEventListener;
+import negotiator.NegotiationOutcome;
+import negotiator.actions.*;
+import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
-import negotiator.repository.*;
+import negotiator.utility.UtilitySpace;
+import negotiator.xml.SimpleElement;
 
 
 
 
 /**
- * SessionRunner is a class that runs a session and stores the results.
- * This class enforces the protocol of the negotiation session
+ * SessionRunner is the implementation of the Protocol - currently alternating offers.
+ * It is a class that runs a session and stores the results.
  * TODO separate the protocol entirely
  * After a run is done, the NegotiationSession2 is notified.
  */
@@ -36,7 +31,15 @@ public class SessionRunner implements Runnable {
     protected Agent         agentA;
     protected Agent         agentB;
     private Bid lastBid=null;				// the last bid that has been done
-    public boolean stopNegotiation;
+
+    /**
+     * stopNegotiation indicates that the session has now ended.
+     * it is checked after every call to the agent,
+     * and if it happens to be true, session is immediately returned without any updates to the results list.
+     * This is because killing the thread in many cases will return Agent.getAction() but with
+     * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
+     */
+    public boolean stopNegotiation=false;
    // private NegotiationTemplate nt;
     public NegotiationOutcome no;
     boolean agentAtookAction = false;
@@ -46,7 +49,7 @@ public class SessionRunner implements Runnable {
     Date startTime; 
     long startTimeMillies; //idem.
     Integer totTime; // total time, seconds, of this negotiation session.
-    
+	public Agent currentAgent=null; // agent currently bidding.
 
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
@@ -81,7 +84,6 @@ public class SessionRunner implements Runnable {
      * At the end of this run, we will notify the parent so that he does not keep waiting for the time-out.
      */
     public void run() {
-		Agent currentAgent;
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
         try {
             double agentAUtility,agentBUtility;
@@ -108,8 +110,10 @@ public class SessionRunner implements Runnable {
                 try {
                    //inform agent about last action of his opponent
                    currentAgent.ReceiveMessage(action);
+                   if (stopNegotiation) return;
                    //get next action of the agent that has its turn now
                    action = currentAgent.chooseAction();
+                   if (stopNegotiation) return;
                    if(action instanceof EndNegotiation) 
                    {
                        stopNegotiation=true;
@@ -179,9 +183,10 @@ public class SessionRunner implements Runnable {
                    }
 
                 } catch(Exception e) {
+                	new Warning("Caught exception:",e,true,2);
                    stopNegotiation=true;
+                   new Warning("Protocol error by Agent"+currentAgent.getName(),e,true,3);
              	   Main.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
-             	   e.printStackTrace();
                    if (lastBid==null) agentAUtility=agentBUtility=1.;
                    else {
                 	   agentAUtility=agentBUtility=0.;
@@ -295,5 +300,20 @@ public class SessionRunner implements Runnable {
         	System.currentTimeMillis()-startTimeMillies,utilA,utilB,message);
     		
     	
+    }
+    
+    /**
+     * This is called whenever the protocol is timed-out. 
+     * What happens in case of a time-out is 
+     * (1) the sessionrunner is killed with a Thread.interrupt() call  from the NegotiationSession2.
+     * (2) judgeTimeout() is called.
+     * @author W.Pasman
+     */
+    public void JudgeTimeout() {
+		try {
+    		newOutcome(currentAgent, 0, 0, new IllegalAction(currentAgent,"negotiation was timed out"),"negotiation was timed out");
+    		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
+    		// don't bother about max utility, both have zero anyway.
+
     }
 }

@@ -44,6 +44,11 @@ import negotiator.xml.SimpleElement;
  * and the run-time object / thread doing a session.
  * Actually the SessionRunner does most of handling the nego session, here we have only code
  * for enforcing the time deadline.
+ * It is done this way because it is much easier to keep a single timer running than to create a new timer 
+ * every time a user agent is called, and because the SessionRunner protocol looks much cleaner without
+ * such deadline hassles all the time.
+ * BUT it restricts the deadline to a single global deadline, and prevents something like
+ * an additional time after each bid.
  * 
  * @author W.Pasman. Lots of old code from NegotiationSession and NegotmationManager
  * 
@@ -67,7 +72,7 @@ public class NegotiationSession2 implements Runnable {
 	private String log;
 	
 	
-    public static int NON_GUI_NEGO_TIME = 120;
+    public static int NON_GUI_NEGO_TIME = 12;//120;
     public static int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
 
 
@@ -192,34 +197,20 @@ public class NegotiationSession2 implements Runnable {
         			 // wait will unblock early if negotiation is finished in time.
     				wait(totalTime*1000);
         		}
-        	} catch (InterruptedException ie) {
-        		System.out.println("wait cancelled:"+ie.getMessage()); ie.printStackTrace();}
-        	}
+        	} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
+        }
         	//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
         	//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
         
-        	if (negoThread!=null&&negoThread.isAlive()) {
-        		try {
-//        			negoThread.stop(); // kill the stuff
-        			 // Wouter: this will throw a ThreadDeath Error into the nego thread
-        			 // The nego thread will catch this and exit immediately.
-        			 // Maybe it should not even try to catch that.
-        		} catch (Exception e) {
-        			System.out.println("problem stopping the nego:"+e.getMessage());
-        			e.printStackTrace();
-        		
-        		}
-        }
+    	stopNegotiation();
+    		
         // add path to the analysis chart
         // TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
         //if (nt.getBidSpace()!=null)
         //	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
         	
     	if(sessionrunner.no==null) {
-    		try {
-    		sessionrunner.newOutcome(null, 0, 0, new EndNegotiation(null), "nego result was null(aborted)");
-    		} catch (Exception err) { new Warning("error during creation of new outcome:"+err); }
-    		// don't bother about max utility, both have zero anyway.
+    		sessionrunner.JudgeTimeout();
     	}
     		outcome=sessionrunner.no;
     		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list. 
@@ -232,14 +223,22 @@ public class NegotiationSession2 implements Runnable {
         }
         
     }
+    
     public void stopNegotiation() {
-        if (negoThread.isAlive()) {
-            try {
-//                negoThread.interrupt();
-                negoThread.stop();
-            } catch (Exception e) {
-            }
-        }
+    	if (negoThread!=null&&negoThread.isAlive()) {
+    		try {
+    			sessionrunner.stopNegotiation=true; // see comments in sessionrunner..
+    			negoThread.interrupt();
+    			 // we call cleanup of agent from separate thread, preventing any sabotage on kill.
+    			Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
+    			cleanup.start();
+    			//TODO call this from separate thread.
+    			//negoThread.stop(); // kill the stuff
+    			 // Wouter: this will throw a ThreadDeath Error into the nego thread
+    			 // The nego thread will catch this and exit immediately.
+    			 // Maybe it should not even try to catch that.
+    		} catch (Exception e) {	new Warning("problem stopping the nego",e); }
+    	}
         return;
     }
     

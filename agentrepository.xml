@@ -10,6 +10,7 @@
             <agentRepItem description="QO Agent designed by Raz Lin" classPath="agents.QOAgent" agentName="QOAgent"/>
             <agentRepItem description="Fuzzy agent designed by Zaynab Raeesy and Ryszard Kowalczyk" classPath="agents.FuzzyAgent" agentName="FuzzyAgent"/>
             <agentRepItem description="ABMP agent designed by C. Jonker and J. Treur" classPath="agents.ABMPAgent2" agentName="ABMPAgent"/>
+            <agentRepItem description="agent to check time-outs" classPath="agents.SlowUIAgent" agentName="slow UI agent"/>
         </agentRepItems>
         <domainRepItem/>
     </items>

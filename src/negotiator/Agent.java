@@ -110,22 +110,15 @@ public abstract class Agent {
      */
     public boolean isUIAgent() { return false; }
     
-    /*
-    public final void setNegotiationEnviroment(NegotiationSession pNegotiation) {
-    	fNegotiation = pNegotiation;   	
-    }
-    */
-
-     /** load agent of given class with given name 
-      * @author W.Pasman
-      * @throws InstantiationException if class can not be instantiated (or even found??) 
-      * Not used at this moment.
-      * 
-      * */
-   /* public static Agent loadAgent(String agentAclassName, String agentName) throws Exception {
-        java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader();//new java.net.URLClassLoader(new URL[]{agentAclass});
-        Agent agent = (Agent)(loaderA.loadClass(agentAclassName).newInstance());
-        agent.setName(agentName);
-    	return agent;
-    }*/
+    /**
+     * This function cleans up the remainders of the agent: open windows etc.
+     * This function will be called when the agent is killed,
+     * typically when it was timed out in a nego session.
+     * The agent will not be able to do any negotiation actions here, just clean up.
+     * To ensure that the agent can not sabotage the negotiation, 
+     * this function will be called from a separate thread.
+     * 
+     * @author W.Pasman
+     */
+    public void cleanUp() {  }
 }
