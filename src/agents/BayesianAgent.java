@@ -43,7 +43,7 @@ class OpponentModelUtilSpace extends UtilitySpace
 		try { u=opponentmodel.getNormalizedUtility(b); } 
 		catch (Exception e) {System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
 		return u;
-	}
+	} 
 }
 
 public class BayesianAgent extends Agent {
@@ -414,7 +414,7 @@ public class BayesianAgent extends Agent {
 		
 		try	{
 			lActionType = getActionType(messageOpponent);
-			switch (lActionType) {
+			switch (lActionType) { 
 			case OFFER: // Offer received from opponent
 				lOppntBid = ((Offer) messageOpponent).getBid();
 				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
