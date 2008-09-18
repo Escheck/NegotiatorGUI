@@ -306,7 +306,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		BidChart myChart = new BidChart();
 		JTable myTable = new JTable(5,5);
 		try {
-			new ProgressUI2("Logging started...",myChart,myTable); 
+			new ProgressUI("Logging started...",myChart,myTable); 
 		} catch (Exception e) { new Warning("ProgressUI failed to launch: ",e); }
 		
 		//when the dataset is changes the chart is automatically updated
@@ -389,28 +389,35 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
-		
+		System.out.println("curveA length "+(curveA.length-1));
+		/*
 		double [][]ap = new double [2][1];
 		ap[0][0]= curveA[0][curveA.length-1];
 		ap[1][0]= curveA[1][curveA.length-1];
 		bidChart.setAgreementPoint(ap);
+		*/
 	}
 	
 	public void addTableData(){
 		System.out.println("updating the table...");
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
+		System.out.println(curveA.length);
+		System.out.println(curveA[0].length);
+		System.out.println(curveB.length);
+		System.out.println(curveB[0].length);
+		
 		String starter = session.getStartingAgent();
-		System.out.println("starting agent "+ starter);
 		String second="";
 		if(starter.equals("Agent A")){
 			second = "Agent B";
 		}else{
 			second = "Agent A";
 		}
-		
+		System.out.println("nr of bids in session "+session.getNrOfBids());
 		for(int i=0;i<session.getNrOfBids();i++){
-			if(i>biddingTable.getModel().getRowCount()){
+			if(i>=biddingTable.getModel().getRowCount()){
+				//System.out.println("i bigger than row count "+i);
 				progressinfo.addRow();
 			}
 			//round = evt.getRound();
@@ -424,7 +431,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 				biddingTable.getModel().setValueAt(curveA[0][i],i,2);
 				biddingTable.getModel().setValueAt(curveB[0][i],i,3);
 			}catch(ArrayIndexOutOfBoundsException e){
-				System.out.println("out of bounds");
+				System.out.println("out of bounds "+i);
 			}
 		}
 	}
