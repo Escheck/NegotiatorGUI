@@ -419,3 +419,16 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 	}
 
 }
+/** this is to override the toString of an AgentRepItem, to show only the short name. */
+class AgentComboBoxItem {
+	public AgentRepItem agent;
+	public AgentComboBoxItem(AgentRepItem a) {agent=a; } 
+	public String toString() { return agent.getName(); }
+}
+
+/** this is to override the toString of an ProfileRepItem, to show only the short name. */
+class ProfileComboBoxItem {
+	public ProfileRepItem profile;
+	public ProfileComboBoxItem(ProfileRepItem p) {profile=p; } 
+	public String toString() { return profile.getURL().getFile(); }
+}

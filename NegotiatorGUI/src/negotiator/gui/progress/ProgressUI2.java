@@ -273,7 +273,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	/** run this for a demo of ProgressnUI */
-	public static void main(String[] args) 
+/*	public static void main(String[] args) 
 	{
 		//create sample data:
 		double [][] possibleBids = new double [2][1000];
@@ -306,7 +306,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		BidChart myChart = new BidChart();
 		JTable myTable = new JTable(5,5);
 		try {
-			new ProgressUI("Logging started...",myChart,myTable); 
+			new ProgressUI2("Logging started...",myChart,myTable); 
 		} catch (Exception e) { new Warning("ProgressUI failed to launch: ",e); }
 		
 		//when the dataset is changes the chart is automatically updated
@@ -314,7 +314,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//myChart.setPareto(pareto);
 		myChart.setBidSeriesA(bidSeriesA);
 		myChart.setBidSeriesB(bidSeriesB);
-	}
+	}*/
 	public void setLogText(String str){
 		textOutput.setText(str);
 	}
