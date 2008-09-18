@@ -389,7 +389,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		}
 		return null;
 	}
-	
+	 
 	
 	Bid getBid() throws Exception
 	{

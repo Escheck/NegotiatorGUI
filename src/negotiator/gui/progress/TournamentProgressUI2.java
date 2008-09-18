@@ -19,7 +19,7 @@ import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
-import negotiator.gui.progress.TournamentProgressUI.SelectionListener;
+
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 
@@ -221,7 +221,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
             this.table = table;
         }
         public void valueChanged(ListSelectionEvent e) {
-            /*if (e.getSource() == table.getSelectionModel()
+            if (e.getSource() == table.getSelectionModel()
                   && table.getRowSelectionAllowed()) {
                 int row = table.getSelectedRow();
                 //System.out.println("selection event happened;row "+row+" selected.");
@@ -237,7 +237,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
                 	fillGUI(ng);
                     NegoGUIApp.negoGUIView.addTab("selected Session", selectedSessionUI);
                 }    
-            }*/
+            }
         }
         private void fillGUI(NegotiationSession2 ng){
         	selectedSessionUI = new ProgressUI2();
