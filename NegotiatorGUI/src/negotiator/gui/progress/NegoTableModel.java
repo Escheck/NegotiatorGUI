@@ -17,7 +17,7 @@ public class NegoTableModel extends AbstractTableModel{
 	public void addRow(){
 		int currentLength = data.length;
 		Object [][] temp = new Object [currentLength+1][colNames.length];
-		System.out.println("temp length "+temp.length);
+		//System.out.println("temp length "+temp.length);
 		for(int j=0;j<temp.length-1;j++){
 			for(int i=0;i<colNames.length;i++){
 				temp [j][i] = data [j][i];
