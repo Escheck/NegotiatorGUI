@@ -620,5 +620,7 @@ public class NegotiationSession2 implements Runnable {
     public String getAgentBStrategyName() {
     	return agentBrep.getName();
     }
-
+    public void setBidSpace(BidSpace pBidSpace) {
+    	bidSpace = pBidSpace;
+    }
 }

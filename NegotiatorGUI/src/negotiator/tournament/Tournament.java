@@ -119,11 +119,18 @@ public class Tournament
 				else paramsB.add(v.value);
 			}
 			 // TODO compute total #sessions. Now fixed to 9999
-			sessions.add(new  NegotiationSession2(agentA, agentB, profileA,profileB,
-	    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false));
+			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
+		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false) ;
+			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
-			BidSpace bidSpace = getBidSpace(profileA.g, profileB);
-			
+			BidSpace bidSpace = getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+			if(bidSpace!=null) {
+				session.setBidSpace(bidSpace);
+			} else {
+				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
+				addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
+				session.setBidSpace(bidSpace);
+			}
 		} else {
 			// pick next variable, and compute all permutations.
 			AssignedParameterVariable v=allparameters.get(0);
@@ -198,7 +205,10 @@ public class Tournament
 		bidSpaceCash.put(spaceB, cashA); 
 	}
 	private BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
-		return bidSpaceCash.get(spaceA).get(spaceB);
+		
+		if(bidSpaceCash.get(spaceA)!=null)			
+			return bidSpaceCash.get(spaceA).get(spaceB);
+		else return null;
 	}
 }
 
