@@ -8,7 +8,24 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class EvaluatorReal implements Evaluator {
-	
+	private static final double EPSILON=0.0001;
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj instanceof EvaluatorReal )) return false;
+		EvaluatorReal eval2 = (EvaluatorReal)obj;
+		if((Math.abs(fweight-eval2.fweight)>EPSILON)||(Math.abs(lowerBound-eval2.lowerBound)>EPSILON)||(Math.abs(upperBound-eval2.upperBound)>EPSILON)) return false;
+		for(Entry<Integer,Double> entry : fParam.entrySet()) {
+			if(entry.getValue()-eval2.fParam.get(entry.getKey())>EPSILON ) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock;	

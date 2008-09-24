@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import negotiator.utility.EVALFUNCTYPE;
 import negotiator.Bid;
@@ -43,6 +44,7 @@ import negotiator.BidIterator;
 
 public class UtilitySpace {
 	
+
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -54,6 +56,27 @@ public class UtilitySpace {
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
 
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj instanceof UtilitySpace)) return false;
+		UtilitySpace obj2 = (UtilitySpace)obj;
+		//cehck domains
+		if(!domain.equals(obj2.getDomain())) return false;
+		//check evaluators
+		for(Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
+			Evaluator eval2 = obj2.getEvaluator(entry.getKey().getNumber());
+			if(!entry.getValue().equals(eval2)) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+    
 
     /**
      * Creates an empty utility space.
