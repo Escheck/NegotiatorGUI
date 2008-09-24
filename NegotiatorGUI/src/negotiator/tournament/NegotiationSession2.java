@@ -279,7 +279,7 @@ public class NegotiationSession2 implements Runnable {
 						options,
 						options);
 				if(n==0) {*/
-					bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
+					//bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
 					//fAnalysis = Analysis.getInstance(this);
 					//  save the analysis to the cache
 					//fAnalysis.saveToCache();
@@ -529,8 +529,16 @@ public class NegotiationSession2 implements Runnable {
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
-    public BidSpace getBidSpace() { return bidSpace; }
-
+    public BidSpace getBidSpace() { 
+    	if(bidSpace==null) {
+    		try {    	
+    			bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+			}
+    	}
+    	return bidSpace;     	
+    }
     public String getStartingAgent(){
     	return startingAgent;
     }

@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -9,6 +10,8 @@ import negotiator.NegotiationEventListener;
 import negotiator.Agent;
 
 import negotiator.tournament.VariablesAndValues.*;
+import negotiator.utility.UtilitySpace;
+import negotiator.analysis.BidSpace;
 import negotiator.repository.*;
 
 
@@ -33,11 +36,13 @@ public class Tournament
 		// rest is AgentParameterVariables.
 	ArrayList<NegotiationSession2> sessions=null;
 	
+	HashMap<UtilitySpace,HashMap<UtilitySpace, BidSpace>> bidSpaceCash = null;
 	/** called when you press start button in Tournament window.
 	 * This builds the sessions array from given Tournament vars 
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. */
 	public ArrayList<NegotiationSession2> getSessions() throws Exception {
+		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents=getAgentVars();
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
@@ -116,6 +121,9 @@ public class Tournament
 			 // TODO compute total #sessions. Now fixed to 9999
 			sessions.add(new  NegotiationSession2(agentA, agentB, profileA,profileB,
 	    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false));
+			//check if the analysis is already made for the prefs. profiles
+			BidSpace bidSpace = getBidSpace(profileA.g, profileB);
+			
 		} else {
 			// pick next variable, and compute all permutations.
 			AssignedParameterVariable v=allparameters.get(0);
@@ -181,7 +189,17 @@ public class Tournament
 
 	
 	public ArrayList<TournamentVariable> getVariables() { return variables; }
-
+	private void addBidSpaceToCash(UtilitySpace spaceA, UtilitySpace spaceB, BidSpace bidSpace) {
+		HashMap<UtilitySpace, BidSpace> cashA = new HashMap<UtilitySpace, BidSpace>();
+		HashMap<UtilitySpace, BidSpace> cashB = new HashMap<UtilitySpace, BidSpace>();
+		cashA.put(spaceA, bidSpace);		
+		cashB.put(spaceB, bidSpace);
+		bidSpaceCash.put(spaceA, cashB);
+		bidSpaceCash.put(spaceB, cashA); 
+	}
+	private BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
+		return bidSpaceCash.get(spaceA).get(spaceB);
+	}
 }
 
 
