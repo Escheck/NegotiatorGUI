@@ -421,7 +421,7 @@ public class BayesianAgent extends Agent {
 				//double lDistance = calculateEuclideanDistanceUtilitySpace();
 				//if(myLastAction==null) dumpDistancesToLog(0);
 				System.out.print("Updating beliefs ...");
-				fOpponentModel.updateBeliefs(lOppntBid);
+				if(myPreviousBids.size()<8)	fOpponentModel.updateBeliefs(lOppntBid);
 				//dumpDistancesToLog(fRound++);
 				System.out.println("Done!");
 				if (myLastAction == null)

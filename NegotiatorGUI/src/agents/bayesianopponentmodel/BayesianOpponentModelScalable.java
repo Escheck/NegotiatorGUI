@@ -351,7 +351,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		for(int i=0;i<fExpectedWeights.length;i++)
 			fExpectedWeights[i] = getExpectedWeight(i);
 		findMinMaxUtility();
-		printBestHyp();
+	//	printBestHyp();
 	}
 	
 	/**
