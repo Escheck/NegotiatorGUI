@@ -2,6 +2,7 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -317,20 +318,34 @@ public class SimilarityAgent extends Agent {
 
 	private Bid getBidRandomWalk(double lowerBound, double upperBoud) throws Exception{
 		Bid lBid = null, lBestBid = null;
-
+		//find all suitable bids
+		ArrayList<Bid> lBidsRange = new ArrayList<Bid>();
+		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
+		while(lIter.hasNext()) {
+			Bid tmpBid = lIter.next();
+			double lUtil = 0;
+			try {
+				lUtil = utilitySpace.getUtility(tmpBid);
+				if(lUtil>=lowerBound && lUtil <=upperBoud) lBidsRange.add(tmpBid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} //while		
 		// Return bid that gets closest to target utility in a "random walk"
 		// search.
-		lBestBid = utilitySpace.getDomain().getRandomBid();
+/*		lBestBid = utilitySpace.getDomain().getRandomBid();
 		while(true) {
 			lBid = utilitySpace.getDomain().getRandomBid();
 			if ((utilitySpace.getUtility(lBid) > lowerBound)&&
 					(utilitySpace.getUtility(lBestBid) < upperBoud)) {
 				lBestBid = lBid;
 				break;
-			}
+			}*
 				
-		}
-		return lBestBid;
+		}*/
+		int lIndex = (new Random()).nextInt(lBidsRange.size()-1);
+		
+		return lBidsRange.get(lIndex);
 	}
 	
 	private double getTargetUtility(double myUtility, double oppntUtility) {

@@ -72,7 +72,7 @@ public class NegotiationSession2 implements Runnable {
 	private String log;
 	
 	
-    public static int NON_GUI_NEGO_TIME = 120;
+    public static int NON_GUI_NEGO_TIME = 35000;//120;
     public static int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
 
 

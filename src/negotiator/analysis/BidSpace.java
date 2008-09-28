@@ -72,6 +72,7 @@ public class BidSpace {
 	void BuildSpace() throws Exception
 	{
 		bidPoints=new ArrayList<BidPoint>();
+		if(domain.getNumberOfPossibleBids()>500000) return;
 		BidIterator lBidIter = new BidIterator(domain);
 		while(lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();
@@ -87,12 +88,31 @@ public class BidSpace {
 	 */
 	public ArrayList<BidPoint> getParetoFrontier() throws Exception
 	{
+		ArrayList<BidPoint> subPareto = new ArrayList<BidPoint >();
 		if (paretoFrontier==null)
-		{
-	        //System.out.println("ParetoFrontier start computation:"+(new Date()));
-	        paretoFrontier=computeParetoFrontier(bidPoints);
+		{		
+			BidIterator lBidIter = new BidIterator(domain);
+			int count=0;
+			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint >();
+			while(lBidIter.hasNext()) {
+				Bid bid = lBidIter.next();
+//				System.out.println(bid.toString());				
+				tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+				count++;
+				if(count>500000) {
+					subPareto.addAll(computeParetoFrontier(tmpBidPoints));
+					tmpBidPoints = new ArrayList<BidPoint >();
+					count = 0;
+				}
+			}
+			if(tmpBidPoints.size()>0)subPareto.addAll(computeParetoFrontier(tmpBidPoints));
+		       //System.out.println("ParetoFrontier start computation:"+(new Date()));
+	        paretoFrontier=computeParetoFrontier(subPareto);
 	        //System.out.println("ParetoFrontier end computation:"+(new Date()));
+
 		}
+
+ 		
 		return paretoFrontier;
 	}
 	
