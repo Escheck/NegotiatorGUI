@@ -10,6 +10,7 @@
 <item index="4" value="Catering" evaluation="4" description="Outsource the food, if you will. The least work, the
 highest cost." cost="250.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="3" etype="discrete" type="discrete" vtype="discrete" name="Drinks"> 
 <item index="1" value="Non-Alcoholic" evaluation="1" description="Soda’s, ice water, etc." cost="75.0"> 
@@ -20,6 +21,7 @@ highest cost." cost="250.0">
 </item> 
 <item index="4" value="Catering" evaluation="3" description="Let some company do the drinks. Least work, highest cost." cost="450.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="4" etype="discrete" type="discrete" vtype="discrete" name="Location"> 
 <item index="1" value="Party Tent" evaluation="1" description="A tent on some field somewhere. Roomy, but outdoors." cost="200.0"> 
@@ -30,6 +32,7 @@ highest cost." cost="250.0">
 </item> 
 <item index="4" value="Ballroom" evaluation="3" description="The fanciest option. A beautifully decorated ballroom with everything you need." cost="600.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="5" etype="discrete" type="discrete" vtype="discrete" name="Invitations"> 
 <item index="1" value="Plain" evaluation="5" description="Write the address on pieces of paper and hand those out." cost="100"> 
@@ -40,6 +43,7 @@ highest cost." cost="250.0">
 </item> 
 <item index="4" value="Custom, Printed" evaluation="3" description="Design the card, then let somebody else print it. You pay a lot, but do the least." cost="250"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="6" etype="discrete" type="discrete" vtype="discrete" name="Music"> 
 <item index="1" value="MP3" evaluation="1" description="Plug some boxes into your computer and run off your MP3 collection. More work, the wiring costs money." cost="100.0"> 
@@ -48,6 +52,7 @@ highest cost." cost="250.0">
 </item> 
 <item index="3" value="Band" evaluation="7" description="Hire a party band for live music. The most expensive, but it is live music." cost="350.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="7" etype="discrete" type="discrete" vtype="discrete" name="Cleanup"> 
 <item index="1" value="Water and Soap" evaluation="1" description="This will take a lot of scrubbing. It is cheap, but by far the most work." cost="20.0"> 
@@ -58,6 +63,7 @@ highest cost." cost="250.0">
 </item> 
 <item index="4" value="Hired Help" evaluation="8" description="Hire somebody else to do your dirty work. No work,but pricey." cost="200.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <weight index="2" value="0.062282126543498025"> 
 </weight> 
