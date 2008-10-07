@@ -112,11 +112,13 @@ public class Tournament
 			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
 		if (allparameters.isEmpty()) {
 			 // separate the parameters into those for agent A and B.
-			ArrayList<AgentParamValue> paramsA=new ArrayList<AgentParamValue>();
-			ArrayList<AgentParamValue> paramsB=new ArrayList<AgentParamValue>();
+			HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue>();
+			HashMap<AgentParameterVariable,AgentParamValue> paramsB = new HashMap<AgentParameterVariable,AgentParamValue>();
+			int i=0;
 			for (AssignedParamValue v: chosenvalues) {
-				if (v.agentname==AGENT_A_NAME) paramsA.add(v.value); 
-				else paramsB.add(v.value);
+				if (v.agentname==AGENT_A_NAME) paramsA.put(allparameters.get(i).parameter, v.value); 
+				else paramsB.put(allparameters.get(i).parameter,v.value);
+				i++;
 			}
 			 // TODO compute total #sessions. Now fixed to 9999
 			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
@@ -201,8 +203,8 @@ public class Tournament
 		HashMap<UtilitySpace, BidSpace> cashB = new HashMap<UtilitySpace, BidSpace>();
 		cashA.put(spaceA, bidSpace);		
 		cashB.put(spaceB, bidSpace);
-		bidSpaceCash.put(spaceA, cashB);
-		bidSpaceCash.put(spaceB, cashA); 
+		bidSpaceCash.put(spaceA, cashB);		 
+		bidSpaceCash.put(spaceB, cashA);
 	}
 	protected BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
 		

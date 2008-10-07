@@ -17,7 +17,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;	
 	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
 	private double fPreviousBidUtility;
-	private double EXPECTED_CONCESSION_STEP = 0.015;
+	private double EXPECTED_CONCESSION_STEP = 0.04;
 	private double SIGMA = 0.35;
 	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
@@ -279,7 +279,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-EXPECTED_CONCESSION_STEP;
-		findMinMaxUtility();
+		//findMinMaxUtility();
 	}
 	
 	private void sortHyps() {

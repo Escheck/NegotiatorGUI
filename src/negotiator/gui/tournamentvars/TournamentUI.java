@@ -27,6 +27,8 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
+import negotiator.tournament.TournamentRunnerTwoPhaseAutction;
+import negotiator.tournament.TournamentTwoPhaseAuction;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
@@ -54,7 +56,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
     /** Creates new form TournamentUI */
     public TournamentUI() {
         initComponents();
-		Tournament t=new Tournament(); // bit stupid to correct an empty one, but will be useful later.
+		Tournament t=new TournamentTwoPhaseAuction(); // bit stupid to correct an empty one, but will be useful later.
 		correct_tournament(t);
 		
 		tournament=t;
@@ -256,7 +258,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		TournamentProgressUI2 tournamentProgressUI=new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, tournamentProgressUI);
 		 
-		new Thread(new TournamentRunner(tournament,tournamentProgressUI)).start();
+		new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
 		
 	}
 	

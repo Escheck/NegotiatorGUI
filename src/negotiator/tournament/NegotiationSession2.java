@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import negotiator.actions.*;
 import negotiator.analysis.BidPoint;
@@ -60,8 +61,8 @@ public class NegotiationSession2 implements Runnable {
     private ProfileRepItem profileBrep;
     private String agentAname;
     private String agentBname;
-    private ArrayList<AgentParamValue> agentAparams=new ArrayList<AgentParamValue> ();
-    private ArrayList<AgentParamValue> agentBparams=new ArrayList<AgentParamValue> ();
+    private HashMap<AgentParameterVariable,AgentParamValue>  agentAparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
+    private HashMap<AgentParameterVariable,AgentParamValue>  agentBparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
@@ -111,7 +112,7 @@ public class NegotiationSession2 implements Runnable {
      * @throws Exception
      */
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
-    		String nameA, String nameB,ArrayList<AgentParamValue> agtApar,ArrayList<AgentParamValue> agtBpar,
+    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
     		int sessionnr, int totalsessions,boolean forceStartA) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
@@ -562,22 +563,22 @@ public class NegotiationSession2 implements Runnable {
 	}
 
 
-	public void setAgentAparams(ArrayList<AgentParamValue> agentAparams) {
+	public void setAgentAparams(HashMap<AgentParameterVariable,AgentParamValue> agentAparams) {
 		this.agentAparams = agentAparams;
 	}
 
 
-	public ArrayList<AgentParamValue> getAgentAparams() {
+	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentAparams() {
 		return agentAparams;
 	}
 
 
-	public void setAgentBparams(ArrayList<AgentParamValue> agentBparams) {
+	public void setAgentBparams(HashMap<AgentParameterVariable,AgentParamValue>  agentBparams) {
 		this.agentBparams = agentBparams;
 	}
 
 
-	public ArrayList<AgentParamValue> getAgentBparams() {
+	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentBparams() {
 		return agentBparams;
 	}
 
