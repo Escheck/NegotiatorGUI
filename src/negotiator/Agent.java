@@ -34,7 +34,7 @@ public abstract class Agent {
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     
     
-    Hashtable<String,Double> parametervalues; // values for the parameters for this agent. Key is param name
+    protected Hashtable<String,Double> parametervalues; // values for the parameters for this agent. Key is param name
 
     public Agent() {
     }

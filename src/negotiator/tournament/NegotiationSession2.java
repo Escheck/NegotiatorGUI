@@ -623,4 +623,7 @@ public class NegotiationSession2 implements Runnable {
     public void setBidSpace(BidSpace pBidSpace) {
     	bidSpace = pBidSpace;
     }
+    public SessionRunner getSessionRunner() {
+    	return sessionrunner;
+    }
 }

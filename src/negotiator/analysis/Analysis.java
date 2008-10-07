@@ -12,7 +12,6 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.Main;
-import negotiator.NegotiationTemplate;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;

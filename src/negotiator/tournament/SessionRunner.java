@@ -312,4 +312,7 @@ public class SessionRunner implements Runnable {
     		// don't bother about max utility, both have zero anyway.
 
     }
+    public NegotiationOutcome getNegotiationOutcome() {
+    	return no;
+    }
 }

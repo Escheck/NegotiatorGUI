@@ -49,7 +49,7 @@ public class TournamentRunner implements Runnable {
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
     }
     
-    private void fireNegotiationSessionEvent(NegotiationSession2 session ) {
+    protected void fireNegotiationSessionEvent(NegotiationSession2 session ) {
     	for(NegotiationEventListener listener :  negotiationEventListeners) 
     		if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
     }

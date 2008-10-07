@@ -196,7 +196,7 @@ public class Tournament
 
 	
 	public ArrayList<TournamentVariable> getVariables() { return variables; }
-	private void addBidSpaceToCash(UtilitySpace spaceA, UtilitySpace spaceB, BidSpace bidSpace) {
+	protected void addBidSpaceToCash(UtilitySpace spaceA, UtilitySpace spaceB, BidSpace bidSpace) {
 		HashMap<UtilitySpace, BidSpace> cashA = new HashMap<UtilitySpace, BidSpace>();
 		HashMap<UtilitySpace, BidSpace> cashB = new HashMap<UtilitySpace, BidSpace>();
 		cashA.put(spaceA, bidSpace);		
@@ -204,7 +204,7 @@ public class Tournament
 		bidSpaceCash.put(spaceA, cashB);
 		bidSpaceCash.put(spaceB, cashA); 
 	}
-	private BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
+	protected BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
 		
 		if(bidSpaceCash.get(spaceA)!=null)			
 			return bidSpaceCash.get(spaceA).get(spaceB);
