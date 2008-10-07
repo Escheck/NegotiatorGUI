@@ -96,6 +96,7 @@ public class SimpleAgt2 extends Agent
    	 	// but this is just a simple agent.
        Bid bid=null;
     	do {
+    		
 	        for(Issue lIssue:issues) 
 	        {
 				switch(lIssue.getType()) {

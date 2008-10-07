@@ -2,6 +2,8 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -11,6 +13,8 @@ import negotiator.NegotiationOutcome;
 import negotiator.actions.*;
 import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
@@ -60,11 +64,21 @@ public class SessionRunner implements Runnable {
 		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
 		    agentA.setName(session.getAgentAname());
-		
 	    java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
 	    agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
 	    agentB.setName(session.getAgentBname());
 
+		HashMap<AgentParameterVariable,AgentParamValue> params = s.getAgentAparams();
+		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
+			agentA.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
+		}
+
+		params = s.getAgentBparams();
+		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
+			agentB.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
+		}
+	    
+	    
         totTime=session.NON_GUI_NEGO_TIME;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.GUI_NEGO_TIME;
 //        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),

@@ -7,6 +7,7 @@
 package negotiator.gui.progress;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -22,6 +23,7 @@ import negotiator.gui.NegoGUIApp;
 
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
 /**
  *
@@ -192,14 +194,14 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		
 		int i=0;
 		if(!(negoSession.getAgentAparams()==null)) {
-			for(AgentParamValue p: negoSession.getAgentAparams()) 
-				{agentAParams+=p; i++;}
+			for(Entry<AgentParameterVariable,AgentParamValue> entry: negoSession.getAgentAparams().entrySet()) 
+				{agentAParams+= entry.getKey().varToString() + " " + entry.getValue().toString(); i++;}
 			resultTable.getModel().setValueAt(agentAParams,session-1,4);//agent a param
 		}
 		i=0;
 		if(!(negoSession.getAgentBparams()==null)) {
-			for(AgentParamValue p: negoSession.getAgentBparams())
-			{agentBParams+=p; i++;};
+			for(Entry<AgentParameterVariable,AgentParamValue> entry: negoSession.getAgentBparams().entrySet()) 
+				{agentBParams+= entry.getKey().varToString() + " " + entry.getValue().toString(); i++;}
 			resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent a param
 		}
 		resultTable.getModel().setValueAt(negoSession.getProfileArep(),session-1,0);//profile 1

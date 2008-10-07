@@ -2,9 +2,6 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -12,12 +9,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.BidIterator;
 import negotiator.actions.*;
 import agents.bayesianopponentmodel.*;
-import negotiator.issue.Issue;
-import negotiator.issue.Value;
-import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
-import negotiator.xml.SimpleElement;
-import negotiator.Domain;
 import negotiator.analysis.BidSpace;
 import negotiator.AgentParam;
 
@@ -42,9 +34,9 @@ public class BayesianAgentForAuction extends Agent {
 	private STRATEGY fStrategy = STRATEGY.AUCTION;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
-	private static final double CONCESSIONFACTOR = 0.03;
-	private static final double ALLOWED_UTILITY_DEVIATION = 0.008;
-	private static final int NUMBER_OF_SMART_STEPS = 1; 
+	private static final double CONCESSIONFACTOR = 0.04;
+	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
+	private static final int NUMBER_OF_SMART_STEPS = 0; 
 	private ArrayList<Bid> myPreviousBids;
 	private boolean fSkipDistanceCalc = true;
 	private boolean fDebug = false;
@@ -64,6 +56,8 @@ public class BayesianAgentForAuction extends Agent {
 	public static ArrayList<AgentParam> getParameters() { 
 		ArrayList<AgentParam> parameters=new ArrayList<AgentParam>();
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.));
+		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.));
+		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",-1.,1.));
 		return parameters;
 	}
 	
@@ -77,16 +71,19 @@ public class BayesianAgentForAuction extends Agent {
 		myPreviousBids = new ArrayList<Bid>();
 		prepareOpponentModel();			
 		fRound =0;
-		if(fPhase == null) {
-			fPhase = PHASE.FIRST_PHASE;			
-		} else
-			if(fPhase == PHASE.FIRST_PHASE) {
-				fPhase = PHASE.SECOND_PHASE;
-			}
+		if(parametervalues.get("phase")<0)
+			fPhase = PHASE.FIRST_PHASE;
+		else
+			fPhase = PHASE.SECOND_PHASE;
+		
+		if(parametervalues.get("role")<0)
+			fRole = ROLE.PROVIDER;
+		else
+			fRole = ROLE.CENTER;
 			
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModel(utilitySpace);
 	}
 
 	// Class methods
@@ -97,8 +94,33 @@ public class BayesianAgentForAuction extends Agent {
 	private Action proposeInitialBid() throws Exception
 	{
 		Bid lBid=null;
+		switch(fRole) {
+		case CENTER:
+			switch(fPhase) {
+			case FIRST_PHASE:
+				lBid = utilitySpace.getMaxUtilityBid();
+				break;
+			case SECOND_PHASE:
+				double lSecondBest = parametervalues.get("reservation");
+				lBid = getTradeOff(lSecondBest);	
+				break;
+			}
+			break;			
+		case PROVIDER:
+			switch(fPhase) {
+			case FIRST_PHASE:
+				double lReservationValue = parametervalues.get("reservation");
+				lBid = getTradeOff(lReservationValue);				
+				break;
+			case SECOND_PHASE:
+				lBid = utilitySpace.getMaxUtilityBid();				
+				break;
+			}
+			break;
+		}
+
+		
 		// Return (one of the) possible bid(s) with maximal utility.
-		lBid = utilitySpace.getMaxUtilityBid();
 		fSmartSteps=NUMBER_OF_SMART_STEPS;
 		myLastBid = lBid;
 		return new Offer(this, lBid);
@@ -125,10 +147,10 @@ public class BayesianAgentForAuction extends Agent {
 		case CENTER:
 			switch(fPhase) {
 			case FIRST_PHASE:
-				lBid = getNextBid(pOppntBid);
+				lBid =  getNextBidSmart(pOppntBid);
 				break;
 			case SECOND_PHASE:
-					double lSecondBest = parametervalues.get("secondbest");
+					double lSecondBest = parametervalues.get("reservation");
 					lBid = getTradeOff(lSecondBest);	
 				break;
 			}
@@ -140,7 +162,7 @@ public class BayesianAgentForAuction extends Agent {
 				lBid = getTradeOff(lReservationValue);				
 				break;
 			case SECOND_PHASE:
-				lBid = getNextBid(pOppntBid);				
+				lBid = getNextBidSmart(pOppntBid);				
 				break;
 			}
 			break;
@@ -408,7 +430,7 @@ public class BayesianAgentForAuction extends Agent {
 //			System.out.println(String.valueOf(i++));
 			if(Math.abs(utilitySpace.getUtility(tmpBid)-pUtility)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpExpecteUtility = fOpponentModel.getNormalizedUtility(tmpBid);
+				double lTmpExpecteUtility = fOpponentModel.getExpectedUtility(tmpBid);
 				if(lTmpExpecteUtility > lExpectedUtility) {
 					lExpectedUtility= lTmpExpecteUtility ;
 					lBid = tmpBid;
