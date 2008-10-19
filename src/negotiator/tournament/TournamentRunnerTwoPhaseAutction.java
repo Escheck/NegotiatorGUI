@@ -24,8 +24,11 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		ArrayList<NegotiationSession2> sessions;
 	   	try { 
-    		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
+	   		while(true) {
+    		sessions=tournament.getSessions();
+    		if(sessions==null) break;
 			for (NegotiationSession2 s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
@@ -34,7 +37,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 				
 			}
 			//determine winner
-			double lMaxUtil=Double.NEGATIVE_INFINITY;
+			double lMaxUtil= Double.NEGATIVE_INFINITY;
 			double lSecondPrice = Double.NEGATIVE_INFINITY;
 			NegotiationSession2 winnerSession = null;
 //			NegotiationSession2 secondBestSession = null;
@@ -44,7 +47,8 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 					lMaxUtil = s.getSessionRunner().getNegotiationOutcome().agentButility;
 					//secondBestSession = winnerSession;
 					winnerSession = s;
-				}
+				} else if(s.getSessionRunner().getNegotiationOutcome().agentButility>lSecondPrice) 
+					lSecondPrice = s.getSessionRunner().getNegotiationOutcome().agentButility;
 				
 			}
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
@@ -80,7 +84,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 			for (NegotiationEventListener list: negotiationEventListeners) secondPhaseSession.addNegotiationEventListener(list);
 			fireNegotiationSessionEvent(secondPhaseSession);
 			secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
-					
+	   		}
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
   
 	}

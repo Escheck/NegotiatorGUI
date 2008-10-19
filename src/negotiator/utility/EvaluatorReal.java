@@ -14,7 +14,9 @@ public class EvaluatorReal implements Evaluator {
 		// TODO Auto-generated method stub
 		if (!(obj instanceof EvaluatorReal )) return false;
 		EvaluatorReal eval2 = (EvaluatorReal)obj;
+		if(eval2.type!=type) return false;
 		if((Math.abs(fweight-eval2.fweight)>EPSILON)||(Math.abs(lowerBound-eval2.lowerBound)>EPSILON)||(Math.abs(upperBound-eval2.upperBound)>EPSILON)) return false;
+		
 		for(Entry<Integer,Double> entry : fParam.entrySet()) {
 			if(entry.getValue()-eval2.fParam.get(entry.getKey())>EPSILON ) return false;
 		}
@@ -222,6 +224,12 @@ public class EvaluatorReal implements Evaluator {
 				this.type = EVALFUNCTYPE.convertToType(ftype);
 			// TODO: define exception.
 			switch(this.type) {
+			case TRIANGULAR:
+				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));				
+				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+				this.fParam.put(2, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter2")));
+				break;
+			
 			case LINEAR:
 				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));				
 				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));

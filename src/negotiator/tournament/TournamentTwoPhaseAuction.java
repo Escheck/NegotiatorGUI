@@ -1,5 +1,6 @@
 package negotiator.tournament;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,6 +10,7 @@ import agents.BayesianAgentForAuction;
 import negotiator.AgentParam;
 import negotiator.analysis.BidSpace;
 import negotiator.repository.AgentRepItem;
+import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -18,9 +20,42 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 
 public class TournamentTwoPhaseAuction extends Tournament {
+	private int sessionIndex;
+	private ArrayList<ArrayList<NegotiationSession2>> allSessions;
+	public TournamentTwoPhaseAuction() {
+		super();
+	}
+	private void generateAllSessions() {
+		try {
+			allSessions = new ArrayList<ArrayList<NegotiationSession2>>();
+			sessionIndex = 0;
+			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
+			//center profiles
+			ProfileRepItem center1 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_1.xml"),domain);
+			ProfileRepItem center2 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_2.xml"),domain);
+			ProfileRepItem center3 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_3.xml"),domain);
+			ProfileRepItem center4 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_4.xml"),domain);
+			ProfileRepItem center5 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_5.xml"),domain);
+			ProfileRepItem center6 = new ProfileRepItem(new URL("file:etc/templates/SON/son_center_6.xml"),domain);
+			//seller profiles
+			ProfileRepItem seller1 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_1.xml"),domain);
+			ProfileRepItem seller2 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_2.xml"),domain);
+			ProfileRepItem seller3 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_3.xml"),domain);
+			ProfileRepItem seller4 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_4.xml"),domain);
+			ProfileRepItem seller5 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_5.xml"),domain);
+			ProfileRepItem seller6 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_6.xml"),domain);
+			double reservationValue = 0.3;
+			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
+			allSessions.add(createSession(center3, seller6, seller5, reservationValue));
+			allSessions.add(createSession(center4, seller5, seller2, reservationValue));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
-	@Override
-	public ArrayList<NegotiationSession2> getSessions() throws Exception {
+	}
+	
+	private ArrayList<NegotiationSession2> createSession(ProfileRepItem profileCenter, ProfileRepItem profileSeller1, ProfileRepItem profileSeller2, double reservationValue) throws Exception {
 		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		ArrayList<AgentVariable> agents=getAgentVars();
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
@@ -31,44 +66,57 @@ public class TournamentTwoPhaseAuction extends Tournament {
 		if (agentBvalues.isEmpty()) 
 			throw new IllegalStateException("Agent B does not contain any values!");
 
-		ArrayList<ProfileRepItem> profiles=getProfiles();
-
+		ArrayList<ProfileRepItem> profiles= new ArrayList<ProfileRepItem>();//getProfiles();
+		profiles.add(profileCenter);
+		profiles.add(profileSeller1);
+		profiles.add(profileSeller2);
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
 		ArrayList<NegotiationSession2>sessions =new ArrayList<NegotiationSession2>();
 		ProfileRepItem profileA = profiles.get(0);
-		
-			for (int i=1;i<profiles.size();i++) {
-				ProfileRepItem profileB =  profiles.get(i); 
-				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
-				if (profileA.equals(profileB)) continue;
-					AgentRepItem agentA=((AgentValue)agentAvalues.get(0)).getValue();
-					AgentRepItem agentB=((AgentValue)agentBvalues.get(0)).getValue();
-					//prepare parameters
-					HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
-					HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
-					paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
-					paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(0.6));
-					paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
-					paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
-					paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(0.6));
-					paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
-					NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
-					   		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false) ;
-					sessions.add(session);
-					//check if the analysis is already made for the prefs. profiles
-					BidSpace bidSpace = getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
-					if(bidSpace!=null) {
-						session.setBidSpace(bidSpace);
-					} else {
-						bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
-						addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
-						session.setBidSpace(bidSpace);
-					}
+
+		for (int i=1;i<profiles.size();i++) {
+			ProfileRepItem profileB =  profiles.get(i); 
+			if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
+			if (profileA.equals(profileB)) continue;
+			AgentRepItem agentA=((AgentValue)agentAvalues.get(0)).getValue();
+			AgentRepItem agentB=((AgentValue)agentBvalues.get(0)).getValue();
+			//prepare parameters
+			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
+			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
+			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
+					AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false) ;
+			sessions.add(session);
+			//check if the analysis is already made for the prefs. profiles
+			BidSpace bidSpace = getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+			if(bidSpace!=null) {
+				session.setBidSpace(bidSpace);
+			} else {
+				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
+				addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
+				session.setBidSpace(bidSpace);
 			}
+		}
 
 		return sessions;
+
+	}
+	@Override
+	public ArrayList<NegotiationSession2> getSessions() throws Exception {
+		if(allSessions==null) generateAllSessions();
+		if(sessionIndex<allSessions.size()) {
+		ArrayList<NegotiationSession2> result = allSessions.get(sessionIndex);
+		sessionIndex++;
+		return result;
+		}
+		else return null;
 	}
 
 }

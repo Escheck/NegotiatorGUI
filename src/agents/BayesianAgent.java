@@ -40,7 +40,7 @@ public class BayesianAgent extends Agent {
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
-	private STRATEGY fStrategy = STRATEGY.SMART;
+	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.03;

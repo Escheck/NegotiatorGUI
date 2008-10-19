@@ -8,7 +8,9 @@ public enum EVALFUNCTYPE { CONSTANT, LINEAR, FARATIN, TRIANGULAR, TRIANGULAR_VAR
 		else if (type.equalsIgnoreCase("constant"))
 			return EVALFUNCTYPE.CONSTANT;
 		if (type.equalsIgnoreCase("faratin"))
-			return EVALFUNCTYPE.FARATIN;		
+			return EVALFUNCTYPE.FARATIN;
+		if (type.equalsIgnoreCase("triangular"))
+			return EVALFUNCTYPE.TRIANGULAR;
 		else return null;
 	}
 
