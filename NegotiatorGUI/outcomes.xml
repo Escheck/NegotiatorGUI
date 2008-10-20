@@ -1,0 +1,5872 @@
+<NegotiationOutcome errors="null" currentTime="2008-10-19 21:06:48" startingAgent="agentA"> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="A" finalUtility="0.475" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.475" utilspace="etc/templates/SON/son_center_5.xml"> 
+<ArrayList size="24"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.15" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.15" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.165" utilityA="0.9500000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.165" utilityA="0.9500000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.2575" utilityA="0.9000000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.2575" utilityA="0.9000000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.25" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.25" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.325" utilityA="0.825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.325" utilityA="0.825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.425" utilityA="0.775"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.425" utilityA="0.775"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.5425" utilityA="0.7250000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.5425" utilityA="0.7250000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.6" utilityA="0.6875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.75 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.6" utilityA="0.6875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.75 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.65"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.65"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.6849999999999999" utilityA="0.6000000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.6849999999999999" utilityA="0.6000000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.7374999999999999" utilityA="0.5625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.7374999999999999" utilityA="0.5625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.745" utilityA="0.525"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.745" utilityA="0.525"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="B" finalUtility="0.8150000000000001" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.8150000000000001" utilspace="etc/templates/SON/son_seller_1.xml"> 
+<ArrayList size="26"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.825" utilityA="0.375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.825" utilityA="0.375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.8175" utilityA="0.3875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.8175" utilityA="0.3875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.35000000000000003 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.35000000000000003 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.8174999999999999" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="24"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="25"> 
+<BidPoint utilityB="0.8150000000000001" utilityA="0.475"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+<theoretical_outcome center_utility="0.825" seller_utility="0.5" winner="etc/templates/SON/son_seller_1.xml"> 
+</theoretical_outcome> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-10-19 21:19:15" startingAgent="agentA"> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="A" finalUtility="0.3375" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.3375" utilspace="etc/templates/SON/son_center_3.xml"> 
+<ArrayList size="30"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.25" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.25" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.30000000000000004" utilityA="0.9500000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.30000000000000004" utilityA="0.9500000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.3375" utilityA="0.9125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.35000000000000003 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.3375" utilityA="0.9125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.35000000000000003 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.3875" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.3875" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.4375" utilityA="0.8125000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.4375" utilityA="0.8125000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.475" utilityA="0.775"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.475" utilityA="0.775"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.525" utilityA="0.7250000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.525" utilityA="0.7250000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.5625" utilityA="0.6875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.75 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.5625" utilityA="0.6875"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.75 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.6125" utilityA="0.6375000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.6125" utilityA="0.6375000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.65" utilityA="0.6"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.65" utilityA="0.6"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.7" utilityA="0.55"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.7" utilityA="0.55"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.7375" utilityA="0.5125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.7375" utilityA="0.5125"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="24"> 
+<BidPoint utilityB="0.7875" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="25"> 
+<BidPoint utilityB="0.7875" utilityA="0.4625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="26"> 
+<BidPoint utilityB="0.825" utilityA="0.425"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="27"> 
+<BidPoint utilityB="0.825" utilityA="0.425"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="28"> 
+<BidPoint utilityB="0.8625" utilityA="0.38749999999999996"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="29"> 
+<BidPoint utilityB="0.8625" utilityA="0.38749999999999996"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="B" finalUtility="0.9125" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.9125" utilspace="etc/templates/SON/son_seller_6.xml"> 
+<ArrayList size="32"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="24"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="25"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="26"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="27"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="28"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="29"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="30"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="31"> 
+<BidPoint utilityB="0.9125" utilityA="0.3375"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+<theoretical_outcome center_utility="0.8624999999999999" seller_utility="0.38750000000000007" winner="etc/templates/SON/son_seller_6.xml"> 
+</theoretical_outcome> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-10-19 22:59:51" startingAgent="agentA"> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="A" finalUtility="0.44" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.44" utilspace="etc/templates/SON/son_center_4.xml"> 
+<ArrayList size="24"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.0" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.0825" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.0825" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.0975" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.0975" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.15499999999999994" utilityA="0.86"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.15499999999999994" utilityA="0.86"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.31" utilityA="0.81"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.31" utilityA="0.81"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.2 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.325" utilityA="0.765"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.325" utilityA="0.765"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.38" utilityA="0.725"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.38" utilityA="0.725"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.9500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.44" utilityA="0.675"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.44" utilityA="0.675"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.48000000000000004" utilityA="0.63"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.7000000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.48000000000000004" utilityA="0.63"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.7000000000000001 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.5574999999999999" utilityA="0.5825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.5574999999999999" utilityA="0.5825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.6174999999999999" utilityA="0.5325000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.6174999999999999" utilityA="0.5325000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.48500000000000004"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.48500000000000004"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="B" finalUtility="0.83" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.83" utilspace="etc/templates/SON/son_seller_5.xml"> 
+<ArrayList size="26"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.8325000000000001" utilityA="0.3925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.8325000000000001" utilityA="0.3925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.8325000000000001" utilityA="0.3925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.8325000000000001" utilityA="0.3925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="20"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="21"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="22"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="23"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="24"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="25"> 
+<BidPoint utilityB="0.83" utilityA="0.44"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+<theoretical_outcome center_utility="0.8450000000000001" seller_utility="0.42500000000000004" winner="etc/templates/SON/son_seller_2.xml"> 
+<optimal_solution> 
+<utility_space spaceA="etc/templates/SON/son_center_4.xml" spaceB="etc/templates/SON/son_seller_5.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.6799999999999999" utilityA="0.625"> 
+</solution> 
+<utility_space spaceA="etc/templates/SON/son_center_4.xml" spaceB="etc/templates/SON/son_seller_2.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.6125" utilityA="0.665"> 
+</solution> 
+</optimal_solution> 
+</theoretical_outcome> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-10-19 23:21:58" startingAgent="agentA"> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="A" finalUtility="0.7474999999999999" maxUtility="0.9975" agentName="Agent A" normalizedUtility="0.7493734335839598" utilspace="etc/templates/SON/son_center_8.xml"> 
+<ArrayList size="10"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.2625" utilityA="0.9975"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.2625" utilityA="0.9975"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.05 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.4125" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.4125" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.4875" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.4875" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.525" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.525" utilityA="0.8625"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.5625" utilityA="0.8175"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.5625" utilityA="0.8175"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.30000000000000004 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="B" finalUtility="0.6375" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.6375" utilspace="etc/templates/SON/son_seller_2.xml"> 
+<ArrayList size="12"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6375" utilityA="0.4575"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6375" utilityA="0.4575"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.9 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.65 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.6375" utilityA="0.735"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.6375" utilityA="0.735"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.6375" utilityA="0.7474999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+<theoretical_outcome center_utility="0.6725" seller_utility="0.8500000000000001" winner="etc/templates/SON/son_seller_2.xml"> 
+<optimal_solution> 
+<utility_space spaceA="etc/templates/SON/son_center_8.xml" spaceB="etc/templates/SON/son_seller_2.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.6875" utilityA="0.8375"> 
+</solution> 
+<utility_space spaceA="etc/templates/SON/son_center_8.xml" spaceB="etc/templates/SON/son_seller_11.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.65" utilityA="0.65"> 
+</solution> 
+</optimal_solution> 
+</theoretical_outcome> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-10-20 00:57:18" startingAgent="agentA"> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="A" finalUtility="0.5925" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.5925" utilspace="etc/templates/SON/son_center_4.xml"> 
+<ArrayList size="18"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.3" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.3" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.3825" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.3825" utilityA="0.9525000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.15000000000000002 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.3975" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.3975" utilityA="0.9075000000000001"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.45" utilityA="0.87"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.45" utilityA="0.87"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.1 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.525" utilityA="0.825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.525" utilityA="0.825"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.25 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.6" utilityA="0.7799999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.6" utilityA="0.7799999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.4 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.735"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.6749999999999999" utilityA="0.735"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.55 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.75" utilityA="0.69"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.7000000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.75" utilityA="0.69"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.7000000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.8250000000000001" utilityA="0.6449999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.8250000000000001" utilityA="0.6449999999999999"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+0.8500000000000001 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgentForAuction" agent="B" finalUtility="0.9425" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.9425" utilspace="etc/templates/SON/son_seller_9.xml"> 
+<ArrayList size="20"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.9450000000000001" utilityA="0.585"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.9450000000000001" utilityA="0.585"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9450000000000001" utilityA="0.585"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9450000000000001" utilityA="0.585"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.5 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="10"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="11"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="12"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="13"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="14"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="15"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="16"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="17"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="18"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="19"> 
+<BidPoint utilityB="0.9425" utilityA="0.5925"> 
+<bid> 
+<issue index="2" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="3" type="real"> 
+<value> 
+1.0 
+</value> 
+</issue> 
+<issue index="4" type="real"> 
+<value> 
+0.8 
+</value> 
+</issue> 
+<issue index="5" type="real"> 
+<value> 
+0.45 
+</value> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+<theoretical_outcome center_utility="0.8450000000000001" seller_utility="0.675" winner="etc/templates/SON/son_seller_6.xml"> 
+<optimal_solution> 
+<utility_space spaceA="etc/templates/SON/son_center_4.xml" spaceB="etc/templates/SON/son_seller_9.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.9500000000000001" utilityA="0.65"> 
+</solution> 
+<utility_space spaceA="etc/templates/SON/son_center_4.xml" spaceB="etc/templates/SON/son_seller_6.xml"> 
+</utility_space> 
+<solution type="Kalai" utilityB="0.75" utilityA="0.8"> 
+</solution> 
+</optimal_solution> 
+</theoretical_outcome> 
+</additional_log> 
+</NegotiationOutcome> 

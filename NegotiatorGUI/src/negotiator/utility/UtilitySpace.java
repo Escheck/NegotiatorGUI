@@ -51,14 +51,12 @@ public class UtilitySpace {
     // in the Similarity agent
     private SimpleElement fXMLRoot;
     public SimpleElement getXMLRoot() { return fXMLRoot;}
-    
-    // TODO: make this arraylist? WHY was this a Vector type? Can you explain this to me Dmytro?
+    private Double fReservationValue = null;
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
 
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		if (!(obj instanceof UtilitySpace)) return false;
 		UtilitySpace obj2 = (UtilitySpace)obj;
 		//cehck domains
@@ -111,7 +109,7 @@ public class UtilitySpace {
     {
     	domain=us.getDomain();
     	fEvaluators = new HashMap<Objective, Evaluator>();
-
+    	fReservationValue = us.getReservationValue(); 
     	// and clone the evaluators
     	for (Objective obj:domain.getObjectives())
     	{
@@ -372,7 +370,17 @@ public class UtilitySpace {
 		
 		int index;
 		double weightsSum = 0;
-		
+		//load reservation value
+		try {
+			if((currentRoot.getChildByTagName("reservation")!=null)&&(currentRoot.getChildByTagName("reservation").length>0)){
+				SimpleElement xml_reservation = (SimpleElement)(currentRoot.getChildByTagName("reservation")[0]);
+				fReservationValue = Double.valueOf(xml_reservation.getAttribute("value"));
+			}
+		} catch (Exception e) {
+			System.out.println("Utility space has no reservation value");
+		}
+			
+			
 		Vector<Evaluator> tmpEvaluator = new Vector<Evaluator>(); //tmp vector with all Evaluators at this level. Used to normalize weigths.
 		EVALUATORTYPE evalType;
     	String type, etype;
@@ -960,6 +968,9 @@ public class UtilitySpace {
     		System.out.print("Objective "+obj.getName()+" ");
     		fEvaluators.get(obj).showStatistics();
     	}
+    }
+    public Double getReservationValue() {
+    	return fReservationValue;
     }
 
 }

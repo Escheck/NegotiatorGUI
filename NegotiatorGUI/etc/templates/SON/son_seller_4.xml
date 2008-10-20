@@ -1,4 +1,5 @@
 <utility_space number_of_issues="4">
+	<reservation value="0.3"/>
 	<objective index="1" etype="objective" type="objective"
 		description="" name="SON">
 		<weight index="2" value="0.25" />

@@ -109,7 +109,7 @@ public class BayesianAgentForAuction extends Agent {
 		case PROVIDER:
 			switch(fPhase) {
 			case FIRST_PHASE:
-				double lReservationValue = parametervalues.get("reservation");
+				double lReservationValue = utilitySpace.getReservationValue();//parametervalues.get("reservation");
 				lBid = getTradeOff(lReservationValue);				
 				break;
 			case SECOND_PHASE:
@@ -158,7 +158,7 @@ public class BayesianAgentForAuction extends Agent {
 		case PROVIDER:
 			switch(fPhase) {
 			case FIRST_PHASE:
-				double lReservationValue = parametervalues.get("reservation");
+				double lReservationValue = utilitySpace.getReservationValue();//parametervalues.get("reservation");
 				lBid = getTradeOff(lReservationValue);				
 				break;
 			case SECOND_PHASE:
