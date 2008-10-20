@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import agents.BayesianAgent;
+
 import agents.BayesianAgentForAuction;
 
 import negotiator.AgentParam;
@@ -56,16 +56,16 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			ProfileRepItem seller10 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_10.xml"),domain);
 			ProfileRepItem seller11 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_11.xml"),domain);
 			ProfileRepItem seller12 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_12.xml"),domain);
-			double reservationValue = 0.3;
+			
 			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
 			//allSessions.add(createSession(center3, seller6, seller5, reservationValue));
-			allSessions.add(createSession(center4, seller5, seller2, reservationValue));
-			allSessions.add(createSession(center8, seller2, seller11, reservationValue));
-			allSessions.add(createSession(center4, seller9, seller6, reservationValue));
-			allSessions.add(createSession(center12, seller2, seller10, reservationValue));
-			allSessions.add(createSession(center1, seller2, seller8, reservationValue));
-			allSessions.add(createSession(center10, seller7, seller9, reservationValue));
-			allSessions.add(createSession(center7, seller11, seller9, reservationValue));
+			//allSessions.add(createSession(center4, seller5, seller2));
+			//allSessions.add(createSession(center8, seller2, seller11));
+			//allSessions.add(createSession(center4, seller9, seller6));
+			allSessions.add(createSession(center12, seller2, seller10));
+			allSessions.add(createSession(center1, seller2, seller8));
+			allSessions.add(createSession(center10, seller7, seller9));
+			allSessions.add(createSession(center7, seller11, seller9));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -73,7 +73,7 @@ public class TournamentTwoPhaseAuction extends Tournament {
 
 	}
 	
-	private ArrayList<NegotiationSession2> createSession(ProfileRepItem profileCenter, ProfileRepItem profileSeller1, ProfileRepItem profileSeller2, double reservationValue) throws Exception {
+	private ArrayList<NegotiationSession2> createSession(ProfileRepItem profileCenter, ProfileRepItem profileSeller1, ProfileRepItem profileSeller2) throws Exception {
 		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		ArrayList<AgentVariable> agents=getAgentVars();
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
@@ -85,16 +85,16 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			throw new IllegalStateException("Agent B does not contain any values!");
 
 		ArrayList<ProfileRepItem> profiles= new ArrayList<ProfileRepItem>();//getProfiles();
-		profiles.add(profileCenter);
+		//profiles.add(profileCenter);
 		profiles.add(profileSeller1);
 		profiles.add(profileSeller2);
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
 		ArrayList<NegotiationSession2>sessions =new ArrayList<NegotiationSession2>();
-		ProfileRepItem profileA = profiles.get(0);
+		ProfileRepItem profileA = profileCenter;
 
-		for (int i=1;i<profiles.size();i++) {
+		for (int i=0;i<profiles.size();i++) {
 			ProfileRepItem profileB =  profiles.get(i); 
 			if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
 			if (profileA.equals(profileB)) continue;
@@ -103,10 +103,10 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//prepare parameters
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
-			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
 			//paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
-			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
 			//paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
 			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,

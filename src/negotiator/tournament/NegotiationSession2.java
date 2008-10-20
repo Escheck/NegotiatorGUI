@@ -217,13 +217,20 @@ public class NegotiationSession2 implements Runnable {
     	}
     		outcome=sessionrunner.no;
     		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
-    		outcome.additional.addChildElement(fAdditional);
+    		if(fAdditional!=null) { 
+    			if(outcome.additional==null) {
+    				outcome.additional = new SimpleElement("additional");
+    			
+    			}
+    			outcome.additional.addChildElement(fAdditional);
+    		}
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
             out.write(""+outcome.toXML());
             out.close();
         } catch (Exception e) {
         	new Warning("Exception during writing outcomes:"+e);
+        	e.printStackTrace();
         }
         
     }
