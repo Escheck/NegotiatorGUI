@@ -91,6 +91,8 @@ public class NegotiationSession2 implements Runnable {
     //private int totalTime; // total available time for nego, in seconds.
     
 	
+	private SimpleElement fAdditional;
+	
 	SessionRunner sessionrunner;
     /** END OF fields copied from the NegotiationTemplate class */
     
@@ -214,7 +216,8 @@ public class NegotiationSession2 implements Runnable {
     		sessionrunner.JudgeTimeout();
     	}
     		outcome=sessionrunner.no;
-    		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list. 
+    		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
+    		outcome.additional.addChildElement(fAdditional);
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
             out.write(""+outcome.toXML());
@@ -625,6 +628,10 @@ public class NegotiationSession2 implements Runnable {
     	bidSpace = pBidSpace;
     }
     public SessionRunner getSessionRunner() {
-    	return sessionrunner;
+    	return sessionrunner;    
     }
+    public void setAdditional(SimpleElement e) {
+    	fAdditional = e;
+    }
+    
 }

@@ -223,7 +223,7 @@ public class BidSpace {
 		double maxp = -1;
 		for (BidPoint p:paretoFrontier)
 		{
-			double utilofp = p.utilityA*p.utilityB;
+			double utilofp = (p.utilityA -utilspaceA.getReservationValue())*(p.utilityB-utilspaceB.getReservationValue());
 			if (utilofp>maxp) { nash=p; maxp=utilofp; }
 		}
 		return nash;

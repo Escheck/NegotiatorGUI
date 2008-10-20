@@ -1,4 +1,5 @@
 <utility_space number_of_issues="5">
+	<reservation value="0.3068" />
 	<objective index="1" etype="objective" type="objective"
 		description="" name="Car">
 		<weight index="2" value="0.25" />
@@ -92,6 +93,5 @@
 		</similarity_function>
 
 		</issue>
-		<reservation value="0.3068" />
 	</objective>
 </utility_space>
