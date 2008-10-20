@@ -31,7 +31,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		fBiddingHistory = new ArrayList<Bid>();
 		issues=fDomain.getIssues();
 		int lNumberOfHyps = factorial(fDomain.getIssues().size());
-		fWeightHyps = new WeightHypothesis[lNumberOfHyps];
+		fWeightHyps = new WeightHypothesis[lNumberOfHyps+1];
 		//generate all possible ordering combinations of the weights
 		int index = 0;
 		double[] P = new double[fDomain.getIssues().size()];
@@ -39,8 +39,13 @@ public class BayesianOpponentModel extends OpponentModel{
 		for(int i=0; i<fDomain.getIssues().size();i++) P[i] = (i+1)/((double)((fDomain.getIssues().size()*(fDomain.getIssues().size()+1))/2.0));
 		//build all possible orderings of the weights from P
 		antilex(new Integer(index), fWeightHyps, P, fDomain.getIssues().size()-1);
+		//add the all equal hyp
+		WeightHypothesis allEqual = new WeightHypothesis(fDomain);
+		for(int i=0;i< fDomain.getIssues().size();i++)
+			allEqual.setWeight(i, 1./((double)(fDomain.getIssues().size())));
 		//set uniform probability distribution to the weights hyps
-		for(int i=0;i<fWeightHyps.length;i++) fWeightHyps[i].setProbability(1/lNumberOfHyps);
+		fWeightHyps[fWeightHyps.length-1] = allEqual;
+		for(int i=0;i<fWeightHyps.length;i++) fWeightHyps[i].setProbability(1./fWeightHyps.length);
 		//generate all possible hyps of evaluation functions
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
 		int lTotalTriangularFns = 1;
@@ -66,8 +71,8 @@ public class BayesianOpponentModel extends OpponentModel{
 				lHypEval.setUpperBound(lIssuePrice.getUpperBound());
 				lHypEval.setLowerBound(lIssuePrice.getLowerBound());				
 				lHypEval.setType(EVALFUNCTYPE.LINEAR);				
-				lHypEval.addParam(1, -1/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
-				lHypEval.addParam(0, 1+lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
+				lHypEval.addParam(1, -1./(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
+				lHypEval.addParam(0, 1.+lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
 				lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
 				lEvalHyps.add(lEvaluatorHypothesis);
 				lEvaluatorHypothesis.setDesc("downhill");
@@ -86,7 +91,7 @@ public class BayesianOpponentModel extends OpponentModel{
 					lEvaluatorHypothesis.setDesc("triangular");
 				}
 				for(int k=0;k<lEvalHyps.size();k++) {
-					lEvalHyps.get(k).setProbability((double)1/lEvalHyps.size());
+					lEvalHyps.get(k).setProbability((double)1./lEvalHyps.size());
 				}
 				break;
 				
@@ -101,7 +106,7 @@ public class BayesianOpponentModel extends OpponentModel{
 					lHypEval.setUpperBound(lIssue.getUpperBound());
 					lHypEval.setLowerBound(lIssue.getLowerBound());
 					lHypEval.setType(EVALFUNCTYPE.LINEAR);
-					lHypEval.addParam(1, 1.0/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
+					lHypEval.addParam(1, 1./(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
 					lHypEval.addParam(0, -lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
 					lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
 					lEvaluatorHypothesis.setDesc("uphill");
@@ -113,7 +118,7 @@ public class BayesianOpponentModel extends OpponentModel{
 				lHypEval.setUpperBound(lIssue.getUpperBound());
 				lHypEval.setLowerBound(lIssue.getLowerBound());
 				lHypEval.setType(EVALFUNCTYPE.LINEAR);
-				lHypEval.addParam(1, 1.0/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
+				lHypEval.addParam(1, 1./(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
 				lHypEval.addParam(0, -lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
 				lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
 				lEvaluatorHypothesis.setDesc("uphill");

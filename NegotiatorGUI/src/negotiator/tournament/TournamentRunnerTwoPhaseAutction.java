@@ -2,6 +2,7 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.sun.org.apache.xpath.internal.operations.Lte;
 
@@ -20,7 +21,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
 public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
-	final private double ALLOWED_UTILITY_DEVIATION = 0.02; 
+	final private double ALLOWED_UTILITY_DEVIATION = 0.015; 
 
 	public TournamentRunnerTwoPhaseAutction(Tournament t,
 			NegotiationEventListener ael) throws Exception {
@@ -31,10 +32,10 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		ArrayList<NegotiationSession2> sessions;
+		LinkedList<NegotiationSession2> sessions;
 	   	try { 
 	   		while(true) {
-    		sessions=tournament.getSessions();
+    		sessions= new LinkedList<NegotiationSession2>( tournament.getSessions());
     		if(sessions==null) break;
 			//calcualte theoretical outcome
 			double outcome[] = new double[sessions.size()];
@@ -47,15 +48,12 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 				while(iter.hasNext()) {
 					Bid bid = iter.next();
 					if(Math.abs(sellerUtilitySpace.getUtility(bid)-sellerUtilitySpace.getReservationValue())<ALLOWED_UTILITY_DEVIATION) {
-						//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
 						double lTmpExpecteUtility = centerUtilitySpace.getUtility(bid);
 						if(lTmpExpecteUtility > outcome[i]) {
 							outcome[i]= lTmpExpecteUtility ;
 						}
-					}				
-					
-				}
-				
+					}									
+				}				
 			}
 			//find the winner
 			int winner = 0;			
@@ -121,23 +119,24 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 			NegotiationSession2 winnerSession = null;
 //			NegotiationSession2 secondBestSession = null;
 			for (NegotiationSession2 s: sessions) {
-				if(s.getSessionRunner().getNegotiationOutcome().agentButility>lMaxUtil) {
+				if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lMaxUtil) {
 					lSecondPrice = lMaxUtil;
-					lMaxUtil = s.getSessionRunner().getNegotiationOutcome().agentButility;
+					lMaxUtil = s.getSessionRunner().getNegotiationOutcome().agentAutility;
 					//secondBestSession = winnerSession;
 					winnerSession = s;
-				} else if(s.getSessionRunner().getNegotiationOutcome().agentButility>lSecondPrice) 
-					lSecondPrice = s.getSessionRunner().getNegotiationOutcome().agentButility;
+				} else if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lSecondPrice) 
+					lSecondPrice = s.getSessionRunner().getNegotiationOutcome().agentAutility;
 				
 			}
 			
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
-			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(lSecondPrice));
 			//paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(0.6));
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
-			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
-			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(lSecondPrice));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
+			
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
 			
 			NegotiationSession2 secondPhaseSession = new NegotiationSession2(winnerSession.agentArep,
