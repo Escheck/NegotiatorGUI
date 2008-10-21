@@ -62,10 +62,20 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//allSessions.add(createSession(center4, seller5, seller2));
 			//allSessions.add(createSession(center8, seller2, seller11));
 			//allSessions.add(createSession(center4, seller9, seller6));
-			allSessions.add(createSession(center12, seller2, seller10));
-			allSessions.add(createSession(center1, seller2, seller8));
-			allSessions.add(createSession(center10, seller7, seller9));
-			allSessions.add(createSession(center7, seller11, seller9));
+			//allSessions.add(createSession(center12, seller2, seller10));
+			//allSessions.add(createSession(center1, seller2, seller8));
+			//allSessions.add(createSession(center10, seller7, seller9));
+			//allSessions.add(createSession(center7, seller11, seller9));
+			//allSessions.add(createSession(center8, seller11, seller10));
+			//allSessions.add(createSession(center10, seller3, seller6));
+			//allSessions.add(createSession(center7, seller4, seller7));
+			//allSessions.add(createSession(center10, seller11, seller8));
+			//allSessions.add(createSession(center11, seller5, seller11));
+			//allSessions.add(createSession(center6, seller7, seller3));
+			//allSessions.add(createSession(center6, seller10, seller5));
+			//allSessions.add(createSession(center8, seller6, seller3));
+			allSessions.add(createSession(center2, seller5, seller1));
+			allSessions.add(createSession(center3, seller5, seller4));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

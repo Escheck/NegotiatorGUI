@@ -100,9 +100,11 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 				solution.setAttribute("type", "Nash");
 				solution.setAttribute("utilityA", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityA));
 				solution.setAttribute("utilityB", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityB));
+				solution = new SimpleElement("solution");
+				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Kalai");
-				solution.setAttribute("utilityA", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityA));
-				solution.setAttribute("utilityB", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityB));
+				solution.setAttribute("utilityA", String.valueOf(sessions.get(i).getBidSpace().getKalaiSmorodinsky().utilityA));
+				solution.setAttribute("utilityB", String.valueOf(sessions.get(i).getBidSpace().getKalaiSmorodinsky().utilityB));
 
 			}
 			//
