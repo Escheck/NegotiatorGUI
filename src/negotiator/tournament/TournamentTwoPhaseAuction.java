@@ -74,8 +74,17 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//allSessions.add(createSession(center6, seller7, seller3));
 			//allSessions.add(createSession(center6, seller10, seller5));
 			//allSessions.add(createSession(center8, seller6, seller3));
-			allSessions.add(createSession(center2, seller5, seller1));
-			allSessions.add(createSession(center3, seller5, seller4));
+			//allSessions.add(createSession(center2, seller5, seller1));
+			//allSessions.add(createSession(center3, seller5, seller4));
+			//allSessions.add(createSession(center10, seller5, seller2));
+			//allSessions.add(createSession(center1, seller3, seller6));
+			//allSessions.add(createSession(center3, seller5, seller4));
+			//allSessions.add(createSession(center8, seller10, seller6));
+			//allSessions.add(createSession(center4, seller12, seller3));
+			//allSessions.add(createSession(center3, seller2, seller11));
+			//allSessions.add(createSession(center6, seller2, seller5));
+			//allSessions.add(createSession(center10, seller2, seller6));
+			//allSessions.add(createSession(center12, seller8, seller12));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -27,7 +27,7 @@ public class BayesianAgentForAuction extends Agent {
 	private Action myLastAction = null;
 	private Bid fOpponentPreviousBid = null;
 
-	private enum ROLE {CENTER, PROVIDER};
+	private enum ROLE {CENTER, PROVIDER, IRRELEVANT};
 	private enum PHASE { FIRST_PHASE, SECOND_PHASE};
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT, AUCTION};
@@ -117,6 +117,17 @@ public class BayesianAgentForAuction extends Agent {
 				break;
 			}
 			break;
+		case IRRELEVANT:
+			switch(fPhase) {
+			case FIRST_PHASE:
+				lBid = utilitySpace.getMaxUtilityBid();
+				break;
+			case SECOND_PHASE:
+				double lSecondBest = parametervalues.get("reservation");
+				lBid = getTradeOff(lSecondBest);	
+				break;
+			}
+			break;
 		}
 
 		
@@ -166,6 +177,18 @@ public class BayesianAgentForAuction extends Agent {
 				break;
 			}
 			break;
+		case IRRELEVANT:
+			switch(fPhase) {
+			case FIRST_PHASE:
+				lBid =  getNextBidSmart(pOppntBid);
+				break;
+			case SECOND_PHASE:
+					double lSecondBest = parametervalues.get("reservation");
+					lBid = getTradeOff(lSecondBest);	
+				break;
+			}
+			break;
+			
 		}
 		return lBid;
 	}
