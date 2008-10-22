@@ -61,12 +61,17 @@ public class SessionRunner implements Runnable {
      /** load the runtime objects to start negotiation */
     public SessionRunner(NegotiationSession2 s) throws Exception {
     	session=s;
-		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
-		    agentA.setName(session.getAgentAname());
-	    java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
-	    agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
-	    agentB.setName(session.getAgentBname());
+    	if(s.getAgentA()==null) {
+    		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+    		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
+    		agentA.setName(session.getAgentAname());
+    	} else agentA = s.getAgentA();
+    	if(s.getAgentB()==null) {
+    		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
+    		agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
+    		agentB.setName(session.getAgentBname());
+    	} else agentB = s.getAgentB();
+    		
 
 		HashMap<AgentParameterVariable,AgentParamValue> params = s.getAgentAparams();
 		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {

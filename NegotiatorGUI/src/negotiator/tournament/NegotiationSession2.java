@@ -90,7 +90,8 @@ public class NegotiationSession2 implements Runnable {
 	private BidSpace bidSpace=null;
     //private int totalTime; // total available time for nego, in seconds.
     
-	
+	private Agent agentA = null;
+	private Agent agentB = null;
 	private SimpleElement fAdditional;
 	
 	SessionRunner sessionrunner;
@@ -139,6 +140,34 @@ public class NegotiationSession2 implements Runnable {
     	
     	check();
     }
+    
+    public NegotiationSession2(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
+    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
+    		int sessionnr, int totalsessions,boolean forceStartA) throws Exception {
+    	agentA=agtA;
+    	agentB=agtB;
+    	setProfileArep(profA);
+    	setProfileBrep(profB);
+    	setAgentAname(nameA);
+    	setAgentBname(nameB);
+    	if (agtApar!=null) setAgentAparams(agtApar);
+    	if (agtBpar!=null) setAgentBparams(agtBpar);
+    	sessionNumber=sessionnr;
+    	sessionTotalNumber=totalsessions;
+    	startingWithA=forceStartA;
+    	//actionEventListener.add(ael);
+    	startingAgent=getAgentAname();
+    	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
+    		startingAgent=getAgentBname();
+    	}
+   		fFileName = getProfileArep().getDomain().getURL().getFile();
+		this.agentAUtilitySpaceFileName = getProfileArep().getURL().getFile();
+		this.agentBUtilitySpaceFileName = getProfileBrep().getURL().getFile();      	
+		loadFromFile(fFileName);
+    	
+    	check();
+    }
+    
     public void addNegotiationEventListener(NegotiationEventListener listener) {
     	actionEventListener.add(listener);
     }
@@ -624,12 +653,25 @@ public class NegotiationSession2 implements Runnable {
     	}
 		
 	}
+    public Agent getAgentA() {
+    	return agentA;
+    }
+    public Agent getAgentB() {
+    	return agentB;
+    }
 
     public String getAgentAStrategyName() {
-    	return agentArep.getName();
+    	if(agentArep!=null)
+    		return agentArep.getName();
+    	else
+    		return "";//agentA.getClass().toString();
+    	
     }
     public String getAgentBStrategyName() {
-    	return agentBrep.getName();
+    	if(agentBrep!=null)
+    		return agentBrep.getName();
+    	else
+    		return "";//agentB.getClass().toString();
     }
     public void setBidSpace(BidSpace pBidSpace) {
     	bidSpace = pBidSpace;
