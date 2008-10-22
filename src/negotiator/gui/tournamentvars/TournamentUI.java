@@ -57,6 +57,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
     public TournamentUI() {
         initComponents();
 		Tournament t=new TournamentTwoPhaseAuction(); // bit stupid to correct an empty one, but will be useful later.
+        //Tournament t=new Tournament(); 
 		correct_tournament(t);
 		
 		tournament=t;
@@ -259,6 +260,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, tournamentProgressUI);
 		 
 		new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
+		//new Thread(new TournamentRunner (tournament,tournamentProgressUI)).start();
 		
 	}
 	

@@ -57,8 +57,8 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			ProfileRepItem seller11 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_11.xml"),domain);
 			ProfileRepItem seller12 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_12.xml"),domain);
 			
-			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
-			//allSessions.add(createSession(center3, seller6, seller5, reservationValue));
+			allSessions.add(createSession(center5, seller4, seller1 ));
+			//allSessions.add(createSession(center3, seller6, seller5 ));
 			//allSessions.add(createSession(center4, seller5, seller2));
 			//allSessions.add(createSession(center8, seller2, seller11));
 			//allSessions.add(createSession(center4, seller9, seller6));

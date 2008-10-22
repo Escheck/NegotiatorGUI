@@ -28,7 +28,7 @@ public class BayesianAgentForAuction extends Agent {
 	private Bid fOpponentPreviousBid = null;
 
 	private enum ROLE {CENTER, PROVIDER, IRRELEVANT};
-	private enum PHASE { FIRST_PHASE, SECOND_PHASE};
+	public enum PHASE { FIRST_PHASE, SECOND_PHASE};
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT, AUCTION};
 	private STRATEGY fStrategy = STRATEGY.AUCTION;
@@ -50,13 +50,14 @@ public class BayesianAgentForAuction extends Agent {
 	}
 	
 
-	public static String getVersion() { return "1.0"; }
+	public static String getVersion() { return "2.0"; }
 
 	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
 	public static ArrayList<AgentParam> getParameters() { 
 		ArrayList<AgentParam> parameters=new ArrayList<AgentParam>();
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.));
-		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.));
+		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.));
+		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.));
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",-1.,1.));
 		return parameters;
 	}
@@ -69,17 +70,18 @@ public class BayesianAgentForAuction extends Agent {
 		myLastAction = null;
 		fSmartSteps = 0;
 		myPreviousBids = new ArrayList<Bid>();
-		prepareOpponentModel();			
+					
 		fRound =0;
 		if(parametervalues.get("phase")<0)
 			fPhase = PHASE.FIRST_PHASE;
 		else
-			fPhase = PHASE.SECOND_PHASE;
-		
+			fPhase = PHASE.SECOND_PHASE;		
 		if(parametervalues.get("role")<0)
 			fRole = ROLE.PROVIDER;
-		else
+		else if (parametervalues.get("role")<2)
 			fRole = ROLE.CENTER;
+		else fRole = ROLE.IRRELEVANT;
+		if(fPhase==PHASE.FIRST_PHASE) prepareOpponentModel();
 			
 	}
 	protected void prepareOpponentModel() {
@@ -123,7 +125,7 @@ public class BayesianAgentForAuction extends Agent {
 				lBid = utilitySpace.getMaxUtilityBid();
 				break;
 			case SECOND_PHASE:
-				double lSecondBest = parametervalues.get("reservation");
+				double lSecondBest = parametervalues.get("starting_utility");
 				lBid = getTradeOff(lSecondBest);	
 				break;
 			}
@@ -182,9 +184,8 @@ public class BayesianAgentForAuction extends Agent {
 			case FIRST_PHASE:
 				lBid =  getNextBidSmart(pOppntBid);
 				break;
-			case SECOND_PHASE:
-					double lSecondBest = parametervalues.get("reservation");
-					lBid = getTradeOff(lSecondBest);	
+			case SECOND_PHASE:					
+					lBid = getNextBidSmart(pOppntBid);	
 				break;
 			}
 			break;
@@ -484,7 +485,10 @@ public class BayesianAgentForAuction extends Agent {
 		return  lBid;
 	}
 
-	
+	public double getOpponentUtility(Bid bid) throws Exception 
+	{
+		return fOpponentModel.getExpectedUtility(bid);
+	}
 	public Action chooseAction()
 	{
 		Action lAction = null;
