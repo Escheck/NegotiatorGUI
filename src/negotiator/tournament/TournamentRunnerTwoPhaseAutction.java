@@ -29,7 +29,8 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		// TODO Auto-generated constructor stub
 	}
 	private void runFreeNegotiationSessions(LinkedList<NegotiationSession2> sessions ) throws Exception {
-		LinkedList<NegotiationSession2> freeSessions = new LinkedList<NegotiationSession2>(); 
+		LinkedList<NegotiationSession2> freeSessions = new LinkedList<NegotiationSession2>();
+		
 		for (NegotiationSession2 s: sessions) {
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
@@ -61,8 +62,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 			//freeSession.setAdditional(theoreticalOutcome);
 			for (NegotiationEventListener list: negotiationEventListeners) freeSession.addNegotiationEventListener(list);
 			fireNegotiationSessionEvent(freeSession);
-			freeSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
-			
+			freeSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.			
 
 		}
 		//determine winner
@@ -70,7 +70,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		double lSecondPrice = Double.NEGATIVE_INFINITY;
 		Bid lSecondBestBid = null;
 		NegotiationSession2 winnerSession = null;
-//		NegotiationSession2 secondBestSession = null;
+
 		for (NegotiationSession2 s: freeSessions) {
 			if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lMaxUtil) {
 				lSecondPrice = lMaxUtil;
@@ -116,8 +116,9 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		
+		System.out.println("Center starting utility = " + String.valueOf(centerStartingUtil));
+		System.out.println("Seller starting utility = " + String.valueOf(sellerStartingUtil));
+		//NegotiationSession2 winnerSession = freeSessions.get(0);
 		HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 		HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
 		paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.)), new AgentParamValue(2.1));
