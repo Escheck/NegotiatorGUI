@@ -196,7 +196,7 @@ public class NegotiationSession2 implements Runnable {
     		// only sleep if batch mode????
     		Thread.sleep(1000); // 1 second delay before next nego starts. Used to be 5, is it needed anyway?
     		// Wouter: huh?? removed this           System.exit(0);
-        } catch (Exception e) { new Warning("Problem starting negotiation:"+e); }
+        } catch (Exception e) { new Warning("Problem starting negotiation:"+e); e.printStackTrace();}
     }
 
     public void startNegotiation() throws Exception {
@@ -283,7 +283,7 @@ public class NegotiationSession2 implements Runnable {
     }
     
     public String toString() {
-    	return "NegotiationSession["+agentArep.getName()+" versus "+agentBrep.getName()+"]";
+    	return "NegotiationSession["+getAgentAStrategyName()+" versus "+getAgentAStrategyName()+"]";
     }
  
     
@@ -654,9 +654,21 @@ public class NegotiationSession2 implements Runnable {
 		
 	}
     public Agent getAgentA() {
+    	if(agentA==null)
+    		if(sessionrunner!=null)
+    			return sessionrunner.agentA;
+    		else
+    			return null;
+    	else
     	return agentA;
     }
     public Agent getAgentB() {
+    	if(agentB==null)
+    		if(sessionrunner!=null)
+    			return sessionrunner.agentB;
+    		else
+    			return null;
+    	else
     	return agentB;
     }
 
