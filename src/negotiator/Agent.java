@@ -17,6 +17,7 @@ import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
 import negotiator.tournament.NegotiationSession2;
+import negotiator.tournament.SessionRunner;
 /**
  *
  * @author Dmytro Tykhonov
@@ -29,7 +30,7 @@ public abstract class Agent {
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-     //protected NegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
+    public SessionRunner 	fNegotiation;// can be accessed only in the expermental setup 
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     
