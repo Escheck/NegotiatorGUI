@@ -57,12 +57,16 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			ProfileRepItem seller11 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_11.xml"),domain);
 			ProfileRepItem seller12 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_12.xml"),domain);
 			
-			//allSessions.add(createSession(center5, seller4, seller1 ));
+			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
+			//allSessions.add(createSession(center3, seller6, seller5, reservationValue));
+			//allSessions.add(createSession(center4, seller5, seller2));
+			//allSessions.add(createSession(center8, seller2, seller11));
+			//allSessions.add(createSession(center4, seller9, seller6));
 			//allSessions.add(createSession(center12, seller2, seller10));
 			//allSessions.add(createSession(center1, seller2, seller8));
 			//allSessions.add(createSession(center10, seller7, seller9));
 			//allSessions.add(createSession(center7, seller11, seller9));
-			allSessions.add(createSession(center8, seller11, seller10));
+			//allSessions.add(createSession(center8, seller11, seller10));
 			//allSessions.add(createSession(center10, seller3, seller6));
 			//allSessions.add(createSession(center7, seller4, seller7));
 			//allSessions.add(createSession(center10, seller11, seller8));
@@ -81,6 +85,38 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//allSessions.add(createSession(center6, seller2, seller5));
 			//allSessions.add(createSession(center10, seller2, seller6));
 			//allSessions.add(createSession(center12, seller8, seller12));
+			//allSessions.add(createSession(center9, seller6, seller2));
+			//allSessions.add(createSession(center7, seller7, seller11));
+			//allSessions.add(createSession(center2, seller1, seller5));
+			//allSessions.add(createSession(center10, seller8, seller10));
+			//allSessions.add(createSession(center11, seller8, seller7));
+			//allSessions.add(createSession(center8, seller7, seller10));
+			//allSessions.add(createSession(center2, seller7, seller12));
+			//allSessions.add(createSession(center10, seller12, seller7));
+			//allSessions.add(createSession(center7, seller7, seller11));
+			//allSessions.add(createSession(center2, seller1, seller5));
+			//allSessions.add(createSession(center10, seller8, seller10));
+			//allSessions.add(createSession(center11, seller8, seller7));
+			//allSessions.add(createSession(center8, seller7, seller10));
+			//allSessions.add(createSession(center2, seller7, seller12));
+			//allSessions.add(createSession(center7, seller12, seller11));
+			//allSessions.add(createSession(center12, seller8, seller10));
+			//allSessions.add(createSession(center2, seller5, seller4));
+			//allSessions.add(createSession(center3, seller10, seller12));
+			//allSessions.add(createSession(center1, seller5, seller3));
+			//allSessions.add(createSession(center11, seller7, seller10));
+			//allSessions.add(createSession(center1, seller8, seller12));
+			//allSessions.add(createSession(center10, seller4, seller6));
+			//allSessions.add(createSession(center7, seller4, seller6));
+			//allSessions.add(createSession(center2, seller3, seller6));
+			//allSessions.add(createSession(center5, seller10, seller11));
+			//allSessions.add(createSession(center12, seller7, seller10));
+			//allSessions.add(createSession(center6, seller9, seller11));
+			allSessions.add(createSession(center4, seller10, seller7));
+			//allSessions.add(createSession(center3, seller5, seller2));
+			//allSessions.add(createSession(center7, seller2, seller4));
+			
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

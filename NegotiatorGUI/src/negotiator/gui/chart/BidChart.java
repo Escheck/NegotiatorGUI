@@ -1,6 +1,7 @@
 package negotiator.gui.chart;
 
 import java.awt.Color;
+import java.awt.Paint;
 import java.awt.geom.Ellipse2D;
 
 import org.jfree.chart.*;
@@ -18,6 +19,8 @@ public class BidChart {
 	private double [][]pareto;
 	private double [][] bidSeriesA;
 	private double [][] bidSeriesB;
+	private String agentAName = "Agent A";
+	private String agentBName = "Agent B";
 	private JFreeChart chart;
 	private XYPlot plot;
 	private DefaultXYDataset possibleBidData = new DefaultXYDataset();
@@ -35,12 +38,18 @@ public class BidChart {
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
-	
+	private NumberAxis domainAxis ;
+    private ValueAxis rangeAxis;
+
 	//empty constructor; but: don't you always know the possible bids and the pareto before the 1st bid? 
 	public BidChart(){
+
 		BidChart1();
+		
 	}
-	public BidChart(double [][] possibleBids,double[][] pareto){
+	public BidChart(String agentAname, String agentBname, double [][] possibleBids,double[][] pareto){		
+		this.agentAName = agentAname;
+		this.agentBName = agentBname;
 		this.pareto = pareto;
 		this.possibleBids = possibleBids;
 		BidChart1();
@@ -60,12 +69,12 @@ public class BidChart {
 	//set-Methods
 	public void setPareto(double [][] pareto){
 		this.pareto = pareto;
-		paretoData.addSeries("pareto optimal bids",pareto);
+		paretoData.addSeries("Pareto efficient frontier",pareto);
 	}
 	
 	public void setPossibleBids(double [][] possibleBids){
 		this.possibleBids = possibleBids;
-		possibleBidData.addSeries("all possible bids",possibleBids);
+		//possibleBidData.addSeries("all possible bids",possibleBids);
 	}
 	
 	public void setBidSeriesA(double [][] bidSeriesA){
@@ -90,9 +99,9 @@ public class BidChart {
 	
 	public void removeAllPlots(){
 		if(bidderAData.getSeriesCount()!=0)
-			bidderAData.removeSeries("Agent A's bids");
+			bidderAData.removeSeries("Bids of "+ agentAName);
 		if(bidderBData.getSeriesCount()!=0)
-			bidderBData.removeSeries("Agent B's bids");
+			bidderBData.removeSeries("Bids of " + agentBName);
 		if(agreementData.getSeriesCount()!=0)
 			agreementData.removeSeries("Agreement");
 		
@@ -104,8 +113,8 @@ public class BidChart {
      * @return The chart.
      */
     private JFreeChart createOverlaidChart() {
-    	NumberAxis domainAxis = new NumberAxis("Agent B");
-        ValueAxis rangeAxis = new NumberAxis("Agent A");
+    	domainAxis = new NumberAxis(agentAName);
+        rangeAxis = new NumberAxis(agentBName);
         dotRenderer.setDotHeight(2);
         dotRenderer.setDotWidth(2);
         nashRenderer.setDotHeight(5);
@@ -121,7 +130,7 @@ public class BidChart {
         agreementRenderer.setDotWidth(10);
         //agreementRenderer.setSeriesShape(0, new Ellipse2D.Float(10.0f, 10.0f, 10.0f, 10.0f));
         agreementRenderer.setSeriesPaint(0, Color.RED);
-        
+       
 		//create default plot, quick hack so that the graph panel is not empty
     	if(possibleBids!=null){
     		possibleBidData.addSeries("all possible bids",possibleBids);
@@ -146,6 +155,16 @@ public class BidChart {
 	    plot.setRenderer(7, agreementRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
-        return new JFreeChart("Bids", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        chart.setBackgroundPaint(new Color(255,255,255));
+        return chart;
+    }
+    public void setAgentAName (String value) {
+    	agentAName = value;
+    	domainAxis.setLabel(agentAName);
+    }
+    public void setAgentBName (String value) {
+    	agentBName = value;
+    	rangeAxis.setLabel(agentBName);
     }
 }

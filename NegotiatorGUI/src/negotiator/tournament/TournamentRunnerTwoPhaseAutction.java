@@ -162,8 +162,8 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		try { 
 			while(true) {
 				sessions= new LinkedList<NegotiationSession2>( tournament.getSessions());
-				runFreeNegotiationSessions(sessions);
-				if(true) continue;
+				//runFreeNegotiationSessions(sessions);
+				//if(true) continue;
 				if(sessions==null) break;
 				//calcualte theoretical outcome
 				double outcome[] = new double[sessions.size()];

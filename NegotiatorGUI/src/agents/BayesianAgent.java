@@ -40,14 +40,14 @@ public class BayesianAgent extends Agent {
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
-	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
+	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
-	private static final double CONCESSIONFACTOR = 0.03;
-	private static final double ALLOWED_UTILITY_DEVIATION = 0.008;
-	private static final int NUMBER_OF_SMART_STEPS = 1; 
+	private static final double CONCESSIONFACTOR = 0.04;
+	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
+	private static final int NUMBER_OF_SMART_STEPS = 0; 
 	private ArrayList<Bid> myPreviousBids;
-	private boolean fSkipDistanceCalc = true;
+	private boolean fSkipDistanceCalc =true;
 	private boolean fDebug = false;
 	private int fRound;
 	// Class constructor
@@ -80,7 +80,7 @@ public class BayesianAgent extends Agent {
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModel(utilitySpace);	
 	}
 
 	// Class methods
@@ -401,10 +401,10 @@ public class BayesianAgent extends Agent {
 				lOppntBid = ((Offer) messageOpponent).getBid();
 				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
 				//double lDistance = calculateEuclideanDistanceUtilitySpace();
-				//if(myLastAction==null) dumpDistancesToLog(0);
+				if(myLastAction==null) dumpDistancesToLog(0);
 				System.out.print("Updating beliefs ...");
 				if(myPreviousBids.size()<8)	fOpponentModel.updateBeliefs(lOppntBid);
-				//dumpDistancesToLog(fRound++);
+				dumpDistancesToLog(fRound++);
 				System.out.println("Done!");
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
@@ -448,7 +448,7 @@ public class BayesianAgent extends Agent {
 				// I am starting, but not sure whether Negotiator checks this, so
 				// lets check also myLastAction...
 				if (myLastAction == null) {
-				//	dumpDistancesToLog(fRound++);				
+					dumpDistancesToLog(fRound++);				
 					lAction = proposeInitialBid();
 				} else
 					// simply repeat last action
@@ -519,7 +519,7 @@ public class BayesianAgent extends Agent {
 	}
 	
 	private double sq(double x) { return x*x; }
-/*	
+	
 	private double calculateEuclideanDistanceUtilitySpace(double[] pLearnedUtil, double[] pOpponentUtil) {		
 		double lDistance = 0;
 		try {
@@ -608,7 +608,7 @@ public class BayesianAgent extends Agent {
 	private double calculateRankingDistanceUtilitySpaceMonteCarlo(double[] pLearnedUtil, double[] pOpponentUtil) {
 		double lDistance = 0;
 		int lNumberOfPossibleBids = (int)(utilitySpace.getDomain().getNumberOfPossibleBids());
-		int lNumberOfComparisons = 10000000;
+		int lNumberOfComparisons = 10000;
 		for(int k=0;k<lNumberOfComparisons ;k++) {
 			int i = (new Random()).nextInt(lNumberOfPossibleBids-1);
 			int j = (new Random()).nextInt(lNumberOfPossibleBids-1);
@@ -731,6 +731,7 @@ public class BayesianAgent extends Agent {
 		double lPearsonDistWeights		= calculatePearsonDistanceWeghts(lExpectedWeights);
 		SimpleElement lLearningPerformance = new SimpleElement("learning_performance");
 		lLearningPerformance.setAttribute("round", String.valueOf(pRound));
+		lLearningPerformance.setAttribute("agent", getName());
 		lLearningPerformance.setAttribute("euclidean_distance_utility_space", String.valueOf(lEuclideanDistUtil));
 		lLearningPerformance.setAttribute("euclidean_distance_weights", String.valueOf(lEuclideanDistWeights));
 		lLearningPerformance.setAttribute("ranking_distance_utility_space", String.valueOf(lRankingDistUtil));
@@ -741,5 +742,5 @@ public class BayesianAgent extends Agent {
 		System.out.println(lLearningPerformance.toString());
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
-	}*/
+	}
 }

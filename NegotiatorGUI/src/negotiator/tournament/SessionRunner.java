@@ -88,7 +88,8 @@ public class SessionRunner implements Runnable {
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.GUI_NEGO_TIME;
 //        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
 //        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime); 
-        
+        agentA.fNegotiation = this;
+        agentB.fNegotiation = this;
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
     }
