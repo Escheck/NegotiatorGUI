@@ -116356,3 +116356,1503 @@
 <additional_log> 
 </additional_log> 
 </NegotiationOutcome> 
+<NegotiationOutcome errors="Agent agent B ended the negotiation without agreement" currentTime="2008-11-03 17:21:20" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="A" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent A" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.UIAgentExtended" agent="B" finalUtility="0.0" maxUtility="1.000051804171754" agentName="agent B" normalizedUtility="0.0" utilspace="etc/templates/laptopdomain/laptop_seller_utility.xml"> 
+<ArrayList size="0"> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-11-03 17:25:30" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="A" finalUtility="0.966920642435499" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.966920642435499" utilspace="etc/templates/partydomain/party_utility_cath.xml"> 
+<ArrayList size="8"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.6458333333333334" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.6458333333333334" utilityA="1.0"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.8575" utilityA="0.966920642435499"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.8575" utilityA="0.966920642435499"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.8066666666666668" utilityA="0.9300308383973166"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Finger-Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.8066666666666668" utilityA="0.9300308383973166"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Finger-Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.7466666666666667" utilityA="0.8891644616682702"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.7466666666666667" utilityA="0.8891644616682702"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="0.8575" maxUtility="1.0000000000000002" agentName="Agent B" normalizedUtility="0.8574999999999998" utilspace="etc/templates/partydomain/party_bartluijten_utility.xml"> 
+<ArrayList size="10"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0000000000000002" utilityA="0.5432538457965072"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0000000000000002" utilityA="0.5432538457965072"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9625" utilityA="0.5507708150012744"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9625" utilityA="0.5507708150012744"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9241666666666667" utilityA="0.6390554457187023"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9241666666666667" utilityA="0.6390554457187023"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.8908333333333334" utilityA="0.6208407125677692"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.8908333333333334" utilityA="0.6208407125677692"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.8575" utilityA="0.966920642435499"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.8575" utilityA="0.966920642435499"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-11-03 17:25:34" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SimpleAgt2" agent="A" finalUtility="0.5175221434408068" maxUtility="1.0" agentName="Agent A" normalizedUtility="0.5175221434408068" utilspace="etc/templates/partydomain/party_utility_cath.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5758333333333333" utilityA="0.6123614209675962"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Tent"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Special Equiment"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5758333333333333" utilityA="0.6123614209675962"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Tent"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Special Equiment"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="0.9541666666666666" maxUtility="1.0000000000000002" agentName="Agent B" normalizedUtility="0.9541666666666664" utilspace="etc/templates/partydomain/party_bartluijten_utility.xml"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0000000000000002" utilityA="0.5432538457965072"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0000000000000002" utilityA="0.5432538457965072"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.9541666666666666" utilityA="0.5175221434408068"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.9541666666666666" utilityA="0.5175221434408068"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-11-03 17:25:37" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="A" finalUtility="0.9083333333333333" maxUtility="1.0000000000000002" agentName="Agent A" normalizedUtility="0.9083333333333331" utilspace="etc/templates/partydomain/party_bartluijten_utility.xml"> 
+<ArrayList size="8"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.5432538457965072" utilityA="1.0000000000000002"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.5432538457965072" utilityA="1.0000000000000002"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.5507708150012744" utilityA="0.9625"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.5507708150012744" utilityA="0.9625"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.6390554457187023" utilityA="0.9241666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.6390554457187023" utilityA="0.9241666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.6208407125677692" utilityA="0.8908333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.6208407125677692" utilityA="0.8908333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Water and Soap"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="0.8560851041037694" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.8560851041037694" utilspace="etc/templates/partydomain/party_utility_cath.xml"> 
+<ArrayList size="10"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="0.6458333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="0.6458333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.966920642435499" utilityA="0.8575"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.966920642435499" utilityA="0.8575"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="4"> 
+<BidPoint utilityB="0.9300308383973166" utilityA="0.8066666666666668"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Finger-Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="5"> 
+<BidPoint utilityB="0.9300308383973166" utilityA="0.8066666666666668"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Finger-Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="6"> 
+<BidPoint utilityB="0.8891644616682702" utilityA="0.7466666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="7"> 
+<BidPoint utilityB="0.8891644616682702" utilityA="0.7466666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Handmade"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="8"> 
+<BidPoint utilityB="0.8560851041037694" utilityA="0.9083333333333333"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Printed"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="9"> 
+<BidPoint utilityB="0.8560851041037694" utilityA="0.9083333333333333"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Custom, Printed"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
+<NegotiationOutcome errors="null" currentTime="2008-11-03 17:25:41" startingAgent="agentB"> 
+<resultsOfAgent agentClass="agents.SimpleAgt2" agent="A" finalUtility="0.8575" maxUtility="1.0000000000000002" agentName="Agent A" normalizedUtility="0.8574999999999998" utilspace="etc/templates/partydomain/party_bartluijten_utility.xml"> 
+<ArrayList size="2"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="0.46912671672731504" utilityA="0.9241666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Handmade Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="0.46912671672731504" utilityA="0.9241666666666667"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Handmade Food"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="DJ"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Specialized Materials"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<resultsOfAgent agentClass="agents.BayesianAgent" agent="B" finalUtility="0.966920642435499" maxUtility="1.0" agentName="Agent B" normalizedUtility="0.966920642435499" utilspace="etc/templates/partydomain/party_utility_cath.xml"> 
+<ArrayList size="4"> 
+<ArrayListElement index="0"> 
+<BidPoint utilityB="1.0" utilityA="0.6458333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="1"> 
+<BidPoint utilityB="1.0" utilityA="0.6458333333333334"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Non-Alcoholic"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Plain"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="2"> 
+<BidPoint utilityB="0.966920642435499" utilityA="0.8575"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+<ArrayListElement index="3"> 
+<BidPoint utilityB="0.966920642435499" utilityA="0.8575"> 
+<bid> 
+<issue index="2" type="discrete"> 
+<item value="Chips and Nuts"> 
+</item> 
+</issue> 
+<issue index="3" type="discrete"> 
+<item value="Beer Only"> 
+</item> 
+</issue> 
+<issue index="4" type="discrete"> 
+<item value="Party Room"> 
+</item> 
+</issue> 
+<issue index="5" type="discrete"> 
+<item value="Photo"> 
+</item> 
+</issue> 
+<issue index="6" type="discrete"> 
+<item value="MP3"> 
+</item> 
+</issue> 
+<issue index="7" type="discrete"> 
+<item value="Hired Help"> 
+</item> 
+</issue> 
+</bid> 
+</BidPoint> 
+</ArrayListElement> 
+</ArrayList> 
+</resultsOfAgent> 
+<additional_log> 
+</additional_log> 
+</NegotiationOutcome> 
