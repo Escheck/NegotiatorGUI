@@ -80,7 +80,7 @@ public class BayesianAgent extends Agent {
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModel(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
 	}
 
 	// Class methods

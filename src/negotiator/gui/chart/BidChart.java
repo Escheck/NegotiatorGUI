@@ -74,7 +74,7 @@ public class BidChart {
 	
 	public void setPossibleBids(double [][] possibleBids){
 		this.possibleBids = possibleBids;
-		//possibleBidData.addSeries("all possible bids",possibleBids);
+		possibleBidData.addSeries("all possible bids",possibleBids);
 	}
 	
 	public void setBidSeriesA(double [][] bidSeriesA){
