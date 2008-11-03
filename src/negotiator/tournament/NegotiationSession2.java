@@ -73,8 +73,8 @@ public class NegotiationSession2 implements Runnable {
 	private String log;
 	
 	
-    public static int NON_GUI_NEGO_TIME = 35000;//120;
-    public static int GUI_NEGO_TIME=60*30; 	// Nego time if a GUI is involved in the nego
+    public int non_gui_nego_time = 35000;//120;
+    public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
 
     /** fields copied from the NegotiationTemplate class */
@@ -112,13 +112,34 @@ public class NegotiationSession2 implements Runnable {
      * @param totalsessions
      * @param forceStartA true to force start with agent A. with false, start agent is chosen randomly.
      * @param ael is the callback point for bidding events. null means you won't be given call backs.
+     * @param gui_time is the time (ms) available for normal GUI agents
+     * @param non_gui_time is the time(ms) available for agents that are agents involving user interaction 
+     * 		which is indicated by Agent.isUIAgent().
      * @throws Exception
      */
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA) throws Exception {
+    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
+    	
+    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time);
+    }
+    
+    public NegotiationSession2(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
+    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
+    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
+    	agentA=agtA;
+    	agentB=agtB;
+    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time);
+    }
+
+    
+    private void continueSetup(ProfileRepItem profA, ProfileRepItem profB,
+	String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
+	int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
+    	non_gui_nego_time=non_gui_time;
+    	gui_nego_time=gui_time;
     	setProfileArep(profA);
     	setProfileBrep(profB);
     	setAgentAname(nameA);
@@ -141,32 +162,6 @@ public class NegotiationSession2 implements Runnable {
     	check();
     }
     
-    public NegotiationSession2(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
-    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA) throws Exception {
-    	agentA=agtA;
-    	agentB=agtB;
-    	setProfileArep(profA);
-    	setProfileBrep(profB);
-    	setAgentAname(nameA);
-    	setAgentBname(nameB);
-    	if (agtApar!=null) setAgentAparams(agtApar);
-    	if (agtBpar!=null) setAgentBparams(agtBpar);
-    	sessionNumber=sessionnr;
-    	sessionTotalNumber=totalsessions;
-    	startingWithA=forceStartA;
-    	//actionEventListener.add(ael);
-    	startingAgent=getAgentAname();
-    	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent=getAgentBname();
-    	}
-   		fFileName = getProfileArep().getDomain().getURL().getFile();
-		this.agentAUtilitySpaceFileName = getProfileArep().getURL().getFile();
-		this.agentBUtilitySpaceFileName = getProfileBrep().getURL().getFile();      	
-		loadFromFile(fFileName);
-    	
-    	check();
-    }
     
     public void addNegotiationEventListener(NegotiationEventListener listener) {
     	actionEventListener.add(listener);

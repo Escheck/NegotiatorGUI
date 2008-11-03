@@ -73,6 +73,7 @@ public class SessionRunner implements Runnable {
     	} else agentB = s.getAgentB();
     		
 
+    	/*
 		HashMap<AgentParameterVariable,AgentParamValue> params = s.getAgentAparams();
 		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
 			agentA.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
@@ -82,10 +83,11 @@ public class SessionRunner implements Runnable {
 		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
 			agentB.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
 		}
+		*/
 	    
 	    
-        totTime=session.NON_GUI_NEGO_TIME;
-        if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.GUI_NEGO_TIME;
+        totTime=session.non_gui_nego_time;
+        if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.gui_nego_time;
 //        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
 //        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime); 
         agentA.fNegotiation = this;
@@ -109,9 +111,9 @@ public class SessionRunner implements Runnable {
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
             agentA.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
-            		new UtilitySpace(session.getAgentAUtilitySpace()));
+            		new UtilitySpace(session.getAgentAUtilitySpace()),session.getAgentAparams());
             agentB.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
-            		new UtilitySpace(session.getAgentBUtilitySpace()));
+            		new UtilitySpace(session.getAgentBUtilitySpace()),session.getAgentBparams());
             
             stopNegotiation = false;
             Action action = null;

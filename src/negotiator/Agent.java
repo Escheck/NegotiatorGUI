@@ -12,12 +12,15 @@ package negotiator;
 import negotiator.actions.Action;
 import negotiator.issue.ISSUETYPE;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
 import negotiator.tournament.NegotiationSession2;
 import negotiator.tournament.SessionRunner;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 /**
  *
  * @author Dmytro Tykhonov
@@ -35,8 +38,10 @@ public abstract class Agent {
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     
     
-    protected Hashtable<String,Double> parametervalues = new Hashtable<String, Double>(); // values for the parameters for this agent. Key is param name
+    //protected Hashtable<String,Double> parametervalues = new Hashtable<String, Double>(); // values for the parameters for this agent. Key is param name
 
+    protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues;
+    
     public Agent() {
     }
 
@@ -44,10 +49,11 @@ public abstract class Agent {
     
     /** TODO: handle the parameters init */
     public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-    		Integer totalTimeP, UtilitySpace us) {
+    		Integer totalTimeP, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
     	utilitySpace=us;
+    	parametervalues=params;
         return;
     }
     
@@ -81,18 +87,8 @@ public abstract class Agent {
     	return new ArrayList<AgentParam>();
     	}
     
-    public Hashtable<String,Double> getParameterValues() {
+    public HashMap<AgentParameterVariable,AgentParamValue> getParameterValues() {
     	return parametervalues;
-    }
-
-    /** 
-     * set the values for the parameters for this agent.
-     * @throws IllegalArgumentException if number of parameters is incorrect.
-     * @param paramValues
-     * @throws Exception
-     */
-    public void setParameter(String paramname, Double value) throws Exception { 
-    	parametervalues.put(paramname, value);
     }
     
     

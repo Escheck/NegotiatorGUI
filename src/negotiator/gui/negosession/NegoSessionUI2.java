@@ -105,7 +105,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		ProgressUI2 graphlistener=new ProgressUI2();
 		NegoGUIApp.negoGUIView.replaceTab("Progress", this, graphlistener);
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",null,null,1, 1,false);
+	    		"agent A", "agent B",null,null,1, 1,false,35000,3500);
 		ns.addNegotiationEventListener(graphlistener);
 		graphlistener.setNegotiationSession(ns);
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
