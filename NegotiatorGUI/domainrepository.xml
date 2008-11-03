@@ -15,7 +15,7 @@
             <domainRepItem url="file:etc/templates/SON/son_domain.xml">
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
                 <profile url="file:etc/templates/SON/son_seller.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_1.xml"/>
+<!--                <profile url="file:etc/templates/SON/son_seller_1.xml"/>
                 <profile url="file:etc/templates/SON/son_seller_2.xml"/>
                 <profile url="file:etc/templates/SON/son_seller_3.xml"/>
                 <profile url="file:etc/templates/SON/son_seller_4.xml"/>
@@ -38,7 +38,7 @@
                 <profile url="file:etc/templates/SON/son_center_9.xml"/>
                 <profile url="file:etc/templates/SON/son_center_10.xml"/>
                 <profile url="file:etc/templates/SON/son_center_11.xml"/>
-                <profile url="file:etc/templates/SON/son_center_12.xml"/>
+                <profile url="file:etc/templates/SON/son_center_12.xml"/>   -->
             </domainRepItem>
             <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_city_space.xml"/>
