@@ -3,9 +3,12 @@ package agents;
 import java.util.Collections;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import negotiator.*;
 import negotiator.actions.*;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 
 
@@ -60,15 +63,12 @@ public class DecUtilAgent extends Agent
     /**
      * init is called when a next session starts with the same opponent.
      */
-    public void init(int sessionNumberP, int sessionTotalNumberP, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-        super.init (sessionNumberP, sessionTotalNumberP, startTimeP,totalTimeP,us);
+    public void init() {
 
-        BidIterator biter=new BidIterator(us.getDomain());
+        BidIterator biter=new BidIterator(utilitySpace.getDomain());
         while (biter.hasNext()) bids.add(biter.next());
-		Collections.sort(bids, new BidComparator(us));
+		Collections.sort(bids, new BidComparator(utilitySpace));
 
-        sessionNumber = sessionNumberP;
-        sessionTotalNumber = sessionTotalNumberP;
     }
 
 	public void ReceiveMessage(Action opponentAction) {

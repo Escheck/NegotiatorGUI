@@ -44,7 +44,8 @@ import negotiator.BidIterator;
 
 public class UtilitySpace {
 	
-
+	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
+	private CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_CHECK;
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -54,7 +55,7 @@ public class UtilitySpace {
     private Double fReservationValue = null;
 //    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
-
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof UtilitySpace)) return false;
@@ -229,8 +230,8 @@ public class UtilitySpace {
     {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
-        
-        //if (constraintsViolated(bid)) return 0.;
+        if(fCheckConstraints == CHECK_CONSTRAINTS.DO_CHECK)
+        	if (constraintsViolated(bid)) return 0.;
         
         Objective root = domain.getObjectivesRoot();
         Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();

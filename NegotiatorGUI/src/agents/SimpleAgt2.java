@@ -8,6 +8,8 @@ import java.util.Random;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 
 
@@ -31,10 +33,8 @@ public class SimpleAgt2 extends Agent
      * init is called when a next session starts with the same opponent.
      */
     
-    public void init(int sessionNumberP, int sessionTotalNumberP, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-        super.init (sessionNumberP, sessionTotalNumberP, startTimeP,totalTimeP,us);
-        sessionNumber = sessionNumberP;
-        sessionTotalNumber = sessionTotalNumberP;
+    public void init(){
+
     }
 
     public static String getVersion() { return "1.2"; }

@@ -20,6 +20,8 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import java.util.*;
 
@@ -37,8 +39,7 @@ public class UIAgentExtended extends Agent{
     protected int bidCounter = 0;
     protected NegoRoundData roundData;
     protected ArrayList<NegoRoundData> historyOfBids = null;
-    protected UtilitySpace utilSpace;
-    
+
     /** Creates a new instance of UIAgent */
     
     
@@ -47,19 +48,18 @@ public class UIAgentExtended extends Agent{
      * Init will be called at the start of each nego session.
      */
     public static String getVersion() { return "2.0"; }
-    public void init(int sessionNumber, int sessionTotalNumber, Date startT, Integer totalTimeP, UtilitySpace us)
+    public void init()
     {
     	
-    	System.out.println("try to init UIAgent");
-    	utilSpace =us;
-    	System.out.println("Utility Space initialized: "+utilSpace);
+    	System.out.println("try to init UIAgent");   	
+    	System.out.println("Utility Space initialized: "+utilitySpace);
     	historyOfBids = new ArrayList<NegoRoundData>();
-        super.init (sessionNumber, sessionTotalNumber, startT,totalTimeP, us);
+
         System.out.println("closing old dialog of ");
         if (ui!=null) { ui.dispose(); ui=null; }
         System.out.println("old  dialog closed. Trying to open new dialog. ");
         try { 
-        	ui = new EnterBidDialogExtended(this, null, true,us); 
+        	ui = new EnterBidDialogExtended(this, null, true,utilitySpace); 
         	//alina: dialog in the center- doesnt really work  
         	Toolkit t = Toolkit.getDefaultToolkit();
     		int x = (int)((t.getScreenSize().getWidth() - ui.getWidth()) / 2);

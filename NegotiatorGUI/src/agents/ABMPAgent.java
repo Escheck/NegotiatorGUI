@@ -17,6 +17,8 @@ import java.util.HashMap;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.*;
 
 /**
@@ -66,9 +68,7 @@ public class ABMPAgent extends Agent {
 		super();
 	}
 
-	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-    		Integer totalTimeP, UtilitySpace us) {
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+	public void init(){
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;

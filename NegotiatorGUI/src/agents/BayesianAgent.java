@@ -15,6 +15,8 @@ import agents.bayesianopponentmodel.*;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import negotiator.Domain;
@@ -68,9 +70,7 @@ public class BayesianAgent extends Agent {
 		return parameters;
 	}
 	
-	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-			Integer totalTimeP, UtilitySpace us) {
-		super.init(sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
+	public void init() {
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;

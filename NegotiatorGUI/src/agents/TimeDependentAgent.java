@@ -15,10 +15,7 @@ public class TimeDependentAgent extends Agent {
 	}
 
 	@Override
-	public void init(int sessionNumber, int sessionTotalNumber,
-			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-		// TODO Auto-generated method stub
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+	public void init(){
 	}
 
 	@Override

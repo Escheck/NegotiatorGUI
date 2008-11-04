@@ -12,6 +12,8 @@ import negotiator.actions.Offer;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueReal;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 
 public class FuzzyAgent extends Agent {
@@ -103,10 +105,8 @@ public class FuzzyAgent extends Agent {
 	}
 	public static String getVersion() { return "1.0"; }
 	@Override
-	public void init(int sessionNumber, int sessionTotalNumber,
-			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-		// TODO Auto-generated method stub
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+	public void init() {
+		
 		fRound = 0;
 		dist=new double[deadline+1];
 		BuyOffer=new double[deadlineB+1][2];

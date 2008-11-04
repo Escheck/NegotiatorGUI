@@ -9,6 +9,8 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import agents.qoagent2.*;
 public class QOAgent extends Agent {
@@ -31,10 +33,7 @@ public class QOAgent extends Agent {
 	}
 	public static String getVersion() { return "1.0"; }
 	@Override
-	public void init(int sessionNumber, int sessionTotalNumber,
-			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+	public void init(){
 		fFirstOffer=true;
 		fMessageId = 1;
 		opponentModels = new UtilitySpace[3];
