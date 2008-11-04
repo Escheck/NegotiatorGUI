@@ -63,6 +63,9 @@ public class NegotiationSession2 implements Runnable {
     private String agentBname;
     private HashMap<AgentParameterVariable,AgentParamValue>  agentAparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
     private HashMap<AgentParameterVariable,AgentParamValue>  agentBparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
+
+     /** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
+    int tournamentNumber=-1; 
     int sessionNumber;
     int sessionTotalNumber;
     boolean startingWithA=true;
@@ -115,31 +118,37 @@ public class NegotiationSession2 implements Runnable {
      * @param gui_time is the time (ms) available for normal GUI agents
      * @param non_gui_time is the time(ms) available for agents that are agents involving user interaction 
      * 		which is indicated by Agent.isUIAgent().
+     * @param tournamentnr is the number of the tournament of which this session is a part, or -1 if this session is no part of a tournament.
      * @throws Exception
      */
     public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
+    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
     	agentArep=agtA;
     	agentBrep=agtB;
     	
-    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time);
+    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time, tournamentnr);
     }
     
     public NegotiationSession2(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
+    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
     	agentA=agtA;
     	agentB=agtB;
-    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time);
+    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time,tournamentnr);
     }
 
+    /** non_tournament_next_session_nr is used to auto-number non-tournament sessions */
+    static int non_tournament_next_session_nr=1;
+    
     
     private void continueSetup(ProfileRepItem profA, ProfileRepItem profB,
 	String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-	int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time) throws Exception {
-    	non_gui_nego_time=non_gui_time;
+	int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time,int tournamentnr) throws Exception {
+
+        non_gui_nego_time=non_gui_time;
     	gui_nego_time=gui_time;
+    	tournamentNumber=tournamentnr;
     	setProfileArep(profA);
     	setProfileBrep(profB);
     	setAgentAname(nameA);
@@ -147,6 +156,7 @@ public class NegotiationSession2 implements Runnable {
     	if (agtApar!=null) setAgentAparams(agtApar);
     	if (agtBpar!=null) setAgentBparams(agtBpar);
     	sessionNumber=sessionnr;
+    	if (tournamentNumber==-1) sessionNumber=non_tournament_next_session_nr++;
     	sessionTotalNumber=totalsessions;
     	startingWithA=forceStartA;
     	//actionEventListener.add(ael);
@@ -690,4 +700,10 @@ public class NegotiationSession2 implements Runnable {
     	fAdditional = e;
     }
     
+    public int getTournamentNumber() { 
+    	return tournamentNumber; 
+    }
+    public int getSessionNumber() { 
+    	return sessionNumber; 
+    }
 }
