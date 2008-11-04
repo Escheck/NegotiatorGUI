@@ -18,8 +18,11 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -38,14 +41,14 @@ public class UIAgent extends Agent{
      * Init will be called at the start of each nego session.
      */
  
-    public void init(int sessionNumber, int sessionTotalNumber, Date startT, Integer totalTimeP, UtilitySpace us)
+    public void init()
     {
     	System.out.println("init UIAgent");
-        super.init (sessionNumber, sessionTotalNumber, startT,totalTimeP, us);
+        
         System.out.println("closing old dialog of ");
         if (ui!=null) { ui.dispose(); ui=null; }
         System.out.println("old  dialog closed. Trying to open new dialog. ");
-        try { ui = new EnterBidDialog(this, null, true,us); }
+        try { ui = new EnterBidDialog(this, null, true,utilitySpace); }
         catch (Exception e) {System.out.println("Problem in UIAgent2.init:"+e.getMessage()); e.printStackTrace(); }
         System.out.println("finished init of UIAgent2");
     }

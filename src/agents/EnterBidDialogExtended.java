@@ -310,9 +310,9 @@ public class EnterBidDialogExtended extends JDialog {
 		        	double utilOpp = 0;
 		        	double ourUtil = 0;
 
-		    		if (agent.utilSpace!=null){
-		    			if (oppBid!=null)utilOpp = agent.utilSpace.getUtility(oppBid);
-		    			ourUtil= agent.utilSpace.getUtility(ourBid);
+		    		if (agent.utilitySpace !=null){
+		    			if (oppBid!=null)utilOpp = agent.utilitySpace.getUtility(oppBid);
+		    			ourUtil= agent.utilitySpace.getUtility(ourBid);
 		    		}else{
 		    			System.out.println("agent.utilSpace=null");
 		    		}

@@ -62,9 +62,7 @@ public class BayesianAgentForAuction extends Agent {
 		return parameters;
 	}
 	
-	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-			Integer totalTimeP, UtilitySpace us) {
-		super.init(sessionNumber, sessionTotalNumber, startTimeP,totalTimeP,us);
+	public void init() {
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;

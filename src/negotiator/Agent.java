@@ -46,9 +46,24 @@ public abstract class Agent {
     }
 
     public static String getVersion() {return "unknown";};
+    /**
+     * This method is called by the environment (SessionRunner) every time before starting a new 
+     * session after the internalInit method is called. User can override this method. 
+     */
+    public void init() {
     
-    /** TODO: handle the parameters init */
-    public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+    }
+    
+    /**
+     * This method is called by the SessionRunner to initialize the agent with a new session information.
+     * @param sessionNumber number of the session
+     * @param sessionTotalNumber total number of sessions
+     * @param startTimeP
+     * @param totalTimeP
+     * @param us utility space of the agent for the session
+     * @param params parameters of the agent
+     */
+    public final void internalInit(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
     		Integer totalTimeP, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;

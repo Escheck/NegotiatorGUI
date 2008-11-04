@@ -2,6 +2,7 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 import negotiator.Agent;
@@ -12,6 +13,8 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import agents.similarity.Similarity;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 
 
@@ -35,9 +38,7 @@ public class SimilarityAgent extends Agent {
 		super();
 	}
 
-	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-		Integer totalTimeP, UtilitySpace us) {
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
+	public void init() {		
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;

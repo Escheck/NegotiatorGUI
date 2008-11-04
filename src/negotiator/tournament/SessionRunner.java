@@ -110,11 +110,12 @@ public class SessionRunner implements Runnable {
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            agentA.internalInit(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
             		new UtilitySpace(session.getAgentAUtilitySpace()),session.getAgentAparams());
-            agentB.init(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            agentA.init();
+            agentB.internalInit(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
             		new UtilitySpace(session.getAgentBUtilitySpace()),session.getAgentBparams());
-            
+            agentB.init();
             stopNegotiation = false;
             Action action = null;
             

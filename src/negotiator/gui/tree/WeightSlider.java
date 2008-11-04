@@ -49,7 +49,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		this.setLayout(new FlowLayout());
 		
 		slider = new JSlider(MIN_VALUE, MAX_VALUE);
-		slider.setBackground(BACKGROUND);
+		//slider.setBackground(BACKGROUND);
 		slider.setToolTipText("Drag to change the weight");
 		slider.addChangeListener(this);
 		this.add(slider);
