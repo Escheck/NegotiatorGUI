@@ -234,10 +234,10 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
                 if (selectedSessionUI!= null){
                 	oldUI = selectedSessionUI; 
                 	fillGUI(ng);
-                    NegoGUIApp.negoGUIView.replaceTab("selected Session", oldUI,selectedSessionUI);
+                    NegoGUIApp.negoGUIView.replaceTab(getTabString(), oldUI,selectedSessionUI);
                 }else{
                 	fillGUI(ng);
-                    NegoGUIApp.negoGUIView.addTab("selected Session", selectedSessionUI);
+                    NegoGUIApp.negoGUIView.addTab(getTabString(), selectedSessionUI);
                 }    
             }
         }
@@ -249,4 +249,11 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         	selectedSessionUI.addTableData();
         }
     }
+	
+	public String getTabString() {
+		int tournr=negoSession.getTournamentNumber();
+		int sessnr=negoSession.getSessionNumber();
+		if (tournr!=-1) return "Tour."+tournr+" Prog."+sessnr;
+		return "Sess."+sessnr+" Prog.";
+	}
 }

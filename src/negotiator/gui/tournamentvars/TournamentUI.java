@@ -257,7 +257,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 
 		ProgressUI2 progressUI = new ProgressUI2();
 		TournamentProgressUI2 tournamentProgressUI=new TournamentProgressUI2(progressUI );
-		NegoGUIApp.negoGUIView.replaceTab("Progress", this, tournamentProgressUI);
+		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
 		 
 		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
 		new Thread(new TournamentRunner (tournament,tournamentProgressUI)).start();
@@ -463,6 +463,10 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 	public void saveAction() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Tournament getTournament() { 
+		return tournament;
 	}
 
 }

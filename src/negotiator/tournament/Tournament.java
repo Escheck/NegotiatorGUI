@@ -25,9 +25,18 @@ import negotiator.repository.*;
  */
 public class Tournament
 {
+	/** TournamentNumber is used to give a unique reference to this tournament to the user.
+	 * So the first tournament the user creates is tournament 1, the second 2, etc.
+	 * The number is used in the tabs, eg "tour1" as tab name.
+	 */
+	public final int TournamentNumber;
 	int nrOfRunsPerSession;
 	static final String AGENT_A_NAME="Agent A";
 	static final String AGENT_B_NAME="Agent B";
+	
+	/** the time (ms) that GUI and non-GUI agents will get for a nego session 
+	 * TODO Wouter: this is quick hack, make sure they get set properly.*/
+	int tournament_gui_time=35000, tournament_non_gui_time=3500; 
 	
 	ArrayList<TournamentVariable> variables=new ArrayList<TournamentVariable>();
 		// ASSSUMPTIONS: variable 0 is the ProfileVariable.
@@ -37,11 +46,27 @@ public class Tournament
 	ArrayList<NegotiationSession2> sessions=null;
 	
 	HashMap<UtilitySpace,HashMap<UtilitySpace, BidSpace>> bidSpaceCash = null;
+	
+	
+	/** creates empty tournament with the next TournamenNumber */
+		static int next_number=1;
+	public Tournament()
+	{
+		TournamentNumber=next_number;
+		next_number++;
+	}
+	
+	
+	 /** shared counter */
+	int session_number;
+
 	/** called when you press start button in Tournament window.
 	 * This builds the sessions array from given Tournament vars 
 	 * The procedure skips sessions where both sides use the same preference profiles.
-	 * @throws exception if something wrong with the variables, eg not set. */
-	public ArrayList<NegotiationSession2> getSessions() throws Exception {
+	 * @throws exception if something wrong with the variables, eg not set. 
+	 */
+	public synchronized  ArrayList<NegotiationSession2> getSessions() throws Exception {	
+		session_number=1;
 		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents=getAgentVars();
@@ -94,12 +119,10 @@ public class Tournament
 		allparameters=getParametersOfAgent(agentA,AGENT_A_NAME);
 		allparameters.addAll(getParametersOfAgent(agentB,AGENT_B_NAME)); // are the run-time names somewhere?
 		ArrayList<NegotiationSession2> sessions=new ArrayList<NegotiationSession2>();
-		sessionnr=0;
 		allParameterCombis(allparameters,sessions,profileA,profileB,agentA,agentB,new ArrayList<AssignedParamValue>());
 		return sessions;
 	}
 	
-	int sessionnr;
 	/**
 	 * adds all permutations of all NegotiationSessions to the given sessions array.
 	 * Note, this is not threadsafe, if called from multiple threads the session number will screw up.
@@ -122,7 +145,7 @@ public class Tournament
 			}
 			 // TODO compute total #sessions. Now fixed to 9999
 			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
-		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false) ;
+		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, 1, false,tournament_gui_time, tournament_non_gui_time,TournamentNumber) ;
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());

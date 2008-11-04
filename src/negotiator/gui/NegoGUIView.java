@@ -474,7 +474,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	//JFrame frame = new JFrame();
     	try {  
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();    		
-    		addTab("Session", sessionUI);
+    		addTab("Sess. Editor", sessionUI);
     		setActiveComponent(sessionUI);
     	} catch (Exception e) {
 			// TODO: handle exception
@@ -486,7 +486,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public void newTournamentAction() {
         try {
             TournamentUI tournamentUI = new TournamentUI();            
-            addTab("Tournament", tournamentUI);
+            addTab("Tour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
             setActiveComponent(tournamentUI);
         } catch (Exception e) {
             e.printStackTrace();

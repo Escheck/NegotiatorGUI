@@ -353,6 +353,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		}	
 	}
 	
+	/** TODO Wouter: this should be taken out of the agent's CPU time. Currently
+	 * this does not follow my warning/prescribed way to do this (see the handleActionEvent docuemntation)
+	 */
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
 		System.out.println("Caught event "+evt+ "in ProgressUI");
 		round+=1;
