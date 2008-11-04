@@ -62,6 +62,14 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		ProgressUI1("initialized...",bidChart,biddingTable);
 
     }
+    
+    public void fillGUI(NegotiationSession2 ng){
+    	setNegotiationSession(ng);
+    	setLogText(ng.getLog());
+    	addGraph();
+    	addTableData();
+    }
+    
 	public void ProgressUI1 (String logging,BidChart bidChart, JTable bidTable){
 		Container pane = pnlChart;
 		pane.setLayout(new GridBagLayout());

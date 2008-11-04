@@ -7,6 +7,7 @@ package negotiator.gui;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.negosession.NegoSessionUI2;
+import negotiator.gui.tab.CloseTabbedPane;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
@@ -113,6 +114,7 @@ public class NegoGUIView extends FrameView {
 
 			public void closeOperation(MouseEvent e, int overTabIndex) {
 				// TODO Auto-generated method stub
+				//closeTabbedPane1.getSelectedComponent().
 				closeTabbedPane1.remove(overTabIndex);
 				
 			}
@@ -587,4 +589,8 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private int busyIconIndex = 0;
 
     private JDialog aboutBox;
+    
+    public CloseTabbedPane getMainTabbedPane() {
+    	return closeTabbedPane1;
+    }
 }

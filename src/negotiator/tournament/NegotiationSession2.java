@@ -66,8 +66,10 @@ public class NegotiationSession2 implements Runnable {
 
      /** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
     int tournamentNumber=-1; 
-    int sessionNumber;
     int sessionTotalNumber;
+    int sessionNumber; // the main session number: increases with different session setups
+    int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
+    
     boolean startingWithA=true;
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
@@ -204,6 +206,7 @@ public class NegotiationSession2 implements Runnable {
         } catch (Exception e) { new Warning("Problem starting negotiation:"+e); e.printStackTrace();}
     }
 
+    /** this runs sessionTotalNumber of sessions with the provided settings */
     public void startNegotiation() throws Exception {
         //sf = new SessionFrame(agentAname, agentBname);
         //sf.setVisible(true);
@@ -217,7 +220,7 @@ public class NegotiationSession2 implements Runnable {
     
     protected void runNegotiationSession(int nr)  throws Exception
     {
-    	sessionNumber=nr;
+    	sessionTestNumber=nr;
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	//SessionRunner sessionrunner=new SessionRunner(this);
     	sessionrunner=new SessionRunner(this);
@@ -705,5 +708,8 @@ public class NegotiationSession2 implements Runnable {
     }
     public int getSessionNumber() { 
     	return sessionNumber; 
+    }
+    public int getTestNumber() { 
+    	return sessionTestNumber; 
     }
 }
