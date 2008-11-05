@@ -2,19 +2,19 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Main;
 import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
-import negotiator.actions.*;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.IllegalAction;
+import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
@@ -119,7 +119,7 @@ public class SessionRunner implements Runnable {
             stopNegotiation = false;
             Action action = null;
             
-            if (session.startingAgent.equals(session.agentArep)) currentAgent=agentA;
+            if (session.startingAgent.equals(session.getAgentAname())) currentAgent=agentA;
            	else currentAgent=agentB;
             
         	System.out.println("starting with agent "+currentAgent);
@@ -133,6 +133,7 @@ public class SessionRunner implements Runnable {
                    //get next action of the agent that has its turn now
                    action = currentAgent.chooseAction();
                    if (stopNegotiation) return;
+                   
                    if(action instanceof EndNegotiation) 
                    {
                        stopNegotiation=true;
@@ -155,10 +156,9 @@ public class SessionRunner implements Runnable {
                        session.fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
                        //save last results 
                        BidPoint p=null;
-               		   Bid b=((Offer)action).getBid();
-               		   p=new BidPoint(b,
-               				   session.getAgentAUtilitySpace().getUtility(b),
-               				   session.getAgentBUtilitySpace().getUtility(b));
+               		   p=new BidPoint(lastBid,
+               				   session.getAgentAUtilitySpace().getUtility(lastBid),
+               				   session.getAgentBUtilitySpace().getUtility(lastBid));
                        if(currentAgent.equals(agentA))                    {
                     	   fAgentABids.add(p);
                        } else{
@@ -186,20 +186,6 @@ public class SessionRunner implements Runnable {
                 	   throw new Exception("unknown action by agent "+currentAgent.getName());
                    }
                        
-                   //save last results and swap to other agent
-                   BidPoint p=null;
-                   if (action instanceof Offer)
-                   {
-            		   Bid b=((Offer)action).getBid();
-            		   p=new BidPoint(b,
-            				   session.getAgentAUtilitySpace().getUtility(b),
-            				   session.getAgentBUtilitySpace().getUtility(b));
-                   }
-                   if(currentAgent.equals(agentA))                    {
-                	   if(action instanceof Offer) fAgentABids.add(p);
-                   } else{
-                	   if(action instanceof Offer) fAgentBBids.add(p);
-                   }
 
                 } catch(Exception e) {
                 	new Warning("Caught exception:",e,true,2);

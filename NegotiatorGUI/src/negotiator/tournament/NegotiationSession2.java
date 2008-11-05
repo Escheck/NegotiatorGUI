@@ -218,6 +218,13 @@ public class NegotiationSession2 implements Runnable {
     }
     
     
+    /** do test run of negotiation session.
+     * There may be multiple test runs of a single session, for isntance to take the average score.
+     * returns the result in the global field "outcome"
+     * @param nr is the sessionTestNumber
+     * @throws Exception
+     * 
+     */
     protected void runNegotiationSession(int nr)  throws Exception
     {
     	sessionTestNumber=nr;
@@ -463,6 +470,7 @@ public class NegotiationSession2 implements Runnable {
 	public int getNrOfBids(){
 		return sessionrunner.fAgentABids.size()+sessionrunner.fAgentBBids.size();
 	}
+	
 	//alinas code
 	public double[][] getNegotiationPathA(){
 		System.out.println("fAgentABids "+sessionrunner.fAgentABids.size());
