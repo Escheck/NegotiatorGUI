@@ -40,14 +40,16 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 				int choice=JOptionPane.showConfirmDialog(null, "Utility space is not complete: "+warning+". Save anyway?");
 				if (choice!=JOptionPane.OK_OPTION) return;
 		}
-
+		//get the folder of the domain 
+		String folder = parent.getDomainRepItem().getURL().getPath();
+		fileChooser.setSelectedFile(new File(folder));
 		int result = fileChooser.showSaveDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			openedFile = fileChooser.getSelectedFile();
 			saveUtilitySpace(openedFile);
 			try {
 				DomainRepositoryUI domainRep = NegoGUIApp.negoGUIView.getDomainRepositoryUI();
-				domainRep.addprofile(openedFile.toURL());
+				domainRep. addprofile(openedFile.toURL());
 			} catch (Exception exc) {
 				// TODO: handle exception
 				exc.printStackTrace();

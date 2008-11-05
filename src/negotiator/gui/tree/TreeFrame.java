@@ -2,13 +2,16 @@ package negotiator.gui.tree;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import jtreetable.*;
 import negotiator.*;
+import negotiator.repository.DomainRepItem;
 import negotiator.utility.*;
+import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.actions.*;
 import negotiator.issue.*;
@@ -59,7 +62,7 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu editMenu;
-	
+	private DomainRepItem fDomainRepItem;
 	private JPopupMenu treePopupMenu;
 	
 	//Constructors
@@ -70,11 +73,31 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 	public TreeFrame(Domain domain, UtilitySpace utilitySpace) {
 		this(new NegotiatorTreeTableModel(domain, utilitySpace));
 	}
-	
+
+	public TreeFrame(DomainRepItem domainRepItem, Domain domain, UtilitySpace utilitySpace) {		
+		this(new NegotiatorTreeTableModel(domain, utilitySpace));
+		fDomainRepItem = domainRepItem;
+	}
+
 	public TreeFrame(NegotiatorTreeTableModel treeModel) {
 		super();
 		
 		init(treeModel, null);
+		final NegoGUIComponent comp = this;
+		treeTable.addFocusListener(new FocusListener() {
+
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				NegoGUIApp.negoGUIView.setActiveComponent(comp); 
+			}
+
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 	}
 	
 	
@@ -419,7 +442,9 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 	}
 
 	public void saveAction() {
-		// TODO Auto-generated method stub
-		
+		saveUtilitySpaceAct.actionPerformed(null);
+	}
+	public DomainRepItem getDomainRepItem() {
+		return fDomainRepItem;
 	}
 }
