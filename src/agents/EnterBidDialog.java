@@ -411,9 +411,6 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 }
 
 
-
-
-
 /********************************************************************/
 
 class MyCellRenderer1 implements TableCellRenderer {
