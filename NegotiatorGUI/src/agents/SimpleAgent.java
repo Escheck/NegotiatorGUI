@@ -19,7 +19,7 @@ import negotiator.utility.UtilitySpace;
  * Some improvements over the standard SimpleAgent.
  * 
  */
-public class SimpleAgt2 extends Agent
+public class SimpleAgent extends Agent
 {
     private Action actionOfPartner=null;
     private static final double MINIMUM_BID_UTILITY = 0.5;

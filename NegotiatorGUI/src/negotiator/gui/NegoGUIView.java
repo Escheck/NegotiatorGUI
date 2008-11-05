@@ -80,7 +80,7 @@ public class NegoGUIView extends FrameView {
                     if (!busyIconTimer.isRunning()) {
                         statusAnimationLabel.setIcon(busyIcons[0]);
                         busyIconIndex = 0;
-                        busyIconTimer.start();
+                        busyIconTimer.start(); 
                     }
                     progressBar.setVisible(true);
                     progressBar.setIndeterminate(true);
@@ -114,7 +114,6 @@ public class NegoGUIView extends FrameView {
 
 			public void closeOperation(MouseEvent e, int overTabIndex) {
 				// TODO Auto-generated method stub
-				//closeTabbedPane1.getSelectedComponent().
 				closeTabbedPane1.remove(overTabIndex);
 				
 			}
@@ -179,6 +178,7 @@ public class NegoGUIView extends FrameView {
         newPrefProfileMenuItem = new javax.swing.JMenuItem();
         newDomainMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
@@ -373,6 +373,10 @@ public class NegoGUIView extends FrameView {
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenu.add(openMenuItem);
 
+        saveMenuItem.setAction(actionMap.get("save")); // NOI18N
+        saveMenuItem.setName("saveMenuItem"); // NOI18N
+        fileMenu.add(saveMenuItem);
+
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
@@ -546,6 +550,10 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     @Action
     public void opnFileAction() {
     }
+
+    @Action
+    public void saveFileAction() {
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToolBarButton;
@@ -573,6 +581,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JButton openToolBarButton1;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton removeToolBarButton;
+    private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JButton saveToolBarButton;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
@@ -589,8 +598,4 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private int busyIconIndex = 0;
 
     private JDialog aboutBox;
-    
-    public CloseTabbedPane getMainTabbedPane() {
-    	return closeTabbedPane1;
-    }
 }
