@@ -4,30 +4,22 @@
 
 package negotiator.gui;
 
-import negotiator.gui.agentrepository.AgentRepositoryUI;
-import negotiator.gui.domainrepository.DomainRepositoryUI;
-import negotiator.gui.negosession.NegoSessionUI2;
-import negotiator.gui.tab.CloseTabbedPane;
-
-import org.jdesktop.application.Action;
-import org.jdesktop.application.ResourceMap;
-import org.jdesktop.application.SingleFrameApplication;
-import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.Icon;
-import javax.swing.JDialog; 
-import javax.swing.JFrame;
-import javax.swing.tree.TreePath; 
-import negotiator.Domain; 
+import javax.swing.JDialog;
+import javax.swing.Timer;
+import javax.swing.tree.TreePath;
+
+import negotiator.Domain;
+import negotiator.gui.agentrepository.AgentRepositoryUI;
+import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
+import negotiator.gui.negosession.NegoSessionUI2;
 import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
@@ -36,6 +28,12 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.utility.UtilitySpace;
+
+import org.jdesktop.application.Action;
+import org.jdesktop.application.FrameView;
+import org.jdesktop.application.ResourceMap;
+import org.jdesktop.application.SingleFrameApplication;
+import org.jdesktop.application.TaskMonitor;
 
 /**
  * The application's main frame.
@@ -121,6 +119,31 @@ public class NegoGUIView extends FrameView {
         };
         closeTabbedPane1.addCloseListener(cl);
     }
+    
+    /**
+     * @author W.Pasman
+     * @param filename 
+     * @return part of filename following the last slash, or full filename if there is no slash.
+     */
+    public String GetPlainFileName(String filename) {
+    	int i=filename.lastIndexOf('/');
+    	if (i==-1) return filename;
+    	return filename.substring(i+1);
+    }
+    
+    /**
+     * @author W.Pasman
+     * @param filename
+     * @return filename stripped of its extension (the part after the last dot).
+     */
+    public String StripExtension(String filename) {
+    	int i=filename.lastIndexOf('.');
+    	if (i==-1) return filename;
+    	return filename.substring(0, i);
+    }
+    
+    
+    
     public void replaceTab(String title, Component oldComp, Component newComp) {
     	closeTabbedPane1.remove(oldComp);
     	addTab(title, newComp);
@@ -450,9 +473,10 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
                     RepItem repItem = node.getRepositoryItem();
                     if(repItem instanceof DomainRepItem) {
                         try {
-                            Domain domain = new Domain( ((DomainRepItem) repItem).getURL().getFile());
+                        	String filename=((DomainRepItem) repItem).getURL().getFile();
+                            Domain domain = new Domain( filename);
                             tf = new TreeFrame(domain);
-                            addTab("Domain", tf);
+                            addTab(StripExtension(GetPlainFileName(filename)), tf);
                         } catch (Exception e) {
                             e.printStackTrace();
                         
@@ -460,11 +484,13 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
                     } else if(repItem instanceof ProfileRepItem) {
                         try {
                         	MyTreeNode parentNode = (MyTreeNode)(node.getParent());
+                        	String filename=((ProfileRepItem) repItem).getURL().getFile();
+
                             Domain domain = new Domain( ((DomainRepItem) (parentNode.getRepositoryItem()) ).getURL().getFile());
-                            UtilitySpace utilitySpace = new UtilitySpace(domain, ((ProfileRepItem) repItem).getURL().getFile());
+                            UtilitySpace utilitySpace = new UtilitySpace(domain, filename);
                             
                             tf = new TreeFrame(domain,utilitySpace);
-                            addTab("Profile", tf);
+                            addTab(StripExtension(GetPlainFileName(filename)), tf);
                         } catch (Exception e) {
                             e.printStackTrace();
                         
@@ -504,8 +530,9 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	activeComponent = comp;
     }
     
+	static int profilenr=1;
     @Action
-    public void newPrefProfile() {
+	public void newPrefProfile() {
     	TreePath selPath = treeDomains.getSelectionPath();
     	if(selPath!=null) {
     		TreeFrame tf;
@@ -516,7 +543,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     				DomainRepItem domainRepItem = (DomainRepItem) repItem; 
     				Domain domain = new Domain( domainRepItem .getURL().getFile());
     				tf = new TreeFrame(domainRepItem , domain, new UtilitySpace(domain, ""));
-    				addTab("Domain", tf);
+    				addTab("Profile "+profilenr++, tf);
     				setActiveComponent(tf);
     			} catch (Exception e) {
     				e.printStackTrace();
@@ -529,13 +556,14 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	}
     }
 
+    static int domainnr=1;
     @Action
     public void newDomain() {
 		Objective newRoot = new Objective(null, "root", 0);
 		Domain domain = new Domain();
 		domain.setObjectivesRoot(newRoot);
     	TreeFrame tf = new TreeFrame(domain);
-    	addTab("Domain", tf);
+    	addTab("Domain "+domainnr++, tf);
     }
 
     @Action
