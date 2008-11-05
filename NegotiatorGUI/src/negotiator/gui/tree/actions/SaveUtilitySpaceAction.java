@@ -41,7 +41,7 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 				if (choice!=JOptionPane.OK_OPTION) return;
 		}
 		//get the folder of the domain 
-		String folder = parent.getDomainRepItem().getURL().getPath();
+		String folder =  System.getProperties().getProperty("user.dir")  +"/"+parent.getDomainRepItem().getURL().getPath();	
 		fileChooser.setSelectedFile(new File(folder));
 		int result = fileChooser.showSaveDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {

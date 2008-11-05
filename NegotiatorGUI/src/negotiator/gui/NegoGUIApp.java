@@ -43,4 +43,34 @@ public class NegoGUIApp extends SingleFrameApplication {
     public static void main(String[] args) {
         launch(NegoGUIApp.class, args);
     }
+    public static String getClassName()
+    {
+    	String thisClassName;
+
+    	//	Build a string with executing class's name
+    	thisClassName = NegoGUIApp.class.getName();
+    	thisClassName = thisClassName.substring(thisClassName.lastIndexOf(".")
+    			+ 1,thisClassName.length());
+    	thisClassName += ".class"; //this is the name of the bytecode file that is executing
+
+    	return thisClassName;
+    } 
+    public static String getLocalDirName()
+    {
+    	String localDirName;
+
+    	//	Use that name to get a URL to the directory we are executing in
+    	java.net.URL myURL = NegoGUIApp.class.getResource(getClassName());
+    	//Open a URL to the our .class file
+
+    	//Clean up the URL and make a String with absolute path name
+    	localDirName = myURL.getPath(); //Strip path to URL object out
+    	localDirName = myURL.getPath().replaceAll("%20", " "); //change %20 chars to spaces
+
+    	//Get the current execution directory
+    	localDirName =
+    		localDirName.substring(0,localDirName.lastIndexOf("/")); //clean off the file name
+
+    	return localDirName;
+    } 
 }

@@ -104,7 +104,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		
 		ProgressUI2 graphlistener=new ProgressUI2();
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",null,null,1, 1,false,35000,3500,-1);
+	    		"agent A", "agent B",null,null,1, 1,false,1800000,120000,-1);
 		NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);
 		ns.addNegotiationEventListener(graphlistener);
 		graphlistener.setNegotiationSession(ns);
