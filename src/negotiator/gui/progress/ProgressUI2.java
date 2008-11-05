@@ -6,7 +6,6 @@
 
 package negotiator.gui.progress;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -18,15 +17,9 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.AbstractTableModel;
-
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -34,9 +27,11 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
-import negotiator.exceptions.Warning;
 import negotiator.gui.chart.BidChart;
 import negotiator.tournament.NegotiationSession2;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -420,12 +415,18 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		System.out.println(curveB.length);
 		System.out.println(curveB[0].length);
 		
+		// Wouter:due to a bug both paths contained all values twice.
+		double[][] curve0=curveA;
+		double[][] curve1=curveB;
+		
 		String starter = session.getStartingAgent();
 		String second="";
 		if(starter.equals("Agent A")){
 			second = "Agent B";
 		}else{
 			second = "Agent A";
+			curve0=curveB; // Agent B started, then we need curveB at the even points.
+			curve1=curveA;
 		}
 		System.out.println("nr of bids in session "+session.getNrOfBids());
 		for(int i=0;i<session.getNrOfBids();i++){
@@ -435,17 +436,25 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			}
 			//round = evt.getRound();
 			biddingTable.getModel().setValueAt(i+1,i,0);
-			if (i%2 != 0){
+			if (i%2 == 0){
 				biddingTable.getModel().setValueAt(starter,i,1);
+				 // round 0 and 1 both need point 0 in a curve, round 2 and 3 point 1 in a curve, etc.
+				biddingTable.getModel().setValueAt(curve0[0][i/2],i,2);
+				biddingTable.getModel().setValueAt(curve0[1][i/2],i,3);
 			}else{
 				biddingTable.getModel().setValueAt(second,i,1);
+				biddingTable.getModel().setValueAt(curve1[0][i/2],i,2);
+				biddingTable.getModel().setValueAt(curve1[1][i/2],i,3);
+
 			}
+			/*
 			try{
-				biddingTable.getModel().setValueAt(curveA[0][i],i,2);
-				biddingTable.getModel().setValueAt(curveB[0][i],i,3);
+				biddingTable.getModel().setValueAt(curveA[0][i / 2],i,2);
+				biddingTable.getModel().setValueAt(curveB[0][i/2],i,3);
 			}catch(ArrayIndexOutOfBoundsException e){
 				System.out.println("out of bounds "+i);
 			}
+			*/
 		}
 	}
 	
