@@ -221,9 +221,12 @@ public class BidSpace {
 		if(getParetoFrontier().size()<1) 
 			throw new AnalysisException("Nash product: Pareto frontier is unavailable.");
 		double maxp = -1;
+		double agentAresValue=0, agentBresValue=0;
+		if(utilspaceA.getReservationValue()!=null) agentAresValue = utilspaceA.getReservationValue();
+		if(utilspaceB.getReservationValue()!=null) agentBresValue = utilspaceB.getReservationValue();
 		for (BidPoint p:paretoFrontier)
 		{
-			double utilofp = (p.utilityA -utilspaceA.getReservationValue())*(p.utilityB-utilspaceB.getReservationValue());
+			double utilofp = (p.utilityA -agentAresValue)*(p.utilityB-agentBresValue);
 			if (utilofp>maxp) { nash=p; maxp=utilofp; }
 		}
 		return nash;

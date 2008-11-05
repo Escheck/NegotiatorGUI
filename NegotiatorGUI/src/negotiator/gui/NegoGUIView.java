@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog; 
@@ -280,7 +281,7 @@ public class NegoGUIView extends FrameView {
         openToolBarButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(openToolBarButton1);
 
-        saveToolBarButton.setAction(actionMap.get("save")); // NOI18N
+        saveToolBarButton.setAction(actionMap.get("saveFileAction")); // NOI18N
         saveToolBarButton.setIcon(resourceMap.getIcon("saveToolBarButton.icon")); // NOI18N
         saveToolBarButton.setToolTipText(resourceMap.getString("saveToolBarButton.toolTipText")); // NOI18N
         saveToolBarButton.setFocusable(false);
@@ -512,13 +513,18 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     		RepItem repItem = node.getRepositoryItem();
     		if(repItem instanceof DomainRepItem) {
     			try {
-    				Domain domain = new Domain( ((DomainRepItem) repItem).getURL().getFile());
-    				tf = new TreeFrame(domain, new UtilitySpace(domain, ""));
+    				DomainRepItem domainRepItem = (DomainRepItem) repItem; 
+    				Domain domain = new Domain( domainRepItem .getURL().getFile());
+    				tf = new TreeFrame(domainRepItem , domain, new UtilitySpace(domain, ""));
     				addTab("Domain", tf);
+    				setActiveComponent(tf);
     			} catch (Exception e) {
     				e.printStackTrace();
 
-    			}                        
+    			}
+    			
+    		} else {
+    			//JOptionPane.showMessageDialog(this, "Please, select a domain in the Domains repository");
     		}
     	}
     }
@@ -553,6 +559,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
     @Action
     public void saveFileAction() {
+    	 if(activeComponent!=null) activeComponent.saveAction();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

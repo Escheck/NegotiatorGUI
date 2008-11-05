@@ -34,6 +34,8 @@ public class SessionRunner implements Runnable {
     protected Agent         agentB;
     private Bid lastBid=null;				// the last bid that has been done
 
+    private static boolean fIsExperimentalSetup = false;
+    
     /**
      * stopNegotiation indicates that the session has now ended.
      * it is checked after every call to the agent,
@@ -89,9 +91,11 @@ public class SessionRunner implements Runnable {
         totTime=session.non_gui_nego_time;
         if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.gui_nego_time;
 //        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
-//        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime); 
-        agentA.fNegotiation = this;
-        agentB.fNegotiation = this;
+//        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime);
+        if(fIsExperimentalSetup) {
+        	agentA.fNegotiation = this;
+        	agentB.fNegotiation = this;
+        }
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
     }
