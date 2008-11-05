@@ -134,7 +134,6 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 		//Initialize the InfoPanel
 		infoPanel = new SelectedInfoPanel();
 		controlPanel.add(infoPanel);
-		
 		add(controlPanel, BorderLayout.PAGE_END);
 		
 		//Do nothing on closing, since we might need different behaviour.
@@ -158,8 +157,8 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 		treeTable.setColumnSelectionAllowed(false);
 		treeTable.setCellSelectionEnabled(true);
 		
-		//TableColumnModel colModel = treeTable.getColumnModel();
-		//colModel.getColumn(0).setMaxWidth(160);
+		TableColumnModel colModel = treeTable.getColumnModel();
+		if (treeTable.getColumnCount()>3) colModel.getColumn(3).setMinWidth(220); //Wouter: make it likely that Weight column is shown completely.
 		//colModel.getColumn(1).setMaxWidth(80);
 		//colModel.getColumn(2).setMaxWidth(120);
 		
