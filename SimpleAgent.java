@@ -33,7 +33,7 @@ public class SimpleAgent extends Agent
         super.init (sessionNumberP, sessionTotalNumberP, startTimeP,totalTimeP,us);
         sessionNumber = sessionNumberP;
         sessionTotalNumber = sessionTotalNumberP;
-    }
+    }s
 
 	public void ReceiveMessage(Action opponentAction) {
         actionOfPartner = opponentAction;
