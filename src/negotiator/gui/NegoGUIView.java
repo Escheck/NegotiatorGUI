@@ -21,6 +21,7 @@ import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
 import negotiator.gui.negosession.NegoSessionUI2;
 import negotiator.gui.tab.CloseListener;
+import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
 import negotiator.issue.Objective;
@@ -633,4 +634,9 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private int busyIconIndex = 0;
 
     private JDialog aboutBox;
+    
+    public  CloseTabbedPane getMainTabbedPane() {
+    	return closeTabbedPane1;
+    }
+    
 }

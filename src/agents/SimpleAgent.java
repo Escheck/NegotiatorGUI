@@ -34,7 +34,7 @@ public class SimpleAgent extends Agent
      */
     
     public void init(){
-
+ 
     }
 
     public static String getVersion() { return "1.2"; }
