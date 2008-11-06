@@ -10,6 +10,7 @@
             <agentRepItem description="Trade-Off agent designed by P. Faratin, C. Sierra and N. R. Jennings" classPath="agents.SimilarityAgent" agentName="Trade-Off agent"/>
             <agentRepItem description="Fuzzy agent designed by Zaynab Raeesy and Ryszard Kowalczyk" classPath="agents.FuzzyAgent" agentName="FuzzyAgent"/>
             <agentRepItem description="ABMP agent designed by C. Jonker and J. Treur" classPath="agents.ABMPAgent2" agentName="ABMPAgent"/>
+            <agentRepItem description="Tries to offer bid with higher util than best opponent bid" classPath="agents.RandomIncreasingUtilAgent" agentName="RandomIncreasingUtilAgent"/>
         </agentRepItems>
         <domainRepItem/>
     </items>

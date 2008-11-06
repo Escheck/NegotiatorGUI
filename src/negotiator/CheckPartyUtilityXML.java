@@ -10,20 +10,20 @@
 package negotiator;
 
 
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.JPanel;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 
-import negotiator.issue.Objective;
-import negotiator.utility.*;
-import negotiator.issue.*;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.Evaluator;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.UtilitySpace;
 
 
 /**
  *
- * @author W.Pasman
+ * @author W.Pasman nov2007
  * Checks all selected files for conformity with the Party domain. 
  * Checked is that the selected file is ready to run (has all evaluators set)
  * and that all costs correspond to those in party_empty_utility.xml
@@ -38,7 +38,7 @@ public class CheckPartyUtilityXML extends JPanel
 	{	
     	boolean finished=false;
     	partyDomain=new Domain("etc/templates/partydomain/party_domain.xml");
-    	costSpace=new UtilitySpace(partyDomain,"etc/templates/partydomain/party_utility_empty.xml");
+    	costSpace=new UtilitySpace(partyDomain,"etc/templates/partydomain/party_utility_empty1.xml");
     	
     	
     	while (!finished)
