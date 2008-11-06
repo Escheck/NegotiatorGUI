@@ -11,34 +11,14 @@
                 <profile url="file:etc/templates/partydomain/party_utility_kh.xml"/>
                 <profile url="file:etc/templates/partydomain/party_utility_cath.xml"/>
                 <profile url="file:etc/templates/partydomain/party_bartluijten_utility.xml"/>
+                <profile url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/partydomain/party_11_utility.xml"/>
+                <profile url="file:/Users/wouter/Desktop/party.xml"/>
+                <profile url="file:/Users/wouter/Desktop/party.xml"/>
+                <profile url="file:/Users/wouter/Desktop/party2.xml"/>
             </domainRepItem>
             <domainRepItem url="file:etc/templates/SON/son_domain.xml">
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
                 <profile url="file:etc/templates/SON/son_seller.xml"/>
-<!--                <profile url="file:etc/templates/SON/son_seller_1.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_2.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_3.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_4.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_5.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_6.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_7.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_8.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_9.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_10.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_11.xml"/>
-                <profile url="file:etc/templates/SON/son_seller_12.xml"/>
-                <profile url="file:etc/templates/SON/son_center_1.xml"/>
-                <profile url="file:etc/templates/SON/son_center_2.xml"/>
-                <profile url="file:etc/templates/SON/son_center_3.xml"/>
-                <profile url="file:etc/templates/SON/son_center_4.xml"/>
-                <profile url="file:etc/templates/SON/son_center_5.xml"/>
-                <profile url="file:etc/templates/SON/son_center_6.xml"/>
-                <profile url="file:etc/templates/SON/son_center_7.xml"/>
-                <profile url="file:etc/templates/SON/son_center_8.xml"/>
-                <profile url="file:etc/templates/SON/son_center_9.xml"/>
-                <profile url="file:etc/templates/SON/son_center_10.xml"/>
-                <profile url="file:etc/templates/SON/son_center_11.xml"/>
-                <profile url="file:etc/templates/SON/son_center_12.xml"/>   -->
             </domainRepItem>
             <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_city_space.xml"/>
@@ -52,6 +32,7 @@
                 <profile url="file:etc/templates/2nd_hand_car/car_buyer.xml"/>
                 <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
+            <domainRepItem url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/partydomain/party_11_utility.xml"/>
         </domainRepItem>
     </items>
     <filename>domainrepository.xml</filename>

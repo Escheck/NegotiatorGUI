@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="dep/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-xjc.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="src_TournamentBuilder"/>
 	<classpathentry kind="lib" path="dep/jcommon-1.0.13.jar"/>
 	<classpathentry kind="lib" path="dep/jfreechart-1.0.10.jar"/>
 	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>

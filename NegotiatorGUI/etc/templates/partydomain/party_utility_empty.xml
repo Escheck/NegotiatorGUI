@@ -9,6 +9,7 @@
 </item> 
 <item index="4" value="Catering" description="Outsource the food, if you will. The least work, the highest cost." cost="250.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="3" etype="discrete" type="discrete" vtype="discrete" name="Drinks"> 
 <item index="1" value="Non-Alcoholic" description="Soda’s, ice water, etc." cost="75.0"> 
@@ -19,6 +20,7 @@
 </item> 
 <item index="4" value="Catering" description="Let some company do the drinks. Least work, highest cost." cost="450.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="4" etype="discrete" type="discrete" vtype="discrete" name="Location"> 
 <item index="1" value="Party Tent" description="A tent on some field somewhere. Roomy, but outdoors." cost="200.0"> 
@@ -39,6 +41,7 @@
 </item> 
 <item index="4" value="Custom, Printed" description="Design the card, then let somebody else print it. You pay a lot, but do the least." cost="150"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="6" etype="discrete" type="discrete" vtype="discrete" name="Music"> 
 <item index="1" value="MP3" description="Plug some boxes into your computer and run off your MP3 collection. More work, the wiring costs money." cost="100.0"> 
@@ -47,6 +50,7 @@
 </item> 
 <item index="3" value="Band" description="Hire a party band for live music. The most expensive, but it is live music." cost="350.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <issue index="7" etype="discrete" type="discrete" vtype="discrete" name="Cleanup"> 
 <item index="1" value="Water and Soap" description="This will take a lot of scrubbing. It is cheap, but by far the most work." cost="20.0"> 
@@ -57,6 +61,7 @@
 </item> 
 <item index="4" value="Hired Help" description="Hire somebody else to do your dirty work. No work,but pricey." cost="200.0"> 
 </item> 
+<similarity_function type="binary" weight="0.1666666"/>
 </issue> 
 <weight index="2" value="0.166666"> 
 </weight> 
