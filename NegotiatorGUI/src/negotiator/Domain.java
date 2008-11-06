@@ -210,6 +210,7 @@ public class Domain {
             String[] values;
             String[] desc;
             Issue issue;
+            Double[] cost;
             switch(issueType) {
             case DISCRETE:
             	// Collect discrete values for discrete-valued issue from xml template
@@ -219,14 +220,16 @@ public class Domain {
                 
                 values = new String[nrOfItems];
                 desc = new String[nrOfItems];
-
+                cost = new Double[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
                     item_index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
                     values[k] = ((SimpleElement)xml_items[k]).getAttribute("value");
                     desc[k]=((SimpleElement)xml_items[k]).getAttribute("description");
+                    if(((SimpleElement)xml_items[k]).getAttribute("cost")!=null)
+                    	cost[k] = Double.valueOf(((SimpleElement)xml_items[k]).getAttribute("cost"));
                 }
-                child = new IssueDiscrete(name, index, values, desc,currentParent);
+                child = new IssueDiscrete(name, index, values, desc,currentParent, cost);
             	break;
             case INTEGER:
             	// Collect range bounds for integer-valued issue from xml template
@@ -255,11 +258,14 @@ public class Domain {
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
                 values = new String[nrOfItems];
-                for(int k=0;k<nrOfItems;k++) {
+                cost = new Double[nrOfItems];
+                for(int k=0;k<nrOfItems;k++) { 
                     item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
                     values[k] = ((SimpleElement)xml_items[j]).getAttribute("value");
+                    if(((SimpleElement)xml_items[j]).getAttribute("cost")!=null)
+                    	cost[k] = Double.valueOf(((SimpleElement)xml_items[j]).getAttribute("cost"));
                 }
-            	child = new IssueDiscrete(name, index, values, currentParent);
+            	child = new IssueDiscrete(name, index, values, currentParent, cost);
             	break;
             }
     		    		

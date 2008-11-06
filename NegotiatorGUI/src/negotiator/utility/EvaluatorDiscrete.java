@@ -220,7 +220,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		//	fCost.put((ValueDiscrete)val, new Double(cost));
 		//}
 		fCost.put(val, cost);
-		if (cost>maxCost) maxCost=cost;
+		 if (cost>maxCost) maxCost=cost;
 	}
 	
 

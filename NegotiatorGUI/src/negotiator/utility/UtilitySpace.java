@@ -101,7 +101,19 @@ public class UtilitySpace {
         else
         { // add evaluator to all objectives
         	ArrayList<Objective> objectives=domain.getObjectives();
-        	for (Objective obj:objectives) fEvaluators.put(obj, DefaultEvaluator(obj));
+        	for (Objective obj:objectives) {
+        		Evaluator eval =  DefaultEvaluator(obj);
+        		fEvaluators.put(obj, eval);
+        		if(eval instanceof EvaluatorDiscrete) {
+        			EvaluatorDiscrete evalDisc = (EvaluatorDiscrete)eval;
+        			IssueDiscrete issue = (IssueDiscrete)obj;        			
+        			for(Value val: issue.getValues()) {
+        				ValueDiscrete valDisc = (ValueDiscrete)val;
+        				evalDisc.setCost(valDisc, issue.getCost(valDisc));
+        			}
+        		}
+        	}
+        	
         }
     }
     

@@ -21,6 +21,7 @@ public class IssueDiscrete extends Issue {
 	
 	 // the descriptions for each value
 	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
+	private HashMap<ValueDiscrete, Double> fCosts=new HashMap<ValueDiscrete, Double>();
 
 	private int numberOfValues; // Wouter: imho should not be done this way
 
@@ -35,22 +36,25 @@ public class IssueDiscrete extends Issue {
 	    }
 	}	
 	
-	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
+	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent, Double[] cost) {
 		super(name, issueNumber, objParent);		
 		numberOfValues = values.length;
 		issueValues = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
-	        issueValues.add(new ValueDiscrete(values[i]));
+	    	ValueDiscrete v=new ValueDiscrete(values[i]);
+	        issueValues.add(v);
+	        fCosts.put(v, cost[i]);
 	    }
 	}
 	
-	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent) {
+	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent, Double[] cost) {
 		super(name, issueNumber, objParent);		
 		numberOfValues = values.length;
 		issueValues = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<numberOfValues;i++) {
 			ValueDiscrete v=new ValueDiscrete(values[i]);
 	        issueValues.add(v);
+	        fCosts.put(v, cost[i]);
 	        if (descriptions!=null && descriptions[i]!=null) fDesc.put(v,descriptions[i]);
 	    }
 	}
@@ -181,5 +185,8 @@ public class IssueDiscrete extends Issue {
 	public String getDesc(ValueDiscrete val)
 	{ return fDesc.get(val); }
 	
+	public Double getCost(ValueDiscrete val) {
+		return fCosts.get(val);
+	}
 	
 }
