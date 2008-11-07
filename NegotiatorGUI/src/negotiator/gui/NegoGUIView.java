@@ -12,6 +12,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.tree.TreePath;
 
@@ -40,6 +41,7 @@ import org.jdesktop.application.TaskMonitor;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
+	private static final boolean fTournamentEnabled =false;
 	private AgentRepositoryUI agentRep = null;
 	private DomainRepositoryUI domainRep = null;
 	private NegoGUIComponent activeComponent = null;
@@ -399,6 +401,7 @@ public class NegoGUIView extends FrameView {
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setAction(actionMap.get("save")); // NOI18N
+        saveMenuItem.setText("Save");
         saveMenuItem.setName("saveMenuItem"); // NOI18N
         fileMenu.add(saveMenuItem);
 
@@ -518,13 +521,17 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
     @Action
     public void newTournamentAction() {
-        try {
-            TournamentUI tournamentUI = new TournamentUI();            
-            addTab("Tour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
-            setActiveComponent(tournamentUI);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	if(fTournamentEnabled) {
+    		try {
+    			TournamentUI tournamentUI = new TournamentUI();            
+    			addTab("Tour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
+    			setActiveComponent(tournamentUI);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	} else {
+    		JOptionPane.showMessageDialog(this.getComponent(), "The tournament functionality is switched off in this version.");
+    	}
         
     }
     public void setActiveComponent(NegoGUIComponent comp) {
@@ -552,9 +559,11 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     			}
     			
     		} else {
-    			//JOptionPane.showMessageDialog(this, "Please, select a domain in the Domains repository");
+    			JOptionPane.showMessageDialog(this.getComponent(), "Please, select a domain in the Domains repository");
     		}
-    	}
+    	}else {
+			JOptionPane.showMessageDialog(this.getComponent(), "Please, select a domain in the Domains repository");
+		}
     }
 
     static int domainnr=1;
@@ -590,6 +599,11 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public void saveFileAction() {
     	 if(activeComponent!=null) activeComponent.saveAction();
     }
+    @Action
+    public void save() {
+    	 if(activeComponent!=null) activeComponent.saveAction();
+    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addToolBarButton;
