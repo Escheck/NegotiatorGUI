@@ -30,7 +30,7 @@ import org.jdesktop.application.Action;
  * @author  dmytro
  */
 public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUIComponent {
-
+	private static final boolean fShowProgressUI = false; 
     /** Creates new form NegoSessionUI2 */
     public NegoSessionUI2() { 
         initComponents();
@@ -101,13 +101,15 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 			}
 		};
 
-		
-		ProgressUI2 graphlistener=new ProgressUI2();
+		ProgressUI2 graphlistener=null;
+		if(fShowProgressUI) graphlistener=new ProgressUI2();
 		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false,1800000,120000,-1);
-		NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);
-		ns.addNegotiationEventListener(graphlistener);
-		graphlistener.setNegotiationSession(ns);
+		if(fShowProgressUI) {
+			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		
+			ns.addNegotiationEventListener(graphlistener);
+			graphlistener.setNegotiationSession(ns);
+		}
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 
 		Thread negosession=new Thread(ns);

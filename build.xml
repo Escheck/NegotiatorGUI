@@ -184,9 +184,9 @@
 		<zip destfile="${dist}/negotiator.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-			<zipfileset dir="" includes="${tmp}/agentrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="../NegoAssignment" includes="negotiation.pdf" prefix="negotiator"/>
-			<zipfileset dir="" includes="${tmp}/domainrepository.xml" prefix="negotiator"/>			
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
 			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
 		</zip>
