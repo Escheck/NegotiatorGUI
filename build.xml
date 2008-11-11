@@ -76,20 +76,6 @@
 		<ant target="cleanup"/>
     </target>
 	
-	<target name ="makeNegoEditorJar" description="Create a jar for the Negotiation Editor" 
-		depends="cleanup, unpackJTreeTable">
-	     <delete file="${dist}/negoeditor.jar" quiet="true"/>
-         <jar destfile="${dist}/negoeditor.jar"  >
-			<fileset dir="${build}" excludes="agents/, negotiator/actions, negotiator/CheckPartyUtility*"/>
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/MainEditor"/>
-    		</manifest>		
-		</jar>	         
-		<ant target="cleanup"/>
-    </target>
-	
 
 	
 	<!-- WARNING. Both makeNegoSimulatorJar and makeNegoSimulatorWithBayesJar create a file
@@ -127,6 +113,20 @@
 		</jar>	         		
     </target>
 	
+	<target name ="makeNegoSimulatorWithoutBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" 
+		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackSwingAddons">
+   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
+         <jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" 
+				includes="negotiator/**,agents/SimpleAgent*,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*,  agents/EnterBidDialog*, agents/OpponentModelUtil*, agents/ABMPAgent.*, agents/NegoRoundData*, agents/My*, agents/History*" />
+			<fileset dir="${tmp}"/>
+	    	<manifest>
+      			<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp"/>
+				<attribute name="Class-Path" value="."/>
+    		</manifest>		
+		</jar>	         		
+    </target>
 	
 	<target name ="makeNegoSimulatorWithBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" 
 		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackSwingAddons">
@@ -170,7 +170,7 @@
 			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
 		</zip>
 	</target>
-	<target name ="makeGeniusFor07Nov2008" depends="makeNegoSimulatorWithBayesJar">
+	<target name ="makeGeniusFor07Nov2008" depends="makeNegoSimulatorWithoutBayesJar">
 		<copy todir="${tmp}">
 			<fileset dir="." includes="domainrep_12nov.xml"/>
 			<globmapper from="domainrep_12nov.xml" to="domainrepository.xml" />
@@ -193,59 +193,28 @@
 		<ant target="cleanup"/>
 	</target>
 
-	<target name ="makeGeniusFor12Nov2008" depends="makeNegoSimulatorWithAllAgentJar">
-		<zip destfile="${dist}/negotiator.zip">
+	<target name ="makeGeniusFor12Nov2008" depends="makeNegoSimulatorWithBayesJar">
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_12nov_with_party.xml"/>
+			<globmapper from="domainrep_12nov_with_party.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_12nov_with_Bayesian.xml"/>
+			<globmapper from="agentrep_12nov_with_Bayesian.xml" to="agentrepository.xml" />
+		</copy>
+		<zip destfile="${dist}/negotiator12Nov.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-			<zipfileset dir="" includes="agentrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="../NegoAssignment" includes="negotiation.pdf" prefix="negotiator"/>
-			<zipfileset dir="" includes="domainrepository.xml" prefix="negotiator"/>			
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
+			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml, party_utility_cath.xml, party_utility_kh.xml" prefix="negotiator/etc/templates/partydomain"/>
 			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
 		</zip>
 		<ant target="cleanup"/>
 	</target>
 
-	<target name ="makeDistributiveForStudentsOn14Nov" depends="makeNegoEditorJar, makeNegoSimulatorWithBayesJar">
-		<zip destfile="${dist}/negotiator14Nov.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
-			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain" 
-					includes="party_domain.xml, party_utility_empty.xml" />
-			<zipfileset dir="doc" includes="14novguide.pdf" prefix="negotiator"/>
-			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
-		</zip>
-	</target>
-
-	<!--This is the home-version excluding the Bayesian Agent-->
-	<target name ="makeDistributiveForStudentsOn4Nov" depends="makeNegoEditorJar, makeNegoSimulatorJar">
-		<zip destfile="${dist}/negotiator4Nov.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
-			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
-			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
-			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/laptopdomainNoBayes" prefix="negotiator/templates/laptopdomain"/>
-		</zip>
-	</target>
-
-	<!--This is the home-version including the Bayesian Agent-->
-	<target name ="makeDistributiveForStudentsOn21Nov" depends="makeNegoEditorJar, makeNegoSimulatorWithBayesJar">
-		<zip destfile="${dist}/negotiator21Nov.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>
-			<zipfileset dir="${dist}" includes="negoeditor.jar" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/inheritancedomain" includes="*.xml" prefix="negotiator/templates/inheritancedomain"/>
-			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/templates/laptopdomain"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/templates/partydomain" 
-								includes="party_domain.xml, party_utility_empty.xml" />
-			<zipfileset dir="doc" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>
-			<zipfileset dir="." includes="SimpleAgent*.*" prefix="negotiator"/>
-		</zip>
-	</target>
 
 	<target name ="makeXMLChecker" depends="makeXMLCheckerJar">
 		<zip destfile="${dist}/XMLChecker.zip">
