@@ -139,8 +139,10 @@ public class BayesianAgent extends Agent {
 		
 		// find the target on the pareto curve
 		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
-		
-		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
+		//exclude only the last bid
+		ArrayList<Bid> excludeBids = new ArrayList<Bid>();
+		excludeBids.add(myPreviousBids.get(myPreviousBids.size()-1));
+		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,excludeBids);
 		log("found bid "+bp);
 		return bp.bid;
 	}
