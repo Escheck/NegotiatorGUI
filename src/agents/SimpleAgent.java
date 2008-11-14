@@ -24,10 +24,6 @@ public class SimpleAgent extends Agent
     private Action actionOfPartner=null;
     private static final double MINIMUM_BID_UTILITY = 0.5;
     
-    
-    	// just here to suggest possibilities, not used in this agent.
-    private int sessionNumber;			
-    private int sessionTotalNumber;
  
     /**
      * init is called when a next session starts with the same opponent.

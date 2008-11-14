@@ -202,7 +202,8 @@
 			<fileset dir="." includes="agentrep_12nov_with_Bayesian.xml"/>
 			<globmapper from="agentrep_12nov_with_Bayesian.xml" to="agentrepository.xml" />
 		</copy>
-		<zip destfile="${dist}/negotiator12Nov.zip">
+		<zip destfile="${dist}/negotiator14Nov.zip">
+			<zipfileset dir="src/agents" includes="SimpleAgent.java" prefix="negotiator"/>
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>

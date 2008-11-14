@@ -41,7 +41,7 @@ import org.jdesktop.application.TaskMonitor;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
-	private static final boolean fTournamentEnabled =false;
+	private static final boolean fTournamentEnabled =true;
 	private AgentRepositoryUI agentRep = null;
 	private DomainRepositoryUI domainRep = null;
 	private NegoGUIComponent activeComponent = null;
