@@ -142,7 +142,7 @@ public class BayesianAgent extends Agent {
 		//exclude only the last bid
 		ArrayList<Bid> excludeBids = new ArrayList<Bid>();
 		excludeBids.add(myPreviousBids.get(myPreviousBids.size()-1));
-		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,excludeBids);
+		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
 		log("found bid "+bp);
 		return bp.bid;
 	}

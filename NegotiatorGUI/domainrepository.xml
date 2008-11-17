@@ -12,10 +12,46 @@
                 <profile url="file:etc/templates/partydomain/party_utility_cath.xml"/>
                 <profile url="file:etc/templates/partydomain/party_bartluijten_utility.xml"/>
                 <profile url="file:etc/templates/partydomain/party_dmytro_utility.xml"/>
-                <profile url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/partydomain/party_11_utility.xml"/>
-                <profile url="file:/Users/wouter/Desktop/party.xml"/>
-                <profile url="file:/Users/wouter/Desktop/party.xml"/>
-                <profile url="file:/Users/wouter/Desktop/party2.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_adrianasuson_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_alvinmattssonkjellqvist.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_AndaniOsuman_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_AndreasBerglund_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_AndreeaRadu_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_andrevandixhoorn_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_anthonybrandon_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_BastijnVissers_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_berendwouda_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_catholijn_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_chichingchi_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_christoffergersen_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_FlorisGaisser_noncheat_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_haroldvanzandbrink_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_karingriffioen_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_KeesVanderbok_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_KimJansen_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_LeonardvanBommel_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_magdalenalauber_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_MartijnHaak_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_martijnvanoosterhout_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_MennoBruggeling_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_merlandobeekema_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_MiriamDoorn_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_PaulvandenHaak_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_pieterdekker_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_QuintHeuvel_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_riksonderkamp_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_rindevanlon_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_RubenWieman_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_saravanhaverbeke_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_stephandenijs_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_stevenbos_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_sung-shikjongmans_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_ThijsZandvliet_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_TiemenSchreuder_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_utility_kh_sacha_panic_1367803.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_veronikacheplygina_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_WouterBroeze_utility.xml"/>
+                <profile url="file:/D:/_Work/PhD/Negotiation Assignment/2008/profiles/party_WouterWolfslag_utility.xml"/>
             </domainRepItem>
             <domainRepItem url="file:etc/templates/SON/son_domain.xml">
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
@@ -33,7 +69,6 @@
                 <profile url="file:etc/templates/2nd_hand_car/car_buyer.xml"/>
                 <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:/Volumes/Documents/Wouter/Negotiator/NegoWorkspace/Negotiator/etc/templates/partydomain/party_11_utility.xml"/>
         </domainRepItem>
     </items>
     <filename>domainrepository.xml</filename>

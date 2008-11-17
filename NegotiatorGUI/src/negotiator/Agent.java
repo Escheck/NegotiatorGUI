@@ -33,6 +33,8 @@ public abstract class Agent {
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
     public Integer			totalTime; // total time to complete entire nego, in seconds.
+    public Integer			sessionNumber;
+    public Integer			sessionTotalNumber;
     public SessionRunner 	fNegotiation;// can be accessed only in the expermental setup 
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
@@ -67,6 +69,8 @@ public abstract class Agent {
     		Integer totalTimeP, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
+        this.sessionNumber = sessionNumber;
+        this.sessionTotalNumber = sessionTotalNumber;
     	utilitySpace=us;
     	parametervalues=params;
         return;
