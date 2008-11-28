@@ -73,7 +73,7 @@ public class NegotiationSession2 implements Runnable {
     boolean startingWithA=true;
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
-	Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
+	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	NegotiationOutcome outcome;
 	private String log;
 	
@@ -240,7 +240,7 @@ public class NegotiationSession2 implements Runnable {
             negoThread.start();
         	try {
         		synchronized (this) {
-        			System.out.println("waiting NEGO_TIMEOUT="+totalTime);
+        			System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
         			 // wait will unblock early if negotiation is finished in time.
     				wait(totalTime*1000);
         		}

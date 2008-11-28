@@ -35,6 +35,7 @@ import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
@@ -132,7 +133,10 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
 			v.setValues(newtvs);
+		} else if(v instanceof TotalSessionNumberVariable) {
+			
 		}
+		
 		else if (v instanceof AgentParameterVariable) {
 			
 			ArrayList<TournamentValue> newvalues=null;
@@ -274,6 +278,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		correctposition(vars,0,new ProfileVariable());
 		correctposition(vars,1,new AgentVariable());
 		correctposition(vars,2,new AgentVariable());
+		vars.add(new TotalSessionNumberVariable());
 	}
 
 	/** check that variable of type given in stub is at expected position.

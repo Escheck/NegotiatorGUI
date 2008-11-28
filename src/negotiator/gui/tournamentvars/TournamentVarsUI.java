@@ -326,6 +326,7 @@ public class TournamentVarsUI extends JFrame {
 		correctposition(vars,0,new ProfileVariable());
 		correctposition(vars,1,new AgentVariable());
 		correctposition(vars,2,new AgentVariable());
+		vars.add(new TotalSessionNumberVariable());
 	}
 
 	/** check that variable of type given in stub is at expected position.
@@ -337,6 +338,7 @@ public class TournamentVarsUI extends JFrame {
 	 */
 	static void correctposition(ArrayList<TournamentVariable> vars, int expectedpos, TournamentVariable stub) {
 		// find the profile variable(s) and its position. Remove multiple occurences.
+		
 		TournamentVariable v=null;
 		int pos=-1;
 		for (int i=expectedpos; i<vars.size(); i++) {
