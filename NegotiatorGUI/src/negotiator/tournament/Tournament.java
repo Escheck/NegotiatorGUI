@@ -36,12 +36,13 @@ public class Tournament
 	
 	/** the time (ms) that GUI and non-GUI agents will get for a nego session 
 	 * TODO Wouter: this is quick hack, make sure they get set properly.*/
-	int tournament_gui_time=35000, tournament_non_gui_time=3500; 
+	int tournament_gui_time=30*60, tournament_non_gui_time=120; 
 	
 	ArrayList<TournamentVariable> variables=new ArrayList<TournamentVariable>();
 		// ASSSUMPTIONS: variable 0 is the ProfileVariable.
 		// variable 1 is AgentVariable for agent A.
 		// variable 2 is AgentVariable for agent B.
+		// variable 3 is number of runs per session
 		// rest is AgentParameterVariables.
 	ArrayList<NegotiationSession2> sessions=null;
 	
