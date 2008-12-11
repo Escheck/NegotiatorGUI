@@ -66,10 +66,12 @@ public class NegotiationSession2 implements Runnable {
 
      /** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
     int tournamentNumber=-1; 
-    int sessionTotalNumber;
+     int sessionTotalNumber;
     int sessionNumber; // the main session number: increases with different session setups
-    int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
+    public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
     
+    
+    TournamentRunner tournamentRunner;
     boolean startingWithA=true;
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
@@ -176,7 +178,8 @@ public class NegotiationSession2 implements Runnable {
     
     
     public void addNegotiationEventListener(NegotiationEventListener listener) {
-    	actionEventListener.add(listener);
+    	if(!actionEventListener.contains(listener))
+    		actionEventListener.add(listener);
     }
     
     void check() throws Exception {
@@ -228,6 +231,7 @@ public class NegotiationSession2 implements Runnable {
     protected void runNegotiationSession(int nr)  throws Exception
     {
     	sessionTestNumber=nr;
+    	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	//SessionRunner sessionrunner=new SessionRunner(this);
     	sessionrunner=new SessionRunner(this);
@@ -285,8 +289,8 @@ public class NegotiationSession2 implements Runnable {
     			sessionrunner.stopNegotiation=true; // see comments in sessionrunner..
     			negoThread.interrupt();
     			 // we call cleanup of agent from separate thread, preventing any sabotage on kill.
-    			Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
-    			cleanup.start();
+    			//Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
+    			//cleanup.start();
     			//TODO call this from separate thread.
     			//negoThread.stop(); // kill the stuff
     			 // Wouter: this will throw a ThreadDeath Error into the nego thread
@@ -669,6 +673,13 @@ public class NegotiationSession2 implements Runnable {
     	}
 		
 	}
+    public void setAgentA(Agent agent) {
+    	agentA=agent;
+    }
+    public void setAgentB(Agent agent) {
+    	agentB=agent;
+    }
+
     public Agent getAgentA() {
     	if(agentA==null)
     		if(sessionrunner!=null)
@@ -710,7 +721,9 @@ public class NegotiationSession2 implements Runnable {
     public void setAdditional(SimpleElement e) {
     	fAdditional = e;
     }
-    
+    public void setTournamentRunner(TournamentRunner runner) {
+    	tournamentRunner = runner; 
+    }
     public int getTournamentNumber() { 
     	return tournamentNumber; 
     }

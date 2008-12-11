@@ -35,6 +35,7 @@ import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
@@ -134,7 +135,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
 			v.setValues(newtvs);
 		} else if(v instanceof TotalSessionNumberVariable) {
-			
+			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
+			if(value==null) return;
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+			newtvs.add(value);
+			v.setValues(newtvs);
 		}
 		
 		else if (v instanceof AgentParameterVariable) {

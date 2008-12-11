@@ -67,11 +67,13 @@ public class SessionRunner implements Runnable {
     		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
     		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
     		agentA.setName(session.getAgentAname());
+    		s.setAgentA(agentA);
     	} else agentA = s.getAgentA();
     	if(s.getAgentB()==null) {
     		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
     		agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
     		agentB.setName(session.getAgentBname());
+    		s.setAgentB(agentB);
     	} else agentB = s.getAgentB();
     		
 
@@ -114,10 +116,10 @@ public class SessionRunner implements Runnable {
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.internalInit(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            agentA.internalInit(session.sessionTestNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
             		new UtilitySpace(session.getAgentAUtilitySpace()),session.getAgentAparams());
             agentA.init();
-            agentB.internalInit(session.sessionNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
+            agentB.internalInit(session.sessionTestNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
             		new UtilitySpace(session.getAgentBUtilitySpace()),session.getAgentBparams());
             agentB.init();
             stopNegotiation = false;

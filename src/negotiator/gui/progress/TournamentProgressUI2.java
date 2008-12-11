@@ -193,6 +193,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		String agentAParams="";String agentBParams="";
 		negoSession = evt.getSession();
 		sessionProgress.session = negoSession;
+		//if(negoSession.sessionTestNumber<1)
 		negoSession.addNegotiationEventListener(sessionProgress);
 		
 		//add the current session to the array

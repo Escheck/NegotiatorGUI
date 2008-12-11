@@ -106,6 +106,11 @@ public class SimpleAgent extends Agent
 					int optionInd = randomnr.nextInt(lIssueReal.getNumberOfDiscretizationSteps()-1);
 					values.put(lIssueReal.getNumber(), new ValueReal(lIssueReal.getLowerBound() + (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())*(double)(optionInd)/(double)(lIssueReal.getNumberOfDiscretizationSteps())));
 					break;
+				case INTEGER:
+					IssueInteger lIssueInteger = (IssueInteger)lIssue;
+					int optionIndex2 = lIssueInteger.getLowerBound() + randomnr.nextInt(lIssueInteger.getUpperBound()-lIssueInteger.getLowerBound());
+					values.put(lIssueInteger.getNumber(), new ValueInteger(optionIndex2));
+					break;
 				default: throw new Exception("issue type "+lIssue.getType()+" not supported by SimpleAgent2");
 				}
 			}

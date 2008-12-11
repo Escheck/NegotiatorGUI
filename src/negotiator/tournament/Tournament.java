@@ -145,8 +145,11 @@ public class Tournament
 				i++;
 			}
 			 // TODO compute total #sessions. Now fixed to 9999
+			int numberOfSessions = 1;
+			if(variables.get(3).getValues().size()>0)
+				numberOfSessions = ((TotalSessionNumberValue)( variables.get(3).getValues().get(0))).getValue();
 			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
-		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, 1, false,
+		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, numberOfSessions , false,
 		    		tournament_gui_time, tournament_non_gui_time,TournamentNumber) ;
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles

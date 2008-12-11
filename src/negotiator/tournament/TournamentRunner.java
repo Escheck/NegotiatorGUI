@@ -41,15 +41,16 @@ public class TournamentRunner implements Runnable {
     		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
 			for (NegotiationSession2 s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
-				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
-				fireNegotiationSessionEvent(s);
+				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);				
+				//fireNegotiationSessionEvent(s);
+				s.setTournamentRunner(this);
 				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 				
 			}
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
     }
     
-    protected void fireNegotiationSessionEvent(NegotiationSession2 session ) {
+    public void fireNegotiationSessionEvent(NegotiationSession2 session ) {
     	for(NegotiationEventListener listener :  negotiationEventListeners) 
     		if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
     }
