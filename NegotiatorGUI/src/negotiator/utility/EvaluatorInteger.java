@@ -16,10 +16,10 @@ public class EvaluatorInteger implements Evaluator {
 	int lowerBound;
 	int upperBound;
 	EVALFUNCTYPE type;
-	HashMap<Integer, Integer> fParam;
+	HashMap<Integer, Double> fParam;
 		
 	public EvaluatorInteger() {
-		fParam = new HashMap<Integer, Integer>();
+		fParam = new HashMap<Integer, Double>();
 		
 		fweight = 0;
 	}
@@ -125,14 +125,14 @@ public class EvaluatorInteger implements Evaluator {
 	 */
 	public void setLinearParam(int par0){
 		setftype("linear");
-		fParam.put(new Integer(1), new Integer(par0) );
+		fParam.put(new Integer(1), new Double(par0) );
 	}
 
 	/**
 	 * 
 	 * @return The linear parameter of this Evaluator, or 0 if it doesn't exist.
 	 */		
-	public int getLinearParam(){
+	public double getLinearParam(){
 		try{
 			return fParam.get(new Integer(1));
 		}catch(Exception e){
@@ -144,16 +144,16 @@ public class EvaluatorInteger implements Evaluator {
 	 * Sets the constant parameter for this evaluetor, and changes the ftype to constant.
 	 * @param par1 The constant parameter.
 	 */
-	public void setConstantParam(int par1){
+	public void setConstantParam(double par1){
 		setftype("constant");
-		fParam.put(new Integer(0), new Integer(par1));
+		fParam.put(new Integer(0), new Double(par1));
 	}
 
 	/**
 	 * 
 	 * @return The constant parameter of this Evaluator, or 0 if it doesn't exist.
 	 */	
-	public int getConstantParam(){
+	public double getConstantParam(){
 		try{
 			return fParam.get(new Integer(0));
 		}catch(Exception e){
@@ -174,10 +174,11 @@ public class EvaluatorInteger implements Evaluator {
 			// TODO: define exception.
 			switch(this.type) {
 			case LINEAR:
-				this.fParam.put(1, Integer.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
+				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
 				break;
 			case CONSTANT:
-				this.fParam.put(0, Integer.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
+				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
 				break;
 			}
 		}
@@ -196,7 +197,8 @@ public class EvaluatorInteger implements Evaluator {
 	
 	public String isComplete(Objective whichobj )
 	{
-		return "EvaluatorInteger isComplete checker is not implemented";
+		//TODO: implement isComplete in the EvaluatorInteger
+		return null;
 	}
 	
 	
@@ -214,11 +216,12 @@ public class EvaluatorInteger implements Evaluator {
 		EvaluatorInteger ed=new EvaluatorInteger();
 		//ed.setType(type);
 		ed.setWeight(fweight);
+		ed.type = type; 
 		ed.setUpperBound(upperBound);
 		ed.setLowerBound(lowerBound);
 		try{
-			for (Entry<Integer, Integer> entry:fParam.entrySet())
-				ed.fParam.put(new Integer(entry.getKey()), new Integer(entry.getValue()));
+			for (Entry<Integer, Double> entry:fParam.entrySet())
+				ed.fParam.put(new Integer(entry.getKey()), new Double(entry.getValue()));
 		}
 		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
 

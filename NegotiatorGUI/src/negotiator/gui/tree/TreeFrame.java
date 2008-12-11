@@ -442,7 +442,10 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 	}
 
 	public void saveAction() {
-		saveUtilitySpaceAct.actionPerformed(null);
+		if(model.getUtilitySpace()==null)
+			saveDomainAct.actionPerformed(null);
+		else
+			saveUtilitySpaceAct.actionPerformed(null);
 	}
 	public DomainRepItem getDomainRepItem() {
 		return fDomainRepItem;

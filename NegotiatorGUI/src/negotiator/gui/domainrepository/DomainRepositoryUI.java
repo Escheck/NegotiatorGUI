@@ -162,6 +162,14 @@ public class DomainRepositoryUI implements NegoGUIComponent
 			domainrepository.save();
 	     }	
 	}
+	public void adddomain(URL fileName) throws Exception { 
+	        DomainRepItem newnode=new DomainRepItem(fileName);
+	        
+	        domainrepository.getItems().add(newnode);		        
+			treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
+			domainrepository.save();
+	
+	}
 	
 	void removedomain() throws Exception {
 		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());

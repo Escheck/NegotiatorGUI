@@ -55,7 +55,8 @@ public class BidIterator implements Iterator {
 			switch(lIssue.getType()) {
 			case INTEGER:
 				IssueInteger lIssueInteger =(IssueInteger)lIssue;
-				lNumberOfValues = lIssueInteger.getUpperBound()-lIssueInteger.getLowerBound()+1;				
+				lNumberOfValues = lIssueInteger.getUpperBound()-lIssueInteger.getLowerBound()+1;
+				break;
 			case REAL: 
 				IssueReal lIssueReal =(IssueReal)lIssue;
 				lNumberOfValues = lIssueReal.getNumberOfDiscretizationSteps();
@@ -101,6 +102,7 @@ public class BidIterator implements Iterator {
 					IssueInteger lIssueInteger =(IssueInteger)lIssue;
 					lValues.put(lIssue.getNumber(),  
 							new ValueInteger(lIssueInteger.getLowerBound()+fValuesIndexes[i]));
+					break;
 				case REAL: 
 					IssueReal lIssueReal =(IssueReal)lIssue;
 					lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/(lIssueReal.getNumberOfDiscretizationSteps()-1);

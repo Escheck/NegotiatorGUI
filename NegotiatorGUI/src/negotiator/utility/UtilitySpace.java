@@ -45,7 +45,7 @@ import negotiator.BidIterator;
 public class UtilitySpace {
 	
 	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
-	private CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_CHECK;
+	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_NOT_CHECK;
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
