@@ -34,7 +34,7 @@ public class SessionRunner implements Runnable {
     protected Agent         agentB;
     private Bid lastBid=null;				// the last bid that has been done
 
-    private static boolean fIsExperimentalSetup = false;
+    private static boolean fIsExperimentalSetup = true;
     
     /**
      * stopNegotiation indicates that the session has now ended.

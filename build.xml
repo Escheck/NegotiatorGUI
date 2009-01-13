@@ -103,7 +103,7 @@
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}" 
-				includes="negotiator/**, agents/BayesianAgent*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*, agents/EnterBidDialog*, agents/AMBPAgent2.*, agents/FuzzyAgent.*, agents/OpponentModelUtil*,  agents/SimpleAgt2.*, agents/SimilarityAgent*, agents/similarity/**,agents/ABMPAgent*" />
+				includes="negotiator/**, agents/BayesianAgent*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*, agents/EnterBidDialog*, agents/AMBPAgent2.*, agents/FuzzyAgent.*, agents/OpponentModelUtil*,  agents/SimpleAgent*, agents/SimilarityAgent*, agents/similarity/**,agents/ABMPAgent*,  agents/NegoRoundData*, agents/My*, agents/History*" />
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
@@ -157,18 +157,28 @@
 	</target>
 			
 	<target name ="makeGenius" depends="makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_all_working.xml"/>
+			<globmapper from="domainrep_all_working.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_all_working.xml"/>
+			<globmapper from="agentrep_all_working.xml" to="agentrepository.xml" />
+		</copy>	
 		<zip destfile="${dist}/negotiator.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-			<zipfileset dir="" includes="agentrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="" includes="domainrepository.xml" prefix="negotiator"/>			
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
 			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
 			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+--> 
 			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
 			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
 		</zip>
+		<ant target="cleanup"/>
 	</target>
 	<target name ="makeGeniusFor07Nov2008" depends="makeNegoSimulatorWithoutBayesJar">
 		<copy todir="${tmp}">

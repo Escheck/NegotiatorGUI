@@ -9,6 +9,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.BidIterator;
 import negotiator.actions.*;
 import agents.bayesianopponentmodel.*;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidSpace;
 import negotiator.AgentParam;
@@ -32,6 +33,7 @@ public class BayesianAgentForAuction extends Agent {
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT, AUCTION};
 	private STRATEGY fStrategy = STRATEGY.AUCTION;
+	private boolean fMarketPreassure = true;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.04;
@@ -70,13 +72,13 @@ public class BayesianAgentForAuction extends Agent {
 		myPreviousBids = new ArrayList<Bid>();
 					
 		fRound =0;
-		if(getParameterValues().get("phase").getValue()<0)
+		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",new Double(-1.),new Double(1.)))).getValue()<0)
 			fPhase = PHASE.FIRST_PHASE;
 		else
 			fPhase = PHASE.SECOND_PHASE;		
-		if(getParameterValues().get("role").getValue()<0)
+		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<0)
 			fRole = ROLE.PROVIDER;
-		else if (getParameterValues().get("role").getValue()<2)
+		else if (getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<2)
 			fRole = ROLE.CENTER;
 		else fRole = ROLE.IRRELEVANT;
 		if(fPhase==PHASE.FIRST_PHASE) prepareOpponentModel();
@@ -98,10 +100,10 @@ public class BayesianAgentForAuction extends Agent {
 		case CENTER:
 			switch(fPhase) {
 			case FIRST_PHASE:
-				lBid = utilitySpace.getMaxUtilityBid();
+				lBid = getMaxUtilityBid();
 				break;
 			case SECOND_PHASE:
-				double lSecondBest = getParameterValues().get("reservation").getValue();
+				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.))).getValue();
 				lBid = getTradeOff(lSecondBest);	
 				break;
 			}
@@ -113,17 +115,18 @@ public class BayesianAgentForAuction extends Agent {
 				lBid = getTradeOff(lReservationValue);				
 				break;
 			case SECOND_PHASE:
-				lBid = utilitySpace.getMaxUtilityBid();				
+				lBid = getMaxUtilityBid();				
 				break;
 			}
 			break;
 		case IRRELEVANT:
 			switch(fPhase) {
 			case FIRST_PHASE:
-				lBid = utilitySpace.getMaxUtilityBid();
+				//if(fRole=ROLE.)
+				lBid = getMaxUtilityBid();
 				break;
 			case SECOND_PHASE:
-				double lSecondBest = getParameterValues().get("starting_utility").getValue();
+				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.))).getValue();
 				lBid = getTradeOff(lSecondBest);	
 				break;
 			}
@@ -161,7 +164,7 @@ public class BayesianAgentForAuction extends Agent {
 				lBid =  getNextBidSmart(pOppntBid);
 				break;
 			case SECOND_PHASE:
-					double lSecondBest = getParameterValues().get("reservation").getValue();
+					double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.))).getValue();
 					lBid = getTradeOff(lSecondBest);	
 				break;
 			}
@@ -450,6 +453,7 @@ public class BayesianAgentForAuction extends Agent {
 			Bid tmpBid = lIter.next();
 //			System.out.println(tmpBid);
 //			System.out.println(String.valueOf(i++));
+			if (fMarketPreassure) if(fNegotiation.getOpponentUtility(this, tmpBid)<0.3 ) continue;
 			if(Math.abs(utilitySpace.getUtility(tmpBid)-pUtility)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
 				double lTmpExpecteUtility = fOpponentModel.getExpectedUtility(tmpBid);
@@ -841,4 +845,21 @@ public class BayesianAgentForAuction extends Agent {
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
 	}*/
+	public final Bid getMaxUtilityBid() throws Exception
+	{
+		Bid maxBid=null; double maxutil=0.;
+		BidIterator bidit=new BidIterator(utilitySpace.getDomain());
+
+		if (bidit.hasNext()) maxBid=bidit.next();
+		else throw new Exception("The domain does not contain any bids!");
+		while (bidit.hasNext())
+		{
+			Bid thisBid=bidit.next();
+			if (fMarketPreassure) if(fNegotiation.getOpponentUtility(this, thisBid)<0.3 ) continue;
+			double thisutil=utilitySpace.getUtility(thisBid);
+			if (thisutil>maxutil) { maxutil=thisutil; maxBid=thisBid;  }
+		}
+		return maxBid;
+	}
+
 }

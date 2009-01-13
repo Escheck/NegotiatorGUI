@@ -45,7 +45,7 @@ import negotiator.BidIterator;
 public class UtilitySpace {
 	
 	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
-	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_NOT_CHECK;
+	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_CHECK;
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -538,10 +538,10 @@ public class UtilitySpace {
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issueID);
 		if(ob != null){
-			System.out.println("Obje index "+ issueID +" != null");
+		//	System.out.println("Obje index "+ issueID +" != null");
 			Evaluator ev = fEvaluators.get(ob);
 			if(ev != null){
-				System.out.println("Weight " + issueID + " should be " + ev.getWeight());
+				//System.out.println("Weight " + issueID + " should be " + ev.getWeight());
 				return ev.getWeight();
 			}
 		}

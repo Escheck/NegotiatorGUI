@@ -13,6 +13,32 @@ import negotiator.AgentParam;
  */
 public class AgentParameterVariable extends TournamentVariable
 {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+	//	result = prime * result
+		//		+ ((agentparam == null) ? 0 : agentparam.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AgentParameterVariable other = (AgentParameterVariable) obj;
+		if (agentparam == null) {
+			if (other.agentparam != null)
+				return false;
+		} else if (!agentparam.equals(other.agentparam))
+			return false;
+		return true;
+	}
+
 	AgentParam agentparam; // the name and other info about the parameter
 	
 	/** 

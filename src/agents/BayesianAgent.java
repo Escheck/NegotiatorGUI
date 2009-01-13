@@ -416,7 +416,7 @@ public class BayesianAgent extends Agent {
 	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                double P=Paccept(offeredutil,time);
 	                log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
-	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)
+	               if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(myLastBid)
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
@@ -429,7 +429,7 @@ public class BayesianAgent extends Agent {
 	                	// Propose counteroffer. Get next bid.
 	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                	// if yes then accept last bid of the opponent.
-	                	if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
+	                	if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(lnextBid))
 	                	{
 	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
 	                		lAction = new Accept(this);
