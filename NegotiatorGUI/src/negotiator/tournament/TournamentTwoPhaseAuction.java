@@ -66,8 +66,8 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//allSessions.add(createSession(center1, seller2, seller8));
 			//allSessions.add(createSession(center10, seller7, seller9));
 			//allSessions.add(createSession(center7, seller11, seller9));
-			//allSessions.add(createSession(center8, seller11, seller10));
-			//allSessions.add(createSession(center10, seller3, seller6));
+			allSessions.add(createSession(center8, seller11, seller10));
+			allSessions.add(createSession(center10, seller3, seller6));
 			//allSessions.add(createSession(center7, seller4, seller7));
 			//allSessions.add(createSession(center10, seller11, seller8));
 			//allSessions.add(createSession(center11, seller5, seller11));
@@ -112,7 +112,7 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//allSessions.add(createSession(center5, seller10, seller11));
 			//allSessions.add(createSession(center12, seller7, seller10));
 			//allSessions.add(createSession(center6, seller9, seller11));
-			allSessions.add(createSession(center4, seller10, seller7));
+			//allSessions.add(createSession(center4, seller10, seller7));
 			//allSessions.add(createSession(center3, seller5, seller2));
 			//allSessions.add(createSession(center7, seller2, seller4));
 			
@@ -154,14 +154,14 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			//prepare parameters
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
-			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
+			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(2.1));
 			//paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
-			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
+			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(2.1));
 			//paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
 			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
-					AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,sessionnr, 1, false) ;
+					AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,1, 1, false, 1200, 1200, 1) ;
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());

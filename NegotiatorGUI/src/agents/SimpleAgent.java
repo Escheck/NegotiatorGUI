@@ -14,7 +14,7 @@ import negotiator.utility.UtilitySpace;
 
 
 /**
- *
+ * 
  * @author W.Pasman
  * Some improvements over the standard SimpleAgent.
  * 

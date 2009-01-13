@@ -27,7 +27,7 @@ public class AgentParam {
 	public boolean equals(Object o) {
 		if (!(o instanceof AgentParam)) return false;
 		AgentParam ap=(AgentParam)o;
-		return ap.agentclass.equals(agentclass) && ap.name.equals(name) && ap.min==min && ap.max==max;
+		return ap.agentclass.equals(agentclass) && ap.name.equals(name) /*&& ap.min==min && ap.max==max*/;
 	}
 	public String toString() {
 		return agentclass+":"+name;

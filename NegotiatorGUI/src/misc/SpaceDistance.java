@@ -4,6 +4,7 @@ import java.util.Random;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
+import negotiator.Domain;
 
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
@@ -20,20 +21,130 @@ public class SpaceDistance {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
+			String domainFileName = "D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\SON\\son_domain.xml";
+			String dir = "D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\SON\\";
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_9.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_9.xml");
+
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_9.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_1.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_4.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_4.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_9.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_9.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_1.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_8.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_9.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_11.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_8.xml");
+			calculateDistances(domainFileName, dir+"son_center_1.xml", dir+"son_seller_12.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_10.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_3.xml");
+			calculateDistances(domainFileName, dir+"son_center_2.xml", dir+"son_seller_6.xml");
+			calculateDistances(domainFileName, dir+"son_center_5.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_5.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_12.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_9.xml");
+			calculateDistances(domainFileName, dir+"son_center_6.xml", dir+"son_seller_11.xml");
+			calculateDistances(domainFileName, dir+"son_center_4.xml", dir+"son_seller_10.xml");
+			calculateDistances(domainFileName, dir+"son_center_4.xml", dir+"son_seller_7.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_5.xml");
+			calculateDistances(domainFileName, dir+"son_center_3.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_2.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_4.xml");
+			calculateDistances(domainFileName, dir+"son_center_7.xml", dir+"son_seller_2.xml");
+
+
+
+
+	}
+	private static void calculateDistances(String domainFileName, String fileNameA, String fileNameB) {
 		try {
-/*			NegotiationTemplate nt = 
-				new NegotiationTemplate("D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_domain_template.xml",
-										"D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_buyer_utilityspace.xml",
-										"D:\\_Work\\eclipse\\NegotiatorGUI\\etc\\templates\\ABMP_car_dealer_utilityspace.xml",1000);*/	
-			UtilitySpace utilitySpaceA =  new UtilitySpace(nt.getDomain(), nt.getAgentAUtilitySpaceFileName());
-			UtilitySpace utilitySpaceB =  new UtilitySpace(nt.getDomain(), nt.getAgentBUtilitySpaceFileName());
+			Domain domain = new Domain(domainFileName);
+			UtilitySpace utilitySpaceA, utilitySpaceB;
+			utilitySpaceA =  new UtilitySpace(domain, fileNameA);
+			utilitySpaceB =  new UtilitySpace(domain, fileNameB);
 			SpaceDistance dist = new SpaceDistance(utilitySpaceA, utilitySpaceB);
+			
+			System.out.println(fileNameA);
+			System.out.println(fileNameB);
 			dist.dumpDistancesToLog(0);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	private double sq(double x) { return x*x; }
 

@@ -29,11 +29,6 @@
                 <profile url="file:etc/templates/2nd_hand_car/car_buyer.xml"/>
                 <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_domain.xml"/>
-            <domainRepItem url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_domain.xml">
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_agent_B.xml"/>
-                <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_agent_A.xml"/>
-            </domainRepItem>
         </domainRepItem>
     </items>
     <filename>domainrepository.xml</filename>
