@@ -14,9 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import negotiator.AgentParam;
-import negotiator.NegotiationEventListener;
-import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationSessionEvent;
+
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
@@ -24,21 +22,10 @@ import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.Repository;
-import negotiator.tournament.Tournament;
-import negotiator.tournament.TournamentRunner;
-import negotiator.tournament.TournamentRunnerTwoPhaseAutction;
-import negotiator.tournament.TournamentTwoPhaseAuction;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.tournament.VariablesAndValues.AgentValue;
-import negotiator.tournament.VariablesAndValues.AgentVariable;
-import negotiator.tournament.VariablesAndValues.ProfileValue;
-import negotiator.tournament.VariablesAndValues.ProfileVariable;
-import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
-import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
-import negotiator.tournament.VariablesAndValues.TournamentValue;
-import negotiator.tournament.VariablesAndValues.TournamentVariable;
+import negotiator.tournament.*;
+import negotiator.tournament.VariablesAndValues.*;
 
 import org.jdesktop.application.Action;
 
@@ -88,8 +75,6 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			  	{
 			  	case 0: {
 			  		String res =var.varToString();
-			  		if(row==1) res += " side A";
-			  		else if (row == 2) res += " side B";
 			  		return res;			  	
 			  	}
 			  	case 1:return var.getValues().toString();
@@ -125,6 +110,14 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
+		}else if(v instanceof ProtocolVariable) {
+			ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();//(AgentVariable)v);
+			System.out.println("result new vars="+newv);
+			if (newv==null) return; // cancel pressed.
+			// make agentvalues for each selected agent and add to the agentvariable
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+			for (ProtocolRepItem protocolItem: newv) newtvs.add(new ProtocolValue(protocolItem));
+			v.setValues(newtvs);			
 		}
 		else if (v instanceof AgentVariable) {
 			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new AgentVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();//(AgentVariable)v);
@@ -140,10 +133,8 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
 			newtvs.add(value);
 			v.setValues(newtvs);
-		}
-		
-		else if (v instanceof AgentParameterVariable) {
-			
+		}		
+		else if (v instanceof AgentParameterVariable) {			
 			ArrayList<TournamentValue> newvalues=null;
 			String newvaluestr=new String(""+v.getValues()); // get old list, using ArrayList.toString.
 			 // remove the [ and ] that ArrayList will add
@@ -280,10 +271,15 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	static void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars=t.getVariables();
-		correctposition(vars,0,new ProfileVariable());
-		correctposition(vars,1,new AgentVariable());
-		correctposition(vars,2,new AgentVariable());
-		vars.add(new TotalSessionNumberVariable());
+		correctposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());		
+		correctposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
+		AgentVariable agentVar = new AgentVariable();
+		agentVar.setSide("A");
+		correctposition(vars,Tournament.VARIABLE_AGENT_A,agentVar);
+		agentVar = new AgentVariable();
+		agentVar.setSide("B");
+		correctposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
+		correctposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
 	}
 
 	/** check that variable of type given in stub is at expected position.

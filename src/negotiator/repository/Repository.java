@@ -143,7 +143,30 @@ public class Repository
 			items.add(new 	AgentRepItem("UI agent", "agents.UIAgent", "basic UI agent"));
 			return items;
 		}
-		
+		static ArrayList<RepItem> init_temp_prot_repository() {
+			ArrayList<RepItem> items=new ArrayList<RepItem>();
+			items.add(new 	ProtocolRepItem("Alternating Offers", "negotiator.protocol.AlternatingOffersMetaProtocol", "Alternating Offers"));
+			items.add(new 	ProtocolRepItem("Auction", "negotiator.protocol.AuctionMetaProtocol", "Auction"));
+			return items;
+			
+		}
+		public static Repository getProtocolRepository() {
+			final String FILENAME="protocolrepository.xml";
+			Repository repos;
+			
+			try {
+				repos=new Repository(FILENAME);
+			} catch (Exception e) {
+				System.out.println("load of saved repository failed:"+e);
+				repos=new Repository();
+				repos.setFilename(FILENAME);
+				repos.getItems().addAll(init_temp_prot_repository());
+				repos.save();
+			}
+			
+			return repos;
+			
+		}
 		public static Repository get_agent_repository() {
 			final String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
 			Repository repos;

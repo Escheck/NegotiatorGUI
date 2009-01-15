@@ -119,7 +119,7 @@ public class NegotiationOutcome {
     public SimpleElement toXML()
     {
     	SimpleElement outcome = new SimpleElement("NegotiationOutcome");
-    	outcome.setAttribute("currentTime", ""+Main.getCurrentTime());
+    	outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
     	outcome.setAttribute("errors",ErrorRemarks);
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
     	outcome.setAttribute("startingAgent",startingagent);

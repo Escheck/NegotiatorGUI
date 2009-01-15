@@ -26,6 +26,7 @@ import negotiator.utility.*;
  */
 
 public class ABMPAgent2 extends Agent {
+
 	private String myName;
 	private Action messageOpponent;
 	private int sessionNumber;
@@ -66,15 +67,14 @@ public class ABMPAgent2 extends Agent {
 	public ABMPAgent2() {
 		super();
 	}
-
-	public void init(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-    		Integer totalTimeP, UtilitySpace us) {
-		super.init(sessionNumber, sessionTotalNumber, startTimeP, totalTimeP, us);
-
+	@Override
+	public void init() {
+		super.init();
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;
 		fOldTargetUtility=1;		
+
 	}
 
 	public void ReceiveMessage(Action opponentAction) {

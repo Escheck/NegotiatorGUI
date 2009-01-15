@@ -9,8 +9,11 @@
 
 package negotiator;
 
+import java.net.URL;
 import java.util.TimeZone;
 import java.util.Calendar;
+
+import negotiator.gui.NegoGUIApp;
 
 
 
@@ -18,46 +21,23 @@ import java.util.Calendar;
  *
  * @author dmytro
  */
-public class Main {
+public class Global {
     
-    /** Creates a new instance of Main */
     public static Logger logger;
     public static String[] args;
-    //public static NegotiationManager nm;
-    public static boolean batchMode ;
-    public static boolean fDebug=false;
-    //public static MainFrame mf;
-    //public static Chart fChart = null;
+
+    public static boolean batchMode = false;
+    public static boolean fDebug = false;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
     public static boolean experimentalSetup=true;//set to true to allow agent to access negotiation environment
      
-    public Main() {
+    public Global() {
     }
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-	
-        batchMode = false;
-        fDebug = false;
-        checkArguments(args);
-        Main.args = args;
-      /*  java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                mf = new MainFrame(Main.args);
-                logger = new Logger(mf.getOutputArea());
-                if(batchMode) mf.getButtonStart().doClick();
-                mf.setVisible(true);
-                if (!analysisEnabled) new Warning("analysis is disabled.");
-            }
-        });*/
-    }
     
-    /** Wouter: added 20aug as workaround for bug 436 on mantis. */
-    public static void log(String arg) {
-    	if (logger!=null) logger.add(arg);
-    }
     private static void checkArguments(String[] args){
     	for(int i=0;i<args.length;i++) {
     		if(args[i].equals("-d")) fDebug = true;    		
@@ -80,5 +60,24 @@ public class Main {
 
 	public static boolean isDebug() {
 		return fDebug;
+	}
+
+	public static String getLocalDirName()
+	{
+		String localDirName;
+	
+		//	Use that name to get a URL to the directory we are executing in
+		java.net.URL myURL = NegoGUIApp.class.getResource(NegoGUIApp.getClassName());
+		//Open a URL to the our .class file
+	
+		//Clean up the URL and make a String with absolute path name
+		localDirName = myURL.getPath(); //Strip path to URL object out
+		localDirName = myURL.getPath().replaceAll("%20", " "); //change %20 chars to spaces
+	
+		//Get the current execution directory
+		localDirName =
+			localDirName.substring(0,localDirName.lastIndexOf("/")); //clean off the file name
+	
+		return localDirName;
 	}
 }

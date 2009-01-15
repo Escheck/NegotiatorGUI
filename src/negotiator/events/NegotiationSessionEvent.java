@@ -1,14 +1,15 @@
 package negotiator.events;
 
-import negotiator.tournament.NegotiationSession2;
+import negotiator.protocol.MetaProtocol;
+import negotiator.protocol.NegotiationSession2;
 
 public class NegotiationSessionEvent extends NegotiationEvent {
-	private NegotiationSession2 session;
-	public NegotiationSessionEvent(Object source, NegotiationSession2 session) {
+	private MetaProtocol session;
+	public NegotiationSessionEvent(Object source, MetaProtocol session) {
 		super(source);
 		this.session = session;
 	}
-	public NegotiationSession2 getSession() {
+	public MetaProtocol getSession() {
 		return session;
 	}
 

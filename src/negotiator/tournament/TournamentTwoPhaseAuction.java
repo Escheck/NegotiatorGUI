@@ -9,6 +9,7 @@ import agents.BayesianAgentForAuction;
 
 import negotiator.AgentParam;
 import negotiator.analysis.BidSpace;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
