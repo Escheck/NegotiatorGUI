@@ -1,7 +1,7 @@
 package negotiator.events;
 
 import negotiator.protocol.MetaProtocol;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 
 public class NegotiationSessionEvent extends NegotiationEvent {
 	private MetaProtocol session;

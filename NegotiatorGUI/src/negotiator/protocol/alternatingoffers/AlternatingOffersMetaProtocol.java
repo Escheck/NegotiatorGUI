@@ -1,4 +1,4 @@
-package negotiator.protocol;
+package negotiator.protocol.alternatingoffers;
 
 import java.io.*;
 import java.util.*;
@@ -9,6 +9,7 @@ import negotiator.analysis.*;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.MetaProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.TournamentRunner;
@@ -20,18 +21,10 @@ import negotiator.xml.*;
 
 public class AlternatingOffersMetaProtocol implements MetaProtocol {
 
-	AgentRepItem agentArep;
-	AgentRepItem agentBrep;
-    private ProfileRepItem profileArep;
-    private ProfileRepItem profileBrep;
-    private String agentAname;
-    private String agentBname;
-    private HashMap<AgentParameterVariable,AgentParamValue>  agentAparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
-    private HashMap<AgentParameterVariable,AgentParamValue>  agentBparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
 
      /** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
     int tournamentNumber=-1; 
-     int sessionTotalNumber;
+    int sessionTotalNumber;
     int sessionNumber; // the main session number: increases with different session setups
     public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
     
@@ -40,36 +33,28 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
     boolean startingWithA=true;
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
-	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
+
 	NegotiationOutcome outcome;
 	private String log;
 	
-	
+	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not	
     public int non_gui_nego_time = 120;
     public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
 
+    private Agent agentA;
+    private Agent agentB;
+    
     /** fields copied from the NegotiationTemplate class */
     
-    private Domain domain;
-    private String agentAUtilitySpaceFileName;
-    private String agentBUtilitySpaceFileName;
-    private UtilitySpace fAgentAUtilitySpace;
-    private UtilitySpace fAgentBUtilitySpace;
-    private SimpleElement fRoot;
 	private String fFileName;    
-    //private Analysis fAnalysis;
-	private BidSpace bidSpace=null;
-    //private int totalTime; // total available time for nego, in seconds.
     
-	private Agent agentA = null;
-	private Agent agentB = null;
 	private SimpleElement fAdditional;
 	
 	AlternatingOffersProtocol sessionrunner;
     /** END OF fields copied from the NegotiationTemplate class */
     
-    
+    private AlternatingOffersNegotiationSession session;
     /** 
      * Creates a new instance of Negotiation 
      * @param agtA AgentRepItem (agent descriptor) for agent A.
@@ -134,10 +119,7 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
     		startingAgent=getAgentBname();
     	}
    		fFileName = getProfileArep().getDomain().getURL().getFile();
-		this.agentAUtilitySpaceFileName = getProfileArep().getURL().getFile();
-		this.agentBUtilitySpaceFileName = getProfileBrep().getURL().getFile();      	
 		loadFromFile(fFileName);
-    	
     	check();
     }
     
@@ -147,10 +129,6 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
     		actionEventListener.add(listener);
     }
     
-    void check() throws Exception {
-    	if (!(getProfileArep().getDomain().equals(getProfileBrep().getDomain())))
-    		throw new IllegalArgumentException("profiles "+getProfileArep()+" and "+getProfileBrep()+" have a different domain.");
-    }
 
     /***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
     private Thread negoThread = null;
@@ -176,8 +154,6 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
 
     /** this runs sessionTotalNumber of sessions with the provided settings */
     public void startNegotiation() throws Exception {
-        //sf = new SessionFrame(agentAname, agentBname);
-        //sf.setVisible(true);
        // Main.log("Starting negotiations...");
         for(int i=0;i<sessionTotalNumber;i++) {
             //Main.log("Starting session " + String.valueOf(i+1));
@@ -195,12 +171,27 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
      */
     protected void runNegotiationSession(int nr)  throws Exception
     {
+    	java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+    	agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
+   		agentA.setName(session.getAgentAname());
+   		//session.setAgentA(agentA);
+
+   		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
+    	agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
+    	agentB.setName(session.getAgentBname());
+    	//session.setAgentB(agentB);
+    	
+
     	sessionTestNumber=nr;
     	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	//SessionRunner sessionrunner=new SessionRunner(this);
-    	sessionrunner=new AlternatingOffersProtocol(this);
-    	totalTime=sessionrunner.totTime;
+    	sessionrunner=new AlternatingOffersProtocol(agentA, 
+    							agentA, 
+    							session.getAgentAUtilitySpace(), 
+    							session.getAgentBUtilitySpace(), 
+    							non_gui_nego_time);
+
     	if(Global.fDebug) {
     		sessionrunner.run();
         } else {
@@ -267,197 +258,12 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
     }
     
     public String toString() {
-    	return "NegotiationSession["+getAgentAStrategyName()+" versus "+getAgentAStrategyName()+"]";
+    	return "NegotiationSession["+getAgentAStrategyName()+" versus "+getAgentBStrategyName()+"]";
     }
  
     
     /* methods copied from the NegotiationTemplate class */
     
-    
-	/**
-	 * @param fileName Wouter: I think this is the domain.xml file.
-	 */
-	private void loadFromFile(String fileName)  throws Exception
-	{
-		SimpleDOMParser parser = new SimpleDOMParser();
-		BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
-		fRoot = parser.parse(file);
-		/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-        else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
-		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
-		domain = new Domain(xml_utility_space);
-		loadAgentsUtilitySpaces();
-		if (Global.analysisEnabled && !Global.batchMode)
-		{
-			if(fRoot.getChildByTagName("analysis").length>0) {
-				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
-			} else {
-				//propose to build an analysis
-/*				Object[] options = {"Yes","No"};                  
-				int n = JOptionPane.showOptionDialog(null,
-						"You have no analysis available for this template. Do you want build it?",
-						"No Analysis",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						options,
-						options);
-				if(n==0) {*/
-					//bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
-					//fAnalysis = Analysis.getInstance(this);
-					//  save the analysis to the cache
-					//fAnalysis.saveToCache();
-				//}
-				
-			}//if
-		}
-		//if(fAnalysis!=null) showAnalysis();	
-		//if (bidSpace!=null) showAnalysis();
-	}
-
-	
-	
-	/**
-	 * 
-	 * Call this method to draw the negotiation paths on the chart with analysis.
-	 * Wouter: moved to here from Analysis. 
-	 * @param pAgentABids
-	 * @param pAgentBBids
-	 */
-	public void addNegotiationPaths(int sessionNumber, ArrayList<BidPoint> pAgentABids, ArrayList<BidPoint> pAgentBBids) 
-	{
-        double[][] lAgentAUtilities = new double[pAgentABids.size()][2];
-        double[][] lAgentBUtilities = new double[pAgentBBids.size()][2];        
-        try
-        {
-        	int i=0;
-        	for (BidPoint p:pAgentABids)
-        	{
-	        	lAgentAUtilities [i][0] = p.utilityA;
-	        	lAgentAUtilities [i][1] = p.utilityB;
-	        	i++;
-        	}
-        	i=0;
-        	for (BidPoint p:pAgentBBids)
-        	{
-	        	lAgentBUtilities [i][0] = p.utilityA;
-	        	lAgentBUtilities [i][1] = p.utilityB;
-	        	i++;
-        	}
-	        
-/*	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
-	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
-	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-	        Main.fChart.show();*/
-        } catch (Exception e) {
-			// TODO: handle exception
-        	e.printStackTrace();
-		}
-		
-	}
-	public int getNrOfBids(){
-		return sessionrunner.fAgentABids.size()+sessionrunner.fAgentBBids.size();
-	}
-	
-	//alinas code
-	public double[][] getNegotiationPathA(){
-		System.out.println("fAgentABids "+sessionrunner.fAgentABids.size());
-		double[][] lAgentAUtilities = new double[2][sessionrunner.fAgentABids.size()];
-		try
-        {
-			int i=0;
-	    	for (BidPoint p:sessionrunner.fAgentABids)
-	    	{
-	        	lAgentAUtilities [0][i] = p.utilityA;
-	        	lAgentAUtilities [1][i] = p.utilityB;
-	        	i++;
-	    	}
-        } catch (Exception e) {
-			e.printStackTrace();
-        	return null;
-		}
-    	
-		return lAgentAUtilities; 
-	}
-	public double[][] getNegotiationPathB(){
-		System.out.println("fAgentBBids "+sessionrunner.fAgentBBids.size());
-		double[][] lAgentBUtilities = new double [2][sessionrunner.fAgentBBids.size()];  
-		try{
-			int i=0;
-	    	for (BidPoint p:sessionrunner.fAgentBBids)
-	    	{
-	        	lAgentBUtilities [0][i] = p.utilityA;
-	        	lAgentBUtilities [1][i] = p.utilityB;
-	        	i++;
-	    	}
-	 	} catch (Exception e) {
-		   	e.printStackTrace();
-		   	return null;
-		}
-		return lAgentBUtilities;
-	}
-	
-	protected void loadAgentsUtilitySpaces() throws Exception
-	{
-		//load the utility space
-		fAgentAUtilitySpace = new UtilitySpace(getDomain(), agentAUtilitySpaceFileName);
-		System.out.println("utility space statistics for "+"Agent "+agentAUtilitySpaceFileName);
-		fAgentAUtilitySpace.showStatistics();
-		fAgentBUtilitySpace = new UtilitySpace(getDomain(), agentBUtilitySpaceFileName);
-		System.out.println("utility space statistics for "+"Agent "+agentBUtilitySpaceFileName);
-		fAgentBUtilitySpace.showStatistics();
-		return;
-
-	}
-	
-	/**
-	 * 
-	 * @param fileName
-	 * @param mf points to the MainFrame GUI that currently also holds the application data (...)
-	 * @throws Exception if there are problems reading the file.
-	 */
-	/*public static void loadParamsFromFile (String fileName, MainFrame mf) throws Exception
-	{
-		SimpleDOMParser parser = new SimpleDOMParser();
-		try {
-			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));		
-			SimpleElement root = parser.parse(file);
-
-            mf.setNemberOfSessions(root.getAttribute("number_of_sessions"));
-            SimpleElement xml_agentA = (SimpleElement)(root.getChildByTagName("agent")[0]);
-            mf.setAgentAName(xml_agentA.getAttribute("name"));
-            mf.setAgentAClassName(xml_agentA.getAttribute("class"));
-            mf.setAgentAUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentA.getAttribute("utility_space"));
-            SimpleElement xml_agentB = (SimpleElement)(root.getChildByTagName("agent")[1]);
-            mf.setAgentBName(xml_agentB.getAttribute("name"));
-            mf.setAgentBClassName(xml_agentB.getAttribute("class"));
-            mf.setAgentBUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentB.getAttribute("utility_space"));
-        } catch (Exception e) {
-            throw new IOException("Problem loading parameters from "+fileName+": "+e.getMessage());
-        }
-    }
-    */
-    
-    public Domain getDomain() {
-        return domain;
-    }
-    
-    public String getAgentBUtilitySpaceFileName() {
-        return agentBUtilitySpaceFileName;
-    }
-    
-    public String getAgentAUtilitySpaceFileName() {
-        return agentAUtilitySpaceFileName;
-    }
-    
-
-	public UtilitySpace getAgentAUtilitySpace() {
-		return fAgentAUtilitySpace;
-	}
-
-	public UtilitySpace getAgentBUtilitySpace() {
-		return fAgentBUtilitySpace;
-	}
 	
 	public void setLog(String str){
 		log = str;
@@ -465,85 +271,14 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
 	public String getLog(){
 		return log;
 	}
-    public SimpleElement domainToXML(){
-    	return domain.toXML(); 		
-    }
 
      /**
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
-    public BidSpace getBidSpace() { 
-    	if(bidSpace==null) {
-    		try {    	
-    			bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
-    		} catch (Exception e) {
-    			e.printStackTrace();
-			}
-    	}
-    	return bidSpace;     	
-    }
     public String getStartingAgent(){
     	return startingAgent;
     }
-	public void setAgentAname(String agentAname) {
-		this.agentAname = agentAname;
-	}
-
-
-	public String getAgentAname() {
-		return agentAname;
-	}
-
-
-	public void setAgentBname(String agentBname) {
-		this.agentBname = agentBname;
-	}
-
-
-	public String getAgentBname() {
-		return agentBname;
-	}
-
-
-	public void setAgentAparams(HashMap<AgentParameterVariable,AgentParamValue> agentAparams) {
-		this.agentAparams = agentAparams;
-	}
-
-
-	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentAparams() {
-		return agentAparams;
-	}
-
-
-	public void setAgentBparams(HashMap<AgentParameterVariable,AgentParamValue>  agentBparams) {
-		this.agentBparams = agentBparams;
-	}
-
-
-	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentBparams() {
-		return agentBparams;
-	}
-
-
-	public void setProfileArep(ProfileRepItem profileArep) {
-		this.profileArep = profileArep;
-	}
-
-
-	public ProfileRepItem getProfileArep() {
-		return profileArep;
-	}
-
-
-	public void setProfileBrep(ProfileRepItem profileBrep) {
-		this.profileBrep = profileBrep;
-	}
-
-
-	public ProfileRepItem getProfileBrep() {
-		return profileBrep;
-	}
 
 	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
 			double utilA,double utilB,String remarks) {
@@ -583,22 +318,6 @@ public class AlternatingOffersMetaProtocol implements MetaProtocol {
     	return agentB;
     }
 
-    public String getAgentAStrategyName() {
-    	if(agentArep!=null)
-    		return agentArep.getName();
-    	else
-    		return "";//agentA.getClass().toString();
-    	
-    }
-    public String getAgentBStrategyName() {
-    	if(agentBrep!=null)
-    		return agentBrep.getName();
-    	else
-    		return "";//agentB.getClass().toString();
-    }
-    public void setBidSpace(BidSpace pBidSpace) {
-    	bidSpace = pBidSpace;
-    }
     public AlternatingOffersProtocol getSessionRunner() {
     	return sessionrunner;    
     }

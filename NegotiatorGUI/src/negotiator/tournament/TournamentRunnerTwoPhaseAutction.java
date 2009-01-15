@@ -15,7 +15,7 @@ import negotiator.BidIterator;
 import negotiator.NegotiationEventListener;
 import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -29,10 +29,10 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		super(t, ael);
 		// TODO Auto-generated constructor stub
 	}
-	private void runFreeNegotiationSessions(LinkedList<NegotiationSession2> sessions ) throws Exception {
-		LinkedList<NegotiationSession2> freeSessions = new LinkedList<NegotiationSession2>();
+	private void runFreeNegotiationSessions(LinkedList<AlternatingOffersNegotiationSession> sessions ) throws Exception {
+		LinkedList<AlternatingOffersNegotiationSession> freeSessions = new LinkedList<AlternatingOffersNegotiationSession>();
 		
-		for (NegotiationSession2 s: sessions) {
+		for (AlternatingOffersNegotiationSession s: sessions) {
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.)), new AgentParamValue(2.1));
@@ -40,7 +40,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.)), new AgentParamValue(2.1));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",-1.,1.)), new AgentParamValue(-0.9));
 			
-			NegotiationSession2 freeSession = new NegotiationSession2(s.agentArep,
+			AlternatingOffersNegotiationSession freeSession = new AlternatingOffersNegotiationSession(s.agentArep,
 					s.agentBrep,
 					s.getProfileArep(),
 					s.getProfileBrep(),
@@ -70,9 +70,9 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		double lMaxUtil= Double.NEGATIVE_INFINITY;
 		double lSecondPrice = Double.NEGATIVE_INFINITY;
 		Bid lSecondBestBid = null;
-		NegotiationSession2 winnerSession = null;
+		AlternatingOffersNegotiationSession winnerSession = null;
 
-		for (NegotiationSession2 s: freeSessions) {
+		for (AlternatingOffersNegotiationSession s: freeSessions) {
 			if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lMaxUtil) {
 				lSecondPrice = lMaxUtil;
 				lSecondBestBid = s.getSessionRunner().getNegotiationOutcome().AgentABids.get(s.getSessionRunner().getNegotiationOutcome().AgentABids.size()-1).bid;
@@ -129,7 +129,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 		paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
 		paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.)), new AgentParamValue(sellerStartingUtil));
 
-		NegotiationSession2 secondPhaseSession = new NegotiationSession2(winnerSession.getAgentA(),
+		AlternatingOffersNegotiationSession secondPhaseSession = new AlternatingOffersNegotiationSession(winnerSession.getAgentA(),
 				winnerSession.getAgentB(),
 				winnerSession.getProfileArep(),
 				winnerSession.getProfileBrep(),
@@ -159,10 +159,10 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		LinkedList<NegotiationSession2> sessions;
+		LinkedList<AlternatingOffersNegotiationSession> sessions;
 		try { 
 			while(true) {
-				sessions= new LinkedList<NegotiationSession2>( tournament.getSessions());
+				sessions= new LinkedList<AlternatingOffersNegotiationSession>( tournament.getSessions());
 				runFreeNegotiationSessions(sessions);
 				if(true) continue;
 				if(sessions==null) break;
@@ -237,7 +237,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 
 				}
 				//
-				for (NegotiationSession2 s: sessions) {
+				for (AlternatingOffersNegotiationSession s: sessions) {
 					//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 					for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
 					fireNegotiationSessionEvent(s);
@@ -248,9 +248,9 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 				//determine winner
 				double lMaxUtil= Double.NEGATIVE_INFINITY;
 				double lSecondPrice = Double.NEGATIVE_INFINITY;
-				NegotiationSession2 winnerSession = null;
+				AlternatingOffersNegotiationSession winnerSession = null;
 //				NegotiationSession2 secondBestSession = null;
-				for (NegotiationSession2 s: sessions) {
+				for (AlternatingOffersNegotiationSession s: sessions) {
 					if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lMaxUtil) {
 						lSecondPrice = lMaxUtil;
 						lMaxUtil = s.getSessionRunner().getNegotiationOutcome().agentAutility;
@@ -271,7 +271,7 @@ public class TournamentRunnerTwoPhaseAutction extends TournamentRunner {
 
 				paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
 
-				NegotiationSession2 secondPhaseSession = new NegotiationSession2(winnerSession.agentArep,
+				AlternatingOffersNegotiationSession secondPhaseSession = new AlternatingOffersNegotiationSession(winnerSession.agentArep,
 						winnerSession.agentBrep,
 						winnerSession.getProfileArep(),
 						winnerSession.getProfileBrep(),

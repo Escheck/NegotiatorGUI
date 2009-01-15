@@ -1,4 +1,4 @@
-package negotiator.protocol;
+package negotiator.protocol.alternatingoffers;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,18 +13,26 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.IllegalAction;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.MetaProtocol;
+import negotiator.protocol.NegotiationSession;
+import negotiator.protocol.Protocol;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
 public class AlternatingOffersProtocol implements Protocol {
 
-    AlternatingOffersMetaProtocol session;
+    //AlternatingOffersNegotiationSession session;
 	
     protected Agent         agentA;
     protected Agent         agentB;
     private Bid lastBid=null;				// the last bid that has been done
 
+    UtilitySpace spaceA;
+    UtilitySpace spaceB;
+
+    
     private static boolean fIsExperimentalSetup = true;
     
     /**
@@ -35,56 +43,38 @@ public class AlternatingOffersProtocol implements Protocol {
      * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
      */
     public boolean stopNegotiation=false;
-   // private NegotiationTemplate nt;
+
     public NegotiationOutcome no;
+
     boolean agentAtookAction = false;
     boolean agentBtookAction = false;
+    
     boolean agentAStarts=false;
     public SimpleElement additionalLog = new SimpleElement("additional_log");
+    
+    /* time/deadline */
     Date startTime; 
     long startTimeMillies; //idem.
     Integer totTime; // total time, seconds, of this negotiation session.
+    
+    
 	public Agent currentAgent=null; // agent currently bidding.
 
+	
+	
     public ArrayList<BidPoint> fAgentABids;
     public ArrayList<BidPoint> fAgentBBids;
-    NegotiationEventListener the_event_listener;
+    
 
+    
 
      /** load the runtime objects to start negotiation */
-    public AlternatingOffersProtocol(MetaProtocol s) throws Exception {
-    	session=(AlternatingOffersMetaProtocol)s;
-    	if(session.getAgentA()==null) {
-    		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-    		agentA = (Agent)(loaderA.loadClass(session.agentArep.getClassPath()).newInstance());
-    		agentA.setName(session.getAgentAname());
-    		session.setAgentA(agentA);
-    	} else agentA = session.getAgentA();
-    	if(session.getAgentB()==null) {
-    		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
-    		agentB = (Agent)(loaderB.loadClass(session.agentBrep.getClassPath()).newInstance());
-    		agentB.setName(session.getAgentBname());
-    		session.setAgentB(agentB);
-    	} else agentB = session.getAgentB();
-    		
-
-    	/*
-		HashMap<AgentParameterVariable,AgentParamValue> params = s.getAgentAparams();
-		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
-			agentA.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
-		}
-
-		params = s.getAgentBparams();
-		for(Entry<AgentParameterVariable, AgentParamValue> entry : params.entrySet()) {
-			agentB.setParameter(entry.getKey().getAgentParam().name, entry.getValue().getValue());
-		}
-		*/
-	    
-	    
-        totTime=session.non_gui_nego_time;
-        if (agentA.isUIAgent() || agentB.isUIAgent()) totTime=session.gui_nego_time;
-//        nt = new NegotiationTemplate(session.profileArep.getDomain().getURL().getFile(),
-//        		session.profileArep.getURL().getFile(),session.profileBrep.getURL().getFile(),totTime);
+    public AlternatingOffersProtocol(Agent agentA, Agent agentB, UtilitySpace spaceA, UtilitySpace spaceB, Integer totalTime) throws Exception {
+    	this.agentA = agentA;
+    	this.agentB = agentB;
+    	this.spaceA = spaceA;
+    	this.spaceB = spaceB;
+        this.totTime=totalTime;
         if(fIsExperimentalSetup) {
         	agentA.fNegotiation = this;
         	agentB.fNegotiation = this;
@@ -102,16 +92,14 @@ public class AlternatingOffersProtocol implements Protocol {
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
         try {
             double agentAUtility,agentBUtility;
-            UtilitySpace spaceA=session.getAgentAUtilitySpace();
-            UtilitySpace spaceB=session.getAgentBUtilitySpace();
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
             agentA.internalInit(session.sessionTestNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
-            		new UtilitySpace(session.getAgentAUtilitySpace()),session.getAgentAparams());
+            		new UtilitySpace(spaceA),session.getAgentAparams());
             agentA.init();
             agentB.internalInit(session.sessionTestNumber, session.sessionTotalNumber,startTime,session.getTotalTime(),
-            		new UtilitySpace(session.getAgentBUtilitySpace()),session.getAgentBparams());
+            		new UtilitySpace(spaceB),session.getAgentBparams());
             agentB.init();
             stopNegotiation = false;
             Action action = null;
@@ -154,8 +142,8 @@ public class AlternatingOffersProtocol implements Protocol {
                        //save last results 
                        BidPoint p=null;
                		   p=new BidPoint(lastBid,
-               				   session.getAgentAUtilitySpace().getUtility(lastBid),
-               				   session.getAgentBUtilitySpace().getUtility(lastBid));
+               				   spaceA.getUtility(lastBid),
+               				   spaceB.getUtility(lastBid));
                        if(currentAgent.equals(agentA))                    {
                     	   fAgentABids.add(p);
                        } else{
@@ -174,8 +162,8 @@ public class AlternatingOffersProtocol implements Protocol {
                     			   currentAgent.getName()+" but no bid was done yet.");
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
-                        agentAUtility = session.getAgentAUtilitySpace().getUtility(lastBid);
-                        agentBUtility = session.getAgentBUtilitySpace().getUtility(lastBid);
+                        agentAUtility = spaceA.getUtility(lastBid);
+                        agentBUtility = spaceB.getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
                         checkAgentActivity(currentAgent) ;
                         otherAgent(currentAgent).ReceiveMessage(action);                      
@@ -195,10 +183,10 @@ public class AlternatingOffersProtocol implements Protocol {
                 	   // handle both getUtility calls apart, if one crashes
                 	   // the other should not be affected.
                 	   try {
-                		   agentAUtility = session.getAgentAUtilitySpace().getUtility(lastBid);
+                		   agentAUtility = spaceA.getUtility(lastBid);
                 	   }  catch (Exception e1) {}
                 	   try {
-                    	   agentBUtility = session.getAgentBUtilitySpace().getUtility(lastBid);
+                    	   agentBUtility = spaceB.getUtility(lastBid);
                 	   }  catch (Exception e1) {}
                    }
                    if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
@@ -245,15 +233,15 @@ public class AlternatingOffersProtocol implements Protocol {
 	
     public double getOpponentUtility(Agent pAgent, Bid pBid) throws Exception{
     	if(pAgent.equals(agentA)) 
-    		return agentB.utilitySpace.getUtility(pBid);
+    		return spaceB.getUtility(pBid);
     	else
-    		return agentA.utilitySpace.getUtility(pBid);
+    		return spaceA.getUtility(pBid);
     }
     public double getOpponentWeight(Agent pAgent, int pIssueID) throws Exception{
     	if(pAgent.equals(agentA)) 
-    		return agentB.utilitySpace.getWeight(pIssueID);
+    		return spaceB.getWeight(pIssueID);
     	else
-    		return agentA.utilitySpace.getWeight(pIssueID);
+    		return spaceA.getWeight(pIssueID);
     }
     
     public void addAdditionalLog(SimpleElement pElem) {
@@ -280,9 +268,6 @@ public class AlternatingOffersProtocol implements Protocol {
   
     
     public void newOutcome(Agent currentAgent, double utilA, double utilB, Action action, String message) throws Exception {
-        UtilitySpace spaceA=session.getAgentAUtilitySpace();
-        UtilitySpace spaceB=session.getAgentBUtilitySpace();
-
         
     	no=new NegotiationOutcome(session.sessionNumber, 
 			   agentA.getName(),  agentB.getName(),
@@ -321,5 +306,16 @@ public class AlternatingOffersProtocol implements Protocol {
     public NegotiationOutcome getNegotiationOutcome() {
     	return no;
     }
-
+  /*  public BidSpace getBidSpace() { 
+    	if(bidSpace==null) {
+    		try {    	
+    			bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+			}
+    	}
+    	return bidSpace;     	
+    }
+*/
 }
+

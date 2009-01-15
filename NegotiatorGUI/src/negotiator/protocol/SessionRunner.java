@@ -15,6 +15,7 @@ import negotiator.actions.IllegalAction;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
@@ -28,7 +29,7 @@ import negotiator.xml.SimpleElement;
  * After a run is done, the NegotiationSession2 is notified.
  */
 public class SessionRunner implements Runnable {
-    NegotiationSession2 session;
+    AlternatingOffersNegotiationSession session;
 	
     protected Agent         agentA;
     protected Agent         agentB;
@@ -61,7 +62,7 @@ public class SessionRunner implements Runnable {
 
 
      /** load the runtime objects to start negotiation */
-    public SessionRunner(NegotiationSession2 s) throws Exception {
+    public SessionRunner(AlternatingOffersNegotiationSession s) throws Exception {
     	session=s;
     	if(s.getAgentA()==null) {
     		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
