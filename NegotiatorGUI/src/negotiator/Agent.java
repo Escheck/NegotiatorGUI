@@ -17,8 +17,11 @@ import java.util.Hashtable;
 import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
-import negotiator.tournament.NegotiationSession2;
-import negotiator.tournament.SessionRunner;
+
+import negotiator.protocol.MetaProtocol;
+import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.Protocol;
+import negotiator.protocol.SessionRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 /**
@@ -35,7 +38,7 @@ public abstract class Agent {
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     public Integer			sessionNumber;
     public Integer			sessionTotalNumber;
-    public SessionRunner 	fNegotiation;// can be accessed only in the expermental setup 
+    public Protocol 	fNegotiation;// can be accessed only in the expermental setup 
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     

@@ -28,14 +28,14 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 	JButton okbutton=new JButton("OK");
 	JButton cancelbutton=new JButton("Cancel");
 	Object the_result=null; // will be set after ok button is pressed. null in other cases (eg cancel)
-
+	
 	/** 
 	 * 
 	 * @param owner is the parent frame, used only to center the dialog properly. Probably can be null
 	 * @param title the title of the dialog
 	 */
 	public DefaultOKCancelDialog(Frame owner, String title) {
-		super(owner,title,true); // modal dialog.
+		super(owner,title,true); // modal dialog.		
 		getContentPane().setLayout(new BorderLayout());
 	}
 	
@@ -73,8 +73,6 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 			}
 		});
 		
-		
-		
 		Panel buttonrow=new Panel(new BorderLayout());
 		buttonrow.add(okbutton,BorderLayout.WEST);
 		buttonrow.add(cancelbutton,BorderLayout.EAST);
@@ -84,6 +82,7 @@ public abstract class DefaultOKCancelDialog extends JDialog {
 		add(getPanel(),BorderLayout.CENTER);
 
 		pack();
+		setLocationRelativeTo(getOwner());
 		setVisible(true); // block until closing window.
 		return the_result; 
 		}

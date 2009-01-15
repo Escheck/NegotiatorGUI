@@ -15,6 +15,7 @@ import negotiator.BidIterator;
 import negotiator.NegotiationEventListener;
 import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;

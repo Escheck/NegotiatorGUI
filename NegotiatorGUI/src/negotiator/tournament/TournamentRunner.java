@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.MetaProtocol;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.NegotiationEventListener;
 
 /**
@@ -50,7 +52,7 @@ public class TournamentRunner implements Runnable {
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
     }
     
-    public void fireNegotiationSessionEvent(NegotiationSession2 session ) {
+    public void fireNegotiationSessionEvent(MetaProtocol session ) {
     	for(NegotiationEventListener listener :  negotiationEventListeners) 
     		if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
     }

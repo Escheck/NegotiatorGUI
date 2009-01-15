@@ -1,11 +1,11 @@
-package negotiator.tournament;
+package negotiator.protocol;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Main;
+import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
 import negotiator.actions.Accept;
@@ -181,8 +181,8 @@ public class SessionRunner implements Runnable {
                        if(lastBid==null)
                     	   throw new Exception("Accept was done by "+
                     			   currentAgent.getName()+" but no bid was done yet.");
-                        Main.log("Agents accepted the following bid:");
-                        Main.log(((Accept)action).toString());
+                        //Global.log("Agents accepted the following bid:");
+                        //Global.log(((Accept)action).toString());
                         agentAUtility = session.getAgentAUtilitySpace().getUtility(lastBid);
                         agentBUtility = session.getAgentBUtilitySpace().getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
@@ -197,7 +197,7 @@ public class SessionRunner implements Runnable {
                 	new Warning("Caught exception:",e,true,2);
                    stopNegotiation=true;
                    new Warning("Protocol error by Agent"+currentAgent.getName(),e,true,3);
-             	   Main.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
+             	   //Global.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
                    if (lastBid==null) agentAUtility=agentBUtility=1.;
                    else {
                 	   agentAUtility=agentBUtility=0.;

@@ -19,8 +19,8 @@ import java.awt.Dimension;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.repository.*;
-import negotiator.tournament.NegotiationSession2;
 
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
@@ -166,6 +166,8 @@ public class TournamentVarsUI extends JFrame {
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
+		} else if(v instanceof ProtocolVariable) {
+			
 		}
 		else if (v instanceof AgentVariable) {
 			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new AgentVarUI(this).getResult();//(AgentVariable)v);
@@ -210,9 +212,6 @@ public class TournamentVarsUI extends JFrame {
 		}
 		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
-	
-
-	
 	
 	/** remove selected row from table */
 	void removerow() throws Exception {
@@ -323,9 +322,10 @@ public class TournamentVarsUI extends JFrame {
 	static void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars=t.getVariables();
-		correctposition(vars,0,new ProfileVariable());
-		correctposition(vars,1,new AgentVariable());
-		correctposition(vars,2,new AgentVariable());
+		correctposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());
+		correctposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
+		correctposition(vars,Tournament.VARIABLE_AGENT_A,new AgentVariable());
+		correctposition(vars,Tournament.VARIABLE_AGENT_B,new AgentVariable());
 		vars.add(new TotalSessionNumberVariable());
 	}
 
@@ -370,7 +370,6 @@ public class TournamentVarsUI extends JFrame {
 	public static void main(String[] args) 
 	{
 		try {
-
 			new TournamentVarsUI(); 
 		}
 		catch (Exception e) { new Warning("TournamentVarsUI failed to launch: "+e); }

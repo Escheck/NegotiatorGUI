@@ -17,12 +17,12 @@ import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
-import negotiator.tournament.NegotiationSession2;
 import org.jdesktop.application.Action;
 
 /**

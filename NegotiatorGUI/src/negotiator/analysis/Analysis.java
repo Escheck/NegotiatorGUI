@@ -11,7 +11,7 @@ import java.util.Iterator;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
-import negotiator.Main;
+import negotiator.Global;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
@@ -262,7 +262,7 @@ public class Analysis {
 	 * 
 	 */
 	public void buildParetoFrontier() {
-		Main.log("Building Pareto Frontier...");
+		//Global.log("Building Pareto Frontier...");
 		//loadAgentsUtilitySpaces();
 		BidIterator lBidIter = new BidIterator(getDomain());
 		while(lBidIter.hasNext()) {
@@ -281,7 +281,7 @@ public class Analysis {
 			
 		}
 		sortParetoFrontier();    	
-		Main.log("Finished building Pareto Frontier.");
+		Global.log("Finished building Pareto Frontier.");
 		//make an XML representation of the analysis
 
 		fRoot = new SimpleElement("analysis");

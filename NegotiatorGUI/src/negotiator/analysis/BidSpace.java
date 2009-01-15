@@ -3,7 +3,7 @@ package negotiator.analysis;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.Main;
+import negotiator.Global;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import negotiator.Domain;

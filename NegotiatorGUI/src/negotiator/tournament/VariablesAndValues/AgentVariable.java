@@ -1,5 +1,4 @@
 package negotiator.tournament.VariablesAndValues;
-import negotiator.Agent;
 
 /**
  * ProfileVariable is a variable for a tournament,
@@ -12,6 +11,7 @@ import negotiator.Agent;
  */
 public class AgentVariable extends TournamentVariable
 {
+	private String side = null;
 	public void addValue(TournamentValue a) throws Exception
 	{
 		if (!(a instanceof AgentValue))
@@ -20,6 +20,13 @@ public class AgentVariable extends TournamentVariable
 	}
 	
 	public String varToString() {
-		return "Agent";
+		String res = "Agent";
+		if(side != null) res = res + " side " +side;
+		return res;
 	}
+	public void setSide(String val) 
+	{
+		side = val;
+	}
+		
 }

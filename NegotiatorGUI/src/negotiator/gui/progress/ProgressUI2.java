@@ -28,7 +28,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
-import negotiator.tournament.NegotiationSession2;
+import negotiator.protocol.NegotiationSession2;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

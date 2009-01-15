@@ -12,6 +12,7 @@ import negotiator.Agent;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidSpace;
+import negotiator.protocol.NegotiationSession2;
 import negotiator.repository.*;
 
 
@@ -44,6 +45,11 @@ public class Tournament
 		// variable 2 is AgentVariable for agent B.
 		// variable 3 is number of runs per session
 		// rest is AgentParameterVariables.
+	public static final int VARIABLE_PROTOCOL = 0;
+	public static final int VARIABLE_PROFILE = 1;
+	public static final int VARIABLE_AGENT_A = 2;
+	public static final int VARIABLE_AGENT_B = 3;
+	public static final int VARIABLE_NUMBER_OF_RUNS = 4;
 	ArrayList<NegotiationSession2> sessions=null;
 	
 	HashMap<UtilitySpace,HashMap<UtilitySpace, BidSpace>> bidSpaceCash = null;
@@ -226,6 +232,7 @@ public class Tournament
 
 	
 	public ArrayList<TournamentVariable> getVariables() { return variables; }
+	
 	protected void addBidSpaceToCash(UtilitySpace spaceA, UtilitySpace spaceB, BidSpace bidSpace) {
 		HashMap<UtilitySpace, BidSpace> cashA = new HashMap<UtilitySpace, BidSpace>();
 		HashMap<UtilitySpace, BidSpace> cashB = new HashMap<UtilitySpace, BidSpace>();
@@ -234,8 +241,7 @@ public class Tournament
 		bidSpaceCash.put(spaceA, cashB);		 
 		bidSpaceCash.put(spaceB, cashA);
 	}
-	protected BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
-		
+	protected BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {		
 		if(bidSpaceCash.get(spaceA)!=null)			
 			return bidSpaceCash.get(spaceA).get(spaceB);
 		else return null;
@@ -251,8 +257,8 @@ class AssignedParameterVariable {
 	public AgentParameterVariable parameter;
 	public String agentname;
 	AssignedParameterVariable(AgentParameterVariable param,String name) {
-		parameter=param;
-		agentname=name;
+		parameter = param;
+		agentname = name;
 	}
 }
 
@@ -260,7 +266,7 @@ class AssignedParamValue {
 	public AgentParamValue value;
 	public String agentname;
 	AssignedParamValue(AgentParamValue v,String name) {
-	value=v;
-	agentname=name;
+		value = v;
+		agentname = name;
 	}
 }

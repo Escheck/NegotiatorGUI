@@ -1,9 +1,7 @@
 package negotiator.gui.tournamentvars;
 
-import java.awt.BorderLayout;
+
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;

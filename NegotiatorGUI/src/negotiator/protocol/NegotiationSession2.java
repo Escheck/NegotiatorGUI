@@ -1,9 +1,9 @@
-package negotiator.tournament;
+package negotiator.protocol;
 
 import negotiator.Domain;
 
 import negotiator.Agent;
-import negotiator.Main;
+import negotiator.Global;
 import negotiator.NegotiationOutcome; 
 
 import java.io.BufferedReader;
@@ -32,6 +32,7 @@ import negotiator.exceptions.Warning;
 import negotiator.gui.SessionFrame;
 
 import negotiator.repository.*;
+import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleDOMParser;
@@ -236,7 +237,7 @@ public class NegotiationSession2 implements Runnable {
     	//SessionRunner sessionrunner=new SessionRunner(this);
     	sessionrunner=new SessionRunner(this);
     	totalTime=sessionrunner.totTime;
-    	if(Main.fDebug) {
+    	if(Global.fDebug) {
     		sessionrunner.run();
         } else {
         	negoThread = new Thread(sessionrunner);
@@ -322,7 +323,7 @@ public class NegotiationSession2 implements Runnable {
 		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
 		domain = new Domain(xml_utility_space);
 		loadAgentsUtilitySpaces();
-		if (Main.analysisEnabled && !Main.batchMode)
+		if (Global.analysisEnabled && !Global.batchMode)
 		{
 			if(fRoot.getChildByTagName("analysis").length>0) {
 				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
@@ -351,87 +352,6 @@ public class NegotiationSession2 implements Runnable {
 	}
 
 	
-	
-	/**
-	 * 
-	 * Show the analysis window. Couples the analysis object with the chart window 
-	 * Wouter: old vesion by Dmytro.
-	 * @throws Exception
-	 */
-	/*
-	protected void showAnalysisOld() throws Exception
-	{
-		Chart lChart = new Chart();		
-		//if((!fAnalysis.isCompleteSpaceBuilt())&&fAnalysis.getTotalNumberOfBids()<100000) 
-		//	fAnalysis.buildCompleteOutcomeSpace();
-		if(fAnalysis.isCompleteSpaceBuilt()) {			
-			double[][] lAllBids = new double[fAnalysis.getTotalNumberOfBids()][2];
-			for(int i=0;i<fAnalysis.getTotalNumberOfBids();i++) {
-				lAllBids[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getBidFromCompleteSpace(i));
-				lAllBids[i][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getBidFromCompleteSpace(i));
-			}
-			lChart.addCurve("All Outcomes", lAllBids);		
-	
-		}
-		double[][] lParetoPoints = new double[fAnalysis.getParetoCount()][2];
-		for(int i=0;i<fAnalysis.getParetoCount();i++) {
-			lParetoPoints[i][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getParetoBid(i));
-			lParetoPoints[i][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getParetoBid(i));
-		}
-		lChart.addCurve("Pareto frontier", lParetoPoints);		
-		double[][] lNash = new double[1][2];
-		lNash[0][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getNashProduct());
-		lNash[0][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getNashProduct());		
-		lChart.addCurve("Nash product", lNash);
-		double[][] lKalaiSmorodinsky = new double[1][2];
-		lKalaiSmorodinsky[0][0]= fAgentAUtilitySpace.getUtility(fAnalysis.getKalaiSmorodinsky());
-		lKalaiSmorodinsky[0][1]= fAgentBUtilitySpace.getUtility(fAnalysis.getKalaiSmorodinsky());		
-		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);
-		Main.fChart = lChart;
-		lChart.show();
-	}
-	*/
-	
-	/**
-	 * 
-	 * Show the analysis window. Couples the analysis object with the chart window 
-	 * Wouter: this version uses the BidSpace instead of the Analysis.
-	 * 
-	 * @throws Exception
-	 */
-	/*protected void showAnalysis() throws Exception
-	{
-		int i;
-		if (bidSpace==null) throw new NullPointerException("bidspace=null, cant show analysis");
-		Chart lChart = new Chart();
-
-		i=0;
-		double[][] lAllBids = new double[bidSpace.bidPoints.size()][2];
-		for(BidPoint p: bidSpace.bidPoints) 
-		  { lAllBids[i][0]= p.utilityA; lAllBids[i][1]= p.utilityB; i++;}
-		lChart.addCurve("All Outcomes", lAllBids);		
-	
-		i=0;
-		double[][] lParetoPoints=new double[bidSpace.getParetoFrontier().size()][2];
-		for (BidPoint p:bidSpace.getParetoFrontier())
-		  { lParetoPoints[i][0]= p.utilityA; lParetoPoints[i][1]= p.utilityB; i++;}
-		lChart.addCurve("Pareto frontier", lParetoPoints);		
-
-		BidPoint nash=bidSpace.getNash();
-		double[][] lNash = new double[1][2];
-		lNash[0][0]= nash.utilityA;	lNash[0][1]= nash.utilityB;	
-		lChart.addCurve("Nash product", lNash);
-		
-		
-		double[][] lKalaiSmorodinsky = new double[1][2];
-		BidPoint kalai=bidSpace.getKalaiSmorodinsky();
-
-		lKalaiSmorodinsky[0][0]= kalai.utilityA; lKalaiSmorodinsky[0][1]=kalai.utilityB;		
-		lChart.addCurve("Kalai-Smorodinsky", lKalaiSmorodinsky);
-		Main.fChart = lChart;
-		//lChart.show();
-	}
-	*/
 	
 	/**
 	 * 
