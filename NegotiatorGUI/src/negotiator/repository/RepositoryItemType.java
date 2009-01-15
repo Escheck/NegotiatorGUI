@@ -19,20 +19,29 @@ public class RepositoryItemType {
     @XmlElement(name = "domainRepItem")
     //private List<Birthday> birthdays;
     private ArrayList<DomainRepItem> domainRepItem;
+    // produce a wrapper XML element around this collection
+    @XmlElementWrapper(name = "protocolRepItem")
+    // maps each member of this list to an XML element named birthday
+    @XmlElement(name = "protocolRepItem")
+    //private List<Birthday> birthdays;
+    private ArrayList<ProtocolRepItem> protocolRepItem;
     
     public RepositoryItemType() {}
     
-    public RepositoryItemType(ArrayList<AgentRepItem> agentRepItem, ArrayList<DomainRepItem> domainRepItem) {
+    public RepositoryItemType(ArrayList<AgentRepItem> agentRepItem, ArrayList<DomainRepItem> domainRepItem, ArrayList<ProtocolRepItem> protocolRepItem) {
         this.agentRepItem = agentRepItem;
         this.domainRepItem = domainRepItem;
+        this.protocolRepItem = protocolRepItem;
     }
 
     public ArrayList<AgentRepItem> getAgentRepItem() {
         return agentRepItem;
     }
-
     public ArrayList<DomainRepItem> getDomainRepItem() {
         return domainRepItem;
+    }
+    public ArrayList<ProtocolRepItem> getProtocolRepItem() {
+    	return protocolRepItem;
     }
 }
 

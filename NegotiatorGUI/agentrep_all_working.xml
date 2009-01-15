@@ -11,6 +11,7 @@
             
         </agentRepItems>
         <domainRepItem/>
+        <protocolRepItem/>
     </items>
     <filename>agentrepository.xml</filename>
 </repository>

@@ -9,17 +9,19 @@ public class RepositoryItemTypeAdapter extends XmlAdapter<RepositoryItemType, Ar
     // adapt original Java construct to a type, NotificationsType,
     // which we can easily map to the XML output we want
     public RepositoryItemType marshal(ArrayList<RepItem> events) throws Exception {
-        ArrayList<DomainRepItem> appointments = new ArrayList<DomainRepItem>();
-        ArrayList<AgentRepItem> birthdays = new ArrayList<AgentRepItem>();
-        
+        ArrayList<DomainRepItem> domains = new ArrayList<DomainRepItem>();
+        ArrayList<AgentRepItem> agents = new ArrayList<AgentRepItem>();
+        ArrayList<ProtocolRepItem> protocols = new ArrayList<ProtocolRepItem>();
         for (RepItem e : events) {
             if (e instanceof DomainRepItem) {
-                appointments.add((DomainRepItem)e);
-            } else {
-                birthdays.add((AgentRepItem)e);              
-            }
+                domains.add((DomainRepItem)e);
+            } else if (e instanceof AgentRepItem) {
+                agents.add((AgentRepItem)e);              
+            } else if (e instanceof ProtocolRepItem) {
+            	protocols.add((ProtocolRepItem)e);
+            } else throw new Exception("Repository: unknow item");
         }        
-        return new RepositoryItemType(birthdays, appointments);
+        return new RepositoryItemType(agents, domains, protocols);
     }
 
     // map XML type to Java
@@ -27,6 +29,7 @@ public class RepositoryItemTypeAdapter extends XmlAdapter<RepositoryItemType, Ar
         ArrayList<RepItem> events = new ArrayList<RepItem>();
         events.addAll(notifications.getAgentRepItem());
         events.addAll(notifications.getDomainRepItem());
+        events.addAll(notifications.getProtocolRepItem());
         return events;
     }
 }

@@ -8,6 +8,7 @@
             <agentRepItem description="Bayesian Agent" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
         </agentRepItems>
         <domainRepItem/>
+        <protocolRepItem/>
     </items>
     <filename>agentrepository.xml</filename>
 </repository>

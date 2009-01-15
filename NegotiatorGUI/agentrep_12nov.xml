@@ -7,6 +7,7 @@
             <agentRepItem description="The Random Walker" classPath="agents.SimpleAgent" agentName="SimpleAgt"/>
         </agentRepItems>
         <domainRepItem/>
+        <protocolRepItem/>
     </items>
     <filename>agentrepository.xml</filename>
 </repository>
