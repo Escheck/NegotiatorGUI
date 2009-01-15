@@ -1,4 +1,4 @@
-package negotiator.protocol;
+package negotiator.protocol.alternatingoffers;
 
 import negotiator.Domain;
 
@@ -31,6 +31,8 @@ import negotiator.exceptions.Warning;
 
 import negotiator.gui.SessionFrame;
 
+import negotiator.protocol.NegotiationSession;
+import negotiator.protocol.SessionRunner;
 import negotiator.repository.*;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
@@ -55,19 +57,13 @@ import negotiator.xml.SimpleElement;
  * @author W.Pasman. Lots of old code from NegotiationSession and NegotmationManager
  * 
  */
-public class NegotiationSession2 implements Runnable {
-	AgentRepItem agentArep;
-	AgentRepItem agentBrep;
-    private ProfileRepItem profileArep;
-    private ProfileRepItem profileBrep;
-    private String agentAname;
-    private String agentBname;
-    private HashMap<AgentParameterVariable,AgentParamValue>  agentAparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
-    private HashMap<AgentParameterVariable,AgentParamValue>  agentBparams=new HashMap<AgentParameterVariable,AgentParamValue>  ();
+public class AlternatingOffersNegotiationSession extends NegotiationSession {
+	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
+	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
-     /** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
+	/** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
     int tournamentNumber=-1; 
-     int sessionTotalNumber;
+    int sessionTotalNumber;
     int sessionNumber; // the main session number: increases with different session setups
     public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
     
@@ -87,22 +83,12 @@ public class NegotiationSession2 implements Runnable {
 
     /** fields copied from the NegotiationTemplate class */
     
-    private Domain domain;
-    private String agentAUtilitySpaceFileName;
-    private String agentBUtilitySpaceFileName;
-    private UtilitySpace fAgentAUtilitySpace;
-    private UtilitySpace fAgentBUtilitySpace;
-    private SimpleElement fRoot;
-	private String fFileName;    
+
     //private Analysis fAnalysis;
 	private BidSpace bidSpace=null;
     //private int totalTime; // total available time for nego, in seconds.
     
-	private Agent agentA = null;
-	private Agent agentB = null;
-	private SimpleElement fAdditional;
-	
-	SessionRunner sessionrunner;
+	private SimpleElement fAdditional;	
     /** END OF fields copied from the NegotiationTemplate class */
     
     
@@ -126,23 +112,22 @@ public class NegotiationSession2 implements Runnable {
      * @param tournamentnr is the number of the tournament of which this session is a part, or -1 if this session is no part of a tournament.
      * @throws Exception
      */
-    public NegotiationSession2(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
+    public AlternatingOffersNegotiationSession(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
     		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
     	agentArep=agtA;
-    	agentBrep=agtB;
-    	
+    	agentBrep=agtB;    	
     	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time, tournamentnr);
     }
     
-    public NegotiationSession2(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
+/*    public AlternatingOffersNegotiationSession(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
     		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
     		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
     	agentA=agtA;
     	agentB=agtB;
     	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time,tournamentnr);
     }
-
+*/
     /** non_tournament_next_session_nr is used to auto-number non-tournament sessions */
     static int non_tournament_next_session_nr=1;
     
@@ -183,176 +168,10 @@ public class NegotiationSession2 implements Runnable {
     		actionEventListener.add(listener);
     }
     
-    void check() throws Exception {
-    	if (!(getProfileArep().getDomain().equals(getProfileBrep().getDomain())))
-    		throw new IllegalArgumentException("profiles "+getProfileArep()+" and "+getProfileBrep()+" have a different domain.");
-    }
-
-    /***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
-    private Thread negoThread = null;
-    //SessionFrame sf; // this will show the outcomes. Not really a job for NegoSession, TODO remove this,
- 
-     /**
-      * Warning. You can call run() directly (instead of using Thread.start() )
-      * but be aware that run() will not return until the nego session
-      * has completed. That means that your interface will lock up until the session is complete.
-      * And if the negosession uses modal interfaces, this will lock up swing, because modal
-      * interfaces will not launch until the other swing interfaces have handled their events.
-      * (at least this is my current understanding, Wouter, 22aug08).
-      * See "java dialog deadlock" on the web...
-      */
-    public void run() {
-    	try { 
-    		startNegotiation();
-    		// only sleep if batch mode????
-    		Thread.sleep(1000); // 1 second delay before next nego starts. Used to be 5, is it needed anyway?
-    		// Wouter: huh?? removed this           System.exit(0);
-        } catch (Exception e) { new Warning("Problem starting negotiation:"+e); e.printStackTrace();}
-    }
-
-    /** this runs sessionTotalNumber of sessions with the provided settings */
-    public void startNegotiation() throws Exception {
-        //sf = new SessionFrame(agentAname, agentBname);
-        //sf.setVisible(true);
-       // Main.log("Starting negotiations...");
-        for(int i=0;i<sessionTotalNumber;i++) {
-            //Main.log("Starting session " + String.valueOf(i+1));
-            runNegotiationSession(i+1);
-        }
-    }
-    
-    
-    /** do test run of negotiation session.
-     * There may be multiple test runs of a single session, for isntance to take the average score.
-     * returns the result in the global field "outcome"
-     * @param nr is the sessionTestNumber
-     * @throws Exception
-     * 
-     */
-    protected void runNegotiationSession(int nr)  throws Exception
-    {
-    	sessionTestNumber=nr;
-    	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
-        //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
-    	//SessionRunner sessionrunner=new SessionRunner(this);
-    	sessionrunner=new SessionRunner(this);
-    	totalTime=sessionrunner.totTime;
-    	if(Global.fDebug) {
-    		sessionrunner.run();
-        } else {
-        	negoThread = new Thread(sessionrunner);
-            System.out.println("nego start. "+System.currentTimeMillis()/1000);
-            negoThread.start();
-        	try {
-        		synchronized (this) {
-        			System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
-        			 // wait will unblock early if negotiation is finished in time.
-    				wait(totalTime*1000);
-        		}
-        	} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
-        }
-        	//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
-        	//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
-        
-    	stopNegotiation();
-    		
-        // add path to the analysis chart
-        // TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
-        //if (nt.getBidSpace()!=null)
-        //	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
-        	
-    	if(sessionrunner.no==null) {
-    		sessionrunner.JudgeTimeout();
-    	}
-    		outcome=sessionrunner.no;
-    		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
-    		if(fAdditional!=null) { 
-    			if(outcome.additional==null) {
-    				outcome.additional = new SimpleElement("additional");
-    			
-    			}
-    			outcome.additional.addChildElement(fAdditional);
-    		}
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
-            out.write(""+outcome.toXML());
-            out.close();
-        } catch (Exception e) {
-        	new Warning("Exception during writing outcomes:"+e);
-        	e.printStackTrace();
-        }
-        
-    }
-    
-    public void stopNegotiation() {
-    	if (negoThread!=null&&negoThread.isAlive()) {
-    		try {
-    			sessionrunner.stopNegotiation=true; // see comments in sessionrunner..
-    			negoThread.interrupt();
-    			 // we call cleanup of agent from separate thread, preventing any sabotage on kill.
-    			//Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
-    			//cleanup.start();
-    			//TODO call this from separate thread.
-    			//negoThread.stop(); // kill the stuff
-    			 // Wouter: this will throw a ThreadDeath Error into the nego thread
-    			 // The nego thread will catch this and exit immediately.
-    			 // Maybe it should not even try to catch that.
-    		} catch (Exception e) {	new Warning("problem stopping the nego",e); }
-    	}
-        return;
-    }
-    
-    public String toString() {
-    	return "NegotiationSession["+getAgentAStrategyName()+" versus "+getAgentAStrategyName()+"]";
-    }
- 
-    
     /* methods copied from the NegotiationTemplate class */
     
     
-	/**
-	 * @param fileName Wouter: I think this is the domain.xml file.
-	 */
-	private void loadFromFile(String fileName)  throws Exception
-	{
-		SimpleDOMParser parser = new SimpleDOMParser();
-		BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
-		fRoot = parser.parse(file);
-		/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-        else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
-		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
-		domain = new Domain(xml_utility_space);
-		loadAgentsUtilitySpaces();
-		if (Global.analysisEnabled && !Global.batchMode)
-		{
-			if(fRoot.getChildByTagName("analysis").length>0) {
-				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
-			} else {
-				//propose to build an analysis
-/*				Object[] options = {"Yes","No"};                  
-				int n = JOptionPane.showOptionDialog(null,
-						"You have no analysis available for this template. Do you want build it?",
-						"No Analysis",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						options,
-						options);
-				if(n==0) {*/
-					//bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
-					//fAnalysis = Analysis.getInstance(this);
-					//  save the analysis to the cache
-					//fAnalysis.saveToCache();
-				//}
-				
-			}//if
-		}
-		//if(fAnalysis!=null) showAnalysis();	
-		//if (bidSpace!=null) showAnalysis();
-	}
 
-	
-	
 	/**
 	 * 
 	 * Call this method to draw the negotiation paths on the chart with analysis.
@@ -381,10 +200,6 @@ public class NegotiationSession2 implements Runnable {
 	        	i++;
         	}
 	        
-/*	        if (Main.fChart==null) throw new Exception("fChart=null, can not add curve.");
-	        Main.fChart.addCurve("Negotiation path of Agent A ("+String.valueOf(sessionNumber)+")", lAgentAUtilities);
-	        Main.fChart.addCurve("Negotiation path of Agent B ("+String.valueOf(sessionNumber)+")", lAgentBUtilities);
-	        Main.fChart.show();*/
         } catch (Exception e) {
 			// TODO: handle exception
         	e.printStackTrace();
@@ -433,19 +248,6 @@ public class NegotiationSession2 implements Runnable {
 		return lAgentBUtilities;
 	}
 	
-	protected void loadAgentsUtilitySpaces() throws Exception
-	{
-		//load the utility space
-		fAgentAUtilitySpace = new UtilitySpace(getDomain(), agentAUtilitySpaceFileName);
-		System.out.println("utility space statistics for "+"Agent "+agentAUtilitySpaceFileName);
-		fAgentAUtilitySpace.showStatistics();
-		fAgentBUtilitySpace = new UtilitySpace(getDomain(), agentBUtilitySpaceFileName);
-		System.out.println("utility space statistics for "+"Agent "+agentBUtilitySpaceFileName);
-		fAgentBUtilitySpace.showStatistics();
-		return;
-
-	}
-	
 	/**
 	 * 
 	 * @param fileName
@@ -477,22 +279,14 @@ public class NegotiationSession2 implements Runnable {
     public Domain getDomain() {
         return domain;
     }
-    
-    public String getAgentBUtilitySpaceFileName() {
-        return agentBUtilitySpaceFileName;
-    }
-    
-    public String getAgentAUtilitySpaceFileName() {
-        return agentAUtilitySpaceFileName;
-    }
-    
+
 
 	public UtilitySpace getAgentAUtilitySpace() {
-		return fAgentAUtilitySpace;
+		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_A_INDEX);
 	}
 
 	public UtilitySpace getAgentBUtilitySpace() {
-		return fAgentBUtilitySpace;
+		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}
 	
 	public void setLog(String str){
@@ -509,10 +303,11 @@ public class NegotiationSession2 implements Runnable {
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
+
     public BidSpace getBidSpace() { 
     	if(bidSpace==null) {
     		try {    	
-    			bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
+    			bidSpace=new BidSpace(getAgentAUtilitySpace(),getAgentBUtilitySpace());
     		} catch (Exception e) {
     			e.printStackTrace();
 			}
@@ -522,60 +317,27 @@ public class NegotiationSession2 implements Runnable {
     public String getStartingAgent(){
     	return startingAgent;
     }
-	public void setAgentAname(String agentAname) {
-		this.agentAname = agentAname;
-	}
 
 
 	public String getAgentAname() {
-		return agentAname;
+		return getAgentName(ALTERNATING_OFFERS_AGENT_A_INDEX);
 	}
-
-
-	public void setAgentBname(String agentBname) {
-		this.agentBname = agentBname;
-	}
-
 
 	public String getAgentBname() {
-		return agentBname;
+		return getAgentName(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}
-
-
-	public void setAgentAparams(HashMap<AgentParameterVariable,AgentParamValue> agentAparams) {
-		this.agentAparams = agentAparams;
-	}
-
 
 	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentAparams() {
-		return agentAparams;
+		return getAgentParams(ALTERNATING_OFFERS_AGENT_A_INDEX);
 	}
-
-
-	public void setAgentBparams(HashMap<AgentParameterVariable,AgentParamValue>  agentBparams) {
-		this.agentBparams = agentBparams;
-	}
-
 
 	public HashMap<AgentParameterVariable,AgentParamValue>  getAgentBparams() {
-		return agentBparams;
+		return getAgentParams(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}
-
-
-	public void setProfileArep(ProfileRepItem profileArep) {
-		this.profileArep = profileArep;
-	}
-
 
 	public ProfileRepItem getProfileArep() {
 		return profileArep;
 	}
-
-
-	public void setProfileBrep(ProfileRepItem profileBrep) {
-		this.profileBrep = profileBrep;
-	}
-
 
 	public ProfileRepItem getProfileBrep() {
 		return profileBrep;
@@ -593,12 +355,6 @@ public class NegotiationSession2 implements Runnable {
     	}
 		
 	}
-    public void setAgentA(Agent agent) {
-    	agentA=agent;
-    }
-    public void setAgentB(Agent agent) {
-    	agentB=agent;
-    }
 
     public Agent getAgentA() {
     	if(agentA==null)
@@ -634,9 +390,6 @@ public class NegotiationSession2 implements Runnable {
     }
     public void setBidSpace(BidSpace pBidSpace) {
     	bidSpace = pBidSpace;
-    }
-    public SessionRunner getSessionRunner() {
-    	return sessionrunner;    
     }
     public void setAdditional(SimpleElement e) {
     	fAdditional = e;

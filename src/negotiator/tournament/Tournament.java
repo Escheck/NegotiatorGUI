@@ -12,7 +12,7 @@ import negotiator.Agent;
 import negotiator.tournament.VariablesAndValues.*;
 import negotiator.utility.UtilitySpace;
 import negotiator.analysis.BidSpace;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.repository.*;
 
 
@@ -50,7 +50,7 @@ public class Tournament
 	public static final int VARIABLE_AGENT_A = 2;
 	public static final int VARIABLE_AGENT_B = 3;
 	public static final int VARIABLE_NUMBER_OF_RUNS = 4;
-	ArrayList<NegotiationSession2> sessions=null;
+	ArrayList<AlternatingOffersNegotiationSession> sessions=null;
 	
 	HashMap<UtilitySpace,HashMap<UtilitySpace, BidSpace>> bidSpaceCash = null;
 	
@@ -72,7 +72,7 @@ public class Tournament
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
 	 */
-	public synchronized  ArrayList<NegotiationSession2> getSessions() throws Exception {	
+	public synchronized  ArrayList<AlternatingOffersNegotiationSession> getSessions() throws Exception {	
 		session_number=1;
 		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		// get agent A and B value(s)
@@ -90,7 +90,7 @@ public class Tournament
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
-		ArrayList<NegotiationSession2>sessions =new ArrayList<NegotiationSession2>();
+		ArrayList<AlternatingOffersNegotiationSession>sessions =new ArrayList<AlternatingOffersNegotiationSession>();
 		for (ProfileRepItem profileA: profiles) {
 			for (ProfileRepItem profileB: profiles) {
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
@@ -120,12 +120,12 @@ public class Tournament
 	 * @throws exception if one of the variables contains no values (which would prevent any 
 	 * running sessions to be created with that variable.
 	 */
-	ArrayList<NegotiationSession2> allParameterCombis(AgentRepItem agentA,AgentRepItem agentB,
+	ArrayList<AlternatingOffersNegotiationSession> allParameterCombis(AgentRepItem agentA,AgentRepItem agentB,
 			ProfileRepItem profileA, ProfileRepItem profileB) throws Exception {
 		ArrayList<AssignedParameterVariable> allparameters;
 		allparameters=getParametersOfAgent(agentA,AGENT_A_NAME);
 		allparameters.addAll(getParametersOfAgent(agentB,AGENT_B_NAME)); // are the run-time names somewhere?
-		ArrayList<NegotiationSession2> sessions=new ArrayList<NegotiationSession2>();
+		ArrayList<AlternatingOffersNegotiationSession> sessions=new ArrayList<AlternatingOffersNegotiationSession>();
 		allParameterCombis(allparameters,sessions,profileA,profileB,agentA,agentB,new ArrayList<AssignedParamValue>());
 		return sessions;
 	}
@@ -137,7 +137,7 @@ public class Tournament
 	 * @param sessions
 	 * @throws Exception
 	 */
-	void allParameterCombis(ArrayList<AssignedParameterVariable> allparameters, ArrayList<NegotiationSession2> sessions,
+	void allParameterCombis(ArrayList<AssignedParameterVariable> allparameters, ArrayList<AlternatingOffersNegotiationSession> sessions,
 			ProfileRepItem profileA, ProfileRepItem profileB,
 			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
 		if (allparameters.isEmpty()) {
@@ -154,7 +154,7 @@ public class Tournament
 			int numberOfSessions = 1;
 			if(variables.get(3).getValues().size()>0)
 				numberOfSessions = ((TotalSessionNumberValue)( variables.get(3).getValues().get(0))).getValue();
-			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
+			AlternatingOffersNegotiationSession session =new  AlternatingOffersNegotiationSession(agentA, agentB, profileA,profileB,
 		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, numberOfSessions , false,
 		    		tournament_gui_time, tournament_non_gui_time,TournamentNumber) ;
 			sessions.add(session);

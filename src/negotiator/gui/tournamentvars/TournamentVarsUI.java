@@ -19,7 +19,7 @@ import java.awt.Dimension;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.repository.*;
 
 import negotiator.tournament.Tournament;

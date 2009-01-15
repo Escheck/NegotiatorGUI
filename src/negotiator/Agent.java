@@ -19,9 +19,9 @@ import negotiator.utility.UtilitySpace;
 import java.util.Date;
 
 import negotiator.protocol.MetaProtocol;
-import negotiator.protocol.NegotiationSession2;
 import negotiator.protocol.Protocol;
 import negotiator.protocol.SessionRunner;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 /**

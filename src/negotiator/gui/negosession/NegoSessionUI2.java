@@ -17,7 +17,7 @@ import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -103,7 +103,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 
 		ProgressUI2 graphlistener=null;
 		if(fShowProgressUI) graphlistener=new ProgressUI2();
-		NegotiationSession2 ns=new NegotiationSession2(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
+		AlternatingOffersNegotiationSession ns=new AlternatingOffersNegotiationSession(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
 	    		"agent A", "agent B",null,null,1, 1,false,30*60,120,-1);
 		if(fShowProgressUI) {
 			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		

@@ -9,7 +9,7 @@ import agents.BayesianAgentForAuction;
 
 import negotiator.AgentParam;
 import negotiator.analysis.BidSpace;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -22,13 +22,13 @@ import negotiator.utility.UtilitySpace;
 
 public class TournamentTwoPhaseAuction extends Tournament {
 	private int sessionIndex;
-	private ArrayList<ArrayList<NegotiationSession2>> allSessions;
+	private ArrayList<ArrayList<AlternatingOffersNegotiationSession>> allSessions;
 	public TournamentTwoPhaseAuction() {
 		super();
 	}
 	private void generateAllSessions() {
 		try {
-			allSessions = new ArrayList<ArrayList<NegotiationSession2>>();
+			allSessions = new ArrayList<ArrayList<AlternatingOffersNegotiationSession>>();
 			sessionIndex = 0;
 			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
 			//center profiles
@@ -125,7 +125,7 @@ public class TournamentTwoPhaseAuction extends Tournament {
 
 	}
 	
-	private ArrayList<NegotiationSession2> createSession(ProfileRepItem profileCenter, ProfileRepItem profileSeller1, ProfileRepItem profileSeller2) throws Exception {
+	private ArrayList<AlternatingOffersNegotiationSession> createSession(ProfileRepItem profileCenter, ProfileRepItem profileSeller1, ProfileRepItem profileSeller2) throws Exception {
 		bidSpaceCash = new HashMap<UtilitySpace, HashMap<UtilitySpace,BidSpace>>();
 		ArrayList<AgentVariable> agents=getAgentVars();
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
@@ -143,7 +143,7 @@ public class TournamentTwoPhaseAuction extends Tournament {
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
-		ArrayList<NegotiationSession2>sessions =new ArrayList<NegotiationSession2>();
+		ArrayList<AlternatingOffersNegotiationSession>sessions =new ArrayList<AlternatingOffersNegotiationSession>();
 		ProfileRepItem profileA = profileCenter;
 
 		for (int i=0;i<profiles.size();i++) {
@@ -161,7 +161,7 @@ public class TournamentTwoPhaseAuction extends Tournament {
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(2.1));
 			//paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(reservationValue));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(-0.9));
-			NegotiationSession2 session =new  NegotiationSession2(agentA, agentB, profileA,profileB,
+			AlternatingOffersNegotiationSession session =new  AlternatingOffersNegotiationSession(agentA, agentB, profileA,profileB,
 					AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,1, 1, false, 1200, 1200, 1) ;
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
@@ -179,10 +179,10 @@ public class TournamentTwoPhaseAuction extends Tournament {
 
 	}
 	@Override
-	public ArrayList<NegotiationSession2> getSessions() throws Exception {
+	public ArrayList<AlternatingOffersNegotiationSession> getSessions() throws Exception {
 		if(allSessions==null) generateAllSessions();
 		if(sessionIndex<allSessions.size()) {
-		ArrayList<NegotiationSession2> result = allSessions.get(sessionIndex);
+		ArrayList<AlternatingOffersNegotiationSession> result = allSessions.get(sessionIndex);
 		sessionIndex++;
 		return result;
 		}

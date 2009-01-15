@@ -4,7 +4,7 @@ import negotiator.actions.Action;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 
 /** 
  * implement this class in order to subscribe with teh NegotiationManager

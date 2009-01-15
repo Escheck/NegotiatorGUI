@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.MetaProtocol;
-import negotiator.protocol.NegotiationSession2;
+import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.NegotiationEventListener;
 
 /**
@@ -40,8 +40,8 @@ public class TournamentRunner implements Runnable {
      */
     public void run() {
     	try { 
-    		ArrayList<NegotiationSession2> sessions=tournament.getSessions();
-			for (NegotiationSession2 s: sessions) {
+    		ArrayList<AlternatingOffersNegotiationSession> sessions=tournament.getSessions();
+			for (AlternatingOffersNegotiationSession s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);				
 				//fireNegotiationSessionEvent(s);
