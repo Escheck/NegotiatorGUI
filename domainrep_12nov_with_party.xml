@@ -16,6 +16,7 @@
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_ampo_space.xml"/>
             </domainRepItem>
         </domainRepItem>
+        <protocolRepItem/>
     </items>
     <filename>domainrepository.xml</filename>
 </repository>

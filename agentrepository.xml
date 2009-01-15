@@ -13,6 +13,7 @@
             <agentRepItem description="Tries to offer bid with higher util than best opponent bid" classPath="agents.RandomIncreasingUtilAgent" agentName="RandomIncreasingUtilAgent"/>
         </agentRepItems>
         <domainRepItem/>
+        <protocolRepItem/>
     </items>
     <filename>agentrepository.xml</filename>
 </repository>

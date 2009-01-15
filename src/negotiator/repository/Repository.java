@@ -59,7 +59,7 @@ public class Repository
 		/** @author Dmytro */
 		public void save() {
 			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class);		
+				JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class, ProtocolRepItem.class);		
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 						   new Boolean(true));

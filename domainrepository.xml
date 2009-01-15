@@ -35,6 +35,7 @@
                 <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_agent_A.xml"/>
             </domainRepItem>
         </domainRepItem>
+        <protocolRepItem/>
     </items>
     <filename>domainrepository.xml</filename>
 </repository>
