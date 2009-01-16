@@ -11,16 +11,20 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
+import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;
+import negotiator.protocol.NegotiationSession;
+import negotiator.protocol.Protocol;
 import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import org.jdesktop.application.Action;
@@ -43,11 +47,18 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
     }
 
     private void initValues() throws Exception {
+    	ArrayList<ProtocolComboBoxItem> protocolsList = new ArrayList<ProtocolComboBoxItem>();
+    	Repository protocolRep = Repository.getProtocolRepository();
+		for (RepItem protocl: protocolRep.getItems()) {
+			protocolsList.add(new ProtocolComboBoxItem((ProtocolRepItem)protocl));
+		}
+
 		Repository agent_rep=Repository.get_agent_repository();
 		ArrayList<AgentComboBoxItem> agentslist=new ArrayList<AgentComboBoxItem>();
 		for (RepItem agt: agent_rep.getItems()) {
 			agentslist.add(new AgentComboBoxItem((AgentRepItem)agt));
 		}
+		
 		ArrayList<ProfileComboBoxItem> profileslist=new ArrayList<ProfileComboBoxItem>();
 		
 		cmbPrefProfileA.removeAllItems();
@@ -62,30 +73,38 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 			cmbAgentA.addItem(new AgentComboBoxItem((AgentRepItem)agt));
 			cmbAgentB.addItem(new AgentComboBoxItem((AgentRepItem)agt));
 		}
-		
-		
+		cmbProtocol.removeAllItems();
+		for(RepItem protocol : protocolRep.getItems()) {
+			cmbProtocol.addItem(new ProtocolComboBoxItem((ProtocolRepItem)protocol));
+		}
     }
     
 	/** TODO use the parameters. */
 	public void start() throws Exception {
+		ProtocolRepItem protocol = ((ProtocolComboBoxItem)cmbProtocol.getSelectedItem()).protocol;
+		if (protocol ==null) throw new NullPointerException("Please select a protocol");
 		
-		ProfileRepItem agentAprofile=((ProfileComboBoxItem)cmbPrefProfileA.getSelectedItem()).profile;
-		if (agentAprofile==null) throw new NullPointerException("Please select a profile for agent A");
+		ProfileRepItem[] agentProfiles;
+		agentProfiles[0]=((ProfileComboBoxItem)cmbPrefProfileA.getSelectedItem()).profile;
 		
-		ProfileRepItem agentBprofile=((ProfileComboBoxItem)cmbPrefProfileB.getSelectedItem()).profile;
-		if (agentBprofile==null) throw new NullPointerException("Please select a profile for agent B");
 		
-		AgentComboBoxItem agentAsel=((AgentComboBoxItem)cmbAgentA.getSelectedItem());
-		if (agentAsel==null) throw new NullPointerException("Please select agent A");
-		AgentComboBoxItem agentBsel=((AgentComboBoxItem)cmbAgentB.getSelectedItem());
-		if (agentBsel==null) throw new NullPointerException("Please select agent B");
+		agentProfiles[1]=((ProfileComboBoxItem)cmbPrefProfileB.getSelectedItem()).profile;
+		for(ProfileRepItem item : agentProfiles)
+			if (item ==null) throw new NullPointerException("Please select a profile for agent");
+		
+		AgentRepItem[] agents;
+		agents[0] =((AgentComboBoxItem)cmbAgentA.getSelectedItem()).agent;
+		
+		agents[1] = ((AgentComboBoxItem)cmbAgentB.getSelectedItem()).agent;
+		for(AgentRepItem item : agents)
+			if (item==null) throw new NullPointerException("Please select agent B");
 		
 		 // determine the domain
-		DomainRepItem domain=agentAprofile.getDomain();
-		if (domain!=agentBprofile.getDomain())
+		DomainRepItem domain=agentProfiles[0].getDomain();
+		if (domain!=agentProfiles[1].getDomain())
 			throw new IllegalArgumentException("profiles for agent A and B do not have the same domain. Please correct your profiles");
 		
-		NegotiationEventListener ael=new NegotiationEventListener() {
+/*		NegotiationEventListener ael=new NegotiationEventListener() {
 			public void handleActionEvent(negotiator.events.ActionEvent evt) {
 				System.out.println("Caught event "+evt);
 			}
@@ -100,11 +119,15 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 				
 			}
 		};
-
+*/
 		ProgressUI2 graphlistener=null;
 		if(fShowProgressUI) graphlistener=new ProgressUI2();
-		AlternatingOffersNegotiationSession ns=new AlternatingOffersNegotiationSession(agentAsel.agent, agentBsel.agent, agentAprofile, agentBprofile,
-	    		"agent A", "agent B",null,null,1, 1,false,30*60,120,-1);
+		Protocol ns;
+		try {
+			ns = Global.createProtocolInstance(protocol, agents, agentProfiles, null);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		if(fShowProgressUI) {
 			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		
 			ns.addNegotiationEventListener(graphlistener);
@@ -112,8 +135,8 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		}
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 
-		Thread negosession=new Thread(ns);
-		negosession.start();
+		
+		ns.startSession();
 	}
     
 	public ArrayList<ProfileRepItem> getProfiles() throws Exception
@@ -507,4 +530,10 @@ class ProfileComboBoxItem {
 	public ProfileRepItem profile;
 	public ProfileComboBoxItem(ProfileRepItem p) {profile=p; } 
 	public String toString() { return profile.getURL().getFile(); }
+}
+
+class ProtocolComboBoxItem {
+	public ProtocolRepItem protocol;
+	public ProtocolComboBoxItem(ProtocolRepItem p) {protocol=p; } 
+	public String toString() { return protocol.getName(); }
 }

@@ -18,10 +18,8 @@ import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
 
-import negotiator.protocol.MetaProtocol;
 import negotiator.protocol.Protocol;
-import negotiator.protocol.SessionRunner;
-import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
+import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 /**
@@ -38,7 +36,7 @@ public abstract class Agent {
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     public Integer			sessionNumber;
     public Integer			sessionTotalNumber;
-    public Protocol 	fNegotiation;// can be accessed only in the expermental setup 
+    public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     

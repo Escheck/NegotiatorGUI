@@ -28,9 +28,9 @@ import negotiator.analysis.BidSpace;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
-import negotiator.protocol.MetaProtocol;
 import negotiator.protocol.Protocol;
-import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
+import negotiator.protocol.BilateralAtomicNegotiationSession;
+
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -44,7 +44,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	private ProgressInfo progressinfo; // the table model
 	protected int round = 0;
 	private BidChart bidChart;
-	protected Protocol session;
+	protected BilateralAtomicNegotiationSession session;
 	private TextArea logText;
 	private JPanel chart;
 	
@@ -57,10 +57,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		biddingTable.setModel(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
 		ProgressUI1("initialized...",bidChart,biddingTable);
-
     }
     
-    public void fillGUI(Protocol ng){
+    public void fillGUI(BilateralAtomicNegotiationSession ng){
     	setNegotiationSession(ng);
     	setLogText(ng.getLog());
     	addGraph();
@@ -87,8 +86,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
         pane.add(chart,c);
 
         pnlChart.add(chart);
-        
-		
 		logText = new TextArea();
 		
 		logText.setText("");
@@ -324,7 +321,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		textOutput.setText(str);
 	}
 	
-	public void setNegotiationSession(Protocol nego){
+	public void setNegotiationSession(BilateralAtomicNegotiationSession nego){
 		session = nego;
 		bidChart.setAgentBName("Agent B:"+nego.getAgentBname());
 		bidChart.setAgentAName("Agent A:"+nego.getAgentAname());

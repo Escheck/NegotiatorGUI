@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.MetaProtocol;
-import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
+import negotiator.protocol.Protocol;
 import negotiator.NegotiationEventListener;
 
 /**
@@ -40,19 +39,19 @@ public class TournamentRunner implements Runnable {
      */
     public void run() {
     	try { 
-    		ArrayList<AlternatingOffersNegotiationSession> sessions=tournament.getSessions();
-			for (AlternatingOffersNegotiationSession s: sessions) {
+    		ArrayList<Protocol> sessions=tournament.getSessions();
+			for (Protocol s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);				
 				//fireNegotiationSessionEvent(s);
-				s.setTournamentRunner(this);
-				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
+				//s.setTournamentRunner(this);
+				s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 				
 			}
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
     }
     
-    public void fireNegotiationSessionEvent(MetaProtocol session ) {
+    public void fireNegotiationSessionEvent(Protocol session ) {
     	for(NegotiationEventListener listener :  negotiationEventListeners) 
     		if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
     }

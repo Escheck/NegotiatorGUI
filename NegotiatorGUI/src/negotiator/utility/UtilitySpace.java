@@ -53,9 +53,8 @@ public class UtilitySpace {
     private SimpleElement fXMLRoot;
     public SimpleElement getXMLRoot() { return fXMLRoot;}
     private Double fReservationValue = null;
-//    private Map<Issue,Evaluator> fEvaluators;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
-    
+    private String fileName;
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof UtilitySpace)) return false;
@@ -95,6 +94,7 @@ public class UtilitySpace {
     public UtilitySpace(Domain domain, String fileName) throws Exception
     {
         this.domain = domain;
+        this.fileName = fileName;
     	fEvaluators = new HashMap<Objective, Evaluator>();
         if(!fileName.equals(""))
         	loadTreeFromFile(fileName);
@@ -122,6 +122,7 @@ public class UtilitySpace {
     public UtilitySpace(UtilitySpace us)
     {
     	domain=us.getDomain();
+    	fileName = us.getFileName();
     	fEvaluators = new HashMap<Objective, Evaluator>();
     	fReservationValue = us.getReservationValue(); 
     	// and clone the evaluators
@@ -987,4 +988,7 @@ public class UtilitySpace {
     	return fReservationValue;
     }
 
+    public String getFileName() {
+    	return fileName;
+    }
 }

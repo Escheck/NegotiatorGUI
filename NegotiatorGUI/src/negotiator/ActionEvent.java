@@ -1,9 +1,10 @@
 package negotiator;
 
 import negotiator.actions.Action;
-import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 
-/** This class records details about an action of an agent. 
+
+/** 
+ * This class records details about an action of an agent. 
  * It is passed as event to interested parties (currently the logger&data display GUI).
  * 
  * 
