@@ -9,11 +9,19 @@
 
 package negotiator;
 
+import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.Calendar;
 
 import negotiator.gui.NegoGUIApp;
+import negotiator.protocol.Protocol;
+import negotiator.repository.AgentRepItem;
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.ProtocolRepItem;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
 
 
@@ -30,7 +38,8 @@ public class Global {
     public static boolean fDebug = false;
     public static boolean analysisEnabled=true; // set to true to enable the realtime analysis tool.
     public static boolean experimentalSetup=true;//set to true to allow agent to access negotiation environment
-     
+
+    
     public Global() {
     }
     
@@ -79,5 +88,34 @@ public class Global {
 			localDirName.substring(0,localDirName.lastIndexOf("/")); //clean off the file name
 	
 		return localDirName;
+	}
+	public static Protocol createProtocolInstance (ProtocolRepItem protRepItem, AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams) throws Exception {
+		Protocol ns;
+    	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+    	Class klass = loader.loadClass(protRepItem.getClassPath());
+    	Class[] paramTypes = {
+    			 	AgentRepItem[].class,
+    			 	ProfileRepItem[].class,
+    			 	HashMap[].class
+    			 	};
+    	      
+    	      Constructor cons = klass.getConstructor(paramTypes);
+    	      
+    	      System.out.println( "Found the constructor: " + cons);
+
+    	      
+    	      Object[] args = { 
+    	            agentRepItems, 
+    	            profileRepItems, 
+    	            agentParams};
+    	      
+    	      Object theObject = cons.newInstance(args);
+    	      //System.out.println( "New object: " + theObject);
+    	ns = (Protocol)(theObject);
+    	return ns;
+		
+	}
+	public static boolean isExperimentalSetup() {
+		return experimentalSetup;
 	}
 }

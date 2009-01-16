@@ -21,7 +21,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 
-import negotiator.protocol.MetaProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -34,8 +34,8 @@ import java.util.Hashtable;
  */
 public class TournamentProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener{
 	private NegoTableModel resultTableModel; // the table model	
-	private MetaProtocol negoSession;
-	private ArrayList <AlternatingOffersNegotiationSession> sessionArray;
+	private Protocol negoSession;
+	private ArrayList <Protocol> sessionArray;
 	private int session;
 	private ProgressUI2 sessionProgress;
 	private ProgressUI2 oldUI;
@@ -45,7 +45,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	
     /** Creates new form TournamentProgressUI2 */
     public TournamentProgressUI2(ProgressUI2 pUI) {
-    	sessionArray = new ArrayList<AlternatingOffersNegotiationSession>();
+    	sessionArray = new ArrayList<Protocol>();
     	jPanel1 = pUI;
         initComponents(); 
 		sessionProgress = pUI;
