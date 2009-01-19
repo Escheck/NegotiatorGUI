@@ -13,8 +13,10 @@ import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
 import negotiator.actions.Action;
 import negotiator.events.*;
+import negotiator.exceptions.Warning;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
@@ -22,6 +24,16 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.*;
 
 public abstract class Protocol implements Runnable {
+    protected Thread negoThread = null;
+    /**
+     * stopNegotiation indicates that the session has now ended.
+     * it is checked after every call to the agent,
+     * and if it happens to be true, session is immediately returned without any updates to the results list.
+     * This is because killing the thread in many cases will return Agent.getAction() but with
+     * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
+     */
+    public boolean stopNegotiation=false;
+
 	private AgentRepItem[] agentRepItems;	
     private ProfileRepItem[] profileRepItems;    
     private String[] agentNames;
@@ -30,7 +42,6 @@ public abstract class Protocol implements Runnable {
     /** -- **/
     protected Domain domain;
     private UtilitySpace[] agentUtilitySpaces;
-
     
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();    
 
@@ -43,7 +54,7 @@ public abstract class Protocol implements Runnable {
 	
 	//public Agent getAgent(int index);
 	
-	public static ArrayList<Protocol> getTournamentSessions(TournamentValue[] vars) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		throw new Exception("This protocol cannot be used in a tournament");
 	}
 
@@ -53,12 +64,21 @@ public abstract class Protocol implements Runnable {
     public Protocol(AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
-    	this.agentParams = agentParams.clone();    	
+    	if (agentParams!=null) 
+    		this.agentParams = agentParams.clone();
+    	else this.agentParams = new HashMap[agentRepItems.length];
     	loadAgentsUtilitySpaces();
     }
 	protected void loadAgentsUtilitySpaces() throws Exception
 	{
-		//load the utility space
+		if(domain==null)
+			domain = new Domain(profileRepItems[0].getDomain().getURL().getFile());
+		//TODO: read the agent names
+		agentNames = new String[profileRepItems.length];
+		agentNames[0] = "Agent A";
+		agentNames[1] = "Agent B";
+		//load the utility space		
+		agentUtilitySpaces = new UtilitySpace[profileRepItems.length]; 
 		for(int i=0;i<profileRepItems.length;i++) {
 			ProfileRepItem profile = profileRepItems[i];
 			agentUtilitySpaces[i] = new UtilitySpace(domain, profile.getURL().getFile());
@@ -129,6 +149,15 @@ public abstract class Protocol implements Runnable {
 			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, remarks ));
 		}
 	}
+	public synchronized void fireBilateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSession session,ProfileRepItem profileA,
+			ProfileRepItem profileB,
+			AgentRepItem agentA,
+			AgentRepItem agentB) {
+		for(NegotiationEventListener listener : actionEventListener) {
+			listener.handleBlateralAtomicNegotiationSessionEvent(new BilateralAtomicNegotiationSessionEvent (this, session,profileA,profileB,agentA,agentB));
+		}
+	}
+	
     public synchronized void fireLogMessage(String source, String log) { 
     	for(NegotiationEventListener listener : actionEventListener) { 
         	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
@@ -151,9 +180,29 @@ public abstract class Protocol implements Runnable {
     public  UtilitySpace getAgentUtilitySpaces(int index) {
     	return agentUtilitySpaces[index];
     }
+    public int getNumberOfAgents() {
+    	return agentRepItems.length;
+    }
 
     public int getSessionNumber() {
     	return 1;
+    }
+    public void stopNegotiation() {
+    	if (negoThread!=null&&negoThread.isAlive()) {
+    		try {
+    			stopNegotiation=true; // see comments in sessionrunner..
+    			negoThread.interrupt();
+    			 // we call cleanup of agent from separate thread, preventing any sabotage on kill.
+    			//Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
+    			//cleanup.start();
+    			//TODO call this from separate thread.
+    			//negoThread.stop(); // kill the stuff
+    			 // Wouter: this will throw a ThreadDeath Error into the nego thread
+    			 // The nego thread will catch this and exit immediately.
+    			 // Maybe it should not even try to catch that.
+    		} catch (Exception e) {	new Warning("problem stopping the nego",e); }
+    	}
+        return;
     }
 
 }

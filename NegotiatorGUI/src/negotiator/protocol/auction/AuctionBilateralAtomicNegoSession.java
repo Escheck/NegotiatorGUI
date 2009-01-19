@@ -12,12 +12,13 @@ import negotiator.utility.UtilitySpace;
 public class AuctionBilateralAtomicNegoSession extends AlternatingOffersBilateralAtomicNegoSession {
 
 	public AuctionBilateralAtomicNegoSession(Protocol protocol, Agent agentA,
-			Agent agentB, UtilitySpace spaceA, UtilitySpace spaceB,
+			Agent agentB, String agentAname, String agentBname,
+			UtilitySpace spaceA, UtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent, int totalTime) throws Exception {
-		super(protocol, agentA, agentB, spaceA, spaceB, agentAparams, agentBparams,
-				startingAgent, totalTime);
+		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
+				agentAparams, agentBparams, startingAgent, totalTime);
 		// TODO Auto-generated constructor stub
 	}
 

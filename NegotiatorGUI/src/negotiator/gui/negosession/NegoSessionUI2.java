@@ -82,7 +82,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		ProtocolRepItem protocol = ((ProtocolComboBoxItem)cmbProtocol.getSelectedItem()).protocol;
 		if (protocol ==null) throw new NullPointerException("Please select a protocol");
 		
-		ProfileRepItem[] agentProfiles;
+		ProfileRepItem[] agentProfiles = new ProfileRepItem[2];
 		agentProfiles[0]=((ProfileComboBoxItem)cmbPrefProfileA.getSelectedItem()).profile;
 		
 		
@@ -90,7 +90,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		for(ProfileRepItem item : agentProfiles)
 			if (item ==null) throw new NullPointerException("Please select a profile for agent");
 		
-		AgentRepItem[] agents;
+		AgentRepItem[] agents = new AgentRepItem[2];
 		agents[0] =((AgentComboBoxItem)cmbAgentA.getSelectedItem()).agent;
 		
 		agents[1] = ((AgentComboBoxItem)cmbAgentB.getSelectedItem()).agent;
@@ -125,11 +125,13 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 			ns = Global.createProtocolInstance(protocol, agents, agentProfiles, null);
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+			throw new Exception("Cannot create protocol.");
 		}
 		if(fShowProgressUI) {
 			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		
 			ns.addNegotiationEventListener(graphlistener);
-			graphlistener.setNegotiationSession(ns);
+			//graphlistener.setNegotiationSession(ns);
 		}
 		// java.awt.EventQueue.invokeLater(ns); // this does not work... still deadlock in swing.
 		 

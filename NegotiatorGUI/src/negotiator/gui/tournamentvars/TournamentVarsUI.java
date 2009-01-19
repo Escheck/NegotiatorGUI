@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.Dimension;
 
+import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
@@ -306,6 +307,12 @@ public class TournamentVarsUI extends JFrame {
 			}
 
 			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void handleBlateralAtomicNegotiationSessionEvent(
+					BilateralAtomicNegotiationSessionEvent evt) {
 				// TODO Auto-generated method stub
 				
 			}

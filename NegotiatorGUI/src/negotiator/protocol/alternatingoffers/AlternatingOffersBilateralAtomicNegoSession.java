@@ -21,8 +21,6 @@ import negotiator.xml.SimpleElement;
 public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
 
 	//AlternatingOffersNegotiationSession session;
-	
-    
     /**
      * stopNegotiation indicates that the session has now ended.
      * it is checked after every call to the agent,
@@ -31,6 +29,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
      */
     public boolean stopNegotiation=false;
+	
+    
 
     public NegotiationOutcome no;
 
@@ -38,7 +38,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     private boolean agentBtookAction = false;
     protected String startingAgent;
     boolean agentAStarts=false;
-    public SimpleElement additionalLog = new SimpleElement("additional_log");
     
     /* time/deadline */
     Date startTime; 
@@ -55,6 +54,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
     		Agent agentA,
 			Agent agentB, 
+			String agentAname, 
+			String agentBname,
 			UtilitySpace spaceA, 
 			UtilitySpace spaceB, 
 			HashMap<AgentParameterVariable,AgentParamValue> agentAparams,
@@ -62,7 +63,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			String startingAgent,
 			int totalTime) throws Exception {
     	
-		super(protocol, agentA, agentB, spaceA, spaceB, agentAparams, agentBparams);
+		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB, agentAparams, agentBparams);
 		this.protocol = (AlternatingOffersProtocol) protocol;
 		this.startingAgent = startingAgent;
         this.totTime = totalTime;
@@ -89,7 +90,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             stopNegotiation = false;
             Action action = null;
             
-            if (startingAgent.equals(gentAname)) currentAgent=agentA;
+            if (startingAgent.equals(agentAname)) currentAgent=agentA;
            	else currentAgent=agentB;
             
         	System.out.println("starting with agent "+currentAgent);
@@ -208,32 +209,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
     }
 
-	public ArrayList<BidPoint> getAgentABids() {
-		return fAgentABids;
-	}
 	
-	public ArrayList<BidPoint> getAgentBBids() {
-		return fAgentBBids;
-	}
-	
-    public double getOpponentUtility(Agent pAgent, Bid pBid) throws Exception{
-    	if(pAgent.equals(agentA)) 
-    		return spaceB.getUtility(pBid);
-    	else
-    		return spaceA.getUtility(pBid);
-    }
-    public double getOpponentWeight(Agent pAgent, int pIssueID) throws Exception{
-    	if(pAgent.equals(agentA)) 
-    		return spaceB.getWeight(pIssueID);
-    	else
-    		return spaceA.getWeight(pIssueID);
-    }
-    
-    public void addAdditionalLog(SimpleElement pElem) {
-    	if(pElem!=null)
-    		additionalLog.addChildElement(pElem);
-    	
-    }
     
     /** This is the running method of the negotiation thread.
      * It contains the work flow of the negotiation. 
@@ -291,6 +267,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     public NegotiationOutcome getNegotiationOutcome() {
     	return no;
     }
+	public String getStartingAgent() {
+		return startingAgent;
+	}
 
 }
 

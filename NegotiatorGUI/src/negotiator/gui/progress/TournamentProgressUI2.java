@@ -17,6 +17,7 @@ import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.actions.EndNegotiation;
 import negotiator.events.ActionEvent;
+import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
@@ -183,8 +184,9 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 	}
 
-
-	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+	public void handleBlateralAtomicNegotiationSessionEvent(
+			BilateralAtomicNegotiationSessionEvent evt) {
+		// TODO Auto-generated method stub
 		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		session+=1;
 		if(session>resultTable.getModel().getRowCount()){
@@ -212,15 +214,19 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 				{agentBParams+= entry.getKey().varToString() + " " + entry.getValue().toString(); i++;}
 			resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent a param
 		}
-		resultTable.getModel().setValueAt(negoSession.getProfileArep(),session-1,0);//profile 1
-		resultTable.getModel().setValueAt(negoSession.getProfileBrep(),session-1,1);//profile 2
-		resultTable.getModel().setValueAt(negoSession.getAgentAStrategyName(),session-1,2);//agent a
-		resultTable.getModel().setValueAt(negoSession.getAgentBStrategyName(),session-1,3);//agent b
+		resultTable.getModel().setValueAt(evt.getProfileA().toString(),session-1,0);//profile 1
+		resultTable.getModel().setValueAt(evt.getProfileB().toString(),session-1,1);//profile 2
+		resultTable.getModel().setValueAt(evt.getAgentA().getName(),session-1,2);//agent a
+		resultTable.getModel().setValueAt(evt.getAgentB().getName(),session-1,3);//agent b
 	    
 		//clear the ProgressGUI
 		System.out.println("resetting the GUI after NegotiationSessionEvent.");
 		sessionProgress.resetGUI();
 		sessionProgress.setNegotiationSession(negoSession);
+		
+	}
+
+	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
 	}
 	
 	public class MyListSelectionListener implements ListSelectionListener {
@@ -267,5 +273,6 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         }
 
     }
+
 	
 }
