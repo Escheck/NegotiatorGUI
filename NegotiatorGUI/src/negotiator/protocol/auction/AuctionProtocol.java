@@ -1,5 +1,6 @@
 package negotiator.protocol.auction;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import negotiator.Agent;
@@ -21,26 +22,17 @@ public class AuctionProtocol extends Protocol {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public NegotiationOutcome getNegotiationOutcome() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void run() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Agent getAgent(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public void startSession() {
@@ -48,10 +40,13 @@ public class AuctionProtocol extends Protocol {
 		
 	}
 
-	@Override
-	public Protocol getTournamentSessions(TournamentValue[] vars) {
+	public void run() {
 		// TODO Auto-generated method stub
+		
+	}
+	public static ArrayList<Protocol> getTournamentSessions(TournamentValue[] vars) throws Exception {
 		return null;
 	}
+
 
 }
