@@ -25,6 +25,7 @@ import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
+import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
@@ -61,7 +62,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
     
     public void fillGUI(BilateralAtomicNegotiationSession ng){
     	setNegotiationSession(ng);
-    	setLogText(ng.getLog());
+    	setLogText(session.getLog());
     	addGraph();
     	addTableData();
     }
@@ -322,6 +323,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	public void setNegotiationSession(BilateralAtomicNegotiationSession nego){
+		nego.addNegotiationEventListener(this);
 		session = nego;
 		bidChart.setAgentBName("Agent B:"+nego.getAgentBname());
 		bidChart.setAgentAName("Agent A:"+nego.getAgentAname());
@@ -475,6 +477,12 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void handleBlateralAtomicNegotiationSessionEvent(
+			BilateralAtomicNegotiationSessionEvent evt) {
+		// TODO Auto-generated method stub
+		setNegotiationSession(evt.getSession());
 	}	
 
 

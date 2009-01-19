@@ -12,10 +12,9 @@ import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.tournament.VariablesAndValues.TournamentValue;
+import negotiator.tournament.VariablesAndValues.*;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.*;
 
@@ -25,8 +24,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
 
-	/** tournamentNumber is the tournament.TournamentNumber, or -1 if this session is not part of a tournament*/
-    int tournamentNumber=-1; 
     int sessionTotalNumber;
     int sessionNumber; // the main session number: increases with different session setups
     public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
@@ -38,12 +35,13 @@ public class AlternatingOffersProtocol extends Protocol {
 	String startingAgent; // agentAname or agnetBname
 
 	NegotiationOutcome outcome;
-	private String log;
+
 	
 	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not	
     public int non_gui_nego_time = 120;
     public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
-
+    
+    private static int tournament_gui_time=30*60, tournament_non_gui_time=120;
 
     private Agent agentA;
     private Agent agentB;
@@ -55,18 +53,14 @@ public class AlternatingOffersProtocol extends Protocol {
 	AlternatingOffersBilateralAtomicNegoSession sessionrunner;
     /** END OF fields copied from the NegotiationTemplate class */
     
-
     
     /** non_tournament_next_session_nr is used to auto-number non-tournament sessions */
     static int non_tournament_next_session_nr=1;
-    
 
     TournamentRunner tournamentRunner;
-
-    
 	
-	
-
+	 /** shared counter */
+	static int session_number;
 
     /** fields copied from the NegotiationTemplate class */
     
@@ -77,9 +71,6 @@ public class AlternatingOffersProtocol extends Protocol {
     
 	
     /** END OF fields copied from the NegotiationTemplate class */
-    
-
-
     
     /** 
      * Creates a new instance of Negotiation 
@@ -150,14 +141,13 @@ public class AlternatingOffersProtocol extends Protocol {
     
 
     /***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
-    private Thread negoThread = null;
 
     public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 			throws Exception {
 		super(agentRepItems, profileRepItems, agentParams);
-		// TODO Auto-generated constructor stub
+		sessionTotalNumber = 1;
 	}
 
  
@@ -201,30 +191,37 @@ public class AlternatingOffersProtocol extends Protocol {
     	java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
     	agentA = (Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
    		agentA.setName(getAgentAname());
-   		//session.setAgentA(agentA);
 
    		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
     	agentB = (Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
     	agentB.setName(getAgentBname());
-    	//session.setAgentB(agentB);
     	
-
     	sessionTestNumber=nr;
     	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	//SessionRunner sessionrunner=new SessionRunner(this);
+    	startingAgent=getAgentAname();
+    	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
+    		startingAgent=getAgentBname();
+    	}
+    	
     	sessionrunner=new AlternatingOffersBilateralAtomicNegoSession(this, 
     							agentA, 
     							agentB, 
+    							getAgentAname(),
+    							getAgentBname(),
     							getAgentAUtilitySpace(), 
     							getAgentBUtilitySpace(), 
     							getAgentAparams(),
     							getAgentBparams(),
-    							log, non_gui_nego_time);
-
+    							startingAgent,
+    							non_gui_nego_time);
+    	fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep());
     	if(Global.fDebug) {
     		sessionrunner.run();
         } else {
+        	if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
+        	else totalTime = gui_nego_time;
         	negoThread = new Thread(sessionrunner);
             System.out.println("nego start. "+System.currentTimeMillis()/1000);
             negoThread.start();
@@ -328,47 +325,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 		
 	}
-	public int getNrOfBids(){
-		return sessionrunner.fAgentABids.size()+sessionrunner.fAgentBBids.size();
-	}
 	
-	//alinas code
-	public double[][] getNegotiationPathA(){
-		System.out.println("fAgentABids "+sessionrunner.fAgentABids.size());
-		double[][] lAgentAUtilities = new double[2][sessionrunner.fAgentABids.size()];
-		try
-        {
-			int i=0;
-	    	for (BidPoint p:sessionrunner.fAgentABids)
-	    	{
-	        	lAgentAUtilities [0][i] = p.utilityA;
-	        	lAgentAUtilities [1][i] = p.utilityB;
-	        	i++;
-	    	}
-        } catch (Exception e) {
-			e.printStackTrace();
-        	return null;
-		}
-    	
-		return lAgentAUtilities; 
-	}
-	public double[][] getNegotiationPathB(){
-		System.out.println("fAgentBBids "+sessionrunner.fAgentBBids.size());
-		double[][] lAgentBUtilities = new double [2][sessionrunner.fAgentBBids.size()];  
-		try{
-			int i=0;
-	    	for (BidPoint p:sessionrunner.fAgentBBids)
-	    	{
-	        	lAgentBUtilities [0][i] = p.utilityA;
-	        	lAgentBUtilities [1][i] = p.utilityB;
-	        	i++;
-	    	}
-	 	} catch (Exception e) {
-		   	e.printStackTrace();
-		   	return null;
-		}
-		return lAgentBUtilities;
-	}
 	
 	/**
 	 * 
@@ -495,28 +452,13 @@ public class AlternatingOffersProtocol extends Protocol {
     public void setTournamentRunner(TournamentRunner runner) {
     	tournamentRunner = runner; 
     }
-    public int getTournamentNumber() { 
-    	return tournamentNumber; 
-    }
-    public int getSessionNumber() { 
-    	return sessionNumber; 
-    }
-    public int getTestNumber() { 
-    	return sessionTestNumber; 
-    }
 
 	
-	public void setLog(String str){
-		log = str;
-	}
-	public String getLog(){
-		return log;
-	}
-
      /**
       * @return total available time for entire nego, in seconds.
       */
     public Integer getTotalTime() { return totalTime; }
+
     public String getStartingAgent(){
     	return startingAgent;
     }
@@ -563,10 +505,142 @@ public class AlternatingOffersProtocol extends Protocol {
 			e.printStackTrace();
 		}
 	}
+	/*-------------------------------------- TOURNAMENT BUILDING -------------------------*/
+	
+	static final String AGENT_A_NAME="Agent A";
+	static final String AGENT_B_NAME="Agent B";
+	
+	/** called when you press start button in Tournament window.
+	 * This builds the sessions array from given Tournament vars 
+	 * The procedure skips sessions where both sides use the same preference profiles.
+	 * @throws exception if something wrong with the variables, eg not set. 
+	 */
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+	
+		session_number=1;
+		// get agent A and B value(s)
+		ArrayList<AgentVariable> agents = tournament.getAgentVars();
+		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
+		ArrayList<TournamentValue> agentAvalues=agents.get(0).getValues();
+		if (agentAvalues.isEmpty()) 
+			throw new IllegalStateException("Agent A does not contain any values!");
+		ArrayList<TournamentValue> agentBvalues=agents.get(1).getValues();
+		if (agentBvalues.isEmpty()) 
+			throw new IllegalStateException("Agent B does not contain any values!");
 
-	public static ArrayList<Protocol> getTournamentSessions(TournamentValue[] vars) throws Exception {
-		throw new Exception("This protocol cannot be used in a tournament");
+		ArrayList<ProfileRepItem> profiles=tournament.getProfiles();
+		
+		// we need to exhaust the possible combinations of all variables.
+		// we iterate explicitly over the profile and agents, because we need to permutate
+		// only the parameters for the selected agents.
+		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
+		for (ProfileRepItem profileA: profiles) {
+			for (ProfileRepItem profileB: profiles) {
+				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
+				if (profileA.equals(profileB)) continue;
+				for (TournamentValue agentAval: agentAvalues ) {
+					AgentRepItem agentA=((AgentValue)agentAval).getValue();
+					for (TournamentValue agentBval: agentBvalues) {
+						AgentRepItem agentB=((AgentValue)agentBval).getValue();
+						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
+					}
+				}
+				
+			}
+		}
+		return sessions;
 	}
+	
+	
+	/** 
+	 * This is a recursive function that iterates over all *parameters* and tries all values for each,
+	 * recursively calling itself to iterate over the remaining parameters.
+	 * This only runs over parameters, not the other variables (Agents and Profiles)
+	 * because there may be many parameters and we need to filter 
+	 * Not all permutations of the vars are acceptable, for instance domains have to be idnetical.
+	 * One optimization: 
+	 * @param sessions is the final result: all valid permutations of variables. 
+	 * @param varnr is the index of the variable in the variables array.
+	 * @throws exception if one of the variables contains no values (which would prevent any 
+	 * running sessions to be created with that variable.
+	 */
+	protected static ArrayList<AlternatingOffersProtocol> allParameterCombis(Tournament tournament, AgentRepItem agentA,AgentRepItem agentB,
+			ProfileRepItem profileA, ProfileRepItem profileB) throws Exception {
+		ArrayList<AssignedParameterVariable> allparameters;
+		allparameters=tournament.getParametersOfAgent(agentA,AGENT_A_NAME);
+		allparameters.addAll(tournament.getParametersOfAgent(agentB,AGENT_B_NAME)); // are the run-time names somewhere?
+		ArrayList<AlternatingOffersProtocol> sessions=new ArrayList<AlternatingOffersProtocol>();
+		allParameterCombis(tournament, allparameters,sessions,profileA,profileB,agentA,agentB,new ArrayList<AssignedParamValue>());
+		return sessions;
+	}
+	
+	/**
+	 * adds all permutations of all NegotiationSessions to the given sessions array.
+	 * Note, this is not threadsafe, if called from multiple threads the session number will screw up.
+	 * @param allparameters the parameters of the agents that were selected for this nego session.
+	 * @param sessions
+	 * @throws Exception
+	 */
+	protected static void allParameterCombis(Tournament tournament, ArrayList<AssignedParameterVariable> allparameters, ArrayList<AlternatingOffersProtocol> sessions,
+			ProfileRepItem profileA, ProfileRepItem profileB,
+			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
+		if (allparameters.isEmpty()) {
+			 // separate the parameters into those for agent A and B.
+			HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue>();
+			HashMap<AgentParameterVariable,AgentParamValue> paramsB = new HashMap<AgentParameterVariable,AgentParamValue>();
+			int i=0;
+			for (AssignedParamValue v: chosenvalues) {
+				if (v.agentname==AGENT_A_NAME) paramsA.put(allparameters.get(i).parameter, v.value); 
+				else paramsB.put(allparameters.get(i).parameter,v.value);
+				i++;
+			}
+			 // TODO compute total #sessions. Now fixed to 9999
+			int numberOfSessions = 1;
+			if(tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS ).getValues().size()>0)
+				numberOfSessions = ((TotalSessionNumberValue)( tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS).getValues().get(0))).getValue();
+/*			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agentA, agentB, profileA,profileB,
+		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, numberOfSessions , false,
+		    		tournament_gui_time, tournament_non_gui_time,1);//TODO::TournamentNumber) ;*/
+			AgentRepItem[] agents = new AgentRepItem[2];
+			agents[0] = agentA;
+			agents[1] = agentB;
+			ProfileRepItem[] profiles = new ProfileRepItem[2];
+			profiles[0] = profileA;
+			profiles[1] = profileB;
+			HashMap<AgentParameterVariable,AgentParamValue>[] params = new HashMap[2];
+			params[0] = paramsA;
+			params[1] = paramsB;
+			
+			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agents, profiles,params); 
+			sessions.add(session);
+			//check if the analysis is already made for the prefs. profiles
+			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+			if(bidSpace!=null) {
+				session.setBidSpace(bidSpace);
+			} else {
+				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
+				BidSpaceCash.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
+				session.setBidSpace(bidSpace);
+			}
+		} else {
+			// pick next variable, and compute all permutations.
+			AssignedParameterVariable v=allparameters.get(0);
+			 // remove that variable from the list... using clone to avoid damaging the original being used higher up
+			ArrayList<AssignedParameterVariable> newparameters=(ArrayList<AssignedParameterVariable>)allparameters.clone();
+			newparameters.remove(0);
+			ArrayList<TournamentValue> tvalues=v.parameter.getValues();
+			if (tvalues.isEmpty()) throw new IllegalArgumentException("tournament parameter "+v.parameter+" has no values!");
+			 // recursively do all permutations for the remaining vars.
+			for (TournamentValue tv: tvalues) {
+				ArrayList<AssignedParamValue> newchosenvalues=(ArrayList<AssignedParamValue>) chosenvalues.clone();
+				newchosenvalues.add(new AssignedParamValue((AgentParamValue)tv,v.agentname));
+				allParameterCombis(tournament, newparameters, sessions, profileA,  profileB,agentA,  agentB,newchosenvalues);
+			} 
+		}	    	
+	}
+
+	
+
 	
 	
 }

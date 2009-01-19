@@ -89,6 +89,11 @@ public class Global {
 	
 		return localDirName;
 	}
+	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem) throws Exception{
+    	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+    	Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem.getClassPath());
+    	return klass;
+	}
 	public static Protocol createProtocolInstance (ProtocolRepItem protRepItem, AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams) throws Exception {
 		Protocol ns;
     	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
