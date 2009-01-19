@@ -21,8 +21,8 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 
+import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
-import negotiator.protocol.alternatingoffers.AlternatingOffersNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
@@ -34,8 +34,8 @@ import java.util.Hashtable;
  */
 public class TournamentProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener{
 	private NegoTableModel resultTableModel; // the table model	
-	private Protocol negoSession;
-	private ArrayList <Protocol> sessionArray;
+	private BilateralAtomicNegotiationSession negoSession;
+	private ArrayList <BilateralAtomicNegotiationSession> sessionArray;
 	private int session;
 	private ProgressUI2 sessionProgress;
 	private ProgressUI2 oldUI;
@@ -45,7 +45,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	
     /** Creates new form TournamentProgressUI2 */
     public TournamentProgressUI2(ProgressUI2 pUI) {
-    	sessionArray = new ArrayList<Protocol>();
+    	sessionArray = new ArrayList<BilateralAtomicNegotiationSession>();
     	jPanel1 = pUI;
         initComponents(); 
 		sessionProgress = pUI;
@@ -236,7 +236,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
                 int row = table.getSelectedRow();
                 //System.out.println("selection event happened;row "+row+" selected.");
                 //show ProgressUI for selected session:
-                AlternatingOffersNegotiationSession ng =  sessionArray.get(row);
+                BilateralAtomicNegotiationSession ng =  sessionArray.get(row);
                 //System.out.println(ng.getLog());
                 int selected_session_nr=ng.getSessionNumber();
                 int selected_test_nr=ng.getTestNumber();
