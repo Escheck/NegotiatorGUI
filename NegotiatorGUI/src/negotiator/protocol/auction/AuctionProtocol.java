@@ -10,17 +10,11 @@ import java.util.Random;
 
 import agents.BayesianAgentForAuction;
 
-import negotiator.Agent;
-import negotiator.AgentParam;
-import negotiator.Bid;
-import negotiator.BidIterator;
-import negotiator.Global;
-import negotiator.NegotiationEventListener;
-import negotiator.NegotiationOutcome;
+import negotiator.*;
 import negotiator.analysis.BidSpace;
+import negotiator.analysis.BidSpaceCash;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
-import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -31,7 +25,10 @@ import negotiator.xml.SimpleElement;
 
 public class AuctionProtocol extends Protocol {
 	final private double ALLOWED_UTILITY_DEVIATION = 0.015; 
-
+	private boolean startingWithA = false;
+    public int non_gui_nego_time = 120;
+    public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
+	
 	public AuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
@@ -50,12 +47,6 @@ public class AuctionProtocol extends Protocol {
 	public NegotiationOutcome getNegotiationOutcome() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void startSession() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void run() {
@@ -117,81 +108,89 @@ public class AuctionProtocol extends Protocol {
 			for(int i=0;i<numberOfSellers;i++) {
 				SimpleElement space = new SimpleElement("utility_space");
 				optimalPoints.addChildElement(space);
-				space.setAttribute("spaceA",sessions.get(i).getAgentAUtilitySpaceFileName() );
-				space.setAttribute("spaceB",sessions.get(i).getAgentBUtilitySpaceFileName());
+				space.setAttribute("spaceA",getProfileRepItems(0).getURL().getFile() );
+				space.setAttribute("spaceB",getProfileRepItems(1+i).getURL().getFile() );
 				SimpleElement solution = new SimpleElement("solution");
 				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Nash");
-				solution.setAttribute("utilityA", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityA));
-				solution.setAttribute("utilityB", String.valueOf(sessions.get(i).getBidSpace().getNash().utilityB));
+				BidSpace bidSpace = BidSpaceCash.getBidSpace(getAgentUtilitySpaces(0), getAgentUtilitySpaces(i+1));
+				solution.setAttribute("utilityA", String.valueOf(bidSpace.getNash().utilityA));
+				solution.setAttribute("utilityB", String.valueOf(bidSpace.getNash().utilityB));
 				solution = new SimpleElement("solution");
 				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Kalai");
-				solution.setAttribute("utilityA", String.valueOf(sessions.get(i).getBidSpace().getKalaiSmorodinsky().utilityA));
-				solution.setAttribute("utilityB", String.valueOf(sessions.get(i).getBidSpace().getKalaiSmorodinsky().utilityB));
+				solution.setAttribute("utilityA", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityA));
+				solution.setAttribute("utilityB", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityB));
 			}
 			//run the sessions
+			AuctionBilateralAtomicNegoSession[] sessions = new AuctionBilateralAtomicNegoSession[numberOfSellers];
 			for (int i=0;i<numberOfSellers;i++) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
-				AuctionBilateralAtomicNegoSession session = new AuctionBilateralAtomicNegoSession(
-						)
-				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
-				fireNegotiationSessionEvent(s);
-				s.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
+				sessions[i] = 
+					runNegotiationSession(
+						getAgentRepItem(0),
+						getAgentRepItem(i+1),
+						"Buyer", "Seller", 
+						getProfileRepItems(0),
+						getProfileRepItems(i+1),
+						getAgentUtilitySpaces(0),
+						getAgentUtilitySpaces(i+1),
+						getAgentParams(0),
+						getAgentParams(i+1));
+//				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
+//				fireNegotiationSessionEvent(s);
 			}
 			//determine winner
 			double lMaxUtil= Double.NEGATIVE_INFINITY;
 			double lSecondPrice = Double.NEGATIVE_INFINITY;
 			AuctionBilateralAtomicNegoSession winnerSession = null;
 //				NegotiationSession2 secondBestSession = null;
-			for (AlternatingOffersNegotiationSession s: sessions) {
-				if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lMaxUtil) {
+			int winnerSessionIndex=0, i=0;
+			for (AuctionBilateralAtomicNegoSession s: sessions) {
+				if(s.getNegotiationOutcome().agentAutility>lMaxUtil) {
 					lSecondPrice = lMaxUtil;
-					lMaxUtil = s.getSessionRunner().getNegotiationOutcome().agentAutility;
+					lMaxUtil = s.getNegotiationOutcome().agentAutility;
 					//secondBestSession = winnerSession;
 					winnerSession = s;
-				} else if(s.getSessionRunner().getNegotiationOutcome().agentAutility>lSecondPrice) 
-					lSecondPrice = s.getSessionRunner().getNegotiationOutcome().agentAutility;
+					winnerSessionIndex = i;
+				} else if(s.getNegotiationOutcome().agentAutility>lSecondPrice) 
+					lSecondPrice = s.getNegotiationOutcome().agentAutility;
+				i++;
 			}
-			HashMap<AgentParameterVariable,AgentParamValue>  paramsA=new HashMap<AgentParameterVariable,AgentParamValue> ();
-			HashMap<AgentParameterVariable,AgentParamValue>  paramsB=new HashMap<AgentParameterVariable,AgentParamValue> ();
+			
+			HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue> ();
+			HashMap<AgentParameterVariable,AgentParamValue> paramsB = new HashMap<AgentParameterVariable,AgentParamValue> ();
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(lSecondPrice));
 			//paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(0.6));
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
-			AuctionBilateralAtomicNegoSession secondPhaseSession = new AuctionBilateralAtomicNegoSession(
-						winnerSession.agentArep,
-						winnerSession.agentBrep,
-						winnerSession.getProfileArep(),
-						winnerSession.getProfileBrep(),
-						winnerSession.getAgentAname(),
-						winnerSession.getAgentBname(),
-						paramsA,
-						paramsB,
-						100,
-						1,
-						true, 1200, 1200, 1
-				);
-				secondPhaseSession.setAdditional(theoreticalOutcome);
-				for (NegotiationEventListener list: negotiationEventListeners) 
-					secondPhaseSession.addNegotiationEventListener(list);
-				fireBilateralAtomicNegotiationSessionEvent(secondPhaseSession, profileA, profileB, agentA, agentB);
+			
+			AuctionBilateralAtomicNegoSession secondPhaseSession = 
+				runNegotiationSession(
+						getAgentRepItem(0), 
+						getAgentRepItem(1+winnerSessionIndex), 
+						"Buyer", "Seller", 
+						getProfileRepItems(0),
+						getProfileRepItems(1+winnerSessionIndex),
+						getAgentUtilitySpaces(0),
+						getAgentUtilitySpaces(1+winnerSessionIndex), 
+						paramsA, paramsB); 
+				
+
+				//TODO: secondPhaseSession.setAdditional(theoreticalOutcome);
+//				for (NegotiationEventListener list: negotiationEventListeners) 
+//					secondPhaseSession.addNegotiationEventListener(list);
+//				fireBilateralAtomicNegotiationSessionEvent(secondPhaseSession, profileA, profileB, agentA, agentB);
 				secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 	   		
 		} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
 	}
-	private static ArrayList<AuctionProtocol> allSessions;
+	
 	
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
-		if(allSessions==null) generateAllSessions(tournament);
-		if(sessionIndex<allSessions.size()) {
-			ArrayList<AuctionBilateralAtomicNegoSession> result = allSessions.get(sessionIndex);
-			sessionIndex++;
-			return result;
-		}
-		else return null;
+		return generateAllSessions(tournament);
 	}
 
 
@@ -232,9 +231,10 @@ public class AuctionProtocol extends Protocol {
 		return session;
 
 	}
-	private static void generateAllSessions(Tournament tournament) {
+	private static ArrayList<Protocol> generateAllSessions(Tournament tournament) {
+		ArrayList<Protocol> allSessions = null;
 		try {
-			allSessions = new ArrayList<AuctionProtocol>();
+			allSessions = new ArrayList<Protocol>();
 			//sessionIndex = 0;
 			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
 			//center profiles
@@ -322,13 +322,11 @@ public class AuctionProtocol extends Protocol {
 			//allSessions.add(createSession(center4, seller10, seller7));
 			//allSessions.add(createSession(center3, seller5, seller2));
 			//allSessions.add(createSession(center7, seller2, seller4));
-			
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-
+		return allSessions;
 	}
     /** do test run of negotiation session.
      * There may be multiple test runs of a single session, for isntance to take the average score.
@@ -337,40 +335,54 @@ public class AuctionProtocol extends Protocol {
      * @throws Exception
      * 
      */
-    protected void runNegotiationSession(int nr)  throws Exception
+    protected AuctionBilateralAtomicNegoSession runNegotiationSession(
+    		AgentRepItem agentARepItem, 
+    		AgentRepItem agentBRepItem, 
+    		String agentAname, 
+    		String agentBname, 
+    		ProfileRepItem profileRepItemA,
+    		ProfileRepItem profileRepItemB,
+    		UtilitySpace spaceA, 
+    		UtilitySpace spaceB,
+    		HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
+			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
     {
     	java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-    	agentA = (Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
-   		agentA.setName(getAgentAname());
+    	Agent agentA = (Agent)(loaderA.loadClass(agentARepItem.getClassPath()).newInstance());
+   		agentA.setName(agentAname);
 
    		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
-    	agentB = (Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
-    	agentB.setName(getAgentBname());
+    	Agent agentB = (Agent)(loaderB.loadClass(agentBRepItem.getClassPath()).newInstance());
+    	agentB.setName(agentBname);
     	
-    	sessionTestNumber=nr;
+    	int sessionTestNumber=1;
     	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
         //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
     	//SessionRunner sessionrunner=new SessionRunner(this);
-    	startingAgent=getAgentAname();
+    	
+    	String startingAgent=agentAname;
     	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent=getAgentBname();
+    		startingAgent = agentBname;
     	}
-    	AuctionBilateralAtomicNegoSession sessionrunner;
-    	sessionrunner=new AuctionBilateralAtomicNegoSession(this, 
+    	
+    	AuctionBilateralAtomicNegoSession sessionrunner = 
+    		new AuctionBilateralAtomicNegoSession(
+    							this, 
     							agentA, 
     							agentB, 
-    							getAgentAname(),
-    							getAgentBname(),
-    							getAgentAUtilitySpace(), 
-    							getAgentBUtilitySpace(), 
-    							getAgentAparams(),
-    							getAgentBparams(),
-    							startingAgent,
-    							non_gui_nego_time);
-    	fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep());
+    							agentAname,
+    							agentBname,
+    							spaceA, 
+    							spaceB, 
+    							agentAparams,
+    							agentBparams,
+    							"Buyer",
+    							3600);
+    	fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB,agentARepItem, agentBRepItem);
     	if(Global.fDebug) {
     		sessionrunner.run();
         } else {
+        	int totalTime;
         	if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
         	else totalTime = gui_nego_time;
         	negoThread = new Thread(sessionrunner);
@@ -384,21 +396,16 @@ public class AuctionProtocol extends Protocol {
         		}
         	} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
         }
-        	//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
-        	//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
         
     	stopNegotiation();
-    		
-        // add path to the analysis chart
-        // TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
-        //if (nt.getBidSpace()!=null)
-        //	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
-        	
+       	
     	if(sessionrunner.no==null) {
     		sessionrunner.JudgeTimeout();
     	}
-    		outcome=sessionrunner.no;
+    	
+    	NegotiationOutcome outcome=sessionrunner.no;
     		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
+    	SimpleElement fAdditional = null;
     		if(fAdditional!=null) { 
     			if(outcome.additional==null) {
     				outcome.additional = new SimpleElement("additional");
@@ -414,8 +421,14 @@ public class AuctionProtocol extends Protocol {
         	new Warning("Exception during writing s:"+e);
         	e.printStackTrace();
         }
-        
+        return sessionrunner;
     }
+
+	@Override
+	public void cleanUP() {
+		// TODO Auto-generated method stub
+		
+	}
     
 
 

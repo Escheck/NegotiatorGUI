@@ -80,7 +80,7 @@ public class BayesianAgent extends Agent {
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModel(utilitySpace);	
 	}
 
 	// Class methods
@@ -744,5 +744,14 @@ public class BayesianAgent extends Agent {
 		System.out.println(lLearningPerformance.toString());
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
+	}
+
+
+	@Override
+	public void cleanUp() {
+		// TODO Auto-generated method stub
+		super.cleanUp();
+		fOpponentModel = null;
+		myPreviousBids = null;
 	}
 }

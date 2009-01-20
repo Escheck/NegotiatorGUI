@@ -17,14 +17,15 @@ import negotiator.exceptions.Warning;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.*;
 
 public abstract class Protocol implements Runnable {
     protected Thread negoThread = null;
+    protected TournamentRunner tournamentRunner;
     /**
      * stopNegotiation indicates that the session has now ended.
      * it is checked after every call to the agent,
@@ -58,7 +59,10 @@ public abstract class Protocol implements Runnable {
 		throw new Exception("This protocol cannot be used in a tournament");
 	}
 
-    public abstract void startSession();
+    public final void startSession() {
+    	Thread protocolThread = new Thread(this);
+    	protocolThread.start();
+    }
     
     
     public Protocol(AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams) throws Exception{
@@ -163,6 +167,9 @@ public abstract class Protocol implements Runnable {
         	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
     	}
 	}
+    public void setTournamentRunner(TournamentRunner runner) {
+    	tournamentRunner = runner; 
+    }
     
 	public AgentRepItem getAgentRepItem(int index) {
 		return agentRepItems[index];
@@ -204,5 +211,6 @@ public abstract class Protocol implements Runnable {
     	}
         return;
     }
+    public abstract void cleanUP();
 
 }
