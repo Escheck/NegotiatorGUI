@@ -55,27 +55,9 @@ public class UtilitySpace {
     private Double fReservationValue = null;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
     private String fileName;
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof UtilitySpace)) return false;
-		UtilitySpace obj2 = (UtilitySpace)obj;
-		//cehck domains
-		if(!domain.equals(obj2.getDomain())) return false;
-		//check evaluators
-		for(Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
-			Evaluator eval2 = obj2.getEvaluator(entry.getKey().getNumber());
-			if(!entry.getValue().equals(eval2)) return false;
-		}
-		return true;
-	}
 
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 1;
-	}
     
-
+    
     /**
      * Creates an empty utility space.
      */
@@ -991,4 +973,61 @@ public class UtilitySpace {
     public String getFileName() {
     	return fileName;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+		result = prime * result
+				+ ((fEvaluators == null) ? 0 : fEvaluators.hashCode());
+		result = prime
+				* result
+				+ ((fReservationValue == null) ? 0 : fReservationValue
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UtilitySpace other = (UtilitySpace) obj;
+		if (domain == null) {
+			if (other.domain != null)
+				return false;
+		} else if (!domain.equals(other.domain))
+			return false;
+		if (fEvaluators == null) {
+			if (other.fEvaluators != null)
+				return false;
+		} else if (!fEvaluators.equals(other.fEvaluators))
+			return false;
+		if (fReservationValue == null) {
+			if (other.fReservationValue != null)
+				return false;
+		} else if (!fReservationValue.equals(other.fReservationValue))
+			return false;
+		return true;
+	}
+	
+/*	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof UtilitySpace)) return false;
+		UtilitySpace obj2 = (UtilitySpace)obj;
+		//cehck domains
+		if(!domain.equals(obj2.getDomain())) return false;
+		//check evaluators
+		for(Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
+			Evaluator eval2 = obj2.getEvaluator(entry.getKey().getNumber());
+			if(!entry.getValue().equals(eval2)) return false;
+		}
+		return true;
+	}
+
+*/
 }

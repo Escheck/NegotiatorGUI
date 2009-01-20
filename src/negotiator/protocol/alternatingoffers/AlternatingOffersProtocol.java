@@ -57,8 +57,7 @@ public class AlternatingOffersProtocol extends Protocol {
     /** non_tournament_next_session_nr is used to auto-number non-tournament sessions */
     static int non_tournament_next_session_nr=1;
 
-    TournamentRunner tournamentRunner;
-	
+
 	 /** shared counter */
 	static int session_number;
 
@@ -177,7 +176,8 @@ public class AlternatingOffersProtocol extends Protocol {
             runNegotiationSession(i+1);
         }
     }
-    
+
+
     
     /** do test run of negotiation session.
      * There may be multiple test runs of a single session, for isntance to take the average score.
@@ -263,7 +263,7 @@ public class AlternatingOffersProtocol extends Protocol {
         	new Warning("Exception during writing s:"+e);
         	e.printStackTrace();
         }
-        
+        notify();
     }
     
     public void stopNegotiation() {
@@ -449,9 +449,6 @@ public class AlternatingOffersProtocol extends Protocol {
     public void setAdditional(SimpleElement e) {
     	fAdditional = e;
     }
-    public void setTournamentRunner(TournamentRunner runner) {
-    	tournamentRunner = runner; 
-    }
 
 	
      /**
@@ -495,16 +492,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		return null;
 	}
 
-	@Override
-	public void startSession() {
-		// TODO Auto-generated method stub
-		try {
-			startNegotiation();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	/*-------------------------------------- TOURNAMENT BUILDING -------------------------*/
 	
 	static final String AGENT_A_NAME="Agent A";
@@ -637,6 +624,14 @@ public class AlternatingOffersProtocol extends Protocol {
 				allParameterCombis(tournament, newparameters, sessions, profileA,  profileB,agentA,  agentB,newchosenvalues);
 			} 
 		}	    	
+	}
+
+
+	@Override
+	public void cleanUP() {
+		agentA = null;
+		agentB = null;
+		
 	}
 
 	

@@ -73,12 +73,12 @@ public class Domain {
      * @param d
      * @return true if equal, else false. returns false also when fObjectivesRoot=null 
      */
-    public boolean equals(Domain d)
+/*    public boolean equals(Domain d)
     {
     	if (fObjectivesRoot==null) return false;
     	return fObjectivesRoot.equals(d.getObjectivesRoot());
     }
-    
+  */  
     /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG
      *  A better name would be getChild 
      */
@@ -400,4 +400,31 @@ public class Domain {
 		}
 		return lNumberOfPossibleBids;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((fObjectivesRoot == null) ? 0 : fObjectivesRoot.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Domain other = (Domain) obj;
+		if (fObjectivesRoot == null) {
+			if (other.fObjectivesRoot != null)
+				return false;
+		} else if (!fObjectivesRoot.equals(other.fObjectivesRoot))
+			return false;
+		return true;
+	}
+	
 }

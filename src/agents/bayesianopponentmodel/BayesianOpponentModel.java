@@ -16,6 +16,8 @@ public class BayesianOpponentModel extends OpponentModel{
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;	
 	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
+	private boolean fUseMostProbableHypsOnly = true;
+	private ArrayList<UtilitySpaceHypothesis> fMostProbableUSHyps;	
 	private double fPreviousBidUtility;
 	private double EXPECTED_CONCESSION_STEP = 0.04;
 	private double SIGMA = 0.35;
@@ -268,14 +270,35 @@ public class BayesianOpponentModel extends OpponentModel{
 		fBiddingHistory.add(pBid);
 		//calculate full probability for the given bid
 		double lFullProb = 0;
+		double lMaxProb = 0;
 		for(int i=0;i<fUSHyps.size();i++) {
-			lFullProb += fUSHyps.get(i).getProbability()*conditionalDistribution(fUSHyps.get(i).getUtility(pBid), fPreviousBidUtility);
+			UtilitySpaceHypothesis hyp =fUSHyps.get(i);
+			double condDistrib = hyp.getProbability()*conditionalDistribution(fUSHyps.get(i).getUtility(pBid), fPreviousBidUtility);
+			lFullProb += condDistrib;
+			if(condDistrib>lMaxProb) lMaxProb = condDistrib;
+			hyp.setProbability(condDistrib);
 		}
+		if(fUseMostProbableHypsOnly )  fMostProbableUSHyps = new ArrayList<UtilitySpaceHypothesis>();
 		//update the weights hyps and evaluators hyps
-		for(int i=0;i<fUSHyps.size();i++) {
-			fUSHyps.get(i).setProbability(fUSHyps.get(i).getProbability()*conditionalDistribution(fUSHyps.get(i).getUtility(pBid), fPreviousBidUtility)/lFullProb);
-			
+		double lMostProbableHypFullProb = 0;
+		for(int i=0;i<fUSHyps.size();i++) {			
+			UtilitySpaceHypothesis hyp = fUSHyps.get(i);
+			double normalizedProbability =hyp.getProbability()/lFullProb; 
+			hyp.setProbability(normalizedProbability);
+			if(fUseMostProbableHypsOnly)
+				if(normalizedProbability>lMaxProb*0.95) {
+					fMostProbableUSHyps.add(hyp);
+					lMostProbableHypFullProb += normalizedProbability;
+				}
 		}
+		if(fUseMostProbableHypsOnly) { 
+			for(int i=0;i<fMostProbableUSHyps.size();i++) {			
+				UtilitySpaceHypothesis hyp = fMostProbableUSHyps.get(i);
+				double normalizedProbability =hyp.getProbability()/lMostProbableHypFullProb; 
+				hyp.setProbability(normalizedProbability);
+			}
+		}
+		
 /*		sortHyps();
 		for(int i=0;i<10;i++) {
 			System.out.println(fUSHyps.get(i).toString());
@@ -320,11 +343,20 @@ public class BayesianOpponentModel extends OpponentModel{
 	}
 	public double getExpectedUtility(Bid pBid)  throws Exception{
 		double lExpectedUtility = 0;
-		for(int i=0;i<fUSHyps.size();i++) {
-			UtilitySpaceHypothesis lUSHyp = fUSHyps.get(i);
-			double p = lUSHyp.getProbability();
-			double u = lUSHyp.getUtility(pBid);
-			lExpectedUtility += p*u;
+		if(fUseMostProbableHypsOnly ) {
+			for(int i=0;i<fMostProbableUSHyps.size();i++) {
+				UtilitySpaceHypothesis lUSHyp = fMostProbableUSHyps.get(i);
+				double p = lUSHyp.getProbability();
+				double u = lUSHyp.getUtility(pBid);
+				lExpectedUtility += p*u;
+			}			
+		} else { 
+			for(int i=0;i<fUSHyps.size();i++) {
+				UtilitySpaceHypothesis lUSHyp = fUSHyps.get(i);
+				double p = lUSHyp.getProbability();
+				double u = lUSHyp.getUtility(pBid);
+				lExpectedUtility += p*u;
+			}
 		}
 		return lExpectedUtility;
 		
@@ -338,7 +370,6 @@ public class BayesianOpponentModel extends OpponentModel{
 			double u = lUSHyp.getHeightHyp().getWeight(pIssueNumber);
 			lExpectedWeight += p*u;
 		}
-
 		return lExpectedWeight;
 	}	
 
