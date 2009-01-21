@@ -37,14 +37,15 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     private boolean agentAtookAction = false;
     private boolean agentBtookAction = false;
     protected String startingAgent;
-    boolean agentAStarts=false;
-    
+
+	boolean startingWithA=true;    
     /* time/deadline */
     Date startTime; 
     long startTimeMillies; //idem.
+	private Integer totalTime = 180000;
     Integer totTime; // total time, seconds, of this negotiation session.
-    
-    private AlternatingOffersProtocol protocol;
+    private int sessionTotalNumber = 1;
+    private Protocol protocol;
     
 	public Agent currentAgent=null; // agent currently bidding.
 
@@ -64,7 +65,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			int totalTime) throws Exception {
     	
 		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB, agentAparams, agentBparams);
-		this.protocol = (AlternatingOffersProtocol) protocol;
+		this.protocol = protocol;
 		this.startingAgent = startingAgent;
         this.totTime = totalTime;
 	}
@@ -81,10 +82,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.internalInit(sessionNumber, protocol.sessionTotalNumber,startTime,protocol.getTotalTime(),
+            agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,
             		new UtilitySpace(spaceA),agentAparams);
             agentA.init();
-            agentB.internalInit(sessionNumber, protocol.sessionTotalNumber,startTime,protocol.getTotalTime(),
+            agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,
             		new UtilitySpace(spaceB),agentBparams);
             agentB.init();
             stopNegotiation = false;
@@ -238,7 +239,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             fAgentABids,fAgentBBids,
             spaceA.getUtility(spaceA.getMaxUtilityBid()),
             spaceB.getUtility(spaceB.getMaxUtilityBid()),
-            protocol.startingWithA, 
+            startingWithA, 
             spaceA.getFileName(),
             spaceB.getFileName(),
             additionalLog
@@ -270,6 +271,14 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	public String getStartingAgent() {
 		return startingAgent;
 	}
-
+	public void setStartingWithA(boolean val) { 
+		startingWithA = val;
+	}
+	public void setTotalTime(int val) {
+		totalTime = val;
+	}
+	public void setSessionTotalNumber(int val) {
+		sessionTotalNumber = val;
+	}
 }
 

@@ -42,12 +42,12 @@ public class TournamentRunner implements Runnable {
     		ArrayList<Protocol> sessions=tournament.getSessions();
 			for (Protocol s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
-				synchronized (s) {
+				synchronized(this) { 
 					for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);				
 					//fireNegotiationSessionEvent(s);
 					s.setTournamentRunner(this);
 					s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
-					s.wait();					
+					wait();					
 				}
 				
 			}

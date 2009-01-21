@@ -143,6 +143,10 @@ public abstract class Protocol implements Runnable {
     	if(!actionEventListener.contains(listener))
     		actionEventListener.add(listener);
     }
+    public ArrayList<NegotiationEventListener> getNegotiationEventListeners() {
+    	return (ArrayList<NegotiationEventListener>) (actionEventListener.clone());
+    }
+
     public void removeNegotiationEventListener(NegotiationEventListener listener) {
     	if(!actionEventListener.contains(listener))
     		actionEventListener.remove(listener);

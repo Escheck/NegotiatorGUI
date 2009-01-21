@@ -73,6 +73,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         }
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
+        actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }
 
     public void addNegotiationEventListener(NegotiationEventListener listener) {
@@ -94,9 +95,11 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
     	}
 	}
-    public void cleanupAgents() {
-    	this.agentA = null;
-    	this.agentB = null;
+    public void cleanUp() {
+    	agentA.cleanUp();
+    	agentA = null;
+    	agentB.cleanUp();
+    	agentB = null;
     }
     public BidSpace getBidSpace() { 
     	if(bidSpace==null) {

@@ -1,7 +1,10 @@
 package agents.bayesianopponentmodel;
 
+import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.Domain;
+import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 public class UtilitySpaceHypothesis extends Hypothesis {
@@ -9,15 +12,16 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 	private EvaluatorHypothesis[] fEvalHyp;
 	private Domain fDomain;
 	private UtilitySpace fUS;
-	
+	ArrayList<Issue> issues;;	
 	public UtilitySpaceHypothesis(Domain pDomain,
 								  UtilitySpace pUS,
 								  WeightHypothesis pWeightHyp,
 								  EvaluatorHypothesis[] pEvalHyp) {
 		fUS = pUS;
 		fDomain = pDomain;
+		issues =  fDomain.getIssues();
 		fWeightHyp = pWeightHyp;
-		fEvalHyp = pEvalHyp;
+		fEvalHyp = pEvalHyp;		
 	}
 
 	public Domain getDomain() {
@@ -33,10 +37,11 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 	}
 	public double getUtility(Bid pBid) {
 		double u=0;
+		 
 		for(int k=0;k<fEvalHyp.length;k++) {
 			try
 			{
-				u = u + fWeightHyp.getWeight(k)*fEvalHyp[k].getEvaluator().getEvaluation(fUS, pBid, fDomain.getIssues().get(k).getNumber());
+				u = u + fWeightHyp.getWeight(k)*fEvalHyp[k].getEvaluator().getEvaluation(fUS, pBid,issues.get(k).getNumber());
 			} catch (Exception e) {System.out.println("Exception in UtilSpaceHypo.getUtil:"+e.getMessage()+". using 0"); 
 				e.printStackTrace();
 			}

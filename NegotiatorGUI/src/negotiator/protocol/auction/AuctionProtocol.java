@@ -24,15 +24,15 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
 public class AuctionProtocol extends Protocol {
-	final private double ALLOWED_UTILITY_DEVIATION = 0.015; 
+	final protected double ALLOWED_UTILITY_DEVIATION = 0.015; 
 	private boolean startingWithA = false;
-    public int non_gui_nego_time = 120;
-    public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
-	
+	public int non_gui_nego_time = 120;
+	public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
+
 	public AuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
-			throws Exception {
+	throws Exception {
 		super(agentRepItems, profileRepItems, agentParams);
 		// TODO Auto-generated constructor stub
 	}
@@ -48,11 +48,9 @@ public class AuctionProtocol extends Protocol {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void run() {
-		try { 
+	protected void calculateTheoreticalOutcome() {
+		try {
 			int numberOfSellers = getNumberOfAgents()-1;
-			//calcualte theoretical outcome			
 			double outcome[] = new double[numberOfSellers ];
 			//int i=0;
 			for (int i=0;i<numberOfSellers ;i++) {
@@ -122,29 +120,36 @@ public class AuctionProtocol extends Protocol {
 				solution.setAttribute("utilityA", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityA));
 				solution.setAttribute("utilityB", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityB));
 			}
+		}		
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void run() {
+		try { 
+			int numberOfSellers = getNumberOfAgents()-1;
+			//calcualte theoretical outcome			
 			//run the sessions
 			AuctionBilateralAtomicNegoSession[] sessions = new AuctionBilateralAtomicNegoSession[numberOfSellers];
 			for (int i=0;i<numberOfSellers;i++) {
-				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				sessions[i] = 
 					runNegotiationSession(
-						getAgentRepItem(0),
-						getAgentRepItem(i+1),
-						"Buyer", "Seller", 
-						getProfileRepItems(0),
-						getProfileRepItems(i+1),
-						getAgentUtilitySpaces(0),
-						getAgentUtilitySpaces(i+1),
-						getAgentParams(0),
-						getAgentParams(i+1));
-//				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
-//				fireNegotiationSessionEvent(s);
+							getAgentRepItem(0),
+							getAgentRepItem(i+1),
+							"Buyer", "Seller", 
+							getProfileRepItems(0),
+							getProfileRepItems(i+1),
+							getAgentUtilitySpaces(0),
+							getAgentUtilitySpaces(i+1),
+							getAgentParams(0),
+							getAgentParams(i+1));
 			}
 			//determine winner
 			double lMaxUtil= Double.NEGATIVE_INFINITY;
 			double lSecondPrice = Double.NEGATIVE_INFINITY;
 			AuctionBilateralAtomicNegoSession winnerSession = null;
-//				NegotiationSession2 secondBestSession = null;
+			//				NegotiationSession2 secondBestSession = null;
 			int winnerSessionIndex=0, i=0;
 			for (AuctionBilateralAtomicNegoSession s: sessions) {
 				if(s.getNegotiationOutcome().agentAutility>lMaxUtil) {
@@ -157,7 +162,7 @@ public class AuctionProtocol extends Protocol {
 					lSecondPrice = s.getNegotiationOutcome().agentAutility;
 				i++;
 			}
-			
+
 			HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue> ();
 			HashMap<AgentParameterVariable,AgentParamValue> paramsB = new HashMap<AgentParameterVariable,AgentParamValue> ();
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(0.9));
@@ -166,7 +171,7 @@ public class AuctionProtocol extends Protocol {
 			paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,1.)), new AgentParamValue(-0.9));
 			paramsB.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
-			
+
 			AuctionBilateralAtomicNegoSession secondPhaseSession = 
 				runNegotiationSession(
 						getAgentRepItem(0), 
@@ -177,18 +182,20 @@ public class AuctionProtocol extends Protocol {
 						getAgentUtilitySpaces(0),
 						getAgentUtilitySpaces(1+winnerSessionIndex), 
 						paramsA, paramsB); 
-				
 
-				//TODO: secondPhaseSession.setAdditional(theoreticalOutcome);
-//				for (NegotiationEventListener list: negotiationEventListeners) 
-//					secondPhaseSession.addNegotiationEventListener(list);
-//				fireBilateralAtomicNegotiationSessionEvent(secondPhaseSession, profileA, profileB, agentA, agentB);
-				secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
-	   		
+
+			//TODO: secondPhaseSession.setAdditional(theoreticalOutcome);
+			//				for (NegotiationEventListener list: negotiationEventListeners) 
+			//					secondPhaseSession.addNegotiationEventListener(list);
+			//				fireBilateralAtomicNegotiationSessionEvent(secondPhaseSession, profileA, profileB, agentA, agentB);
+			//secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
+			for (AuctionBilateralAtomicNegoSession s: sessions) 
+				s.cleanUp();
+			secondPhaseSession.cleanUp();
 		} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
 	}
-	
-	
+
+
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		return generateAllSessions(tournament);
 	}
@@ -263,7 +270,7 @@ public class AuctionProtocol extends Protocol {
 			ProfileRepItem seller10 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_10.xml"),domain);
 			ProfileRepItem seller11 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_11.xml"),domain);
 			ProfileRepItem seller12 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_12.xml"),domain);
-			
+
 			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
 			//allSessions.add(createSession(center3, seller6, seller5, reservationValue));
 			//allSessions.add(createSession(center4, seller5, seller2));
@@ -328,108 +335,108 @@ public class AuctionProtocol extends Protocol {
 		}
 		return allSessions;
 	}
-    /** do test run of negotiation session.
-     * There may be multiple test runs of a single session, for isntance to take the average score.
-     * returns the result in the global field "outcome"
-     * @param nr is the sessionTestNumber
-     * @throws Exception
-     * 
-     */
-    protected AuctionBilateralAtomicNegoSession runNegotiationSession(
-    		AgentRepItem agentARepItem, 
-    		AgentRepItem agentBRepItem, 
-    		String agentAname, 
-    		String agentBname, 
-    		ProfileRepItem profileRepItemA,
-    		ProfileRepItem profileRepItemB,
-    		UtilitySpace spaceA, 
-    		UtilitySpace spaceB,
-    		HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
+	/** do test run of negotiation session.
+	 * There may be multiple test runs of a single session, for isntance to take the average score.
+	 * returns the result in the global field "outcome"
+	 * @param nr is the sessionTestNumber
+	 * @throws Exception
+	 * 
+	 */
+	protected AuctionBilateralAtomicNegoSession runNegotiationSession(
+			AgentRepItem agentARepItem, 
+			AgentRepItem agentBRepItem, 
+			String agentAname, 
+			String agentBname, 
+			ProfileRepItem profileRepItemA,
+			ProfileRepItem profileRepItemB,
+			UtilitySpace spaceA, 
+			UtilitySpace spaceB,
+			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
-    {
-    	java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-    	Agent agentA = (Agent)(loaderA.loadClass(agentARepItem.getClassPath()).newInstance());
-   		agentA.setName(agentAname);
+			{
+		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+		Agent agentA = (Agent)(loaderA.loadClass(agentARepItem.getClassPath()).newInstance());
+		agentA.setName(agentAname);
 
-   		java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
-    	Agent agentB = (Agent)(loaderB.loadClass(agentBRepItem.getClassPath()).newInstance());
-    	agentB.setName(agentBname);
-    	
-    	int sessionTestNumber=1;
-    	if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
-        //NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
-    	//SessionRunner sessionrunner=new SessionRunner(this);
-    	
-    	String startingAgent=agentAname;
-    	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent = agentBname;
-    	}
-    	
-    	AuctionBilateralAtomicNegoSession sessionrunner = 
-    		new AuctionBilateralAtomicNegoSession(
-    							this, 
-    							agentA, 
-    							agentB, 
-    							agentAname,
-    							agentBname,
-    							spaceA, 
-    							spaceB, 
-    							agentAparams,
-    							agentBparams,
-    							"Buyer",
-    							3600);
-    	fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB,agentARepItem, agentBRepItem);
-    	if(Global.fDebug) {
-    		sessionrunner.run();
-        } else {
-        	int totalTime;
-        	if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
-        	else totalTime = gui_nego_time;
-        	negoThread = new Thread(sessionrunner);
-            System.out.println("nego start. "+System.currentTimeMillis()/1000);
-            negoThread.start();
-        	try {
-        		synchronized (this) {
-        			System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
-        			 // wait will unblock early if negotiation is finished in time.
-    				wait(totalTime*1000);
-        		}
-        	} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
-        }
-        
-    	stopNegotiation();
-       	
-    	if(sessionrunner.no==null) {
-    		sessionrunner.JudgeTimeout();
-    	}
-    	
-    	NegotiationOutcome outcome=sessionrunner.no;
-    		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
-    	SimpleElement fAdditional = null;
-    		if(fAdditional!=null) { 
-    			if(outcome.additional==null) {
-    				outcome.additional = new SimpleElement("additional");
-    			
-    			}
-    			outcome.additional.addChildElement(fAdditional);
-    		}
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
-            out.write(""+outcome.toXML());
-            out.close();
-        } catch (Exception e) {
-        	new Warning("Exception during writing s:"+e);
-        	e.printStackTrace();
-        }
-        return sessionrunner;
-    }
+		java.lang.ClassLoader loaderB = ClassLoader.getSystemClassLoader();
+		Agent agentB = (Agent)(loaderB.loadClass(agentBRepItem.getClassPath()).newInstance());
+		agentB.setName(agentBname);
+
+		int sessionTestNumber=1;
+		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
+		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
+		//SessionRunner sessionrunner=new SessionRunner(this);
+
+		String startingAgent=agentAname;
+		if ( (!startingWithA) && new Random().nextInt(2)==1) { 
+			startingAgent = agentBname;
+		}
+
+		AuctionBilateralAtomicNegoSession sessionrunner = 
+			new AuctionBilateralAtomicNegoSession(
+					this, 
+					agentA, 
+					agentB, 
+					agentAname,
+					agentBname,
+					spaceA, 
+					spaceB, 
+					agentAparams,
+					agentBparams,
+					"Buyer",
+					3600);
+		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB,agentARepItem, agentBRepItem);
+		if(Global.fDebug) {
+			sessionrunner.run();
+		} else {
+			int totalTime;
+			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
+			else totalTime = gui_nego_time;
+			negoThread = new Thread(sessionrunner);
+			System.out.println("nego start. "+System.currentTimeMillis()/1000);
+			negoThread.start();
+			try {
+				synchronized (this) {
+					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
+					// wait will unblock early if negotiation is finished in time.
+					wait(totalTime*1000);
+				}
+			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
+		}
+
+		stopNegotiation();
+
+		if(sessionrunner.no==null) {
+			sessionrunner.JudgeTimeout();
+		}
+
+		NegotiationOutcome outcome=sessionrunner.no;
+		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
+		SimpleElement fAdditional = null;
+		if(fAdditional!=null) { 
+			if(outcome.additional==null) {
+				outcome.additional = new SimpleElement("additional");
+
+			}
+			outcome.additional.addChildElement(fAdditional);
+		}
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
+			out.write(""+outcome.toXML());
+			out.close();
+		} catch (Exception e) {
+			new Warning("Exception during writing s:"+e);
+			e.printStackTrace();
+		}
+		return sessionrunner;
+	}
 
 	@Override
 	public void cleanUP() {
 		// TODO Auto-generated method stub
-		
+
 	}
-    
+
 
 
 }
