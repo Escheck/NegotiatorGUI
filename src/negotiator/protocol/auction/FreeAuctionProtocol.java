@@ -12,7 +12,6 @@ import negotiator.NegotiationEventListener;
 import negotiator.analysis.BidSpace;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
-import negotiator.tournament.AlternatingOffersNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 

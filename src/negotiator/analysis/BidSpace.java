@@ -93,11 +93,11 @@ public class BidSpace {
 		{		
 			BidIterator lBidIter = new BidIterator(domain);
 			int count=0;
-			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint >();
+			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint>(bidPoints);
 			while(lBidIter.hasNext()) {
 				Bid bid = lBidIter.next();
 //				System.out.println(bid.toString());				
-				tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+				//tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
 				count++;
 				if(count>500000) {
 					subPareto.addAll(computeParetoFrontier(tmpBidPoints));

@@ -131,9 +131,7 @@ public class BayesianAgentForAuction extends Agent {
 				break;
 			}
 			break;
-		}
-
-		
+		}		
 		// Return (one of the) possible bid(s) with maximal utility.
 		fSmartSteps=NUMBER_OF_SMART_STEPS;
 		myLastBid = lBid;

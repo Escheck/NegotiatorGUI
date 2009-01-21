@@ -181,12 +181,11 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	}
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
+		//System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 	}
 
 	public void handleBlateralAtomicNegotiationSessionEvent(
 			BilateralAtomicNegotiationSessionEvent evt) {
-		// TODO Auto-generated method stub
 		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		session+=1;
 		if(session>resultTable.getModel().getRowCount()){
@@ -227,6 +226,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	}
 
 	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+		
 	}
 	
 	public class MyListSelectionListener implements ListSelectionListener {
