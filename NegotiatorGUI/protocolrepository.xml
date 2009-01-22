@@ -6,6 +6,7 @@
         <protocolRepItem>
             <protocolRepItem description="Alternating Offers" classPath="negotiator.protocol.alternatingoffers.AlternatingOffersProtocol" protocolName="Alternating Offers"/>
             <protocolRepItem description="Auction" classPath="negotiator.protocol.auction.AuctionProtocol" protocolName="Auction"/>
+            <protocolRepItem description="MultiPhaseAuction" classPath="negotiator.protocol.auction.MultiPhaseAuctionProtocol" protocolName="MultiPhaseAuction"/>
         </protocolRepItem>
     </items>
     <filename>protocolrepository.xml</filename>

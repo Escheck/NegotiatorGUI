@@ -343,8 +343,10 @@ public class AuctionProtocol extends Protocol {
 	 * 
 	 */
 	protected AuctionBilateralAtomicNegoSession runNegotiationSession(
+			Agent agentA, 
+			Agent agentB, 
 			AgentRepItem agentARepItem, 
-			AgentRepItem agentBRepItem, 
+			AgentRepItem agentBRepItem, 			
 			String agentAname, 
 			String agentBname, 
 			ProfileRepItem profileRepItemA,
@@ -353,15 +355,8 @@ public class AuctionProtocol extends Protocol {
 			UtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
-			{
-		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-		Agent agentA = (Agent)(loaderA.loadClass(agentARepItem.getClassPath()).newInstance());
-		agentA.setName(agentAname);
-
-		java.lang.ClassLoader loaderB = ClassLoader.getSystemClassLoader();
-		Agent agentB = (Agent)(loaderB.loadClass(agentBRepItem.getClassPath()).newInstance());
-		agentB.setName(agentBname);
-
+ 
+	{
 		int sessionTestNumber=1;
 		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
 		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
@@ -429,6 +424,30 @@ public class AuctionProtocol extends Protocol {
 			e.printStackTrace();
 		}
 		return sessionrunner;
+	
+	}
+	protected AuctionBilateralAtomicNegoSession runNegotiationSession(
+			AgentRepItem agentARepItem, 
+			AgentRepItem agentBRepItem, 
+			String agentAname, 
+			String agentBname, 
+			ProfileRepItem profileRepItemA,
+			ProfileRepItem profileRepItemB,
+			UtilitySpace spaceA, 
+			UtilitySpace spaceB,
+			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
+			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
+			{
+		java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+		Agent agentA = (Agent)(loaderA.loadClass(agentARepItem.getClassPath()).newInstance());
+		agentA.setName(agentAname);
+
+		java.lang.ClassLoader loaderB = ClassLoader.getSystemClassLoader();
+		Agent agentB = (Agent)(loaderB.loadClass(agentBRepItem.getClassPath()).newInstance());
+		agentB.setName(agentBname);
+		
+		return runNegotiationSession(agentA, agentB, agentARepItem, agentBRepItem, agentAname, agentBname, profileRepItemA, profileRepItemB, spaceA, spaceB, agentAparams, agentBparams);
+
 	}
 
 	@Override

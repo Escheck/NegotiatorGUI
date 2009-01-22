@@ -36,6 +36,7 @@ public class BayesianAgentForAuction extends Agent {
 	private boolean fMarketPreassure = true;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
+	protected OpponentModel[] fOpponentModels;
 	private static final double CONCESSIONFACTOR = 0.04;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
 	private static final int NUMBER_OF_SMART_STEPS = 0; 
@@ -61,6 +62,7 @@ public class BayesianAgentForAuction extends Agent {
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.));
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.));
 		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",-1.,1.));
+		parameters.add(new AgentParam(BayesianAgentForAuction.class.getName(),"opponent",-1.,1.));
 		return parameters;
 	}
 	
@@ -82,10 +84,17 @@ public class BayesianAgentForAuction extends Agent {
 			fRole = ROLE.CENTER;
 		else fRole = ROLE.IRRELEVANT;
 		if(fPhase==PHASE.FIRST_PHASE) prepareOpponentModel();
+		if(fRole==ROLE.CENTER) {
+			int index = Double.valueOf(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"opponent",-1.,1.))).getValue()).intValue();
+			fOpponentModel = fOpponentModels[index];
+		}
 			
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModel(utilitySpace);
+		fOpponentModels = new BayesianOpponentModel[2];
+		fOpponentModels[0] = new BayesianOpponentModel(utilitySpace);
+		fOpponentModels[1] = new BayesianOpponentModel(utilitySpace);
+		fOpponentModel = fOpponentModels[0];
 	}
 
 	// Class methods
@@ -184,7 +193,7 @@ public class BayesianAgentForAuction extends Agent {
 				lBid =  getNextBidSmart(pOppntBid);
 				break;
 			case SECOND_PHASE:					
-					lBid = getNextBidSmart(pOppntBid);	
+				lBid = getNextBidSmart(pOppntBid);	
 				break;
 			}
 			break;
@@ -382,7 +391,10 @@ public class BayesianAgentForAuction extends Agent {
 			lTargetUtility = lMyUtility; 
 			fSmartSteps++;
 		}
-		return getTradeOff(lTargetUtility);
+		if(lTargetUtility<utilitySpace.getReservationValue()) 
+			return null;
+		else
+			return getTradeOff(lTargetUtility);
 	}
 	
 	/**
@@ -524,16 +536,21 @@ public class BayesianAgentForAuction extends Agent {
 	                }
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
-	                	lAction=new Offer(this,lnextBid);
-	                	// Propose counteroffer. Get next bid.
-	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
-	                	// if yes then accept last bid of the opponent.
-	                	if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
-	                	{
-	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
-	                		lAction = new Accept(this);
-	                		log("opponent's bid higher than util of my last bid! accepted");
-	                	} 
+	                	if(lnextBid==null) {
+	                		lAction = new EndNegotiation(this);
+	                	} else {
+	                		
+	                		lAction=new Offer(this,lnextBid);
+	                		// Propose counteroffer. Get next bid.
+	                		// Check if utility of the new bid is lower than utility of the opponent's last bid
+	                		// if yes then accept last bid of the opponent.
+	                		if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
+	                		{
+	                			// Opponent bids equally, or outbids my previous bid, so lets  accept
+	                			lAction = new Accept(this);
+	                			log("opponent's bid higher than util of my last bid! accepted");
+	                		}
+	                	}
 
 	                }
 	                //remember current bid of the opponent as its previous bid
