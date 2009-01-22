@@ -212,6 +212,18 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	public HashMap<AgentParameterVariable, AgentParamValue> getAgentBparams() {
 		return agentBparams;
 	}
-
+	public Agent getAgentA() {
+		return agentA;
+	}
+	public Agent getAgentB() {
+		return agentB;
+	}
+	public UtilitySpace getAgentAUtilitySpace() {
+		return spaceA;
+	}
+	public UtilitySpace getAgentBUtilitySpace() {
+		return spaceB;
+	}
+	
 	
 }
