@@ -23,29 +23,29 @@ import negotiator.AgentParam;
 
 public class BayesianAgentForAuction extends Agent {
 
-	private Action messageOpponent;
-	private Bid myLastBid = null;
-	private Action myLastAction = null;
-	private Bid fOpponentPreviousBid = null;
+	protected Action messageOpponent;
+	protected Bid myLastBid = null;
+	protected  Action myLastAction = null;
+	protected Bid fOpponentPreviousBid = null;
 
-	private enum ROLE {CENTER, PROVIDER, IRRELEVANT};
+	protected enum ROLE {CENTER, PROVIDER, IRRELEVANT};
 	public enum PHASE { FIRST_PHASE, SECOND_PHASE};
-	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
+	protected  enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT, AUCTION};
 	private STRATEGY fStrategy = STRATEGY.AUCTION;
-	private boolean fMarketPreassure = true;
-	private int fSmartSteps;
+	private boolean fMarketPreassure = false;
+	protected int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
-	protected OpponentModel[] fOpponentModels;
-	private static final double CONCESSIONFACTOR = 0.04;
+	protected OpponentModel[] fOpponentModels = null;
+	private static  double CONCESSIONFACTOR = 0.04;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
-	private static final int NUMBER_OF_SMART_STEPS = 0; 
-	private ArrayList<Bid> myPreviousBids;
+	protected static final int NUMBER_OF_SMART_STEPS = 0; 
+	protected  ArrayList<Bid> myPreviousBids;
 	private boolean fSkipDistanceCalc = true;
 	private boolean fDebug = false;
 	private int fRound;
-	private PHASE fPhase = null;
-	private ROLE fRole;
+	protected PHASE fPhase = null;
+	protected ROLE fRole;
 	// Class constructor
 	public BayesianAgentForAuction() {
 		super();
@@ -72,7 +72,7 @@ public class BayesianAgentForAuction extends Agent {
 		myLastAction = null;
 		fSmartSteps = 0;
 		myPreviousBids = new ArrayList<Bid>();
-					
+		fOpponentPreviousBid = null;					
 		fRound =0;
 		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",new Double(-1.),new Double(1.)))).getValue()<0)
 			fPhase = PHASE.FIRST_PHASE;
@@ -80,10 +80,12 @@ public class BayesianAgentForAuction extends Agent {
 			fPhase = PHASE.SECOND_PHASE;		
 		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<0)
 			fRole = ROLE.PROVIDER;
-		else if (getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<2)
+		else if (getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<2) {
 			fRole = ROLE.CENTER;
+			CONCESSIONFACTOR = 0.06;
+		}
 		else fRole = ROLE.IRRELEVANT;
-		if(fPhase==PHASE.FIRST_PHASE) prepareOpponentModel();
+		if((fPhase==PHASE.FIRST_PHASE)&&(fOpponentModels==null)) prepareOpponentModel();
 		if(fRole==ROLE.CENTER) {
 			int index = Double.valueOf(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"opponent",-1.,1.))).getValue()).intValue();
 			fOpponentModel = fOpponentModels[index];
@@ -102,7 +104,7 @@ public class BayesianAgentForAuction extends Agent {
 		messageOpponent = opponentAction;
 	}
 
-	private Action proposeInitialBid() throws Exception
+	protected Action proposeInitialBid() throws Exception
 	{
 		Bid lBid=null;
 		switch(fRole) {
@@ -157,7 +159,7 @@ public class BayesianAgentForAuction extends Agent {
 	 * as that counterbid.
 	 * @throws Exception
 	 */
-	private Bid getNextBidAuction(Bid pOppntBid) throws Exception 
+	protected Bid getNextBidAuction(Bid pOppntBid) throws Exception 
 	{
 		if (pOppntBid==null) throw new NullPointerException("pOpptBid=null");
 		if (myLastBid==null) throw new Exception("myLastBid==null");
@@ -281,7 +283,7 @@ public class BayesianAgentForAuction extends Agent {
 		 * @return
 		 * @throws Exception
 		 */
-	private Bid getSmartBid(Bid pBid) throws Exception {
+	protected Bid getSmartBid(Bid pBid) throws Exception {
 		Bid lBid=null;
 		double lExpectedUtility = -1;
 		double lUtility = utilitySpace.getUtility(pBid);
@@ -300,11 +302,12 @@ public class BayesianAgentForAuction extends Agent {
 				}
 			}				
 		} 		
+		return lBid;
 		//check if really found a better bid. if not return null
-		if(fOpponentModel.getNormalizedUtility(lBid)>(fOpponentModel.getNormalizedUtility(pBid)+0.04))
+	/*	if(fOpponentModel.getNormalizedUtility(lBid)>(fOpponentModel.getNormalizedUtility(pBid)+0.04))
 			return lBid;
 		else
-			return null;
+			return null;*/
 	}
 	
 	
@@ -378,7 +381,7 @@ public class BayesianAgentForAuction extends Agent {
 		return nearestbid.bid;
 	}
 	
-	private Bid getNextBidSmart(Bid pOppntBid) throws Exception 
+	protected Bid getNextBidSmart(Bid pOppntBid) throws Exception 
 	{
 		double lMyUtility, lOppntUtility, lTargetUtility;
 		// Both parties have made an initial bid. Compute associated utilities from my point of view.
@@ -453,8 +456,9 @@ public class BayesianAgentForAuction extends Agent {
 		return lBid;
 		
 	}
-	private Bid getTradeOff(double pUtility) throws Exception
+	protected Bid getTradeOff(double pUtility) throws Exception
 	{
+		if(pUtility<utilitySpace.getReservationValue()) return null;
 		Bid lBid=null;
 		double lExpectedUtility = -100;
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
@@ -466,7 +470,7 @@ public class BayesianAgentForAuction extends Agent {
 			if (fMarketPreassure) if(fNegotiation.getOpponentUtility(this, tmpBid)<0.3 ) continue;
 			if(Math.abs(utilitySpace.getUtility(tmpBid)-pUtility)<ALLOWED_UTILITY_DEVIATION) {
 				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpExpecteUtility = fOpponentModel.getExpectedUtility(tmpBid);
+				double lTmpExpecteUtility = fNegotiation.getOpponentUtility(this, tmpBid); //fOpponentModel.getExpectedUtility(tmpBid);
 				if(lTmpExpecteUtility > lExpectedUtility) {
 					lExpectedUtility= lTmpExpecteUtility ;
 					lBid = tmpBid;
@@ -477,7 +481,7 @@ public class BayesianAgentForAuction extends Agent {
 	}
 	
 	
-	private Bid proposeNextBid(Bid pOppntBid) throws Exception
+	protected  Bid proposeNextBid(Bid pOppntBid) throws Exception
 	{
 		Bid lBid = null;
 		switch(fStrategy) {
@@ -585,7 +589,7 @@ public class BayesianAgentForAuction extends Agent {
 			myPreviousBids.add( ((Offer)myLastAction).getBid());
 		return lAction;
 	}
-	private ACTIONTYPE getActionType(Action lAction) {
+	protected  ACTIONTYPE getActionType(Action lAction) {
 		ACTIONTYPE lActionType = ACTIONTYPE.START;
 		if (lAction instanceof Offer)
 			lActionType = ACTIONTYPE.OFFER;
@@ -625,7 +629,7 @@ public class BayesianAgentForAuction extends Agent {
 	 * @throws Exception if you use wrong values for u or t.
 	 * 
 	 */
-	private double Paccept(double u, double t1) throws Exception
+	protected double Paccept(double u, double t1) throws Exception
 	{
 		double t=t1*t1*t1; // get more relaxed more to the end.
 		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
