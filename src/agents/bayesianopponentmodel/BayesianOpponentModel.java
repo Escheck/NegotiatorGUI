@@ -19,8 +19,8 @@ public class BayesianOpponentModel extends OpponentModel{
 	private boolean fUseMostProbableHypsOnly = true;
 	private ArrayList<UtilitySpaceHypothesis> fMostProbableUSHyps;	
 	private double fPreviousBidUtility;
-	private double EXPECTED_CONCESSION_STEP = 0.04;
-	private double SIGMA = 0.35;
+	private double EXPECTED_CONCESSION_STEP = 0.045;
+	private double SIGMA = 0.25;
 	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
 	
