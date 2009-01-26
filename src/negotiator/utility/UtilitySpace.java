@@ -510,6 +510,7 @@ public class UtilitySpace {
         	returnval = loadTreeRecursive((SimpleElement)objArray[i]);
         return returnval;
 	}
+	
 
 	/**
 	 * 
@@ -978,17 +979,18 @@ public class UtilitySpace {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+/*		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result
 				+ ((fEvaluators == null) ? 0 : fEvaluators.hashCode());
 		result = prime
 				* result
 				+ ((fReservationValue == null) ? 0 : fReservationValue
 						.hashCode());
+						*/
 		return result;
 	}
 
-	@Override
+/*	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -1014,8 +1016,8 @@ public class UtilitySpace {
 			return false;
 		return true;
 	}
-	
-/*	@Override
+*/	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof UtilitySpace)) return false;
 		UtilitySpace obj2 = (UtilitySpace)obj;
@@ -1029,5 +1031,5 @@ public class UtilitySpace {
 		return true;
 	}
 
-*/
+
 }

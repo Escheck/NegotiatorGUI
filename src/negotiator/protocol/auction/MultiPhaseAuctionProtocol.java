@@ -48,17 +48,32 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 	}
 	@Override
 	public void run() {
+		synchronized (tournamentRunner) {
+			
+		
 		try { 
 			int numberOfSellers = getNumberOfAgents()-1;
 			//run the sessions
 			AuctionBilateralAtomicNegoSession[] sessions = new AuctionBilateralAtomicNegoSession[numberOfSellers];
 			//Agent center;
-			
+			int numberOfOffers = 0;
+			java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+			Agent agentA = (Agent)(loaderA.loadClass(getAgentRepItem(0).getClassPath()).newInstance());
+			agentA.setName("Buyer");
+
 			for (int i=0;i<numberOfSellers;i++) {
+				java.lang.ClassLoader loaderB = ClassLoader.getSystemClassLoader();
+				Agent agentB = (Agent)(loaderB.loadClass(getAgentRepItem(i+1).getClassPath()).newInstance());
+				agentB.setName("Seller");
+				
+				
 				HashMap<AgentParameterVariable,AgentParamValue> centerParams = getAgentParams(0);
 				centerParams.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"opponent",-1.,1.)), new AgentParamValue(Double.valueOf(i)));
+				
 				sessions[i] = 
 					runNegotiationSession(
+							agentA,
+							agentB,
 							getAgentRepItem(0),
 							getAgentRepItem(i+1),
 							"Buyer", "Seller", 
@@ -91,10 +106,13 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).bid;
 				}
 				i++;
+				numberOfOffers += s.getNegotiationOutcome().AgentABids.size() +s.getNegotiationOutcome().AgentBBids.size();
 			}
 			boolean bContinue = true;
 			int opponentIndex = winnerSessionIndex;
-			if(opponentIndex==0) opponentIndex =1; else opponentIndex = 0;
+			//if(opponentIndex==0) opponentIndex =1; else opponentIndex = 0;
+			int numberOfSession = 2;
+			
 			while(bContinue) {
 				//calculate the strarting utils
 
@@ -135,9 +153,9 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 */
 				HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue> ();
 				HashMap<AgentParameterVariable,AgentParamValue> paramsB = new HashMap<AgentParameterVariable,AgentParamValue> ();
+				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.)), new AgentParamValue(centerStartingUtil));
 				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.)), new AgentParamValue(0.9));
 				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(lSecondPrice));
-				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.)), new AgentParamValue(centerStartingUtil));
 				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"opponent",-1.,1.)), new AgentParamValue(Double.valueOf(opponentIndex)));			
 				//paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.)), new AgentParamValue(0.6));
 				paramsA.put(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",0.,1.)), new AgentParamValue(0.9));
@@ -162,13 +180,17 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 				//secondPhaseSession.getNegotiationOutcome().
 				if(secondPhaseSession.getNegotiationOutcome().ErrorRemarks!=null) bContinue = false; 
 				lBestBid = secondPhaseSession.getNegotiationOutcome().AgentABids.get(secondPhaseSession.getNegotiationOutcome().AgentABids.size()-1).bid;
+				numberOfSession++;
+				numberOfOffers += (secondPhaseSession.getNegotiationOutcome().AgentABids.size()+secondPhaseSession.getNegotiationOutcome().AgentBBids.size());
 			}
 			for (AuctionBilateralAtomicNegoSession s: sessions) 
 				s.cleanUp();
 			//secondPhaseSession.cleanUp();
-
+			System.out.println("Results: number of sessions:"+String.valueOf(numberOfSession) + "; number of offers:"+String.valueOf(numberOfOffers));
 		} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
-
+			tournamentRunner.notify();
+		}
+	
 	}
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		return generateAllSessions(tournament);
@@ -251,38 +273,38 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			//allSessions.add(createSession(center4, seller9, seller6));
 			//allSessions.add(createSession(center12, seller2, seller10));
 			//allSessions.add(createSession(center1, seller2, seller8));
-			//allSessions.add(createSession(tournament,center10, seller7, seller9));
-			//allSessions.add(createSession(tournament,center7, seller11, seller9));
-			//allSessions.add(createSession(tournament,center8, seller11, seller10));
+			allSessions.add(createSession(tournament,center10, seller7, seller9));
+			allSessions.add(createSession(tournament,center7, seller11, seller9));
+			allSessions.add(createSession(tournament,center8, seller11, seller10));
 			allSessions.add(createSession(tournament,center10, seller3, seller6));
-			//allSessions.add(createSession(tournament,center7, seller4, seller7));
-			//allSessions.add(createSession(tournament,center10, seller11, seller8));
-			//allSessions.add(createSession(center11, seller5, seller11));
-			//allSessions.add(createSession(center6, seller7, seller3));
-			//allSessions.add(createSession(center6, seller10, seller5));
-			//allSessions.add(createSession(center8, seller6, seller3));
-			//allSessions.add(createSession(center2, seller5, seller1));
-			//allSessions.add(createSession(center3, seller5, seller4));
-			//allSessions.add(createSession(center10, seller5, seller2));
-			//allSessions.add(createSession(center1, seller3, seller6));
-			//allSessions.add(createSession(center3, seller5, seller4));
-			//allSessions.add(createSession(center8, seller10, seller6));
-			//allSessions.add(createSession(center4, seller12, seller3));
-			//allSessions.add(createSession(center3, seller2, seller11));
-			//allSessions.add(createSession(center6, seller2, seller5));
-			//allSessions.add(createSession(center10, seller2, seller6));
-			//allSessions.add(createSession(center12, seller8, seller12));
-			//allSessions.add(createSession(center9, seller6, seller2));
-			//allSessions.add(createSession(center7, seller7, seller11));
-			//allSessions.add(createSession(center2, seller1, seller5));
-			//allSessions.add(createSession(center10, seller8, seller10));
-			//allSessions.add(createSession(center11, seller8, seller7));
-			//allSessions.add(createSession(center8, seller7, seller10));
-			//allSessions.add(createSession(center2, seller7, seller12));
-			//allSessions.add(createSession(center10, seller12, seller7));
-			//allSessions.add(createSession(center7, seller7, seller11));
-			//allSessions.add(createSession(center2, seller1, seller5));
-			//allSessions.add(createSession(center10, seller8, seller10));
+			allSessions.add(createSession(tournament,center7, seller4, seller7));
+			allSessions.add(createSession(tournament,center10, seller11, seller8));
+			allSessions.add(createSession(tournament,center11, seller5, seller11));
+			allSessions.add(createSession(tournament,center6, seller7, seller3));
+			allSessions.add(createSession(tournament,center6, seller10, seller5));
+			//allSessions.add(createSession(tournament,center8, seller6, seller3));
+			//allSessions.add(createSession(tournament,center2, seller5, seller1));
+			//allSessions.add(createSession(tournament,center3, seller5, seller4));
+			//allSessions.add(createSession(tournament,center10, seller5, seller2));
+			//allSessions.add(createSession(tournament,center1, seller3, seller6));
+			//allSessions.add(createSession(tournament,center3, seller5, seller4));
+			//allSessions.add(createSession(tournament,center8, seller10, seller6));
+			//allSessions.add(createSession(tournament,center4, seller12, seller3));
+			//allSessions.add(createSession(tournament,center3, seller2, seller11));
+			//allSessions.add(createSession(tournament,center6, seller2, seller5));
+			//allSessions.add(createSession(tournament,center10, seller2, seller6));
+			//allSessions.add(createSession(tournament,center12, seller8, seller12));
+			//allSessions.add(createSession(tournament,center9, seller6, seller2));
+			//allSessions.add(createSession(tournament,center7, seller7, seller11));
+			//allSessions.add(createSession(tournament,center2, seller1, seller5));
+//			allSessions.add(createSession(tournament,center10, seller8, seller10));
+//			allSessions.add(createSession(tournament,center11, seller8, seller7));
+//			allSessions.add(createSession(tournament,center8, seller7, seller10));
+//			allSessions.add(createSession(tournament,center2, seller7, seller12));
+//			allSessions.add(createSession(tournament,center10, seller12, seller7));
+//			allSessions.add(createSession(tournament,center7, seller7, seller11));
+//			allSessions.add(createSession(tournament,center2, seller1, seller5));
+//			allSessions.add(createSession(tournament,center10, seller8, seller10));
 			//allSessions.add(createSession(center11, seller8, seller7));
 			//allSessions.add(createSession(center8, seller7, seller10));
 			//allSessions.add(createSession(center2, seller7, seller12));
