@@ -37,7 +37,7 @@ public class BayesianAgentForAuction extends Agent {
 	protected int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	protected OpponentModel[] fOpponentModels = null;
-	private static  double CONCESSIONFACTOR = 0.04;
+	protected double CONCESSIONFACTOR = 0.04;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
 	protected static final int NUMBER_OF_SMART_STEPS = 0; 
 	protected  ArrayList<Bid> myPreviousBids;

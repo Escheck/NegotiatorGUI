@@ -170,9 +170,9 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
     private javax.swing.JTable resultTable;
     // End of variables declaration//GEN-END:variables
 	public void handleActionEvent(ActionEvent evt) {
-		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
+		//System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		if ((evt.getAct() instanceof EndNegotiation)| (evt.getAct()instanceof Accept)){
-			System.out.println("end or accept --> fill table");
+			//System.out.println("end or accept --> fill table");
 			resultTable.getModel().setValueAt(sessionProgress.round,session-1,6);//rounds
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityA(),session-1,7);//util a
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
@@ -186,7 +186,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 
 	public void handleBlateralAtomicNegotiationSessionEvent(
 			BilateralAtomicNegotiationSessionEvent evt) {
-		System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
+		//System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		session+=1;
 		if(session>resultTable.getModel().getRowCount()){
 			resultTableModel.addRow();
@@ -219,7 +219,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		resultTable.getModel().setValueAt(evt.getAgentB().getName(),session-1,3);//agent b
 	    
 		//clear the ProgressGUI
-		System.out.println("resetting the GUI after NegotiationSessionEvent.");
+		//System.out.println("resetting the GUI after NegotiationSessionEvent.");
 		sessionProgress.resetGUI();
 		sessionProgress.setNegotiationSession(negoSession);
 		

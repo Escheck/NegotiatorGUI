@@ -2,6 +2,8 @@ package agents;
 
 import java.util.Date;
 
+import javax.management.relation.Role;
+
 import agents.BayesianAgentForAuction.ACTIONTYPE;
 import negotiator.AgentParam;
 import negotiator.Bid;
@@ -13,6 +15,7 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
 public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	protected Bid myProviderLastBid;
+	protected double centerMaxOffer = 0;
 	@Override
 	protected Action proposeInitialBid() throws Exception
 	{
@@ -21,9 +24,11 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 		case CENTER:
 			switch(fPhase) {
 			case FIRST_PHASE:
+				CONCESSIONFACTOR = 0.07;
 				lBid = getMaxUtilityBid();
 				break;
 			case SECOND_PHASE:
+				CONCESSIONFACTOR = 0.0;
 				if(fOpponentPreviousBid==null) {
 					//double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.))).getValue();					
 					lBid = getMaxUtilityBid();
@@ -39,9 +44,10 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 				break;
 			case SECOND_PHASE:
 				//lBid = getMaxUtilityBid();
-				//double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.))).getValue();
-				lBid = getTradeOff(utilitySpace.getUtility(myProviderLastBid)-0.03);
+				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.))).getValue();
+				lBid = getTradeOff(lSecondBest);
 				myProviderLastBid = lBid;
+				if(lBid == null) return new EndNegotiation(this); 
 				break;
 			}
 			break;
@@ -53,7 +59,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	}
 	@Override
 	public Action chooseAction() {
-		if((fOpponentPreviousBid!=null)&&(fRole == ROLE.CENTER)&&(fPhase == PHASE.SECOND_PHASE)) return new Accept(this);
+		//if((fOpponentPreviousBid!=null)&&(fRole == ROLE.CENTER)&&(fPhase == PHASE.SECOND_PHASE)) return new Accept(this);
 		Action lAction = null;
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
@@ -70,6 +76,12 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 				if(myPreviousBids.size()<8)	fOpponentModel.updateBeliefs(lOppntBid);
 				//dumpDistancesToLog(fRound++);
 				System.out.println("Done!");
+				if(fRole == ROLE.CENTER) {
+					if (utilitySpace.getUtility(lOppntBid)>centerMaxOffer)  {
+						centerMaxOffer = utilitySpace.getUtility(lOppntBid);
+						if(fPhase == PHASE.SECOND_PHASE) return new Accept(this);
+					}
+				}
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
@@ -154,10 +166,10 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 				lBid =  getNextBidSmart(pOppntBid);
 				break;
 			case SECOND_PHASE:
-				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.))).getValue();
-				lBid = getTradeOff(lSecondBest);
+//				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"reservation",0.,1.))).getValue();
+//				lBid = getTradeOff(lSecondBest);
 	//				return new Accept(this);				
-
+				lBid =  getNextBidSmart(pOppntBid);
 				break;
 			}
 			break;			

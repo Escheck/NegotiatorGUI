@@ -328,7 +328,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		bidChart.setAgentBName("Agent B:"+nego.getAgentBname());
 		bidChart.setAgentAName("Agent A:"+nego.getAgentAname());
 		BidSpace bs = session.getBidSpace();
-		double [][] pb = getAllBidsInBidSpace();
+		double [][] pb = null;//getAllBidsInBidSpace();
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
@@ -361,7 +361,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	 * this does not follow my warning/prescribed way to do this (see the handleActionEvent docuemntation)
 	 */
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
-		System.out.println("Caught event "+evt+ "in ProgressUI");
+		//System.out.println("Caught event "+evt+ "in ProgressUI");
 		round+=1;
 		if(round>biddingTable.getModel().getRowCount()){
 			progressinfo.addRow();
@@ -408,7 +408,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	public void addTableData(){
-		System.out.println("updating the table...");
+		//System.out.println("updating the table...");
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
 		System.out.println(curveA.length);
