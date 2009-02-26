@@ -89,15 +89,21 @@ public class BidSpace {
 	public ArrayList<BidPoint> getParetoFrontier() throws Exception
 	{
 		ArrayList<BidPoint> subPareto = new ArrayList<BidPoint >();
+		boolean bIsBidSpaceAvailable = true;
+		if(bidPoints.size()<1) bIsBidSpaceAvailable =false; 
 		if (paretoFrontier==null)
 		{		
 			BidIterator lBidIter = new BidIterator(domain);
 			int count=0;
-			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint>(bidPoints);
+			ArrayList<BidPoint> tmpBidPoints;
+			if(bIsBidSpaceAvailable)
+				tmpBidPoints = new ArrayList<BidPoint>(bidPoints);
+			else
+				tmpBidPoints = new ArrayList<BidPoint>();
 			while(lBidIter.hasNext()) {
 				Bid bid = lBidIter.next();
 //				System.out.println(bid.toString());				
-				//tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+				if(!bIsBidSpaceAvailable) tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
 				count++;
 				if(count>500000) {
 					subPareto.addAll(computeParetoFrontier(tmpBidPoints));

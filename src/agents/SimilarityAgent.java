@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -32,7 +33,7 @@ public class SimilarityAgent extends Agent {
 	private static final double CONCESSIONFACTOR = 0.03;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
 	private static final int NUMBER_OF_SMART_STEPS = 2; 
-	
+	private HashMap<Bid, Double> utilityCash;
 	// Class constructor
 	public SimilarityAgent() {
 		super();
@@ -46,6 +47,17 @@ public class SimilarityAgent extends Agent {
 		//load similarity info from the utility space
 		fSimilarity = new Similarity(utilitySpace.getDomain());
 		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
+		//build utility cash
+		utilityCash = new HashMap<Bid, Double>();
+		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
+		try {
+			while(lIter.hasNext()) {
+				Bid tmpBid = lIter.next();
+				utilityCash.put(tmpBid, new Double(utilitySpace.getUtility(tmpBid)));
+			} //while
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -222,15 +234,11 @@ public class SimilarityAgent extends Agent {
 	private Bid getTradeOffExhaustive(double pUtility, Bid pOppntBid) {
 		Bid lBid=null;
 		double lSim = -1;
-		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
-		while(lIter.hasNext()) {
-			Bid tmpBid = lIter.next();
-			double lUtil = 0;
-			try {
-				lUtil = utilitySpace.getUtility(tmpBid);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		//BidIterator lIter = new BidIterator(utilitySpace.getDomain());		
+		//while(lIter.hasNext()) {
+		for(Entry<Bid, Double> entry: utilityCash.entrySet()) {
+			Bid tmpBid = entry.getKey();
+			double lUtil = entry.getValue();
 			if(Math.abs(lUtil-pUtility)<ALLOWED_UTILITY_DEVIATION) {
 				double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
 				if(lTmpSim>lSim) {

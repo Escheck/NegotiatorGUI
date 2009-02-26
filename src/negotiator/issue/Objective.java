@@ -1,5 +1,6 @@
 package negotiator.issue;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Objective implements MutableTreeNode
 	private String description="";
 	private Object userObject; //can be a picture, for instance
 	private Objective parent; // Wouter: null if no parent available?
-	private Vector<Objective> children = new Vector(); // Wouter: need to make this arraylist but no time now...
+	private ArrayList<Objective> children = new ArrayList<Objective>();
 		
 	//Constructors
 	public Objective() {
@@ -53,6 +54,20 @@ public class Objective implements MutableTreeNode
 	
 	//Methods
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		/*result = prime * result
+				+ ((children == null) ? 0 : children.hashCode());*/
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + number;
+		/*result = prime * result + ((parent == null) ? 0 : parent.hashCode());*/
+		return result;
+	}
+	
 	/** 
 	 * @return true if given object is an Objective and
 	 * number, name, and children are the same 
@@ -63,7 +78,41 @@ public class Objective implements MutableTreeNode
 		if (!(o instanceof Objective)) return false;
 		return equalContents((Objective)o);
 	}
-	
+/*
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Objective other = (Objective) obj;
+		if (children == null) {
+			if (other.children != null)
+				return false;
+		} else if (!children.equals(other.children))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (number != other.number)
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		return true;
+	}
+	*/
 	/**
 	 * check the contents but don't check for the class type anymore.
 	 * @param obj the objective to be compared
@@ -251,7 +300,7 @@ public class Objective implements MutableTreeNode
 	 * @return an Enumeration of this Objective's children.
 	 */
 	public Enumeration<Objective> children() {
-		return children.elements();
+		  return Collections.enumeration(children);
 	}
 	
 	/** Wouter: added bcause I dont have time to change all Vector and Enumerators to ArrayList code*/
@@ -270,7 +319,7 @@ public class Objective implements MutableTreeNode
 	 */
 	public Objective getChildAt(int childIndex) {
 		if (childIndex < children.size() && childIndex >= 0)
-			return children.elementAt(childIndex);
+			return children.get(childIndex);
 		else
 			return null;
 	}
@@ -299,7 +348,7 @@ public class Objective implements MutableTreeNode
 	 */
 	public int getIndex(TreeNode node) {
 		for (int i = 0; i < children.size(); i++) {
-			if (node == children.elementAt(i))
+			if (node == children.get(i))
 				return i;
 		}
 		return -1;
@@ -351,7 +400,7 @@ public class Objective implements MutableTreeNode
 	 */
 	public void insert(MutableTreeNode child, int index) {
 		if (index <= getChildCount() && index >= 0) {
-			children.insertElementAt((Objective)child, index);
+			children.add(index, (Objective)child);
 			child.setParent(this);
 		}
 		// TODO Update weights
@@ -375,7 +424,7 @@ public class Objective implements MutableTreeNode
 	 */
 	public void remove(MutableTreeNode node) {
 		for (int i = 0; i < children.size(); i++) {
-			if (node == children.elementAt(i)) {
+			if (node == children.get(i)) {
 				getChildAt(i).setParent(null);
 				children.remove(i);
 			}

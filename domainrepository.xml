@@ -16,11 +16,11 @@
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
                 <profile url="file:etc/templates/SON/son_seller.xml"/>
             </domainRepItem>
-<!--             <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
+             <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_city_space.xml"/>
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_ampo_space.xml"/>
             </domainRepItem>
- -->           
+          
             <domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
