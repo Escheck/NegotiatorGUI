@@ -173,10 +173,16 @@ public class AlternatingOffersProtocol extends Protocol {
 		// Main.log("Starting negotiations...");
 		for(int i=0;i<sessionTotalNumber;i++) {
 			//Main.log("Starting session " + String.valueOf(i+1));
-			runNegotiationSession(i+1);
+			if(tournamentRunner!=null) {
+				synchronized (tournamentRunner) {
+					runNegotiationSession(i+1);
+					tournamentRunner.notify();
+				}
+			} else
+				runNegotiationSession(i+1);
 		}
 	}
-
+	
 
 
 	/** do test run of negotiation session.
@@ -188,9 +194,8 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	protected void runNegotiationSession(int nr)  throws Exception
 	{
-		synchronized (tournamentRunner) {
 
-
+			
 			java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 			agentA = (Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 			agentA.setName(getAgentAname());
@@ -219,6 +224,8 @@ public class AlternatingOffersProtocol extends Protocol {
 					getAgentBparams(),
 					startingAgent,
 					non_gui_nego_time);
+			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
+			else totalTime = gui_nego_time;
 			sessionrunner.setTotalTime(totalTime);
 			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 			sessionrunner.setStartingWithA(startingWithA);
@@ -226,8 +233,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			if(Global.fDebug) {
 				sessionrunner.run();
 			} else {
-				if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
-				else totalTime = gui_nego_time;
+				
 				negoThread = new Thread(sessionrunner);
 				System.out.println("nego start. "+System.currentTimeMillis()/1000);
 				negoThread.start();
@@ -268,8 +274,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				new Warning("Exception during writing s:"+e);
 				e.printStackTrace();
 			}
-			tournamentRunner.notify();
-		}
+
 	}
 
 	public void stopNegotiation() {

@@ -232,17 +232,18 @@ public class UtilitySpace {
         Objective root = domain.getObjectivesRoot();
         Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();
         while(issueEnum.hasMoreElements()){
-        	Objective is = (Objective)issueEnum.nextElement();
-        	type = fEvaluators.get(is).getType();
+        	Objective is = issueEnum.nextElement();
+        	Evaluator eval = fEvaluators.get(is);
+        	type = eval.getType();
         	switch(type) {
         	case DISCRETE:
         	case INTEGER:
         	case REAL:
-        		utility += fEvaluators.get(is).getWeight()*getEvaluation(is.getNumber(),bid);
+        		utility += eval.getWeight()*getEvaluation(is.getNumber(),bid);
         		break;
         	case PRICE:
         		financialUtility = getEvaluation(is.getNumber(),bid);
-        		financialRat = ((EvaluatorPrice)fEvaluators.get(is)).rationalityfactor;
+        		financialRat = ((EvaluatorPrice)eval).rationalityfactor;
         		break;
         	}
         }
