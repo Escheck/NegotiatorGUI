@@ -17,12 +17,16 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.xml.SimpleElement;
-import java.util.HashMap.*;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Iterator;
-import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * 
@@ -31,15 +35,17 @@ import java.util.ArrayList;
  * and value is the picked alternative.
  */
 
+@XmlRootElement
 public final class Bid implements XMLable
 {
 
 	// Class fields
 	Domain fDomain;
-
+	@XmlElement(name="values")
+	@XmlJavaTypeAdapter(MyMapAdapter.class)
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
-	
+	public Bid(){HashMap<Integer, Value> fValues = new HashMap<Integer, Value>();}
 	/**
 	 * create a new bid in a domain. Partially checks the validity of the bid as well
 	 * There is only this constructor because we require that ALL values in the domain
@@ -256,3 +262,47 @@ public final class Bid implements XMLable
 	}
 	
 }
+class MyMapAdapter extends XmlAdapter<Temp,Map<Integer,Value>> {
+
+	@Override
+	public Temp marshal(Map<Integer, Value> arg0) throws Exception {
+		Temp temp = new Temp();
+		for(Entry<Integer, Value> entry : arg0.entrySet()){
+			temp.entry.add(new Item(entry.getKey(), entry.getValue()));
+		}
+		return temp;
+	}
+
+	@Override
+	public Map<Integer, Value> unmarshal(Temp arg0) throws Exception {
+		Map<Integer, Value> map = new HashMap<Integer, Value>();
+		for(Item item: arg0.entry) {
+			map.put(item.key, item.value);
+		}
+		return map;
+	}
+
+}
+class Temp {
+  @XmlElement(name="issue")  
+  public List<Item> entry ;
+  
+  public Temp(){entry = new ArrayList<Item>();}
+   
+}
+@XmlRootElement
+class Item {
+	  @XmlAttribute(name="index")
+	  public Integer key;
+	  	
+	  @XmlElement	  
+	  public Value value;
+	  
+	  public Item(){ }
+	  public Item(Integer key, Value val) {
+		  this.key = key;
+		  this.value = val;
+	  }
+	}
+
+

@@ -80,20 +80,20 @@ public class DecUtilAgent extends Agent
     {
         Action action = null;
         try { 
-            if(actionOfPartner==null) action = new Offer(this,bids.get(nextBidIndex++));
+            if(actionOfPartner==null) action = new Offer(getAgentID(),bids.get(nextBidIndex++));
             if(actionOfPartner instanceof Offer)
             {
                 Bid partnerBid = ((Offer)actionOfPartner).getBid();
                 double offeredutil=utilitySpace.getUtility(partnerBid);
                 double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
                 double P=Paccept(offeredutil,time);
-                if (.02*P>Math.random()) action = new Accept(this);
-                else action = new Offer(this,bids.get(nextBidIndex++));               
+                if (.02*P>Math.random()) action = new Accept(getAgentID());
+                else action = new Offer(getAgentID(),bids.get(nextBidIndex++));               
             }
             Thread.sleep(300); // 3 bids per second is good enough.
         } catch (Exception e) { 
         	System.out.println("Exception in ChooseAction:"+e.getMessage());
-        	action=new Accept(this); // best guess if things go wrong. 
+        	action=new Accept(getAgentID()); // best guess if things go wrong. 
         }
         return action;
     }

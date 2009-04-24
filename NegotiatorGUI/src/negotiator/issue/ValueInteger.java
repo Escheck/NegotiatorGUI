@@ -1,9 +1,18 @@
 package negotiator.issue;
 
-public class ValueInteger implements Value {
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class ValueInteger extends Value {
 	
 	//	 Class fields
+	@XmlAttribute
 	int value;
+	
+	public ValueInteger() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	// Constructor
 	public ValueInteger(int i) {

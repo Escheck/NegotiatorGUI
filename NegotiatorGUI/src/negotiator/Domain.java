@@ -30,9 +30,10 @@ import java.util.ArrayList;
 public class Domain {
 	
     private Objective fObjectivesRoot;
-    
+    private String name;
     public Domain(){
     	fObjectivesRoot = null;
+    	name="";
     }
     
     public Domain(SimpleElement root)
@@ -41,8 +42,9 @@ public class Domain {
     }
     
     public Domain(String filename) throws Exception
-    {
+    {    	
     	this(new File(filename));
+    	name = filename;
     }
     
     /**
@@ -52,6 +54,7 @@ public class Domain {
      */
     public Domain(File filename) throws Exception
     {
+    	name = filename.getAbsolutePath();
     	SimpleDOMParser parser = new SimpleDOMParser();
     		BufferedReader file = new BufferedReader(new FileReader(filename));                  
     		SimpleElement root = parser.parse(file);
@@ -426,5 +429,8 @@ public class Domain {
 			return false;
 		return true;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
 }

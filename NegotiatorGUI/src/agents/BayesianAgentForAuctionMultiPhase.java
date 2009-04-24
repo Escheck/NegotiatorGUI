@@ -34,7 +34,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 					lBid = getMaxUtilityBid();
 				}
 				else
-				return new Accept(this);				
+				return new Accept(getAgentID());				
 			}
 			break;			
 		case PROVIDER:
@@ -47,7 +47,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 				double lSecondBest = getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"starting_utility",0.,1.))).getValue();
 				lBid = getTradeOff(lSecondBest);
 				myProviderLastBid = lBid;
-				if(lBid == null) return new EndNegotiation(this); 
+				if(lBid == null) return new EndNegotiation(getAgentID()); 
 				break;
 			}
 			break;
@@ -55,7 +55,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 		// Return (one of the) possible bid(s) with maximal utility.
 		fSmartSteps=NUMBER_OF_SMART_STEPS;
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 	@Override
 	public Action chooseAction() {
@@ -79,7 +79,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 				if(fRole == ROLE.CENTER) {
 					if (utilitySpace.getUtility(lOppntBid)>centerMaxOffer)  {
 						centerMaxOffer = utilitySpace.getUtility(lOppntBid);
-						if(fPhase == PHASE.SECOND_PHASE) return new Accept(this);
+						if(fPhase == PHASE.SECOND_PHASE) return new Accept(getAgentID());
 					}
 				}
 				if (myLastAction == null)
@@ -94,16 +94,16 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
-	                	lAction = new Accept(this);
+	                	lAction = new Accept(getAgentID());
 	                	//log("randomly accepted");
 	                }
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
 	                	if(lnextBid==null) {
-	                		lAction = new EndNegotiation(this);
+	                		lAction = new EndNegotiation(getAgentID());
 	                	} else {
 	                		
-	                		lAction=new Offer(this,lnextBid);
+	                		lAction=new Offer(getAgentID(),lnextBid);
 	                		myProviderLastBid = lnextBid;
 	                		// Propose counteroffer. Get next bid.
 	                		// Check if utility of the new bid is lower than utility of the opponent's last bid
@@ -111,7 +111,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	                		if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
 	                		{
 	                			// Opponent bids equally, or outbids my previous bid, so lets  accept
-	                			lAction = new Accept(this);
+	                			lAction = new Accept(getAgentID());
 	                			//log("opponent's bid higher than util of my last bid! accepted");
 	                		}
 	                	}
@@ -142,7 +142,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 		{ 
 			//log("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
-			lAction = new Offer(this, myLastBid);
+			lAction = new Offer(getAgentID(), myLastBid);
 		}
 		myLastAction = lAction;
 		if (myLastAction instanceof Offer)

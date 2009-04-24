@@ -1,9 +1,18 @@
 package negotiator.issue;
 
-public class ValueDiscrete extends Object implements Value {
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class ValueDiscrete  extends Value {
 
 	// Class fields
-	String value;
+	@XmlAttribute
+	public String value;
+	
+	public ValueDiscrete() {
+		
+	}
 	
 	// Constructor
 	public ValueDiscrete(String s) {

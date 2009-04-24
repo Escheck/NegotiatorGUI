@@ -9,23 +9,29 @@
 
 package negotiator.actions;
 
-import negotiator.Agent;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import negotiator.AgentID;
 
 /**
  * @author Dmytro Tykhonov
  * 
  */
+@XmlRootElement
 public class Action {
-    protected   Agent       agent;
+	@XmlElement
+    protected   AgentID       agent;
     
+	public Action() {}
     /** Creates a new instance of Action 
      * @param agent is the agent performing the action. 
      * Note that by referring to the agent class object we effectively prevent the agent
      * from garbage collection. */
-    public Action(Agent agent) {
+    public Action(AgentID agent) {
         this.agent = agent;
     }
-    public Agent getAgent() {
+    public AgentID getAgent() {
         return agent;
     }
     public String toString() {

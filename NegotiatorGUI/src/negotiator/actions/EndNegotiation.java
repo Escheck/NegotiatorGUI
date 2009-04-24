@@ -8,15 +8,21 @@
  */
 
 package negotiator.actions;
-import negotiator.Agent;
+import javax.xml.bind.annotation.XmlRootElement;
+
+
+import negotiator.AgentID;
 /**
  *
  * @author Dmytro Tykhonov
  */
+@XmlRootElement
 public class EndNegotiation extends Action {
     
+	public EndNegotiation() { }
+	
     /** Creates a new instance of BreakNegotiation */
-    public EndNegotiation(Agent agent) {
+    public EndNegotiation(AgentID agent) {
         super(agent);
     }
     public String toString() {

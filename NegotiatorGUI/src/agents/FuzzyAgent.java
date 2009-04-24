@@ -86,7 +86,7 @@ public class FuzzyAgent extends Agent {
 			lNextBidValue = SellOffer[fRound][0];
 			break;
 		}
-		if(deal) lAction = new Accept(this);
+		if(deal) lAction = new Accept(getAgentID());
 		
 		else {
 			HashMap<Integer,Value> lValues = new HashMap<Integer, Value>();
@@ -94,7 +94,7 @@ public class FuzzyAgent extends Agent {
 			lValues.put(utilitySpace.getDomain().getIssues().get(0).getNumber(), lValue);
 			try {
 				Bid lBid = new Bid(utilitySpace.getDomain(),lValues);
-				lAction = new Offer(this, lBid);
+				lAction = new Offer(getAgentID(), lBid);
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

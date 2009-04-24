@@ -1,10 +1,14 @@
 package negotiator.issue;
 
-public interface Value {
+public class Value {
 	
+	
+	public Value() {
+		
+	}
 	// Interface methods
-	public ISSUETYPE getType();
+	public ISSUETYPE getType() {return ISSUETYPE.UNKNOWN;};
 	
-	public String toString();
+	public String toString() { return "unknown!";}
 
 }

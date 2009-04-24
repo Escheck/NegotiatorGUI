@@ -92,7 +92,7 @@ public class SimilarityAgent extends Agent {
 		fSmartSteps=NUMBER_OF_SMART_STEPS+1;
 		myLastBid = lBid;
 		
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 		
 	}
 	private Bid getNextBidSmart(Bid pOppntBid) {
@@ -257,7 +257,7 @@ public class SimilarityAgent extends Agent {
 			break;
 		}
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 
 	public Action chooseAction(){
@@ -277,7 +277,7 @@ public class SimilarityAgent extends Agent {
 					.getUtility(myLastBid))
 				// Opponent bids equally, or outbids my previous bid, so lets
 				// accept
-				lAction = new Accept(this);
+				lAction = new Accept(getAgentID());
 			else
 				// Propose counteroffer. Get next bid.
 				lAction = proposeNextBid(lOppntBid);
@@ -287,7 +287,7 @@ public class SimilarityAgent extends Agent {
 					.getUtility(myLastBid))
 					// Opponent bids equally, or outbids my previous bid, so lets
 					// accept
-				lAction = new Accept(this);			
+				lAction = new Accept(getAgentID());			
 			break;
 		case ACCEPT: // Presumably, opponent accepted last bid, but let's
 			// check...

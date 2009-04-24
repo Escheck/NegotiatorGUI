@@ -228,7 +228,7 @@ public class EnterBidDialogExtended extends JDialog {
     	
         Bid bid=getBid();
         if (bid!=null) { 
-        	selectedAction = new Offer(agent,bid);         
+        	selectedAction = new Offer(agent.getAgentID(),bid);         
         	setVisible(false);
         }
     }
@@ -244,14 +244,14 @@ public class EnterBidDialogExtended extends JDialog {
         Bid bid=getBid();
         if (bid!=null) {
         	System.out.println("Accept performed");
-        	selectedAction=new Accept(agent);
+        	selectedAction=new Accept(agent.getAgentID());
         	setVisible(false);
         }
     }
     
     private void buttonEndActionPerformed(java.awt.event.ActionEvent evt) {
     	System.out.println("End Negotiation performed");
-        selectedAction=new EndNegotiation(agent);
+        selectedAction=new EndNegotiation(agent.getAgentID());
         setVisible(false);
     }
       

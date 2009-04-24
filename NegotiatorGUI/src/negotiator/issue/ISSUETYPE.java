@@ -1,6 +1,6 @@
 package negotiator.issue;
 
-public enum ISSUETYPE {	DISCRETE, INTEGER, REAL, OBJECTIVE;
+public enum ISSUETYPE {	UNKNOWN, DISCRETE, INTEGER, REAL, OBJECTIVE;
 // KH dd070510: Removed DISCRETEWCOST, PRICE
 
 	public static ISSUETYPE convertToType(String typeString) {

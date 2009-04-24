@@ -1,9 +1,19 @@
 package negotiator.issue;
 
-public class ValueReal implements Value {
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
+
+@XmlRootElement
+public class ValueReal extends Value {
 	
 	// Class fields
+	@XmlAttribute
 	double value;
+	
+	public ValueReal() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	// Constructor
 	public ValueReal(double r) {

@@ -89,7 +89,7 @@ public class ABMPAgent extends Agent {
 			e.printStackTrace();
 		}
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) throws Exception{
@@ -101,7 +101,7 @@ public class ABMPAgent extends Agent {
 		lTargetUtility = getTargetUtility(lMyUtility, lOppntUtility);
 		lBid = getBidABMPsimple(lTargetUtility);
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 
 	public Action chooseAction() {
@@ -120,7 +120,7 @@ public class ABMPAgent extends Agent {
 				try {
 					if (utilitySpace.getUtility(lOppntBid) >= (utilitySpace.getUtility(myLastBid))-UTIlITYGAPSIZE)
 						// 	Opponent bids equally, or outbids my previous bid, so lets accept.
-						lAction = new Accept(this);
+						lAction = new Accept(getAgentID());
 					else
 						// 	Propose counteroffer. Get next bid.
 						try {

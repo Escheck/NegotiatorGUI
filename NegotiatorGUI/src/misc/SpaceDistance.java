@@ -10,6 +10,16 @@ import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
+/**
+ * 
+ * This class calculate three types of distance measure between two utility spaces:
+ * 1. Euclidean distance
+ * 2. Ranking distance
+ * 3. Pearson correlation coefficient 
+ * 
+ * @author Dmytro Tykhonov
+ *
+ */
 public class SpaceDistance {
 	private UtilitySpace utilitySpaceA;
 	private UtilitySpace utilitySpaceB;
