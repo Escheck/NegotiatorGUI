@@ -18,6 +18,12 @@ import negotiator.utility.UtilitySpace;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.sun.xml.txw2.annotation.XmlElement;
+
 import negotiator.protocol.Protocol;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -29,7 +35,9 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
  * 
  */
 
+
 public abstract class Agent {
+	private AgentID 		agentID;
     private String          fName=null;
     public  UtilitySpace    utilitySpace;
     public	Date			startTime;
@@ -138,4 +146,12 @@ public abstract class Agent {
      * @author W.Pasman
      */
     public void cleanUp() {  }
+    
+    public AgentID getAgentID() {
+    	return agentID;
+    }
+    public void setAgentID(AgentID value) {
+    	agentID = value;
+    }
+
 }

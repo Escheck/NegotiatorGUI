@@ -64,7 +64,7 @@ public class RandomWalkABMPAgent extends Agent {
 		// Return (one of the) possible bid(s) with maximal utility.
 		lBid = getMaxUtilityBid();
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) {
@@ -76,7 +76,7 @@ public class RandomWalkABMPAgent extends Agent {
 		lTargetUtility = getTargetUtility(lMyUtility, lOppntUtility);
 		lBid = getBidRandomWalk(lTargetUtility);
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 
 	public Action chooseAction() {
@@ -95,7 +95,7 @@ public class RandomWalkABMPAgent extends Agent {
 					.getUtility(myLastBid))
 				// Opponent bids equally, or outbids my previous bid, so lets
 				// accept
-				lAction = new Accept(this);
+				lAction = new Accept(getAgentID());
 			else
 				// Propose counteroffer. Get next bid.
 				lAction = proposeNextBid(lOppntBid);
@@ -104,9 +104,9 @@ public class RandomWalkABMPAgent extends Agent {
 			// check...
 			//lOppntBid = ((Accept) messageOpponent).getBid();
 			if (lOppntBid.equals(myLastBid))
-				lAction = new Accept(this);
+				lAction = new Accept(getAgentID());
 			else
-				lAction = new Offer(this, myLastBid);
+				lAction = new Offer(getAgentID(), myLastBid);
 			break;
 		case BREAKOFF:
 			// nothing left to do. Negotiation ended, which should be checked by

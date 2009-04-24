@@ -88,7 +88,7 @@ public class ABMPAgent2 extends Agent {
 		lBid = utilitySpace.getMaxUtilityBid();
 		lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.95, utilitySpace.getUtility(lBid));
 		myLastBid = lBid;
-		return new Offer(this,lBid);
+		return new Offer(this.getAgentID(),lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) {
@@ -109,7 +109,7 @@ public class ABMPAgent2 extends Agent {
 		}
 		myLastBid = lBid;
 		fOldTargetUtility = lTargetUtility;
-		return new Offer(this, lBid);
+		return new Offer(this.getAgentID(), lBid);
 	}
 
 	public Action chooseAction() {
@@ -128,7 +128,7 @@ public class ABMPAgent2 extends Agent {
 			//DT Accept if utility gap is smaller than my target utility (instead of actual utility of my previous bid) 
 			else if (utilitySpace.getUtility(lOppntBid) >=/* (utilitySpace.getUtility(myLastBid))*/ fOldTargetUtility-UTIlITYGAPSIZE)
 				// Opponent bids equally, or outbids my previous bid, so lets accept.
-				lAction = new Accept(this);
+				lAction = new Accept(getAgentID());
 			else
 				// Propose counteroffer. Get next bid.
 				lAction = proposeNextBid(lOppntBid);

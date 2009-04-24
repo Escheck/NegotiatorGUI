@@ -9,17 +9,22 @@
 
 package negotiator.actions;
 
-import negotiator.Agent;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import negotiator.AgentID;
 import negotiator.Bid;
 /**
  *
  * @author Dmytro Tykhonov
  */
+@XmlRootElement
 public class Accept extends Action {
-    
+    public Accept() {
+
+	}
     // protected Bid fBid; //Wouter: NO you accept PREVIOUS bid, not current bid!!
     /** Creates a new instance of AcceptBid */
-    public Accept(Agent agent) {
+    public Accept(AgentID agent) {
         super(agent);
     }
     //public Bid getBid() {  return fBid; }

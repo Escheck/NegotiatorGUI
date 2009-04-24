@@ -92,22 +92,36 @@ public class Repository
 		
 		}
 		
-		
-		/****************** code that creates repos if none exists ********************/
-		public static Repository get_domain_repos() throws Exception
-		{
-			final String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
-
+		public static DomainRepItem getDomainByName(String name) throws Exception {
+			Repository domRep = get_domain_repos();
+			DomainRepItem domainRepItem = null;
+			for(RepItem  tmp : domRep.getItems()) {
+				if(((DomainRepItem)tmp).url.toString().equals(name)) {
+					domainRepItem =(DomainRepItem)tmp;
+					break;
+				}
+			}
+			return domainRepItem; 
+		}
+		public static Repository get_domain_repos(String filename) throws Exception {
 			Repository repos;
 			try {
-				repos=new Repository(FILENAME);
+				repos=new Repository(filename);
 			} catch (Exception e) {
 				repos=new Repository();
-				repos.setFilename(FILENAME);
+				repos.setFilename(filename);
 				repos.getItems().addAll(makedemorepository());
 				repos.save();
 			}
 			return repos;
+		}
+
+		/****************** code that creates repos if none exists ********************/
+		public static Repository get_domain_repos() throws Exception
+		{
+			final String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
+			return get_domain_repos(FILENAME);
+			
 		}
 		
 		static ArrayList<RepItem> makedemorepository() throws Exception

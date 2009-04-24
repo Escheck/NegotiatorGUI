@@ -146,7 +146,7 @@ public class BayesianAgentForAuction extends Agent {
 		// Return (one of the) possible bid(s) with maximal utility.
 		fSmartSteps=NUMBER_OF_SMART_STEPS;
 		myLastBid = lBid;
-		return new Offer(this, lBid);
+		return new Offer(getAgentID(), lBid);
 	}
 	
 	
@@ -535,23 +535,23 @@ public class BayesianAgentForAuction extends Agent {
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
-	                	lAction = new Accept(this);
+	                	lAction = new Accept(getAgentID());
 	                	log("randomly accepted");
 	                }
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
 	                	if(lnextBid==null) {
-	                		lAction = new EndNegotiation(this);
+	                		lAction = new EndNegotiation(getAgentID());
 	                	} else {
 	                		
-	                		lAction=new Offer(this,lnextBid);
+	                		lAction=new Offer(getAgentID(),lnextBid);
 	                		// Propose counteroffer. Get next bid.
 	                		// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                		// if yes then accept last bid of the opponent.
 	                		if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(lnextBid))
 	                		{
 	                			// Opponent bids equally, or outbids my previous bid, so lets  accept
-	                			lAction = new Accept(this);
+	                			lAction = new Accept(getAgentID());
 	                			log("opponent's bid higher than util of my last bid! accepted");
 	                		}
 	                	}
@@ -582,7 +582,7 @@ public class BayesianAgentForAuction extends Agent {
 		{ 
 			log("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
-			lAction = new Offer(this, myLastBid);
+			lAction = new Offer(getAgentID(), myLastBid);
 		}
 		myLastAction = lAction;
 		if (myLastAction instanceof Offer)

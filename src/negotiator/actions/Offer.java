@@ -9,18 +9,24 @@
 
 package negotiator.actions;
 
-import negotiator.Agent;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import negotiator.AgentID;
 import negotiator.Bid;
 /**
  *
  * @author Dmytro Tykhonov
  */
 
+@XmlRootElement
 public class Offer extends Action {
-    
+    @XmlElement
     protected Bid bid;
+    
+    public Offer() { }
     /** Creates a new instance of SendBid */
-    public Offer(Agent agent, Bid bid) {
+    public Offer(AgentID agent, Bid bid) {
         super(agent);
         this.bid = bid;
     }
