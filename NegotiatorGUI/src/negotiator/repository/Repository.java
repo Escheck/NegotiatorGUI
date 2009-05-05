@@ -11,7 +11,10 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.*;
 import javax.xml.namespace.QName;
 import java.io.*;
+
+import negotiator.Domain;
 import negotiator.exceptions.*;
+import negotiator.utility.UtilitySpace;
 /**
  * Repository contains a set of known files
  * This can be agent files or domain+profile files.
@@ -27,6 +30,9 @@ public class Repository
 		@XmlAttribute
 		String fileName; // the filename of this repository.
 		
+		String sourceFolder;
+		
+		private static Repository domainRepos = null;
 		public Repository() { 
 			items=new ArrayList<RepItem>();
 		}
@@ -103,10 +109,36 @@ public class Repository
 			}
 			return domainRepItem; 
 		}
-		public static Repository get_domain_repos(String filename) throws Exception {
+		public Domain getDomain(DomainRepItem domainRepItem) {
+			Domain domain = null;
+			try {
+				if(sourceFolder!=null)
+					domain = new Domain(sourceFolder +"\\"+ domainRepItem.getURL().getFile());
+				else domain = new Domain(domainRepItem.getURL().getFile());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return domain;
+		}
+		public UtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
+			UtilitySpace us = null;			
+			try {
+				if(sourceFolder!=null) us = new UtilitySpace(domain, sourceFolder+"\\"+ profile.getURL().getFile());
+				else us = new UtilitySpace(domain, profile.getURL().getFile());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return us;
+		}
+		public static Repository get_domain_repos(String filename, String sourceFolder) throws Exception {
+			if(domainRepos!=null ) return domainRepos;
 			Repository repos;
 			try {
 				repos=new Repository(filename);
+				domainRepos = repos;
+				repos.sourceFolder = sourceFolder;				
 			} catch (Exception e) {
 				repos=new Repository();
 				repos.setFilename(filename);
@@ -120,7 +152,7 @@ public class Repository
 		public static Repository get_domain_repos() throws Exception
 		{
 			final String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
-			return get_domain_repos(FILENAME);
+			return get_domain_repos(FILENAME,"");
 			
 		}
 		

@@ -16,6 +16,7 @@ import negotiator.events.*;
 import negotiator.exceptions.Warning;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -76,7 +77,8 @@ public abstract class Protocol implements Runnable {
 	protected void loadAgentsUtilitySpaces() throws Exception
 	{
 		if(domain==null)
-			domain = new Domain(profileRepItems[0].getDomain().getURL().getFile());
+			//domain = new Domain(profileRepItems[0].getDomain().getURL().getFile());
+			domain = Repository.get_domain_repos().getDomain(profileRepItems[0].getDomain());
 		//TODO: read the agent names
 		agentNames = new String[profileRepItems.length];
 		agentNames[0] = "Agent A";
@@ -85,7 +87,7 @@ public abstract class Protocol implements Runnable {
 		agentUtilitySpaces = new UtilitySpace[profileRepItems.length]; 
 		for(int i=0;i<profileRepItems.length;i++) {
 			ProfileRepItem profile = profileRepItems[i];
-			agentUtilitySpaces[i] = new UtilitySpace(domain, profile.getURL().getFile());
+			agentUtilitySpaces[i] =  Repository.get_domain_repos().getUtilitySpace(domain, profile); //new UtilitySpace(domain, profile.getURL().getFile());
 			//System.out.println("utility space statistics for "+"Agent "+agentAUtilitySpaceFileName);
 			//fAgentAUtilitySpace.showStatistics();
 		}
@@ -174,7 +176,9 @@ public abstract class Protocol implements Runnable {
     public void setTournamentRunner(TournamentRunner runner) {
     	tournamentRunner = runner; 
     }
-    
+    public Domain getDomain() {
+    	return domain;
+    }
 	public AgentRepItem getAgentRepItem(int index) {
 		return agentRepItems[index];
 	}

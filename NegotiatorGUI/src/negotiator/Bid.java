@@ -97,7 +97,9 @@ public final class Bid implements XMLable
 			 * BidDoesNotExistInDomainException();
 			 */
 	}
-
+	public void setDomain(Domain domain) {
+		fDomain = domain;
+	}
 	public String toString() {
         String s = "Bid[";
         Set<Entry<Integer, Value>> value_set = fValues.entrySet();

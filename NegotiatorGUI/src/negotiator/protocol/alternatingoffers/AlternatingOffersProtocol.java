@@ -196,11 +196,11 @@ public class AlternatingOffersProtocol extends Protocol {
 	{
 
 			
-			java.lang.ClassLoader loaderA = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+			java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 			agentA = (Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 			agentA.setName(getAgentAname());
 
-			java.lang.ClassLoader loaderB =ClassLoader.getSystemClassLoader();
+			java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
 			agentB = (Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 			agentB.setName(getAgentBname());
 
