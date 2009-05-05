@@ -534,6 +534,16 @@ public class UtilitySpace {
 			System.out.println("Obje "+ issueID +" == null");
 		return 0.0; //fallthrough.
     }
+    public double setWeightSimple(Objective tmpObj, double wt){
+    	try{
+    		Evaluator ev = fEvaluators.get(tmpObj);
+   			ev.setWeight(wt); //set weight
+    	}catch(NullPointerException npe){
+    		return -1;
+    	}
+    	return wt;
+    }
+    
     
 	
     public double setWeight(Objective tmpObj, double wt){
