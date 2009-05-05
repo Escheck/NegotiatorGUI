@@ -96,8 +96,39 @@ public class Global {
 	}
 	public static Protocol createProtocolInstance (ProtocolRepItem protRepItem, AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams) throws Exception {
 		Protocol ns;
-    	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+ 
+    	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;    	
+    	
     	Class klass = loader.loadClass(protRepItem.getClassPath());
+    	Class[] paramTypes = {
+    			 	AgentRepItem[].class,
+    			 	ProfileRepItem[].class,
+    			 	HashMap[].class
+    			 	};
+    	      
+    	      Constructor cons = klass.getConstructor(paramTypes);
+    	      
+    	      System.out.println( "Found the constructor: " + cons);
+
+    	      
+    	      Object[] args = { 
+    	            agentRepItems, 
+    	            profileRepItems, 
+    	            agentParams};
+    	      
+    	      Object theObject = cons.newInstance(args);
+    	      //System.out.println( "New object: " + theObject);
+    	ns = (Protocol)(theObject);
+    	return ns;
+		
+	}
+
+	public static Protocol createProtocolInstance (ProtocolRepItem protRepItem, AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems, HashMap<AgentParameterVariable,AgentParamValue>[] agentParams, ClassLoader classLoader) throws Exception {
+		Protocol ns;
+ 
+//    	java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;    	
+    	
+    	Class klass = classLoader.loadClass(protRepItem.getClassPath());
     	Class[] paramTypes = {
     			 	AgentRepItem[].class,
     			 	ProfileRepItem[].class,
