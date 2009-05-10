@@ -50,7 +50,8 @@ public class SimpleAgent extends Agent
                 double offeredutil=utilitySpace.getUtility(partnerBid);
                 double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
                 double P=Paccept(offeredutil,time);
-                if (P>Math.random()) action = new Accept(getAgentID());
+                if (P>Math.random()) 
+                	action = new Accept(getAgentID());
                 else action = chooseRandomBidAction();               
             }
             Thread.sleep(1000); // just for fun
