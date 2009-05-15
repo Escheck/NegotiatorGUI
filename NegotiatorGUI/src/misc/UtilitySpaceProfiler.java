@@ -13,6 +13,7 @@ public class UtilitySpaceProfiler {
 		String domainFileName = "etc//templates//AMPOvsCity//ampo_vs_city_template.xml";
 		String utilitySpaceFileName = "etc//templates//AMPOvsCity//ampo_vs_city_city_space.xml"; 
 		Domain domain;
+		int i = 0;
 		try {
 			domain = new Domain(domainFileName);
 			UtilitySpace us = new UtilitySpace(domain,utilitySpaceFileName);
@@ -24,6 +25,8 @@ public class UtilitySpaceProfiler {
 				if(util>maxUtil) {
 					maxUtil = util;
 				}
+				i++;
+				if(i>10000000) break;
 			}
 			System.out.println(maxUtil);
 		} catch (Exception e) {

@@ -111,7 +111,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int ID) throws Exception
 	{
 		//Added by Dmytro on 09/05/2007
-		return normalize(fEval.get(((ValueDiscrete)bid.getValue(ID))));
+		return normalize(fEval.get((ValueDiscrete)bid.getValue(ID)));
 	}
 	
 	public Double getEvaluation(ValueDiscrete altP) throws Exception 

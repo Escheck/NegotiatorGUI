@@ -1,5 +1,6 @@
 package negotiator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -48,8 +49,9 @@ public class BidIterator implements Iterator {
 		int[] lNewIndexes = new int[fNumberOfIssues];
 		for(int i=0;i<fNumberOfIssues;i++) 
 			lNewIndexes [i] = fValuesIndexes[i];
+		ArrayList<Issue> lIssues = fDomain.getIssues(); 
 		for(int i=0;i<fNumberOfIssues;i++) {
-			Issue lIssue = fDomain.getIssues().get(i);
+			Issue lIssue = lIssues.get(i);
 //			to loop through the Real and Price Issues we use discretization
 			int lNumberOfValues=0;
 			switch(lIssue.getType()) {
@@ -92,9 +94,10 @@ public class BidIterator implements Iterator {
 		
 		// build Hashmap and create the next bid.
 		try {
-			HashMap<Integer,Value> lValues = new HashMap<Integer,Value>(16,(float)0.75);
+			HashMap<Integer,Value> lValues = new HashMap<Integer,Value>(/*16,(float)0.75*/);
+			ArrayList<Issue> lIssues = fDomain.getIssues();
 			for(int i=0;i<fNumberOfIssues;i++) {
-			Issue lIssue = fDomain.getIssues().get(i);
+			Issue lIssue = lIssues.get(i);
 				double lOneStep;
 				switch(lIssue.getType()) {
 				//TODO: COMPLETE add cases for all types of issues
