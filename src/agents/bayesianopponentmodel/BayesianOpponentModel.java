@@ -19,7 +19,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	private boolean fUseMostProbableHypsOnly = true;
 	private ArrayList<UtilitySpaceHypothesis> fMostProbableUSHyps;	
 	private double fPreviousBidUtility;
-	private double EXPECTED_CONCESSION_STEP = 0.045;
+	private double EXPECTED_CONCESSION_STEP = 0.035;
 	private double SIGMA = 0.25;
 	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
@@ -32,19 +32,19 @@ public class BayesianOpponentModel extends OpponentModel{
 		fUS = pUtilitySpace;
 		fBiddingHistory = new ArrayList<Bid>();
 		issues=fDomain.getIssues();
-		int lNumberOfHyps = factorial(fDomain.getIssues().size());
+		int lNumberOfHyps = factorial(issues.size());
 		fWeightHyps = new WeightHypothesis[lNumberOfHyps+1];
 		//generate all possible ordering combinations of the weights
 		int index = 0;
-		double[] P = new double[fDomain.getIssues().size()];
+		double[] P = new double[issues.size()];
 		//take care of weights normalization
-		for(int i=0; i<fDomain.getIssues().size();i++) P[i] = (i+1)/((double)((fDomain.getIssues().size()*(fDomain.getIssues().size()+1))/2.0));
+		for(int i=0; i<issues.size();i++) P[i] = (i+1)/((double)((issues.size()*(fDomain.getIssues().size()+1))/2.0));
 		//build all possible orderings of the weights from P
 		antilex(new Integer(index), fWeightHyps, P, fDomain.getIssues().size()-1);
 		//add the all equal hyp
 		WeightHypothesis allEqual = new WeightHypothesis(fDomain);
-		for(int i=0;i< fDomain.getIssues().size();i++)
-			allEqual.setWeight(i, 1./((double)(fDomain.getIssues().size())));
+		for(int i=0;i< issues.size();i++)
+			allEqual.setWeight(i, 1./((double)(issues.size())));
 		//set uniform probability distribution to the weights hyps
 		fWeightHyps[fWeightHyps.length-1] = allEqual;
 		for(int i=0;i<fWeightHyps.length;i++) fWeightHyps[i].setProbability(1./fWeightHyps.length);
@@ -286,7 +286,7 @@ public class BayesianOpponentModel extends OpponentModel{
 			double normalizedProbability =hyp.getProbability()/lFullProb; 
 			hyp.setProbability(normalizedProbability);
 			if(fUseMostProbableHypsOnly)
-				if(normalizedProbability>lMaxProb*0.95) {
+				if(normalizedProbability>lMaxProb*0.85/lFullProb) {
 					fMostProbableUSHyps.add(hyp);
 					lMostProbableHypFullProb += normalizedProbability;
 				}

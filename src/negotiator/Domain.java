@@ -216,8 +216,7 @@ public class Domain {
             Double[] cost;
             switch(issueType) {
             case DISCRETE:
-            	// Collect discrete values for discrete-valued issue from xml template
-            	
+            	// Collect discrete values for discrete-valued issue from xml template            	
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;
                 

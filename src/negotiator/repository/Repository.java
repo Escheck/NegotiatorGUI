@@ -30,7 +30,7 @@ public class Repository
 		@XmlAttribute
 		String fileName; // the filename of this repository.
 		
-		String sourceFolder;
+		String sourceFolder=null;
 		
 		private static Repository domainRepos = null;
 		public Repository() { 
@@ -112,7 +112,7 @@ public class Repository
 		public Domain getDomain(DomainRepItem domainRepItem) {
 			Domain domain = null;
 			try {
-				if(sourceFolder!=null)
+				if((sourceFolder!=null)&&(!sourceFolder.equals("")))
 					domain = new Domain(sourceFolder +"\\"+ domainRepItem.getURL().getFile());
 				else domain = new Domain(domainRepItem.getURL().getFile());
 			} catch (Exception e) {
@@ -124,7 +124,7 @@ public class Repository
 		public UtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
 			UtilitySpace us = null;			
 			try {
-				if(sourceFolder!=null) us = new UtilitySpace(domain, sourceFolder+"\\"+ profile.getURL().getFile());
+				if((sourceFolder!=null)&&(!sourceFolder.equals(""))) us = new UtilitySpace(domain, sourceFolder+"\\"+ profile.getURL().getFile());
 				else us = new UtilitySpace(domain, profile.getURL().getFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
