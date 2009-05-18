@@ -22,7 +22,7 @@ import negotiator.utility.UtilitySpace;
 public class SimpleAgent extends Agent
 {
     private Action actionOfPartner=null;
-    private static final double MINIMUM_BID_UTILITY = 0.5;
+    private static double MINIMUM_BID_UTILITY = 0.5;
     
  
     /**
@@ -30,7 +30,7 @@ public class SimpleAgent extends Agent
      */
     
     public void init(){
- 
+    	MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
     }
 
     public static String getVersion() { return "1.2"; }

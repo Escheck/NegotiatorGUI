@@ -118,8 +118,8 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 
 				if(opponentIndex==0) opponentIndex =1; else opponentIndex = 0;
 				AuctionBilateralAtomicNegoSession nextSession = sessions[opponentIndex];
-				BayesianAgentForAuction center = (BayesianAgentForAuction)(nextSession.getAgentA());
-				BayesianAgentForAuction seller = (BayesianAgentForAuction)(nextSession.getAgentB());
+				//BayesianAgentForAuction center = (BayesianAgentForAuction)(nextSession.getAgentA());
+				//BayesianAgentForAuction seller = (BayesianAgentForAuction)(nextSession.getAgentB());
 				double centerStartingUtil = getAgentUtilitySpaces(0).getUtility(lBestBid) ;
 /*				try {
 					BidIterator iter = new BidIterator(nextSession.getAgentAUtilitySpace().getDomain());
@@ -214,7 +214,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 		AgentRepItem[] agents= new AgentRepItem[3];//getProfiles();
 		AgentRepItem agentA=((AgentValue)agentAvalues.get(0)).getValue();
 		agents[0] = agentA;
-		agents[1] = agentA;
+		agents[1] = ((AgentValue)agentBvalues.get(0)).getValue();
 		agents[2] = agentA;
 		//prepare parameters
 		HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue>();
@@ -266,13 +266,9 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			ProfileRepItem seller11 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_11.xml"),domain);
 			ProfileRepItem seller12 = new ProfileRepItem(new URL("file:etc/templates/SON/son_seller_12.xml"),domain);
 
-			//allSessions.add(createSession(center5, seller4, seller1, reservationValue));
-			//allSessions.add(createSession(center3, seller6, seller5, reservationValue));
-			//allSessions.add(createSession(center4, seller5, seller2));
-			//allSessions.add(createSession(center8, seller2, seller11));
-			//allSessions.add(createSession(center4, seller9, seller6));
-			//allSessions.add(createSession(center12, seller2, seller10));
-			//allSessions.add(createSession(center1, seller2, seller8));
+			allSessions.add(createSession(tournament,center5, seller4, seller1));
+			allSessions.add(createSession(tournament,center12, seller2, seller10));
+			allSessions.add(createSession(tournament,center1, seller2, seller10));
 			allSessions.add(createSession(tournament,center10, seller7, seller9));
 			allSessions.add(createSession(tournament,center7, seller11, seller9));
 			allSessions.add(createSession(tournament,center8, seller11, seller10));
