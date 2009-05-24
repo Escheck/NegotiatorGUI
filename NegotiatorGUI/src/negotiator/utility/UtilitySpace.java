@@ -172,7 +172,7 @@ public class UtilitySpace {
     		
     	}
     	//System.out.println("sum="+lSum);
-    	return (normalised && lSum>.9998 && lSum<1.0002);
+    	return (normalised && lSum>.98 && lSum<1.02);
     }
     
     /**

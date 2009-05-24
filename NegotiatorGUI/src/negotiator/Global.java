@@ -40,7 +40,7 @@ public class Global {
 	public static boolean experimentalSetup = true;// set to true to allow agent
 													// to access negotiation
 													// environment
-
+	public static String outcomesFile = "outcomes.xml";
 	public Global() {
 	}
 
