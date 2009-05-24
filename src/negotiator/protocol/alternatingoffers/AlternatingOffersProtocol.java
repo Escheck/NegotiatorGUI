@@ -267,7 +267,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				outcome.additional.addChildElement(fAdditional);
 			}
 			try {
-				BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));
+				BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
 				out.write(""+outcome.toXML());
 				out.close();
 			} catch (Exception e) {
