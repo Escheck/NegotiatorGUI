@@ -42,14 +42,14 @@ public class BayesianAgent extends Agent {
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
-	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
+	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.04;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
 	private static final int NUMBER_OF_SMART_STEPS = 0; 
 	private ArrayList<Bid> myPreviousBids;
-	private boolean fSkipDistanceCalc =true;
+	private boolean fSkipDistanceCalc = false;
 	private boolean fDebug = false;
 	private int fRound;
 	// Class constructor
@@ -63,7 +63,8 @@ public class BayesianAgent extends Agent {
 	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
 	public static ArrayList<AgentParam> getParameters() { 
 		ArrayList<AgentParam> parameters=new ArrayList<AgentParam>();
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"risetime",0.,2.));
+		parameters.add(new AgentParam<>(BayesianAgent.class.getName(),"risetime",0.,2.));
+		parameters.add(new AgentParamInteger(BayesianAgent.class.getName(),"risetime",0.,2.));
 		parameters.add(new AgentParam(BayesianAgent.class.getName(),"tau",1.,4.));
 		parameters.add(new AgentParam(BayesianAgent.class.getName(),"epsilon",-2.,2.));
 		parameters.add(new AgentParam(BayesianAgent.class.getName(),"beta",18.3,22.17));

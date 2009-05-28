@@ -343,7 +343,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	}
 	public double getExpectedUtility(Bid pBid)  throws Exception{
 		double lExpectedUtility = 0;
-		if(fUseMostProbableHypsOnly ) {
+		if(fUseMostProbableHypsOnly &&(fMostProbableUSHyps!=null)) {
 			for(int i=0;i<fMostProbableUSHyps.size();i++) {
 				UtilitySpaceHypothesis lUSHyp = fMostProbableUSHyps.get(i);
 				double p = lUSHyp.getProbability();

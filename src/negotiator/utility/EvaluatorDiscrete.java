@@ -219,6 +219,8 @@ public class EvaluatorDiscrete implements Evaluator {
 		//	maxCost = cost;
 		//	fCost.put((ValueDiscrete)val, new Double(cost));
 		//}
+		if(cost==null)
+			cost=new Double(0);
 		fCost.put(val, cost);
 		 if (cost>maxCost) maxCost=cost;
 	}

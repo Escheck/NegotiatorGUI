@@ -31,13 +31,17 @@ public class Domain {
 	
     private Objective fObjectivesRoot;
     private String name;
+    private SimpleElement root;
     public Domain(){
     	fObjectivesRoot = null;
     	name="";
     }
-    
+    public SimpleElement getXMLRoot() {
+    	return root;
+    }
     public Domain(SimpleElement root)
     {
+    	this.root = root;
     	loadTreeFromXML(root);
     }
     
@@ -57,7 +61,7 @@ public class Domain {
     	name = filename.getAbsolutePath();
     	SimpleDOMParser parser = new SimpleDOMParser();
     		BufferedReader file = new BufferedReader(new FileReader(filename));                  
-    		SimpleElement root = parser.parse(file);
+    		root = parser.parse(file);
     		
     		SimpleElement xml_utility_space;
     		try { 

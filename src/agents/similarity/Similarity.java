@@ -26,7 +26,8 @@ public class Similarity {
     }
         
     public void loadFromXML(SimpleElement pRoot) {
-    	SimpleElement lXMLObjective = (SimpleElement)(pRoot.getChildByTagName("objective")[0]);
+    	SimpleElement lXMLUtilitySpace = (SimpleElement)(pRoot.getChildByTagName("utility_space")[0]);
+    	SimpleElement lXMLObjective = (SimpleElement)(lXMLUtilitySpace.getChildByTagName("objective")[0]);
     	Object[] lXMLIssue = lXMLObjective.getChildByTagName("issue");
 		fWeights = new double[lXMLIssue.length];    	
     	for(int j=0;j<lXMLIssue.length;j++) {

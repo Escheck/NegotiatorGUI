@@ -182,9 +182,9 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		System.out.println("add row "+jTable1.getSelectedRow());
 		// get all available parameters of all available agents
 		HashSet<AgentParam> params=new HashSet<AgentParam>();
-		 // Assumption: 1 and 2 in the list are the AgentVars. This is checked in allparams()
-		params.addAll(allparams(tournament.getVariables().get(1).getValues()));
-		params.addAll(allparams(tournament.getVariables().get(2).getValues()));
+		 // Assumption: 2 and 3 in the list are the AgentVars. This is checked in allparams()
+		params.addAll(allparams(tournament.getVariables().get(2).getValues())); //TODO : define constants for the AgentVar
+		params.addAll(allparams(tournament.getVariables().get(3).getValues()));
 		//System.out.println("available parameters:"+params);
 		 // launch editor for a variable.
 		ArrayList<AgentParam> paramsAsArray=new ArrayList<AgentParam>();

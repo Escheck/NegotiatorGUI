@@ -35,7 +35,7 @@ public abstract class Protocol implements Runnable {
      * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
      */
     public boolean stopNegotiation=false;
-
+    
 	private AgentRepItem[] agentRepItems;	
     private ProfileRepItem[] profileRepItems;    
     private String[] agentNames;
