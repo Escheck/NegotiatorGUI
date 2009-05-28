@@ -16,11 +16,10 @@
                 <profile url="file:etc/templates/SON/son_buyer.xml"/>
                 <profile url="file:etc/templates/SON/son_seller.xml"/>
             </domainRepItem>
-             <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
+            <domainRepItem url="file:etc/templates/AMPOvsCity/ampo_vs_city_template.xml">
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_city_space.xml"/>
                 <profile url="file:etc/templates/AMPOvsCity/ampo_vs_city_ampo_space.xml"/>
             </domainRepItem>
-          
             <domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
@@ -29,10 +28,38 @@
                 <profile url="file:etc/templates/2nd_hand_car/car_buyer.xml"/>
                 <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_domain.xml"/>
-            <domainRepItem url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_domain.xml">
+            <domainRepItem url="file:etc/templates/web_service/web_service_domain.xml">
                 <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_agent_B.xml"/>
                 <profile url="file:/D:/_Work/eclipse/NegotiatorGUI/etc/templates/web_service/web_service_agent_A.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:/D:/_Work/TRQ/Documents/circle_office"/>
+            <domainRepItem url="file:etc/templates/journal_learning/four_issues/four_issues.xml">
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_uphill.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_uphill_side_b_1.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill_side_b_1.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle_side_b_1.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred_side_b_1.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_uphill_side_b_2.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill_side_b_2.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle_side_b_2.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred_side_b_2.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_uphill_side_b_3.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill_side_b_3.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle_side_b_3.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred_side_b_3.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_uphill_side_b_4.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill_side_b_4.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle_side_b_4.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred_side_b_4.xml"/>
+
+                <profile url="file:etc/templates/journal_learning/four_issues/nonlin_uphill.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/nonlin_downhill.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/nonlin_triangle.xml"/>
+                <profile url="file:etc/templates/journal_learning/four_issues/nonlin_unpred.xml"/>
+
             </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>

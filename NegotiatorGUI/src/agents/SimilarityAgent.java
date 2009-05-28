@@ -46,7 +46,7 @@ public class SimilarityAgent extends Agent {
 		fSmartSteps = 0;
 		//load similarity info from the utility space
 		fSimilarity = new Similarity(utilitySpace.getDomain());
-		fSimilarity.loadFromXML(utilitySpace.getXMLRoot());
+		fSimilarity.loadFromXML(utilitySpace.getDomain().getXMLRoot());
 		//build utility cash
 		utilityCash = new HashMap<Bid, Double>();
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
