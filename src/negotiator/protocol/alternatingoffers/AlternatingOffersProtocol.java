@@ -1,8 +1,10 @@
 package negotiator.protocol.alternatingoffers;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
+import misc.SpaceDistance;
 import negotiator.*;
 import negotiator.actions.Action;
 import negotiator.analysis.*;
@@ -11,6 +13,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
+import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
@@ -260,12 +263,25 @@ public class AlternatingOffersProtocol extends Protocol {
 			}
 			outcome=sessionrunner.no;
 			//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
+			
+			//calculate distance between the two spaces
+			SpaceDistance dist = new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
+			SimpleElement xmlDistance =  dist.calculateDistances();
+			xmlDistance.setTagName("opposition");
+			
 			if(fAdditional!=null) { 
 				if(outcome.additional==null) {
 					outcome.additional = new SimpleElement("additional");
 				}
-				outcome.additional.addChildElement(fAdditional);
+				outcome.additional.addChildElement(fAdditional);				
 			}
+			if(xmlDistance!=null) { 
+				if(outcome.additional==null) {
+					outcome.additional = new SimpleElement("additional");
+				}
+				outcome.additional.addChildElement(xmlDistance);				
+			}
+
 			try {
 				BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
 				out.write(""+outcome.toXML());
@@ -513,7 +529,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
 	 */
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessionsOld(Tournament tournament) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
@@ -534,6 +550,61 @@ public class AlternatingOffersProtocol extends Protocol {
 		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
 		for (ProfileRepItem profileA: profiles) {
 			for (ProfileRepItem profileB: profiles) {
+				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
+				if (profileA.equals(profileB)) continue;
+				for (TournamentValue agentAval: agentAvalues ) {
+					AgentRepItem agentA=((AgentValue)agentAval).getValue();
+					for (TournamentValue agentBval: agentBvalues) {
+						AgentRepItem agentB=((AgentValue)agentBval).getValue();
+						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
+					}
+				}
+
+			}
+		}
+		return sessions;
+	}
+
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+
+		session_number=1;
+		// get agent A and B value(s)
+		ArrayList<AgentVariable> agents = tournament.getAgentVars();
+		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
+		ArrayList<TournamentValue> agentAvalues=agents.get(0).getValues();
+		if (agentAvalues.isEmpty()) 
+			throw new IllegalStateException("Agent A does not contain any values!");
+		ArrayList<TournamentValue> agentBvalues=agents.get(1).getValues();
+		if (agentBvalues.isEmpty()) 
+			throw new IllegalStateException("Agent B does not contain any values!");
+		
+		String path ="file:etc/templates/journal_learning/four_issues/";
+		DomainRepItem domain = new DomainRepItem(new URL(path+"four_issues.xml"));
+		ArrayList<ProfileRepItem> profilesA=new ArrayList<ProfileRepItem>(); //tournament.getProfiles();
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
+		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();
+		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
+		// we need to exhaust the possible combinations of all variables.
+		// we iterate explicitly over the profile and agents, because we need to permutate
+		// only the parameters for the selected agents.
+		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
+		for (ProfileRepItem profileA: profilesA) {
+			for (ProfileRepItem profileB: profilesB) {
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
 				if (profileA.equals(profileB)) continue;
 				for (TournamentValue agentAval: agentAvalues ) {

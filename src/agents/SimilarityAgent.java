@@ -30,9 +30,9 @@ public class SimilarityAgent extends Agent {
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM};
 	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
-	private static final double CONCESSIONFACTOR = 0.03;
+	private static final double CONCESSIONFACTOR = 0.035;
 	private static final double ALLOWED_UTILITY_DEVIATION = 0.01;
-	private static final int NUMBER_OF_SMART_STEPS = 2; 
+	private static final int NUMBER_OF_SMART_STEPS = 0; 
 	private HashMap<Bid, Double> utilityCash;
 	// Class constructor
 	public SimilarityAgent() {
@@ -85,7 +85,7 @@ public class SimilarityAgent extends Agent {
 		// Return (one of the) possible bid(s) with maximal utility.
 		try {
 			lBid = utilitySpace.getMaxUtilityBid();
-			lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.96, utilitySpace.getUtility(lBid));
+			lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.98, utilitySpace.getUtility(lBid));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,7 +104,7 @@ public class SimilarityAgent extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(fSmartSteps>NUMBER_OF_SMART_STEPS) {
+		if(fSmartSteps>=NUMBER_OF_SMART_STEPS) {
 			lTargetUtility = getTargetUtility(lMyUtility, lOppntUtility);
 			fSmartSteps=0;
 		} else {
