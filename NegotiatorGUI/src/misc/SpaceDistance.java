@@ -323,10 +323,7 @@ public class SpaceDistance {
 		return ((double)lDistance)/((double)k);
 	}
 
-	protected void dumpDistancesToLog(int pRound) {
-
-		//System.out.print(getName() + ": calculating distance between the learned space and the original one ...");
-
+	public SimpleElement calculateDistances() {
 		double lExpectedWeights[] = new double[utilitySpaceA.getDomain().getIssues().size()];
 		int i=0;
 		for(Issue lIssue : utilitySpaceA.getDomain().getIssues()) {
@@ -376,13 +373,21 @@ public class SpaceDistance {
 		double lPearsonDistUtil			= calculatePearsonDistanceUtilitySpace(pLearnedUtil,pOpponentUtil);
 		double lPearsonDistWeights		= calculatePearsonDistanceWeghts(lExpectedWeights);
 		SimpleElement lLearningPerformance = new SimpleElement("learning_performance");
-		lLearningPerformance.setAttribute("round", String.valueOf(pRound));
+		
 		lLearningPerformance.setAttribute("euclidean_distance_utility_space", String.valueOf(lEuclideanDistUtil));
 		lLearningPerformance.setAttribute("euclidean_distance_weights", String.valueOf(lEuclideanDistWeights));
 		lLearningPerformance.setAttribute("ranking_distance_utility_space", String.valueOf(lRankingDistUtil));
 		lLearningPerformance.setAttribute("ranking_distance_weights", String.valueOf(lRankingDistWeights));
 		lLearningPerformance.setAttribute("pearson_distance_utility_space", String.valueOf(lPearsonDistUtil));
 		lLearningPerformance.setAttribute("pearson_distance_weights", String.valueOf(lPearsonDistWeights));
+		return lLearningPerformance;
+	}
+	
+	protected void dumpDistancesToLog(int pRound) {
+
+		//System.out.print(getName() + ": calculating distance between the learned space and the original one ...");
+		SimpleElement lLearningPerformance = calculateDistances();
+		lLearningPerformance.setAttribute("round", String.valueOf(pRound));
 		System.out.println("Done!");
 		System.out.println(lLearningPerformance.toString());
 

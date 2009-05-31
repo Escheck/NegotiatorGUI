@@ -286,7 +286,7 @@ public class BayesianOpponentModel extends OpponentModel{
 			double normalizedProbability =hyp.getProbability()/lFullProb; 
 			hyp.setProbability(normalizedProbability);
 			if(fUseMostProbableHypsOnly)
-				if(normalizedProbability>lMaxProb*0.85/lFullProb) {
+				if(normalizedProbability>lMaxProb*0.75/lFullProb) {
 					fMostProbableUSHyps.add(hyp);
 					lMostProbableHypFullProb += normalizedProbability;
 				}
