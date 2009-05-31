@@ -597,8 +597,52 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_t.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
-		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2_u3.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u2_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u3_u3.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u3.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_d.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_t.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2_u3.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u2_u1.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u3_u3.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u3.xml"),domain));
+
+		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();		
 		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_d_d.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_u_u.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.

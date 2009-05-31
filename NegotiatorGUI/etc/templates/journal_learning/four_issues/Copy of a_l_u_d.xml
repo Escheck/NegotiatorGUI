@@ -88,5 +88,13 @@
 <item index="10" value="j" evaluation="10" cost="0.0"> 
 </item> 
 </issue> 
+<weight index="1" value="0.39601171957316705"> 
+</weight> 
+<weight index="2" value="0.3013195681135996"> 
+</weight> 
+<weight index="3" value="0.20332392075778155"> 
+</weight> 
+<weight index="4" value="0.09934479155545176"> 
+</weight> 
 </objective> 
 </utility_space> 
