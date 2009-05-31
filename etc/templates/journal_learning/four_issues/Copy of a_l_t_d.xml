@@ -13,13 +13,13 @@
 </item> 
 <item index="6" value="f" evaluation="6" cost="0.0"> 
 </item> 
-<item index="7" value="g" evaluation="7" cost="0.0"> 
+<item index="7" value="g" evaluation="5" cost="0.0"> 
 </item> 
-<item index="8" value="h" evaluation="8" cost="0.0"> 
+<item index="8" value="h" evaluation="4" cost="0.0"> 
 </item> 
-<item index="9" value="i" evaluation="9" cost="0.0"> 
+<item index="9" value="i" evaluation="3" cost="0.0"> 
 </item> 
-<item index="10" value="j" evaluation="10" cost="0.0"> 
+<item index="10" value="j" evaluation="2" cost="0.0"> 
 </item> 
 </issue> 
 <issue index="2" etype="discrete" type="discrete" vtype="discrete" name="second"> 
@@ -88,5 +88,13 @@
 <item index="10" value="j" evaluation="10" cost="0.0"> 
 </item> 
 </issue> 
+<weight index="1" value="0.39601171957316705"> 
+</weight> 
+<weight index="2" value="0.3013195681135996"> 
+</weight> 
+<weight index="3" value="0.20332392075778155"> 
+</weight> 
+<weight index="4" value="0.09934479155545176"> 
+</weight> 
 </objective> 
 </utility_space> 
