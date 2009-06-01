@@ -639,16 +639,16 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_d_d.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_u_u.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
+//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
+//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
+//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
+//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
 		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
-		for (ProfileRepItem profileA: profilesA) {
-			for (ProfileRepItem profileB: profilesB) {
+		for (ProfileRepItem profileA: profilesB) {
+			for (ProfileRepItem profileB: profilesA) {
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
 				if (profileA.equals(profileB)) continue;
 				for (TournamentValue agentAval: agentAvalues ) {
