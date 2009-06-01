@@ -30,7 +30,8 @@ public class SimpleAgent extends Agent
      */
     
     public void init(){
-    	MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
+    	if(utilitySpace.getReservationValue()!=null)
+    		MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
     }
 
     public static String getVersion() { return "1.2"; }
