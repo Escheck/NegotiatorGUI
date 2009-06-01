@@ -188,7 +188,7 @@ public class UtilitySpace {
         if (!(dom.equals(domain)))
         	throw new Exception("domain of agent "+agentName+"does not match the negotiation domain");
         String err=IsComplete();
-        if (err!=null) throw new Exception("utility space of agent "+agentName+" is incomplete\n"+err);
+        if (err!=null) throw new Exception("utility space '"+ fileName +"' of agent "+agentName+" is incomplete\n"+err);
         
         // TODO 
          if (!checkTreeNormalization())  throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
