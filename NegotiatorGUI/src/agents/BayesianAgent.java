@@ -404,7 +404,7 @@ public class BayesianAgent extends Agent {
 				lOppntBid = ((Offer) messageOpponent).getBid();
 				//if (fOpponentModel.haveSeenBefore(lOppntBid)) { lAction=myLastAction; break; }
 				//double lDistance = calculateEuclideanDistanceUtilitySpace();
-				if(myLastAction==null) dumpDistancesToLog(0);
+				//if(myLastAction==null) dumpDistancesToLog(0);
 				System.out.print("Updating beliefs ...");
 				if(myPreviousBids.size()<8)	fOpponentModel.updateBeliefs(lOppntBid);
 				dumpDistancesToLog(fRound++);
@@ -451,7 +451,7 @@ public class BayesianAgent extends Agent {
 				// I am starting, but not sure whether Negotiator checks this, so
 				// lets check also myLastAction...
 				if (myLastAction == null) {
-					dumpDistancesToLog(fRound++);				
+					//dumpDistancesToLog(fRound++);				
 					lAction = proposeInitialBid();
 				} else
 					// simply repeat last action

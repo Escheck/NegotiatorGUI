@@ -128,6 +128,7 @@ public class Repository
 				else us = new UtilitySpace(domain, profile.getURL().getFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				System.out.println("Failed to load space:" +profile.getURL().getFile());
 				e.printStackTrace();
 			}
 			return us;
