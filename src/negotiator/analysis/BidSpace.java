@@ -72,7 +72,7 @@ public class BidSpace {
 	void BuildSpace() throws Exception
 	{
 		bidPoints=new ArrayList<BidPoint>();
-		if(domain.getNumberOfPossibleBids()>500000) return;
+		if(domain.getNumberOfPossibleBids()>200000) return;
 		BidIterator lBidIter = new BidIterator(domain);
 		while(lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();

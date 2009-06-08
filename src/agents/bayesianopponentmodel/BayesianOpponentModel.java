@@ -33,7 +33,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		fBiddingHistory = new ArrayList<Bid>();
 		issues=fDomain.getIssues();
 		int lNumberOfHyps = factorial(issues.size());
-		fWeightHyps = new WeightHypothesis[lNumberOfHyps+1];
+		fWeightHyps = new WeightHypothesis[lNumberOfHyps/*+1*/];
 		//generate all possible ordering combinations of the weights
 		int index = 0;
 		double[] P = new double[issues.size()];
@@ -42,11 +42,11 @@ public class BayesianOpponentModel extends OpponentModel{
 		//build all possible orderings of the weights from P
 		antilex(new Integer(index), fWeightHyps, P, fDomain.getIssues().size()-1);
 		//add the all equal hyp
-		WeightHypothesis allEqual = new WeightHypothesis(fDomain);
+		/*WeightHypothesis allEqual = new WeightHypothesis(fDomain);
 		for(int i=0;i< issues.size();i++)
 			allEqual.setWeight(i, 1./((double)(issues.size())));
 		//set uniform probability distribution to the weights hyps
-		fWeightHyps[fWeightHyps.length-1] = allEqual;
+		fWeightHyps[fWeightHyps.length-1] = allEqual;*/
 		for(int i=0;i<fWeightHyps.length;i++) fWeightHyps[i].setProbability(1./fWeightHyps.length);
 		//generate all possible hyps of evaluation functions
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
@@ -286,7 +286,7 @@ public class BayesianOpponentModel extends OpponentModel{
 			double normalizedProbability =hyp.getProbability()/lFullProb; 
 			hyp.setProbability(normalizedProbability);
 			if(fUseMostProbableHypsOnly)
-				if(normalizedProbability>lMaxProb*0.75/lFullProb) {
+				if(normalizedProbability>lMaxProb*0.99/lFullProb) {
 					fMostProbableUSHyps.add(hyp);
 					lMostProbableHypFullProb += normalizedProbability;
 				}
@@ -304,6 +304,7 @@ public class BayesianOpponentModel extends OpponentModel{
 			System.out.println(fUSHyps.get(i).toString());
 		}
 	*/	
+		System.out.println("BA: Using " +String.valueOf(fMostProbableUSHyps.size())+ " out of " +String.valueOf(fUSHyps.size())+ "hyps");
 		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-EXPECTED_CONCESSION_STEP;
