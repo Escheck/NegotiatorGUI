@@ -113,10 +113,14 @@ public class EditIssueDialog extends NewIssueDialog {
 			if (utilSpace != null) {
 				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
 				if (eval != null) {
-					if(eval.getFuncType() == EVALFUNCTYPE.LINEAR){
+					switch (eval.getFuncType()) {
+					case LINEAR:
 						integerLinearField.setText("" + eval.getLinearParam());
-					}else if(eval.getFuncType() == EVALFUNCTYPE.CONSTANT){
+					case CONSTANT:
 						integerParameterField.setText("" + eval.getConstantParam());
+					default:
+						break;
+						
 					}
 				}
 			}
@@ -130,12 +134,15 @@ public class EditIssueDialog extends NewIssueDialog {
 			if (utilSpace != null) {
 				EvaluatorReal eval = (EvaluatorReal)utilSpace.getEvaluator(issue.getNumber());
 				if (eval != null) {
-					//realOtherField.setText(eval.); Herbert: what's realOtherField?
-					if(eval.getFuncType() == EVALFUNCTYPE.LINEAR){
-						realLinearField.setText("" + eval.getLinearParam());
-					}else if(eval.getFuncType() == EVALFUNCTYPE.CONSTANT){
+					switch (eval.getFuncType()) {
+					case LINEAR:
+						realLinearField.setText("" + eval.getLinearParam());						
+					case CONSTANT:
 						realParameterField.setText("" + eval.getConstantParam());
+					default:
+						break;
 					}
+					//realOtherField.setText(eval.); Herbert: what's realOtherField?
 				}
 			}
 		}
