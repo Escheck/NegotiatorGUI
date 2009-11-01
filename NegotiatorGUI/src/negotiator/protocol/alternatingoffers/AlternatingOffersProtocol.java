@@ -265,8 +265,9 @@ public class AlternatingOffersProtocol extends Protocol {
 			//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
 			
 			//calculate distance between the two spaces
-			SpaceDistance dist = new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
-			SimpleElement xmlDistance =  dist.calculateDistances();
+			
+			SpaceDistance dist =null;// new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
+			SimpleElement xmlDistance =null;//  dist.calculateDistances();
 			xmlDistance.setTagName("opposition");
 			
 			if(fAdditional!=null) { 
