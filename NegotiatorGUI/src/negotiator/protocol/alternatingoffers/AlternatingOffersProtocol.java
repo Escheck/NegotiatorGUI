@@ -227,8 +227,8 @@ public class AlternatingOffersProtocol extends Protocol {
 					getAgentBparams(),
 					startingAgent,
 					non_gui_nego_time);
-			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = non_gui_nego_time;
-			else totalTime = gui_nego_time;
+			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
+			else totalTime = non_gui_nego_time;
 			sessionrunner.setTotalTime(totalTime);
 			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 			sessionrunner.setStartingWithA(startingWithA);
@@ -268,7 +268,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			
 			SpaceDistance dist =null;// new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
 			SimpleElement xmlDistance =null;//  dist.calculateDistances();
-			xmlDistance.setTagName("opposition");
+			//xmlDistance.setTagName("opposition");
 			
 			if(fAdditional!=null) { 
 				if(outcome.additional==null) {
