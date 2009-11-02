@@ -7,8 +7,24 @@ import negotiator.xml.SimpleElement;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+/**
+ * 
+ * An evaluator for real-type issues.
+ * 
+ * @author Dmytro Tykhonov
+ *
+ */
 public class EvaluatorReal implements Evaluator {
 	private static final double EPSILON=0.0001;
+	
+	// Class fields
+	private double fweight; //the weight of the evaluated Objective or Issue.
+	private boolean fweightLock;	
+	double lowerBound;
+	double upperBound;
+	EVALFUNCTYPE type;
+	HashMap<Integer, Double> fParam;
+	
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
@@ -28,13 +44,7 @@ public class EvaluatorReal implements Evaluator {
 		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
-	// Class fields
-	private double fweight; //the weight of the evaluated Objective or Issue.
-	private boolean fweightLock;	
-	double lowerBound;
-	double upperBound;
-	EVALFUNCTYPE type;
-	HashMap<Integer, Double> fParam;
+
 		
 	public EvaluatorReal() {
 		fParam = new HashMap<Integer, Double>();		
