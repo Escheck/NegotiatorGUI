@@ -152,7 +152,29 @@ public class UtilitySpace {
     private boolean checkTreeNormalization(){
     	return checkTreeNormalizationRecursive(domain.getObjectivesRoot());
     }
-    
+    protected void normalizeWeights(Objective currentRoot) {
+    	double lSum = 0;
+    	
+    	Enumeration<Objective> children = currentRoot.children();
+    	
+    	// Wouter: there is nothing recursive here. This function seems broken
+    	while(children.hasMoreElements()){
+    		
+    		Objective tmpObj = children.nextElement();
+    		lSum += (fEvaluators.get(tmpObj)).getWeight();
+    		
+    	}
+    	children = currentRoot.children();
+    	
+    	// Wouter: there is nothing recursive here. This function seems broken
+    	while(children.hasMoreElements()){
+    		
+    		Objective tmpObj = children.nextElement();
+    		double weight = (1-lSum)*(fEvaluators.get(tmpObj)).getWeight();
+    		(fEvaluators.get(tmpObj)).setWeight(weight);
+    		
+    	}
+    }
     /**
      * Private helper function to check the normalisation throughout the tree.
      * @param currentRoot The current parent node of the subtree we are going to check
@@ -191,7 +213,11 @@ public class UtilitySpace {
         if (err!=null) throw new Exception("utility space '"+ fileName +"' of agent "+agentName+" is incomplete\n"+err);
         
         // TODO 
-         if (!checkTreeNormalization())  throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
+         if (!checkTreeNormalization()) {
+        	 
+        	 //throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
+         }
+         
     }
     
     /**Wouter: I think this should not be used anymore*/

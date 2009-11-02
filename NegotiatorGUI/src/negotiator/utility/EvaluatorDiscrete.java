@@ -138,6 +138,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	public Double normalize(Integer EvalValueL) throws Exception
 	{
 		if (EvalValueL==null) throw new NullPointerException("EvalValuel=null");
+		if (getEvalMax().doubleValue()<0.00001) return new Double(0); else
 		return EvalValueL.doubleValue()/getEvalMax().doubleValue(); // this will throw if problem.
 	}
 	
