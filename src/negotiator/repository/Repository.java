@@ -113,7 +113,7 @@ public class Repository
 			Domain domain = null;
 			try {
 				if((sourceFolder!=null)&&(!sourceFolder.equals("")))
-					domain = new Domain(sourceFolder +"\\"+ domainRepItem.getURL().getFile());
+					domain = new Domain(sourceFolder +"/"+ domainRepItem.getURL().getFile());
 				else domain = new Domain(domainRepItem.getURL().getFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -124,7 +124,7 @@ public class Repository
 		public UtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
 			UtilitySpace us = null;			
 			try {
-				if((sourceFolder!=null)&&(!sourceFolder.equals(""))) us = new UtilitySpace(domain, sourceFolder+"\\"+ profile.getURL().getFile());
+				if((sourceFolder!=null)&&(!sourceFolder.equals(""))) us = new UtilitySpace(domain, sourceFolder+"/"+ profile.getURL().getFile());
 				else us = new UtilitySpace(domain, profile.getURL().getFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
