@@ -4,20 +4,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import jtreetable.JTreeTable;
-
-import java.util.Enumeration;
 import java.util.ArrayList;
 
 import negotiator.gui.tree.*;
-import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
 import negotiator.issue.*;
 import negotiator.utility.*;
 
+
 /**
- * Maakt een dialog om een nieuwe Issue aan te maken
+ * A dialog window of Genius GUI used to create a new issue and/or evaluator for a issue.
  * 
+ * 
+ * @author Dmytro Tykhonov
  *
  */
 public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
@@ -524,7 +523,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 					((EvaluatorInteger)evaluator).setLowerBound(min);
 					((EvaluatorInteger)evaluator).setUpperBound(max);
 					((EvaluatorInteger)evaluator).setLinearParam(getIntegerLinear());
-				}else if(! integerParameterField.getText().equals("")){
+				}
+				if(! integerParameterField.getText().equals("")){
 					//evInt = new EvaluatorInteger();
 					//evInt.setWeight(0.0);
 					((EvaluatorInteger)evaluator).setLowerBound(min);
