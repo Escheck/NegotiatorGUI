@@ -81,7 +81,7 @@ public class BayesianAgent extends Agent {
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModel(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
 	}
 
 	// Class methods
@@ -414,9 +414,9 @@ public class BayesianAgent extends Agent {
 					lAction = proposeInitialBid();
 				else {
 	                double offeredutil=utilitySpace.getUtility(lOppntBid);
-	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
-	                double P=Paccept(offeredutil,time);
-	                log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
+	                //double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+	                //double P=Paccept(offeredutil,time);
+	                //log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(myLastBid)
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
