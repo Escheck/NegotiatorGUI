@@ -21,7 +21,7 @@
 	<property name="build" location="bin"/>
 	<property name="tmp" location="tmp"/>
 	<property name="dep" location="dep"/>
-	
+	<property name="src" location="src"/>
 	
 	<target name="cleanup">
 		<delete includeemptydirs="true" quiet="true">
@@ -147,7 +147,7 @@
 	
 
 	<target name ="compilesimpleAgent">
-		<javac srcdir="." includes="agents/SimpleAgent.java" classpath="${build}">
+		<javac srcdir="." includes="./SimpleAgent.java" classpath="${build}">
 		</javac>
 	</target>
 		
@@ -180,6 +180,44 @@
 		</zip>
 		<ant target="cleanup"/>
 	</target>
+	<target name ="makeGeniusForStudentsAssignment2009" depends="makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_AIMA2009.xml"/>
+			<globmapper from="domainrep_AIMA2009.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_AIMA2009.xml"/>
+			<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
+		</copy>	
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
+			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
+		</copy>	
+
+		<copy todir="${tmp}">
+			<fileset dir="doc" includes="assignment2009.pdf"/>
+			<globmapper from="assignment2009.pdf" to="assignment.pdf" />
+		</copy>	
+		
+		<zip destfile="${dist}/negotiator.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain"/>
+			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009"/>
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
+
+		</zip>
+		<ant target="cleanup"/>
+	</target>
+
 	<target name ="makeGeniusFor07Nov2008" depends="makeNegoSimulatorWithoutBayesJar">
 		<copy todir="${tmp}">
 			<fileset dir="." includes="domainrep_12nov.xml"/>

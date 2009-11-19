@@ -54,12 +54,14 @@
                 <profile url="file:etc/templates/journal_learning/four_issues/linear_downhill_side_b_4.xml"/>
                 <profile url="file:etc/templates/journal_learning/four_issues/linear_triangle_side_b_4.xml"/>
                 <profile url="file:etc/templates/journal_learning/four_issues/linear_unpred_side_b_4.xml"/>
-
                 <profile url="file:etc/templates/journal_learning/four_issues/nonlin_uphill.xml"/>
                 <profile url="file:etc/templates/journal_learning/four_issues/nonlin_downhill.xml"/>
                 <profile url="file:etc/templates/journal_learning/four_issues/nonlin_triangle.xml"/>
                 <profile url="file:etc/templates/journal_learning/four_issues/nonlin_unpred.xml"/>
-
+            </domainRepItem>
+            <domainRepItem url="file:/C:/temp/test_domain.xml">
+                <profile url="file:/C:/temp/test_us.xml"/>
+                <profile url="file:/H:/My Documents/test_us_2.xml"/>
             </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>

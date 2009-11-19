@@ -530,7 +530,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
 	 */
-	public static ArrayList<Protocol> getTournamentSessionsOld(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
@@ -566,7 +566,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		return sessions;
 	}
 
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessionsBla(Tournament tournament) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
@@ -601,7 +601,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u1.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u1.xml"),domain));*/
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u1.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u2.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2_u3.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u2.xml"),domain));
@@ -612,7 +612,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u2_u3.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u2_u1_u3.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u3_u3_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u3_u2.xml"),domain));
+		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u3_u2.xml"),domain));*/
 
 		/*profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_d.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_t.xml"),domain));
@@ -648,8 +648,8 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u3_u2.xml"),domain));*/
 
 		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();		
-		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
-/**		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
+/*		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
+		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_d_d.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_u_u.xml"),domain));*/
 //		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));

@@ -133,6 +133,20 @@ public class Repository
 			}
 			return us;
 		}
+		public boolean existUtilitySpace(Domain domain, ProfileRepItem profile) {
+			UtilitySpace us = null;			
+			try {
+				File file;
+				if((sourceFolder!=null)&&(!sourceFolder.equals(""))) file = new File(sourceFolder+"/"+ profile.getURL().getFile());
+				else file = new File(profile.getURL().getFile());
+				return file.exists();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("Failed to load space:" +profile.getURL().getFile());
+				e.printStackTrace();
+			}
+			return false;
+		}
 		public static Repository get_domain_repos(String filename, String sourceFolder) throws Exception {
 			if(domainRepos!=null ) return domainRepos;
 			Repository repos;
