@@ -464,6 +464,7 @@ public class NegoGUIView extends FrameView {
 
 private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeDomainsMouseClicked
 // TODO add your handling code here:
+		 
          int selRow = treeDomains.getRowForLocation(evt.getX(), evt.getY());
          TreePath selPath = treeDomains.getPathForLocation(evt.getX(), evt.getY());
          if(selRow != -1) {
