@@ -42,7 +42,7 @@ public class BayesianAgent extends Agent {
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
-	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
+	private STRATEGY fStrategy = STRATEGY.SMART;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.04;
@@ -81,7 +81,7 @@ public class BayesianAgent extends Agent {
 		fRound =0;
 	}
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
+		fOpponentModel = new BayesianOpponentModel(utilitySpace);	
 	}
 
 	// Class methods
@@ -414,9 +414,9 @@ public class BayesianAgent extends Agent {
 					lAction = proposeInitialBid();
 				else {
 	                double offeredutil=utilitySpace.getUtility(lOppntBid);
-	                //double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
-	                //double P=Paccept(offeredutil,time);
-	                //log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
+	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+	                double P=Paccept(offeredutil,time);
+	                log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(myLastBid)
 	            	/*|| .05*P>Math.random()*/ )	   
 	               {
