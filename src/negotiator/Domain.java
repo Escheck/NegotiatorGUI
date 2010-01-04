@@ -89,10 +89,17 @@ public class Domain {
     /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG
      *  A better name would be getChild 
      */
+    /**
+     * Returns an issue with a given index. Considers issues in the domain tree as a plain array (uses getIssues method to generate the array).
+     * 
+     * @param index - index of the issue
+     * @return
+     */
     public final Objective getIssue(int index) {
-        return fObjectivesRoot.getChildAt(index);
+    	return getIssues().get(index);
     }
     
+   
      /**
       * @param ID (number) of the objective
       * @return the objective with given ID
