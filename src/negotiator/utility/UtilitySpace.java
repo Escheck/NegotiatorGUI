@@ -53,6 +53,8 @@ public class UtilitySpace {
     private SimpleElement fXMLRoot;
     public SimpleElement getXMLRoot() { return fXMLRoot;}
     private Double fReservationValue = null;
+    
+    private double discountFactor = 0;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
     private String fileName;
 
@@ -276,6 +278,26 @@ public class UtilitySpace {
         return financialRat*financialUtility+(1-financialRat)*utility;
     }
     
+    /**
+     * @param bid
+     * @param timeAfterStart
+     * @param deadline
+     * @return
+     * @throws Exception
+     */
+    public double getUtilityWithDiscount(Bid bid, long timeAfterStart, long deadline) throws Exception
+    {
+    	long timeAfteStartNormalized = 0; 
+    	if(timeAfterStart>deadline) {
+    		timeAfteStartNormalized =  (long) 1.;
+    	} else {
+    		timeAfteStartNormalized = timeAfterStart/deadline;
+    	}
+    	double utility = getUtility(bid) * Math.exp(- discountFactor * timeAfteStartNormalized);
+    	return utility;
+    }
+    
+
     
     /**
      * @author W.Pasman
@@ -403,6 +425,16 @@ public class UtilitySpace {
 		} catch (Exception e) {
 			System.out.println("Utility space has no reservation value");
 		}
+		//load discount factor
+		try {
+			if((currentRoot.getChildByTagName("discount_factor")!=null)&&(currentRoot.getChildByTagName("discount_factor").length>0)){
+				SimpleElement xml_reservation = (SimpleElement)(currentRoot.getChildByTagName("discount_factor")[0]);
+				discountFactor = Double.valueOf(xml_reservation.getAttribute("value"));
+			}
+		} catch (Exception e) {
+			System.out.println("Utility space has no discount factor;");
+		}
+		
 			
 			
 		Vector<Evaluator> tmpEvaluator = new Vector<Evaluator>(); //tmp vector with all Evaluators at this level. Used to normalize weigths.
@@ -1068,5 +1100,8 @@ public class UtilitySpace {
 		return true;
 	}
 
+	public final double getDiscountFactor() {
+		return discountFactor;
+	}
 
 }

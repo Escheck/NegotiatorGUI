@@ -23,10 +23,12 @@ public class ActionEvent extends NegotiationEvent
 	long elapsedMilliseconds;	// milliseconds since start of nego. Using System.currentTimeMillis();
 	double normalizedUtilityA;
 	double normalizedUtilityB;
+	double utilADiscount;
+	double utilBDsicount;
 	String errorRemarks;		// errors 
 	
 	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed,
-			double utilA,double utilB,String remarks)
+			double utilA,double utilB, double utilADiscount, double utilBDsicount, String remarks)
 	{
 		super(source);
 		actor=actorP;
@@ -35,9 +37,19 @@ public class ActionEvent extends NegotiationEvent
 		elapsedMilliseconds=elapsed;
 		normalizedUtilityA=utilA;
 		normalizedUtilityB=utilB;
+		this.utilADiscount = utilADiscount;
+		this.utilBDsicount = utilBDsicount;
 		errorRemarks=remarks;
 	}
 	
+	public double getUtilADiscount() {
+		return utilADiscount;
+	}
+
+	public double getUtilBDsicount() {
+		return utilBDsicount;
+	}
+
 	public String toString()
 	{
 		return "ActionEvent["+actor+","+act+","+round+","+elapsedMilliseconds+","+

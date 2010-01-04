@@ -86,9 +86,9 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     		actionEventListener.remove(listener);
     }
 	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
-			double utilA,double utilB,String remarks) {
+			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
 		}
 	}
 	protected synchronized void fireLogMessage(String source, String log) { 

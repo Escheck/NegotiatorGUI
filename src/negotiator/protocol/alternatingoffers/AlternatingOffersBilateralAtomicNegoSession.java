@@ -37,7 +37,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     private boolean agentAtookAction = false;
     private boolean agentBtookAction = false;
     protected String startingAgent;
-
+    private long totalTimePerAgent = 3 * 60 * 1000;
 	boolean startingWithA=true;    
     /* time/deadline */
     Date startTime; 
@@ -77,6 +77,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      */
     public void run() {
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
+		long totalTimeAgentA =0, totalTimeAgentB = 0;
         try {
             double agentAUtility,agentBUtility;
 
@@ -100,10 +101,37 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             while(!stopNegotiation) {
                 try {
                    //inform agent about last action of his opponent
+                   long currentTime = System.currentTimeMillis();
                    currentAgent.ReceiveMessage(action);
+                   long timeSpent = System.currentTimeMillis() - currentTime; 
+                   if(currentAgent == agentA) {
+                	   totalTimeAgentA += timeSpent; 
+                   } else {
+                	   totalTimeAgentB += timeSpent;
+                   }
+                   if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
+                       stopNegotiation=true;
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
+                       newOutcome(currentAgent,0.,0., 0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
+                   }
                    if (stopNegotiation) return;
                    //get next action of the agent that has its turn now
+                   currentTime = System.currentTimeMillis();                   
                    action = currentAgent.chooseAction();
+                   timeSpent = System.currentTimeMillis() - currentTime;
+                   if(currentAgent == agentA) {
+                	   totalTimeAgentA += timeSpent; 
+                   } else {
+                	   totalTimeAgentB += timeSpent;
+                   }
+                   if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
+                       stopNegotiation=true;
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
+                       newOutcome(currentAgent,0.,0., 0.,0.,action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
+                   }
+                   
                    if (stopNegotiation) return;
                    
                    if(action instanceof EndNegotiation) 
@@ -111,7 +139,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                        stopNegotiation=true;
                        double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
                        double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
-                       newOutcome(currentAgent,0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
+                       newOutcome(currentAgent,0.,0., 0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
@@ -136,8 +164,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                        } else{
                     	   fAgentBBids.add(p);
                        }
+                       long timeAfterStart = startTimeMillies - System.currentTimeMillis(); 
+                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
+                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
+                       
 	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,"bid by "+currentAgent.getName());
+	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
 	                	
                        checkAgentActivity(currentAgent) ;
                    }                   
@@ -149,9 +181,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     			   currentAgent.getName()+" but no bid was done yet.");
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
+                        long timeAfterStart = startTimeMillies - System.currentTimeMillis(); 
+                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
+                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
                         agentAUtility = spaceA.getUtility(lastBid);
                         agentBUtility = spaceB.getUtility(lastBid);
-                        newOutcome(currentAgent, agentAUtility,agentBUtility,action, null);
+                        newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null);
                         checkAgentActivity(currentAgent) ;
                         otherAgent(currentAgent).ReceiveMessage(action);                      
                    } else {  // action instanceof unknown action, e.g. null.
@@ -178,7 +213,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                    }
                    if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
                    try {
-                	   newOutcome(currentAgent, agentAUtility,agentBUtility,action, "Agent " + currentAgent.getName() +":"+e.getMessage());
+                	   newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Agent " + currentAgent.getName() +":"+e.getMessage());
                    }
                    catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
                    // don't compute the max utility, we're in exception which is already bad enough.
@@ -229,7 +264,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     }
   
     
-    public void newOutcome(Agent currentAgent, double utilA, double utilB, Action action, String message) throws Exception {
+    public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message) throws Exception {
         
     	no=new NegotiationOutcome(sessionNumber, 
 			   agentA.getName(),  agentB.getName(),
@@ -246,7 +281,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             );
     	
     	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-        	System.currentTimeMillis()-startTimeMillies,utilA,utilB,message);
+        	System.currentTimeMillis()-startTimeMillies,utilA,utilB,utilADiscount,utilBDiscount,message);
     		
     	
     }
@@ -260,7 +295,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      */
     public void JudgeTimeout() {
 		try {
-    		newOutcome(currentAgent, 0, 0, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
+    		newOutcome(currentAgent, 0, 0,0,0, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
     		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
     		// don't bother about max utility, both have zero anyway.
 
