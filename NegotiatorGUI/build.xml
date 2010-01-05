@@ -210,6 +210,7 @@
 			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain"/>
 			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009"/>
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
+			<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain"/>
 			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
 			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
 			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
