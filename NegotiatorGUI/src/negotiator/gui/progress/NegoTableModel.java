@@ -6,7 +6,7 @@ public class NegoTableModel extends AbstractTableModel{
 	
 	private String[] colNames;
 	private Object[][] data;
-	
+	private static final int NUMBER_OF_COLUMNS = 8;
 	public NegoTableModel(String[] colNames) 
 	{
 		super();

@@ -371,6 +371,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		biddingTable.getModel().setValueAt(evt.getAgentAsString(),round-1,1);
 		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityA(),round-1,2);
 		biddingTable.getModel().setValueAt(evt.getNormalizedUtilityB(),round-1,3);
+		biddingTable.getModel().setValueAt(evt.getUtilADiscount(),round-1,4);
+		biddingTable.getModel().setValueAt(evt.getUtilBDsicount(),round-1,5);
+
 		//opponent model?
 		
 		//adding graph data:

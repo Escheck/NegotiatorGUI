@@ -287,11 +287,11 @@ public class UtilitySpace {
      */
     public double getUtilityWithDiscount(Bid bid, long timeAfterStart, long deadline) throws Exception
     {
-    	long timeAfteStartNormalized = 0; 
+    	double timeAfteStartNormalized = 0L; 
     	if(timeAfterStart>deadline) {
-    		timeAfteStartNormalized =  (long) 1.;
+    		timeAfteStartNormalized =  1L;
     	} else {
-    		timeAfteStartNormalized = timeAfterStart/deadline;
+    		timeAfteStartNormalized = (double)timeAfterStart/(double)deadline;
     	}
     	double utility = getUtility(bid) * Math.exp(- discountFactor * timeAfteStartNormalized);
     	return utility;
