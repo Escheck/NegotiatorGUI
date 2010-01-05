@@ -51,7 +51,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         initComponents(); 
 		sessionProgress = pUI;
 		negoSession = pUI.session;
-		String[] colNames={"Domain1","Domain2","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","Details"};
+		String[] colNames={"Prof. A","Prof. B","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","utilA discount","utilB discount","Details"};
 		resultTableModel = new NegoTableModel (colNames);
 		resultTable.setModel(resultTableModel);
 		//add a listener to receive selection events:
@@ -176,7 +176,9 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 			resultTable.getModel().setValueAt(sessionProgress.round,session-1,6);//rounds
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityA(),session-1,7);//util a
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
-			resultTable.getModel().setValueAt("",session-1,9);//details???
+			resultTable.getModel().setValueAt(evt.getUtilADiscount(),session-1,9);//util a
+			resultTable.getModel().setValueAt(evt.getUtilBDsicount(),session-1,10);//util b			
+			resultTable.getModel().setValueAt("",session-1,11);//details???
 		}
 	}
 

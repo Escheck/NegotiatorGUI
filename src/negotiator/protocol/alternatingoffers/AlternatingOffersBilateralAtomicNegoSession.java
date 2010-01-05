@@ -164,9 +164,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                        } else{
                     	   fAgentBBids.add(p);
                        }
-                       long timeAfterStart = startTimeMillies - System.currentTimeMillis(); 
-                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
-                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
+                       long timeAfterStart = System.currentTimeMillis() - startTimeMillies; 
+                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime* 60 * 1000);
+                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime* 60 * 1000);
                        
 	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
 	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
@@ -181,9 +181,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     			   currentAgent.getName()+" but no bid was done yet.");
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
-                        long timeAfterStart = startTimeMillies - System.currentTimeMillis(); 
-                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
-                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, deadline);
+                        long timeAfterStart = System.currentTimeMillis() -  startTimeMillies; 
+                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 60 * 1000);
+                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 60 * 1000);
                         agentAUtility = spaceA.getUtility(lastBid);
                         agentBUtility = spaceB.getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null);

@@ -6,13 +6,14 @@ class ProgressInfo extends AbstractTableModel{
 	//public Bid ourOldBid;
 	//public Bid oppOldBid;
 	//public UtilitySpace utilitySpace;
-	private String[] colNames={"Round","Side","utilA","utilB","Opp. model"};
+	private static final int NUMBER_OF_COLUMNS = 8; 
+	private String[] colNames={"Round","Side","utilA","utilB","utilA discount","utilB discount"," Opp. model"};
 	private Object[][] data;
 	
 	public ProgressInfo() 
 	{
 		super();
-		data = new Object [6][colNames.length];
+		data = new Object [NUMBER_OF_COLUMNS][colNames.length];
 	}
 	
 	public void addRow(){
@@ -32,7 +33,7 @@ class ProgressInfo extends AbstractTableModel{
 	public void reset()
 	{
 		System.out.println("reset the JTable now.");
-		data = new Object [6][colNames.length];
+		data = new Object [NUMBER_OF_COLUMNS][colNames.length];
 		fireTableDataChanged();
 	}
 
