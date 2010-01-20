@@ -154,9 +154,9 @@ public abstract class Protocol implements Runnable {
     		actionEventListener.remove(listener);
     }
 	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
-			double utilA,double utilB,String remarks) {
+			double utilA,double utilB, double utilADiscount, double utilBDiscount,String remarks) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, utilADiscount, utilBDiscount,remarks ));
 		}
 	}
 	public synchronized void fireBilateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSession session,ProfileRepItem profileA,
