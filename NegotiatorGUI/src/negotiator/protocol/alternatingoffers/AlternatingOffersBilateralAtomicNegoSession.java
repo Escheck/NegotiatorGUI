@@ -165,8 +165,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     	   fAgentBBids.add(p);
                        }
                        long timeAfterStart = System.currentTimeMillis() - startTimeMillies; 
-                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime* 60 * 1000);
-                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime* 60 * 1000);
+                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
+                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        
 	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
 	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
@@ -182,8 +182,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
                         long timeAfterStart = System.currentTimeMillis() -  startTimeMillies; 
-                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 60 * 1000);
-                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 60 * 1000);
+                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
+                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                         agentAUtility = spaceA.getUtility(lastBid);
                         agentBUtility = spaceB.getUtility(lastBid);
                         newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null);
@@ -270,6 +270,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			   agentA.getName(),  agentB.getName(),
             agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
             utilA,utilB,
+            utilADiscount,utilBDiscount,
             message,
             fAgentABids,fAgentBBids,
             spaceA.getUtility(spaceA.getMaxUtilityBid()),
