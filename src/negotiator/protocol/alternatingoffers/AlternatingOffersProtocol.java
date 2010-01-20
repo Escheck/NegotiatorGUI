@@ -41,7 +41,7 @@ public class AlternatingOffersProtocol extends Protocol {
 
 
 	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not	
-	public int non_gui_nego_time = 120;
+	public int non_gui_nego_time = 360;
 	public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
 	private static int tournament_gui_time=30*60, tournament_non_gui_time=120;

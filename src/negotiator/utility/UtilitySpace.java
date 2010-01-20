@@ -45,7 +45,7 @@ import negotiator.BidIterator;
 public class UtilitySpace {
 	
 	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
-	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_CHECK;
+	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_NOT_CHECK;
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -118,6 +118,7 @@ public class UtilitySpace {
     		// especially, objectives (the non-Issues) won't generally have an evlauator.
     	}
     	fXMLRoot = us.getXMLRoot();
+    	discountFactor = us.discountFactor;
     }
     
     /**
@@ -370,8 +371,7 @@ public class UtilitySpace {
 		Bid maxBid=null; double maxutil=0.;
 		BidIterator bidit=new BidIterator(domain);
 
-		if (bidit.hasNext()) maxBid=bidit.next();
-		else throw new Exception("The domain does not contain any bids!");
+		if (!bidit.hasNext()) throw new Exception("The domain does not contain any bids!");
 		while (bidit.hasNext())
 		{
 			Bid thisBid=bidit.next();

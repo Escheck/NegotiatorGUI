@@ -26,6 +26,8 @@ public class NegotiationOutcome {
     public String agentBclass; 
     public Double agentAutility;
     public Double agentButility;
+    public Double agentAutilityDiscount;
+    public Double agentButilityDiscount;
     public String ErrorRemarks; // non-null if something happens crashing the negotiation
     public ArrayListXML<BidPoint> AgentABids;
     public ArrayListXML<BidPoint> AgentBBids;
@@ -39,7 +41,9 @@ public class NegotiationOutcome {
     public String agentButilSpaceName;
     public SimpleElement additional;
 
-    /** Creates a new instance of NegotiationOutcome */
+    /** Creates a new instance of NegotiationOutcome 
+     * @param utilBDiscount 
+     * @param utilADiscount */
     public NegotiationOutcome(int sessionNumber, 
                     String agentAname,
                     String agentBname,
@@ -47,6 +51,8 @@ public class NegotiationOutcome {
                     String agentBclass,
                     Double agentAutility,
                     Double agentButility,
+                    Double agentAutilityDiscount,
+                    Double agentButilityDiscount,
                     String err,
                     ArrayList<BidPoint> AgentABidsP,
                     ArrayList<BidPoint> AgentBBidsP,
@@ -61,6 +67,8 @@ public class NegotiationOutcome {
         this.sessionNumber = sessionNumber;
         this.agentAutility = agentAutility;
         this.agentButility = agentButility;
+        this.agentAutilityDiscount = agentAutilityDiscount;
+        this.agentButilityDiscount = agentButilityDiscount;
         this.agentAname = agentAname;
         this.agentBname = agentBname;
         this.agentAclass=agentAclass;
@@ -81,6 +89,7 @@ public class NegotiationOutcome {
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
         return String.valueOf(sessionNumber) + " agentAName="+agentAname + " agentBName=" + agentBname + 
         " agentAutility="+agentAutility+ " agentButility="+agentButility+
+        " agentAutilityDiscount="+agentAutilityDiscount+ " agentButilityDiscount="+agentButilityDiscount+
         " errors='"+ErrorRemarks+"'"+
         " agentAmaxUtil="+agentAmaxUtil+ " agentBmaxUtil="+agentBmaxUtil+
         " startingAgent="+startingagent+
@@ -100,7 +109,7 @@ public class NegotiationOutcome {
      * @return
      */
     SimpleElement resultsOfAgent(String agentX,String agentName, String agentClass, String utilspacefilename,
-    		Double agentAUtil,Double agentAMaxUtil, ArrayListXML<BidPoint> bids)
+    		Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids)
     {
     	SimpleElement outcome=new SimpleElement("resultsOfAgent");
     	outcome.setAttribute("agent", agentX);
@@ -108,6 +117,7 @@ public class NegotiationOutcome {
     	outcome.setAttribute("agentClass", agentClass);
     	outcome.setAttribute("utilspace", utilspacefilename);
     	outcome.setAttribute("finalUtility",""+agentAUtil);
+    	outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
     	outcome.setAttribute("maxUtility",""+agentAMaxUtil);
     	Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
     	outcome.setAttribute("normalizedUtility",""+normalized);
@@ -124,9 +134,9 @@ public class NegotiationOutcome {
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
     	outcome.setAttribute("startingAgent",startingagent);
     	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
-    			agentAutility,agentAmaxUtil,AgentABids));
+    			agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids));
     	outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
-    			agentButility,agentBmaxUtil,AgentBBids));
+    			agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids));
     	if(additional!=null) outcome.addChildElement(additional);
 		return outcome;
     }
