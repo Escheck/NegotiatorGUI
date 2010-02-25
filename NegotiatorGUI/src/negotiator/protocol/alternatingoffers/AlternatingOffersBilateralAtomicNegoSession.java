@@ -139,7 +139,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                        stopNegotiation=true;
                        double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
                        double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
-                       newOutcome(currentAgent,0.,0., 0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
+                       newOutcome(currentAgent,spaceA.getReservationValue(),spaceB.getReservationValue(), spaceA.getReservationValue(),0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
@@ -296,7 +296,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      */
     public void JudgeTimeout() {
 		try {
-    		newOutcome(currentAgent, 0, 0,0,0, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
+    		newOutcome(currentAgent, spaceA.getReservationValue(), spaceB.getReservationValue(),spaceA.getReservationValue(),spaceB.getReservationValue(), new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
     		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
     		// don't bother about max utility, both have zero anyway.
 
