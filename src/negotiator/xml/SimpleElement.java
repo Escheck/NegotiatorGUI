@@ -18,13 +18,13 @@ import java.util.ListIterator;
 public class SimpleElement {
 	private String tagName;
 	private String text;
-	private HashMap attributes;
-	private LinkedList childElements;
+	private HashMap<String, String> attributes;
+	private LinkedList<SimpleElement> childElements;
 
 	public SimpleElement(String tagName) {
 		this.tagName = tagName;
-		attributes = new HashMap();
-		childElements = new LinkedList();
+		attributes = new HashMap<String, String>();
+		childElements = new LinkedList<SimpleElement>();
 	}
 
 	public String getTagName() {
@@ -44,7 +44,7 @@ public class SimpleElement {
 	}
 
 	public String getAttribute(String name) {
-		return (String)attributes.get(name);
+		return attributes.get(name);
 	}
 
 	public void setAttribute(String name, String value) {
@@ -62,9 +62,9 @@ public class SimpleElement {
 	public Object[] getChildByTagName(String tagName) {
 	//	LinkedList<Object> result = new LinkedList<Object>();
 		Vector<Object> result = new Vector<Object>();
-        ListIterator iter = childElements.listIterator();
+        ListIterator<SimpleElement> iter = childElements.listIterator();
         while(iter.hasNext()) {
-        	SimpleElement se = (SimpleElement)iter.next();
+        	SimpleElement se = iter.next();
            	String seTagName = se.getTagName();
             if (seTagName.equals(tagName))
 				result.add(se);
@@ -84,7 +84,7 @@ public class SimpleElement {
             	String lAttrName = (String)(attributes.keySet().toArray()[i]);
             	String lAttrValue="";
             	if (attributes.entrySet().toArray()[i]!=null)
-            		lAttrValue= (String)(attributes.get(lAttrName));
+            		lAttrValue= (attributes.get(lAttrName));
             	
             	lResult +=" "+lAttrName+"=\"" +lAttrValue+"\"";
             }

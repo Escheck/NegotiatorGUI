@@ -2,10 +2,10 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 
+import negotiator.NegotiationEventListener;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
-import negotiator.NegotiationEventListener;
 
 /**
  * TournamentRunner is a class that runs a tournament.
@@ -51,7 +51,7 @@ public class TournamentRunner implements Runnable {
 				}
 				
 			}
-    	} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
+    	} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
     }
     
     public void fireNegotiationSessionEvent(Protocol session ) {

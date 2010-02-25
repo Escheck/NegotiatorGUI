@@ -45,7 +45,7 @@ public final class Bid implements XMLable
 	@XmlJavaTypeAdapter(MyMapAdapter.class)
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
-	public Bid(){HashMap<Integer, Value> fValues = new HashMap<Integer, Value>();}
+	public Bid(){fValues = new HashMap<Integer, Value>();}
 	/**
 	 * create a new bid in a domain. Partially checks the validity of the bid as well
 	 * There is only this constructor because we require that ALL values in the domain
@@ -162,7 +162,7 @@ public final class Bid implements XMLable
 			String indexStr = ((SimpleElement) lXMLIssues[i])
 					.getAttribute("index"); // find the index of this Issue.
 			int ind = new Integer(indexStr);
-			switch (fDomain.getIssue(ind).getType()) {
+			switch (fDomain.getObjective(ind).getType()) {
 			case DISCRETE:
 				lXMLItem = (SimpleElement) (((SimpleElement) lXMLIssues[i])
 						.getChildByTagName("item"))[0];

@@ -1,14 +1,18 @@
 package negotiator.utility;
 
-import negotiator.Bid;
-import negotiator.issue.*;
-import negotiator.xml.SimpleElement;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import negotiator.Bid;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Objective;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.xml.SimpleElement;
 
 /**
  * 
@@ -79,7 +83,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		Collection<Integer> alts=fEval.values();
 		Integer maximum=null;
 		for (Integer d: alts) if (maximum==null || d>maximum) maximum=d;
-		if (maximum==null) throw new Exception("no evaluators avaliable, can't get max");
+		if (maximum==null) throw new Exception("no evaluators available, can't get max");
 		if (maximum<0) throw new Exception("Internal error: values <0 in evaluators.");
 		evalMax = maximum;
 	}
@@ -375,5 +379,9 @@ public class EvaluatorDiscrete implements Evaluator {
 	public void showStatistics()
 	{
 		System.out.println("weight="+getWeight()+" min="+getMinValue()+" max="+getMaxValue());		
+	}
+
+	public Set<ValueDiscrete> getValues() {
+		return fEval.keySet();
 	}
 }

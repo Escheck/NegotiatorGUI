@@ -78,6 +78,29 @@ public class EvaluatorInteger implements Evaluator {
 			return -1.;
 		}	
 	}
+	public Double getEvaluation(int pValue) {
+		double utility;		
+		switch(this.type) {
+		case LINEAR:
+			utility = EVALFUNCTYPE.evalLinear(pValue, this.fParam.get(1), this.fParam.get(0));
+			if (utility<0)
+				utility = 0;
+			else if (utility > 1)
+				utility = 1;
+			return utility;
+		case CONSTANT:
+			return this.fParam.get(0);
+		case TRIANGULAR:
+			utility = EVALFUNCTYPE.evalTriangular(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2));
+			return utility;
+		case TRIANGULAR_VARIABLE_TOP:
+			utility = EVALFUNCTYPE.evalTriangularVariableTop(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2), this.fParam.get(3));
+			return utility;
+		default:
+			return -1.0;
+		}	
+		
+	}
 	
 	public EVALUATORTYPE getType() {
 		return EVALUATORTYPE.INTEGER;
@@ -92,7 +115,7 @@ public class EvaluatorInteger implements Evaluator {
 	}
 	
 	public int getUpperBound() {
-		return lowerBound;   //TODO check if this is ok.
+		return upperBound;
 	}	
 	
 	/**
@@ -165,7 +188,7 @@ public class EvaluatorInteger implements Evaluator {
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_item = ((SimpleElement)pRoot).getChildByTagName("range");
 		this.lowerBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
-		this.upperBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
+		this.upperBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("evaluator");
 		if(xml_items.length != 0){
 			String ftype = ((SimpleElement)xml_items[0]).getAttribute("ftype");
