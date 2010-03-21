@@ -128,7 +128,17 @@ public final class Bid implements XMLable
 		 */
 		return fValues.equals(pBid.getValues());
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Bid)
+			return equals((Bid)obj);
+		return false;
+	}
+	
 	/**
 	 * Helper function to enable the comparison between two Bids.
 	 * Wouter: changed to public for convenience.
