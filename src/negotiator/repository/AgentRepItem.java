@@ -70,7 +70,8 @@ public class AgentRepItem implements RepItem
 	       return "ERR";
 		}
 	
-	/** callAgentFunction can call a Static agent function without instantiating the agent. 
+	/** 
+	 * callAgentFunction can call a Static agent function without instantiating the agent. 
 	 * This is used to get the version and parameters from the agent class in general.
 	 * @return the object returned by that function
 	 * @throws any exception that the function can throw, or failures

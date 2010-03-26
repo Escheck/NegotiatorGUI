@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
 /**
  * Repository contains a set of known files
  * This can be agent files or domain+profile files.
- * @author W.Pasman, Dmytro Tychonov
+ * @author  Dmytro Tykhonov, W.Pasman
  * 
  */
 @XmlRootElement
@@ -59,6 +59,8 @@ public class Repository
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			unmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
 			rep = (Repository)( unmarshaller.unmarshal(new File(fileName)));
+			unmarshaller = null;
+			jaxbContext = null;
 			return rep;
 		}
 
@@ -225,9 +227,23 @@ public class Repository
 				repos.save();
 			}
 			
-			return repos;
-			
+			return repos;		
 		}
+		public static Repository getProtocolRepository(String filename, String sourceFolder) throws Exception {
+
+			Repository repos;
+			try {
+				repos=new Repository(filename);				
+				repos.sourceFolder = sourceFolder;				
+			} catch (Exception e) {
+				repos=new Repository();
+				repos.setFilename(filename);
+				repos.getItems().addAll(init_temp_prot_repository());
+				repos.save();
+			}
+			return repos;
+		}
+		
 		public static Repository get_agent_repository() {
 			final String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
 			Repository repos;
@@ -242,6 +258,20 @@ public class Repository
 				repos.save();
 			}
 			
+			return repos;
+		}
+		public static Repository get_agent_repos(String filename, String sourceFolder) throws Exception {
+
+			Repository repos;
+			try {
+				repos=new Repository(filename);				
+				repos.sourceFolder = sourceFolder;				
+			} catch (Exception e) {
+				repos=new Repository();
+				repos.setFilename(filename);
+				repos.getItems().addAll(init_temp_repository());
+				repos.save();
+			}
 			return repos;
 		}
 		

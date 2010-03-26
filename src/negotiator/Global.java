@@ -30,9 +30,11 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
  */
 public class Global {
 
+	private static AgentsLoader agentsLoader;
+	
 	public static Logger logger;
 	public static String[] args;
-
+	
 	public static boolean batchMode = false;
 	public static boolean fDebug = false;
 	public static boolean analysisEnabled = true; // set to true to enable the
@@ -112,21 +114,20 @@ public class Global {
 
 	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem)
 			throws Exception {
-		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*
-																		 * new
-																		 * java
-																		 * .net.
-																		 * URLClassLoader
-																		 * (new
-																		 * URL
-																		 * []{
-																		 * agentAclass
-																		 * })
-																		 */;
+		java.lang.ClassLoader loader = Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
 		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
 				.getClassPath());
 		return klass;
 	}
+
+	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem, ClassLoader loader)
+	throws Exception {
+		
+		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
+				.getClassPath());
+		return klass;
+	}
+
 
 	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
 			AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems,
@@ -190,7 +191,34 @@ public class Global {
 
 	}
 
+	public static Agent loadAgent(String agentClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		if(agentsLoader!=null) {
+			return agentsLoader.loadAgent(agentClassName);
+		} else {
+			java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+			Agent agent = (Agent)(loaderA.loadClass(agentClassName).newInstance());
+			return agent;
+		}
+		
+	}
+	
 	public static boolean isExperimentalSetup() {
 		return experimentalSetup;
 	}
+
+	/**
+	 * @return the agentsLoader
+	 */
+	public static AgentsLoader getAgentsLoader() {
+		return agentsLoader;
+	}
+
+	/**
+	 * @param agentsLoader the agentsLoader to set
+	 */
+	public static void setAgentsLoader(AgentsLoader agentsLoader) {
+		Global.agentsLoader = agentsLoader;
+	}
+	
+	
 }
