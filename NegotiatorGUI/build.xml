@@ -76,6 +76,18 @@
 		<ant target="cleanup"/>
     </target>
 	
+	<target name ="makeTestAgentJar" description="Create a jar with testagent (used to test GeniusWebSimulator">
+	     <delete file="${dist}/TestAgent.jar" quiet="true"/>
+		<javac srcdir="." includes="${src}/TesteAgent.java" classpath="${build}">
+		</javac>		
+         <jar destfile="${dist}/TestAgent.jar"  >
+			<fileset dir="${build}" includes="agents/TestAgent*.*" />
+	    	<manifest>
+      			<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Class-Path" value="."/>
+    		</manifest>		
+		</jar>	         
+    </target>
 
 	
 	<!-- WARNING. Both makeNegoSimulatorJar and makeNegoSimulatorWithBayesJar create a file
@@ -175,7 +187,11 @@
 			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
 <!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
 --> 
-			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
+				<exclude name="son_center_*.xml"/>
+				<exclude name="son_seller_*.xml"/>
+			</zipfileset>
+			<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
 			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
 		</zip>
 		<ant target="cleanup"/>

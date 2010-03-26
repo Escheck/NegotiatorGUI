@@ -44,6 +44,15 @@ public class ProfileRepItem implements RepItem
 		this.domain = (DomainRepItem)parent;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
 	public boolean equals(Object o) {
 		if (!(o instanceof ProfileRepItem)) return false;
 		return url.equals( ((ProfileRepItem)o).getURL());

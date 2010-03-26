@@ -199,12 +199,12 @@ public class AlternatingOffersProtocol extends Protocol {
 	{
 
 			
-			java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-			agentA = (Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
+			//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+			agentA = Global.loadAgent(getAgentARep().getClassPath());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 			agentA.setName(getAgentAname());
 
-			java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
-			agentB = (Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
+			//java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
+			agentB = Global.loadAgent(getAgentBRep().getClassPath());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 			agentB.setName(getAgentBname());
 
 			sessionTestNumber=nr;
@@ -530,7 +530,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
 	 */
-	public static ArrayList<Protocol> getTournamentSessionsOld(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
@@ -566,7 +566,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		return sessions;
 	}
 
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessionsBlaBla(Tournament tournament) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
