@@ -14,6 +14,7 @@ import negotiator.protocol.Protocol;
  */
 public class TournamentRunner implements Runnable {
     Tournament tournament;
+    private boolean runSingleSession = false; 
     ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
 	
     /** 
@@ -27,7 +28,18 @@ public class TournamentRunner implements Runnable {
     	tournament=t;
     	negotiationEventListeners.add(ael);
     }
-    
+
+    /** 
+     * 
+     * @param t the tournament to be run
+     * @param ael the action event listener to use. If not null, the existing listener for each
+     * 	session will be overridden with this listener.
+     * @throws Exception
+     */
+    public TournamentRunner(Tournament t,NegotiationEventListener ael, boolean runSingleSession) throws Exception {
+    	this(t,ael);
+    	this.runSingleSession = runSingleSession;
+    }
     /**
      * Warning. You can call run() directly (instead of using Thread.start() )
      * but be aware that run() will not return until the tournament
@@ -39,7 +51,13 @@ public class TournamentRunner implements Runnable {
      */
     public void run() {
     	try { 
-    		ArrayList<Protocol> sessions=tournament.getSessions();
+    		ArrayList<Protocol> sessions =null;
+    		if(runSingleSession) {
+    			sessions = new ArrayList<Protocol>();
+    			sessions.add(tournament.getSessions().get(0));
+    		}
+    		else
+    			sessions=tournament.getSessions();
 			for (Protocol s: sessions) {
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				synchronized(this) { 

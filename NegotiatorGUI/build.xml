@@ -176,12 +176,17 @@
 		<copy todir="${tmp}">
 			<fileset dir="." includes="agentrep_all_working.xml"/>
 			<globmapper from="agentrep_all_working.xml" to="agentrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
+			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
 		</copy>	
 		<zip destfile="${dist}/negotiator.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
 			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
 			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
