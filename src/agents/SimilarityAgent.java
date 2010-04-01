@@ -85,7 +85,10 @@ public class SimilarityAgent extends Agent {
 		// Return (one of the) possible bid(s) with maximal utility.
 		try {
 			lBid = utilitySpace.getMaxUtilityBid();
-			lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.98, utilitySpace.getUtility(lBid));
+			Bid lBid2 = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.98, utilitySpace.getUtility(lBid));
+			if(lBid!=null) {
+				lBid = lBid2;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -352,9 +355,15 @@ public class SimilarityAgent extends Agent {
 			}*
 				
 		}*/
-		int lIndex = (new Random()).nextInt(lBidsRange.size()-1);
-		
-		return lBidsRange.get(lIndex);
+		if(lBidsRange.size()<1) {
+			return null;
+		} if(lBidsRange.size()<2) {
+			return lBidsRange.get(0);
+		}
+		else {
+			int lIndex = (new Random()).nextInt(lBidsRange.size()-1);
+			return lBidsRange.get(lIndex);
+		}
 	}
 	
 	private double getTargetUtility(double myUtility, double oppntUtility) {
