@@ -150,6 +150,11 @@ public class EvaluatorInteger implements Evaluator {
 		setftype("linear");
 		fParam.put(new Integer(1), new Double(par0) );
 	}
+	public void setLinearParam(double par0){
+		setftype("linear");
+		fParam.put(new Integer(1), new Double(par0) );
+	}
+	
 
 	/**
 	 * 
