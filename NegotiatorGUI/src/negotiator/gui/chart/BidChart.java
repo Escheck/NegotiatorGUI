@@ -1,16 +1,17 @@
 package negotiator.gui.chart;
 
 import java.awt.Color;
-import java.awt.Paint;
-import java.awt.geom.Ellipse2D;
 
-import org.jfree.chart.*;
-import org.jfree.chart.plot.*;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.DatasetRenderingOrder;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.axis.*;
-import org.jfree.data.xy.*;
+import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYSeries;
 
 
 public class BidChart {
@@ -25,8 +26,8 @@ public class BidChart {
 	private XYPlot plot;
 	private DefaultXYDataset possibleBidData = new DefaultXYDataset();
 	private DefaultXYDataset paretoData = new DefaultXYDataset();
-	private DefaultXYDataset bidderAData = new DefaultXYDataset();
-	private DefaultXYDataset bidderBData = new DefaultXYDataset();
+	private XYSeries bidderAData = new XYSeries("Bidder A");
+	private XYSeries bidderBData = new XYSeries("Bidder B");
 	private DefaultXYDataset nashData = new DefaultXYDataset();
 	private DefaultXYDataset kalaiData = new DefaultXYDataset();
 	private DefaultXYDataset agreementData = new DefaultXYDataset();
@@ -142,9 +143,15 @@ public class BidChart {
     	plot = new XYPlot(possibleBidData, domainAxis, rangeAxis, dotRenderer);
     	plot.setDataset(2, paretoData);
         plot.setRenderer(2, paretoRenderer);
-    	plot.setDataset(3, bidderAData);
+        
+        DefaultXYDataset bidderADataSet = new DefaultXYDataset();
+        bidderADataSet.addSeries("Bidder A", bidderAData.toArray());
+        DefaultXYDataset bidderAData = new DefaultXYDataset();
+        bidderAData.addSeries("Bidder B", bidderBData.toArray());
+        		
+    	plot.setDataset(3, bidderADataSet);
 	    plot.setRenderer(3, lineARenderer);
-	    plot.setDataset(4, bidderBData);
+	    plot.setDataset(4, bidderAData);
 	    plot.setRenderer(4, lineBRenderer);
 	   
 	    plot.setDataset(5, nashData);
