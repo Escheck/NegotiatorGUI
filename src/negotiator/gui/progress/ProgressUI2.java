@@ -379,11 +379,11 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//adding graph data:
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
-		if(curveA!=null)
+/*		if(curveA!=null)
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
-		
+*/		
 		if ((evt.getAct()instanceof Accept)){
 			double [][]ap = new double [2][1];
 			ap[0][0]= evt.getNormalizedUtilityA();
@@ -414,10 +414,10 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//System.out.println("updating the table...");
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
-		System.out.println(curveA.length);
-		System.out.println(curveA[0].length);
-		System.out.println(curveB.length);
-		System.out.println(curveB[0].length);
+		//System.out.println(curveA.length);
+		//System.out.println(curveA[0].length);
+		//System.out.println(curveB.length);
+		//System.out.println(curveB[0].length);
 		
 		// Wouter:due to a bug both paths contained all values twice.
 		double[][] curve0=curveA;

@@ -133,10 +133,10 @@ public class NegotiationOutcome {
     	outcome.setAttribute("errors",ErrorRemarks);
     	String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
     	outcome.setAttribute("startingAgent",startingagent);
-    	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
+/*    	outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
     			agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids));
     	outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
-    			agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids));
+    			agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids));*/
     	if(additional!=null) outcome.addChildElement(additional);
 		return outcome;
     }
