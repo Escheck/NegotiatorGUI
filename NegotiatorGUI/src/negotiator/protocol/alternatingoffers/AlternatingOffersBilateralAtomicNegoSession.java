@@ -296,7 +296,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      */
     public void JudgeTimeout() {
 		try {
-    		newOutcome(currentAgent, spaceA.getReservationValue(), spaceB.getReservationValue(),spaceA.getReservationValue(),spaceB.getReservationValue(), new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
+			double reservationValueA = 0;
+			if(spaceA.getReservationValue()!=null) reservationValueA = spaceA.getReservationValue();
+			double reservationValueB = 0;
+			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
+			
+    		newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
     		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
     		// don't bother about max utility, both have zero anyway.
 

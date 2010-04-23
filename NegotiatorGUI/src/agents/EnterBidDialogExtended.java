@@ -340,7 +340,9 @@ public class EnterBidDialogExtended extends JDialog {
         defaultChartPanel.add(chartPanel);
         
         pack();
+        repaint();
         setVisible(true); // this returns only after the panel closes.
+        negoinfo.comboBoxes.get(0).requestFocusInWindow();
         return selectedAction;
     }
 }   

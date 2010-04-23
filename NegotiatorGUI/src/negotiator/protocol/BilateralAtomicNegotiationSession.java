@@ -122,7 +122,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 
 	//alinas code
 	public double[][] getNegotiationPathA(){
-		System.out.println("fAgentABids "+fAgentABids.size());
+//		System.out.println("fAgentABids "+fAgentABids.size());
 		double[][] lAgentAUtilities = new double[2][fAgentABids.size()];
 		try
         {
@@ -150,7 +150,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	}
 
 	public double[][] getNegotiationPathB(){
-		System.out.println("fAgentBBids "+fAgentBBids.size());
+		//System.out.println("fAgentBBids "+fAgentBBids.size());
 		double[][] lAgentBUtilities = new double [2][fAgentBBids.size()];  
 		try{
 			int i=0;
