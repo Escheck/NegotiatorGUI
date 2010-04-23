@@ -10,23 +10,26 @@
 package negotiator;
 
 // import negotiator.xml.SimpleElement;
-import negotiator.exceptions.BidDoesNotExistInDomainException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.xml.SimpleElement;
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * 

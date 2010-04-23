@@ -22,7 +22,7 @@ public class Issue extends Objective {
 	//int issueNumber;
 	//
 	//Modified by Richard
-    
+	
     // Constructor
     public Issue(String name, int issueNumber) {
         super(null, name, issueNumber);
