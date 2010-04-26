@@ -2,6 +2,8 @@ package negotiator.gui.chart;
 
 import java.awt.Color;
 
+import javax.swing.SwingUtilities;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -18,16 +20,16 @@ public class BidChart {
 	
 	private double [][] possibleBids;
 	private double [][]pareto;
-	private double [][] bidSeriesA;
-	private double [][] bidSeriesB;
+	private double [][] bidSeriesA_;
+	private double [][] bidSeriesB_;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
 	private XYPlot plot;
 	private DefaultXYDataset possibleBidData = new DefaultXYDataset();
 	private DefaultXYDataset paretoData = new DefaultXYDataset();
-	private XYSeries bidderAData = new XYSeries("Bidder A");
-	private XYSeries bidderBData = new XYSeries("Bidder B");
+	private DefaultXYDataset bidderAData = new DefaultXYDataset();
+	private DefaultXYDataset bidderBData = new DefaultXYDataset();
 	private DefaultXYDataset nashData = new DefaultXYDataset();
 	private DefaultXYDataset kalaiData = new DefaultXYDataset();
 	private DefaultXYDataset agreementData = new DefaultXYDataset();
@@ -79,13 +81,24 @@ public class BidChart {
 	}
 	
 	public void setBidSeriesA(double [][] bidSeriesA){
-		this.bidSeriesA = bidSeriesA;
-		bidderAData.addSeries("Agent A's bids",bidSeriesA);   
+		this.bidSeriesA_ = bidSeriesA;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				bidderAData.addSeries("Agent A's bids",bidSeriesA_);
+		    }
+		});		
+   
 	}
         
 	public void setBidSeriesB(double [][] bidSeriesB){
-		this.bidSeriesB = bidSeriesB;
-		bidderBData.addSeries("Agent B's bids",bidSeriesB);
+		this.bidSeriesB_ = bidSeriesB;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				bidderBData.addSeries("Agent B's bids",bidSeriesB_);
+		    }
+		});		
+		
+
 	}
 	
 	public void setNash(double[][]nash){
@@ -144,14 +157,14 @@ public class BidChart {
     	plot.setDataset(2, paretoData);
         plot.setRenderer(2, paretoRenderer);
         
-        DefaultXYDataset bidderADataSet = new DefaultXYDataset();
-        bidderADataSet.addSeries("Bidder A", bidderAData.toArray());
+    /*    DefaultXYDataset bidderADataSet = new DefaultXYDataset();
+        bidderADataSet.addSeries("Bidder A", bidderAData);
         DefaultXYDataset bidderAData = new DefaultXYDataset();
-        bidderAData.addSeries("Bidder B", bidderBData.toArray());
+        bidderAData.addSeries("Bidder B", bidderBData.toArray());*/
         		
-    	plot.setDataset(3, bidderADataSet);
+    	plot.setDataset(3, bidderAData);
 	    plot.setRenderer(3, lineARenderer);
-	    plot.setDataset(4, bidderAData);
+	    plot.setDataset(4, bidderBData);
 	    plot.setRenderer(4, lineBRenderer);
 	   
 	    plot.setDataset(5, nashData);

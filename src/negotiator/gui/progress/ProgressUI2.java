@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
@@ -379,11 +380,12 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//adding graph data:
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
-/*		if(curveA!=null)
+		
+		if(curveA!=null)
 			bidChart.setBidSeriesA(curveA);
 		if(curveB!=null)
 			bidChart.setBidSeriesB(curveB);	
-*/		
+		
 		if ((evt.getAct()instanceof Accept)){
 			double [][]ap = new double [2][1];
 			ap[0][0]= evt.getNormalizedUtilityA();
