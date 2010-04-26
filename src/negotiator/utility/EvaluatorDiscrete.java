@@ -384,4 +384,54 @@ public class EvaluatorDiscrete implements Evaluator {
 	public Set<ValueDiscrete> getValues() {
 		return fEval.keySet();
 	}
+		@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((evalMax == null) ? 0 : evalMax.hashCode());
+		result = prime * result + ((fCost == null) ? 0 : fCost.hashCode());
+		result = prime * result + ((fEval == null) ? 0 : fEval.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(fweight);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (fweightLock ? 1231 : 1237);
+		temp = Double.doubleToLongBits(maxCost);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EvaluatorDiscrete other = (EvaluatorDiscrete) obj;
+		if (evalMax == null) {
+			if (other.evalMax != null)
+				return false;
+		} else if (!evalMax.equals(other.evalMax))
+			return false;
+		if (fCost == null) {
+			if (other.fCost != null)
+				return false;
+		} else if (!fCost.equals(other.fCost))
+			return false;
+		if (fEval == null) {
+			if (other.fEval != null)
+				return false;
+		} else if (!fEval.equals(other.fEval))
+			return false;
+		if (Double.doubleToLongBits(fweight) != Double
+				.doubleToLongBits(other.fweight))
+			return false;
+		if (fweightLock != other.fweightLock)
+			return false;
+		if (Double.doubleToLongBits(maxCost) != Double
+				.doubleToLongBits(other.maxCost))
+			return false;
+		return true;
+	}
 }
