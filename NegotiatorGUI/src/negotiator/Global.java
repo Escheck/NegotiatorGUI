@@ -39,7 +39,7 @@ public class Global {
 	public static boolean fDebug = false;
 	public static boolean analysisEnabled = true; // set to true to enable the
 													// realtime analysis tool.
-	public static boolean experimentalSetup = true;// set to true to allow agent
+	public static boolean experimentalSetup = false;// set to true to allow agent
 													// to access negotiation
 													// environment
 	public static String outcomesFile = "outcomes.xml";
