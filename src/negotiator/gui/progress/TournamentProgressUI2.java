@@ -22,6 +22,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 
+import negotiator.gui.ExcelAdapter;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -40,7 +41,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	private int session;
 	private ProgressUI2 sessionProgress;
 	private ProgressUI2 oldUI;
-	
+	private ExcelAdapter fExcelAdapter;
 	/** modified Wouter 4nov08: SesssionDetailsUI contains list of pairs <session number, ProgressUI> */
 	private Hashtable<Integer,ProgressUI2> SessionDetailsUI=new Hashtable<Integer,ProgressUI2>();
 	
@@ -60,7 +61,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	    resultTable.getColumnModel().getSelectionModel()
 	        .addListSelectionListener(listener);		
 		//pnlSession.add(sessionProgress);
-	   
+        fExcelAdapter = new ExcelAdapter(resultTable);
 	    
     }
 
