@@ -549,19 +549,23 @@ public class AlternatingOffersProtocol extends Protocol {
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
 		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
+		ArrayList<ProfileRepItem> skipProfiles =  new ArrayList<ProfileRepItem>();
 		for (ProfileRepItem profileA: profiles) {
 			for (ProfileRepItem profileB: profiles) {
+				if(skipProfiles.contains(profileB)) continue;
 				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
 				if (profileA.equals(profileB)) continue;
 				for (TournamentValue agentAval: agentAvalues ) {
 					AgentRepItem agentA=((AgentValue)agentAval).getValue();
 					for (TournamentValue agentBval: agentBvalues) {
+						if(agentAval.equals(agentBval)) continue;
 						AgentRepItem agentB=((AgentValue)agentBval).getValue();
 						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
 					}
 				}
 
 			}
+			skipProfiles.add(profileA);
 		}
 		return sessions;
 	}
