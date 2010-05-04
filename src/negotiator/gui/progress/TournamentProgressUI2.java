@@ -6,6 +6,8 @@
 
 package negotiator.gui.progress;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -56,10 +58,47 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		resultTableModel = new NegoTableModel (colNames);
 		resultTable.setModel(resultTableModel);
 		//add a listener to receive selection events:
-	    MyListSelectionListener listener = new MyListSelectionListener(resultTable);
-	    resultTable.getSelectionModel().addListSelectionListener(listener);
-	    resultTable.getColumnModel().getSelectionModel()
-	        .addListSelectionListener(listener);		
+		resultTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+			      if (e.getClickCount() == 2) {
+			         JTable target = (JTable)e.getSource();
+			         int row = target.getSelectedRow();
+			         int column = target.getSelectedColumn();
+		                BilateralAtomicNegotiationSession ng =  sessionArray.get(row);
+		                //System.out.println(ng.getLog());
+		                int selected_session_nr=ng.getSessionNumber();
+		                int selected_test_nr=ng.getTestNumber();
+
+		                
+		                ProgressUI2 ui=SessionDetailsUI.get(selected_session_nr);
+		                if (ui==null) { /* not there yet, make it */
+		                	ui=new ProgressUI2(); 
+		                	ui.fillGUI(ng);
+		                    SessionDetailsUI.put(selected_session_nr,ui);
+		                }
+		                 /* make it visible or select it */
+		                int index= NegoGUIApp.negoGUIView.getMainTabbedPane().indexOfComponent(ui);
+		                if (index==-1) { /* not in the tabs, make new tab */
+		                	String tabname;
+		            		int tournr=ng.getTournamentNumber();
+		            		if (tournr!=-1) tabname= "Tour."+tournr+" Prog."+selected_session_nr+"."+selected_test_nr;
+		            		else tabname= "Sess."+selected_session_nr+"."+selected_test_nr+" Prog.";
+
+		                    NegoGUIApp.negoGUIView.addTab(tabname, ui);
+		                	//oldUI = selectedSessionUI; 
+		                	//fillGUI(ng);
+		                    //NegoGUIApp.negoGUIView.replaceTab(getTabString(), oldUI,selectedSessionUI);
+		                }else{ /* already in the tabs, select it */
+		                	NegoGUIApp.negoGUIView.getMainTabbedPane().setSelectedComponent(ui);                	
+		                }    
+
+			         }
+			   }			
+		});
+	   // MyListSelectionListener listener = new MyListSelectionListener(resultTable);
+	   // resultTable.getSelectionModel().addListSelectionListener(listener);
+	   // resultTable.getColumnModel().getSelectionModel()
+	    //    .addListSelectionListener(listener);		
 		//pnlSession.add(sessionProgress);
         fExcelAdapter = new ExcelAdapter(resultTable);
 	    
