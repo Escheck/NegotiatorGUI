@@ -13,7 +13,7 @@ public class MemoryLogger extends Thread
 			logFreeMemory("");
 			try
 			{
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
@@ -23,10 +23,15 @@ public class MemoryLogger extends Thread
 
 	public static void logFreeMemory(String msg) 
 	{
-		System.gc();System.gc();System.gc();System.gc();
+		garbageCollect();
 		long freeMemory = Runtime.getRuntime().freeMemory();
 		String fM =Math.round((double) freeMemory / 1024 / 1024)+" mb";
 		log("Free memory; "+freeMemory + "  (= "+fM+"). " + msg);
+	}
+
+	public static void garbageCollect() 
+	{
+		System.gc();System.gc();System.gc();System.gc();
 	}
 
 	public static void log(String msg)

@@ -7,8 +7,6 @@ package negotiator.gui;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
-import misc.MemoryLogger;
-
 
 /**
  * The main class of the application.
@@ -44,7 +42,7 @@ public class NegoGUIApp extends SingleFrameApplication {
      */
     public static void main(String[] args) 
     {
-    	new MemoryLogger().start();
+//    	new MemoryLogger().start();
         launch(NegoGUIApp.class, args);
     }
     public static String getClassName()
