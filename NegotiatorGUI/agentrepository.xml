@@ -13,6 +13,10 @@
             <agentRepItem description="ABMP agent designed by C. Jonker and J. Treur" classPath="agents.ABMPAgent2" agentName="ABMPAgent"/>
             <agentRepItem description="Tries to offer bid with higher util than best opponent bid" classPath="agents.RandomIncreasingUtilAgent" agentName="RandomIncreasingUtilAgent"/>
             <agentRepItem description="Scalable version of the BayesianAgent" classPath="agents.BayesianAgentNS" agentName="BayesianScalable agent"/>
+            <agentRepItem description="IAMhaggler.IAMhaggler" classPath="uk.ac.soton.ecs.crw104.IAMhaggler.IAMhaggler" agentName="IAMhaggler.IAMhaggler"/>
+            <agentRepItem description="Agent K" classPath="agents.Agent_K" agentName="Agent K"/>
+            <agentRepItem description="Nozomi" classPath="agents.MyAgent" agentName="Nozomi"/>
+            <agentRepItem description="FSEGA" classPath="agents.AgentFSEGA_final" agentName="FSEGA"/>
         </agentRepItems>
         <domainRepItem/>
         <protocolRepItem/>

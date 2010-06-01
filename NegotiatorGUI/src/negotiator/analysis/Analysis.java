@@ -1,12 +1,13 @@
 package negotiator.analysis;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -27,7 +28,7 @@ import negotiator.xml.SimpleElement;
  * 
  * 
  * @author Dmytro Tykhonov
- *   FIXME Write analysis to a separete file!!!
+ *   FIXME Write analysis to a separate file!!!
  */
 public class Analysis {
 	private Bid fNashProduct;
