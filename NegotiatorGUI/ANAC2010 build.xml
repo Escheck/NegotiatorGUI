@@ -241,6 +241,10 @@
 				</zipfileset>
 				<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
 				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
+				
+				<zipfileset dir="${anac}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
+				<zipfileset dir="${anac}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
+				<zipfileset dir="${anac}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
 			</zip>
 			<ant target="cleanup"/>
 		</target>
