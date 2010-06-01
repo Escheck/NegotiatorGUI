@@ -29,17 +29,17 @@
                 <profile url="file:etc/templates/2nd_hand_car/car_dealer.xml"/>
             </domainRepItem>
             
-            <domainRepItem url="file:/ANAC2010/etc/templates/travel/travel_domain.xml">
-                <profile url="file:/ANAC2010/etc/templates/travel/travel_fanny.xml"/>
-                <profile url="file:/ANAC2010/etc/templates/travel/travel_chox.xml"/>
+            <domainRepItem url="file:etc/templates/travel/travel_domain.xml">
+                <profile url="file:etc/templates/travel/travel_fanny.xml"/>
+                <profile url="file:etc/templates/travel/travel_chox.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:/ANAC2010/etc/templates/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
-                <profile url="file:/ANAC2010/etc/templates/EnglandZimbabwe/England.xml"/>
-                <profile url="file:/ANAC2010/etc/templates/EnglandZimbabwe/Zimbabwe.xml"/>
+            <domainRepItem url="file:etc/templates/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
+                <profile url="file:etc/templates/EnglandZimbabwe/England.xml"/>
+                <profile url="file:etc/templates/EnglandZimbabwe/Zimbabwe.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:/ANAC2010/etc/templates/ItexvsCypress/ItexvsCypress_domain.xml">
-                <profile url="file:/ANAC2010/etc/templates/ItexvsCypress/ItexvsCypress_Cypress.xml"/>
-                <profile url="file:/ANAC2010/etc/templates/ItexvsCypress/ItexvsCypress_Itex.xml"/>
+            <domainRepItem url="file:etc/templates/ItexvsCypress/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypress/ItexvsCypress_Cypress.xml"/>
+                <profile url="file:etc/templates/ItexvsCypress/ItexvsCypress_Itex.xml"/>
             </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
