@@ -1,27 +1,24 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Random;
 
+import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
+import agents.bayesianopponentmodel.OpponentModel;
+import agents.bayesianopponentmodel.OpponentModelUtilSpace;
+
 import negotiator.Agent;
-import negotiator.Bid;
-import negotiator.analysis.BidPoint;
-import negotiator.BidIterator;
-import negotiator.actions.*;
-import agents.bayesianopponentmodel.*;
-import negotiator.issue.Issue;
-import negotiator.issue.Value;
-import negotiator.issue.ValueReal;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
-import negotiator.xml.SimpleElement;
-import negotiator.Domain;
-import negotiator.analysis.BidSpace;
 import negotiator.AgentParam;
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
+import negotiator.issue.Issue;
+import negotiator.xml.SimpleElement;
 
 
 /**
@@ -42,7 +39,7 @@ public class BayesianAgent extends Agent {
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
-	private STRATEGY fStrategy = STRATEGY.SMART;
+	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
 	private int fSmartSteps;
 	protected OpponentModel fOpponentModel;	
 	private static final double CONCESSIONFACTOR = 0.04;
@@ -393,6 +390,7 @@ public class BayesianAgent extends Agent {
 	
 	public Action chooseAction()
 	{
+		System.out.println("TIM");
 		Action lAction = null;
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
@@ -407,7 +405,7 @@ public class BayesianAgent extends Agent {
 				//if(myLastAction==null) dumpDistancesToLog(0);
 				System.out.print("Updating beliefs ...");
 				if(myPreviousBids.size()<8)	fOpponentModel.updateBeliefs(lOppntBid);
-				dumpDistancesToLog(fRound++);
+//				dumpDistancesToLog(fRound++);
 				System.out.println("Done!");
 				if (myLastAction == null)
 					// Other agent started, lets propose my initial bid.

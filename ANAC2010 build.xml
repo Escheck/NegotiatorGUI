@@ -123,8 +123,7 @@
 		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackSwingAddons, unpackANAC2010Agents">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
-         	<fileset dir="${build}" 
-         					includes="negotiator/**, agents/BayesianAgent*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*, agents/EnterBidDialog*, agents/AMBPAgent2.*, agents/FuzzyAgent.*, agents/OpponentModelUtil*,  agents/SimpleAgent*, agents/SimilarityAgent*, agents/similarity/**,agents/ABMPAgent*,  agents/NegoRoundData*, agents/My*, agents/History*" />
+         	<fileset dir="${build}" includes="negotiator/**, agents/**"/>
 			<fileset dir="${tmp}"/>
 	    	<manifest>
       			<attribute name="Built-By" value="${user.name}"/>
