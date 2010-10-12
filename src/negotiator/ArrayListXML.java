@@ -10,8 +10,8 @@
 package negotiator;
 
 import java.util.ArrayList;
+
 import negotiator.xml.SimpleElement;
-import negotiator.XMLable;
 
 /**
  * ArrayListXML is an arraylist with an extra toXML function.
@@ -33,7 +33,7 @@ public class ArrayListXML<E> extends ArrayList<E> implements XMLable
 	   {
 		   SimpleElement elt=new SimpleElement("ArrayListElement");
 		   elt.setAttribute("index", ""+i); // have to do this way, XML does not enforce any order...
-		   Object e=get(i);
+		   E e=get(i);
 		   if (!(e instanceof XMLable))
 			   throw new ClassCastException("Element of ArrayListXML at position "+i+" is not XMLable");
 		   elt.addChildElement(((XMLable)e).toXML());
