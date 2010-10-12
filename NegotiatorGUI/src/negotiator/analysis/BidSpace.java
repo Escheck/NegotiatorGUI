@@ -1,15 +1,12 @@
 package negotiator.analysis;
 
 
+import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.Global;
-import negotiator.utility.UtilitySpace;
-import negotiator.xml.SimpleElement;
 import negotiator.Domain;
-
-import java.util.ArrayList;
-import java.util.Date;
+import negotiator.utility.UtilitySpace;
 
 /**
  * 
@@ -38,6 +35,11 @@ public class BidSpace {
 		utilspaceA.checkReadyForNegotiation("spaceA", domain);
 		utilspaceB.checkReadyForNegotiation("spaceA", domain);
 		BuildSpace();
+//		System.out.println(bidPoints);
+//		System.out.println("-------------PARETO----------------");
+//		System.out.println(getParetoFrontier());
+//		System.out.println("--------------NASH----------------");
+//		System.out.println(getNash());
 	}
 	
 	

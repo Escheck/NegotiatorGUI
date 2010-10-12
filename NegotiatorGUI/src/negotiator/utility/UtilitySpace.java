@@ -9,23 +9,30 @@
 
 package negotiator.utility;
 
-import java.io.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.Vector;
 import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 import java.util.Map.Entry;
 
-import negotiator.utility.EVALFUNCTYPE;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 import negotiator.Bid;
-import negotiator.Domain;
-import negotiator.issue.*;
-import negotiator.xml.*;
-import negotiator.exceptions.Warning;
 import negotiator.BidIterator;
+import negotiator.Domain;
+import negotiator.exceptions.Warning;
+import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Objective;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.xml.SimpleDOMParser;
+import negotiator.xml.SimpleElement;
 
 /**
  *
@@ -268,6 +275,7 @@ public class UtilitySpace {
         	case DISCRETE:
         	case INTEGER:
         	case REAL:
+//    			System.out.println(is + " weight = " + eval.getWeight() + " with value " + bid.getValue(is.getNumber()) + " -> " + getEvaluation(is.getNumber(), bid));
         		utility += eval.getWeight()*getEvaluation(is.getNumber(),bid);
         		break;
         	case PRICE:
