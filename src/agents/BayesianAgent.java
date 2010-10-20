@@ -390,7 +390,7 @@ public class BayesianAgent extends Agent {
 	
 	public Action chooseAction()
 	{
-		Action lAction = null;
+		Action lAction = null; 
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
 		
