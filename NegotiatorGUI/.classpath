@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="dep/jaxb-xjc.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="dep/jcommon-1.0.13.jar"/>
-	<classpathentry kind="lib" path="dep/jfreechart-1.0.10.jar"/>
+	<classpathentry kind="lib" path="dep/jfreechart-1.0.10.jar" sourcepath="E:/GeniusS/jfreechart-1.0.13/source"/>
 	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>
 	<classpathentry kind="lib" path="dep/swing-worker-1.1.jar"/>
 	<classpathentry kind="lib" path="dep/appframework-1.0.3.jar"/>
