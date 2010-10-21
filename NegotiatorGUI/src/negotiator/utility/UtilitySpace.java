@@ -24,6 +24,7 @@ import java.io.FileReader;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
+import negotiator.Timeline;
 import negotiator.exceptions.Warning;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
@@ -288,12 +289,14 @@ public class UtilitySpace {
     }
     
     /**
+     * Deprecated: uses old timing protocol.
      * @param bid
      * @param timeAfterStart
      * @param deadline
      * @return
      * @throws Exception
      */
+    @Deprecated
     public double getUtilityWithDiscount(Bid bid, long timeAfterStart, long deadline) throws Exception
     {
     	double timeAfteStartNormalized = 0L; 
@@ -304,6 +307,25 @@ public class UtilitySpace {
     	}
     	double utility = getUtility(bid) * Math.exp(- discountFactor * timeAfteStartNormalized);
     	return utility;
+    }
+    
+    public double getUtilityWithDiscount(Bid bid, Timeline timeline)
+    {
+    	double util = 0;
+    	if (discountFactor <= 0 || discountFactor > 1)
+    	{
+    		System.err.println("Warning: discount factor = " + discountFactor);
+    		try
+			{
+				util = getUtility(bid);
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+    	}
+    	double time = timeline.getTime();
+    	double discountedUtil = util * Math.pow(discountFactor, time);
+    	return discountedUtil;
     }
     
 

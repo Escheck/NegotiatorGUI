@@ -35,8 +35,12 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
-
-public class AlternatingOffersProtocol extends Protocol {
+/**
+ * This is an old version of the {@link AlternatingOffersProtocol} where each party had a separate time line.
+ * See {@link AlternatingOffersProtocol} and @link AlternatingOffersBilateralAtomicNegoSession} for an updated version which has shared deadlines.
+ */
+@Deprecated
+public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
@@ -55,8 +59,10 @@ public class AlternatingOffersProtocol extends Protocol {
 
 
 	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not	
-	public final int non_gui_nego_time = 180;
-	public final int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
+	public int non_gui_nego_time = 360;
+	public int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
+
+	private static int tournament_gui_time=30*60, tournament_non_gui_time=120;
 
 	private Agent agentA;
 	private Agent agentB;
@@ -65,7 +71,7 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	private SimpleElement fAdditional;
 
-	AlternatingOffersBilateralAtomicNegoSession sessionrunner;
+	AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines sessionrunner;
 	/** END OF fields copied from the NegotiationTemplate class */
 
 
@@ -156,7 +162,7 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	/***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
 
-	public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
+	public AlternatingOffersProtocolSeparateTimelines(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 	throws Exception {
@@ -228,7 +234,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				startingAgent=getAgentBname();
 			}
 
-			sessionrunner=new AlternatingOffersBilateralAtomicNegoSession(this, 
+			sessionrunner=new AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines(this, 
 					agentA, 
 					agentB, 
 					getAgentAname(),
@@ -514,7 +520,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		return agentB;
 	}
 
-	public AlternatingOffersBilateralAtomicNegoSession getSessionRunner() {
+	public AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines getSessionRunner() {
 		return sessionrunner;    
 	}
 
@@ -706,12 +712,12 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * @throws exception if one of the variables contains no values (which would prevent any 
 	 * running sessions to be created with that variable.
 	 */
-	protected static ArrayList<AlternatingOffersProtocol> allParameterCombis(Tournament tournament, AgentRepItem agentA,AgentRepItem agentB,
+	protected static ArrayList<AlternatingOffersProtocolSeparateTimelines> allParameterCombis(Tournament tournament, AgentRepItem agentA,AgentRepItem agentB,
 			ProfileRepItem profileA, ProfileRepItem profileB) throws Exception {
 		ArrayList<AssignedParameterVariable> allparameters;
 		allparameters=tournament.getParametersOfAgent(agentA,AGENT_A_NAME);
 		allparameters.addAll(tournament.getParametersOfAgent(agentB,AGENT_B_NAME)); // are the run-time names somewhere?
-		ArrayList<AlternatingOffersProtocol> sessions=new ArrayList<AlternatingOffersProtocol>();
+		ArrayList<AlternatingOffersProtocolSeparateTimelines> sessions=new ArrayList<AlternatingOffersProtocolSeparateTimelines>();
 		allParameterCombis(tournament, allparameters,sessions,profileA,profileB,agentA,agentB,new ArrayList<AssignedParamValue>());
 		return sessions;
 	}
@@ -723,7 +729,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * @param sessions
 	 * @throws Exception
 	 */
-	protected static void allParameterCombis(Tournament tournament, ArrayList<AssignedParameterVariable> allparameters, ArrayList<AlternatingOffersProtocol> sessions,
+	protected static void allParameterCombis(Tournament tournament, ArrayList<AssignedParameterVariable> allparameters, ArrayList<AlternatingOffersProtocolSeparateTimelines> sessions,
 			ProfileRepItem profileA, ProfileRepItem profileB,
 			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
 		if (allparameters.isEmpty()) {
@@ -753,7 +759,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 
-			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agents, profiles,params); 
+			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles,params); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
