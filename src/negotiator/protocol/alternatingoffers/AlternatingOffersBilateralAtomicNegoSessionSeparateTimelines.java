@@ -19,9 +19,11 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 /**
- * This is an updated version which has shared deadlines for both agents, implemented with {@link Timeline}.
+ * This is an old implementation of the {@link AlternatingOffersProtocol} where each party had a separate time line.
+ * See {@link AlternatingOffersBilateralAtomicNegoSession} for an updated version which has shared deadlines.
  */
-public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
+@Deprecated
+public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extends BilateralAtomicNegotiationSession {
 
 	//AlternatingOffersNegotiationSession session;
     /**
@@ -40,6 +42,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     private boolean agentAtookAction = false;
     private boolean agentBtookAction = false;
     protected String startingAgent;
+    private long totalTimePerAgent = 3 * 60 * 1000;
 	boolean startingWithA=true;    
     /* time/deadline */
     Date startTime; 
@@ -54,7 +57,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	
      /** load the runtime objects to start negotiation */
-    public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
+    public AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines(Protocol protocol,
     		Agent agentA,
 			Agent agentB, 
 			String agentAname, 
@@ -79,16 +82,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
      */
     public void run() {
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
+		long totalTimeAgentA =0, totalTimeAgentB = 0;
         try {
             double agentAUtility,agentBUtility;
-
-            Timeline timeline = new Timeline((int) (totalTime));
+            // Note: we do not use the timeline here, but needed for forward compatibility.
+            Timeline timeline = new Timeline((int) (totalTimePerAgent / 1000));
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
+            agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime, timeline,
             		new UtilitySpace(spaceA),agentAparams);
             agentA.init();
-            agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
+            agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime, timeline,
             		new UtilitySpace(spaceB),agentBparams);
             agentB.init();
             stopNegotiation = false;
@@ -101,23 +105,36 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             //Main.log("Agent " + currentAgent.getName() + " begins");
         	fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
             while(!stopNegotiation) {
-            	timeline.printTime();
                 try {
                    //inform agent about last action of his opponent
+                   long currentTime = System.currentTimeMillis();
                    currentAgent.ReceiveMessage(action);
-                   if(timeline.isDeadlineReached()) 
-                   {
-                	   System.out.println("Deadline reached while waiting for " + currentAgent);
+                   long timeSpent = System.currentTimeMillis() - currentTime; 
+                   if(currentAgent == agentA) {
+                	   totalTimeAgentA += timeSpent; 
+                   } else {
+                	   totalTimeAgentB += timeSpent;
+                   }
+                   if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
                        stopNegotiation=true;
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
                        newOutcome(currentAgent,0.,0., 0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
                    }
                    if (stopNegotiation) return;
                    //get next action of the agent that has its turn now
+                   currentTime = System.currentTimeMillis();                   
                    action = currentAgent.chooseAction();
-                   if(timeline.isDeadlineReached()) 
-                   {
-                	   System.out.println("Deadline reached while waiting for " + currentAgent);
+                   timeSpent = System.currentTimeMillis() - currentTime;
+                   if(currentAgent == agentA) {
+                	   totalTimeAgentA += timeSpent; 
+                   } else {
+                	   totalTimeAgentB += timeSpent;
+                   }
+                   if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
                        stopNegotiation=true;
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
                        newOutcome(currentAgent,0.,0., 0.,0.,action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
                    }
                    
@@ -126,6 +143,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                    if(action instanceof EndNegotiation) 
                    {
                        stopNegotiation=true;
+                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
+                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
                        newOutcome(currentAgent,spaceA.getReservationValue(),spaceB.getReservationValue(), spaceA.getReservationValue(),0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                        checkAgentActivity(currentAgent) ;
                    }
@@ -151,7 +170,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                        } else{
                     	   fAgentBBids.add(p);
                        }
-                       // TODO: discount?
                        long timeAfterStart = System.currentTimeMillis() - startTimeMillies; 
                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
@@ -169,7 +187,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     			   currentAgent.getName()+" but no bid was done yet.");
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
-                       // TODO: discount?
                         long timeAfterStart = System.currentTimeMillis() -  startTimeMillies; 
                         double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                         double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
@@ -252,9 +269,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     	return agentA;    	
     }
   
-    /**
-     * Make a new outcome and update table
-     */
+    
     public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message) throws Exception {
         
     	no=new NegotiationOutcome(sessionNumber, 

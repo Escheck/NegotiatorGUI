@@ -44,6 +44,9 @@
 		<unzip src="${anac}/agents/itolab01/Agent_K.jar" dest="${tmp}"/>
 		<unzip src="${anac}/agents/itolab02/hikari.jar" dest="${tmp}"/>
 	</target>
+	<target name="unpackNegotiatorZIP">		
+			<unzip src="${dist}/negotiator.zip" dest="${dist}"/>
+	</target>
 	<target name="unpackJTreeTable" depends="makeTempDir">		
 		<unzip src="${dep}/jtreetable.jar" dest="${tmp}"/>
 	</target>

@@ -9,25 +9,15 @@
 
 package negotiator;
 
-import negotiator.actions.Action;
-import negotiator.issue.ISSUETYPE;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import negotiator.utility.UtilitySpace;
-
 import java.util.Date;
+import java.util.HashMap;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.sun.xml.txw2.annotation.XmlElement;
-
-import negotiator.protocol.Protocol;
+import negotiator.actions.Action;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.UtilitySpace;
 /**
  *
  * @author Dmytro Tykhonov
@@ -40,8 +30,12 @@ public abstract class Agent {
 	private AgentID 		agentID;
     private String          fName=null;
     public  UtilitySpace    utilitySpace;
+    @Deprecated
     public	Date			startTime;
+    @Deprecated
     public Integer			totalTime; // total time to complete entire nego, in seconds.
+    /** Use timeline for everything time-related */
+    public Timeline timeline;
     public Integer			sessionNumber;
     public Integer			sessionTotalNumber;
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
@@ -75,9 +69,10 @@ public abstract class Agent {
      * @param params parameters of the agent
      */
     public final void internalInit(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
-    		Integer totalTimeP, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
+    		Integer totalTimeP, Timeline timeline, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
+        this.timeline = timeline;
         this.sessionNumber = sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
     	utilitySpace=us;
@@ -123,6 +118,11 @@ public abstract class Agent {
     public final void setName(String pName) {
         if(this.fName==null) this.fName = pName;
         return;
+    }
+    
+    public double getUtility(Bid bid)
+    {
+    	return utilitySpace.getUtilityWithDiscount(bid, timeline);
     }
     
     
