@@ -1,5 +1,7 @@
 package negotiator;
-
+/**
+ * A time line, running from t = 0 (start) to t = 1 (deadline).
+ */
 public final class Timeline
 {
 	private final int totalSeconds;
@@ -18,6 +20,11 @@ public final class Timeline
 		return ((t2 - startTime) / 1000000000.0);
 	}
 	
+	public long getTotalMiliseconds()
+	{
+		return 1000 * totalSeconds;
+	}
+	
 	/** 
 	 * Print time in seconds
 	 */
@@ -27,7 +34,7 @@ public final class Timeline
 	}
 	
 	/** 
-	 * Print time in [0, 1]
+	 * Print time, running from t = 0 (start) to t = 1 (deadline).
 	 */
 	public void printTime()
 	{
@@ -35,7 +42,7 @@ public final class Timeline
 	}
 	
 	/**
-	 * Time is in [0, 1].
+	 * Get the time, running from t = 0 (start) to t = 1 (deadline).
 	 */
 	public double getTime()
 	{

@@ -312,19 +312,25 @@ public class UtilitySpace {
     public double getUtilityWithDiscount(Bid bid, Timeline timeline)
     {
     	double util = 0;
-    	if (discountFactor <= 0 || discountFactor > 1)
+    	double discount = discountFactor;
+    	
+    	if (discountFactor <= 0 || discountFactor >= 1)
     	{
-    		System.err.println("Warning: discount factor = " + discountFactor);
-    		try
-			{
-				util = getUtility(bid);
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+    		discount = 1;
+    		if (discountFactor < 0 || discountFactor > 1)
+    			System.err.println("Warning: discount factor = " + discountFactor);
+    	}
+    	
+    	try
+    	{
+    		util = getUtility(bid);
+    	} catch (Exception e)
+    	{
+    		e.printStackTrace();
     	}
     	double time = timeline.getTime();
-    	double discountedUtil = util * Math.pow(discountFactor, time);
+    	double discountedUtil = util * Math.pow(discount, time);
+    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;
     }
     
