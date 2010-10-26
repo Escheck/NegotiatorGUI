@@ -125,6 +125,24 @@ public abstract class Agent {
     	return utilitySpace.getUtilityWithDiscount(bid, timeline);
     }
     
+    /**
+     * Example:<br>
+     * wait(0.1) will let the agent sleep for 10% of the negotiation time (as defined by the {@link Timeline}).
+     * @param fraction should be between 0 and 1.
+     */
+    public void wait(double fraction)
+    {
+    	long sleep = (long) (timeline.getTotalMiliseconds() * fraction);
+    	try
+		{
+			Thread.sleep(sleep);
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     
     /**
      * @author W.Pasman
