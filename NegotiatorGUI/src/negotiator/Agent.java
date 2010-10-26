@@ -121,7 +121,7 @@ public abstract class Agent {
     }
     
     /**
-     * A convenience method to get the utility of a bid. This method will take discount factors into account, 
+     * A convenience method to get the utility of a bid. This method will take discount factors into account (if any), 
      * using the status of the current {@link #timeline}.
      * @see {@link UtilitySpace}.
      */
@@ -133,10 +133,10 @@ public abstract class Agent {
     /**
      * Let the agent wait.
      * Example:<br>
-     * wait(0.1) will let the agent sleep for 10% of the negotiation time (as defined by the {@link Timeline}).
+     * sleep(0.1) will let the agent sleep for 10% of the negotiation time (as defined by the {@link Timeline}).
      * @param fraction should be between 0 and 1.
      */
-    public void wait(double fraction)
+    public void sleep(double fraction)
     {
     	long sleep = (long) (timeline.getTotalMiliseconds() * fraction);
     	try
