@@ -7,11 +7,14 @@ public final class Timeline
 	private final int totalSeconds;
     private final long startTime;
 
+    /**
+     * Create a timeline of {@link #totalSeconds} number of seconds.
+     */
 	public Timeline(int totalSecs)
 	{	 
 		totalSeconds = totalSecs;
-		System.out.println("Start time line of " + totalSecs + " seconds.");
     	startTime = System.nanoTime();
+    	System.out.println("Started time line of " + totalSecs + " seconds.");
 	}
 	
 	private double getElapsedSeconds()
@@ -43,6 +46,8 @@ public final class Timeline
 	
 	/**
 	 * Get the time, running from t = 0 (start) to t = 1 (deadline).
+	 * The time is normalized, so agents need not be concerned with the actual internal clock. 
+	 * Please use {@link Agent#wait(double)} for pausing the agent.
 	 */
 	public double getTime()
 	{

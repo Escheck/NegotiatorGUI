@@ -309,6 +309,13 @@ public class UtilitySpace {
     	return utility;
     }
     
+    /**
+     * Let d in (0, 1) be the discount factor. (If d <= 0 or d >= 1, we assume that d = 1.)
+     * Let t in [0, 1] be the current time, as defined by the {@link Timeline}.
+     * We compute the <i>discounted</i> utility discountedUtility as follows:
+     * 
+     * discountedUtility = originalUtility * d^t.
+     */
     public double getUtilityWithDiscount(Bid bid, Timeline timeline)
     {
     	double util = 0;
@@ -330,7 +337,7 @@ public class UtilitySpace {
     	}
     	double time = timeline.getTime();
     	double discountedUtil = util * Math.pow(discount, time);
-    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
+//    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;
     }
     
