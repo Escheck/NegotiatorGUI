@@ -315,8 +315,20 @@ public class UtilitySpace {
      * We compute the <i>discounted</i> utility discountedUtility as follows:
      * 
      * discountedUtility = originalUtility * d^t.
+     * 
+     * For t = 0 the utility remains unchanged, and for t = 1 the original utility is multiplied by the discount factor. 
+     * The effect is almost linear in between.
      */
     public double getUtilityWithDiscount(Bid bid, Timeline timeline)
+    {
+       	double time = timeline.getTime();
+       	return getUtilityWithDiscount(bid, time);
+    }
+    
+    /**
+     * @see #getUtilityWithDiscount(Bid, Timeline)
+     */
+    public double getUtilityWithDiscount(Bid bid, double time)
     {
     	double util = 0;
     	double discount = discountFactor;
@@ -335,7 +347,6 @@ public class UtilitySpace {
     	{
     		e.printStackTrace();
     	}
-    	double time = timeline.getTime();
     	double discountedUtil = util * Math.pow(discount, time);
 //    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;

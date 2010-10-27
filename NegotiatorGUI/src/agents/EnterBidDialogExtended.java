@@ -6,48 +6,55 @@
 
 package agents;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.TextArea;
-import negotiator.exceptions.Warning;
-
-import javax.swing.*;
-import javax.swing.table.*;
-import java.awt.Color;
-import java.util.Vector;
-
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelListener;
-import javax.swing.event.TableModelEvent;
-
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventObject;
-import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
 
-import negotiator.Agent;
-import negotiator.Bid;
-import negotiator.Domain;
-import negotiator.utility.UtilitySpace;
-import negotiator.actions.*;
-import negotiator.actions.Action;
-import negotiator.exceptions.BidDoesNotExistInDomainException;
-import negotiator.issue.*;
-import negotiator.utility.EvaluatorDiscrete;
-import negotiator.gui.chart.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart; 
+import org.jfree.chart.JFreeChart;
+
+import negotiator.Bid;
+import negotiator.actions.Accept;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+import negotiator.exceptions.Warning;
+import negotiator.gui.chart.UtilityPlot;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.UtilitySpace;
 
 /**
  *
@@ -481,7 +488,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	    		System.out.println("error getting max utility first bid:"+e.getMessage()); 
 	    		e.printStackTrace();
 	    	}
-    	makeComboBoxes(); // reset the whole shit...
+    	makeComboBoxes(); // reset all
 	    setComboBoxes(ourOldBid);
    	}
 	

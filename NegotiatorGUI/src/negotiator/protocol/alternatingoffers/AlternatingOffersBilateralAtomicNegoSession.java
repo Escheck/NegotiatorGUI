@@ -152,8 +152,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     	   fAgentBBids.add(p);
                        }
                        
-                       double agentAUtilityDisc = agentA.getUtility(lastBid);
-                       double agentBUtilityDisc = agentB.getUtility(lastBid);
+                       double time = timeline.getTime();
+                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
+                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
                        
 	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
 	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
@@ -168,8 +169,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                     			   currentAgent.getName()+" but no bid was done yet.");
                         //Global.log("Agents accepted the following bid:");
                         //Global.log(((Accept)action).toString());
-                        double agentAUtilityDisc = agentA.getUtility(lastBid);
-                        double agentBUtilityDisc = agentB.getUtility(lastBid);
+                       double time = timeline.getTime();
+                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
+                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
 
                         agentAUtility = spaceA.getUtility(lastBid);
                         agentBUtility = spaceB.getUtility(lastBid);

@@ -6,32 +6,49 @@ public final class Timeline
 {
 	private final int totalSeconds;
     private final long startTime;
+    private final boolean hasDeadline;
 
     /**
-     * Create a timeline of {@link #totalSeconds} number of seconds.
+     * Create a timeline with a deadline of {@link #totalSeconds} number of seconds.
      */
 	public Timeline(int totalSecs)
 	{	 
 		totalSeconds = totalSecs;
     	startTime = System.nanoTime();
+    	hasDeadline = true;
     	System.out.println("Started time line of " + totalSecs + " seconds.");
 	}
 	
-	private double getElapsedSeconds()
+	/** 
+	 * Get the elapsed time in seconds. 
+	 * Use {@link #getTime()} for a more generic version.
+	 */
+	public double getElapsedSeconds()
 	{
 		long t2 = System.nanoTime();
 		return ((t2 - startTime) / 1000000000.0);
 	}
 	
+	/** 
+	 * Get the total negotiation time in miliseconds
+	 */
 	public long getTotalMiliseconds()
 	{
 		return 1000 * totalSeconds;
 	}
 	
+	/**
+	 * Get the total negotiation time in seconds
+	 */
+	public long getTotalSeconds()
+	{
+		return totalSeconds;
+	}
+	
 	/** 
 	 * Print time in seconds
 	 */
-	public void printRealTime()
+	public void printElapsedSeconds()
 	{
 		System.out.println("Elapsed: " + getElapsedSeconds() + " seconds");
 	}
@@ -59,7 +76,7 @@ public final class Timeline
 	
 	public boolean isDeadlineReached()
 	{
-		return getTime() >= 1;
+		return hasDeadline && (getTime() >= 1);
 	}
 	
 	public static void main(String[] args)
@@ -67,8 +84,13 @@ public final class Timeline
 		Timeline timeline = new Timeline(60);
 		while (true)
 		{
-			timeline.printRealTime();
+			timeline.printElapsedSeconds();
 			timeline.printTime();			
 		}
+	}
+	
+	public boolean hasDeadline()
+	{
+		return hasDeadline;
 	}
 }

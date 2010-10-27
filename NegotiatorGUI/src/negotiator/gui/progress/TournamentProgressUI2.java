@@ -6,10 +6,12 @@
 
 package negotiator.gui.progress;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map.Entry;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -22,15 +24,11 @@ import negotiator.events.ActionEvent;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
-import negotiator.gui.NegoGUIApp;
-
 import negotiator.gui.ExcelAdapter;
+import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.protocol.Protocol;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-
-import java.util.Hashtable;
 
 /**
  *
@@ -209,6 +207,10 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
     private javax.swing.JPanel pnlTournamentOverView;
     private javax.swing.JTable resultTable;
     // End of variables declaration//GEN-END:variables
+    
+    /**
+     * Tournament overview at the top
+     */
 	public void handleActionEvent(ActionEvent evt) {
 		//System.out.println("Caught event "+evt+ "in TournamentProgressUI");	
 		if ((evt.getAct() instanceof EndNegotiation)| (evt.getAct()instanceof Accept)){

@@ -6,6 +6,8 @@
 
 package negotiator.gui.progress;
 
+import java.util.ArrayList;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,14 +15,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -30,12 +33,7 @@ import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
-import negotiator.protocol.Protocol;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-
-
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -43,7 +41,8 @@ import org.jfree.chart.JFreeChart;
  */
 public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener {
 	
-	private ProgressInfo progressinfo; // the table model
+	/** the table model at the bottom */
+	private ProgressInfo progressinfo;
 	protected int round = 0;
 	private BidChart bidChart;
 	protected BilateralAtomicNegotiationSession session;
@@ -358,7 +357,10 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		}	
 	}
 	
-	/** TODO Wouter: this should be taken out of the agent's CPU time. Currently
+	/** 
+	 * Fills bottom table.
+	 * 
+	 * TODO Wouter: this should be taken out of the agent's CPU time. Currently
 	 * this does not follow my warning/prescribed way to do this (see the handleActionEvent docuemntation)
 	 */
 	public void handleActionEvent(negotiator.events.ActionEvent evt) {
