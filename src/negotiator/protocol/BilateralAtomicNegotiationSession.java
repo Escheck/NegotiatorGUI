@@ -13,6 +13,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
+import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -85,12 +86,25 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     	if(!actionEventListener.contains(listener))
     		actionEventListener.remove(listener);
     }
+    
+	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,double time,
+			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks) {
+		for(NegotiationEventListener listener : actionEventListener) {
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
+		}
+	}
+	
+	/**
+	 * Used by {@link AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines}. Does not use time.
+	 */
+	@Deprecated
 	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
 			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, -1, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
 		}
 	}
+	
 	protected synchronized void fireLogMessage(String source, String log) { 
     	for(NegotiationEventListener listener : actionEventListener) { 
         	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));

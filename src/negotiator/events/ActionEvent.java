@@ -21,13 +21,14 @@ public class ActionEvent extends NegotiationEvent
 	Action act;   				// Bid, Accept, etc.
 	int round;					// integer 0,1,2,...: round in the overall bidding.
 	long elapsedMilliseconds;	// milliseconds since start of nego. Using System.currentTimeMillis();
+	double time;				// [0, 1] using Timeline
 	double normalizedUtilityA;
 	double normalizedUtilityB;
 	double utilADiscount;
 	double utilBDsicount;
 	String errorRemarks;		// errors 
 	
-	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed,
+	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed, double t,
 			double utilA,double utilB, double utilADiscount, double utilBDsicount, String remarks)
 	{
 		super(source);
@@ -35,6 +36,7 @@ public class ActionEvent extends NegotiationEvent
 		act=actP;
 		round=roundP;
 		elapsedMilliseconds=elapsed;
+		time=t;
 		normalizedUtilityA=utilA;
 		normalizedUtilityB=utilB;
 		this.utilADiscount = utilADiscount;
@@ -70,6 +72,11 @@ public class ActionEvent extends NegotiationEvent
 
 	public long getElapsedMilliseconds() {
 		return elapsedMilliseconds;
+	}
+	
+	public double getTime()
+	{
+		return time;
 	}
 
 	public double getNormalizedUtilityA() {
