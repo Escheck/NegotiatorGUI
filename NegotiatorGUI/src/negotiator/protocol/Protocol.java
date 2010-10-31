@@ -1,10 +1,11 @@
 package negotiator.protocol;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import negotiator.Agent;
 import negotiator.Domain;
@@ -12,7 +13,9 @@ import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
 import negotiator.actions.Action;
-import negotiator.events.*;
+import negotiator.events.ActionEvent;
+import negotiator.events.BilateralAtomicNegotiationSessionEvent;
+import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -22,7 +25,8 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
-import negotiator.xml.*;
+import negotiator.xml.SimpleDOMParser;
+import negotiator.xml.SimpleElement;
 
 public abstract class Protocol implements Runnable {
     protected Thread negoThread = null;
@@ -153,10 +157,10 @@ public abstract class Protocol implements Runnable {
     	if(!actionEventListener.contains(listener))
     		actionEventListener.remove(listener);
     }
-	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
+	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,double time,
 			double utilA,double utilB, double utilADiscount, double utilBDiscount,String remarks) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, utilA, utilB, utilADiscount, utilBDiscount,remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount,remarks ));
 		}
 	}
 	public synchronized void fireBilateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSession session,ProfileRepItem profileA,

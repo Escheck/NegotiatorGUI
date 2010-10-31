@@ -26,7 +26,8 @@ import negotiator.utility.UtilitySpace;
  */
 
 
-public abstract class Agent {
+public abstract class Agent 
+{
 	private AgentID 		agentID;
     private String          fName=null;
     public  UtilitySpace    utilitySpace;
@@ -97,7 +98,8 @@ public abstract class Agent {
         return null;
     }
     
-    public String getName() {
+    public String getName() 
+    {
         return fName;
     }
     
