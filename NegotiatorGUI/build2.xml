@@ -292,6 +292,7 @@
 	</target>
 	
 	<target name ="makeGeniusForStudentsAssignment2010" depends="makeNegoSimulatorWithAllAgentJar">
+		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten"/>
 			<copy todir="${tmp}">
 				<fileset dir="." includes="domainrep_AIMA2009.xml"/>
 				<globmapper from="domainrep_AIMA2009.xml" to="domainrepository.xml" />
