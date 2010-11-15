@@ -3,10 +3,6 @@ package agents;
 import java.util.ArrayList;
 import java.util.Random;
 
-import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
-import agents.bayesianopponentmodel.OpponentModel;
-import agents.bayesianopponentmodel.OpponentModelUtilSpace;
-
 import negotiator.Agent;
 import negotiator.AgentParam;
 import negotiator.Bid;
@@ -19,6 +15,9 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.issue.Issue;
 import negotiator.xml.SimpleElement;
+import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
+import agents.bayesianopponentmodel.OpponentModel;
+import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 
 
 /**
