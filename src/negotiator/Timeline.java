@@ -9,7 +9,7 @@ public final class Timeline
     private final boolean hasDeadline;
 
     /**
-     * Create a timeline with a deadline of {@link #totalSeconds} number of seconds.
+     * Creates a timeline with a deadline of {@link #totalSeconds} number of seconds.
      */
 	public Timeline(int totalSecs)
 	{	 
@@ -20,7 +20,7 @@ public final class Timeline
 	}
 	
 	/** 
-	 * Get the elapsed time in seconds. 
+	 * Gets the elapsed time in seconds. 
 	 * Use {@link #getTime()} for a more generic version.
 	 */
 	public double getElapsedSeconds()
@@ -30,7 +30,7 @@ public final class Timeline
 	}
 	
 	/** 
-	 * Get the total negotiation time in miliseconds
+	 * Gets the total negotiation time in miliseconds
 	 */
 	public long getTotalMiliseconds()
 	{
@@ -38,7 +38,7 @@ public final class Timeline
 	}
 	
 	/**
-	 * Get the total negotiation time in seconds
+	 * Gets the total negotiation time in seconds
 	 */
 	public long getTotalSeconds()
 	{
@@ -46,7 +46,7 @@ public final class Timeline
 	}
 	
 	/** 
-	 * Print time in seconds
+	 * Prints time in seconds
 	 */
 	public void printElapsedSeconds()
 	{
@@ -54,7 +54,7 @@ public final class Timeline
 	}
 	
 	/** 
-	 * Print time, running from t = 0 (start) to t = 1 (deadline).
+	 * Prints time, running from t = 0 (start) to t = 1 (deadline).
 	 */
 	public void printTime()
 	{
@@ -62,7 +62,7 @@ public final class Timeline
 	}
 	
 	/**
-	 * Get the time, running from t = 0 (start) to t = 1 (deadline).
+	 * Gets the time, running from t = 0 (start) to t = 1 (deadline).
 	 * The time is normalized, so agents need not be concerned with the actual internal clock. 
 	 * Please use {@link Agent#wait(double)} for pausing the agent.
 	 */

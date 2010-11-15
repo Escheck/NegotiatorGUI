@@ -1,9 +1,7 @@
 package negotiator;
 /**
  * This class stores info about a parameter of an agent.
- * You can get and set parameters using Agent.getParameter and agent.setParameter.
  *  @author W.Pasman 19aug08
- *
  */
 
 public class AgentParam {
