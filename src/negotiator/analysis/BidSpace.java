@@ -291,14 +291,15 @@ public class BidSpace {
 			ArrayList<Bid> excludeList)
 	{
 		System.out.println("determining nearest bid to "+utilA+","+utilB);
-		System.out.println("excludes="+excludeList);
+//		System.out.println("excludes="+excludeList);
 		double mindist=9.; // paretospace distances are always smaller than 2
 		BidPoint bestPoint=null;
 		double r;
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
+			//disabled excluding 16-11-2010
+			//for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
 			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; 
 			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
 			// although manual claims that indexOf is using equals???

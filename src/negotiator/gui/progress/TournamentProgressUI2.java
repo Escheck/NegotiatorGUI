@@ -219,8 +219,9 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityA(),session-1,7);//util a
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
 			resultTable.getModel().setValueAt(evt.getUtilADiscount(),session-1,9);//util a
-			resultTable.getModel().setValueAt(evt.getUtilBDsicount(),session-1,10);//util b			
-			resultTable.getModel().setValueAt("",session-1,11);//details???
+			resultTable.getModel().setValueAt(evt.getUtilBDsicount(),session-1,10);//util b
+			if (ProgressUI2.isShowTime())
+				resultTable.getModel().setValueAt(evt.getTime(),session-1,11);//details???
 		}
 	}
 

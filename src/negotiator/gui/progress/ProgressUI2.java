@@ -48,6 +48,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	protected BilateralAtomicNegotiationSession session;
 	private TextArea logText;
 	private JPanel chart;
+	private static final boolean SHOW_TIME = false;
 	
     /** Creates new form ProgressUI2 */
     public ProgressUI2() {
@@ -325,8 +326,15 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	public void setNegotiationSession(BilateralAtomicNegotiationSession nego){
 		nego.addNegotiationEventListener(this);
 		session = nego;
-		bidChart.setAgentBName("Agent B:"+nego.getAgentBname());
-		bidChart.setAgentAName("Agent A:"+nego.getAgentAname());
+		String agentAName = nego.getAgentAname();
+		String agentBName = nego.getAgentBname();
+		// If the names are useless
+		if ("Agent A".equals(agentAName))
+			agentAName = nego.getAgentA().getClass().getSimpleName();
+		if ("Agent B".equals(agentAName))
+			agentBName = nego.getAgentB().getClass().getSimpleName();
+		bidChart.setAgentAName("Agent A:"+agentAName);
+		bidChart.setAgentBName("Agent B:"+agentBName);
 		BidSpace bs = session.getBidSpace();
 		double [][] pb = null;//getAllBidsInBidSpace();
 		double [][] nash = new double [2][1];
@@ -377,6 +385,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		biddingTable.getModel().setValueAt(evt.getUtilADiscount(),round-1,4);
 		biddingTable.getModel().setValueAt(evt.getUtilBDsicount(),round-1,5);
 
+		if (isShowTime())
+			biddingTable.getModel().setValueAt(evt.getTime(),round-1,6);
 		//opponent model?
 		
 		//adding graph data:
@@ -490,9 +500,12 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			BilateralAtomicNegotiationSessionEvent evt) {
 		// TODO Auto-generated method stub
 		setNegotiationSession(evt.getSession());
-	}	
-
-
+	}
+	
+	public static boolean isShowTime()
+	{
+		return SHOW_TIME;
+	}
 }
 
 

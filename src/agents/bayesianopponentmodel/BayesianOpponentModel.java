@@ -3,11 +3,14 @@ package agents.bayesianopponentmodel;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 import negotiator.Bid;
-import negotiator.Domain;
-import negotiator.issue.*;
-import negotiator.utility.*;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueReal;
+import negotiator.utility.EVALFUNCTYPE;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.EvaluatorReal;
+import negotiator.utility.UtilitySpace;
 
 public class BayesianOpponentModel extends OpponentModel{
 	
@@ -268,6 +271,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	}
 	public void updateBeliefs(Bid pBid) throws Exception{
 		fBiddingHistory.add(pBid);
+		if(haveSeenBefore(pBid)) return;
 		//calculate full probability for the given bid
 		double lFullProb = 0;
 		double lMaxProb = 0;
