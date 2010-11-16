@@ -21,7 +21,12 @@ public class OpponentModel {
 	}
 	public void updateBeliefs(Bid pBid) throws Exception { };
 	public double getExpectedWeight(int pIssueNumber) { return 0;}
-	
+	public boolean haveSeenBefore(Bid pBid) {
+		for(Bid tmpBid : fBiddingHistory) {
+			if(pBid.equals(tmpBid)) return true;
+		}
+		return false;
+	}
 	protected void findMinMaxUtility() throws Exception
 	{
 		BidIterator biditer=new BidIterator(fDomain);

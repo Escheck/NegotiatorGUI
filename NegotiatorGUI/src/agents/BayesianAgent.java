@@ -3,6 +3,10 @@ package agents;
 import java.util.ArrayList;
 import java.util.Random;
 
+import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
+import agents.bayesianopponentmodel.OpponentModel;
+import agents.bayesianopponentmodel.OpponentModelUtilSpace;
+
 import negotiator.Agent;
 import negotiator.AgentParam;
 import negotiator.Bid;
@@ -15,9 +19,6 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.issue.Issue;
 import negotiator.xml.SimpleElement;
-import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
-import agents.bayesianopponentmodel.OpponentModel;
-import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 
 
 /**
@@ -37,6 +38,7 @@ public class BayesianAgent extends Agent {
 	
 
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
+	/** See paper. Standard = TIT_FOR_TAT */
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
 	private STRATEGY fStrategy = STRATEGY.TIT_FOR_TAT;
 	private int fSmartSteps;
@@ -75,7 +77,7 @@ public class BayesianAgent extends Agent {
 		myPreviousBids = new ArrayList<Bid>();
 		prepareOpponentModel();			
 		fRound =0;
-	}
+	} 
 	protected void prepareOpponentModel() {
 		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
 	}
@@ -137,9 +139,9 @@ public class BayesianAgent extends Agent {
 		// find the target on the pareto curve
 		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
 		//exclude only the last bid
-		ArrayList<Bid> excludeBids = new ArrayList<Bid>();
-		excludeBids.add(myPreviousBids.get(myPreviousBids.size()-1));
-		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
+		//ArrayList<Bid> excludeBids = new ArrayList<Bid>();
+		//excludeBids.add(myPreviousBids.get(myPreviousBids.size()-1));
+		BidPoint bp = bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,.1,myPreviousBids);
 		log("found bid "+bp);
 		return bp.bid;
 	}
