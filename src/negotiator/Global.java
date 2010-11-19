@@ -9,12 +9,12 @@
 
 package negotiator;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
-import java.util.Calendar;
+
+import java.io.File;
+import java.lang.reflect.Constructor;
 
 import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
@@ -43,6 +43,8 @@ public class Global {
 													// to access negotiation
 													// environment
 	public static String outcomesFile = "outcomes.xml";
+	/** Set to true to write to {@link #outcomesFile} with a lot more information */
+	public static final boolean SHOW_BID_HISTORY_IN_OUTCOMES = false;
 	public Global() {
 	}
 

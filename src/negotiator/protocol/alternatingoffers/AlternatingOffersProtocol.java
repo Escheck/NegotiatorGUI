@@ -274,7 +274,6 @@ public class AlternatingOffersProtocol extends Protocol {
 				sessionrunner.JudgeTimeout();
 			}
 			outcome=sessionrunner.no;
-			//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
 			
 			//calculate distance between the two spaces
 			
