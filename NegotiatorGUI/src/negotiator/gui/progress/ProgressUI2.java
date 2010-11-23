@@ -328,11 +328,17 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		session = nego;
 		String agentAName = nego.getAgentAname();
 		String agentBName = nego.getAgentBname();
-		// If the names are useless
+		
+		// If the names are useless, use getName(). If that is useless, use the class name.
 		if ("Agent A".equals(agentAName))
+			agentAName = nego.getAgentA().getName();
+		if (agentAName == null)
 			agentAName = nego.getAgentA().getClass().getSimpleName();
-		if ("Agent B".equals(agentAName))
+		if ("Agent B".equals(agentBName))
+			agentBName = nego.getAgentB().getName();
+		if (agentBName == null)
 			agentBName = nego.getAgentB().getClass().getSimpleName();
+		
 		bidChart.setAgentAName("Agent A:"+agentAName);
 		bidChart.setAgentBName("Agent B:"+agentBName);
 		BidSpace bs = session.getBidSpace();
