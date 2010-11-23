@@ -78,6 +78,7 @@ public abstract class Agent
         this.sessionTotalNumber = sessionTotalNumber;
     	utilitySpace=us;
     	parametervalues=params;
+    	System.out.println("Agent " + getName() + " initted with parameters " + parametervalues);
         return;
     }
     
