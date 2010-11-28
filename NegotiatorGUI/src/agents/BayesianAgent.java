@@ -420,7 +420,7 @@ public class BayesianAgent extends Agent {
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(getAgentID());
-	                	log("randomly accepted");
+	                	log("opponent's bid higher than util of my last bid! accepted");
 	                }
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
@@ -432,7 +432,7 @@ public class BayesianAgent extends Agent {
 	                	{
 	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
 	                		lAction = new Accept(getAgentID());
-	                		log("opponent's bid higher than util of my last bid! accepted");
+	                		log("opponent's bid higher than util of my next bid! accepted");
 	                	} 
 
 	                }
