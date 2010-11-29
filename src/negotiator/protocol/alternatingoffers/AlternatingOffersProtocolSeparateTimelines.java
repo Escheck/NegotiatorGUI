@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import misc.SpaceDistance;
-
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -250,7 +249,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			sessionrunner.setTotalTime(totalTime);
 			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 			sessionrunner.setStartingWithA(startingWithA);
-			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep());
+			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
 			if(Global.fDebug) {
 				sessionrunner.run();
 			} else {

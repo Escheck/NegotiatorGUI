@@ -166,9 +166,9 @@ public abstract class Protocol implements Runnable {
 	public synchronized void fireBilateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSession session,ProfileRepItem profileA,
 			ProfileRepItem profileB,
 			AgentRepItem agentA,
-			AgentRepItem agentB) {
+			AgentRepItem agentB, String agenAName, String agentBName) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleBlateralAtomicNegotiationSessionEvent(new BilateralAtomicNegotiationSessionEvent (this, session,profileA,profileB,agentA,agentB));
+			listener.handleBlateralAtomicNegotiationSessionEvent(new BilateralAtomicNegotiationSessionEvent (this, session,profileA,profileB,agentA,agentB, agenAName, agentBName));
 		}
 	}
 	

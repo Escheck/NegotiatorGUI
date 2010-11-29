@@ -10,20 +10,25 @@ public class BilateralAtomicNegotiationSessionEvent extends NegotiationEvent {
 	private ProfileRepItem profileB;
 	private AgentRepItem agentA;
 	private AgentRepItem agentB;
+	private String agentAName;
+	private String agentBName;
 	
 	public BilateralAtomicNegotiationSessionEvent(Object source, 
 			BilateralAtomicNegotiationSession session, 	
 			ProfileRepItem profileA,
 			ProfileRepItem profileB,
 			AgentRepItem agentA,
-			AgentRepItem agentB) {
+			AgentRepItem agentB, String agentAName, String agentBName) {
 		super(source);
 		this.session = session;
 		this.agentA = agentA;
 		this.agentB = agentB;
 		this.profileA = profileA;
 		this.profileB = profileB;
+		this.agentAName = agentAName;
+		this.agentBName = agentBName;
 	}
+	
 	public BilateralAtomicNegotiationSession getSession() {
 		return session;
 	}
@@ -38,5 +43,15 @@ public class BilateralAtomicNegotiationSessionEvent extends NegotiationEvent {
 	}
 	public AgentRepItem getAgentB() {
 		return agentB;
+	}
+
+	public String getAgentAName()
+	{
+		return agentAName;
+	}
+
+	public String getAgentBName()
+	{
+		return agentBName;
 	}
 }
