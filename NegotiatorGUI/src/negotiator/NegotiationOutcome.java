@@ -134,7 +134,6 @@ public class NegotiationOutcome {
 		outcome.setAttribute("errors",ErrorRemarks);
 		String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
 		outcome.setAttribute("startingAgent",startingagent);
-		outcome.setAttribute("",startingagent);
 		
 		boolean addBids = Global.SHOW_BID_HISTORY_IN_OUTCOMES;
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,

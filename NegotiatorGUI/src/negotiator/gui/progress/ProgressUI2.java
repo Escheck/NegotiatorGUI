@@ -22,9 +22,7 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-
+import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.analysis.BidPoint;
@@ -34,6 +32,9 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -331,13 +332,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		
 		// If the names are useless, use getName(). If that is useless, use the class name.
 		if ("Agent A".equals(agentAName))
-			agentAName = nego.getAgentA().getName();
-		if (agentAName == null)
-			agentAName = nego.getAgentA().getClass().getSimpleName();
+			agentAName = Global.getAgentDescription(nego.getAgentA());
 		if ("Agent B".equals(agentBName))
-			agentBName = nego.getAgentB().getName();
-		if (agentBName == null)
-			agentBName = nego.getAgentB().getClass().getSimpleName();
+			agentBName = Global.getAgentDescription(nego.getAgentB());
 		
 		bidChart.setAgentAName("Agent A:"+agentAName);
 		bidChart.setAgentBName("Agent B:"+agentBName);

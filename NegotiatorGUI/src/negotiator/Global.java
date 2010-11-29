@@ -204,6 +204,16 @@ public class Global {
 		
 	}
 	
+
+	public static String getAgentDescription(Agent agent)
+	{
+		String agentDescription = agent.getName();
+		if (agentDescription == null)
+			agentDescription = agent.getClass().getSimpleName();
+		
+		return agentDescription;
+	}
+	
 	public static boolean isExperimentalSetup() {
 		return experimentalSetup;
 	}
