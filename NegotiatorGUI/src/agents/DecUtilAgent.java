@@ -1,14 +1,14 @@
 package agents;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 
-import negotiator.*;
-import negotiator.actions.*;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
 
 
@@ -85,7 +85,7 @@ public class DecUtilAgent extends Agent
             {
                 Bid partnerBid = ((Offer)actionOfPartner).getBid();
                 double offeredutil=utilitySpace.getUtility(partnerBid);
-                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+                double time=timeline.getTime();
                 double P=Paccept(offeredutil,time);
                 if (.02*P>Math.random()) action = new Accept(getAgentID());
                 else action = new Offer(getAgentID(),bids.get(nextBidIndex++));               
