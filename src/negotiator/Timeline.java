@@ -30,6 +30,16 @@ public final class Timeline
 	}
 	
 	/** 
+	 * Gets the elapsed time in seconds. 
+	 * Use {@link #getTime()} for a more generic version.
+	 */
+	public double getElapsedMilliSeconds()
+	{
+		long t2 = System.nanoTime();
+		return ((t2 - startTime) / 1000000.0);
+	}
+	
+	/** 
 	 * Gets the total negotiation time in miliseconds
 	 */
 	public long getTotalMiliseconds()
