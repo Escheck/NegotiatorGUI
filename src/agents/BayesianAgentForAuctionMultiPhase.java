@@ -87,7 +87,7 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 					lAction = proposeInitialBid();
 				else {
 	                double offeredutil=utilitySpace.getUtility(lOppntBid);
-	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+	                double time=timeline.getTime();
 	                double P=Paccept(offeredutil,time);
 	                //log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)

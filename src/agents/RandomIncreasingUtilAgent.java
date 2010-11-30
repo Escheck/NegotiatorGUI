@@ -67,7 +67,7 @@ public class RandomIncreasingUtilAgent extends Agent
                 	max_opponent_utility=offeredutil;
                 	max_opponent_bid=partnerBid;
                 }
-                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+                double time=timeline.getTime();
                 double P=Paccept(offeredutil,time);
                 if (P>Math.random()) action = new Accept(getAgentID());
                 else action = chooseRandomBidAction();               

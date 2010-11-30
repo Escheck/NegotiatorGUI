@@ -1,18 +1,22 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Date;
+
+import agents.bayesianopponentmodel.BayesianOpponentModel;
+import agents.bayesianopponentmodel.OpponentModel;
+import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 
 import negotiator.Agent;
-import negotiator.Bid;
-import negotiator.analysis.BidPoint;
-import negotiator.BidIterator;
-import negotiator.actions.*;
-import agents.bayesianopponentmodel.*;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
-import negotiator.analysis.BidSpace;
 import negotiator.AgentParam;
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
 
 /**
@@ -528,7 +532,7 @@ public class BayesianAgentForAuction extends Agent {
 					lAction = proposeInitialBid();
 				else {
 	                double offeredutil=utilitySpace.getUtility(lOppntBid);
-	                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+	                double time=timeline.getTime();
 	                double P=Paccept(offeredutil,time);
 	                log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)

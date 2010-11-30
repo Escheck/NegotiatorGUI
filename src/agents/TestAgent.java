@@ -1,7 +1,6 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -47,7 +46,7 @@ public class TestAgent extends Agent {
             {
                 Bid partnerBid = ((Offer)actionOfPartner).getBid();
                 double offeredutil=utilitySpace.getUtility(partnerBid);
-                double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
+                double time=timeline.getTime();                
                 double P=Paccept(offeredutil,time);
                 if (P>Math.random()) 
                 	action = new Accept(getAgentID());
