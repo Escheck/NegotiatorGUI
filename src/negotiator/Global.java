@@ -45,6 +45,9 @@ public class Global {
 	public static String outcomesFile = "outcomes.xml";
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
 	public static final boolean SHOW_BID_HISTORY_IN_OUTCOMES = false;
+	/** Every agent plays as each preference profile */
+	public static final boolean PLAY_BOTH_SIDES = true;
+	
 	public Global() {
 	}
 

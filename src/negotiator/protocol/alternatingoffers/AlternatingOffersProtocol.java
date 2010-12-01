@@ -24,6 +24,7 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
@@ -536,7 +537,8 @@ public class AlternatingOffersProtocol extends Protocol {
 	static final String AGENT_A_NAME="Agent A";
 	static final String AGENT_B_NAME="Agent B";
 
-	/** called when you press start button in Tournament window.
+	/** 
+	 * Called when you press start button in Tournament window via reflection in {@link TournamentRunner}.
 	 * This builds the sessions array from given Tournament vars 
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
@@ -572,11 +574,14 @@ public class AlternatingOffersProtocol extends Protocol {
 						if(agentAval.equals(agentBval)) continue;
 						AgentRepItem agentB=((AgentValue)agentBval).getValue();
 						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
+//						System.out.println(agentA + ", " + profileA + " vs. ");
+//						System.out.println(agentB + ", " + profileB);
 					}
 				}
 
 			}
-			skipProfiles.add(profileA);
+			if (!Global.PLAY_BOTH_SIDES)
+				skipProfiles.add(profileA);
 		}
 		return sessions;
 	}

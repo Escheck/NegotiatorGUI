@@ -203,6 +203,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
                    if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
                    try {
                 	   newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Agent " + currentAgent.getName() +":"+e.getMessage(), timeline.getTime());
+                	   System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
                    }
                    catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
                    // don't compute the max utility, we're in exception which is already bad enough.
