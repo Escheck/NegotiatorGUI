@@ -12,6 +12,7 @@ package negotiator;
 import java.util.ArrayList;
 
 import negotiator.analysis.BidPoint;
+import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -40,8 +41,10 @@ public class NegotiationOutcome {
 	public String agentAutilSpaceName;
 	public String agentButilSpaceName;
 	public SimpleElement additional;
+	public double time;
 
 	/** Creates a new instance of NegotiationOutcome 
+	 * @param time 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
 	public NegotiationOutcome(int sessionNumber, 
@@ -61,7 +64,7 @@ public class NegotiationOutcome {
 			boolean startingWithA, // true if A starts, false if B starts
 			String agentAutilSpaceNameP,
 			String agentButilSpaceNameP,
-			SimpleElement additional
+			SimpleElement additional, double time
 	) 
 	{
 		this.sessionNumber = sessionNumber;
@@ -82,6 +85,7 @@ public class NegotiationOutcome {
 		agentAstarts=startingWithA;
 		agentAutilSpaceName=agentAutilSpaceNameP;
 		agentButilSpaceName=agentButilSpaceNameP;
+		this.time = time;
 	}
 
 
@@ -111,7 +115,7 @@ public class NegotiationOutcome {
 	SimpleElement resultsOfAgent(String agentX,String agentName, String agentClass, String utilspacefilename,
 			Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
 	{
-		SimpleElement outcome=new SimpleElement("resultsOfAgent");
+		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
 		outcome.setAttribute("agentClass", agentClass);
@@ -129,18 +133,19 @@ public class NegotiationOutcome {
 
 	public SimpleElement toXML()
 	{
-		SimpleElement outcome = new SimpleElement("NegotiationOutcome");
+		OrderedSimpleElement outcome = new OrderedSimpleElement("NegotiationOutcome");
 		outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
-		outcome.setAttribute("errors",ErrorRemarks);
-		String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
-		outcome.setAttribute("startingAgent",startingagent);
+		outcome.setAttribute("timeOfAgreement", "" + time);
 		
 		boolean addBids = Global.SHOW_BID_HISTORY_IN_OUTCOMES;
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
 				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids));
 		outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
 				agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids, addBids));
-		if(additional!=null) outcome.addChildElement(additional);
+		if(additional!=null && !additional.isEmpty()) outcome.addChildElement(additional);
+		if (ErrorRemarks != null) outcome.setAttribute("errors",ErrorRemarks);
+		String startingagent="B"; if (agentAstarts) startingagent="A";
+		outcome.setAttribute("startingAgent",startingagent);
 		return outcome;
 	}
 }

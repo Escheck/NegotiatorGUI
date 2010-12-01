@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import misc.SpaceDistance;
+
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -196,7 +197,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				runNegotiationSession(i+1);
 		}
 	}
-	
+
 
 
 	/** do test run of negotiation session.
@@ -209,98 +210,98 @@ public class AlternatingOffersProtocol extends Protocol {
 	protected void runNegotiationSession(int nr)  throws Exception
 	{
 
-			
-			//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-			agentA = Global.loadAgent(getAgentARep().getClassPath());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
-			agentA.setName(getAgentAname());
 
-			//java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
-			agentB = Global.loadAgent(getAgentBRep().getClassPath());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
-			agentB.setName(getAgentBname());
+		//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
+		agentA = Global.loadAgent(getAgentARep().getClassPath());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
+		agentA.setName(getAgentAname());
 
-			sessionTestNumber=nr;
-			if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
-			//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
-			//SessionRunner sessionrunner=new SessionRunner(this);
-			startingAgent=getAgentAname();
-			if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-				startingAgent=getAgentBname();
-			}
+		//java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
+		agentB = Global.loadAgent(getAgentBRep().getClassPath());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
+		agentB.setName(getAgentBname());
 
-			sessionrunner=new AlternatingOffersBilateralAtomicNegoSession(this, 
-					agentA, 
-					agentB, 
-					getAgentAname(),
-					getAgentBname(),
-					getAgentAUtilitySpace(), 
-					getAgentBUtilitySpace(), 
-					getAgentAparams(),
-					getAgentBparams(),
-					startingAgent,
-					non_gui_nego_time);
-			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
-			else totalTime = non_gui_nego_time;
-			sessionrunner.setTotalTime(totalTime);
-			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
-			sessionrunner.setStartingWithA(startingWithA);
-			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
-			if(Global.fDebug) {
-				sessionrunner.run();
-			} else {
-				
-				negoThread = new Thread(sessionrunner);
-				System.out.println("nego start. "+System.currentTimeMillis()/1000);
-				negoThread.start();
-				try {
-					synchronized (this) {
-						System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
-						// wait will unblock early if negotiation is finished in time.
-						wait(totalTime*1000);
-					}
-				} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
-			}
-			//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
-			//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
+		sessionTestNumber=nr;
+		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
+		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
+		//SessionRunner sessionrunner=new SessionRunner(this);
+		startingAgent=getAgentAname();
+		if ( (!startingWithA) && new Random().nextInt(2)==1) { 
+			startingAgent=getAgentBname();
+		}
 
-			stopNegotiation();
+		sessionrunner=new AlternatingOffersBilateralAtomicNegoSession(this, 
+				agentA, 
+				agentB, 
+				getAgentAname(),
+				getAgentBname(),
+				getAgentAUtilitySpace(), 
+				getAgentBUtilitySpace(), 
+				getAgentAparams(),
+				getAgentBparams(),
+				startingAgent,
+				non_gui_nego_time);
+		if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
+		else totalTime = non_gui_nego_time;
+		sessionrunner.setTotalTime(totalTime);
+		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
+		sessionrunner.setStartingWithA(startingWithA);
+		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
+		if(Global.fDebug) {
+			sessionrunner.run();
+		} else {
 
-			// add path to the analysis chart
-			// TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
-			//if (nt.getBidSpace()!=null)
-			//	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
-
-			if(sessionrunner.no==null) {
-				sessionrunner.JudgeTimeout();
-			}
-			outcome=sessionrunner.no;
-			
-			//calculate distance between the two spaces
-			
-			SpaceDistance dist =null;// new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
-			SimpleElement xmlDistance =null;//  dist.calculateDistances();
-			//xmlDistance.setTagName("opposition");
-			
-			if(fAdditional!=null) { 
-				if(outcome.additional==null) {
-					outcome.additional = new SimpleElement("additional");
-				}
-				outcome.additional.addChildElement(fAdditional);				
-			}
-			if(xmlDistance!=null) { 
-				if(outcome.additional==null) {
-					outcome.additional = new SimpleElement("additional");
-				}
-				outcome.additional.addChildElement(xmlDistance);				
-			}
-
+			negoThread = new Thread(sessionrunner);
+			System.out.println("nego start. "+System.currentTimeMillis()/1000);
+			negoThread.start();
 			try {
-				BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
-				out.write(""+outcome.toXML());
-				out.close();
-			} catch (Exception e) {
-				new Warning("Exception during writing s:"+e);
-				e.printStackTrace();
+				synchronized (this) {
+					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
+					// wait will unblock early if negotiation is finished in time.
+					wait(totalTime*1000);
+				}
+			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
+		}
+		//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
+		//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
+
+		stopNegotiation();
+
+		// add path to the analysis chart
+		// TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
+		//if (nt.getBidSpace()!=null)
+		//	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
+
+		if(sessionrunner.no==null) {
+			sessionrunner.JudgeTimeout();
+		}
+		outcome=sessionrunner.no;
+
+		//calculate distance between the two spaces
+
+		SpaceDistance dist =null;// new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
+		SimpleElement xmlDistance =null;//  dist.calculateDistances();
+		//xmlDistance.setTagName("opposition");
+
+		if(fAdditional!=null) { 
+			if(outcome.additional==null) {
+				outcome.additional = new SimpleElement("additional");
 			}
+			outcome.additional.addChildElement(fAdditional);				
+		}
+		if(xmlDistance!=null) { 
+			if(outcome.additional==null) {
+				outcome.additional = new SimpleElement("additional");
+			}
+			outcome.additional.addChildElement(xmlDistance);				
+		}
+
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
+			out.write(""+outcome.toXML());
+			out.close();
+		} catch (Exception e) {
+			new Warning("Exception during writing s:"+e);
+			e.printStackTrace();
+		}
 
 	}
 
@@ -592,7 +593,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		ArrayList<TournamentValue> agentBvalues=agents.get(1).getValues();
 		if (agentBvalues.isEmpty()) 
 			throw new IllegalStateException("Agent B does not contain any values!");
-		
+
 		String path ="file:etc/templates/journal_learning/six_issues/";
 		DomainRepItem domain = new DomainRepItem(new URL(path+"six_issues.xml"));
 		ArrayList<ProfileRepItem> profilesA=new ArrayList<ProfileRepItem>(); //tournament.getProfiles();
@@ -644,7 +645,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_t.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));*/
-	/*	profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2.xml"),domain));
+		/*	profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u1.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));
 		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u1.xml"),domain));
@@ -663,13 +664,13 @@ public class AlternatingOffersProtocol extends Protocol {
 
 		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();		
 		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
-/**		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
+		/**		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_d_d.xml"),domain));
 		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_u_u.xml"),domain));*/
-//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
-//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
-//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
-//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
+		//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
+		//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
+		//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
+		//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
 		// we need to exhaust the possible combinations of all variables.
 		// we iterate explicitly over the profile and agents, because we need to permutate
 		// only the parameters for the selected agents.
