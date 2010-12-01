@@ -12,6 +12,7 @@ package negotiator.actions;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import negotiator.Agent;
 import negotiator.AgentID;
 import negotiator.Bid;
 /**
@@ -30,6 +31,12 @@ public class Offer extends Action {
         super(agent);
         this.bid = bid;
     }
+    
+    /** Creates a new instance of SendBid */
+    public Offer(Agent agent, Bid bid) {
+        this(agent.getAgentID(), bid);
+    }
+    
     public Bid getBid() {
         return bid;
     }
