@@ -3,23 +3,24 @@ package negotiator.xml;
  * @(#)SimpleElement.java
  */
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Vector;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Vector;
-import java.util.ListIterator;
 
 /**
  * <code>SimpleElement</code> is the only node type for
  * simplified DOM model.
  */
 public class SimpleElement {
-	private String tagName;
-	private String text;
-	private HashMap<String, String> attributes;
-	private LinkedList<SimpleElement> childElements;
+	protected String tagName;
+	protected String text;
+	protected HashMap<String, String> attributes;
+	protected LinkedList<SimpleElement> childElements;
 
 	public SimpleElement(String tagName) {
 		this.tagName = tagName;
@@ -57,6 +58,11 @@ public class SimpleElement {
 
 	public Object[] getChildElements() {
 		return childElements.toArray();
+	}
+	
+	public boolean isEmpty()
+	{
+		return attributes.isEmpty() && childElements.isEmpty();
 	}
         
 	public Object[] getChildByTagName(String tagName) {

@@ -269,7 +269,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             startingWithA, 
             spaceA.getFileName(),
             spaceB.getFileName(),
-            additionalLog
+            additionalLog,
+            time
             );
     	
     	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
