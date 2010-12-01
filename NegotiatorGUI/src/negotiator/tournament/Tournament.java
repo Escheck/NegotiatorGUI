@@ -1,23 +1,27 @@
 package negotiator.tournament;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+
+import java.lang.reflect.Method;
 
 import negotiator.Global;
-import negotiator.NegotiationEventListener;
-import negotiator.Agent;
-
-import negotiator.tournament.VariablesAndValues.*;
-import negotiator.utility.UtilitySpace;
-import negotiator.analysis.BidSpace;
 import negotiator.protocol.Protocol;
-import negotiator.repository.*;
+import negotiator.repository.AgentRepItem;
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.ProtocolRepItem;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.tournament.VariablesAndValues.AgentVariable;
+import negotiator.tournament.VariablesAndValues.AssignedParameterVariable;
+import negotiator.tournament.VariablesAndValues.ProfileValue;
+import negotiator.tournament.VariablesAndValues.ProfileVariable;
+import negotiator.tournament.VariablesAndValues.ProtocolValue;
+import negotiator.tournament.VariablesAndValues.ProtocolVariable;
+import negotiator.tournament.VariablesAndValues.TournamentValue;
+import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
 
 /**
- * This class stores all tournament info.
+ * This class stores all tournament info (for one negotiation!).
  * Only ONE ProfileValue is allowed in the variables.
  * Only TWO AgentValues are allowed.
  * 
@@ -61,6 +65,9 @@ public class Tournament
 		next_number++;
 	}
 	
+	/**
+	 * Get all combinations of agents, domains, etc. via reflection
+	 */
 	public ArrayList<Protocol> getSessions() throws Exception {
 		ProtocolRepItem protRepItem = getProtocol();
 		Class<Protocol> protocol = Global.getProtocolClass(protRepItem);

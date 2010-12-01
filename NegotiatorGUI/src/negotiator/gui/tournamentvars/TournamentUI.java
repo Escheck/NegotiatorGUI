@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.JButton;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import negotiator.AgentParam;
+import org.jdesktop.application.Action;
 
+import negotiator.AgentParam;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
@@ -24,10 +24,20 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.Repository;
-import negotiator.tournament.*;
-import negotiator.tournament.VariablesAndValues.*;
-
-import org.jdesktop.application.Action;
+import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentRunner;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.tournament.VariablesAndValues.AgentValue;
+import negotiator.tournament.VariablesAndValues.AgentVariable;
+import negotiator.tournament.VariablesAndValues.ProfileValue;
+import negotiator.tournament.VariablesAndValues.ProfileVariable;
+import negotiator.tournament.VariablesAndValues.ProtocolValue;
+import negotiator.tournament.VariablesAndValues.ProtocolVariable;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
+import negotiator.tournament.VariablesAndValues.TournamentValue;
+import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
 /**
  *
@@ -267,7 +277,10 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	
 	
 	/***************************CODE FOR RUNNING DEMO AND LOADING & CORRECTING EXAMPLE ********************/
-	/** make sure first three rows are Profile, AgentA, AgentB */
+	/** make sure first three rows are Profile, AgentA, AgentB 
+	 * 	Tournaments setings tab
+	 * 
+	 */
 	static void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars=t.getVariables();
@@ -280,6 +293,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		correctposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		correctposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
+//		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
 	/** check that variable of type given in stub is at expected position.
