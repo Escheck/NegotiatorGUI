@@ -22,6 +22,9 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -32,9 +35,6 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 
 /**
  *
@@ -49,7 +49,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	protected BilateralAtomicNegotiationSession session;
 	private TextArea logText;
 	private JPanel chart;
-	private static final boolean SHOW_TIME = false;
+	private static final boolean SHOW_TIME = !false;
 	
     /** Creates new form ProgressUI2 */
     public ProgressUI2() {
