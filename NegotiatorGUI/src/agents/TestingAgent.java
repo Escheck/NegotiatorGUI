@@ -22,10 +22,10 @@ import negotiator.issue.ValueReal;
  * @author W.Pasman
  * Some improvements over the standard SimpleAgent.
  */
-public class SimpleAgent extends Agent
+public class TestingAgent extends Agent
 {
 	private Action actionOfPartner=null;
-	private static double MINIMUM_BID_UTILITY = 0.5;
+	private static double MINIMUM_BID_UTILITY = 0.7;
 
 	/**
 	 * init is called when a next session starts with the same opponent.
@@ -34,15 +34,20 @@ public class SimpleAgent extends Agent
 	{
 		if(utilitySpace.getReservationValue() != null)
 			MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
+		
+		System.out.println(getName());
+		System.out.println();
+		System.out.println("Discount: " + utilitySpace.getDiscountFactor());
+		System.out.println("RV: " + utilitySpace.getReservationValue());
 	}
-
-	public static String getVersion() { return "3.1"; }
 	
 	@Override
 	public String getName()
 	{
-		return "Simple Agent";
+		return "Testing Agent";
 	}
+
+	public static String getVersion() { return "1.3"; }
 
 	public void ReceiveMessage(Action opponentAction) 
 	{
@@ -59,32 +64,20 @@ public class SimpleAgent extends Agent
 			if(actionOfPartner instanceof Offer)
 			{
 				Bid partnerBid = ((Offer)actionOfPartner).getBid();
-				double offeredUtilFromOpponent = getUtility(partnerBid);
 				// get current time
 				double time = timeline.getTime();
-				action = chooseRandomBidAction();
-				
-				Bid myBid = ((Offer) action).getBid();
-				double myOfferedUtil = getUtility(myBid);
-				
-				// accept under certain circumstances
-				if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
+				if (time > 0.1) 
+				{
+					System.out.println("Accepted, beause t = " + time);
 					action = new Accept(getAgentID());
+				}
+				else action = chooseRandomBidAction();               
 			}
-			sleep(0.005); // just for fun
 		} catch (Exception e) { 
 			System.out.println("Exception in ChooseAction:"+e.getMessage());
 			action=new Accept(getAgentID()); // best guess if things go wrong. 
 		}
 		return action;
-	}
-
-	private boolean isAcceptable(double offeredUtilFromOpponent, double myOfferedUtil, double time) throws Exception
-	{
-		double P = Paccept(offeredUtilFromOpponent,time);
-		if (P > Math.random())
-			return true;		
-		return false;
 	}
 
 	/**
@@ -145,29 +138,4 @@ public class SimpleAgent extends Agent
 
 		return bid;
 	}
-
-	/**
-	 * This function determines the accept probability for an offer.
-	 * At t=0 it will prefer high-utility offers.
-	 * As t gets closer to 1, it will accept lower utility offers with increasing probability.
-	 * it will never accept offers with utility 0.
-	 * @param u is the utility 
-	 * @param t is the time as fraction of the total available time 
-	 * (t=0 at start, and t=1 at end time)
-	 * @return the probability of an accept at time t
-	 * @throws Exception if you use wrong values for u or t.
-	 * 
-	 */
-	double Paccept(double u, double t1) throws Exception
-	{
-		double t=t1*t1*t1; // steeper increase when deadline approaches.
-		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
-		// normalization may be slightly off, therefore we have a broad boundary up to 1.05
-		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
-		if (u>1.) u=1;
-		if (t==0.5) return u;
-		return (u - 2.*u*t + 2.*(-1. + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1. + 2*t);
-	}
-
-	double sq(double x) { return x*x; }
 }
