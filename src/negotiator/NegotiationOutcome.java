@@ -122,6 +122,8 @@ public class NegotiationOutcome {
 		outcome.setAttribute("utilspace", utilspacefilename);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
+		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
+		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
 		Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
 		outcome.setAttribute("normalizedUtility",""+normalized);

@@ -337,7 +337,7 @@ public class UtilitySpace {
     	{
     		discount = 1;
     		if (discountFactor < 0 || discountFactor > 1)
-    			System.err.println("Warning: discount factor = " + discountFactor);
+    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
     	}
     	
     	try

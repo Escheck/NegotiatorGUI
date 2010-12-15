@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
 
@@ -296,7 +297,11 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
+			File outcomes = new File(Global.getOutcomesFileName());
+			boolean exists = outcomes.exists();
+			BufferedWriter out = new BufferedWriter(new FileWriter(outcomes, true));
+			if (!exists)
+				out.write("<a>");
 			out.write(""+outcome.toXML());
 			out.close();
 		} catch (Exception e) {
@@ -744,6 +749,8 @@ public class AlternatingOffersProtocol extends Protocol {
 			int numberOfSessions = 1;
 			if(tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS ).getValues().size()>0)
 				numberOfSessions = ((TotalSessionNumberValue)( tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS).getValues().get(0))).getValue();
+			
+			System.out.println("Number of sessions: " + numberOfSessions);
 			/*			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agentA, agentB, profileA,profileB,
 		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, numberOfSessions , false,
 		    		tournament_gui_time, tournament_non_gui_time,1);//TODO::TournamentNumber) ;*/
@@ -758,7 +765,8 @@ public class AlternatingOffersProtocol extends Protocol {
 			params[1] = paramsB;
 
 			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agents, profiles,params); 
-			sessions.add(session);
+			for (int k = 0; k < numberOfSessions; k++)
+				sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
 			if(bidSpace!=null) {

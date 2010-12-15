@@ -10,11 +10,13 @@
 package negotiator;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.text.SimpleDateFormat;
 
 import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
@@ -47,6 +49,10 @@ public class Global {
 	public static final boolean SHOW_BID_HISTORY_IN_OUTCOMES = false;
 	/** Every agent plays as each preference profile */
 	public static final boolean PLAY_BOTH_SIDES = true;
+	
+	public static final Date loadDate = Calendar.getInstance().getTime();
+	/** Use extensive data-named logging files */
+	public static final boolean LOG_TO_DATED_FILES = false;
 	
 	public Global() {
 	}
@@ -233,6 +239,28 @@ public class Global {
 	 */
 	public static void setAgentsLoader(AgentsLoader agentsLoader) {
 		Global.agentsLoader = agentsLoader;
+	}
+	
+	/**
+	 * @return the agentsLoader
+	 */
+	private static String getLoadDate() 
+	{
+	    // (2) create our "formatter" (our custom format)
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+
+	    // (3) create a new String in the format we want
+	    String name = formatter.format(loadDate);
+
+		return name;
+	}
+	
+	public static String getOutcomesFileName()
+	{
+		if (LOG_TO_DATED_FILES)
+			return "log/" + getLoadDate() + ".xml";
+		else
+			return outcomesFile;
 	}
 	
 	
