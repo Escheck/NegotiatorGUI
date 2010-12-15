@@ -16,6 +16,8 @@ import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
 import negotiator.tournament.VariablesAndValues.ProtocolVariable;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
+import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
@@ -88,6 +90,27 @@ public class Tournament
 			if (v instanceof AgentVariable) agents.add((AgentVariable)v);
 		}
 		return agents;
+	}
+	
+	/**
+	 * @return the number of sessions the tournament. Default = 1.
+	 */
+	public int getNumberOfSessions() 
+	{
+		for (TournamentVariable v: variables)
+			if (v instanceof TotalSessionNumberVariable)
+			{
+				ArrayList<TournamentValue> values = ((TotalSessionNumberVariable) v).getValues();
+				for (TournamentValue val : values)
+				{
+					if (val instanceof TotalSessionNumberValue)
+					{
+						int nosessions = ((TotalSessionNumberValue) val).getValue();
+						return nosessions;
+					}
+				}
+			}
+		return 1;
 	}
 
 	public ProtocolRepItem getProtocol() throws Exception {
