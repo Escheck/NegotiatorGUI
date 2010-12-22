@@ -83,7 +83,7 @@ public class ActionEvent extends NegotiationEvent
 		return normalizedUtilityA;
 	}
 	public String getAgentAsString() {
-		return actor.getName();
+		return actor == null ? "null" : actor.getName();
 	}
 
 	public double getNormalizedUtilityB() {

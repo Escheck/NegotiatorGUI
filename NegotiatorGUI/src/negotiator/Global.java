@@ -54,6 +54,8 @@ public class Global {
 	/** Use extensive data-named logging files */
 	public static final boolean LOG_TO_DATED_FILES = false;
 	
+	public static final boolean SHOW_TIME = false;
+	
 	public Global() {
 	}
 
