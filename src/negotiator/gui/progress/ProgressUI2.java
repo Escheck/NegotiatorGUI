@@ -49,7 +49,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	protected BilateralAtomicNegotiationSession session;
 	private TextArea logText;
 	private JPanel chart;
-	private static final boolean SHOW_TIME = !false;
 	
     /** Creates new form ProgressUI2 */
     public ProgressUI2() {
@@ -388,7 +387,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		biddingTable.getModel().setValueAt(evt.getUtilADiscount(),round-1,4);
 		biddingTable.getModel().setValueAt(evt.getUtilBDsicount(),round-1,5);
 
-		if (isShowTime())
+		if (Global.SHOW_TIME)
 			biddingTable.getModel().setValueAt(evt.getTime(),round-1,6);
 		//opponent model?
 		
@@ -503,11 +502,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			BilateralAtomicNegotiationSessionEvent evt) {
 		// TODO Auto-generated method stub
 		setNegotiationSession(evt.getSession());
-	}
-	
-	public static boolean isShowTime()
-	{
-		return SHOW_TIME;
 	}
 }
 

@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.actions.EndNegotiation;
@@ -29,6 +30,7 @@ import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+s.AgentParameterVariable;
 
 /**
  *
@@ -52,7 +54,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         initComponents(); 
 		sessionProgress = pUI;
 		negoSession = pUI.session;
-		String[] colNames={"Prof. A","Prof. B","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","utilA discount","utilB discount","Details"};
+		String[] colNames={"Prof. A","Prof. B","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","utilA discount","utilB discount", Global.SHOW_TIME ? "Time" : "Details"};
 		resultTableModel = new NegoTableModel (colNames);
 		resultTable.setModel(resultTableModel);
 		//add a listener to receive selection events:
@@ -220,7 +222,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
 			resultTable.getModel().setValueAt(evt.getUtilADiscount(),session-1,9);//util a
 			resultTable.getModel().setValueAt(evt.getUtilBDsicount(),session-1,10);//util b
-			if (ProgressUI2.isShowTime())
+			if (Global.SHOW_TIME)
 				resultTable.getModel().setValueAt(evt.getTime(),session-1,11);//details???
 		}
 	}
