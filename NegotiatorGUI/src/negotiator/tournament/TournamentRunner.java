@@ -6,6 +6,7 @@ import negotiator.NegotiationEventListener;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
+import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
 
 /**
  * TournamentRunner is a class that runs a tournament.
@@ -50,15 +51,17 @@ public class TournamentRunner implements Runnable {
      * See "java dialog deadlock" on the web...
      */
     public void run() {
+    	ArrayList<Protocol> sessions =null;
     	try { 
-    		ArrayList<Protocol> sessions =null;
     		if(runSingleSession) {
     			sessions = new ArrayList<Protocol>();
     			sessions.add(tournament.getSessions().get(0));
     		}
     		else
     			sessions=tournament.getSessions();
-			for (Protocol s: sessions) {
+			for (Protocol s: sessions) 
+			{
+				System.out.println("Starting negotiation " + s);
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				synchronized(this) { 
 					for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);				
@@ -70,6 +73,9 @@ public class TournamentRunner implements Runnable {
 				
 			}
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
+    	
+    	System.out.println("Done with " + sessions.size() + " sessions.");
+    	AlternatingOffersProtocol.closeLog();
     }
     
     public void fireNegotiationSessionEvent(Protocol session ) {

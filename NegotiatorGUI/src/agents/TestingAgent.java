@@ -6,6 +6,7 @@ import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -39,6 +40,17 @@ public class TestingAgent extends Agent
 		System.out.println();
 		System.out.println("Discount: " + utilitySpace.getDiscountFactor());
 		System.out.println("RV: " + utilitySpace.getReservationValue());
+		Domain domain = utilitySpace.getDomain();
+		System.out.println("NumberOfPossibleBids: " + domain.getNumberOfPossibleBids());
+		Bid randomBid = domain.getRandomBid();
+		try
+		{
+			System.out.println("Utitility of bid " + randomBid + " = " + utilitySpace.getUtility(randomBid));
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

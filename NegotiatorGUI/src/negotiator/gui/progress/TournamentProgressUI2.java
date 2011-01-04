@@ -1,9 +1,3 @@
-/*
- * TournamentProgressUI2.java
- *
- * Created on 9 september 2008, 12:13
- */
-
 package negotiator.gui.progress;
 
 import java.util.ArrayList;
@@ -30,7 +24,6 @@ import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-s.AgentParameterVariable;
 
 /**
  *

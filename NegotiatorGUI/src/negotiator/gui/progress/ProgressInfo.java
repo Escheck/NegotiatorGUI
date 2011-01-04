@@ -2,12 +2,14 @@ package negotiator.gui.progress;
 
 import javax.swing.table.AbstractTableModel;
 
+import negotiator.Global;
+
 class ProgressInfo extends AbstractTableModel{
 	//public Bid ourOldBid;
 	//public Bid oppOldBid;
 	//public UtilitySpace utilitySpace;
 	private static final int NUMBER_OF_COLUMNS = 8; 
-	private String[] colNames={"Round","Side","utilA","utilB","utilA discount","utilB discount"," Opp. model"};
+	private String[] colNames={"Round","Side","utilA","utilB","utilA discount","utilB discount", Global.SHOW_TIME ? "Time" : " Opp. model"};
 	private Object[][] data;
 	
 	public ProgressInfo() 
