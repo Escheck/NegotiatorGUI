@@ -260,8 +260,12 @@ public class BidSpace {
 		if (pareto.size()<2) throw new Exception("Pareto has only 1 point?!"+pareto);
 		// pareto is monotonically descending in utilB direction.
 		int i=0;
-		while (! (pareto.get(i).utilityB>=opponentUtility && opponentUtility>pareto.get(i+1).utilityB)) 
+//		System.out.println("Searching for opponentUtility = " + opponentUtility);
+		while (! (pareto.get(i).utilityB>=opponentUtility && opponentUtility>=pareto.get(i+1).utilityB)) 
+		{
+//			System.out.println(i + ". Trying [" + pareto.get(i).utilityB +  ", " + pareto.get(i+1).utilityB + "]");
 			i++;
+		}
 		
 		double oppUtil1=pareto.get(i).utilityB; // this is the high value
 		double oppUtil2=pareto.get(i+1).utilityB; // the low value
@@ -307,9 +311,9 @@ public class BidSpace {
 			r=weightA*sq(p.utilityA-utilA)+weightB*sq(p.utilityB-utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
-		System.out.println("point found="+bestPoint.bid);
+		System.out.println("point found: (" + bestPoint.utilityA + ", " + bestPoint.utilityB + ") ="+bestPoint.bid);
 		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
-		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
+//		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
 		//System.out.println();
 		return bestPoint;
 	}

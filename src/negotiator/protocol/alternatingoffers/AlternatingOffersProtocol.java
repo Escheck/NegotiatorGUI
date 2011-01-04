@@ -42,7 +42,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
-
+	/** always 1? */
 	int sessionTotalNumber;
 	int sessionNumber; // the main session number: increases with different session setups
 	public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
@@ -56,9 +56,10 @@ public class AlternatingOffersProtocol extends Protocol {
 	NegotiationOutcome outcome;
 
 
-	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not	
-	public final int non_gui_nego_time = 180;
-	public final int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
+	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
+	/** Total negotiation time available in seconds. This also changes {@link AlternatingOffersBilateralAtomicNegoSession.totalTime} */
+	public final static int non_gui_nego_time = 180;
+	public final static int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
 	private Agent agentA;
 	private Agent agentB;
@@ -189,7 +190,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	public void startNegotiation() throws Exception {
 		// Main.log("Starting negotiations...");
 		for(int i=0;i<sessionTotalNumber;i++) {
-			//Main.log("Starting session " + String.valueOf(i+1));
+//			System.out.println("Starting session " + String.valueOf(i+1));
 			if(tournamentRunner!=null) {
 				synchronized (tournamentRunner) {
 					runNegotiationSession(i+1);
@@ -246,6 +247,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		sessionrunner.setTotalTime(totalTime);
 		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);
+		/* This eventually fills the GUI columns */
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
 		if(Global.fDebug) {
 			sessionrunner.run();
@@ -296,19 +298,54 @@ public class AlternatingOffersProtocol extends Protocol {
 			outcome.additional.addChildElement(xmlDistance);				
 		}
 
+		writeOutcomeToLog();
+		sessionrunner.cleanUp();
+	}
+
+
+	private void writeOutcomeToLog()
+	{
 		try {
-			File outcomes = new File(Global.getOutcomesFileName());
-			boolean exists = outcomes.exists();
-			BufferedWriter out = new BufferedWriter(new FileWriter(outcomes, true));
+			File outcomesFile = getLogFile();
+			boolean exists = outcomesFile.exists();
+			BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
 			if (!exists)
-				out.write("<a>");
+			{
+				System.out.println("Creating log file: " + Global.getOutcomesFileName());
+				out.write("<a>\n");
+			}
 			out.write(""+outcome.toXML());
 			out.close();
 		} catch (Exception e) {
 			new Warning("Exception during writing s:"+e);
 			e.printStackTrace();
 		}
+	}
+	
+	public static void closeLog()
+	{
+		try {
+			File outcomesFile = getLogFile();
+			boolean exists = outcomesFile.exists();
+			if (exists)
+			{
+				BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
+				System.out.println("Closing log file: " + Global.getOutcomesFileName());
+				out.write("</a>\n");
+				out.close();
+			}
+		} catch (Exception e) {
+			new Warning("Exception during closing log:"+e);
+			e.printStackTrace();
+		}
+	}
 
+
+	private static File getLogFile()
+	{
+		String outcomesFileName = Global.getOutcomesFileName();
+		File outcomesFile = new File(outcomesFileName);
+		return outcomesFile;
 	}
 
 	public void stopNegotiation() {
@@ -795,10 +832,10 @@ public class AlternatingOffersProtocol extends Protocol {
 
 
 	@Override
-	public void cleanUP() {
+	public void cleanUP() 
+	{
 		agentA = null;
 		agentB = null;
-
 	}
 
 

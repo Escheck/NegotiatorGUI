@@ -23,8 +23,7 @@ import negotiator.xml.SimpleElement;
 
 /**
  * Wrapper for opponentmodelspace, so that it is a neat utilityspace that we can give to the bidspace. 
- * @author wouter
- *
+ * @author Tim Baarslag & Dmytro Tykhonov
  */
 
 public class BayesianAgent extends Agent {
@@ -48,7 +47,7 @@ public class BayesianAgent extends Agent {
 	private static final int NUMBER_OF_SMART_STEPS = 0; 
 	private ArrayList<Bid> myPreviousBids;
 	private boolean fSkipDistanceCalc = false;
-	private boolean fDebug = false;
+	private boolean logging = !false;
 	private int fRound;
 	// Class constructor
 	public BayesianAgent() {
@@ -56,7 +55,13 @@ public class BayesianAgent extends Agent {
 	}
 	
 
-	public static String getVersion() { return "2.0"; }
+	public static String getVersion() { return "2.1"; }
+	
+	@Override
+	public String getName()
+	{
+		return "Bayesian Agent";
+	}
 
 	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
 	public static ArrayList<AgentParam> getParameters() { 
@@ -415,8 +420,8 @@ public class BayesianAgent extends Agent {
 	                //double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
 	                //double P=Paccept(offeredutil,time);
 	                //log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
-	               if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(myLastBid)
-	            	/*|| .05*P>Math.random()*/ )	   
+	                /*if (.05*P>Math.random()) was here too */
+	               if (isAcceptableBefore(offeredutil))	   
 	               {
 						// Opponent bids equally, or outbids my previous bid, so lets accept
 	                	lAction = new Accept(getAgentID());
@@ -428,7 +433,8 @@ public class BayesianAgent extends Agent {
 	                	// Propose counteroffer. Get next bid.
 	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                	// if yes then accept last bid of the opponent.
-	                	if (utilitySpace.getUtility(lOppntBid)*1.03 >= utilitySpace.getUtility(lnextBid))
+	                	// Before 22-12-2010 it was: if (offeredutil*1.03 >= utilitySpace.getUtility(lnextBid))
+	                	if (isAcceptableAfter(offeredutil, lnextBid))
 	                	{
 	                		// Opponent bids equally, or outbids my previous bid, so lets  accept
 	                		lAction = new Accept(getAgentID());
@@ -468,6 +474,23 @@ public class BayesianAgent extends Agent {
 			myPreviousBids.add( ((Offer)myLastAction).getBid());
 		return lAction;
 	}
+
+	/**
+	 * Returns whether the offered utility is acceptable after computing a counter offer.
+	 */
+	protected boolean isAcceptableAfter(double offeredutil, Bid lnextBid) throws Exception
+	{
+		return offeredutil >= utilitySpace.getUtility(lnextBid);
+	}
+
+	/**
+	 * Returns whether the offered utility is acceptable before computing a counter offer.
+	 */
+	protected boolean isAcceptableBefore(double offeredutil) throws Exception
+	{
+		return offeredutil*1.03 >= utilitySpace.getUtility(myLastBid);
+	}
+	
 	private ACTIONTYPE getActionType(Action lAction) {
 		ACTIONTYPE lActionType = ACTIONTYPE.START;
 		if (lAction instanceof Offer)
@@ -492,7 +515,7 @@ public class BayesianAgent extends Agent {
 	 * @param pMessage - debug informaton to print
 	 */
 	private void log(String pMessage) {
-		if(fDebug) 
+		if(logging) 
 			System.out.println(pMessage);
 	}
 

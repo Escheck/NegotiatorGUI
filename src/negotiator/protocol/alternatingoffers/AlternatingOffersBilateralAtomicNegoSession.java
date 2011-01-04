@@ -44,7 +44,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
     /* time/deadline */
     Date startTime; 
     long startTimeMillies; //idem.
-	private Integer totalTime = 180000;
+    /** In ms. */
+	private Integer totalTime = 1000 * AlternatingOffersProtocol.non_gui_nego_time;
     Integer totTime; // total time, seconds, of this negotiation session.
     private int sessionTotalNumber = 1;
     private Protocol protocol;
@@ -265,8 +266,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
             utilADiscount,utilBDiscount,
             message,
             fAgentABids,fAgentBBids,
-            spaceA.getUtility(spaceA.getMaxUtilityBid()),
-            spaceB.getUtility(spaceB.getMaxUtilityBid()),
+            1.0,
+            1.0,
+            // This is super slow
+//            spaceA.getUtility(spaceA.getMaxUtilityBid()),
+//            spaceB.getUtility(spaceB.getMaxUtilityBid()),
             startingWithA, 
             spaceA.getFileName(),
             spaceB.getFileName(),
@@ -296,7 +300,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double reservationValueB = 0;
 			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
 			
-    		newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out", 1);
+    		newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"negotiation was timed out"),"negotiation was timed out", 1);
     		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
     		// don't bother about max utility, both have zero anyway.
 
