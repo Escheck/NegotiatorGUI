@@ -298,15 +298,21 @@ public class AlternatingOffersProtocol extends Protocol {
 			outcome.additional.addChildElement(xmlDistance);				
 		}
 
-		writeOutcomeToLog();
+		writeOutcomeToLog(false);
+		if (Global.EXTENSIVE_OUTCOMES_LOG)
+			writeOutcomeToLog(true);
 		sessionrunner.cleanUp();
 	}
 
 
-	private void writeOutcomeToLog()
+	private void writeOutcomeToLog(boolean extensive)
 	{
 		try {
-			File outcomesFile = getLogFile();
+			File outcomesFile;
+			if (extensive)
+				outcomesFile = getExtensiveLogFile();
+			else
+				outcomesFile = getLogFile();
 			boolean exists = outcomesFile.exists();
 			BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
 			if (!exists)
@@ -314,7 +320,10 @@ public class AlternatingOffersProtocol extends Protocol {
 				System.out.println("Creating log file: " + Global.getOutcomesFileName());
 				out.write("<a>\n");
 			}
-			out.write(""+outcome.toXML());
+			if (extensive)
+				out.write(outcome.toXMLWithBids().toString());
+			else
+				out.write(""+outcome.toXML());
 			out.close();
 		} catch (Exception e) {
 			new Warning("Exception during writing s:"+e);
@@ -322,15 +331,19 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 	}
 	
-	public static void closeLog()
+	public static void closeLog(boolean extensive)
 	{
 		try {
-			File outcomesFile = getLogFile();
+			File outcomesFile;
+			if (extensive)
+				outcomesFile = getExtensiveLogFile();
+			else
+				outcomesFile = getLogFile();
 			boolean exists = outcomesFile.exists();
 			if (exists)
 			{
 				BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
-				System.out.println("Closing log file: " + Global.getOutcomesFileName());
+				System.out.println("Closing log file: " + outcomesFile.getName());
 				out.write("</a>\n");
 				out.close();
 			}
@@ -344,6 +357,13 @@ public class AlternatingOffersProtocol extends Protocol {
 	private static File getLogFile()
 	{
 		String outcomesFileName = Global.getOutcomesFileName();
+		File outcomesFile = new File(outcomesFileName);
+		return outcomesFile;
+	}
+	
+	private static File getExtensiveLogFile()
+	{
+		String outcomesFileName = Global.getExtensiveOutcomesFileName();
 		File outcomesFile = new File(outcomesFileName);
 		return outcomesFile;
 	}

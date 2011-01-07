@@ -1,8 +1,5 @@
 package misc;
 
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -50,9 +47,6 @@ public class Serializer<A>
 		{
 			is = new BufferedInputStream(new FileInputStream(fileName), 50000 * 1024);
 			
-			if (log)
-				is = new GZIPInputStream(is);
-
 			ois = new ObjectInputStream(is);
 				
 			final Object readObject = ois.readObject();
@@ -88,9 +82,6 @@ public class Serializer<A>
 		{
 			os = new BufferedOutputStream(new FileOutputStream(fileName));
 			
-			if (log)
-				os = new GZIPOutputStream(os);
-
 			oos = new ObjectOutputStream(os);
 			oos.writeObject(a);
 			oos.close();
