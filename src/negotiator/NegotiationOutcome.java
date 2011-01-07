@@ -122,24 +122,38 @@ public class NegotiationOutcome {
 		outcome.setAttribute("utilspace", utilspacefilename);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
-		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
-		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
+		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
+		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
 		Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
 		outcome.setAttribute("normalizedUtility",""+normalized);
-
-		if (addBids)
-			outcome.addChildElement(bids.toXML());
 		return outcome;
 	}
 
+	/**
+	 * Does not include bid history in log file.
+	 */
 	public SimpleElement toXML()
+	{
+		return toXML(false);
+	}
+
+	/**
+	 * Includes bid history in log file.
+	 */
+	public SimpleElement toXMLWithBids()
+	{
+		return toXML(true);
+	}
+
+
+	private SimpleElement toXML(boolean addBids)
 	{
 		OrderedSimpleElement outcome = new OrderedSimpleElement("NegotiationOutcome");
 		outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
 		outcome.setAttribute("timeOfAgreement", "" + time);
-		
-		boolean addBids = Global.SHOW_BID_HISTORY_IN_OUTCOMES;
+		outcome.setAttribute("bids", "" + (AgentABids.size() + AgentBBids.size()));
+
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
 				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids));
 		outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
@@ -148,6 +162,39 @@ public class NegotiationOutcome {
 		if (ErrorRemarks != null) outcome.setAttribute("errors",ErrorRemarks);
 		String startingagent="B"; if (agentAstarts) startingagent="A";
 		outcome.setAttribute("startingAgent",startingagent);
+		
+		if (addBids)
+			outcome.addChildElement(bidsToXML());
 		return outcome;
+	}
+
+	private OrderedSimpleElement bidsToXML()
+	{
+		OrderedSimpleElement bids = new OrderedSimpleElement("bidHistory");
+
+		final int total = Math.max(AgentABids.size(), AgentBBids.size());
+		for (int i = 0; i < total; i++)
+		{
+			if (i < AgentABids.size())
+			{
+				BidPoint a = AgentABids.get(i);
+				SimpleElement xmlBidpoint = new OrderedSimpleElement("bidpoint");
+				xmlBidpoint.setAttribute("fromAgent", "A");
+				xmlBidpoint.setAttribute("utilityA", String.valueOf(a.utilityA));
+				xmlBidpoint.setAttribute("utilityB", String.valueOf(a.utilityB));
+				bids.addChildElement(xmlBidpoint);
+			}
+
+			if (i < AgentBBids.size())
+			{
+				BidPoint b = AgentBBids.get(i);
+				SimpleElement xmlBidpoint = new OrderedSimpleElement("bidpoint");
+				xmlBidpoint.setAttribute("fromAgent", "B");
+				xmlBidpoint.setAttribute("utilityA", String.valueOf(b.utilityA));
+				xmlBidpoint.setAttribute("utilityB", String.valueOf(b.utilityB));
+				bids.addChildElement(xmlBidpoint);
+			}
+		}
+		return bids;
 	}
 }

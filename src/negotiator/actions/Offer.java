@@ -41,7 +41,7 @@ public class Offer extends Action {
         return bid;
     }
     public String toString() {
-        return "(Offer: " + bid.toString() + ")";
+        return "(Offer: " + (bid == null ? "null" : bid.toString()) + ")";
     }
     
 }
