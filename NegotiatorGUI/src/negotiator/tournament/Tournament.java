@@ -2,6 +2,7 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import negotiator.Global;
@@ -30,7 +31,7 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
  * @author wouter
  *
  */
-public class Tournament
+public class Tournament implements Serializable
 {
 	/** TournamentNumber is used to give a unique reference to this tournament to the user.
 	 * So the first tournament the user creates is tournament 1, the second 2, etc.
@@ -160,6 +161,12 @@ public class Tournament
 	}
 	
 	public ArrayList<TournamentVariable> getVariables() { return variables; }
+	
+	@Override
+	public String toString()
+	{
+		return "Variables: " + variables + "\nSessions: " + sessions;
+	}
 	
 }
 

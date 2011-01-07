@@ -1,11 +1,13 @@
 package negotiator.protocol;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.Serializable;
 
 import negotiator.Agent;
 import negotiator.Domain;
@@ -28,7 +30,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public abstract class Protocol implements Runnable {
+public abstract class Protocol implements Runnable, Serializable {
     protected Thread negoThread = null;
     protected TournamentRunner tournamentRunner;
     /**
@@ -222,6 +224,12 @@ public abstract class Protocol implements Runnable {
     		} catch (Exception e) {	new Warning("problem stopping the nego",e); }
     	}
         return;
+    }
+    
+    @Override
+    public String toString()
+    {
+    	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
     }
     public abstract void cleanUP();
 

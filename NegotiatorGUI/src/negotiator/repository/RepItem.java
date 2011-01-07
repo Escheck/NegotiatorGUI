@@ -1,6 +1,8 @@
 package negotiator.repository;
 
-public interface RepItem
+import java.io.Serializable;
+
+public interface RepItem extends Serializable
 {
 	
 }

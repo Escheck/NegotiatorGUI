@@ -82,9 +82,16 @@ public class SimpleElement {
 		return resultArray;
     }
         
-	public String toString() {
-        	String lResult="";
-        	lResult +="<" + tagName;
+	public String toString() 
+	{
+		StringBuffer s;
+		if (childElements.isEmpty())
+			s = new StringBuffer(64);
+		else
+			s = new StringBuffer(1024);
+			
+        	s.append("<");
+        	s.append(tagName);
             //save all attributes
             for(int i=0;i<attributes.size();i++) {
             	String lAttrName = (String)(attributes.keySet().toArray()[i]);
@@ -92,19 +99,27 @@ public class SimpleElement {
             	if (attributes.entrySet().toArray()[i]!=null)
             		lAttrValue= (attributes.get(lAttrName));
             	
-            	lResult +=" "+lAttrName+"=\"" +lAttrValue+"\"";
+            	s.append(" "); 
+            	s.append(lAttrName);
+            	s.append("=\"");
+            	s.append(lAttrValue);
+            	s.append("\"");
             }
-            lResult +="> \n";
+            s.append("> \n");
             //save all children
             for(int i=0;i<childElements.size();i++) {
             	SimpleElement lSE = (SimpleElement)getChildElements()[i];
-            	lResult += lSE.toString();
+            	s.append(lSE.toString());
             }
             if(text!=null) {
-            	lResult += text+" \n";}
-            lResult +="</" + tagName+"> \n";
+            	s.append(text);
+            	s.append(" \n");
+            	}
+            s.append("</");
+            s.append(tagName);
+            s.append("> \n");
         	
-        	return lResult;
+        	return s.toString();
         }
         public void saveToFile(String pFileName) {
         	try {

@@ -2,8 +2,9 @@ package negotiator.analysis;
 
 
 import negotiator.Bid;
-import negotiator.xml.SimpleElement;
 import negotiator.XMLable;
+import negotiator.xml.OrderedSimpleElement;
+import negotiator.xml.SimpleElement;
 
 /**
  * 
@@ -33,10 +34,10 @@ public class BidPoint implements XMLable {
 	
 	public SimpleElement toXML()
 	{
-		SimpleElement xml = new SimpleElement("BidPoint");
+		SimpleElement xml = new OrderedSimpleElement("BidPoint");
 		xml.addChildElement(bid.toXML());
-		xml.setAttribute("utilityA", ""+utilityA);
-		xml.setAttribute("utilityB", ""+utilityB);
+		xml.setAttribute("utilityA", String.valueOf(utilityA));
+		xml.setAttribute("utilityB", String.valueOf(utilityB));
 		return xml;
 	}
 }

@@ -14,6 +14,8 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.application.Action;
 
+import misc.Serializer;
+
 import negotiator.AgentParam;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
@@ -43,10 +45,13 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
  *
  * @author  dmytro
  */
-public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent {
-
+public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent 
+{
 	
 	Tournament tournament; // this contains the variables and their possible values.
+	public static Serializer<Tournament> previousTournament
+	= new Serializer<Tournament>("previousTournament", "Previous tournament setup");
+	
 	AbstractTableModel dataModel;
 
 	Repository domainrepository; // contains all available domains and profiles to pick from.
@@ -56,7 +61,17 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
     public TournamentUI() {
         initComponents();
 		//Tournament t=new TournamentTwoPhaseAuction(); // bit stupid to correct an empty one, but will be useful later.
-        Tournament t=new Tournament(); 
+        
+        Tournament t;
+        final Tournament readFromDisk = previousTournament.readFromDisk();
+		if (readFromDisk == null)
+			t = new Tournament(); 
+		else
+		{
+			System.out.println("Using the tournament setup from " + previousTournament.getFileName() + ".");
+			t = readFromDisk;
+		}
+		
 		correct_tournament(t);
 		
 		tournament=t;
@@ -268,7 +283,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		ProgressUI2 progressUI = new ProgressUI2();
 		TournamentProgressUI2 tournamentProgressUI=new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
-		 
+		previousTournament.writeToDisk(tournament);
 		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
 		new Thread(new TournamentRunner (tournament,tournamentProgressUI)).start();
 		
@@ -284,52 +299,48 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	static void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars=t.getVariables();
-		correctposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());		
-		correctposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
+		fillposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());		
+		fillposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
 		AgentVariable agentVar = new AgentVariable();
 		agentVar.setSide("A");
-		correctposition(vars,Tournament.VARIABLE_AGENT_A,agentVar);
+		fillposition(vars,Tournament.VARIABLE_AGENT_A,agentVar);
 		agentVar = new AgentVariable();
 		agentVar.setSide("B");
-		correctposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
-		correctposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
+		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
+		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
 //		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
-	/** check that variable of type given in stub is at expected position.
-	 * If not, move the first occurence after *that position* to the given position
+	/** 
+	 * Check that variable of type given in stub is at expected position.
 	 * Or create new instance of that type if there is none.
 	 * @param vars is array of TournamentVariables.
 	 * @param pos expected position
-	 * @param stub: TournamentVariable of the expected type, which is substituted if no object of required type is in the array at all.
 	 */
-	static void correctposition(ArrayList<TournamentVariable> vars, int expectedpos, TournamentVariable stub) {
-		// find the profile variable(s) and its position. Remove multiple occurences.
-		TournamentVariable v=null;
-		int pos=-1;
-		for (int i=expectedpos; i<vars.size(); i++) {
-			if (vars.get(i).getClass().equals(stub.getClass())) {
-				if (v==null) {
-					pos=i; v=vars.get(i);
-				} else {
-					new Warning("tournament contains multiple "+stub.getClass()+" variables. Removing all but the first one.");
-					vars.remove(i);
-					i--; // re-check this index
-				}
-			}
+	static void fillposition(ArrayList<TournamentVariable> vars, int expectedpos, TournamentVariable stub) 
+	{
+		TournamentVariable var = null;
+		if (expectedpos < vars.size())
+			var = vars.get(expectedpos);
+		
+		// This var is not set yet
+		if (var == null)
+		{
+			if (expectedpos < vars.size())
+				vars.set(expectedpos, stub);
+			else
+				vars.add(expectedpos, stub);
+			return;
 		}
-	
-		if (pos!=expectedpos) {
-			// incorrect profile
-			if (v==null) {
-				new Warning("tournament has no "+stub.getClass()+" variable. adding a stub");
-				vars.add(expectedpos,stub);
-			} else {
-				new Warning("tournament has "+stub.getClass()+" variable not on expected place. Moving it to correct position.");
-				vars.remove(pos);
-				vars.add(expectedpos, v);
-			}
+		
+		if (!var.getClass().equals(stub.getClass()))
+		{
+			new Warning("tournament has "+stub.getClass()+" variable not on expected place. Replacing it by a stub.");
+			vars.set(expectedpos, stub);
+			return;
 		}
+		
+//		System.out.println("Read " + var);
 	}
     
     

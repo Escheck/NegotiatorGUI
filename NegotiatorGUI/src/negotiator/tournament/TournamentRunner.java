@@ -2,6 +2,7 @@ package negotiator.tournament;
 
 import java.util.ArrayList;
 
+import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
@@ -75,7 +76,9 @@ public class TournamentRunner implements Runnable {
     	} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
     	
     	System.out.println("Done with " + sessions.size() + " sessions.");
-    	AlternatingOffersProtocol.closeLog();
+    	if (Global.EXTENSIVE_OUTCOMES_LOG)
+    		AlternatingOffersProtocol.closeLog(true);
+    	AlternatingOffersProtocol.closeLog(false);
     }
     
     public void fireNegotiationSessionEvent(Protocol session ) {

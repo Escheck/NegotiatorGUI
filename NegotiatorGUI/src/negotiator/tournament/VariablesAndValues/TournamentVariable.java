@@ -2,6 +2,8 @@ package negotiator.tournament.VariablesAndValues;
 
 import java.util.ArrayList;
 
+import java.io.Serializable;
+
 /**
  * TournamentVariable is an abstract class, 
  * it is either a ProfileVariable, AgentVariable or AgentParameterVariable,
@@ -11,7 +13,7 @@ import java.util.ArrayList;
  * @author wouter
  *
  */
-public abstract class TournamentVariable
+public abstract class TournamentVariable  implements Serializable
 {
 	ArrayList<TournamentValue> values=new ArrayList<TournamentValue>(); /** ordered list of values this var can take */
 

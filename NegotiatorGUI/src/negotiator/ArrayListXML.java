@@ -32,7 +32,7 @@ public class ArrayListXML<E> extends ArrayList<E> implements XMLable
 	   for (int i=0; i<N;i++)
 	   {
 		   SimpleElement elt=new SimpleElement("ArrayListElement");
-		   elt.setAttribute("index", ""+i); // have to do this way, XML does not enforce any order...
+		   elt.setAttribute("index", String.valueOf(i)); // have to do this way, XML does not enforce any order...
 		   E e=get(i);
 		   if (!(e instanceof XMLable))
 			   throw new ClassCastException("Element of ArrayListXML at position "+i+" is not XMLable");
