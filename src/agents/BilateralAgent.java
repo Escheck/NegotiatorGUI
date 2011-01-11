@@ -5,6 +5,7 @@ import java.util.List;
 
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -15,12 +16,14 @@ import negotiator.actions.Offer;
  */
 public abstract class BilateralAgent extends Agent
 {
+	protected Domain domain;
 	private Action opponentAction;
 	protected List<Bid> opponentPreviousBids;
 	protected List<Bid> myPreviousBids;
 
 	public void init()
 	{ 
+		domain = utilitySpace.getDomain();
 		opponentPreviousBids 	= new ArrayList<Bid>();
 		myPreviousBids 			= new ArrayList<Bid>();
 	}
@@ -34,7 +37,7 @@ public abstract class BilateralAgent extends Agent
 		if (opponentAction instanceof Offer)
 			opponentPreviousBids.add(((Offer) opponentAction).getBid());
 	}
-	
+
 	/**
 	 * @param remember: remember the action or not.
 	 */
@@ -43,25 +46,23 @@ public abstract class BilateralAgent extends Agent
 	{
 		Bid opponentLastBid = getOpponentLastBid();
 		Action myAction = null;
-		
+
 		// We start
 		if (opponentLastBid == null)
 		{
 			Bid openingBid = chooseOpeningBid();
 			myAction = new Offer(getAgentID(), openingBid);
 		}
-		
+
 		// We make a counter-offer
 		else if (opponentAction instanceof Offer)
 		{
+			Bid counterBid = chooseCounterBid();
 			// Check to see if we want to accept
-			if (isAcceptable())
+			if (isAcceptable(counterBid))
 				myAction = new Accept(getAgentID());
 			else
-			{
-				Bid counterBid = chooseCounterBid();
 				myAction = new Offer(getAgentID(), counterBid);
-			}
 		}
 
 		remember(myAction);
@@ -79,12 +80,13 @@ public abstract class BilateralAgent extends Agent
 			myPreviousBids.add(myLastBid);
 		}
 	}
-	
+
 	/**
 	 * At some point, one of the parties has to accept an offer to end the negotiation. 
 	 * Use this method to decide whether to accept the last offer by the opponent.  
+	 * @param plannedBid 
 	 */
-	public abstract boolean isAcceptable();
+	public abstract boolean isAcceptable(Bid plannedBid);
 
 	/**
 	 * The opponent has already made a bid. Use this method to make an counter bid.
@@ -95,23 +97,23 @@ public abstract class BilateralAgent extends Agent
 	 * Use this method to make an opening bid
 	 */
 	public abstract Bid chooseOpeningBid(); 
-	
+
 	public Bid getMyLastBid()
 	{
 		if (myPreviousBids.isEmpty())
 			return null;
-		
+
 		return myPreviousBids.get(myPreviousBids.size() - 1);
 	}
-	
+
 	public Bid getOpponentLastBid()
 	{
 		if (opponentPreviousBids.isEmpty())
 			return null;
-		
+
 		return opponentPreviousBids.get(opponentPreviousBids.size() - 1);
 	}
-	
+
 	public List<Bid> getOpponentPreviousBids()
 	{
 		return opponentPreviousBids;
