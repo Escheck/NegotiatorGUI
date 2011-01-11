@@ -112,9 +112,9 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	}
     public void cleanUp() {
     	agentA.cleanUp();
-    	agentA = null;
+//    	agentA = null;
     	agentB.cleanUp();
-    	agentB = null;
+//    	agentB = null;
     }
     public BidSpace getBidSpace() { 
     	if(bidSpace==null) {

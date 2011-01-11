@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import negotiator.issue.*;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.Value;
+import negotiator.issue.ValueInteger;
+import negotiator.issue.ValueReal;
 
 /**
  * 
@@ -24,9 +30,6 @@ public class BidIterator implements Iterator {
 		fInit=true;
 		fNumberOfIssues = fDomain.getIssues().size();
 		fValuesIndexes= new int[fNumberOfIssues ];
-		for(int i=0;i<fNumberOfIssues ;i++) {
-			fValuesIndexes[i]=0;			
-		}
 	}
 	
 	public boolean hasNext() {

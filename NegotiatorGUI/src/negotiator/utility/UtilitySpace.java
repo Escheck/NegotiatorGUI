@@ -53,6 +53,7 @@ import negotiator.xml.SimpleElement;
 public class UtilitySpace {
 	
 	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
+	/** For checking costs */
 	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_NOT_CHECK;
 	// Class fields
     protected Domain domain;
@@ -223,11 +224,11 @@ public class UtilitySpace {
         String err=IsComplete();
         if (err!=null) throw new Exception("utility space '"+ fileName +"' of agent "+agentName+" is incomplete\n"+err);
         
-        // TODO 
-         if (!checkTreeNormalization()) {
-        	 
+//        TODO 
+//         if (!checkTreeNormalization()) 
+//         {
         	 //throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
-         }
+//         }
          
     }
     
@@ -1090,6 +1091,11 @@ public class UtilitySpace {
     		fEvaluators.get(obj).showStatistics();
     	}
     }
+    
+    /**
+     * The reservation value is the least favourable point at which one will accept a negotiated agreement. 
+     * Also sometimes referred to as the ‘walk away’ point.
+     */
     public Double getReservationValue() {
     	return fReservationValue;
     }
