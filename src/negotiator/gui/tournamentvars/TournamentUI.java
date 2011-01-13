@@ -47,8 +47,9 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
  */
 public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent 
 {
+	/** this contains the variables and their possible values. */
+	Tournament tournament; 
 	
-	Tournament tournament; // this contains the variables and their possible values.
 	public static Serializer<Tournament> previousTournament
 	= new Serializer<Tournament>("previousTournament", "Previous tournament setup");
 	

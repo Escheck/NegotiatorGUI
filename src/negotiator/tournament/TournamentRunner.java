@@ -6,6 +6,7 @@ import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
+import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
 import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
 
@@ -79,6 +80,12 @@ public class TournamentRunner implements Runnable {
     	if (Global.EXTENSIVE_OUTCOMES_LOG)
     		AlternatingOffersProtocol.closeLog(true);
     	AlternatingOffersProtocol.closeLog(false);
+    	
+    	if (NegoGUIApp.getOptions().quitWhenTournamentDone)
+    	{
+    		System.out.println("Auto-quitting after the tournament is done.");
+    		System.exit(0);
+    	}
     }
     
     public void fireNegotiationSessionEvent(Protocol session ) {

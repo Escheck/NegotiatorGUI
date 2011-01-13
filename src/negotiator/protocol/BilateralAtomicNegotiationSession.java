@@ -110,12 +110,15 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
     	}
 	}
-    public void cleanUp() {
+    
+	public void cleanUp() 
+    {
     	agentA.cleanUp();
-//    	agentA = null;
+    	agentA = null;
     	agentB.cleanUp();
-//    	agentB = null;
+    	agentB = null;
     }
+	
     public BidSpace getBidSpace() { 
     	if(bidSpace==null) {
     		try {    	

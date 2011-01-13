@@ -9,6 +9,11 @@
 	<classpathentry kind="lib" path="dep/jaxb1-impl.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="dep/jopt-simple-3.2-rc1.jar" sourcepath="dep/jopt-simple-3.2-rc1-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI voor AAMAS competitie/dep/jopt-simple-3.2-rc1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="dep/jcommon-1.0.13.jar"/>
 	<classpathentry kind="lib" path="dep/jfreechart-1.0.10.jar" sourcepath="E:/GeniusS/jfreechart-1.0.13/source"/>
