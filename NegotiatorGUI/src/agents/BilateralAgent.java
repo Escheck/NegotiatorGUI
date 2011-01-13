@@ -113,6 +113,15 @@ public abstract class BilateralAgent extends Agent
 
 		return opponentPreviousBids.get(opponentPreviousBids.size() - 1);
 	}
+	
+	public Bid getOpponentSecondLastBid()
+	{
+		int size = opponentPreviousBids.size();
+		if (size < 2)
+			return null;
+
+		return opponentPreviousBids.get(size - 2);
+	}
 
 	public List<Bid> getOpponentPreviousBids()
 	{

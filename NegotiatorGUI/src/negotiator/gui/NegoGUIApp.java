@@ -7,18 +7,24 @@ package negotiator.gui;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
+import misc.CommandLineOptions;
+
 
 /**
  * The main class of the application.
  */
-public class NegoGUIApp extends SingleFrameApplication {
+public class NegoGUIApp extends SingleFrameApplication 
+{
 	public static NegoGUIView negoGUIView = null;
+	private static CommandLineOptions options = new CommandLineOptions();;
+	
     /**
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
     	negoGUIView = new NegoGUIView(this);
         show(negoGUIView); 
+        negoGUIView.processCommandLineOptions();
     }
 
     /**
@@ -43,8 +49,10 @@ public class NegoGUIApp extends SingleFrameApplication {
     public static void main(String[] args) 
     {
 //    	new MemoryLogger().start();
+    	options.parse(args);
         launch(NegoGUIApp.class, args);
     }
+    
     public static String getClassName()
     {
     	String thisClassName;
@@ -56,5 +64,10 @@ public class NegoGUIApp extends SingleFrameApplication {
     	thisClassName += ".class"; //this is the name of the bytecode file that is executing
 
     	return thisClassName;
-    } 
+    }
+
+	public static CommandLineOptions getOptions()
+	{
+		return options;
+	}    
 }

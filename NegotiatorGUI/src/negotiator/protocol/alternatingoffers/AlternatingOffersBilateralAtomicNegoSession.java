@@ -24,39 +24,39 @@ import negotiator.utility.UtilitySpace;
 public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
 
 	//AlternatingOffersNegotiationSession session;
-    /**
-     * stopNegotiation indicates that the session has now ended.
-     * it is checked after every call to the agent,
-     * and if it happens to be true, session is immediately returned without any updates to the results list.
-     * This is because killing the thread in many cases will return Agent.getAction() but with
-     * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
-     */
-    public boolean stopNegotiation=false;
-	
-    
+	/**
+	 * stopNegotiation indicates that the session has now ended.
+	 * it is checked after every call to the agent,
+	 * and if it happens to be true, session is immediately returned without any updates to the results list.
+	 * This is because killing the thread in many cases will return Agent.getAction() but with
+	 * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
+	 */
+	public boolean stopNegotiation=false;
 
-    public NegotiationOutcome no;
 
-    private boolean agentAtookAction = false;
-    private boolean agentBtookAction = false;
-    protected String startingAgent;
+
+	public NegotiationOutcome no;
+
+	private boolean agentAtookAction = false;
+	private boolean agentBtookAction = false;
+	protected String startingAgent;
 	boolean startingWithA=true;    
-    /* time/deadline */
-    Date startTime; 
-    long startTimeMillies; //idem.
-    /** In ms. */
+	/* time/deadline */
+	Date startTime; 
+	long startTimeMillies; //idem.
+	/** In ms. */
 	private Integer totalTime = 1000 * AlternatingOffersProtocol.non_gui_nego_time;
-    Integer totTime; // total time, seconds, of this negotiation session.
-    private int sessionTotalNumber = 1;
-    private Protocol protocol;
-    
+	Integer totTime; // total time, seconds, of this negotiation session.
+	private int sessionTotalNumber = 1;
+	private Protocol protocol;
+
 	public Agent currentAgent=null; // agent currently bidding.
 
 
-	
-     /** load the runtime objects to start negotiation */
-    public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
-    		Agent agentA,
+
+	/** load the runtime objects to start negotiation */
+	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
+			Agent agentA,
 			Agent agentB, 
 			String agentAname, 
 			String agentBname,
@@ -66,262 +66,262 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			HashMap<AgentParameterVariable,AgentParamValue> agentBparams,
 			String startingAgent,
 			int totalTime) throws Exception {
-    	
+
 		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB, agentAparams, agentBparams);
 		this.protocol = protocol;
 		this.startingAgent = startingAgent;
-        this.totTime = totalTime;
+		this.totTime = totalTime;
 	}
-    
-    /**
-     * a parent thread will call this via the Thread.run() function.
-     * Then it will start a timer to handle the time-out of the negotiation.
-     * At the end of this run, we will notify the parent so that he does not keep waiting for the time-out.
-     */
-    public void run() {
+
+	/**
+	 * a parent thread will call this via the Thread.run() function.
+	 * Then it will start a timer to handle the time-out of the negotiation.
+	 * At the end of this run, we will notify the parent so that he does not keep waiting for the time-out.
+	 */
+	public void run() {
 		startTime=new Date(); startTimeMillies=System.currentTimeMillis();
-        try {
-            double agentAUtility,agentBUtility;
+		try {
+			double agentAUtility,agentBUtility;
 
-            Timeline timeline = new Timeline((int) (totalTime));
-            // note, we clone the utility spaces for security reasons, so that the agent
-        	 // can not damage them.
-            agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
-            		new UtilitySpace(spaceA),agentAparams);
-            agentA.init();
-            agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
-            		new UtilitySpace(spaceB),agentBparams);
-            agentB.init();
-            stopNegotiation = false;
-            Action action = null;
-            
-            if (startingAgent.equals(agentAname)) currentAgent=agentA;
-           	else currentAgent=agentB;
-            
-        	System.out.println("starting with agent "+currentAgent);
-            //Main.log("Agent " + currentAgent.getName() + " begins");
-        	fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
-            while(!stopNegotiation) {
-//            	timeline.printTime();
-                try {
-                   //inform agent about last action of his opponent
-                   currentAgent.ReceiveMessage(action);
-                   String deadlineReachedMsg = "Deadline reached while waiting for [" + currentAgent + "]";
-				if(timeline.isDeadlineReached()) 
-                   {
-                	   System.out.println(deadlineReachedMsg);
-                       badOutcome(timeline, action, deadlineReachedMsg);                	   
-                   }
-                   if (stopNegotiation) return;
-                   //get next action of the agent that has its turn now
-                   action = currentAgent.chooseAction();
-                   if(timeline.isDeadlineReached()) 
-                   {
-                	   System.out.println(deadlineReachedMsg);
-                       badOutcome(timeline, action, deadlineReachedMsg);              	   
-                   }
-                   
-                   if (stopNegotiation) return;
-                   
-                   if(action instanceof EndNegotiation) 
-                   {
-                       badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
-            		   checkAgentActivity(currentAgent);
-                   }
-                   else if (action instanceof Offer) {
-                       //Main.log("Agent " + currentAgent.getName() + " sent the following offer:");
-                       fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
-                       lastBid  = ((Offer)action).getBid();
-                       if (lastBid == null)
-                       {
-                    	   badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
-                    	   return;
-                       }
-                       //Main.log(action.toString());
-                       fireLogMessage("Nego",action.toString());
-                       double utilA=agentA.utilitySpace.getUtility(lastBid);
-                       double utilB=agentB.utilitySpace.getUtility(lastBid);
-                       //Main.log("Utility of " + agentA.getName() +": " + utilA);
-                       fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
-                       //Main.log("Utility of " + agentB.getName() +": " + utilB);
-                       fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
-                       //save last results 
-                       BidPoint p=null;
-               		   p=new BidPoint(lastBid,
-               				   spaceA.getUtility(lastBid),
-               				   spaceB.getUtility(lastBid));
-                       if(currentAgent.equals(agentA))                    {
-                    	   fAgentABids.add(p);
-                       } else{
-                    	   fAgentBBids.add(p);
-                       }
-                       
-                       double time = timeline.getTime();
-                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
-                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
-                       
-	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-	                   		System.currentTimeMillis()-startTimeMillies, time, utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
-	                	
-                       checkAgentActivity(currentAgent) ;
-                   }                   
-                   else if (action instanceof Accept) {
-                       stopNegotiation = true;
-                       Accept accept = (Accept)action;
-                       if(lastBid==null)
-                    	   throw new Exception("Accept was done by "+
-                    			   currentAgent.getName()+" but no bid was done yet.");
-                        //Global.log("Agents accepted the following bid:");
-                        //Global.log(((Accept)action).toString());
-                       double time = timeline.getTime();
-                       double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
-                       double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
+			Timeline timeline = new Timeline((int) (totalTime));
+			// note, we clone the utility spaces for security reasons, so that the agent
+			// can not damage them.
+			agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
+					new UtilitySpace(spaceA),agentAparams);
+			agentA.init();
+			agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
+					new UtilitySpace(spaceB),agentBparams);
+			agentB.init();
+			stopNegotiation = false;
+			Action action = null;
 
-                        agentAUtility = spaceA.getUtility(lastBid);
-                        agentBUtility = spaceB.getUtility(lastBid);
-                        newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time);
-                        checkAgentActivity(currentAgent) ;
-                        otherAgent(currentAgent).ReceiveMessage(action);                      
-                   } else {  // action instanceof unknown action, e.g. null.
-                	   throw new Exception("unknown action by agent "+currentAgent.getName());
-                   }
-                       
+			if (startingAgent.equals(agentAname)) currentAgent=agentA;
+			else currentAgent=agentB;
 
-                } catch(Exception e) {
-                	new Warning("Caught exception:",e,true,2);
-                   stopNegotiation=true;
-                   new Warning("Protocol error by Agent"+currentAgent.getName(),e,true,3);
-             	   //Global.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
-                   if (lastBid==null) agentAUtility=agentBUtility=1.;
-                   else {
-                	   agentAUtility=agentBUtility=0.;
-                	   // handle both getUtility calls apart, if one crashes
-                	   // the other should not be affected.
-                	   try {
-                		   agentAUtility = spaceA.getUtility(lastBid);
-                	   }  catch (Exception e1) {}
-                	   try {
-                    	   agentBUtility = spaceB.getUtility(lastBid);
-                	   }  catch (Exception e1) {}
-                   }
-                   if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
-                   try 
-                   {
-                	   newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + action + ". Details: "+e.toString(), timeline.getTime());
-                	   System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
-                   }
-                   catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
-                   // don't compute the max utility, we're in exception which is already bad enough.
-                }
-                // swap to other agent
-                if(currentAgent.equals(agentA))     currentAgent = agentB; 
-                else   currentAgent = agentA;
-            }
-            
-            // nego finished by Accept or illegal action.
-            // notify parent that we're ready.
-            synchronized (protocol) {  protocol.notify();  }
-           
-            /*
-             * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
-             * Maybe even catching the ThreadDeath error is wrong. 
-             * If we do more processing, we risk getting a ThreadDeath exception
-             * causing Eclipse to pop up a dialog bringing us into the debugger.
-             */            
-            
-        } catch (Error e) {
-            if(e instanceof ThreadDeath) {
-            	System.out.println("Nego was timed out");
-                // Main.logger.add("Negotiation was timed out. Both parties get util=0");
-            	// if this happens, the caller will adjust utilities.
-           }     
-             
-        }
+			System.out.println("starting with agent "+currentAgent);
+			//Main.log("Agent " + currentAgent.getName() + " begins");
+			fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
+			while(!stopNegotiation) {
+				//            	timeline.printTime();
+				try {
+					//inform agent about last action of his opponent
+					currentAgent.ReceiveMessage(action);
+					String deadlineReachedMsg = "Deadline reached while waiting for [" + currentAgent + "]";
+					if(timeline.isDeadlineReached()) 
+					{
+						System.out.println(deadlineReachedMsg);
+						badOutcome(timeline, action, deadlineReachedMsg);                	   
+					}
+					if (stopNegotiation) return;
+					//get next action of the agent that has its turn now
+					action = currentAgent.chooseAction();
+					if(timeline.isDeadlineReached()) 
+					{
+						System.out.println(deadlineReachedMsg);
+						badOutcome(timeline, action, deadlineReachedMsg);              	   
+					}
 
-    }
+					if (stopNegotiation) return;
+
+					if(action instanceof EndNegotiation) 
+					{
+						badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
+						checkAgentActivity(currentAgent);
+					}
+					else if (action instanceof Offer) {
+						//Main.log("Agent " + currentAgent.getName() + " sent the following offer:");
+						fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
+						lastBid  = ((Offer)action).getBid();
+						if (lastBid == null)
+						{
+							badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
+							return;
+						}
+						//Main.log(action.toString());
+						fireLogMessage("Nego",action.toString());
+						double utilA=agentA.utilitySpace.getUtility(lastBid);
+						double utilB=agentB.utilitySpace.getUtility(lastBid);
+						//Main.log("Utility of " + agentA.getName() +": " + utilA);
+						fireLogMessage("Nego","Utility of " + agentA.getName() +": " + utilA);
+						//Main.log("Utility of " + agentB.getName() +": " + utilB);
+						fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
+						//save last results 
+						BidPoint p=null;
+						p=new BidPoint(lastBid,
+								spaceA.getUtility(lastBid),
+								spaceB.getUtility(lastBid));
+						if(currentAgent.equals(agentA))                    {
+							fAgentABids.add(p);
+						} else{
+							fAgentBBids.add(p);
+						}
+
+						double time = timeline.getTime();
+						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
+						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
+
+						fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+								System.currentTimeMillis()-startTimeMillies, time, utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
+
+						checkAgentActivity(currentAgent) ;
+					}                   
+					else if (action instanceof Accept) {
+						stopNegotiation = true;
+						Accept accept = (Accept)action;
+						if(lastBid==null)
+							throw new Exception("Accept was done by "+
+									currentAgent.getName()+" but no bid was done yet.");
+						//Global.log("Agents accepted the following bid:");
+						//Global.log(((Accept)action).toString());
+						double time = timeline.getTime();
+						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
+						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
+
+						agentAUtility = spaceA.getUtility(lastBid);
+						agentBUtility = spaceB.getUtility(lastBid);
+						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time);
+						checkAgentActivity(currentAgent) ;
+						otherAgent(currentAgent).ReceiveMessage(action);                      
+					} else {  // action instanceof unknown action, e.g. null.
+						throw new Exception("unknown action by agent "+currentAgent.getName());
+					}
+
+
+				} catch(Exception e) {
+					new Warning("Caught exception:",e,true,2);
+					stopNegotiation=true;
+					new Warning("Protocol error by Agent"+currentAgent.getName(),e,true,3);
+					//Global.log("Protocol error by Agent " + currentAgent.getName() +":"+e.getMessage());
+					if (lastBid==null) agentAUtility=agentBUtility=1.;
+					else {
+						agentAUtility=agentBUtility=0.;
+						// handle both getUtility calls apart, if one crashes
+						// the other should not be affected.
+						try {
+							agentAUtility = spaceA.getUtility(lastBid);
+						}  catch (Exception e1) {}
+						try {
+							agentBUtility = spaceB.getUtility(lastBid);
+						}  catch (Exception e1) {}
+					}
+					if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
+					try 
+					{
+						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + action + ". Details: "+e.toString(), timeline.getTime());
+						System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
+					}
+					catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
+					// don't compute the max utility, we're in exception which is already bad enough.
+				}
+				// swap to other agent
+				if(currentAgent.equals(agentA))     currentAgent = agentB; 
+				else   currentAgent = agentA;
+			}
+
+			// nego finished by Accept or illegal action.
+			// notify parent that we're ready.
+			synchronized (protocol) {  protocol.notify();  }
+
+			/*
+			 * Wouter: WE CAN NOT DO MORE PROCESSING HERE!!!!!
+			 * Maybe even catching the ThreadDeath error is wrong. 
+			 * If we do more processing, we risk getting a ThreadDeath exception
+			 * causing Eclipse to pop up a dialog bringing us into the debugger.
+			 */            
+
+		} catch (Error e) {
+			if(e instanceof ThreadDeath) {
+				System.out.println("Nego was timed out");
+				// Main.logger.add("Negotiation was timed out. Both parties get util=0");
+				// if this happens, the caller will adjust utilities.
+			}     
+
+		}
+
+	}
 
 	private void badOutcome(Timeline timeline, Action action, String logMsg) throws Exception
 	{
-		   stopNegotiation=true;
-		   Double utilA = spaceA.getReservationValue();
-		   Double utilB = spaceB.getReservationValue();
-		   if (utilA == null) utilA = 0.0;
-		   if (utilB == null) utilB = 0.0;
-		   newOutcome(currentAgent,utilA,utilB, utilA,utilB, action, logMsg, timeline.getTime());
+		stopNegotiation=true;
+		Double utilA = spaceA.getReservationValue();
+		Double utilB = spaceB.getReservationValue();
+		if (utilA == null) utilA = 0.0;
+		if (utilB == null) utilB = 0.0;
+		newOutcome(currentAgent,utilA,utilB, utilA,utilB, action, logMsg, timeline.getTime());
 	}
 
-	
-    
-    /** This is the running method of the negotiation thread.
-     * It contains the work flow of the negotiation. 
-     */
-    void checkAgentActivity(Agent agent) {
-        if(agent.equals(agentA)) agentAtookAction = true;
-        else agentBtookAction = true;
-        
-    }
 
-  
-    public Agent otherAgent(Agent ag)
-    {
-    	if (ag==agentA) return agentB;
-    	return agentA;    	
-    }
-  
-    /**
-     * Make a new outcome and update table
-     */
-    public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time) throws Exception {
-        
-    	no=new NegotiationOutcome(sessionNumber, 
-			   agentA.getName(),  agentB.getName(),
-            agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
-            utilA,utilB,
-            utilADiscount,utilBDiscount,
-            message,
-            fAgentABids,fAgentBBids,
-            1.0,
-            1.0,
-            // This is super slow
-//            spaceA.getUtility(spaceA.getMaxUtilityBid()),
-//            spaceB.getUtility(spaceB.getMaxUtilityBid()),
-            startingWithA, 
-            spaceA.getFileName(),
-            spaceB.getFileName(),
-            additionalLog,
-            time
-            );
-    	
-    	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-        	System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message);
-    		
-    	
-    }
-    
-    /**
-     * This is called whenever the protocol is timed-out. 
-     * What happens in case of a time-out is 
-     * (1) the sessionrunner is killed with a Thread.interrupt() call  from the NegotiationSession2.
-     * (2) judgeTimeout() is called.
-     * @author W.Pasman
-     */
-    public void JudgeTimeout() 
-    {
-    	System.out.println("Judging time-out.");
+
+	/** This is the running method of the negotiation thread.
+	 * It contains the work flow of the negotiation. 
+	 */
+	void checkAgentActivity(Agent agent) {
+		if(agent.equals(agentA)) agentAtookAction = true;
+		else agentBtookAction = true;
+
+	}
+
+
+	public Agent otherAgent(Agent ag)
+	{
+		if (ag==agentA) return agentB;
+		return agentA;    	
+	}
+
+	/**
+	 * Make a new outcome and update table
+	 */
+	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time) throws Exception {
+
+		no=new NegotiationOutcome(sessionNumber, 
+				agentA.getName(),  agentB.getName(),
+				agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
+				utilA,utilB,
+				utilADiscount,utilBDiscount,
+				message,
+				fAgentABids,fAgentBBids,
+				1.0,
+				1.0,
+				// This is super slow
+				//            spaceA.getUtility(spaceA.getMaxUtilityBid()),
+				//            spaceB.getUtility(spaceB.getMaxUtilityBid()),
+				startingWithA, 
+				spaceA.getFileName(),
+				spaceB.getFileName(),
+				additionalLog,
+				time
+		);
+
+		fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message);
+
+
+	}
+
+	/**
+	 * This is called whenever the protocol is timed-out. 
+	 * What happens in case of a time-out is 
+	 * (1) the sessionrunner is killed with a Thread.interrupt() call  from the NegotiationSession2.
+	 * (2) judgeTimeout() is called.
+	 * @author W.Pasman
+	 */
+	public void JudgeTimeout() 
+	{
+		System.out.println("Judging time-out.");
 		try {
 			double reservationValueA = 0;
 			if(spaceA.getReservationValue()!=null) reservationValueA = spaceA.getReservationValue();
 			double reservationValueB = 0;
 			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
-			
-    		newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"negotiation was timed out"),"negotiation was timed out", 1);
-    		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
-    		// don't bother about max utility, both have zero anyway.
 
-    }
-    public NegotiationOutcome getNegotiationOutcome() {
-    	return no;
-    }
+			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"negotiation was timed out"),"negotiation was timed out", 1);
+		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
+		// don't bother about max utility, both have zero anyway.
+
+	}
+	public NegotiationOutcome getNegotiationOutcome() {
+		return no;
+	}
 	public String getStartingAgent() {
 		return startingAgent;
 	}

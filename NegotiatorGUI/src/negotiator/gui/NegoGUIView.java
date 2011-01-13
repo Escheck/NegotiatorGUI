@@ -8,13 +8,18 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.tree.TreePath;
+
+import org.jdesktop.application.Action;
+import org.jdesktop.application.FrameView;
+import org.jdesktop.application.ResourceMap;
+import org.jdesktop.application.SingleFrameApplication;
+import org.jdesktop.application.TaskMonitor;
 
 import negotiator.Domain;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
@@ -30,12 +35,6 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.utility.UtilitySpace;
-
-import org.jdesktop.application.Action;
-import org.jdesktop.application.FrameView;
-import org.jdesktop.application.ResourceMap;
-import org.jdesktop.application.SingleFrameApplication;
-import org.jdesktop.application.TaskMonitor;
 
 /**
  * The application's main frame.
@@ -121,6 +120,12 @@ public class NegoGUIView extends FrameView {
 			}
         };
         closeTabbedPane1.addCloseListener(cl);
+    }
+    
+    public void processCommandLineOptions()
+    {
+        if (NegoGUIApp.getOptions().newTournament)
+        	newTournamentAction();
     }
     
     /**
@@ -527,6 +532,10 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     			TournamentUI tournamentUI = new TournamentUI();            
     			addTab("Tour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
     			setActiveComponent(tournamentUI);
+    			
+    			if (NegoGUIApp.getOptions().startTournament)
+    				tournamentUI.startTournament();
+    			
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
