@@ -55,6 +55,8 @@ public class Tournament implements Serializable
 	public static final int VARIABLE_AGENT_A = 2;
 	public static final int VARIABLE_AGENT_B = 3;
 	public static final int VARIABLE_NUMBER_OF_RUNS = 4;
+	public static final int VARIABLE_EXPERIMENTAL_A = 5;
+	public static final int VARIABLE_EXPERIMENTAL_B = 6;
 	
 	ArrayList<Protocol> sessions=null;
 	

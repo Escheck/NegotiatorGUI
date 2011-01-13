@@ -32,6 +32,8 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
+import negotiator.tournament.VariablesAndValues.ExperimentalValue;
+import negotiator.tournament.VariablesAndValues.ExperimentalVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -121,7 +123,10 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
         
     }
 
-	/**********************button functionality************************/
+	/**********************button functionality***********************
+	 * 
+	 * E.g. when you edit the {@link AgentVariable}s, you go to the {@link AgentVarUI}, where the agent repository is loaded.
+	 * */
 
 	void editVariable(TournamentVariable v) throws Exception {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
@@ -158,6 +163,13 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			if(value==null) return;
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
 			newtvs.add(value);
+			v.setValues(newtvs);
+		} else if(v instanceof ExperimentalVariable) {
+			String value =	(String)(new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
+			if(value==null) return;
+			ExperimentalValue experimentalValue = new ExperimentalValue(value);
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+			newtvs.add(experimentalValue);
 			v.setValues(newtvs);
 		}		
 		else if (v instanceof AgentParameterVariable) {			
@@ -309,6 +321,8 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
+		fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_A, new ExperimentalVariable());
+		fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_B, new ExperimentalVariable());
 //		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
