@@ -338,7 +338,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		bidChart.setAgentAName("Agent A:"+agentAName);
 		bidChart.setAgentBName("Agent B:"+agentBName);
 		BidSpace bs = session.getBidSpace();
-		double [][] pb = null;//getAllBidsInBidSpace();
+		double [][] pb = null;
+		if (Global.SHOW_ALL_BIDS)
+			pb = getAllBidsInBidSpace();
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
