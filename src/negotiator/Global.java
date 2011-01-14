@@ -55,6 +55,9 @@ public class Global {
 	public static final boolean LOG_TO_DATED_FILES = false;
 	
 	public static final boolean SHOW_TIME = false;
+
+	/** Show all bid points in the GUI chart */
+	public static final boolean SHOW_ALL_BIDS = false;
 	
 	public Global() {
 	}
