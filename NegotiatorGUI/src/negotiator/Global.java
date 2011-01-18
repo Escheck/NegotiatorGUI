@@ -46,18 +46,18 @@ public class Global {
 													// environment
 	public static String outcomesFile = "outcomes.xml";
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
-	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
+	public static final boolean EXTENSIVE_OUTCOMES_LOG = !false;
 	/** Every agent plays as each preference profile */
 	public static final boolean PLAY_BOTH_SIDES = true;
 	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
-	public static final boolean LOG_TO_DATED_FILES = false;
+	public static final boolean LOG_TO_DATED_FILES = !false;
 	
-	public static final boolean SHOW_TIME = false;
+	public static final boolean SHOW_TIME = !false;
 
 	/** Show all bid points in the GUI chart */
-	public static final boolean SHOW_ALL_BIDS = false;
+	public static final boolean SHOW_ALL_BIDS = !false;
 	
 	public Global() {
 	}
@@ -218,11 +218,13 @@ public class Global {
 		
 	}
 	
-
+	/**
+	 * Gives a useful agent name.
+	 */
 	public static String getAgentDescription(Agent agent)
 	{
 		String agentDescription = agent.getName();
-		if (agentDescription == null)
+		if (agentDescription == null || "Agent A".equals(agentDescription) || "Agent B".equals(agentDescription))
 			agentDescription = agent.getClass().getSimpleName();
 		
 		return agentDescription;
