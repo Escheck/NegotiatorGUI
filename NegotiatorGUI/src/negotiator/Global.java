@@ -58,6 +58,9 @@ public class Global {
 
 	/** Show all bid points in the GUI chart */
 	public static final boolean SHOW_ALL_BIDS = !false;
+
+	/** Agents play themselves in a tournament */
+	public static final boolean SELF_PLAY = false;
 	
 	public Global() {
 	}

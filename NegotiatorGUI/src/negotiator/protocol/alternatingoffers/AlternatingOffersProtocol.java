@@ -633,7 +633,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				for (TournamentValue agentAval: agentAvalues ) {
 					AgentRepItem agentA=((AgentValue)agentAval).getValue();
 					for (TournamentValue agentBval: agentBvalues) {
-						if(agentAval.equals(agentBval)) continue;
+						if(agentAval.equals(agentBval) && !Global.SELF_PLAY) continue;
 						AgentRepItem agentB=((AgentValue)agentBval).getValue();
 						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
 //						System.out.println(agentA + ", " + profileA + " vs. ");
