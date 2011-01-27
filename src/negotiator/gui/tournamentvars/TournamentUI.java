@@ -322,7 +322,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
-		if (Global.EXPIREMENTAL_SETTING)
+		if (Global.EXPERIMENTAL_SETTING)
 		{
 			fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_A, new ExperimentalVariable());
 			fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_B, new ExperimentalVariable());
