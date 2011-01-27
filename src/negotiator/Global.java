@@ -52,15 +52,18 @@ public class Global {
 	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
-	public static final boolean LOG_TO_DATED_FILES = !false;
+	public static final boolean LOG_TO_DATED_FILES = false;
 	
-	public static final boolean SHOW_TIME = !false;
+	public static final boolean SHOW_TIME = false;
 
 	/** Show all bid points in the GUI chart */
-	public static final boolean SHOW_ALL_BIDS = !false;
+	public static final boolean SHOW_ALL_BIDS = false;
 
 	/** Agents play themselves in a tournament */
 	public static final boolean SELF_PLAY = false;
+
+	/** Use experimental variables etc. */
+	public static final boolean EXPIREMENTAL_SETTING = false;
 	
 	public Global() {
 	}
