@@ -63,7 +63,7 @@ public class Global {
 	public static final boolean SELF_PLAY = false;
 
 	/** Use experimental variables etc. */
-	public static final boolean EXPIREMENTAL_SETTING = false;
+	public static final boolean EXPERIMENTAL_SETTING = false;
 	
 	public Global() {
 	}
