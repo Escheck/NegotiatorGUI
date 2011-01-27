@@ -17,6 +17,7 @@ import org.jdesktop.application.Action;
 import misc.Serializer;
 
 import negotiator.AgentParam;
+import negotiator.Global;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
@@ -321,8 +322,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
-		fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_A, new ExperimentalVariable());
-		fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_B, new ExperimentalVariable());
+		if (Global.EXPIREMENTAL_SETTING)
+		{
+			fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_A, new ExperimentalVariable());
+			fillposition(vars,Tournament.VARIABLE_EXPERIMENTAL_B, new ExperimentalVariable());
+		}
 //		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
