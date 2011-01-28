@@ -133,6 +133,12 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     	}
     	return bidSpace;     	
     }
+    
+    public Bid getLastBid()
+	{
+		return lastBid;
+	}
+    
 	public int getNrOfBids(){
 		return fAgentABids.size() + fAgentBBids.size();
 	}

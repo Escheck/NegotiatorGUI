@@ -13,7 +13,6 @@ import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYSeries;
 
 
 public class BidChart {
@@ -33,11 +32,15 @@ public class BidChart {
 	private DefaultXYDataset nashData = new DefaultXYDataset();
 	private DefaultXYDataset kalaiData = new DefaultXYDataset();
 	private DefaultXYDataset agreementData = new DefaultXYDataset();
+	private DefaultXYDataset lastBidAData = new DefaultXYDataset();
+	private DefaultXYDataset lastBidBData = new DefaultXYDataset();
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
 	final XYDotRenderer nashRenderer = new XYDotRenderer();
 	final XYDotRenderer kalaiRenderer = new XYDotRenderer();
 	final XYDotRenderer agreementRenderer = new XYDotRenderer();
 	//final XYItemRenderer agreementRenderer = new XYLineAndShapeRenderer(false, true);
+	final XYDotRenderer lastBidARenderer = new XYDotRenderer();
+	final XYDotRenderer lastBidBRenderer = new XYDotRenderer();
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
@@ -78,6 +81,16 @@ public class BidChart {
 	public void setPossibleBids(double [][] possibleBids){
 		this.possibleBids = possibleBids;
 		possibleBidData.addSeries("all possible bids",possibleBids);
+	}
+	
+	public void setLastBidAData(double [][] lastBid)
+	{
+		lastBidAData.addSeries("Last bid by A", lastBid);
+	}
+	
+	public void setLastBidBData(double [][] lastBid)
+	{
+		lastBidBData.addSeries("Last bid by B", lastBid);
 	}
 	
 	public void setBidSeriesA(double [][] bidSeriesA){
@@ -144,10 +157,17 @@ public class BidChart {
         agreementRenderer.setDotWidth(10);
         //agreementRenderer.setSeriesShape(0, new Ellipse2D.Float(10.0f, 10.0f, 10.0f, 10.0f));
         agreementRenderer.setSeriesPaint(0, Color.RED);
+        lastBidARenderer.setSeriesPaint(0, Color.YELLOW);
+        lastBidARenderer.setDotHeight(3);
+        lastBidARenderer.setDotWidth(3);
+        lastBidBRenderer.setSeriesPaint(0, Color.ORANGE);
+        lastBidBRenderer.setDotHeight(3);
+        lastBidBRenderer.setDotWidth(3);
        
 		//create default plot, quick hack so that the graph panel is not empty
     	if(possibleBids!=null){
     		possibleBidData.addSeries("all possible bids",possibleBids);
+//    		lastBidData.addSeries("Last bid", )
     	}
     	if (pareto!=null){
         	setPareto(pareto);   
@@ -173,6 +193,10 @@ public class BidChart {
 	    plot.setRenderer(6, kalaiRenderer);
 	    plot.setDataset(7, agreementData);
 	    plot.setRenderer(7, agreementRenderer);
+	    plot.setDataset(8, lastBidAData);
+	    plot.setRenderer(8, lastBidARenderer);
+	    plot.setDataset(9, lastBidBData);
+	    plot.setRenderer(9, lastBidBRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
