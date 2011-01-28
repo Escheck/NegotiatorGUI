@@ -341,6 +341,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		double [][] pb = null;
 		if (Global.SHOW_ALL_BIDS)
 			pb = getAllBidsInBidSpace();
+
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
@@ -408,9 +409,37 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			ap[1][0]= evt.getNormalizedUtilityB();
 			bidChart.setAgreementPoint(ap);
 		}
-
+		
+		if (Global.HIGHLIGHT_LAST_BID)
+		{
+			ArrayList<BidPoint> agentABids = session.getAgentABids();
+			ArrayList<BidPoint> agentBBids = session.getAgentBBids();
+			if (!agentABids.isEmpty())
+			{
+				BidPoint bidPointA = agentABids.get(agentABids.size() - 1);
+				double[][] pA = makeChartPoint(bidPointA);
+				bidChart.setLastBidAData(pA);
+			}
+			if (!agentBBids.isEmpty())
+			{
+				BidPoint bidPointB = agentBBids.get(agentBBids.size() - 1);
+				double[][] pB = makeChartPoint(bidPointB);
+				bidChart.setLastBidBData(pB);
+			}
+		}
 		
 	}
+
+	private static double [][] makeChartPoint(BidPoint bidPoint)
+	{
+		if (bidPoint == null)
+			return null;
+		double [][] pA = new double [2][1];
+		pA[0][0] = bidPoint.utilityA;
+		pA[1][0] = bidPoint.utilityB;
+		return pA;
+	}
+	
 	public void addGraph(){
 		//adding graph data:
 		double [][] curveA = session.getNegotiationPathA();
