@@ -9,17 +9,26 @@
 
 package negotiator;
 
-import negotiator.issue.*;
-import negotiator.xml.SimpleElement;
-import negotiator.xml.SimpleDOMParser;
-import negotiator.exceptions.Warning;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.ArrayList;
+
+import negotiator.exceptions.Warning;
+import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.Objective;
+import negotiator.issue.Value;
+import negotiator.issue.ValueInteger;
+import negotiator.issue.ValueReal;
+import negotiator.xml.SimpleDOMParser;
+import negotiator.xml.SimpleElement;
 /**
  *
  * @author Dmytro Tykhonov & Koen Hindriks
@@ -198,7 +207,7 @@ public class Domain {
             String vtype = childIssues.getAttribute("vtype");
             ISSUETYPE issueType;
         	if (type==null) { // No value type specified.
-        		new Warning("Type not specified in template file.");
+        		new Warning("Type not specified in template file of " + name + " at " + index);
             	issueType = ISSUETYPE.DISCRETE;
         	}
         	else if (type.equals(vtype)) {
