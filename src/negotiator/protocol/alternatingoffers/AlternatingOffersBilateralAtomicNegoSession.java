@@ -42,13 +42,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	protected String startingAgent;
 	boolean startingWithA=true;    
 	/* time/deadline */
-	Date startTime; 
-	long startTimeMillies; //idem.
+	protected Date startTime; 
+	protected long startTimeMillies; //idem.
 	/** In ms. */
-	private Integer totalTime = 1000 * AlternatingOffersProtocol.non_gui_nego_time;
+	protected Integer totalTime = 1000 * AlternatingOffersProtocol.non_gui_nego_time;
 	Integer totTime; // total time, seconds, of this negotiation session.
-	private int sessionTotalNumber = 1;
-	private Protocol protocol;
+	protected int sessionTotalNumber = 1;
+	protected Protocol protocol;
 
 	public Agent currentAgent=null; // agent currently bidding.
 
@@ -240,7 +240,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	}
 
-	private void badOutcome(Timeline timeline, Action action, String logMsg) throws Exception
+	protected void badOutcome(Timeline timeline, Action action, String logMsg) throws Exception
 	{
 		stopNegotiation=true;
 		Double utilA = spaceA.getReservationValue();
@@ -255,7 +255,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	/** This is the running method of the negotiation thread.
 	 * It contains the work flow of the negotiation. 
 	 */
-	void checkAgentActivity(Agent agent) {
+	protected void checkAgentActivity(Agent agent) {
 		if(agent.equals(agentA)) agentAtookAction = true;
 		else agentBtookAction = true;
 
@@ -294,8 +294,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 		fireNegotiationActionEvent(currentAgent,action,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message);
-
-
 	}
 
 	/**
