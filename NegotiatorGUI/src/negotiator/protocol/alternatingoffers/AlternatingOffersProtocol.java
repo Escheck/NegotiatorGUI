@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import misc.SpaceDistance;
-
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -51,7 +50,7 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	boolean startingWithA=true;
 	ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
-	String startingAgent; // agentAname or agnetBname
+	protected String startingAgent; // agentAname or agnetBname
 
 	NegotiationOutcome outcome;
 
@@ -61,8 +60,8 @@ public class AlternatingOffersProtocol extends Protocol {
 	public final static int non_gui_nego_time = 180;
 	public final static int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
-	private Agent agentA;
-	private Agent agentB;
+	protected Agent agentA;
+	protected Agent agentB;
 
 	/** fields copied from the NegotiationTemplate class */
 
@@ -231,17 +230,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			startingAgent=getAgentBname();
 		}
 
-		sessionrunner=new AlternatingOffersBilateralAtomicNegoSession(this, 
-				agentA, 
-				agentB, 
-				getAgentAname(),
-				getAgentBname(),
-				getAgentAUtilitySpace(), 
-				getAgentBUtilitySpace(), 
-				getAgentAparams(),
-				getAgentBparams(),
-				startingAgent,
-				non_gui_nego_time);
+		sessionrunner = newAlternatingOffersBilateralAtomicNegoSession();
 		if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
 		else totalTime = non_gui_nego_time;
 		sessionrunner.setTotalTime(totalTime);
@@ -302,6 +291,22 @@ public class AlternatingOffersProtocol extends Protocol {
 		if (Global.EXTENSIVE_OUTCOMES_LOG)
 			writeOutcomeToLog(true);
 		sessionrunner.cleanUp();
+	}
+
+
+	protected AlternatingOffersBilateralAtomicNegoSession newAlternatingOffersBilateralAtomicNegoSession() throws Exception
+	{
+		return new AlternatingOffersBilateralAtomicNegoSession(this, 
+				agentA, 
+				agentB, 
+				getAgentAname(),
+				getAgentBname(),
+				getAgentAUtilitySpace(), 
+				getAgentBUtilitySpace(), 
+				getAgentAparams(),
+				getAgentBparams(),
+				startingAgent,
+				non_gui_nego_time);
 	}
 
 
@@ -821,7 +826,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 
-			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agents, profiles,params); 
+			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params); 
 			for (int k = 0; k < numberOfSessions; k++)
 				sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
