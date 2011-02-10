@@ -40,7 +40,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentAtookAction = false;
 	private boolean agentBtookAction = false;
 	protected String startingAgent;
-	boolean startingWithA=true;    
+	protected boolean startingWithA=true;    
 	/* time/deadline */
 	protected Date startTime; 
 	protected long startTimeMillies; //idem.
@@ -312,7 +312,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double reservationValueB = 0;
 			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
 
-			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"negotiation was timed out"),"negotiation was timed out", 1);
+			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"JudgeTimeout: negotiation was timed out"),"JudgeTimeout: negotiation was timed out", 1);
 		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
 		// don't bother about max utility, both have zero anyway.
 
