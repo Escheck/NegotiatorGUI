@@ -41,6 +41,8 @@ public class NegotiationOutcome {
 	public String agentAutilSpaceName;
 	public String agentButilSpaceName;
 	public SimpleElement additional;
+	public String extraName;
+	public String extraValue;
 	public double time;
 
 	/** Creates a new instance of NegotiationOutcome 
@@ -162,6 +164,7 @@ public class NegotiationOutcome {
 		if (ErrorRemarks != null) outcome.setAttribute("errors",ErrorRemarks);
 		String startingagent="B"; if (agentAstarts) startingagent="A";
 		outcome.setAttribute("startingAgent",startingagent);
+		if (extraName != null && extraValue != null) outcome.setAttribute(extraName, extraValue);
 		
 		if (addBids)
 			outcome.addChildElement(bidsToXML());
