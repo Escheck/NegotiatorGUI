@@ -52,7 +52,7 @@ public class Global {
 	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
-	public static final boolean LOG_TO_DATED_FILES = false;
+	public static final boolean LOG_TO_DATED_FILES = !false;
 	
 	public static final boolean SHOW_TIME = false;
 
@@ -64,6 +64,8 @@ public class Global {
 
 	/** Use experimental variables etc. */
 	public static final boolean EXPERIMENTAL_SETTING = false;
+
+	public static final boolean	HIGHLIGHT_LAST_BID	= false;
 	
 	public Global() {
 	}
