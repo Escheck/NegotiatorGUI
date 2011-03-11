@@ -1,7 +1,5 @@
 package agents;
 
-import agents.BilateralAgent;
-
 import negotiator.Bid;
 import negotiator.analysis.BidHistory;
 
@@ -32,7 +30,7 @@ public class TimeDependentAgent extends BilateralAgent
 	 * 
 	 * 4. When e = 0, the agent plays hardball.
 	 */		
-	private final double e = 0.2;
+	private final double e = .5;
 	private BidHistory outcomeSpace;
 	private double Pmax;
 	private double Pmin;
@@ -109,8 +107,11 @@ public class TimeDependentAgent extends BilateralAgent
 	@Override
 	public boolean isAcceptable(Bid plannedBid)
 	{
-		AcceptanceCriteria ac = new AcceptanceCriteria(utilitySpace, timeline.getTime(), getOpponentLastBid(), getMyLastBid(), plannedBid, opponentHistory);
-		return ac.acnext(1, 0);
+		Bid opponentLastBid = getOpponentLastBid();
+		// is acnext(1, 0);
+		if(getUndiscountedUtility(opponentLastBid) >= getUndiscountedUtility(plannedBid))
+			return true;
+		return false;
 	}
 
 }
