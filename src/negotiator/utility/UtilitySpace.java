@@ -801,7 +801,7 @@ public class UtilitySpace {
     			//do nothing, we can encounter Objectives/issues without Evaluators.
     		}
     	}
-    	System.out.println("freeCount + lockedCount = " + freeCount + " + " + lockedCount);
+//    	System.out.println("freeCount + lockedCount = " + freeCount + " + " + lockedCount);
     	if(freeCount + lockedCount == 1){
     		System.out.println("At least the IF works...");
     		Enumeration<Objective> singleChild = obj.children();
@@ -829,7 +829,7 @@ public class UtilitySpace {
     							newWeight = 0; //FIXME hdv: could this become 0? Unsure of that.
     						}
     						fEvaluators.get(tmpObj).setWeight(newWeight);
-    						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
+//    						System.out.println("new Weight of " + tmpObj.getName() + " is " + newWeight);
     					}
     			}catch(Exception e){
     					// do nothing, we can encounter Objectives/issues without Evaluators.
