@@ -32,6 +32,11 @@ public class BidPoint implements XMLable {
 		return bid.equals(pt.bid);
 	}
 	
+	public double distanceTo(BidPoint b)
+	{
+		return Math.sqrt(Math.pow(utilityA - b.utilityA, 2) + Math.pow(utilityB - b.utilityB, 2));
+	}
+	
 	public SimpleElement toXML()
 	{
 		SimpleElement xml = new OrderedSimpleElement("BidPoint");
