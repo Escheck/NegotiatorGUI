@@ -179,6 +179,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 						agentAUtility = spaceA.getUtility(lastBid);
 						agentBUtility = spaceB.getUtility(lastBid);
+						
+						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
+						BidPoint nash = bidSpace.getNash();
+						System.out.println("Distance to Nash: " + lastbidPoint.distanceTo(nash));
 						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time);
 						checkAgentActivity(currentAgent) ;
 						otherAgent(currentAgent).ReceiveMessage(action);                      
@@ -286,12 +290,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				//            spaceA.getUtility(spaceA.getMaxUtilityBid()),
 				//            spaceB.getUtility(spaceB.getMaxUtilityBid()),
 				startingWithA, 
+				spaceA.getDomain().getName(),
 				spaceA.getFileName(),
 				spaceB.getFileName(),
 				additionalLog,
 				time
 		);
-
+		
 		fireNegotiationActionEvent(currentAgent,action,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message);
 	}

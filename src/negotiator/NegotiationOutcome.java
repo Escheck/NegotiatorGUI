@@ -10,6 +10,7 @@
 package negotiator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import negotiator.analysis.BidPoint;
 import negotiator.xml.OrderedSimpleElement;
@@ -41,11 +42,13 @@ public class NegotiationOutcome {
 	public String agentAutilSpaceName;
 	public String agentButilSpaceName;
 	public SimpleElement additional;
-	public String extraName;
-	public String extraValue;
+	public List<String> extraNames = new ArrayList<String>();
+	public List<String> extraValues = new ArrayList<String>();
 	public double time;
+	public String domainName;
 
 	/** Creates a new instance of NegotiationOutcome 
+	 * @param string 
 	 * @param time 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
@@ -64,6 +67,7 @@ public class NegotiationOutcome {
 			Double agentAmaxUtilP,
 			Double agentBmaxUtilP,
 			boolean startingWithA, // true if A starts, false if B starts
+			String domainName,
 			String agentAutilSpaceNameP,
 			String agentButilSpaceNameP,
 			SimpleElement additional, double time
@@ -78,6 +82,7 @@ public class NegotiationOutcome {
 		this.agentBname = agentBname;
 		this.agentAclass=agentAclass;
 		this.agentBclass=agentBclass;
+		this.domainName = domainName;
 		this.additional = additional;
 		AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
 		AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
@@ -111,17 +116,23 @@ public class NegotiationOutcome {
 	 * @param agentX is "A" or "B"
 	 * @param agentName is the given name to that agent.
 	 * @param utilspacefilename is the filename holding the utility.xml file
+	 * @param oppUtilSpaceName 
+	 * @param oppClass 
+	 * @param oppName 
 	 * @param bids is the arraylist of bids made by that agent.
 	 * @return
 	 */
-	SimpleElement resultsOfAgent(String agentX,String agentName, String agentClass, String utilspacefilename,
-			Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
+	SimpleElement resultsOfAgent(String agentX, String agentName, String agentClass, String utilspacefilename,
+			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
 	{
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
 		outcome.setAttribute("agentClass", agentClass);
 		outcome.setAttribute("utilspace", utilspacefilename);
+		outcome.setAttribute("Opponent-agentName", oppName);
+		outcome.setAttribute("Opponent-agentClass", oppClass);
+		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
@@ -130,6 +141,12 @@ public class NegotiationOutcome {
 		Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
 		outcome.setAttribute("normalizedUtility",""+normalized);
 		return outcome;
+	}
+	
+	public void addExtraAttribute(String name, String value)
+	{
+		extraNames.add(name);
+		extraValues.add(value);
 	}
 
 	/**
@@ -155,16 +172,27 @@ public class NegotiationOutcome {
 		outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
 		outcome.setAttribute("timeOfAgreement", "" + time);
 		outcome.setAttribute("bids", "" + (AgentABids.size() + AgentBBids.size()));
+		outcome.setAttribute("domain", domainName);
 
-		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName,
+		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
+				agentBname, agentBclass, agentButilSpaceName,
 				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids));
 		outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
+				agentAname, agentAclass, agentAutilSpaceName,
 				agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids, addBids));
 		if(additional!=null && !additional.isEmpty()) outcome.addChildElement(additional);
 		if (ErrorRemarks != null) outcome.setAttribute("errors",ErrorRemarks);
 		String startingagent="B"; if (agentAstarts) startingagent="A";
 		outcome.setAttribute("startingAgent",startingagent);
-		if (extraName != null && extraValue != null) outcome.setAttribute(extraName, extraValue);
+		
+		int i = 0;
+		for (String extraName : extraNames)
+		{
+			String extraValue = extraValues.get(i);
+			if (extraName != null && extraValue != null) 
+				outcome.setAttribute(extraName, extraValue);
+			i++;
+		}
 		
 		if (addBids)
 			outcome.addChildElement(bidsToXML());

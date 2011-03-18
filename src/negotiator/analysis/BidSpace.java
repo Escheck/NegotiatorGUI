@@ -9,8 +9,6 @@ import negotiator.Domain;
 import negotiator.utility.UtilitySpace;
 
 /**
- * 
- * 
  * @author W.Pasman 15nov07
  * BidSpace is a class that can store and do analysis of a space of bids.
  * There seems lot of overlap with the Analysis class.

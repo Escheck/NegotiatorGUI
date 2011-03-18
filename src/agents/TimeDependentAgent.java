@@ -30,10 +30,21 @@ public class TimeDependentAgent extends BilateralAgent
 	 * 
 	 * 4. When e = 0, the agent plays hardball.
 	 */		
-	private final double e = .5;
+	private final double e = 1.5;
 	private BidHistory outcomeSpace;
 	private double Pmax;
 	private double Pmin;
+	
+	@Override
+	public String getName()
+	{
+		return "Time Dependent Agent";
+	}
+	
+	public static String getVersion()
+	{
+		return "1.1";
+	}	
 	
 	@Override
 	public void init()
