@@ -30,7 +30,7 @@ public class TimeDependentAgent extends BilateralAgent
 	 * 
 	 * 4. When e = 0, the agent plays hardball.
 	 */		
-	private final double e = 1.5;
+	private final double e = 0;
 	private BidHistory outcomeSpace;
 	private double Pmax;
 	private double Pmin;
