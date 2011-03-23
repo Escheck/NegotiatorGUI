@@ -46,10 +46,12 @@ public class NegotiationOutcome {
 	public List<String> extraValues = new ArrayList<String>();
 	public double time;
 	public String domainName;
+	private final double distanceToNash;
 
 	/** Creates a new instance of NegotiationOutcome 
 	 * @param string 
 	 * @param time 
+	 * @param distanceToNash 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
 	public NegotiationOutcome(int sessionNumber, 
@@ -70,7 +72,7 @@ public class NegotiationOutcome {
 			String domainName,
 			String agentAutilSpaceNameP,
 			String agentButilSpaceNameP,
-			SimpleElement additional, double time
+			SimpleElement additional, double time, double distanceToNash
 	) 
 	{
 		this.sessionNumber = sessionNumber;
@@ -84,6 +86,7 @@ public class NegotiationOutcome {
 		this.agentBclass=agentBclass;
 		this.domainName = domainName;
 		this.additional = additional;
+		this.distanceToNash = distanceToNash;
 		AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
 		AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
 		ErrorRemarks=err;
@@ -173,6 +176,7 @@ public class NegotiationOutcome {
 		outcome.setAttribute("timeOfAgreement", "" + time);
 		outcome.setAttribute("bids", "" + (AgentABids.size() + AgentBBids.size()));
 		outcome.setAttribute("domain", domainName);
+		outcome.setAttribute("distanceToNash", "" + distanceToNash);
 
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,

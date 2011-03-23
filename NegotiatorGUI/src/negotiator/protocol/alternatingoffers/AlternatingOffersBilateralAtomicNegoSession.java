@@ -182,8 +182,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 						BidPoint nash = bidSpace.getNash();
-						System.out.println("Distance to Nash: " + lastbidPoint.distanceTo(nash));
-						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time);
+						double distanceToNash = lastbidPoint.distanceTo(nash);
+//						System.out.println("Distance to Nash: " + distanceToNash);
+						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time, distanceToNash);
 						checkAgentActivity(currentAgent) ;
 						otherAgent(currentAgent).ReceiveMessage(action);                      
 					} else {  // action instanceof unknown action, e.g. null.
@@ -211,7 +212,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					if (currentAgent==agentA) agentAUtility=0.; else agentBUtility=0.;
 					try 
 					{
-						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + action + ". Details: "+e.toString(), timeline.getTime());
+						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
+						BidPoint nash = bidSpace.getNash();
+						double distanceToNash = lastbidPoint.distanceTo(nash);
+						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + action + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
 						System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
 					}
 					catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
@@ -251,7 +255,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		Double utilB = spaceB.getReservationValue();
 		if (utilA == null) utilA = 0.0;
 		if (utilB == null) utilB = 0.0;
-		newOutcome(currentAgent,utilA,utilB, utilA,utilB, action, logMsg, timeline.getTime());
+		BidPoint lastbidPoint = new BidPoint(lastBid, utilA, utilB);
+		BidPoint nash = bidSpace.getNash();
+		double distanceToNash = lastbidPoint.distanceTo(nash);
+		newOutcome(currentAgent,utilA,utilB, utilA,utilB, action, logMsg, timeline.getTime(), distanceToNash);
 	}
 
 
@@ -274,8 +281,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	/**
 	 * Make a new outcome and update table
+	 * @param distanceToNash 
 	 */
-	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time) throws Exception {
+	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time, double distanceToNash) throws Exception {
 
 		no=new NegotiationOutcome(sessionNumber, 
 				agentA.getName(),  agentB.getName(),
@@ -294,7 +302,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				spaceA.getFileName(),
 				spaceB.getFileName(),
 				additionalLog,
-				time
+				time,
+				distanceToNash
 		);
 		
 		fireNegotiationActionEvent(currentAgent,action,sessionNumber,
@@ -317,7 +326,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double reservationValueB = 0;
 			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
 
-			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"JudgeTimeout: negotiation was timed out"),"JudgeTimeout: negotiation was timed out", 1);
+			BidPoint lastbidPoint = new BidPoint(lastBid, reservationValueA, reservationValueB);
+			BidPoint nash = bidSpace.getNash();
+			double distanceToNash = lastbidPoint.distanceTo(nash);
+			
+			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"JudgeTimeout: negotiation was timed out"),"JudgeTimeout: negotiation was timed out", 1, distanceToNash);
 		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
 		// don't bother about max utility, both have zero anyway.
 
