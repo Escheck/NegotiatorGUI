@@ -13,7 +13,7 @@ import negotiator.analysis.BidHistory;
  * @author Tim Baarslag
  * Agent skeleton for a bilateral agent. It contains service functions to have access to the bidding history. 
  */
-public abstract class BilateralAgent extends Agent
+public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 {
 	private static final boolean LOGGING = true;
 	protected Domain domain;
@@ -136,6 +136,16 @@ public abstract class BilateralAgent extends Agent
 	public Bid getMyLastBid()
 	{
 		return myHistory.getLastBid();
+	}
+	
+	public Bid getMySecondLastBid()
+	{
+		return myHistory.getSecondLastBid();
+	}
+	
+	public BidHistory getOpponentHistory()
+	{
+		return opponentHistory;
 	}
 
 	public Bid getOpponentLastBid()

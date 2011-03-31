@@ -121,6 +121,14 @@ public class BidHistory implements Iterable<BidDetails>
 		return lastBidDetails.getBid();
 	}
 	
+	public Bid getSecondLastBid()
+	{
+		if (history.size() < 2)
+			return null;
+		
+		return history.get(history.size() - 2).getBid();
+	}
+	
 	public int size()
 	{
 		return history.size();

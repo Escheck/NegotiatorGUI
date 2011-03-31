@@ -13,11 +13,18 @@ import negotiator.analysis.BidHistory;
  * 
  * @author Tim Baarslag
  */
-public class TimeDependentAgent extends BilateralAgent
+public abstract class TimeDependentAgent extends BilateralAgent
 {	
 	/** k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility */
 	private static final double k = 0;
 	
+	/** Is set by subclass */
+	@SuppressWarnings("unused")
+	private double e;
+	private BidHistory outcomeSpace;
+	private double Pmax;
+	private double Pmin;
+
 	/** 
 	 * Depending on the value of e, extreme sets show clearly different patterns of behaviour [1]: 
 	 * 
@@ -30,10 +37,7 @@ public class TimeDependentAgent extends BilateralAgent
 	 * 
 	 * 4. When e = 0, the agent plays hardball.
 	 */		
-	private final double e = 0;
-	private BidHistory outcomeSpace;
-	private double Pmax;
-	private double Pmin;
+	public abstract double getE();
 	
 	@Override
 	public String getName()
@@ -70,7 +74,7 @@ public class TimeDependentAgent extends BilateralAgent
 	 */
 	public double f(double t)
 	{
-		double ft = k + (1 - k) * Math.pow(t, 1 / e);
+		double ft = k + (1 - k) * Math.pow(t, 1 / getE());
 		log("f(t) = " + ft);
 		return ft;
 	}
@@ -124,5 +128,4 @@ public class TimeDependentAgent extends BilateralAgent
 			return true;
 		return false;
 	}
-
 }
