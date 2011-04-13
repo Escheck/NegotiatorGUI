@@ -87,12 +87,23 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 			Bid counterBid = chooseCounterBid();
 			// Check to see if we want to accept
 			if (isAcceptable(counterBid))
-				myAction = new Accept(getAgentID());
+				myAction = makeAcceptAction();
 			else
 				myAction = new Offer(getAgentID(), counterBid);
 		}
 
 		remember(myAction);
+		return myAction;
+	}
+
+	/**
+	 * By default, if an offer is deemed acceptable, we send accept.
+	 * Overwrite this method to change this behaviour.
+	 */
+	protected Action makeAcceptAction()
+	{
+		Action myAction;
+		myAction = new Accept(getAgentID());
 		return myAction;
 	}
 
