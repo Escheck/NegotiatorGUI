@@ -10,9 +10,13 @@
 package negotiator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointSorterA;
+import negotiator.analysis.BidPointSorterB;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -128,6 +132,17 @@ public class NegotiationOutcome {
 	SimpleElement resultsOfAgent(String agentX, String agentName, String agentClass, String utilspacefilename,
 			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
 	{
+		Comparator<BidPoint> comp = null;
+		if ("A".equals(agentX))
+			comp = new BidPointSorterA();
+		else if ("B".equals(agentX))
+			comp = new BidPointSorterB();
+		else
+			System.err.println("Unknown agent " + agentX);
+		
+		BidPoint minDemandedBid = Collections.min(bids, comp);
+		double minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
@@ -138,6 +153,8 @@ public class NegotiationOutcome {
 		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
+		outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
+		System.out.println("minDemandedUtility:"+minDemandedUtil);
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
