@@ -45,8 +45,10 @@ public class Global {
 													// to access negotiation
 													// environment
 	public static String outcomesFile = "outcomes.xml";
+	
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
 	public static final boolean EXTENSIVE_OUTCOMES_LOG = !false;
+	
 	/** Every agent plays as each preference profile */
 	public static final boolean PLAY_BOTH_SIDES = true;
 	
@@ -66,6 +68,9 @@ public class Global {
 	public static final boolean EXPERIMENTAL_SETTING = false;
 
 	public static final boolean	HIGHLIGHT_LAST_BID	= false;
+	
+	/** Log things like competitiveness and minDemandedUtil */
+	public static final boolean LOG_COMPETITIVENESS = false;
 	
 	public Global() {
 	}

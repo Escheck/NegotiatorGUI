@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import misc.SpaceDistance;
+
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -247,9 +248,9 @@ public class AlternatingOffersProtocol extends Protocol {
 			negoThread.start();
 			try {
 				synchronized (this) {
-					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000);
+					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000 + 10000);
 					// wait will unblock early if negotiation is finished in time.
-					wait(totalTime*1000);
+					wait(totalTime*1000 + 10000);
 				}
 			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
 		}
@@ -258,11 +259,12 @@ public class AlternatingOffersProtocol extends Protocol {
 
 		stopNegotiation();
 
-		// add path to the analysis chart
-		// TODO Wouter: I removed this, not the job of a negotiationsession. We have no nt here anyway.
-		//if (nt.getBidSpace()!=null)
-		//	nt.addNegotiationPaths(sessionNumber, nego.getAgentABids(), nego.getAgentBBids());
-
+		if (sessionrunner.no == null)
+		{
+			// wait some more
+			Thread.sleep(totalTime * 1000 + 5000);
+		}
+		
 		if(sessionrunner.no==null) {
 			sessionrunner.JudgeTimeout();
 		}
@@ -812,7 +814,8 @@ public class AlternatingOffersProtocol extends Protocol {
 			if(tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS ).getValues().size()>0)
 				numberOfSessions = ((TotalSessionNumberValue)( tournament.getVariables().get(Tournament.VARIABLE_NUMBER_OF_RUNS).getValues().get(0))).getValue();
 			
-			System.out.println("Number of sessions: " + numberOfSessions);
+			// numberOfSessions is always 1
+//			System.out.println("Number of sessions: " + numberOfSessions);
 			/*			AlternatingOffersProtocol session =new AlternatingOffersProtocol(agentA, agentB, profileA,profileB,
 		    		AGENT_A_NAME, AGENT_B_NAME,paramsA,paramsB,session_number++, numberOfSessions , false,
 		    		tournament_gui_time, tournament_non_gui_time,1);//TODO::TournamentNumber) ;*/
