@@ -17,6 +17,8 @@ import java.util.List;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidPointSorterB;
+import negotiator.analysis.BidSpace;
+import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -51,14 +53,16 @@ public class NegotiationOutcome {
 	public double time;
 	public String domainName;
 	private final double distanceToNash;
+	private final AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession;
 
 	/** Creates a new instance of NegotiationOutcome 
+	 * @param alternatingOffersBilateralAtomicNegoSession 
 	 * @param string 
 	 * @param time 
 	 * @param distanceToNash 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
-	public NegotiationOutcome(int sessionNumber, 
+	public NegotiationOutcome(AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession, int sessionNumber, 
 			String agentAname,
 			String agentBname,
 			String agentAclass,
@@ -79,6 +83,7 @@ public class NegotiationOutcome {
 			SimpleElement additional, double time, double distanceToNash
 	) 
 	{
+		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
 		this.sessionNumber = sessionNumber;
 		this.agentAutility = agentAutility;
 		this.agentButility = agentButility;
@@ -132,16 +137,17 @@ public class NegotiationOutcome {
 	SimpleElement resultsOfAgent(String agentX, String agentName, String agentClass, String utilspacefilename,
 			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
 	{
-		Comparator<BidPoint> comp = null;
-		if ("A".equals(agentX))
-			comp = new BidPointSorterA();
-		else if ("B".equals(agentX))
-			comp = new BidPointSorterB();
-		else
-			System.err.println("Unknown agent " + agentX);
-		
-		BidPoint minDemandedBid = Collections.min(bids, comp);
-		double minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+		double minDemandedUtil;
+		double fyu;
+		double competitiveness;
+		if (Global.LOG_COMPETITIVENESS)
+		{
+		minDemandedUtil = getMinDemandedUtil(agentX, bids);
+		BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
+		fyu = getFYU(agentX, bidSpace);
+		double yield = Math.max(minDemandedUtil, fyu);
+		competitiveness = (yield - fyu) / (1 - fyu);
+		}
 		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
@@ -153,14 +159,71 @@ public class NegotiationOutcome {
 		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
-		outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
-		System.out.println("minDemandedUtility:"+minDemandedUtil);
+		
+		if (Global.LOG_COMPETITIVENESS)
+		{
+			outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
+			outcome.setAttribute("FYU",""+fyu);
+			outcome.setAttribute("competitiveness",""+competitiveness);
+			System.out.println("competitiveness: "+competitiveness);
+		}
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
 		Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
 		outcome.setAttribute("normalizedUtility",""+normalized);
 		return outcome;
+	}
+
+	/**
+	 * Gets the Full Yield Utility of the agent. 
+	 * Definition of FYU for agent A: 
+	 * let X be the optimal bid for agent B (with utility 1). Then the utility of X for agent A is its FYU.
+	 */
+	private double getFYU(String agentX, BidSpace bidSpace)
+	{
+		ArrayList<BidPoint> paretoFrontier = null;
+		try
+		{
+			paretoFrontier = bidSpace.getParetoFrontier();
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BidPoint bestOutcomeForA = paretoFrontier.get(paretoFrontier.size() - 1);
+		BidPoint bestOutcomeForB = paretoFrontier.get(0);
+		double fyu = Double.NaN;
+		if ("A".equals(agentX))
+			fyu = bestOutcomeForB.utilityA;
+		else if ("B".equals(agentX))
+			fyu = bestOutcomeForA.utilityB;
+		else
+			System.err.println("Unknown agent " + agentX);
+		
+		System.out.println("Pareto begin: " + bestOutcomeForA);
+		System.out.println("Pareto end: " + bestOutcomeForB);
+		System.out.println("So, FYU_" + agentX + " = " + fyu);
+		return fyu;
+	}
+
+	/**
+	 * Gets the smallest utility an agent was willing to ask
+	 */
+	private double getMinDemandedUtil(String agentX, ArrayListXML<BidPoint> bids)
+	{
+		Comparator<BidPoint> comp = null;
+		if ("A".equals(agentX))
+			comp = new BidPointSorterA();
+		else if ("B".equals(agentX))
+			comp = new BidPointSorterB();
+		else
+			System.err.println("Unknown agent " + agentX);
+		
+		BidPoint minDemandedBid = Collections.min(bids, comp);
+		double minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+		System.out.println("minDemandedUtility:"+minDemandedUtil);
+		return minDemandedUtil;
 	}
 	
 	public void addExtraAttribute(String name, String value)

@@ -285,7 +285,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 */
 	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time, double distanceToNash) throws Exception {
 
-		no=new NegotiationOutcome(sessionNumber, 
+		no=new NegotiationOutcome(this, sessionNumber, 
 				agentA.getName(),  agentB.getName(),
 				agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
 				utilA,utilB,
