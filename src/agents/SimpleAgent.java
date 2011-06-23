@@ -21,11 +21,13 @@ import negotiator.issue.ValueReal;
 /**
  * @author W.Pasman
  * Some improvements over the standard SimpleAgent.
+ * 
+ * Random Walker, Zero Intelligence Agent
  */
 public class SimpleAgent extends Agent
 {
 	private Action actionOfPartner=null;
-	private static double MINIMUM_BID_UTILITY = 0.5;
+	private static double MINIMUM_BID_UTILITY = 0.0;
 
 	/**
 	 * init is called when a next session starts with the same opponent.
@@ -114,7 +116,7 @@ public class SimpleAgent extends Agent
 
 		// create a random bid with utility>MINIMUM_BID_UTIL.
 		// note that this may never succeed if you set MINIMUM too high!!!
-		// in that case we will search for a bid till the time is up (2 minutes)
+		// in that case we will search for a bid till the time is up (3 minutes)
 		// but this is just a simple agent.
 		Bid bid=null;
 		do 

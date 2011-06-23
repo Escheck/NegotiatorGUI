@@ -28,7 +28,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	UtilitySpace 	spaceB;
     protected	String 			agentAname;
     protected	String 			agentBname;
-    protected 	Bid 			lastBid = null;				// the last bid that has been done
+    protected 	Bid 			lastBid    = null;				// the last bid that has been done
+    protected 	Action 			lastAction = null;				// the last action that has been done (also included Accept, etc.)
     protected	Protocol 		protocol;
     protected 	int				sessionNumber;
     public ArrayList<BidPoint> 	fAgentABids;
