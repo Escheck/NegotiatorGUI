@@ -7,9 +7,7 @@ import negotiator.Agent;
 import negotiator.NegotiationOutcome;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
-import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
-import negotiator.actions.IllegalAction;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
@@ -93,7 +91,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					new UtilitySpace(spaceB),agentBparams);
 			agentB.init();
 			stopNegotiation = false;
-			Action action = null;
+			lastAction = null;
 
 			if (startingAgent.equals(agentAname)) currentAgent=agentA;
 			else currentAgent=agentB;
@@ -105,40 +103,40 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				//            	timeline.printTime();
 				try {
 					//inform agent about last action of his opponent
-					currentAgent.ReceiveMessage(action);
+					currentAgent.ReceiveMessage(lastAction);
 					String deadlineReachedMsg = "Deadline reached while waiting for [" + currentAgent + "]";
 					if(timeline.isDeadlineReached()) 
 					{
 						System.out.println(deadlineReachedMsg);
-						badOutcome(timeline, action, deadlineReachedMsg);                	   
+						badOutcome(timeline, deadlineReachedMsg);                	   
 					}
 					if (stopNegotiation) return;
 					//get next action of the agent that has its turn now
-					action = currentAgent.chooseAction();
+					lastAction = currentAgent.chooseAction();
 					if(timeline.isDeadlineReached()) 
 					{
 						System.out.println(deadlineReachedMsg);
-						badOutcome(timeline, action, deadlineReachedMsg);              	   
+						badOutcome(timeline, deadlineReachedMsg);              	   
 					}
 
 					if (stopNegotiation) return;
 
-					if(action instanceof EndNegotiation) 
+					if(lastAction instanceof EndNegotiation) 
 					{
-						badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
+						badOutcome(timeline, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
 						checkAgentActivity(currentAgent);
 					}
-					else if (action instanceof Offer) {
+					else if (lastAction instanceof Offer) {
 						//Main.log("Agent " + currentAgent.getName() + " sent the following offer:");
 						fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
-						lastBid  = ((Offer)action).getBid();
+						lastBid  = ((Offer)lastAction).getBid();
 						if (lastBid == null)
 						{
-							badOutcome(timeline, action, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
+							badOutcome(timeline, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
 							return;
 						}
-						//Main.log(action.toString());
-						fireLogMessage("Nego",action.toString());
+						//Main.log(lastAction.toString());
+						fireLogMessage("Nego",lastAction.toString());
 						double utilA=agentA.utilitySpace.getUtility(lastBid);
 						double utilB=agentB.utilitySpace.getUtility(lastBid);
 						//Main.log("Utility of " + agentA.getName() +": " + utilA);
@@ -160,19 +158,19 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
 						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
 
-						fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+						fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 								System.currentTimeMillis()-startTimeMillies, time, utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
 
 						checkAgentActivity(currentAgent) ;
 					}                   
-					else if (action instanceof Accept) {
+					else if (lastAction instanceof Accept) {
 						stopNegotiation = true;
-						Accept accept = (Accept)action;
+						Accept accept = (Accept)lastAction;
 						if(lastBid==null)
 							throw new Exception("Accept was done by "+
 									currentAgent.getName()+" but no bid was done yet.");
 						//Global.log("Agents accepted the following bid:");
-						//Global.log(((Accept)action).toString());
+						//Global.log(((Accept)lastAction).toString());
 						double time = timeline.getTime();
 						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
 						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
@@ -184,10 +182,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						BidPoint nash = bidSpace.getNash();
 						double distanceToNash = lastbidPoint.distanceTo(nash);
 //						System.out.println("Distance to Nash: " + distanceToNash);
-						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc,action, null, time, distanceToNash);
+						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null, time, distanceToNash);
 						checkAgentActivity(currentAgent) ;
-						otherAgent(currentAgent).ReceiveMessage(action);                      
-					} else {  // action instanceof unknown action, e.g. null.
+						otherAgent(currentAgent).ReceiveMessage(lastAction);                      
+					} else {  // lastAction instanceof unknown action, e.g. null.
 						throw new Exception("unknown action by agent "+currentAgent.getName());
 					}
 
@@ -215,7 +213,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 						BidPoint nash = bidSpace.getNash();
 						double distanceToNash = lastbidPoint.distanceTo(nash);
-						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0,action, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + action + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
 						System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
 					}
 					catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }
@@ -226,7 +224,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				else   currentAgent = agentA;
 			}
 
-			// nego finished by Accept or illegal action.
+			// nego finished by Accept or illegal lastAction.
 			// notify parent that we're ready.
 			synchronized (protocol) {  protocol.notify();  }
 
@@ -248,7 +246,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	}
 
-	protected void badOutcome(Timeline timeline, Action action, String logMsg) throws Exception
+	protected void badOutcome(Timeline timeline, String logMsg) throws Exception
 	{
 		stopNegotiation=true;
 		Double utilA = spaceA.getReservationValue();
@@ -258,7 +256,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		BidPoint lastbidPoint = new BidPoint(lastBid, utilA, utilB);
 		BidPoint nash = bidSpace.getNash();
 		double distanceToNash = lastbidPoint.distanceTo(nash);
-		newOutcome(currentAgent,utilA,utilB, utilA,utilB, action, logMsg, timeline.getTime(), distanceToNash);
+		newOutcome(currentAgent,utilA,utilB, utilA,utilB, logMsg, timeline.getTime(), distanceToNash);
 	}
 
 
@@ -283,9 +281,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * Make a new outcome and update table
 	 * @param distanceToNash 
 	 */
-	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message, double time, double distanceToNash) throws Exception {
+	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, double time, double distanceToNash) throws Exception {
 
-		no=new NegotiationOutcome(this, sessionNumber, 
+		no=new NegotiationOutcome(this, sessionNumber, lastAction,
 				agentA.getName(),  agentB.getName(),
 				agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
 				utilA,utilB,
@@ -306,7 +304,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				distanceToNash
 		);
 		
-		fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message);
 	}
 
@@ -330,7 +328,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			BidPoint nash = bidSpace.getNash();
 			double distanceToNash = lastbidPoint.distanceTo(nash);
 			
-			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent != null ? currentAgent.getAgentID() : null,"JudgeTimeout: negotiation was timed out"),"JudgeTimeout: negotiation was timed out", 1, distanceToNash);
+			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, "JudgeTimeout: negotiation was timed out", 1, distanceToNash);
 		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
 		// don't bother about max utility, both have zero anyway.
 

@@ -11,6 +11,6 @@ public class TimeDependentAgentLinear extends TimeDependentAgent
 	@Override
 	public String getName()
 	{
-		return "Conceder";
+		return "Conceder Linear";
 	}
 }

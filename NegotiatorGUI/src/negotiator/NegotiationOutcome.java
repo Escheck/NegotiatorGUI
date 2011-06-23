@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidPointSorterB;
@@ -54,16 +55,18 @@ public class NegotiationOutcome {
 	public String domainName;
 	private final double distanceToNash;
 	private final AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession;
+	private final Action lastAction;
 
 	/** Creates a new instance of NegotiationOutcome 
 	 * @param alternatingOffersBilateralAtomicNegoSession 
+	 * @param lastAction 
 	 * @param string 
 	 * @param time 
 	 * @param distanceToNash 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
 	public NegotiationOutcome(AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession, int sessionNumber, 
-			String agentAname,
+			Action lastAction, String agentAname,
 			String agentBname,
 			String agentAclass,
 			String agentBclass,
@@ -85,6 +88,7 @@ public class NegotiationOutcome {
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
 		this.sessionNumber = sessionNumber;
+		this.lastAction = lastAction;
 		this.agentAutility = agentAutility;
 		this.agentButility = agentButility;
 		this.agentAutilityDiscount = agentAutilityDiscount;
@@ -140,13 +144,15 @@ public class NegotiationOutcome {
 		double minDemandedUtil;
 		double fyu;
 		double competitiveness;
+		double cooperation;
 		if (Global.LOG_COMPETITIVENESS)
 		{
-		minDemandedUtil = getMinDemandedUtil(agentX, bids);
-		BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
-		fyu = getFYU(agentX, bidSpace);
-		double yield = Math.max(minDemandedUtil, fyu);
-		competitiveness = (yield - fyu) / (1 - fyu);
+			minDemandedUtil = getMinDemandedUtil(agentX, bids);
+			BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
+			fyu = getFYU(agentX, bidSpace);
+			double yield = Math.max(minDemandedUtil, fyu);
+			competitiveness = (yield - fyu) / (1 - fyu);
+			cooperation = 1 - competitiveness;
 		}
 		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
@@ -164,8 +170,8 @@ public class NegotiationOutcome {
 		{
 			outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
 			outcome.setAttribute("FYU",""+fyu);
-			outcome.setAttribute("competitiveness",""+competitiveness);
-			System.out.println("competitiveness: "+competitiveness);
+			outcome.setAttribute("cooperation",""+cooperation);
+			System.out.println("cooperation: "+cooperation);
 		}
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
@@ -254,9 +260,10 @@ public class NegotiationOutcome {
 		OrderedSimpleElement outcome = new OrderedSimpleElement("NegotiationOutcome");
 		outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
 		outcome.setAttribute("timeOfAgreement", "" + time);
+		outcome.setAttribute("timeOfAgreement", "" + time);
 		outcome.setAttribute("bids", "" + (AgentABids.size() + AgentBBids.size()));
 		outcome.setAttribute("domain", domainName);
-		outcome.setAttribute("distanceToNash", "" + distanceToNash);
+		outcome.setAttribute("lastAction", "" + lastAction);
 
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
