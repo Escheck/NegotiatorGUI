@@ -24,7 +24,13 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
 
 /**
- * This class stores all tournament info (for one negotiation!).
+ * This class stores all tournament info (protocol, list of profiles, list of agents, etc.)
+ * This is then converted into a list of {@link Protocol}s using {@link #getSessions()}.
+ * These {@link Protocol}s (which are actually just negotiation sessions) are then run by {@link TournamentRunner}, 
+ * one by one, in {@link TournamentRunner}.run().
+ * 
+ * (Tournament contains the information for only one negotiation if you choose Negotiation Session!).
+ * 
  * Only ONE ProfileValue is allowed in the variables.
  * Only TWO AgentValues are allowed.
  * 

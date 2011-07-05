@@ -7,8 +7,12 @@
 
 package agents;
 
-import negotiator.*;
-import negotiator.actions.*;
+import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
 
 /**
  * 
@@ -42,8 +46,9 @@ public class ABMPExactAgent extends Agent {
 		super();
 	}
 
-	protected void init(int sessionNumber, int sessionTotalNumber,NegotiationTemplate nt) {		
-		super.init(sessionNumber, sessionTotalNumber, nt);
+	protected void init(int sessionNumber, int sessionTotalNumber) 
+	{		
+		super.init();
 		myName = super.getName();
 		this.sessionNumber = sessionNumber;
 		this.sessionTotalNumber = sessionTotalNumber;
