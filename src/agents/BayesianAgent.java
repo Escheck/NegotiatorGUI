@@ -76,7 +76,6 @@ public class BayesianAgent extends Agent {
 	
 	public void init() {
 		messageOpponent = null;
-		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
 		myPreviousBids = new ArrayList<Bid>();
@@ -430,6 +429,11 @@ public class BayesianAgent extends Agent {
 	                else {
 	                	Bid lnextBid = proposeNextBid(lOppntBid);
 	                	lAction=new Offer(getAgentID(),lnextBid);
+                        
+                        //Liviu: it doesn't allow proposing null bid
+	                	if(lnextBid == null)
+	                		lnextBid = myPreviousBids.get(myPreviousBids.size() - 1);
+	                	                        
 	                	// Propose counteroffer. Get next bid.
 	                	// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                	// if yes then accept last bid of the opponent.
@@ -471,7 +475,10 @@ public class BayesianAgent extends Agent {
 		}
 		myLastAction = lAction;
 		if (myLastAction instanceof Offer)
+        {
 			myPreviousBids.add( ((Offer)myLastAction).getBid());
+			myLastBid = ((Offer)myLastAction).getBid();
+		}
 		return lAction;
 	}
 
@@ -502,7 +509,7 @@ public class BayesianAgent extends Agent {
 		return lActionType;
 	}
 	private double getTargetUtility(double myUtility, double oppntUtility) {
-		return myUtility -getConcessionFactor();
+		return myUtility - getConcessionFactor();
 	}
 	private double getConcessionFactor() {
 		// The more the agent is willing to concess on its aspiration value, the

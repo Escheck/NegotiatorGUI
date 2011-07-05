@@ -104,6 +104,11 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	                	} else {
 	                		
 	                		lAction=new Offer(getAgentID(),lnextBid);
+                            
+                            //Liviu: it doesn't allow proposing null bid
+                            if(lnextBid == null)
+                                lnextBid = myPreviousBids.get(myPreviousBids.size() - 1);
+	                	                             
 	                		myProviderLastBid = lnextBid;
 	                		// Propose counteroffer. Get next bid.
 	                		// Check if utility of the new bid is lower than utility of the opponent's last bid
@@ -146,7 +151,10 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 		}
 		myLastAction = lAction;
 		if (myLastAction instanceof Offer)
+		{
 			myPreviousBids.add( ((Offer)myLastAction).getBid());
+			myLastBid = ((Offer)myLastAction).getBid();
+		}
 		return lAction;
 
 		

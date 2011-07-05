@@ -72,7 +72,6 @@ public class BayesianAgentForAuction extends Agent {
 	
 	public void init() {
 		messageOpponent = null;
-		myLastBid = null;
 		myLastAction = null;
 		fSmartSteps = 0;
 		myPreviousBids = new ArrayList<Bid>();
@@ -551,6 +550,12 @@ public class BayesianAgentForAuction extends Agent {
 	                	} else {
 	                		
 	                		lAction=new Offer(getAgentID(),lnextBid);
+                            
+                                                    
+                            //Liviu: it doesn't allow proposing null bid
+                            if(lnextBid == null)
+                                lnextBid = myPreviousBids.get(myPreviousBids.size() - 1);
+	                	 
 	                		// Propose counteroffer. Get next bid.
 	                		// Check if utility of the new bid is lower than utility of the opponent's last bid
 	                		// if yes then accept last bid of the opponent.
@@ -589,10 +594,12 @@ public class BayesianAgentForAuction extends Agent {
 			log("Exception in chooseAction:"+e.getMessage());
 			e.printStackTrace();
 			lAction = new Offer(getAgentID(), myLastBid);
-		}
+        }
 		myLastAction = lAction;
-		if (myLastAction instanceof Offer)
+        {
 			myPreviousBids.add( ((Offer)myLastAction).getBid());
+			myLastBid = ((Offer)myLastAction).getBid();
+		}
 		return lAction;
 	}
 	protected  ACTIONTYPE getActionType(Action lAction) {
