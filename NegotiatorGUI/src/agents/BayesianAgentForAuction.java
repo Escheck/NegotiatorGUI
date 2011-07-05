@@ -78,11 +78,13 @@ public class BayesianAgentForAuction extends Agent {
 		myPreviousBids = new ArrayList<Bid>();
 		fOpponentPreviousBid = null;					
 		fRound =0;
-		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"phase",new Double(-1.),new Double(1.)))).getValue()<0)
+		if((getParameterValues().isEmpty())||(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(), "phase", new Double(-1.), new Double(1.)))).getValue() < 0))
 			fPhase = PHASE.FIRST_PHASE;
 		else
 			fPhase = PHASE.SECOND_PHASE;		
-		if(getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<0)
+		if(getParameterValues().isEmpty())
+            fRole = ROLE.IRRELEVANT;
+        else if((getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<0))
 			fRole = ROLE.PROVIDER;
 		else if (getParameterValues().get(new AgentParameterVariable(new AgentParam(BayesianAgentForAuction.class.getName(),"role",-1.,3.))).getValue()<2) {
 			fRole = ROLE.CENTER;

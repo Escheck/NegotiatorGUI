@@ -187,7 +187,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 				s.cleanUp();
 			//secondPhaseSession.cleanUp();
 			System.out.println("Results: number of sessions:"+String.valueOf(numberOfSession) + "; number of offers:"+String.valueOf(numberOfOffers));
-		} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
+		} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
 			tournamentRunner.notify();
 		}
 	

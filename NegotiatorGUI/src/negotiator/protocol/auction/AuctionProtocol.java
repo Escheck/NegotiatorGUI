@@ -192,7 +192,7 @@ public class AuctionProtocol extends Protocol {
 			for (AuctionBilateralAtomicNegoSession s: sessions) 
 				s.cleanUp();
 			secondPhaseSession.cleanUp();
-		} catch (Exception e) { e.printStackTrace(); new Warning("Fatail error cancelled tournament run:"+e); }
+		} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
 	}
 
 
@@ -380,7 +380,7 @@ public class AuctionProtocol extends Protocol {
 					agentBparams,
 					"Buyer",
 					3600);
-		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB,agentARepItem, agentBRepItem);
+		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB, agentARepItem, agentBRepItem, "", "");
 		if(Global.fDebug) {
 			sessionrunner.run();
 		} else {
