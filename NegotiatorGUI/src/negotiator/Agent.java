@@ -95,9 +95,7 @@ public abstract class Agent
      * with an Offer-action.
      * @return (should return) the bid-action the agent wants to make.
      */
-    public Action chooseAction() {
-        return null;
-    }
+    public abstract Action chooseAction();
     
     public String getName() 
     {
