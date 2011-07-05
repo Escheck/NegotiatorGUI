@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
@@ -16,11 +17,26 @@ import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
  * Use with new Thread(new TournamentRunner(tournament,ael)).start();
  * You can use a null action event listener if you want to.
  */
-public class TournamentRunner implements Runnable {
-	Tournament tournament;
+public class TournamentRunner implements Runnable 
+{
 	private boolean runSingleSession = false; 
+	private List<Protocol> sessions;
 	ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
 
+	/** 
+	 * 
+	 * @param sessions the sessions to be run
+	 * @param ael the action event listener to use. If not null, the existing listener for each
+	 * 	session will be overridden with this listener.
+	 * @throws Exception
+	 */
+	public TournamentRunner(List<Protocol> sessions, NegotiationEventListener ael) throws Exception {
+		this.sessions = sessions;
+		negotiationEventListeners.add(ael);
+		if (sessions.size() == 1)
+			runSingleSession = true;
+	}
+	
 	/** 
 	 * 
 	 * @param t the tournament to be run
@@ -29,7 +45,7 @@ public class TournamentRunner implements Runnable {
 	 * @throws Exception
 	 */
 	public TournamentRunner(Tournament t,NegotiationEventListener ael) throws Exception {
-		tournament=t;
+		sessions = getSessionsFromTournament(t);
 		negotiationEventListeners.add(ael);
 	}
 
@@ -41,7 +57,7 @@ public class TournamentRunner implements Runnable {
 	 * @throws Exception
 	 */
 	public TournamentRunner(Tournament t,NegotiationEventListener ael, boolean runSingleSession) throws Exception {
-		this(t,ael);
+		this(t, ael);
 		this.runSingleSession = runSingleSession;
 	}
 	/**
@@ -53,18 +69,9 @@ public class TournamentRunner implements Runnable {
 	 * (at least this is my current understanding, Wouter, 22aug08).
 	 * See "java dialog deadlock" on the web...
 	 */
-	public void run() {
-		ArrayList<Protocol> sessions =null;
+	public void run() 
+	{
 		try { 
-			if(runSingleSession) {
-				sessions = new ArrayList<Protocol>();
-				sessions.add(tournament.getSessions().get(0));
-			}
-			else
-				sessions=tournament.getSessions();
-			
-//			new SessionRunner(sessions).start();
-			
 			for (Protocol s: sessions) 
 			{
 				System.out.println("Starting negotiation " + s);
@@ -76,7 +83,6 @@ public class TournamentRunner implements Runnable {
 					s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 					wait();					
 				}
-
 			}
 
 			System.out.println("Done with " + sessions.size() + " sessions.");
@@ -91,6 +97,18 @@ public class TournamentRunner implements Runnable {
 			}
 		} 
 		catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
+	}
+
+	private List<Protocol> getSessionsFromTournament(Tournament t) throws Exception
+	{
+		ArrayList<Protocol> sessions;
+		if(runSingleSession) {
+			sessions = new ArrayList<Protocol>();
+			sessions.add(t.getSessions().get(0));
+		}
+		else
+			sessions=t.getSessions();
+		return sessions;
 	}
 
 	public void fireNegotiationSessionEvent(Protocol session ) {
