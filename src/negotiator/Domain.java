@@ -36,18 +36,23 @@ import negotiator.xml.SimpleElement;
  * 
  */
 
-public class Domain {
-	
+public class Domain 
+{
     private Objective fObjectivesRoot;
     private String name;
     private SimpleElement root;
-    public Domain(){
+    
+    public Domain()
+    {
     	fObjectivesRoot = null;
     	name="";
     }
-    public SimpleElement getXMLRoot() {
+    
+    public SimpleElement getXMLRoot() 
+    {
     	return root;
     }
+    
     public Domain(SimpleElement root)
     {
     	this.root = root;
