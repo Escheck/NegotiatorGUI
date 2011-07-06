@@ -9,19 +9,19 @@
 
 package negotiator;
 
-import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI2;
@@ -329,7 +329,7 @@ public class Global {
 
                 if(tokens.length < 4)
                 {
-                    System.out.println("Invalid file");
+                    System.out.println("Invalid line " + line + " parsed as " + Arrays.toString(tokens));
                     break;
                 }
 
@@ -376,7 +376,7 @@ public class Global {
 
         if(protocolRI == null)
         {
-            throw new Exception("Unable to create protocol!");
+            throw new Exception("Unable to create protocol: " + protocol);
         }
 
         Repository repDomain = Repository.get_domain_repos();
@@ -385,7 +385,7 @@ public class Global {
 
         if(domainRI == null)
         {
-            throw new Exception("Unable to find domain!");
+            throw new Exception("Unable to find domain: " + domain);
         }
 
         Repository repAgent = Repository.get_agent_repository();
@@ -395,7 +395,7 @@ public class Global {
             agentsRI[i] = (AgentRepItem) repAgent.getItemByName(agents[i]);
             if(agentsRI[i] == null)
             {
-                throw new Exception("Unable to create agent!");
+                throw new Exception("Unable to create agent: " + agents[i]);
             }
         }
         repAgent = null;
@@ -413,24 +413,24 @@ public class Global {
 
             if(profilesRI[i] == null)
             {
-                throw new Exception("Unable to create profile!");
+                throw new Exception("Unable to create profile: " + profiles[i]);
             }
         }
 
-         // Try create the protocol instance
+        HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[agentsRI.length];
+        for(int i = 0; i < agentsRI.length; i++)
+        {
+        	agentParamsp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
+        }
+
+        // Try create the protocol instance
         try
         {
-            HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[agentsRI.length];
-            for(int i = 0; i < agentsRI.length; i++)
-            {
-                agentParamsp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
-            }
-
-            ns = Global.createProtocolInstance(protocolRI, agentsRI, profilesRI, agentParamsp);
+        	ns = Global.createProtocolInstance(protocolRI, agentsRI, profilesRI, agentParamsp);
         }
         catch(Exception e)
         {
-            throw new Exception("Cannot create protocol!");
+        	throw new Exception("Cannot create protocol!");
         }
 
         

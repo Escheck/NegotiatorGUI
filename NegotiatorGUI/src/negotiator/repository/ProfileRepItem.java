@@ -1,9 +1,13 @@
 package negotiator.repository;
 
-import javax.xml.bind.annotation.*;
 import java.net.URL;
-import negotiator.exceptions.*;
+
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import negotiator.exceptions.Warning;
 
 /**
  * ProfileRepItem is a profile, as an item to put in the registry.
@@ -53,7 +57,11 @@ public class ProfileRepItem implements RepItem
     public String toString()
     {
         return getName();
-        //return "ProfileRepItem[" + url + "]";
+    }
+    
+    public String getFullName()
+    {
+        return "ProfileRepItem[" + url + "]";
     }
 
     public void afterUnmarshal(Unmarshaller u, Object parent)

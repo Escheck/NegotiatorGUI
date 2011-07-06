@@ -1,9 +1,14 @@
 package negotiator.repository;
 
 import java.util.ArrayList;
+
 import java.net.URL;
-import negotiator.exceptions.*;
-import javax.xml.bind.annotation.*;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import negotiator.exceptions.Warning;
 
 /**
  * A DomainRepItem is a domain reference that can be put in the domain repository.
@@ -49,9 +54,13 @@ public class DomainRepItem implements RepItem
     public String toString()
     {
         return getName();
-        //return "DomainRepItem[" + url + "," + profiles + "]";
     }
-
+    
+    public String getFullName()
+    {
+    	return "DomainRepItem[" + url + "," + profiles + "]";
+    }
+    
     @Override
     public boolean equals(Object o)
     {
