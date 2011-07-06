@@ -275,4 +275,14 @@ public class Repository
 			return repos;
 		}
 		
+        public RepItem getItemByName(String name)
+        {
+            for(RepItem ri : items)
+            {
+                //get protocol name
+                if(ri.getName().equals(name))
+                    return ri;
+            }
+            return null;
+        }
 }
