@@ -1,0 +1,3 @@
+;test batch file
+Alternating Offers	son_domain	BayesianAgent,BayesianAgent	son_buyer,son_seller
+Alternating Offers	thompson_employment	BayesianAgent,BayesianAgent	thompson_employer_utilityspace,thompson_employee_utilityspace

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.6">
   <NonVisualComponents>
@@ -20,12 +20,12 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                  <Component id="jSplitPane1" pref="663" max="32767" attributes="0"/>
+                  <Component id="jSplitPane1" pref="665" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="toolBar" min="-2" pref="42" max="-2" attributes="0"/>
-                      <EmptySpace pref="666" max="32767" attributes="0"/>
+                      <EmptySpace pref="668" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -137,7 +137,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTabbedPane2" alignment="0" pref="605" max="32767" attributes="0"/>
+                          <Component id="jTabbedPane2" alignment="0" pref="607" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -189,6 +189,18 @@
                   </SubComponents>
                 </Container>
               </SubComponents>
+            </Container>
+            <Container class="negotiator.gui.tab.CloseTabbedPane" name="closeTabbedPane1">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="closeTabbedPane1" noResource="true"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="right"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
             </Container>
           </SubComponents>
         </Container>
@@ -314,6 +326,15 @@
                     <Property name="name" type="java.lang.String" value="newTournamentMenuItem" noResource="true"/>
                   </Properties>
                 </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="negotiator.gui.NegoGUIView" id="runCSVFile" methodName="runCSVFile"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" resourceKey="jMenuItem1.text"/>
+                    <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
+                  </Properties>
+                </MenuItem>
                 <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
@@ -406,7 +427,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="statusMessageLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="431" max="32767" attributes="0"/>
+                  <EmptySpace pref="435" max="32767" attributes="0"/>
                   <Component id="progressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="statusAnimationLabel" min="-2" max="-2" attributes="0"/>
@@ -472,6 +493,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>

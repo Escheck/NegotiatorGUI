@@ -8,11 +8,14 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.application.Action;
@@ -22,6 +25,7 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.TaskMonitor;
 
 import negotiator.Domain;
+import negotiator.Global;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
@@ -206,6 +210,7 @@ public class NegoGUIView extends FrameView {
         newMenu = new javax.swing.JMenu();
         newSessionMenuItem = new javax.swing.JMenuItem();
         newTournamentMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         newPrefProfileMenuItem = new javax.swing.JMenuItem();
         newDomainMenuItem = new javax.swing.JMenuItem();
@@ -243,7 +248,7 @@ public class NegoGUIView extends FrameView {
         });
         jScrollPane2.setViewportView(treeDomains);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getResourceMap(NegoGUIView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(NegoGUIView.class);
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
@@ -254,7 +259,7 @@ public class NegoGUIView extends FrameView {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+            .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
         );
 
         jSplitPane2.setTopComponent(jPanel1);
@@ -290,7 +295,7 @@ public class NegoGUIView extends FrameView {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
         );
 
         jSplitPane2.setRightComponent(jPanel2);
@@ -304,7 +309,7 @@ public class NegoGUIView extends FrameView {
         toolBar.setRollover(true);
         toolBar.setName("toolBar"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(negotiator.gui.NegoGUIApp.class).getContext().getActionMap(NegoGUIView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(NegoGUIView.class, this);
         openToolBarButton1.setAction(actionMap.get("opnFileAction")); // NOI18N
         openToolBarButton1.setFocusable(false);
         openToolBarButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -313,8 +318,6 @@ public class NegoGUIView extends FrameView {
         toolBar.add(openToolBarButton1);
 
         saveToolBarButton.setAction(actionMap.get("saveFileAction")); // NOI18N
-        saveToolBarButton.setIcon(resourceMap.getIcon("saveToolBarButton.icon")); // NOI18N
-        saveToolBarButton.setToolTipText(resourceMap.getString("saveToolBarButton.toolTipText")); // NOI18N
         saveToolBarButton.setFocusable(false);
         saveToolBarButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveToolBarButton.setName("saveToolBarButton"); // NOI18N
@@ -363,11 +366,11 @@ public class NegoGUIView extends FrameView {
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
                 .add(45, 45, 45)
-                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE))
+                .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE))
             .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(mainPanelLayout.createSequentialGroup()
                     .add(toolBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(666, Short.MAX_VALUE)))
+                    .addContainerGap(668, Short.MAX_VALUE)))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -385,6 +388,11 @@ public class NegoGUIView extends FrameView {
         newTournamentMenuItem.setAction(actionMap.get("newTournamentAction")); // NOI18N
         newTournamentMenuItem.setName("newTournamentMenuItem"); // NOI18N
         newMenu.add(newTournamentMenuItem);
+
+        jMenuItem1.setAction(actionMap.get("runCSVFile")); // NOI18N
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        newMenu.add(jMenuItem1);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         newMenu.add(jSeparator1);
@@ -405,8 +413,8 @@ public class NegoGUIView extends FrameView {
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenu.add(openMenuItem);
 
-        saveMenuItem.setAction(actionMap.get("save")); // NOI18N
-        saveMenuItem.setText("Save");
+        saveMenuItem.setAction(actionMap.get("saveFileAction")); // NOI18N
+        saveMenuItem.setText(resourceMap.getString("saveMenuItem.text")); // NOI18N
         saveMenuItem.setName("saveMenuItem"); // NOI18N
         fileMenu.add(saveMenuItem);
 
@@ -444,7 +452,7 @@ public class NegoGUIView extends FrameView {
             .add(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(statusMessageLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 431, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 435, Short.MAX_VALUE)
                 .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(statusAnimationLabel)
@@ -619,6 +627,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JButton addToolBarButton;
     private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
     private javax.swing.JButton editToolBarButton;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -662,5 +671,40 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public  CloseTabbedPane getMainTabbedPane() {
     	return closeTabbedPane1;
     }
-    
+
+    @Action
+    public void runCSVFile()
+    {
+        final JFileChooser csvFileChooser = new JFileChooser();
+        csvFileChooser.setCurrentDirectory(new File("."));
+
+        csvFileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f)
+            {
+                if(f.getName().endsWith(".sc"))
+                    return true;
+                else
+                    return false;
+            }
+
+            @Override
+            public String getDescription()
+            {
+                return "Script files";
+            }
+        });
+
+        csvFileChooser.setDialogTitle("Open script");
+        csvFileChooser.showOpenDialog(null);
+
+        try
+        {
+            Global.runNegotiationfromCSV(csvFileChooser.getSelectedFile().getPath());
+        }
+        catch(Exception e)
+        {
+            
+        }
+    }
 }
