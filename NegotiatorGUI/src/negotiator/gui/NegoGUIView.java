@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.TreePath;
+import negotiator.CSVLoader;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.FrameView;
@@ -30,14 +32,18 @@ import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
 import negotiator.gui.negosession.NegoSessionUI2;
+import negotiator.gui.progress.ProgressUI2;
+import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
 import negotiator.issue.Objective;
+import negotiator.protocol.Protocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
+import negotiator.tournament.TournamentRunner;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -682,7 +688,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
             @Override
             public boolean accept(File f)
             {
-                if(f.getName().endsWith(".sc"))
+                if((f.getName().endsWith(".sc"))||(f.isDirectory()))
                     return true;
                 else
                     return false;
@@ -700,7 +706,14 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
 
         try
         {
-            Global.runNegotiationfromCSV(csvFileChooser.getSelectedFile().getPath());
+            CSVLoader csvLoader = new CSVLoader(csvFileChooser.getSelectedFile().getPath());
+            List<Protocol> sessions = csvLoader.getSessions();
+            
+            ProgressUI2 progressUI = new ProgressUI2();
+            TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
+            NegoGUIApp.negoGUIView.addTab("Run from file: " + csvLoader.getFilePath(), tournamentProgressUI);
+                        
+            new Thread(new TournamentRunner(sessions, tournamentProgressUI)).start();
         }
         catch(Exception e)
         {
