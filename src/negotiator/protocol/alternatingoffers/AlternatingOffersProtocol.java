@@ -612,7 +612,12 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * The procedure skips sessions where both sides use the same preference profiles.
 	 * @throws exception if something wrong with the variables, eg not set. 
 	 */
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+    public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception
+    {
+        return getTournamentSessions(tournament, Global.SELF_PLAY, Global.PLAY_BOTH_SIDES);
+    }
+    
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides) throws Exception {
 
 		session_number=1;
 		// get agent A and B value(s)
@@ -640,7 +645,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				for (TournamentValue agentAval: agentAvalues ) {
 					AgentRepItem agentA=((AgentValue)agentAval).getValue();
 					for (TournamentValue agentBval: agentBvalues) {
-						if(agentAval.equals(agentBval) && !Global.SELF_PLAY) continue;
+						if(agentAval.equals(agentBval) && !selfplay) continue;
 						AgentRepItem agentB=((AgentValue)agentBval).getValue();
 						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
 //						System.out.println(agentA + ", " + profileA + " vs. ");
@@ -649,7 +654,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				}
 
 			}
-			if (!Global.PLAY_BOTH_SIDES)
+			if (!both_sides)
 				skipProfiles.add(profileA);
 		}
 		return sessions;

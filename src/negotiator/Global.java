@@ -9,31 +9,20 @@
 
 package negotiator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TimeZone;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 
 import negotiator.gui.NegoGUIApp;
-import negotiator.gui.progress.ProgressUI2;
-import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
-import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
-import negotiator.repository.RepItem;
-import negotiator.repository.Repository;
-import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
@@ -301,139 +290,4 @@ public class Global {
 		else
 			return "extensive " + outcomesFile;
 	}
-
-    //Liviu
-    public static void runNegotiationfromCSV(String csvFilePath) throws Exception
-    {
-        List<Protocol> sessions = new ArrayList<Protocol>();
-        
-        try
-        {
-            FileReader fr = new FileReader(csvFilePath);
-            BufferedReader br = new BufferedReader(fr);
-
-            String line;
-
-            //read each line from script file
-            while((line = br.readLine()) != null)
-            {
-                line = line.trim();
-                String[] tokens = line.split("\t");
-
-                //ignore commented line
-                if((tokens.length == 0)||(line.startsWith(";")))
-                {
-                    //in case the line br an comment
-                    continue;
-                }
-
-                if(tokens.length < 4)
-                {
-                    System.out.println("Invalid line " + line + " parsed as " + Arrays.toString(tokens));
-                    break;
-                }
-
-                String protocol = tokens[0].trim();
-                String domain = tokens[1].trim();
-                String[] agents = tokens[2].split(",");
-                String[] profiles = tokens[3].split(",");
-                ArrayList<HashMap<String, String>> agentParams = new ArrayList();
-                HashMap<String, String> params = new HashMap<String, String>();
-                
-                Protocol newSession = loadSession(protocol, domain, agents, profiles, agentParams, params);
-                sessions.add(newSession);
-            }
-            
-            br.close();
-            fr.close();
-            
-            ProgressUI2 progressUI = new ProgressUI2();
-            TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
-            NegoGUIApp.negoGUIView.addTab("Run from file: " + csvFilePath, tournamentProgressUI);
-                        
-            //new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
-            new Thread(new TournamentRunner(sessions, tournamentProgressUI)).start();
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            throw new Exception("Batch file error!");
-        }
-    }
-
-    public static Protocol loadSession(String protocol, String domain, String agents[], String profiles[], ArrayList<HashMap<String, String>> agentParams, HashMap<String, String> parameters) throws Exception
-    {
-        Protocol ns = null;
-        if(profiles.length != agents.length)
-        {
-            throw new Exception("Invalid file - non-equal number of profiles and agents");
-        }
-
-        Repository repProtocol = Repository.getProtocolRepository();
-        ProtocolRepItem protocolRI = (ProtocolRepItem) repProtocol.getItemByName(protocol);
-        repProtocol = null;
-
-        if(protocolRI == null)
-        {
-            throw new Exception("Unable to create protocol: " + protocol);
-        }
-
-        Repository repDomain = Repository.get_domain_repos();
-        RepItem domainRI = repDomain.getItemByName(domain);
-        repDomain = null;
-
-        if(domainRI == null)
-        {
-            throw new Exception("Unable to find domain: " + domain);
-        }
-
-        Repository repAgent = Repository.get_agent_repository();
-        AgentRepItem[] agentsRI = new AgentRepItem[agents.length];
-        for(int i = 0; i < agents.length; i++)
-        {
-            agentsRI[i] = (AgentRepItem) repAgent.getItemByName(agents[i]);
-            if(agentsRI[i] == null)
-            {
-                throw new Exception("Unable to create agent: " + agents[i]);
-            }
-        }
-        repAgent = null;
-
-        ArrayList<ProfileRepItem> profileArray = ((DomainRepItem)domainRI).getProfiles();
-
-        ProfileRepItem[] profilesRI = new ProfileRepItem[profiles.length];
-        for(int i = 0; i < profiles.length; i++)
-        {
-            for(ProfileRepItem prf: profileArray)
-            {
-                if(prf.getName().equals(profiles[i]))
-                    profilesRI[i] = prf;
-            }
-
-            if(profilesRI[i] == null)
-            {
-                throw new Exception("Unable to create profile: " + profiles[i]);
-            }
-        }
-
-        HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[agentsRI.length];
-        for(int i = 0; i < agentsRI.length; i++)
-        {
-        	agentParamsp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
-        }
-
-        // Try create the protocol instance
-        try
-        {
-        	ns = Global.createProtocolInstance(protocolRI, agentsRI, profilesRI, agentParamsp);
-        }
-        catch(Exception e)
-        {
-        	throw new Exception("Cannot create protocol!");
-        }
-
-        
-        return ns;
-    }
 }
