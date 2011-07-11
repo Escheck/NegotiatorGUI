@@ -2,6 +2,7 @@ package negotiator.protocol.alternatingoffers;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import negotiator.Agent;
 import negotiator.NegotiationOutcome;
@@ -182,6 +183,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						BidPoint nash = bidSpace.getNash();
 						double distanceToNash = lastbidPoint.distanceTo(nash);
 //						System.out.println("Distance to Nash: " + distanceToNash);
+						
+						List<BidPoint> paretoFrontier = bidSpace.getParetoFrontier();
+						System.out.println("Pareto begin: " + paretoFrontier.get(0));
+						System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
+						// TODO: add Pareto to logging
 						newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null, time, distanceToNash);
 						checkAgentActivity(currentAgent) ;
 						otherAgent(currentAgent).ReceiveMessage(lastAction);                      
@@ -281,8 +287,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * Make a new outcome and update table
 	 * @param distanceToNash 
 	 */
-	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, double time, double distanceToNash) throws Exception {
-
+	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, double time, double distanceToNash) throws Exception 
+	{
 		no=new NegotiationOutcome(this, sessionNumber, lastAction,
 				agentA.getName(),  agentB.getName(),
 				agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
