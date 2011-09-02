@@ -120,7 +120,7 @@ public class Repository
 		return getDomain(file);
 	}
 
-	private Domain getDomain(String file)
+	public Domain getDomain(String file)
 	{
 		Domain domain = null;
 		try {
@@ -141,7 +141,7 @@ public class Repository
 		return getUtilitySpace(domain, file);
 	}
 
-	private UtilitySpace getUtilitySpace(Domain domain, String file)
+	public UtilitySpace getUtilitySpace(Domain domain, String file)
 	{
 		UtilitySpace us = null;			
 		try {
