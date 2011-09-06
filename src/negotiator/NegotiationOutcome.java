@@ -186,7 +186,7 @@ public class NegotiationOutcome {
 	 * Definition of FYU for agent A: 
 	 * let X be the optimal bid for agent B (with utility 1). Then the utility of X for agent A is its FYU.
 	 */
-	private double getFYU(String agentX, BidSpace bidSpace)
+	public static double getFYU(String agentX, BidSpace bidSpace)
 	{
 		ArrayList<BidPoint> paretoFrontier = null;
 		try
