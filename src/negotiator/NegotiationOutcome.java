@@ -207,9 +207,9 @@ public class NegotiationOutcome {
 		else
 			System.err.println("Unknown agent " + agentX);
 		
-		System.out.println("Pareto begin: " + bestOutcomeForA);
-		System.out.println("Pareto end: " + bestOutcomeForB);
-		System.out.println("So, FYU_" + agentX + " = " + fyu);
+//		System.out.println("Pareto begin: " + bestOutcomeForA);
+//		System.out.println("Pareto end: " + bestOutcomeForB);
+//		System.out.println("So, FYU_" + agentX + " = " + fyu);
 		return fyu;
 	}
 
