@@ -537,7 +537,7 @@ public class UtilitySpace {
             type = ((SimpleElement)xml_obj_issues[i]).getAttribute("type");
             etype = ((SimpleElement)xml_obj_issues[i]).getAttribute("etype");
             if (type==null) { // No value type specified.
-        		new Warning("Evaluator type not specified in utility template file.");
+//        		new Warning("Evaluator type not specified in utility template file.");
         		// TODO: Define exception.
             	evalType = EVALUATORTYPE.DISCRETE;
         	}

@@ -1,13 +1,7 @@
 package negotiator.tournament.VariablesAndValues;
 
 /**
- * ProfileVariable is a variable for a tournament,
- * indicating that the profile is to be manipulated.
- * It just is an indicator for the TournamentVariable that its
- * value array contains a ProfileValue.
- * 
- * @author wouter
- *
+ * {@link AgentVariable} indicates the agents used in a tournament.
  */
 public class AgentVariable extends TournamentVariable
 {
