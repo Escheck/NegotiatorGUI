@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import negotiator.exceptions.Warning;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -212,7 +211,7 @@ public class Domain
             String vtype = childIssues.getAttribute("vtype");
             ISSUETYPE issueType;
         	if (type==null) { // No value type specified.
-        		new Warning("Type not specified in template file of " + name + " at " + index);
+//        		new Warning("Type not specified in template file of " + name + " at " + index);
             	issueType = ISSUETYPE.DISCRETE;
         	}
         	else if (type.equals(vtype)) {
