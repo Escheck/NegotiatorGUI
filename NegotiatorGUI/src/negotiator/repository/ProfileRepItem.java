@@ -56,7 +56,7 @@ public class ProfileRepItem implements RepItem
     @Override
     public String toString()
     {
-        return getName();
+    	return getURL().getFile();
     }
     
     public String getFullName()

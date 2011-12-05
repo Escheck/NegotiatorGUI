@@ -86,5 +86,5 @@ public class AgentRepItem implements RepItem
 	
 	public String getDescription() { return description; }
 	
-	public String toString() { return "AgentRepositoryItem["+agentName+","+classPath+","+description+"]"; }
+	public String toString() { return agentName; }
 }
