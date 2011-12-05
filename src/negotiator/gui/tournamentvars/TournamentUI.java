@@ -24,8 +24,10 @@ import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.repository.AgentRepItem;
+import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
+import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
@@ -132,17 +134,14 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	void editVariable(TournamentVariable v) throws Exception {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
 		 // IMHO the strong typechecking gives maybe even more problems than it resolves...
-		if (v instanceof ProfileVariable) { 
-			ArrayList<ProfileRepItem> oldv=new ArrayList<ProfileRepItem>();
-			for (TournamentValue tv:v.getValues()) oldv.add( ((ProfileValue)tv).getProfile() );
-			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new ProfileVarUI(NegoGUIApp.negoGUIView.getFrame(),oldv).getResult();
-			System.out.println("result new vars="+newv);
+		if (v instanceof ProfileVariable) {
+			ArrayList<ProfileRepItem> items = getProfileRepItems();
+			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new RepItemVarUI<ProfileRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select profiles").getResult(items);//(AgentVariable)v);
 			if (newv==null) return; // cancel pressed.
-			 // make profilevalues for each selected profile and add to the set.
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
-		}else if(v instanceof ProtocolVariable) {
+		} else if(v instanceof ProtocolVariable) {
 			ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();//(AgentVariable)v);
 			System.out.println("result new vars="+newv);
 			if (newv==null) return; // cancel pressed.
@@ -152,12 +151,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			v.setValues(newtvs);			
 		}
 		else if (v instanceof AgentVariable) {
-			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new AgentVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();//(AgentVariable)v);
-			System.out.println("result new vars="+newv);
+			ArrayList<AgentRepItem> items = getAgentRepItems();
+			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new RepItemVarUI<AgentRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select agents").getResult(items);
 			if (newv==null) return; // cancel pressed.
-			// make agentvalues for each selected agent and add to the agentvariable
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-			for (AgentRepItem agtitem: newv) newtvs.add(new AgentValue(agtitem));
+			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
 			v.setValues(newtvs);
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
@@ -208,7 +206,35 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	}
 	
 
+	private ArrayList<AgentRepItem> getAgentRepItems() {
+		Repository agentrep=Repository.get_agent_repository();
+		ArrayList<AgentRepItem> items = new ArrayList<AgentRepItem>();
+		for (RepItem agt: agentrep.getItems()) 
+		{
+			if (!(agt instanceof AgentRepItem))
+				new Warning("there is a non-AgentRepItem in agent repository:"+agt);
+			items.add((AgentRepItem)agt);
+		}
+		return items;
+	}
 	
+	private ArrayList<ProfileRepItem> getProfileRepItems() {
+		Repository domainrep = null;
+		ArrayList<ProfileRepItem> items = new ArrayList<ProfileRepItem>();
+		try {
+			domainrep  = Repository.get_domain_repos();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		for (RepItem domain : domainrep.getItems()) {
+			for (ProfileRepItem profile : ((DomainRepItem) domain)
+					.getProfiles()) {
+				items.add(profile);
+			}
+		}
+		return items;
+	}
 	
 	/** remove selected row from table */
 	void removerow() throws Exception {
