@@ -24,7 +24,7 @@ public class RepItemVarUI<A> extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JButton okButton = new JButton("Ok");
 	private JButton cancelButton = new JButton("Cancel");
-	private JList<A> profileList = new JList<A>();
+	private JList profileList = new JList();
 	private JScrollPane scrollPane = new JScrollPane();
 	private ArrayList<A> result;
 	private ExtendedListModel<A> model;
