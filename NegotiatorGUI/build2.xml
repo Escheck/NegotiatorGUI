@@ -22,7 +22,9 @@
 	<property name="tmp" location="tmp"/>
 	<property name="dep" location="dep"/>
 	<property name="src" location="src"/>
-	<property name="anac" location="/ANAC2010"/>
+	<property name="anac2010" location="/ANAC2010"/>
+	<property name="anacResources" location="/ANAC/All ANAC 2010 and ANAC 2011 resources"/>
+	<property name="anac2011" location="${anacResources}/bin/anac/y2011"/>
 	
 	<target name="cleanup">
 		<!-- <delete includeemptydirs="true" quiet="true">
@@ -36,15 +38,25 @@
 	</target>
 	
 	<target name="unpackANAC2010Agents" depends="makeTempDir">		
-		<unzip src="${anac}/agents/IAMhaggler/IAMhaggler.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/IAMcrazyHaggler/IAMhaggler3.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/boan/an.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/FSEGA/AgentFSEGA.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/group9/group9.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/itolab01/Agent_K.jar" dest="${tmp}"/>
-		<unzip src="${anac}/agents/itolab02/hikari.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/IAMhaggler/IAMhaggler.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/IAMcrazyHaggler/IAMhaggler3.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/boan/an.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/FSEGA/AgentFSEGA.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/group9/group9.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/itolab01/Agent_K.jar" dest="${tmp}"/>
+		<unzip src="${anac2010}/agents/itolab02/hikari.jar" dest="${tmp}"/>
+	</target>
+	<target name="unpackANAC2011Agents" depends="makeTempDir">		
+		<copy todir="${tmp}/anac/y2011" verbose="true">
+			<fileset dir="${anac2011}/"/>
+		</copy>
+		<!-- For some reason IAMHaggler 2011 is still in a jar -->
+		<unzip src="${anacResources}/Southampton_Final_2011.jar" dest="${tmp}"/>
 	</target>
 	<target name="unpackNegotiatorZIP">		
+			<delete includeemptydirs="true" quiet="true">
+					<fileset dir="${dist}/negotiator"/>
+				</delete>
 			<unzip src="${dist}/negotiator.zip" dest="${dist}"/>
 	</target>
 	<target name="unpackJTreeTable" depends="makeTempDir">		
@@ -248,10 +260,51 @@
 				<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
 				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
 				
-				<zipfileset dir="${anac}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
-				<zipfileset dir="${anac}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
-				<zipfileset dir="${anac}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
-				<zipfileset dir="${anac}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
+				<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
+				<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
+			</zip>
+			<ant target="cleanup"/>
+		</target>
+	
+	<target name ="makeGeniusANAC2012" depends="unpackANAC2011Agents, makeNegoSimulatorWithAllAgentJar">
+			<copy todir="${tmp}">
+				<fileset dir="." includes="domainrep_ANAC2011.xml"/>
+				<globmapper from="domainrep_ANAC2011.xml" to="domainrepository.xml" />
+			</copy>
+			<copy todir="${tmp}">
+				<fileset dir="." includes="agentrep_ANAC2011.xml"/>
+				<globmapper from="agentrep_ANAC2011.xml" to="agentrepository.xml" />
+			</copy>
+			<copy todir="${tmp}">
+				<fileset dir="." includes="protocolrep_ANAC2010.xml"/>
+				<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
+			</copy>	
+			<zip destfile="${dist}/negotiator.zip">
+				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
+				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
+				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
+				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
+				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
+				<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
+				<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
+				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
+	<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+	--> 
+				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
+					<exclude name="son_center_*.xml"/>
+					<exclude name="son_seller_*.xml"/>
+				</zipfileset>
+				<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
+				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
+				
+				<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
+				<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
+				
+				<zipfileset dir="${anacResources}/etc/2011/final/" prefix="negotiator//etc/templates/"/>
 			</zip>
 			<ant target="cleanup"/>
 		</target>
@@ -370,8 +423,8 @@
 				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
 				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
 				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
-				<zipfileset dir="${anac}/etc/templates/ItexvsCypress" prefix="negotiator/etc/templates/ItexvsCypress"/>
-				<zipfileset dir="${anac}/etc/templates/ItexvsCypress_discount" prefix="negotiator/etc/templates/ItexvsCypress_discount"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator/etc/templates/ItexvsCypress"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator/etc/templates/ItexvsCypress_discount"/>
 			</zip>
 			<ant target="cleanup"/>
 		</target>

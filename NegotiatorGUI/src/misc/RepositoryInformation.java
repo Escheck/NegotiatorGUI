@@ -15,7 +15,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class RepositoryInformation
 {
-	public static void main1(String[] args)
+	public static void main(String[] args)
 	{
 		Repository theDomainRepos = null;
 		try
