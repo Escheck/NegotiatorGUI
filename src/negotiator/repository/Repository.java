@@ -221,8 +221,7 @@ public class Repository
 	static ArrayList<RepItem> init_temp_repository()
 	{
 		ArrayList<RepItem> items=new ArrayList<RepItem>();
-		items.add(new 	AgentRepItem("aap", "/Volumes/aap.class", "apy negotiator"));
-		items.add(new 	AgentRepItem("beer", "/Volumes/beer.class", "beary negotiator"));
+		items.add(new 	AgentRepItem("Repository not loaded", "/Volumes/aap.class", "apy negotiator"));
 		items.add(new 	AgentRepItem("BayesianAgent", "agents.BayesianAgent", "simple agent"));
 		items.add(new 	AgentRepItem("UI agent", "agents.UIAgent", "basic UI agent"));
 		return items;
