@@ -221,7 +221,9 @@ public class Repository
 	static ArrayList<RepItem> init_temp_repository()
 	{
 		ArrayList<RepItem> items=new ArrayList<RepItem>();
-		items.add(new 	AgentRepItem("Repository not loaded", "/Volumes/aap.class", "apy negotiator"));
+		items.add(new 	AgentRepItem("Warning: Repository not loaded", "", ""));
+		items.add(new 	AgentRepItem("Please check that Genius can find agentrepository.xml and domainrepository.xml", "", ""));
+		items.add(new 	AgentRepItem("And make sure /etc/templates is in the same directory", "", ""));
 		items.add(new 	AgentRepItem("BayesianAgent", "agents.BayesianAgent", "simple agent"));
 		items.add(new 	AgentRepItem("UI agent", "agents.UIAgent", "basic UI agent"));
 		return items;
