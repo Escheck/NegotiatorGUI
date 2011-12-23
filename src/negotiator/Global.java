@@ -9,12 +9,12 @@
 
 package negotiator;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 
@@ -46,8 +46,9 @@ public class Global {
 													// environment
 	public static String outcomesFile = "outcomes.xml";
 	
+
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
-	public static final boolean EXTENSIVE_OUTCOMES_LOG = !false;
+	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
 	
 	/** Every agent plays as each preference profile */
 	public static final boolean PLAY_BOTH_SIDES = true;
@@ -56,10 +57,10 @@ public class Global {
 	/** Use extensive data-named logging files */
 	public static final boolean LOG_TO_DATED_FILES = !false;
 	
-	public static final boolean SHOW_TIME = false;
+	public static final boolean SHOW_TIME = !false;
 
 	/** Show all bid points in the GUI chart */
-	public static final boolean SHOW_ALL_BIDS = false;
+	public static final boolean SHOW_ALL_BIDS = !false;
 
 	/** Agents play themselves in a tournament */
 	public static final boolean SELF_PLAY = false;
@@ -67,7 +68,7 @@ public class Global {
 	/** Use experimental variables etc. */
 	public static final boolean EXPERIMENTAL_SETTING = false;
 
-	public static final boolean	HIGHLIGHT_LAST_BID	= false;
+	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
 	
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
@@ -236,6 +237,8 @@ public class Global {
 	 */
 	public static String getAgentDescription(Agent agent)
 	{
+		if (agent == null)
+			return "";
 		String agentDescription = agent.getName();
 		if (agentDescription == null || "Agent A".equals(agentDescription) || "Agent B".equals(agentDescription))
 			agentDescription = agent.getClass().getSimpleName();
