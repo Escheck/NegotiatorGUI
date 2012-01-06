@@ -45,6 +45,8 @@ public class Global {
 													// to access negotiation
 													// environment
 	public static String outcomesFile = "outcomes.xml";
+
+	public static String logPrefix = "";
 	
 
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
@@ -280,7 +282,9 @@ public class Global {
 	
 	public static String getOutcomesFileName()
 	{
-		if (LOG_TO_DATED_FILES)
+		if (!logPrefix.equals(""))
+			return logPrefix + "log.xml";
+		else if (LOG_TO_DATED_FILES)
 			return "log/" + getLoadDate() + ".xml";
 		else
 			return outcomesFile;
@@ -288,7 +292,9 @@ public class Global {
 	
 	public static String getExtensiveOutcomesFileName()
 	{
-		if (LOG_TO_DATED_FILES)
+		if (!logPrefix.equals(""))
+			return logPrefix + "extensive_log.xml";
+		else if (LOG_TO_DATED_FILES)
 			return "log/extensive " + getLoadDate() + ".xml";
 		else
 			return "extensive " + outcomesFile;
