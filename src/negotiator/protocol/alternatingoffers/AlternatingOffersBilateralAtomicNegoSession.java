@@ -181,6 +181,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 						BidPoint nash = bidSpace.getNash();
+						// This is the distance between the *undiscounted* bidpoints
 						double distanceToNash = lastbidPoint.distanceTo(nash);
 //						System.out.println("Distance to Nash: " + distanceToNash);
 						
@@ -254,15 +255,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	protected void badOutcome(Timeline timeline, String logMsg) throws Exception
 	{
+		double time = timeline.getTime();
 		stopNegotiation=true;
-		Double utilA = spaceA.getReservationValue();
-		Double utilB = spaceB.getReservationValue();
-		if (utilA == null) utilA = 0.0;
-		if (utilB == null) utilB = 0.0;
-		BidPoint lastbidPoint = new BidPoint(lastBid, utilA, utilB);
+		double rvADiscounted = spaceA.getReservationValueWithDiscount(time);
+		double rvBDiscounted = spaceB.getReservationValueWithDiscount(time);
+		double rvA = spaceA.getReservationValueUndiscounted();
+		double rvB = spaceB.getReservationValueUndiscounted();
+		
+		BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
 		BidPoint nash = bidSpace.getNash();
 		double distanceToNash = lastbidPoint.distanceTo(nash);
-		newOutcome(currentAgent,utilA,utilB, utilA,utilB, logMsg, timeline.getTime(), distanceToNash);
+		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, logMsg, time, distanceToNash);
 	}
 
 
@@ -325,16 +328,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	{
 		System.out.println("Judging time-out.");
 		try {
-			double reservationValueA = 0;
-			if(spaceA.getReservationValue()!=null) reservationValueA = spaceA.getReservationValue();
-			double reservationValueB = 0;
-			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
+			double time = 1;
+			double rvADiscounted = spaceA.getReservationValueWithDiscount(time);
+			double rvBDiscounted = spaceB.getReservationValueWithDiscount(time);
+			double rvA = spaceA.getReservationValueUndiscounted();
+			double rvB = spaceB.getReservationValueUndiscounted();
 
-			BidPoint lastbidPoint = new BidPoint(lastBid, reservationValueA, reservationValueB);
+			BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
 			BidPoint nash = bidSpace.getNash();
 			double distanceToNash = lastbidPoint.distanceTo(nash);
 			
-			newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, "JudgeTimeout: negotiation was timed out", 1, distanceToNash);
+			newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, "JudgeTimeout: negotiation was timed out", time, distanceToNash);
 		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }
 		// don't bother about max utility, both have zero anyway.
 

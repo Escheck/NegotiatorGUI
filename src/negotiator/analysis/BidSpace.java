@@ -215,7 +215,7 @@ public class BidSpace {
 	
 	
 	/**
-	 * Calculates Nash optimal outcome. Assumes that Pareto frontier is already built.
+	 * Calculates the undiscounted Nash optimal outcome. Assumes that Pareto frontier is already built.
 	 * Nash is the point on paretofrontier that has max product of utilities for A and B
 	 * @author Dmytro Tykhonov, cleanup by W.Pasman
 	 * @returns the Nash BidPoint.

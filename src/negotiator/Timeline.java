@@ -2,7 +2,7 @@ package negotiator;
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).
  */
-public final class Timeline
+public class Timeline
 {
 	private final int totalSeconds;
     private final long startTime;

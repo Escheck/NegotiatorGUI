@@ -281,6 +281,7 @@
 				<fileset dir="." includes="protocolrep_ANAC2010.xml"/>
 				<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
 			</copy>	
+			<mkdir dir="${dist}/log"/>
 			<zip destfile="${dist}/negotiator.zip">
 				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
 				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
