@@ -250,15 +250,10 @@ public class UtilitySpace {
     		return fEvaluators.get(obj);
     	}else return null;
     }
-
-// Utility space should not return domain-related information, should it?
-//    public final int getNumberOfIssues() {
-//        return domain.getNumberOfIssues();
-//    }
     
     /**
-     * update 23oct. If a hard constraint is violated, the utility should be 0.
-     * @param bid=???? seems 
+     * Note: computes undiscounted utility.
+     * If a hard constraint is violated, the utility is 0.
      */
     public double getUtility(Bid bid) throws Exception
     {
@@ -332,15 +327,6 @@ public class UtilitySpace {
     public double getUtilityWithDiscount(Bid bid, double time)
     {
     	double util = 0;
-    	double discount = discountFactor;
-    	
-    	if (discountFactor <= 0 || discountFactor >= 1)
-    	{
-    		discount = 1;
-    		if (discountFactor < 0 || discountFactor > 1)
-    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
-    	}
-    	
     	try
     	{
     		util = getUtility(bid);
@@ -348,10 +334,42 @@ public class UtilitySpace {
     	{
     		e.printStackTrace();
     	}
-    	double discountedUtil = util * Math.pow(discount, time);
+    	
+    	double discountedUtil = discount(time, util);
 //    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;
     }
+
+    /**
+     * Computes:
+     * 
+     * discountedUtil = util * Math.pow(discount, time).
+     * 
+     * Checks for bounds on the discount factor and time.
+     */
+	public double discount(double util, double time)
+	{
+		double discount = discountFactor;
+    	if (discountFactor <= 0 || discountFactor >= 1)
+    	{
+    		discount = 1;
+    		if (discountFactor < 0 || discountFactor > 1)
+    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
+    	}
+    	if (time < 0)
+    	{
+			System.err.println("Warning: time = " + time + " < 0, using time = 0 instead.");
+    		time = 0;
+    	}
+    	if (time > 1)
+    	{
+			System.err.println("Warning: time = " + time + " > 1, using time = 1 instead.");
+    		time = 1;
+    	}
+    	
+    	double discountedUtil = util * Math.pow(discount, time);
+		return discountedUtil;
+	}
     
 
     
@@ -1094,10 +1112,47 @@ public class UtilitySpace {
     
     /**
      * The reservation value is the least favourable point at which one will accept a negotiated agreement. 
-     * Also sometimes referred to as the ‘walk away’ point.
+     * Also sometimes referred to as the ‘walk away’ point. 
+     * 
+     * This is value remains constant during the negotiation. 
+     * However, by default, the reservation value descreases with time. To obtain the discounted version of 
+     * the reservation value, use {@link #getReservationValueWithDiscount(Timeline)}.
      */
-    public Double getReservationValue() {
+    public Double getReservationValue() 
+    {
     	return fReservationValue;
+    }
+    
+    /**
+     * Equivalent to {@link #getReservationValue()}, but always returns a double value. When the original reservation value is
+     * <b>null</b> it returns the default value 0.
+     * @see #getReservationValue()
+     */
+    public double getReservationValueUndiscounted() 
+    {
+    	if (fReservationValue == null)
+    		return 0;
+    	return fReservationValue;
+    }
+    
+    /**
+     * The discounted version of {@link #getReservationValue()}.
+     */
+    public double getReservationValueWithDiscount(double time) 
+    {
+    	Double rv = getReservationValue();
+    	if (rv == null || rv == 0)
+    		return 0;
+    	
+    	return discount(rv, time);
+    }
+    
+    /**
+     * The discounted version of {@link #getReservationValue()}.
+     */
+    public double getReservationValueWithDiscount(Timeline timeline) 
+    {
+    	return getReservationValueWithDiscount(timeline.getTime());
     }
 
     public String getFileName() {
