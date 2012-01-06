@@ -272,8 +272,8 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
     
     public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message) throws Exception {
         
-    	no=new NegotiationOutcome(sessionNumber, 
-			   agentA.getName(),  agentB.getName(),
+    	no=new NegotiationOutcome(null, sessionNumber, 
+			   action, agentA.getName(),  agentB.getName(),
             agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
             utilA,utilB,
             utilADiscount,utilBDiscount,
@@ -286,6 +286,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
             spaceA.getFileName(),
             spaceB.getFileName(),
             additionalLog,
+            -1, 
             -1
             );
     	
