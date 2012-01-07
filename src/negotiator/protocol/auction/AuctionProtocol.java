@@ -1,16 +1,19 @@
 package negotiator.protocol.auction;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Random;
 
-import agents.BayesianAgentForAuction;
-
-import negotiator.*;
+import negotiator.Agent;
+import negotiator.AgentParam;
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.Global;
+import negotiator.NegotiationOutcome;
 import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.exceptions.Warning;
@@ -19,9 +22,14 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
-import negotiator.tournament.VariablesAndValues.*;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.tournament.VariablesAndValues.AgentValue;
+import negotiator.tournament.VariablesAndValues.AgentVariable;
+import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
+import agents.BayesianAgentForAuction;
 
 public class AuctionProtocol extends Protocol {
 	final protected double ALLOWED_UTILITY_DEVIATION = 0.015; 
@@ -60,7 +68,7 @@ public class AuctionProtocol extends Protocol {
 				BidIterator iter = new BidIterator(centerUtilitySpace.getDomain());
 				while(iter.hasNext()) {
 					Bid bid = iter.next();
-					if(Math.abs(sellerUtilitySpace.getUtility(bid)-sellerUtilitySpace.getReservationValue())<ALLOWED_UTILITY_DEVIATION) {
+					if(Math.abs(sellerUtilitySpace.getUtility(bid)-sellerUtilitySpace.getReservationValueUndiscounted())<ALLOWED_UTILITY_DEVIATION) {
 						double lTmpExpecteUtility = centerUtilitySpace.getUtility(bid);
 						if(lTmpExpecteUtility > outcome[i]) {
 							outcome[i]= lTmpExpecteUtility ;
