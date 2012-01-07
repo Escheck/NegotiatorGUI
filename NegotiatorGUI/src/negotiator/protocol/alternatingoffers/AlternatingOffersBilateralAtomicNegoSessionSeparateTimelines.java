@@ -142,10 +142,10 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                    
                    if(action instanceof EndNegotiation) 
                    {
-                       stopNegotiation=true;
-                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
-                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
-                       newOutcome(currentAgent,spaceA.getReservationValue(),spaceB.getReservationValue(), spaceA.getReservationValue(),0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
+                	   stopNegotiation=true;
+                	   double reservationValueA = spaceA.getReservationValueUndiscounted();
+                	   double reservationValueB = spaceB.getReservationValueUndiscounted();
+                	   newOutcome(currentAgent, reservationValueA, reservationValueB, reservationValueA, reservationValueB, action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");
                        checkAgentActivity(currentAgent) ;
                    }
                    else if (action instanceof Offer) {
@@ -305,10 +305,8 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
      */
     public void JudgeTimeout() {
 		try {
-			double reservationValueA = 0;
-			if(spaceA.getReservationValue()!=null) reservationValueA = spaceA.getReservationValue();
-			double reservationValueB = 0;
-			if(spaceB.getReservationValue()!=null) reservationValueB = spaceB.getReservationValue(); 
+			double reservationValueA = spaceA.getReservationValueUndiscounted();
+			double reservationValueB = spaceB.getReservationValueUndiscounted();
 			
     		newOutcome(currentAgent, reservationValueA, reservationValueB,reservationValueA,reservationValueB, new IllegalAction(currentAgent.getAgentID(),"negotiation was timed out"),"negotiation was timed out");
     		} catch (Exception err) { new Warning("error during creation of new outcome:",err,true,2); }

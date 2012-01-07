@@ -4,10 +4,10 @@
 
 package negotiator.gui;
 
+import misc.CommandLineOptions;
+
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-
-import misc.CommandLineOptions;
 
 
 /**
@@ -16,7 +16,7 @@ import misc.CommandLineOptions;
 public class NegoGUIApp extends SingleFrameApplication 
 {
 	public static NegoGUIView negoGUIView = null;
-	private static CommandLineOptions options = new CommandLineOptions();;
+	private static CommandLineOptions options = new CommandLineOptions();
 	
     /**
      * At startup create and show the main frame of the application.
