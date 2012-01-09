@@ -52,11 +52,11 @@ public class Warning {
 	/** if you set showstack to true, stack dump will be made for location where WARNING occurs. 
 	 * Note that this is not useful if you are converting an exception into a warning. In that case,
 	 * you better use Warning(warning, Exception) 
-	 * @param warning is the message to be shown
+	 * @param pWarning is the message to be shown
 	 * @param err is the exception that caused the rise of this warning. this will be used
 	 * to inform the user about where the problem occured.
-	 * @param showstack is true if you want to show a stack dump as well
-	 * @param suppressat is the maximum number of this warning you want to appear 
+	 * @param pShowStack is true if you want to show a stack dump as well
+	 * @param pSuppressAt is the maximum number of this warning you want to appear 
 	 */
 	public Warning(String pWarning, Exception err, boolean pShowStack,int pSuppressAt) {
 		makeWarning(pWarning,err,pShowStack,pSuppressAt);
