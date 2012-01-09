@@ -189,6 +189,20 @@ public class EvaluatorInteger implements Evaluator {
 		}
 		return 0;
 	}
+
+	/**
+	 * 
+	 * @return The top parameter of this Evaluator, or 0 if it doesn't exist.
+	 */
+	public double getTopParam() {
+		try{
+			return fParam.get(new Integer(2));
+		}catch(Exception e){
+			System.out.println("Top parameter does not exist");
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_item = ((SimpleElement)pRoot).getChildByTagName("range");
