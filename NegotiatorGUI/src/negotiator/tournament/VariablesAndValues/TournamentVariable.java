@@ -31,7 +31,6 @@ public abstract class TournamentVariable  implements Serializable
 	/** 
 	 * varToString converts the variable name into a string.
 	 * It shound NOT convert the values, only the variable name and its parameters (eg AgentParam[tau])
-	 * @return
 	 */
 	public abstract String varToString();
 	
