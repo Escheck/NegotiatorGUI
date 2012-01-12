@@ -2,6 +2,7 @@ package negotiator.events;
 
 import negotiator.Agent;
 import negotiator.actions.Action;
+import negotiator.gui.progress.TournamentProgressUI2;
 
 
 /** This class records details about an action of an agent. 
@@ -26,10 +27,13 @@ public class ActionEvent extends NegotiationEvent
 	double normalizedUtilityB;
 	double utilADiscount;
 	double utilBDsicount;
-	String errorRemarks;		// errors 
+	String errorRemarks;		// errors
+	/** Indicates whether it was the last actionevent of the negotiation session, so then we update 
+	 * the table through {@link TournamentProgressUI2} */
+	boolean finalActionEvent;
 	
 	public ActionEvent(Object source, Agent actorP,Action actP,int roundP,long elapsed, double t,
-			double utilA,double utilB, double utilADiscount, double utilBDsicount, String remarks)
+			double utilA,double utilB, double utilADiscount, double utilBDsicount, String remarks, boolean finalActionEvent)
 	{
 		super(source);
 		actor=actorP;
@@ -42,6 +46,7 @@ public class ActionEvent extends NegotiationEvent
 		this.utilADiscount = utilADiscount;
 		this.utilBDsicount = utilBDsicount;
 		errorRemarks=remarks;
+		this.finalActionEvent = finalActionEvent;
 	}
 	
 	public double getUtilADiscount() {
@@ -94,5 +99,8 @@ public class ActionEvent extends NegotiationEvent
 		return errorRemarks;
 	}
 	
-	
+	public boolean isFinalActionEvent()
+	{
+		return finalActionEvent;
+	}	
 }

@@ -89,9 +89,9 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     }
     
 	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,double time,
-			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks) {
+			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks, boolean finalActionEvent) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks, finalActionEvent ));
 		}
 	}
 	
@@ -100,9 +100,9 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	 */
 	@Deprecated
 	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,
-			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks) {
+			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks, boolean finalActionEvent) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, -1, utilA, utilB, utilADiscount, utilBDiscount, remarks ));
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, -1, utilA, utilB, utilADiscount, utilBDiscount, remarks, finalActionEvent));
 		}
 	}
 	
