@@ -1,0 +1,34 @@
+\contentsline {section}{\numberline {1}Theory Crash Course}{2}
+\contentsline {subsection}{\numberline {1.1}Actions}{2}
+\contentsline {subsection}{\numberline {1.2}Negotiation Protocol}{2}
+\contentsline {subsection}{\numberline {1.3}Reservation Value}{2}
+\contentsline {subsection}{\numberline {1.4}Time available for a Session}{3}
+\contentsline {subsubsection}{\numberline {1.4.1}Discounting}{3}
+\contentsline {subsection}{\numberline {1.5}Negotiation Objects}{3}
+\contentsline {subsection}{\numberline {1.6}Utility of a Bid}{4}
+\contentsline {subsection}{\numberline {1.7}Optimality of a Bid}{4}
+\contentsline {section}{\numberline {2}Installing the Environment}{5}
+\contentsline {subsection}{\numberline {2.1}System Requirements}{5}
+\contentsline {subsection}{\numberline {2.2}Installation}{5}
+\contentsline {subsection}{\numberline {2.3}Progress \& Error Messages}{5}
+\contentsline {subsection}{\numberline {2.4}Bug reporting}{6}
+\contentsline {section}{\numberline {3}Profile Creation}{6}
+\contentsline {subsection}{\numberline {3.1}Start the Negosimulator}{6}
+\contentsline {subsection}{\numberline {3.2}Load the Domain}{6}
+\contentsline {subsection}{\numberline {3.3}Create a Preference Profile}{7}
+\contentsline {subsection}{\numberline {3.4}Set the Evaluation Values}{7}
+\contentsline {subsection}{\numberline {3.5}Set the Issue Weights}{8}
+\contentsline {subsection}{\numberline {3.6}Save your Utility Space}{8}
+\contentsline {section}{\numberline {4}Running Negotiations}{8}
+\contentsline {subsection}{\numberline {4.1}Using an Automatic Agent}{9}
+\contentsline {subsection}{\numberline {4.2}Negotiation Results}{9}
+\contentsline {subsubsection}{\numberline {4.2.1}The Utility Plot}{9}
+\contentsline {subsubsection}{\numberline {4.2.2}Exchanged Offers}{9}
+\contentsline {subsection}{\numberline {4.3}Running a Tournament}{10}
+\contentsline {section}{\numberline {5}Writing a Negotiation Agent}{10}
+\contentsline {subsection}{\numberline {5.1}ReceiveMessage}{11}
+\contentsline {subsection}{\numberline {5.2}ChooseAction}{12}
+\contentsline {subsection}{\numberline {5.3}Compiling an Agent}{13}
+\contentsline {section}{\numberline {6}Data structures}{14}
+\contentsline {section}{\numberline {7}Conclusions}{14}
+\contentsline {section}{\numberline {8}References}{14}
