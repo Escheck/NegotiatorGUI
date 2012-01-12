@@ -63,8 +63,28 @@
 \title{Negotiation User Guide - \ANAC{ANAC Version}\AI{AI Techniques (IN4010TU) Version}}
 \author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser}
 
-\date{2012-01-06}
+\date{\today}
 
+% Alter some LaTeX defaults for better treatment of figures:
+    % See p.105 of "TeX Unbound" for suggested values.
+    % See pp. 199-200 of Lamport's "LaTeX" book for details.
+    %   General parameters, for ALL pages:
+    \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
+    \renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
+    %   Parameters for TEXT pages (not float pages):
+    \setcounter{topnumber}{2}
+    \setcounter{bottomnumber}{2}
+    \setcounter{totalnumber}{4}     % 2 may work better
+    \setcounter{dbltopnumber}{2}    % for 2-column pages
+    \renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
+    \renewcommand{\textfraction}{0.07}	% allow minimal text w. figs
+    %   Parameters for FLOAT pages (not text pages):
+    \renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
+	% N.B.: floatpagefraction MUST be less than topfraction !!
+    \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
+
+	% remember to use [htp] or [htpb] for placement
+	
 \begin{document}
 
 \ifpdf
@@ -77,20 +97,12 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-\AI{For the second half of the course AI Techniques (IN4010TU) you have to implement an agent that will negotiate on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
+In Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.
 
 \tableofcontents
 
 \section{Theory Crash Course}
 This section gives a crash course on some essential theory needed to understand the negotiation system. The negotiation objects that are used in a negotiation and utility values are discussed. 
-
-\ANAC{
-	\subsection{Reservation Value}
-
-	A reservation value is a real-valued value that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with a Best Alternative to No Agreement BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting or by not reaching an agreement before the deadline associated with a negotiation session. In other words: if the negotiating parties agree on an outcome $\omega$, then both agents receive the associated utility of $\omega$. However, if no agreement is reached, both agents receive their reservation value instead.
-
-	Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0). Given that utilities for outcomes range from 0 to 1, this essentially is the same as having no reservation value.
-}
 
 \subsection{Actions}
 In negotiation, the two parties take turns in doing the next negotiation action. The possible actions are:
@@ -98,11 +110,11 @@ In negotiation, the two parties take turns in doing the next negotiation action.
 \begin{center}
 \begin{tabular}{cm{0.6\textwidth}}
 \hline
-\textsc{Accept} & This action indicates that agent (which usually has the value `this') accepts the opponent's last bid.\\
+\textsc{Accept} & This action indicates that agent accepts the opponent's last bid.\\
 \hline
 \textsc{Offer} & This action indicates that the agent proposes a new bid.\\
 \hline
-\textsc{EndNegotiation} & This action indicates that the agent terminates the entire negotiation, resulting in \ANAC{the reservation value}\AI{a value of zero} being awarded to both players (normally this is equal to the lowest possible score of zero for both agents).\\
+\textsc{EndNegotiation} & This action indicates that the agent terminates the entire negotiation, resulting in the reservation value being awarded to both players (see below; normally this is equal to the lowest possible score of zero for both agents).\\
 \hline
 \end{tabular}
 \end{center}
@@ -110,18 +122,24 @@ In negotiation, the two parties take turns in doing the next negotiation action.
 \subsection{Negotiation Protocol}
 The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the protocol for this assignment.
 
-Agent A and B take turns in the negotiation. One of the two agents is picked at random to start. When it is the turn of agent X (X being A or B), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent X is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an Offer, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
+Agent $A$ and $B$ take turns in the negotiation. One of the two agents is picked at random to start. When it is the turn of agent $X$ (X being $A$ or $B$), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent $X$ is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
 \begin{itemize}
-	\item the action of agent X is an \textsc{Accept}. This action is possible only if the opponent actually did a bid. The last bid of the opponent is taken, and the utility of that bid is determined in the utility spaces of agent A and B. The opponent is informed of this accept via the ReceiveMessage method (but now without the subsequent chooseAction).
-	\item the action returned is an \textsc{EndNegotiation}. The score of both agents is set to \ANAC{their reservation value}\AI{zero}.
+	\item the action of agent $X$ is an \textsc{Accept}. This action is possible only if the opponent actually did a bid. The last bid of the opponent is taken, and the utility of that bid is determined in the utility spaces of agent $A$ and $B$. The opponent is informed of this accept via the ReceiveMessage method (but now without the subsequent chooseAction).
+	\item the action returned is an \textsc{EndNegotiation}. The score of both agents is set to their reservation value.
 \end{itemize}
 
 So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also \ANAC{get their reservation values}\AI{score zero}. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
  
+\subsection{Reservation Value}
+
+A reservation value is a real-valued value that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with a Best Alternative to No Agreement (BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting) or by not reaching an agreement before the deadline associated with a negotiation session. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or: no agreement is reached, and both agents receive their reservation value instead.
+
+Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0). Given that utilities for outcomes range from 0 to 1, this essentially is the same as having no reservation value.
+
 
 \subsection{Time available for a Session}
 
-Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be \ANAC{their reservation value}\AI{zero}. \AI{Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds.} Notice that manipulation of the available time (by delaying the response of your agent) can be an important factor influencing the negotiation results, and one improvement for the example agent (SimpleAgent) would be to be more careful about this.
+Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be their reservation value (normally 0). Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds. Notice that manipulation of the available time (by delaying the response of the agent) can be an important factor influencing the negotiation results, and one improvement for the example agent (SimpleAgent) would be to be more careful about this.
 
 Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time. 
 
@@ -132,14 +150,16 @@ U_D^t(\omega) = U(\omega) \cdot d^t
 \end{eqnarray}
 If $d = 1$, the utility is not affected by time, and such a scenario is considered to be undiscounted, while if $d$ is very small there is high pressure on the agents to reach an agreement. Note that discount factors are part of the preference profiles and need not be \emph{symmetric} (i.e. $d$ can have different values for each agent).
 
-If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome.
+If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reserve price, it may be rational for an agent to break off the negotiation early and take the outside option.
 
-Note that, as opposed to having a fixed number of rounds, both the discount factor and deadline are measured in {\it real time}. This, in turn, introduces another factor of uncertainty since it is unknown to the agents how many negotiation rounds there will be, and how much time an opponent requires to compute a counter offer. Also, this computational time will typically change depending on the size of the outcome space.
+Note that, as opposed to having a fixed number of rounds, both the discount factor and deadline are measured in {\it real time}. This, in turn, introduces another factor of uncertainty since it is unknown to the agents how many negotiation rounds there will be, and how much time an opponent requires to compute a counter offer. Also, this computational time will typically change depending on the size of the outcome space. 
 
 \subsection{Negotiation Objects}
 The central data structures in the negotiation are the bid and the utilityspace. Both work in a domain. Figure~\ref{Fig:data structure and relation overview} shows an overview of the Domain and utility space data structures and their relations.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/datastructures.png}
 \caption{Overview of the data structures and relations.}\label{Fig:data structure and relation overview}
 \end{figure}
 
@@ -161,29 +181,34 @@ The {\bf bid} is a set of values for each of the issues in the domain.
 
 \subsection{Utility of a Bid}
 
-A bid is a set of chosen values $v_1, ..., v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space, and also there are fixed costs $\text{cost}(v_i)$ associated with each value. The utility is the weighted sum of the normalized evaluation values, under the assumption that the cost is below the maximum cost of 1200. If the maximum cost is exceeded, the utility is zero.
+A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. Sometimes, there are also fixed costs $\text{cost}(v_i)$ associated with each value. The utility is the weighted sum of the normalized evaluation values, under the assumption that the cost is below the maximum cost of $M$. If the maximum cost is exceeded, the utility is zero.
 
 \begin{equation}
-	\text{Utility}(v_1, ..., v_n) = 
+	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
+\end{equation}
+
+And when costs are associated with the domain:
+
+\begin{equation}
+	\text{Utility}(v_1, \ldots, v_n) = 
 		\begin{dcases*}
-			U(v_1, ..., v_n) & if CostSum$(v_1, ..., v_n) \leq 1200$\\
-			0 & if CostSum$(v_1, ..., v_n) > 1200$\\
+			U(v_1, \ldots, v_n) & if CostSum$(v_1, \ldots, v_n) \leq M$\\
+			0 & if CostSum$(v_1, \ldots, v_n) > M$\\
 		\end{dcases*}
 \label{eqn:Utility}
 \end{equation}
 
-\begin{equation}
-	U(v_1, ..., v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
-\end{equation}
 
 \begin{equation}
-	\text{CostSum}(v_1, ..., v_n) = \sum_{i=1}^{N} \text{cost}(v_i)
+	\text{CostSum}(v_1, \ldots, v_n) = \sum_{i=1}^{N} \text{cost}(v_i)
 \end{equation}
 
 \subsection{Optimality of a Bid}
 For a single agent, the optimal bid is of course one with a maximum utility. But a more general notion of optimality of a negotiation involves the utility of both agents. Figure~\ref{Fig:utility plot} shows the utilities of all bids for the two parties in the negotiation. 
  
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image5.png}
 \caption{Utility plot. Each point indicates the utility for both agents of a particular bid. The red line is the Pareto optimal frontier.}\label{Fig:utility plot}
 \end{figure}
 
@@ -195,14 +220,14 @@ There are multiple ways to define a more global ``optimum''. One approach to opt
 You can run the negotiation environment on most systems running Java version 5 or 6. There are known issues with Linux (in particular Ubuntu and SUSE). You can download Java from the internet (www.sun.com/java) [sun07]. 
 
 \subsection{Installation}
-To install the environment, the file \texttt{negotiator.zip} can be downloaded from Blackboard. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
+To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
 
 \begin{itemize}
-	\item \texttt{assignment.pdf}, containing the assignment
-	\item \texttt{userguide.pdf}, containing this document
-	\item \texttt{negosimulator.jar}, the negotiation simulator
-	\item a \texttt{templates} folder, containing various domain spaces, all with a few sample utility spaces (xml files)
-	\item The \texttt{SimpleAgent.java} and \texttt{SimpleAgent.class} file
+	\item \texttt{assignment.pdf}, containing the assignment;
+	\item \texttt{userguide.pdf}, this document;
+	\item \texttt{negosimulator.jar}, the negotiation simulator;
+	\item a \texttt{templates} folder, containing various domain spaces, all with a few sample utility spaces (xml files);
+	\item The \texttt{SimpleAgent.java} and \texttt{SimpleAgent.class} file.
 \end{itemize}
 
 \subsection{Progress \& Error Messages}
@@ -217,23 +242,29 @@ The negotiation environment has been tested extensively on Mac OSX 10.9 and on W
 The profile describes your personal preferences for a negotiation in a given domain. The profile is used to convert any bid in that domain to a value indicating how you would rate that bid. This is also called your utility of that bid. A profile is also called a utility space. Your utility space has a major impact on your final rating in the course, because it will be used to judge how well you completed the negotiations that you will perform. This section discusses how to edit your utility space.
 
 \subsection{Start the Negosimulator}
-Start the negosimulator by double-clicking the \texttt{negosimulator.jar} file in the negotiator package. The negosimulator screen is displayed in Figure~\ref{Fig:negosimulator start}. The Domains and Preference Profiles tab contains a repository of domains and preference profiles (under the corresponding domain). Domains and preference profiles can be added or deleted with the green + and red – buttons. The agents tab contains a repository of agents. Agents can also be added or deleted with the green + and red – buttons.
+Start the negosimulator by double-clicking the \texttt{negosimulator.jar} file in the negotiator package. The negosimulator screen is displayed in Figure~\ref{Fig:negosimulator start}. The Domains and Preference Profiles tab contains a repository of domains and preference profiles (under the corresponding domain). Domains and preference profiles can be added or deleted with the green + and red -- buttons. The agents tab contains a repository of agents. Agents can also be added or deleted with the green + and red -- buttons.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image6.png}
 \caption{The negosimulator right after start-up.}\label{Fig:negosimulator start}
 \end{figure}
 
 \subsection{Load the Domain}
 Load the domain specification that you want to work with, by double-clicking one of the domains in the Domains and Preference Profiles tab, for instance laptop\_domain.xml. After loading the laptop domain the simulator will look like Figure~\ref{Fig:negosimulator domain loaded}. The left column shows the laptop domain, with the issues ``Laptop'', ``Harddisk'', and ``External Monitor''. The center column shows the type of the issue. The right column shows the values that are available for the issue.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image7.png}
 \caption{The negosimulator after loading the laptop domain.}\label{Fig:negosimulator domain loaded}
 \end{figure}
 
 \subsection{Create a Preference Profile}
 We need to extend the domain that has now been loaded into an empty utility space for that domain. In the Domains and Preference Profiles tab, select the domain for which you want to create a new preference profile. Then select File $>$ New $>$ Preferences Profile. After this, the editor should look like Figure~\ref{Fig:negosimulator utility space created}. New as compared to Figure 4 is the ``Weight'' column, showing the importance associated with this issue. Notice the numbers and check boxes at the far right. If you do not see them in your window, you may need to resize the window and the headers.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image8.png}
 \caption{The negosimulator after creating a new utility space.}\label{Fig:negosimulator utility space created}
 \end{figure}
 
@@ -242,7 +273,9 @@ Now you are ready to start customizing your utility space to reflect your person
 \subsection{Set the Evaluation Values}
 In this step the utility values for each value will be set for each of the issues. Select one of the issues by clicking on the name of the issue (do not select the ``LaptopDomain'' which is not an issue). The selected name will turn blue and a large yellow area will appear. Then click the ``Edit'' button. The editor for discrete issues will pop up (see Figure~\ref{Fig:discrete issue editor}).
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image9.png}
 \caption{The discrete-issue editor.}\label{Fig:discrete issue editor}
 \end{figure}
 
@@ -251,7 +284,9 @@ Now you can edit the column Evaluation values by clicking in the blank column un
 Do not edit the first column. Doing so will change the domain, resulting in a utility space that does not fit the laptop domain. The other columns should not be edited either for the same reasons. The editor will not allow editing of these values anyway, but you can also edit the xml files by hand in which case you have to be careful not to touch those fields.
 When adjusting the evaluation values, keep in mind that the utility of a bid will be zero if the cost constraint is violated (see Equation 1).
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image10.png}
 \caption{The discrete-issue editor after entering the evaluation values.}\label{Fig:discrete issue editor edited}
 \end{figure}
 
@@ -267,7 +302,9 @@ Once you have set all sliders and have filled out the evaluations for the option
 \section{Running Negotiations}
 To run a negotiation session, select File $>$ New $>$ Negotiation Session. The Session tab pops up (Figure~\ref{Fig:negotiation set-up}). 
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image11.png}
 \caption{The negotiation set-up screen.}\label{Fig:negotiation set-up}
 \end{figure}
 
@@ -289,9 +326,11 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 
 	If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
 
-	\begin{figure}
-	\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
-	\end{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image12.png}
+\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
+\end{figure}
 
 	This GUI has three main components: the text field at the top level, the table showing the last bid and a possible next bid, and a row of buttons at the bottom.
 	The text field shows some text about the current negotiation state.
@@ -303,9 +342,11 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 		\item The right column shows the current picked values for the issues. You can edit the current pick by clicking on the fields, which will open the combo boxes in the fields (Figure 10).
 	\end{itemize}
 
-	\begin{figure}
-	\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
-	\end{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image13.png}
+\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
+\end{figure}
 
 	The last two rows of the table show the cost and utility of the last opponent's bid and your current bid. The cost field will turn red if you exceed the maximum cost of 1200. The utility is shown as a percentage, and also as a bar of matching size. These values are computed according to your utility space, as that determines your score, and also because you have no access to the opponent's utility space. The lower three buttons allow you to submit the next bid as set in the right column, or to accept the opponent's last bid.
 
@@ -313,16 +354,19 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 
 	The extended UIAgent is similar to the UIAgent. It additionally shows a table and a plot of the utilities of all bids made in the session (Figure~\ref{Fig:uiagent extended gui}).
 
-	\begin{figure}
-	\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
-	\end{figure}
-}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image14.png}
+\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
+\end{figure}
 
 \subsection{Negotiation Results}
 
 There are two types of results: the utility plot and the utility of the last bid for each round. Both are shown in the Progress tab, as displayed in Figure~\ref{Fig:progress}.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image15.png}
 \caption{Progress tab. The utility plot also shows the Pareto Frontier (the red line), and the bidding sequence of agent A and agent B (the green and the blue lines).}\label{Fig:progress}
 \end{figure}
 
@@ -338,19 +382,25 @@ The results of the negotiation are shown in the Exchanged Offers part. This show
 
 Besides running a single negotiation session, it is also possible to run a tournament. In a tournament, a negotiation session is held for every possible combination of chosen agents and preference profiles for each side. To do this, select File $>$ New $>$ Tournament. The Tournament tab will appear as displayed in Figure~\ref{Fig:tournament}. 
  
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image16.png}
 \caption{Tournament tab.}\label{Fig:tournament}
 \end{figure}
 
 Double-click Preference profiles and select at least two profiles from the window that pops up (Figure~\ref{Fig:profile}). For every chosen domain, at least two profiles should be chosen. For example, choose laptop\_seller\_utility.xml and laptop\_buyer\_utility.xml.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image17.png}
 \caption{Profile Selector.}\label{Fig:profile}
 \end{figure}
 
 Next, double-click Agent side A and select one or more agents from the window that pops up. Do the same for Agent side B and press the Start button. A Progress tab will appear as displayed in Figure~\ref{Fig:tournament progress}. This tab contains the same information as a Progress tab for a single negotiation session, but additionally it has a tournament overview. If you click on a session in this overview, the details of that session will be displayed.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image18.png}
 \caption{Progress tab for a tournament.}\label{Fig:tournament progress}
 \end{figure}
 
@@ -401,17 +451,13 @@ To implement your agent, you have to override two or three three classes:
 	\item \texttt{public void init ()}
 \end{itemize}
 
-\subsection{Init}
-An important consideration for the implementation is that an agent may participate in multiple negotiation sessions with the same opponent. This enables the agent to learn from the previous sessions. For this reason, the negotiation environment calls the method \texttt{init} before starting the new session. 
-
-
 \subsection{ReceiveMessage}
 The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just did \texttt{opponentAction}. The \texttt{opponentAction} may be null if you are the first to place a bid, or an \texttt{Offer} containing the bid of the opponent. It may also be an \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to return an \texttt{Action} to make the next step in the negotiation.
 
 In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage} (Figure~\ref{Code:ReceiveMessage}). This will be the typical code for automatic negotiation agents.
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{lstlisting}
 public void ReceiveMessage(Action opponentAction) 
 {
@@ -422,33 +468,36 @@ public void ReceiveMessage(Action opponentAction)
 \end{figure}
 
 \subsection{ChooseAction}
-Figure~\ref{Code:chooseAction} shows the example code for the \texttt{chooseAction} method. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error – see Negotiation Protocol – and results in a score of 0 for us!).
+Figure~\ref{Code:chooseAction} shows the example code for the \texttt{chooseAction} method. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error (see Negotiation Protocol) and results in a score of 0!).
 The sample code works as follows. If we are the first to place a bid, we place a random bid with sufficient utility (see the .java file for the details on that). Else, we determine the probability to accept the bid, depending on the utility of the offered bid and the remaining time. Finally, we randomly accept or pose a new random bid.
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{lstlisting}
 public Action chooseAction()
 {
 	Action action = null;
-	try { 
-		if(actionOfPartner == null) 
-			action = chooseRandomBidAction();
+	try 
+	{ 
+		if(actionOfPartner==null) action = chooseRandomBidAction();
 		if(actionOfPartner instanceof Offer)
 		{
 			Bid partnerBid = ((Offer)actionOfPartner).getBid();
-			double offeredutil = utilitySpace.getUtility(partnerBid);
+			double offeredUtilFromOpponent = getUtility(partnerBid);
 			// get current time
 			double time = timeline.getTime();
-			double P = Paccept(offeredutil,time);
-			if (P > Math.random())
-				action = new Accept(this);
-			else
-				action = chooseRandomBidAction();
+			action = chooseRandomBidAction();
+			
+			Bid myBid = ((Offer) action).getBid();
+			double myOfferedUtil = getUtility(myBid);
+			
+			// accept under certain circumstances
+			if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
+				action = new Accept(getAgentID());
 		}
-		Thread.sleep(1000); // just for fun
+		sleep(0.005); // just for fun
 	} catch (Exception e) { 
-		System.out.println("Exception in ChooseAction:" + e.getMessage());
-		action = new Accept(this); 
+		System.out.println("Exception in ChooseAction:"+e.getMessage());
+		action=new Accept(getAgentID()); // best guess if things go wrong. 
 	}
 	return action;
 }
@@ -463,10 +512,14 @@ The Paccept function is a probabilistic acceptance function where P equals:
 where $u$ is the utility of the bid made by the opponent (as measured in our utility space), and $t$ is the current time as a fraction of the total available time. 
 Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utility and remaining time. It can take quite some time to figure out a formula that suits the requirements, but it is at the heart of the example agent.
 
-\begin{figure}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/image21.png}
 \caption{Paccept value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
 \end{figure}
-
+%\subsection{Init}
+%An important consideration for the implementation is that an agent may participate in multiple negotiation sessions with the same opponent. This enables the agent to learn from the previous sessions. For this reason, the negotiation environment calls the method \texttt{init} before starting the new session.
+ 
 The UtilitySpace and its functions should be considered as `given',  
 You may want to override the \texttt{init} function, to catch the \texttt{sessionNumber} and \texttt{sessionTotalNumber}. See the \texttt{SimpleAgent.java} example file.
 Automatic agents have to negotiate on their own, and are not allowed to communicate with a human user. Therefore, do not override the \texttt{isUIAgent()} function in automatic negotiation agents.
@@ -486,8 +539,8 @@ For the documentation of the data structures that are relevant when writing a ne
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
 
 \section{References}
-[sun07] Sun Developer Network, JDK 6 Update 3. \url{http://java.sun.com/javase/downloads/index.jsp}
+\textbf{[sun07]} Sun Developer Network, JDK 6 Update 3. \url{http://java.sun.com/javase/downloads/index.jsp}
 
-\bibliographystyle{plain}
-\bibliography{}
+%\bibliographystyle{plain}
+%\bibliography{}
 \end{document}
