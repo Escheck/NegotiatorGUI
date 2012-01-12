@@ -45,6 +45,10 @@
 %\pdftrue
 %\fi
 
+
+\newcommand\AI[1]{{}} \newcommand\ANAC[1]{{#1}}
+%\newcommand\AI[1]{{#1}} \newcommand\ANAC[1]{{}}
+
 \usepackage{array}
 \usepackage{url}
 \usepackage{listings}
@@ -56,7 +60,7 @@
 \else
 \usepackage{graphicx}
 \fi
-\title{Negotiation User Guide}
+\title{Negotiation User Guide - \ANAC{ANAC Version}\AI{AI Techniques (IN4010TU) Version}}
 \author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser}
 
 \date{2012-01-06}
@@ -73,19 +77,20 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-For the second half of the course AI Techniques (IN4010TU) you have to implement an agent that will negotiate on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.
+\AI{For the second half of the course AI Techniques (IN4010TU) you have to implement an agent that will negotiate on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
 
 \tableofcontents
 
 \section{Theory Crash Course}
 This section gives a crash course on some essential theory needed to understand the negotiation system. The negotiation objects that are used in a negotiation and utility values are discussed. 
 
-\subsection{Reservation Value}
+\ANAC{
+	\subsection{Reservation Value}
 
-A reservation value is a real-valued value that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with a Best Alternative to No Agreement (BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting) or by not reaching an agreement before the deadline associated with a negotiation session. In other words: if the negotiating parties agree on an outcome $\omega$, then both agents receive the associated utility of $\omega$. However, if no agreement is reached, both agents receive their reservation value instead.
+	A reservation value is a real-valued value that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with a Best Alternative to No Agreement BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting or by not reaching an agreement before the deadline associated with a negotiation session. In other words: if the negotiating parties agree on an outcome $\omega$, then both agents receive the associated utility of $\omega$. However, if no agreement is reached, both agents receive their reservation value instead.
 
-Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0). Given that utilities for outcomes range from 0 to 1, this essentially is the same as having no reservation value.
-
+	Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0). Given that utilities for outcomes range from 0 to 1, this essentially is the same as having no reservation value.
+}
 
 \subsection{Actions}
 In negotiation, the two parties take turns in doing the next negotiation action. The possible actions are:
@@ -97,7 +102,7 @@ In negotiation, the two parties take turns in doing the next negotiation action.
 \hline
 \textsc{Offer} & This action indicates that the agent proposes a new bid.\\
 \hline
-\textsc{EndNegotiation} & This action indicates that the agent terminates the entire negotiation, resulting in the reservation value being awarded to both players (normally this is equal to the lowest possible score of zero for both agents).\\
+\textsc{EndNegotiation} & This action indicates that the agent terminates the entire negotiation, resulting in \ANAC{the reservation value}\AI{a value of zero} being awarded to both players (normally this is equal to the lowest possible score of zero for both agents).\\
 \hline
 \end{tabular}
 \end{center}
@@ -108,17 +113,17 @@ The negotiation protocol determines the overall order of actions during a negoti
 Agent A and B take turns in the negotiation. One of the two agents is picked at random to start. When it is the turn of agent X (X being A or B), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent X is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an Offer, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
 \begin{itemize}
 	\item the action of agent X is an \textsc{Accept}. This action is possible only if the opponent actually did a bid. The last bid of the opponent is taken, and the utility of that bid is determined in the utility spaces of agent A and B. The opponent is informed of this accept via the ReceiveMessage method (but now without the subsequent chooseAction).
-	\item the action returned is an \textsc{EndNegotiation}. The score of both agents is set to their reservation value.
+	\item the action returned is an \textsc{EndNegotiation}. The score of both agents is set to \ANAC{their reservation value}\AI{zero}.
 \end{itemize}
 
-So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also get their reservation values. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
+So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also \ANAC{get their reservation values}\AI{score zero}. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
  
 
 \subsection{Time available for a Session}
 
-Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be their reservation value (normally 0). Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds. Notice that manipulation of the available time (by delaying the response of your agent) can be an important factor influencing the negotiation results, and one improvement for the example agent (SimpleAgent) would be to be more careful about this.
+Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be \ANAC{their reservation value}\AI{zero}. \AI{Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds.} Notice that manipulation of the available time (by delaying the response of your agent) can be an important factor influencing the negotiation results, and one improvement for the example agent (SimpleAgent) would be to be more careful about this.
 
-Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ respresents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time. 
+Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time. 
 
 \subsubsection{Discounting}
 Apart from a deadline, a scenario may also have \emph{discount factors}. Discount factors devaluate the value of the issues under negotiation as time passes. Time is shared between the agents, but the discount is private to, and can different between each agent. The implementation of discount factors is as follows. Let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent. Let $t$ in $[0, 1]$ be the current normalised time, as defined by the timeline. We compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
@@ -279,37 +284,39 @@ After these fields have been set appropriately, you can press the Start button t
 
 If you selected an automatic negotiation agent, for instance SimpleAgent, there will not appear any window while that agent has the turn. The agent should pose its bid within a reasonable time. After the agent made its bid, the other agent is given the turn. If both agents are automatic, no windows will appear at all during the entire negotiation, and only the output windows will show the ongoing negotiation results.
 
-\subsection{Using the UIAgent}
+\AI{
+	\subsection{Using the UIAgent}
 
-If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
+	If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
 
-\begin{figure}
-\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
-\end{figure}
+	\begin{figure}
+	\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
+	\end{figure}
 
-This GUI has three main components: the text field at the top level, the table showing the last bid and a possible next bid, and a row of buttons at the bottom.
-The text field shows some text about the current negotiation state.
+	This GUI has three main components: the text field at the top level, the table showing the last bid and a possible next bid, and a row of buttons at the bottom.
+	The text field shows some text about the current negotiation state.
 
-The table has three columns: 
-\begin{itemize}
-	\item The left column shows the names of the issues in the domain
-	\item The center column shows the evaluation values for the issues as proposed in the last bid of the opponent (or ``-'' if this is the first round)
-	\item The right column shows the current picked values for the issues. You can edit the current pick by clicking on the fields, which will open the combo boxes in the fields (Figure 10).
-\end{itemize}
+	The table has three columns: 
+	\begin{itemize}
+		\item The left column shows the names of the issues in the domain
+		\item The center column shows the evaluation values for the issues as proposed in the last bid of the opponent (or ``-'' if this is the first round)
+		\item The right column shows the current picked values for the issues. You can edit the current pick by clicking on the fields, which will open the combo boxes in the fields (Figure 10).
+	\end{itemize}
 
-\begin{figure}
-\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
-\end{figure}
+	\begin{figure}
+	\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
+	\end{figure}
 
-The last two rows of the table show the cost and utility of the last opponent's bid and your current bid. The cost field will turn red if you exceed the maximum cost of 1200. The utility is shown as a percentage, and also as a bar of matching size. These values are computed according to your utility space, as that determines your score, and also because you have no access to the opponent's utility space. The lower three buttons allow you to submit the next bid as set in the right column, or to accept the opponent's last bid.
+	The last two rows of the table show the cost and utility of the last opponent's bid and your current bid. The cost field will turn red if you exceed the maximum cost of 1200. The utility is shown as a percentage, and also as a bar of matching size. These values are computed according to your utility space, as that determines your score, and also because you have no access to the opponent's utility space. The lower three buttons allow you to submit the next bid as set in the right column, or to accept the opponent's last bid.
 
-\subsection{Using the Extended UIAgent}
+	\subsection{Using the Extended UIAgent}
 
-The extended UIAgent is similar to the UIAgent. It additionally shows a table and a plot of the utilities of all bids made in the session (Figure~\ref{Fig:uiagent extended gui}).
+	The extended UIAgent is similar to the UIAgent. It additionally shows a table and a plot of the utilities of all bids made in the session (Figure~\ref{Fig:uiagent extended gui}).
 
-\begin{figure}
-\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
-\end{figure}
+	\begin{figure}
+	\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
+	\end{figure}
+}
 
 \subsection{Negotiation Results}
 
@@ -351,7 +358,7 @@ Next, double-click Agent side A and select one or more agents from the window th
 
 This section discusses how you create an automatic negotiation agent. To explain this, the SimpleAgent.java code as provided in the installation package will be discussed.
 It is assumed that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://java.sun.com/docs/books/tutorial/index.html}. The Java API definitions can be found on \url{http://java.sun.com/j2se/1.5.0/docs/api/index.html}.
-In the first place, a negotiation agent has to extend the negotiator.agents.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of Genius.
+In the first place, a negotiation agent has to extend the negotiator.agents.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
 
 \begin{table}
 \begin{tabular}{m{0.9\textwidth}}
@@ -473,7 +480,7 @@ To compile the agent, you put \texttt{YourAgent.java} code in the directory cont
 After compilation, the resulting \texttt{YourAgent.class} file can be loaded into the negotiator simulator by typing ``YourAgent'' (fill in your actual agent name) in the negotiation set-up screen (Figure 8). Make sure your agent can be found in the same directory structure as is indicated by its package header.
  
 \section{Data structures}
-For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of Genius. 
+For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
  
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
