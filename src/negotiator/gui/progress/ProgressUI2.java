@@ -371,7 +371,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	}
 	
 	/** 
-	 * Fills bottom table.
+	 * Fills the columns of the bottom table.
 	 * 
 	 * TODO Wouter: this should be taken out of the agent's CPU time. Currently
 	 * this does not follow my warning/prescribed way to do this (see the handleActionEvent docuemntation)

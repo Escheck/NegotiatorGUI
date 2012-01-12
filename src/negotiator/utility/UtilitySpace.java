@@ -335,7 +335,7 @@ public class UtilitySpace {
     		e.printStackTrace();
     	}
     	
-    	double discountedUtil = discount(time, util);
+    	double discountedUtil = discount(util, time);
 //    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;
     }

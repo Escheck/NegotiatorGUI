@@ -175,7 +175,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        
 	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName());
+	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName(), false);
 	                	
                        checkAgentActivity(currentAgent) ;
                    }                   
@@ -291,7 +291,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
             );
     	
     	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
-        	System.currentTimeMillis()-startTimeMillies,utilA,utilB,utilADiscount,utilBDiscount,message);
+        	System.currentTimeMillis()-startTimeMillies,utilA,utilB,utilADiscount,utilBDiscount,message, true);
     		
     	
     }
