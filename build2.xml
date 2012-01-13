@@ -51,7 +51,7 @@
 			<fileset dir="${anac2011}/"/>
 		</copy>
 		<!-- For some reason IAMHaggler 2011 is still in a jar -->
-		<unzip src="${anacResources}/Southampton_Final_2011.jar" dest="${tmp}"/>
+		<unzip src="${anacResources}/Southampton_Final_2011_classes.jar" dest="${tmp}"/>
 	</target>
 	<target name="unpackNegotiatorZIP">		
 			<delete includeemptydirs="true" quiet="true">
@@ -303,11 +303,13 @@
 				<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
 				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
 				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
+				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount_rv" prefix="negotiator//etc/templates/ItexvsCypress_discount_rv"/>
 				<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
 				
 				<zipfileset dir="${anacResources}/etc/2011/final/" prefix="negotiator//etc/templates/"/>
 			</zip>
 			<ant target="cleanup"/>
+			<antcall target="unpackNegotiatorZIP"/>
 		</target>
 	
 	<target name ="makeGeniusForStudentsAssignment2009" depends="makeNegoSimulatorWithAllAgentJar">
