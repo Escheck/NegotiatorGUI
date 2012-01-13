@@ -9,6 +9,7 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -26,20 +27,18 @@ import negotiator.issue.ValueReal;
 public class TestingAgent extends Agent
 {
 	private Action actionOfPartner=null;
-	private static double MINIMUM_BID_UTILITY = 0.7;
+	private static double MINIMUM_BID_UTILITY = 0;
 
 	/**
 	 * init is called when a next session starts with the same opponent.
 	 */
 	public void init()
 	{
-		if(utilitySpace.getReservationValue() != null)
-			MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
-		
+		Double reservationValue = utilitySpace.getReservationValue();
 		System.out.println(getName());
 		System.out.println();
 		System.out.println("Discount: " + utilitySpace.getDiscountFactor());
-		System.out.println("RV: " + utilitySpace.getReservationValue());
+		System.out.println("RV: " + reservationValue);
 		Domain domain = utilitySpace.getDomain();
 		System.out.println("NumberOfPossibleBids: " + domain.getNumberOfPossibleBids());
 		Bid randomBid = domain.getRandomBid();
@@ -51,6 +50,15 @@ public class TestingAgent extends Agent
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void main(String[] args)
+	{
+		double util = 0.24858884644383605;
+		double time = 0.21064712109444447;
+		double discount = 0.5;
+		double discountedUtil = util * Math.pow(discount, time);
+		System.out.println(discountedUtil);
 	}
 	
 	@Override
@@ -78,10 +86,13 @@ public class TestingAgent extends Agent
 				Bid partnerBid = ((Offer)actionOfPartner).getBid();
 				// get current time
 				double time = timeline.getTime();
+				System.out.println("t = " + Math.round(100 * time) / 100.0
+						+ ", discountedRV = " + utilitySpace.getReservationValueWithDiscount(time));
+				
 				if (time > 0.1) 
 				{
-					System.out.println("Accepted, beause t = " + time);
-					action = new Accept(getAgentID());
+					System.out.println("End, because t = " + time);
+					action = new EndNegotiation(getAgentID());
 				}
 				else action = chooseRandomBidAction();               
 			}
@@ -122,6 +133,7 @@ public class TestingAgent extends Agent
 		// in that case we will search for a bid till the time is up (2 minutes)
 		// but this is just a simple agent.
 		Bid bid=null;
+		double utility;
 		do 
 		{
 			for(Issue lIssue:issues) 
@@ -146,8 +158,10 @@ public class TestingAgent extends Agent
 				}
 			}
 			bid=new Bid(utilitySpace.getDomain(),values);
-		} while (getUtility(bid) < MINIMUM_BID_UTILITY);
+			utility = getUtility(bid);
+		} while (utility < MINIMUM_BID_UTILITY);
 
+//		System.out.println(this.getName() + " sent " + bid);
 		return bid;
 	}
 }
