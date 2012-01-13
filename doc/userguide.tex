@@ -52,8 +52,24 @@
 \usepackage{array}
 \usepackage{url}
 \usepackage{listings}
+\usepackage{color}
 \usepackage{amsmath}
 \usepackage{mathtools}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  language=Java,
+  tabsize=4,
+  showstringspaces=false,
+  basicstyle=\tt,
+  numberstyle=\tiny\color{gray},      % line number style
+  keywordstyle=\color{blue},          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+  stringstyle=\color{mauve},          % string literal style
+}
 
 \ifpdf
 \usepackage[pdftex]{graphicx}
@@ -159,8 +175,8 @@ The central data structures in the negotiation are the bid and the utilityspace.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/datastructures.png}
-\caption{Overview of the data structures and relations.}\label{Fig:data structure and relation overview}
+	\includegraphics{fig/datastructure-view.pdf}
+	\caption{Overview of the data structures and relations.}\label{Fig:data structure and relation overview}
 \end{figure}
 
 The {\bf domain} describes which issues are the subject of the negotiation. To give a concrete example of a domain, in the laptop domain the domain is a list of issues, where the issues are laptop, harddisk and monitor. Issues are being referred to via the {\bf issue ID},  a unique number for each issue. The domain description also describes the possible values that all the issues can take. In the laptop domain, all issues can have only discrete values, e.g. the harddisk issue can have only the values 60 Gb, 80 Gb and 120 Gb. These issues are an instance of IssueDiscrete. There are other types of Issue but discussion of them falls out of the scope of this short discussion.
@@ -326,11 +342,11 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 
 	If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image12.png}
-\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
-\end{figure}
+	\begin{figure}[htb]
+		\centering
+		\includegraphics[width=0.4\textwidth]{media/image12.png}
+	\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
+	\end{figure}
 
 	This GUI has three main components: the text field at the top level, the table showing the last bid and a possible next bid, and a row of buttons at the bottom.
 	The text field shows some text about the current negotiation state.
@@ -342,11 +358,11 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 		\item The right column shows the current picked values for the issues. You can edit the current pick by clicking on the fields, which will open the combo boxes in the fields (Figure 10).
 	\end{itemize}
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image13.png}
-\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
-\end{figure}
+	\begin{figure}[htb]
+		\centering
+		\includegraphics[width=0.4\textwidth]{media/image13.png}
+	\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
+	\end{figure}
 
 	The last two rows of the table show the cost and utility of the last opponent's bid and your current bid. The cost field will turn red if you exceed the maximum cost of 1200. The utility is shown as a percentage, and also as a bar of matching size. These values are computed according to your utility space, as that determines your score, and also because you have no access to the opponent's utility space. The lower three buttons allow you to submit the next bid as set in the right column, or to accept the opponent's last bid.
 
@@ -354,11 +370,11 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 
 	The extended UIAgent is similar to the UIAgent. It additionally shows a table and a plot of the utilities of all bids made in the session (Figure~\ref{Fig:uiagent extended gui}).
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image14.png}
-\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
-\end{figure}
+	\begin{figure}[htb]
+		\centering
+		\includegraphics[width=0.4\textwidth]{media/image14.png}
+	\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
+	\end{figure}
 }
 \subsection{Negotiation Results}
 
@@ -438,6 +454,7 @@ This function is called immediately after a ReceiveMessage, and only if the oppo
 \hline
 \texttt{String getName()}\\
 Returns the name of the agent. Please override this to give a proper name to your agent.\\
+\hline
 \end{tabular}
 \caption{The most important methods and fields of the Agent class.}
 \end{table}
@@ -505,17 +522,18 @@ public Action chooseAction()
 \caption{Example code for \texttt{chooseAction}.}\label{Code:chooseAction}
 \end{figure}
 
-The Paccept function is a probabilistic acceptance function where P equals:
+The $P_\text{accept}$ function is a probabilistic acceptance function where P equals:
 
 \begin{equation}
+	P_\text{accept} = \dfrac{u - 2ut + 2\left(t - 1 + \sqrt{(t - 1)^2 + u(2t - 1)}\right)}{2t - 1}
 \end{equation}
 where $u$ is the utility of the bid made by the opponent (as measured in our utility space), and $t$ is the current time as a fraction of the total available time. 
 Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utility and remaining time. It can take quite some time to figure out a formula that suits the requirements, but it is at the heart of the example agent.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image21.png}
-\caption{Paccept value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
+	\includegraphics[width=0.4\textwidth]{media/image21.pdf}=
+	\caption{$P_\text{accept}$ value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
 \end{figure}
 %\subsection{Init}
 %An important consideration for the implementation is that an agent may participate in multiple negotiation sessions with the same opponent. This enables the agent to learn from the previous sessions. For this reason, the negotiation environment calls the method \texttt{init} before starting the new session.
