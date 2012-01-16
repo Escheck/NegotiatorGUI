@@ -41,7 +41,6 @@ public class NegotiationSession {
 			double maxBidUtil = utilitySpace.getUtility(maxBid);
 			maxBidDetails = new BidDetails(maxBid, maxBidUtil, 0);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
