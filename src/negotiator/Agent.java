@@ -43,6 +43,7 @@ public abstract class Agent
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
     
+    protected HashMap<String, String> agentVariables;
     
     //protected Hashtable<String,Double> parametervalues = new Hashtable<String, Double>(); // values for the parameters for this agent. Key is param name
 
@@ -160,6 +161,36 @@ public abstract class Agent
      */
     public boolean isUIAgent() { return false; }
     
+	public HashMap<String, String> getAgentVariables() {
+		return agentVariables;
+	}
+    
+	/**
+	 * This method processes the variables string.
+	 * The method assumes a predefined format of the string but can be overriden.
+	 * Mark: I suggest removing params in the constructor, as this solution works via
+	 * the XML.
+	 * 
+	 * @param variables
+	 * @throws Exception 
+	 */
+	public void setAgentVariables(String variables) throws Exception {
+		if (variables != null) {
+			agentVariables = new HashMap<String, String>();
+			String[] vars = variables.split(";");
+			for (String var : vars) {
+				String[] expression = var.split("=");
+				if (expression.length == 2) {
+					agentVariables.put(expression[0], expression[1]);
+				} else {
+					throw new Exception(	"Expected variablename and result but got " + expression.length + " elements. " +
+											"Correct in XML or overload the method.");
+					
+				}
+			}
+		}
+	}
+	
     /**
      * This function cleans up the remainders of the agent: open windows etc.
      * This function will be called when the agent is killed,
