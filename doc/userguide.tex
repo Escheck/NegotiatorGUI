@@ -203,6 +203,8 @@ A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. 
 	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
 \end{equation}
 
+\AI
+{
 And when costs are associated with the domain:
 
 \begin{equation}
@@ -218,7 +220,7 @@ And when costs are associated with the domain:
 \begin{equation}
 	\text{CostSum}(v_1, \ldots, v_n) = \sum_{i=1}^{N} \text{cost}(v_i)
 \end{equation}
-
+}
 \subsection{Optimality of a Bid}
 For a single agent, the optimal bid is of course one with a maximum utility. But a more general notion of optimality of a negotiation involves the utility of both agents. Figure~\ref{Fig:utility plot} shows the utilities of all bids for the two parties in the negotiation. 
  
@@ -239,11 +241,11 @@ You can run the negotiation environment on most systems running Java version 5 o
 To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
 
 \begin{itemize}
-	\item \texttt{assignment.pdf}, containing the assignment;
+	\AI{\item \texttt{assignment.pdf}, containing the assignment;}
 	\item \texttt{userguide.pdf}, this document;
 	\item \texttt{negosimulator.jar}, the negotiation simulator;
 	\item a \texttt{templates} folder, containing various domain spaces, all with a few sample utility spaces (xml files);
-	\item The \texttt{SimpleAgent.java} and \texttt{SimpleAgent.class} file.
+	\AI{\item The \texttt{SimpleAgent.java} and \texttt{SimpleAgent.class} file.}
 \end{itemize}
 
 \subsection{Progress \& Error Messages}
