@@ -41,28 +41,30 @@ public class CommandLineRunner {
 
 	public static void start(String p, String domainFile, List<String> profiles, List<String> agents, String outputFile) throws Exception {
 		
-		Protocol ns = null;
+		if(profiles.size() != agents.size())
+			throw new IllegalArgumentException("Number of profiles does not match number of agents.");
 		
-		if (p.equals("negotiator.protocol.alternatingoffers.AlternatingOffersProtocol"))
+		Protocol ns = null;
+
+		ProtocolRepItem protocol = new ProtocolRepItem(p, p, p);
+		
+		DomainRepItem dom = new DomainRepItem(new URL(domainFile));
+		
+		ProfileRepItem[] agentProfiles = new ProfileRepItem[profiles.size()];
+		for(int i = 0; i<profiles.size(); i++)
 		{
-			ProtocolRepItem protocol = new ProtocolRepItem(p, p, p);
-			
-			DomainRepItem dom = new DomainRepItem(new URL(domainFile));
-			
-			ProfileRepItem[] agentProfiles = new ProfileRepItem[2];
-			agentProfiles[0] = new ProfileRepItem(new URL(profiles.get(0)), dom);
-			agentProfiles[1] = new ProfileRepItem(new URL(profiles.get(1)), dom);
-			
-			AgentRepItem[] agentsrep = new AgentRepItem[2];
-			agentsrep[0] = new AgentRepItem(agents.get(0), agents.get(0), agents.get(0));
-			agentsrep[1] = new AgentRepItem(agents.get(1), agents.get(1), agents.get(1));
-					
-			DomainRepItem domain = agentProfiles[0].getDomain();
-			if (domain != agentProfiles[1].getDomain())
-				throw new IllegalArgumentException("Profiles for agent A and B do not have the same domain. Please correct your profiles");
-			
-			ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
+			agentProfiles[i] = new ProfileRepItem(new URL(profiles.get(i)), dom);
+			if(agentProfiles[i].getDomain() != agentProfiles[0].getDomain())
+				throw new IllegalArgumentException("Profiles for agent 0 and agent " + i + " do not have the same domain. Please correct your profiles");
 		}
+		
+		AgentRepItem[] agentsrep = new AgentRepItem[agents.size()];
+		for(int i = 0; i<agents.size(); i++)
+		{
+			agentsrep[i] = new AgentRepItem(agents.get(i), agents.get(i), agents.get(i));
+		}
+		
+		ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
 		
 		final FileWriter fw = new FileWriter(outputFile+"/log.txt");
 		ns.addNegotiationEventListener(new NegotiationEventListener() {

@@ -29,7 +29,7 @@ public class CommandLineOptions
 
 	public void parse(String [] args)
 	{
-		OptionParser parser = new OptionParser( "stq:q::a:b:p:d:f:w:" );
+		OptionParser parser = new OptionParser( "stq:q::a:p:d:f:r:" );
 
         OptionSet options = parser.parse(args);
 
@@ -41,6 +41,8 @@ public class CommandLineOptions
         	quitWhenTournamentDone = true;
         if (options.has("a"))
         	agents = (List<String>) options.valuesOf("a");
+        if (options.has("r"))
+        	protocol = (String) options.valueOf("r");
         if (options.has("p"))
         	profiles = (List<String>) options.valuesOf("p");
         if (options.has("d"))
