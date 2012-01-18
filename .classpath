@@ -14,7 +14,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI voor AAMAS competitie/dep/jopt-simple-3.2-rc1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="negotiator/analysis/Analysis.java|negotiator/analysis/BiddingHistoryAnalysis.java|negotiator/protocol/auction/FreeAuctionProtocol.java|agents/ABMPExactAgent.java|agents/RandomWalkABMPAgent.java|agents/SlowUIAgent.java" kind="src" path="src"/>
 	<classpathentry kind="lib" path="dep/jcommon-1.0.13.jar"/>
 	<classpathentry kind="lib" path="dep/jfreechart-1.0.10.jar" sourcepath="E:/GeniusS/jfreechart-1.0.13/source"/>
 	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>
