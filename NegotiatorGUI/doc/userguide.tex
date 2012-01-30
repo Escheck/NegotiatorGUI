@@ -189,7 +189,7 @@ The {\bf Evaluator} object contains a weight, and for each value that the issue 
 
 The {\bf weight} indicates the relative importance of an issue. The sum of the weights of all issues is 1.0.
 
-The {\bf evaluation-value} gives the evaluation, or utility, associated with each value that an issue can take. For instance, for the harddisk issue above, the evaluation values could be 2 for the 60 Gb, 4 for the 80 Gb and 10 for the 12 0Gb, etc.
+The {\bf evaluation-value} gives the evaluation, or utility, associated with each value that an issue can take. For instance, for the harddisk issue above, the evaluation values could be 2 for the 60 Gb, 4 for the 80 Gb and 10 for the 120Gb, etc.
 
 The exact formula for computation of the utilities is given in Equation~\ref{eqn:Utility}.
 
@@ -197,10 +197,11 @@ The {\bf bid} is a set of values for each of the issues in the domain.
 
 \subsection{Utility of a Bid}
 
-A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. Sometimes, there are also fixed costs $\text{cost}(v_i)$ associated with each value. The utility is the weighted sum of the normalized evaluation values, under the assumption that the cost is below the maximum cost of $M$. If the maximum cost is exceeded, the utility is zero.
+A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. \AI{Sometimes, there are also fixed costs $\text{cost}(v_i)$ associated with each value.} The utility is the weighted sum of the normalized evaluation values\AI{, under the assumption that the cost is below the maximum cost of $M$. If the maximum cost is exceeded, the utility is zero}.
 
 \begin{equation}
 	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
+	\ANAC{\label{eqn:Utility}}
 \end{equation}
 
 \AI
@@ -213,7 +214,7 @@ And when costs are associated with the domain:
 			U(v_1, \ldots, v_n) & if CostSum$(v_1, \ldots, v_n) \leq M$\\
 			0 & if CostSum$(v_1, \ldots, v_n) > M$\\
 		\end{dcases*}
-\label{eqn:Utility}
+		\AI{\label{eqn:Utility}}
 \end{equation}
 
 
