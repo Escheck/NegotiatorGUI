@@ -136,7 +136,7 @@ In negotiation, the two parties take turns in doing the next negotiation action.
 \end{center}
 
 \subsection{Negotiation Protocol}
-The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the protocol for this assignment.
+The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the protocol\AI{ for this assignment}.
 
 Agent $A$ and $B$ take turns in the negotiation. One of the two agents is picked at random to start. When it is the turn of agent $X$ (X being $A$ or $B$), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent $X$ is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
 \begin{itemize}
