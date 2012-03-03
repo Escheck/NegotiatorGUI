@@ -6,7 +6,7 @@ import java.util.List;
 import misc.Pair;
 import misc.Range;
 import negotiator.Bid;
-import negotiator.BidDetails;
+import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
@@ -14,10 +14,12 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.utility.UtilitySpace;
 
 /**
- * This class generates the complete outcome space.
+ * This class generates the complete outcome space and is therefore
+ * Useful if someone wants to quickly implement an agent.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
+
 public class OutcomeSpace implements Cloneable {
 	
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
@@ -33,7 +35,7 @@ public class OutcomeSpace implements Cloneable {
 	}
 	
 	/**
-	 * Generates all the possible bids in the domain.
+	 * Generates all the possible bids in the domain
 	 * @param utilSpace
 	 */
 	public void generateAllBids(UtilitySpace utilSpace) {
@@ -113,7 +115,7 @@ public class OutcomeSpace implements Cloneable {
 	/**
 	 * gets a list of bids (from possibleBids) that have a utility between the range
 	 * @param range
-	 * @return list of BidDetailss
+	 * @return list of BidDetails
 	 */
 	public List<BidDetails> getBidsinRange (Range r){
 		ArrayList<BidDetails> result = new ArrayList<BidDetails>();

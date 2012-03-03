@@ -2,12 +2,26 @@ package negotiator.decoupledframework;
 
 import negotiator.Bid;
 
+/**
+ * This class is a container which holds the necessary information so that a particular NegotiationOutcome
+ * of the multi-acceptance criteria (MAC) can be reconstructed given a full negotiation outcome.
+ * 
+ * The MAC technique runs multiple negotiation outcomes in parallel during a single negotiation. The negotiation
+ * ends when the deadline has been reached, or when all acceptance criteria accepted. Normally, a single match
+ * results in a single negotiation outcome. However, in this case there are multiple acceptance criteria each
+ * resulting in a subset of the full negotiation trace. This class aids in generating this new outcome.
+ * 
+ * @author Alex Dirkwager
+ */
 public class OutcomeTuple {
-
+	// last bid done by an agent
 	Bid lastBid;
+	// name of the acceptance criteria
 	String name;
+	// time of acceptance
 	double time;
-	int agentASize;
+	// amount of bids made by agent A and B
+	int agentASize;	
 	int agentBSize;
 	
 	public OutcomeTuple(Bid lastBid, String name, double time, int agentASize, int agentBSize){

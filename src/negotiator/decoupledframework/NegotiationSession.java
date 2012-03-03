@@ -24,7 +24,6 @@ public class NegotiationSession {
 	protected UtilitySpace utilSpace;
 	protected Timeline timeline;
 	private BidDetails maxBidDetails;
-	
 
 	public NegotiationSession(UtilitySpace utilitySpace, Timeline time){
 		utilSpace = utilitySpace;
@@ -38,15 +37,8 @@ public class NegotiationSession {
 			double maxBidUtil = utilitySpace.getUtility(maxBid);
 			maxBidDetails = new BidDetails(maxBid, maxBidUtil, 0);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-	}
-	
-	public void init(OutcomeSpace space) {
-		this.outcomeSpace = space;
 	}
 	
 	/**
@@ -89,6 +81,9 @@ public class NegotiationSession {
 		return outcomeSpace;
 	}
 	
+	public void setOutcomeSpace(OutcomeSpace space) {
+		this.outcomeSpace = space;
+	}
 	
 	/**
 	 * gets the maximum utility possible from the domain

@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import bidding.BidDetailSorterTime;
+import bidding.BidDetails;
+import bidding.BidDetailsSorter;
+
 
 /**
  * This class contains the history of a negotiation agent.

@@ -3,17 +3,14 @@ package negotiator.decoupledframework;
 import java.util.HashMap;
 import java.util.List;
 
-import negotiator.BidDetails;
+import negotiator.bidding.BidDetails;
 
 /**
  * This is the abstract class for the agents utilization of the opponent model.
  * Given an array of bids, an OmUtilization-object should return a bid which
  * takes the preferences of the opponent into account.
  * 
- * Please report bugs to author.
- * 
- * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
- * @version 16-01-12
+ * @author Mark Hendrikx
  */
 public abstract class OMStrategy implements Cloneable {
 	

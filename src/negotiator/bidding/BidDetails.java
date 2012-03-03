@@ -1,4 +1,6 @@
-package negotiator;
+package negotiator.bidding;
+
+import negotiator.Bid;
 
 
 /**
