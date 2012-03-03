@@ -23,6 +23,7 @@ public class AC_CombiV4 extends AcceptanceStrategy{
 	private double c;
 	private double d;
 	private double e;
+	private double highestUtilReceived = 0;
 	
 public AC_CombiV4() { }
 	
@@ -52,6 +53,12 @@ public AC_CombiV4() { }
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 
+		boolean bestYet = false;
+		if (lastOpponentBidUtil >= highestUtilReceived) {
+			highestUtilReceived = lastOpponentBidUtil;
+			bestYet = true;
+		}
+		
 		double target = 0;
 		if (negotiationSession.getDiscountFactor() < 0.00001 || negotiationSession.getDiscountFactor() > e) {
 			// no discount mode
@@ -59,15 +66,15 @@ public AC_CombiV4() { }
 		} else {
 			// discount mode
 			target = c * nextMyBidUtil + d;
+			//System.out.println(negotiationSession.getTime() + " " + "Target: " + target);
 		}
 		if (target > 1.0) {
 			target = 1.0;
 		}
 		
-		if (lastOpponentBidUtil >= target) {
+		if (bestYet && lastOpponentBidUtil >= target) {
 			return true;
 		}
-
 		return false;		
 	}
 }

@@ -31,7 +31,7 @@ public class OpponentModel {
 	{
 		BidIterator biditer=new BidIterator(fDomain);
 		minUtility=1.;  maxUtility=0.; double u;
-		int i=0;
+
 		while (biditer.hasNext())
 		{
 			Bid b=biditer.next();
@@ -39,8 +39,6 @@ public class OpponentModel {
 			
 			if (minUtility>u) minUtility=u;
 			if (maxUtility<u) maxUtility=u;
-			i++;
-//			System.out.println(String.valueOf(i));
 		}
 	}
 }

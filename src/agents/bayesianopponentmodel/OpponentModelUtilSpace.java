@@ -17,7 +17,9 @@ public class OpponentModelUtilSpace extends UtilitySpace
 	{ 
 		double u=0.;
 		try { u=opponentmodel.getNormalizedUtility(b); } 
-		catch (Exception e) {System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
 		return u;
 	} 
 }
