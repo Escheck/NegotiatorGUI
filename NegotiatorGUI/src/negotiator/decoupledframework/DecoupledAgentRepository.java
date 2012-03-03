@@ -98,7 +98,7 @@ public class DecoupledAgentRepository {
 		acceptanceStrategies.put("CombiV4 (no disc. a,b; disc. c,d isDisc. e)", new AC_CombiV4());
 
 		// MAC
-		acceptanceStrategies.put("Multi_AC", new Multi_AcceptanceCondition());
+		// acceptanceStrategies.put("Multi_AC", new Multi_AcceptanceCondition());
 	}
 	
 	private void loadOpponentModels() {
