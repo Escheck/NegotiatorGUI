@@ -2,10 +2,10 @@ package negotiator.analysis;
 
 
 import java.util.ArrayList;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
+import negotiator.Global;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -33,11 +33,6 @@ public class BidSpace {
 		utilspaceA.checkReadyForNegotiation("spaceA", domain);
 		utilspaceB.checkReadyForNegotiation("spaceA", domain);
 		BuildSpace();
-//		System.out.println(bidPoints);
-//		System.out.println("-------------PARETO----------------");
-//		System.out.println(getParetoFrontier());
-//		System.out.println("--------------NASH----------------");
-//		System.out.println(getNash());
 	}
 	
 	
@@ -74,10 +69,19 @@ public class BidSpace {
 		bidPoints=new ArrayList<BidPoint>();
 		if(domain.getNumberOfPossibleBids()>200000) return;
 		BidIterator lBidIter = new BidIterator(domain);
-		while(lBidIter.hasNext()) {
-			Bid bid = lBidIter.next();
-//			System.out.println(bid.toString());
-			bidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+		
+		// if low memory mode, do not store the actual. At the time of writing this
+		// has no side-effects
+		if (Global.LOW_MEMORY_MODE) {
+			while(lBidIter.hasNext()) {
+				Bid bid = lBidIter.next();
+				bidPoints.add(new BidPoint(null, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
+			}
+		} else {
+			while(lBidIter.hasNext()) {
+				Bid bid = lBidIter.next();
+				bidPoints.add(new BidPoint(bid, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
+			}
 		}
 	}
 	

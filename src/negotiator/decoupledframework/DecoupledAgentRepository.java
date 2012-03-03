@@ -48,49 +48,13 @@ public class DecoupledAgentRepository {
 	}
 
 	private void loadOfferingStrategies() {
-		
-		//ANAC2010
-		/*
-		offeringStrategies.put("AgentFSEGA", new AgentFSEGA_Offering());
-		offeringStrategies.put("AgentSmith", new AgentSmith_Offering());
-		offeringStrategies.put("Nozomi", new Nozomi_Offering());
-		offeringStrategies.put("Agent K", new AgentK_Offering());
-		offeringStrategies.put("Yushu", new Yushu_Offering());
-		offeringStrategies.put("IAMCrazyHaggler", new IAMCrazyHaggler_Offering());
-		*/
-		
-		//ANAC2011
-		/*
-		offeringStrategies.put("BRAMAgent", new BRAMAgent_Offering());
-		offeringStrategies.put("HardHeaded", new HardHeaded_Offering());
-		offeringStrategies.put("Nice-Tit-For-Tat", new NiceTitForTat_Offering());
-		offeringStrategies.put("TheNegotiator", new TheNegotiator_Offering()); // test OM implementation (not sure about array indices)
-		*/
-		
 		//Other OfferingStrategies
-		/*
 		offeringStrategies.put("Offer decreasing utility", new ChoosingAllBids());
 		offeringStrategies.put("TimeDependent (concession: e)", new TimeDependent_Offering());
 		offeringStrategies.put("RandomWalker", new Random_Offering());
-		*/
 	}
 	
 	private void loadAcceptanceStrategies() {
-		/*
-		//ANAC2010
-		acceptanceStrategies.put("AgentSmith", new AC_AgentSmith());
-		acceptanceStrategies.put("AgentFSEGA", new AC_AgentFSEGA());
-		acceptanceStrategies.put("Nozomi", new AC_Nozomi());
-		acceptanceStrategies.put("Agent K", new AC_AgentK());
-		acceptanceStrategies.put("Yushu", new AC_Yushu());
-		acceptanceStrategies.put("IAMcrazyHaggler", new AC_IAMcrazyHaggler());
-
-		//ANAC2011
-		acceptanceStrategies.put("NiceTitForTat", new AC_NiceTitForTat());
-		acceptanceStrategies.put("TheNegotiator", new AC_TheNegotiator()); 
-		acceptanceStrategies.put("HardHeaded", new AC_HardHeaded()); 
-		acceptanceStrategies.put("BRAMAgent", new AC_BRAMAgent());
-
 		//Other AC		
 		acceptanceStrategies.put("False", new AC_False());
 		acceptanceStrategies.put("True", new AC_True());
@@ -99,64 +63,36 @@ public class DecoupledAgentRepository {
 		acceptanceStrategies.put("Gap (constant: c)", new AC_Gap());
 		acceptanceStrategies.put("Constant (constant: c)", new AC_Const());
 		acceptanceStrategies.put("Next (alpha: a, beta: b)", new AC_Next());
-		*/
+
 		//AC_Combi variants
-		/*
 		acceptanceStrategies.put("Combi", new AC_Combi());
 		acceptanceStrategies.put("CombiAvg", new AC_CombiAvg());
 		acceptanceStrategies.put("CombiBestAvg", new AC_CombiBestAvg());
 		acceptanceStrategies.put("CombiMax", new AC_CombiMax());
 		acceptanceStrategies.put("CombiMaxInWindow", new AC_CombiMaxInWindow());
 		acceptanceStrategies.put("CombiProb", new AC_CombiProb());
-		*/
-		
-		// acceptanceStrategies.put("Multi_AC", new Multi_AcceptanceCondition());
-		//acceptanceStrategies.put("Multi-Acceptance Conditions", new AC_MultiConditions());
 	}
 	
 	private void loadOpponentModels() {
-		/*
 		opponentModels.put("Null", new NullModel());
 		opponentModels.put("Frequency (learncoef: l, vweight: v)", new FrequencyModel());
 		opponentModels.put("Bayesian (onlyusebesthypo: m)", new BayesianModel());
 		opponentModels.put("Bayesian scalable", new BayesianModelScalable());
 		opponentModels.put("Perfect", new PerfectModel());
 		opponentModels.put("FSEGA Bayesian", new FSEGABayesianModel());
-		opponentModels.put("Smith Frequency", new SmithFrequencyModel());
-		*/
+		opponentModels.put("Smith Frequency", new SmithFrequencyModel());/
 	}
 	
 	private void loadOMStrategies() {
-		/*
 		omStrategies.put("Offer best n (count: n)", new OfferBestN());
 		omStrategies.put("Default", new NullStrategy());
-		*/
 	}
 
 	private void loadOutcomeSpaces() {
-		outcomeSpaces.put("Sorted outcomespace", new SortedOutcomeSpace());
-		outcomeSpaces.put("Unsorted outcomespace", new OutcomeSpace());
-		
-		/*
-		//ANAC2010
-		outcomeSpaces.put("AgentFSEGA", new SortedOutcomeSpace());
-		outcomeSpaces.put("AgentSmith", new SortedOutcomeSpace());
-		outcomeSpaces.put("Nozomi", new SortedOutcomeSpace());
-		outcomeSpaces.put("Agent K", null);
-		outcomeSpaces.put("Yushu", new SortedOutcomeSpace());
-		outcomeSpaces.put("IAMCrazyHaggler", null);
-				
-		//ANAC2011
-		outcomeSpaces.put("BRAMAgent", new SortedOutcomeSpace());
-		outcomeSpaces.put("HardHeaded", new OutcomeSpace());
-		outcomeSpaces.put("Nice-Tit-For-Tat", new SortedOutcomeSpace());
-		outcomeSpaces.put("TheNegotiator", new SortedOutcomeSpace());
-				
 		//Other OfferingStrategies
 		outcomeSpaces.put("Offer decreasing utility", new OutcomeSpace());
 		outcomeSpaces.put("TimeDependent (concession: e)", new OutcomeSpace());
 		outcomeSpaces.put("RandomWalker", new OutcomeSpace());
-		*/
 	}
 	
 	public ArrayList<String> getOfferingStrategies() {

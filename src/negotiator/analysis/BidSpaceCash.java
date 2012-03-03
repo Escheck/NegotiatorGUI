@@ -24,6 +24,4 @@ public class BidSpaceCash {
 		else 
 			return null;
 	}
-	
-
 }
