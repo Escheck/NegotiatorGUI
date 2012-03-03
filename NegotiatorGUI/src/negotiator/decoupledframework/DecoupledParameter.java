@@ -37,7 +37,7 @@ public class DecoupledParameter {
 
 	/**
 	 * Generates the set of all possible configurations for the parameter
-	 * given the range and stepsize of the component.
+	 * given the range and step size of the component.
 	 */
 	private void generatePairs() {
 		valuePairs = new HashSet<Pair<String, Double>>();

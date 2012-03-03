@@ -1,12 +1,11 @@
 package negotiator.decoupledframework;
-
 import java.util.HashMap;
-
 import misc.Range;
 import negotiator.bidding.BidDetails;
 
 /**
  * This is an abstract class for the agents offering strategy
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */
@@ -20,7 +19,7 @@ public abstract class OfferingStrategy implements Cloneable{
 	
 	//A helper class for ANAC2010 and ANAC2011 agents
 	protected SharedAgentState helper;
-
+	
 	/**
 	 * Initializes the offering strategy. If parameters are used,
 	 * this method should be overridden.

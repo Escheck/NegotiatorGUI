@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * This class is a container which describes a full decoupled agent.
+ * This object is used to carry the information from the GUI to the
+ * agent loader.
  * 
  * Please report bugs to author.
  * 

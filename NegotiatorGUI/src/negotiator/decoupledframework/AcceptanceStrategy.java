@@ -3,9 +3,9 @@ package negotiator.decoupledframework;
 import java.util.HashMap;
 
 /**
- * This is an abstract class for the agents acceptance strategy
+ * This is an abstract class for the agents acceptance strategy.
  * 
- * @author Alex Dirkzwager
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
 public abstract class  AcceptanceStrategy implements Cloneable {
 	
@@ -28,7 +28,9 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 		this.offeringStrategy = strat;
 	}
 	
-	public abstract String printParameters();
+	public String printParameters(){
+		return"";
+	}
 	
 	/**
 	 * Clone method used to create a new object. This is a trick,
@@ -57,8 +59,8 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 	}
 	
 	/**
-	 * determines the either to accept and offer or not
-	 * @return boolean
+	 * Determines the either to accept and offer or not.
+	 * @return true if accept
 	 */
 	public abstract boolean determineAcceptability();
 }

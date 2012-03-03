@@ -3,14 +3,15 @@ package negotiator.decoupledframework;
 import java.util.Collections;
 import java.util.List;
 import misc.Range;
-import negotiator.BidDetails;
-import negotiator.BidDetailsSorter;
+import negotiator.bidding.BidDetails;
+import negotiator.bidding.BidDetailsSorterUtility;
 import negotiator.decoupledframework.OutcomeSpace;
 import negotiator.utility.UtilitySpace;
 
 /**
  * This class is an OutcomeSpace but with a sorted list of BidDetails based on the utility
- * Methods have been optimized to work with a sorted list
+ * Methods have been optimized to work with a sorted list.
+ * Useful if someone wants to quickly implement an agent.
  * 
  * @author Alex Dirkzwager
  */
@@ -25,7 +26,7 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 	@Override
 	public void init(UtilitySpace utilSpace) {
 		generateAllBids(utilSpace);
-		Collections.sort(allBids, new BidDetailsSorter());
+		Collections.sort(allBids, new BidDetailsSorterUtility());
 	}
 	
 	/**
