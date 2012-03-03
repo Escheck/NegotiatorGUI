@@ -1,21 +1,18 @@
 package negotiator.decoupledframework;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
 import negotiator.Bid;
-import negotiator.BidDetails;
-import negotiator.BidDetailsSorter;
 import negotiator.BidHistory;
 import negotiator.Domain;
 import negotiator.Timeline;
+import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
  * This is an abstract class which manages all the negotiation Session pertinent information to a single agent
  * 
- * @author Alex Dirkzwager
+ @author Alex Dirkzwager
  */
 public class NegotiationSession {
 	
@@ -41,8 +38,11 @@ public class NegotiationSession {
 			double maxBidUtil = utilitySpace.getUtility(maxBid);
 			maxBidDetails = new BidDetails(maxBid, maxBidUtil, 0);
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	public void init(OutcomeSpace space) {
@@ -88,6 +88,7 @@ public class NegotiationSession {
 	public OutcomeSpace getOutcomeSpace(){
 		return outcomeSpace;
 	}
+	
 	
 	/**
 	 * gets the maximum utility possible from the domain

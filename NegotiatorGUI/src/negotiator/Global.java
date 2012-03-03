@@ -75,6 +75,23 @@ public class Global {
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
 	
+	/**
+	 * Setting this boolean to false fixes a huge memory leak. The problem
+	 * with the current version of Genius, is that the GUI keeps track of all
+	 * sessions, and therefore all agents, even if they have been ran.
+	 * 
+	 * Note that by disabling this functionality, it is impossible to view previous
+	 * tournaments in the GUI.
+	 */
+	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
+	
+	/**
+	 * Using this option is recommended when your PC has less than 4 GB of RAM.
+	 * Currently there are no known side-effects. 
+	 */
+	public static final boolean LOW_MEMORY_MODE = false;
+	
+	
 	public Global() {
 	}
 

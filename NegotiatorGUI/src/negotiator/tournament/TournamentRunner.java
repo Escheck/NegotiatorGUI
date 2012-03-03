@@ -72,8 +72,8 @@ public class TournamentRunner implements Runnable
 	public void run() 
 	{
 		try { 
-			for (Protocol s: sessions) 
-			{
+			for (int i = 0; i < sessions.size(); i++) {
+				Protocol s = sessions.get(i);
 				System.out.println("Starting negotiation " + s);
 				//if (the_event_listener!=null) s.actionEventListener=the_event_listener;
 				synchronized(this) { 
@@ -82,6 +82,16 @@ public class TournamentRunner implements Runnable
 					s.setTournamentRunner(this);
 					s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 					wait();					
+				}
+				
+				// if true, delete previous session reference and call the garbage collector.
+				// Calling the garbage collector multiple times ensures that the garbage created by
+				// an agent does not influence the performance of the next agent.
+				if(!Global.REMEMBER_PREVIOUS_SESSIONS) {
+					sessions.set(i, null);
+					System.gc();
+					System.gc();
+					System.gc();
 				}
 			}
 

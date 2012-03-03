@@ -11,7 +11,7 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 	
 	protected NegotiationSession negotiationSession;
 	protected OfferingStrategy offeringStrategy;
-	protected Helper helper;
+	protected SharedAgentState helper;
 	
 	/**
 	 * Standard initialize method to be called after using the empty constructor.
@@ -60,5 +60,5 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 	 * determines the either to accept and offer or not
 	 * @return boolean
 	 */
-	public abstract boolean acceptOpponentBid();
+	public abstract boolean determineAcceptability();
 }

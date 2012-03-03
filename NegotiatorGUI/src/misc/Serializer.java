@@ -2,6 +2,8 @@ package misc;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +12,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class Serializer<A>
 {
@@ -74,6 +79,8 @@ public class Serializer<A>
 		return null;
 	}
 
+
+	
 	public void writeToDisk(A a)
 	{
 		OutputStream os = null;
@@ -93,9 +100,58 @@ public class Serializer<A>
 		}
 	}
 
-	public String getFileName()
-	{
-		return fileName;
+	/**
+	 * Serializes an object to a string encoded by using Base64 to
+	 * avoid characterset problems.
+	 * 
+	 * @param a object to serialize
+	 * @return serialized object
+	 */
+	public String writeToString(A a) {
+		BASE64Encoder encode = new BASE64Encoder();
+
+		String out = null;
+		if (a != null) {
+			try {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(a);
+				out = encode.encode(baos.toByteArray());
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return out;
+	}
+	
+	/**
+	 * Converts a string back to an object.
+	 * 
+	 * @param str serialized object
+	 * @return unserialized object
+	 */
+	public A readStringToObject(String str) {
+		BASE64Decoder decode = new BASE64Decoder();
+
+		Object out = null;
+		if (str != null) {
+			try {
+				ByteArrayInputStream bios = new ByteArrayInputStream(decode.decodeBuffer(str));
+				ObjectInputStream ois = new ObjectInputStream(bios);
+				out = ois.readObject();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return (A)out;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
 }
