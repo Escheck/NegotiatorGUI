@@ -103,13 +103,9 @@ public class DecoupledAgentRepository {
 	
 	private void loadOpponentModels() {
 		opponentModels.put("Null", new NullModel());
-		opponentModels.put("Frequency (learncoef: l, vweight: v)", new FrequencyModel());
 		opponentModels.put("Bayesian (onlyusebesthypo: m)", new BayesianModel());
 		opponentModels.put("Bayesian scalable (time t)", new BayesianModelScalable());
-		opponentModels.put("IAMhaggler2010 Model (time t)", new IAMhagglerModel());
 		opponentModels.put("Perfect", new PerfectModel());
-		opponentModels.put("FSEGA Bayesian", new FSEGABayesianModel());
-		opponentModels.put("Smith Frequency", new SmithFrequencyModel());
 	}
 	
 	private void loadOMStrategies() {

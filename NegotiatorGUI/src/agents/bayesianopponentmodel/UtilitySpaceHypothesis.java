@@ -12,7 +12,8 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 	private EvaluatorHypothesis[] fEvalHyp;
 	private Domain fDomain;
 	private UtilitySpace fUS;
-	ArrayList<Issue> issues;;	
+	ArrayList<Issue> issues;
+	
 	public UtilitySpaceHypothesis(Domain pDomain,
 								  UtilitySpace pUS,
 								  WeightHypothesis pWeightHyp,
@@ -28,6 +29,10 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 		return fDomain;
 	}
 
+	public UtilitySpace getUtilitySpace() {
+		return fUS;
+	}
+	
 	public EvaluatorHypothesis[] getEvalHyp() {
 		return fEvalHyp;
 	}

@@ -28,7 +28,6 @@ public class BayesianOpponentModel extends OpponentModel{
 	ArrayList<Issue> issues;
 	
 	public BayesianOpponentModel(UtilitySpace pUtilitySpace) {
-		//
 		if (pUtilitySpace==null) throw new NullPointerException("pUtilitySpace=null");
 		fDomain = pUtilitySpace.getDomain();
 		fPreviousBidUtility = 1;
@@ -51,7 +50,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		//set uniform probability distribution to the weights hyps
 		fWeightHyps[fWeightHyps.length-1] = allEqual;*/
 		for(int i=0;i<fWeightHyps.length;i++) fWeightHyps[i].setProbability(1./fWeightHyps.length);
-		//generate all possible hyps of evaluation functions
+		//generate all possible hyps of evaluation functions (arraylist with length issues with an arraylist of length values for each issue)
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
 		int lTotalTriangularFns = 1;
 		for(int i =0; i<fUS.getNrOfEvaluators();i++) {
@@ -159,6 +158,7 @@ public class BayesianOpponentModel extends OpponentModel{
 				}
 				
 				break;
+			// for each issue three possible hypothesis are generated
 			case DISCRETE:
 				lEvalHyps = new ArrayList<EvaluatorHypothesis>();
 				fEvaluatorHyps.add(lEvalHyps);
@@ -174,7 +174,7 @@ public class BayesianOpponentModel extends OpponentModel{
 					lEvalHyps.add(lEvaluatorHypothesis);
 					
 				} else {
-				//uphill
+				//uphill (from 1 to 1000 * valueCount + 1)
 				EvaluatorDiscrete lDiscreteEval = new EvaluatorDiscrete();
 				for(int j=0;j<lDiscIssue.getNumberOfValues();j++) 
 					lDiscreteEval.addEvaluation(lDiscIssue.getValue(j), 1000*j+1);
@@ -207,7 +207,13 @@ public class BayesianOpponentModel extends OpponentModel{
 				
 			}
 		}
+		// each issue is estimated by a uphill, downhill, or triangular function
+		// an hypothesis about the space, is therefore a choice for uphill, downhill, or triangular for each issue.
+		// For example; if there are 6 issues, then there are 3^6 possible combinations for the issues alone!
 		buildEvaluationHyps();
+		// create all hypothesis, all combinations of weights hypothesis and evaluations.
+		// For example, if there are 6 issues, then there are 6! possible weight orderings, which
+		// with all 3^6 evaluation hypothesis leads to 6! * 3^6 combinations.
 		buildUniformHyps();
 	}
 	
@@ -226,7 +232,6 @@ public class BayesianOpponentModel extends OpponentModel{
 		for(int i=0;i<fUSHyps.size();i++) {
 			fUSHyps.get(i).setProbability(1/(double)(fUSHyps.size()));
 		}
-		
 	}
 	private void reverse(double[] P, int m) {
 		int i=0, j=m;
@@ -344,7 +349,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	private void buildEvaluationHyps() {
 		fEvalHyps = new ArrayList<EvaluatorHypothesis[]>();
 		EvaluatorHypothesis[] lTmp = new EvaluatorHypothesis[fUS.getNrOfEvaluators()];
-		buildEvaluationHypsRecursive(fEvalHyps, lTmp, fUS.getNrOfEvaluators()-1);		
+		buildEvaluationHypsRecursive(fEvalHyps, lTmp, fUS.getNrOfEvaluators()-1);
 	}
 	public double getExpectedUtility(Bid pBid)  throws Exception{
 		double lExpectedUtility = 0;
@@ -364,7 +369,6 @@ public class BayesianOpponentModel extends OpponentModel{
 			}
 		}
 		return lExpectedUtility;
-		
 	}
 	
 	public double getExpectedWeight(int pIssueNumber) {
@@ -414,7 +418,10 @@ public class BayesianOpponentModel extends OpponentModel{
 			return n * factorial( n - 1 );
 	}
 	
-
+	public void setMostProbableUSHypsOnly(boolean value) {
+		fUseMostProbableHypsOnly = value;
+	}
+	
 	protected  class HypsComparator implements java.util.Comparator
 	{
 		public int compare(Object o1,Object o2) throws ClassCastException
