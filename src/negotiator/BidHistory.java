@@ -5,33 +5,67 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import bidding.BidDetailSorterTime;
-import bidding.BidDetails;
-import bidding.BidDetailsSorter;
-
+import negotiator.bidding.BidDetails;
+import negotiator.bidding.BidDetailsSorterTime;
+import negotiator.bidding.BidDetailsSorterUtility;
 
 /**
- * This class contains the history of a negotiation agent.
+ * This class contains the bidding history of a negotiation agent.
  * 
- * @author Alex Dirkzwager, Tim Baarslag
+ * @author Alex Dirkzwager, Mark Hendrikx, Tim Baarslag
  */
 public class BidHistory {
 	
+	// list used to store the bids in the order in which they are received
 	private List<BidDetails> bidList;
 	
+	/**
+	 * Creates a bid history given an array of bids offered
+	 * by the negotiation agent.
+	 * @param bids
+	 */
 	public BidHistory(ArrayList<BidDetails> bids) {
 		bidList =  bids;
 	}
 	
+	/**
+	 * Creates an empty bid history.
+	 */
 	public BidHistory() {
 		bidList = new ArrayList<BidDetails>();
 	}
 	
-	public BidHistory filterBetweenTime(double minT, double maxT)
+	/**
+	 * Returns the set of bids offered between time instances t1 and t2: (t1, t2].
+	 * @param t1
+	 * @param t2
+	 * @return bids done in (t1, t2]
+	 */
+	public BidHistory filterBetweenTime(double t1, double t2)
 	{
-		return filterBetween(0, 1, minT, maxT);		
+		return filterBetween(0, 1.1, t1, t2);		
+	}
+	
+	/**
+	 * Returns the set of bids with a utility of at least u1 and at most u2: (u1, u2].
+	 * @param u1
+	 * @param u2
+	 * @return bids with a utility in (u1, u2]
+	 */
+	public BidHistory filterBetweenUtility(double u1, double u2)
+	{
+		return filterBetween(u1, u2, 0, 1.1);		
 	}
 
+	/**
+	 * Returns the set of bids offered between time instances t1 and t2: (t1, t2] and
+	 * with a utility in (u1, u2].
+	 * @param minU
+	 * @param maxU
+	 * @param minT
+	 * @param maxT
+	 * @return
+	 */
 	public BidHistory filterBetween(double minU, double maxU, double minT, double maxT)
 	{
 		BidHistory bidHistory = new BidHistory();
@@ -46,14 +80,26 @@ public class BidHistory {
 		return bidHistory;			
 	}
 	
+	/**
+	 * Add an offered bid o the history.
+	 * @param offered bid
+	 */
 	public void add(BidDetails bid){
 		bidList.add(bid);
 	}
 
+	/**
+	 * Returns the full history.
+	 * @return history
+	 */
 	public List<BidDetails> getHistory() {
 		return bidList;
 	}
 	
+	/**
+	 * Returns the last bid added to the history.
+	 * @return last added bid
+	 */
 	public BidDetails getLastBidDetails(){
 		BidDetails bid = null;
 		if (bidList.size() > 0) {
@@ -62,44 +108,73 @@ public class BidHistory {
 		return bid;
 	}
 	
+	/**
+	 * Returns the first bid stored in the history
+	 * @return first bid of history
+	 */
 	public BidDetails getFirstBidDetails() {
 		return bidList.get(0);
 	}
 	
-	
+	/**
+	 * Returns the bid with the highest utility stored in the history.
+	 * @return bid with highest utility
+	 */
 	public BidDetails getBestBidDetails(){
-		List<BidDetails> sortedOpponentBids = new ArrayList<BidDetails>(bidList);
-		Collections.sort(sortedOpponentBids, new BidDetailsSorter());
-		return sortedOpponentBids.get(0);
-	}
-	
-	public BidDetails getWorstBidDetails(){
-		ArrayList<BidDetails> sortedOpponentBids = new ArrayList<BidDetails>(bidList);
-		Collections.sort(sortedOpponentBids,new BidDetailsSorter());
-		return sortedOpponentBids.get(bidList.size()-1);
+		double max = Double.NEGATIVE_INFINITY;
+		BidDetails bestBid = null;
+		for (BidDetails b : bidList)
+		{
+			double utility = b.getMyUndiscountedUtil();
+			if (utility >= max)
+			{
+				max = utility;
+				bestBid = b;
+			}
+		}
+		return bestBid;
 	}
 	
 	/**
-	 * gives a list of the top N bids which the opponent has offered
+	 * Returns the bid with the lowest utility stored in the history.
+	 * @return bid with lowest utility
+	 */
+	public BidDetails getWorstBidDetails(){
+		double min = Double.POSITIVE_INFINITY;
+		BidDetails worstBid = null;
+		for (BidDetails b : bidList)
+		{
+			double utility = b.getMyUndiscountedUtil();
+			if (utility < min)
+			{
+				min = utility;
+				worstBid = b;
+			}
+		}
+		return worstBid;
+	}
+	
+	/**
+	 * Returns a list of the top N bids which the opponent has offered.
 	 * @param count
 	 * @return a list of UTBids
 	 */
-	public List<BidDetails> getNBestBids(int count){
+	public List<BidDetails> getNBestBids(int count) {
 		List<BidDetails> result = new ArrayList<BidDetails>();
 		List<BidDetails> sortedOpponentBids = new ArrayList<BidDetails>(bidList);
-		Collections.sort(sortedOpponentBids, new BidDetailsSorter());
-		for(int i = 0; i < count && i < sortedOpponentBids.size(); i++){
+		Collections.sort(sortedOpponentBids, new BidDetailsSorterUtility());
+		for (int i = 0; i < count && i < sortedOpponentBids.size(); i++) {
 			result.add(sortedOpponentBids.get(i));
 		}
-		
+
 		return result;
 	}
-	
-	public int size(){
+
+	public int size() {
 		return bidList.size();
 	}
 	
-	public double getAverageUtility(){
+	public double getAverageUtility() {
 		int size = size();
 		if (size == 0)
 			return 0;
@@ -113,8 +188,7 @@ public class BidHistory {
 	/**
 	 * Get the {@link BidDetails} of the {@link Bid} with utility closest to u.
 	 */
-	public BidDetails getBidDetailsOfUtility(double u)
-	{
+	public BidDetails getBidDetailsOfUtility(double u) {
 		double minDistance = -1;
 		BidDetails closestBid = null;
 		for (BidDetails b : bidList)
@@ -129,24 +203,28 @@ public class BidHistory {
 		return closestBid;
 	}
 	
-	public BidHistory sortToUtility(){
+	public BidHistory sortToUtility() {
 		BidHistory sortedHistory = this;
-		Collections.sort(sortedHistory.getHistory(), new BidDetailsSorter());
+		Collections.sort(sortedHistory.getHistory(), new BidDetailsSorterUtility());
 		return sortedHistory;
 	}
 	
-	public BidHistory sortToTime(){
+	public BidHistory sortToTime() {
 		BidHistory sortedHistory = this;
-		Collections.sort(sortedHistory.getHistory(), new BidDetailSorterTime());
+		Collections.sort(sortedHistory.getHistory(), new BidDetailsSorterTime());
 		return sortedHistory;
 	}
 	
-	public BidDetails getRandom()
+	public BidDetails getRandom() {
+		return getRandom(new Random());
+	}
+	
+	public BidDetails getRandom(Random rand)
 	{
 		int size = size();
 		if (size == 0)
 			return null;
-		int index = (new Random()).nextInt(size);
+		int index = rand.nextInt(size);
 		return bidList.get(index);
 	}
 }
