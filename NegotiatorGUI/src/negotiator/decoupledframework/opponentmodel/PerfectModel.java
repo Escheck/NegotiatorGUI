@@ -10,7 +10,6 @@ import negotiator.protocol.BilateralAtomicNegotiationSession;
  * experimentalSetup should be enabled in global.
  * 
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
- *
  */
 public class PerfectModel extends OpponentModel {
 
