@@ -1,7 +1,7 @@
 package agents;
 
 import negotiator.Bid;
-import negotiator.analysis.BidHistory;
+import negotiator.BidHistory;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
@@ -55,8 +55,8 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	{
 		super.init();
 		outcomeSpace = new BidHistory(utilitySpace);
-		Pmax = outcomeSpace.getMaximumUtility();
-		Pmin = outcomeSpace.getMinimumUtility();
+		Pmax = outcomeSpace.getBestBidDetails().getMyUndiscountedUtil();
+		Pmin = outcomeSpace.getWorstBidDetails().getMyUndiscountedUtil();
 		log("Pmin = " + Pmin);
 		log("Pmax = " + Pmax);
 	}

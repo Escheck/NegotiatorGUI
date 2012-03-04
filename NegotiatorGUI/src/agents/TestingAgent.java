@@ -3,7 +3,6 @@ package agents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Domain;

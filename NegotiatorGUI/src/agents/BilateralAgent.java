@@ -6,8 +6,8 @@ import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
-import negotiator.analysis.BidDetails;
-import negotiator.analysis.BidHistory;
+import negotiator.bidding.BidDetails;
+import negotiator.BidHistory;
 
 /**
  * @author Tim Baarslag
@@ -146,14 +146,9 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 	
 	public Bid getMyLastBid()
 	{
-		return myHistory.getLastBid();
+		return myHistory.getLastBidDetails().getBid();
 	}
-	
-	public Bid getMySecondLastBid()
-	{
-		return myHistory.getSecondLastBid();
-	}
-	
+
 	public BidHistory getOpponentHistory()
 	{
 		return opponentHistory;
@@ -161,7 +156,7 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 
 	public Bid getOpponentLastBid()
 	{
-		return opponentHistory.getLastBid();
+		return opponentHistory.getLastBidDetails().getBid();
 	}
 	
 	/**
