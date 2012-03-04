@@ -1,18 +1,21 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
-
+import misc.Serializer;
 import negotiator.Global;
+import negotiator.decoupledframework.DecoupledAgentInfo;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
 import negotiator.tournament.VariablesAndValues.AssignedParameterVariable;
+import negotiator.tournament.VariablesAndValues.DecoupledAgentValue;
+import negotiator.tournament.VariablesAndValues.DecoupledAgentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -21,7 +24,6 @@ import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
-
 
 /**
  * This class stores all tournament info (protocol, list of profiles, list of agents, etc.)
@@ -35,7 +37,6 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
  * Only TWO AgentValues are allowed.
  * 
  * @author wouter
- *
  */
 public class Tournament implements Serializable
 {
@@ -61,14 +62,20 @@ public class Tournament implements Serializable
 	public static final int VARIABLE_AGENT_A = 2;
 	public static final int VARIABLE_AGENT_B = 3;
 	public static final int VARIABLE_NUMBER_OF_RUNS = 4;
-	public static final int VARIABLE_EXPERIMENTAL_A = 5;
-	public static final int VARIABLE_EXPERIMENTAL_B = 6;
+	
+	// parameters for the decoupled agents framework
+	public static final int VARIABLE_DECOUPLED_A = 5;
+	public static final int VARIABLE_DECOUPLED_B = 6;
+	
+	// Database parameters; used for distributed tournaments
+	public static final int VARIABLE_DB_LOCATION = 7;
+	public static final int VARIABLE_DB_USER = 8;
+	public static final int VARIABLE_DB_PASSWORD = 9;
+	public static final int VARIABLE_DB_SESSIONNAME = 10;
 	
 	ArrayList<Protocol> sessions=null;
-	
-	
-	
-	/** creates emptyÊtournament with the next TournamenNumber */
+
+	/** creates empty tournament with the next TournamenNumber */
 		static int next_number=1;
 	public Tournament()
 	{
@@ -90,6 +97,14 @@ public class Tournament implements Serializable
 		return sessions;
 		
 	}
+	
+	/**
+	 * Throw away all calculated sessions to allow serialization.
+	 */
+	public void resetTournament() {
+		sessions = null;
+	}
+	
 	/**
 	 * @return the available AgentVariables in the tournament.
 	 */
@@ -122,6 +137,20 @@ public class Tournament implements Serializable
 		return 1;
 	}
 
+	/**
+	 * Returns how many times each session is repeated in a tournament.
+	 * @return round count
+	 */
+	public int getRounds() {
+		int count = 1;
+		TournamentVariable runs = variables.get(VARIABLE_NUMBER_OF_RUNS);
+		if (runs != null && runs.getValues().size() > 0) {
+			count = Integer.parseInt(runs.getValues().get(0).toString()); 
+		}
+		return count;
+	}
+	
+	
 	public ProtocolRepItem getProtocol() throws Exception {
 		for (TournamentVariable v: variables) {
 			if (v instanceof ProtocolVariable) {
@@ -135,6 +164,7 @@ public class Tournament implements Serializable
 		throw new RuntimeException("tournament does not contain a profile variable");
 		
 	}
+	
 	 /**
 	  * Get the profiles that are available.
 	  * The TournamentVarsUI will always place them in position 0 of the array but that is not mandatory.
@@ -171,12 +201,38 @@ public class Tournament implements Serializable
 	public ArrayList<TournamentVariable> getVariables() { return variables; }
 	
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Variables: " + variables + "\nSessions: " + sessions;
 	}
-	
+
+	public ArrayList<AgentVariable> getDecoupledAgentVars() {
+		ArrayList<DecoupledAgentVariable> decoupledAgentVars=new ArrayList<DecoupledAgentVariable>();
+		for (TournamentVariable v: variables) {
+			if (v instanceof DecoupledAgentVariable) decoupledAgentVars.add((DecoupledAgentVariable)v);
+		}
+		// now we have two decoupledagentvarinfo's, which we need to convert to agentvariables.
+		// agentvariables are basically collections of agentrepitem.
+		// An agentrepitem can be created by serializing the DecoupledAgentInfo, and using it's name
+		ArrayList<AgentVariable> agentVars = new ArrayList<AgentVariable>();
+		for (DecoupledAgentVariable decoupledVar : decoupledAgentVars) {
+			ArrayList<TournamentValue> values = decoupledVar.getValues();
+			AgentVariable agentVar = new AgentVariable();
+			agentVar.setSide(decoupledVar.getSide());
+
+			for (TournamentValue value : values) {
+				DecoupledAgentValue dav = (DecoupledAgentValue) value;
+				DecoupledAgentInfo agent = dav.getValue();
+				Serializer<DecoupledAgentInfo> serializer = new Serializer<DecoupledAgentInfo>("");
+				AgentRepItem agentRep = new AgentRepItem(agent.getName(), "negotiator.decoupledframework.agent.TheDecoupledAgent" , "", serializer.writeToString(agent));
+				AgentValue av = new AgentValue(agentRep);
+				try {
+					agentVar.addValue(av);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			agentVars.add(agentVar);
+		}
+		return agentVars;
+	}
 }
-
-
-

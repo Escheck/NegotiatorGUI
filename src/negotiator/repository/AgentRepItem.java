@@ -1,18 +1,13 @@
 package negotiator.repository;
 
 import negotiator.exceptions.Warning;
-import java.net.URLClassLoader;
-import java.lang.reflect.Method;
 import java.net.URL;
-import java.io.File;
 import javax.xml.bind.annotation.*;
 
 /**
  * This repository item contains all info about an agent that can be loaded.
-
  * 
  * @author wouter
- *
  */
 @XmlRootElement
 public class AgentRepItem implements RepItem
@@ -25,7 +20,9 @@ public class AgentRepItem implements RepItem
 	String classPath; /** file path including the class name */
 	@XmlAttribute
 	String description; /** description of this agent */
-
+	@XmlAttribute
+	String params; /** Parameters of the agent, for example a concession parameter */
+	
 	public AgentRepItem(){
 	}
 	
@@ -41,6 +38,13 @@ public class AgentRepItem implements RepItem
 		agentName=aName; 
 		classPath=cPath;
 		description=desc;
+	}
+	
+	public AgentRepItem(String aName, String cPath, String desc, String param) {
+		agentName=aName; 
+		classPath=cPath;
+		description=desc;
+		params = param;
 	}
 	
 	public String getName() { return agentName; }
@@ -82,6 +86,10 @@ public class AgentRepItem implements RepItem
 	public Object callStaticAgentFunction(String methodname, Object[] params) throws Exception {
 		Class c=Class.forName(classPath);
 		return c.getMethod(methodname).invoke(null, params);
+	}
+	
+	public String getParams() {
+		return params;
 	}
 	
 	public String getDescription() { return description; }
