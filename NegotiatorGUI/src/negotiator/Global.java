@@ -67,9 +67,6 @@ public class Global {
 	/** Agents play themselves in a tournament */
 	public static final boolean SELF_PLAY = false;
 
-	/** Use experimental variables etc. */
-	public static final boolean EXPERIMENTAL_SETTING = false;
-
 	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
 	
 	/** Log things like competitiveness and minDemandedUtil */
@@ -303,6 +300,22 @@ public class Global {
 			return logPrefix + "log.xml";
 		else if (LOG_TO_DATED_FILES)
 			return "log/" + getLoadDate() + ".xml";
+		else
+			return outcomesFile;
+	}
+	
+	public static String getDistributedOutcomesFileName()
+	{
+		if (LOG_TO_DATED_FILES)
+			return "log/DT-" + getLoadDate() + ".xml";
+		else
+			return outcomesFile;
+	}
+	
+	public static String getTournamentOutcomeFileName()
+	{
+		if (LOG_TO_DATED_FILES)
+			return "log/TM-" + getLoadDate() + ".xml";
 		else
 			return outcomesFile;
 	}
