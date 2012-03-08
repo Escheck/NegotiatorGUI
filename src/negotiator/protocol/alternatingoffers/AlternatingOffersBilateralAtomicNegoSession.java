@@ -25,6 +25,9 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 /**
  * This is an updated version which has shared deadlines for both agents, implemented with {@link Timeline}.
+ * 
+ * KNOWN BUGS:
+ * 1. The last bid of fAgentABids and fAgentBBids is not always the actual bid which was made.
  */
 public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
 
