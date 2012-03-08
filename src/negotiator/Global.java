@@ -88,6 +88,7 @@ public class Global {
 	 */
 	public static final boolean LOW_MEMORY_MODE = false;
 	
+	public static final boolean DISCRETE_TIMELINE = false;
 	
 	public Global() {
 	}

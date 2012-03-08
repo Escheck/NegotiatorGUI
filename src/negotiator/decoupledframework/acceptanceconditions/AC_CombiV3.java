@@ -6,14 +6,6 @@ import negotiator.decoupledframework.AcceptanceStrategy;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
-/**
- * Acceptance condition which accepts when a bid has a higher utility
- * than a target utility calculated using a linear function of the utility
- * to be offered next OR when a given amount of time has passed and the utility
- * of the opponent bid is higher than a constant.
- *
- * @author Alex Dirkzwager, Mark Hendrikx
- */
 public class AC_CombiV3 extends AcceptanceStrategy{
 
 	private double a;

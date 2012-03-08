@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import negotiator.Agent;
+import negotiator.ContinuousTimeline;
+import negotiator.DiscreteTimeline;
+import negotiator.Global;
 import negotiator.NegotiationOutcome;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
@@ -50,6 +53,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	protected Protocol protocol;
 
 	public Agent currentAgent=null; // agent currently bidding.
+	private Timeline timeline;
+	private int totalRounds = 5000; //The total amount of rounds when using DiscreteTimeline
 
 
 
@@ -82,7 +87,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		try {
 			double agentAUtility,agentBUtility;
 
-			Timeline timeline = new Timeline((int) (totalTime));
+			if (Global.DISCRETE_TIMELINE){
+				timeline = new DiscreteTimeline(totalRounds);			
+			} else {
+				timeline = new ContinuousTimeline((int) (totalTime));
+			}
+
 			// note, we clone the utility spaces for security reasons, so that the agent
 			// can not damage them.
 			agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
