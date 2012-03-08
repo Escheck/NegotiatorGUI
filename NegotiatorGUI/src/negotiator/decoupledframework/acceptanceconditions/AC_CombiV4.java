@@ -6,16 +6,6 @@ import negotiator.decoupledframework.AcceptanceStrategy;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
-/**
- * Acceptance condition which accepts when a bid has a higher utility
- * than a target utility calculated using a linear function of the utility
- * to be offered next.
- * 
- * Two linear functions are used, a function for when the negotiation has
- * a strong discount, and a function for all other cases.
- *
- * @author Alex Dirkzwager, Mark Hendrikx
- */
 public class AC_CombiV4 extends AcceptanceStrategy{
 
 	private double a;
@@ -26,13 +16,23 @@ public class AC_CombiV4 extends AcceptanceStrategy{
 	private double highestUtilReceived = 0;
 	
 public AC_CombiV4() { }
+
+	public AC_CombiV4(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double c, double d, double e){
+		this.negotiationSession = negoSession;
+		this.offeringStrategy = strat;
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
+		this.e = e;
+	}
 	
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
-		if (parameters.get("a") != null  || parameters.get("b")!=null || parameters.get("c") != null 
-				&& parameters.get("t") != null && parameters.get("d") != null && parameters.get("e") != null){
+		if (parameters.get("a") != null  || parameters.get("b")!=null || parameters.get("c") != null
+				&& parameters.get("d") != null && parameters.get("e") != null){
 			a = parameters.get("a");
 			b = parameters.get("b");
 			c = parameters.get("c");
@@ -75,6 +75,7 @@ public AC_CombiV4() { }
 		if (bestYet && lastOpponentBidUtil >= target) {
 			return true;
 		}
+
 		return false;		
 	}
 }

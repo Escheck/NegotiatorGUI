@@ -32,14 +32,19 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("e") != null) {
 			this.e = parameters.get("e");
-			initializeAgent(negoSession, model, e);
+			if (parameters.get("min") != null) {
+				Pmin = parameters.get("min");
+			} else {
+				Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
+			}
+			initializeAgent(negoSession, model, oms);
 		} else {
 			throw new Exception("Constant \"e\" for the concession speed was not set.");
 		}
 	}
 
 	
-	private void initializeAgent(NegotiationSession negoSession, OpponentModel model, double e) {
+	private void initializeAgent(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) {
 		this.negotiationSession = negoSession;
 		
 		OutcomeSpace space = new OutcomeSpace();
@@ -47,8 +52,6 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		negotiationSession.setOutcomeSpace(space);
 		
 		Pmax = negoSession.getMaxBidinDomain().getMyUndiscountedUtil();
-		Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
-		this.e = e;
 	}
 
 	@Override

@@ -12,14 +12,23 @@ import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OMStrategy;
 import negotiator.decoupledframework.OpponentModel;
 
+/**
+ * This class uses an opponent model to determine the next bid for the opponent, while taking
+ * the opponent's preferences into account. The opponent model is used to select the N best
+ * bids. Following, a random bid is selected from this subset. Setting N > 1 is rational,
+ * as opponent models cannot be assumed to be perfect.
+ * 
+ * @author Mark Hendrikx
+ */
 public class OfferBestN extends OMStrategy {
 
 	private Random rand;
+	// parameter which determines which n best bids should be considered
 	private int bestN;
+	// used to sort the opponent's bid with regard to utility
 	private static BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
 	
 	public OfferBestN() { }
-	
 
 	public OfferBestN(NegotiationSession negotiationSession, OpponentModel model, int n) {
 		initializeAgent(negotiationSession, model, n);
@@ -41,18 +50,32 @@ public class OfferBestN extends OMStrategy {
 		this.bestN = n;
 	}
 	
-	// THIS COULD BE IMPLEMENTED A LOT FASTER :!
+	/**
+	 * Returns the (likely) best bid for the opponent given a set of more-or-less
+	 * equally prefered bids.
+	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
+		// determine the utility for the opponent for each of the bids
 		ArrayList<BidDetails> oppBids = new ArrayList<BidDetails>(allBids.size());
 		for (BidDetails bidDetail : allBids) {
 			Bid bid = bidDetail.getBid();
 			BidDetails newBid = new BidDetails(bid, model.getBidEvaluation(bid));
 			oppBids.add(newBid);
 		}
+		
+		// sort the bids on the utility for the opponent
 		Collections.sort(oppBids, comp);
+		
+		// select a random bid from the N best bids and offer this bid
 		int entry = rand.nextInt(Math.min(bestN, oppBids.size()));
-
-		return oppBids.get(entry);
+		Bid opponentBestBid = oppBids.get(entry).getBid();
+		BidDetails nextBid = null;
+		try {
+			nextBid = new BidDetails(opponentBestBid, negotiationSession.getUtilitySpace().getUtility(opponentBestBid));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nextBid;
 	}
 }

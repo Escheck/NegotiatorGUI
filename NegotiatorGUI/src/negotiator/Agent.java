@@ -12,20 +12,18 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 import negotiator.actions.Action;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
+
 /**
  *
  * @author Dmytro Tykhonov
  * @author W.Pasman
  * 
  */
-
-
 public abstract class Agent 
 {
 	private AgentID 		agentID;
@@ -42,14 +40,14 @@ public abstract class Agent
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
      // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
      // particularly we now have NegotiationSession2 replacing NegotiationSession.
-    
-    protected HashMap<String, String> agentVariables;
-    
-    //protected Hashtable<String,Double> parametervalues = new Hashtable<String, Double>(); // values for the parameters for this agent. Key is param name
 
     protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues;
+    // the strategy parameters are parameters of the negotiation strategy, for example the concession
+    // factor of the TDT-agent.
+	protected StrategyParameters strategyParameters;
     
     public Agent() {
+    	this.strategyParameters = new StrategyParameters();
     }
 
     public static String getVersion() {return "unknown";};
@@ -58,7 +56,7 @@ public abstract class Agent
      * session after the internalInit method is called. User can override this method. 
      */
     public void init() {
-    
+    	
     }
     
     /**
@@ -140,7 +138,7 @@ public abstract class Agent
      */
     public void sleep(double fraction)
     {
-    	long sleep = (long) (timeline.getTotalMiliseconds() * fraction);
+    	long sleep = (long) ((timeline.getTotalTime() * 1000) * fraction);
     	try
 		{
 			Thread.sleep(sleep);
@@ -161,36 +159,6 @@ public abstract class Agent
      */
     public boolean isUIAgent() { return false; }
     
-	public HashMap<String, String> getAgentVariables() {
-		return agentVariables;
-	}
-    
-	/**
-	 * This method processes the variables string.
-	 * The method assumes a predefined format of the string but can be overriden.
-	 * Mark: I suggest removing params in the constructor, as this solution works via
-	 * the XML.
-	 * 
-	 * @param variables
-	 * @throws Exception 
-	 */
-	public void setAgentVariables(String variables) throws Exception {
-		if (variables != null) {
-			agentVariables = new HashMap<String, String>();
-			String[] vars = variables.split(";");
-			for (String var : vars) {
-				String[] expression = var.split("=");
-				if (expression.length == 2) {
-					agentVariables.put(expression[0], expression[1]);
-				} else {
-					throw new Exception(	"Expected variablename and result but got " + expression.length + " elements. " +
-											"Correct in XML or overload the method.");
-					
-				}
-			}
-		}
-	}
-	
     /**
      * This function cleans up the remainders of the agent: open windows etc.
      * This function will be called when the agent is killed,
@@ -210,4 +178,33 @@ public abstract class Agent
     	agentID = value;
     }
 
+    /**
+     * @return strategy parameters
+     */
+	public StrategyParameters getStrategyParameters() {
+		return strategyParameters;
+	}
+	
+	/**
+	 * Used to parse parameters presented in the agent repository. The particular
+	 * implementation below parses parameters such as time=0.9;e=1.0.
+	 * An example of an alternative implementation can be found in TheDecoupledAgent.
+	 * 
+	 * @param variables
+	 * @throws Exception
+	 */
+	public void parseStrategyParameters(String variables) throws Exception {
+		if (variables != null) {
+			String[] vars = variables.split(";");
+			for (String var : vars) {
+				String[] expression = var.split("=");
+				if (expression.length == 2) {
+					strategyParameters.addVariable(expression[0], expression[1]);
+				} else {
+					throw new Exception(	"Expected variablename and result but got " + expression.length + " elements. " +
+											"Correct in XML or overload the method.");
+				}
+			}
+		}
+	}
 }

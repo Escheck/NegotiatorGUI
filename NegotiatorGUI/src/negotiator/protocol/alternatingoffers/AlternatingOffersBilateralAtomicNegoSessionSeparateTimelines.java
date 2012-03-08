@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import negotiator.Agent;
+import negotiator.ContinuousTimeline;
 import negotiator.NegotiationOutcome;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
@@ -86,7 +87,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
         try {
             double agentAUtility,agentBUtility;
             // Note: we do not use the timeline here, but needed for forward compatibility.
-            Timeline timeline = new Timeline((int) (totalTimePerAgent / 1000));
+            Timeline timeline = new ContinuousTimeline((int) (totalTimePerAgent / 1000));
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
             agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime, timeline,
