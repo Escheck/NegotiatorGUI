@@ -9,7 +9,7 @@ import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OMStrategy;
 import negotiator.decoupledframework.OfferingStrategy;
 import negotiator.decoupledframework.OpponentModel;
-import negotiator.decoupledframework.OutcomeSpace;
+import negotiator.decoupledframework.SortedOutcomeSpace;
 
 /**
  * This is an abstract class used to implement a TimeDependentAgent Strategy adapted from [1]
@@ -22,36 +22,51 @@ import negotiator.decoupledframework.OutcomeSpace;
 public class TimeDependent_Offering extends OfferingStrategy {
 
 	/** k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility */
-	private static final double k = 0;
+	private double k;
 	private double Pmax;
 	private double Pmin;
 	private double e;
+	private BidDetails maxBid;
+	private double discount;
 	
 	public TimeDependent_Offering(){}
 	
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("e") != null) {
+			this.negotiationSession = negoSession;
+			
+			SortedOutcomeSpace space = new SortedOutcomeSpace();
+			space.init(negotiationSession.getUtilitySpace());
+			negotiationSession.setOutcomeSpace(space);
+			
 			this.e = parameters.get("e");
-			if (parameters.get("min") != null) {
-				Pmin = parameters.get("min");
-			} else {
-				Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
+			
+			if (parameters.get("k") != null)
+				this.k = parameters.get("k");
+			else
+				this.k = 0;
+			
+			if (parameters.get("min") != null)
+				this.Pmin = parameters.get("min");
+			else
+				this.Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
+			
+			maxBid = negoSession.getMaxBidinDomain();
+			if (parameters.get("max") != null)
+				Pmax= parameters.get("max");
+			else
+				Pmax = maxBid.getMyUndiscountedUtil();
+			
+			this.opponentModel = model;
+			this.omStrategy = oms;
+			
+			discount = negotiationSession.getDiscountFactor();
+			if (discount <= 0.00001) {
+				discount = 1.0;
 			}
-			initializeAgent(negoSession, model, oms);
 		} else {
 			throw new Exception("Constant \"e\" for the concession speed was not set.");
 		}
-	}
-
-	
-	private void initializeAgent(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) {
-		this.negotiationSession = negoSession;
-		
-		OutcomeSpace space = new OutcomeSpace();
-		space.init(negotiationSession.getUtilitySpace());
-		negotiationSession.setOutcomeSpace(space);
-		
-		Pmax = negoSession.getMaxBidinDomain().getMyUndiscountedUtil();
 	}
 
 	@Override
@@ -62,12 +77,23 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	@Override
 	public BidDetails determineNextBid() {
 		double time = negotiationSession.getTime();
-		double utilityGoal = p(time);
+		double utilityGoal;
+		if (negotiationSession.getDiscountFactor() < 0.00001) {
+			utilityGoal = p(time);
+		} else {
+			utilityGoal = Math.pow(negotiationSession.getDiscountFactor(), negotiationSession.getTime()) * p(time);
+		}
+		
 		if (opponentModel == null || !opponentModel.isCompleteModel()) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
-			List<BidDetails> bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, 1.1));
-			omStrategy.getBid(bidsInRange);
+			List<BidDetails> bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + 0.1));
+			double windowSize = 0.1;
+			while(bidsInRange.size() == 0){
+				bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + windowSize));
+				windowSize = windowSize + 0.1;
+			}
+			nextBid = omStrategy.getBid(bidsInRange);
 		}
 		return nextBid;
 	}
@@ -84,7 +110,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 * will offer the reservation value.
 	 */
 	public double f(double t) {
-		double ft = k + (1 - k) * Math.pow(t, 1 / e);
+		double ft = k + (1 - k) * Math.pow(t, 1.0/e);
 		return ft;
 	}
 
@@ -98,5 +124,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	}
 
 	@Override
-	public void agentReset() { }
+	public void agentReset() {
+		maxBid = null;
+	}
 }
