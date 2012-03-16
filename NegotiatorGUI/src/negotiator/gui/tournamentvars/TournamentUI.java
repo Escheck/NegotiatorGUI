@@ -8,8 +8,10 @@ package negotiator.gui.tournamentvars;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.application.Action;
@@ -18,9 +20,12 @@ import misc.Serializer;
 
 import negotiator.AgentParam;
 import negotiator.Global;
+import negotiator.distributedtournament.DBController;
+import negotiator.decoupledframework.DecoupledAgentInfo;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
+import negotiator.gui.decoupledframework.DecoupledAgentsFrame;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.repository.AgentRepItem;
@@ -35,8 +40,16 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
-import negotiator.tournament.VariablesAndValues.ExperimentalValue;
-import negotiator.tournament.VariablesAndValues.ExperimentalVariable;
+import negotiator.tournament.VariablesAndValues.DBLocationValue;
+import negotiator.tournament.VariablesAndValues.DBLocationVariable;
+import negotiator.tournament.VariablesAndValues.DBPasswordValue;
+import negotiator.tournament.VariablesAndValues.DBPasswordVariable;
+import negotiator.tournament.VariablesAndValues.DBSessionValue;
+import negotiator.tournament.VariablesAndValues.DBSessionVariable;
+import negotiator.tournament.VariablesAndValues.DBUserValue;
+import negotiator.tournament.VariablesAndValues.DBUserVariable;
+import negotiator.tournament.VariablesAndValues.DecoupledAgentValue;
+import negotiator.tournament.VariablesAndValues.DecoupledAgentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -47,7 +60,6 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
 /**
- *
  * @author  dmytro
  */
 public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent 
@@ -55,20 +67,27 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	/** this contains the variables and their possible values. */
 	Tournament tournament; 
 	
-	public static Serializer<Tournament> previousTournament
-	= new Serializer<Tournament>("previousTournament", "Previous tournament setup");
+	public static Serializer<Tournament> previousTournament;
 	
 	AbstractTableModel dataModel;
 
 	Repository domainrepository; // contains all available domains and profiles to pick from.
 	Repository agentrepository; // contains all available  agents to pick from.
+	
+	boolean distributed = false;
 
     /** Creates new form TournamentUI */
-    public TournamentUI() {
+    public TournamentUI(boolean distributed) {
+    	this.distributed = distributed;
         initComponents();
 		//Tournament t=new TournamentTwoPhaseAuction(); // bit stupid to correct an empty one, but will be useful later.
         
         Tournament t;
+        
+        String name = "previousTournament";
+        if (distributed) { name += "Distributed"; }
+        previousTournament = new Serializer<Tournament>(name, "Previous tournament setup");
+        
         final Tournament readFromDisk = previousTournament.readFromDisk();
 		if (readFromDisk == null)
 			t = new Tournament(); 
@@ -141,36 +160,82 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
-		} else if(v instanceof ProtocolVariable) {
-			ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();//(AgentVariable)v);
+		}else if(v instanceof ProtocolVariable) {
+			ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();
 			System.out.println("result new vars="+newv);
 			if (newv==null) return; // cancel pressed.
 			// make agentvalues for each selected agent and add to the agentvariable
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProtocolRepItem protocolItem: newv) newtvs.add(new ProtocolValue(protocolItem));
 			v.setValues(newtvs);			
-		}
-		else if (v instanceof AgentVariable) {
+		} else if (v instanceof AgentVariable) {
 			ArrayList<AgentRepItem> items = getAgentRepItems();
 			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new RepItemVarUI<AgentRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select agents").getResult(items);
 			if (newv==null) return; // cancel pressed.
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
 			v.setValues(newtvs);
+		} else if (v instanceof DecoupledAgentVariable) {
+			if (Global.DECOUPLED_AGENTS_ENABLED) {
+				ArrayList<DecoupledAgentInfo> test = new ArrayList<DecoupledAgentInfo>();
+				ArrayList<DecoupledAgentInfo> newv=(ArrayList<DecoupledAgentInfo>)new DecoupledAgentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
+				if (newv==null) return;
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+				for (DecoupledAgentInfo item: newv) newtvs.add(new DecoupledAgentValue(item));
+				v.setValues(newtvs);
+			} else {
+				JOptionPane.showMessageDialog(null, "This option is disabled.", "Disabled feature", 0);
+			}
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
 			if(value==null) return;
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
 			newtvs.add(value);
 			v.setValues(newtvs);
-		} else if(v instanceof ExperimentalVariable) {
-			String value =	(String)(new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
-			if(value==null) return;
-			ExperimentalValue experimentalValue = new ExperimentalValue(value);
-			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
-			newtvs.add(experimentalValue);
-			v.setValues(newtvs);
-		}		
+		} else if (distributed) {
+		
+			if (v instanceof DBLocationVariable) {
+				SingleStringVarUI gui = new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame());
+				gui.setTitle("Enter DB address");
+				Object result = gui.getResult();
+				if (result == null)
+					return;
+				DBLocationValue value = new DBLocationValue(result.toString());
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+				newtvs.add(value);
+				v.setValues(newtvs);			
+			} else if (v instanceof DBUserVariable) {
+				SingleStringVarUI gui = new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame());
+				gui.setTitle("Enter DB username");
+				Object result = gui.getResult();
+				if (result == null)
+					return;
+				DBUserValue value = new DBUserValue(result.toString());
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+				newtvs.add(value);
+				v.setValues(newtvs);
+			} else if (v instanceof DBPasswordVariable) {
+				SingleStringVarUI gui = new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame());
+				gui.setTitle("Enter DB password");
+				Object result = gui.getResult();
+				if (result == null)
+					return;
+				DBPasswordValue value = new DBPasswordValue(result.toString());
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+				newtvs.add(value);
+				v.setValues(newtvs);
+			} else if (v instanceof DBSessionVariable) {
+				SingleStringVarUI gui = new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame());
+				gui.setTitle("Enter DB sessionname");
+				Object result = gui.getResult();
+				if (result == null)
+					return;
+				DBSessionValue value = new DBSessionValue(result.toString());
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+				newtvs.add(value);
+				v.setValues(newtvs);
+			}
+		}
 		else if (v instanceof AgentParameterVariable) {			
 			ArrayList<TournamentValue> newvalues=null;
 			String newvaluestr=new String(""+v.getValues()); // get old list, using ArrayList.toString.
@@ -204,7 +269,6 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		}
 		else throw new IllegalArgumentException("Unknown tournament variable "+v);		
 	}
-	
 
 	private ArrayList<AgentRepItem> getAgentRepItems() {
 		Repository agentrep=Repository.get_agent_repository();
@@ -235,7 +299,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		}
 		return items;
 	}
-	
+
 	/** remove selected row from table */
 	void removerow() throws Exception {
 		int row=checkParameterSelected("You can not remove the Profile and Agent vars.");
@@ -317,16 +381,25 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 * Run it in different thread, so that we can return control to AWT/Swing
 	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
-	void start() throws Exception {
+	void start(boolean distributed, String sessionname) throws Exception {
+		ProgressUI2 progressUI = new ProgressUI2();
+		TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
+		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
+		
+		// required for distributed, this sets the sessions to null (sessions are unserializable)
+		tournament.resetTournament();
+		previousTournament.writeToDisk(tournament);
+
+		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
+		TournamentRunner runner = new TournamentRunner (tournament, tournamentProgressUI);
+		if (distributed) {
+			runner = new TournamentRunner (tournamentProgressUI);
+			runner.setDistributed(distributed, sessionname);
+			//NegoGUIApp.negoGUIView.getFrame().setVisible(false);
+		}
 		
 
-		ProgressUI2 progressUI = new ProgressUI2();
-		TournamentProgressUI2 tournamentProgressUI=new TournamentProgressUI2(progressUI );
-		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
-		previousTournament.writeToDisk(tournament);
-		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
-		new Thread(new TournamentRunner (tournament,tournamentProgressUI)).start();
-		
+		new Thread(runner).start();
 	}
 	
 	
@@ -336,9 +409,9 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 * 	Tournaments setings tab
 	 * 
 	 */
-	static void correct_tournament(Tournament t)
+	private void correct_tournament(Tournament t)
 	{
-		ArrayList<TournamentVariable> vars=t.getVariables();
+		ArrayList<TournamentVariable> vars = t.getVariables();
 		fillposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());		
 		fillposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
 		AgentVariable agentVar = new AgentVariable();
@@ -348,6 +421,24 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
+		
+		DecoupledAgentVariable decoupledAgentVarA = new DecoupledAgentVariable();
+		decoupledAgentVarA.setSide("A");
+		fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
+		DecoupledAgentVariable decoupledAgentVarB = new DecoupledAgentVariable();
+		decoupledAgentVarB.setSide("B");
+		fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
+		
+		if (Global.DISTRIBUTED_TOURNAMENTS) {
+			
+			// create fields for connecting to a database
+			if (distributed) {
+				fillposition(vars, Tournament.VARIABLE_DB_LOCATION, new DBLocationVariable());
+				fillposition(vars, Tournament.VARIABLE_DB_USER, new DBUserVariable());
+				fillposition(vars, Tournament.VARIABLE_DB_PASSWORD, new DBPasswordVariable());
+				fillposition(vars, Tournament.VARIABLE_DB_SESSIONNAME, new DBSessionVariable());
+			}
+		}
 //		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
@@ -429,6 +520,23 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
         btnStart.setAction(actionMap.get("startTournament")); // NOI18N
         btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
         btnStart.setName("btnStart"); // NOI18N
+        
+
+        btnStartNewDT = new javax.swing.JButton();
+		btnJoinDS = new javax.swing.JButton();
+		
+        if (distributed) {
+	        btnStartNewDT.setAction(actionMap.get("startDistributedTournament")); // NOI18N
+	        btnStartNewDT.setText(resourceMap.getString("btnStartNewDT.text")); // NOI18N
+	        btnStartNewDT.setName("btnStartNewDT"); // NOI18N
+	        
+	        btnJoinDS.setAction(actionMap.get("joinDistributedTournament")); // NOI18N
+	        btnJoinDS.setText(resourceMap.getString("btnJoinDS.text")); // NOI18N
+	        btnJoinDS.setName("btnJoinDS"); // NOI18N
+        } else {
+        	btnStartNewDT.setVisible(false);
+        	btnJoinDS.setVisible(false);
+        }
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -438,7 +546,9 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
-                    .add(btnStart))
+                    .add(btnStart)
+                    .add(btnStartNewDT)
+                    .add(btnJoinDS))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -448,6 +558,8 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(btnStart)
+                .add(btnStartNewDT)
+                .add(btnJoinDS)
                 .addContainerGap())
         );
 
@@ -485,16 +597,86 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     @Action
     public void startTournament() {
     	try {
-    		start();
+    		start(false, "");
     	}catch (Exception e) {
 			// TODO: handle exception
     		e.printStackTrace();
     		
 		}
     }
+    
+    /**
+     * Join a distributed tournament by retrieving the tournament from the DB.
+     * A subset of the sessions of the tournament are executed, after which
+     * a new subset is requested. This process continues until the full
+     * job has been processed.
+     */
+    @Action
+    public void joinDistributedTournament() {
+    	startDTournament(false);
+    }
+    
+    /**
+     * Start a distributed tournament by storing the tournament and its jobs in the
+     * database. Following, the steps are identical to joining a distributed tournament.
+     */
+    @Action
+    public void startDistributedTournament() {
+    	startDTournament(true);
+    }
+    
+    /**
+     * Starts a distributed tournament.
+     * @param storeJobs true if startTournament, false if join
+     */
+    public void startDTournament(boolean storeJobs) {
+    	DBController dbc = DBController.getInstance();
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    	// 1. Load the database parameters
+    	String url = tournament.getVariables().get(Tournament.VARIABLE_DB_LOCATION).getValues().get(0).toString();
+    	String user = tournament.getVariables().get(Tournament.VARIABLE_DB_USER).getValues().get(0).toString();
+    	String password = tournament.getVariables().get(Tournament.VARIABLE_DB_PASSWORD).getValues().get(0).toString();
+    	String sessionname = tournament.getVariables().get(Tournament.VARIABLE_DB_SESSIONNAME).getValues().get(0).toString();
+
+    	// 2. Try to connect
+    	if (DBController.connect(url, user, password)) {
+    		try {
+    			// 3. Print a tutorial on how to configure DT
+    			System.out.println(DBController.getDistributedTutorial());
+    			
+    			// 4. Generate jobs and store them in the DB if a tournament was started
+    			int response = 0;
+    			if (storeJobs) {
+    				// 5. Check that the user does not accidentally start a new session when he actually wanted to join
+    				if (DBController.getInstance().existsSessionName(sessionname)) {
+    					response = JOptionPane.showConfirmDialog(null, "This session name already exists.\n" +
+	    																"Are you sure you want to use the same name?\n" +
+	    																"Note that if the other session was still running,\n" +
+	    																"this will shift the priority to this session.", "Input",
+																		JOptionPane.YES_NO_OPTION);
+    				}
+    				if (response == 0) { // yes
+    					DBController.getInstance().createJob(sessionname, tournament);
+    				}
+    			}
+    			// the user STARTED and ACCEPTED or the user JOINED
+    			if (response == 0) {
+    				NegoGUIApp.negoGUIView.getFrame().setVisible(false);
+    				start(true, sessionname);
+    			}
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error while creating tournament.", "Tournament error", 0);
+			}
+    	} else {
+    		JOptionPane.showMessageDialog(null, "Could not connect to database.", "Database error", 0);
+    	}
+    }
+    
+	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnStart;
+    private javax.swing.JButton btnStartNewDT;
+	private javax.swing.JButton btnJoinDS;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

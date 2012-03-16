@@ -1,10 +1,5 @@
 package negotiator.qualitymeasures;
 
-/**
- * This class stores the information relating to the outcome of a negotiation.
- * 
- * @author Mark Hendrikx
- */
 public class OutcomeInfo {
 	
 	private double timeOfAgreement;
@@ -14,9 +9,11 @@ public class OutcomeInfo {
 	private boolean startedA;
 	private String agentNameA;
 	private String utilProfA;
+	private double utilityA;
 	private double discountedUtilityA;
 	private String agentNameB;
 	private String utilProfB;
+	private double utilityB;
 	private double discountedUtilityB;
 	private double nashDistance;
 	private double paretoDistance;
@@ -80,6 +77,22 @@ public class OutcomeInfo {
 	
 	public void setUtilProfA(String utilProfA) {
 		this.utilProfA = utilProfA;
+	}
+	
+	public double getUtilityA() {
+		return utilityA;
+	}
+	
+	public void setUtilityA(double utilityA) {
+		this.utilityA = utilityA;
+	}
+	
+	public double getUtilityB() {
+		return utilityB;
+	}
+	
+	public void setUtilityB(double utilityB) {
+		this.utilityB = utilityB;
 	}
 	
 	public double getDiscountedUtilityA() {

@@ -36,7 +36,7 @@ public class RepItemVarUI<A> extends JDialog {
 	 */
 	public RepItemVarUI(Frame frame, String title) {
 		super(frame, title, true);
-		this.setLocation(frame.getSize().width / 3, frame.getSize().height / 4);
+		this.setLocation(frame.getLocation().x + frame.getWidth() / 2, frame.getLocation().y + frame.getHeight() / 4);
 		this.setSize(frame.getSize().width / 3, frame.getSize().height / 2);
 	}
 
@@ -63,7 +63,7 @@ public class RepItemVarUI<A> extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<A> profiles = new ArrayList<A>();
 				for (int item : profileList.getSelectedIndices()) {
-					profiles.add((A) model.getFullElementAt(item));
+					profiles.add((A) model.getElementAt(item));
 				}
 				result = profiles;
 				dispose();

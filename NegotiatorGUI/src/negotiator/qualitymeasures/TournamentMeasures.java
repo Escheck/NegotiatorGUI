@@ -63,13 +63,15 @@ public class TournamentMeasures {
 				outcome.setAgentNameA(attributes.getValue(1));
 				agents.add(attributes.getValue(1));
 				outcome.setUtilProfA(attributes.getValue(3));
-				outcome.setDiscountedUtilityA(Double.parseDouble(attributes.getValue(7)));
+				outcome.setUtilityA(Double.parseDouble(attributes.getValue(10)));
+				outcome.setDiscountedUtilityA(Double.parseDouble(attributes.getValue(8)));
 				found = true;
 			} else if (tagName.equals("resultsOfAgent") && attributes.getValue(0).equals("B")) {
 				outcome.setAgentNameB(attributes.getValue(1));
 				agents.add(attributes.getValue(1));
 				outcome.setUtilProfB(attributes.getValue(3));
-				outcome.setDiscountedUtilityB(Double.parseDouble(attributes.getValue(7)));
+				outcome.setUtilityB(Double.parseDouble(attributes.getValue(10)));
+				outcome.setDiscountedUtilityB(Double.parseDouble(attributes.getValue(8)));
 				found = true;
 			}
 			return found;
@@ -97,6 +99,7 @@ public class TournamentMeasures {
 			}
 			return found;
 		}
+		
 		public void endElement(String nsURI, String strippedName,
 				String tagName) throws SAXException {
 			if (tagName.equals("NegotiationOutcome")) {
@@ -112,20 +115,24 @@ public class TournamentMeasures {
 		 */
 		public ArrayList<ArrayList<OutcomeInfo>> getOutcomesAsRuns() {
 			ArrayList<ArrayList<OutcomeInfo>> runs = new ArrayList<ArrayList<OutcomeInfo>>();
-			int totalRuns = getRunsCount();
-			for (int i = 0; i < totalRuns; i++) {
-				ArrayList<OutcomeInfo> run = new ArrayList<OutcomeInfo>();
-				runs.add(run);
-			}
+			runs.add(new ArrayList<OutcomeInfo>());
+
 			for (int i = 0; i < outcomes.size(); i++) {
-				int index = i % totalRuns;
-				runs.get(index).add(outcomes.get(i));
+				boolean added = false;
+				for (int a = 0; a < runs.size(); a++) {
+					if (!outcomeInArray(runs.get(a), outcomes.get(i))) {
+						runs.get(a).add(outcomes.get(i));
+						added = true;
+						break;
+					}
+				}
+				if (!added) {
+					ArrayList<OutcomeInfo> newList = new ArrayList<OutcomeInfo>();
+					newList.add(outcomes.get(i));
+					runs.add(newList);
+				}
 			}
 			return runs;
-		}
-		
-		public ArrayList<OutcomeInfo> getOutcomes() {
-			return outcomes;
 		}
 		
 		/**
@@ -134,28 +141,29 @@ public class TournamentMeasures {
 		 * 
 		 * @return amount of runs
 		 */
-		private int getRunsCount() {
-			int runsCount = 1;
-			OutcomeInfo first = outcomes.get(0);
-			int i = 1;
-			while (	i < outcomes.size()) {
-				if (outcomes.get(i).getAgentNameA().equals(first.getAgentNameA()) && 
-					outcomes.get(i).getAgentNameB().equals(first.getAgentNameB()) &&
-					outcomes.get(i).getUtilProfA().equals(first.getUtilProfA()) &&
-					outcomes.get(i).getUtilProfB().equals(first.getUtilProfB())) {
-					runsCount++;
-				} else {
-					// data is identical, but agents are swapped
-					if (outcomes.get(i).getAgentNameB().equals(first.getAgentNameA()) && 
-							outcomes.get(i).getAgentNameA().equals(first.getAgentNameB()) &&
-							outcomes.get(i).getUtilProfB().equals(first.getUtilProfA()) &&
-							outcomes.get(i).getUtilProfA().equals(first.getUtilProfB())) {
-							runsCount++;
-					}
+		private boolean outcomeInArray(ArrayList<OutcomeInfo> outcomes, OutcomeInfo outcome) {
+			boolean found = false;
+			for (int i = 0; i < outcomes.size(); i++) {
+				if (outcomes.get(i).getAgentNameA().equals(outcome.getAgentNameA()) &&
+						outcomes.get(i).getAgentNameB().equals(outcome.getAgentNameB()) &&
+						outcomes.get(i).getUtilProfA().equals(outcome.getUtilProfA()) &&
+						outcomes.get(i).getUtilProfB().equals(outcome.getUtilProfB())) {
+					found = true;
+					break;
 				}
-				i++;
+				if (outcomes.get(i).getAgentNameA().equals(outcome.getAgentNameB()) &&
+						outcomes.get(i).getAgentNameB().equals(outcome.getAgentNameA()) &&
+						outcomes.get(i).getUtilProfA().equals(outcome.getUtilProfB()) &&
+						outcomes.get(i).getUtilProfB().equals(outcome.getUtilProfA())) {
+					found = true;
+					break;
+				}
 			}
-			return runsCount;
+			return found;
+		}
+		
+		public ArrayList<OutcomeInfo> getOutcomes() {
+			return outcomes;
 		}
 
 		public HashSet<String> getAgents() {
@@ -223,10 +231,13 @@ public class TournamentMeasures {
 	 * @param agents
 	 * @return XML-object with results of calculated measures.
 	 */
-	public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, ArrayList<ArrayList<OutcomeInfo>> runs, HashSet<String> agents) {
+public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, ArrayList<ArrayList<OutcomeInfo>> runs, HashSet<String> agents) {
 		SimpleElement tournamentQualityMeasures = new SimpleElement("tournament_quality_measures");
-		
-		// for all unique (decoupled) agents
+		System.out.println("RUNS: " + runs.size());
+		System.out.println("OUTCOMES: " + outcomes.size());
+		for (int i = 0; i < runs.size(); i++) {
+			System.out.println("run " + i + "  " + runs.get(i).size());
+		}
 		for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
 			String agentName = agentsIter.next();
 			SimpleElement agentElement = new SimpleElement("NegotiationOutcome");
@@ -235,9 +246,8 @@ public class TournamentMeasures {
 			SimpleElement tournamentQM = new SimpleElement("TournamentQM");
 			agentElement.addChildElement(tournamentQM);
 			
-			// functionality of the decoupled framework which allows to calculate the performance
-			// of the components.
-			if(agentName.contains("bs")) { // if the agent is a decoupled agent
+
+			if(agentName.contains("bs")) {
 				SimpleElement decoupledElementID = new SimpleElement("DecoupledElementID");
 				agentElement.addChildElement(decoupledElementID);
 
@@ -251,6 +261,8 @@ public class TournamentMeasures {
 			tournamentQM.setAttribute("average_time_of_agreement", getAverageTimeOfAgreement(outcomes, agentName) + "");
 			tournamentQM.setAttribute("average_util_of_agreements", getAverageUtility(outcomes, agentName, true) + "");
 			tournamentQM.setAttribute("average_util", getAverageUtility(outcomes, agentName, false) + "");
+			tournamentQM.setAttribute("average_discounted_util_of_agreements", getAverageDiscountedUtility(outcomes, agentName, true) + "");
+			tournamentQM.setAttribute("average_discounted_util", getAverageDiscountedUtility(outcomes, agentName, false) + "");
 			
 			SimpleElement utilityBasedQM = new SimpleElement("UtilityBasedQM");
 			agentElement.addChildElement(utilityBasedQM);
@@ -261,14 +273,17 @@ public class TournamentMeasures {
 			SimpleElement runBasedQM = new SimpleElement("RunBasedQM");
 			agentElement.addChildElement(runBasedQM);
 			getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName);
-			getStandardDeviationOfUtility(runs, agentName);
-
+			getStandardDeviationOfDiscountedUtility(runs, agentName);
+			getStandardDeviationOfTotalRounds(runs, agentName);
+			
 			SimpleElement prefOpponentModelQM = new SimpleElement("PrefOpponentModelQM");
 			agentElement.addChildElement(prefOpponentModelQM);
 			prefOpponentModelQM.setAttribute("average_correlation_nash",  "");
 			prefOpponentModelQM.setAttribute("average_correlation_kalai",  "");
 			prefOpponentModelQM.setAttribute("average_correlation_pareto_bids",  "");
 			prefOpponentModelQM.setAttribute("average_correlation_all_bids",  "");
+			
+			
 			
 			SimpleElement trajectorAnalysisQM = new SimpleElement("trajectorAnalysisQM");
 			agentElement.addChildElement(trajectorAnalysisQM);
@@ -284,12 +299,13 @@ public class TournamentMeasures {
 	 * @param runs
 	 * @param agentName
 	 */
-	private static void getStandardDeviationOfUtility(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+	private static void getStandardDeviationOfDiscountedUtility(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
 		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageUtility(runs.get(i), agentName, false);
+			double averageOfRun = getAverageDiscountedUtility(runs.get(i), agentName, false);
+			System.out.println(averageOfRun);
 			sumOfAverages += averageOfRun;
 			results[i] = averageOfRun;
 		}
@@ -299,12 +315,33 @@ public class TournamentMeasures {
 		}
 		// n-1 due to Bessel's correction
 		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		System.out.println(agentName + "  " + averageOfRuns);
-		System.out.println(agentName + "  " + Math.sqrt(variance));
 	}
 	
 	/**
 	 * Calculates the standard deviation of the time of agreement.
+	 * Also uses outcomes because of isAgreement (average of averages != average of all)
+	 * @param runs
+	 * @param outcomes
+	 * @param agentName
+	 */
+	private static void getStandardDeviationOfTotalRounds(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+		double sumOfAverages = 0;
+		double squaredSumOfDeviations = 0;
+		double[] results = new double[runs.size()];
+		for (int i = 0; i < runs.size(); i++) {
+			double averageOfRun = getAverageRounds(runs.get(i), agentName);
+			sumOfAverages += averageOfRun;
+			results[i] = averageOfRun;
+		}
+		double averageOfRuns = sumOfAverages / runs.size();
+		for (int i = 0; i < runs.size(); i++) {
+			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+		}
+		// n-1 due to Bessel's correction
+		double variance = squaredSumOfDeviations / (runs.size() - 1);
+	}
+
+	/**
 	 * Also uses outcomes because of isAgreement (average of averages != average of all)
 	 * @param runs
 	 * @param outcomes
@@ -323,10 +360,8 @@ public class TournamentMeasures {
 		}
 		// n-1 due to Bessel's correction
 		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		System.out.println(agentName + "  " + averageOfRuns);
-		System.out.println(agentName + "  " + Math.sqrt(variance));
 	}
-
+	
 	/**
 	 * Calculates the average non-discounted utility an agent.
 	 * Optionally, matches without agreement are ignored.
@@ -344,6 +379,36 @@ public class TournamentMeasures {
 		for (OutcomeInfo outcome : outcomes) {
 			boolean found = false;
 			if (outcome.getAgentNameA().equals(agentName)) {
+				utility += outcome.getUtilityA();
+				found = true;
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				utility += outcome.getUtilityB();
+				found = true;
+			}
+			if (found && (outcome.isAgreement() || !onlyAgreements)) {
+				totalSessions++;
+			}
+		}
+		return utility / (double)totalSessions;
+	}
+
+	/**
+	 * Calculates the average discounted utility an agent.
+	 * Optionally, matches without agreement are ignored.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @param onlyAgreements
+	 * @return average utility
+	 */
+	private static double getAverageDiscountedUtility(ArrayList<OutcomeInfo> outcomes,
+			String agentName, boolean onlyAgreements) {
+		int totalSessions = 0;
+		double utility = 0;
+
+		for (OutcomeInfo outcome : outcomes) {
+			boolean found = false;
+			if (outcome.getAgentNameA().equals(agentName)) {
 				utility += outcome.getDiscountedUtilityA();
 				found = true;
 			} else if (outcome.getAgentNameB().equals(agentName)) {
@@ -354,9 +419,9 @@ public class TournamentMeasures {
 				totalSessions++;
 			}
 		}
-		return utility / (double)totalSessions;
+		return utility / (double) totalSessions;
 	}
-
+	
 	/**
 	 * Calculates the percentage of agreement of an agent.
 	 * 
@@ -456,7 +521,7 @@ public class TournamentMeasures {
 	}
 	
 	/**
-	 * alculates the average Kalai distance of an agreement.
+	 * Calculates the average Kalai distance of an agreement.
 	 * 
 	 * @param outcomes
 	 * @param agentName

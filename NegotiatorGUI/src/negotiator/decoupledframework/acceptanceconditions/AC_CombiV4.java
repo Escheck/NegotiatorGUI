@@ -13,11 +13,12 @@ public class AC_CombiV4 extends AcceptanceStrategy{
 	private double c;
 	private double d;
 	private double e;
-	private double highestUtilReceived = 0;
+	private boolean discountedDomain;
 	
 public AC_CombiV4() { }
 
 	public AC_CombiV4(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double c, double d, double e){
+		
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		this.a = a;
@@ -25,6 +26,12 @@ public AC_CombiV4() { }
 		this.c = c;
 		this.d = d;
 		this.e = e;
+		
+		if (negotiationSession.getDiscountFactor() < 0.00001 || negotiationSession.getDiscountFactor() > e) {
+			discountedDomain = false;
+		}else {
+			discountedDomain = true;
+		}
 	}
 	
 	@Override
@@ -38,6 +45,11 @@ public AC_CombiV4() { }
 			c = parameters.get("c");
 			d = parameters.get("d");
 			e = parameters.get("e");
+			if (negotiationSession.getDiscountFactor() < 0.00001 || negotiationSession.getDiscountFactor() > e) {
+				discountedDomain = false;
+			}else {
+				discountedDomain = true;
+			}
 		} else {
 			throw new Exception("Paramaters were not correctly set");
 		}
@@ -52,27 +64,21 @@ public AC_CombiV4() { }
 	public boolean determineAcceptability() {
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-
-		boolean bestYet = false;
-		if (lastOpponentBidUtil >= highestUtilReceived) {
-			highestUtilReceived = lastOpponentBidUtil;
-			bestYet = true;
-		}
 		
 		double target = 0;
-		if (negotiationSession.getDiscountFactor() < 0.00001 || negotiationSession.getDiscountFactor() > e) {
+		if (!discountedDomain) {
 			// no discount mode
-			target = a * nextMyBidUtil + b;
+			target = a * lastOpponentBidUtil + b;
 		} else {
 			// discount mode
-			target = c * nextMyBidUtil + d;
+			target = c * lastOpponentBidUtil + d;
 			//System.out.println(negotiationSession.getTime() + " " + "Target: " + target);
 		}
 		if (target > 1.0) {
 			target = 1.0;
 		}
 		
-		if (bestYet && lastOpponentBidUtil >= target) {
+		if (target >= nextMyBidUtil) {
 			return true;
 		}
 

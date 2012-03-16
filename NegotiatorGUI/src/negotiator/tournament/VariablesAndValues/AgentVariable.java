@@ -22,5 +22,9 @@ public class AgentVariable extends TournamentVariable
 	{
 		side = val;
 	}
+	
+	public String getSide() {
+		return side;
+	}
 		
 }
