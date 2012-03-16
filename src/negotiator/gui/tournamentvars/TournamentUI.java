@@ -176,16 +176,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
 			v.setValues(newtvs);
 		} else if (v instanceof DecoupledAgentVariable) {
-			if (Global.DECOUPLED_AGENTS_ENABLED) {
-				ArrayList<DecoupledAgentInfo> test = new ArrayList<DecoupledAgentInfo>();
-				ArrayList<DecoupledAgentInfo> newv=(ArrayList<DecoupledAgentInfo>)new DecoupledAgentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
-				if (newv==null) return;
-				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-				for (DecoupledAgentInfo item: newv) newtvs.add(new DecoupledAgentValue(item));
+			ArrayList<DecoupledAgentInfo> newv=(ArrayList<DecoupledAgentInfo>)new DecoupledAgentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
+			if (newv==null) return;
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+			for (DecoupledAgentInfo item: newv) newtvs.add(new DecoupledAgentValue(item));
 				v.setValues(newtvs);
-			} else {
-				JOptionPane.showMessageDialog(null, "This option is disabled.", "Disabled feature", 0);
-			}
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
 			if(value==null) return;
@@ -409,6 +404,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 * 	Tournaments setings tab
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	private void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars = t.getVariables();
@@ -422,23 +418,25 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
 		
-		DecoupledAgentVariable decoupledAgentVarA = new DecoupledAgentVariable();
-		decoupledAgentVarA.setSide("A");
-		fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
-		DecoupledAgentVariable decoupledAgentVarB = new DecoupledAgentVariable();
-		decoupledAgentVarB.setSide("B");
-		fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
-		
-		if (Global.DISTRIBUTED_TOURNAMENTS) {
-			
-			// create fields for connecting to a database
-			if (distributed) {
-				fillposition(vars, Tournament.VARIABLE_DB_LOCATION, new DBLocationVariable());
-				fillposition(vars, Tournament.VARIABLE_DB_USER, new DBUserVariable());
-				fillposition(vars, Tournament.VARIABLE_DB_PASSWORD, new DBPasswordVariable());
-				fillposition(vars, Tournament.VARIABLE_DB_SESSIONNAME, new DBSessionVariable());
-			}
+		// Ignore possible dead code warning displayed here, it is has to do with the 
+		// values of the global variables.
+		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
+			DecoupledAgentVariable decoupledAgentVarA = new DecoupledAgentVariable();
+			decoupledAgentVarA.setSide("A");
+			fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
+			DecoupledAgentVariable decoupledAgentVarB = new DecoupledAgentVariable();
+			decoupledAgentVarB.setSide("B");
+			fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
 		}
+		
+		// create fields for connecting to a database
+		if (distributed) {
+			fillposition(vars, Tournament.VARIABLE_DB_LOCATION, new DBLocationVariable());
+			fillposition(vars, Tournament.VARIABLE_DB_USER, new DBUserVariable());
+			fillposition(vars, Tournament.VARIABLE_DB_PASSWORD, new DBPasswordVariable());
+			fillposition(vars, Tournament.VARIABLE_DB_SESSIONNAME, new DBSessionVariable());
+		}
+		
 //		vars.add(new AgentParameterVariable(new AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
