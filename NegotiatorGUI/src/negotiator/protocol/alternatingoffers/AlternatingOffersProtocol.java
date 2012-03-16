@@ -289,26 +289,25 @@ public class AlternatingOffersProtocol extends Protocol {
 	
 	public void createExtraLogData() {
 		
-		// Calculate the opponent model quality measures and log them
-		UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
-		SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
-		
-		TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids());
-		SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
-		
-		// OPPONENT QUALITY MEASURES
-		
-		if (outcome.additional==null) {
-			outcome.additional = new SimpleElement("additional");
+		if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
+			// Calculate the opponent model quality measures and log them
+			UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
+			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
+			
+			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids());
+			SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
+			
+			if (outcome.additional==null) {
+				outcome.additional = new SimpleElement("additional");
+			}
+			
+			if (utQualityMeasures != null) { 
+				outcome.additional.addChildElement(utQualityMeasures);				
+			}
+			if (tjQualityMeasures != null) {
+				outcome.additional.addChildElement(tjQualityMeasures);	
+			}
 		}
-		
-		if (utQualityMeasures != null) { 
-			outcome.additional.addChildElement(utQualityMeasures);				
-		}
-		if (tjQualityMeasures != null) {
-			outcome.additional.addChildElement(tjQualityMeasures);	
-		}
-		
 		if (!Global.DISABLE_NORMAL_LOG) {
 			writeOutcomeToLog(false);
 			if (Global.EXTENSIVE_OUTCOMES_LOG)

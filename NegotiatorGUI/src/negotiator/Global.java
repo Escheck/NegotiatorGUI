@@ -83,6 +83,9 @@ public class Global {
 	 * and thus all agents. */
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
+	/** Enable a large set of analysis metrics from which the results are stored in a separate log */
+	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = false;
+	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
 	 * Currently there are no known side-effects. 
