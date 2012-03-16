@@ -665,7 +665,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents = tournament.getAgentVars();
 		
-		if (Global.DECOUPLED_AGENTS_ENABLED) {
+		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
 			ArrayList<AgentVariable> decoupledAgents = tournament.getDecoupledAgentVars();
 			agents.get(0).getValues().addAll(decoupledAgents.get(0).getValues());
 			agents.get(1).getValues().addAll(decoupledAgents.get(1).getValues());

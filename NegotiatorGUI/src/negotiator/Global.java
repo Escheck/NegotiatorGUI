@@ -67,11 +67,13 @@ public class Global {
 	/** Disable logging. Useful for distributed sessions, as partial log are in that case not printed. */
 	public static final boolean DISABLE_NORMAL_LOG = false;
 	
-	/** Enables the use of Decoupled Agents in the GUI */
+	/** Enables the use of Decoupled Agents in the GUI. */
 	public static final boolean DECOUPLED_AGENTS_ENABLED = false;
 	
-	/** Enables the distributed tournaments functionality of Genius */
-	public static final boolean DISTRIBUTED_TOURNAMENTS = false;
+	/** Enables the distributed tournaments functionality of Genius. Also automatically enables
+	 * decoupled agents, as the GUI does not allow unfilled rows.
+	 */
+	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = false;
 	
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
 	public static final boolean DISCRETE_TIMELINE = false;
@@ -85,7 +87,7 @@ public class Global {
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
 	 * Currently there are no known side-effects. 
 	 */
-	public static final boolean LOW_MEMORY_MODE = false;
+	public static final boolean LOW_MEMORY_MODE = true;
 	
 	public Global() {}
 
