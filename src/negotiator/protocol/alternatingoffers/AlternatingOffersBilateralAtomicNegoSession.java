@@ -28,6 +28,13 @@ import negotiator.utility.UtilitySpace;
  * 
  * KNOWN BUGS:
  * 1. The last bid of fAgentABids and fAgentBBids is not always the actual bid which was made.
+ * 
+ * 2. In some cases, when a bad outcome is created, there is a nullpointer. Likely to occur when a
+ *    computationally heavy agent plays on Energy.
+ * 
+ * 3. MAC does not always store the outcomes for each separate acceptance condition. This
+ *    occurs in less than 1% of the matches, and can be easily detected by checking if an agent
+ *    with Multi_AC in its name exists.
  */
 public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
 
@@ -62,8 +69,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentAWithMultiAC = false;
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
-
-
 
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,

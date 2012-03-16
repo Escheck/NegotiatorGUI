@@ -109,7 +109,9 @@ public class TournamentRunner implements Runnable
 				AlternatingOffersProtocol.closeLog(false);
 				
 			}
-			TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
+			if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
+				TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
+			}
 			
 			if (distributed) {
 				JOptionPane.showMessageDialog(null, "Finished jobs of session: \"" + sessionname + "\".\nThe log is stored in the log directory.");
