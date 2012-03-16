@@ -51,6 +51,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class NegoGUIView extends FrameView {
 	private static final boolean fTournamentEnabled =true;
+	private static final boolean dTournamentEnabled =true;
 	private AgentRepositoryUI agentRep = null;
 	private DomainRepositoryUI domainRep = null;
 	private NegoGUIComponent activeComponent = null;
@@ -216,6 +217,7 @@ public class NegoGUIView extends FrameView {
         newMenu = new javax.swing.JMenu();
         newSessionMenuItem = new javax.swing.JMenuItem();
         newTournamentMenuItem = new javax.swing.JMenuItem();
+        newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         newPrefProfileMenuItem = new javax.swing.JMenuItem();
@@ -394,6 +396,10 @@ public class NegoGUIView extends FrameView {
         newTournamentMenuItem.setAction(actionMap.get("newTournamentAction")); // NOI18N
         newTournamentMenuItem.setName("newTournamentMenuItem"); // NOI18N
         newMenu.add(newTournamentMenuItem);
+        
+        newDistributedTournamentMenuItem.setAction(actionMap.get("newDistributedTournamentAction")); // NOI18N
+        newDistributedTournamentMenuItem.setName("newDistributedTournamentMenuItem"); // NOI18N
+        newMenu.add(newDistributedTournamentMenuItem);
 
         jMenuItem1.setAction(actionMap.get("runCSVFile")); // NOI18N
         jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
@@ -479,6 +485,7 @@ public class NegoGUIView extends FrameView {
         setComponent(mainPanel);
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
+        //mainPanel.hide();
     }// </editor-fold>//GEN-END:initComponents
 
 private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeDomainsMouseClicked
@@ -543,7 +550,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     public void newTournamentAction() {
     	if(fTournamentEnabled) {
     		try {
-    			TournamentUI tournamentUI = new TournamentUI();            
+    			TournamentUI tournamentUI = new TournamentUI(false);            
     			addTab("Tour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
     			setActiveComponent(tournamentUI);
     			
@@ -556,8 +563,23 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     	} else {
     		JOptionPane.showMessageDialog(this.getComponent(), "The tournament functionality is switched off in this version.");
     	}
-        
     }
+    
+    @Action
+    public void newDistributedTournamentAction() {
+    	if(dTournamentEnabled) {
+    		try {
+    			TournamentUI tournamentUI = new TournamentUI(true);            
+    			addTab("DistributedTour."+tournamentUI.getTournament().TournamentNumber+" settings", tournamentUI);
+    			setActiveComponent(tournamentUI);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	} else {
+    		JOptionPane.showMessageDialog(this.getComponent(), "The tournament functionality is switched off in this version.");
+    	}
+    }
+    
     public void setActiveComponent(NegoGUIComponent comp) {
     	activeComponent = comp;
     }
@@ -652,6 +674,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private javax.swing.JMenuItem newPrefProfileMenuItem;
     private javax.swing.JMenuItem newSessionMenuItem;
     private javax.swing.JMenuItem newTournamentMenuItem;
+    private javax.swing.JMenuItem newDistributedTournamentMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JButton openToolBarButton1;
     private javax.swing.JProgressBar progressBar;
@@ -712,7 +735,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
             ProgressUI2 progressUI = new ProgressUI2();
             TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
             NegoGUIApp.negoGUIView.addTab("Run from file: " + csvLoader.getFilePath(), tournamentProgressUI);
-                        
+                      
             new Thread(new TournamentRunner(sessions, tournamentProgressUI)).start();
         }
         catch(Exception e)

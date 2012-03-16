@@ -17,7 +17,7 @@ import negotiator.exceptions.Warning;
 /**
  * Open a UI and negotiate with user about which agents to use in tournament.
  * @author wouter
- *
+ * @deprecated see RepItemVarUI
  */
 public class AgentVarUI extends DefaultOKCancelDialog {
 

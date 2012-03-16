@@ -56,6 +56,8 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jScrollPane1" alignment="0" pref="437" max="32767" attributes="0"/>
                       <Component id="btnStart" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnStartNewDT" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnJoinDS" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -68,6 +70,8 @@
                   <Component id="jScrollPane1" pref="328" max="32767" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnStart" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnStartNewDT" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnJoinDS" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -109,6 +113,24 @@
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="btnStart.text"/>
             <Property name="name" type="java.lang.String" value="btnStart" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnStartNewDT">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="negotiator.gui.tournamentvars.TournamentUI" id="startDistributedTournment" methodName="startDistributedTournament"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="btnStartNewDT.text"/>
+            <Property name="name" type="java.lang.String" value="btnStartNewDT" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnJoinDS">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="negotiator.gui.tournamentvars.TournamentUI" id="joinDistributedTournment" methodName="joinDistributedTournament"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="btnJoinDS.text"/>
+            <Property name="name" type="java.lang.String" value="btnJoinDS" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

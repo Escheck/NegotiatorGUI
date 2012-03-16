@@ -6,9 +6,10 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class ExperimentalVariable extends TournamentVariable
 {
+	private String side = null;
+	
 	@Override
-	public void addValue(TournamentValue a) throws Exception
-	{
+	public void addValue(TournamentValue a) throws Exception {
 		if (!(a instanceof ExperimentalValue))
 			throw new IllegalArgumentException("Expected ExperimentalValue but received "+a);
 		values.add(a);
@@ -16,6 +17,11 @@ public class ExperimentalVariable extends TournamentVariable
 	
 	public String varToString() {
 		String res = "Experimental variable";
+		if(side != null) res = res + " " +side;
 		return res;
+	}
+	
+	public void setSide(String val) {
+		side = val;
 	}
 }

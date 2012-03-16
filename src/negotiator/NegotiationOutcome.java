@@ -181,6 +181,15 @@ public class NegotiationOutcome {
 		return outcome;
 	}
 
+	
+	public ArrayListXML<BidPoint> getAgentABids() {
+		return AgentABids;
+	}
+
+	public ArrayListXML<BidPoint> getAgentBBids() {
+		return AgentBBids;
+	}
+
 	/**
 	 * Gets the Full Yield Utility of the agent. 
 	 * Definition of FYU for agent A: 
@@ -318,5 +327,10 @@ public class NegotiationOutcome {
 			}
 		}
 		return bids;
+	}
+
+
+	public boolean getAgentAFirst() {
+		return agentAstarts;
 	}
 }

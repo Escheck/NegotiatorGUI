@@ -1,23 +1,12 @@
-/*
- * Main.java
- *
- * Created on November 6, 2006, 9:52 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package negotiator;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
-
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
-
 import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
@@ -27,7 +16,8 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
 /**
- * 
+ * Overview of global variables used throughout the application.
+ *
  * @author dmytro
  */
 public class Global {
@@ -48,7 +38,6 @@ public class Global {
 
 	public static String logPrefix = "";
 	
-
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
 	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
 	
@@ -71,15 +60,25 @@ public class Global {
 	
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
+
+	/** Enables experimental vars in a tournament */
+	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
+
+	/** Disable logging. Useful for distributed sessions, as partial log are in that case not printed. */
+	public static final boolean DISABLE_NORMAL_LOG = false;
 	
-	/**
-	 * Setting this boolean to false fixes a huge memory leak. The problem
-	 * with the current version of Genius, is that the GUI keeps track of all
-	 * sessions, and therefore all agents, even if they have been ran.
-	 * 
-	 * Note that by disabling this functionality, it is impossible to view previous
-	 * tournaments in the GUI.
-	 */
+	/** Enables the use of Decoupled Agents in the GUI */
+	public static final boolean DECOUPLED_AGENTS_ENABLED = false;
+	
+	/** Enables the distributed tournaments functionality of Genius */
+	public static final boolean DISTRIBUTED_TOURNAMENTS = false;
+	
+	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
+	public static final boolean DISCRETE_TIMELINE = false;
+	
+	/** WARNING: enabling this functionality allows the user to view previous tournaments by
+	 * clicking in the GUI, but also introduces a giant memory leak as all protocols are remembered
+	 * and thus all agents. */
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
 	/**
@@ -88,16 +87,12 @@ public class Global {
 	 */
 	public static final boolean LOW_MEMORY_MODE = false;
 	
-	public static final boolean DISCRETE_TIMELINE = false;
-	
-	public Global() {
-	}
+	public Global() {}
 
 	/**
 	 * @param args
 	 *            the command line arguments
 	 */
-
 	private static void checkArguments(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-d"))
@@ -182,17 +177,7 @@ public class Global {
 			throws Exception {
 		Protocol ns;
 
-		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader()/*
-																		 * new
-																		 * java
-																		 * .net.
-																		 * URLClassLoader
-																		 * (new
-																		 * URL
-																		 * []{
-																		 * agentAclass
-																		 * })
-																		 */;
+		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
 
 		Class klass = loader.loadClass(protRepItem.getClassPath());
 		Class[] paramTypes = { AgentRepItem[].class, ProfileRepItem[].class,
@@ -208,7 +193,6 @@ public class Global {
 		// System.out.println( "New object: " + theObject);
 		ns = (Protocol) (theObject);
 		return ns;
-
 	}
 
 	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
@@ -239,14 +223,22 @@ public class Global {
 	}
 
 	public static Agent loadAgent(String agentClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		if(agentsLoader!=null) {
+		return loadAgent(agentClassName, null);
+	}
+	
+	public static Agent loadAgent(String agentClassName, String variables) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		if (agentsLoader!=null) {
 			return agentsLoader.loadAgent(agentClassName);
 		} else {
 			java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 			Agent agent = (Agent)(loaderA.loadClass(agentClassName).newInstance());
+			try{
+				agent.parseStrategyParameters(variables);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return agent;
 		}
-		
 	}
 	
 	/**

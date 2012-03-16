@@ -6,24 +6,21 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class ExperimentalValue extends TournamentValue
 {
-	String value;	
+	double value;	
 	
-	public ExperimentalValue(String val) { value=val; }
-	public String toString() { return value; }
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
+	public ExperimentalValue(double val) { value=val; }
+	public String toString() { return value+""; }
+	public double getValue(){ return value;	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(value);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -33,11 +30,11 @@ public class ExperimentalValue extends TournamentValue
 		if (getClass() != obj.getClass())
 			return false;
 		ExperimentalValue other = (ExperimentalValue) obj;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
+		if (Double.doubleToLongBits(value) != Double
+				.doubleToLongBits(other.value))
 			return false;
 		return true;
 	}
+	
+	
 }

@@ -11,7 +11,7 @@ import negotiator.gui.DefaultOKCancelDialog;
 /**
  * This is a UI for editing a profile variable.
  * @author wouter
- *
+ * @deprecated see RepItemVarUI
  */
 
 class ProfileVarUI extends DefaultOKCancelDialog {

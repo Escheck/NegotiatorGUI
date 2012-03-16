@@ -368,7 +368,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	public void JudgeTimeout() 
 	{
 		System.out.println("Judging time-out.");
+		
 		try {
+			checkForMAC();
 			double time = 1;
 			double rvADiscounted = spaceA.getReservationValueWithDiscount(time);
 			double rvBDiscounted = spaceB.getReservationValueWithDiscount(time);
