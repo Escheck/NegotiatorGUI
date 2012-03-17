@@ -454,6 +454,25 @@ public class UtilitySpace {
 		return maxBid;
 	}
 
+	/**
+	 * Returns the the worst bid.
+	 * @return a bid with the lowest possible utility
+	 * @throws Exception if there is no bid at all in the util space
+	 */
+	public Bid getMinUtilityBid() throws Exception {
+		Bid minBid = null;
+		double minUtil = 1.2;
+		BidIterator bidit = new BidIterator(domain);
+
+		if (!bidit.hasNext()) throw new Exception("The domain does not contain any bids!");
+		while (bidit.hasNext())
+		{
+			Bid thisBid = bidit.next();
+			double thisutil = getUtility(thisBid);
+			if (thisutil < minUtil) { minUtil = thisutil; minBid = thisBid;  }
+		}
+		return minBid;
+	}
 	
 	/**
 	 * @author Herbert. Modified Wouter.
@@ -1218,5 +1237,4 @@ public class UtilitySpace {
 	public final double getDiscountFactor() {
 		return discountFactor;
 	}
-
 }

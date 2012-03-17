@@ -2,6 +2,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 
 import java.util.HashMap;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -46,9 +47,12 @@ public class AC_Next extends AcceptanceStrategy {
 	}
 
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-		return a * lastOpponentBidUtil + b >= nextMyBidUtil;
+		if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
+			return Actions.Accept;
+		}
+		return Actions.Reject;
 	}
 }

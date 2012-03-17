@@ -1,6 +1,7 @@
 package negotiator.decoupledframework.acceptanceconditions;
 
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -21,12 +22,17 @@ public class AC_ABMP extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 
+		Actions decision = Actions.Reject;
+		
 		double UTIlITYGAPSIZE = 0.05;
 
-		return (negotiationSession.getOwnBidHistory().getLastBidDetails() != null && 
+		if (negotiationSession.getOwnBidHistory().getLastBidDetails() != null && 
 				negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() >= 
-				negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil() - UTIlITYGAPSIZE);
+				negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil() - UTIlITYGAPSIZE) {
+			decision = Actions.Accept;
+		}
+		return decision;
 	}
 }

@@ -3,6 +3,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 import java.util.HashMap;
 import negotiator.bidding.BidDetails;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -39,8 +40,11 @@ public class AC_Const extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		BidDetails opponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
-		return opponentBid.getMyUndiscountedUtil() > constant;
+		if (opponentBid.getMyUndiscountedUtil() > constant) {
+			return Actions.Accept;
+		}
+		return Actions.Reject;
 	}
 }

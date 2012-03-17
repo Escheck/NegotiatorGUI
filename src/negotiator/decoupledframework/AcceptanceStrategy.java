@@ -62,5 +62,5 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 	 * Determines the either to accept and offer or not.
 	 * @return true if accept
 	 */
-	public abstract boolean determineAcceptability();
+	public abstract Actions determineAcceptability();
 }

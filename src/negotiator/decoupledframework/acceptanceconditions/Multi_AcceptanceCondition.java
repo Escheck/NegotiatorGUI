@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import negotiator.Bid;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 import negotiator.decoupledframework.OutcomeTuple;
@@ -42,7 +43,7 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	 * checked, and that the outcome for each AC is saved.
 	 */
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		boolean startingAgent = false;
 		
 		if(!startingAgent && negotiationSession.getOpponentBidHistory().getHistory().isEmpty()){
@@ -51,7 +52,7 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 		
 		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
 		for (AcceptanceStrategy a : ACList) {
-			if (a.determineAcceptability()) {
+			if (a.determineAcceptability().equals(Actions.Accept)) {
 				Bid lastOpponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
 				String name = a.getClass().getSimpleName() + " " + printParameters(a);
 				double time = negotiationSession.getTime();
@@ -70,7 +71,10 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 		}
 		ACList.removeAll(acceptors);
 		
-		return (ACList.isEmpty());
+		if (ACList.isEmpty()) {
+			return Actions.Accept;
+		}
+		return Actions.Reject;
 	}
 	
 	public ArrayList<OutcomeTuple> getOutcomes() {

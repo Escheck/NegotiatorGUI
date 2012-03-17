@@ -2,6 +2,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 
 import java.util.HashMap;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -39,8 +40,11 @@ public class AC_Time extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public boolean determineAcceptability() {
-		return negotiationSession.getTime() > constant;
+	public Actions determineAcceptability() {
+		if (negotiationSession.getTime() > constant) {
+			return Actions.Accept;
+		}
+		return Actions.Reject;
 	}
 	
 	@Override

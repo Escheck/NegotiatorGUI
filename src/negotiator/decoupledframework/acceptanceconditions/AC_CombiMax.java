@@ -2,6 +2,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 
 import java.util.HashMap;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -17,7 +18,7 @@ public class AC_CombiMax extends AcceptanceStrategy {
 
 	public AC_CombiMax() { }
 	
-	public AC_CombiMax(NegotiationSession negoSession, OfferingStrategy strat){
+	public AC_CombiMax(NegotiationSession negoSession, OfferingStrategy strat) {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 	}
@@ -27,21 +28,21 @@ public class AC_CombiMax extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		if(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() >= offeringStrategy.getNextBid().getMyUndiscountedUtil()) {
-			return true;
+			return Actions.Accept;
 		}
 		
 		if(negotiationSession.getTime() < 0.99) {
-			return false;
+			return Actions.Reject;
 		}
 		
 		double offeredUndiscountedUtility = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 		double bestUtil = negotiationSession.getOpponentBidHistory().getBestBidDetails().getMyUndiscountedUtil();
 		
 		if (offeredUndiscountedUtility >= bestUtil)
-			return true;
+			return Actions.Accept;
 		
-		return false;
+		return Actions.Reject;
 	}
 }
