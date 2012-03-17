@@ -3,6 +3,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 import java.util.HashMap;
 import negotiator.BidHistory;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -47,15 +48,15 @@ public class AC_CombiProb extends AcceptanceStrategy {
 	}
 
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		if (negotiationSession.getOpponentBidHistory().getLastBidDetails()
 				.getMyUndiscountedUtil() >= offeringStrategy.getNextBid()
 				.getMyUndiscountedUtil()) {
-			return true;
+			return Actions.Accept;
 		}
 
 		if (negotiationSession.getTime() < time) {
-			return false;
+			return Actions.Reject;
 		}
 
 		double offeredUndiscountedUtility = negotiationSession
@@ -69,7 +70,7 @@ public class AC_CombiProb extends AcceptanceStrategy {
 				.filterBetweenTime(now - timeLeft, now);
 		int remainingBids = recentBids.size();
 		if (remainingBids > 10)
-			return false;
+			return Actions.Reject;
 
 		// v2.0
 		double window = timeLeft;
@@ -91,9 +92,9 @@ public class AC_CombiProb extends AcceptanceStrategy {
 		double expectedUtilOfWaitingForABetterBid = pAtLeastOneHit * avg;
 
 		if (offeredUndiscountedUtility > expectedUtilOfWaitingForABetterBid)
-			return true;
+			return Actions.Accept;
 
-		return false;
+		return Actions.Reject;
 	}
 
 }

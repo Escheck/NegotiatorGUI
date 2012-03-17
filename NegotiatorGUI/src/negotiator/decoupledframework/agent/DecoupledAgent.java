@@ -6,9 +6,11 @@ import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OMStrategy;
 import negotiator.decoupledframework.OfferingStrategy;
@@ -97,7 +99,6 @@ public abstract class DecoupledAgent extends Agent {
 	@Override
 	public Action chooseAction() {
 
-		boolean decision = false;
 		BidDetails bid;
 		
 		//the opening bid
@@ -109,21 +110,24 @@ public abstract class DecoupledAgent extends Agent {
 		offeringStrategy.setNextBid(bid);
 		
 		// if the offering strategy made a mistake and didn't set a bid: accept
-		if(bid == null) {
+		if (bid == null) {
 			System.out.println("Error in code, null bid was given");
 			return new Accept(this.getAgentID());
 		}
 		
 		// check if the opponent bid should be accepted
-		decision = false;
+		Actions decision = Actions.Reject;
 		if (!negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
 			decision = acceptConditions.determineAcceptability();
 		} else {
 			startingAgent = true;
 		}
 		
+		if (decision.equals(Actions.Break)) {
+			return new EndNegotiation(this.getAgentID());
+		}
 		//if agent does not accept, it offers the counter bid
-		if(!decision){
+		if(decision.equals(Actions.Reject)){
 			negotiationSession.getOwnBidHistory().add(bid);
 			return new Offer(this.getAgentID(), bid.getBid());
 		} else {

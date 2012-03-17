@@ -2,6 +2,7 @@ package negotiator.decoupledframework.acceptanceconditions;
 
 import java.util.HashMap;
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 import negotiator.decoupledframework.NegotiationSession;
 import negotiator.decoupledframework.OfferingStrategy;
 
@@ -44,14 +45,15 @@ public class AC_Previous extends AcceptanceStrategy{
 	}
 
 	@Override
-	public boolean determineAcceptability() {
+	public Actions determineAcceptability() {
 		if(!negotiationSession.getOwnBidHistory().getHistory().isEmpty()){
 			double opponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 			double ownLastBidUtil = negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-			return a * opponentBidUtil + b >= ownLastBidUtil;
-		}else {
-			return false;
+			if (a * opponentBidUtil + b >= ownLastBidUtil) {
+				return Actions.Accept;
+			}
 		}
+		return Actions.Reject;
 		
 	}
 }

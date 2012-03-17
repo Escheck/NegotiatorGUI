@@ -1,6 +1,7 @@
 package negotiator.decoupledframework.acceptanceconditions;
 
 import negotiator.decoupledframework.AcceptanceStrategy;
+import negotiator.decoupledframework.Actions;
 
 /**
  * This Acceptance Condition never accepts an opponent offer.
@@ -13,7 +14,7 @@ public class AC_False extends AcceptanceStrategy {
 	public AC_False() { }
 
 	@Override
-	public boolean determineAcceptability() {
-		return false;
+	public Actions determineAcceptability() {
+		return Actions.Reject;
 	}
 }
