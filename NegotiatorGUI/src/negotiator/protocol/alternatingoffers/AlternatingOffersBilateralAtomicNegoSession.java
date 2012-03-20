@@ -208,7 +208,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					try 
 					{
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
-						BidPoint nash = bidSpace.getNash();
+						BidPoint nash = getBidSpace().getNash();
 						double distanceToNash = lastbidPoint.distanceTo(nash);
 						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
 						System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
@@ -274,7 +274,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		double rvB = spaceB.getReservationValueUndiscounted();
 		
 		BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
-		BidPoint nash = bidSpace.getNash();
+		BidPoint nash = getBidSpace().getNash();
 		double distanceToNash = lastbidPoint.distanceTo(nash);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, logMsg, time, distanceToNash);
 	}
@@ -383,7 +383,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double rvB = spaceB.getReservationValueUndiscounted();
 
 			BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
-			BidPoint nash = bidSpace.getNash();
+			BidPoint nash = getBidSpace().getNash();
 			double distanceToNash = lastbidPoint.distanceTo(nash);
 			if(!agentBWithMultiAC){	
 				newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, "JudgeTimeout: negotiation was timed out", time, distanceToNash);
@@ -450,11 +450,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				agentBUtility = spaceB.getUtility(lastBid);
 				
 				BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
-				BidPoint nash = bidSpace.getNash();
+				BidPoint nash = getBidSpace().getNash();
 				distanceToNash = lastbidPoint.distanceTo(nash);
 		//		System.out.println("Distance to Nash: " + distanceToNash);
 				
-				List<BidPoint> paretoFrontier = bidSpace.getParetoFrontier();
+				List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
 				//System.out.println("Pareto begin: " + paretoFrontier.get(0));
 				//System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
 				// TODO: add Pareto to logging
@@ -467,8 +467,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			System.out.println("creating negoOutcome for Agent(s) with MAC");
 
 			//System.out.println("savedOutcomes size is: " + ((DecoupledAgent) agentB).getSavedOutcomes().size());
-			BidPoint nash = bidSpace.getNash();
-			List<BidPoint> paretoFrontier = bidSpace.getParetoFrontier();
+			BidPoint nash = getBidSpace().getNash();
+			List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
 			//System.out.println("Pareto begin: " + paretoFrontier.get(0));
 			//System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
 			// TODO: add Pareto to logging
