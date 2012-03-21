@@ -14,6 +14,11 @@
             <agentRepItem description="Tries to offer bid with higher util than best opponent bid" classPath="agents.RandomIncreasingUtilAgent" agentName="RandomIncreasingUtilAgent"/>
             <agentRepItem description="Scalable version of the BayesianAgent" classPath="agents.BayesianAgentNS" agentName="BayesianScalable agent"/>
             <agentRepItem description="TestingAgent" classPath="agents.TestingAgent" agentName="TestingAgent"/>
+            <agentRepItem description="Boulware" classPath="agents.TimeDependentAgentBoulware" agentName="Boulware"/>
+        	<agentRepItem description="Conceder" classPath="agents.TimeDependentAgentConceder" agentName="Conceder"/>
+        	<agentRepItem description="Hardliner" classPath="agents.TimeDependentAgentHardliner" agentName="Hardliner"/>
+        	<agentRepItem description="Conceder Linear" classPath="agents.TimeDependentAgentLinear" agentName="Conceder Linear"/>
+            
         </agentRepItems>
         <domainRepItem/>
         <protocolRepItem/>

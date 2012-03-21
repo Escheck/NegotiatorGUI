@@ -27,6 +27,7 @@ import negotiator.issue.ValueReal;
 public class SimpleAgent extends Agent
 {
 	private Action actionOfPartner=null;
+	/** Note: {@link SimpleAgent} does not account for the discount factor in its computations */ 
 	private static double MINIMUM_BID_UTILITY = 0.0;
 
 	/**
