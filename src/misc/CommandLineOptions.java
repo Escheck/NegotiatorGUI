@@ -23,8 +23,9 @@ public class CommandLineOptions
 	public static void main(String[] args)
 	{
 		CommandLineOptions commandLineOptions = new CommandLineOptions();
-        commandLineOptions.parse(new String [] {"-s", "-c", "foo", "-q"} );
+        commandLineOptions.parse(new String [] {"-s", "foo", "-q"} );
         System.out.println(commandLineOptions.silent);
+        System.out.println((Double)0.2 + (Double)0.1 + (Double)0.4);
     }
 
 	public void parse(String [] args)

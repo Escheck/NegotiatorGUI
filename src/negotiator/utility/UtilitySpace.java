@@ -429,9 +429,7 @@ public class UtilitySpace {
     		return -1;
     	
     	}
-    
     }
-    
 
     /**
      * Totally revised, brute-force search now.
@@ -453,7 +451,6 @@ public class UtilitySpace {
 		}
 		return maxBid;
 	}
-
 	/**
 	 * Returns the the worst bid.
 	 * @return a bid with the lowest possible utility
