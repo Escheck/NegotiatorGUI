@@ -6,6 +6,7 @@ import java.util.List;
 import misc.Pair;
 import misc.Range;
 import negotiator.Bid;
+import negotiator.BidIterator;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -22,6 +23,7 @@ import negotiator.utility.UtilitySpace;
 
 public class OutcomeSpace implements Cloneable {
 	
+	protected UtilitySpace utilitySpace;
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
 	
 	public OutcomeSpace() { }
@@ -32,6 +34,7 @@ public class OutcomeSpace implements Cloneable {
 	
 	public void init(UtilitySpace utilSpace) {
 		generateAllBids(utilSpace);
+		this.utilitySpace = utilSpace;
 	}
 	
 	/**
@@ -39,68 +42,16 @@ public class OutcomeSpace implements Cloneable {
 	 * @param utilSpace
 	 */
 	public void generateAllBids(UtilitySpace utilSpace) {
-		ArrayList<Issue> issues = utilSpace.getDomain().getIssues();
-		ArrayList<IssueDiscrete> discreteIssues = new ArrayList<IssueDiscrete>();
 		
-		for (Issue issue:issues) {
-			discreteIssues.add((IssueDiscrete)issue);
-		}
-		
-		ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>> result = generateAllBids(discreteIssues, 0);
-		
-		for (ArrayList<Pair<Integer, ValueDiscrete>> bidSet : result) {
-			HashMap<Integer, Value> values = new HashMap<Integer, Value>();
-			for (Pair<Integer, ValueDiscrete> pair : bidSet) {
-				values.put(pair.getFirst(), pair.getSecond());
-			}
+		BidIterator iter = new BidIterator(utilSpace.getDomain());
+		while (iter.hasNext()) {
+			Bid bid = iter.next();
 			try {
-				Bid bid = new Bid(utilSpace.getDomain(), values);
-				double utility = utilSpace.getUtility(bid);
-				addPossibleBid(bid, utility);
+				addPossibleBid(bid, utilSpace.getUtility(bid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	/**
-	 * Is used to generate a list of all possible bids (not in BidDetails form)
-	 * @param issueList
-	 * @param i
-	 * @return ArrayList
-	 */
-	private ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>> generateAllBids(ArrayList<IssueDiscrete> issueList, int i) {
-		
-		// stop condition
-		if(i == issueList.size()) {
-			// return a list with an empty list
-			ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>> result = new ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>>();
-			result.add(new ArrayList<Pair<Integer, ValueDiscrete>>());
-			return result;
-		}
-		
-		ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>> result = new ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>>();
-		ArrayList<ArrayList<Pair<Integer, ValueDiscrete>>> recursive = generateAllBids(issueList, i+1); // recursive call
-		
-		// for each element of the first list of input
-		for(int j = 0; j < issueList.get(i).getValues().size(); j++) {
-			// add the element to all combinations obtained for the rest of the lists
-			for(int k = 0; k < recursive.size(); k++) {
-	                        // copy a combination from recursive
-				ArrayList<Pair<Integer, ValueDiscrete>> newList = new ArrayList<Pair<Integer, ValueDiscrete>>();
-				for(Pair<Integer, ValueDiscrete> set : recursive.get(k)) {
-					newList.add(set);
-				}
-				// add element of the first list
-				ValueDiscrete value = issueList.get(i).getValues().get(j);
-				int issueNr = issueList.get(i).getNumber();
-				newList.add(new Pair<Integer, ValueDiscrete>(issueNr, value));
-				
-				// add new combination to result
-				result.add(newList);
-			}
-		}
-		return result;
 	}
 	
 	/**
@@ -131,6 +82,25 @@ public class OutcomeSpace implements Cloneable {
 	}
 	
 	/**
+	 * gets a list of bids (from possibleBids) that have a utility between the range
+	 * @param range
+	 * @return list of BidDetails
+	 */
+	public List<BidDetails> getBidsinDiscountedRange (Range r, double time){
+		ArrayList<BidDetails> result = new ArrayList<BidDetails>();
+		double upperbound = r.getUpperbound();
+		double lowerbound = r.getLowerbound();
+		
+
+		for(BidDetails bid: allBids){
+			if (utilitySpace.getUtilityWithDiscount(bid.getBid(), time) > lowerbound && utilitySpace.getUtilityWithDiscount(bid.getBid(), time) < upperbound){
+				result.add(bid);
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * gets a BidDetails which is closest to the give utility
 	 * @param utility
 	 * @return BidDetails
@@ -140,6 +110,23 @@ public class OutcomeSpace implements Cloneable {
 		double closesDistance = 1;
 		for(BidDetails bid : allBids){
 			if(Math.abs(bid.getMyUndiscountedUtil()-utility) < closesDistance) {
+				closesBid = bid;
+				closesDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
+			}
+		}
+		return closesBid;
+	}
+	
+	/**
+	 * gets a BidDetails which is closest to the give utility
+	 * @param utility
+	 * @return BidDetails
+	 */
+	public BidDetails getBidNearDiscountedUtility(double utility, double time) {
+		BidDetails closesBid = null;
+		double closesDistance = 1;
+		for(BidDetails bid : allBids){
+			if(Math.abs(utilitySpace.getUtilityWithDiscount(bid.getBid(), time)-utility) < closesDistance) {
 				closesBid = bid;
 				closesDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
 			}

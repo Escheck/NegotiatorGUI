@@ -26,6 +26,7 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 	@Override
 	public void init(UtilitySpace utilSpace) {
 		generateAllBids(utilSpace);
+		utilitySpace = utilSpace;
 		Collections.sort(allBids, new BidDetailsSorterUtility());
 	}
 	
