@@ -762,17 +762,32 @@ In the previous section we discussed how to create the components. To use the co
 \caption{Example of a \textit{BOA repository}.}\label{code:boarep}
 \end{figure}
 
-\subsection{Multi-Acceptance Criteria (MAC) (TODO)}
+\subsection{Multi-Acceptance Criteria (MAC)}
+The \textit{BOA framework} allows to easily explore a large space of negotiation strategies. MAC can be used to scale down a negotiation space, and thereby make it more computationally traceable.
 
-With the creation of the BOA framework, there is an enormous space of negotiation strategies.  To make it more manageable to search through this space, the acceptance conditions can be run in parallel given the agent has the same bidding strategy.  This can be done because the agents will accept at a different time during the negotiation, but the bidding behavior will be identical until the acceptance. For example, agent $A$ accepts in the middle of the negotiation, and agent $B$ at the end. The only difference between the complete traces is that the trace of agent $A$ is cut-off in the middle of the negotiation.  This reduces the amount of component combinations from $n^3$ to $n^2$ as the $n$ acceptance conditions reduce to 1. 
+As discussed in the introduction of this chapter, the acceptance condition determines solely if a bid should be accepted. This entails that it does not influence the bidding trace, except for when it is cut-off. In fact, given a \textit{BOA agent} which does not accept, the only difference between variants of the strategy with other acceptance conditions is the time of agreement (assuming that the computational cost of the acceptance conditions are negligible).
 
-\subsubsection{How it works}
-In the BOA framework we exploit this property (that the traces are the same between the agents) by running acceptance conditions in parallel, and recording when each acceptance condition accepts. The negotiation is terminated when either the deadline is reached, or when all acceptance conditions have accepted. 
+Given this property, multi acceptance criteria can be tested in parallel, storing an outcome when a single acceptance condition accepts. In practice, we noted that more than 50 variants of $\textbf{AC}_{next}$ could be tested in parallel at a negligible computational cost.
 
+This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. Figure~\ref{code:mac} illustrates how to efficiently use the MAC.
 
+\begin{figure}[h!]
+\begin{lstlisting}[basicstyle=\small]
+	public void init(NegotiationSession ns, OfferingStrategy os,
+				HashMap<String, Double> param) throws Exception {
+		this.negotiationSession = ns;
+		outcomes = new ArrayList<OutcomeTuple> ();
+		ACList = new ArrayList<AcceptanceStrategy>();
+		
+		//  add 36 variants of the AC_CombiV4 acceptance condition
+		for(int d = 0; d <= 35; d += 1) {
+			ACList.add(new AC_CombiV4(ns, os, 1, 0, 0.85 + d * 0.01, 0, 0.95));
+		}	
+	}
+\end{lstlisting}
+\caption{Example of using MAC.}\label{code:mac}
+\end{figure}
 
-\subsubsection{Using the MAC}
-To create a multi-acceptance condition use the example MAC provided with the decoupled agent example.  An place the acceptance conditions in the list.
 
 
 \section{Distributed Genius (TODO)}
