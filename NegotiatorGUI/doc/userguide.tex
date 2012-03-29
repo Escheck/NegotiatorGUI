@@ -113,10 +113,12 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-In Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.
+\abstract{In Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
 
+\pagebreak
 \tableofcontents
 
+\pagebreak
 \section{Theory Crash Course}
 This section gives a crash course on some essential theory needed to understand the negotiation system. The negotiation objects that are used in a negotiation and utility values are discussed. 
 
@@ -425,6 +427,7 @@ Next, double-click Agent side A and select one or more agents from the window th
 
 \section{Writing a Negotiation Agent}
 
+
 This section discusses how you create an automatic negotiation agent. To explain this, the SimpleAgent.java code as provided in the installation package will be discussed.
 It is assumed that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://java.sun.com/docs/books/tutorial/index.html}. The Java API definitions can be found on \url{http://java.sun.com/j2se/1.5.0/docs/api/index.html}.
 In the first place, a negotiation agent has to extend the negotiator.agents.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
@@ -535,7 +538,7 @@ Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utilit
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image21.pdf}=
+	\includegraphics[width=0.3\textwidth]{media/image21.pdf}
 	\caption{$P_\text{accept}$ value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
 \end{figure}
 %\subsection{Init}
@@ -552,10 +555,214 @@ To compile the agent, you put \texttt{YourAgent.java} code in the directory cont
 \texttt{javac -cp negosimulator.jar YourAgent.java}
 
 After compilation, the resulting \texttt{YourAgent.class} file can be loaded into the negotiator simulator by typing ``YourAgent'' (fill in your actual agent name) in the negotiation set-up screen (Figure 8). Make sure your agent can be found in the same directory structure as is indicated by its package header.
+
+\subsection{Loading an Agent with Parameters (TODO)}
+- Using the agent repository
+- Optional parameters of agents
  
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
+
+\section{BOA framework}
+This section introduces the \textit{BOA framework}: a negotiation agent architecture which allows to study the performance of its individual components. While methods exist to identify the best negotiation agent in a set of agents in terms of utility, we still do not know which agents are most effective in general, and especially why.%This is mostly due to the fact that it is impossible to exhaustively search the large (in fact, infinite) space of negotiation strategies.
+
+Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The negotiation strategy is a result of the complex interaction between these components.%, of which the individual performance may vary significantly.% For instance, an agent may contain a module that predicts the opponent's preferences very well, but the agent may still perform badly utility-wise because it concedes far too quickly.
+
+The advantages of fitting agents into the BOA framework are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
+
+\subsection{How it works}
+A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of three components:
+
+\begin{description}
+  \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it, passing one or multiple bids and see how they compare within the opponent's utility space.
+
+  \item[Opponent model] An opponent model is a learning technique that constructs a model of the opponent's negotiation profile. In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
+  \item[Acceptance strategy] The acceptance strategy determines whether the bid that the opponent has presented is acceptable.
+\end{description}
+The components interact in the following way (the full process is visualized in Figure~\ref{fig:flowchart}). When receiving an opponent bid, the BOA agent first updates the \textit{bidding history} and \textit{opponent model} to make sure the most up to date data is used, maximizing the information known about the environment and opponent.
+
+Given the opponent bid, the \textit{bidding strategy} determines the counter offer by first generating a set of bids with a similar preference for the agent. The \textit{bidding strategy} uses the \textit{opponent model} (if present) to select a bid from this set by taking the opponent's utility into account.
+
+Finally, the \textit{acceptance strategy} decides whether the opponent's action should be accepted. If the opponent's bid is not accepted by the acceptance strategy, then the bid generated by the bidding strategy is offered instead.
+
+\begin{figure}[t] 
+	\center
+	\includegraphics[width=16cm]{media/Decoupled_FlowChart.png}
+	\caption{The BOA Framework Architecture.}
+	\label{fig:flowchart}
+\end{figure}
+
+\subsection{Using Existing Components}
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is checking if it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
+
+\begin{figure}[h!]
+	\center
+	\includegraphics[width=5cm]{media/Decoupled_TournamentSettings.png}
+	\caption{Tournament settings. The selected items indicate that the BOA framework is enabled.}
+	\label{fig:settings}
+\end{figure}
+
+The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opened by clicking in the \textit{Values} section after \textit{DecoupledAgent Side A} or \textit{DecoupledAgent Side B}. In this GUI four component types are shown: \textit{bidding strategy}, \textit{acceptance strategy}, \textit{opponent model}, and the \textit{opponent model strategy}.
+
+\begin{figure}[h!]
+	\center
+	\includegraphics[width=15cm]{media/Decoupled_DecoupledGUI.png}
+	\caption{The BOA framework GUI.}
+	\label{fig:decoupledGUI}
+\end{figure}
+
+Our goal in this section is to create three variants of \textit{TheNegotiator}. First, we select \textit{ANAC2011 - The Negotiator} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Perfect} opponent model. As there is no tooltip, we know that this model does not require parameters. Finally, we select \textit{Offer best n} as opponent model strategy. This component requires a parameter $n$, for which we use 1.
+
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=5cm]{media/Decoupled_Param.png}
+	\caption{Adding a parameter.}
+	\label{fig:decoupledparam}
+\end{figure}
+
+To summarize: we created three variants of \textit{TheNegotiator}. All variants use a perfect opponent model, and offer the best possible bid for the opponent given the bids under consideration in a round. The variants differ in when they accept, variants with a higher value for $b$ generally accept earlier.
+
+\subsection{Creating New Components}
+This section discusses how to create new components for the BOA framework. The next section discusses how these components can be added to the BOA framework.
+
+\subsubsection{Adding a Bidding Strategy}
+Figure~\ref{code:biddingstrategy} visualizes the bidding strategy of \textit{IAMCrazyHaggler}. The first step in creating a component, is creating a new class which extends the \textit{OfferingStrategy}. The \textit{OfferingStrategy} class specifies a simple interface, which forces to implement the \textit{init}, \textit{determineOpeningBid} and \textit{determineNextBid} methods.
+
+Following, we add an empty constructor, and an implementation of the \textit{init} function. In this implementation, we set the \textit{negotiationsession}, \textit{opponent model} and \textit{opponent model strategy}. The \textit{negotiationsession} is an object which stores all information about the current match, including all bids done by the opponent and the agent itself. This entails that no other data structures are required for holding the bidding history. 
+
+Next, we implement the \textit{determineOpeningBid}, which should specify the first bid done by the agent. The final step is to implement \textit{determineNextBid}. In this case, a random bid is generated online with a utility of at least \textit{breakoff}.
+
+An approach often taken by more complex agents, is to first generate all possible bids. While can take a long time, it allows to efficiently look up bids during the negotiation. The \textit{SortedOutcomeSpace} can be used to efficiently generate and access all possible bids during the negotiation. For an example of how to use this class we refer to the class \textit{TimeDependent\_Offering} which implements the bidding strategy of the TimeDependent agent.
+
+Finally, a bidding strategy can use parameters. Using parameters allows to easily create variants of the bidding strategy. For an example on how to use parameters, we refer also refer to the \textit{TimeDependent\_Offering} class.
+
+
+
+\begin{figure}[htb]
+\begin{lstlisting}[basicstyle=\small]
+public class IAMCrazyHaggler_Offering extends OfferingStrategy {
+	private double breakoff = 0.9;
+	private UtilitySpace space;
+
+	public IAMCrazyHaggler_Offering() { }
+
+	public void init(NegotiationSession negoSession, OpponentModel model,
+				OMStrategy oms, HashMap<String, Double> parameters)
+				throws Exception {
+		this.negotiationSession = negoSession;
+		this.space = negotiationSession.getUtilitySpace();
+		this.opponentModel = model;
+		this.omStrategy = oms;
+		if (negoSession.getDiscountFactor() == 0)
+			breakoff = 0.95;
+	}
+
+	public BidDetails determineOpeningBid() { return determineNextBid(); }
+
+	public BidDetails determineNextBid() {
+		Bid bid = null;
+		do {
+ 			bid = space.getDomain().getRandomBid();
+		} while (space.getUtility(bid) <= breakoff);
+		nextBid = new BidDetails(bid, space.getUtility(bid));
+		} return nextBid;
+	}
+}
+\end{lstlisting}
+\caption{The bidding strategy of IAMCrazyHaggler.}\label{code:biddingstrategy}
+\end{figure}
+
+
+
+\subsubsection{Adding an Acceptance Condition}
+This section discusses the implementation of $\textbf{AC}_{next}$ visualized in Figure~\ref{code:acnext}. Identical to the bidding strategy, an new class has to be created which extends the \textit{AcceptanceStrategy} class. This abstract class forces the implementation of two methods: \textit{init} and \textit{determineAcceptability}.
+
+Regarding the implementation of the \textit{init}, similar to the bidding strategy we set \textit{negotiation session} and \textit{offering strategy}. In addition, we make a reference to the opponent's bidding history for each access. The framework keeps track of both the agent's and opponent's bidding history. The last bid made by our agent is stored in a special variable \textit{nextBid}. In contrast to the bidding strategy discussed in the previous section, this component expects a parameter $a$ and $b$.
+
+Finally, we have to specify when to accept and opponent bid by implementing \textit{determineAcceptability}. The implementation shown accepts an opponent bid when the utility of the bid is higher than a linear function of the bid under consideration for offering (\textit{nextBid}).
+
+In this acceptance condition a bid is only accepted or rejected. In some cases, especially when there are reservation values, it can rational to end the negotiation. This is possible by returning \textit{Actions.Break}.
+
+\begin{figure}[htb]
+\begin{lstlisting}[basicstyle=\small]
+public class AC_Next extends AcceptanceStrategy {
+	private double a = 1.0;
+	private double b = 0.0;
+	BidHistory oppHistory;
+
+	public AC_Next() { }
+
+	public void init(NegotiationSession negotiationSession,
+				OfferingStrategy offeringStrat, HashMap<String, Double> parameters)
+				throws Exception {
+		this.negotiationSession = negotiationSession;
+		this.offeringStrategy = offeringStrat;
+		this.oppHistory =  negotiationSession.getOpponentBidHistory();
+
+		if (parameters.get("a") != null || parameters.get("b") !=null) {
+			a = parameters.get("a");
+			b = parameters.get("b");
+		}
+	}
+
+	public Actions determineAcceptability() {
+		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
+		double lastOppUtil = oppHistory.getLastBidDetails().getMyUndiscountedUtil();
+		if (a * lastOppUtil + b >= nextMyBidUtil) {
+			return Actions.Accept;
+		}
+		return Actions.Reject;
+	}
+}
+\end{lstlisting}
+\caption{The acceptance condition $\textbf{AC}_{next}$.}\label{code:acnext}
+\end{figure}
+
+\subsubsection{Adding an Opponent Model}
+
+\subsubsection{Adding an Opponent Model Strategy}
+
+\subsection{Adding Components to the Repository}
+
+\subsection{Multi-Acceptance Criteria (MAC) (TODO)}
+
+With the creation of the BOA framework, there is an enormous space of negotiation strategies.  To make it more manageable to search through this space, the acceptance conditions can be run in parallel given the agent has the same bidding strategy.  This can be done because the agents will accept at a different time during the negotiation, but the bidding behavior will be identical until the acceptance. For example, agent $A$ accepts in the middle of the negotiation, and agent $B$ at the end. The only difference between the complete traces is that the trace of agent $A$ is cut-off in the middle of the negotiation.  This reduces the amount of component combinations from $n^3$ to $n^2$ as the $n$ acceptance conditions reduce to 1. 
+
+\subsubsection{How it works}
+In the BOA framework we exploit this property (that the traces are the same between the agents) by running acceptance conditions in parallel, and recording when each acceptance condition accepts. The negotiation is terminated when either the deadline is reached, or when all acceptance conditions have accepted. 
+
+
+
+\subsubsection{Using the MAC}
+To create a multi-acceptance condition use the example MAC provided with the decoupled agent example.  An place the acceptance conditions in the list.
+
+
+\section{Distributed Genius (TODO)}
+
+
+
+
+
+
+Even if MAC is applied, there are still $n^2$ possible combinations. % If a tournament is run on $d$ domains with two preference profiles, then there are $2 \cdot d \cdot n^3$ sessions in the tournament against a single opponent.
+On a single computer with a single negotiation thread this is already problematic for a limited amount of domains and agents. % In fact, a PC with standard hardware can run 2 or 3 tournaments at the same time on the same speed if multiple cores are used.
+Towards improving scalability, we extended G\textsc{enius} such that parts of a negotiation tournament can be run on multiple computers, effectively realizing a linear speed-up. %To share a tournament, a client automatically splits the tournament into smaller jobs, after which they are stored in a central database. Once the jobs are stored, other clients are able to join the tournament and request jobs from the database. The outcome of a finished job is compressed and stored in the database, after which the full log is retrieved if all jobs are processed.
+
+% When a job is finished, the outcome is recorded in the database and another job is requested. This process continues until all jobs are (being) processed. When all jobs are taken, a timeout is calculated upon job request how long should be waited for the results can be calculated. After the timeout, it is checked if there are still jobs running. If there are still jobs running, this means that a client crashed on a job. In this case these jobs are reset. Finally, when all jobs are processed, a connecting client is send the full log.
+
+% Using a distributed setup, a single client with multiple processors can run multiple negotiation threads. In addition, other clients can join the tournament. Given that there are $k$ computers, this reduces the average amount of sessions per client to $\frac{2 \cdot d \cdot n^3}{k}$.
+%If we assume the worst case scenario where all negotiation session last till the deadline (three minutes), a tournament using three domains and all the possible agents which can created using the ANAC2011 agents, then it would take 6.4 days to finish if each original agent implemented all components. However, if there are five clients with two negotiation threads per client, this number reduces to a little more than 15 hours, which illustrates the strength of DC. Combining DC with MAC, a large set of acceptance conditions for each agent can be used without influencing the maximum calculation time. % 2*3*8^3 * 3 / (60 * 24) / (2 * 5).
+
+% There are two main assumptions to the MAC approach; first, all clients should have identical hardware and software and run the same amount of negotiation threads to ensure that the negotiation threads are allocated the same amount of computational resources. Second, all clients should run the same version of G\textsc{enius} and the agents competing in the tournament to ensure that all agents behave identically.
+
+% While it could be argued that the performance of the combination of hardware and software is never equivalent, it should be noted that the performance of an agent on the same computer also differs between rounds depending on many uncontrollable variables such as system load, component temperature, etc.
+\subsection{Configuring the Database}
+
+\subsection{Using Distributed Genius}
  
+
+
+
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
 
