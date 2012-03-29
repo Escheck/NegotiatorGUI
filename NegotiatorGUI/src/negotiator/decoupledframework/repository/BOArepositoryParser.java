@@ -13,7 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 class BOArepositoryParser extends DefaultHandler {
 
-	HashMap<String, BiddingStrategyItem> biddingStrategies = new HashMap<String, BiddingStrategyItem>();
+	HashMap<String, BOArepItem> biddingStrategies = new HashMap<String, BOArepItem>();
 	HashMap<String, BOArepItem> acceptanceConditions = new HashMap<String, BOArepItem>();
 	HashMap<String, BOArepItem> opponentModels = new HashMap<String, BOArepItem>();
 	HashMap<String, BOArepItem> omStrategies = new HashMap<String, BOArepItem>();
@@ -43,7 +43,7 @@ class BOArepositoryParser extends DefaultHandler {
 			
 			
 			if (mode.equals(Modes.BS)) {
-				BiddingStrategyItem item = new BiddingStrategyItem(attributes.getValue(1), attributes.getValue(2), attributes.getValue(3));
+				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
 				biddingStrategies.put(description, item);
 			}
 			if (mode.equals(Modes.AC)) {
@@ -70,7 +70,7 @@ class BOArepositoryParser extends DefaultHandler {
 		}
 	}
 
-	public HashMap<String, BiddingStrategyItem> getBiddingStrategies() {
+	public HashMap<String, BOArepItem> getBiddingStrategies() {
 		return biddingStrategies;
 	}
 
