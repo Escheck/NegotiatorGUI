@@ -2,7 +2,7 @@ package negotiator.decoupledframework.agent;
 
 import misc.Serializer;
 import negotiator.decoupledframework.DecoupledAgentInfo;
-import negotiator.decoupledframework.DecoupledAgentRepository;
+import negotiator.decoupledframework.repository.DecoupledAgentRepository;
 
 /**
  * This class is used to convert a serialized decoupled agent (created with the GUI)

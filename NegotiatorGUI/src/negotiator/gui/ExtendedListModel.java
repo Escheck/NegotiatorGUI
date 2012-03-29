@@ -22,7 +22,10 @@ public class ExtendedListModel<A> extends AbstractListModel implements ListModel
 	}
 
 	public A getElementAt(int index) {
-		return items.get(index);
+		if (index >= 0) {
+			return items.get(index);
+		}
+		return null;
 	}
 
 	public int getSize() {

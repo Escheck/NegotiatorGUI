@@ -20,6 +20,8 @@ public class BayesianModelScalable extends OpponentModel {
 
 	BayesianOpponentModelScalable model;
 	double updateThreshold;
+	long DOMAINSIZE;
+	boolean niceTitForTatMode = false;
 	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
@@ -30,19 +32,43 @@ public class BayesianModelScalable extends OpponentModel {
 		} else {
 			updateThreshold = 1.0;
 		}
+		if (parameters != null && parameters.containsKey("n")) {
+			System.out.println("Entering NTFT mode");
+			DOMAINSIZE = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
+			niceTitForTatMode = true;
+		}
 	}
 
 	@Override
 	public void updateModel(Bid opponentBid) {
 		try {
-			if (negotiationSession.getTime() < updateThreshold) {
-				model.updateBeliefs(opponentBid);
+			if (niceTitForTatMode) {
+				if (canUpdateBeliefs(negotiationSession.getTime())) {
+					model.updateBeliefs(opponentBid);
+				}
+			} else {
+				if (negotiationSession.getTime() < updateThreshold) {
+					model.updateBeliefs(opponentBid);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private boolean canUpdateBeliefs(double time)
+	{
+		// in the last seconds we don't want to lose any time
+		if (time > 0.99)
+			return false;
+		
+		// in a big domain, we stop updating half-way
+		if (DOMAINSIZE > 10000)
+			if (time > 0.5)
+				return false;
+		return true;
+	}
+	
 	@Override
 	public double getBidEvaluation(Bid bid) {
 		try {

@@ -99,6 +99,7 @@ public class TournamentRunner implements Runnable
 			String log = "";
 			if (distributed) {
 				log = runDistributedTournament(0);
+				NegoGUIApp.negoGUIView.getFrame().setVisible(true);
 			} else {
 				log = runTournament();
 			}
@@ -109,9 +110,7 @@ public class TournamentRunner implements Runnable
 				AlternatingOffersProtocol.closeLog(false);
 				
 			}
-			if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
-				TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
-			}
+			TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
 			
 			if (distributed) {
 				JOptionPane.showMessageDialog(null, "Finished jobs of session: \"" + sessionname + "\".\nThe log is stored in the log directory.");

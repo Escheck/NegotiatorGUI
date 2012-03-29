@@ -3,6 +3,7 @@ package negotiator.gui.decoupledframework;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,9 +20,9 @@ import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import negotiator.decoupledframework.DecoupledAgentInfo;
-import negotiator.decoupledframework.DecoupledAgentRepository;
 import negotiator.decoupledframework.DecoupledComponent;
 import negotiator.decoupledframework.DecoupledParameter;
+import negotiator.decoupledframework.repository.DecoupledAgentRepository;
 import negotiator.gui.ExtendedListModel;
 import negotiator.gui.MultiListSelectionModel;
 import negotiator.gui.NegoGUIApp;
@@ -115,7 +116,15 @@ public class DecoupledAgentsFrame extends JDialog {
         loadLists();
         initControls();
         if (DEBUG) {
+        	asParamsModel.addElement(new DecoupledParameter("a", 1, 1, 1));
+        	asParamsModel.addElement(new DecoupledParameter("b", 0, 0, 1));
+        	asParamsModel.addElement(new DecoupledParameter("ad", 1, 1, 1));
+        	asParamsModel.addElement(new DecoupledParameter("bd", 0, 0, 1));
+        	asParamsModel.addElement(new DecoupledParameter("t", 0.99, 0.99, 1));
+        	asParamsModel.addElement(new DecoupledParameter("c", 0.98, 0.98, 1));
         	omParamsModel.addElement(new DecoupledParameter("v", 1, 1, 1));
+        	omParamsModel.addElement(new DecoupledParameter("t", 0.95, 0.95, 1));
+        	omParamsModel.addElement(new DecoupledParameter("a", 1, 1, 1));
         	omParamsModel.addElement(new DecoupledParameter("l", 0.2, 0.2, 1));
         }
         pack();
@@ -307,7 +316,15 @@ public class DecoupledAgentsFrame extends JDialog {
     	osListPane = new JScrollPane();
     	getContentPane().add(osListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 220, 200));
     	// Instantiate the list
-    	osList = new JList();
+    	osList =  new JList() {
+			private static final long serialVersionUID = 1L;
+
+			public String getToolTipText(MouseEvent evt) {
+                int index = locationToIndex(evt.getPoint());
+                String bs = (String)getModel().getElementAt(index);
+                return DecoupledAgentRepository.getOfferingStrategyTooltip(bs);
+            }
+        };
     	osList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         osListPane.setViewportView(osList);
     	// Instantiate the params pane
@@ -335,7 +352,15 @@ public class DecoupledAgentsFrame extends JDialog {
         asListPane = new JScrollPane();
         getContentPane().add(asListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 35, 220, 200));
     	// Instantiate the list
-        asList = new JList();
+        asList = new JList() {
+			private static final long serialVersionUID = 1L;
+
+			public String getToolTipText(MouseEvent evt) {
+                int index = locationToIndex(evt.getPoint());
+                String as = (String)getModel().getElementAt(index);
+                return DecoupledAgentRepository.getAcceptanceStrategyTooltip(as);
+            }
+        };
         asList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         asListPane.setViewportView(asList);
     	// Instantiate the params pane
@@ -363,7 +388,15 @@ public class DecoupledAgentsFrame extends JDialog {
         omsListPane = new JScrollPane();
         getContentPane().add(omsListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 35, 220, 200));
         // Instantiate the list
-        omsList = new JList();
+        omsList = new JList() {
+			private static final long serialVersionUID = 1L;
+
+			public String getToolTipText(MouseEvent evt) {
+                int index = locationToIndex(evt.getPoint());
+                String oms = (String)getModel().getElementAt(index);
+                return DecoupledAgentRepository.getOpponentModelStrategyTooltip(oms);
+            }
+        };
         omsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         omsListPane.setViewportView(omsList);
         // Instantiate the params pane
@@ -391,7 +424,15 @@ public class DecoupledAgentsFrame extends JDialog {
         omListPane = new JScrollPane();
         getContentPane().add(omListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 35, 220, 200));
         // Instantiate the list
-        omList = new JList();
+        omList = new JList() {
+			private static final long serialVersionUID = 1L;
+
+			public String getToolTipText(MouseEvent evt) {
+                int index = locationToIndex(evt.getPoint());
+                String om = (String)getModel().getElementAt(index);
+                return DecoupledAgentRepository.getOpponentModelTooltip(om);
+            }
+        };
         omList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         omListPane.setViewportView(omList);
         // Instantiate the params pane

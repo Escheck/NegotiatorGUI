@@ -67,7 +67,6 @@ public class BidSpace {
 	void BuildSpace() throws Exception
 	{
 		bidPoints=new ArrayList<BidPoint>();
-		if(domain.getNumberOfPossibleBids()>200000) return;
 		BidIterator lBidIter = new BidIterator(domain);
 		
 		// if low memory mode, do not store the actual. At the time of writing this
