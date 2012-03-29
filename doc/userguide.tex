@@ -566,17 +566,16 @@ For the documentation of the data structures that are relevant when writing a ne
 \section{BOA framework}
 This section introduces the \textit{BOA framework}: a negotiation agent architecture which allows to study the performance of its individual components. While methods exist to identify the best negotiation agent in a set of agents in terms of utility, we still do not know which agents are most effective in general, and especially why.%This is mostly due to the fact that it is impossible to exhaustively search the large (in fact, infinite) space of negotiation strategies.
 
-Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The negotiation strategy is a result of the complex interaction between these components.%, of which the individual performance may vary significantly.% For instance, an agent may contain a module that predicts the opponent's preferences very well, but the agent may still perform badly utility-wise because it concedes far too quickly.
+Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}).% The negotiation strategy is a result of the complex interaction between these components.%, of which the individual performance may vary significantly.% For instance, an agent may contain a module that predicts the opponent's preferences very well, but the agent may still perform badly utility-wise because it concedes far too quickly.
 
 The advantages of fitting agents into the BOA framework are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
 
 \subsection{How it works}
 A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of three components:
-
 \begin{description}
-  \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it, passing one or multiple bids and see how they compare within the opponent's utility space.
+  \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it.%, passing one or multiple bids and see how they compare within the opponent's utility space.
 
-  \item[Opponent model] An opponent model is a learning technique that constructs a model of the opponent's negotiation profile. In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
+  \item[Opponent model] An opponent model is a learning technique that constructs a model of the opponent's negotiation profile.% In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
   \item[Acceptance strategy] The acceptance strategy determines whether the bid that the opponent has presented is acceptable.
 \end{description}
 The components interact in the following way (the full process is visualized in Figure~\ref{fig:flowchart}). When receiving an opponent bid, the BOA agent first updates the \textit{bidding history} and \textit{opponent model} to make sure the most up to date data is used, maximizing the information known about the environment and opponent.
@@ -587,13 +586,13 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 
 \begin{figure}[t] 
 	\center
-	\includegraphics[width=16cm]{media/Decoupled_FlowChart.png}
+	\includegraphics[width=14cm]{media/Decoupled_FlowChart.png}
 	\caption{The BOA Framework Architecture.}
 	\label{fig:flowchart}
 \end{figure}
 
 \subsection{Using Existing Components}
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is checking if it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
 
 \begin{figure}[h!]
 	\center
@@ -611,7 +610,7 @@ The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opene
 	\label{fig:decoupledGUI}
 \end{figure}
 
-Our goal in this section is to create three variants of \textit{TheNegotiator}. First, we select \textit{ANAC2011 - The Negotiator} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Perfect} opponent model. As there is no tooltip, we know that this model does not require parameters. Finally, we select \textit{Offer best n} as opponent model strategy. This component requires a parameter $n$, for which we use 1.
+Our goal in this section is to create three variants of \textit{TheNegotiator}. First, we select the bidding strategy \textit{ANAC2011 - The Negotiator} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Perfect} opponent model. As there is no tooltip, we know that this model does not require parameters. Finally, we select \textit{Offer best n} as opponent model strategy. This component requires a parameter $n$, for which we use 1.
 
 \begin{figure}[h!] 
 	\center
@@ -620,23 +619,19 @@ Our goal in this section is to create three variants of \textit{TheNegotiator}. 
 	\label{fig:decoupledparam}
 \end{figure}
 
-To summarize: we created three variants of \textit{TheNegotiator}. All variants use a perfect opponent model, and offer the best possible bid for the opponent given the bids under consideration in a round. The variants differ in when they accept, variants with a higher value for $b$ generally accept earlier.
+To summarize: we created three variants of \textit{TheNegotiator}. All variants use a perfect opponent model, and offer the best possible bid for the opponent given the bids under consideration in a round. The variants differ in when they accept, variants with a higher value for $b$ accept earlier in general.
 
 \subsection{Creating New Components}
 This section discusses how to create new components for the BOA framework. The next section discusses how these components can be added to the BOA framework.
 
-\subsubsection{Adding a Bidding Strategy}
-Figure~\ref{code:biddingstrategy} visualizes the bidding strategy of \textit{IAMCrazyHaggler}. The first step in creating a component, is creating a new class which extends the \textit{OfferingStrategy}. The \textit{OfferingStrategy} class specifies a simple interface, which forces to implement the \textit{init}, \textit{determineOpeningBid} and \textit{determineNextBid} methods.
+\subsubsection{Creating a Bidding Strategy}
+Figure~\ref{code:biddingstrategy} visualizes the bidding strategy of \textit{IAMCrazyHaggler}. The first step in creating a component, is creating a new class which extends the class \textit{OfferingStrategy}. The \textit{OfferingStrategy} class is an abstract class, which forces to implement the \textit{init}, \textit{determineOpeningBid} and \textit{determineNextBid} methods.
 
-Following, we add an empty constructor, and an implementation of the \textit{init} function. In this implementation, we set the \textit{negotiationsession}, \textit{opponent model} and \textit{opponent model strategy}. The \textit{negotiationsession} is an object which stores all information about the current match, including all bids done by the opponent and the agent itself. This entails that no other data structures are required for holding the bidding history. 
+The reference to \textit{negotiationsession} is important, as this object stores all information about the current match, including all bids done by the opponent and the agent itself.
 
-Next, we implement the \textit{determineOpeningBid}, which should specify the first bid done by the agent. The final step is to implement \textit{determineNextBid}. In this case, a random bid is generated online with a utility of at least \textit{breakoff}.
+Next, we implement \textit{determineOpeningBid}, which should specify the first bid done by the agent. The final step is to implement \textit{determineNextBid}. In this case, a random bid is generated with a utility at least equal to the value of the variable \textit{breakoff}.
 
-An approach often taken by more complex agents, is to first generate all possible bids. While can take a long time, it allows to efficiently look up bids during the negotiation. The \textit{SortedOutcomeSpace} can be used to efficiently generate and access all possible bids during the negotiation. For an example of how to use this class we refer to the class \textit{TimeDependent\_Offering} which implements the bidding strategy of the TimeDependent agent.
-
-Finally, a bidding strategy can use parameters. Using parameters allows to easily create variants of the bidding strategy. For an example on how to use parameters, we refer also refer to the \textit{TimeDependent\_Offering} class.
-
-
+An approach often taken by more complex agents, is to first generate all possible bids. While this can take a long time, it allows to efficiently look up bids during the negotiation. The \textit{SortedOutcomeSpace} can be used to efficiently generate and access all possible bids during the negotiation. For an example of how to use this class we refer to the class \textit{TimeDependent\_Offering}. This class also specifies how parameters can be added.
 
 \begin{figure}[htb]
 \begin{lstlisting}[basicstyle=\small]
@@ -672,16 +667,14 @@ public class IAMCrazyHaggler_Offering extends OfferingStrategy {
 \caption{The bidding strategy of IAMCrazyHaggler.}\label{code:biddingstrategy}
 \end{figure}
 
-
-
-\subsubsection{Adding an Acceptance Condition}
+\subsubsection{Creating an Acceptance Condition}
 This section discusses the implementation of $\textbf{AC}_{next}$ visualized in Figure~\ref{code:acnext}. Identical to the bidding strategy, an new class has to be created which extends the \textit{AcceptanceStrategy} class. This abstract class forces the implementation of two methods: \textit{init} and \textit{determineAcceptability}.
 
-Regarding the implementation of the \textit{init}, similar to the bidding strategy we set \textit{negotiation session} and \textit{offering strategy}. In addition, we make a reference to the opponent's bidding history for each access. The framework keeps track of both the agent's and opponent's bidding history. The last bid made by our agent is stored in a special variable \textit{nextBid}. In contrast to the bidding strategy discussed in the previous section, this component expects a parameter $a$ and $b$.
+In the \textit{init} method we make a reference to the opponent's bidding history for easy access. The framework keeps track of both the agent's and opponent's bidding history. The last bid made by our agent is stored in a special variable \textit{nextBid}. In contrast to the bidding strategy discussed in the previous section, this component expects a parameter $a$ and $b$.
 
 Finally, we have to specify when to accept and opponent bid by implementing \textit{determineAcceptability}. The implementation shown accepts an opponent bid when the utility of the bid is higher than a linear function of the bid under consideration for offering (\textit{nextBid}).
 
-In this acceptance condition a bid is only accepted or rejected. In some cases, especially when there are reservation values, it can rational to end the negotiation. This is possible by returning \textit{Actions.Break}.
+In this acceptance condition a bid is only accepted or rejected. In some cases, in particular when reservation values are used, it can rational to end the negotiation prematurely. This is possible by returning \textit{Actions.Break}.
 
 \begin{figure}[htb]
 \begin{lstlisting}[basicstyle=\small]
@@ -718,11 +711,56 @@ public class AC_Next extends AcceptanceStrategy {
 \caption{The acceptance condition $\textbf{AC}_{next}$.}\label{code:acnext}
 \end{figure}
 
-\subsubsection{Adding an Opponent Model}
+\subsubsection{Creating an Opponent Model}
+This section discusses how to implement an opponent model. An opponent models in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least an \textit{init}, \textit{updateModel}, \textit{getBidEvaluation}, and \textit{getDiscountedBidEvaluation} are implemented. Since opponent models are relatively more complex to implement in comparison to the other components, we do not discuss them and instead refer to the class \textit{BayesianModelScalable}.
 
-\subsubsection{Adding an Opponent Model Strategy}
+\subsubsection{Creating an Opponent Model Strategy}
+This section discusses the implementation of the null opponent model strategy visualized in Figure~\ref{code:nulloms}. An opponent model strategy uses an opponent model to select a bid for the opponent given a set of bids. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init} and \textit{getBid}.
+
+\begin{figure}[h!]
+\begin{lstlisting}[basicstyle=\small]
+public class NullStrategy extends OMStrategy {
+
+	private Random rand;
+	
+	public NullStrategy() {}
+	
+	public void init(NegotiationSession negotiationSession, OpponentModel model,
+				HashMap<String, Double> parameters) throws Exception {
+		rand = new Random();
+	}
+	
+	public BidDetails getBid(List<BidDetails> allBids) {
+		return allBids.get(rand.nextInt(allBids.size()));
+	}
+}
+\end{lstlisting}
+\caption{The opponent model strategy \textit{null}.}\label{code:nulloms}
+\end{figure}
 
 \subsection{Adding Components to the Repository}
+In the previous section we discussed how to create the components. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius and its structure is similar to the small repository shown in Figure~\ref{code:boarep}. There are four main categories corresponding to the component types. Each element in a category has to specify description and a classpath. Optionally, a tooltip element can be specified to discuss which parameters are expected.
+
+\begin{figure}[h!]
+\begin{lstlisting}[basicstyle=\small]
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository fileName="boarepository.xml">
+  <biddingstrategies>
+   <biddingstrategy description="TDT" classPath="TDT_BS" tooltip="'e' for concession."/>
+  </biddingstrategies>
+  <acceptanceconditions>
+   <acceptancecondition description="CombiMaxInWindow" classPath="AC_CMIW"/>	
+  </acceptanceconditions>
+  <opponentmodels>
+   <opponentmodel description="Bayesian" classPath="BayesianModel"/>
+  </opponentmodels>
+  <omstrategies>
+   <omstrategy description="Offer best n" classPath="OfferBestN" tooltip="'n' for count"/>
+  </omstrategies>
+</repository>
+\end{lstlisting}
+\caption{Example of a \textit{BOA repository}.}\label{code:boarep}
+\end{figure}
 
 \subsection{Multi-Acceptance Criteria (MAC) (TODO)}
 
