@@ -12,6 +12,7 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Random;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -315,13 +316,21 @@ public class Domain
 	 * Wouter: NOTE, it is NOT checked whether the bid has a utility>0.
 	 * @return a random bid
 	 */
-	public final Bid getRandomBid()
+    public final Bid getRandomBid() {
+    	return getRandomBid(new Random());
+    }
+    
+	/** KH 070511: Moved to here since it is generic method that can be made available to all agents.
+	 * Wouter: NOTE, it is NOT checked whether the bid has a utility>0.
+	 * @return a random bid
+	 */
+	public final Bid getRandomBid(Random r)
 	{
        //Value[] values = new Value[this.getNumberOfIssues()];
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 		
        int lNrOfOptions, lOptionIndex;
-
+       
        // For each issue, compute a random value to return in bid.
        int i;
        for (Issue lIssue: getIssues()) {
@@ -329,7 +338,7 @@ public class Domain
 			case DISCRETE:
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
 	            lNrOfOptions =lIssueDiscrete.getNumberOfValues();
-	            lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
+	            lOptionIndex = Double.valueOf(r.nextDouble()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 				//values[i]= lIssueDiscrete.getValue(lOptionIndex);
@@ -337,7 +346,7 @@ public class Domain
 				break;
 			case INTEGER:
 		        lNrOfOptions = ((IssueInteger)lIssue).getUpperBound()-((IssueInteger)lIssue).getLowerBound()+1;
-		        lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
+		        lOptionIndex = Double.valueOf(r.nextDouble()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 	            //values[i]= new ValueInteger(((IssueInteger)lIssue).getLowerBound()+lOptionIndex);
@@ -347,7 +356,7 @@ public class Domain
 				IssueReal lIssueReal =(IssueReal)lIssue;
 				lNrOfOptions =lIssueReal.getNumberOfDiscretizationSteps();
 				double lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/lNrOfOptions;
-	            lOptionIndex = Double.valueOf(java.lang.Math.random()*(lNrOfOptions)).intValue();
+	            lOptionIndex = Double.valueOf(r.nextDouble()*(lNrOfOptions)).intValue();
 	            if (lOptionIndex >= lNrOfOptions)
 	            	lOptionIndex= lNrOfOptions-1;
 				//values[i]= new ValueReal(lIssueReal.getLowerBound()+lOneStep*lOptionIndex);
