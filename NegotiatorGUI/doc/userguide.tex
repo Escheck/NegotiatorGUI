@@ -790,31 +790,23 @@ This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. Th
 
 
 
-\section{Distributed Genius (TODO)}
+\section{Distributed Genius}
+Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius is an extension to \Genius which allows to share a single tournament with multiple instances of \Genius. The speed-up is linear to the amount of computers.
 
+Distributed \Genius works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split in smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
 
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=7cm]{media/Decoupled_DTsettings.png}
+	\caption{Creating a distributed tournament.}
+	\label{fig:dtsettings}
+\end{figure}
 
+It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament, since when there are no unclaimed jobs left it is checked whether all sessions had been processed. If all sessions are processed, then each client automatically reconstructs the full log of the tournament. If this is note the case, then the client waits as it can happen that another client is still busy with the job. If a timeout occurs, then the claimed jobs are reset are redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
 
+The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament. Two buttons are available: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius.
 
-
-Even if MAC is applied, there are still $n^2$ possible combinations. % If a tournament is run on $d$ domains with two preference profiles, then there are $2 \cdot d \cdot n^3$ sessions in the tournament against a single opponent.
-On a single computer with a single negotiation thread this is already problematic for a limited amount of domains and agents. % In fact, a PC with standard hardware can run 2 or 3 tournaments at the same time on the same speed if multiple cores are used.
-Towards improving scalability, we extended G\textsc{enius} such that parts of a negotiation tournament can be run on multiple computers, effectively realizing a linear speed-up. %To share a tournament, a client automatically splits the tournament into smaller jobs, after which they are stored in a central database. Once the jobs are stored, other clients are able to join the tournament and request jobs from the database. The outcome of a finished job is compressed and stored in the database, after which the full log is retrieved if all jobs are processed.
-
-% When a job is finished, the outcome is recorded in the database and another job is requested. This process continues until all jobs are (being) processed. When all jobs are taken, a timeout is calculated upon job request how long should be waited for the results can be calculated. After the timeout, it is checked if there are still jobs running. If there are still jobs running, this means that a client crashed on a job. In this case these jobs are reset. Finally, when all jobs are processed, a connecting client is send the full log.
-
-% Using a distributed setup, a single client with multiple processors can run multiple negotiation threads. In addition, other clients can join the tournament. Given that there are $k$ computers, this reduces the average amount of sessions per client to $\frac{2 \cdot d \cdot n^3}{k}$.
-%If we assume the worst case scenario where all negotiation session last till the deadline (three minutes), a tournament using three domains and all the possible agents which can created using the ANAC2011 agents, then it would take 6.4 days to finish if each original agent implemented all components. However, if there are five clients with two negotiation threads per client, this number reduces to a little more than 15 hours, which illustrates the strength of DC. Combining DC with MAC, a large set of acceptance conditions for each agent can be used without influencing the maximum calculation time. % 2*3*8^3 * 3 / (60 * 24) / (2 * 5).
-
-% There are two main assumptions to the MAC approach; first, all clients should have identical hardware and software and run the same amount of negotiation threads to ensure that the negotiation threads are allocated the same amount of computational resources. Second, all clients should run the same version of G\textsc{enius} and the agents competing in the tournament to ensure that all agents behave identically.
-
-% While it could be argued that the performance of the combination of hardware and software is never equivalent, it should be noted that the performance of an agent on the same computer also differs between rounds depending on many uncontrollable variables such as system load, component temperature, etc.
-\subsection{Configuring the Database}
-
-\subsection{Using Distributed Genius}
- 
-
-
+The database structure can created by using the SQL dump which can be found in the directory \textit{database}. Note that the script assumes that \textit{InnoDB} is available to define the ``Delete on cascade'' relationship between the \textit{Jobs} and \textit{Sessions} table. This relationship enforces that when a user deletes a job in the database, that the corresponding sessions are also delete. Note that deleting jobs is not part of the program, and therefore the requirement to use \textit{InnoDB} is not strict.
 
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
