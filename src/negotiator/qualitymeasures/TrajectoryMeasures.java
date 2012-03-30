@@ -20,8 +20,7 @@ public class TrajectoryMeasures {
 	ArrayList<BidPoint> agentABids;
 	ArrayList<BidPoint> agentBBids;
 	boolean agentAFirst;
-	private final double SILENTTHRESHOLD = 0.05;
-	//private int silentMoves = 0;
+	private final double SILENTTHRESHOLD = 0.001;
 
 	public TrajectoryMeasures(ArrayList<BidPoint> agentABids,
 			ArrayList<BidPoint> agentBBids) {
@@ -46,12 +45,11 @@ public class TrajectoryMeasures {
 			
 			for (int i = 1; i < bids.size(); i++) {
 				if(!checkSilentMove(bids.get(i), prev)) {
-					if (bids.get(i).utilityA < prev.utilityA &&
+					if (bids.get(i).utilityA <= prev.utilityA &&
 							bids.get(i).utilityB < prev.utilityB) {
 						unfortunateMoves++;
 					}
 				}
-				
 				prev = bids.get(i);
 			}
 			// -1 since we are looking in between bids.
@@ -79,7 +77,7 @@ public class TrajectoryMeasures {
 			for (int i = 1; i < bids.size(); i++) {
 				if(!checkSilentMove(bids.get(i), prev)) {
 					if (bids.get(i).utilityA > prev.utilityA &&
-							bids.get(i).utilityB < prev.utilityB) {
+							bids.get(i).utilityB <= prev.utilityB) {
 						selfishMoves++;
 					}
 				}
@@ -110,7 +108,7 @@ public class TrajectoryMeasures {
 			for (int i = 1; i < bids.size(); i++) {
 				if(!checkSilentMove(bids.get(i), prev) && !checkNiceMoves(bids.get(i), prev)) {
 					if (bids.get(i).utilityA < prev.utilityA &&
-							bids.get(i).utilityB > prev.utilityB) {
+							bids.get(i).utilityB >= prev.utilityB) {
 						concessionMoves++;
 					}
 				}
@@ -215,7 +213,7 @@ public class TrajectoryMeasures {
 	
 	public boolean checkNiceMoves(BidPoint bid, BidPoint prevBid) {
 		if(bid.utilityB > prevBid.utilityB && 
-				(bid.utilityA > prevBid.utilityA + SILENTTHRESHOLD || bid.utilityA < prevBid.utilityA - SILENTTHRESHOLD)) {
+				(bid.utilityA < prevBid.utilityA + SILENTTHRESHOLD && bid.utilityA > prevBid.utilityA - SILENTTHRESHOLD)) {
 				return true;
 
 		}
@@ -225,9 +223,8 @@ public class TrajectoryMeasures {
 	}
 	
 	public boolean checkSilentMove(BidPoint bid, BidPoint prevBid) {
-		if (Math.abs(bid.utilityA - prevBid.utilityA) < SILENTTHRESHOLD &&
-				Math.abs(bid.utilityB - prevBid.utilityB) < SILENTTHRESHOLD) {
-			//silentMoves++;
+		if (Math.abs(bid.utilityA - prevBid.utilityA) <= SILENTTHRESHOLD &&
+				Math.abs(bid.utilityB - prevBid.utilityB) <= SILENTTHRESHOLD) {
 			return true;
 		}	
 		return false;

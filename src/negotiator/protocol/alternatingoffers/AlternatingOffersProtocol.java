@@ -40,7 +40,11 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
-
+/**
+ * BUGS
+ * 1. The last bid is excluded for the trajectory analysis as it it not always correctly
+ * saved.
+ */
 public class AlternatingOffersProtocol extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
@@ -294,7 +298,13 @@ public class AlternatingOffersProtocol extends Protocol {
 			UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
 			
-			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids());
+			TrajectoryMeasures trajCalc = null;
+			if (outcome.getAgentABids().size() > 1 && outcome.getAgentBBids().size() > 1) {
+				trajCalc= new TrajectoryMeasures(	new ArrayList<BidPoint>(outcome.getAgentABids().subList(0, outcome.getAgentABids().size() - 1)), 
+													new ArrayList<BidPoint>(outcome.getAgentBBids().subList(0, outcome.getAgentBBids().size() - 1)));
+			} else {
+				trajCalc= new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids());	
+			}
 			SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
 			
 			if (outcome.additional==null) {
