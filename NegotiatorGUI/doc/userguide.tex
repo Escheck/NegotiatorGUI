@@ -556,9 +556,25 @@ To compile the agent, you put \texttt{YourAgent.java} code in the directory cont
 
 After compilation, the resulting \texttt{YourAgent.class} file can be loaded into the negotiator simulator by typing ``YourAgent'' (fill in your actual agent name) in the negotiation set-up screen (Figure 8). Make sure your agent can be found in the same directory structure as is indicated by its package header.
 
-\subsection{Loading an Agent with Parameters (TODO)}
-- Using the agent repository
-- Optional parameters of agents
+\subsection{Loading an Agent with Parameters}
+A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. Figure~\ref{code:agentrep} visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
+
+\begin{figure}[htb]
+\begin{lstlisting}[basicstyle=\small]
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository fileName="agentrepository.xml">
+  <items>
+   <agentRepItems>
+     <agentRepItem description="Other agents - SimpleAgent"
+			classPath="agents.SimpleAgent"
+			agentName="SimpleAgent" params="e=2;time=0.95"/>
+     </agentRepItems>
+  </items>
+<filename>agentrepository.xml</filename>
+</repository>
+\end{lstlisting}
+\caption{Agent repository containing a single agent.}\label{code:agentrep}
+\end{figure}
  
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
@@ -592,7 +608,7 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 \end{figure}
 
 \subsection{Using Existing Components}
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}.%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
 
 \begin{figure}[h!]
 	\center
@@ -712,7 +728,7 @@ public class AC_Next extends AcceptanceStrategy {
 \end{figure}
 
 \subsubsection{Creating an Opponent Model}
-This section discusses how to implement an opponent model. An opponent models in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least an \textit{init}, \textit{updateModel}, \textit{getBidEvaluation}, and \textit{getDiscountedBidEvaluation} are implemented. Since opponent models are relatively more complex to implement in comparison to the other components, we do not discuss them and instead refer to the class \textit{BayesianModelScalable}.
+This section discusses how to implement an opponent model. An opponent model in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least \textit{init}, \textit{updateModel}, \textit{getBidEvaluation}, and \textit{getDiscountedBidEvaluation} are implemented. Since opponent models are relatively more complex to implement in comparison to the other components, we do not discuss them and instead refer to the class \textit{BayesianModelScalable}.
 
 \subsubsection{Creating an Opponent Model Strategy}
 This section discusses the implementation of the null opponent model strategy visualized in Figure~\ref{code:nulloms}. An opponent model strategy uses an opponent model to select a bid for the opponent given a set of bids. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init} and \textit{getBid}.
@@ -739,7 +755,7 @@ public class NullStrategy extends OMStrategy {
 \end{figure}
 
 \subsection{Adding Components to the Repository}
-In the previous section we discussed how to create the components. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius and its structure is similar to the small repository shown in Figure~\ref{code:boarep}. There are four main categories corresponding to the component types. Each element in a category has to specify description and a classpath. Optionally, a tooltip element can be specified to discuss which parameters are expected.
+In the previous section we discussed how to create the components. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius ~and its structure is similar to the small repository shown in Figure~\ref{code:boarep}. There are four main categories corresponding to the component types. Each element in a category has to specify a description and a classpath. Optionally, a tooltip element can be specified to discuss which parameters are expected.
 
 \begin{figure}[h!]
 \begin{lstlisting}[basicstyle=\small]
@@ -767,7 +783,7 @@ The \textit{BOA framework} allows to easily explore a large space of negotiation
 
 As discussed in the introduction of this chapter, the acceptance condition determines solely if a bid should be accepted. This entails that it does not influence the bidding trace, except for when it is cut-off. In fact, given a \textit{BOA agent} which does not accept, the only difference between variants of the strategy with other acceptance conditions is the time of agreement (assuming that the computational cost of the acceptance conditions are negligible).
 
-Given this property, multi acceptance criteria can be tested in parallel, storing an outcome when a single acceptance condition accepts. In practice, we noted that more than 50 variants of $\textbf{AC}_{next}$ could be tested in parallel at a negligible computational cost.
+Given this property, multi acceptance criteria can be tested in parallel during the same negotiation trace. In practice, we noted that more than 50 variants of $\textbf{AC}_{next}$ could be tested in the same negotiation at a negligible computational cost.
 
 This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. Figure~\ref{code:mac} illustrates how to efficiently use the MAC.
 
@@ -791,9 +807,9 @@ This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. Th
 
 
 \section{Distributed Genius}
-Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius is an extension to \Genius which allows to share a single tournament with multiple instances of \Genius. The speed-up is linear to the amount of computers.
+Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius. The speed-up is linear to the amount of computers.
 
-Distributed \Genius works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split in smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
+Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split in smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
 
 \begin{figure}[h!] 
 	\center
@@ -802,11 +818,13 @@ Distributed \Genius works with a central MySQL database. A job can be submitted 
 	\label{fig:dtsettings}
 \end{figure}
 
-It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament, since when there are no unclaimed jobs left it is checked whether all sessions had been processed. If all sessions are processed, then each client automatically reconstructs the full log of the tournament. If this is note the case, then the client waits as it can happen that another client is still busy with the job. If a timeout occurs, then the claimed jobs are reset are redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
+It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament, since when there are no unclaimed jobs left it is checked whether all sessions had been processed. If all sessions are processed, then each client automatically reconstructs the full log of the tournament. If this is note the case, then the client waits as it can happen that another client is still busy with the job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
 
-The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament. Two buttons are available: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius.
+The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
 
-The database structure can created by using the SQL dump which can be found in the directory \textit{database}. Note that the script assumes that \textit{InnoDB} is available to define the ``Delete on cascade'' relationship between the \textit{Jobs} and \textit{Sessions} table. This relationship enforces that when a user deletes a job in the database, that the corresponding sessions are also delete. Note that deleting jobs is not part of the program, and therefore the requirement to use \textit{InnoDB} is not strict.
+Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius.
+
+The database structure can created by using the SQL dump which can be found in the directory \textit{database}. Note that the script assumes that the \textit{InnoDB} database engine is available to define the ``Delete on cascade'' relationship between the \textit{Jobs} and \textit{Sessions} table. This relationship enforces that when a user deletes a job in the database, that the corresponding sessions are also delete. Note that deleting jobs is not part of the program, and therefore the requirement to use \textit{InnoDB} is not strict.
 
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
