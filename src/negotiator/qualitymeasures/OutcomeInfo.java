@@ -20,6 +20,16 @@ public class OutcomeInfo {
 	private double kalaiDistance;
 	private double unfortunateMovesA;
 	private double unfortunateMovesB;
+	private double silentMovesA;
+	private double silentMovesB;
+	private double niceMovesA;
+	private double niceMovesB;
+	private double fortunateMovesA;
+	private double fortunateMovesB;
+	private double selfishMovesA;
+	private double selfishMovesB;
+	private double concessionMovesA;
+	private double concessionMovesB;
 	
 	public double getTimeOfAgreement() {
 		return timeOfAgreement;
@@ -165,6 +175,87 @@ public class OutcomeInfo {
 
 	public void setUnfortunateMovesB(double unfortunateMovesB) {
 		this.unfortunateMovesB = unfortunateMovesB;
+	}
+
+	
+	public double getSilentMovesA() {
+		return silentMovesA;
+	}
+
+	public void setSilentMovesA(double silentMovesA) {
+		this.silentMovesA = silentMovesA;
+	}
+
+	public double getSilentMovesB() {
+		return silentMovesB;
+	}
+
+	public void setSilentMovesB(double silentMovesB) {
+		this.silentMovesB = silentMovesB;
+	}
+
+	public double getNiceMovesA() {
+		return niceMovesA;
+	}
+
+	public void setNiceMovesA(double niceMovesA) {
+		this.niceMovesA = niceMovesA;
+	}
+
+	public double getNiceMovesB() {
+		return niceMovesB;
+	}
+
+	public void setNiceMovesB(double niceMovesB) {
+		this.niceMovesB = niceMovesB;
+	}
+
+	public double getFortunateMovesA() {
+		return fortunateMovesA;
+	}
+
+	public void setFortunateMovesA(double fortunateMovesA) {
+		this.fortunateMovesA = fortunateMovesA;
+	}
+
+	public double getFortunateMovesB() {
+		return fortunateMovesB;
+	}
+
+	public void setFortunateMovesB(double fortunateMovesB) {
+		this.fortunateMovesB = fortunateMovesB;
+	}
+
+	public double getSelfishMovesA() {
+		return selfishMovesA;
+	}
+
+	public void setSelfishMovesA(double selfishMovesA) {
+		this.selfishMovesA = selfishMovesA;
+	}
+
+	public double getSelfishMovesB() {
+		return selfishMovesB;
+	}
+
+	public void setSelfishMovesB(double selfishMovesB) {
+		this.selfishMovesB = selfishMovesB;
+	}
+
+	public double getConcessionMovesA() {
+		return concessionMovesA;
+	}
+
+	public void setConcessionMovesA(double concessionMovesA) {
+		this.concessionMovesA = concessionMovesA;
+	}
+
+	public double getConcessionMovesB() {
+		return concessionMovesB;
+	}
+
+	public void setConcessionMovesB(double concessionMovesB) {
+		this.concessionMovesB = concessionMovesB;
 	}
 
 	public String toString() {

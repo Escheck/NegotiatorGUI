@@ -92,10 +92,20 @@ public class TournamentMeasures {
 		private boolean processTrajectoryBasedQM(String nsURI,
 				String strippedName, String tagName, Attributes attributes) {
 			boolean found = false;
-			if (tagName.equals("trajectory") && attributes.getValue(1).equals("A")) {
-				outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue(0)));
-			} else if (tagName.equals("trajectory") && attributes.getValue(1).equals("B")) {
-				outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue(0)));
+			if (tagName.equals("trajectory") && attributes.getValue(6).equals("A")) {
+				outcome.setSilentMovesA(Double.parseDouble(attributes.getValue(0)));
+				outcome.setSelfishMovesA(Double.parseDouble(attributes.getValue(1)));
+				outcome.setFortunateMovesA(Double.parseDouble(attributes.getValue(2)));
+				outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue(3)));
+				outcome.setNiceMovesA(Double.parseDouble(attributes.getValue(4)));
+				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue(5)));
+			} else if (tagName.equals("trajectory") && attributes.getValue(6).equals("B")) {
+				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue(0)));
+				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue(1)));
+				outcome.setFortunateMovesB(Double.parseDouble(attributes.getValue(2)));
+				outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue(3)));
+				outcome.setNiceMovesB(Double.parseDouble(attributes.getValue(4)));
+				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue(5)));
 			}
 			return found;
 		}
@@ -177,8 +187,9 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Path/To/Normal/Log/log.xml";
-			String out = "c:/Path/To/Output/Filename.xml";
+			String in = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/Rounds IAMcrazyHaggler dec - B.xml";
+			String out = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/results2.xml";
+			
 			process(in, out);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -283,15 +294,35 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 			prefOpponentModelQM.setAttribute("average_correlation_pareto_bids",  "");
 			prefOpponentModelQM.setAttribute("average_correlation_all_bids",  "");
 			
-			
-			
 			SimpleElement trajectorAnalysisQM = new SimpleElement("trajectorAnalysisQM");
 			agentElement.addChildElement(trajectorAnalysisQM);
+			
+			// discard invalid trajectories
+			ArrayList<OutcomeInfo> filteredOutcomes = discardInvalidTrajectories(outcomes);
+			
 			trajectorAnalysisQM.setAttribute("percentage_of_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(outcomes, agentName) + "");
-				
+			trajectorAnalysisQM.setAttribute("percentage_of_fortunate_moves", getAveragePercentageOfFortunateMoves(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_nice_moves", getAveragePercentageOfNiceMoves(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_selfish_moves", getAveragePercentageOfSelfishMoves(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_concession_moves", getAveragePercentageOfConcessionMoves(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_silent_moves", getAveragePercentageOfSilentMoves(outcomes, agentName) + "");
+			
 			tournamentQualityMeasures.addChildElement(agentElement);
 	    }
 		return tournamentQualityMeasures;
+	}
+
+	private static ArrayList<OutcomeInfo> discardInvalidTrajectories(ArrayList<OutcomeInfo> outcomes) {
+		ArrayList<OutcomeInfo> outcomesToRemove = new ArrayList<OutcomeInfo>();
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getSelfishMovesA() == 0 && outcome.getNiceMovesA() == 0 &&
+					outcome.getFortunateMovesA() == 0 && outcome.getUnfortunateMovesA() == 0 &&
+					outcome.getConcessionMovesA() == 0 && outcome.getSilentMovesA() == 0) {
+				outcomesToRemove.add(outcome);
+			}
+		}
+		outcomes.removeAll(outcomesToRemove);
+		return outcomes;
 	}
 
 	/**
@@ -558,7 +589,118 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 				totalUnfortunateMovesPerc += outcome.getUnfortunateMovesB();
 			}
 		}
+
 		return totalUnfortunateMovesPerc / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average percentage of fortunate moves.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return percentage of fortunate moves
+	 */
+	private static double getAveragePercentageOfFortunateMoves(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalFortunateMovesPerc = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalFortunateMovesPerc += outcome.getFortunateMovesA();
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalFortunateMovesPerc += outcome.getFortunateMovesB();
+			}
+		}
+		return totalFortunateMovesPerc / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average percentage of nice moves.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return percentage of nice moves
+	 */
+	private static double getAveragePercentageOfNiceMoves(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalNiceMovesPerc = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalNiceMovesPerc += outcome.getNiceMovesA();
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalNiceMovesPerc += outcome.getNiceMovesB();
+			}
+		}
+		return totalNiceMovesPerc / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average percentage of silent moves.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return percentage of silent moves
+	 */
+	private static double getAveragePercentageOfSilentMoves(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalSilentMovesPerc = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalSilentMovesPerc += outcome.getSilentMovesA();
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalSilentMovesPerc += outcome.getSilentMovesB();
+			}
+		}
+		return totalSilentMovesPerc / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average percentage of concession moves.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return percentage of concession moves
+	 */
+	private static double getAveragePercentageOfConcessionMoves(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalConcessionMovesPerc = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalConcessionMovesPerc += outcome.getConcessionMovesA();
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalConcessionMovesPerc += outcome.getConcessionMovesB();
+			}
+		}
+		return totalConcessionMovesPerc / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average percentage of selfish moves.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return percentage of selfish moves
+	 */
+	private static double getAveragePercentageOfSelfishMoves(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalSelfishMovesPerc = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalSelfishMovesPerc += outcome.getSelfishMovesA();
+			} else if (outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalSelfishMovesPerc += outcome.getSelfishMovesB();
+			}
+		}
+		return totalSelfishMovesPerc / totalSessions;
 	}
 	
 	/**
