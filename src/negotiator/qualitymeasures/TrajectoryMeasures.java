@@ -142,28 +142,50 @@ public class TrajectoryMeasures {
 		
 		if (sizeA > 0 && sizeB > 0) {
 			processAllBids();
+			SimpleElement agentA = new SimpleElement("trajectory");
+			tjQualityMeasures.addChildElement(agentA);
+			agentA.setAttribute("agent", "A");
+			agentA.setAttribute("unfortunate_moves", unfortunateA / sizeA + "");
+			agentA.setAttribute("fortunate_moves", fortunateA / sizeA + "");
+			agentA.setAttribute("nice_moves", niceA / sizeA + "");
+			agentA.setAttribute("selfish_moves", selfishA / sizeA + "");
+			agentA.setAttribute("silent_moves", silentA / sizeA + "");
+			agentA.setAttribute("concession_moves", concessionA / sizeA + "");
+
+			
+			SimpleElement agentB = new SimpleElement("trajectory");
+			tjQualityMeasures.addChildElement(agentB);
+			agentB.setAttribute("agent", "B");
+			agentB.setAttribute("unfortunate_moves", unfortunateB / sizeB + "");
+			agentB.setAttribute("fortunate_moves", fortunateB / sizeB + "");
+			agentB.setAttribute("nice_moves",  niceB / sizeB + "");
+			agentB.setAttribute("selfish_moves", selfishB / sizeB + "");
+			agentB.setAttribute("silent_moves", silentB / sizeB + "");
+			agentB.setAttribute("concession_moves", concessionB / sizeB + "");
+		} else {
+			SimpleElement agentA = new SimpleElement("trajectory");
+			tjQualityMeasures.addChildElement(agentA);
+			agentA.setAttribute("agent", "A");
+			agentA.setAttribute("unfortunate_moves", "0");
+			agentA.setAttribute("fortunate_moves", "0");
+			agentA.setAttribute("nice_moves", "0");
+			agentA.setAttribute("selfish_moves", "0");
+			agentA.setAttribute("silent_moves", "0");
+			agentA.setAttribute("concession_moves", "0");
+
+			
+			SimpleElement agentB = new SimpleElement("trajectory");
+			tjQualityMeasures.addChildElement(agentB);
+			agentB.setAttribute("agent", "B");
+			agentB.setAttribute("unfortunate_moves", "0");
+			agentB.setAttribute("fortunate_moves", "0");
+			agentB.setAttribute("nice_moves", "0");
+			agentB.setAttribute("selfish_moves", "0");
+			agentB.setAttribute("silent_moves", "0");
+			agentB.setAttribute("concession_moves", "0");
 		}
 	
-		SimpleElement agentA = new SimpleElement("trajectory");
-		tjQualityMeasures.addChildElement(agentA);
-		agentA.setAttribute("agent", "A");
-		agentA.setAttribute("unfortunate_moves", unfortunateA / sizeA + "");
-		agentA.setAttribute("fortunate_moves", fortunateA / sizeA + "");
-		agentA.setAttribute("nice_moves", niceA / sizeA + "");
-		agentA.setAttribute("selfish_moves", selfishA / sizeA + "");
-		agentA.setAttribute("silent_moves", silentA / sizeA + "");
-		agentA.setAttribute("concession_moves", concessionA / sizeA + "");
 
-		
-		SimpleElement agentB = new SimpleElement("trajectory");
-		tjQualityMeasures.addChildElement(agentB);
-		agentB.setAttribute("agent", "B");
-		agentB.setAttribute("unfortunate_moves", unfortunateB / sizeB + "");
-		agentB.setAttribute("fortunate_moves", fortunateB / sizeB + "");
-		agentB.setAttribute("nice_moves",  niceB / sizeB + "");
-		agentB.setAttribute("selfish_moves", selfishB / sizeB + "");
-		agentB.setAttribute("silent_moves", silentB / sizeB + "");
-		agentB.setAttribute("concession_moves", concessionB / sizeB + "");
 		
 		return tjQualityMeasures;
 	}
