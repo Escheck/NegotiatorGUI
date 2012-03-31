@@ -187,7 +187,7 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/Rounds IAMcrazyHaggler dec - B.xml";
+			String in = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/Rounds IAMcrazyHaggler - A.xml";
 			String out = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/results2.xml";
 			
 			process(in, out);
@@ -298,14 +298,14 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 			agentElement.addChildElement(trajectorAnalysisQM);
 			
 			// discard invalid trajectories
-			ArrayList<OutcomeInfo> filteredOutcomes = discardInvalidTrajectories(outcomes);
-			
-			trajectorAnalysisQM.setAttribute("percentage_of_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(outcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_fortunate_moves", getAveragePercentageOfFortunateMoves(outcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_nice_moves", getAveragePercentageOfNiceMoves(outcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_selfish_moves", getAveragePercentageOfSelfishMoves(outcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_concession_moves", getAveragePercentageOfConcessionMoves(outcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_silent_moves", getAveragePercentageOfSilentMoves(outcomes, agentName) + "");
+			ArrayList<OutcomeInfo> newOutcomes = discardInvalidTrajectories(outcomes);
+			System.out.println("groot: " + outcomes.size());
+			trajectorAnalysisQM.setAttribute("percentage_of_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_fortunate_moves", getAveragePercentageOfFortunateMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_nice_moves", getAveragePercentageOfNiceMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_selfish_moves", getAveragePercentageOfSelfishMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_concession_moves", getAveragePercentageOfConcessionMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("percentage_of_silent_moves", getAveragePercentageOfSilentMoves(newOutcomes, agentName) + "");
 			
 			tournamentQualityMeasures.addChildElement(agentElement);
 	    }
@@ -314,15 +314,17 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 
 	private static ArrayList<OutcomeInfo> discardInvalidTrajectories(ArrayList<OutcomeInfo> outcomes) {
 		ArrayList<OutcomeInfo> outcomesToRemove = new ArrayList<OutcomeInfo>();
-		for (OutcomeInfo outcome : outcomes) {
+		ArrayList<OutcomeInfo> newOutcomes = new ArrayList<OutcomeInfo>(outcomes);
+		
+		for (OutcomeInfo outcome : newOutcomes) {
 			if (outcome.getSelfishMovesA() == 0 && outcome.getNiceMovesA() == 0 &&
 					outcome.getFortunateMovesA() == 0 && outcome.getUnfortunateMovesA() == 0 &&
 					outcome.getConcessionMovesA() == 0 && outcome.getSilentMovesA() == 0) {
 				outcomesToRemove.add(outcome);
 			}
 		}
-		outcomes.removeAll(outcomesToRemove);
-		return outcomes;
+		newOutcomes.removeAll(outcomesToRemove);
+		return newOutcomes;
 	}
 
 	/**
