@@ -6,7 +6,7 @@ import negotiator.xml.SimpleElement;
 
 /**
  * This class is an implementation of the trajectory measures discussed by
- * Hindriks et al. Extend calculateMeasures to add your own measures.
+ * Hindriks et al. in Negotiation Dynamics: Analysis, Concession Tactics, and Outcomes.
  * 
  * NOTE: currently there is a bug in Genius which results in the last bid
  * not being saved correctly. Therefore it is advised to remove the last
@@ -20,7 +20,19 @@ public class TrajectoryMeasures {
 	ArrayList<BidPoint> agentABids;
 	ArrayList<BidPoint> agentBBids;
 	boolean agentAFirst;
-	private final double SILENTTHRESHOLD = 0.001;
+	private final double SILENTTHRESHOLD = 0;
+	double unfortunateA;
+	double unfortunateB;
+	double silentA;
+	double silentB;
+	double niceA;
+	double niceB;
+	double fortunateA;
+	double fortunateB;
+	double selfishA;
+	double selfishB;
+	double concessionA;
+	double concessionB;
 
 	public TrajectoryMeasures(ArrayList<BidPoint> agentABids,
 			ArrayList<BidPoint> agentBBids) {
@@ -29,206 +41,76 @@ public class TrajectoryMeasures {
 	}
 
 	/**
-	 * Calculates the percentage of unfortunate moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of unfortunate moves
+	 * Define the type of move for a single pair of bids. Note that the utility
+	 * of agent B is swapped relative to agent A.
+	 * @param prevBid
+	 * @param bid
 	 */
-	public double calculatePercentageUnfortunateMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
+	public void processBid(BidPoint prevBid, BidPoint bid, boolean isAgentA) {
+		
+		double utilMine = bid.utilityA;
+		double utilTheirs = bid.utilityB;
+		double prevUtilMine = prevBid.utilityA;
+		double prevUtilTheirs = prevBid.utilityB;
 		if (!isAgentA) {
-			bids = agentBBids;
+			utilMine = bid.utilityB;
+			utilTheirs = bid.utilityA;
+			prevUtilMine = prevBid.utilityB;
+			prevUtilTheirs = prevBid.utilityA;
 		}
 
-		if (bids.size() > 1) {
-			int unfortunateMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(!checkSilentMove(bids.get(i), prev)) {
-					if (bids.get(i).utilityA <= prev.utilityA &&
-							bids.get(i).utilityB < prev.utilityB) {
-						unfortunateMoves++;
-					}
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)unfortunateMoves / ((double)bids.size() - 1);
+		if (Math.abs(utilMine - prevUtilMine) <= SILENTTHRESHOLD && Math.abs(utilTheirs - prevUtilTheirs) <= SILENTTHRESHOLD) {
+			if (isAgentA)
+				silentA++;
+			else
+				silentB++;
+		} else if (utilTheirs > prevUtilTheirs && Math.abs(utilMine - prevUtilMine) <= SILENTTHRESHOLD) {
+			if (isAgentA)
+				niceA++;
+			else
+				niceB++;
+		} else if (utilMine <= prevUtilMine && utilTheirs < prevUtilTheirs) {
+			if (isAgentA)
+				unfortunateA++;
+			else
+				unfortunateB++;
+		} else if (utilMine > prevUtilMine && utilTheirs <= prevUtilTheirs) {
+			if (isAgentA)
+				selfishA++;
+			else
+				selfishB++;
+		} else if (utilMine < prevUtilMine && utilTheirs >= prevUtilTheirs) {
+			if (isAgentA)
+				concessionA++;
+			else
+				concessionB++;
 		} else {
-			return 0;
+			if (isAgentA)
+				fortunateA++;
+			else
+				fortunateB++;
 		}
 	}
 	
 	/**
-	 * Calculates the percentage of selfish moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of selfish moves
+	 * Determine the move type of each bid.
 	 */
-	public double calculatePercentageSelfishMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
-		if (!isAgentA) {
-			bids = agentBBids;
+	public void processAllBids() {
+		BidPoint prevBidA = agentABids.get(0);
+		for (int i = 1; i < agentABids.size(); i++) {
+			BidPoint bidA = agentABids.get(i);
+			processBid(prevBidA, bidA, true);
+			prevBidA = bidA;
 		}
+		
+		BidPoint prevBidB = agentBBids.get(0);
+		for (int i = 1; i < agentBBids.size(); i++) {
+			BidPoint bidB = agentBBids.get(i);
+			processBid(prevBidB, bidB, false);
+			prevBidB = bidB;
+		}
+	}
 
-		if (bids.size() > 1) {
-			int selfishMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(!checkSilentMove(bids.get(i), prev)) {
-					if (bids.get(i).utilityA > prev.utilityA &&
-							bids.get(i).utilityB <= prev.utilityB) {
-						selfishMoves++;
-					}
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)selfishMoves / ((double)bids.size() - 1);
-		} else {
-			return 0;
-		}
-	}
-	
-	/**
-	 * Calculates the percentage of concession moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of concession moves
-	 */
-	public double calculatePercentageConcessionMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
-		if (!isAgentA) {
-			bids = agentBBids;
-		}
-
-		if (bids.size() > 1) {
-			int concessionMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(!checkSilentMove(bids.get(i), prev) && !checkNiceMoves(bids.get(i), prev)) {
-					if (bids.get(i).utilityA < prev.utilityA &&
-							bids.get(i).utilityB >= prev.utilityB) {
-						concessionMoves++;
-					}
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)concessionMoves / ((double)bids.size() - 1);
-		} else {
-			return 0;
-		}
-	}
-	
-	
-	/**
-	 * Calculates the percentage of fortunate moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of fortunate moves
-	 */
-	public double calculatePercentageFortunateMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
-		if (!isAgentA) {
-			bids = agentBBids;
-		}
-
-		if (bids.size() > 1) {
-			int fortunateMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(!checkSilentMove(bids.get(i), prev) && !checkNiceMoves(bids.get(i), prev)) {
-					if (bids.get(i).utilityA > prev.utilityA &&
-							bids.get(i).utilityB > prev.utilityB) {
-						fortunateMoves++;
-					}
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)fortunateMoves / ((double)bids.size() - 1);
-		} else {
-			return 0;
-		}
-	}
-	/**
-	 * Calculates the percentage of silent moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of silent moves
-	 */
-	public double calculatePercentageSilentMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
-		if (!isAgentA) {
-			bids = agentBBids;
-		}
-
-		if (bids.size() > 1) {
-			int silentMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(checkSilentMove(bids.get(i), prev)) {
-					silentMoves++;
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)silentMoves / ((double)bids.size() - 1);
-		} else {
-			return 0;
-		}
-	}
-	
-	/**
-	 * Calculates the percentage of nice moves.
-	 * @param isAgentA is true if this is agent A
-	 * @return percentage of nice moves
-	 */
-	public double calculatePercentageNiceMoves(boolean isAgentA) {
-		ArrayList<BidPoint> bids = agentABids;
-		if (!isAgentA) {
-			bids = agentBBids;
-		}
-
-		if (bids.size() > 1) {
-			int niceMoves = 0;
-			BidPoint prev = bids.get(0);
-			
-			for (int i = 1; i < bids.size(); i++) {
-				if(checkNiceMoves(bids.get(i), prev)) {
-					niceMoves++;
-				}
-				prev = bids.get(i);
-			}
-			// -1 since we are looking in between bids.
-			return (double)niceMoves / ((double)bids.size() - 1);
-		} else {
-			return 0;
-		}
-	}
-	
-	
-	
-	
-	public boolean checkNiceMoves(BidPoint bid, BidPoint prevBid) {
-		if(bid.utilityB > prevBid.utilityB && 
-				(bid.utilityA < prevBid.utilityA + SILENTTHRESHOLD && bid.utilityA > prevBid.utilityA - SILENTTHRESHOLD)) {
-				return true;
-
-		}
-			//current bid is between ownPrev +- SILENTTHRESHOLD
-			//current Bid is greater than opponent prevBid
-		return false;
-	}
-	
-	public boolean checkSilentMove(BidPoint bid, BidPoint prevBid) {
-		if (Math.abs(bid.utilityA - prevBid.utilityA) <= SILENTTHRESHOLD &&
-				Math.abs(bid.utilityB - prevBid.utilityB) <= SILENTTHRESHOLD) {
-			return true;
-		}	
-		return false;
-	}
 	
 	/**
 	 * Returns an XML representation of all trajectory based quality measures.
@@ -241,26 +123,47 @@ public class TrajectoryMeasures {
 	public SimpleElement calculateMeasures() {
 		SimpleElement tjQualityMeasures = new SimpleElement("trajactory_based_quality_measures");
 		
+		unfortunateA = 0;
+		unfortunateB = 0;
+		silentA = 0;
+		silentB = 0;
+		niceA = 0;
+		niceB = 0;
+		fortunateA = 0;
+		fortunateB = 0;
+		selfishA = 0;
+		selfishB = 0;
+		concessionA = 0;
+		concessionB = 0;
+		
+		// -1 because we are looking inbetween bids
+		int sizeA = agentABids.size() - 1;
+		int sizeB = agentBBids.size() - 1;
+		
+		if (sizeA > 0 && sizeB > 0) {
+			processAllBids();
+		}
+	
 		SimpleElement agentA = new SimpleElement("trajectory");
 		tjQualityMeasures.addChildElement(agentA);
 		agentA.setAttribute("agent", "A");
-		agentA.setAttribute("unfortunate_moves", calculatePercentageUnfortunateMoves(true) + "");
-		agentA.setAttribute("fortunate_moves", calculatePercentageFortunateMoves(true) + "");
-		agentA.setAttribute("nice_moves", calculatePercentageNiceMoves(true) + "");
-		agentA.setAttribute("selfish_moves", calculatePercentageSelfishMoves(true) + "");
-		agentA.setAttribute("silent_moves", calculatePercentageSilentMoves(true) + "");
-		agentA.setAttribute("concession_moves", calculatePercentageConcessionMoves(true) + "");
+		agentA.setAttribute("unfortunate_moves", unfortunateA / sizeA + "");
+		agentA.setAttribute("fortunate_moves", fortunateA / sizeA + "");
+		agentA.setAttribute("nice_moves", niceA / sizeA + "");
+		agentA.setAttribute("selfish_moves", selfishA / sizeA + "");
+		agentA.setAttribute("silent_moves", silentA / sizeA + "");
+		agentA.setAttribute("concession_moves", concessionA / sizeA + "");
 
 		
 		SimpleElement agentB = new SimpleElement("trajectory");
 		tjQualityMeasures.addChildElement(agentB);
 		agentB.setAttribute("agent", "B");
-		agentB.setAttribute("unfortunate_moves", calculatePercentageUnfortunateMoves(false) + "");
-		agentB.setAttribute("fortunate_moves", calculatePercentageFortunateMoves(false) + "");
-		agentB.setAttribute("nice_moves", calculatePercentageNiceMoves(false) + "");
-		agentB.setAttribute("selfish_moves", calculatePercentageSelfishMoves(false) + "");
-		agentB.setAttribute("silent_moves", calculatePercentageSilentMoves(false) + "");
-		agentB.setAttribute("concession_moves", calculatePercentageConcessionMoves(false) + "");
+		agentB.setAttribute("unfortunate_moves", unfortunateB / sizeB + "");
+		agentB.setAttribute("fortunate_moves", fortunateB / sizeB + "");
+		agentB.setAttribute("nice_moves",  niceB / sizeB + "");
+		agentB.setAttribute("selfish_moves", selfishB / sizeB + "");
+		agentB.setAttribute("silent_moves", silentB / sizeB + "");
+		agentB.setAttribute("concession_moves", concessionB / sizeB + "");
 		
 		return tjQualityMeasures;
 	}
