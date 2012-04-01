@@ -8,6 +8,7 @@ import java.util.Random;
 import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsSorterTime;
 import negotiator.bidding.BidDetailsSorterUtility;
+import negotiator.bidding.BidDetailsStrictSorterUtility;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -19,6 +20,7 @@ public class BidHistory {
 	
 	// list used to store the bids in the order in which they are received
 	private List<BidDetails> bidList;
+	private final boolean TEST_EQUIVALENCE = false;
 	
 	/**
 	 * Creates a bid history given an array of bids offered
@@ -178,7 +180,12 @@ public class BidHistory {
 	public List<BidDetails> getNBestBids(int count) {
 		List<BidDetails> result = new ArrayList<BidDetails>();
 		List<BidDetails> sortedOpponentBids = new ArrayList<BidDetails>(bidList);
-		Collections.sort(sortedOpponentBids, new BidDetailsSorterUtility());
+		if (TEST_EQUIVALENCE) {
+			Collections.sort(sortedOpponentBids, new BidDetailsStrictSorterUtility());
+		} else {
+			Collections.sort(sortedOpponentBids, new BidDetailsSorterUtility());
+		}
+		
 		for (int i = 0; i < count && i < sortedOpponentBids.size(); i++) {
 			result.add(sortedOpponentBids.get(i));
 		}
