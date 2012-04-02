@@ -111,7 +111,6 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 * will offer the reservation value.
 	 */
 	public double f(double t) {
-		System.out.println(e);
 		double ft = k + (1 - k) * Math.pow(t, 1.0/e);
 		return ft;
 	}
