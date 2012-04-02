@@ -28,6 +28,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	private double e;
 	private BidDetails maxBid;
 	private double discount;
+	private final boolean EQUIVALENCE_TEST = false;
 	
 	public TimeDependent_Offering(){}
 	
@@ -78,7 +79,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	public BidDetails determineNextBid() {
 		double time = negotiationSession.getTime();
 		double utilityGoal;
-		if (negotiationSession.getDiscountFactor() < 0.00001) {
+		if (EQUIVALENCE_TEST || discount == 1.0) {
 			utilityGoal = p(time);
 		} else {
 			utilityGoal = Math.pow(negotiationSession.getDiscountFactor(), negotiationSession.getTime()) * p(time);
@@ -110,6 +111,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 * will offer the reservation value.
 	 */
 	public double f(double t) {
+		System.out.println(e);
 		double ft = k + (1 - k) * Math.pow(t, 1.0/e);
 		return ft;
 	}
