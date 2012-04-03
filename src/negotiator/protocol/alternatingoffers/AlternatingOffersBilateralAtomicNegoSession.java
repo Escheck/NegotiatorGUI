@@ -15,8 +15,8 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
-import negotiator.decoupledframework.OutcomeTuple;
-import negotiator.decoupledframework.agent.DecoupledAgent;
+import negotiator.boaframework.OutcomeTuple;
+import negotiator.boaframework.agent.BOAagent;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
@@ -63,7 +63,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	public Agent currentAgent=null; // agent currently bidding.
 	private Timeline timeline;
-	private int totalRounds = 5000; //The total amount of rounds when using DiscreteTimeline
+	private int totalRounds = 1000; //The total amount of rounds when using DiscreteTimeline
 	
 	public ArrayList<NegotiationOutcome> MACoutcomes = new ArrayList<NegotiationOutcome>();
 	private boolean agentAWithMultiAC = false;
@@ -248,14 +248,14 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * Checks if one of the agents MAC has
 	 */
 	private void checkForMAC() {
-		if(agentA instanceof DecoupledAgent && ((DecoupledAgent) agentA).getSavedOutcomes()!=null) {
-			ArrayList<OutcomeTuple> listFromAgentA = ((DecoupledAgent) agentA).getSavedOutcomes();
+		if(agentA instanceof BOAagent && ((BOAagent) agentA).getSavedOutcomes()!=null) {
+			ArrayList<OutcomeTuple> listFromAgentA = ((BOAagent) agentA).getSavedOutcomes();
 			completeList.add(listFromAgentA);
 			agentAWithMultiAC = true;
 		}
 		
-		if(agentB instanceof DecoupledAgent && ((DecoupledAgent) agentB).getSavedOutcomes()!=null) {
-			ArrayList<OutcomeTuple> listFromAgentB = ((DecoupledAgent) agentB).getSavedOutcomes();
+		if(agentB instanceof BOAagent && ((BOAagent) agentB).getSavedOutcomes()!=null) {
+			ArrayList<OutcomeTuple> listFromAgentB = ((BOAagent) agentB).getSavedOutcomes();
 			completeList.add(listFromAgentB);
 			agentBWithMultiAC = true;
 		}
@@ -391,7 +391,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			
 				System.out.println("Judge Timeout: with MAC agent");
 				
-				ArrayList<OutcomeTuple> list = ((DecoupledAgent) agentB).getSavedOutcomes();
+				ArrayList<OutcomeTuple> list = ((BOAagent) agentB).getSavedOutcomes();
 				for(OutcomeTuple outcomeTuple: list){
 					newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,  "JudgeTimeout: negotiation was timed out", outcomeTuple.getTime(), distanceToNash);
 					
@@ -439,7 +439,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 				String deadlineReachedMsg = "Deadline reached while waiting for [" + currentAgent + "]";
 				badOutcome(timeline, deadlineReachedMsg);
-
 			}else {
 				System.out.println("creating negoOutcome for one session");
 				
