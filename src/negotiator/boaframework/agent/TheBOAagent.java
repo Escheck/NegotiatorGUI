@@ -1,10 +1,8 @@
 package negotiator.boaframework.agent;
 
 import misc.Serializer;
-import negotiator.boaframework.DecoupledAgentInfo;
-import negotiator.boaframework.OfferingStrategy;
-import negotiator.boaframework.AcceptanceStrategy;
-import negotiator.boaframework.repository.DecoupledAgentRepository;
+import negotiator.boaframework.BOAagentInfo;
+import negotiator.boaframework.repository.BOAagentRepository;
 
 /**
  * This class is used to convert a serialized decoupled agent (created with the GUI)
@@ -13,10 +11,10 @@ import negotiator.boaframework.repository.DecoupledAgentRepository;
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 19/12/11
  */
-public class TheDecoupledAgent extends DecoupledAgent {
+public class TheBOAagent extends BOAagent {
 
 	String name = "";
-	DecoupledAgentInfo dagent;
+	BOAagentInfo dagent;
 	
 	/**
 	 * Loads and initializes the decoupled components of the agent.
@@ -33,10 +31,10 @@ public class TheDecoupledAgent extends DecoupledAgent {
 		// We could have used reflexion, but that option is a lot slower.
 		// For safety we also reset the clone, because it is possible that the object remembers
 		// information from its previous round.
-		offeringStrategy = DecoupledAgentRepository.getInstance().getOfferingStrategy(os);
-		acceptConditions = DecoupledAgentRepository.getInstance().getAcceptanceStrategy(as);
-		opponentModel = DecoupledAgentRepository.getInstance().getOpponentModel(om);
-		omStrategy = DecoupledAgentRepository.getInstance().getOMStrategy(oms);
+		offeringStrategy = BOAagentRepository.getInstance().getOfferingStrategy(os);
+		acceptConditions = BOAagentRepository.getInstance().getAcceptanceStrategy(as);
+		opponentModel = BOAagentRepository.getInstance().getOpponentModel(om);
+		omStrategy = BOAagentRepository.getInstance().getOMStrategy(oms);
 
 		try {
 			opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());
@@ -70,7 +68,7 @@ public class TheDecoupledAgent extends DecoupledAgent {
 	 */
 	@Override
 	public void parseStrategyParameters(String variables) throws Exception {
-		Serializer<DecoupledAgentInfo> serializer = new Serializer<DecoupledAgentInfo>("");
+		Serializer<BOAagentInfo> serializer = new Serializer<BOAagentInfo>("");
 		dagent = serializer.readStringToObject(variables);
 		name = dagent.getName();
 	}

@@ -21,11 +21,11 @@ import misc.Serializer;
 import negotiator.AgentParam;
 import negotiator.Global;
 import negotiator.distributedtournament.DBController;
-import negotiator.boaframework.DecoupledAgentInfo;
+import negotiator.boaframework.BOAagentInfo;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
-import negotiator.gui.decoupledframework.DecoupledAgentsFrame;
+import negotiator.gui.boaframework.BOAagentsFrame;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
 import negotiator.repository.AgentRepItem;
@@ -48,8 +48,8 @@ import negotiator.tournament.VariablesAndValues.DBSessionValue;
 import negotiator.tournament.VariablesAndValues.DBSessionVariable;
 import negotiator.tournament.VariablesAndValues.DBUserValue;
 import negotiator.tournament.VariablesAndValues.DBUserVariable;
-import negotiator.tournament.VariablesAndValues.DecoupledAgentValue;
-import negotiator.tournament.VariablesAndValues.DecoupledAgentVariable;
+import negotiator.tournament.VariablesAndValues.BOAagentValue;
+import negotiator.tournament.VariablesAndValues.BOAagentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -175,11 +175,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
 			v.setValues(newtvs);
-		} else if (v instanceof DecoupledAgentVariable) {
-			ArrayList<DecoupledAgentInfo> newv=(ArrayList<DecoupledAgentInfo>)new DecoupledAgentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
+		} else if (v instanceof BOAagentVariable) {
+			ArrayList<BOAagentInfo> newv=(ArrayList<BOAagentInfo>)new BOAagentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
 			if (newv==null) return;
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-			for (DecoupledAgentInfo item: newv) newtvs.add(new DecoupledAgentValue(item));
+			for (BOAagentInfo item: newv) newtvs.add(new BOAagentValue(item));
 				v.setValues(newtvs);
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
@@ -421,10 +421,10 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		// Ignore possible dead code warning displayed here, it is has to do with the 
 		// values of the global variables.
 		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
-			DecoupledAgentVariable decoupledAgentVarA = new DecoupledAgentVariable();
+			BOAagentVariable decoupledAgentVarA = new BOAagentVariable();
 			decoupledAgentVarA.setSide("A");
 			fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
-			DecoupledAgentVariable decoupledAgentVarB = new DecoupledAgentVariable();
+			BOAagentVariable decoupledAgentVarB = new BOAagentVariable();
 			decoupledAgentVarB.setSide("B");
 			fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
 		}

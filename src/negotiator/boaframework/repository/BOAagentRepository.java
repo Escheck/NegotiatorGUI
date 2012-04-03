@@ -14,13 +14,13 @@ import negotiator.boaframework.OpponentModel;
  * The main difference with the agent and domain repositories, is that this approach
  * does not use reflection.
  */
-public class DecoupledAgentRepository {
+public class BOAagentRepository {
 	
-	private static DecoupledAgentRepository ref;
+	private static BOAagentRepository ref;
 	private static BOArepositoryParser repositoryParser;
 	private static String filename = "boarepository.xml";
 	
-	private DecoupledAgentRepository() {
+	private BOAagentRepository() {
 		XMLReader xr;
 		try {
 			xr = XMLReaderFactory.createXMLReader();
@@ -33,9 +33,9 @@ public class DecoupledAgentRepository {
 		}
 	}
 	
-	public static DecoupledAgentRepository getInstance() {
+	public static BOAagentRepository getInstance() {
 	    if (ref == null)
-	        ref = new DecoupledAgentRepository();		
+	        ref = new BOAagentRepository();		
 	    return ref;
 	  }
 	

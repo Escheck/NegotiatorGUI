@@ -3,11 +3,11 @@ package negotiator.tournament.VariablesAndValues;
 /**
  * {@link AgentVariable} indicates the agents used in a tournament.
  */
-public class DecoupledAgentVariable extends TournamentVariable
+public class BOAagentVariable extends TournamentVariable
 {
 	private String side = null;
 	public void addValue(TournamentValue a) throws Exception {
-		if (!(a instanceof DecoupledAgentValue))
+		if (!(a instanceof BOAagentValue))
 			throw new IllegalArgumentException("Expected DecoupledAgentValue but received "+a);
 		values.add(a);
 	}

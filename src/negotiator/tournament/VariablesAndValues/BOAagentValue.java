@@ -1,14 +1,14 @@
 package negotiator.tournament.VariablesAndValues;
 
-import negotiator.boaframework.DecoupledAgentInfo;
+import negotiator.boaframework.BOAagentInfo;
 
-public class DecoupledAgentValue extends TournamentValue
+public class BOAagentValue extends TournamentValue
 {
-	DecoupledAgentInfo value;	
+	BOAagentInfo value;	
 	
-	public DecoupledAgentValue(DecoupledAgentInfo val) { value = val; }
+	public BOAagentValue(BOAagentInfo val) { value = val; }
 	public String toString() { return value.toString(); }
-	public DecoupledAgentInfo getValue() { return value; }
+	public BOAagentInfo getValue() { return value; }
 	
 	@Override
 	public int hashCode() {
@@ -25,7 +25,7 @@ public class DecoupledAgentValue extends TournamentValue
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DecoupledAgentValue other = (DecoupledAgentValue) obj;
+		BOAagentValue other = (BOAagentValue) obj;
 		if (value == null) {
 			if (other.value != null)
 				return false;
