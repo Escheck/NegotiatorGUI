@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="boarepository.xml">
     <biddingstrategies>
-		<biddingstrategy description="Other - Offer decreasing utility" classPath="negotiator.decoupledframework.offeringstrategy.ChoosingAllBids"/>
-		<biddingstrategy description="Other - Time dependent" classPath="negotiator.decoupledframework.offeringstrategy.TimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
-		<biddingstrategy description="Other - Random walker" classPath="negotiator.decoupledframework.offeringstrategy.Random_Offering"/>
+		<biddingstrategy description="Other - Offer decreasing utility" classPath="negotiator.boaframework.offeringstrategy.ChoosingAllBids"/>
+		<biddingstrategy description="Other - Time dependent" classPath="negotiator.boaframework.offeringstrategy.TimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
+		<biddingstrategy description="Other - Random walker" classPath="negotiator.boaframework.offeringstrategy.Random_Offering"/>
 	</biddingstrategies>
 	<acceptanceconditions>
-		<acceptancecondition description="Other - False" classPath="negotiator.decoupledframework.acceptanceconditions.AC_False"/>
-		<acceptancecondition description="Other - True" classPath="negotiator.decoupledframework.acceptanceconditions.AC_True"/>
-		<acceptancecondition description="Other - Previous" classPath="negotiator.decoupledframework.acceptanceconditions.AC_Previous" tooltip="'a' for multiplier. 'b' for constant."/>
-		<acceptancecondition description="Other - Time" classPath="negotiator.decoupledframework.acceptanceconditions.AC_Time" tooltip="'t' for time"/>
-		<acceptancecondition description="Other - Gap" classPath="negotiator.decoupledframework.acceptanceconditions.AC_Gap" tooltip="'c' for gapsize"/>
-		<acceptancecondition description="Other - Constant" classPath="negotiator.decoupledframework.acceptanceconditions.AC_Const" tooltip="'c' for constant"/>
-		<acceptancecondition description="Other - Next" classPath="negotiator.decoupledframework.acceptanceconditions.AC_Next" tooltip="'a' for multiplier. 'b' for constant."/>		
-		<acceptancecondition description="Other - CombiMaxInWindow" classPath="negotiator.decoupledframework.acceptanceconditions.AC_CombiMaxInWindow" tooltip="'t' for time"/>		
-		<acceptancecondition description="Other - CombiV2" classPath="negotiator.decoupledframework.acceptanceconditions.AC_CombiV2" tooltip="'a' for multiplier. 'b' for constant'. 'c' for discount constant. 't' for time. 'd' for threshold."/>		
-		<acceptancecondition description="Other - CombiV3" classPath="negotiator.decoupledframework.acceptanceconditions.AC_CombiV3" tooltip= "'a' for multiplier. 'b' for constant'. 'c' for threshold. 't' for time."/>		
-		<acceptancecondition description="Other - CombiV4" classPath="negotiator.decoupledframework.acceptanceconditions.AC_CombiV4" tooltip="'a' for multiplier no discount. 'b' for constant no discount'. 'c' for multiplier discount. 'd' for constant discount. 'e' for discount threshold."/>		
-		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.decoupledframework.acceptanceconditions.Multi_AC"/>
+		<acceptancecondition description="Other - False" classPath="negotiator.boaframework.acceptanceconditions.AC_False"/>
+		<acceptancecondition description="Other - True" classPath="negotiator.boaframework.acceptanceconditions.AC_True"/>
+		<acceptancecondition description="Other - Previous" classPath="negotiator.boaframework.acceptanceconditions.AC_Previous" tooltip="'a' for multiplier. 'b' for constant."/>
+		<acceptancecondition description="Other - Time" classPath="negotiator.boaframework.acceptanceconditions.AC_Time" tooltip="'t' for time"/>
+		<acceptancecondition description="Other - Gap" classPath="negotiator.boaframework.acceptanceconditions.AC_Gap" tooltip="'c' for gapsize"/>
+		<acceptancecondition description="Other - Constant" classPath="negotiator.boaframework.acceptanceconditions.AC_Const" tooltip="'c' for constant"/>
+		<acceptancecondition description="Other - Next" classPath="negotiator.boaframework.acceptanceconditions.AC_Next" tooltip="'a' for multiplier. 'b' for constant."/>		
+		<acceptancecondition description="Other - CombiMaxInWindow" classPath="negotiator.boaframework.acceptanceconditions.AC_CombiMaxInWindow" tooltip="'t' for time"/>		
+		<acceptancecondition description="Other - CombiV2" classPath="negotiator.boaframework.acceptanceconditions.AC_CombiV2" tooltip="'a' for multiplier. 'b' for constant'. 'c' for discount constant. 't' for time. 'd' for threshold."/>		
+		<acceptancecondition description="Other - CombiV3" classPath="negotiator.boaframework.acceptanceconditions.AC_CombiV3" tooltip= "'a' for multiplier. 'b' for constant'. 'c' for threshold. 't' for time."/>		
+		<acceptancecondition description="Other - CombiV4" classPath="negotiator.boaframework.acceptanceconditions.AC_CombiV4" tooltip="'a' for multiplier no discount. 'b' for constant no discount'. 'c' for multiplier discount. 'd' for constant discount. 'e' for discount threshold."/>		
+		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.Multi_AC"/>
 	</acceptanceconditions>
 	<opponentmodels>
-		<opponentmodel description="Null" classPath="negotiator.decoupledframework.opponentmodel.NullModel"/>
-		<opponentmodel description="Bayesian" classPath="negotiator.decoupledframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
-		<opponentmodel description="Bayesian scalable" classPath="negotiator.decoupledframework.opponentmodel.BayesianModelScalable" tooltip="'t' for update time threshold. 'n' for NiceTitForTat-mode"/>
-		<opponentmodel description="FSEGA Bayesian" classPath="negotiator.decoupledframework.opponentmodel.FSEGABayesianModel"/>
-		<opponentmodel description="Perfect" classPath="negotiator.decoupledframework.opponentmodel.PerfectModel"/>
+		<opponentmodel description="Null" classPath="negotiator.boaframework.opponentmodel.NullModel"/>
+		<opponentmodel description="Bayesian" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
+		<opponentmodel description="Bayesian scalable" classPath="negotiator.boaframework.opponentmodel.BayesianModelScalable" tooltip="'t' for update time threshold. 'n' for NiceTitForTat-mode"/>
+		<opponentmodel description="FSEGA Bayesian" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
+		<opponentmodel description="Perfect" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
 	</opponentmodels>
 	<omstrategies>
-		<omstrategy description="Null" classPath="negotiator.decoupledframework.omstrategy.NullStrategy"/>
-		<omstrategy description="Offer best n" classPath="negotiator.decoupledframework.omstrategy.OfferBestN" tooltip="'n' for count"/>
+		<omstrategy description="Null" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
+		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count"/>
 	</omstrategies>
 </repository>
