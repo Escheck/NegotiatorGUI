@@ -580,11 +580,9 @@ A compiled agent can also be loaded by directly adding the agent to the reposito
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
 \section{BOA framework}
-This section introduces the \textit{BOA framework}: a negotiation agent architecture which allows to study the performance of its individual components. While methods exist to identify the best negotiation agent in a set of agents in terms of utility, we still do not know which agents are most effective in general, and especially why.%This is mostly due to the fact that it is impossible to exhaustively search the large (in fact, infinite) space of negotiation strategies.
+Instead of implementing your negotiating agent from scratch, you may opt to use the already existing \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to implement separate components of a negotiation strategy. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
 
-Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}).% The negotiation strategy is a result of the complex interaction between these components.%, of which the individual performance may vary significantly.% For instance, an agent may contain a module that predicts the opponent's preferences very well, but the agent may still perform badly utility-wise because it concedes far too quickly.
-
-The advantages of fitting agents into the BOA framework are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
+The advantages of separating the negotiation strategy into these three components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
 
 \subsection{How it works}
 A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of three components:
@@ -608,7 +606,7 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 \end{figure}
 
 \subsection{Using Existing Components}
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the decoupled framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}.%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the BOA framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}.%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
 
 \begin{figure}[h!]
 	\center
@@ -783,7 +781,7 @@ The \textit{BOA framework} allows to easily explore a large space of negotiation
 
 As discussed in the introduction of this chapter, the acceptance condition determines solely if a bid should be accepted. This entails that it does not influence the bidding trace, except for when it is cut-off. In fact, given a \textit{BOA agent} which does not accept, the only difference between variants of the strategy with other acceptance conditions is the time of agreement (assuming that the computational cost of the acceptance conditions are negligible).
 
-Given this property, multi acceptance criteria can be tested in parallel during the same negotiation trace. In practice, we noted that more than 50 variants of $\textbf{AC}_{next}$ could be tested in the same negotiation at a negligible computational cost.
+Given this property, multi acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
 This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. Figure~\ref{code:mac} illustrates how to efficiently use the MAC.
 
