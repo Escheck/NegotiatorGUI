@@ -1,8 +1,10 @@
-package negotiator.decoupledframework.agent;
+package negotiator.boaframework.agent;
 
 import misc.Serializer;
-import negotiator.decoupledframework.DecoupledAgentInfo;
-import negotiator.decoupledframework.repository.DecoupledAgentRepository;
+import negotiator.boaframework.DecoupledAgentInfo;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.repository.DecoupledAgentRepository;
 
 /**
  * This class is used to convert a serialized decoupled agent (created with the GUI)
@@ -31,10 +33,10 @@ public class TheDecoupledAgent extends DecoupledAgent {
 		// We could have used reflexion, but that option is a lot slower.
 		// For safety we also reset the clone, because it is possible that the object remembers
 		// information from its previous round.
-		offeringStrategy = DecoupledAgentRepository.getInstance().getOfferingStrategy(os).clone().reset();
-		acceptConditions = DecoupledAgentRepository.getInstance().getAcceptanceStrategy(as).clone().reset();
-		opponentModel = DecoupledAgentRepository.getInstance().getOpponentModel(om).clone().reset();
-		omStrategy = DecoupledAgentRepository.getInstance().getOMStrategy(oms).clone().reset();
+		offeringStrategy = DecoupledAgentRepository.getInstance().getOfferingStrategy(os);
+		acceptConditions = DecoupledAgentRepository.getInstance().getAcceptanceStrategy(as);
+		opponentModel = DecoupledAgentRepository.getInstance().getOpponentModel(om);
+		omStrategy = DecoupledAgentRepository.getInstance().getOMStrategy(oms);
 
 		try {
 			opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());

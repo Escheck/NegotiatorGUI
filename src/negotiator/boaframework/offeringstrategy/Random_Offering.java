@@ -1,8 +1,8 @@
-package negotiator.decoupledframework.offeringstrategy;
+package negotiator.boaframework.offeringstrategy;
 
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
-import negotiator.decoupledframework.OfferingStrategy;
+import negotiator.boaframework.OfferingStrategy;
 
 /**
  * This class implements the Simple Agent a.k.a. Zero Intelligence, Random Walker offering strategy.

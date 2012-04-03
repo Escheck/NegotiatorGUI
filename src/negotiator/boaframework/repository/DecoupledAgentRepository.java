@@ -1,13 +1,13 @@
-package negotiator.decoupledframework.repository;
+package negotiator.boaframework.repository;
 
 import java.util.ArrayList;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import negotiator.Global;
-import negotiator.decoupledframework.AcceptanceStrategy;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OfferingStrategy;
-import negotiator.decoupledframework.OpponentModel;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 
 /**
  * Simple class used to load the repository of decoupled agent components.

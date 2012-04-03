@@ -1,4 +1,4 @@
-package negotiator.decoupledframework.repository;
+package negotiator.boaframework.repository;
 
 public class BOArepItem {
 	private String classPath;

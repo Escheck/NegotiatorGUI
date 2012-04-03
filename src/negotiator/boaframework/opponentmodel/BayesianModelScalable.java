@@ -1,11 +1,11 @@
-package negotiator.decoupledframework.opponentmodel;
+package negotiator.boaframework.opponentmodel;
 
 import java.util.HashMap;
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import negotiator.Bid;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OpponentModel;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OpponentModel;
 import negotiator.utility.UtilitySpace;
 
 /**

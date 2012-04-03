@@ -1,13 +1,13 @@
-package negotiator.decoupledframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Actions;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OutcomeTuple;
 import negotiator.Bid;
-import negotiator.decoupledframework.AcceptanceStrategy;
-import negotiator.decoupledframework.Actions;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OfferingStrategy;
-import negotiator.decoupledframework.OutcomeTuple;
 
 /**
  * The MAC is a tool which allows to test many acceptance strategies in the

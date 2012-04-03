@@ -1,4 +1,4 @@
-package negotiator.decoupledframework.repository;
+package negotiator.boaframework.repository;
 
 import java.util.HashMap;
 import org.xml.sax.Attributes;

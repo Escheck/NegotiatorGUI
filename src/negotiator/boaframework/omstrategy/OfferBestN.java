@@ -1,4 +1,4 @@
-package negotiator.decoupledframework.omstrategy;
+package negotiator.boaframework.omstrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +8,9 @@ import java.util.Random;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsSorterUtility;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OpponentModel;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OpponentModel;
 
 /**
  * This class uses an opponent model to determine the next bid for the opponent, while taking

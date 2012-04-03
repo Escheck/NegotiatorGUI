@@ -21,7 +21,7 @@ import misc.Serializer;
 import negotiator.AgentParam;
 import negotiator.Global;
 import negotiator.distributedtournament.DBController;
-import negotiator.decoupledframework.DecoupledAgentInfo;
+import negotiator.boaframework.DecoupledAgentInfo;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;

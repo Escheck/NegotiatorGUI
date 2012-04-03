@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import negotiator.decoupledframework.DecoupledParameter;
+import negotiator.boaframework.DecoupledParameter;
 
 /**
  * The form used to input a parameter in the DecoupledAgentsFrame GUI.

@@ -1,8 +1,8 @@
-package negotiator.decoupledframework.opponentmodel;
+package negotiator.boaframework.opponentmodel;
 
 import negotiator.Bid;
 import negotiator.Global;
-import negotiator.decoupledframework.OpponentModel;
+import negotiator.boaframework.OpponentModel;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 
 /**
