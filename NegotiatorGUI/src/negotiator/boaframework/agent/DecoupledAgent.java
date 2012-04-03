@@ -1,4 +1,4 @@
-package negotiator.decoupledframework.agent;
+package negotiator.boaframework.agent;
 
 import java.util.ArrayList;
 import misc.Pair;
@@ -9,15 +9,15 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
-import negotiator.decoupledframework.AcceptanceStrategy;
-import negotiator.decoupledframework.Actions;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OfferingStrategy;
-import negotiator.decoupledframework.OpponentModel;
-import negotiator.decoupledframework.OutcomeSpace;
-import negotiator.decoupledframework.OutcomeTuple;
-import negotiator.decoupledframework.acceptanceconditions.Multi_AcceptanceCondition;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Actions;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.OutcomeSpace;
+import negotiator.boaframework.OutcomeTuple;
+import negotiator.boaframework.acceptanceconditions.Multi_AcceptanceCondition;
 
 /**
  * This class describes a basic decoupled agent. The TheDecoupledAgent class extends

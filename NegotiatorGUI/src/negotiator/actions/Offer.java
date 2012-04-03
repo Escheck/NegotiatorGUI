@@ -32,7 +32,33 @@ public class Offer extends Action {
         this.bid = bid;
     }
     
-    /** Creates a new instance of SendBid */
+    
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bid == null) ? 0 : bid.hashCode());
+		return result;
+	}
+    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Offer other = (Offer) obj;
+		if (bid == null) {
+			if (other.bid != null)
+				return false;
+		} else if (!bid.equals(other.bid))
+			return false;
+		return true;
+	}
+	
+	/** Creates a new instance of SendBid */
     public Offer(Agent agent, Bid bid) {
         this(agent.getAgentID(), bid);
     }

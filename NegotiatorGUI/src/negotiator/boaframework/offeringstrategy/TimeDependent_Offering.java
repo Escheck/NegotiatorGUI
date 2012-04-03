@@ -1,15 +1,15 @@
-package negotiator.decoupledframework.offeringstrategy;
+package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
 import java.util.List;
 
 import misc.Range;
 import negotiator.bidding.BidDetails;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OfferingStrategy;
-import negotiator.decoupledframework.OpponentModel;
-import negotiator.decoupledframework.SortedOutcomeSpace;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
  * This is an abstract class used to implement a TimeDependentAgent Strategy adapted from [1]

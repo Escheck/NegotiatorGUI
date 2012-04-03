@@ -1,10 +1,10 @@
-package negotiator.decoupledframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions;
 
 import java.util.HashMap;
-import negotiator.decoupledframework.AcceptanceStrategy;
-import negotiator.decoupledframework.Actions;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OfferingStrategy;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Actions;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OfferingStrategy;
 
 /**
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:

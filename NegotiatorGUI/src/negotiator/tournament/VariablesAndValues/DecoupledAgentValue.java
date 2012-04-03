@@ -1,6 +1,6 @@
 package negotiator.tournament.VariablesAndValues;
 
-import negotiator.decoupledframework.DecoupledAgentInfo;
+import negotiator.boaframework.DecoupledAgentInfo;
 
 public class DecoupledAgentValue extends TournamentValue
 {

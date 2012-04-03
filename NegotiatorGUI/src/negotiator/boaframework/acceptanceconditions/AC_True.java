@@ -1,7 +1,7 @@
-package negotiator.decoupledframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions;
 
-import negotiator.decoupledframework.AcceptanceStrategy;
-import negotiator.decoupledframework.Actions;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Actions;
 
 /**
  * This Acceptance Condition will accept any opponent offer.

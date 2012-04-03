@@ -1,15 +1,15 @@
-package negotiator.decoupledframework.offeringstrategy;
+package negotiator.boaframework.offeringstrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 import negotiator.bidding.BidDetails;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OfferingStrategy;
-import negotiator.decoupledframework.OpponentModel;
-import negotiator.decoupledframework.OutcomeSpace;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.OutcomeSpace;
 
 /**
  * This class implements an offering strategy which creates a list of possible bids and 

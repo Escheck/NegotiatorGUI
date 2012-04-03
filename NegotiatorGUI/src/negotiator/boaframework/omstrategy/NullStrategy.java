@@ -1,12 +1,12 @@
-package negotiator.decoupledframework.omstrategy;
+package negotiator.boaframework.omstrategy;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import negotiator.bidding.BidDetails;
-import negotiator.decoupledframework.NegotiationSession;
-import negotiator.decoupledframework.OMStrategy;
-import negotiator.decoupledframework.OpponentModel;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OpponentModel;
 
 public class NullStrategy extends OMStrategy {
 

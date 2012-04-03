@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import misc.Serializer;
 import negotiator.Global;
-import negotiator.decoupledframework.DecoupledAgentInfo;
+import negotiator.boaframework.DecoupledAgentInfo;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -223,7 +223,7 @@ public class Tournament implements Serializable
 				DecoupledAgentValue dav = (DecoupledAgentValue) value;
 				DecoupledAgentInfo agent = dav.getValue();
 				Serializer<DecoupledAgentInfo> serializer = new Serializer<DecoupledAgentInfo>("");
-				AgentRepItem agentRep = new AgentRepItem(agent.getName(), "negotiator.decoupledframework.agent.TheDecoupledAgent" , "", serializer.writeToString(agent));
+				AgentRepItem agentRep = new AgentRepItem(agent.getName(), "negotiator.boaframework.agent.TheDecoupledAgent" , "", serializer.writeToString(agent));
 				AgentValue av = new AgentValue(agentRep);
 				try {
 					agentVar.addValue(av);
