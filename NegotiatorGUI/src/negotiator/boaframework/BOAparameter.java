@@ -11,7 +11,7 @@ import misc.Pair;
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
  * @version 16-01-12
  */
-public class DecoupledParameter {
+public class BOAparameter {
 	
 	private String name;
 	private double low;
@@ -27,7 +27,7 @@ public class DecoupledParameter {
 	 * @param high value of the range
 	 * @param step in the range
 	 */
-	public DecoupledParameter(String name, double low, double high, double step) {
+	public BOAparameter(String name, double low, double high, double step) {
 		this.name = name;
 		this.low = low;
 		this.high = high;

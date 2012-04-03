@@ -12,20 +12,20 @@ import java.util.HashMap;
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
  * @version 16-01-12
  */
-public class DecoupledComponent implements Serializable {
+public class BOAcomponent implements Serializable {
 	
 	private static final long serialVersionUID = 9055936213274664445L;
 	private String classname;
 	private String type;
 	private HashMap<String, Double> parameters;
 
-	public DecoupledComponent(String classname, String type, HashMap<String, Double> strategyParam) {
+	public BOAcomponent(String classname, String type, HashMap<String, Double> strategyParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = strategyParam;
 	}
 	
-	public DecoupledComponent(String classname, String type) {
+	public BOAcomponent(String classname, String type) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = new HashMap<String, Double>();

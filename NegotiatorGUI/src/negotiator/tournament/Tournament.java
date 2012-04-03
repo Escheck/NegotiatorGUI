@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import misc.Serializer;
 import negotiator.Global;
-import negotiator.boaframework.DecoupledAgentInfo;
+import negotiator.boaframework.BOAagentInfo;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -14,8 +14,8 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
 import negotiator.tournament.VariablesAndValues.AssignedParameterVariable;
-import negotiator.tournament.VariablesAndValues.DecoupledAgentValue;
-import negotiator.tournament.VariablesAndValues.DecoupledAgentVariable;
+import negotiator.tournament.VariablesAndValues.BOAagentValue;
+import negotiator.tournament.VariablesAndValues.BOAagentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -206,24 +206,24 @@ public class Tournament implements Serializable
 	}
 
 	public ArrayList<AgentVariable> getDecoupledAgentVars() {
-		ArrayList<DecoupledAgentVariable> decoupledAgentVars=new ArrayList<DecoupledAgentVariable>();
+		ArrayList<BOAagentVariable> decoupledAgentVars=new ArrayList<BOAagentVariable>();
 		for (TournamentVariable v: variables) {
-			if (v instanceof DecoupledAgentVariable) decoupledAgentVars.add((DecoupledAgentVariable)v);
+			if (v instanceof BOAagentVariable) decoupledAgentVars.add((BOAagentVariable)v);
 		}
 		// now we have two decoupledagentvarinfo's, which we need to convert to agentvariables.
 		// agentvariables are basically collections of agentrepitem.
 		// An agentrepitem can be created by serializing the DecoupledAgentInfo, and using it's name
 		ArrayList<AgentVariable> agentVars = new ArrayList<AgentVariable>();
-		for (DecoupledAgentVariable decoupledVar : decoupledAgentVars) {
+		for (BOAagentVariable decoupledVar : decoupledAgentVars) {
 			ArrayList<TournamentValue> values = decoupledVar.getValues();
 			AgentVariable agentVar = new AgentVariable();
 			agentVar.setSide(decoupledVar.getSide());
 
 			for (TournamentValue value : values) {
-				DecoupledAgentValue dav = (DecoupledAgentValue) value;
-				DecoupledAgentInfo agent = dav.getValue();
-				Serializer<DecoupledAgentInfo> serializer = new Serializer<DecoupledAgentInfo>("");
-				AgentRepItem agentRep = new AgentRepItem(agent.getName(), "negotiator.boaframework.agent.TheDecoupledAgent" , "", serializer.writeToString(agent));
+				BOAagentValue dav = (BOAagentValue) value;
+				BOAagentInfo agent = dav.getValue();
+				Serializer<BOAagentInfo> serializer = new Serializer<BOAagentInfo>("");
+				AgentRepItem agentRep = new AgentRepItem(agent.getName(), "negotiator.boaframework.agent.TheBOAagent" , "", serializer.writeToString(agent));
 				AgentValue av = new AgentValue(agentRep);
 				try {
 					agentVar.addValue(av);

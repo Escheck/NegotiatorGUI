@@ -25,7 +25,7 @@ import negotiator.boaframework.acceptanceconditions.Multi_AcceptanceCondition;
  * 
  * @author Alex Dirkzwager
  */
-public abstract class DecoupledAgent extends Agent {
+public abstract class BOAagent extends Agent {
 
 	// when to accept
 	protected AcceptanceStrategy acceptConditions;
