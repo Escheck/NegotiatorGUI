@@ -1,15 +1,18 @@
 package negotiator.qualitymeasures;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Random;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -19,6 +22,7 @@ import negotiator.analysis.BidSpaceCash;
 import negotiator.exceptions.Warning;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
+import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -87,7 +91,7 @@ public class DomainMeasures {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String dir = "C:\\Path\\To\\Genius\\";
+		String dir = "./";
 		process(dir);
 	}
 
@@ -101,19 +105,21 @@ public class DomainMeasures {
 	public static void process(String dir) throws Exception {
 		ArrayList<DomainInfo> domains = parseDomainFile(dir);
 		
-		SimpleElement prefResults = new SimpleElement("preference_profiles_statistics");
+		SimpleElement prefResults = new OrderedSimpleElement("preference_profiles_statistics");
 		for (DomainInfo domainSt : domains) {
 			Domain domain = new Domain(dir + domainSt.getDomain());
 			UtilitySpace utilitySpaceA, utilitySpaceB;
 			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
 			utilitySpaceB =  new UtilitySpace(domain, dir + domainSt.getPrefProfB());
-			SimpleElement results = new SimpleElement("domain_result");
+			SimpleElement results = new OrderedSimpleElement("domain_result");
 			results.setAttribute("domain", domainSt.getDomain());
+			results.setAttribute("profileA", domainSt.getPrefProfA());
+			results.setAttribute("profileB", domainSt.getPrefProfB());
 			
 			calculateDistances(results, utilitySpaceA, utilitySpaceB);
 			
 			prefResults.addChildElement(results);
-			System.out.println("Processed domain: " + domain.getName());
+			System.out.println("Processed domain: " + domain.getName() + " \t [" + utilitySpaceA.getFileName() + " , " + utilitySpaceB.getFileName() + "]");
 		}
 		writeXMLtoFile(prefResults, dir + "domain_info.xml");
 	}
