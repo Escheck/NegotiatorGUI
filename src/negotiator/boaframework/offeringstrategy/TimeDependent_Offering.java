@@ -29,6 +29,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	private BidDetails maxBid;
 	private double discount;
 	private final boolean EQUIVALENCE_TEST = false;
+	private final boolean STRICT_FATIMA_TDT = true;
 	
 	public TimeDependent_Offering(){}
 	
@@ -79,7 +80,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	public BidDetails determineNextBid() {
 		double time = negotiationSession.getTime();
 		double utilityGoal;
-		if (EQUIVALENCE_TEST || discount == 1.0) {
+		if (STRICT_FATIMA_TDT || EQUIVALENCE_TEST || discount == 1.0) {
 			utilityGoal = p(time);
 		} else {
 			utilityGoal = Math.pow(negotiationSession.getDiscountFactor(), negotiationSession.getTime()) * p(time);
