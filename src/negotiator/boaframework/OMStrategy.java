@@ -3,6 +3,7 @@ package negotiator.boaframework;
 import java.util.HashMap;
 import java.util.List;
 
+import misc.Range;
 import negotiator.bidding.BidDetails;
 
 /**
@@ -28,6 +29,11 @@ public abstract class OMStrategy implements Cloneable {
 	}
 	
 	public abstract BidDetails getBid(List<BidDetails> bidsInRange);
+	
+	public BidDetails getBid(OutcomeSpace space, Range range) {
+		List<BidDetails> bids = space.getBidsinRange(range);
+		return getBid(bids);
+	}
 	
 	public OMStrategy clone() {
 		try {
