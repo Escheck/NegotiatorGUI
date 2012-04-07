@@ -29,6 +29,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class TournamentMeasures {
 	
+	private static boolean SKIP_TRAJECTORY_ANALYSIS = false;
+	
 	/**
 	 * Class which parses a normal outcomes log and stores all the information in objects.
 	 */
@@ -43,7 +45,9 @@ public class TournamentMeasures {
 			
 			if (!processTournamentBasedQM(nsURI, strippedName, tagName, attributes)) {
 				if (!processUtilityBasedQM(nsURI, strippedName, tagName, attributes)) {
-					processTrajectoryBasedQM(nsURI, strippedName, tagName, attributes);
+					if (!SKIP_TRAJECTORY_ANALYSIS) {
+						processTrajectoryBasedQM(nsURI, strippedName, tagName, attributes);
+					}
 				}
 			}
 		}
@@ -187,8 +191,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/Rounds IAMcrazyHaggler - A.xml";
-			String out = "c:/Documents and Settings/Mark/Media Knowledge Engineering/ANAC paper/improved test results/equivalence test/results2.xml";
+			String in = "c:/Users/Mark/workspace/Genius/log/DT-2012-04-07 16.37.56.xml" ;
+			String out = "c:/Users/Mark/workspace/Genius/log/result.xml" ;
 			
 			process(in, out);
 		} catch (Exception e) {
@@ -244,11 +248,6 @@ public class TournamentMeasures {
 	 */
 public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, ArrayList<ArrayList<OutcomeInfo>> runs, HashSet<String> agents) {
 		SimpleElement tournamentQualityMeasures = new SimpleElement("tournament_quality_measures");
-		System.out.println("RUNS: " + runs.size());
-		System.out.println("OUTCOMES: " + outcomes.size());
-		for (int i = 0; i < runs.size(); i++) {
-			System.out.println("run " + i + "  " + runs.get(i).size());
-		}
 		for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
 			String agentName = agentsIter.next();
 			SimpleElement agentElement = new SimpleElement("NegotiationOutcome");
@@ -275,17 +274,19 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 			tournamentQM.setAttribute("average_discounted_util_of_agreements", getAverageDiscountedUtility(outcomes, agentName, true) + "");
 			tournamentQM.setAttribute("average_discounted_util", getAverageDiscountedUtility(outcomes, agentName, false) + "");
 			
+			
+			tournamentQM.setAttribute("std_time_of_agreement", getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName) + "");
+			tournamentQM.setAttribute("std_discounted_util", getStandardDeviationOfDiscountedUtility(runs, agentName) + "");
+			tournamentQM.setAttribute("std_rounds", getStandardDeviationOfTotalRounds(runs, agentName) + "");
+			
 			SimpleElement utilityBasedQM = new SimpleElement("UtilityBasedQM");
 			agentElement.addChildElement(utilityBasedQM);
 			utilityBasedQM.setAttribute("average_nash_distance", getAverageNashDistance(outcomes, agentName) + "");
 			utilityBasedQM.setAttribute("average_pareto_distance", getAverageParetoDistance(outcomes, agentName) + "");
 			utilityBasedQM.setAttribute("average_kalai_distance", getAverageKalaiDistance(outcomes, agentName) + "");
 			
-			SimpleElement runBasedQM = new SimpleElement("RunBasedQM");
-			agentElement.addChildElement(runBasedQM);
-			getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName);
-			getStandardDeviationOfDiscountedUtility(runs, agentName);
-			getStandardDeviationOfTotalRounds(runs, agentName);
+
+			
 			
 			SimpleElement prefOpponentModelQM = new SimpleElement("PrefOpponentModelQM");
 			agentElement.addChildElement(prefOpponentModelQM);
@@ -299,7 +300,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 			
 			// discard invalid trajectories
 			ArrayList<OutcomeInfo> newOutcomes = discardInvalidTrajectories(outcomes);
-			System.out.println("groot: " + outcomes.size());
+
 			trajectorAnalysisQM.setAttribute("percentage_of_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(newOutcomes, agentName) + "");
 			trajectorAnalysisQM.setAttribute("percentage_of_fortunate_moves", getAveragePercentageOfFortunateMoves(newOutcomes, agentName) + "");
 			trajectorAnalysisQM.setAttribute("percentage_of_nice_moves", getAveragePercentageOfNiceMoves(newOutcomes, agentName) + "");
@@ -332,13 +333,13 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 	 * @param runs
 	 * @param agentName
 	 */
-	private static void getStandardDeviationOfDiscountedUtility(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+	private static double getStandardDeviationOfDiscountedUtility(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
 		for (int i = 0; i < runs.size(); i++) {
 			double averageOfRun = getAverageDiscountedUtility(runs.get(i), agentName, false);
-			System.out.println(averageOfRun);
+			
 			sumOfAverages += averageOfRun;
 			results[i] = averageOfRun;
 		}
@@ -348,6 +349,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 		}
 		// n-1 due to Bessel's correction
 		double variance = squaredSumOfDeviations / (runs.size() - 1);
+		return Math.sqrt(variance);
 	}
 	
 	/**
@@ -357,7 +359,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 	 * @param outcomes
 	 * @param agentName
 	 */
-	private static void getStandardDeviationOfTotalRounds(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+	private static double getStandardDeviationOfTotalRounds(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
@@ -372,6 +374,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 		}
 		// n-1 due to Bessel's correction
 		double variance = squaredSumOfDeviations / (runs.size() - 1);
+		return Math.sqrt(variance);
 	}
 
 	/**
@@ -380,7 +383,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 	 * @param outcomes
 	 * @param agentName
 	 */
-	private static void getStandardDeviationOfTimeOfAgreement(ArrayList<ArrayList<OutcomeInfo>> runs, ArrayList<OutcomeInfo> outcomes, String agentName) {
+	private static double getStandardDeviationOfTimeOfAgreement(ArrayList<ArrayList<OutcomeInfo>> runs, ArrayList<OutcomeInfo> outcomes, String agentName) {
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
 		for (int i = 0; i < runs.size(); i++) {
@@ -393,6 +396,7 @@ public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, A
 		}
 		// n-1 due to Bessel's correction
 		double variance = squaredSumOfDeviations / (runs.size() - 1);
+		return Math.sqrt(variance);
 	}
 	
 	/**
