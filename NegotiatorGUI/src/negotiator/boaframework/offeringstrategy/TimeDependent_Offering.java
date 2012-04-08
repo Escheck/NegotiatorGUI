@@ -10,6 +10,7 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.NullModel;
 
 /**
  * This is an abstract class used to implement a TimeDependentAgent Strategy adapted from [1]
@@ -86,7 +87,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 			utilityGoal = Math.pow(negotiationSession.getDiscountFactor(), negotiationSession.getTime()) * p(time);
 		}
 		
-		if (opponentModel == null || !opponentModel.isCompleteModel()) {
+		if (opponentModel instanceof NullModel) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
 			List<BidDetails> bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + 0.1));

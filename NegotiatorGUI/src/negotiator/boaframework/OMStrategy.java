@@ -39,6 +39,8 @@ public abstract class OMStrategy implements Cloneable {
 		return getBid(bids);
 	}
 	
+	public abstract boolean canUpdateOM();
+	
 	public OMStrategy clone() {
 		try {
 			OMStrategy clone = (OMStrategy) super.clone();
