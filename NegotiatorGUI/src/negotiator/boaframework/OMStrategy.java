@@ -32,6 +32,10 @@ public abstract class OMStrategy implements Cloneable {
 	
 	public BidDetails getBid(OutcomeSpace space, Range range) {
 		List<BidDetails> bids = space.getBidsinRange(range);
+		if (bids.size() == 0) {
+			range.increaseUpperbound(0.01);
+			getBid(space, range);
+		}
 		return getBid(bids);
 	}
 	

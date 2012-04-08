@@ -523,12 +523,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	
 	private void changeNameofAC(boolean agentAWithMultiAC, boolean agentBWithMultiAC, OutcomeTuple tuple) {
 		if(agentAWithMultiAC){
-			String newName = no.agentAname.replaceAll("Multi_AC", tuple.getName());
+			String newName = no.agentAname.replaceAll("Multi Acceptance Criteria", tuple.getName());
 			no.agentAname = newName;
 		}
 		if(agentBWithMultiAC) {
 			//System.out.println("Name of agent: " + no.agentBname);
-			String newName = no.agentBname.replaceAll("Multi_AC", tuple.getName());
+			String newName = no.agentBname.replaceAll("Multi Acceptance Criteria", tuple.getName());
 			no.agentBname = newName;
 
 			//System.out.println("Changed Name of agent: " + newName);

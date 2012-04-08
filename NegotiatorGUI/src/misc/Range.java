@@ -31,4 +31,8 @@ public class Range {
 	public void setLowerbound(double lbound){
 		lowerbound = lbound;
 	}
+	
+	public void increaseUpperbound(double increment) {
+		upperbound = upperbound + increment;
+	}
 }
