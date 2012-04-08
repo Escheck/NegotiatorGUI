@@ -27,6 +27,8 @@ public class OfferBestN extends OMStrategy {
 	private int bestN;
 	// used to sort the opponent's bid with regard to utility
 	private static BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
+	// when to stop updating
+	double updateThreshold = 1.0;
 	
 	public OfferBestN() { }
 
@@ -41,6 +43,11 @@ public class OfferBestN extends OMStrategy {
 			initializeAgent(negotiationSession, model, parameters.get("n").intValue());
 		} else {
 			throw new Exception("Constant \"n\" for amount of best bids was not set.");
+		}
+		if (parameters.get("t") != null) {
+			updateThreshold = parameters.get("t").doubleValue();
+		} else {
+			System.out.println("OMStrategy assumed t = 1.0");
 		}
 	}
 	
@@ -77,5 +84,10 @@ public class OfferBestN extends OMStrategy {
 			e.printStackTrace();
 		}
 		return nextBid;
+	}
+
+	@Override
+	public boolean canUpdateOM() {
+		return negotiationSession.getTime() < updateThreshold;
 	}
 }

@@ -18,6 +18,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeSpace;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.acceptanceconditions.Multi_AcceptanceCondition;
+import negotiator.boaframework.opponentmodel.NullModel;
 
 /**
  * This class describes a basic decoupled agent. The TheDecoupledAgent class extends
@@ -85,8 +86,10 @@ public abstract class BOAagent extends Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (opponentModel != null && opponentModel.isCompleteModel()) {
-				opponentModel.updateModel(bid);
+			if (!(opponentModel instanceof NullModel)) {
+				if (omStrategy.canUpdateOM()) {
+					opponentModel.updateModel(bid);
+				}
 			}
 		}
 	}

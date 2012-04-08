@@ -22,4 +22,9 @@ public class NullStrategy extends OMStrategy {
 	public BidDetails getBid(List<BidDetails> allBids) {
 		return allBids.get(rand.nextInt(allBids.size()));
 	}
+
+	@Override
+	public boolean canUpdateOM() {
+		return true;
+	}
 }

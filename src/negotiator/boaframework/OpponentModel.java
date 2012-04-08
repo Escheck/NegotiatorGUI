@@ -28,10 +28,6 @@ public abstract class OpponentModel implements Cloneable {
 
 	public abstract void updateModel(Bid opponentBid);
 	
-	public boolean isCompleteModel() {
-		return true;
-	}
-	
 	/**
 	 * Determines the utility of the opponent according to the OpponentModel
 	 * @param Bid
