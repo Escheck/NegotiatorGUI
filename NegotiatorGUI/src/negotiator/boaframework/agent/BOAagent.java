@@ -110,12 +110,13 @@ public abstract class BOAagent extends Agent {
 		} else {
 			bid = offeringStrategy.determineNextBid();
 		}
-		offeringStrategy.setNextBid(bid);
 		
 		// if the offering strategy made a mistake and didn't set a bid: accept
 		if (bid == null) {
 			System.out.println("Error in code, null bid was given");
 			return new Accept(this.getAgentID());
+		} else {
+			offeringStrategy.setNextBid(bid);
 		}
 		
 		// check if the opponent bid should be accepted
