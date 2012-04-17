@@ -615,7 +615,7 @@ In this section we create a \textit{BOA agent} by selecting its components from 
 	\label{fig:settings}
 \end{figure}
 
-The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opened by clicking in the \textit{Values} section after \textit{DecoupledAgent Side A} or \textit{DecoupledAgent Side B}. In this GUI four component types are shown: \textit{bidding strategy}, \textit{acceptance strategy}, \textit{opponent model}, and the \textit{opponent model strategy}.
+The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opened by clicking in the \textit{Values} section next to the \textit{BOA Agent Side A} or \textit{BOA Agent Side B}. In this GUI four component types are shown: \textit{bidding strategy}, \textit{acceptance strategy}, \textit{opponent model}, and the \textit{opponent model strategy}.
 
 \begin{figure}[h!]
 	\center
@@ -624,7 +624,7 @@ The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opene
 	\label{fig:decoupledGUI}
 \end{figure}
 
-Our goal in this section is to create three variants of \textit{TheNegotiator}. First, we select the bidding strategy \textit{ANAC2011 - The Negotiator} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Perfect} opponent model. As there is no tooltip, we know that this model does not require parameters. Finally, we select \textit{Offer best n} as opponent model strategy. This component requires a parameter $n$, for which we use 1.
+Our goal in this section is to create three variants of \textit{IAMCrazyHaggler}. First, we select the bidding strategy \textit{ANAC2010 - IAMcrazyHaggler} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Frequency} opponent model. This model requires the parameters $l$ and $v$ which we will assign as 1 and 0.2 respectively.  Finally, we select the \textit{null} opponent model strategy. This component requires no parameters.
 
 \begin{figure}[h!] 
 	\center
@@ -633,7 +633,7 @@ Our goal in this section is to create three variants of \textit{TheNegotiator}. 
 	\label{fig:decoupledparam}
 \end{figure}
 
-To summarize: we created three variants of \textit{TheNegotiator}. All variants use a perfect opponent model, and offer the best possible bid for the opponent given the bids under consideration in a round. The variants differ in when they accept, variants with a higher value for $b$ accept earlier in general.
+To summarize: we created three variants of \textit{IAMCrazyHaggler}. All variants use a frequency opponent model, and choose a random bid out of the bids that are being considered in a round. The variants differ in when they accept, variants with a higher value for $a$ and $b$ will in general accept earlier.
 
 \subsection{Creating New Components}
 This section discusses how to create new components for the BOA framework. The next section discusses how these components can be added to the BOA framework.
@@ -688,7 +688,7 @@ In the \textit{init} method we make a reference to the opponent's bidding histor
 
 Finally, we have to specify when to accept and opponent bid by implementing \textit{determineAcceptability}. The implementation shown accepts an opponent bid when the utility of the bid is higher than a linear function of the bid under consideration for offering (\textit{nextBid}).
 
-In this acceptance condition a bid is only accepted or rejected. In some cases, in particular when reservation values are used, it can rational to end the negotiation prematurely. This is possible by returning \textit{Actions.Break}.
+This acceptance condition will only accepted or rejected a bid, however there are some scenarios in which it is rational to end the negotiation prematurely (e.g. when working with reservation values).  This can be done by returning the action breakoff (\textit{Actions.Break}).
 
 \begin{figure}[htb]
 \begin{lstlisting}[basicstyle=\small]
@@ -726,10 +726,9 @@ public class AC_Next extends AcceptanceStrategy {
 \end{figure}
 
 \subsubsection{Creating an Opponent Model}
-This section discusses how to implement an opponent model. An opponent model in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least \textit{init}, \textit{updateModel}, \textit{getBidEvaluation}, and \textit{getDiscountedBidEvaluation} are implemented. Since opponent models are relatively more complex to implement in comparison to the other components, we do not discuss them and instead refer to the class \textit{BayesianModelScalable}.
+This section discusses how to implement an opponent model. An opponent model in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least \textit{init}, \textit{updateModel}, \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are implemented. The  \textit{updateModel} is given a bid which is then used to update the opponent model.  This is usually called when a new bid is received from the opponent. The methods \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are used to obtain the estimated (discounted) utility of the opponent for a particular bid based on the opponent model. Since opponent models are relatively more complex to implement in comparison to the other components, we do not present an example but instead refer to the class \textit{IAMhaggler2010 Model}.\\
 
-\subsubsection{Creating an Opponent Model Strategy}
-This section discusses the implementation of the null opponent model strategy visualized in Figure~\ref{code:nulloms}. An opponent model strategy uses an opponent model to select a bid for the opponent given a set of bids. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init} and \textit{getBid}.
+The opponent model also comprise of a sub-component, the \textit{Opponent Model Strategy}.  This component determines which bid the opponent model should return.  Below is the implementation of the null opponent model strategy visualized in Figure~\ref{code:nulloms}. An opponent model strategy uses an opponent model to select a bid for the opponent given a set of bids. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init} and \textit{getBid}.
 
 \begin{figure}[h!]
 \begin{lstlisting}[basicstyle=\small]
@@ -760,16 +759,16 @@ In the previous section we discussed how to create the components. To use the co
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="boarepository.xml">
   <biddingstrategies>
-   <biddingstrategy description="TDT" classPath="TDT_BS" tooltip="'e' for concession."/>
+  <biddingstrategy description="ANAC2010 - IAMcrazyHaggler" classPath="IAMCrazyHaggler_Offering"/>
   </biddingstrategies>
   <acceptanceconditions>
-   <acceptancecondition description="CombiMaxInWindow" classPath="AC_CMIW"/>	
+  <acceptancecondition description="Other - Next" classPath="AC_Next" tooltip="'a' for multiplier. 'b' for constant."/>		
   </acceptanceconditions>
   <opponentmodels>
-   <opponentmodel description="Bayesian" classPath="BayesianModel"/>
+   <opponentmodel description="IAMhaggler2010 Model" classPath="IAMhagglerModel" tooltip="'t' for time. 'a' for use all bids"/>
   </opponentmodels>
   <omstrategies>
-   <omstrategy description="Offer best n" classPath="OfferBestN" tooltip="'n' for count"/>
+  <omstrategy description="Null" classPath="NullStrategy"/>
   </omstrategies>
 </repository>
 \end{lstlisting}
@@ -777,11 +776,11 @@ In the previous section we discussed how to create the components. To use the co
 \end{figure}
 
 \subsection{Multi-Acceptance Criteria (MAC)}
-The \textit{BOA framework} allows to easily explore a large space of negotiation strategies. MAC can be used to scale down a negotiation space, and thereby make it more computationally traceable.
+The \textit{BOA framework} allows to easily explore a large space of negotiation strategies. MAC can be used to scale down a negotiation space, and thereby make it more computationally explorable.
 
 As discussed in the introduction of this chapter, the acceptance condition determines solely if a bid should be accepted. This entails that it does not influence the bidding trace, except for when it is cut-off. In fact, given a \textit{BOA agent} which does not accept, the only difference between variants of the strategy with other acceptance conditions is the time of agreement (assuming that the computational cost of the acceptance conditions are negligible).
 
-Given this property, multi acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
+Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
 This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. Figure~\ref{code:mac} illustrates how to efficiently use the MAC.
 
@@ -805,9 +804,9 @@ This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. Th
 
 
 \section{Distributed Genius}
-Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius. The speed-up is linear to the amount of computers.
+Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius. The speed-up is increased linear with the amount of computers.
 
-Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split in smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
+Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split into smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
 
 \begin{figure}[h!] 
 	\center
@@ -816,13 +815,13 @@ Distributed \Genius ~works with a central MySQL database. A job can be submitted
 	\label{fig:dtsettings}
 \end{figure}
 
-It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament, since when there are no unclaimed jobs left it is checked whether all sessions had been processed. If all sessions are processed, then each client automatically reconstructs the full log of the tournament. If this is note the case, then the client waits as it can happen that another client is still busy with the job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
+It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament; when there are no unclaimed jobs left, each client checks whether all sessions have been processed.  If all the jobs have been processed then each client reconstructs the full log of the tournament, if not all the processes have been processed, then the client waits, as it is possible that another client is still busy with a job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
 
 The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
 
-Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius.
+Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius and agent code.
 
-The database structure can created by using the SQL dump which can be found in the directory \textit{database}. Note that the script assumes that the \textit{InnoDB} database engine is available to define the ``Delete on cascade'' relationship between the \textit{Jobs} and \textit{Sessions} table. This relationship enforces that when a user deletes a job in the database, that the corresponding sessions are also delete. Note that deleting jobs is not part of the program, and therefore the requirement to use \textit{InnoDB} is not strict.
+The database structure can be created by using the SQL dump which can be found in the directory \textit{database}. 
 
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
