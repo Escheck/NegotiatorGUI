@@ -780,7 +780,7 @@ As discussed in the introduction of this chapter, the acceptance condition deter
 
 Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
-To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel.  This is where you have to add the desired acceptance conditions. The code below illustrates an example of a MAC component.
+To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. An acceptance can be added to the MAC by appending it to the AClist The code below illustrates an example of a MAC component.
 
 \begin{lstlisting}
 public class AC_MAC extends Multi_AcceptanceCondition {
@@ -794,13 +794,9 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 		ACList = new ArrayList<AcceptanceStrategy>();
 		
 		for (int e = 0; e < 5; e++) {
-			ACList.add(new AC_Next(negotiationSession, offeringStrategy, 1, 0));
+			ACList.add(new AC_Next(negotiationSession, offeringStrategy, 1, 
+												e * 0.01));
 		}
-
-		ACList.add(new AC_TheNegotiator(negotiationSession, offeringStrategy));
-		ACList.add(new AC_HardHeaded(negotiationSession, offeringStrategy));
-		ACList.add(new AC_NiceTitForTat(negotiationSession, offeringStrategy));
-		ACList.add(new AC_IAMHaggler2011(negotiationSession, offeringStrategy));	
 	}
 }
 
