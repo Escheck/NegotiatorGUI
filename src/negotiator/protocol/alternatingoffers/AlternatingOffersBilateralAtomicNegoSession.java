@@ -208,9 +208,23 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					try 
 					{
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
-						BidPoint nash = getBidSpace().getNash();
+						BidPoint nash = bidSpace.getNash();
 						double distanceToNash = lastbidPoint.distanceTo(nash);
-						newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+
+						checkForMAC();
+						if(!agentBWithMultiAC && !agentAWithMultiAC){	
+							newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+							}else {
+								System.out.println("Error thrown: with MAC agent");
+								for(ArrayList<OutcomeTuple> outcomeTupleList : completeList )
+								for(OutcomeTuple outcomeTuple : outcomeTupleList){
+									newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+									changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
+									System.out.println("OutcomeTuple: " + outcomeTuple.toString());
+									MACoutcomes.add(no);
+								}
+							}
+						
 						System.err.println("Emergency outcome: " + agentAUtility + ", " + agentBUtility);
 					}
 					catch (Exception err) { err.printStackTrace(); new Warning("exception raised during exception handling: "+err); }

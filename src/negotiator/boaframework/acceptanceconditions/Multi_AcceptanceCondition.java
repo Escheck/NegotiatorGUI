@@ -20,22 +20,23 @@ import negotiator.Bid;
 public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 
 	// list of acceptance strategies to checked for acceptance
-	private ArrayList<AcceptanceStrategy> ACList;
+	protected ArrayList<AcceptanceStrategy> ACList;
 	// list of outcomes; an outcome is added when an AC accepts, or the negotiation ended
-	private ArrayList<OutcomeTuple> outcomes;
+	protected ArrayList<OutcomeTuple> outcomes;
 	
 	public Multi_AcceptanceCondition() { }
 
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
-		this.negotiationSession = negoSession;
+		//this.negotiationSession = negoSession;
 		outcomes = new ArrayList<OutcomeTuple> ();
 		ACList = new ArrayList<AcceptanceStrategy>();
 		
-		// EXAMPLE: add 36 variants of the AC_CombiV4 acceptance condition
+		/*// EXAMPLE: add 36 variants of the AC_CombiV4 acceptance condition
 		for(int d = 0; d <= 35; d += 1) {
 			ACList.add(new AC_CombiV4(negoSession, strat, 1, 0, 0.85 + d * 0.01, 0, 0.95));
-		}	
+		}
+		*/	
 	}
 	
 	/**
@@ -56,8 +57,9 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 				Bid lastOpponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
 				String name = a.getClass().getSimpleName() + " " + printParameters(a);
 				double time = negotiationSession.getTime();
-				System.out.println(name + " accepted Bid Starting: " + startingAgent);
+				//System.out.println(name + " accepted Bid");
 
+				//sets the amount of bids made for agent A and agent B
 				OutcomeTuple outcome;
 				if(startingAgent) {
 					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size());
