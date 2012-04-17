@@ -557,10 +557,9 @@ To compile the agent, you put \texttt{YourAgent.java} code in the directory cont
 After compilation, the resulting \texttt{YourAgent.class} file can be loaded into the negotiator simulator by typing ``YourAgent'' (fill in your actual agent name) in the negotiation set-up screen (Figure 8). Make sure your agent can be found in the same directory structure as is indicated by its package header.
 
 \subsection{Loading an Agent with Parameters}
-A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. Figure~\ref{code:agentrep} visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
+A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. The code below visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
 
-\begin{figure}[htb]
-\begin{lstlisting}[basicstyle=\small]
+\begin{lstlisting}
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="agentrepository.xml">
   <items>
@@ -573,14 +572,12 @@ A compiled agent can also be loaded by directly adding the agent to the reposito
 <filename>agentrepository.xml</filename>
 </repository>
 \end{lstlisting}
-\caption{Agent repository containing a single agent.}\label{code:agentrep}
-\end{figure}
  
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
 \section{BOA framework}
-Instead of implementing your negotiating agent from scratch, you may opt to use the already existing \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to implement separate components of a negotiation strategy. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
+Instead of implementing your negotiating agent from scratch, you may opt to use the \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to reuse existing components. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
 
 The advantages of separating the negotiation strategy into these three components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
 
@@ -589,7 +586,7 @@ A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists 
 \begin{description}
   \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it.%, passing one or multiple bids and see how they compare within the opponent's utility space.
 
-  \item[Opponent model] An opponent model is a learning technique that constructs a model of the opponent's negotiation profile.% In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
+  \item[Opponent model] An opponent model is in the BOA framework a learning technique that constructs a model of the opponent's preference profile.% In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
   \item[Acceptance strategy] The acceptance strategy determines whether the bid that the opponent has presented is acceptable.
 \end{description}
 The components interact in the following way (the full process is visualized in Figure~\ref{fig:flowchart}). When receiving an opponent bid, the BOA agent first updates the \textit{bidding history} and \textit{opponent model} to make sure the most up to date data is used, maximizing the information known about the environment and opponent.
@@ -624,7 +621,7 @@ The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opene
 	\label{fig:decoupledGUI}
 \end{figure}
 
-Our goal in this section is to create three variants of \textit{IAMCrazyHaggler}. First, we select the bidding strategy \textit{ANAC2010 - IAMcrazyHaggler} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Frequency} opponent model. This model requires the parameters $l$ and $v$ which we will assign as 1 and 0.2 respectively.  Finally, we select the \textit{null} opponent model strategy. This component requires no parameters.
+Our goal in this section is to create three variants of \textit{IAMCrazyHaggler}. First, we select the bidding strategy \textit{ANAC2010 - IAMcrazyHaggler} under the heading \textit{Bidding Strategy}. Next, we select the acceptance condition \textit{Other - Next}. If we hold our mouse still for a few seconds on this element, we see that it assumes that a parameter $a$ and $b$ are given. In our case we want to create three variants: $a=1, b=0$, $a=1, b=0.05$, and $a=1, b=0.10$. Both parameters can be added by using the $Add$ button under the list of acceptance strategies. Adding the parameter $b$ is visualized in figure~\ref{fig:decoupledparam}. Following, we select the \textit{Frequency} opponent model. This model requires the parameters $l$ and $v$ which we will assign as 1 and 0.2 respectively.  Next, we select the \textit{null} opponent model strategy. This component requires no parameters. Finally, we select ``add agents'' to create the agents and ``save'' to store them for usage in the negotiation.
 
 \begin{figure}[h!] 
 	\center
@@ -639,7 +636,7 @@ To summarize: we created three variants of \textit{IAMCrazyHaggler}. All variant
 This section discusses how to create new components for the BOA framework. The next section discusses how these components can be added to the BOA framework.
 
 \subsubsection{Creating a Bidding Strategy}
-Figure~\ref{code:biddingstrategy} visualizes the bidding strategy of \textit{IAMCrazyHaggler}. The first step in creating a component, is creating a new class which extends the class \textit{OfferingStrategy}. The \textit{OfferingStrategy} class is an abstract class, which forces to implement the \textit{init}, \textit{determineOpeningBid} and \textit{determineNextBid} methods.
+The code below is used to create the bidding strategy of \textit{IAMCrazyHaggler}. The first step in creating a component, is creating a new class which extends the class \textit{OfferingStrategy}. The \textit{OfferingStrategy} class is an abstract class, which forces to implement the \textit{init}, \textit{determineOpeningBid} and \textit{determineNextBid} methods.
 
 The reference to \textit{negotiationsession} is important, as this object stores all information about the current match, including all bids done by the opponent and the agent itself.
 
@@ -647,8 +644,8 @@ Next, we implement \textit{determineOpeningBid}, which should specify the first 
 
 An approach often taken by more complex agents, is to first generate all possible bids. While this can take a long time, it allows to efficiently look up bids during the negotiation. The \textit{SortedOutcomeSpace} can be used to efficiently generate and access all possible bids during the negotiation. For an example of how to use this class we refer to the class \textit{TimeDependent\_Offering}. This class also specifies how parameters can be added.
 
-\begin{figure}[htb]
-\begin{lstlisting}[basicstyle=\small]
+
+\begin{lstlisting}
 public class IAMCrazyHaggler_Offering extends OfferingStrategy {
 	private double breakoff = 0.9;
 	private UtilitySpace space;
@@ -678,11 +675,10 @@ public class IAMCrazyHaggler_Offering extends OfferingStrategy {
 	}
 }
 \end{lstlisting}
-\caption{The bidding strategy of IAMCrazyHaggler.}\label{code:biddingstrategy}
-\end{figure}
+
 
 \subsubsection{Creating an Acceptance Condition}
-This section discusses the implementation of $\textbf{AC}_{next}$ visualized in Figure~\ref{code:acnext}. Identical to the bidding strategy, an new class has to be created which extends the \textit{AcceptanceStrategy} class. This abstract class forces the implementation of two methods: \textit{init} and \textit{determineAcceptability}.
+This section discusses the implementation of $\textbf{AC}_{next}$ visualized in the code below. Identical to the bidding strategy, an new class has to be created which extends the \textit{AcceptanceStrategy} class. This abstract class forces the implementation of two methods: \textit{init} and \textit{determineAcceptability}.
 
 In the \textit{init} method we make a reference to the opponent's bidding history for easy access. The framework keeps track of both the agent's and opponent's bidding history. The last bid made by our agent is stored in a special variable \textit{nextBid}. In contrast to the bidding strategy discussed in the previous section, this component expects a parameter $a$ and $b$.
 
@@ -690,8 +686,7 @@ Finally, we have to specify when to accept and opponent bid by implementing \tex
 
 This acceptance condition will only accepted or rejected a bid, however there are some scenarios in which it is rational to end the negotiation prematurely (e.g. when working with reservation values).  This can be done by returning the action breakoff (\textit{Actions.Break}).
 
-\begin{figure}[htb]
-\begin{lstlisting}[basicstyle=\small]
+\begin{lstlisting}
 public class AC_Next extends AcceptanceStrategy {
 	private double a = 1.0;
 	private double b = 0.0;
@@ -700,7 +695,8 @@ public class AC_Next extends AcceptanceStrategy {
 	public AC_Next() { }
 
 	public void init(NegotiationSession negotiationSession,
-				OfferingStrategy offeringStrat, HashMap<String, Double> parameters)
+				OfferingStrategy offeringStrat, HashMap<String, 
+				Double> parameters)
 				throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.offeringStrategy = offeringStrat;
@@ -713,8 +709,10 @@ public class AC_Next extends AcceptanceStrategy {
 	}
 
 	public Actions determineAcceptability() {
-		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
-		double lastOppUtil = oppHistory.getLastBidDetails().getMyUndiscountedUtil();
+		double nextMyBidUtil = offeringStrategy.getNextBid().
+										getMyUndiscountedUtil();
+		double lastOppUtil = oppHistory.getLastBidDetails().
+										getMyUndiscountedUtil();
 		if (a * lastOppUtil + b >= nextMyBidUtil) {
 			return Actions.Accept;
 		}
@@ -722,16 +720,13 @@ public class AC_Next extends AcceptanceStrategy {
 	}
 }
 \end{lstlisting}
-\caption{The acceptance condition $\textbf{AC}_{next}$.}\label{code:acnext}
-\end{figure}
 
 \subsubsection{Creating an Opponent Model}
-This section discusses how to implement an opponent model. An opponent model in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least \textit{init}, \textit{updateModel}, \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are implemented. The  \textit{updateModel} is given a bid which is then used to update the opponent model.  This is usually called when a new bid is received from the opponent. The methods \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are used to obtain the estimated (discounted) utility of the opponent for a particular bid based on the opponent model. Since opponent models are relatively more complex to implement in comparison to the other components, we do not present an example but instead refer to the class \textit{IAMhaggler2010 Model}.\\
+This section discusses how to implement an opponent model. An opponent model in the BOA framework should extend the \textit{OpponentModel} class. This class enforces that at least \textit{init}, \textit{updateModel}, \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are implemented. The  \textit{updateModel} is given a bid which is then used to update the opponent model.  This method should be called when a new bid is received from the opponent. The methods \textit{getBidEvaluation} and \textit{getDiscountedBidEvaluation} are used to obtain the estimated (discounted) utility of the opponent for a particular bid based on the opponent model. Since opponent models are relatively more complex to implement in comparison to the other components, we do not present an example but instead refer to the class \textit{IAMhaggler2010 Model}.\\
 
-The opponent model also comprise of a sub-component, the \textit{Opponent Model Strategy}.  This component determines which bid the opponent model should return.  Below is the implementation of the null opponent model strategy visualized in Figure~\ref{code:nulloms}. An opponent model strategy uses an opponent model to select a bid for the opponent given a set of bids. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init} and \textit{getBid}.
+The opponent model also comprise of a sub-component, the \textit{Opponent Model Strategy}. This component can be seen as the part of the bidding strategy which determines which bid the opponent model should return when presented with alternatives and when the opponent model may be updated.  Visualized below is the implementation of the null opponent model strategy. The null strategy simply selects a random bid. A opponent model strategy class should extend the \textit{OMStrategy} class and implement \textit{init}, \textit{canUpdateOM} and \textit{getBid}.
 
-\begin{figure}[h!]
-\begin{lstlisting}[basicstyle=\small]
+\begin{lstlisting}
 public class NullStrategy extends OMStrategy {
 
 	private Random rand;
@@ -742,38 +737,41 @@ public class NullStrategy extends OMStrategy {
 				HashMap<String, Double> parameters) throws Exception {
 		rand = new Random();
 	}
-	
+
+	@Override
+	public boolean canUpdateOM() {
+		return true;
+	}
+
 	public BidDetails getBid(List<BidDetails> allBids) {
 		return allBids.get(rand.nextInt(allBids.size()));
 	}
 }
 \end{lstlisting}
-\caption{The opponent model strategy \textit{null}.}\label{code:nulloms}
-\end{figure}
 
 \subsection{Adding Components to the Repository}
-In the previous section we discussed how to create the components. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius ~and its structure is similar to the small repository shown in Figure~\ref{code:boarep}. There are four main categories corresponding to the component types. Each element in a category has to specify a description and a classpath. Optionally, a tooltip element can be specified to discuss which parameters are expected.
+In the previous section we discussed how to create the components. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius ~and its structure is similar to the small repository shown below. There are four main categories corresponding to the component types. Each element in a category has to specify a description and a classpath. Optionally, a tooltip element can be specified to discuss which parameters are expected.
 
-\begin{figure}[h!]
-\begin{lstlisting}[basicstyle=\small]
+\begin{lstlisting}
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="boarepository.xml">
   <biddingstrategies>
-  <biddingstrategy description="ANAC2010 - IAMcrazyHaggler" classPath="IAMCrazyHaggler_Offering"/>
+  <biddingstrategy description="ANAC2010 - IAMcrazyHaggler" 
+		classPath="IAMCrazyHaggler_Offering"/>
   </biddingstrategies>
   <acceptanceconditions>
-  <acceptancecondition description="Other - Next" classPath="AC_Next" tooltip="'a' for multiplier. 'b' for constant."/>		
+  <acceptancecondition description="Other - Next" classPath="AC_Next" 
+		tooltip="'a' for multiplier. 'b' for constant."/>		
   </acceptanceconditions>
   <opponentmodels>
-   <opponentmodel description="IAMhaggler2010 Model" classPath="IAMhagglerModel" tooltip="'t' for time. 'a' for use all bids"/>
+   <opponentmodel description="IAMhaggler2010 Model" 
+		classPath="IAMhagglerModel" tooltip="'t' for time. 'a' for use all bids"/>
   </opponentmodels>
   <omstrategies>
   <omstrategy description="Null" classPath="NullStrategy"/>
   </omstrategies>
 </repository>
 \end{lstlisting}
-\caption{Example of a \textit{BOA repository}.}\label{code:boarep}
-\end{figure}
 
 \subsection{Multi-Acceptance Criteria (MAC)}
 The \textit{BOA framework} allows to easily explore a large space of negotiation strategies. MAC can be used to scale down a negotiation space, and thereby make it more computationally explorable.
@@ -782,29 +780,26 @@ As discussed in the introduction of this chapter, the acceptance condition deter
 
 Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
-This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. Figure~\ref{code:mac} illustrates how to efficiently use the MAC.
+This concept is implemented in the class \textit{Multi\_AcceptanceCondition}. This class allows to add an acceptance condition to a list which is checked each round. Note that to use this functionality it is recommended to extend the components under consideration with a constructor which creates and automatically initializes the component. The code below illustrates how to efficiently use the MAC.
 
-\begin{figure}[h!]
-\begin{lstlisting}[basicstyle=\small]
-	public void init(NegotiationSession ns, OfferingStrategy os,
-				HashMap<String, Double> param) throws Exception {
-		this.negotiationSession = ns;
-		outcomes = new ArrayList<OutcomeTuple> ();
-		ACList = new ArrayList<AcceptanceStrategy>();
+\begin{lstlisting}
+public void init(NegotiationSession ns, OfferingStrategy os,
+			HashMap<String, Double> param) throws Exception {
+	this.negotiationSession = ns;
+	outcomes = new ArrayList<OutcomeTuple> ();
+	ACList = new ArrayList<AcceptanceStrategy>();
 		
-		//  add 36 variants of the AC_CombiV4 acceptance condition
-		for(int d = 0; d <= 35; d += 1) {
-			ACList.add(new AC_CombiV4(ns, os, 1, 0, 0.85 + d * 0.01, 0, 0.95));
-		}	
-	}
+	//  add 36 variants of the AC_CombiV4 acceptance condition
+	for(int d = 0; d <= 35; d += 1) {
+		ACList.add(new AC_CombiV4(ns, os, 1, 0, 0.85 + d * 0.01, 0, 0.95));
+	}	
+}
 \end{lstlisting}
-\caption{Example of using MAC.}\label{code:mac}
-\end{figure}
 
 
 
 \section{Distributed Genius}
-Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius. The speed-up is increased linear with the amount of computers.
+Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius.
 
 Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split into smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
 
@@ -819,7 +814,7 @@ It can happen that a client crashes, or is shut down, while processing a job. In
 
 The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
 
-Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius and agent code.
+Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius~and agent code.
 
 The database structure can be created by using the SQL dump which can be found in the directory \textit{database}. 
 
