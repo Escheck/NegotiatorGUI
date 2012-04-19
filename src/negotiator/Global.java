@@ -73,7 +73,7 @@ public class Global {
 	/** Enables the distributed tournaments functionality of Genius. Also automatically enables
 	 * decoupled agents, as the GUI does not allow unfilled rows.
 	 */
-	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
+	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = false;
 	
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
 	public static final boolean DISCRETE_TIMELINE = false;
@@ -84,7 +84,7 @@ public class Global {
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
 	/** Enable a large set of analysis metrics from which the results are stored in a separate log */
-	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = true;
+	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = false;
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
