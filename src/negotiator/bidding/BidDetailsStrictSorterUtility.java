@@ -4,6 +4,14 @@ import java.util.Comparator;
 
 import negotiator.bidding.BidDetails;
 
+/**
+ * The problem with the default BidDetailsSorterUtility, is that if two bids
+ * have the same utility, then their order can be interchanged.
+ * This guarantees a unique ordering. Note that this class should ONLY be used
+ * when ordering is important (for example to test equivalence of agent strategies).
+ * 
+ * @author Mark Hendrikx
+ */
 public class BidDetailsStrictSorterUtility implements Comparator<BidDetails>
 {
 	public int compare(BidDetails b1, BidDetails b2)
@@ -21,4 +29,3 @@ public class BidDetailsStrictSorterUtility implements Comparator<BidDetails>
 	        return ((Integer) b1.hashCode()).compareTo(b2.hashCode());
 	}
 }
-

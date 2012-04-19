@@ -7,7 +7,7 @@ import java.util.HashMap;
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
-public abstract class  AcceptanceStrategy implements Cloneable {
+public abstract class  AcceptanceStrategy {
 	
 	protected NegotiationSession negotiationSession;
 	protected OfferingStrategy offeringStrategy;
@@ -30,32 +30,6 @@ public abstract class  AcceptanceStrategy implements Cloneable {
 	
 	public String printParameters(){
 		return"";
-	}
-	
-	/**
-	 * Clone method used to create a new object. This is a trick,
-	 * such that we don't have to use reflection to create an object.
-	 */
-	public AcceptanceStrategy clone() {
-		try {
-			AcceptanceStrategy clone = (AcceptanceStrategy) super.clone();
-			clone.negotiationSession = this.negotiationSession;
-			clone.offeringStrategy = this.offeringStrategy;
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("this could never happen", e);
-		}
-    }
-	
-	/**
-	 * Reset an object to ensure that no references are left in the memory.
-	 * It's identical to cleanup() in agent.
-	 * @return clean object
-	 */
-	public AcceptanceStrategy reset() {
-		negotiationSession = null;
-		offeringStrategy = null;
-		return this;
 	}
 	
 	/**

@@ -5,15 +5,19 @@ import negotiator.boaframework.BOAagentInfo;
 import negotiator.boaframework.repository.BOAagentRepository;
 
 /**
- * This class is used to convert a serialized decoupled agent (created with the GUI)
- * to a real agent.
+ * This class is used to convert a BOA agent created using the GUI to
+ * a real agent. The parseStrategyParameters loads the information object,
+ * the agentSetup uses the information object to load the agent using
+ * reflexion.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 19/12/11
  */
 public class TheBOAagent extends BOAagent {
 
+	/** name of the agent */
 	String name = "";
+	/** information object which stores the decoupled agent */
 	BOAagentInfo dagent;
 	
 	/**
@@ -21,21 +25,19 @@ public class TheBOAagent extends BOAagent {
 	 */
 	@Override
 	public void agentSetup() {
+		// load the class names of each object
 		String os = dagent.getOfferingStrategy().getClassname();
 		String as = dagent.getAcceptanceStrategy().getClassname();
 		String om = dagent.getOpponentModel().getClassname();
 		String oms = dagent.getOMStrategy().getClassname();
 		
-		// Create clones and reset the clones. The clone is necessary to create a new object.
-		// The problem is that we don't know the definite form of the constructor.
-		// We could have used reflexion, but that option is a lot slower.
-		// For safety we also reset the clone, because it is possible that the object remembers
-		// information from its previous round.
+		// create the actual objects using reflexion
 		offeringStrategy = BOAagentRepository.getInstance().getOfferingStrategy(os);
 		acceptConditions = BOAagentRepository.getInstance().getAcceptanceStrategy(as);
 		opponentModel = BOAagentRepository.getInstance().getOpponentModel(om);
 		omStrategy = BOAagentRepository.getInstance().getOMStrategy(oms);
 
+		// init the components.
 		try {
 			opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());
 			opponentModel.setOpponentUtilitySpace(fNegotiation);
@@ -45,6 +47,8 @@ public class TheBOAagent extends BOAagent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// remove the reference to the information object such that the garbage collector can remove it.
+		dagent = null;
 	}
 
 	@Override
@@ -52,6 +56,10 @@ public class TheBOAagent extends BOAagent {
 		return name;
 	}
 	
+	/**
+	 * Removes the references to all components such that the garbage collector
+	 * can remove them.
+	 */
 	@Override
 	public void cleanUp() {
 		offeringStrategy = null;
@@ -63,8 +71,9 @@ public class TheBOAagent extends BOAagent {
 	}
 	
 	/**
-	 * Retrieves the parameters of the agent and converts them to
-	 * a decoupled agent.
+	 * Loads the BOA agent information object created by using the GUI.
+	 * The agentSetup method uses this information to load the necessary
+	 * components by using reflexion.
 	 */
 	@Override
 	public void parseStrategyParameters(String variables) throws Exception {

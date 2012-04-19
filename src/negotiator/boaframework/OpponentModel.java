@@ -11,7 +11,7 @@ import negotiator.utility.UtilitySpace;
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
-public abstract class OpponentModel implements Cloneable {
+public abstract class OpponentModel {
 	
 	protected NegotiationSession negotiationSession;
 	protected UtilitySpace opponentUtilitySpace;
@@ -54,23 +54,6 @@ public abstract class OpponentModel implements Cloneable {
 	
 	public UtilitySpace getOpponentUtilitySpace(){
 		return opponentUtilitySpace;
-	}
-	
-	public OpponentModel clone() {
-		try {
-			OpponentModel clone = (OpponentModel) super.clone();
-			clone.opponentUtilitySpace = this.opponentUtilitySpace;
-			clone.negotiationSession = this.negotiationSession;
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("this could never happen", e);
-		}
-	}
-	
-	public OpponentModel reset() {
-		opponentUtilitySpace = null;
-		negotiationSession = null;
-		return this;
 	}
 
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { }

@@ -28,21 +28,21 @@ import negotiator.boaframework.opponentmodel.NullModel;
  */
 public abstract class BOAagent extends Agent {
 
-	// when to accept
+	/** when to accept */
 	protected AcceptanceStrategy acceptConditions;
-	// link to domain
+	/** link to domain */
 	protected NegotiationSession negotiationSession;
-	// what to offer
+	/** what to offer */
 	protected OfferingStrategy offeringStrategy;
-	// used to determine the utility of a bid for the opponent
+	/**  used to determine the utility of a bid for the opponent */
 	protected OpponentModel opponentModel;
-	// which bid to select using an opponent model
+	/** which bid to select using an opponent model */
 	protected OMStrategy omStrategy;
-	// used to store MAC outcomes
+	/** used to store MAC outcomes */
     public ArrayList<Pair<Bid, String>> savedOutcomes;
-    // space of possible bids
+    /** space of possible bids */
     protected OutcomeSpace outcomeSpace;
-    // if this agent started
+    /** if this agent started */
     private boolean startingAgent;
     
 	public void init() {
@@ -51,10 +51,15 @@ public abstract class BOAagent extends Agent {
 		agentSetup();
 	}
 	
+	/**
+	 * Method used to setup the agent. The method is called directly after
+	 * initialization of the agent.
+	 */
 	public abstract void agentSetup();
 	
 	/**
 	 * Set the components of the decoupled agent.
+	 * 
 	 * @param ac the acceptance strategy
 	 * @param os the offering strategy
 	 * @param om the opponent model
@@ -97,6 +102,7 @@ public abstract class BOAagent extends Agent {
 	
 	/**
 	 * Choose an action to perform.
+	 * 
 	 * @return Action the agent performs
 	 */
 	@Override
@@ -104,10 +110,11 @@ public abstract class BOAagent extends Agent {
 
 		BidDetails bid;
 		
-		//the opening bid
+		// if our history is empty, then make an opening bid
 		if(negotiationSession.getOwnBidHistory().getHistory().isEmpty()){
 			bid = offeringStrategy.determineOpeningBid();
 		} else {
+			// else make a normal bid
 			bid = offeringStrategy.determineNextBid();
 		}
 		

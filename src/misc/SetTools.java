@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Class which generates the cartesian product of a list of sets.
+ * Class which generates the Cartesian product of a list of sets.
  * An iterative approach would have been faster, but also less clear.
  * 
  * @author Mark Hendrikx
@@ -14,11 +14,11 @@ public class SetTools {
 
 	public static Set<Set<Object>> cartesianProduct(Set<?>... sets) {
 	    if (sets.length < 2) {
-	    	Iterator setIterator = sets[0].iterator();
-	    	HashSet mainSet = new HashSet();
+	    	Iterator<?> setIterator = sets[0].iterator();
+	    	HashSet<Set<Object>> mainSet = new HashSet<Set<Object>>();
 	    	while (setIterator.hasNext()) {
 	    		Object item = setIterator.next();
-	    		Set set = new HashSet();
+	    		Set<Object> set = new HashSet<Object>();
 	    		set.add(item);
 	    		mainSet.add(set);
 	    	}

@@ -9,7 +9,7 @@ import negotiator.bidding.BidDetails;
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */
-public abstract class OfferingStrategy implements Cloneable{ 
+public abstract class OfferingStrategy { 
 	//is the next bid the agent is willing to present
 	protected BidDetails nextBid;	
 	protected Range bidTargetRange;
@@ -62,29 +62,4 @@ public abstract class OfferingStrategy implements Cloneable{
 	public SharedAgentState getHelper() {
 		return helper;
 	}
-	
-	public OfferingStrategy clone() {
-		try {
-			OfferingStrategy clone = (OfferingStrategy) super.clone();
-			clone.nextBid = this.nextBid;
-			clone.bidTargetRange = this.bidTargetRange;
-			clone.negotiationSession = this.negotiationSession;
-			clone.opponentModel = this.opponentModel;
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("this could never happen", e);
-		}
-	}
-	
-	public OfferingStrategy reset() {
-		nextBid = null;
-		bidTargetRange = null;
-		negotiationSession = null;
-		opponentModel = null;
-		omStrategy = null;
-		agentReset();
-		return this;
-	}
-	
-	public abstract void agentReset();
 }
