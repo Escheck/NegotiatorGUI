@@ -16,10 +16,11 @@ import negotiator.xml.SimpleElement;
  * 1. Euclidean distance
  * 2. Ranking distance
  * 3. Pearson correlation coefficient 
- * 
- * @author Dmytro Tykhonov
  *
- */
+ * @author Dmytro Tykhonov
+ * @Deprecated as ScenarioMeasures is more generic
+ * @See ScenarioMeasures
+*/
 public class SpaceDistance {
 	private UtilitySpace utilitySpaceA;
 	private UtilitySpace utilitySpaceB;

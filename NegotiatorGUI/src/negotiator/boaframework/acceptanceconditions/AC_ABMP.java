@@ -5,7 +5,6 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
-
 /**
  * Acceptance condition of the ABMP agent.
  * 
@@ -16,6 +15,8 @@ import negotiator.boaframework.OfferingStrategy;
  */
 public class AC_ABMP extends AcceptanceStrategy {
 
+	private static final double UTIlITYGAPSIZE = 0.05;
+			
 	public AC_ABMP() { }
 
 	public AC_ABMP(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
@@ -26,8 +27,6 @@ public class AC_ABMP extends AcceptanceStrategy {
 	public Actions determineAcceptability() {
 
 		Actions decision = Actions.Reject;
-		
-		double UTIlITYGAPSIZE = 0.05;
 
 		if (negotiationSession.getOwnBidHistory().getLastBidDetails() != null && 
 				negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() >= 

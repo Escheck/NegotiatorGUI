@@ -13,23 +13,39 @@ import negotiator.boaframework.OutcomeSpace;
 
 /**
  * This class implements an offering strategy which creates a list of possible bids and 
- * then offers them in descending order. If all bids were offered, then the last bid
+ * then offers them in descending order. If all bids are offered, then the last bid
  * is repeated.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */
 public class ChoosingAllBids extends OfferingStrategy {
-
+	/** counter used to determine which bid to offer from the sorted list of possible bids */
 	private int counter = 0;
+	/** reference to all bids */
 	private ArrayList<BidDetails> allBids;
 	
+	/**
+	 * Empty constructor used for reflexion. Note this constructor assumes that init
+	 * is called next.
+	 */
 	public ChoosingAllBids() { }
 	
-	public ChoosingAllBids(NegotiationSession negoSession, OpponentModel model, OMStrategy omStrat) {
+	/**
+	 * Constructor which can be used to create the agent without the GUI.
+	 * 
+	 * @param negoSession reference to the negotiationsession object
+	 * @param model reference to the opponent model
+	 */
+	public ChoosingAllBids(NegotiationSession negoSession, OpponentModel model) {
 		initializeAgent(negoSession, model);
 	}
 	
+	@Override
+	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy omStrat, HashMap<String, Double> parameters) throws Exception {
+		initializeAgent(domainKnow, model);
+	} 
+
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
 		this.negotiationSession = negoSession;
 		
@@ -42,12 +58,6 @@ public class ChoosingAllBids extends OfferingStrategy {
 		this.opponentModel = model;
 	}
 	
-	@Override
-	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy omStrat, HashMap<String, Double> parameters) throws Exception {
-		this.opponentModel = model;
-		initializeAgent(domainKnow, model);
-	} 
-
 	/**
 	 * Returns the next bid in the sorted array of bids. If there are no more bids
 	 * in the list, then the last bid is returned.
@@ -65,24 +75,5 @@ public class ChoosingAllBids extends OfferingStrategy {
 	@Override
 	public BidDetails determineOpeningBid() {
 		return determineNextBid();
-	}
-	
-	public ChoosingAllBids clone() {
-		ChoosingAllBids clone = (ChoosingAllBids) super.clone();
-		clone.counter = this.counter;
-		clone.allBids = this.allBids;
-		return clone;
-	}
-	
-	public ChoosingAllBids reset() {
-		super.reset();
-
-		return this;
-	}
-
-	@Override
-	public void agentReset() {
-		counter = 0;
-		allBids = null;		
 	}
 }

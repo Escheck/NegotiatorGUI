@@ -5,6 +5,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+
 /**
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
  * "Acceptance Conditions in Automated Negotiation"

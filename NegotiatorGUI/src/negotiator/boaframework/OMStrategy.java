@@ -13,7 +13,7 @@ import negotiator.bidding.BidDetails;
  * 
  * @author Mark Hendrikx
  */
-public abstract class OMStrategy implements Cloneable {
+public abstract class OMStrategy {
 	
 	protected NegotiationSession negotiationSession;
 	protected OpponentModel model;
@@ -40,21 +40,4 @@ public abstract class OMStrategy implements Cloneable {
 	}
 	
 	public abstract boolean canUpdateOM();
-	
-	public OMStrategy clone() {
-		try {
-			OMStrategy clone = (OMStrategy) super.clone();
-			clone.negotiationSession = this.negotiationSession;
-			clone.model = this.model;
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("this could never happen", e);
-		}
-	}
-	
-	public OMStrategy reset() {
-		model = null;
-		negotiationSession = null;
-		return this;
-	}
 }

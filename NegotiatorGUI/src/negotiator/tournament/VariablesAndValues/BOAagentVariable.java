@@ -13,7 +13,7 @@ public class BOAagentVariable extends TournamentVariable
 	}
 	
 	public String varToString() {
-		String res = "DecoupledAgent";
+		String res = "BOA Agent";
 		if(side != null) res = res + " side " +side;
 		return res;
 	}

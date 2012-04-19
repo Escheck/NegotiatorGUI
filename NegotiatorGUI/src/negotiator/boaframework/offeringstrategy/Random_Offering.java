@@ -29,7 +29,4 @@ public class Random_Offering extends OfferingStrategy {
 	public BidDetails determineOpeningBid() {
 		return determineNextBid();
 	}
-
-	@Override
-	public void agentReset() { }
 }

@@ -46,11 +46,4 @@ public class AC_Time extends AcceptanceStrategy {
 		}
 		return Actions.Reject;
 	}
-	
-	@Override
-	public AC_Time clone() {
-		AC_Time clone = (AC_Time) super.clone();
-		clone.constant = constant;
-		return clone;
-	}
 }

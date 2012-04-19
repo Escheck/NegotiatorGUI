@@ -2,13 +2,15 @@ package misc;
 
 
 /**
- * This is a tuple class which is used to pass on a target utility range 
+ * This is a tuple class which is used to pass on a target utility range.
+ * 
  * @author Alex Dirkzwager
- *
  */
 public class Range {
 
+	/** Lower bound of the specified window */
 	private double lowerbound;
+	/** Upper bound of the specified window */
 	private double upperbound;
 	
 	public Range(double lowerbound, double upperbound){
@@ -32,6 +34,11 @@ public class Range {
 		lowerbound = lbound;
 	}
 	
+	/**
+	 * Enlarges the upper bound by the given increment.
+	 * 
+	 * @param increment
+	 */
 	public void increaseUpperbound(double increment) {
 		upperbound = upperbound + increment;
 	}

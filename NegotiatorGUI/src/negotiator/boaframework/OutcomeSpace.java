@@ -15,7 +15,7 @@ import negotiator.utility.UtilitySpace;
  * @author Alex Dirkzwager, Mark Hendrikx
  */
 
-public class OutcomeSpace implements Cloneable {
+public class OutcomeSpace {
 	
 	protected UtilitySpace utilitySpace;
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
@@ -117,15 +117,15 @@ public class OutcomeSpace implements Cloneable {
 	 * @return BidDetails
 	 */
 	public BidDetails getBidNearDiscountedUtility(double utility, double time) {
-		BidDetails closesBid = null;
-		double closesDistance = 1;
+		BidDetails closestBid = null;
+		double closestDistance = 1;
 		for(BidDetails bid : allBids){
-			if(Math.abs(utilitySpace.getUtilityWithDiscount(bid.getBid(), time)-utility) < closesDistance) {
-				closesBid = bid;
-				closesDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
+			if(Math.abs(utilitySpace.getUtilityWithDiscount(bid.getBid(), time)-utility) < closestDistance) {
+				closestBid = bid;
+				closestDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
 			}
 		}
-		return closesBid;
+		return closestBid;
 	}
 	
 
@@ -150,20 +150,5 @@ public class OutcomeSpace implements Cloneable {
 			}
 		}
 		return maxBid;
-	}
-
-	public OutcomeSpace clone() {
-		try {
-			OutcomeSpace clone = (OutcomeSpace) super.clone();
-			clone.allBids = this.allBids;
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("this could never happen", e);
-		}
-	}
-	
-	public OutcomeSpace reset() {
-		allBids = new ArrayList<BidDetails>();
-		return this;
 	}
 }

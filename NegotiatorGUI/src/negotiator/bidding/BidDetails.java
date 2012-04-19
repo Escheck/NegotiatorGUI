@@ -11,64 +11,51 @@ import negotiator.Bid;
  */
 public class BidDetails implements Comparable<BidDetails>{
 
-	// the bid of an agent
+	/** the bid of an agent */
 	private Bid bid;
-	// the utility corresponding to the bid
+	/** the utility corresponding to the bid */
 	private double myUndiscountedUtil;
-	//time the bid was offered (so the discounted utility can be calculated at that time)
+	/** time the bid was offered (so the discounted utility can be calculated at that time) */
 	private double time;
 	
 	/**
-	 * Creates a UTBid-object which stores a bid with it's corresponding
+	 * Creates a BidDetails-object which stores a bid with it's corresponding
 	 * utility.
 	 * 
 	 * @param bid of an agent
-	 * @param myUndiscountedUtil of the bid
-	 * @param if it has already been offered
+	 * @param undiscounted utility of the bid
 	 */
 	public BidDetails(Bid bid, double myUndiscountedUtil) {
 		this.bid = bid;
 		this.myUndiscountedUtil = myUndiscountedUtil;
 	}
 	
+	/**
+	 * Creates a BidDetails-object which stores a bid with it's corresponding
+	 * utility and the time it was offered.
+	 * 
+	 * @param bid of an agent
+	 * @param myUndiscountedUtil of the bid
+	 * @param time of offering
+	 */
 	public BidDetails(Bid bid, double myUndiscountedUtil, double time) {
 		this.bid = bid;
 		this.myUndiscountedUtil = myUndiscountedUtil;
 		this.time = time;
 	}
 	
-	/**
-	 * Method which returns the bid.
-	 * 
-	 * @return bid
-	 */
 	public Bid getBid() {
 		return bid;
 	}
 	
-	/**
-	 * Method which sets the bid.
-	 * 
-	 * @param bid
-	 */
 	public void setBid(Bid bid) {
 		this.bid = bid;
 	}
 	
-	/**
-	 * Method which returns the utility.
-	 * 
-	 * @return utility
-	 */
 	public double getMyUndiscountedUtil() {
 		return myUndiscountedUtil;
 	}
 	
-	/**
-	 * Method which sets the utility.
-	 * 
-	 * @param utility
-	 */
 	public void setMyUndiscountedUtil(double utility) {
 		this.myUndiscountedUtil = utility;
 	}
@@ -89,8 +76,8 @@ public class BidDetails implements Comparable<BidDetails>{
 	}
 	
 	/**
-	 * compareTo is used to compare UTbids. The comparision is made 
-	 * in such a way that the result is in reverse natural order.
+	 * A comperator for BidDetails which order the bids in
+	 * reverse natural order of utility.
 	 * 
 	 * @param another utbid
 	 */

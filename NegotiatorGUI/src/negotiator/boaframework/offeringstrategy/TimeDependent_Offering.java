@@ -125,9 +125,4 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	public double p(double t) {
 		return Pmin + (Pmax - Pmin) * (1 - f(t));
 	}
-
-	@Override
-	public void agentReset() {
-		maxBid = null;
-	}
 }
