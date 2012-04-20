@@ -2,7 +2,6 @@ package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
 import java.util.List;
-
 import misc.Range;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
@@ -24,14 +23,17 @@ public class TimeDependent_Offering extends OfferingStrategy {
 
 	/** k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility */
 	private double k;
+	/** Maximum target utility */
 	private double Pmax;
+	/** Minimum target utility */
 	private double Pmin;
+	/** Concession factor */
 	private double e;
-	private BidDetails maxBid;
-	private double discount;
-	private final boolean EQUIVALENCE_TEST = false;
-	private final boolean STRICT_FATIMA_TDT = true;
 	
+	/**
+	 * Empty constructor used for reflexion. Note this constructor assumes that init
+	 * is called next.
+	 */
 	public TimeDependent_Offering(){}
 	
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
@@ -54,19 +56,16 @@ public class TimeDependent_Offering extends OfferingStrategy {
 			else
 				this.Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
 			
-			maxBid = negoSession.getMaxBidinDomain();
-			if (parameters.get("max") != null)
+			
+			if (parameters.get("max") != null) {
 				Pmax= parameters.get("max");
-			else
+			} else {
+				BidDetails maxBid = negoSession.getMaxBidinDomain();
 				Pmax = maxBid.getMyUndiscountedUtil();
+			}
 			
 			this.opponentModel = model;
 			this.omStrategy = oms;
-			
-			discount = negotiationSession.getDiscountFactor();
-			if (discount <= 0.00001) {
-				discount = 1.0;
-			}
 		} else {
 			throw new Exception("Constant \"e\" for the concession speed was not set.");
 		}
@@ -77,19 +76,21 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		return determineNextBid();
 	}
 
+	/**
+	 * Simple offering strategy which retrieves the target utility
+	 * and finds 
+	 */
 	@Override
 	public BidDetails determineNextBid() {
 		double time = negotiationSession.getTime();
 		double utilityGoal;
-		if (STRICT_FATIMA_TDT || EQUIVALENCE_TEST || discount == 1.0) {
-			utilityGoal = p(time);
-		} else {
-			utilityGoal = Math.pow(negotiationSession.getDiscountFactor(), negotiationSession.getTime()) * p(time);
-		}
+		utilityGoal = p(time);
 		
+		// if there is no opponent model available
 		if (opponentModel instanceof NullModel) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
+			// retrieve a list of bids and find the best bid for the opponent in this range
 			List<BidDetails> bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + 0.1));
 			double windowSize = 0.1;
 			while(bidsInRange.size() == 0){

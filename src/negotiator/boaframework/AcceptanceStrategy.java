@@ -9,8 +9,12 @@ import java.util.HashMap;
  */
 public abstract class  AcceptanceStrategy {
 	
+	/** Reference to the object which holds all information about the negotiation */
 	protected NegotiationSession negotiationSession;
+	/** Reference to the offering strategy  */
 	protected OfferingStrategy offeringStrategy;
+	/** Reference to the helper-object, which is used when there is overlap between
+	 * the acceptance condition and offering strategy */
 	protected SharedAgentState helper;
 	
 	/**
@@ -18,14 +22,15 @@ public abstract class  AcceptanceStrategy {
 	 * Most of the time this method should be overridden for usage by the decoupled
 	 * framework.
 	 * 
-	 * @param domain
+	 * @param reference to the negotiation session
 	 * @param strat
 	 * @param parameters
 	 * @throws Exception
 	 */
-	public void init(NegotiationSession domain, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
-		this.negotiationSession = domain;
-		this.offeringStrategy = strat;
+	public void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy,
+						HashMap<String, Double> parameters) throws Exception {
+		this.negotiationSession = negotiationSession;
+		this.offeringStrategy = offeringStrategy;
 	}
 	
 	public String printParameters(){

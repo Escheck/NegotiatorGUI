@@ -6,6 +6,14 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
+/**
+ * This acceptance condition uses two versions of AC_next.
+ * The used AC_next depends on if the discount of the domain is
+ * (non)-negligible. The parameter e determines when a domain is
+ * marked as discounted or not.
+ * 
+ * @author Alex Dirkzwager, Mark Hendrikx
+ */
 public class AC_CombiV4 extends AcceptanceStrategy{
 
 	private double a;
@@ -72,7 +80,6 @@ public AC_CombiV4() { }
 		} else {
 			// discount mode
 			target = c * lastOpponentBidUtil + d;
-			//System.out.println(negotiationSession.getTime() + " " + "Target: " + target);
 		}
 		if (target > 1.0) {
 			target = 1.0;

@@ -6,6 +6,17 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
+/**
+ * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper
+ * on Acceptance Conditions:
+ * "Acceptance Conditions in Automated Negotiation"
+ * 
+ * This Acceptance Condition accepts a bid if the utility of the opponent's
+ * bid plus a constant (the gap) is higher than the utility of the next bid.
+ * The acceptance condition is a restricted version of AC_next.
+ * 
+ * @author Alex Dirkzwager
+ */
 public class AC_Gap extends AcceptanceStrategy{
 
 	private double constant;

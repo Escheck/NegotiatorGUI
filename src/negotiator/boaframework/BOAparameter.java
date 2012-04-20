@@ -13,10 +13,15 @@ import misc.Pair;
  */
 public class BOAparameter {
 	
+	/** name of the parameter */
 	private String name;
+	/** lower bound of the specified range */
 	private double low;
+	/** upper bound of the specified range */
 	private double high;
+	/** step size of the specified range */
 	private double step;
+	/** set of seperate values which the specified variable should attain */
 	private HashSet<Pair<String, Double>> valuePairs;
 	
 	/**

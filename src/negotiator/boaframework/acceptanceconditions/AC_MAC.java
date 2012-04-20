@@ -37,14 +37,6 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 		}
 		for (int e = 0; e < 5; e++) {
 			ACList.add(new AC_CombiMaxInWindow(negotiationSession, offeringStrategy, 0.95 + e * 0.01));
-		}
-		
-		try {
-
-			// Value Model Agent and Gahboninho are exluded
-		} catch (Exception e) {
-			e.printStackTrace();
 		}	
 	}
 }
-
