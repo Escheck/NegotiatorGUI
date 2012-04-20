@@ -23,13 +23,17 @@ import negotiator.boaframework.OpponentModel;
 public class OfferBestN extends OMStrategy {
 
 	private Random rand;
-	// parameter which determines which n best bids should be considered
+	/** parameter which determines which n best bids should be considered */
 	private int bestN;
-	// used to sort the opponent's bid with regard to utility
+	/**  used to sort the opponent's bid with regard to utility */
 	private static BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
-	// when to stop updating
+	/**  when to stop updating */
 	double updateThreshold = 1.0;
 	
+	/**
+	 * Empty constructor used for reflexion. Note this constructor assumes that init
+	 * is called next.
+	 */
 	public OfferBestN() { }
 
 	public OfferBestN(NegotiationSession negotiationSession, OpponentModel model, int n) {
@@ -86,6 +90,10 @@ public class OfferBestN extends OMStrategy {
 		return nextBid;
 	}
 
+	/**
+	 * The opponent model may be updated, unless the time is higher
+	 * than a given constant.
+	 */
 	@Override
 	public boolean canUpdateOM() {
 		return negotiationSession.getTime() < updateThreshold;

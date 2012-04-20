@@ -1,6 +1,8 @@
 package negotiator.boaframework;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Domain;
@@ -16,34 +18,30 @@ import negotiator.utility.UtilitySpace;
  */
 public class NegotiationSession {
 	
+	/** Optional outcomespace which should be set manually */
 	protected OutcomeSpace outcomeSpace;
+	/** History of bids made by the opponent */
 	protected BidHistory opponentBidHistory;
+	/** History of bids made by the agent */
 	protected BidHistory ownBidHistory;
+	/** Reference to the negotiation domain */
 	protected Domain domain;
-	protected double discountFactor;
-	protected UtilitySpace utilSpace;
+	/** Reference to the agent's preference profile for the domain */
+	protected UtilitySpace utilitySpace;
+	/** Reference to the timeline */
 	protected Timeline timeline;
-	private BidDetails maxBidDetails;
 
-	public NegotiationSession(UtilitySpace utilitySpace, Timeline time){
-		utilSpace = utilitySpace;
-		timeline = time;
-		domain = utilSpace.getDomain();
-		discountFactor = utilSpace.getDiscountFactor();
-		opponentBidHistory = new BidHistory();
-		ownBidHistory = new BidHistory();
-		try {
-			Bid maxBid = utilitySpace.getMaxUtilityBid();
-			double maxBidUtil = utilitySpace.getUtility(maxBid);
-			maxBidDetails = new BidDetails(maxBid, maxBidUtil, 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline){
+		this.utilitySpace = utilitySpace;
+		this.timeline = timeline;
+		this.domain = utilitySpace.getDomain();
+		this.opponentBidHistory = new BidHistory();
+		this.ownBidHistory = new BidHistory();
 	}
 	
 	/**
-	 * gives a list of bids which the opponent has offered
-	 * @return a list of BidDetails
+	 * Returns a list of bids offered by the opponent.
+	 * @return a list of of opponent bids
 	 */
 	public BidHistory getOpponentBidHistory(){
 		return opponentBidHistory;
@@ -54,7 +52,7 @@ public class NegotiationSession {
 	}
 	
 	public double getDiscountFactor() {
-		return discountFactor;
+		return utilitySpace.getDiscountFactor();
 	}
 	
 	public ArrayList<Issue> getIssues(){
@@ -74,7 +72,7 @@ public class NegotiationSession {
 	}
 	
 	public UtilitySpace getUtilitySpace(){
-		return utilSpace;
+		return utilitySpace;
 	}
 	
 	public OutcomeSpace getOutcomeSpace(){
@@ -86,23 +84,48 @@ public class NegotiationSession {
 	}
 	
 	/**
-	 * gets the maximum utility possible from the domain
-	 * @return double 
+	 * Returns the best bid in the domain.
 	 */
 	public BidDetails getMaxBidinDomain() {
-		return maxBidDetails;
+		BidDetails maxBid = null;
+		if (outcomeSpace == null) {
+			try {
+				Bid maximumBid = utilitySpace.getMaxUtilityBid();
+				maxBid = new BidDetails(maximumBid, utilitySpace.getUtility(maximumBid));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			List<BidDetails> outcomes = outcomeSpace.getAllOutcomes();
+			maxBid = outcomes.get(0);
+			for (int i = 0; i < outcomes.size(); i++) {
+				if (outcomes.get(i).getMyUndiscountedUtil() > maxBid.getMyUndiscountedUtil()) {
+					maxBid = outcomes.get(i);
+				}
+			}
+		}
+		return maxBid;
 	}
 	
 	/**
-	 * gets the minimum utility possible from the domain
-	 * @return double 
+	 * Returns the worst bid in the domain.
 	 */
 	public BidDetails getMinBidinDomain() {
-		ArrayList<BidDetails> outcomes = new ArrayList<BidDetails>(outcomeSpace.getAllOutcomes());
-		BidDetails minBid = outcomes.get(0);
-		for (int i = 0; i < outcomes.size(); i++) {
-			if (outcomes.get(i).getMyUndiscountedUtil() < minBid.getMyUndiscountedUtil()) {
-				minBid = outcomes.get(i);
+		BidDetails minBid = null;
+		if (outcomeSpace == null) {
+			try {
+				Bid minimumBidBid = utilitySpace.getMinUtilityBid();
+				minBid = new BidDetails(minimumBidBid, utilitySpace.getUtility(minimumBidBid));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			List<BidDetails> outcomes = outcomeSpace.getAllOutcomes();
+			minBid = outcomes.get(0);
+			for (int i = 0; i < outcomes.size(); i++) {
+				if (outcomes.get(i).getMyUndiscountedUtil() < minBid.getMyUndiscountedUtil()) {
+					minBid = outcomes.get(i);
+				}
 			}
 		}
 		return minBid;

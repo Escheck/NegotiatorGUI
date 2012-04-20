@@ -1,7 +1,6 @@
 package negotiator.boaframework.acceptanceconditions;
 
 import java.util.HashMap;
-
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;

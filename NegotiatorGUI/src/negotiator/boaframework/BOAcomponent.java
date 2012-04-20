@@ -15,8 +15,11 @@ import java.util.HashMap;
 public class BOAcomponent implements Serializable {
 	
 	private static final long serialVersionUID = 9055936213274664445L;
+	/** Classname of the component */
 	private String classname;
+	/** Type of the component, for example "as" for acceptance condition */
 	private String type;
+	/** Parameters which should be used to initialize the component upon creation */
 	private HashMap<String, Double> parameters;
 
 	public BOAcomponent(String classname, String type, HashMap<String, Double> strategyParam) {

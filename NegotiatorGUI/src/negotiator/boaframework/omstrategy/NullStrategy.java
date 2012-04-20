@@ -8,6 +8,11 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
 
+/**
+ * Baseline strategy which simply returns a random bid from the given array of bid.
+ *  
+ * @author Mark Hendrikx
+ */
 public class NullStrategy extends OMStrategy {
 
 	private Random rand;

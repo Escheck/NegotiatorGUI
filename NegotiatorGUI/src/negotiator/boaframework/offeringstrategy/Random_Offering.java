@@ -12,6 +12,10 @@ import negotiator.boaframework.OfferingStrategy;
  */
 public class Random_Offering extends OfferingStrategy {
 
+	/**
+	 * Empty constructor used for reflexion. Note this constructor assumes that init
+	 * is called next.
+	 */
 	public Random_Offering() { }
 
 	@Override

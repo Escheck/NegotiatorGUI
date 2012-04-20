@@ -8,8 +8,7 @@ import negotiator.boaframework.OfferingStrategy;
 
 /**
  * This Acceptance Condition accepts an opponent bid if the utility is higher
- * than the previous bid the agent made. Note that this only works if there is
- * a previous bid.
+ * than the previous bid the agent made.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  *
