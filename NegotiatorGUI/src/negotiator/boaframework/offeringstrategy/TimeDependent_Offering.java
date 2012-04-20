@@ -40,8 +40,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;
 			
-			SortedOutcomeSpace space = new SortedOutcomeSpace();
-			space.init(negotiationSession.getUtilitySpace());
+			SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 			negotiationSession.setOutcomeSpace(space);
 			
 			this.e = parameters.get("e");

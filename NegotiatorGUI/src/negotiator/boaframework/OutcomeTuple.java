@@ -14,15 +14,16 @@ import negotiator.Bid;
  * @author Alex Dirkwager
  */
 public class OutcomeTuple {
-	// last bid done by an agent
-	Bid lastBid;
-	// name of the acceptance criteria
-	String name;
-	// time of acceptance
-	double time;
-	// amount of bids made by agent A and B
-	int agentASize;	
-	int agentBSize;
+	/** last bid done by an agent */
+	private Bid lastBid;
+	/** name of the acceptance criteria */
+	private String name;
+	/** time of acceptance */
+	private double time;
+	/** amount of bids made by agent A */
+	private int agentASize;	
+	/** amount of bids made by agent B */
+	private int agentBSize;
 	
 	public OutcomeTuple(Bid lastBid, String name, double time, int agentASize, int agentBSize){
 		this.lastBid = lastBid;

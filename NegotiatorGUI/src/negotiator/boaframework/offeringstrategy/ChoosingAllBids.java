@@ -49,8 +49,7 @@ public class ChoosingAllBids extends OfferingStrategy {
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
 		this.negotiationSession = negoSession;
 		
-		OutcomeSpace space = new OutcomeSpace();
-		space.init(negotiationSession.getUtilitySpace());
+		OutcomeSpace space = new OutcomeSpace(negotiationSession.getUtilitySpace());
 		negotiationSession.setOutcomeSpace(space);
 		
 		allBids = (ArrayList<BidDetails>) negotiationSession.getOutcomeSpace().getAllOutcomes();

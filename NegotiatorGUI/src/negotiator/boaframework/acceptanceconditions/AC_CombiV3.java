@@ -6,6 +6,13 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
+/**
+ * This acceptance condition uses AC_next to determine when to accept.
+ * In addition, the agent also accepts when a given time has passed,
+ * and the utility of the opponent's bid is higher than a given constant.
+ * 
+ * @author Alex Dirkzwager, Mark Hendrikx
+ */
 public class AC_CombiV3 extends AcceptanceStrategy{
 
 	private double a;

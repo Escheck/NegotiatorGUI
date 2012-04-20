@@ -37,7 +37,7 @@ import negotiator.xml.SimpleElement;
  * @author Mark Hendrikx
  * @contact m.j.c.hendrikx@student.tudelft.nl
  */
-public class DomainMeasures {
+public class ScenarioMeasures {
 	
 	// if the amount of bids is larger or equal to this value, exact calculation
 	// takes to long and an estimation procedure is used.
@@ -52,13 +52,13 @@ public class DomainMeasures {
 	 */
 	static class DomainParser extends DefaultHandler {
 
-		DomainInfo domain = null;
-		ArrayList<DomainInfo> domains = new ArrayList<DomainInfo>();
+		ScenarioInfo domain = null;
+		ArrayList<ScenarioInfo> domains = new ArrayList<ScenarioInfo>();
 
 		public void startElement(String nsURI, String strippedName,
 				String tagName, Attributes attributes) throws SAXException {
 			if (tagName.equals("domainRepItem") && attributes.getLength() > 0) {
-				domain = new DomainInfo(attributes.getValue(0).substring(5));
+				domain = new ScenarioInfo(attributes.getValue(0).substring(5));
 			} else if (tagName.equals("profile")) {
 				if (domain.getPrefProfA() == null) {
 					domain.setPrefProfA(attributes.getValue(0).substring(5));
@@ -80,7 +80,7 @@ public class DomainMeasures {
 			}
 		}
 		
-		public ArrayList<DomainInfo> getDomains() {
+		public ArrayList<ScenarioInfo> getDomains() {
 			return domains;
 		}
 	}
@@ -103,10 +103,10 @@ public class DomainMeasures {
 	 * @throws Exception
 	 */
 	public static void process(String dir) throws Exception {
-		ArrayList<DomainInfo> domains = parseDomainFile(dir);
+		ArrayList<ScenarioInfo> domains = parseDomainFile(dir);
 		
 		SimpleElement prefResults = new OrderedSimpleElement("preference_profiles_statistics");
-		for (DomainInfo domainSt : domains) {
+		for (ScenarioInfo domainSt : domains) {
 			Domain domain = new Domain(dir + domainSt.getDomain());
 			UtilitySpace utilitySpaceA, utilitySpaceB;
 			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
@@ -132,7 +132,7 @@ public class DomainMeasures {
 	 * @return set of domain-objects
 	 * @throws Exception
 	 */
-	private static ArrayList<DomainInfo> parseDomainFile(String dir) throws Exception {
+	private static ArrayList<ScenarioInfo> parseDomainFile(String dir) throws Exception {
 		XMLReader xr = XMLReaderFactory.createXMLReader();
 		DomainParser handler = new DomainParser();
 		xr.setContentHandler(handler);

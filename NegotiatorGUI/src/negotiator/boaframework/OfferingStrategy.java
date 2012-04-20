@@ -1,6 +1,6 @@
 package negotiator.boaframework;
+
 import java.util.HashMap;
-import misc.Range;
 import negotiator.bidding.BidDetails;
 
 /**
@@ -10,31 +10,34 @@ import negotiator.bidding.BidDetails;
  * @version 15-12-11
  */
 public abstract class OfferingStrategy { 
-	//is the next bid the agent is willing to present
-	protected BidDetails nextBid;	
-	protected Range bidTargetRange;
+	/** The next bid the agent plans to present */
+	protected BidDetails nextBid;
+	/** Reference to the negotiation session */
 	protected NegotiationSession negotiationSession;
+	/** Reference to the opponent model */
 	protected OpponentModel opponentModel;
+	/** Reference to the opponent model strategy */
 	protected OMStrategy omStrategy;
-	
-	//A helper class for ANAC2010 and ANAC2011 agents
+	/** Reference to helper class used if there are dependencies between
+	 * the acceptance condition an offering strategy  */
 	protected SharedAgentState helper;
 	
 	/**
 	 * Initializes the offering strategy. If parameters are used,
 	 * this method should be overridden.
 	 * 
-	 * @param domainKnow
+	 * @param negotiationSession
 	 * @param parameters
 	 */
-	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
-		negotiationSession = domainKnow;
-		this.opponentModel = model;
+	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, 
+						OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
+		this.negotiationSession = negotiationSession;
+		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
 	}
 	
 	/**
-	 * determines the first bid
+	 * determines the first bid to be offered by the agent
 	 * @return UTBid the beginBid
 	 */
 	public abstract BidDetails determineOpeningBid();
@@ -53,10 +56,6 @@ public abstract class OfferingStrategy {
 	
 	public void setNextBid(BidDetails counterBid) {
 		nextBid = counterBid;
-	}
-	
-	public Range getTargetRange(){
-		return bidTargetRange;
 	}
 	
 	public SharedAgentState getHelper() {

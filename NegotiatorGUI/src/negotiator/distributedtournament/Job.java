@@ -1,7 +1,6 @@
 package negotiator.distributedtournament;
 
 import java.util.List;
-
 import negotiator.protocol.Protocol;
 
 /**
@@ -12,11 +11,11 @@ import negotiator.protocol.Protocol;
  */
 public class Job {
 
-	// ID of the high-level job in the DB
+	/** ID of the high-level job in the DB */
 	private int jobID;
-	// ID of the low-level job in the DB
+	/**  ID of the low-level job in the DB */
 	private int sessionID;
-	// Sessions to be ran for this Job
+	/**  Sessions to be ran for this Job */
 	private List<Protocol> sessions;
 
 	public Job(int jobID, int sessionID, List<Protocol> sessions) {
