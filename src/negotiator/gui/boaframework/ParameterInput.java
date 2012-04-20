@@ -15,7 +15,7 @@ import negotiator.boaframework.BOAparameter;
 /**
  * The form used to input a parameter in the DecoupledAgentsFrame GUI.
  * The GUI was originally created using Netbeans, and is therefore probably
- * compatible with their form editor.
+ * still compatible with their form editor.
  * 
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
  * @version 11-12-11

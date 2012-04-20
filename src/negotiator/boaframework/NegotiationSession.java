@@ -1,8 +1,6 @@
 package negotiator.boaframework;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Domain;
@@ -96,13 +94,7 @@ public class NegotiationSession {
 				e.printStackTrace();
 			}
 		} else {
-			List<BidDetails> outcomes = outcomeSpace.getAllOutcomes();
-			maxBid = outcomes.get(0);
-			for (int i = 0; i < outcomes.size(); i++) {
-				if (outcomes.get(i).getMyUndiscountedUtil() > maxBid.getMyUndiscountedUtil()) {
-					maxBid = outcomes.get(i);
-				}
-			}
+			maxBid = outcomeSpace.getMaxBidPossible();
 		}
 		return maxBid;
 	}
@@ -120,13 +112,7 @@ public class NegotiationSession {
 				e.printStackTrace();
 			}
 		} else {
-			List<BidDetails> outcomes = outcomeSpace.getAllOutcomes();
-			minBid = outcomes.get(0);
-			for (int i = 0; i < outcomes.size(); i++) {
-				if (outcomes.get(i).getMyUndiscountedUtil() < minBid.getMyUndiscountedUtil()) {
-					minBid = outcomes.get(i);
-				}
-			}
+			minBid = outcomeSpace.getMinBidPossible();
 		}
 		return minBid;
 	}	

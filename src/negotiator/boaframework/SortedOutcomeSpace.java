@@ -16,14 +16,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class SortedOutcomeSpace extends OutcomeSpace {
 
-	public SortedOutcomeSpace() { }
-	
 	public SortedOutcomeSpace(UtilitySpace utilSpace) {
-		init(utilSpace);
-	}
-	
-	@Override
-	public void init(UtilitySpace utilSpace) {
 		generateAllBids(utilSpace);
 		utilitySpace = utilSpace;
 		Collections.sort(allBids, new BidDetailsSorterUtility());
@@ -112,5 +105,9 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 	@Override
 	public BidDetails getMaxBidPossible(){
 		return allBids.get(0);
+	}
+	
+	public BidDetails getMinBidPossible() {
+		return allBids.get(allBids.size() - 1);
 	}
 }

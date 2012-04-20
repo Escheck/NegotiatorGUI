@@ -7,16 +7,19 @@ import misc.Range;
 import negotiator.bidding.BidDetails;
 
 /**
- * This is the abstract class for the agents utilization of the opponent model.
- * Given an array of bids, an OmUtilization-object should return a bid which
- * takes the preferences of the opponent into account.
+ * This is the abstract class which determines when the opponent model
+ * may be updated, and how it used to select a bid for the opponent.
  * 
  * @author Mark Hendrikx
  */
 public abstract class OMStrategy {
 	
+	/** Reference to the object which holds all information about the negotiation */
 	protected NegotiationSession negotiationSession;
+	/** Reference to the opponent model */
 	protected OpponentModel model;
+	/** Increment used to increase the upperbound in case no bid is found in the range */
+	private final double RANGE_INCREMENT = 0.01;
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
@@ -28,13 +31,33 @@ public abstract class OMStrategy {
 		this.model = model;
 	}
 	
+	/**
+	 * Returns a bid selected using the opponent model from the given
+	 * set of similarly preferred bids.
+	 * 
+	 * @param bidsInRange set of similarly preferred bids
+	 * @return bid
+	 */
 	public abstract BidDetails getBid(List<BidDetails> bidsInRange);
 	
+	/**
+	 * Returns a bid selected using the opponent model with a utility
+	 * in the given range.
+	 * 
+	 * @param space of all possible outcomes
+	 * @param range of utility
+	 * @return bid
+	 */
 	public BidDetails getBid(OutcomeSpace space, Range range) {
 		List<BidDetails> bids = space.getBidsinRange(range);
 		if (bids.size() == 0) {
-			range.increaseUpperbound(0.01);
-			getBid(space, range);
+			range.increaseUpperbound(RANGE_INCREMENT);
+			if (range.getUpperbound() < 1.1) {
+				return getBid(space, range);
+			} else {
+				negotiationSession.setOutcomeSpace(space);
+				return negotiationSession.getMaxBidinDomain();
+			}
 		}
 		return getBid(bids);
 	}

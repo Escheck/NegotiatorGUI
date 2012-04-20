@@ -1,11 +1,11 @@
 package negotiator.qualitymeasures;
 
-public class DomainInfo {
+public class ScenarioInfo {
 	String domain;
 	String prefProfA;
 	String prefProfB;
 	
-	public DomainInfo(String domain) {
+	public ScenarioInfo(String domain) {
 		this.domain = domain;
 	}
 

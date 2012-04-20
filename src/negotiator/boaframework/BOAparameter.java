@@ -21,7 +21,7 @@ public class BOAparameter {
 	private double high;
 	/** step size of the specified range */
 	private double step;
-	/** set of seperate values which the specified variable should attain */
+	/** set of separate values which the specified variable should attain */
 	private HashSet<Pair<String, Double>> valuePairs;
 	
 	/**

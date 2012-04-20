@@ -11,28 +11,28 @@ import negotiator.utility.UtilitySpace;
 /**
  * This class generates the complete outcome space and is therefore
  * Useful if someone wants to quickly implement an agent.
+ * Note that while this outcomespace is faster upon initialization,
+ * the sorted outcomespace class is faster during the negotiation.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
-
 public class OutcomeSpace {
 	
+	/** Reference to the utility space */
 	protected UtilitySpace utilitySpace;
+	/** List of all possible bids in the domain */
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
 	
 	public OutcomeSpace() { }
 	
-	public OutcomeSpace(UtilitySpace utilSpace){
-		init(utilSpace);
-	}
-	
-	public void init(UtilitySpace utilSpace) {
-		generateAllBids(utilSpace);
+	public OutcomeSpace(UtilitySpace utilSpace) {
 		this.utilitySpace = utilSpace;
+		generateAllBids(utilSpace);
 	}
 	
 	/**
 	 * Generates all the possible bids in the domain
+	 * 
 	 * @param utilSpace
 	 */
 	public void generateAllBids(UtilitySpace utilSpace) {
@@ -41,7 +41,8 @@ public class OutcomeSpace {
 		while (iter.hasNext()) {
 			Bid bid = iter.next();
 			try {
-				addPossibleBid(bid, utilSpace.getUtility(bid));
+				BidDetails BidDetails = new BidDetails(bid, utilSpace.getUtility(bid));
+				allBids.add(BidDetails);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -49,7 +50,6 @@ public class OutcomeSpace {
 	}
 	
 	/**
-	 * 
 	 * @return list of all possible bids
 	 */
 	public List<BidDetails> getAllOutcomes(){
@@ -58,7 +58,9 @@ public class OutcomeSpace {
 	
 	
 	/**
-	 * gets a list of bids (from possibleBids) that have a utility between the range
+	 * gets a list of bids (from possibleBids) that have a utility within the
+	 * given range.
+	 * 
 	 * @param range
 	 * @return list of BidDetails
 	 */
@@ -126,21 +128,7 @@ public class OutcomeSpace {
 			}
 		}
 		return closestBid;
-	}
-	
-
-		
-	
-	/**
-	 * adds a possible bid to the allBids list
-	 * @param bid
-	 * @param utility 
-	 */
-	protected void addPossibleBid(Bid bid, double utility){
-		BidDetails BidDetails = new BidDetails(bid, utility);
-		allBids.add(BidDetails);
-	}
-	
+	}	
 	
 	public BidDetails getMaxBidPossible(){
 		BidDetails maxBid = allBids.get(0);
@@ -150,5 +138,15 @@ public class OutcomeSpace {
 			}
 		}
 		return maxBid;
+	}
+	
+	public BidDetails getMinBidPossible(){
+		BidDetails minBid = allBids.get(0);
+		for(BidDetails bid : allBids){
+			if(bid.getMyUndiscountedUtil() < minBid.getMyUndiscountedUtil()) {
+				minBid = bid;
+			}
+		}
+		return minBid;
 	}
 }
