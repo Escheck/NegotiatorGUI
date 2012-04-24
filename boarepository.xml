@@ -28,6 +28,6 @@
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Null" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
-		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count"/>
+		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count. Optionally 't'for when to stop updating"/>
 	</omstrategies>
 </repository>

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import negotiator.exceptions.Warning;
-import negotiator.xml.SimpleElement;
+import negotiator.xml.OrderedSimpleElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -57,25 +58,25 @@ public class TournamentMeasures {
 			boolean found = false;
 			if (tagName.equals("NegotiationOutcome")) {
 				outcome = new OutcomeInfo();
-				outcome.setTimeOfAgreement(Double.parseDouble(attributes.getValue(1)));
-				outcome.setBids(Integer.parseInt(attributes.getValue(2)));
-				outcome.setDomain(attributes.getValue(3));
-				outcome.setAgreement(attributes.getValue(4).contains("Accept"));
-				outcome.setStartedA(attributes.getValue(5).equals("A"));
+				outcome.setTimeOfAgreement(Double.parseDouble(attributes.getValue("timeOfAgreement")));
+				outcome.setBids(Integer.parseInt(attributes.getValue("bids")));
+				outcome.setDomain(attributes.getValue("domain"));
+				outcome.setAgreement(attributes.getValue("lastAction").contains("Accept"));
+				outcome.setStartedA(attributes.getValue("startingAgent").equals("A"));
 				found = true;
-			} else if (tagName.equals("resultsOfAgent") && attributes.getValue(0).equals("A")) {
-				outcome.setAgentNameA(attributes.getValue(1));
-				agents.add(attributes.getValue(1));
-				outcome.setUtilProfA(attributes.getValue(3));
-				outcome.setUtilityA(Double.parseDouble(attributes.getValue(10)));
-				outcome.setDiscountedUtilityA(Double.parseDouble(attributes.getValue(8)));
+			} else if (tagName.equals("resultsOfAgent") && attributes.getValue("agent").equals("A")) {
+				outcome.setAgentNameA(attributes.getValue("agentName"));
+				agents.add(outcome.getAgentNameA());
+				outcome.setUtilProfA("utilspace");
+				outcome.setUtilityA(Double.parseDouble(attributes.getValue("normalizedUtility")));
+				outcome.setDiscountedUtilityA(Double.parseDouble(attributes.getValue("discountedUtility")));
 				found = true;
-			} else if (tagName.equals("resultsOfAgent") && attributes.getValue(0).equals("B")) {
-				outcome.setAgentNameB(attributes.getValue(1));
-				agents.add(attributes.getValue(1));
-				outcome.setUtilProfB(attributes.getValue(3));
-				outcome.setUtilityB(Double.parseDouble(attributes.getValue(10)));
-				outcome.setDiscountedUtilityB(Double.parseDouble(attributes.getValue(8)));
+			} else if (tagName.equals("resultsOfAgent") && attributes.getValue("agent").equals("B")) {
+				outcome.setAgentNameB(attributes.getValue("agentName"));
+				agents.add(outcome.getAgentNameB());
+				outcome.setUtilProfB("utilspace");
+				outcome.setUtilityB(Double.parseDouble(attributes.getValue("normalizedUtility")));
+				outcome.setDiscountedUtilityB(Double.parseDouble(attributes.getValue("discountedUtility")));
 				found = true;
 			}
 			return found;
@@ -85,9 +86,9 @@ public class TournamentMeasures {
 				String tagName, Attributes attributes) {
 			boolean found = false;
 			if (tagName.equals("utility_based_quality_measures")) {
-				outcome.setNashDistance(Double.parseDouble(attributes.getValue(0)));
-				outcome.setParetoDistance(Double.parseDouble(attributes.getValue(1)));
-				outcome.setKalaiDistance(Double.parseDouble(attributes.getValue(2)));
+				outcome.setNashDistance(Double.parseDouble(attributes.getValue("nash_distance")));
+				outcome.setParetoDistance(Double.parseDouble(attributes.getValue("pareto_distance")));
+				outcome.setKalaiDistance(Double.parseDouble(attributes.getValue("kalai_distance")));
 				found = true;
 			}
 			return found;
@@ -96,20 +97,20 @@ public class TournamentMeasures {
 		private boolean processTrajectoryBasedQM(String nsURI,
 				String strippedName, String tagName, Attributes attributes) {
 			boolean found = false;
-			if (tagName.equals("trajectory") && attributes.getValue(6).equals("A")) {
-				outcome.setSilentMovesA(Double.parseDouble(attributes.getValue(0)));
-				outcome.setSelfishMovesA(Double.parseDouble(attributes.getValue(1)));
-				outcome.setFortunateMovesA(Double.parseDouble(attributes.getValue(2)));
-				outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue(3)));
-				outcome.setNiceMovesA(Double.parseDouble(attributes.getValue(4)));
-				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue(5)));
-			} else if (tagName.equals("trajectory") && attributes.getValue(6).equals("B")) {
-				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue(0)));
-				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue(1)));
-				outcome.setFortunateMovesB(Double.parseDouble(attributes.getValue(2)));
-				outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue(3)));
-				outcome.setNiceMovesB(Double.parseDouble(attributes.getValue(4)));
-				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue(5)));
+			if (tagName.equals("trajectory") && attributes.getValue("agent").equals("A")) {
+				outcome.setSilentMovesA(Double.parseDouble(attributes.getValue("silent_moves")));
+				outcome.setSelfishMovesA(Double.parseDouble(attributes.getValue("selfish_moves")));
+				outcome.setFortunateMovesA(Double.parseDouble(attributes.getValue("fortunate_moves")));
+				outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue("unfortunate_moves")));
+				outcome.setNiceMovesA(Double.parseDouble(attributes.getValue("nice_moves")));
+				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue("concession_moves")));
+			} else if (tagName.equals("trajectory") && attributes.getValue("agent").equals("B")) {
+				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue("silent_moves")));
+				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue("selfish_moves")));
+				outcome.setFortunateMovesB(Double.parseDouble(attributes.getValue("fortunate_moves")));
+				outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue("unfortunate_moves")));
+				outcome.setNiceMovesB(Double.parseDouble(attributes.getValue("nice_moves")));
+				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue("concession_moves")));
 			}
 			return found;
 		}
@@ -191,8 +192,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Users/Mark/workspace/Genius/log/DT-2012-04-07 16.37.56.xml" ;
-			String out = "c:/Users/Mark/workspace/Genius/log/result.xml" ;
+			String in = "c:/Users/Mark/workspace/Genius/log/DT-2012-04-13 11.52.05.xml";
+			String out = "c:/Users/Mark/workspace/Genius/log/result.xml";
 			
 			process(in, out);
 		} catch (Exception e) {
@@ -214,7 +215,7 @@ public class TournamentMeasures {
 		xr.setContentHandler(handler);
 		xr.setErrorHandler(handler);
 		xr.parse(log);
-		SimpleElement results = calculateMeasures(handler.getOutcomes(), handler.getOutcomesAsRuns(), handler.getAgents());
+		OrderedSimpleElement results = calculateMeasures(handler.getOutcomes(), handler.getOutcomesAsRuns(), handler.getAgents());
 		writeXMLtoFile(results, tournamentLog);
 	}
 	
@@ -223,7 +224,7 @@ public class TournamentMeasures {
 	 * @param results
 	 * @param logPath
 	 */
-	private static void writeXMLtoFile(SimpleElement results, String logPath) {
+	private static void writeXMLtoFile(OrderedSimpleElement results, String logPath) {
 		try {
 			File tournamentLog = new File(logPath);
 			if (tournamentLog.exists()) {
@@ -246,56 +247,43 @@ public class TournamentMeasures {
 	 * @param agents
 	 * @return XML-object with results of calculated measures.
 	 */
-public static SimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, ArrayList<ArrayList<OutcomeInfo>> runs, HashSet<String> agents) {
-		SimpleElement tournamentQualityMeasures = new SimpleElement("tournament_quality_measures");
+public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outcomes, ArrayList<ArrayList<OutcomeInfo>> runs, HashSet<String> agents) {
+	OrderedSimpleElement tournamentQualityMeasures = new OrderedSimpleElement("tournament_quality_measures");
 		for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
 			String agentName = agentsIter.next();
-			SimpleElement agentElement = new SimpleElement("NegotiationOutcome");
+			OrderedSimpleElement agentElement = new OrderedSimpleElement("NegotiationOutcome");
 			agentElement.setAttribute("Agent", agentName);
 			
-			SimpleElement tournamentQM = new SimpleElement("TournamentQM");
+			OrderedSimpleElement tournamentQM = new OrderedSimpleElement("TournamentQM");
 			agentElement.addChildElement(tournamentQM);
 			
 
 			if(agentName.contains("bs")) {
-				SimpleElement decoupledElementID = new SimpleElement("DecoupledElementID");
+				OrderedSimpleElement decoupledElementID = new OrderedSimpleElement("DecoupledElementID");
 				agentElement.addChildElement(decoupledElementID);
 
 				decoupledElementID.setAttribute("offering_strategy", getOfferingStrategyName(agentName));
 				decoupledElementID.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
 				decoupledElementID.setAttribute("opponent_model", getOpponentModelName(agentName));
 			}
-
-			tournamentQM.setAttribute("percentage_of_agreement", getPercentageOfAgreement(outcomes, agentName) + "%");
-			tournamentQM.setAttribute("average_rounds", getAverageRounds(outcomes, agentName) + "");
 			tournamentQM.setAttribute("average_time_of_agreement", getAverageTimeOfAgreement(outcomes, agentName) + "");
-			tournamentQM.setAttribute("average_util_of_agreements", getAverageUtility(outcomes, agentName, true) + "");
-			tournamentQM.setAttribute("average_util", getAverageUtility(outcomes, agentName, false) + "");
-			tournamentQM.setAttribute("average_discounted_util_of_agreements", getAverageDiscountedUtility(outcomes, agentName, true) + "");
-			tournamentQM.setAttribute("average_discounted_util", getAverageDiscountedUtility(outcomes, agentName, false) + "");
-			
-			
 			tournamentQM.setAttribute("std_time_of_agreement", getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName) + "");
-			tournamentQM.setAttribute("std_discounted_util", getStandardDeviationOfDiscountedUtility(runs, agentName) + "");
+			tournamentQM.setAttribute("average_rounds", getAverageRounds(outcomes, agentName) + "");
 			tournamentQM.setAttribute("std_rounds", getStandardDeviationOfTotalRounds(runs, agentName) + "");
+			tournamentQM.setAttribute("percentage_of_agreement", getPercentageOfAgreement(outcomes, agentName) + "%");
+			tournamentQM.setAttribute("average_util", getAverageUtility(outcomes, agentName, false) + "");
+			tournamentQM.setAttribute("average_util_of_agreements", getAverageUtility(outcomes, agentName, true) + "");		
+			tournamentQM.setAttribute("average_discounted_util", getAverageDiscountedUtility(outcomes, agentName, false) + "");
+			tournamentQM.setAttribute("std_discounted_util", getStandardDeviationOfDiscountedUtility(runs, agentName) + "");
+			tournamentQM.setAttribute("average_discounted_util_of_agreements", getAverageDiscountedUtility(outcomes, agentName, true) + "");
 			
-			SimpleElement utilityBasedQM = new SimpleElement("UtilityBasedQM");
+			OrderedSimpleElement utilityBasedQM = new OrderedSimpleElement("UtilityBasedQM");
 			agentElement.addChildElement(utilityBasedQM);
 			utilityBasedQM.setAttribute("average_nash_distance", getAverageNashDistance(outcomes, agentName) + "");
 			utilityBasedQM.setAttribute("average_pareto_distance", getAverageParetoDistance(outcomes, agentName) + "");
 			utilityBasedQM.setAttribute("average_kalai_distance", getAverageKalaiDistance(outcomes, agentName) + "");
 			
-
-			
-			
-			SimpleElement prefOpponentModelQM = new SimpleElement("PrefOpponentModelQM");
-			agentElement.addChildElement(prefOpponentModelQM);
-			prefOpponentModelQM.setAttribute("average_correlation_nash",  "");
-			prefOpponentModelQM.setAttribute("average_correlation_kalai",  "");
-			prefOpponentModelQM.setAttribute("average_correlation_pareto_bids",  "");
-			prefOpponentModelQM.setAttribute("average_correlation_all_bids",  "");
-			
-			SimpleElement trajectorAnalysisQM = new SimpleElement("trajectorAnalysisQM");
+			OrderedSimpleElement trajectorAnalysisQM = new OrderedSimpleElement("trajectorAnalysisQM");
 			agentElement.addChildElement(trajectorAnalysisQM);
 			
 			// discard invalid trajectories

@@ -3,7 +3,7 @@ package negotiator.qualitymeasures;
 import java.util.ArrayList;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.xml.SimpleElement;
+import negotiator.xml.OrderedSimpleElement;
 
 /**
  * Class used to calculate utility-based measures relating to
@@ -95,8 +95,8 @@ public class UtilityMeasures {
 	 * @param utilB utility of agreement for party B
 	 * @return XML representation of the quality measures.
 	 */
-	public SimpleElement calculateMeasures(double utilA, double utilB) {
-		SimpleElement omQualityMeasures = new SimpleElement("utility_based_quality_measures");
+	public OrderedSimpleElement calculateMeasures(double utilA, double utilB) {
+		OrderedSimpleElement omQualityMeasures = new OrderedSimpleElement("utility_based_quality_measures");
 		
 		omQualityMeasures.setAttribute("nash_distance", calculateNashDistance(utilA, utilB) + "");
 		omQualityMeasures.setAttribute("pareto_distance", calculateParetoDistance(utilA, utilB) + "");

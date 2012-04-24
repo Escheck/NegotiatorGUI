@@ -2,17 +2,14 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -23,7 +20,6 @@ import negotiator.exceptions.Warning;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
-import negotiator.xml.SimpleElement;
 
 /**
  * This class is an improved version of the SpaceDistance class by Tykhonov.
@@ -58,12 +54,12 @@ public class ScenarioMeasures {
 		public void startElement(String nsURI, String strippedName,
 				String tagName, Attributes attributes) throws SAXException {
 			if (tagName.equals("domainRepItem") && attributes.getLength() > 0) {
-				domain = new ScenarioInfo(attributes.getValue(0).substring(5));
+				domain = new ScenarioInfo(attributes.getValue("url").substring(5));
 			} else if (tagName.equals("profile")) {
 				if (domain.getPrefProfA() == null) {
-					domain.setPrefProfA(attributes.getValue(0).substring(5));
+					domain.setPrefProfA(attributes.getValue("url").substring(5));
 				} else if (domain.getPrefProfB() == null){
-					domain.setPrefProfB(attributes.getValue(0).substring(5));
+					domain.setPrefProfB(attributes.getValue("url").substring(5));
 				} else {
 					System.out.println("WARNING: Violation of two preference profiles per domain assumption.");
 				}
@@ -91,7 +87,7 @@ public class ScenarioMeasures {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String dir = "./";
+		String dir = "c:/Users/Mark/workspace/Genius/";
 		process(dir);
 	}
 
@@ -105,13 +101,13 @@ public class ScenarioMeasures {
 	public static void process(String dir) throws Exception {
 		ArrayList<ScenarioInfo> domains = parseDomainFile(dir);
 		
-		SimpleElement prefResults = new OrderedSimpleElement("preference_profiles_statistics");
+		OrderedSimpleElement prefResults = new OrderedSimpleElement("preference_profiles_statistics");
 		for (ScenarioInfo domainSt : domains) {
 			Domain domain = new Domain(dir + domainSt.getDomain());
 			UtilitySpace utilitySpaceA, utilitySpaceB;
 			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
 			utilitySpaceB =  new UtilitySpace(domain, dir + domainSt.getPrefProfB());
-			SimpleElement results = new OrderedSimpleElement("domain_result");
+			OrderedSimpleElement results = new OrderedSimpleElement("domain_result");
 			results.setAttribute("domain", domainSt.getDomain());
 			results.setAttribute("profileA", domainSt.getPrefProfA());
 			results.setAttribute("profileB", domainSt.getPrefProfB());
@@ -122,6 +118,7 @@ public class ScenarioMeasures {
 			System.out.println("Processed domain: " + domain.getName() + " \t [" + utilitySpaceA.getFileName() + " , " + utilitySpaceB.getFileName() + "]");
 		}
 		writeXMLtoFile(prefResults, dir + "domain_info.xml");
+		System.out.println("Finished processing domains");
 	}
 	
 	/**
@@ -148,7 +145,7 @@ public class ScenarioMeasures {
 	 * @param results to be written
 	 * @param logPath
 	 */
-	private static void writeXMLtoFile(SimpleElement results, String logPath) {
+	private static void writeXMLtoFile(OrderedSimpleElement results, String logPath) {
 		try {
 			File log = new File(logPath);
 			if (log.exists()) {
@@ -212,7 +209,7 @@ public class ScenarioMeasures {
 	 * @param utilitySpaceB
 	 * @return
 	 */
-	public static SimpleElement calculateDistances(SimpleElement element, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+	public static OrderedSimpleElement calculateDistances(OrderedSimpleElement element, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double issueWeightsA[] = getIssueWeights(utilitySpaceA);
 		double issueWeightsB[] = getIssueWeights(utilitySpaceB);
 		double bidsUtilA[] = getBidsUtil(utilitySpaceA);
