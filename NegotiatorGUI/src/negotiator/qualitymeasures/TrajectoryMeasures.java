@@ -2,7 +2,7 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 import negotiator.analysis.BidPoint;
-import negotiator.xml.SimpleElement;
+import negotiator.xml.OrderedSimpleElement;
 
 /**
  * This class is an implementation of the trajectory measures discussed by
@@ -20,7 +20,7 @@ public class TrajectoryMeasures {
 	ArrayList<BidPoint> agentABids;
 	ArrayList<BidPoint> agentBBids;
 	boolean agentAFirst;
-	private final double SILENTTHRESHOLD = 0;
+	private final double SILENTTHRESHOLD = 0.0005;
 	double unfortunateA;
 	double unfortunateB;
 	double silentA;
@@ -120,8 +120,8 @@ public class TrajectoryMeasures {
 	 * @param utilB utility of agreement for party B
 	 * @return XML representation of the quality measures.
 	 */
-	public SimpleElement calculateMeasures() {
-		SimpleElement tjQualityMeasures = new SimpleElement("trajactory_based_quality_measures");
+	public OrderedSimpleElement calculateMeasures() {
+		OrderedSimpleElement tjQualityMeasures = new OrderedSimpleElement("trajactory_based_quality_measures");
 		
 		unfortunateA = 0;
 		unfortunateB = 0;
@@ -142,7 +142,7 @@ public class TrajectoryMeasures {
 		
 		if (sizeA > 0 && sizeB > 0) {
 			processAllBids();
-			SimpleElement agentA = new SimpleElement("trajectory");
+			OrderedSimpleElement agentA = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentA);
 			agentA.setAttribute("agent", "A");
 			agentA.setAttribute("unfortunate_moves", unfortunateA / sizeA + "");
@@ -153,7 +153,7 @@ public class TrajectoryMeasures {
 			agentA.setAttribute("concession_moves", concessionA / sizeA + "");
 
 			
-			SimpleElement agentB = new SimpleElement("trajectory");
+			OrderedSimpleElement agentB = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentB);
 			agentB.setAttribute("agent", "B");
 			agentB.setAttribute("unfortunate_moves", unfortunateB / sizeB + "");
@@ -163,7 +163,7 @@ public class TrajectoryMeasures {
 			agentB.setAttribute("silent_moves", silentB / sizeB + "");
 			agentB.setAttribute("concession_moves", concessionB / sizeB + "");
 		} else {
-			SimpleElement agentA = new SimpleElement("trajectory");
+			OrderedSimpleElement agentA = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentA);
 			agentA.setAttribute("agent", "A");
 			agentA.setAttribute("unfortunate_moves", "0");
@@ -172,9 +172,8 @@ public class TrajectoryMeasures {
 			agentA.setAttribute("selfish_moves", "0");
 			agentA.setAttribute("silent_moves", "0");
 			agentA.setAttribute("concession_moves", "0");
-
 			
-			SimpleElement agentB = new SimpleElement("trajectory");
+			OrderedSimpleElement agentB = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentB);
 			agentB.setAttribute("agent", "B");
 			agentB.setAttribute("unfortunate_moves", "0");
@@ -184,9 +183,6 @@ public class TrajectoryMeasures {
 			agentB.setAttribute("silent_moves", "0");
 			agentB.setAttribute("concession_moves", "0");
 		}
-	
-
-		
 		return tjQualityMeasures;
 	}
 }

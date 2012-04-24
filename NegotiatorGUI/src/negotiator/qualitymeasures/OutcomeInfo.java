@@ -258,19 +258,25 @@ public class OutcomeInfo {
 		this.concessionMovesB = concessionMovesB;
 	}
 
+	@Override
 	public String toString() {
-		String result = 
-				"Time of agreement: " + timeOfAgreement + "\n" +
-				"Total bids: " + bids + "\n" +
-				"Domain: " + domain + "\n" +
-				"Agreement reached: " + agreement + "\n" +
-				"Agent A started first: " + startedA + "\n" +
-				"Agent A name: " + agentNameA + "\n" +
-				"Preference profile A: " + utilProfA + "\n" +
-				"Final utility A: " + discountedUtilityA + "\n" +
-				"Agent B name: " + agentNameB + "\n" +
-				"Preference profile B: " + utilProfB + "\n" +
-				"Final utility B: " + discountedUtilityB;
-		return result;
+		return "OutcomeInfo [timeOfAgreement=" + timeOfAgreement + ", bids="
+				+ bids + ", domain=" + domain + ", agreement=" + agreement
+				+ ", startedA=" + startedA + ", agentNameA=" + agentNameA
+				+ ", utilProfA=" + utilProfA + ", utilityA=" + utilityA
+				+ ", discountedUtilityA=" + discountedUtilityA
+				+ ", agentNameB=" + agentNameB + ", utilProfB=" + utilProfB
+				+ ", utilityB=" + utilityB + ", discountedUtilityB="
+				+ discountedUtilityB + ", nashDistance=" + nashDistance
+				+ ", paretoDistance=" + paretoDistance + ", kalaiDistance="
+				+ kalaiDistance + ", unfortunateMovesA=" + unfortunateMovesA
+				+ ", unfortunateMovesB=" + unfortunateMovesB
+				+ ", silentMovesA=" + silentMovesA + ", silentMovesB="
+				+ silentMovesB + ", niceMovesA=" + niceMovesA + ", niceMovesB="
+				+ niceMovesB + ", fortunateMovesA=" + fortunateMovesA
+				+ ", fortunateMovesB=" + fortunateMovesB + ", selfishMovesA="
+				+ selfishMovesA + ", selfishMovesB=" + selfishMovesB
+				+ ", concessionMovesA=" + concessionMovesA
+				+ ", concessionMovesB=" + concessionMovesB + "]";
 	}
 }
