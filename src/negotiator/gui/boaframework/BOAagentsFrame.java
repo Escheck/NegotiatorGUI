@@ -91,7 +91,7 @@ public class BOAagentsFrame extends JDialog {
     
     private JSeparator seperator;
     
-    private final static boolean DEBUG = false;
+    private final static boolean DEBUG = true;
     
     // the null parameter is a parameter added to strategies without
     // parameters. This is done, such to ensure that the Cartesian product
@@ -122,10 +122,8 @@ public class BOAagentsFrame extends JDialog {
         	asParamsModel.addElement(new BOAparameter("bd", 0, 0, 1));
         	asParamsModel.addElement(new BOAparameter("t", 0.99, 0.99, 1));
         	asParamsModel.addElement(new BOAparameter("c", 0.98, 0.98, 1));
-        	omParamsModel.addElement(new BOAparameter("v", 1, 1, 1));
-        	omParamsModel.addElement(new BOAparameter("t", 0.95, 0.95, 1));
+        	omParamsModel.addElement(new BOAparameter("t", 0.6, 0.6, 1));
         	omParamsModel.addElement(new BOAparameter("a", 1, 1, 1));
-        	omParamsModel.addElement(new BOAparameter("l", 0.2, 0.2, 1));
         }
         pack();
         setVisible(true);
