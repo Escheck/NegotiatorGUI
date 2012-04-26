@@ -76,6 +76,11 @@ public class UtilitySpace {
     	this.domain = new Domain();
     	fEvaluators = new HashMap<Objective, Evaluator>();
     }
+	
+	  public UtilitySpace(Domain domain) {
+    	this.domain=domain;
+    	fEvaluators = new HashMap<Objective, Evaluator>();
+    }
     
     /**
      * Create new default util space for a given domain.
@@ -281,7 +286,10 @@ public class UtilitySpace {
         		break;
         	}
         }
-        return financialRat*financialUtility+(1-financialRat)*utility;
+		double result = financialRat*financialUtility+(1-financialRat)*utility;
+        if (result > 1)
+        	return 1;
+		return result;
     }
     
     /**
@@ -400,34 +408,11 @@ public class UtilitySpace {
      * @throws Exception
      */
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
-    	ISSUETYPE vtype;
-    	Value tmpval = bid.getValue(pIssueIndex);
-    	//assert (tmpval!=null); //Wouter: I dont think this does anything.
-    	vtype = tmpval.getType();
-    	
-  /* hdevos: used to be this: 	
-   		Issue lIssue = getDomain().getIssue(pIssueIndex);
-    	Evaluator lEvaluator = fEvaluators.get(lIssue);
-   */
-
-    	Objective lObj = getDomain().getObjective(pIssueIndex);
+    
     	Evaluator lEvaluator = fEvaluators.get(lObj);
     	EVALUATORTYPE etype = lEvaluator.getType();
     	
-    	switch(etype) {
-    	case DISCRETE:
-    		return ((EvaluatorDiscrete)lEvaluator).getEvaluation(this,bid,pIssueIndex);
-    	case INTEGER:
-    		return ((EvaluatorInteger)lEvaluator).getEvaluation(this,bid,pIssueIndex);
-    	case REAL:
-    		return ((EvaluatorReal)lEvaluator).getEvaluation(this,bid,pIssueIndex);
-    	case PRICE:
-    		return ((EvaluatorPrice)lEvaluator).getEvaluation(this,bid,pIssueIndex);
-    	case OBJECTIVE: 
-    		return ((EvaluatorObjective)lEvaluator).getEvaluation(this,bid,pIssueIndex);
-    	default:
-    		return -1;
-    	
+    	return lEvaluator.getEvaluation(this, bid, pIssueIndex);
     	}
     }
 
