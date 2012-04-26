@@ -409,11 +409,10 @@ public class UtilitySpace {
      */
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     
+    	Object lObj = getDomain().getObjective(pIssueIndex);
     	Evaluator lEvaluator = fEvaluators.get(lObj);
-    	EVALUATORTYPE etype = lEvaluator.getType();
     	
     	return lEvaluator.getEvaluation(this, bid, pIssueIndex);
-    	}
     }
 
     /**
