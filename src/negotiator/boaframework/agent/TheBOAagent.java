@@ -19,6 +19,7 @@ public class TheBOAagent extends BOAagent {
 	String name = "";
 	/** information object which stores the decoupled agent */
 	BOAagentInfo dagent;
+	private static boolean TNR_TEST = false;
 	
 	/**
 	 * Loads and initializes the decoupled components of the agent.
@@ -34,13 +35,19 @@ public class TheBOAagent extends BOAagent {
 		// create the actual objects using reflexion
 		offeringStrategy = BOAagentRepository.getInstance().getOfferingStrategy(os);
 		acceptConditions = BOAagentRepository.getInstance().getAcceptanceStrategy(as);
-		opponentModel = BOAagentRepository.getInstance().getOpponentModel(om);
+		if (!TNR_TEST || negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids() < 200000) {
+			opponentModel = BOAagentRepository.getInstance().getOpponentModel(om);
+		} else {
+			opponentModel = null;
+		}
 		omStrategy = BOAagentRepository.getInstance().getOMStrategy(oms);
 
 		// init the components.
 		try {
-			opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());
-			opponentModel.setOpponentUtilitySpace(fNegotiation);
+			if (!TNR_TEST || negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids() < 200000) {
+				opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());
+				opponentModel.setOpponentUtilitySpace(fNegotiation);
+			}
 			omStrategy.init(negotiationSession, opponentModel, dagent.getOMStrategy().getParameters());
 			offeringStrategy.init(negotiationSession, opponentModel, omStrategy, dagent.getOfferingStrategy().getParameters());
 			acceptConditions.init(negotiationSession, offeringStrategy, dagent.getAcceptanceStrategy().getParameters());

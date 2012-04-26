@@ -16,11 +16,16 @@ import negotiator.boaframework.OpponentModel;
 public class NullStrategy extends OMStrategy {
 
 	private Random rand;
+	private double updateThreshold = 1.0;
 	
 	public NullStrategy() {}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		rand = new Random();
+		this.negotiationSession = negotiationSession;
+		if (parameters.containsKey("t")) {
+			updateThreshold = parameters.get("t");
+		}
 	}
 	
 	@Override
@@ -30,6 +35,6 @@ public class NullStrategy extends OMStrategy {
 
 	@Override
 	public boolean canUpdateOM() {
-		return true;
+		return negotiationSession.getTime() < updateThreshold;
 	}
 }
