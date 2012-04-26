@@ -122,8 +122,8 @@ public class BOAagentsFrame extends JDialog {
         	asParamsModel.addElement(new BOAparameter("bd", 0, 0, 1));
         	asParamsModel.addElement(new BOAparameter("t", 0.99, 0.99, 1));
         	asParamsModel.addElement(new BOAparameter("c", 0.98, 0.98, 1));
-        	omParamsModel.addElement(new BOAparameter("t", 0.6, 0.6, 1));
         	omParamsModel.addElement(new BOAparameter("a", 1, 1, 1));
+        	omsParamsModel.addElement(new BOAparameter("t", 0.6, 0.6, 1));
         }
         pack();
         setVisible(true);

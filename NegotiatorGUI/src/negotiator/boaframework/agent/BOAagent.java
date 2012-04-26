@@ -91,7 +91,7 @@ public abstract class BOAagent extends Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (!(opponentModel instanceof NullModel)) {
+			if (opponentModel != null && !(opponentModel instanceof NullModel)) {
 				if (omStrategy.canUpdateOM()) {
 					opponentModel.updateModel(bid);
 				}

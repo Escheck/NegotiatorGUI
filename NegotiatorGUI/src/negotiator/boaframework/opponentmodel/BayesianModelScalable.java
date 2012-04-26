@@ -19,7 +19,6 @@ import negotiator.utility.UtilitySpace;
 public class BayesianModelScalable extends OpponentModel {
 
 	BayesianOpponentModelScalable model;
-	double updateThreshold;
 	long DOMAINSIZE;
 	boolean niceTitForTatMode = false;
 	
@@ -27,11 +26,7 @@ public class BayesianModelScalable extends OpponentModel {
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		model = new BayesianOpponentModelScalable(negotiationSession.getUtilitySpace());
 		this.negotiationSession = negotiationSession;
-		if (parameters != null && parameters.containsKey("t")) {
-			updateThreshold = parameters.get("t");
-		} else {
-			updateThreshold = 1.0;
-		}
+		
 		if (parameters != null && parameters.containsKey("n")) {
 			System.out.println("Entering NTFT mode");
 			DOMAINSIZE = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
@@ -47,9 +42,7 @@ public class BayesianModelScalable extends OpponentModel {
 					model.updateBeliefs(opponentBid);
 				}
 			} else {
-				if (negotiationSession.getTime() < updateThreshold) {
-					model.updateBeliefs(opponentBid);
-				}
+				model.updateBeliefs(opponentBid);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
