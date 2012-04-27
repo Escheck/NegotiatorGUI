@@ -15,9 +15,10 @@ public class PerfectModel extends OpponentModel {
 
 	@Override
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession session) {
+		
 		if (Global.experimentalSetup) {
-			opponentUtilitySpace= session.getAgentAUtilitySpace();
-			if (negotiationSession.getUtilitySpace().equals(opponentUtilitySpace)) {
+			opponentUtilitySpace = session.getAgentAUtilitySpace();
+			if (negotiationSession.getUtilitySpace().getFileName().equals(opponentUtilitySpace.getFileName())) {
 				opponentUtilitySpace = session.getAgentBUtilitySpace();
 			}
 		} else {
