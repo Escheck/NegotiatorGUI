@@ -56,5 +56,9 @@ public abstract class OpponentModel {
 		return opponentUtilitySpace;
 	}
 
-	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { }
+	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { 
+		
+	}
+	
+	public void cleanUp() { }
 }
