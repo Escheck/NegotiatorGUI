@@ -44,6 +44,7 @@ public abstract class BOAagent extends Agent {
     protected OutcomeSpace outcomeSpace;
     /** if this agent started */
     private boolean startingAgent;
+    private boolean cleanedOM = false;
     
 	public void init() {
 		super.init();
@@ -94,6 +95,11 @@ public abstract class BOAagent extends Agent {
 			if (opponentModel != null && !(opponentModel instanceof NullModel)) {
 				if (omStrategy.canUpdateOM()) {
 					opponentModel.updateModel(bid);
+				} else {
+					if (!cleanedOM) {
+						opponentModel.cleanUp();
+						cleanedOM = true;
+					}
 				}
 			}
 		}
@@ -161,6 +167,10 @@ public abstract class BOAagent extends Agent {
 			}
 		}
 		return null;
+	}
+	
+	public OpponentModel getOpponentModel() {
+		return opponentModel;
 	}
 	
 	/**

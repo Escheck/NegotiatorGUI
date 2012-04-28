@@ -26,7 +26,7 @@ public class UtilityMeasures {
 	 * @param utilB utility of agreement for party B
 	 * @return Nash distance
 	 */
-	public double calculateNashDistance(double utilA, double utilB) {
+	private double calculateNashDistance(double utilA, double utilB) {
 		double nashDistance = 0;
 		
 		try {
@@ -46,7 +46,7 @@ public class UtilityMeasures {
 	 * @param utilB utility of agreement for party B
 	 * @return Nash distance
 	 */
-	public double calculateKalaiSmorodinskyDistance(double utilA, double utilB) {
+	private double calculateKalaiSmorodinskyDistance(double utilA, double utilB) {
 		double kalaiDistance = 0;
 		try {
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
@@ -70,7 +70,7 @@ public class UtilityMeasures {
 	 * @param utilB utility of agreement for party B
 	 * @return Pareto distance
 	 */
-	public double calculateParetoDistance(double utilA, double utilB) {
+	private double calculateParetoDistance(double utilA, double utilB) {
 		double paretoDistance = 2.0;
 		try {
 			ArrayList<BidPoint> bids = bidSpace.getParetoFrontier();
