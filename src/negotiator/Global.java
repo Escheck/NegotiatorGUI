@@ -92,6 +92,12 @@ public class Global {
 	 */
 	public static final boolean LOW_MEMORY_MODE = true;
 	
+	/**
+	 * Use this option to measure the accuracy of OM during a negotiation. Note that this
+	 * feature is very heavy computationally, and should therefore be used with the PausableTimeline.
+	 */
+	public static final boolean OM_PROFILER_ENABLED = false;
+	
 	public Global() {}
 
 	/**

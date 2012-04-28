@@ -3,6 +3,7 @@ package negotiator.protocol;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import misc.Pair;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Global;
@@ -33,7 +34,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected	Protocol 		protocol;
     protected 	int				sessionNumber;
     public ArrayList<BidPoint> 	fAgentABids;
-    public ArrayList<BidPoint> 	fAgentBBids;    
+    public ArrayList<BidPoint> 	fAgentBBids; 
+    public ArrayList<Pair<Double, Double>> pearsonCorrBids;
     protected 	BidSpace		bidSpace;
 	protected HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
 	protected HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
@@ -76,6 +78,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         }
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
+        pearsonCorrBids = new ArrayList<Pair<Double, Double>>();
         actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }
 
@@ -91,7 +94,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	protected synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,double time,
 			double utilA,double utilB,double utilADiscount,double utilBDiscount,String remarks, boolean finalActionEvent) {
 		for(NegotiationEventListener listener : actionEventListener) {
-			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks, finalActionEvent ));
+			ActionEvent event = new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks, finalActionEvent);
+			listener.handleActionEvent(event);
 		}
 	}
 	
@@ -142,6 +146,10 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 		return fAgentABids.size() + fAgentBBids.size();
 	}
 
+	public double[][] getPearsonCorrBids() {
+		return convertToChartData(pearsonCorrBids);
+	}
+	
 	//alinas code
 	public double[][] getNegotiationPathA(){
 //		System.out.println("fAgentABids "+fAgentABids.size());
@@ -161,6 +169,24 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 		}
     	
 		return lAgentAUtilities; 
+	}
+	
+	private double[][] convertToChartData(ArrayList<Pair<Double, Double>> items) {
+		double[][] data = new double[2][items.size()];
+		try
+        {
+			int i=0;
+	    	for (Pair<Double, Double> p : items)
+	    	{
+	    		data [0][i] = p.getFirst();
+	    		data [1][i] = p.getSecond();
+	        	i++;
+	    	}
+        } catch (Exception e) {
+			e.printStackTrace();
+        	return null;
+		}
+		return data;
 	}
 	
 	public ArrayList<BidPoint> getAgentABids() {

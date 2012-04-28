@@ -1,5 +1,6 @@
 package negotiator.events;
 
+import misc.Pair;
 import negotiator.Agent;
 import negotiator.actions.Action;
 import negotiator.gui.progress.TournamentProgressUI2;
@@ -102,5 +103,5 @@ public class ActionEvent extends NegotiationEvent
 	public boolean isFinalActionEvent()
 	{
 		return finalActionEvent;
-	}	
+	}
 }

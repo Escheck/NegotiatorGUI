@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import misc.Pair;
 import negotiator.Agent;
 import negotiator.ContinuousTimeline;
 import negotiator.DiscreteTimeline;
@@ -17,9 +19,11 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.agent.BOAagent;
+import negotiator.boaframework.opponentmodel.NullModel;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
+import negotiator.qualitymeasures.OpponentModelMeasures;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -69,6 +73,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentAWithMultiAC = false;
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
+	private OpponentModelMeasures omMeasures;
+	private int round = 0;
+	private double minKalai = 1;
+	private int minInRound = 0;
 
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
@@ -95,8 +103,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * At the end of this run, we will notify the parent so that he does not keep waiting for the time-out.
 	 */
 	public void run() {
+		
 		startTime=new Date();
 		startTimeMillies=System.currentTimeMillis();
+		
 		try {
 			double agentAUtility,agentBUtility;
 
@@ -114,6 +124,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime,timeline,
 					new UtilitySpace(spaceB),agentBparams);
 			agentB.init();
+			
 			stopNegotiation = false;
 			lastAction = null;
 
@@ -123,7 +134,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			System.out.println("starting with agent "+currentAgent);
 			//Main.log("Agent " + currentAgent.getName() + " begins");
 			fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
+			omMeasures = new OpponentModelMeasures(spaceA, spaceB);
+			
 			while(!stopNegotiation) {
+				round++;
 				//            	timeline.printTime();
 				try {
 					//inform agent about last action of his opponent
@@ -170,7 +184,20 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						} else{
 							fAgentBBids.add(p);
 						}
-
+						
+						if (Global.OM_PROFILER_ENABLED) {
+							if (agentA instanceof BOAagent) {
+								BOAagent boaA = (BOAagent) agentA;
+								if (!(boaA.getOpponentModel() instanceof NullModel)) {
+									double value = omMeasures.calculateKalaiDiff(spaceA, boaA.getOpponentModel());
+									if (value < minKalai) {
+										minKalai = value;
+										minInRound = round;
+									}
+									pearsonCorrBids.add(new Pair<Double, Double>(timeline.getTime(), value));
+								}
+							}
+						}
 						double time = timeline.getTime();
 						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
 						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
