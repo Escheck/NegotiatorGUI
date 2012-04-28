@@ -53,7 +53,6 @@ public class NegotiationOutcome {
 	public List<String> extraValues = new ArrayList<String>();
 	public double time;
 	public String domainName;
-	private final double distanceToNash;
 	private final AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession;
 	private final Action lastAction;
 
@@ -99,7 +98,6 @@ public class NegotiationOutcome {
 		this.agentBclass=agentBclass;
 		this.domainName = domainName;
 		this.additional = additional;
-		this.distanceToNash = distanceToNash;
 		AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
 		AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
 		ErrorRemarks=err;
