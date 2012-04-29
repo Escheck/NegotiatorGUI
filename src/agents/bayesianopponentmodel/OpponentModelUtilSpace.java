@@ -21,5 +21,5 @@ public class OpponentModelUtilSpace extends UtilitySpace
 			e.printStackTrace();
 			System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
 		return u;
-	} 
+	}
 }

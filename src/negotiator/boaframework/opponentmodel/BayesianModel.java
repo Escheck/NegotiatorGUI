@@ -24,7 +24,8 @@ public class BayesianModel extends OpponentModel {
 		if (parameters.get("m") != null) {
 			model.setMostProbableUSHypsOnly(parameters.get("m") > 0);
 		} else {
-			throw new Exception("Constant \"m\" was not set.");
+			model.setMostProbableUSHypsOnly(false);
+			System.out.println("Constant \"m\" was not set. Assumed default value.");
 		}
 	}
 
@@ -60,5 +61,10 @@ public class BayesianModel extends OpponentModel {
 	@Override
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
+	}
+	
+	public void cleanUp() {
+		super.cleanUp();
+		model = null;
 	}
 }

@@ -15,10 +15,12 @@ public abstract class OpponentModel {
 	
 	protected NegotiationSession negotiationSession;
 	protected UtilitySpace opponentUtilitySpace;
+	private boolean cleared;
 	
 	public void init(NegotiationSession domainKnow, HashMap<String, Double> parameters) throws Exception {
 		negotiationSession = domainKnow;
 		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
+		cleared = false;
 	}
 	
 	public void init(NegotiationSession domainKnow) {
@@ -60,5 +62,13 @@ public abstract class OpponentModel {
 		
 	}
 	
-	public void cleanUp() { }
+	public void cleanUp() {
+		negotiationSession = null;
+		opponentUtilitySpace = null;
+		cleared = true;
+	}
+
+	public boolean isCleared() {
+		return cleared;
+	}
 }

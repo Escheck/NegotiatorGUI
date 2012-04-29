@@ -74,9 +74,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
 	private OpponentModelMeasures omMeasures;
-	private int round = 0;
-	private double minKalai = 1;
-	private int minInRound = 0;
 
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
@@ -137,7 +134,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			
 			while(!stopNegotiation) {
-				round++;
 				//            	timeline.printTime();
 				try {
 					//inform agent about last action of his opponent
@@ -188,13 +184,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						if (Global.OM_PROFILER_ENABLED) {
 							if (agentA instanceof BOAagent) {
 								BOAagent boaA = (BOAagent) agentA;
-								if (!(boaA.getOpponentModel() instanceof NullModel)) {
-									double value = omMeasures.calculateKalaiDiff(spaceA, boaA.getOpponentModel());
-									if (value < minKalai) {
-										minKalai = value;
-										minInRound = round;
-									}
-									pearsonCorrBids.add(new Pair<Double, Double>(timeline.getTime(), value));
+								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
+										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
+									pearsonCorrCoefBids.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel())));
+									rankingDistBids.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel())));
+									kalaiDiff.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateKalaiDiff(boaA.getOpponentModel())));
 								}
 							}
 						}

@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import javax.swing.SwingUtilities;
 
+import negotiator.Global;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -21,7 +23,9 @@ public class BidChart {
 	private double [][]pareto;
 	private double [][] bidSeriesA_;
 	private double [][] bidSeriesB_;
-	private double [][] pearsonCorBids_;
+	private double [][] pearsonCorrCoefBids_;
+	private double [][] rankingDistBids_;
+	private double [][] kalaiDiff_;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
@@ -35,7 +39,9 @@ public class BidChart {
 	private DefaultXYDataset agreementData = new DefaultXYDataset();
 	private DefaultXYDataset lastBidAData = new DefaultXYDataset();
 	private DefaultXYDataset lastBidBData = new DefaultXYDataset();
-	private DefaultXYDataset pearsonCorBidsData = new DefaultXYDataset();
+	private DefaultXYDataset pearsonCorrCoefBidsData = new DefaultXYDataset();
+	private DefaultXYDataset rankingDistBidsData = new DefaultXYDataset();
+	private DefaultXYDataset kalaiDiffData = new DefaultXYDataset();
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
 	final XYDotRenderer nashRenderer = new XYDotRenderer();
 	final XYDotRenderer kalaiRenderer = new XYDotRenderer();
@@ -44,10 +50,12 @@ public class BidChart {
 	final XYDotRenderer lastBidARenderer = new XYDotRenderer();
 	final XYDotRenderer lastBidBRenderer = new XYDotRenderer();
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
-	final XYItemRenderer pearsonCorBidsRenderer = new XYLineAndShapeRenderer(true, false);
+	final XYItemRenderer pearsonCorrCoefBidsRenderer = new XYLineAndShapeRenderer(true, false);
+	final XYItemRenderer rankingDistBidsRenderer = new XYLineAndShapeRenderer(true, false);
+	final XYItemRenderer kalaiDiffRenderer = new XYLineAndShapeRenderer(true, false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
-	private NumberAxis domainAxis ;
+	private NumberAxis domainAxis;
     private ValueAxis rangeAxis;
 
 	//empty constructor; but: don't you always know the possible bids and the pareto before the 1st bid? 
@@ -66,7 +74,11 @@ public class BidChart {
 	public void BidChart1(){
 		chart = createOverlaidChart();  
 		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setRange(0,1.1);
+		if (Global.OM_PROFILER_ENABLED) {
+			rangeAxis.setRange(-1.1,1.1);
+		} else {
+			rangeAxis.setRange(0,1.1);
+		}
 		NumberAxis domainAxis = (NumberAxis)plot.getDomainAxis(); 
 		domainAxis.setRange(0,1.1);
 	}
@@ -96,11 +108,29 @@ public class BidChart {
 		lastBidBData.addSeries("Last bid by B", lastBid);
 	}
 	
-	public void setPearsonCorBidsData(double [][] pearsonCorBids) {
-		this.pearsonCorBids_ = pearsonCorBids;
+	public void setPearsonCorrCoefBidsData(double [][] pearsonCorrCoefBids) {
+		this.pearsonCorrCoefBids_ = pearsonCorrCoefBids;
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-				pearsonCorBidsData.addSeries("Pearson correlation of bids",pearsonCorBids_);
+				pearsonCorrCoefBidsData.addSeries("Pearson corr. coef. bids", pearsonCorrCoefBids_);
+		    }
+		});
+	}
+	
+	public void setRankingDistBidsData(double [][] rankingDistBids) {
+		this.rankingDistBids_ = rankingDistBids;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	rankingDistBidsData.addSeries("Ranking dist. bids", rankingDistBids_);
+		    }
+		});
+	}
+	
+	public void setKalaiDiffData(double [][] kalaiDiff) {
+		this.kalaiDiff_ = kalaiDiff;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	kalaiDiffData.addSeries("Kalai diff.", kalaiDiff_);
 		    }
 		});
 	}
@@ -163,7 +193,9 @@ public class BidChart {
         paretoRenderer.setSeriesPaint(0, Color.RED);
         lineARenderer.setSeriesPaint(0, Color.GREEN);
         lineBRenderer.setSeriesPaint(0, Color.BLUE);
-        pearsonCorBidsRenderer.setSeriesPaint(0, Color.DARK_GRAY);
+        pearsonCorrCoefBidsRenderer.setSeriesPaint(0, Color.DARK_GRAY);
+        rankingDistBidsRenderer.setSeriesPaint(0, Color.GREEN);
+        kalaiDiffRenderer.setSeriesPaint(0, Color.RED);
         agreementRenderer.setDotHeight(10);
         agreementRenderer.setDotWidth(10);
         //agreementRenderer.setSeriesShape(0, new Ellipse2D.Float(10.0f, 10.0f, 10.0f, 10.0f));
@@ -208,8 +240,12 @@ public class BidChart {
 	    plot.setRenderer(8, lastBidARenderer);
 	    plot.setDataset(9, lastBidBData);
 	    plot.setRenderer(9, lastBidBRenderer);
-	    plot.setDataset(10, pearsonCorBidsData);
-	    plot.setRenderer(10, pearsonCorBidsRenderer);
+	    plot.setDataset(10, pearsonCorrCoefBidsData);
+	    plot.setRenderer(10, pearsonCorrCoefBidsRenderer);
+	    plot.setDataset(11, rankingDistBidsData);
+	    plot.setRenderer(11, rankingDistBidsRenderer);
+	    plot.setDataset(12, kalaiDiffData);
+	    plot.setRenderer(12, kalaiDiffRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);

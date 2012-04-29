@@ -39,7 +39,6 @@ public class TheBOAagent extends BOAagent {
 
 		// init the components.
 		try {
-
 			opponentModel.init(negotiationSession, dagent.getOpponentModel().getParameters());
 			opponentModel.setOpponentUtilitySpace(fNegotiation);
 			omStrategy.init(negotiationSession, opponentModel, dagent.getOMStrategy().getParameters());

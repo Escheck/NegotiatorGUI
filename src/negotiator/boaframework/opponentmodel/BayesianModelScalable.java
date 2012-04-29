@@ -18,9 +18,9 @@ import negotiator.utility.UtilitySpace;
  */
 public class BayesianModelScalable extends OpponentModel {
 
-	BayesianOpponentModelScalable model;
-	long DOMAINSIZE;
-	boolean niceTitForTatMode = false;
+	private BayesianOpponentModelScalable model;
+	private long DOMAINSIZE;
+	private boolean niceTitForTatMode = false;
 	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
@@ -85,5 +85,10 @@ public class BayesianModelScalable extends OpponentModel {
 	@Override
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
+	}
+	
+	public void cleanUp() {
+		super.cleanUp();
+		model = null;
 	}
 }

@@ -161,9 +161,9 @@ public class ScenarioMeasures {
 	 */
 	public static OrderedSimpleElement calculateDistances(OrderedSimpleElement element, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double rankingDistWeights = UtilspaceTools.getRankingDistanceOfIssueWeights(utilitySpaceA, utilitySpaceB);	
-		double pearsonDistWeights = UtilspaceTools.getPearsonDistanceOfIssueWeights(utilitySpaceA, utilitySpaceB);
+		double pearsonDistWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
 		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB);
-		double pearsonDistUtil	= UtilspaceTools.getPearsonDistanceOfBids(utilitySpaceA, utilitySpaceB);
+		double pearsonDistUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
 
 		double kalaiDistance = calculateRelativeKalaiDistance(utilitySpaceA, utilitySpaceB);
 		
@@ -171,9 +171,9 @@ public class ScenarioMeasures {
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
 		
 		element.setAttribute("ranking_distance_weights", String.valueOf(rankingDistWeights));
-		element.setAttribute("pearson_distance_weights", String.valueOf(pearsonDistWeights));
+		element.setAttribute("pearson_correlation_coefficient_weights", String.valueOf(pearsonDistWeights));
 		element.setAttribute("ranking_distance_utility_space", String.valueOf(rankingDistUtil));
-		element.setAttribute("pearson_distance_utility_space", String.valueOf(pearsonDistUtil));
+		element.setAttribute("pearson_correlation_coefficient_utility_space", String.valueOf(pearsonDistUtil));
 		element.setAttribute("relative_kalai_distance", String.valueOf(kalaiDistance));
 
 		return element;
