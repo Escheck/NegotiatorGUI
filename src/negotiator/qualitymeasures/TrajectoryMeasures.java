@@ -1,7 +1,15 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.Domain;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
+import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 
 /**
@@ -19,6 +27,7 @@ public class TrajectoryMeasures {
 
 	ArrayList<BidPoint> agentABids;
 	ArrayList<BidPoint> agentBBids;
+	Domain domain;
 	boolean agentAFirst;
 	private final double SILENTTHRESHOLD = 0.0005;
 	double unfortunateA;
@@ -33,20 +42,53 @@ public class TrajectoryMeasures {
 	double selfishB;
 	double concessionA;
 	double concessionB;
+	double explorationRateA;
+	double explorationRateB;
+	double jointExplorationRate;
+	private BidSpace bidSpace;
+	
 
 	public TrajectoryMeasures(ArrayList<BidPoint> agentABids,
-			ArrayList<BidPoint> agentBBids) {
+			ArrayList<BidPoint> agentBBids, BidSpace bidSpace) {
 		this.agentABids = agentABids;
 		this.agentBBids = agentBBids;
+		this.bidSpace = bidSpace;
 	}
 
+	private void calculateExplorationRates() {
+		// strictly, it can happen that multiple bids have the same utility for both parties
+		Set<BidPoint> setA = new HashSet<BidPoint>();
+		Set<BidPoint> setB = new HashSet<BidPoint>();
+		Set<BidPoint> setJoint = new HashSet<BidPoint>();
+		Set<BidPoint> setAll = new HashSet<BidPoint>();
+		
+		
+		for (int i = 0; i < bidSpace.bidPoints.size(); i++) {
+			setAll.add(bidSpace.bidPoints.get(i));
+		}
+		
+		for (int i = 0; i < agentABids.size(); i++) {
+			setA.add(agentABids.get(i));
+			setJoint.add(agentABids.get(i));
+		}
+		
+		for (int i = 0; i < agentBBids.size(); i++) {
+			setB.add(agentBBids.get(i));
+			setJoint.add(agentBBids.get(i));
+		}
+		
+		explorationRateA = (double)setA.size() / (double)setAll.size();
+		explorationRateB = (double)setB.size() / (double)setAll.size();
+		jointExplorationRate = (double)setJoint.size() / (double)setAll.size();
+	}
+	
 	/**
 	 * Define the type of move for a single pair of bids. Note that the utility
 	 * of agent B is swapped relative to agent A.
 	 * @param prevBid
 	 * @param bid
 	 */
-	public void processBid(BidPoint prevBid, BidPoint bid, boolean isAgentA) {
+	private void processBid(BidPoint prevBid, BidPoint bid, boolean isAgentA) {
 		
 		double utilMine = bid.utilityA;
 		double utilTheirs = bid.utilityB;
@@ -95,7 +137,7 @@ public class TrajectoryMeasures {
 	/**
 	 * Determine the move type of each bid.
 	 */
-	public void processAllBids() {
+	private void processAllBids() {
 		BidPoint prevBidA = agentABids.get(0);
 		for (int i = 1; i < agentABids.size(); i++) {
 			BidPoint bidA = agentABids.get(i);
@@ -122,7 +164,6 @@ public class TrajectoryMeasures {
 	 */
 	public OrderedSimpleElement calculateMeasures() {
 		OrderedSimpleElement tjQualityMeasures = new OrderedSimpleElement("trajactory_based_quality_measures");
-		
 		unfortunateA = 0;
 		unfortunateB = 0;
 		silentA = 0;
@@ -140,9 +181,11 @@ public class TrajectoryMeasures {
 		int sizeA = agentABids.size() - 1;
 		int sizeB = agentBBids.size() - 1;
 		
+		OrderedSimpleElement agentA = new OrderedSimpleElement("trajectory");
+		OrderedSimpleElement agentB = new OrderedSimpleElement("trajectory");
 		if (sizeA > 0 && sizeB > 0) {
 			processAllBids();
-			OrderedSimpleElement agentA = new OrderedSimpleElement("trajectory");
+			
 			tjQualityMeasures.addChildElement(agentA);
 			agentA.setAttribute("agent", "A");
 			agentA.setAttribute("unfortunate_moves", unfortunateA / sizeA + "");
@@ -152,8 +195,6 @@ public class TrajectoryMeasures {
 			agentA.setAttribute("silent_moves", silentA / sizeA + "");
 			agentA.setAttribute("concession_moves", concessionA / sizeA + "");
 
-			
-			OrderedSimpleElement agentB = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentB);
 			agentB.setAttribute("agent", "B");
 			agentB.setAttribute("unfortunate_moves", unfortunateB / sizeB + "");
@@ -163,7 +204,6 @@ public class TrajectoryMeasures {
 			agentB.setAttribute("silent_moves", silentB / sizeB + "");
 			agentB.setAttribute("concession_moves", concessionB / sizeB + "");
 		} else {
-			OrderedSimpleElement agentA = new OrderedSimpleElement("trajectory");
 			tjQualityMeasures.addChildElement(agentA);
 			agentA.setAttribute("agent", "A");
 			agentA.setAttribute("unfortunate_moves", "0");
@@ -172,8 +212,7 @@ public class TrajectoryMeasures {
 			agentA.setAttribute("selfish_moves", "0");
 			agentA.setAttribute("silent_moves", "0");
 			agentA.setAttribute("concession_moves", "0");
-			
-			OrderedSimpleElement agentB = new OrderedSimpleElement("trajectory");
+
 			tjQualityMeasures.addChildElement(agentB);
 			agentB.setAttribute("agent", "B");
 			agentB.setAttribute("unfortunate_moves", "0");
@@ -183,6 +222,13 @@ public class TrajectoryMeasures {
 			agentB.setAttribute("silent_moves", "0");
 			agentB.setAttribute("concession_moves", "0");
 		}
+		
+		calculateExplorationRates();
+		agentA.setAttribute("exploration_rate", explorationRateA + "");
+		agentB.setAttribute("exploration_rate", explorationRateB + "");
+		agentA.setAttribute("joint_exploration_rate", jointExplorationRate + "");
+		agentB.setAttribute("joint_exploration_rate", jointExplorationRate + "");
+		
 		return tjQualityMeasures;
 	}
 }
