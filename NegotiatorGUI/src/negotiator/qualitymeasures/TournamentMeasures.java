@@ -289,12 +289,12 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			// discard invalid trajectories
 			ArrayList<OutcomeInfo> newOutcomes = discardInvalidTrajectories(outcomes);
 
-			trajectorAnalysisQM.setAttribute("percentage_of_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(newOutcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_fortunate_moves", getAveragePercentageOfFortunateMoves(newOutcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_nice_moves", getAveragePercentageOfNiceMoves(newOutcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_selfish_moves", getAveragePercentageOfSelfishMoves(newOutcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_concession_moves", getAveragePercentageOfConcessionMoves(newOutcomes, agentName) + "");
-			trajectorAnalysisQM.setAttribute("percentage_of_silent_moves", getAveragePercentageOfSilentMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_unfortunate_moves", getAveragePercentageOfUnfortunateMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_fortunate_moves", getAveragePercentageOfFortunateMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_nice_moves", getAveragePercentageOfNiceMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_selfish_moves", getAveragePercentageOfSelfishMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_concession_moves", getAveragePercentageOfConcessionMoves(newOutcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_silent_moves", getAveragePercentageOfSilentMoves(newOutcomes, agentName) + "");
 			
 			tournamentQualityMeasures.addChildElement(agentElement);
 	    }
