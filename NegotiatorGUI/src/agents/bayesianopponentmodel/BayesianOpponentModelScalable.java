@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 
 import negotiator.Bid;
-import negotiator.Domain;
 import negotiator.issue.*;
 import negotiator.utility.*;
-import negotiator.BidIterator;
 
 public class BayesianOpponentModelScalable extends OpponentModel {
 	
@@ -244,9 +242,9 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		}
 		return u;
 	}
+	
 	public void updateWeights() throws Exception
 	{
-		Bid lPreviousBid = fBiddingHistory.get(fBiddingHistory.size()-2);
 		Bid lBid = fBiddingHistory.get(fBiddingHistory.size()-1);
 		ArrayList<ArrayList<WeightHypothesis2>> lWeightHyps = new ArrayList<ArrayList<WeightHypothesis2>>();
 		//make new hyps array

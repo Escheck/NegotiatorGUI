@@ -44,7 +44,6 @@ public abstract class BOAagent extends Agent {
     protected OutcomeSpace outcomeSpace;
     /** if this agent started */
     private boolean startingAgent;
-    private boolean cleanedOM = false;
     
 	public void init() {
 		super.init();
@@ -96,9 +95,8 @@ public abstract class BOAagent extends Agent {
 				if (omStrategy.canUpdateOM()) {
 					opponentModel.updateModel(bid);
 				} else {
-					if (!cleanedOM) {
+					if (!opponentModel.isCleared()) {
 						opponentModel.cleanUp();
-						cleanedOM = true;
 					}
 				}
 			}

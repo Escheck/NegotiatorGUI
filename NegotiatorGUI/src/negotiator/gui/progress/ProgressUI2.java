@@ -399,7 +399,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		double [][] curveB = session.getNegotiationPathB();
 		
 		if (Global.OM_PROFILER_ENABLED) {
-			bidChart.setPearsonCorBidsData(session.getPearsonCorrBids());
+			bidChart.setPearsonCorrCoefBidsData(session.getPearsonCorrCoefBids());
+			bidChart.setRankingDistBidsData(session.getRankingDistBids());
+			bidChart.setKalaiDiffData(session.getKalaiDiff());
 		} else {
 			if(curveA!=null)
 				bidChart.setBidSeriesA(curveA);

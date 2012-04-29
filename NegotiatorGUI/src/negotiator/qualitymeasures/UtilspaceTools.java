@@ -25,10 +25,10 @@ public class UtilspaceTools {
 		return calculateRankingDistanceMonteCarlo(bidsUtilA, bidsUtilB, AMOUNT_OF_SIMULATIONS);
 	}
 	
-	public static double getPearsonDistanceOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getPearsonCorrelationCoefficientOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
 		double bidsUtilA[] = getBidsUtil(spaceA);
 		double bidsUtilB[] = getBidsUtil(spaceB);
-		return calculatePearsonDistance(bidsUtilA, bidsUtilB);
+		return calculatePearsonCorrelationCoefficient(bidsUtilA, bidsUtilB);
 	}
 	
 	public static double getRankingDistanceOfIssueWeights(UtilitySpace spaceA, UtilitySpace spaceB) {
@@ -37,10 +37,10 @@ public class UtilspaceTools {
 		return calculateRankingDistance(issueWeightsA, issueWeightsB);
 	}
 	
-	public static double getPearsonDistanceOfIssueWeights(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getPearsonCorrelationCoefficientOfIssueWeights(UtilitySpace spaceA, UtilitySpace spaceB) {
 		double issueWeightsA[] = UtilspaceTools.getIssueWeights(spaceA);
 		double issueWeightsB[] = UtilspaceTools.getIssueWeights(spaceB);
-		return calculatePearsonDistance(issueWeightsA, issueWeightsB);
+		return calculatePearsonCorrelationCoefficient(issueWeightsA, issueWeightsB);
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class UtilspaceTools {
 	 * @param setB
 	 * @return
 	 */
-	private static double calculatePearsonDistance(double[] setA, double[] setB) {
+	private static double calculatePearsonCorrelationCoefficient(double[] setA, double[] setB) {
 		if (setA.length != setB.length) {
 			System.out.println("Amount of variables should be equal.");
 		}
@@ -143,6 +143,7 @@ public class UtilspaceTools {
 					totalDistance++;
 			}
 		}
+		totalDistance += 0.001;
 		return totalDistance / (setA.length * setB.length);
 	}
 	

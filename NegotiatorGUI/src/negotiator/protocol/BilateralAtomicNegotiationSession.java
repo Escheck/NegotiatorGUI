@@ -2,7 +2,6 @@ package negotiator.protocol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import misc.Pair;
 import negotiator.Agent;
 import negotiator.Bid;
@@ -14,7 +13,6 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
-import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -35,7 +33,9 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	int				sessionNumber;
     public ArrayList<BidPoint> 	fAgentABids;
     public ArrayList<BidPoint> 	fAgentBBids; 
-    public ArrayList<Pair<Double, Double>> pearsonCorrBids;
+    public ArrayList<Pair<Double, Double>> pearsonCorrCoefBids;
+    public ArrayList<Pair<Double, Double>> rankingDistBids;
+    public ArrayList<Pair<Double, Double>> kalaiDiff;
     protected 	BidSpace		bidSpace;
 	protected HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
 	protected HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
@@ -78,7 +78,11 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         }
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
-        pearsonCorrBids = new ArrayList<Pair<Double, Double>>();
+        
+        pearsonCorrCoefBids = new ArrayList<Pair<Double, Double>>();
+        rankingDistBids = new ArrayList<Pair<Double, Double>>();
+        kalaiDiff = new ArrayList<Pair<Double, Double>>();
+        
         actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }
 
@@ -146,8 +150,16 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 		return fAgentABids.size() + fAgentBBids.size();
 	}
 
-	public double[][] getPearsonCorrBids() {
-		return convertToChartData(pearsonCorrBids);
+	public double[][] getPearsonCorrCoefBids() {
+		return convertToChartData(pearsonCorrCoefBids);
+	}
+
+	public double[][] getRankingDistBids() {
+		return convertToChartData(rankingDistBids);
+	}
+	
+	public double[][] getKalaiDiff() {
+		return convertToChartData(kalaiDiff);
 	}
 	
 	//alinas code
