@@ -1,4 +1,7 @@
-package negotiator;
+package negotiator.timeline;
+
+import negotiator.Agent;
+
 /**
  * Implementation of the timeline in which time is divided in rounds.
  * Time does not pass within a round. Note that requesting the total
@@ -54,6 +57,18 @@ public class DiscreteTimeline extends Timeline
 		cRound++;
 	}
 
+	/**
+	 * The DiscreteTimeline does not have to be paused/resumed, as time does
+	 * not pass within a round.
+	 */
+	public void pause() { }
+	
+	/**
+	 * The DiscreteTimeline does not have to be paused/resumed, as time does
+	 * not pass within a round.
+	 */
+	public void resume() { }
+	
 	/**
 	 * This a hack because in Agent.java a method sleep requires this
 	 */

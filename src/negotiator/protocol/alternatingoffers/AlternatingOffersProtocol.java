@@ -256,7 +256,11 @@ public class AlternatingOffersProtocol extends Protocol {
 				synchronized (this) {
 					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000 + 10000);
 					// wait will unblock early if negotiation is finished in time.
-					wait(totalTime*1000 + 10000);
+					if (Global.PAUSABLE_TIMELINE) {
+						wait(totalTime*10000 + 10000);
+					} else {
+						wait(totalTime*1000 + 10000);
+					}
 				}
 			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
 		}

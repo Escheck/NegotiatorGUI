@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import negotiator.actions.Action;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.timeline.Timeline;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;

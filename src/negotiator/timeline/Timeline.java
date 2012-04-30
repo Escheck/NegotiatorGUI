@@ -1,10 +1,13 @@
-package negotiator;
+package negotiator.timeline;
+
+import negotiator.Agent;
+
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).
  */
 public abstract class Timeline {
     protected boolean hasDeadline;
-
+    protected boolean paused = false;
 
 	/**
 	 * Gets the time, running from t = 0 (start) to t = 1 (deadline).
@@ -23,9 +26,19 @@ public abstract class Timeline {
 		return hasDeadline && (getTime() >= 1.0);
 	}
 	
+	public void pause() throws Exception {
+		throw new Exception("This timeline can not be paused and resumed.");
+	}
+	
+	public void resume() throws Exception {
+		throw new Exception("This timeline can not be paused and resumed.");
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
 	public boolean hasDeadline() {
 		return hasDeadline;
 	}
-	
-	
 }

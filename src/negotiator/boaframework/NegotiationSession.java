@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
+import negotiator.timeline.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**
