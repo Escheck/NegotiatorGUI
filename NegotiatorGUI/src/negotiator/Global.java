@@ -78,6 +78,13 @@ public class Global {
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
 	public static final boolean DISCRETE_TIMELINE = false;
 	
+	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
+	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
+	 * and therefore will judge a timeout after more than 3 minutes passed. To avoid this problem, the waiting time
+	 * is raised to 30 minutes if this functionality is enabled.
+	 */
+	public static final boolean PAUSABLE_TIMELINE = false;
+	
 	/** WARNING: enabling this functionality allows the user to view previous tournaments by
 	 * clicking in the GUI, but also introduces a giant memory leak as all protocols are remembered
 	 * and thus all agents. */

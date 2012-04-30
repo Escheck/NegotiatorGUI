@@ -24,7 +24,6 @@ import java.io.FileReader;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.exceptions.Warning;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
@@ -32,6 +31,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.timeline.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 

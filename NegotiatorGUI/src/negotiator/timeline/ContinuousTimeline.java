@@ -1,11 +1,14 @@
-package negotiator;
+package negotiator.timeline;
+
+import negotiator.Agent;
+
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).
  */
 public class ContinuousTimeline extends Timeline
 {
 	private final int totalSeconds;
-    private final long startTime;
+	protected final long startTime;
 
     /**
      * Creates a timeline with a deadline of {@link #totalSeconds} number of seconds.

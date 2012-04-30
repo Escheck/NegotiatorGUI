@@ -7,11 +7,8 @@ import java.util.List;
 
 import misc.Pair;
 import negotiator.Agent;
-import negotiator.ContinuousTimeline;
-import negotiator.DiscreteTimeline;
 import negotiator.Global;
 import negotiator.NegotiationOutcome;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -24,6 +21,10 @@ import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.OpponentModelMeasures;
+import negotiator.timeline.ContinuousTimeline;
+import negotiator.timeline.DiscreteTimeline;
+import negotiator.timeline.PausableContinuousTimeline;
+import negotiator.timeline.Timeline;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -110,7 +111,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			if (Global.DISCRETE_TIMELINE){
 				timeline = new DiscreteTimeline(totalRounds);			
 			} else {
-				timeline = new ContinuousTimeline((int) (totalTime));
+				if (Global.PAUSABLE_TIMELINE) {
+					timeline = new PausableContinuousTimeline(totalTime);
+				} else {
+					timeline = new ContinuousTimeline((int) (totalTime));
+				}
 			}
 
 			// note, we clone the utility spaces for security reasons, so that the agent
@@ -182,6 +187,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						}
 						
 						if (Global.OM_PROFILER_ENABLED) {
+							if (Global.PAUSABLE_TIMELINE) {
+								timeline.pause();
+							}
 							if (agentA instanceof BOAagent) {
 								BOAagent boaA = (BOAagent) agentA;
 								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
@@ -190,6 +198,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 									rankingDistBids.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel())));
 									kalaiDiff.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateKalaiDiff(boaA.getOpponentModel())));
 								}
+							}
+							if (Global.PAUSABLE_TIMELINE) {
+								timeline.resume();
 							}
 						}
 						double time = timeline.getTime();
