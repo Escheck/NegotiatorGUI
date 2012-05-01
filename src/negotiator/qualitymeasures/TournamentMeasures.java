@@ -23,13 +23,11 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * 
  * Using the main a tournament measures log can be created afterwards.
  * 
- * NOTE: some methods, such as Kalai and Nash distance, should be extended such that
- * matches without outcome can be ignored.
- * 
  * @author Mark Hendrikx, Alex Dirkzwager
  */
 public class TournamentMeasures {
 	
+	/** Skip the trajectory analysis for compatibility with old logs */
 	private static boolean SKIP_TRAJECTORY_ANALYSIS = false;
 	
 	/**
@@ -104,6 +102,8 @@ public class TournamentMeasures {
 				outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue("unfortunate_moves")));
 				outcome.setNiceMovesA(Double.parseDouble(attributes.getValue("nice_moves")));
 				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue("concession_moves")));
+				outcome.setExplorationA(Double.parseDouble(attributes.getValue("exploration_rate")));
+				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
 			} else if (tagName.equals("trajectory") && attributes.getValue("agent").equals("B")) {
 				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue("silent_moves")));
 				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue("selfish_moves")));
@@ -111,6 +111,8 @@ public class TournamentMeasures {
 				outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue("unfortunate_moves")));
 				outcome.setNiceMovesB(Double.parseDouble(attributes.getValue("nice_moves")));
 				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue("concession_moves")));
+				outcome.setExplorationB(Double.parseDouble(attributes.getValue("exploration_rate")));
+				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
 			}
 			return found;
 		}
@@ -268,10 +270,13 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			}
 			tournamentQM.setAttribute("average_time_of_agreement", getAverageTimeOfAgreement(outcomes, agentName) + "");
 			tournamentQM.setAttribute("std_time_of_agreement", getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName) + "");
+			tournamentQM.setAttribute("average_time_of_end_of_negotiation", getAverageEndOfNegotiation(outcomes, agentName) + "");
+			tournamentQM.setAttribute("std_time_of_end_of_negotiation", getStandardDeviationOfEndOfNegotiation(runs, agentName) + "");
 			tournamentQM.setAttribute("average_rounds", getAverageRounds(outcomes, agentName) + "");
 			tournamentQM.setAttribute("std_rounds", getStandardDeviationOfTotalRounds(runs, agentName) + "");
 			tournamentQM.setAttribute("percentage_of_agreement", getPercentageOfAgreement(outcomes, agentName) + "%");
 			tournamentQM.setAttribute("average_util", getAverageUtility(outcomes, agentName, false) + "");
+			tournamentQM.setAttribute("std_util", getStandardDeviationOfUtility(runs, agentName) + "");
 			tournamentQM.setAttribute("average_util_of_agreements", getAverageUtility(outcomes, agentName, true) + "");		
 			tournamentQM.setAttribute("average_discounted_util", getAverageDiscountedUtility(outcomes, agentName, false) + "");
 			tournamentQM.setAttribute("std_discounted_util", getStandardDeviationOfDiscountedUtility(runs, agentName) + "");
@@ -279,13 +284,19 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			
 			OrderedSimpleElement utilityBasedQM = new OrderedSimpleElement("UtilityBasedQM");
 			agentElement.addChildElement(utilityBasedQM);
-			utilityBasedQM.setAttribute("average_nash_distance", getAverageNashDistance(outcomes, agentName) + "");
-			utilityBasedQM.setAttribute("average_pareto_distance", getAverageParetoDistance(outcomes, agentName) + "");
-			utilityBasedQM.setAttribute("average_kalai_distance", getAverageKalaiDistance(outcomes, agentName) + "");
+			utilityBasedQM.setAttribute("average_nash_distance", getAverageNashDistance(outcomes, agentName, false) + "");
+			utilityBasedQM.setAttribute("average_nash_distance_of_agreements", getAverageNashDistance(outcomes, agentName, true) + "");
+			utilityBasedQM.setAttribute("average_pareto_distance", getAverageParetoDistance(outcomes, agentName, false) + "");
+			utilityBasedQM.setAttribute("average_pareto_distance_of_agreements", getAverageParetoDistance(outcomes, agentName, true) + "");
+			utilityBasedQM.setAttribute("average_kalai_distance", getAverageKalaiDistance(outcomes, agentName, false) + "");
+			utilityBasedQM.setAttribute("average_kalai_distance_of_agreements", getAverageKalaiDistance(outcomes, agentName, true) + "");
 			
 			OrderedSimpleElement trajectorAnalysisQM = new OrderedSimpleElement("trajectorAnalysisQM");
 			agentElement.addChildElement(trajectorAnalysisQM);
 			
+			trajectorAnalysisQM.setAttribute("average_exploration", getAverageExploration(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("average_joint_exploration", getAverageJointExploration(outcomes, agentName) + "");
+
 			// discard invalid trajectories
 			ArrayList<OutcomeInfo> newOutcomes = discardInvalidTrajectories(outcomes);
 
@@ -316,6 +327,30 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return newOutcomes;
 	}
 
+	/**
+	 * Calculates the standard deviation of the utility of a run.
+	 * @param runs
+	 * @param agentName
+	 */
+	private static double getStandardDeviationOfUtility(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+		double sumOfAverages = 0;
+		double squaredSumOfDeviations = 0;
+		double[] results = new double[runs.size()];
+		for (int i = 0; i < runs.size(); i++) {
+			double averageOfRun = getAverageUtility(runs.get(i), agentName, false);
+			
+			sumOfAverages += averageOfRun;
+			results[i] = averageOfRun;
+		}
+		double averageOfRuns = sumOfAverages / runs.size();
+		for (int i = 0; i < runs.size(); i++) {
+			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+		}
+		// n-1 due to Bessel's correction
+		double variance = squaredSumOfDeviations / (runs.size() - 1);
+		return Math.sqrt(variance);
+	}
+	
 	/**
 	 * Calculates the standard deviation of the utility of a run.
 	 * @param runs
@@ -379,6 +414,25 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			results[i] = averageOfRun;
 		}
 		double averageOfRuns = getAverageTimeOfAgreement(outcomes, agentName);
+		for (int i = 0; i < runs.size(); i++) {
+			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+		}
+		// n-1 due to Bessel's correction
+		double variance = squaredSumOfDeviations / (runs.size() - 1);
+		return Math.sqrt(variance);
+	}
+	
+	private static double getStandardDeviationOfEndOfNegotiation(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
+		double sumOfAverages = 0;
+		double squaredSumOfDeviations = 0;
+		double[] results = new double[runs.size()];
+		for (int i = 0; i < runs.size(); i++) {
+			double averageOfRun = getAverageEndOfNegotiation(runs.get(i), agentName);
+			
+			sumOfAverages += averageOfRun;
+			results[i] = averageOfRun;
+		}
+		double averageOfRuns = sumOfAverages / runs.size();
 		for (int i = 0; i < runs.size(); i++) {
 			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
 		}
@@ -491,6 +545,26 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	}
 	
 	/**
+	 * Calculates the average time of the end of the negotiation of an agent.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @param onlyAgreements
+	 * @return average time of agreement
+	 */
+	private static double getAverageEndOfNegotiation(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		double timeOfAgreement = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
+				if (outcome.isAgreement()) {
+					timeOfAgreement += outcome.getTimeOfAgreement();
+				}
+			}
+		}
+		return (double)timeOfAgreement / outcomes.size();
+	}
+	
+	/**
 	 * Calculates the average amount of rounds.
 	 * 
 	 * @param outcomes
@@ -509,19 +583,50 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return (double)totalBids / (double)totalSessions;
 	}
 	
+	private static double getAverageExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		int totalExploration = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalExploration += outcome.getExplorationA();
+			} else {
+				if (outcome.getAgentNameB().equals(agentName)) {
+					totalSessions++;
+					totalExploration += outcome.getExplorationB();
+				}
+			}
+		}
+		return (double)totalExploration / (double)totalSessions;
+	}
+	
+	private static double getAverageJointExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		int totalJointExploration = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
+				totalSessions++;
+				totalJointExploration += outcome.getJointExploration();
+			}
+		}
+		return (double)totalJointExploration / (double)totalSessions;
+	}
+	
 	/**
 	 * Calculates the average Nash distance of an agreement.
 	 * @param outcomes
 	 * @param agentName
 	 * @return average Nash distance
 	 */
-	private static double getAverageNashDistance(ArrayList<OutcomeInfo> outcomes, String agentName) {
+	private static double getAverageNashDistance(ArrayList<OutcomeInfo> outcomes, String agentName, boolean onlyAgreements) {
 		int totalSessions = 0;
 		double totalNash = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
-				totalSessions++;
-				totalNash += outcome.getNashDistance();
+				if (!onlyAgreements || outcome.isAgreement()) {
+					totalSessions++;
+					totalNash += outcome.getNashDistance();
+				}
 			}
 		}
 		return totalNash / totalSessions;
@@ -533,13 +638,15 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 * @param agentName
 	 * @return average Pareto distance
 	 */
-	private static double getAverageParetoDistance(ArrayList<OutcomeInfo> outcomes, String agentName) {
+	private static double getAverageParetoDistance(ArrayList<OutcomeInfo> outcomes, String agentName, boolean onlyAgreements) {
 		int totalSessions = 0;
 		double totalPareto = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
-				totalSessions++;
-				totalPareto += outcome.getParetoDistance();
+				if (!onlyAgreements || outcome.isAgreement()) {
+					totalSessions++;
+					totalPareto += outcome.getParetoDistance();
+				}
 			}
 		}
 		return totalPareto / totalSessions;
@@ -552,13 +659,15 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 * @param agentName
 	 * @return average Kalai distance
 	 */
-	private static double getAverageKalaiDistance(ArrayList<OutcomeInfo> outcomes, String agentName) {
+	private static double getAverageKalaiDistance(ArrayList<OutcomeInfo> outcomes, String agentName, boolean onlyAgreements) {
 		int totalSessions = 0;
 		double totalKalai = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
-				totalSessions++;
-				totalKalai += outcome.getKalaiDistance();
+				if (!onlyAgreements || outcome.isAgreement()) {
+					totalSessions++;
+					totalKalai += outcome.getKalaiDistance();
+				}
 			}
 		}
 		return totalKalai / totalSessions;

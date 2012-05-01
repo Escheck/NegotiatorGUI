@@ -30,6 +30,9 @@ public class OutcomeInfo {
 	private double selfishMovesB;
 	private double concessionMovesA;
 	private double concessionMovesB;
+	private double explorationA;
+	private double explorationB;
+	private double jointExploration;
 	
 	public double getTimeOfAgreement() {
 		return timeOfAgreement;
@@ -258,6 +261,30 @@ public class OutcomeInfo {
 		this.concessionMovesB = concessionMovesB;
 	}
 
+	public double getExplorationA() {
+		return explorationA;
+	}
+
+	public void setExplorationA(double explorationA) {
+		this.explorationA = explorationA;
+	}
+
+	public double getExplorationB() {
+		return explorationB;
+	}
+
+	public void setExplorationB(double explorationB) {
+		this.explorationB = explorationB;
+	}
+
+	public double getJointExploration() {
+		return jointExploration;
+	}
+
+	public void setJointExploration(double jointExploration) {
+		this.jointExploration = jointExploration;
+	}
+
 	@Override
 	public String toString() {
 		return "OutcomeInfo [timeOfAgreement=" + timeOfAgreement + ", bids="
@@ -277,6 +304,8 @@ public class OutcomeInfo {
 				+ ", fortunateMovesB=" + fortunateMovesB + ", selfishMovesA="
 				+ selfishMovesA + ", selfishMovesB=" + selfishMovesB
 				+ ", concessionMovesA=" + concessionMovesA
-				+ ", concessionMovesB=" + concessionMovesB + "]";
+				+ ", concessionMovesB=" + concessionMovesB + ", explorationA="
+				+ explorationA + ", explorationB=" + explorationB
+				+ ", jointExploration=" + jointExploration + "]";
 	}
 }
