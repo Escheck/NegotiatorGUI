@@ -17,7 +17,9 @@ public class DiscreteTimeline extends Timeline
      */
 	public DiscreteTimeline(int totalRounds)
 	{	 
-		this.totalRounds = totalRounds;
+		// makes more sense to add one, as in this case "totalrounds" is still before the deadline as the 
+		// deadline is on time >= 1.0
+		this.totalRounds = totalRounds + 1;
     	hasDeadline = true;
     	cRound = 1;
 	}
