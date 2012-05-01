@@ -1,5 +1,10 @@
 package negotiator.qualitymeasures;
 
+/**
+ * Simple object used to store the information of a scenario.
+ * 
+ * @author Mark Hendrikx
+ */
 public class ScenarioInfo {
 	String domain;
 	String prefProfA;

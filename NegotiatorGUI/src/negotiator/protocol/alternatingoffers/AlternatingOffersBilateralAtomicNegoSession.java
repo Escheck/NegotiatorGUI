@@ -194,9 +194,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 								BOAagent boaA = (BOAagent) agentA;
 								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
 										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
-									pearsonCorrCoefBids.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel())));
-									rankingDistBids.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel())));
-									kalaiDiff.add(new Pair<Double, Double>(timeline.getTime(), omMeasures.calculateKalaiDiff(boaA.getOpponentModel())));
+									timeSnaps.add(timeline.getTime());
+									pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
+									rankingDistBids.add(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
+									kalaiDiff.add(omMeasures.calculateKalaiDiff(boaA.getOpponentModel()));
 								}
 							}
 							if (Global.PAUSABLE_TIMELINE) {
@@ -352,7 +353,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * Make a new outcome and update table
 	 * @param distanceToNash 
 	 */
-	public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, double time, double distanceToNash) throws Exception 
+	private void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, double time, double distanceToNash) throws Exception 
 	{
 		no=new NegotiationOutcome(this, sessionNumber, lastAction,
 				agentA.getName(),  agentB.getName(),
@@ -374,20 +375,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
-		
+		processDataForLogging();
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
 	}
 	
-	public void newOutcome(Agent currentAgent, Action lastAction, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, ArrayList<BidPoint> agentASize, ArrayList<BidPoint> agentBSize, double time, double distanceToNash) throws Exception 
+	private void newOutcome(Agent currentAgent, Action lastAction, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, ArrayList<BidPoint> agentASize, ArrayList<BidPoint> agentBSize, double time, double distanceToNash) throws Exception 
 	{
-		
-//		System.out.println("agentA count: " + agentASize.size());
-//		System.out.println("agentB count: " + agentBSize.size());
-//		System.out.println("Total: " + (agentASize.size() + agentBSize.size()));
-
-
-
 		no=new NegotiationOutcome(this, sessionNumber, lastAction,
 				agentA.getName(),  agentB.getName(),
 				agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
@@ -405,8 +399,20 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
+		
+		processDataForLogging();
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
+	}
+
+	private void processDataForLogging() {
+		if (Global.OM_PROFILER_ENABLED) {
+			matchDataLogger.addMeasure("time", timeSnaps);
+			matchDataLogger.addMeasure("kalai_diff", kalaiDiff);
+			matchDataLogger.addMeasure("pearson_corr_coef_bids", pearsonCorrCoefBids);
+			matchDataLogger.addMeasure("ranking_dist_bids", rankingDistBids);
+			matchDataLogger.writeToFile();
+		}
 	}
 
 	/**
@@ -499,7 +505,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				distanceToNash = lastbidPoint.distanceTo(nash);
 		//		System.out.println("Distance to Nash: " + distanceToNash);
 				
-				List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
+				// List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
 				//System.out.println("Pareto begin: " + paretoFrontier.get(0));
 				//System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
 				// TODO: add Pareto to logging
@@ -513,7 +519,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 			//System.out.println("savedOutcomes size is: " + ((DecoupledAgent) agentB).getSavedOutcomes().size());
 			BidPoint nash = getBidSpace().getNash();
-			List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
+			// List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
 			//System.out.println("Pareto begin: " + paretoFrontier.get(0));
 			//System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
 			// TODO: add Pareto to logging

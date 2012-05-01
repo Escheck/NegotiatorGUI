@@ -3,13 +3,9 @@ package negotiator.qualitymeasures;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import negotiator.Bid;
-import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 
 /**
