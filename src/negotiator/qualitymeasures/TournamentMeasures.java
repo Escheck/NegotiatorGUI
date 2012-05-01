@@ -26,12 +26,10 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @author Mark Hendrikx, Alex Dirkzwager
  */
 public class TournamentMeasures {
-	
-	/** Skip the trajectory analysis for compatibility with old logs */
-	private static boolean SKIP_TRAJECTORY_ANALYSIS = false;
-	
+
 	/**
-	 * Class which parses a normal outcomes log and stores all the information in objects.
+	 * Class which parses a normal outcomes log and stores all the information as
+	 * OutcomeInfo objects.
 	 */
 	static class ResultsParser extends DefaultHandler {
 
@@ -44,9 +42,7 @@ public class TournamentMeasures {
 			
 			if (!processTournamentBasedQM(nsURI, strippedName, tagName, attributes)) {
 				if (!processUtilityBasedQM(nsURI, strippedName, tagName, attributes)) {
-					if (!SKIP_TRAJECTORY_ANALYSIS) {
-						processTrajectoryBasedQM(nsURI, strippedName, tagName, attributes);
-					}
+					processTrajectoryBasedQM(nsURI, strippedName, tagName, attributes);
 				}
 			}
 		}
@@ -136,6 +132,8 @@ public class TournamentMeasures {
 
 			for (int i = 0; i < outcomes.size(); i++) {
 				boolean added = false;
+				
+				// check if the outcome can be added to an existing run
 				for (int a = 0; a < runs.size(); a++) {
 					if (!outcomeInArray(runs.get(a), outcomes.get(i))) {
 						runs.get(a).add(outcomes.get(i));
@@ -143,6 +141,8 @@ public class TournamentMeasures {
 						break;
 					}
 				}
+				
+				// if the outcome was already found in every run, create a new run
 				if (!added) {
 					ArrayList<OutcomeInfo> newList = new ArrayList<OutcomeInfo>();
 					newList.add(outcomes.get(i));
@@ -153,10 +153,7 @@ public class TournamentMeasures {
 		}
 		
 		/**
-		 * Calculate how many runs were done. Note that all runs have to be checked
-		 * as it is not guaranteed that there is an order in the data.
-		 * 
-		 * @return amount of runs
+		 * Check if an outcome is found in an array of outcomes.
 		 */
 		private boolean outcomeInArray(ArrayList<OutcomeInfo> outcomes, OutcomeInfo outcome) {
 			boolean found = false;
@@ -204,7 +201,7 @@ public class TournamentMeasures {
 	}
 	
 	/**
-	 * Main method of this class. Parses the file, calculates the results of all measures,
+	 * This method parses the file, calculates the results of all measures,
 	 * and stores the results in a file.
 	 * 
 	 * @param log input
@@ -222,7 +219,8 @@ public class TournamentMeasures {
 	}
 	
 	/**
-	 * Write the result given to and XML file with the given path.
+	 * Write the result given to an XML file with the given path.
+	 * 
 	 * @param results
 	 * @param logPath
 	 */
@@ -312,6 +310,13 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return tournamentQualityMeasures;
 	}
 
+	/**
+	 * Unfortunately, it sometimes occurs that a party made less than two moves in a negotiation.
+	 * In this case, trajactory analysis is impossible and the data should be discarded.
+	 * 
+	 * @param outcomes
+	 * @return
+	 */
 	private static ArrayList<OutcomeInfo> discardInvalidTrajectories(ArrayList<OutcomeInfo> outcomes) {
 		ArrayList<OutcomeInfo> outcomesToRemove = new ArrayList<OutcomeInfo>();
 		ArrayList<OutcomeInfo> newOutcomes = new ArrayList<OutcomeInfo>(outcomes);
@@ -329,6 +334,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 
 	/**
 	 * Calculates the standard deviation of the utility of a run.
+	 * 
 	 * @param runs
 	 * @param agentName
 	 */
@@ -352,7 +358,8 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	}
 	
 	/**
-	 * Calculates the standard deviation of the utility of a run.
+	 * Calculates the standard deviation of the discounted utility of a run.
+	 * 
 	 * @param runs
 	 * @param agentName
 	 */
@@ -376,8 +383,9 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	}
 	
 	/**
-	 * Calculates the standard deviation of the time of agreement.
+	 * Calculates the standard deviation of the amount of rounds.
 	 * Also uses outcomes because of isAgreement (average of averages != average of all)
+	 * 
 	 * @param runs
 	 * @param outcomes
 	 * @param agentName
@@ -401,6 +409,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	}
 
 	/**
+	 * Calculates the standard deviation of the time of agreement.
 	 * Also uses outcomes because of isAgreement (average of averages != average of all)
 	 * @param runs
 	 * @param outcomes
@@ -422,6 +431,13 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return Math.sqrt(variance);
 	}
 	
+	/**
+	 * Calculates the standard deviation of the time of end of negotiation.
+	 * 
+	 * @param runs
+	 * @param agentName
+	 * @return
+	 */
 	private static double getStandardDeviationOfEndOfNegotiation(ArrayList<ArrayList<OutcomeInfo>> runs, String agentName) {
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
@@ -550,7 +566,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 * @param outcomes
 	 * @param agentName
 	 * @param onlyAgreements
-	 * @return average time of agreement
+	 * @return average time of end of negotiation
 	 */
 	private static double getAverageEndOfNegotiation(ArrayList<OutcomeInfo> outcomes, String agentName) {
 		double timeOfAgreement = 0;
@@ -583,6 +599,14 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return (double)totalBids / (double)totalSessions;
 	}
 	
+	/**
+	 * Returns the average individual exploration rate (percentage of possible unique bids
+	 * offered by self).
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return average individual exploration rate
+	 */
 	private static double getAverageExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
 		int totalSessions = 0;
 		int totalExploration = 0;
@@ -600,6 +624,14 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		return (double)totalExploration / (double)totalSessions;
 	}
 	
+	/**
+	 * Returns the average joint exploration rate (percentage of possible unique bids
+	 * offered by both parties).
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return average individual exploration rate
+	 */
 	private static double getAverageJointExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
 		int totalSessions = 0;
 		int totalJointExploration = 0;
@@ -614,8 +646,10 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	
 	/**
 	 * Calculates the average Nash distance of an agreement.
+	 * 
 	 * @param outcomes
 	 * @param agentName
+	 * @param onlyAgreements ignore outcomes which result in non-agreement
 	 * @return average Nash distance
 	 */
 	private static double getAverageNashDistance(ArrayList<OutcomeInfo> outcomes, String agentName, boolean onlyAgreements) {

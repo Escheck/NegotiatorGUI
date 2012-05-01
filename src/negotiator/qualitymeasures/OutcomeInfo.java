@@ -1,5 +1,10 @@
 package negotiator.qualitymeasures;
 
+/**
+ * Simple object used to the information of a negotiation outcome.
+ * 
+ * @author Mark Hendrikx
+ */
 public class OutcomeInfo {
 	
 	private double timeOfAgreement;

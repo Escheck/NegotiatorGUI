@@ -18,19 +18,29 @@ import negotiator.utility.UtilitySpace;
  * In addition, imagine using a neural network. In this case an estimate of the utility can
  * be calculated, but not a particular issue weight.
  * 
- * This work is based on "Towards a quality assessment method for learning preference profiles in negotiation"
- * by Hindriks et al.
+ * This work is based on "Towards a quality assessment method for learning preference profiles 
+ * in negotiation" by Hindriks et al.
  * 
  * @author Mark Hendrikx
  */
 public class OpponentModelMeasures {
 
-	// the utility 
+	/** Utilityspace of the agent under consideration */
 	private UtilitySpace ownUS;
+	/** Utilityspace of the opponent */
 	private UtilitySpace opponentUS;
+	/** Bidding space created using both real utility spaces */
 	private BidSpace realBS;
+	/** The real kalai value */
 	private BidPoint realKalai;
 	
+	/**
+	 * Creates the measures object by storing a reference to both utility spaces
+	 * and calculating the real Kalai bid.
+	 * 
+	 * @param ownSpace utilityspace of self
+	 * @param opponentModelUS utilityspace of opponent
+	 */
 	public OpponentModelMeasures(UtilitySpace ownSpace, UtilitySpace opponentModelUS) {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentModelUS;
@@ -42,18 +52,38 @@ public class OpponentModelMeasures {
 		}
 	}
 	
+	/**
+	 * Calculates the Pearson correlation coefficient by comparing the utility of each bid estimated
+	 * by the real and estimated opponent's utility space. Higher is better.
+	 * 
+	 * @param opponentModel
+	 * @return pearson correlation coefficient
+	 */
 	public double calculatePearsonCorrelationCoefficientBids(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
-		double pearsonDistUtil = UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
-		return pearsonDistUtil;
+		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace(); 
+		return UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
 	}
 
+	/**
+	 * Calculates the ranking distanceby comparing the utility of each bid estimated
+	 * by the real and estimated opponent's utility space. Lower is better.
+	 * 
+	 * @param opponentModel
+	 * @return ranking distance
+	 */
 	public double calculateRankingDistanceBids(OpponentModel opponentModel) {
 		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
-		double rankingDistBids = UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS);
-		return rankingDistBids;
+		return UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS);
 	}
 	
+	/**
+	 * Calculates the absolute difference between the estimated Kalai point and the
+	 * real Kalai point. Note that we are only interested in the value for the
+	 * opponent.
+	 * 
+	 * @param opponentModel
+	 * @return difference between real and estimated Kalaipoint
+	 */
 	public double calculateKalaiDiff(OpponentModel opponentModel) {
 		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
 		BidSpace estimatedBS;
