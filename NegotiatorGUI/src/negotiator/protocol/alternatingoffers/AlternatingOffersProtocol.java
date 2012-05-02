@@ -302,14 +302,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
 			
-			TrajectoryMeasures trajCalc = null;
-			if (outcome.getAgentABids().size() > 1 && outcome.getAgentBBids().size() > 1) {
-				trajCalc= new TrajectoryMeasures(	new ArrayList<BidPoint>(outcome.getAgentABids().subList(0, outcome.getAgentABids().size() - 1)), 
-													new ArrayList<BidPoint>(outcome.getAgentBBids().subList(0, outcome.getAgentBBids().size() - 1)),
-													bidSpace);
-			} else {
-				trajCalc= new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
-			}
+			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
 			SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
 			
 			if (outcome.additional==null) {

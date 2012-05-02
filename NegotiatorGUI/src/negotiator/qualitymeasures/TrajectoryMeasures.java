@@ -25,7 +25,7 @@ public class TrajectoryMeasures {
 	ArrayList<BidPoint> agentBBids;
 	Domain domain;
 	boolean agentAFirst;
-	private final double SILENTTHRESHOLD = 0.0005;
+	private final double SILENTTHRESHOLD = 0.005;
 	double unfortunateA;
 	double unfortunateB;
 	double silentA;
@@ -173,6 +173,7 @@ public class TrajectoryMeasures {
 		concessionA = 0;
 		concessionB = 0;
 		
+		System.out.println(agentABids.size() + " + " + agentBBids.size());
 		// -1 because we are looking inbetween bids
 		int sizeA = agentABids.size() - 1;
 		int sizeB = agentBBids.size() - 1;
