@@ -60,8 +60,9 @@ public class UtilityMeasures {
 	}
 	
 	private double distanceBetweenTwoPoints(double ax, double ay, double bx, double by) {
-		return (Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
+		return Math.sqrt((Math.pow((ax - bx), 2) + Math.pow((ay - by), 2)));
 	}
+	
 	
 	/**
 	 * Calculates the Pareto distance given the agreement.
