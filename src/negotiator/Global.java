@@ -340,4 +340,9 @@ public class Global {
 		else
 			return "extensive " + outcomesFile;
 	}
+	
+	public static String getOQMOutcomesFileName()
+	{
+		return "log/OQM " + getLoadDate() + ".csv";
+	}
 }

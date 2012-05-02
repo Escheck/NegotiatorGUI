@@ -569,15 +569,15 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 * @return average time of end of negotiation
 	 */
 	private static double getAverageEndOfNegotiation(ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
 		double timeOfAgreement = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
-				if (outcome.isAgreement()) {
-					timeOfAgreement += outcome.getTimeOfAgreement();
-				}
+				timeOfAgreement += outcome.getTimeOfAgreement();
+				totalSessions++;
 			}
 		}
-		return (double)timeOfAgreement / outcomes.size();
+		return (double)timeOfAgreement / totalSessions;
 	}
 	
 	/**
@@ -668,6 +668,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	
 	/**
 	 * Calculates the average Pareto distance of an agreement.
+	 * 
 	 * @param outcomes
 	 * @param agentName
 	 * @return average Pareto distance
