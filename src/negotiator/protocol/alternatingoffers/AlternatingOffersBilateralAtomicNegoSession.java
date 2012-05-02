@@ -3,9 +3,6 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
-import misc.Pair;
 import negotiator.Agent;
 import negotiator.Global;
 import negotiator.NegotiationOutcome;
@@ -32,12 +29,10 @@ import negotiator.utility.UtilitySpace;
  * This is an updated version which has shared deadlines for both agents, implemented with {@link Timeline}.
  * 
  * KNOWN BUGS:
- * 1. The last bid of fAgentABids and fAgentBBids is not always the actual bid which was made.
- * 
- * 2. In some cases, when a bad outcome is created, there is a nullpointer. Likely to occur when a
+ * 1. In some cases, when a bad outcome is created, there is a nullpointer. Likely to occur when a
  *    computationally heavy agent plays on Energy.
  * 
- * 3. MAC does not always store the outcomes for each separate acceptance condition. This
+ * 2. MAC does not always store the outcomes for each separate acceptance condition. This
  *    occurs in less than 1% of the matches, and can be easily detected by checking if an agent
  *    with Multi_AC in its name exists.
  */
@@ -180,10 +175,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						p=new BidPoint(lastBid,
 								spaceA.getUtility(lastBid),
 								spaceB.getUtility(lastBid));
-						if(currentAgent.equals(agentA))                    {
-							fAgentABids.add(p);
-						} else{
-							fAgentBBids.add(p);
+						
+						if (!timeline.isDeadlineReached()) {
+							if(currentAgent.equals(agentA)) {
+								fAgentABids.add(p);
+							} else{
+								fAgentBBids.add(p);
+							}
 						}
 						
 						if (Global.OM_PROFILER_ENABLED) {
