@@ -165,30 +165,28 @@ public class ScenarioMeasures {
 		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB);
 		double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
 
-		double kalaiDistance = calculateRelativeKalaiDistance(utilitySpaceA, utilitySpaceB);
+		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
 		
 		element.setAttribute("bids_count", utilitySpaceA.getDomain().getNumberOfPossibleBids() + "");
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
-		
 		element.setAttribute("ranking_distance_weights", String.valueOf(rankingDistWeights));
 		element.setAttribute("pearson_correlation_coefficient_weights", String.valueOf(pearsonCorrWeights));
 		element.setAttribute("ranking_distance_utility_space", String.valueOf(rankingDistUtil));
 		element.setAttribute("pearson_correlation_coefficient_utility_space", String.valueOf(pearsonCorrUtil));
-		element.setAttribute("relative_kalai_distance", String.valueOf(kalaiDistance));
+		element.setAttribute("relative_opposition", String.valueOf(opposition));
 
 		return element;
 	}
 	
 	/**
-	 * Calculate the relative Kalai distance. This is the positive
-	 * or negative distance to the point [0.5; 0.5]. This is a measure
-	 * of competitiveness.
+	 * Calculate the opposition of the domain, the distance to 1.0.
+	 * This is a measure of competitiveness.
 	 * 
 	 * @param utilitySpaceA
 	 * @param utilitySpaceB
 	 * @return
 	 */
-	private static double calculateRelativeKalaiDistance(
+	private static double calculateOpposition(
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double result = 0;
 		try {
@@ -202,11 +200,7 @@ public class ScenarioMeasures {
 				}
 			}
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
-			result = kalai.distanceTo(new BidPoint(null, 0.5, 0.5));
-			if ((kalai.utilityA + kalai.utilityB) < 1.0) {
-				result = (-result);
-			}
-			return result;
+			return kalai.distanceTo(new BidPoint(null, 1.0, 1.0));
 		} catch (Exception e) { e.printStackTrace(); }
 		
 		return result;
