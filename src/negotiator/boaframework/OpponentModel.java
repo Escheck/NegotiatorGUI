@@ -64,7 +64,6 @@ public abstract class OpponentModel {
 	
 	public void cleanUp() {
 		negotiationSession = null;
-		opponentUtilitySpace = null;
 		cleared = true;
 	}
 
