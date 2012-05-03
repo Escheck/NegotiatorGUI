@@ -16,6 +16,8 @@ import negotiator.boaframework.OutcomeSpace;
  * then offers them in descending order. If all bids are offered, then the last bid
  * is repeated.
  * 
+ * This strategy has no straight-forward extension of using opponent models.
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */

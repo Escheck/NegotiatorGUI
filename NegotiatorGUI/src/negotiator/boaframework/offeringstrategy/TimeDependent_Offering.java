@@ -1,8 +1,6 @@
 package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
-import java.util.List;
-import misc.Range;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -16,6 +14,8 @@ import negotiator.boaframework.opponentmodel.NullModel;
  * 	[1]	S. Shaheen Fatima  Michael Wooldridge  Nicholas R. Jennings
  * 		Optimal Negotiation Strategies for Agents with Incomplete Information
  * 		http://eprints.ecs.soton.ac.uk/6151/1/atal01.pdf
+ * 
+ * The default was extended to enable usage of opponent models.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
@@ -89,14 +89,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		if (opponentModel instanceof NullModel) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
-			// retrieve a list of bids and find the best bid for the opponent in this range
-			List<BidDetails> bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + 0.1));
-			double windowSize = 0.1;
-			while(bidsInRange.size() == 0){
-				bidsInRange = negotiationSession.getOutcomeSpace().getBidsinRange(new Range(utilityGoal, utilityGoal + windowSize));
-				windowSize = windowSize + 0.1;
-			}
-			nextBid = omStrategy.getBid(bidsInRange);
+			nextBid = omStrategy.getBid(negotiationSession.getOutcomeSpace(), utilityGoal);
 		}
 		return nextBid;
 	}
