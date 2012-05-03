@@ -172,8 +172,7 @@ public class TrajectoryMeasures {
 		selfishB = 0;
 		concessionA = 0;
 		concessionB = 0;
-		
-		System.out.println(agentABids.size() + " + " + agentBBids.size());
+
 		// -1 because we are looking inbetween bids
 		int sizeA = agentABids.size() - 1;
 		int sizeB = agentBBids.size() - 1;
