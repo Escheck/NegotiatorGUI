@@ -61,14 +61,14 @@ public class TournamentMeasures {
 			} else if (tagName.equals("resultsOfAgent") && attributes.getValue("agent").equals("A")) {
 				outcome.setAgentNameA(attributes.getValue("agentName"));
 				agents.add(outcome.getAgentNameA());
-				outcome.setUtilProfA("utilspace");
+				outcome.setUtilProfA(attributes.getValue("utilspace"));
 				outcome.setUtilityA(Double.parseDouble(attributes.getValue("normalizedUtility")));
 				outcome.setDiscountedUtilityA(Double.parseDouble(attributes.getValue("discountedUtility")));
 				found = true;
 			} else if (tagName.equals("resultsOfAgent") && attributes.getValue("agent").equals("B")) {
 				outcome.setAgentNameB(attributes.getValue("agentName"));
 				agents.add(outcome.getAgentNameB());
-				outcome.setUtilProfB("utilspace");
+				outcome.setUtilProfB(attributes.getValue("utilspace"));
 				outcome.setUtilityB(Double.parseDouble(attributes.getValue("normalizedUtility")));
 				outcome.setDiscountedUtilityB(Double.parseDouble(attributes.getValue("discountedUtility")));
 				found = true;
@@ -129,7 +129,7 @@ public class TournamentMeasures {
 		public ArrayList<ArrayList<OutcomeInfo>> getOutcomesAsRuns() {
 			ArrayList<ArrayList<OutcomeInfo>> runs = new ArrayList<ArrayList<OutcomeInfo>>();
 			runs.add(new ArrayList<OutcomeInfo>());
-
+			
 			for (int i = 0; i < outcomes.size(); i++) {
 				boolean added = false;
 				
@@ -173,6 +173,7 @@ public class TournamentMeasures {
 					break;
 				}
 			}
+			
 			return found;
 		}
 		
@@ -191,7 +192,7 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Users/Mark/workspace/Genius/log/DT-2012-04-13 11.52.05.xml";
+			String in = "c:/Users/Mark/workspace/Genius/log/2012-05-03 13.21.43.xml";
 			String out = "c:/Users/Mark/workspace/Genius/log/result.xml";
 			
 			process(in, out);
@@ -342,19 +343,23 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
-		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageUtility(runs.get(i), agentName, false);
-			
-			sumOfAverages += averageOfRun;
-			results[i] = averageOfRun;
+
+		if (runs.size() > 1) {
+			for (int i = 0; i < runs.size(); i++) {
+				double averageOfRun = getAverageUtility(runs.get(i), agentName, false);
+				
+				sumOfAverages += averageOfRun;
+				results[i] = averageOfRun;
+			}
+			double averageOfRuns = sumOfAverages / runs.size();
+			for (int i = 0; i < runs.size(); i++) {
+				squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+			}
+			// n-1 due to Bessel's correction
+			double variance = squaredSumOfDeviations / (runs.size() - 1);
+			return Math.sqrt(variance);
 		}
-		double averageOfRuns = sumOfAverages / runs.size();
-		for (int i = 0; i < runs.size(); i++) {
-			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
-		}
-		// n-1 due to Bessel's correction
-		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		return Math.sqrt(variance);
+		return 0;
 	}
 	
 	/**
@@ -367,19 +372,23 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
-		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageDiscountedUtility(runs.get(i), agentName, false);
-			
-			sumOfAverages += averageOfRun;
-			results[i] = averageOfRun;
+		
+		if (runs.size() > 1) {
+			for (int i = 0; i < runs.size(); i++) {
+				double averageOfRun = getAverageDiscountedUtility(runs.get(i), agentName, false);
+				
+				sumOfAverages += averageOfRun;
+				results[i] = averageOfRun;
+			}
+			double averageOfRuns = sumOfAverages / runs.size();
+			for (int i = 0; i < runs.size(); i++) {
+				squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+			}
+			// n-1 due to Bessel's correction
+			double variance = squaredSumOfDeviations / (runs.size() - 1);
+			return Math.sqrt(variance);
 		}
-		double averageOfRuns = sumOfAverages / runs.size();
-		for (int i = 0; i < runs.size(); i++) {
-			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
-		}
-		// n-1 due to Bessel's correction
-		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		return Math.sqrt(variance);
+		return 0;
 	}
 	
 	/**
@@ -394,18 +403,22 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
-		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageRounds(runs.get(i), agentName);
-			sumOfAverages += averageOfRun;
-			results[i] = averageOfRun;
+		
+		if (runs.size() > 1) {
+			for (int i = 0; i < runs.size(); i++) {
+				double averageOfRun = getAverageRounds(runs.get(i), agentName);
+				sumOfAverages += averageOfRun;
+				results[i] = averageOfRun;
+			}
+			double averageOfRuns = sumOfAverages / runs.size();
+			for (int i = 0; i < runs.size(); i++) {
+				squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+			}
+			// n-1 due to Bessel's correction
+			double variance = squaredSumOfDeviations / (runs.size() - 1);
+			return Math.sqrt(variance);
 		}
-		double averageOfRuns = sumOfAverages / runs.size();
-		for (int i = 0; i < runs.size(); i++) {
-			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
-		}
-		// n-1 due to Bessel's correction
-		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		return Math.sqrt(variance);
+		return 0;
 	}
 
 	/**
@@ -418,17 +431,21 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	private static double getStandardDeviationOfTimeOfAgreement(ArrayList<ArrayList<OutcomeInfo>> runs, ArrayList<OutcomeInfo> outcomes, String agentName) {
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
-		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageTimeOfAgreement(runs.get(i), agentName);
-			results[i] = averageOfRun;
+		
+		if (runs.size() > 1) {
+			for (int i = 0; i < runs.size(); i++) {
+				double averageOfRun = getAverageTimeOfAgreement(runs.get(i), agentName);
+				results[i] = averageOfRun;
+			}
+			double averageOfRuns = getAverageTimeOfAgreement(outcomes, agentName);
+			for (int i = 0; i < runs.size(); i++) {
+				squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+			}
+			// n-1 due to Bessel's correction
+			double variance = squaredSumOfDeviations / (runs.size() - 1);
+			return Math.sqrt(variance);
 		}
-		double averageOfRuns = getAverageTimeOfAgreement(outcomes, agentName);
-		for (int i = 0; i < runs.size(); i++) {
-			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
-		}
-		// n-1 due to Bessel's correction
-		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		return Math.sqrt(variance);
+		return 0;
 	}
 	
 	/**
@@ -442,19 +459,23 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 		double sumOfAverages = 0;
 		double squaredSumOfDeviations = 0;
 		double[] results = new double[runs.size()];
-		for (int i = 0; i < runs.size(); i++) {
-			double averageOfRun = getAverageEndOfNegotiation(runs.get(i), agentName);
-			
-			sumOfAverages += averageOfRun;
-			results[i] = averageOfRun;
+		
+		if (runs.size() > 1) {
+			for (int i = 0; i < runs.size(); i++) {
+				double averageOfRun = getAverageEndOfNegotiation(runs.get(i), agentName);
+				
+				sumOfAverages += averageOfRun;
+				results[i] = averageOfRun;
+			}
+			double averageOfRuns = sumOfAverages / runs.size();
+			for (int i = 0; i < runs.size(); i++) {
+				squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
+			}
+			// n-1 due to Bessel's correction
+			double variance = squaredSumOfDeviations / (runs.size() - 1);
+			return Math.sqrt(variance);
 		}
-		double averageOfRuns = sumOfAverages / runs.size();
-		for (int i = 0; i < runs.size(); i++) {
-			squaredSumOfDeviations += Math.pow((results[i] - averageOfRuns), 2);
-		}
-		// n-1 due to Bessel's correction
-		double variance = squaredSumOfDeviations / (runs.size() - 1);
-		return Math.sqrt(variance);
+		return 0;
 	}
 	
 	/**
@@ -609,7 +630,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 */
 	private static double getAverageExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
 		int totalSessions = 0;
-		int totalExploration = 0;
+		double totalExploration = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName)) {
 				totalSessions++;
@@ -634,7 +655,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 	 */
 	private static double getAverageJointExploration(ArrayList<OutcomeInfo> outcomes, String agentName) {
 		int totalSessions = 0;
-		int totalJointExploration = 0;
+		double totalJointExploration = 0;
 		for (OutcomeInfo outcome : outcomes) {
 			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
 				totalSessions++;
