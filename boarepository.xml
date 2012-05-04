@@ -22,12 +22,13 @@
 	<opponentmodels>
 		<opponentmodel description="Null" classPath="negotiator.boaframework.opponentmodel.NullModel"/>
 		<opponentmodel description="Bayesian" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
-		<opponentmodel description="Bayesian scalable" classPath="negotiator.boaframework.opponentmodel.BayesianModelScalable" tooltip="'t' for update time threshold. 'n' for NiceTitForTat-mode"/>
+		<opponentmodel description="Bayesian scalable" classPath="negotiator.boaframework.opponentmodel.BayesianModelScalable" tooltip="'n' for NiceTitForTat-mode"/>
 		<opponentmodel description="FSEGA Bayesian" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
 		<opponentmodel description="Perfect" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
 	</opponentmodels>
 	<omstrategies>
-		<omstrategy description="Null" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
+		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
+		<omstrategy description="Best bid" classPath="negotiator.boaframework.omstrategy.BestBid"/>
 		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count. Optionally 't'for when to stop updating"/>
 	</omstrategies>
 </repository>

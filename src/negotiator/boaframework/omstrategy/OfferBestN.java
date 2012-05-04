@@ -18,6 +18,8 @@ import negotiator.boaframework.OpponentModel;
  * bids. Following, a random bid is selected from this subset. Setting N > 1 is rational,
  * as opponent models cannot be assumed to be perfect.
  * 
+ * Due to performance reasons, it is recommended to use BestBid if N = 1.
+ * 
  * @author Mark Hendrikx
  */
 public class OfferBestN extends OMStrategy {
