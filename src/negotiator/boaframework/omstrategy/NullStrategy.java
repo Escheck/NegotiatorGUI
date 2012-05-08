@@ -20,6 +20,10 @@ public class NullStrategy extends OMStrategy {
 	
 	public NullStrategy() {}
 	
+	public NullStrategy(NegotiationSession negotiationSession) {
+		rand = new Random();
+	}
+	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		rand = new Random();
 		this.negotiationSession = negotiationSession;

@@ -10,7 +10,7 @@ import negotiator.boaframework.OfferingStrategy;
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
  * "Acceptance Conditions in Automated Negotiation"
  * 
- * This Acceptance Conditions is a combination of AC_Time and AC_Next
+ * This Acceptance Conditions is a combination of AC_Time and AC_Next -> (AC_Time OR AC_Next)
  * 
  * @author Alex Dirkzwager
  */

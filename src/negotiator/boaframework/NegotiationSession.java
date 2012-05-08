@@ -89,7 +89,7 @@ public class NegotiationSession {
 		if (outcomeSpace == null) {
 			try {
 				Bid maximumBid = utilitySpace.getMaxUtilityBid();
-				maxBid = new BidDetails(maximumBid, utilitySpace.getUtility(maximumBid));
+				maxBid = new BidDetails(maximumBid, utilitySpace.getUtility(maximumBid), -1);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -107,7 +107,7 @@ public class NegotiationSession {
 		if (outcomeSpace == null) {
 			try {
 				Bid minimumBidBid = utilitySpace.getMinUtilityBid();
-				minBid = new BidDetails(minimumBidBid, utilitySpace.getUtility(minimumBidBid));
+				minBid = new BidDetails(minimumBidBid, utilitySpace.getUtility(minimumBidBid), -1);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -116,4 +116,8 @@ public class NegotiationSession {
 		}
 		return minBid;
 	}	
+	
+	public double getDiscountedUtility(Bid bid, double time){
+		return utilitySpace.getUtilityWithDiscount(bid, timeline.getTime());
+	}
 }

@@ -73,7 +73,7 @@ public class OfferBestN extends OMStrategy {
 		ArrayList<BidDetails> oppBids = new ArrayList<BidDetails>(allBids.size());
 		for (BidDetails bidDetail : allBids) {
 			Bid bid = bidDetail.getBid();
-			BidDetails newBid = new BidDetails(bid, model.getBidEvaluation(bid));
+			BidDetails newBid = new BidDetails(bid, model.getBidEvaluation(bid), negotiationSession.getTime());
 			oppBids.add(newBid);
 		}
 		
@@ -85,7 +85,7 @@ public class OfferBestN extends OMStrategy {
 		Bid opponentBestBid = oppBids.get(entry).getBid();
 		BidDetails nextBid = null;
 		try {
-			nextBid = new BidDetails(opponentBestBid, negotiationSession.getUtilitySpace().getUtility(opponentBestBid));
+			nextBid = new BidDetails(opponentBestBid, negotiationSession.getUtilitySpace().getUtility(opponentBestBid), negotiationSession.getTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
