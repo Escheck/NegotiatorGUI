@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 import negotiator.Agent;
+import negotiator.ContinuousTimeline;
 import negotiator.NegotiationOutcome;
+import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -14,8 +16,6 @@ import negotiator.analysis.BidPoint;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
-import negotiator.timeline.ContinuousTimeline;
-import negotiator.timeline.Timeline;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
