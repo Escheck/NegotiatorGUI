@@ -24,7 +24,7 @@ public class Random_Offering extends OfferingStrategy {
 	public BidDetails determineNextBid() {
 		Bid bid = negotiationSession.getUtilitySpace().getDomain().getRandomBid();
 		try {
-			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid));
+			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid), negotiationSession.getTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -36,6 +36,20 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 */
 	public TimeDependent_Offering(){}
 	
+	public TimeDependent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, double e, double k, double max, double min){
+		this.e = e;
+		this.k = k;
+		this.Pmax = max;
+		this.Pmin = min;
+		this.negotiationSession = negoSession;
+		SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+		negotiationSession.setOutcomeSpace(space);
+		this.opponentModel = model;
+		this.omStrategy = oms;
+
+		
+	}
+	
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;

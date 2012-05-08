@@ -41,7 +41,7 @@ public class OutcomeSpace {
 		while (iter.hasNext()) {
 			Bid bid = iter.next();
 			try {
-				BidDetails BidDetails = new BidDetails(bid, utilSpace.getUtility(bid));
+				BidDetails BidDetails = new BidDetails(bid, utilSpace.getUtility(bid), -1);
 				allBids.add(BidDetails);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -42,7 +42,7 @@ public class BidHistory {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			bidList.add(new BidDetails(bid, util));
+			bidList.add(new BidDetails(bid, util,-1.0));
 		}
 	}
 	
@@ -97,6 +97,30 @@ public class BidHistory {
 		}
 		return bidHistory;			
 	}
+	
+	/**
+	 * Returns the set of bids offered between time instances t1 and t2: (t1, t2] and
+	 * with a utility in (u1, u2].
+	 * @param minU
+	 * @param maxU
+	 * @param minT
+	 * @param maxT
+	 * @return
+	 */
+	public BidHistory discountedFilterBetween(double minU, double maxU, double minT, double maxT, UtilitySpace utilSpace)
+	{
+		BidHistory bidHistory = new BidHistory();
+		for (BidDetails b : bidList)
+		{
+			if (minU < utilSpace.getUtilityWithDiscount(b.getBid(), b.getTime()) &&
+					utilSpace.getUtilityWithDiscount(b.getBid(), b.getTime()) <= maxU &&
+					minT < b.getTime() &&
+					b.getTime() <= maxT)
+				bidHistory.add(b);
+		}
+		return bidHistory;			
+	}
+	
 	
 	/**
 	 * Add an offered bid o the history.
@@ -154,6 +178,25 @@ public class BidHistory {
 	}
 	
 	/**
+	 * Returns the bid with the highest discounted utility stored in the history.
+	 * @return bid with highest utility
+	 */
+	public BidDetails getBestDiscountedBidDetails(UtilitySpace util){
+		double max = Double.NEGATIVE_INFINITY;
+		BidDetails bestBid = null;
+		for (BidDetails b : bidList)
+		{
+			double discountedUtility = util.getUtilityWithDiscount(b.getBid(), b.getTime());
+			if (discountedUtility >= max)
+			{
+				max = discountedUtility;
+				bestBid = b;
+			}
+		}
+		return bestBid;
+	}
+	
+	/**
 	 * Returns the bid with the lowest utility stored in the history.
 	 * @return bid with lowest utility
 	 */
@@ -204,6 +247,17 @@ public class BidHistory {
 		double totalUtil = 0;
 		for(BidDetails bid : bidList){
 			totalUtil =+bid.getMyUndiscountedUtil();
+		}
+		return totalUtil / size;
+	}
+	
+	public double getAverageDiscountedUtility(UtilitySpace utilSpace) {
+		int size = size();
+		if (size == 0)
+			return 0;
+		double totalUtil = 0;
+		for(BidDetails bid : bidList){
+			totalUtil =+utilSpace.getUtilityWithDiscount(bid.getBid(), bid.getTime());
 		}
 		return totalUtil / size;
 	}
