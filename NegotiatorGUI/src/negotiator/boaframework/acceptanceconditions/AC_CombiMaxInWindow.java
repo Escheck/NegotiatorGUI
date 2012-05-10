@@ -1,11 +1,12 @@
 package negotiator.boaframework.acceptanceconditions;
 
 import java.util.HashMap;
+
+import negotiator.BidHistory;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
-import negotiator.BidHistory;
 
 /**
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
@@ -36,7 +37,7 @@ public class AC_CombiMaxInWindow extends AcceptanceStrategy {
 		if (parameters.get("t") != null) {
 			time = parameters.get("t");
 		} else {
-			throw new Exception("Paramaters were not correctly set");
+			throw new Exception("Parameters were not correctly set");
 		}
 	}
 	

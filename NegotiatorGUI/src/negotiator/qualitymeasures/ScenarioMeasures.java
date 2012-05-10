@@ -1,14 +1,17 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
@@ -51,7 +54,7 @@ public class ScenarioMeasures {
 				} else if (domain.getPrefProfB() == null){
 					domain.setPrefProfB(attributes.getValue("url").substring(5));
 				} else {
-					System.out.println("WARNING: Violation of two preference profiles per domain assumption.");
+					System.out.println("WARNING: Violation of two preference profiles per domain assumption for " + strippedName);
 				}
 			}
 

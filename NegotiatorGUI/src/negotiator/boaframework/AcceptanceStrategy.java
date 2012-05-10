@@ -34,7 +34,7 @@ public abstract class  AcceptanceStrategy {
 	}
 	
 	public String printParameters(){
-		return"";
+		return "";
 	}
 	
 	/**

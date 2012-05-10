@@ -3,6 +3,7 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
 import negotiator.Agent;
 import negotiator.ContinuousTimeline;
 import negotiator.DiscreteTimeline;
@@ -63,8 +64,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	public Agent currentAgent=null; // agent currently bidding.
 	private Timeline timeline;
-	private int totalRounds = 1000; //The total amount of rounds when using DiscreteTimeline
-	
 	public ArrayList<NegotiationOutcome> MACoutcomes = new ArrayList<NegotiationOutcome>();
 	private boolean agentAWithMultiAC = false;
 	private boolean agentBWithMultiAC = false;
@@ -104,7 +103,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double agentAUtility,agentBUtility;
 
 			if (Global.DISCRETE_TIMELINE){
-				timeline = new DiscreteTimeline(totalRounds);			
+				timeline = new DiscreteTimeline(Global.TOTAL_ROUNDS);			
 			} else {
 				if (Global.PAUSABLE_TIMELINE) {
 					timeline = new PausableContinuousTimeline(totalTime);

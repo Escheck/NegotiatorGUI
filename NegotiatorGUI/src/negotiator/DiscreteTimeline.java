@@ -1,6 +1,5 @@
 package negotiator;
 
-
 /**
  * Implementation of the timeline in which time is divided in rounds.
  * Time does not pass within a round. Note that requesting the total
@@ -8,7 +7,9 @@ package negotiator;
  */
 public class DiscreteTimeline extends Timeline
 {
+	/** With 3 rounds, this is set to 4. */
     private int totalRounds;
+    /** E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4 is the deadline. */
     private int cRound;
 
     /**
@@ -76,6 +77,27 @@ public class DiscreteTimeline extends Timeline
 	@Override
 	public double getTotalTime() {
 		return totalRounds;
+	}
+	
+	/**
+	 * Starting to count from 1, until the total amount of rounds.
+	 */
+	public int getRound()
+	{
+		return cRound;
+	}
+	
+	public int getRoundsLeft()
+	{
+		return totalRounds - cRound - 1;
+	}
+	
+	/**
+	 * The number of rounds left for ourself.
+	 */
+	public int getOwnRoundsLeft()
+	{
+		return (int) Math.floor(getRoundsLeft() / 2);
 	}
 
 	@Override
