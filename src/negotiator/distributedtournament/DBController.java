@@ -443,7 +443,7 @@ public class DBController {
 		// 1. Retrieve all outcomes from the DB.
 		// Note the design decision to retrieve all at once to 
 		// avoid overloading the DB with requests (there are more clients)
-		String outcomes = getLog(jobID);
+		ResultSet outcomes = getLog(jobID);
 		
 		// 2. Get the filename of the to-be-created log
 		String outcomesFileName = Global.getDistributedOutcomesFileName();
@@ -456,7 +456,14 @@ public class DBController {
 			if (!exists) {
 				out.write("<a>\n");
 			}
-			out.write("" + outcomes);
+
+			while (outcomes.next()) {			
+				try {
+					out.write(extractBytes(outcomes.getBytes(1)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			out.write("</a>\n");
 			out.close();
 		} catch (Exception e) {
@@ -472,7 +479,7 @@ public class DBController {
 	 * @param jobID ID of the high-level job
 	 * @return all outcomes glued together as a single string
 	 */
-	private String getLog(int jobID) {
+	private ResultSet getLog(int jobID) {
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(
 					"SELECT result " +
@@ -482,19 +489,11 @@ public class DBController {
 
 			preparedStatement.setInt(1, jobID);
 			ResultSet set = preparedStatement.executeQuery();
-			StringBuilder builder = new StringBuilder();
-			while (set.next()) {			
-				try {
-					builder.append(extractBytes(set.getBytes(1)));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return builder.toString();
+			return set;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return null;
 	}
 	
 	/**
