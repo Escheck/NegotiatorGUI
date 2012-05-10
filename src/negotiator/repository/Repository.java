@@ -170,6 +170,10 @@ public class Repository
 		}
 		return false;
 	}
+	
+	/**
+	 * Uses Jax to load the {@link Repository}.
+	 */
 	public static Repository get_domain_repos(String filename, String sourceFolder) throws Exception {
 		if(domainRepos!=null ) return domainRepos;
 		Repository repos;

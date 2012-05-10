@@ -139,8 +139,8 @@ public class BidHistory {
 	}
 	
 	/**
-	 * Returns the last bid added to the history.
-	 * @return last added bid
+	 * Returns the last bid details added to the history.
+	 * @return last added bid details
 	 */
 	public BidDetails getLastBidDetails(){
 		BidDetails bid = null;
@@ -148,6 +148,18 @@ public class BidHistory {
 			bid = bidList.get(bidList.size() - 1);
 		}
 		return bid;
+	}
+	
+	/**
+	 * Returns the last bid added to the history.
+	 * @return last added bid
+	 */
+	public Bid getLastBid()
+	{
+		BidDetails lastBidDetails = getLastBidDetails();
+		if (lastBidDetails == null)
+			return null;
+		return lastBidDetails.getBid();
 	}
 	
 	/**

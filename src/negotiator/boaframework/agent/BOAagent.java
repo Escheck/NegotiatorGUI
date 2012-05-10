@@ -1,7 +1,9 @@
 package negotiator.boaframework.agent;
 
 import java.util.ArrayList;
+
 import misc.Pair;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -45,6 +47,7 @@ public abstract class BOAagent extends Agent {
     /** if this agent started */
     private boolean startingAgent;
     
+    @Override
 	public void init() {
 		super.init();
 		negotiationSession = new NegotiationSession(utilitySpace, timeline);
@@ -194,7 +197,8 @@ public abstract class BOAagent extends Agent {
 	/**
 	 * Clear the agent's variables.
 	 */
-	public void cleanUp() {
+	public void cleanUp() 
+	{
 		offeringStrategy = null;
 		acceptConditions = null;
 		omStrategy = null;

@@ -8,7 +8,6 @@ package negotiator.gui.tournamentvars;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -20,8 +19,8 @@ import misc.Serializer;
 
 import negotiator.AgentParam;
 import negotiator.Global;
-import negotiator.distributedtournament.DBController;
 import negotiator.boaframework.BOAagentInfo;
+import negotiator.distributedtournament.DBController;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
@@ -40,6 +39,8 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
+import negotiator.tournament.VariablesAndValues.BOAagentValue;
+import negotiator.tournament.VariablesAndValues.BOAagentVariable;
 import negotiator.tournament.VariablesAndValues.DBLocationValue;
 import negotiator.tournament.VariablesAndValues.DBLocationVariable;
 import negotiator.tournament.VariablesAndValues.DBPasswordValue;
@@ -48,8 +49,6 @@ import negotiator.tournament.VariablesAndValues.DBSessionValue;
 import negotiator.tournament.VariablesAndValues.DBSessionVariable;
 import negotiator.tournament.VariablesAndValues.DBUserValue;
 import negotiator.tournament.VariablesAndValues.DBUserVariable;
-import negotiator.tournament.VariablesAndValues.BOAagentValue;
-import negotiator.tournament.VariablesAndValues.BOAagentVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;

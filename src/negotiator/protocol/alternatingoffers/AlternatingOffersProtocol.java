@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
 
-import misc.SpaceDistance;
-
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -21,7 +19,6 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
-import negotiator.qualitymeasures.TournamentMeasures;
 import negotiator.qualitymeasures.TrajectoryMeasures;
 import negotiator.qualitymeasures.UtilityMeasures;
 import negotiator.repository.AgentRepItem;
@@ -295,6 +292,9 @@ public class AlternatingOffersProtocol extends Protocol {
 		sessionrunner.cleanUp();
 	}
 	
+	/**
+	 * Append quality measure information to the additional {@link #outcome} field.
+	 */
 	public void createExtraLogData() {
 		
 		if (Global.TOURNAMENT_ANALYSIS_ENABLED) {

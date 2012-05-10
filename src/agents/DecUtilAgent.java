@@ -86,11 +86,11 @@ public class DecUtilAgent extends Agent
                 Bid partnerBid = ((Offer)actionOfPartner).getBid();
                 double offeredutil=utilitySpace.getUtility(partnerBid);
                 double time=timeline.getTime();
-                double P=Paccept(offeredutil,time);
-                if (.02*P>Math.random()) action = new Accept(getAgentID());
-                else action = new Offer(getAgentID(),bids.get(nextBidIndex++));               
+//                double P=Paccept(offeredutil,time);
+//                if (.02*P>Math.random()) action = new Accept(getAgentID());
+                action = new Offer(getAgentID(),bids.get(nextBidIndex++));               
             }
-            Thread.sleep(300); // 3 bids per second is good enough.
+//            Thread.sleep(300); // 3 bids per second is good enough.
         } catch (Exception e) { 
         	System.out.println("Exception in ChooseAction:"+e.getMessage());
         	action=new Accept(getAgentID()); // best guess if things go wrong. 
