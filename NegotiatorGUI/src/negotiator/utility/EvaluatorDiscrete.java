@@ -206,7 +206,8 @@ public class EvaluatorDiscrete implements Evaluator {
 	public void setEvaluation(Value val, int utility ) throws Exception
 	{
 		if (utility<0) throw new Exception("utility values have to be >0");
-		fEval.put((ValueDiscrete)val, new Integer(utility));		
+		fEval.put((ValueDiscrete)val, new Integer(utility));
+		calcEvalMax();
 	}
 
 	/**

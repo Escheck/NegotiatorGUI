@@ -345,24 +345,26 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
-			if(pb!=null)
-				bidChart.setPossibleBids(pb);
-			double [][] paretoB = getPareto();
-			if(paretoB!=null)
-				bidChart.setPareto(paretoB);
-
-			//nash
-			BidPoint bp1= bs.getNash();
-			nash[0][0]= bp1.utilityA;
-			nash[1][0]= bp1.utilityB;
-			if(nash!=null)
-				bidChart.setNash(nash);	
-			//kalai
-			BidPoint bp2 = bs.getKalaiSmorodinsky();
-			kalai[0][0]= bp2.utilityA;
-			kalai[1][0]= bp2.utilityB;
-			if(kalai!=null)
-				bidChart.setKalai(kalai);
+			if (!Global.OM_PROFILER_ENABLED) {
+				if(pb!=null)
+					bidChart.setPossibleBids(pb);
+				double [][] paretoB = getPareto();
+				if(paretoB!=null)
+					bidChart.setPareto(paretoB);
+				
+				//nash
+				BidPoint bp1= bs.getNash();
+				nash[0][0]= bp1.utilityA;
+				nash[1][0]= bp1.utilityB;
+				if(nash!=null)
+					bidChart.setNash(nash);	
+				//kalai
+				BidPoint bp2 = bs.getKalaiSmorodinsky();
+				kalai[0][0]= bp2.utilityA;
+				kalai[1][0]= bp2.utilityB;
+				if(kalai!=null)
+					bidChart.setKalai(kalai);
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
