@@ -51,7 +51,9 @@ public class BestBid extends OMStrategy {
 	public BidDetails getBid(List<BidDetails> allBids) {
 		// determine the utility for the opponent for each of the bids
 
-
+		if (allBids.size() == 1) {
+			return allBids.get(0);
+		}
 		double bestUtil = -1;
 		BidDetails bestBid = null;
 		

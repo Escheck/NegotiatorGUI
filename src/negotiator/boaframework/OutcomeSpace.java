@@ -102,15 +102,7 @@ public class OutcomeSpace {
 	 * @return BidDetails
 	 */
 	public BidDetails getBidNearUtility(double utility) {
-		BidDetails closesBid = null;
-		double closesDistance = 1;
-		for(BidDetails bid : allBids){
-			if(Math.abs(bid.getMyUndiscountedUtil()-utility) < closesDistance) {
-				closesBid = bid;
-				closesDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
-			}
-		}
-		return closesBid;
+		return allBids.get(getIndexOfBidNearUtility(utility));
 	}
 	
 	/**
@@ -148,5 +140,17 @@ public class OutcomeSpace {
 			}
 		}
 		return minBid;
+	}
+
+	public int getIndexOfBidNearUtility(double utility) {
+		double closesDistance = 1;
+		int best = 0;
+		for(int i = 0; i < allBids.size(); i++){
+			if(Math.abs(allBids.get(i).getMyUndiscountedUtil()-utility) < closesDistance) {
+				closesDistance = Math.abs(allBids.get(i).getMyUndiscountedUtil()-utility);
+				best = i;
+			}
+		}
+		return best;
 	}
 }

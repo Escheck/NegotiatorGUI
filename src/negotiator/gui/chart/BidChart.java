@@ -24,8 +24,10 @@ public class BidChart {
 	private double [][] bidSeriesA_;
 	private double [][] bidSeriesB_;
 	private double [][] pearsonCorrCoefBids_;
+	private double [][] pearsonCorrCoefIssues_;
 	private double [][] rankingDistBids_;
 	private double [][] kalaiDiff_;
+	private double [][] nashDiff_;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
@@ -40,8 +42,10 @@ public class BidChart {
 	private DefaultXYDataset lastBidAData = new DefaultXYDataset();
 	private DefaultXYDataset lastBidBData = new DefaultXYDataset();
 	private DefaultXYDataset pearsonCorrCoefBidsData = new DefaultXYDataset();
+	private DefaultXYDataset pearsonCorrCoefIssuesData = new DefaultXYDataset();
 	private DefaultXYDataset rankingDistBidsData = new DefaultXYDataset();
 	private DefaultXYDataset kalaiDiffData = new DefaultXYDataset();
+	private DefaultXYDataset nashDiffData = new DefaultXYDataset();
 	final XYDotRenderer dotRenderer = new XYDotRenderer();
 	final XYDotRenderer nashRenderer = new XYDotRenderer();
 	final XYDotRenderer kalaiRenderer = new XYDotRenderer();
@@ -51,8 +55,10 @@ public class BidChart {
 	final XYDotRenderer lastBidBRenderer = new XYDotRenderer();
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer pearsonCorrCoefBidsRenderer = new XYLineAndShapeRenderer(true, false);
+	final XYItemRenderer pearsonCorrCoefIssuesRenderer = new XYLineAndShapeRenderer(true, false);
 	final XYItemRenderer rankingDistBidsRenderer = new XYLineAndShapeRenderer(true, false);
 	final XYItemRenderer kalaiDiffRenderer = new XYLineAndShapeRenderer(true, false);
+	final XYItemRenderer nashDiffRenderer = new XYLineAndShapeRenderer(true, false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
 	private NumberAxis domainAxis;
@@ -135,6 +141,24 @@ public class BidChart {
 		});
 	}
 	
+	public void setNashDiffData(double [][] nashDiff) {
+		this.nashDiff_ = nashDiff;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	nashDiffData.addSeries("Nash diff.", nashDiff_);
+		    }
+		});
+	}
+	
+	public void setPearsonCorrCoefIssuesData(double [][] pearsonCorrCoefIssues) {
+		this.pearsonCorrCoefIssues_ = pearsonCorrCoefIssues;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	pearsonCorrCoefIssuesData.addSeries("Pearson corr. coef. issues", pearsonCorrCoefIssues_);
+		    }
+		});
+	}
+	
 	public void setBidSeriesA(double [][] bidSeriesA){
 		this.bidSeriesA_ = bidSeriesA;
 		SwingUtilities.invokeLater(new Runnable() {
@@ -194,8 +218,10 @@ public class BidChart {
         lineARenderer.setSeriesPaint(0, Color.GREEN);
         lineBRenderer.setSeriesPaint(0, Color.BLUE);
         pearsonCorrCoefBidsRenderer.setSeriesPaint(0, Color.DARK_GRAY);
+        pearsonCorrCoefIssuesRenderer.setSeriesPaint(0, Color.CYAN);
         rankingDistBidsRenderer.setSeriesPaint(0, Color.GREEN);
         kalaiDiffRenderer.setSeriesPaint(0, Color.RED);
+        nashDiffRenderer.setSeriesPaint(0, Color.ORANGE);
         agreementRenderer.setDotHeight(10);
         agreementRenderer.setDotWidth(10);
         //agreementRenderer.setSeriesShape(0, new Ellipse2D.Float(10.0f, 10.0f, 10.0f, 10.0f));
@@ -246,6 +272,10 @@ public class BidChart {
 	    plot.setRenderer(11, rankingDistBidsRenderer);
 	    plot.setDataset(12, kalaiDiffData);
 	    plot.setRenderer(12, kalaiDiffRenderer);
+	    plot.setDataset(13, nashDiffData);
+	    plot.setRenderer(13, nashDiffRenderer);
+	    plot.setDataset(14, pearsonCorrCoefIssuesData);
+	    plot.setRenderer(14, pearsonCorrCoefIssuesRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);

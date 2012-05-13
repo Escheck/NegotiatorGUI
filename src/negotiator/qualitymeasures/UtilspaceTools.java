@@ -48,7 +48,7 @@ public class UtilspaceTools {
 	 * @param utilityspace
 	 * @return array of issue weights
 	 */
-	private static double[] getIssueWeights(UtilitySpace space) {
+	public static double[] getIssueWeights(UtilitySpace space) {
 		double issueWeights[] = new double[space.getDomain().getIssues().size()];
 
 		int i = 0;
@@ -90,7 +90,7 @@ public class UtilspaceTools {
 	 * @param setB
 	 * @return
 	 */
-	private static double calculatePearsonCorrelationCoefficient(double[] setA, double[] setB) {
+	public static double calculatePearsonCorrelationCoefficient(double[] setA, double[] setB) {
 		if (setA.length != setB.length) {
 			System.out.println("Amount of variables should be equal.");
 		}
@@ -113,7 +113,7 @@ public class UtilspaceTools {
 		for(int i = 0; i < setA.length; i++) { 
 			double normA = setA[i] - averageSetA;
 			double normB = setB[i] - averageSetB;
-			//System.out.println(normB);
+
 			nominator += (normA * normB);
 			
 			sumSquareNormA += Math.pow(normA, 2);

@@ -2,7 +2,6 @@ package negotiator.protocol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import misc.Pair;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Global;
@@ -32,16 +31,18 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	Action 			lastAction = null;				// the last action that has been done (also included Accept, etc.)
     protected	Protocol 		protocol;
     protected 	int				sessionNumber;
-    public ArrayList<BidPoint> 	fAgentABids;
-    public ArrayList<BidPoint> 	fAgentBBids;
-    public ArrayList<Double> 	timeSnaps;
-    public ArrayList<Double> 	pearsonCorrCoefBids;
-    public ArrayList<Double> 	rankingDistBids;
-    public ArrayList<Double> 	kalaiDiff;
+    protected 	ArrayList<BidPoint> 	fAgentABids;
+    protected 	ArrayList<BidPoint> 	fAgentBBids;
+    protected 	ArrayList<Double> 	timeSnaps;
+    protected 	ArrayList<Double> 	pearsonCorrCoefBids;
+    protected 	ArrayList<Double> 	rankingDistBids;
+    protected 	ArrayList<Double> 	pearsonCorrCoefIssues;
+    protected 	ArrayList<Double> 	kalaiDiff;
+    protected 	ArrayList<Double>	nashDiff;
     protected 	BidSpace		bidSpace;
-	protected HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
-	protected HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
-	protected CSVlogger matchDataLogger;
+	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
+	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
+	protected 	CSVlogger matchDataLogger;
 
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	private String log;
@@ -85,6 +86,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         pearsonCorrCoefBids = new ArrayList<Double>();
         rankingDistBids = new ArrayList<Double>();
         kalaiDiff = new ArrayList<Double>();
+        nashDiff = new ArrayList<Double>();
+        pearsonCorrCoefIssues = new ArrayList<Double>();
 
         matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
         								agentA.getName(), spaceA.getFileName(), 
@@ -167,6 +170,14 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	
 	public double[][] getKalaiDiff() {
 		return convertToChartData(timeSnaps, kalaiDiff);
+	}
+	
+	public double[][] getNashDiff() {
+		return convertToChartData(timeSnaps, nashDiff);
+	}
+	
+	public double[][] getPearsonCorrCoefIssues() {
+		return convertToChartData(timeSnaps, pearsonCorrCoefIssues);
 	}
 	
 	//alinas code

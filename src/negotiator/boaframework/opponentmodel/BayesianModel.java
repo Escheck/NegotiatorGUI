@@ -7,6 +7,8 @@ import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import negotiator.Bid;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
+import negotiator.issue.Issue;
+import negotiator.issue.ValueDiscrete;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -17,6 +19,7 @@ import negotiator.utility.UtilitySpace;
 public class BayesianModel extends OpponentModel {
 
 	BayesianOpponentModel model;
+	private int startingBidIssue = 0;
 	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
@@ -27,6 +30,24 @@ public class BayesianModel extends OpponentModel {
 			model.setMostProbableUSHypsOnly(false);
 			System.out.println("Constant \"m\" was not set. Assumed default value.");
 		}
+		while (!testIndexOfFirstIssue(negotiationSession.getUtilitySpace().getDomain().getRandomBid(), startingBidIssue)){
+			startingBidIssue++;
+		}
+	}
+	
+	/**
+	 * Just an auxiliar funtion to calculate the index where issues start on a bid
+	 * because we found out that it depends on the domain.
+	 * @return true when the received index is the proper index
+	 */
+	private boolean testIndexOfFirstIssue(Bid bid, int i){
+		try{
+			ValueDiscrete valueOfIssue = (ValueDiscrete) bid.getValue(i);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -48,6 +69,10 @@ public class BayesianModel extends OpponentModel {
 		return 0;
 	}
 
+	public double getWeight(Issue issue) {
+		return model.getNormalizedWeight(issue, startingBidIssue);
+	}
+	
 	@Override
 	public double getDiscountedBidEvaluation(Bid b, double time) {
 		try {

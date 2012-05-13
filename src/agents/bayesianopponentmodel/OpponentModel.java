@@ -16,6 +16,7 @@ public class OpponentModel {
 	public double getNormalizedUtility(Bid pBid) throws Exception
 	{
 		double u=getExpectedUtility(pBid);
+		
 		if (minUtility==null || maxUtility==null) findMinMaxUtility();
 		return (u-minUtility)/(maxUtility-minUtility);
 	}

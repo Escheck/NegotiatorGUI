@@ -19,7 +19,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;	
 	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
-	private boolean fUseMostProbableHypsOnly = true;
+	private boolean fUseMostProbableHypsOnly = false;
 	private ArrayList<UtilitySpaceHypothesis> fMostProbableUSHyps;	
 	private double fPreviousBidUtility;
 	private double EXPECTED_CONCESSION_STEP = 0.035;
@@ -382,6 +382,14 @@ public class BayesianOpponentModel extends OpponentModel{
 		return lExpectedWeight;
 	}	
 
+	public double getNormalizedWeight(Issue i, int startingNumber) {
+		double sum = 0;
+		for (Issue issue : fDomain.getIssues()) {
+			sum += getExpectedWeight(issue.getNumber() - startingNumber);
+		}
+		return (getExpectedWeight(i.getNumber() - startingNumber)) / sum;
+	}
+	
 	
 	private UtilitySpaceHypothesis getMaxHyp() {
 		UtilitySpaceHypothesis lHyp = fUSHyps.get(0);

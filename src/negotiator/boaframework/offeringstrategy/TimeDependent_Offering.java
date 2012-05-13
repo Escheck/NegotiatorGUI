@@ -29,6 +29,8 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	private double Pmin;
 	/** Concession factor */
 	private double e;
+	/** Outcome space */
+	SortedOutcomeSpace outcomespace;
 	
 	/**
 	 * Empty constructor used for reflexion. Note this constructor assumes that init
@@ -42,8 +44,8 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		this.Pmax = max;
 		this.Pmin = min;
 		this.negotiationSession = negoSession;
-		SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
-		negotiationSession.setOutcomeSpace(space);
+		outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+		negotiationSession.setOutcomeSpace(outcomespace);
 		this.opponentModel = model;
 		this.omStrategy = oms;
 
@@ -54,8 +56,8 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;
 			
-			SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
-			negotiationSession.setOutcomeSpace(space);
+			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+			negotiationSession.setOutcomeSpace(outcomespace);
 			
 			this.e = parameters.get("e");
 			
@@ -103,7 +105,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		if (opponentModel instanceof NullModel) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
-			nextBid = omStrategy.getBid(negotiationSession.getOutcomeSpace(), utilityGoal);
+			nextBid = omStrategy.getBid(outcomespace, utilityGoal);
 		}
 		return nextBid;
 	}

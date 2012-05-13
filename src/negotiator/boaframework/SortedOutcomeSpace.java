@@ -54,6 +54,17 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 	 */
 	@Override
 	public BidDetails getBidNearUtility(double utility){
+		return allBids.get(getIndexOfBidNearUtility(utility));
+		
+	}
+	
+	/**
+	 * Gets a BidDetails which is close to the utility
+	 * @param utility
+	 * @return BidDetails
+	 */
+	@Override
+	public int getIndexOfBidNearUtility(double utility){
 		int index = searchIndexWith(utility);
 		int newIndex = -1;
 		double closestDistance = Math.abs(allBids.get(index).getMyUndiscountedUtil() - utility);
@@ -71,7 +82,7 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 		}
 		else 
 				newIndex = index;
-		return allBids.get(newIndex);
+		return newIndex;
 		
 	}
 	
