@@ -6,6 +6,8 @@ import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import negotiator.Bid;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
+import negotiator.issue.Issue;
+import negotiator.issue.ValueDiscrete;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -19,47 +21,40 @@ import negotiator.utility.UtilitySpace;
 public class BayesianModelScalable extends OpponentModel {
 
 	private BayesianOpponentModelScalable model;
-	private long DOMAINSIZE;
-	private boolean niceTitForTatMode = false;
+	private int startingBidIssue = 0;
 	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
+		while (!testIndexOfFirstIssue(negotiationSession.getUtilitySpace().getDomain().getRandomBid(), startingBidIssue)){
+			startingBidIssue++;
+		}
+		
 		model = new BayesianOpponentModelScalable(negotiationSession.getUtilitySpace());
 		this.negotiationSession = negotiationSession;
-		
-		if (parameters != null && parameters.containsKey("n")) {
-			System.out.println("Entering NTFT mode");
-			DOMAINSIZE = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
-			niceTitForTatMode = true;
-		}
 	}
 
+	/**
+	 * Just an auxiliar funtion to calculate the index where issues start on a bid
+	 * because we found out that it depends on the domain.
+	 * @return true when the received index is the proper index
+	 */
+	private boolean testIndexOfFirstIssue(Bid bid, int i){
+		try{
+			ValueDiscrete valueOfIssue = (ValueDiscrete) bid.getValue(i);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public void updateModel(Bid opponentBid) {
 		try {
-			if (niceTitForTatMode) {
-				if (canUpdateBeliefs(negotiationSession.getTime())) {
-					model.updateBeliefs(opponentBid);
-				}
-			} else {
-				model.updateBeliefs(opponentBid);
-			}
+			model.updateBeliefs(opponentBid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private boolean canUpdateBeliefs(double time)
-	{
-		// in the last seconds we don't want to lose any time
-		if (time > 0.99)
-			return false;
-		
-		// in a big domain, we stop updating half-way
-		if (DOMAINSIZE > 10000)
-			if (time > 0.5)
-				return false;
-		return true;
 	}
 	
 	@Override
@@ -80,6 +75,10 @@ public class BayesianModelScalable extends OpponentModel {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public double getWeight(Issue issue) {
+		return model.getNormalizedWeight(issue, startingBidIssue);
 	}
 	
 	@Override

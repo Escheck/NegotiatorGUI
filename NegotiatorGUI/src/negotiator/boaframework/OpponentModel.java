@@ -3,6 +3,7 @@ package negotiator.boaframework;
 import java.util.HashMap;
 
 import negotiator.Bid;
+import negotiator.issue.Issue;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
 
@@ -60,6 +61,15 @@ public abstract class OpponentModel {
 
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { 
 		
+	}
+	
+	/**
+	 * Returns the weight of a particular issue in the domain.
+	 * @param issueID
+	 * @return
+	 */
+	public double getWeight(Issue issue) {
+		return opponentUtilitySpace.getWeight(issue.getNumber());
 	}
 	
 	public void cleanUp() {

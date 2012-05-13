@@ -28,7 +28,7 @@ public class OfferBestN extends OMStrategy {
 	/** parameter which determines which n best bids should be considered */
 	private int bestN;
 	/**  used to sort the opponent's bid with regard to utility */
-	private static BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
+	private BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
 	/**  when to stop updating */
 	double updateThreshold = 1.0;
 	

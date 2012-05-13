@@ -67,26 +67,18 @@ public abstract class OMStrategy {
 
 	/**
 	 * Use this method in case no range is specified, but only a target utility.
-	 * In this case first a small window is used, which is enlarged if there are
-	 * too few bids in the window.
 	 * 
 	 * @param space of all possible outcomes
 	 * @param range of utility
 	 * @return bid
 	 */
-	public BidDetails getBid(OutcomeSpace space, double targetUtility) {
-		Range range = new Range(targetUtility, targetUtility + 0.02);
-		List<BidDetails> bids = space.getBidsinRange(range);
-		if (bids.size() < EXPECTED_BIDS_IN_WINDOW) {
-			if (range.getUpperbound() < 1.01) {
-				range.increaseUpperbound(RANGE_INCREMENT);
-				return getBid(space, range);
-			} else {
-				// futher increasing the window does not help
-				return getBid(bids);
-			}
+	public BidDetails getBid(SortedOutcomeSpace space, double targetUtility) {
+		int upperBound = space.getIndexOfBidNearUtility(targetUtility);
+		int lowerBound = 0;
+		if (upperBound >= EXPECTED_BIDS_IN_WINDOW) {
+			lowerBound = upperBound - EXPECTED_BIDS_IN_WINDOW + 1;
 		}
-		return getBid(bids);
+		return getBid(space.getAllOutcomes().subList(lowerBound, upperBound + 1));
 	}
 	
 	public abstract boolean canUpdateOM();

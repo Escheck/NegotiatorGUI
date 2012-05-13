@@ -404,6 +404,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			bidChart.setPearsonCorrCoefBidsData(session.getPearsonCorrCoefBids());
 			bidChart.setRankingDistBidsData(session.getRankingDistBids());
 			bidChart.setKalaiDiffData(session.getKalaiDiff());
+			bidChart.setNashDiffData(session.getNashDiff());
+			bidChart.setPearsonCorrCoefIssuesData(session.getPearsonCorrCoefIssues());
 		} else {
 			if(curveA!=null)
 				bidChart.setBidSeriesA(curveA);

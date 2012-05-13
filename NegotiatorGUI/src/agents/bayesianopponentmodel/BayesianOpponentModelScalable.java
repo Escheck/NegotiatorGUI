@@ -228,6 +228,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		}
 		return lExpectedWeight;
 	}
+	
 	private double getPartialUtility(Bid pBid, int pIssueIndex) throws Exception
 	{
 		//calculate partial utility w/o issue pIssueIndex		
@@ -346,8 +347,9 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 //		System.out.println(getMaxHyp().toString());
 		//calculate utility of the next partner's bid according to the concession functions
 		fPreviousBidUtility = fPreviousBidUtility-0.003;
-		for(int i=0;i<fExpectedWeights.length;i++)
+		for(int i=0;i<fExpectedWeights.length;i++) {
 			fExpectedWeights[i] = getExpectedWeight(i);
+		}
 		findMinMaxUtility();
 	//	printBestHyp();
 	}
@@ -414,6 +416,14 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 			System.out.println();
 		}*/
 		
+	}
+	
+	public double getNormalizedWeight(Issue i, int startingNumber) {
+		double sum = 0;
+		for (Issue issue : fDomain.getIssues()) {
+			sum += getExpectedWeight(issue.getNumber() - startingNumber);
+		}
+		return (getExpectedWeight(i.getNumber() - startingNumber)) / sum;
 	}
 	
 

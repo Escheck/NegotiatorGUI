@@ -195,6 +195,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 									pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
 									rankingDistBids.add(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
 									kalaiDiff.add(omMeasures.calculateKalaiDiff(boaA.getOpponentModel()));
+									nashDiff.add(omMeasures.calculateNashDiff(boaA.getOpponentModel()));
+									pearsonCorrCoefIssues.add(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
 								}
 							}
 							if (Global.PAUSABLE_TIMELINE) {
@@ -406,8 +408,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		if (Global.OM_PROFILER_ENABLED) {
 			matchDataLogger.addMeasure("time", timeSnaps);
 			matchDataLogger.addMeasure("kalai_diff", kalaiDiff);
+			matchDataLogger.addMeasure("nash_diff", nashDiff);
 			matchDataLogger.addMeasure("pearson_corr_coef_bids", pearsonCorrCoefBids);
 			matchDataLogger.addMeasure("ranking_dist_bids", rankingDistBids);
+			matchDataLogger.addMeasure("pearson_corr_issue_weights", pearsonCorrCoefIssues);
 			matchDataLogger.writeToFile();
 		}
 	}

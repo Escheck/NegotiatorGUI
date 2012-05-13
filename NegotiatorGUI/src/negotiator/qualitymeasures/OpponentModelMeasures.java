@@ -3,6 +3,7 @@ package negotiator.qualitymeasures;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.boaframework.OpponentModel;
+import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -33,6 +34,10 @@ public class OpponentModelMeasures {
 	private BidSpace realBS;
 	/** The real kalai value */
 	private BidPoint realKalai;
+	/** The real Nash value */
+	private BidPoint realNash;
+	/** The real issue weights */
+	private double[] realIssueWeights;
 	
 	/**
 	 * Creates the measures object by storing a reference to both utility spaces
@@ -47,6 +52,8 @@ public class OpponentModelMeasures {
 		try {
 			realBS = new BidSpace(ownUS, opponentUS);
 			realKalai = realBS.getKalaiSmorodinsky();
+			realNash = realBS.getNash();
+			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,7 +72,26 @@ public class OpponentModelMeasures {
 	}
 
 	/**
-	 * Calculates the ranking distanceby comparing the utility of each bid estimated
+	 * Calculates the Pearson correlation coefficient by comparing the utility of each weight estimated
+	 * by the real and estimated opponent's utility space. Higher is better.
+	 * 
+	 * @param opponentModel
+	 * @return pearson correlation coefficient
+	 */
+	public double calculatePearsonCorrelationCoefficientWeights(OpponentModel opponentModel) {
+		
+		double estimatedIssueWeights[] = new double[ownUS.getDomain().getIssues().size()];
+
+		int i = 0;
+		for(Issue issue : ownUS.getDomain().getIssues()) {
+			estimatedIssueWeights[i] = opponentModel.getWeight(issue);
+			i++;
+		}
+		return UtilspaceTools.calculatePearsonCorrelationCoefficient(realIssueWeights, estimatedIssueWeights);
+	}
+	
+	/**
+	 * Calculates the ranking distance by comparing the utility of each bid estimated
 	 * by the real and estimated opponent's utility space. Lower is better.
 	 * 
 	 * @param opponentModel
@@ -95,5 +121,26 @@ public class OpponentModelMeasures {
 			e.printStackTrace();
 		}
 		return Math.abs(realKalai.utilityB - estimatedKalai.utilityB);
+	}
+	
+	/**
+	 * Calculates the absolute difference between the estimated Nash point and the
+	 * real Nash point. Note that we are only interested in the value for the
+	 * opponent.
+	 * 
+	 * @param opponentModel
+	 * @return difference between real and estimated Nashpoint
+	 */
+	public double calculateNashDiff(OpponentModel opponentModel) {
+		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
+		BidSpace estimatedBS;
+		BidPoint estimatedNash = null;
+		try {
+			estimatedBS = new BidSpace(ownUS, estimatedSpace, true);
+			estimatedNash = estimatedBS.getNash();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Math.abs(realNash.utilityB - estimatedNash.utilityB);
 	}
 }
