@@ -1,5 +1,8 @@
 package negotiator.qualitymeasures;
 
+import java.util.ArrayList;
+
+import negotiator.Bid;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.boaframework.OpponentModel;
@@ -10,17 +13,15 @@ import negotiator.utility.UtilitySpace;
  * This class specifies a set of opponent model measures used to measure the performance
  * of an opponent model during a negotiation. Note that the measures are computationally
  * heavy and computed during the negotiation. This entails that it is recommended to use
- * the time-independent rounds protocol.
+ * the time-independent rounds protocol or the normal time-based protocol with the
+ * pause functionality.
  * 
- * In practice, it would also be interesting to calculate the correlation of the issue
- * weights. Unfortunately, the Bayesian-type models do not remember the issue weight index
- * (which in Genius is not guaranteed to start at 0).
+ * This work implement the measures discussed in 
+ * "Towards a quality assessment method for learning preference profiles in negotiation" 
+ * by Hindriks et al.
  * 
- * In addition, imagine using a neural network. In this case an estimate of the utility can
- * be calculated, but not a particular issue weight.
- * 
- * This work is based on "Towards a quality assessment method for learning preference profiles 
- * in negotiation" by Hindriks et al.
+ * Additional measures were add a better view of point estimation and distance between
+ * sets of points.
  * 
  * @author Mark Hendrikx
  */
@@ -38,6 +39,8 @@ public class OpponentModelMeasures {
 	private BidPoint realNash;
 	/** The real issue weights */
 	private double[] realIssueWeights;
+	/** The real set of Pareto optimal bids */
+	private ArrayList<Bid> realParetoBids;
 	
 	/**
 	 * Creates the measures object by storing a reference to both utility spaces
@@ -54,6 +57,7 @@ public class OpponentModelMeasures {
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
+			realParetoBids = realBS.getParetoFrontierBids();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,14 +83,7 @@ public class OpponentModelMeasures {
 	 * @return pearson correlation coefficient
 	 */
 	public double calculatePearsonCorrelationCoefficientWeights(OpponentModel opponentModel) {
-		
-		double estimatedIssueWeights[] = new double[ownUS.getDomain().getIssues().size()];
-
-		int i = 0;
-		for(Issue issue : ownUS.getDomain().getIssues()) {
-			estimatedIssueWeights[i] = opponentModel.getWeight(issue);
-			i++;
-		}
+		double[] estimatedIssueWeights = opponentModel.getIssueWeights();
 		return UtilspaceTools.calculatePearsonCorrelationCoefficient(realIssueWeights, estimatedIssueWeights);
 	}
 	

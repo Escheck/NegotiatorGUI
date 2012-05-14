@@ -25,6 +25,7 @@ public class NullStrategy extends OMStrategy {
 	}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
+		super.init(negotiationSession, model);
 		rand = new Random();
 		this.negotiationSession = negotiationSession;
 		if (parameters.containsKey("t")) {
