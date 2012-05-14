@@ -43,6 +43,7 @@ public class OfferBestN extends OMStrategy {
 	}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
+		super.init(negotiationSession, model);
 		this.negotiationSession = negotiationSession;
 		this.model = model;
 		if (parameters.get("n") != null) {

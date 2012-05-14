@@ -29,9 +29,7 @@ public class BestBid extends OMStrategy {
 	}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
-		this.negotiationSession = negotiationSession;
-		this.model = model;
-		
+		initializeAgent(negotiationSession, model);
 		if (parameters.get("t") != null) {
 			updateThreshold = parameters.get("t").doubleValue();
 		} else {
@@ -50,7 +48,6 @@ public class BestBid extends OMStrategy {
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
 		// determine the utility for the opponent for each of the bids
-
 		if (allBids.size() == 1) {
 			return allBids.get(0);
 		}

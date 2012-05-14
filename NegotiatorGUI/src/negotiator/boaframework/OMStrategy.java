@@ -18,22 +18,25 @@ public abstract class OMStrategy {
 	/** Reference to the opponent model */
 	protected OpponentModel model;
 	/** Increment used to increase the upperbound in case no bid is found in the range */
-	private final double RANGE_INCREMENT = 0.05;
-	/** Amount of bids used in a variant of getBid. A higher value results in a slower strategy, but
-	 * more accuractly following the Pareto line.
-	 */
+	private final double RANGE_INCREMENT = 0.01;
+	/** Amount of bids expected in window */
 	private final int EXPECTED_BIDS_IN_WINDOW = 25;
+	private final double INITIAL_WINDOW_RANGE = 0.01;
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
-		this.negotiationSession = negotiationSession;
-		this.model = model;
+		initializeAgent(negotiationSession, model);
 	}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model) {
+		initializeAgent(negotiationSession, model);
+	}
+	
+	private void initializeAgent(NegotiationSession negotiationSession,
+			OpponentModel model) {
 		this.negotiationSession = negotiationSession;
 		this.model = model;
 	}
-	
+
 	/**
 	 * Returns a bid selected using the opponent model from the given
 	 * set of similarly preferred bids.
@@ -73,12 +76,18 @@ public abstract class OMStrategy {
 	 * @return bid
 	 */
 	public BidDetails getBid(SortedOutcomeSpace space, double targetUtility) {
-		int upperBound = space.getIndexOfBidNearUtility(targetUtility);
-		int lowerBound = 0;
-		if (upperBound >= EXPECTED_BIDS_IN_WINDOW) {
-			lowerBound = upperBound - EXPECTED_BIDS_IN_WINDOW + 1;
+		Range range = new Range(targetUtility, targetUtility + INITIAL_WINDOW_RANGE);
+		List<BidDetails> bids = space.getBidsinRange(range);
+		if (bids.size() < EXPECTED_BIDS_IN_WINDOW) {
+			if (range.getUpperbound() < 1.01) {
+				range.increaseUpperbound(RANGE_INCREMENT);
+				return getBid(space, range);
+			} else {
+				// futher increasing the window does not help
+				return getBid(bids);
+			}
 		}
-		return getBid(space.getAllOutcomes().subList(lowerBound, upperBound + 1));
+		return getBid(bids);
 	}
 	
 	public abstract boolean canUpdateOM();

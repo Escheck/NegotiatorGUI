@@ -72,6 +72,16 @@ public abstract class OpponentModel {
 		return opponentUtilitySpace.getWeight(issue.getNumber());
 	}
 	
+	public double[] getIssueWeights() {
+		double estimatedIssueWeights[] = new double[negotiationSession.getUtilitySpace().getDomain().getIssues().size()];
+		int i = 0;
+		for(Issue issue : negotiationSession.getUtilitySpace().getDomain().getIssues()) {
+			estimatedIssueWeights[i] = getWeight(issue);
+			i++;
+		}
+		return estimatedIssueWeights;
+	}
+	
 	public void cleanUp() {
 		negotiationSession = null;
 		cleared = true;

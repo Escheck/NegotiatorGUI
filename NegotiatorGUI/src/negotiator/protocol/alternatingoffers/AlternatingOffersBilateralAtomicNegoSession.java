@@ -69,6 +69,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
 	private OpponentModelMeasures omMeasures;
+	private final double SAMPLE_EVERY_X_TIME = 0.01;
+	private int currentSample = 0;
+	private int round = 0;
 
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
@@ -191,12 +194,15 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 								BOAagent boaA = (BOAagent) agentA;
 								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
 										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
-									timeSnaps.add(timeline.getTime());
-									pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
-									rankingDistBids.add(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
-									kalaiDiff.add(omMeasures.calculateKalaiDiff(boaA.getOpponentModel()));
-									nashDiff.add(omMeasures.calculateNashDiff(boaA.getOpponentModel()));
-									pearsonCorrCoefIssues.add(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
+									if (timeline.getTime() > (currentSample * SAMPLE_EVERY_X_TIME)) {
+										currentSample++;
+										timeSnaps.add(timeline.getTime());
+										pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
+										rankingDistBids.add(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
+										kalaiDiff.add(omMeasures.calculateKalaiDiff(boaA.getOpponentModel()));
+										nashDiff.add(omMeasures.calculateNashDiff(boaA.getOpponentModel()));
+										pearsonCorrCoefIssues.add(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
+									}
 								}
 							}
 							if (Global.PAUSABLE_TIMELINE) {
@@ -335,6 +341,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			agentAtookAction = true;
 		else
 			agentBtookAction = true;
+		
+		round++;
 		
 		if(timeline instanceof DiscreteTimeline)
 			((DiscreteTimeline) timeline).increment();
