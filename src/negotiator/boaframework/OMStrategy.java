@@ -20,7 +20,7 @@ public abstract class OMStrategy {
 	/** Increment used to increase the upperbound in case no bid is found in the range */
 	private final double RANGE_INCREMENT = 0.01;
 	/** Amount of bids expected in window */
-	private final int EXPECTED_BIDS_IN_WINDOW = 25;
+	private final int EXPECTED_BIDS_IN_WINDOW = 100;
 	private final double INITIAL_WINDOW_RANGE = 0.01;
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
