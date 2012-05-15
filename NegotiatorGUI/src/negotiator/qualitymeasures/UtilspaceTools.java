@@ -4,6 +4,7 @@ import java.util.Random;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
+import negotiator.analysis.BidPoint;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
@@ -122,6 +123,14 @@ public class UtilspaceTools {
 		return nominator / (Math.sqrt(sumSquareNormA * sumSquareNormB));
 	}
 
+	public static double distanceBetweenTwoPoints(double ax, double ay, double bx, double by) {
+		return Math.sqrt((Math.pow((ax - bx), 2) + Math.pow((ay - by), 2)));
+	}
+	
+	public static double distanceBetweenTwoBidPoints(BidPoint a, BidPoint b) {
+		return distanceBetweenTwoPoints(a.utilityA, a.utilityB, b.utilityA, b.utilityB);
+	}
+	
 	/**
 	 * Calculate the ranking distance between two sets.
 	 * 
@@ -129,7 +138,7 @@ public class UtilspaceTools {
 	 * @param bidsUtilB
 	 * @return
 	 */
-	private static double calculateRankingDistance(double[] setA, double[] setB) {
+	public static double calculateRankingDistance(double[] setA, double[] setB) {
 		if (setA.length != setB.length) {
 			System.out.println("Amount of variables should be equal.");
 		}

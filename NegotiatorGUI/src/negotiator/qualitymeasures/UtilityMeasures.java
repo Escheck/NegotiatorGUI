@@ -33,7 +33,7 @@ public class UtilityMeasures {
 			BidPoint nash = bidSpace.getNash();
 			double nashA = nash.utilityA;
 			double nashB = nash.utilityB;
-			nashDistance = distanceBetweenTwoPoints(nashA, nashB, utilA, utilB);
+			nashDistance = UtilspaceTools.distanceBetweenTwoPoints(nashA, nashB, utilA, utilB);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,17 +52,12 @@ public class UtilityMeasures {
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
 			double kalaiA = kalai.utilityA;
 			double kalaiB = kalai.utilityB;
-			kalaiDistance = distanceBetweenTwoPoints(kalaiA, kalaiB, utilA, utilB);
+			kalaiDistance = UtilspaceTools.distanceBetweenTwoPoints(kalaiA, kalaiB, utilA, utilB);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return kalaiDistance;
 	}
-	
-	private double distanceBetweenTwoPoints(double ax, double ay, double bx, double by) {
-		return Math.sqrt((Math.pow((ax - bx), 2) + Math.pow((ay - by), 2)));
-	}
-	
 	
 	/**
 	 * Calculates the Pareto distance given the agreement.
@@ -77,7 +72,7 @@ public class UtilityMeasures {
 			ArrayList<BidPoint> bids = bidSpace.getParetoFrontier();
 
 			for (BidPoint bid : bids) {
-				double dist = distanceBetweenTwoPoints(bid.utilityA, bid.utilityB, utilA, utilB);
+				double dist = UtilspaceTools.distanceBetweenTwoPoints(bid.utilityA, bid.utilityB, utilA, utilB);
 				if (dist < paretoDistance) {
 					paretoDistance = dist;
 				}
@@ -86,6 +81,10 @@ public class UtilityMeasures {
 			e.printStackTrace();
 		}
 		return paretoDistance;
+	}
+	
+	private double calculateSocialWelfare(double utilA, double utilB) {
+		return utilA + utilB;
 	}
 
 	/**
@@ -102,6 +101,7 @@ public class UtilityMeasures {
 		omQualityMeasures.setAttribute("nash_distance", calculateNashDistance(utilA, utilB) + "");
 		omQualityMeasures.setAttribute("pareto_distance", calculateParetoDistance(utilA, utilB) + "");
 		omQualityMeasures.setAttribute("kalai_distance", calculateKalaiSmorodinskyDistance(utilA, utilB) + "");
+		omQualityMeasures.setAttribute("social_welfare", calculateSocialWelfare(utilA, utilB) + "");
 		
 		return omQualityMeasures;
 	}

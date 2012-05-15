@@ -32,7 +32,11 @@ public class BidSpace {
 		domain=utilspaceA.getDomain();
 		utilspaceA.checkReadyForNegotiation("spaceA", domain);
 		utilspaceB.checkReadyForNegotiation("spaceA", domain);
-		BuildSpace();
+		if (Global.LOW_MEMORY_MODE) {
+			BuildSpace(true);
+		} else {
+			BuildSpace(false);
+		}
 	}
 	
 	
@@ -42,12 +46,10 @@ public class BidSpace {
 	 * The first space must contain the domain.
 	 * @param spaceA
 	 * @param spaceB
-	 * @param anything. If you use this three-para initializer the check will not
-	 * be done on 2nd domain. The boolean has no function at all except
-	 * being a third parameter that makes a differnet function call.
+	 * @param exclude bids
 	 * @throws Exception
 	 */
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB,boolean anything) throws Exception
+	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids) throws Exception
 	{
 		utilspaceA=spaceA;
 		utilspaceB=spaceB;
@@ -55,23 +57,21 @@ public class BidSpace {
 			throw new NullPointerException("util space is null");
 		domain=utilspaceA.getDomain();
 		utilspaceA.checkReadyForNegotiation("spaceA", domain);
-		BuildSpace();
+		BuildSpace(excludeBids);
 	}
-	
-	
 	/*
 	 * Create the space with all bid points from the two util spaces.
 	 * @throws exception if utility can not be computed for some poitn.
 	 * This should not happen as it seems we checked beforehand that all is set OK.
 	 */
-	void BuildSpace() throws Exception
+	void BuildSpace(boolean excludeBids) throws Exception
 	{
 		bidPoints=new ArrayList<BidPoint>();
 		BidIterator lBidIter = new BidIterator(domain);
 		
 		// if low memory mode, do not store the actual. At the time of writing this
 		// has no side-effects
-		if (Global.LOW_MEMORY_MODE) {
+		if (excludeBids) {
 			while(lBidIter.hasNext()) {
 				Bid bid = lBidIter.next();
 				bidPoints.add(new BidPoint(null, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));

@@ -194,7 +194,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 								BOAagent boaA = (BOAagent) agentA;
 								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
 										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
-									if (timeline.getTime() > (currentSample * SAMPLE_EVERY_X_TIME)) {
+									if (timeline.getTime() >= (currentSample * SAMPLE_EVERY_X_TIME)) {
 										currentSample++;
 										timeSnaps.add(timeline.getTime());
 										pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));

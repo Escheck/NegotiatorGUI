@@ -20,7 +20,7 @@ import negotiator.utility.UtilitySpace;
  * "Towards a quality assessment method for learning preference profiles in negotiation" 
  * by Hindriks et al.
  * 
- * Additional measures were add a better view of point estimation and distance between
+ * Additional measures were added to get a better view of point estimation and distance between
  * sets of points.
  * 
  * @author Mark Hendrikx
@@ -53,7 +53,7 @@ public class OpponentModelMeasures {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentModelUS;
 		try {
-			realBS = new BidSpace(ownUS, opponentUS);
+			realBS = new BidSpace(ownUS, opponentUS, false);
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
@@ -100,6 +100,18 @@ public class OpponentModelMeasures {
 	}
 	
 	/**
+	 * Calculates the ranking distance by comparing the utility of each weight estimated
+	 * by the real and estimated opponent's utility space. Lower is better.
+	 * 
+	 * @param opponentModel
+	 * @return ranking distance
+	 */
+	public double calculateRankingDistanceWeights(OpponentModel opponentModel) {
+		double[] estimatedIssueWeights = opponentModel.getIssueWeights();
+		return UtilspaceTools.calculateRankingDistance(realIssueWeights, estimatedIssueWeights);
+	}
+	
+	/**
 	 * Calculates the absolute difference between the estimated Kalai point and the
 	 * real Kalai point. Note that we are only interested in the value for the
 	 * opponent.
@@ -139,5 +151,57 @@ public class OpponentModelMeasures {
 			e.printStackTrace();
 		}
 		return Math.abs(realNash.utilityB - estimatedNash.utilityB);
+	}
+	
+	public double calculateAvgDiffParetoBidToEstimate(OpponentModel opponentModel) {
+		double sum = 0;
+		
+		// its a difference, not a distance, as we know how we evaluate our own bid
+		for (Bid paretoBid : realParetoBids) {
+			double realOpp;
+			double estOpp;
+			try {
+				realOpp = opponentUS.getUtility(paretoBid);
+				estOpp = opponentModel.getOpponentUtilitySpace().getUtility(paretoBid);
+				sum += Math.abs(realOpp - estOpp);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return sum / realParetoBids.size();
+	}
+	
+	public double calculatePercCorrectlyEstimatedParetoBids(OpponentModel opponentModel) {
+		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
+		BidSpace estimatedBS;
+		ArrayList<Bid> estimatedPFBids = null;
+		try {
+			estimatedBS = new BidSpace(ownUS, estimatedSpace, false);
+			estimatedPFBids = estimatedBS.getParetoFrontierBids();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		int count = 0;
+		
+		if (estimatedPFBids != null && estimatedPFBids.size() > 0 && estimatedPFBids.get(0) != null) {
+			for (Bid pBid : realParetoBids) {
+				if (estimatedPFBids.contains(pBid)) {
+					count++;
+				}
+			}
+		}
+		return ((double)count / (double)realParetoBids.size());
+	}
+	
+	public double calculatePercIncorrectlyEstimatedParetoBids() {
+		return 0;
+		
+	}
+	
+	public double calculateParetoFrontierDistance() {
+		// 1. map bids of estimated frontier to real space
+		// 2. calculate surface of Pareto frontier bids
+		// 3. subtract surface of estimated frontier
+		return 0;
 	}
 }
