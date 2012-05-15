@@ -42,7 +42,7 @@ public class Global {
 	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
 	
 	/** Every agent plays as each preference profile */
-	public static final boolean PLAY_BOTH_SIDES = true;
+	public static final boolean PLAY_BOTH_SIDES = false;
 	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
@@ -59,7 +59,7 @@ public class Global {
 	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
 	
 	/** Log things like competitiveness and minDemandedUtil */
-	public static final boolean LOG_COMPETITIVENESS = false;
+	public static final boolean LOG_COMPETITIVENESS = true;
 
 	/** Enables experimental vars in a tournament */
 	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
@@ -73,10 +73,14 @@ public class Global {
 	/** Enables the distributed tournaments functionality of Genius. Also automatically enables
 	 * decoupled agents, as the GUI does not allow unfilled rows.
 	 */
-	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = false;
+	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
 	
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
 	public static final boolean DISCRETE_TIMELINE = false;
+	
+	/** Defines the amount of round used for descrite timeline */
+	public static final int TOTAL_ROUNDS = 1000;
+	
 	
 	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
 	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
@@ -91,7 +95,7 @@ public class Global {
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
 	/** Enable a large set of analysis metrics from which the results are stored in a separate log */
-	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = false;
+	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = true;
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
