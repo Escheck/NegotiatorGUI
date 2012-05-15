@@ -38,6 +38,7 @@ public class OutcomeInfo {
 	private double explorationA;
 	private double explorationB;
 	private double jointExploration;
+	private double socialWelfare;
 	
 	public double getTimeOfAgreement() {
 		return timeOfAgreement;
@@ -290,6 +291,14 @@ public class OutcomeInfo {
 		this.jointExploration = jointExploration;
 	}
 
+	public double getSocialWelfare() {
+		return socialWelfare;
+	}
+
+	public void setSocialWelfare(double socialWelfare) {
+		this.socialWelfare = socialWelfare;
+	}
+
 	@Override
 	public String toString() {
 		return "OutcomeInfo [timeOfAgreement=" + timeOfAgreement + ", bids="
@@ -311,6 +320,7 @@ public class OutcomeInfo {
 				+ ", concessionMovesA=" + concessionMovesA
 				+ ", concessionMovesB=" + concessionMovesB + ", explorationA="
 				+ explorationA + ", explorationB=" + explorationB
-				+ ", jointExploration=" + jointExploration + "]";
+				+ ", jointExploration=" + jointExploration + ", socialWelfare="
+				+ socialWelfare + "]";
 	}
 }

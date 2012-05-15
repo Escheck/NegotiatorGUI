@@ -83,6 +83,7 @@ public class TournamentMeasures {
 				outcome.setNashDistance(Double.parseDouble(attributes.getValue("nash_distance")));
 				outcome.setParetoDistance(Double.parseDouble(attributes.getValue("pareto_distance")));
 				outcome.setKalaiDistance(Double.parseDouble(attributes.getValue("kalai_distance")));
+				outcome.setSocialWelfare(Double.parseDouble(attributes.getValue("social_welfare")));
 				found = true;
 			}
 			return found;
@@ -289,6 +290,8 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			utilityBasedQM.setAttribute("average_pareto_distance_of_agreements", getAverageParetoDistance(outcomes, agentName, true) + "");
 			utilityBasedQM.setAttribute("average_kalai_distance", getAverageKalaiDistance(outcomes, agentName, false) + "");
 			utilityBasedQM.setAttribute("average_kalai_distance_of_agreements", getAverageKalaiDistance(outcomes, agentName, true) + "");
+			utilityBasedQM.setAttribute("average_social_welfare", getAverageSocialWelfare(outcomes, agentName, false) + "");
+			utilityBasedQM.setAttribute("average_social_welfare_of_agreements", getAverageSocialWelfare(outcomes, agentName, true) + "");
 			
 			OrderedSimpleElement trajectorAnalysisQM = new OrderedSimpleElement("trajectorAnalysisQM");
 			agentElement.addChildElement(trajectorAnalysisQM);
@@ -685,6 +688,28 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			}
 		}
 		return totalNash / totalSessions;
+	}
+	
+	/**
+	 * Calculates the average social welfare of an agreement.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @param onlyAgreements ignore outcomes which result in non-agreement
+	 * @return average socialwelfare distance
+	 */
+	private static double getAverageSocialWelfare(ArrayList<OutcomeInfo> outcomes, String agentName, boolean onlyAgreements) {
+		int totalSessions = 0;
+		double totalSocialWelfare = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName) || outcome.getAgentNameB().equals(agentName)) {
+				if (!onlyAgreements || outcome.isAgreement()) {
+					totalSessions++;
+					totalSocialWelfare += outcome.getSocialWelfare();
+				}
+			}
+		}
+		return totalSocialWelfare / totalSessions;
 	}
 	
 	/**
