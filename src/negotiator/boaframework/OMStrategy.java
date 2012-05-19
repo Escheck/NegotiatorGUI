@@ -57,7 +57,7 @@ public abstract class OMStrategy {
 	public BidDetails getBid(OutcomeSpace space, Range range) {
 		List<BidDetails> bids = space.getBidsinRange(range);
 		if (bids.size() == 0) {
-			if (range.getUpperbound() < 1.1) {
+			if (range.getUpperbound() < 1.01) {
 				range.increaseUpperbound(RANGE_INCREMENT);
 				return getBid(space, range);
 			} else {
