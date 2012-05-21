@@ -1,6 +1,7 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +13,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
@@ -167,8 +169,8 @@ public class ScenarioMeasures {
 		double pearsonCorrWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
 		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB);
 		double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
-
 		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
+		String listOfParetoBids = createListOfParetoBids(utilitySpaceA, utilitySpaceB);
 		
 		element.setAttribute("bids_count", utilitySpaceA.getDomain().getNumberOfPossibleBids() + "");
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
@@ -177,10 +179,34 @@ public class ScenarioMeasures {
 		element.setAttribute("ranking_distance_utility_space", String.valueOf(rankingDistUtil));
 		element.setAttribute("pearson_correlation_coefficient_utility_space", String.valueOf(pearsonCorrUtil));
 		element.setAttribute("relative_opposition", String.valueOf(opposition));
+		element.setAttribute("list_of_pareto_bids", listOfParetoBids);
 
 		return element;
 	}
 	
+	private static String createListOfParetoBids(UtilitySpace utilitySpaceA,
+			UtilitySpace utilitySpaceB) {
+		BidSpace space = null;
+		try {
+			space = new BidSpace(utilitySpaceA, utilitySpaceB, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ArrayList<Bid> bids = null;
+		try {
+			bids = space.getParetoFrontierBids();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(bids, new BidSorter());
+		
+		String bidStr = "";
+		for (int i = 0; i < bids.size(); i++) {
+			bidStr += bids.get(i) + " ";
+		}
+		return bidStr;
+	}
+
 	/**
 	 * Calculate the opposition of the domain, the distance to 1.0.
 	 * This is a measure of competitiveness.
