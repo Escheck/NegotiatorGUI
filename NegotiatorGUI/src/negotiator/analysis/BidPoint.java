@@ -45,6 +45,21 @@ public class BidPoint implements XMLable {
 		xml.setAttribute("utilityB", String.valueOf(utilityB));
 		return xml;
 	}
+	
+	/**
+	 * @param p
+	 * @return whether <b>this</b> is (not-strictly) dominated by p.
+	 */
+	public boolean isDominatedBy(BidPoint p)
+	{
+		if (this.utilityA > p.utilityA)
+			return false;
+		
+		if (this.utilityB > p.utilityB)
+			return false;
+		
+		return true;
+	}
 
 	@Override
 	public int hashCode() {
