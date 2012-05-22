@@ -2,6 +2,8 @@ package negotiator.analysis;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -17,8 +19,11 @@ import negotiator.utility.UtilitySpace;
 public class BidSpace {
 	UtilitySpace utilspaceA;
 	UtilitySpace utilspaceB;
-	Domain domain; // equals to utilspaceA.domain = utilspaceB.domain
+	/** equal to utilspaceA.domain = utilspaceB.domain */
+	Domain domain;
 	public ArrayList<BidPoint> bidPoints;
+	
+	/** All cache */
 	ArrayList<BidPoint> paretoFrontier=null; // not yet set.
 	BidPoint kalaiSmorodinsky=null; // null if not set.
 	BidPoint nash=null; // null if not set.
@@ -85,103 +90,71 @@ public class BidSpace {
 	}
 	
 	/**
-	 * 
-	 * @return pareto frontier. The order is  ascending utilityA.
+	 * @return The Pareto frontier. The order is  ascending utilityA.
 	 * @throws Exception
 	 */
 	public ArrayList<BidPoint> getParetoFrontier() throws Exception
 	{
-		ArrayList<BidPoint> subPareto = new ArrayList<BidPoint >();
-		boolean bIsBidSpaceAvailable = true;
-		if(bidPoints.size()<1) bIsBidSpaceAvailable =false; 
+		boolean isBidSpaceAvailable = !bidPoints.isEmpty();
 		if (paretoFrontier==null)
 		{		
+			long t = System.nanoTime();
+			if (isBidSpaceAvailable)
+			{
+//				System.out.println("ParetoFrontier start computation for known bid space of size " + bidPoints.size());
+				paretoFrontier = computeParetoFrontier(bidPoints).getFrontier();
+//				System.out.println("ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");
+				return paretoFrontier;
+			}
+
+//			System.out.println("ParetoFrontier start computation for very large bid space of size "  + domain.getNumberOfPossibleBids());
+			ArrayList<BidPoint> subPareto = new ArrayList<BidPoint >();
 			BidIterator lBidIter = new BidIterator(domain);
+			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint>();
+			boolean isSplitted = false;
 			int count=0;
-			ArrayList<BidPoint> tmpBidPoints;
-			if(bIsBidSpaceAvailable)
-				tmpBidPoints = new ArrayList<BidPoint>(bidPoints);
-			else
-				tmpBidPoints = new ArrayList<BidPoint>();
-			while(lBidIter.hasNext()) {
+			while(lBidIter.hasNext()) 
+			{
 				Bid bid = lBidIter.next();
-//				System.out.println(bid.toString());				
-				if(!bIsBidSpaceAvailable) tmpBidPoints.add(new BidPoint(bid,utilspaceA.getUtility(bid),utilspaceB.getUtility(bid)));
+				tmpBidPoints.add(new BidPoint(bid, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
 				count++;
-				if(count>500000) {
-					subPareto.addAll(computeParetoFrontier(tmpBidPoints));
+				if(count>500000) 
+				{
+					subPareto.addAll(computeParetoFrontier(tmpBidPoints).getFrontier());
 					tmpBidPoints = new ArrayList<BidPoint >();
 					count = 0;
+					isSplitted = true;
 				}
 			}
-			if(tmpBidPoints.size()>0)subPareto.addAll(computeParetoFrontier(tmpBidPoints));
-		       //System.out.println("ParetoFrontier start computation:"+(new Date()));
-	        paretoFrontier=computeParetoFrontier(subPareto);
-	        //System.out.println("ParetoFrontier end computation:"+(new Date()));
+			// Add the remainder to the sub-Pareto frontier
+			if(tmpBidPoints.size()>0)subPareto.addAll(computeParetoFrontier(tmpBidPoints).getFrontier());
 
+			if (isSplitted)
+				paretoFrontier = computeParetoFrontier(subPareto).getFrontier();		// merge sub-pareto's
+			else
+				paretoFrontier = subPareto;
+			System.out.println("Multi-ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");
 		}
 
- 		
 		return paretoFrontier;
 	}
 	
-	/** private because it should be called only
-	 * with the bids as built by BuildSpace.
+	/**
+	 * Private because it should be called only with the bids as built by BuildSpace.
+	 * @return the sorted pareto frontier of the bidpoints.
+	 * @author Tim Baarslag
 	 * @param points the ArrayList<BidPoint> as computed by BuildSpace and stored in bidpoints.
 	 * @throws Exception if problem occurs
-	 * @return the pareto frontier of the bidpoints.
 	 */
-	ArrayList<BidPoint> computeParetoFrontier(ArrayList<BidPoint> points) throws Exception
+	private ParetoFrontier computeParetoFrontier(List<BidPoint> points) throws Exception
 	{
-		int n=points.size();
-		if (n<=1) return points; // end recursion
-		
-		// split list in two halves. Unfortunately ArrayList does not have support for this...
-		// make new lists that can be modified by us.
-		ArrayList<BidPoint> points1=new ArrayList<BidPoint>();
-		ArrayList<BidPoint> points2=new ArrayList<BidPoint>();
-		for (int i=0; i<n/2; i++) points1.add(points.get(i));
-		for (int i=n/2; i<n; i++) points2.add(points.get(i));
-		
-		ArrayList<BidPoint> pareto1=computeParetoFrontier(points1);
-		ArrayList<BidPoint> pareto2=computeParetoFrontier(points2);
-		return mergeParetoFrontiers(pareto1,pareto2);
-	}
-	
-	/**
-	 * @author W.Pasman
-	 * @param pareto1 the first pareto frontier: list of bidpoints with increasing utility for A, decreasing for B
-	 * @param pareto2 the second pareto frontier:...
-	 * @return new pareto frontier being the merged frontier of the two. Sorted in increasing utilityA direction
-	 */
-	public ArrayList<BidPoint> mergeParetoFrontiers(ArrayList<BidPoint> pareto1,ArrayList<BidPoint> pareto2)
-	{
-		if (pareto1.size()==0) return pareto2;
-		if (pareto2.size()==0) return pareto1;
+		ParetoFrontier frontier = new ParetoFrontier();
+		for (BidPoint p: points)
+			frontier.mergeIntoFrontier(p);
 
-		 // clone because we will remove elements from the list but we want to keep the orig lists.
-		 // This looks bit ugly....
-		ArrayList<BidPoint> list1=(ArrayList<BidPoint>)(pareto1.clone()); 
-		ArrayList<BidPoint> list2=(ArrayList<BidPoint>)(pareto2.clone());
-		 // make sure that the first pareto list has the left most point.
-		if (list1.get(0).utilityA>list2.get(0).utilityA) 
-		{
-			ArrayList<BidPoint> list3;
-			list3=list1; list1=list2; list2=list3; // swap list1,list2......
-		}
-		
-		// sort the rest
-		BidPoint firstpoint=list1.remove(0);
-		ArrayList<BidPoint> newpareto=mergeParetoFrontiers(list1,list2);
-		 // determine if the first point of list1 can be kept.
-		 // the only criterium is the first point of list 2, 
-		 // it must be OK with list 1 because that is already a pareto frontier.
-		if (firstpoint.utilityB>list2.get(0).utilityB) { 
-				 // left point must be higher than next
-				newpareto.add(0,firstpoint);
-		}
-		
-		return newpareto;
+		frontier.sort();
+//		System.out.println("Frontier = " + frontier.size() + ": " + frontier);
+		return frontier;
 	}
 	
 	public ArrayList<Bid> getParetoFrontierBids() throws Exception
