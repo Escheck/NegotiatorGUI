@@ -1,12 +1,12 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import negotiator.Bid;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointSorterAutil;
 import negotiator.analysis.BidSpace;
 import negotiator.boaframework.OpponentModel;
-import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -31,8 +31,6 @@ public class OpponentModelMeasures {
 	private UtilitySpace ownUS;
 	/** Utilityspace of the opponent */
 	private UtilitySpace opponentUS;
-	/** Bidding space created using both real utility spaces */
-	private BidSpace realBS;
 	/** The real kalai value */
 	private BidPoint realKalai;
 	/** The real Nash value */
@@ -41,6 +39,8 @@ public class OpponentModelMeasures {
 	private double[] realIssueWeights;
 	/** The real set of Pareto optimal bids */
 	private ArrayList<Bid> realParetoBids;
+	/** The real set of Pareto optimal bids */
+	private double paretoSurface;
 	
 	/**
 	 * Creates the measures object by storing a reference to both utility spaces
@@ -53,16 +53,17 @@ public class OpponentModelMeasures {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentModelUS;
 		try {
-			realBS = new BidSpace(ownUS, opponentUS, false);
+			BidSpace realBS = new BidSpace(ownUS, opponentUS, false);
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
 			realParetoBids = realBS.getParetoFrontierBids();
+			paretoSurface = calculateParetoSurface(realBS.getParetoFrontier());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Calculates the Pearson correlation coefficient by comparing the utility of each bid estimated
 	 * by the real and estimated opponent's utility space. Higher is better.
@@ -119,12 +120,9 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return difference between real and estimated Kalaipoint
 	 */
-	public double calculateKalaiDiff(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
-		BidSpace estimatedBS;
+	public double calculateKalaiDiff(BidSpace estimatedBS) {
 		BidPoint estimatedKalai = null;
 		try {
-			estimatedBS = new BidSpace(ownUS, estimatedSpace, true);
 			estimatedKalai = estimatedBS.getKalaiSmorodinsky();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,12 +138,9 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return difference between real and estimated Nashpoint
 	 */
-	public double calculateNashDiff(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
-		BidSpace estimatedBS;
+	public double calculateNashDiff(BidSpace estimatedBS) {
 		BidPoint estimatedNash = null;
 		try {
-			estimatedBS = new BidSpace(ownUS, estimatedSpace, true);
 			estimatedNash = estimatedBS.getNash();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -171,12 +166,9 @@ public class OpponentModelMeasures {
 		return sum / realParetoBids.size();
 	}
 	
-	public double calculatePercCorrectlyEstimatedParetoBids(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
-		BidSpace estimatedBS;
+	public double calculatePercCorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
 		ArrayList<Bid> estimatedPFBids = null;
 		try {
-			estimatedBS = new BidSpace(ownUS, estimatedSpace, false);
 			estimatedPFBids = estimatedBS.getParetoFrontierBids();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,10 +190,43 @@ public class OpponentModelMeasures {
 		
 	}
 	
-	public double calculateParetoFrontierDistance() {
+	public double calculateParetoFrontierDistance(BidSpace estimatedBS) {
 		// 1. map bids of estimated frontier to real space
-		// 2. calculate surface of Pareto frontier bids
-		// 3. subtract surface of estimated frontier
-		return 0;
+		ArrayList<BidPoint> estimatedPFBP = new ArrayList<BidPoint>();
+		try {
+			ArrayList<Bid> estimatedPFBids = estimatedBS.getParetoFrontierBids();
+			for (Bid bid : estimatedPFBids) {
+				estimatedPFBP.add(new BidPoint(null, ownUS.getUtility(bid), opponentUS.getUtility(bid)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		double estimatedParetoSurface = calculateParetoSurface(estimatedPFBP);
+		return (paretoSurface - estimatedParetoSurface);
+	}
+	
+	private double calculateParetoSurface(ArrayList<BidPoint> paretoFrontier) {
+		// Add 0.0; 1.0 and 1.0; 0.0 to set
+		paretoFrontier.add(new BidPoint(null, 1.0, 0.0));
+		paretoFrontier.add(new BidPoint(null, 0.0, 1.0));
+		
+		// Order bids on utilityA
+		Collections.sort(paretoFrontier, new BidPointSorterAutil());
+
+		double surface = 0;
+		for (int i = 0; i < paretoFrontier.size() - 1; i++) {
+			surface += calculateSurfaceBelowTwoPoints(paretoFrontier.get(i), paretoFrontier.get(i + 1));
+		}
+		return surface;
+	}
+
+	private double calculateSurfaceBelowTwoPoints(BidPoint higher, BidPoint lower) {
+		
+		// since the bidpoints are discrete, the surface can be decomposed in a triangle and a rectangle
+		double rectangleSurface = higher.utilityB * (higher.utilityA - higher.utilityA);
+		double triangleSurface = ((lower.utilityB - higher.utilityB) * (higher.utilityA - lower.utilityA)) / 2;
+		
+		return (rectangleSurface + triangleSurface);
 	}
 }

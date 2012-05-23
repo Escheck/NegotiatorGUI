@@ -16,6 +16,7 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidSpace;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.opponentmodel.NullModel;
@@ -64,7 +65,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	public Agent currentAgent=null; // agent currently bidding.
 	private Timeline timeline;
-	private int totalRounds = 30; //The total amount of rounds when using DiscreteTimeline
 	
 	public ArrayList<NegotiationOutcome> MACoutcomes = new ArrayList<NegotiationOutcome>();
 	private boolean agentAWithMultiAC = false;
@@ -108,7 +108,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			double agentAUtility,agentBUtility;
 
 			if (Global.DISCRETE_TIMELINE){
-				timeline = new DiscreteTimeline(totalRounds);//Global.TOTAL_ROUNDS);			
+				timeline = new DiscreteTimeline(Global.TOTAL_ROUNDS);			
 			} else {
 				if (Global.PAUSABLE_TIMELINE) {
 					timeline = new PausableContinuousTimeline(totalTime);
@@ -215,13 +215,20 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
 									if (timeline.getTime() >= (currentSample * SAMPLE_EVERY_X_TIME)) {
 										currentSample++;
-										timeSnaps.add(timeline.getTime());
-										pearsonCorrCoefBids.add(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
-										rankingDistBids.add(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
-										kalaiDiff.add(omMeasures.calculateKalaiDiff(boaA.getOpponentModel()));
-										nashDiff.add(omMeasures.calculateNashDiff(boaA.getOpponentModel()));
-										pearsonCorrCoefIssues.add(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
-									}
+										BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
+										omMeasuresResults.addTimePoint(timeline.getTime());
+										
+										omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
+										omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
+										
+										omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
+										omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
+										/*
+										omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
+										
+										
+										*/
+										}
 								}
 							}
 							if (Global.PAUSABLE_TIMELINE) {
@@ -491,12 +498,19 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	private void processDataForLogging() {
 		if (Global.OM_PROFILER_ENABLED) {
-			matchDataLogger.addMeasure("time", timeSnaps);
-			matchDataLogger.addMeasure("kalai_diff", kalaiDiff);
-			matchDataLogger.addMeasure("nash_diff", nashDiff);
-			matchDataLogger.addMeasure("pearson_corr_coef_bids", pearsonCorrCoefBids);
-			matchDataLogger.addMeasure("ranking_dist_bids", rankingDistBids);
-			matchDataLogger.addMeasure("pearson_corr_issue_weights", pearsonCorrCoefIssues);
+			matchDataLogger.addMeasure("time", omMeasuresResults.getTimePointList());
+			matchDataLogger.addMeasure("pearson_corr_coef_bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList());
+			matchDataLogger.addMeasure("pearson_corr_issue_weights", omMeasuresResults.getPearsonCorrelationCoefficientOfIssueWeightsList());
+			matchDataLogger.addMeasure("ranking_dist_bids", omMeasuresResults.getRankingDistanceOfBidsList());
+			matchDataLogger.addMeasure("ranking_dist_issue_weights", omMeasuresResults.getRankingDistanceOfIssueWeightsList());
+			matchDataLogger.addMeasure("avg_difference_between_bids", omMeasuresResults.getAverageDifferenceBetweenBidsList());
+			matchDataLogger.addMeasure("avg_difference_between_issue_weights", omMeasuresResults.getAverageDifferenceBetweenIssueWeightsList());
+			matchDataLogger.addMeasure("kalai_diff", omMeasuresResults.getKalaiDistanceList());
+			matchDataLogger.addMeasure("nash_diff", omMeasuresResults.getNashDistanceList());
+			matchDataLogger.addMeasure("avg_diff_pareto_frontier", omMeasuresResults.getAverageDifferenceOfParetoFrontierList());
+			matchDataLogger.addMeasure("perc_correct_pareto_frontier", omMeasuresResults.getPercentageOfCorrectlyEstimatedParetoBidsList());
+			matchDataLogger.addMeasure("perc_incorrect_pareto_frontier", omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList());
+			matchDataLogger.addMeasure("pareto_frontier_distance", omMeasuresResults.getParetoFrontierDistanceList());
 			matchDataLogger.writeToFile();
 		}
 	}
