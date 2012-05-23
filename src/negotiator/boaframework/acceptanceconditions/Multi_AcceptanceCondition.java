@@ -53,23 +53,30 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 		
 		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
 		for (AcceptanceStrategy a : ACList) {
+			Bid lastOpponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
+			String name = a.getClass().getSimpleName() + " " + printParameters(a);
+			double time = negotiationSession.getTime();
+			OutcomeTuple outcome;
+
 			if (a.determineAcceptability().equals(Actions.Accept)) {
-				Bid lastOpponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
-				String name = a.getClass().getSimpleName() + " " + printParameters(a);
-				double time = negotiationSession.getTime();
-				//System.out.println(name + " accepted Bid");
+				System.out.println(name + " accepted Bid" + " Util: " + negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil());
+
 
 				//sets the amount of bids made for agent A and agent B
-				OutcomeTuple outcome;
 				if(startingAgent) {
-					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size());
+					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"accept");
 				}else {
-					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size());
+					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size(), "accept");
 
 				}
 				outcomes.add(outcome);
 				acceptors.add(a);
+			} else if (a.determineAcceptability().equals(Actions.Break)) {
+				outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"breakoff");
+				outcomes.add(outcome);
+				acceptors.add(a);
 			}
+
 		}
 		ACList.removeAll(acceptors);
 		
@@ -94,5 +101,10 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	@Override
 	public String printParameters() {
 		return null;
+	}
+	
+	@Override
+	public boolean isMAC(){
+		return true;
 	}
 }

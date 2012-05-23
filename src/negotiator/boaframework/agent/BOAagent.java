@@ -142,6 +142,7 @@ public abstract class BOAagent extends Agent {
 		}
 		
 		if (decision.equals(Actions.Break)) {
+			System.out.println("send EndNegotiation");
 			return new EndNegotiation(this.getAgentID());
 		}
 		//if agent does not accept, it offers the counter bid
@@ -174,6 +175,10 @@ public abstract class BOAagent extends Agent {
 		return opponentModel;
 	}
 	
+	public AcceptanceStrategy getAcceptanceStrategy(){
+		return acceptConditions;
+	}
+	
 	/**
 	 * Sync the outcomes stored by the agent for the MAC.
 	 */
@@ -182,12 +187,15 @@ public abstract class BOAagent extends Agent {
 			String name = strat.getClass().getSimpleName() + " " + ((Multi_AcceptanceCondition)acceptConditions).printParameters(strat);
 			OutcomeTuple newTuple;
 			if(negotiationSession.getTime() < 1.0){
-				if(startingAgent)
-					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size());
-				else
-					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size());
+				if(startingAgent){
+					System.out.println("starting agent and time < 1.0");
+					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"");
+				} else{
+					System.out.println("!starting agent and time < 1.0");
+					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size(),"");
+				}
 			}else {
-				newTuple = new OutcomeTuple(null, name, 1, -1, -1);
+				newTuple = new OutcomeTuple(null, name, 1, -1, -1, "deadline");
 			}
 			((Multi_AcceptanceCondition) acceptConditions).getOutcomes().add(newTuple);
 		}
