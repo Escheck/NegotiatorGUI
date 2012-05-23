@@ -13,6 +13,7 @@ import negotiator.analysis.BidSpaceCash;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.qualitymeasures.CSVlogger;
+import negotiator.qualitymeasures.OMMeasuresResults;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -33,16 +34,11 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	int				sessionNumber;
     protected 	ArrayList<BidPoint> 	fAgentABids;
     protected 	ArrayList<BidPoint> 	fAgentBBids;
-    protected 	ArrayList<Double> 	timeSnaps;
-    protected 	ArrayList<Double> 	pearsonCorrCoefBids;
-    protected 	ArrayList<Double> 	rankingDistBids;
-    protected 	ArrayList<Double> 	pearsonCorrCoefIssues;
-    protected 	ArrayList<Double> 	kalaiDiff;
-    protected 	ArrayList<Double>	nashDiff;
     protected 	BidSpace		bidSpace;
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
 	protected 	CSVlogger matchDataLogger;
+	protected 	OMMeasuresResults omMeasuresResults = new OMMeasuresResults();
 
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	private String log;
@@ -81,13 +77,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         }
         fAgentABids = new ArrayList<BidPoint>();
         fAgentBBids = new ArrayList<BidPoint>();
-        
-        timeSnaps = new ArrayList<Double>();
-        pearsonCorrCoefBids = new ArrayList<Double>();
-        rankingDistBids = new ArrayList<Double>();
-        kalaiDiff = new ArrayList<Double>();
-        nashDiff = new ArrayList<Double>();
-        pearsonCorrCoefIssues = new ArrayList<Double>();
 
         matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
         								agentA.getName(), spaceA.getFileName(), 
@@ -159,26 +148,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	public int getNrOfBids(){
 		return fAgentABids.size() + fAgentBBids.size();
 	}
-
-	public double[][] getPearsonCorrCoefBids() {
-		return convertToChartData(timeSnaps, pearsonCorrCoefBids);
-	}
-
-	public double[][] getRankingDistBids() {
-		return convertToChartData(timeSnaps, rankingDistBids);
-	}
-	
-	public double[][] getKalaiDiff() {
-		return convertToChartData(timeSnaps, kalaiDiff);
-	}
-	
-	public double[][] getNashDiff() {
-		return convertToChartData(timeSnaps, nashDiff);
-	}
-	
-	public double[][] getPearsonCorrCoefIssues() {
-		return convertToChartData(timeSnaps, pearsonCorrCoefIssues);
-	}
 	
 	//alinas code
 	public double[][] getNegotiationPathA(){
@@ -199,24 +168,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 		}
     	
 		return lAgentAUtilities; 
-	}
-	
-	private double[][] convertToChartData(ArrayList<Double> timeSnaps, ArrayList<Double> items) {
-		if (timeSnaps.size() != items.size()) {
-			return null;
-		}
-		double[][] data = new double[2][items.size()];
-		try
-        {
-	    	for (int i = 0; i < items.size(); i++) {
-	    		data [0][i] = timeSnaps.get(i);
-	    		data [1][i] = items.get(i);
-	    	}
-        } catch (Exception e) {
-			e.printStackTrace();
-        	return null;
-		}
-		return data;
 	}
 	
 	public ArrayList<BidPoint> getAgentABids() {
@@ -263,6 +214,10 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     	
     }
     
+	public OMMeasuresResults getOmMeasuresResults() {
+		return omMeasuresResults;
+	}
+
 	public void setLog(String str){
 		log = str;
 	}

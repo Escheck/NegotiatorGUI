@@ -154,7 +154,7 @@ public class BidChart {
 		this.pearsonCorrCoefIssues_ = pearsonCorrCoefIssues;
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-		    	pearsonCorrCoefIssuesData.addSeries("Pearson corr. coef. issues", pearsonCorrCoefIssues_);
+		    	pearsonCorrCoefIssuesData.addSeries("Pearson corr. coef. issue weights", pearsonCorrCoefIssues_);
 		    }
 		});
 	}
