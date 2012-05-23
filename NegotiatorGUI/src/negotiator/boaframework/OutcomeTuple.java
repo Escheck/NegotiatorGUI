@@ -24,13 +24,16 @@ public class OutcomeTuple {
 	private int agentASize;	
 	/** amount of bids made by agent B */
 	private int agentBSize;
+	/**What type of log messege (deadline reached, breakoff)**/
+	private String logMsgType;
 	
-	public OutcomeTuple(Bid lastBid, String name, double time, int agentASize, int agentBSize){
+	public OutcomeTuple(Bid lastBid, String name, double time, int agentASize, int agentBSize, String logMsg){
 		this.lastBid = lastBid;
 		this.name = name;
 		this.time = time;
 		this.agentASize = agentASize;
 		this.agentBSize = agentBSize;
+		this.logMsgType = logMsg;
 	}
 
 	public int getAgentASize() {
@@ -71,6 +74,10 @@ public class OutcomeTuple {
 
 	public void setTime(double time) {
 		this.time = time;
+	}
+	
+	public String getLogMsgType(){
+		return logMsgType;
 	}
 	
 	public String toString() {

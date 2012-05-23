@@ -21,6 +21,7 @@ public class NullStrategy extends OMStrategy {
 	public NullStrategy() {}
 	
 	public NullStrategy(NegotiationSession negotiationSession) {
+		this.negotiationSession = negotiationSession;
 		rand = new Random();
 	}
 	

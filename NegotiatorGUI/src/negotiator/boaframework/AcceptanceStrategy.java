@@ -42,4 +42,8 @@ public abstract class  AcceptanceStrategy {
 	 * @return true if accept
 	 */
 	public abstract Actions determineAcceptability();
+	
+	public boolean isMAC(){
+		return false;
+	}
 }

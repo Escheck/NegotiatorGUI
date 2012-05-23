@@ -70,8 +70,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 				this.Pmin = parameters.get("min");
 			else
 				this.Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
-			
-			
+		
 			if (parameters.get("max") != null) {
 				Pmax= parameters.get("max");
 			} else {
