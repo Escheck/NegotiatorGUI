@@ -23,17 +23,6 @@ public class BayesianModelScalable extends OpponentModel {
 	private BayesianOpponentModelScalable model;
 	private int startingBidIssue = 0;
 	
-	public BayesianModelScalable(NegotiationSession negoSession, int n){
-		this.negotiationSession = negoSession;
-		model = new BayesianOpponentModelScalable(negotiationSession.getUtilitySpace());
-		
-		if (n==1) {
-			System.out.println("Entering NTFT mode");
-			DOMAINSIZE = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
-			niceTitForTatMode = true;
-		}
-	}
-	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		while (!testIndexOfFirstIssue(negotiationSession.getUtilitySpace().getDomain().getRandomBid(), startingBidIssue)){
@@ -43,8 +32,6 @@ public class BayesianModelScalable extends OpponentModel {
 		model = new BayesianOpponentModelScalable(negotiationSession.getUtilitySpace());
 		this.negotiationSession = negotiationSession;
 	}
-	
-	
 
 	/**
 	 * Just an auxiliar funtion to calculate the index where issues start on a bid
