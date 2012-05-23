@@ -1,7 +1,5 @@
 package negotiator.boaframework.agent;
 
-import java.util.HashMap;
-
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
@@ -15,7 +13,7 @@ public class SimpleBOAagent extends BOAagent{
 
 	@Override
 	public void agentSetup() {
-		OpponentModel om = new BayesianModelScalable(negotiationSession, 1);
+		OpponentModel om = new BayesianModelScalable(negotiationSession);
 		OMStrategy oms = new NullStrategy(negotiationSession);
 		OfferingStrategy offering  = new TimeDependent_Offering(negotiationSession, om, oms, 0.2, 0, 1, 0); //Bouwlware agent strategy
 		AcceptanceStrategy ac = new AC_Next(negotiationSession, offering, 1, 0);
@@ -26,5 +24,4 @@ public class SimpleBOAagent extends BOAagent{
 	public String getName() {
 		return "SimpleBOAagent";
 	}
-
 }
