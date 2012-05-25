@@ -193,8 +193,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/Users/Mark/workspace/Genius/log/2012-05-03 13.21.43.xml";
-			String out = "c:/Users/Mark/workspace/Genius/log/result.xml";
+			String in = "d:/Media Knowledge Engineering/Opponent Models 2/Data/Exp1-rounds-pareto.xml";
+			String out = "d:/Media Knowledge Engineering/Opponent Models 2/Data/Result.xml";
 			
 			process(in, out);
 		} catch (Exception e) {
@@ -274,7 +274,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			tournamentQM.setAttribute("std_time_of_end_of_negotiation", getStandardDeviationOfEndOfNegotiation(runs, agentName) + "");
 			tournamentQM.setAttribute("average_rounds", getAverageRounds(outcomes, agentName) + "");
 			tournamentQM.setAttribute("std_rounds", getStandardDeviationOfTotalRounds(runs, agentName) + "");
-			tournamentQM.setAttribute("percentage_of_agreement", getPercentageOfAgreement(outcomes, agentName) + "%");
+			tournamentQM.setAttribute("percentage_of_agreement", getPercentageOfAgreement(outcomes, agentName) + "");
 			tournamentQM.setAttribute("average_util", getAverageUtility(outcomes, agentName, false) + "");
 			tournamentQM.setAttribute("std_util", getStandardDeviationOfUtility(runs, agentName) + "");
 			tournamentQM.setAttribute("average_util_of_agreements", getAverageUtility(outcomes, agentName, true) + "");		
