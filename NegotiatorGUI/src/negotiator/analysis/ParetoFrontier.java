@@ -89,7 +89,7 @@ public class ParetoFrontier
 				else if (x.utilityA > y.utilityA)
 					return 1;
 				else
-					throw new IllegalStateException("Pareto frontier in illegal state for " + x + " and " + y + " in: " + frontier);
+					return 0;
 			}
 		});
 	}

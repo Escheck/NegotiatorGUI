@@ -12,10 +12,6 @@ import negotiator.xml.OrderedSimpleElement;
  * This class is an implementation of the trajectory measures discussed by
  * Hindriks et al. in Negotiation Dynamics: Analysis, Concession Tactics, and Outcomes.
  * 
- * NOTE: currently there is a bug in Genius which results in the last bid
- * not being saved correctly. Therefore it is advised to remove the last
- * before calculating the measures below.
- * 
  * @author Mark Hendrikx and Alexander Dirkzwager
  * @contact m.j.c.hendrikx@student.tudelft.nl
  */
@@ -25,7 +21,7 @@ public class TrajectoryMeasures {
 	ArrayList<BidPoint> agentBBids;
 	Domain domain;
 	boolean agentAFirst;
-	private final double SILENTTHRESHOLD = 0.005;
+	private final double SILENTTHRESHOLD = 0.0001;
 	double unfortunateA;
 	double unfortunateB;
 	double silentA;

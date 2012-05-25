@@ -52,13 +52,13 @@ public class BidPoint implements XMLable {
 	 */
 	public boolean isDominatedBy(BidPoint p)
 	{
-		if (this.utilityA > p.utilityA)
-			return false;
-		
-		if (this.utilityB > p.utilityB)
-			return false;
-		
-		return true;
+		if ((this != p && (p.utilityA > this.utilityA &&
+				p.utilityB >= this.utilityB) ||
+				(p.utilityA >= this.utilityA &&
+				p.utilityB > this.utilityB))){
+				return true;
+		}
+		return false;
 	}
 
 	@Override
