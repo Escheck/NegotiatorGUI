@@ -148,9 +148,13 @@ public class NegotiationOutcome {
 			minDemandedUtil = getMinDemandedUtil(agentX, bids);
 			BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
 			fyu = getFYU(agentX, bidSpace);
-			double yield = Math.max(minDemandedUtil, fyu);
-			competitiveness = (yield - fyu) / (1 - fyu);
-			cooperation = 1 - competitiveness;
+			if(minDemandedUtil != -1){
+				double yield = Math.max(minDemandedUtil, fyu);
+				competitiveness = (yield - fyu) / (1 - fyu);
+				cooperation = 1 - competitiveness;
+			} else {
+				cooperation = -1;
+			}
 		}
 		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
@@ -233,9 +237,15 @@ public class NegotiationOutcome {
 		else
 			System.err.println("Unknown agent " + agentX);
 		
-		BidPoint minDemandedBid = Collections.min(bids, comp);
-		double minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
-		System.out.println("minDemandedUtility:"+minDemandedUtil);
+		double minDemandedUtil;
+		if(!bids.isEmpty()){
+			BidPoint minDemandedBid = Collections.min(bids, comp);
+			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+			System.out.println("minDemandedUtility:"+minDemandedUtil);
+		}else { 
+			minDemandedUtil = -1;
+		
+		}
 		return minDemandedUtil;
 	}
 	
