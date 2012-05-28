@@ -47,7 +47,9 @@ public class CSVlogger {
 	 * @param results of the quality measure
 	 */
 	public void addMeasure(String name, ArrayList<Double> results) {
-		dataToLog.add(new Pair<String, ArrayList<Double>>(name, results));
+		if (results.size() > 1) {
+			dataToLog.add(new Pair<String, ArrayList<Double>>(name, results));
+		}
 	}
 	
 	/**
@@ -88,6 +90,8 @@ public class CSVlogger {
 				new Warning("Exception during writing s:"+e);
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("No data to log");
 		}
 	}
 }

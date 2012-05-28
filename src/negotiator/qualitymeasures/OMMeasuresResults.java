@@ -17,6 +17,7 @@ public class OMMeasuresResults {
     private ArrayList<Double> percentageOfCorrectlyEstimatedParetoBidsList;
     private ArrayList<Double> percentageOfIncorrectlyEstimatedParetoBidsList;
     private ArrayList<Double> paretoFrontierDistanceList;
+    private ArrayList<Double> bidIndices;
     private double[][] empty;
 
     public OMMeasuresResults() {
@@ -33,6 +34,7 @@ public class OMMeasuresResults {
     	percentageOfCorrectlyEstimatedParetoBidsList = new ArrayList<Double>();
     	percentageOfIncorrectlyEstimatedParetoBidsList = new ArrayList<Double>();
     	paretoFrontierDistanceList = new ArrayList<Double>();
+    	bidIndices = new ArrayList<Double>();
 		empty = new double[2][1];
 		empty [0][0] = 0;
 		empty [1][0] = 0;
@@ -84,6 +86,10 @@ public class OMMeasuresResults {
     
     public void addPercentageOfIncorrectlyEstimatedParetoBids(double percentageOfIncorrectlyEstimatedParetoBids) {
     	percentageOfIncorrectlyEstimatedParetoBidsList.add(percentageOfIncorrectlyEstimatedParetoBids);
+    }
+    
+    public void addBidIndex(int bidIndex) {
+    	bidIndices.add((double)bidIndex);
     }
 
     public void addParetoFrontierDistance(double paretoFrontierDistance) {
@@ -203,6 +209,10 @@ public class OMMeasuresResults {
 
 	public ArrayList<Double> getPercentageOfIncorrectlyEstimatedParetoBidsList() {
 		return percentageOfIncorrectlyEstimatedParetoBidsList;
+	}
+
+	public ArrayList<Double> getBidIndices() {
+		return bidIndices;
 	}
 
 	public ArrayList<Double> getParetoFrontierDistanceList() {

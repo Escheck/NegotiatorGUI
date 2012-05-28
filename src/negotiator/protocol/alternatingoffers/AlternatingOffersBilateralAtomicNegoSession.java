@@ -71,9 +71,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
 	private OpponentModelMeasures omMeasures;
-	private final double SAMPLE_EVERY_X_TIME = 0.01;
+	private final double SAMPLE_EVERY_X_TIME = 0.0;
 	private int currentSample = 0;
-	private int round = 0;
 
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
@@ -198,43 +197,15 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 								spaceB.getUtility(lastBid));
 						
 						if (!timeline.isDeadlineReached()) {
+							// if agent A just made an offer
 							if(currentAgent.equals(agentA)) {
 								fAgentABids.add(p);
+								processOMdata();
 							} else{
 								fAgentBBids.add(p);
 							}
 						}
 						
-						if (Global.OM_PROFILER_ENABLED) {
-							if (Global.PAUSABLE_TIMELINE) {
-								timeline.pause();
-							}
-							if (agentA instanceof BOAagent) {
-								BOAagent boaA = (BOAagent) agentA;
-								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
-										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
-									if (timeline.getTime() >= (currentSample * SAMPLE_EVERY_X_TIME)) {
-										currentSample++;
-										BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
-										omMeasuresResults.addTimePoint(timeline.getTime());
-										
-										omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
-										omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
-										
-										omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
-										omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
-										/*
-										omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
-										
-										
-										*/
-										}
-								}
-							}
-							if (Global.PAUSABLE_TIMELINE) {
-								timeline.resume();
-							}
-						}
 						double time = timeline.getTime();
 						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
 						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
@@ -327,6 +298,46 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	
 	
 	
+	private void processOMdata() throws Exception {
+		if (Global.OM_PROFILER_ENABLED) {
+			if (Global.PAUSABLE_TIMELINE) {
+				timeline.pause();
+			}
+			if (agentA instanceof BOAagent) {
+				BOAagent boaA = (BOAagent) agentA;
+				 {
+					if (timeline.getTime() >= (currentSample * SAMPLE_EVERY_X_TIME)) {
+						currentSample++;
+						
+						if (fAgentBBids.size() > 0) {
+							
+							Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).bid;
+							if (lastOpponentBid != null) {
+								omMeasuresResults.addTimePoint(timeline.getTime());
+								omMeasuresResults.addBidIndex(omMeasures.getOpponentBidIndex(lastOpponentBid));
+							}
+							
+							if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
+										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
+								
+								BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
+								omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
+								omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
+								
+								omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
+								omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
+								omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
+								}
+							}
+					}
+				}
+			}
+			if (Global.PAUSABLE_TIMELINE) {
+				timeline.resume();
+			}
+		}
+	}
+
 	/**
 	 * Checks if one of the agents MAC has
 	 */
@@ -424,8 +435,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		else
 			agentBtookAction = true;
 		
-		round++;
-		
 		if(timeline instanceof DiscreteTimeline)
 			((DiscreteTimeline) timeline).increment();
 
@@ -499,6 +508,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private void processDataForLogging() {
 		if (Global.OM_PROFILER_ENABLED) {
 			matchDataLogger.addMeasure("time", omMeasuresResults.getTimePointList());
+			matchDataLogger.addMeasure("bidindices", omMeasuresResults.getBidIndices());
 			matchDataLogger.addMeasure("pearson_corr_coef_bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList());
 			matchDataLogger.addMeasure("pearson_corr_issue_weights", omMeasuresResults.getPearsonCorrelationCoefficientOfIssueWeightsList());
 			matchDataLogger.addMeasure("ranking_dist_bids", omMeasuresResults.getRankingDistanceOfBidsList());

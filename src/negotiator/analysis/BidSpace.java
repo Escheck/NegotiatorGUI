@@ -103,7 +103,7 @@ public class BidSpace {
 			{
 //				System.out.println("ParetoFrontier start computation for known bid space of size " + bidPoints.size());
 				paretoFrontier = computeParetoFrontier(bidPoints).getFrontier();
-//				System.out.println("ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");
+//				System.out.println("ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");;
 				return paretoFrontier;
 			}
 
@@ -135,7 +135,6 @@ public class BidSpace {
 				paretoFrontier = subPareto;
 			System.out.println("Multi-ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");
 		}
-
 		return paretoFrontier;
 	}
 	
