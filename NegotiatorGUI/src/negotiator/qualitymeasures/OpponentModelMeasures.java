@@ -6,7 +6,9 @@ import negotiator.Bid;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterAutil;
 import negotiator.analysis.BidSpace;
+import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -41,6 +43,8 @@ public class OpponentModelMeasures {
 	private ArrayList<Bid> realParetoBids;
 	/** The real set of Pareto optimal bids */
 	private double paretoSurface;
+	/** Outcomespace of the opponent used to look up the index of the bid **/
+	private SortedOutcomeSpace opponentOutcomeSpace;
 	
 	/**
 	 * Creates the measures object by storing a reference to both utility spaces
@@ -59,6 +63,7 @@ public class OpponentModelMeasures {
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
 			realParetoBids = realBS.getParetoFrontierBids();
 			paretoSurface = calculateParetoSurface(realBS.getParetoFrontier());
+			opponentOutcomeSpace = new SortedOutcomeSpace(opponentUS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -228,5 +233,16 @@ public class OpponentModelMeasures {
 		double triangleSurface = ((lower.utilityB - higher.utilityB) * (higher.utilityA - lower.utilityA)) / 2;
 		
 		return (rectangleSurface + triangleSurface);
+	}
+	
+	public int getOpponentBidIndex(Bid opponentBid) {
+		BidDetails oBid = null;
+		try {
+			oBid = new BidDetails(opponentBid, opponentUS.getUtility(opponentBid), -1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(opponentOutcomeSpace.getAllOutcomes().indexOf(oBid) + " " + opponentOutcomeSpace.getAllOutcomes().size());
+		return opponentOutcomeSpace.getAllOutcomes().indexOf(oBid);
 	}
 }

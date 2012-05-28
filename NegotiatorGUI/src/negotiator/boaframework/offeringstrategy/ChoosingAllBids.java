@@ -1,15 +1,13 @@
 package negotiator.boaframework.offeringstrategy;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.OutcomeSpace;
+import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
  * This class implements an offering strategy which creates a list of possible bids and 
@@ -51,11 +49,10 @@ public class ChoosingAllBids extends OfferingStrategy {
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
 		this.negotiationSession = negoSession;
 		
-		OutcomeSpace space = new OutcomeSpace(negotiationSession.getUtilitySpace());
+		SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		negotiationSession.setOutcomeSpace(space);
 		
 		allBids = (ArrayList<BidDetails>) negotiationSession.getOutcomeSpace().getAllOutcomes();
-		Collections.sort(allBids);
 		this.opponentModel = model;
 	}
 	
@@ -65,11 +62,11 @@ public class ChoosingAllBids extends OfferingStrategy {
 	 */
 	@Override
 	public BidDetails determineNextBid() {
-		//System.out.println("allbids size: " + allBids.size());
 		nextBid = this.allBids.get(counter);
 		if (counter < allBids.size() - 1) {
 			counter++;
 		}
+		
 		return nextBid;
 	}
 
