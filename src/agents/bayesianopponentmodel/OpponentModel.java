@@ -16,8 +16,11 @@ public class OpponentModel {
 	public double getNormalizedUtility(Bid pBid) throws Exception
 	{
 		double u=getExpectedUtility(pBid);
-		
 		if (minUtility==null || maxUtility==null) findMinMaxUtility();
+		double value = (u-minUtility)/(maxUtility-minUtility);
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
 		return (u-minUtility)/(maxUtility-minUtility);
 	}
 	public void updateBeliefs(Bid pBid) throws Exception { };

@@ -23,6 +23,7 @@ public class BayesianModel extends OpponentModel {
 	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
+		this.negotiationSession = negotiationSession;
 		model = new BayesianOpponentModel(negotiationSession.getUtilitySpace());
 		if (parameters.get("m") != null) {
 			model.setMostProbableUSHypsOnly(parameters.get("m") > 0);
@@ -51,8 +52,12 @@ public class BayesianModel extends OpponentModel {
 	}
 
 	@Override
-	public void updateModel(Bid opponentBid) {
+	public void updateModel(Bid opponentBid, double time) {
 		try {
+			// time is not used by this opponent model
+			if (model == null) {
+				System.out.println("is null");
+			}
 			model.updateBeliefs(opponentBid);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,6 +95,5 @@ public class BayesianModel extends OpponentModel {
 	
 	public void cleanUp() {
 		super.cleanUp();
-		model = null;
 	}
 }

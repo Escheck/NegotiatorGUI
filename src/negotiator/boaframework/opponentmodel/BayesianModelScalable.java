@@ -22,10 +22,6 @@ public class BayesianModelScalable extends OpponentModel {
 
 	private BayesianOpponentModelScalable model;
 	private int startingBidIssue = 0;
-	
-	public BayesianModelScalable(NegotiationSession negoSession) {
-		initializeModel(negoSession);
-	}
 
 	@Override
 	public void init(NegotiationSession negoSession, HashMap<String, Double> parameters) throws Exception {
@@ -58,8 +54,9 @@ public class BayesianModelScalable extends OpponentModel {
 	}
 	
 	@Override
-	public void updateModel(Bid opponentBid) {
+	public void updateModel(Bid opponentBid, double time) {
 		try {
+			// time is not used by this opponent model
 			model.updateBeliefs(opponentBid);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,6 +94,5 @@ public class BayesianModelScalable extends OpponentModel {
 	
 	public void cleanUp() {
 		super.cleanUp();
-		model = null;
 	}
 }

@@ -50,5 +50,5 @@ public class PerfectModel extends OpponentModel {
 		return 0;
 	}
 
-	public void updateModel(Bid opponentBid) { }
+	public void updateModel(Bid opponentBid, double time) { }
 }

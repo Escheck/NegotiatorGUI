@@ -372,6 +372,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 				w += fWeightHyps.get(j).get(k).getProbability()*fWeightHyps.get(j).get(k).getWeight();(*/
 			u = u + w*getExpectedEvaluationValue(pBid, j);
 		}
+		
 		return u;
 	}
 

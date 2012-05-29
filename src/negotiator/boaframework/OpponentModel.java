@@ -29,7 +29,11 @@ public abstract class OpponentModel {
 		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
 	}
 
-	public abstract void updateModel(Bid opponentBid);
+	public void updateModel(Bid opponentBid) {
+		updateModel(opponentBid, negotiationSession.getTime());
+	}
+	
+	public abstract void updateModel(Bid bid, double time);
 	
 	/**
 	 * Determines the utility of the opponent according to the OpponentModel

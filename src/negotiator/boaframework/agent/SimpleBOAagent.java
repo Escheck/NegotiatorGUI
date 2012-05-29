@@ -13,7 +13,8 @@ public class SimpleBOAagent extends BOAagent{
 
 	@Override
 	public void agentSetup() {
-		OpponentModel om = new BayesianModelScalable(negotiationSession);
+		OpponentModel om = new BayesianModelScalable();
+		om.init(negotiationSession);
 		OMStrategy oms = new NullStrategy(negotiationSession);
 		OfferingStrategy offering  = new TimeDependent_Offering(negotiationSession, om, oms, 0.2, 0, 1, 0); //Bouwlware agent strategy
 		AcceptanceStrategy ac = new AC_Next(negotiationSession, offering, 1, 0);

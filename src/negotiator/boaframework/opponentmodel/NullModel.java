@@ -11,5 +11,5 @@ import negotiator.boaframework.OpponentModel;
 public class NullModel extends OpponentModel {
 
 
-	public void updateModel(Bid opponentBid) { }
+	public void updateModel(Bid opponentBid, double time) { }
 }

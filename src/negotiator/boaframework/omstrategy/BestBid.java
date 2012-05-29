@@ -2,6 +2,8 @@ package negotiator.boaframework.omstrategy;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -47,19 +49,28 @@ public class BestBid extends OMStrategy {
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
+		
 		// determine the utility for the opponent for each of the bids
 		if (allBids.size() == 1) {
 			return allBids.get(0);
 		}
 		double bestUtil = -1;
-		BidDetails bestBid = null;
+		BidDetails bestBid = allBids.get(0);
 		
+		boolean allWereZero = true;
 		for (BidDetails bid : allBids) {
 			double evaluation = model.getBidEvaluation(bid.getBid());
+			if (evaluation > 0.0001) {
+				allWereZero = false;
+			}
 			if (evaluation > bestUtil) {
 				bestBid = bid;
 				bestUtil = evaluation;
 			}
+		}
+		if (allWereZero) {
+			Random r = new Random();
+			return allBids.get(r.nextInt(allBids.size()));
 		}
 		return bestBid;
 	}
