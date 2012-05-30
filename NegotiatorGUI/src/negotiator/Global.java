@@ -111,6 +111,17 @@ public class Global {
 	
 	public Global() {}
 
+	static {
+		if((DISCRETE_TIMELINE == true && fDebug == false)|| DISCRETE_TIMELINE == false && fDebug == true){
+			try {
+				throw new Exception("Discrete Time and fDebug have to be either both true or both false");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * @param args
 	 *            the command line arguments
