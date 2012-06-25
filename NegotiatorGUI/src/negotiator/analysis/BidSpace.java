@@ -291,5 +291,23 @@ public class BidSpace {
 		return bestPoint;
 	}
 	
+	public double distanceToNearestParetoBid(BidPoint bid) {
+		if (paretoFrontier == null) {
+			try {
+				paretoFrontier = getParetoFrontier();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		double distance = Double.POSITIVE_INFINITY;
+		for (BidPoint paretoBid : paretoFrontier) {
+			double paretoDistance = bid.distanceTo(paretoBid);
+			if (paretoDistance < distance) {
+				distance = paretoDistance;
+			}
+		}
+		return distance;
+	}
+	
 	public double sq(double x) { return x*x; }
 }

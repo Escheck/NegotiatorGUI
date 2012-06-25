@@ -80,7 +80,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 
         matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
         								agentA.getName(), spaceA.getFileName(), 
-        								agentB.getName(), spaceB.getFileName());
+        								agentB.getName(), spaceB.getFileName(), spaceA.getDomain().getName());
         
         actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }

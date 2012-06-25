@@ -29,6 +29,8 @@ public class NegotiationSession {
 	/** Reference to the timeline */
 	protected Timeline timeline;
 
+	protected NegotiationSession() { }
+	
 	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline){
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;

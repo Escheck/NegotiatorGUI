@@ -55,6 +55,7 @@ public class NegotiationOutcome {
 	public String domainName;
 	private final AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession;
 	private final Action lastAction;
+	private int runNr = 0;
 
 	/** Creates a new instance of NegotiationOutcome 
 	 * @param alternatingOffersBilateralAtomicNegoSession 
@@ -173,7 +174,6 @@ public class NegotiationOutcome {
 			outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
 			outcome.setAttribute("FYU",""+fyu);
 			outcome.setAttribute("cooperation",""+cooperation);
-			System.out.println("cooperation: "+cooperation);
 		}
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
@@ -217,10 +217,7 @@ public class NegotiationOutcome {
 			fyu = bestOutcomeForA.utilityB;
 		else
 			System.err.println("Unknown agent " + agentX);
-		
-//		System.out.println("Pareto begin: " + bestOutcomeForA);
-//		System.out.println("Pareto end: " + bestOutcomeForB);
-//		System.out.println("So, FYU_" + agentX + " = " + fyu);
+
 		return fyu;
 	}
 
@@ -241,7 +238,6 @@ public class NegotiationOutcome {
 		if(!bids.isEmpty()){
 			BidPoint minDemandedBid = Collections.min(bids, comp);
 			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
-			System.out.println("minDemandedUtility:"+minDemandedUtil);
 		}else { 
 			minDemandedUtil = -1;
 		
@@ -277,10 +273,10 @@ public class NegotiationOutcome {
 		OrderedSimpleElement outcome = new OrderedSimpleElement("NegotiationOutcome");
 		outcome.setAttribute("currentTime", ""+Global.getCurrentTime());
 		outcome.setAttribute("timeOfAgreement", "" + time);
-		outcome.setAttribute("timeOfAgreement", "" + time);
 		outcome.setAttribute("bids", "" + (AgentABids.size() + AgentBBids.size()));
 		outcome.setAttribute("domain", domainName);
 		outcome.setAttribute("lastAction", "" + lastAction);
+		outcome.setAttribute("runNumber", runNr + "");
 
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
@@ -337,6 +333,13 @@ public class NegotiationOutcome {
 		return bids;
 	}
 
+	public int getRunNr() {
+		return runNr;
+	}
+
+	public void setRunNr(int runNr) {
+		this.runNr = runNr;
+	}
 
 	public boolean getAgentAFirst() {
 		return agentAstarts;

@@ -31,6 +31,9 @@ public class TournamentRunner implements Runnable
 	// Options related to distributed tournaments
 	private boolean distributed = false;
 	private String sessionname = "";
+	
+	private int previousSession = -1;
+	private int currentRunNr = 0;
 
 	/** 
 	 * 
@@ -127,7 +130,12 @@ public class TournamentRunner implements Runnable
 
 	private String runTournament() throws InterruptedException {
 		for (int i = 0; i < sessions.size(); i++) {
+
+			
+			int runNr = determineRunNr(sessions.get(i));
+			previousSession = sessions.get(i).hashCode();
 			Protocol s = sessions.get(i);
+			s.setRun(runNr);
 			synchronized(this) { 
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
 				s.setTournamentRunner(this);
@@ -145,6 +153,15 @@ public class TournamentRunner implements Runnable
 		return Global.getOutcomesFileName();
 	}
 	
+	private int determineRunNr(Protocol protocol) {
+		if (protocol.hashCode() == previousSession) {
+			currentRunNr++;
+		} else {
+			currentRunNr = 0;
+		}
+		return currentRunNr;
+	}
+
 	private String runDistributedTournament(int previousOpenSessions) throws InterruptedException {
 		Job job;
 		int jobID = DBController.getInstance().getJobID(sessionname);
@@ -163,7 +180,8 @@ public class TournamentRunner implements Runnable
 				StringBuilder builder = new StringBuilder();
 				// 3. Run the matches and store the outcomes
 				for (Protocol s: job.getSessions()) {
-					
+					int runNr = determineRunNr(s);
+					s.setRun(runNr);
 					synchronized(this) { 
 						for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);	
 						s.setTournamentRunner(this);

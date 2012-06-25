@@ -298,6 +298,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	public void createExtraLogData() {
 		
 		if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
+			outcome.setRunNr(getRun());
 			// Calculate the opponent model quality measures and log them
 			UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
@@ -889,8 +890,9 @@ public class AlternatingOffersProtocol extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params); 
-			for (int k = 0; k < numberOfSessions; k++)
+			for (int k = 0; k < numberOfSessions; k++) {
 				sessions.add(session);
+			}
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
 			if(bidSpace!=null) {

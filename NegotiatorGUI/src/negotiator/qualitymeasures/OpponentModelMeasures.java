@@ -62,7 +62,7 @@ public class OpponentModelMeasures {
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
 			realParetoBids = realBS.getParetoFrontierBids();
-			paretoSurface = calculateParetoSurface(realBS.getParetoFrontier());
+			paretoSurface = calculateParetoSurface((ArrayList<BidPoint>) realBS.getParetoFrontier().clone());
 			opponentOutcomeSpace = new SortedOutcomeSpace(opponentUS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,6 +157,7 @@ public class OpponentModelMeasures {
 		double sum = 0;
 		
 		// its a difference, not a distance, as we know how we evaluate our own bid
+
 		for (Bid paretoBid : realParetoBids) {
 			double realOpp;
 			double estOpp;
@@ -190,11 +191,34 @@ public class OpponentModelMeasures {
 		return ((double)count / (double)realParetoBids.size());
 	}
 	
-	public double calculatePercIncorrectlyEstimatedParetoBids() {
-		return 0;
+	public double calculatePercIncorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
+		ArrayList<Bid> estimatedPFBids = null;
+		try {
+			estimatedPFBids = estimatedBS.getParetoFrontierBids();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		int count = 0;
 		
+		if (estimatedPFBids != null && estimatedPFBids.size() > 0 && estimatedPFBids.get(0) != null) {
+			for (Bid pBid : estimatedPFBids) {
+				if (realParetoBids.contains(pBid)) {
+					count++;
+				}
+			}
+		}
+		return ((double)count / (double)estimatedPFBids.size());
 	}
 	
+	/**
+	 * Note that the Pareto frontier difference can be positive and negative.
+	 * In general, the mapped estimate of the Pareto frontier will have less surface;
+	 * however, it can happen that less Pareto-points were estimated. In this case
+	 * a Pareto-point is missed, and it can happen that the surface is therefore larger.
+	 * 
+	 * @param estimatedBS
+	 * @return
+	 */
 	public double calculateParetoFrontierDistance(BidSpace estimatedBS) {
 		// 1. map bids of estimated frontier to real space
 		ArrayList<BidPoint> estimatedPFBP = new ArrayList<BidPoint>();
@@ -208,13 +232,22 @@ public class OpponentModelMeasures {
 		}
 		
 		double estimatedParetoSurface = calculateParetoSurface(estimatedPFBP);
-		return (paretoSurface - estimatedParetoSurface);
+		return Math.abs(paretoSurface - estimatedParetoSurface);
 	}
 	
 	private double calculateParetoSurface(ArrayList<BidPoint> paretoFrontier) {
 		// Add 0.0; 1.0 and 1.0; 0.0 to set
-		paretoFrontier.add(new BidPoint(null, 1.0, 0.0));
-		paretoFrontier.add(new BidPoint(null, 0.0, 1.0));
+		boolean foundZero = false;
+		boolean foundOne = false;
+		for (int i = 0; i < paretoFrontier.size(); i++) {
+			if (paretoFrontier.get(i).utilityA.equals(0.0)) {
+				foundZero = true;
+			} else if (paretoFrontier.get(i).utilityA.equals(1.0)) {
+				foundOne = true;
+			}
+		}
+		if (!foundZero) { paretoFrontier.add(new BidPoint(null, 0.0, 1.0)); }
+		if (!foundOne) { paretoFrontier.add(new BidPoint(null, 1.0, 0.0)); }
 		
 		// Order bids on utilityA
 		Collections.sort(paretoFrontier, new BidPointSorterAutil());
@@ -229,9 +262,9 @@ public class OpponentModelMeasures {
 	private double calculateSurfaceBelowTwoPoints(BidPoint higher, BidPoint lower) {
 		
 		// since the bidpoints are discrete, the surface can be decomposed in a triangle and a rectangle
-		double rectangleSurface = higher.utilityB * (higher.utilityA - higher.utilityA);
-		double triangleSurface = ((lower.utilityB - higher.utilityB) * (higher.utilityA - lower.utilityA)) / 2;
-		
+		double rectangleSurface = lower.utilityB * (lower.utilityA - higher.utilityA);
+		double triangleSurface = ((higher.utilityB - lower.utilityB) * (lower.utilityA - higher.utilityA)) / 2;
+
 		return (rectangleSurface + triangleSurface);
 	}
 	
@@ -242,7 +275,6 @@ public class OpponentModelMeasures {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(opponentOutcomeSpace.getAllOutcomes().indexOf(oBid) + " " + opponentOutcomeSpace.getAllOutcomes().size());
 		return opponentOutcomeSpace.getAllOutcomes().indexOf(oBid);
 	}
 }

@@ -21,6 +21,7 @@ public class CSVlogger {
 	private String spaceB;
 	private String LINE_SEPARATOR = System.getProperty("line.separator");
 	private ArrayList<Pair<String, ArrayList<Double>>> dataToLog;
+	private String domain;
 	
 	/**
 	 * Creates a CSV logger
@@ -30,13 +31,14 @@ public class CSVlogger {
 	 * @param agentB name of agent B
 	 * @param spaceB utility space of agent B
 	 */
-	public CSVlogger(String path, String agentA, String spaceA, String agentB, String spaceB) {
+	public CSVlogger(String path, String agentA, String spaceA, String agentB, String spaceB, String domain) {
 		this.path = path;
 		dataToLog = new ArrayList<Pair<String, ArrayList<Double>>>();
 		this.agentA = agentA.replaceAll(",", " ");
 		this.agentB = agentB.replaceAll(",", " ");
 		this.spaceA = spaceA;
 		this.spaceB = spaceB;
+		this.domain = domain;
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class CSVlogger {
 	/**
 	 * Writes the quality measures to a log.
 	 */
-	public void writeToFile() {
+	public void writeToFile(double timeOfAgreement, boolean agreement, int runNr) {
 		// 1. check if there is information to be written. It is assumed that each
 		// quality measure has the same amount of values
 		if (dataToLog.size() > 0 && dataToLog.get(0).getSecond().size() > 0) {
@@ -63,10 +65,15 @@ public class CSVlogger {
 				// 2. create a writer
 				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
 				
-				
 				// 3. store general information to distinguish a particular match
-				out.write(agentA + "(" + spaceA + ")" + LINE_SEPARATOR);
-				out.write(agentB + "(" + spaceB + ")" + LINE_SEPARATOR);
+				out.write(domain + LINE_SEPARATOR);
+				out.write(agentA.trim() + LINE_SEPARATOR);
+				out.write(spaceA.trim() + LINE_SEPARATOR);
+				out.write(agentB.trim() + LINE_SEPARATOR);
+				out.write(spaceB.trim() + LINE_SEPARATOR);
+				out.write(timeOfAgreement + " " + LINE_SEPARATOR);
+				out.write(agreement + LINE_SEPARATOR);
+				out.write(runNr + LINE_SEPARATOR);
 	
 				// 4. write the names of each quality measure
 				String namesLine = "";

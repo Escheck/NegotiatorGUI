@@ -99,7 +99,9 @@ public class Global {
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
-	 * Currently there are no known side-effects. 
+	 * The only side-effect is that it is not possible to retrieve the Pareto bids
+	 * given the bid points. This could be a problem for quality measures, but in this
+	 * case the alternate constructor of BidSpace can be used.
 	 */
 	public static final boolean LOW_MEMORY_MODE = true;
 	
@@ -108,6 +110,8 @@ public class Global {
 	 * feature is very heavy computationally, and should therefore be used with the PausableTimeline.
 	 */
 	public static final boolean OM_PROFILER_ENABLED = false;
+	
+	public static final boolean ONLY_RECORD_TRACE = false;
 	
 	public Global() {}
 
