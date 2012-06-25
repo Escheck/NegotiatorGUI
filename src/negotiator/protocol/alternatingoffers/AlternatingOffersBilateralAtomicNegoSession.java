@@ -295,13 +295,18 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		}
 
 	}
-	
-	
-	
+
 	private void processOMdata() throws Exception {
 		if (Global.OM_PROFILER_ENABLED) {
 			if (Global.PAUSABLE_TIMELINE) {
 				timeline.pause();
+			}
+			if (fAgentBBids.size() > 0) {
+				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).bid;
+				if (lastOpponentBid != null) {
+					omMeasuresResults.addTimePoint(timeline.getTime());
+					omMeasuresResults.addBidIndex(omMeasures.getOpponentBidIndex(lastOpponentBid));
+				}
 			}
 			if (agentA instanceof BOAagent) {
 				BOAagent boaA = (BOAagent) agentA;
@@ -311,24 +316,20 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						
 						if (fAgentBBids.size() > 0) {
 							
-							Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).bid;
-							if (lastOpponentBid != null) {
-								omMeasuresResults.addTimePoint(timeline.getTime());
-								omMeasuresResults.addBidIndex(omMeasures.getOpponentBidIndex(lastOpponentBid));
-							}
-							
-							if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
-										boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
-								
-								BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
-								omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
-								omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
-								
-								omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
-								omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
-								omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
+							if (!Global.ONLY_RECORD_TRACE) {
+								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
+											boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
+									
+									BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
+									omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
+									omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
+									
+									omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
+									omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
+									omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
 								}
 							}
+						}
 					}
 				}
 			}
@@ -473,7 +474,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
-		processDataForLogging();
+		boolean agreement = (lastAction instanceof Accept);
+		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
 	}
@@ -499,29 +501,32 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
-		
-		processDataForLogging();
+		boolean agreement = (lastAction instanceof Accept);
+		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
 	}
 
-	private void processDataForLogging() {
+	private void processDataForLogging(double time, boolean agreement) {
 		if (Global.OM_PROFILER_ENABLED) {
 			matchDataLogger.addMeasure("time", omMeasuresResults.getTimePointList());
 			matchDataLogger.addMeasure("bidindices", omMeasuresResults.getBidIndices());
-			matchDataLogger.addMeasure("pearson_corr_coef_bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList());
-			matchDataLogger.addMeasure("pearson_corr_issue_weights", omMeasuresResults.getPearsonCorrelationCoefficientOfIssueWeightsList());
-			matchDataLogger.addMeasure("ranking_dist_bids", omMeasuresResults.getRankingDistanceOfBidsList());
-			matchDataLogger.addMeasure("ranking_dist_issue_weights", omMeasuresResults.getRankingDistanceOfIssueWeightsList());
-			matchDataLogger.addMeasure("avg_difference_between_bids", omMeasuresResults.getAverageDifferenceBetweenBidsList());
-			matchDataLogger.addMeasure("avg_difference_between_issue_weights", omMeasuresResults.getAverageDifferenceBetweenIssueWeightsList());
-			matchDataLogger.addMeasure("kalai_diff", omMeasuresResults.getKalaiDistanceList());
-			matchDataLogger.addMeasure("nash_diff", omMeasuresResults.getNashDistanceList());
-			matchDataLogger.addMeasure("avg_diff_pareto_frontier", omMeasuresResults.getAverageDifferenceOfParetoFrontierList());
-			matchDataLogger.addMeasure("perc_correct_pareto_frontier", omMeasuresResults.getPercentageOfCorrectlyEstimatedParetoBidsList());
-			matchDataLogger.addMeasure("perc_incorrect_pareto_frontier", omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList());
-			matchDataLogger.addMeasure("pareto_frontier_distance", omMeasuresResults.getParetoFrontierDistanceList());
-			matchDataLogger.writeToFile();
+
+			if (!Global.ONLY_RECORD_TRACE) {
+				matchDataLogger.addMeasure("pearson_corr_coef_bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList());
+				matchDataLogger.addMeasure("pearson_corr_issue_weights", omMeasuresResults.getPearsonCorrelationCoefficientOfIssueWeightsList());
+				matchDataLogger.addMeasure("ranking_dist_bids", omMeasuresResults.getRankingDistanceOfBidsList());
+				matchDataLogger.addMeasure("ranking_dist_issue_weights", omMeasuresResults.getRankingDistanceOfIssueWeightsList());
+				matchDataLogger.addMeasure("avg_difference_between_bids", omMeasuresResults.getAverageDifferenceBetweenBidsList());
+				matchDataLogger.addMeasure("avg_difference_between_issue_weights", omMeasuresResults.getAverageDifferenceBetweenIssueWeightsList());
+				matchDataLogger.addMeasure("kalai_diff", omMeasuresResults.getKalaiDistanceList());
+				matchDataLogger.addMeasure("nash_diff", omMeasuresResults.getNashDistanceList());
+				matchDataLogger.addMeasure("avg_diff_pareto_frontier", omMeasuresResults.getAverageDifferenceOfParetoFrontierList());
+				matchDataLogger.addMeasure("perc_correct_pareto_frontier", omMeasuresResults.getPercentageOfCorrectlyEstimatedParetoBidsList());
+				matchDataLogger.addMeasure("perc_incorrect_pareto_frontier", omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList());
+				matchDataLogger.addMeasure("pareto_frontier_distance", omMeasuresResults.getParetoFrontierDistanceList());
+			}
+			matchDataLogger.writeToFile(time, agreement, protocol.getRun());
 		}
 	}
 
@@ -588,14 +593,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		
 		BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 		BidPoint nash = getBidSpace().getNash();
-		distanceToNash = lastbidPoint.distanceTo(nash);
-//		System.out.println("Distance to Nash: " + distanceToNash);
-		
-		// List<BidPoint> paretoFrontier = getBidSpace().getParetoFrontier();
-		//System.out.println("Pareto begin: " + paretoFrontier.get(0));
-		//System.out.println("Pareto end: " + paretoFrontier.get(paretoFrontier.size() - 1));
-		// TODO: add Pareto to logging
-		
+		distanceToNash = lastbidPoint.distanceTo(nash);	
 		
 		if(isMac){
 			ArrayList<BidPoint> subAgentABids;
@@ -610,7 +608,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			}
 			newOutcome(currentAgent, new Accept(agentB.getAgentID()), agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null,subAgentABids, subAgentBBids, outcomeTuple.getTime(), distanceToNash);
 			changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
-			//System.out.println("OutcomeTuple: " + outcomeTuple.toString());
 			MACoutcomes.add(no);
 
 		} else{
@@ -625,11 +622,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			no.agentAname = newName;
 		}
 		if(agentBWithMultiAC) {
-			//System.out.println("Name of agent: " + no.agentBname);
 			String newName = no.agentBname.replaceAll("Multi Acceptance Criteria", tuple.getName());
 			no.agentBname = newName;
-
-			//System.out.println("Changed Name of agent: " + newName);
 		}
 		
 	}

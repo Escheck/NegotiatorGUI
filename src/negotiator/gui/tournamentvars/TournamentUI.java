@@ -627,8 +627,7 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      * @param storeJobs true if startTournament, false if join
      */
     public void startDTournament(boolean storeJobs) {
-    	DBController dbc = DBController.getInstance();
-
+    	
     	// 1. Load the database parameters
     	String url = tournament.getVariables().get(Tournament.VARIABLE_DB_LOCATION).getValues().get(0).toString();
     	String user = tournament.getVariables().get(Tournament.VARIABLE_DB_USER).getValues().get(0).toString();

@@ -55,6 +55,7 @@ public abstract class Protocol implements Runnable, Serializable {
 
     private SimpleElement fRoot;
 //	private String fFileName;    
+	private int runNr = 0;
 
 	public abstract String getName();
 	
@@ -226,6 +227,19 @@ public abstract class Protocol implements Runnable, Serializable {
         return;
     }
     
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(agentNames);
+		result = prime * result + Arrays.hashCode(agentParams);
+		result = prime * result + Arrays.hashCode(agentRepItems);
+		result = prime * result + Arrays.hashCode(agentUtilitySpaces);
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+		result = prime * result + Arrays.hashCode(profileRepItems);
+		return result;
+	}
+	
     @Override
     public String toString()
     {
@@ -233,4 +247,11 @@ public abstract class Protocol implements Runnable, Serializable {
     }
     public abstract void cleanUP();
 
+	public void setRun(int runNr) {
+		this.runNr  = runNr;
+	}
+
+	public int getRun() {
+		return runNr;
+	}
 }
