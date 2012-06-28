@@ -20,15 +20,21 @@
 		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.Multi_AC"/>
 	</acceptanceconditions>
 	<opponentmodels>
-		<opponentmodel description="Null" classPath="negotiator.boaframework.opponentmodel.NullModel"/>
-		<opponentmodel description="Bayesian" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
-		<opponentmodel description="Bayesian scalable" classPath="negotiator.boaframework.opponentmodel.BayesianModelScalable" tooltip="'n' for NiceTitForTat-mode"/>
-		<opponentmodel description="FSEGA Bayesian" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
-		<opponentmodel description="Perfect" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
+		<opponentmodel description="No Model" classPath="negotiator.boaframework.opponentmodel.NoModel"/>
+		<opponentmodel description="HardHeaded Frequency Model" classPath="negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel" tooltip="'l' for learning coef. 'v' for value addition"/>
+		<opponentmodel description="Bayesian Model" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
+		<opponentmodel description="Scalable Bayesian Model" classPath="negotiator.boaframework.opponentmodel.ScalableBayesianModel"/>
+		<opponentmodel description="IAMhaggler Bayesian Model" classPath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel" tooltip="'a' for use all bids"/>
+		<opponentmodel description="FSEGA Bayesian Model" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
+		<opponentmodel description="Perfect Model" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
+		<opponentmodel description="Smith Frequency Model" classPath="negotiator.boaframework.opponentmodel.SmithFrequencyModel"/>
+		<opponentmodel description="Nash Frequency Model" classPath="negotiator.boaframework.opponentmodel.NashFrequencyModel"/>
+		<opponentmodel description="AgentX Frequency Model" classPath="negotiator.boaframework.opponentmodel.AgentXFrequencyModel"/>
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
 		<omstrategy description="Best bid" classPath="negotiator.boaframework.omstrategy.BestBid"/>
-		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count. Optionally 't'for when to stop updating"/>
+		<omstrategy description="NTFT" classPath="negotiator.boaframework.omstrategy.NTFTstrategy"/>
+		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN" tooltip="'n' for count"/>
 	</omstrategies>
 </repository>
