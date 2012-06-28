@@ -41,14 +41,9 @@ public class PerfectModel extends OpponentModel {
 	}
 
 	@Override
-	public double getDiscountedBidEvaluation(Bid bid, double time) {
-		try {
-			return opponentUtilitySpace.getUtilityWithDiscount(bid, time);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
+	public String getName() {
+		return "Perfect Model";
 	}
-
+	
 	public void updateModel(Bid opponentBid, double time) { }
 }
