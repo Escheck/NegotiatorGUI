@@ -71,7 +71,8 @@ public class BidSpace {
 	 */
 	void BuildSpace(boolean excludeBids) throws Exception
 	{
-		bidPoints=new ArrayList<BidPoint>();
+		// initially allocating the right size improves computational efficiency and memory cost
+		bidPoints=new ArrayList<BidPoint>((int)domain.getNumberOfPossibleBids());
 		BidIterator lBidIter = new BidIterator(domain);
 		
 		// if low memory mode, do not store the actual. At the time of writing this

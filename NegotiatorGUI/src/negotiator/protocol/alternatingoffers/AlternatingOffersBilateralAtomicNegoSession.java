@@ -19,7 +19,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.agent.BOAagent;
-import negotiator.boaframework.opponentmodel.NullModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
@@ -317,7 +317,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						if (fAgentBBids.size() > 0) {
 							
 							if (!Global.ONLY_RECORD_TRACE) {
-								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NullModel || boaA.getOpponentModel().isCleared() ||
+								if (!(boaA.getOpponentModel() == null || boaA.getOpponentModel() instanceof NoModel || boaA.getOpponentModel().isCleared() ||
 											boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
 									
 									BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);

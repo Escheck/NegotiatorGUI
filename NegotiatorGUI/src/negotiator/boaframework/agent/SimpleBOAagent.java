@@ -7,13 +7,13 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.acceptanceconditions.AC_Next;
 import negotiator.boaframework.offeringstrategy.TimeDependent_Offering;
 import negotiator.boaframework.omstrategy.NullStrategy;
-import negotiator.boaframework.opponentmodel.BayesianModelScalable;
+import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 
 public class SimpleBOAagent extends BOAagent{
 
 	@Override
 	public void agentSetup() {
-		OpponentModel om 			= new BayesianModelScalable();
+		OpponentModel om 			= new ScalableBayesianModel();
 		om.init(negotiationSession);
 		OMStrategy oms 				= new NullStrategy(negotiationSession);
 		OfferingStrategy offering  	= new TimeDependent_Offering(negotiationSession, om, oms, 0.2, 0, 1, 0); //Bouwlware agent strategy
