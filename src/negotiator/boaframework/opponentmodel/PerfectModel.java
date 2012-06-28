@@ -22,11 +22,7 @@ public class PerfectModel extends OpponentModel {
 				opponentUtilitySpace = session.getAgentBUtilitySpace();
 			}
 		} else {
-			try {
-				throw new Exception("Global.experimentalSetup should be enabled!");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			System.err.println("Global.experimentalSetup should be enabled!");
 		}	
 	}
 
