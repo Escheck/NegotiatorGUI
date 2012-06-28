@@ -15,7 +15,7 @@ import negotiator.utility.UtilitySpace;
  * 
  * @author Mark Hendrikx
  */
-public class BayesianModelScalable extends OpponentModel {
+public class ScalableBayesianModel extends OpponentModel {
 
 	private BayesianOpponentModelScalable model;
 	private int startingBidIssue = 0;

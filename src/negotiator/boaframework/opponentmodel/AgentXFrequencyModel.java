@@ -8,6 +8,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.agentx.DiscreteIssueProcessor;
 import negotiator.boaframework.opponentmodel.agentx.DiscreteValueProcessor;
+import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
@@ -160,5 +161,9 @@ public class AgentXFrequencyModel extends OpponentModel {
 	
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
+	}
+	
+	public String getName() {
+		return "AgentX Frequency Model";
 	}
 }

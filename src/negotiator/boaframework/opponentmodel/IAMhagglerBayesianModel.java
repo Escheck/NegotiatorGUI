@@ -9,6 +9,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.iamhaggler.TimeConcessionFunction;
 import negotiator.boaframework.opponentmodel.iamhaggler.WeightHypothesis;
+import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -27,7 +28,7 @@ import negotiator.utility.UtilitySpace;
  *  
  * @author Colin Williams, Mark Hendrikx
  */
-public class IAMhagglerModel extends OpponentModel {
+public class IAMhagglerBayesianModel extends OpponentModel {
 	private ArrayList<Bid> biddingHistory;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> evaluatorHypotheses;
 	private ArrayList<ArrayList<WeightHypothesis>> weightHypotheses;
@@ -690,6 +691,10 @@ public class IAMhagglerModel extends OpponentModel {
 		return new UtilitySpaceAdapter(this, domain);
 	}
 
+	public String getName() {
+		return "IAMhaggler Bayesian Model";
+	}
+	
 	public void cleanUp() {
 		super.cleanUp();
 		biddingHistory = null;

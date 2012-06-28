@@ -12,6 +12,7 @@ import negotiator.boaframework.opponentmodel.nash.IssueEvaluationInteger;
 import negotiator.boaframework.opponentmodel.nash.IssueEvaluationList;
 import negotiator.boaframework.opponentmodel.nash.IssueEvaluationReal;
 import negotiator.boaframework.opponentmodel.nash.Range;
+import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
