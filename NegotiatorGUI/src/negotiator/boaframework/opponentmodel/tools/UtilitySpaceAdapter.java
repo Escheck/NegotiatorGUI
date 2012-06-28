@@ -32,5 +32,10 @@ public class UtilitySpaceAdapter extends UtilitySpace {
 			u = 0.0;
 		}
 		return u;
-	} 
+	}
+	
+	public double getWeight(int i) {
+		System.err.println("The opponent model should overwrite getWeight() when using the UtilitySpaceAdapter");
+		return i;
+	}
 }

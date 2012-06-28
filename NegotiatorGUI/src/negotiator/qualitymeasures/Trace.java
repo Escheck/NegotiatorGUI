@@ -1,13 +1,15 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import misc.Pair;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 
 public class Trace {
 	
-	private ArrayList<BidDetails> offeredBids;
+	private ArrayList<Pair<Integer, BidDetails>> offeredBids;
 	private String agent;
 	private String opponent;
 	private String agentProfile;
@@ -16,20 +18,25 @@ public class Trace {
 	private double endOfNegotiation;
 	private boolean agreement;
 	private int runNumber;
+	private HashMap<Integer, String> legend;
+	private HashMap<String, ArrayList<Double>> data;
 	
 	public Trace() {
-		offeredBids = new ArrayList<BidDetails>();
+		offeredBids = new ArrayList<Pair<Integer, BidDetails>>();
+		legend = new HashMap<Integer, String>();
+		data = new HashMap<String, ArrayList<Double>>();
 	}
 
-	public void addBid(Bid bid, double evaluation, double time) {
-		offeredBids.add(new BidDetails(bid, evaluation, time));
+	public void addBid(int index, Bid bid, double evaluation, double time) {
+		BidDetails bidDetails = new BidDetails(bid, evaluation, time);
+		offeredBids.add(new Pair<Integer, BidDetails>(index, bidDetails));
 	}
-
-	public ArrayList<BidDetails> getOfferedBids() {
+	
+	public ArrayList<Pair<Integer, BidDetails>> getOfferedBids() {
 		return offeredBids;
 	}
 
-	public void setOfferedBids(ArrayList<BidDetails> offeredBids) {
+	public void setOfferedBids(ArrayList<Pair<Integer, BidDetails>> offeredBids) {
 		this.offeredBids = offeredBids;
 	}
 
@@ -95,6 +102,28 @@ public class Trace {
 
 	public void setRunNumber(int runNumber) {
 		this.runNumber = runNumber;
+	}
+
+
+	public HashMap<Integer, String> getLegend() {
+		return legend;
+	}
+
+	public void setLegend(HashMap<Integer, String> legend) {
+		this.legend = legend;
+		for (String header : legend.values()) {
+			if (!header.equals("time") && !header.equals("bidindices")) {
+				data.put(header, new ArrayList<Double>());
+			}
+		}
+	}
+
+	public HashMap<String, ArrayList<Double>> getData() {
+		return data;
+	}
+
+	public void setData(HashMap<String, ArrayList<Double>> data) {
+		this.data = data;
 	}
 
 	@Override

@@ -3,21 +3,21 @@ package negotiator.qualitymeasures;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Simple parser which is designed to load CSV files containing the trace of the opponent.
- * This type of log can be easily made by disabling the opponent model measures, or using an agent
- * without opponent model.
+ * Simple parser which is designed to load CSV files containing the trace of the opponent and possibly
+ * a the results of various quality measures. New quality measures can be easily added without having
+ * to change the parser.
  * 
  * @author Mark Hendrikx
  */
 public class TraceLoader {
-
-	private ArrayList<Trace> traces = new ArrayList<Trace>();
 	private enum Mode { DOMAIN, AGENTA, PREFPROFA, AGENTB, PREFPROFB, TIME, AGREEMENT, RUNNUMBER, HEADER, DATA }
 	private Mode mode;
 	private Trace currentTrace;
@@ -26,15 +26,17 @@ public class TraceLoader {
 	private UtilitySpace myCurrentUtilSpace;
 	
 	public ArrayList<Trace> loadTraces(String mainDir, String logPath) {
+		ArrayList<Trace> traces = null;
 		try {	
-			process(mainDir, logPath);
+			traces = process(mainDir, logPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return traces;
 	}
 	
-	public void process(String mainDir, String logPath) throws Exception {
+	public ArrayList<Trace> process(String mainDir, String logPath) throws Exception {
+		ArrayList<Trace> traces = new ArrayList<Trace>();
 		BufferedReader parser = new BufferedReader(new FileReader(mainDir + "/" + logPath));
 		mode = Mode.DOMAIN;
 		String line = "";
@@ -47,8 +49,8 @@ public class TraceLoader {
 			switch (mode) {
 				case DOMAIN:
 					currentTrace = new Trace();
-					currentTrace.setDomain(mainDir + "/" + line);
-					currentDomain = new Domain(currentTrace.getDomain());
+					currentTrace.setDomain(line);
+					currentDomain = new Domain(mainDir + "/" + currentTrace.getDomain());
 					mode = Mode.AGENTA;
 		        	break;
 				case AGENTA:
@@ -56,8 +58,8 @@ public class TraceLoader {
 					mode = Mode.PREFPROFA;
 		        	break;
 				case PREFPROFA:
-					currentTrace.setAgentProfile(mainDir + "/" + line);
-					myCurrentUtilSpace = new UtilitySpace(currentDomain, currentTrace.getAgentProfile());
+					currentTrace.setAgentProfile(line);
+					myCurrentUtilSpace = new UtilitySpace(currentDomain, mainDir + "/" + currentTrace.getAgentProfile());
 					mode = Mode.AGENTB;
 					break;
 				case AGENTB:
@@ -65,8 +67,8 @@ public class TraceLoader {
 					mode = Mode.PREFPROFB;
 					break;
 				case PREFPROFB:
-					currentTrace.setOpponentProfile(mainDir + "/" + line);
-					UtilitySpace opponentSpace = new UtilitySpace(currentDomain, currentTrace.getOpponentProfile());
+					currentTrace.setOpponentProfile(line);
+					UtilitySpace opponentSpace = new UtilitySpace(currentDomain, mainDir + "/" + currentTrace.getOpponentProfile());
 					currentOutcomeSpace = new SortedOutcomeSpace(opponentSpace);
 					mode = Mode.TIME;
 					break;
@@ -83,10 +85,11 @@ public class TraceLoader {
 					mode = Mode.HEADER;
 					break;
 				case HEADER:
+					parseHeader(currentTrace, line);
 					mode = Mode.DATA;
 					break;
 				case DATA:
-					parseBid(currentTrace, line);
+					parseData(currentTrace, line);
 					break;
 				default:
 					break;
@@ -95,15 +98,44 @@ public class TraceLoader {
 		if (currentTrace != null) {
 			traces.add(currentTrace);
 		}
+		return traces;
 	}
 
-	private void parseBid(Trace trace, String line) {
-		String[] split = line.split(",");
-		double time = Double.parseDouble(split[0]);
-		int bidIndex = (int) Double.parseDouble(split[1]);
+	private void parseHeader(Trace trace, String line) {
+		String[] headers = line.split(",");
+		HashMap<Integer, String> legend = new HashMap<Integer, String>();
+		for (int i = 0; i < headers.length; i++) {
+			legend.put(i, headers[i]);
+		}
+		trace.setLegend(legend);
+	}
+
+	private void parseData(Trace trace, String line) {
+		String[] data = line.split(",");
+		double time = -1;
+		int bidIndex = -1;
+		for (int i = 0; i < data.length; i++) {
+			String type = trace.getLegend().get(i);
+			double value = Double.parseDouble(data[i]);
+			if (type.equals("time")) {
+				time = value;
+			} else if (type.equals("bidindices")) {
+				bidIndex = (int)value;
+			} else {
+				trace.getData().get(type).add(value);
+			}
+		}
+		if (time >= 0 && bidIndex >= 0) {
+			addBid(trace, time, bidIndex);
+		} else {
+			System.err.println("No bid found on this line; the data is in an incorrect format");
+		}
+	}
+	
+	private void addBid(Trace trace, double time, int bidIndex) {
 		Bid bid = currentOutcomeSpace.getAllOutcomes().get(bidIndex).getBid();
 		try {
-			currentTrace.addBid(bid, myCurrentUtilSpace.getUtility(bid), time);
+			currentTrace.addBid(bidIndex, bid, myCurrentUtilSpace.getUtility(bid), time);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

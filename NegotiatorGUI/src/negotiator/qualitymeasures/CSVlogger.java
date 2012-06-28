@@ -41,6 +41,16 @@ public class CSVlogger {
 		this.domain = domain;
 	}
 	
+	public CSVlogger(String path, Trace trace) {
+		this.path = path;
+		dataToLog = new ArrayList<Pair<String, ArrayList<Double>>>();
+		this.agentA = trace.getAgent().replaceAll(",", " ");
+		this.agentB = trace.getOpponent().replaceAll(",", " ");
+		this.spaceA = trace.getAgentProfile();
+		this.spaceB = trace.getOpponentProfile();
+		this.domain = trace.getDomain();
+	}
+
 	/**
 	 * Add an array with the results of a particular quality measures
 	 * to the set of arrays which should be printed

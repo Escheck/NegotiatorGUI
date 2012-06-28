@@ -321,9 +321,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 											boaA.getOpponentModel().getOpponentUtilitySpace() == null)) {
 									
 									BidSpace estimatedBS = new BidSpace(spaceA, boaA.getOpponentModel().getOpponentUtilitySpace(), false);
-									omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));
-									omMeasuresResults.addPearsonCorrelationCoefficientOfIssueWeights(omMeasures.calculatePearsonCorrelationCoefficientWeights(boaA.getOpponentModel()));
-									
+									omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(boaA.getOpponentModel()));									
 									omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
 									omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
 									omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(boaA.getOpponentModel()));
@@ -514,7 +512,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 			if (!Global.ONLY_RECORD_TRACE) {
 				matchDataLogger.addMeasure("pearson_corr_coef_bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList());
-				matchDataLogger.addMeasure("pearson_corr_issue_weights", omMeasuresResults.getPearsonCorrelationCoefficientOfIssueWeightsList());
 				matchDataLogger.addMeasure("ranking_dist_bids", omMeasuresResults.getRankingDistanceOfBidsList());
 				matchDataLogger.addMeasure("ranking_dist_issue_weights", omMeasuresResults.getRankingDistanceOfIssueWeightsList());
 				matchDataLogger.addMeasure("avg_difference_between_bids", omMeasuresResults.getAverageDifferenceBetweenBidsList());

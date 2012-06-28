@@ -172,6 +172,7 @@ public class ScenarioMeasures {
 		double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
 		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
 		double paretoDistance = calculateAverageParetoDistance(utilitySpaceA, utilitySpaceB);
+		double paretoBids = calculateAmountOfParetoBids(utilitySpaceA, utilitySpaceB);
 		
 		element.setAttribute("bids_count", utilitySpaceA.getDomain().getNumberOfPossibleBids() + "");
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
@@ -181,11 +182,12 @@ public class ScenarioMeasures {
 		element.setAttribute("pearson_correlation_coefficient_utility_space", String.valueOf(pearsonCorrUtil));
 		element.setAttribute("relative_opposition", String.valueOf(opposition));
 		element.setAttribute("bid_distribution", String.valueOf(paretoDistance));
+		element.setAttribute("amount_pareto_bids", String.valueOf(paretoBids));
 
 		return element;
 	}
 	
-	private static String createListOfParetoBids(UtilitySpace utilitySpaceA,
+	private static int calculateAmountOfParetoBids(UtilitySpace utilitySpaceA,
 			UtilitySpace utilitySpaceB) {
 		BidSpace space = null;
 		try {
@@ -199,17 +201,7 @@ public class ScenarioMeasures {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Collections.sort(bids, new BidSorter());
-		
-		String bidStr = "";
-		for (int i = 0; i < bids.size(); i++) {
-			try {
-				bidStr += "(" + utilitySpaceA.getUtility(bids.get(i)) + " " + utilitySpaceB.getUtility(bids.get(i)) + ") ";
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return bidStr;
+		return bids.size();
 	}
 
 	/**
