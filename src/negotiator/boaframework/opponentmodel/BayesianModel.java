@@ -79,21 +79,16 @@ public class BayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public double getDiscountedBidEvaluation(Bid b, double time) {
-		try {
-			throw new Exception("Unimplemented yet");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
-	@Override
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
 	}
 	
 	public void cleanUp() {
 		super.cleanUp();
+	}
+	
+	@Override
+	public String getName() {
+		return "Bayesian Model";
 	}
 }

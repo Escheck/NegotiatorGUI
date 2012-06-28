@@ -72,16 +72,6 @@ public class BayesianModelScalable extends OpponentModel {
 		}
 		return 0;
 	}
-
-	@Override
-	public double getDiscountedBidEvaluation(Bid b, double time) {
-		try {
-			throw new Exception("Unimplemented yet");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
 	
 	public double getWeight(Issue issue) {
 		return model.getNormalizedWeight(issue, startingBidIssue);
@@ -94,5 +84,10 @@ public class BayesianModelScalable extends OpponentModel {
 	
 	public void cleanUp() {
 		super.cleanUp();
+	}
+	
+	@Override
+	public String getName() {
+		return "Scalable Bayesian Model";
 	}
 }

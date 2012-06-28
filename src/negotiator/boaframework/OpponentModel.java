@@ -49,16 +49,6 @@ public abstract class OpponentModel {
 		return -1;
 	}
 	
-	/**
-	 * Determines the discounted utility of the opponent according to the OpponentModel
-	 * @param Bid
-	 * @param Time
-	 * @return
-	 */
-	public double getDiscountedBidEvaluation(Bid b, double time){
-		return opponentUtilitySpace.getUtilityWithDiscount(b, time);
-	}
-	
 	public UtilitySpace getOpponentUtilitySpace(){
 		return opponentUtilitySpace;
 	}
@@ -93,5 +83,9 @@ public abstract class OpponentModel {
 
 	public boolean isCleared() {
 		return cleared;
+	}
+
+	public String getName() {
+		return "Default";
 	}
 }
