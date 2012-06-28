@@ -1,4 +1,4 @@
-package negotiator.boaframework.opponentmodel;
+package negotiator.boaframework.opponentmodel.tools;
 
 import negotiator.Bid;
 import negotiator.Domain;

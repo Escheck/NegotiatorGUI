@@ -8,7 +8,7 @@ import negotiator.boaframework.OpponentModel;
  * 
  * @author Mark Hendrikx
  */
-public class NullModel extends OpponentModel {
+public class NoModel extends OpponentModel {
 
 
 	public void updateModel(Bid opponentBid, double time) { }
