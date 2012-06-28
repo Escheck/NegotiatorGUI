@@ -93,7 +93,7 @@ public class UtilspaceTools {
 	 */
 	public static double calculatePearsonCorrelationCoefficient(double[] setA, double[] setB) {
 		if (setA.length != setB.length) {
-			System.out.println("Amount of variables should be equal.");
+			System.err.println("Amount of variables should be equal.");
 		}
 		
 		double averageSetA = 0, averageSetB = 0;
@@ -106,7 +106,7 @@ public class UtilspaceTools {
 		}
 		averageSetA = (double)sumA / (double)setA.length;
 		averageSetB = (double)sumB / (double)setB.length;
-		
+
 		//calculate the distance itself
 		double nominator = 0;
 		double sumSquareNormA = 0;

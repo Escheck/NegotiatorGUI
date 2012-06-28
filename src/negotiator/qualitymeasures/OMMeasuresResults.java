@@ -6,7 +6,6 @@ public class OMMeasuresResults {
 	
 	private ArrayList<Double> timePointList;
     private ArrayList<Double> pearsonCorrelationCoefficientOfBidsList;
-    private ArrayList<Double> pearsonCorrelationCoefficientOfIssueWeightsList;
     private ArrayList<Double> rankingDistanceOfBidsList;
     private ArrayList<Double> rankingDistanceOfIssueWeightsList;
     private ArrayList<Double> averageDifferenceBetweenBidsList;
@@ -23,7 +22,6 @@ public class OMMeasuresResults {
     public OMMeasuresResults() {
     	timePointList = new ArrayList<Double>();
     	pearsonCorrelationCoefficientOfBidsList = new ArrayList<Double>();
-    	pearsonCorrelationCoefficientOfIssueWeightsList = new ArrayList<Double>();
     	rankingDistanceOfBidsList = new ArrayList<Double>();
     	rankingDistanceOfIssueWeightsList = new ArrayList<Double>();
     	averageDifferenceBetweenBidsList = new ArrayList<Double>();
@@ -46,10 +44,6 @@ public class OMMeasuresResults {
 	
     public void addPearsonCorrelationCoefficientOfBids(double pearsonCorrelationCoefficientOfBids) {
     	pearsonCorrelationCoefficientOfBidsList.add(pearsonCorrelationCoefficientOfBids);
-    }
-    
-    public void addPearsonCorrelationCoefficientOfIssueWeights(double pearsonCorrelationCoefficientOfIssueWeights) {
-    	pearsonCorrelationCoefficientOfIssueWeightsList.add(pearsonCorrelationCoefficientOfIssueWeights);
     }
     
     public void addRankingDistanceOfBids(double rankingDistanceOfBids) {
@@ -102,10 +96,6 @@ public class OMMeasuresResults {
 
 	public double[][] getPearsonCorrelationCoefficientOfBidsListData() {
 		return convertToChartData(timePointList, pearsonCorrelationCoefficientOfBidsList);
-	}
-
-	public double[][] getPearsonCorrelationCoefficientOfIssueWeightsListData() {
-		return convertToChartData(timePointList, pearsonCorrelationCoefficientOfIssueWeightsList);
 	}
 
 	public double[][] getRankingDistanceOfBidsListData() {
@@ -169,10 +159,6 @@ public class OMMeasuresResults {
 
 	public ArrayList<Double> getPearsonCorrelationCoefficientOfBidsList() {
 		return pearsonCorrelationCoefficientOfBidsList;
-	}
-
-	public ArrayList<Double> getPearsonCorrelationCoefficientOfIssueWeightsList() {
-		return pearsonCorrelationCoefficientOfIssueWeightsList;
 	}
 
 	public ArrayList<Double> getRankingDistanceOfBidsList() {

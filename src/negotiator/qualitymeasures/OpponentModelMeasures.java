@@ -3,6 +3,7 @@ package negotiator.qualitymeasures;
 import java.util.ArrayList;
 import java.util.Collections;
 import negotiator.Bid;
+import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterAutil;
 import negotiator.analysis.BidSpace;
@@ -81,16 +82,8 @@ public class OpponentModelMeasures {
 		return UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
 	}
 
-	/**
-	 * Calculates the Pearson correlation coefficient by comparing the utility of each weight estimated
-	 * by the real and estimated opponent's utility space. Higher is better.
-	 * 
-	 * @param opponentModel
-	 * @return pearson correlation coefficient
-	 */
-	public double calculatePearsonCorrelationCoefficientWeights(OpponentModel opponentModel) {
-		double[] estimatedIssueWeights = opponentModel.getIssueWeights();
-		return UtilspaceTools.calculatePearsonCorrelationCoefficient(realIssueWeights, estimatedIssueWeights);
+	public void setRealIssueWeights(double[] realIssueWeights) {
+		this.realIssueWeights = realIssueWeights;
 	}
 	
 	/**
@@ -276,5 +269,29 @@ public class OpponentModelMeasures {
 			e.printStackTrace();
 		}
 		return opponentOutcomeSpace.getAllOutcomes().indexOf(oBid);
+	}
+
+	public double calculateAvgDiffBetweenBids(OpponentModel model) {
+		double difference = 0;
+		BidIterator iterator = new BidIterator(opponentUS.getDomain());
+		while (iterator.hasNext()) {
+			Bid bid = iterator.next();
+			try {
+				difference += Math.abs(opponentUS.getUtility(bid) - model.getBidEvaluation(bid));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return difference / (double) opponentUS.getDomain().getNumberOfPossibleBids();
+	}
+
+	public double calculateAvgDiffBetweenIssueWeights(
+			OpponentModel opponentModel) {
+		double difference = 0;
+		double[] estimatedIssueWeights = opponentModel.getIssueWeights();
+		for (int i = 0; i < realIssueWeights.length; i++) {
+			difference += Math.abs(realIssueWeights[i]- estimatedIssueWeights[i]);
+		}
+		return difference / (double) realIssueWeights.length;
 	}
 }

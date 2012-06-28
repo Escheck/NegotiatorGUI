@@ -91,7 +91,7 @@ public class BOAagentsFrame extends JDialog {
     
     private JSeparator seperator;
     
-    private final static boolean DEBUG = true;
+    private final static boolean DEBUG = false;
     
     // the null parameter is a parameter added to strategies without
     // parameters. This is done, such to ensure that the Cartesian product
