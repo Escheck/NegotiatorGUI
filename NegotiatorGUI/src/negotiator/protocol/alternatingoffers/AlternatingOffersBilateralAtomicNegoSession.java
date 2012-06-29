@@ -523,7 +523,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				matchDataLogger.addMeasure("perc_incorrect_pareto_frontier", omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList());
 				matchDataLogger.addMeasure("pareto_frontier_distance", omMeasuresResults.getParetoFrontierDistanceList());
 			}
-			matchDataLogger.writeToFile(time, agreement, protocol.getRun());
+			matchDataLogger.writeToFileCompact(time, agreement, protocol.getRun());
 		}
 	}
 
