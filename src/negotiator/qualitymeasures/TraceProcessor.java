@@ -45,7 +45,7 @@ public class TraceProcessor {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size());
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace);
-			OMMeasuresResults omMeasuresResults = new OMMeasuresResults();
+			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
 			OpponentModelMeasures omMeasures = null;
 			try {
 				opponentModel.init(negotiationSession, null);
@@ -91,7 +91,7 @@ public class TraceProcessor {
 	}
 	
 	
-	private static void processDataForLogging(Trace trace, OMMeasuresResults omMeasuresResults, String outPath) {
+	private static void processDataForLogging(Trace trace, OpponentModelMeasuresResults omMeasuresResults, String outPath) {
 		CSVlogger logger = new CSVlogger(outPath, trace);
 		logger.addMeasure("time", omMeasuresResults.getTimePointList());
 		logger.addMeasure("bidindices", omMeasuresResults.getBidIndices());

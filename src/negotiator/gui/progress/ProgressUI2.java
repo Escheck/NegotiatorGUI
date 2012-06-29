@@ -276,49 +276,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		session.setLog(textOutput.getText());
 	}
 	
-	/** run this for a demo of ProgressnUI */
-/*	public static void main(String[] args) 
-	{
-		//create sample data:
-		double [][] possibleBids = new double [2][1000];
-		for(int i=0;i<1000;i++){
-			possibleBids [0][i]= Math.random();
-			possibleBids [1][i]= Math.random();
-		}
-		double[][] pareto = new double [2][4];
-		double [][] bidSeriesA = new double [2][4];
-		double [][] bidSeriesB = new double [2][4];
-		
-		for(int i=0;i<4;i++){
-			double paretox = Math.random();
-			if (paretox<0.5)paretox+=0.5;
-			double paretoy = Math.random();
-			if (paretoy<0.5)paretoy+=0.5;
-			if (i==0)
-				pareto [1][0]=1;
-			if (i==3)
-				pareto [0][3]=1;
-													
-			pareto [0][i]= paretox;
-			pareto [1][i]= paretoy;
-			bidSeriesA [0][i]= Math.random();
-			bidSeriesA [1][i]= Math.random();
-			bidSeriesB [0][i]= Math.random();
-			bidSeriesB [1][i]= Math.random();
-		}
-		
-		BidChart myChart = new BidChart();
-		JTable myTable = new JTable(5,5);
-		try {
-			new ProgressUI("Logging started...",myChart,myTable); 
-		} catch (Exception e) { new Warning("ProgressUI failed to launch: ",e); }
-		
-		//when the dataset is changes the chart is automatically updated
-		myChart.setPossibleBids(possibleBids);
-		//myChart.setPareto(pareto);
-		myChart.setBidSeriesA(bidSeriesA);
-		myChart.setBidSeriesB(bidSeriesB);
-	}*/
 	public void setLogText(String str){
 		textOutput.setText(str);
 	}
@@ -345,27 +302,24 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
-			if (!Global.OM_PROFILER_ENABLED) {
-				if(pb!=null)
-					bidChart.setPossibleBids(pb);
-				double [][] paretoB = getPareto();
-				if(paretoB!=null)
-					bidChart.setPareto(paretoB);
-				
-				//nash
-				BidPoint bp1= bs.getNash();
-				nash[0][0]= bp1.utilityA;
-				nash[1][0]= bp1.utilityB;
-				if(nash!=null)
-					bidChart.setNash(nash);	
-				//kalai
-				BidPoint bp2 = bs.getKalaiSmorodinsky();
-				kalai[0][0]= bp2.utilityA;
-				kalai[1][0]= bp2.utilityB;
-				if(kalai!=null)
-					bidChart.setKalai(kalai);
-			}
+			if(pb!=null)
+				bidChart.setPossibleBids(pb);
+			double [][] paretoB = getPareto();
+			if(paretoB!=null)
+				bidChart.setPareto(paretoB);
 			
+			//nash
+			BidPoint bp1= bs.getNash();
+			nash[0][0]= bp1.utilityA;
+			nash[1][0]= bp1.utilityB;
+			if(nash!=null)
+				bidChart.setNash(nash);	
+			//kalai
+			BidPoint bp2 = bs.getKalaiSmorodinsky();
+			kalai[0][0]= bp2.utilityA;
+			kalai[1][0]= bp2.utilityB;
+			if(kalai!=null)
+				bidChart.setKalai(kalai);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -399,18 +353,12 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//adding graph data:
 		double [][] curveA = session.getNegotiationPathA();
 		double [][] curveB = session.getNegotiationPathB();
+	
+		if(curveA!=null)
+			bidChart.setBidSeriesA(curveA);
+		if(curveB!=null)
+			bidChart.setBidSeriesB(curveB);
 		
-		if (Global.OM_PROFILER_ENABLED) {
-			bidChart.setPearsonCorrCoefBidsData(session.getOmMeasuresResults().getPearsonCorrelationCoefficientOfBidsListData());
-			bidChart.setRankingDistBidsData(session.getOmMeasuresResults().getRankingDistanceOfBidsListData());
-			bidChart.setKalaiDiffData(session.getOmMeasuresResults().getKalaiDistanceListData());
-			bidChart.setNashDiffData(session.getOmMeasuresResults().getNashDistanceListData());
-		} else {
-			if(curveA!=null)
-				bidChart.setBidSeriesA(curveA);
-			if(curveB!=null)
-				bidChart.setBidSeriesB(curveB);
-		}
 		
 		if ((evt.getAct()instanceof Accept)){
 			double [][]ap = new double [2][1];
