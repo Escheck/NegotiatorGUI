@@ -106,12 +106,10 @@ public class Global {
 	public static final boolean LOW_MEMORY_MODE = true;
 	
 	/**
-	 * Use this option to measure the accuracy of OM during a negotiation. Note that this
-	 * feature is very heavy computationally, and should therefore be used with the PausableTimeline.
+	 * Use this feature to record the opponent's trace. Note that while this feature is not
+	 * heavy, it is advisable to use it with the PAUSABLE_TIMELINE option.
 	 */
-	public static final boolean OM_PROFILER_ENABLED = false;
-	
-	public static final boolean ONLY_RECORD_TRACE = false;
+	public static final boolean RECORD_OPPONENT_TRACE = false;
 	
 	public Global() {}
 
