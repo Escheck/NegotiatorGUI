@@ -13,7 +13,7 @@ import negotiator.analysis.BidSpaceCash;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.qualitymeasures.CSVlogger;
-import negotiator.qualitymeasures.OMMeasuresResults;
+import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -38,7 +38,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
 	protected 	CSVlogger matchDataLogger;
-	protected 	OMMeasuresResults omMeasuresResults = new OMMeasuresResults();
+	protected 	OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
 
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	private String log;
@@ -213,10 +213,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     		additionalLog.addChildElement(pElem);
     	
     }
-    
-	public OMMeasuresResults getOmMeasuresResults() {
-		return omMeasuresResults;
-	}
 
 	public void setLog(String str){
 		log = str;

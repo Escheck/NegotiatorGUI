@@ -2,7 +2,7 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 
-public class OMMeasuresResults {
+public class OpponentModelMeasuresResults {
 	
 	private ArrayList<Double> timePointList;
     private ArrayList<Double> pearsonCorrelationCoefficientOfBidsList;
@@ -19,7 +19,7 @@ public class OMMeasuresResults {
     private ArrayList<Double> bidIndices;
     private double[][] empty;
 
-    public OMMeasuresResults() {
+    public OpponentModelMeasuresResults() {
     	timePointList = new ArrayList<Double>();
     	pearsonCorrelationCoefficientOfBidsList = new ArrayList<Double>();
     	rankingDistanceOfBidsList = new ArrayList<Double>();
