@@ -65,9 +65,9 @@ public class CSVlogger {
 	}
 	
 	/**
-	 * Writes the quality measures to a log.
+	 * Writes the quality measures to a compact log.
 	 */
-	public void writeToFile(double timeOfAgreement, boolean agreement, int runNr) {
+	public void writeToFileCompact(double timeOfAgreement, boolean agreement, int runNr) {
 		// 1. check if there is information to be written. It is assumed that each
 		// quality measure has the same amount of values
 		if (dataToLog.size() > 0 && dataToLog.get(0).getSecond().size() > 0) {
@@ -96,6 +96,61 @@ public class CSVlogger {
 				// 5. write the values of each quality measure
 				for (int i = 0; i < dataToLog.get(0).getSecond().size(); i++) {
 					String line = "";
+					for (int b = 0; b < dataToLog.size() - 1; b++) {
+						line += (dataToLog.get(b).getSecond().get(i) + ",");
+					}
+					line += (dataToLog.get(dataToLog.size() - 1).getSecond().get(i));
+					out.write(line + LINE_SEPARATOR);
+				}
+				out.close();
+			} catch (Exception e) {
+				new Warning("Exception during writing s:"+e);
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("No data to log");
+		}
+	}
+	
+	/**
+	 * Writes the quality measures to a pivot-table compatible log.
+	 * Information is duplicated many times, and therefore this format should only
+	 * be used as final output.
+	 * @param firstEntry 
+	 */
+	public void writeToFilePivotCompatible(int runNr, double sampleSpeed, boolean firstEntry) {
+		// 1. check if there is information to be written. It is assumed that each
+		// quality measure has the same amount of values
+		if (dataToLog.size() > 0 && dataToLog.get(0).getSecond().size() > 0) {
+			try {
+				// 2. create a writer
+				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
+				
+				// 3. store general information to distinguish a particular match
+				String[] domainInfo = domain.split("/");
+				domain = domainInfo[domainInfo.length - 1];
+				String[] spaceAInfo = spaceA.split("/");
+				spaceA = spaceAInfo[spaceAInfo.length - 1];
+				String[] spaceBInfo = spaceB.split("/");
+				spaceB = spaceBInfo[spaceBInfo.length - 1];
+				
+				// 4. write the names of each quality measure
+				if (firstEntry) {
+					String namesLine = "domain,agentA,spaceA,agentB,spaceB,run,time,";
+					for (int i = 0; i < dataToLog.size() - 1; i++) {
+						namesLine += (dataToLog.get(i).getFirst() + ",");
+					}
+					namesLine += (dataToLog.get(dataToLog.size() - 1).getFirst());
+					out.write(namesLine + LINE_SEPARATOR);
+				}
+
+				// 5. write the values of each quality measure
+				String extraInfo = domain + "," + agentA + "," + spaceA + "," + agentB + "," + spaceB + "," + runNr + ",";
+				int currentSample = 0;
+				for (int i = 0; i < dataToLog.get(0).getSecond().size(); i++) {
+					String time = (currentSample * sampleSpeed) + "000";
+					currentSample++;
+					String line = extraInfo + time.substring(0, 4) + ",";
 					for (int b = 0; b < dataToLog.size() - 1; b++) {
 						line += (dataToLog.get(b).getSecond().get(i) + ",");
 					}
