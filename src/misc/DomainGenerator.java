@@ -25,22 +25,22 @@ import negotiator.xml.SimpleElement;
 public class DomainGenerator {
 	
 	private static Range LOW_OPP = new Range(0.05, 0.20);
-	private static Range MED_OPP = new Range(0.20, 0.45);
-	private static Range HIGH_OPP = new Range(0.45, 0.65);
+	private static Range MED_OPP = new Range(0.20, 0.35);
+	private static Range HIGH_OPP = new Range(0.35, 0.55);
 	private static Range LOW_DIST = new Range(0.05, 0.20);
-	private static Range MED_DIST = new Range(0.20, 0.40);
-	private static Range HIGH_DIST = new Range(0.40, 0.70);
+	private static Range MED_DIST = new Range(0.20, 0.35);
+	private static Range HIGH_DIST = new Range(0.35, 0.50);
 	
 	public static void main(String[] args) throws Exception {
 		String dir = "c:/Users/Mark/workspace/Genius/etc/AccuracyTestSet/Travel/";
 		Domain domain = new Domain(dir + "travel_domain.xml");
 		UtilitySpace utilitySpaceA =  new UtilitySpace(domain, dir + "travel_chox.xml");
 		UtilitySpace utilitySpaceB =  new UtilitySpace(domain, dir + "travel_fanny.xml");
-		String logToDirA = dir + "travel_fanny_hOlB.xml";
-		String logToDirB = dir + "travel_fanny_hOlB.xml";
+		String logToDirA = dir + "travel_chox_lOlD.xml";
+		String logToDirB = dir + "travel_fanny_lOlD.xml";
 		
 		
-		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, HIGH_OPP, LOW_DIST, true, false);
+		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, LOW_OPP, LOW_DIST, true, true);
 	}
 
 	/**
