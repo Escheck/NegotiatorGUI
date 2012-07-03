@@ -36,9 +36,11 @@ public class DomainGenerator {
 		Domain domain = new Domain(dir + "travel_domain.xml");
 		UtilitySpace utilitySpaceA =  new UtilitySpace(domain, dir + "travel_chox.xml");
 		UtilitySpace utilitySpaceB =  new UtilitySpace(domain, dir + "travel_fanny.xml");
-		String logToDir = dir + "travel_fanny_hOmB.xml";
-
-		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDir, HIGH_OPP, MED_DIST, false);
+		String logToDirA = dir + "travel_fanny_hOlB.xml";
+		String logToDirB = dir + "travel_fanny_hOlB.xml";
+		
+		
+		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, HIGH_OPP, LOW_DIST, true, false);
 	}
 
 	/**
@@ -48,13 +50,16 @@ public class DomainGenerator {
 	 * @param dir path to Genius main dir
 	 * @throws Exception
 	 */
-	public static void findDomain(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB, String logToDir, Range opp, Range dist, boolean biasForHighOpp) throws Exception {
+	public static void findDomain(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB, String logToDirA, String logToDirB, Range opp, Range dist, boolean biasForHighOpp, boolean varyBoth) throws Exception {
 		System.out.println("Starting random domain generator");
 
 		double[] result = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
 		boolean found = false;
 
 		while (!found) {
+			if (varyBoth) {
+				randomizeUtilSpace(spaceA, biasForHighOpp);
+			}
 			randomizeUtilSpace(spaceB, biasForHighOpp);
 			result = calculateDistances(spaceA, spaceB);
 
@@ -63,8 +68,11 @@ public class DomainGenerator {
 			}
 			result = null;
 		}
-		JOptionPane.showMessageDialog(null, "saved to: " + logToDir);
-		writeXMLtoFile(spaceB.toXML(), logToDir);
+		JOptionPane.showMessageDialog(null, "saved to: " + logToDirB);
+		if (varyBoth) {
+			writeXMLtoFile(spaceA.toXML(), logToDirA);
+		}
+		writeXMLtoFile(spaceB.toXML(), logToDirB);
 	}
 	
 	/**

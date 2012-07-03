@@ -113,7 +113,7 @@ public class ScenarioMeasures {
 			prefResults.addChildElement(results);
 			System.out.println("Processed domain: " + domain.getName() + " \t [" + utilitySpaceA.getFileName() + " , " + utilitySpaceB.getFileName() + "]");
 		}
-		writeXMLtoFile(prefResults, dir + "domain_info.xml");
+		//writeXMLtoFile(prefResults, dir + "domain_info.xml");
 		System.out.println("Finished processing domains");
 	}
 	
@@ -166,14 +166,15 @@ public class ScenarioMeasures {
 	 * @return
 	 */
 	public static OrderedSimpleElement calculateDistances(OrderedSimpleElement element, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
-		double rankingDistWeights = UtilspaceTools.getRankingDistanceOfIssueWeights(utilitySpaceA, utilitySpaceB);	
-		double pearsonCorrWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
-		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB);
-		double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
+		//double rankingDistWeights = UtilspaceTools.getRankingDistanceOfIssueWeights(utilitySpaceA, utilitySpaceB);	
+		//double pearsonCorrWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
+		//double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB);
+		//double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
 		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
 		double paretoDistance = calculateAverageParetoDistance(utilitySpaceA, utilitySpaceB);
-		double paretoBids = calculateAmountOfParetoBids(utilitySpaceA, utilitySpaceB);
+		//double paretoBids = calculateAmountOfParetoBids(utilitySpaceA, utilitySpaceB);
 		
+		/*
 		element.setAttribute("bids_count", utilitySpaceA.getDomain().getNumberOfPossibleBids() + "");
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
 		element.setAttribute("ranking_distance_weights", String.valueOf(rankingDistWeights));
@@ -183,7 +184,8 @@ public class ScenarioMeasures {
 		element.setAttribute("relative_opposition", String.valueOf(opposition));
 		element.setAttribute("bid_distribution", String.valueOf(paretoDistance));
 		element.setAttribute("amount_pareto_bids", String.valueOf(paretoBids));
-
+		*/
+		System.out.println(opposition + "\n" + paretoDistance);
 		return element;
 	}
 	
