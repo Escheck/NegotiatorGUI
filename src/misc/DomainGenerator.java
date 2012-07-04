@@ -32,15 +32,15 @@ public class DomainGenerator {
 	private static Range HIGH_DIST = new Range(0.35, 0.50);
 	
 	public static void main(String[] args) throws Exception {
-		String dir = "c:/Users/Mark/workspace/Genius/etc/AccuracyTestSet/Travel/";
-		Domain domain = new Domain(dir + "travel_domain.xml");
-		UtilitySpace utilitySpaceA =  new UtilitySpace(domain, dir + "travel_chox.xml");
-		UtilitySpace utilitySpaceB =  new UtilitySpace(domain, dir + "travel_fanny.xml");
-		String logToDirA = dir + "travel_chox_lOlD.xml";
-		String logToDirB = dir + "travel_fanny_lOlD.xml";
+		String dir = "c:/Users/Mark/workspace/Genius/etc/AccuracyTestSet/Supermarket/";
+		Domain domain = new Domain(dir + "Supermarket_domain.xml");
+		UtilitySpace utilitySpaceA =  new UtilitySpace(domain, dir + "Supermarket_mary.xml");
+		UtilitySpace utilitySpaceB =  new UtilitySpace(domain, dir + "Supermarket_sam.xml");
+		String logToDirA = dir + "Supermarket_mary_lOlD.xml";
+		String logToDirB = dir + "Supermarket_sam_lOlD.xml";
 		
 		
-		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, LOW_OPP, LOW_DIST, true, true);
+		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, LOW_OPP, LOW_DIST, true, false);
 	}
 
 	/**
