@@ -534,7 +534,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	public BidSpace getBidSpace() { 
 		bidSpace = BidSpaceCash.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace());
 		if(bidSpace==null) {
-			try {   
+			try {
 				bidSpace=new BidSpace(getAgentAUtilitySpace(),getAgentBUtilitySpace());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -672,7 +672,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		session_number=1;
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents = tournament.getAgentVars();
-		
+
 		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
 			ArrayList<AgentVariable> decoupledAgents = tournament.getDecoupledAgentVars();
 			agents.get(0).getValues().addAll(decoupledAgents.get(0).getValues());
@@ -860,6 +860,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	protected static void allParameterCombis(Tournament tournament, ArrayList<AssignedParameterVariable> allparameters, ArrayList<AlternatingOffersProtocol> sessions,
 			ProfileRepItem profileA, ProfileRepItem profileB,
 			AgentRepItem agentA, AgentRepItem agentB,ArrayList<AssignedParamValue> chosenvalues) throws Exception {
+		
 		if (allparameters.isEmpty()) {
 			// separate the parameters into those for agent A and B.
 			HashMap<AgentParameterVariable,AgentParamValue> paramsA = new HashMap<AgentParameterVariable,AgentParamValue>();
@@ -893,14 +894,16 @@ public class AlternatingOffersProtocol extends Protocol {
 			for (int k = 0; k < numberOfSessions; k++) {
 				sessions.add(session);
 			}
-			//check if the analysis is already made for the prefs. profiles
-			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
-			if(bidSpace!=null) {
-				session.setBidSpace(bidSpace);
-			} else {
-				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
-				BidSpaceCash.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
-				session.setBidSpace(bidSpace);
+			if (!Global.LOW_MEMORY_MODE) {
+				//check if the analysis is already made for the prefs. profiles
+				BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+				if(bidSpace!=null) {
+					session.setBidSpace(bidSpace);
+				} else {
+					bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
+					BidSpaceCash.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
+					session.setBidSpace(bidSpace);
+				}
 			}
 		} else {
 			// pick next variable, and compute all permutations.
