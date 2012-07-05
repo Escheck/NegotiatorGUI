@@ -249,8 +249,9 @@ public class TournamentRunner implements Runnable
 			sessions = new ArrayList<Protocol>();
 			sessions.add(t.getSessions().get(0));
 		}
-		else
+		else {
 			sessions=t.getSessions();
+		}
 		return sessions;
 	}
 	

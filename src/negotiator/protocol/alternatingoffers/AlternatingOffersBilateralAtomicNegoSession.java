@@ -17,6 +17,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
+import negotiator.analysis.BidSpaceCash;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.opponentmodel.NoModel;
@@ -451,6 +452,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
+		if (Global.LOW_MEMORY_MODE) {
+			BidSpaceCash.removeBidSpace(spaceA, spaceB);
+		}
 	}
 	
 	
@@ -478,6 +482,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
+		if (Global.LOW_MEMORY_MODE) {
+			BidSpaceCash.removeBidSpace(spaceA, spaceB);
+		}
 	}
 
 	private void processDataForLogging(double time, boolean agreement) {
