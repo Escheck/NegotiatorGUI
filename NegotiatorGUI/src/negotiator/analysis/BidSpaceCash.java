@@ -18,10 +18,24 @@ public class BidSpaceCash {
 			bidSpaceCash.put(spaceA, cashA);		
 		}		
 	}
-	public static BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {		
+	public static BidSpace getBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {	
 		if(bidSpaceCash.get(spaceA)!=null)			
 			return bidSpaceCash.get(spaceA).get(spaceB);
-		else 
+		else {
 			return null;
+		}
+	}
+	
+	public static void removeBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
+		if (bidSpaceCash.get(spaceA).get(spaceB) != null) {
+			bidSpaceCash.get(spaceA).remove(spaceB);
+		}
+		if (bidSpaceCash.get(spaceA).size() == 0) {
+			bidSpaceCash.remove(spaceA);
+		}
+	}
+	
+	public static int getDomainsCount() {
+		return bidSpaceCash.size();
 	}
 }
