@@ -300,7 +300,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
 			outcome.setRunNr(getRun());
 			// Calculate the opponent model quality measures and log them
-			UtilityMeasures disCalc = new UtilityMeasures(bidSpace);
+			UtilityMeasures disCalc = new UtilityMeasures(getBidSpace());
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
 			
 			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
