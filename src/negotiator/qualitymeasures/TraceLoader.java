@@ -45,6 +45,9 @@ public class TraceLoader {
 			if (mode.equals(Mode.DATA) && !Character.isDigit(line.charAt(0))) {
 				mode = Mode.DOMAIN;
 				traces.add(currentTrace);
+				if (traces.size() % 10 == 0) {
+					System.out.println("Loaded " + traces.size() + " traces");
+				}
 			}
 			switch (mode) {
 				case DOMAIN:

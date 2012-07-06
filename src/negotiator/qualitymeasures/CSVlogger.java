@@ -59,7 +59,7 @@ public class CSVlogger {
 	 * @param results of the quality measure
 	 */
 	public void addMeasure(String name, ArrayList<Double> results) {
-		if (results.size() > 1) {
+		if (results.size() > 0) {
 			dataToLog.add(new Pair<String, ArrayList<Double>>(name, results));
 		}
 	}

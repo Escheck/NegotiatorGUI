@@ -10,10 +10,10 @@ import negotiator.utility.UtilitySpace;
 
 public class NegotiationSessionWrapper extends NegotiationSession {
 	
-	public NegotiationSessionWrapper(Trace trace) {
+	public NegotiationSessionWrapper(Trace trace, String mainPath) {
 		try {
-			this.domain = new Domain(trace.getDomain());
-			this.utilitySpace = new UtilitySpace(domain, trace.getAgentProfile());
+			this.domain = new Domain(mainPath + "/" + trace.getDomain());
+			this.utilitySpace = new UtilitySpace(domain, mainPath + "/" + trace.getAgentProfile());
 			this.opponentBidHistory = new BidHistory();
 		} catch (Exception e) {
 			e.printStackTrace();
