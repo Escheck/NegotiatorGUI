@@ -6,6 +6,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
 import negotiator.boaframework.opponentmodel.UniformModel;
 import negotiator.utility.UtilitySpace;
 
@@ -26,30 +27,30 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "log/OQM 2012-06-29 13.23.49.csv";
-		opponentModel = new UniformModel();
+		String logPath = "log/Deterministic4.csv";
+		opponentModel = new HardHeadedFrequencyModel();
 		String outPath = "log/QM_Results_Default.csv";
 		try {
-			outPath = "log/QM_Results_" + java.net.URLEncoder.encode(opponentModel.getName(), "UTF-8") + ".csv";
+			outPath = "log/QM_Results_Deterministic4" + java.net.URLEncoder.encode(opponentModel.getName(), "UTF-8") + ".csv";
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		
 		TraceLoader loader = new TraceLoader();
 		ArrayList<Trace> traces = loader.loadTraces(mainDir, logPath);
-		processTraces(outPath, traces);
+		processTraces(outPath, traces, mainDir);
 	}
 
-	private static void processTraces(String outPath, ArrayList<Trace> traces) {
+	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size());
 			Trace trace = traces.get(a);
-			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace);
+			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
 			OpponentModelMeasures omMeasures = null;
 			try {
 				opponentModel.init(negotiationSession, null);
-				UtilitySpace opponentSpace = new UtilitySpace(negotiationSession.getUtilitySpace().getDomain(), trace.getOpponentProfile());
+				UtilitySpace opponentSpace = new UtilitySpace(negotiationSession.getUtilitySpace().getDomain(), mainDir + "/" + trace.getOpponentProfile());
 				omMeasures = new OpponentModelMeasures(negotiationSession.getUtilitySpace(), opponentSpace);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -63,6 +64,9 @@ public class TraceProcessor {
 				
 				if (opponentBid.getTime() >= (currentSample * SAMPLE_EVERY_X_TIME)) {
 					try {
+						if (currentSample % 5 == 0) {
+							System.out.println(currentSample);
+						}
 						currentSample++;
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
 						BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), opponentModel.getOpponentUtilitySpace(), false);
