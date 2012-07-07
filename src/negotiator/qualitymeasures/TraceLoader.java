@@ -101,6 +101,7 @@ public class TraceLoader {
 		if (currentTrace != null) {
 			traces.add(currentTrace);
 		}
+		parser.close();
 		return traces;
 	}
 

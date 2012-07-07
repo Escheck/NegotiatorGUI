@@ -157,6 +157,7 @@ public class CSVlogger {
 					line += (dataToLog.get(dataToLog.size() - 1).getSecond().get(i));
 					out.write(line + LINE_SEPARATOR);
 				}
+				out.flush();
 				out.close();
 			} catch (Exception e) {
 				new Warning("Exception during writing s:"+e);
