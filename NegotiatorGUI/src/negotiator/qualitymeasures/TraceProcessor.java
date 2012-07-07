@@ -6,6 +6,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
 import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
 import negotiator.boaframework.opponentmodel.UniformModel;
 import negotiator.utility.UtilitySpace;
@@ -27,14 +28,9 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "Tracelogs/Experiment 1/Test.csv";
-		opponentModel = new HardHeadedFrequencyModel();
-		String outPath = "log/QM_Results_Default.csv";
-		try {
-			outPath = "log/QM_Results_Test" + java.net.URLEncoder.encode(opponentModel.getName(), "UTF-8") + ".csv";
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		String logPath = "Tracelogs/Experiment 1/Deterministic3.csv";
+		String outPath = "log/QM_Results_Deterministic3_AgentXFM.csv";
+
 		
 		TraceLoader loader = new TraceLoader();
 		ArrayList<Trace> traces = loader.loadTraces(mainDir, logPath);
@@ -44,6 +40,7 @@ public class TraceProcessor {
 	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size() + " " + traces.get(a).getOpponentProfile());
+			opponentModel = new AgentXFrequencyModel();
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
