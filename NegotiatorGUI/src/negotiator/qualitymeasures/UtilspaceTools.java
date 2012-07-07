@@ -12,10 +12,11 @@ public class UtilspaceTools {
 
 	// if the amount of bids is larger or equal to this value, exact calculation
 	// takes to long and an estimation procedure is used.
-	static final int MAX_SIZE_FOR_EXACT_CALCULATION = 100000;
+	static final int MAX_SIZE_FOR_EXACT_CALCULATION = 80000;
 	// how many times the estimation procedure should be repeated.
 	// Higher amount of simulations results in better estimate.
-	static final int AMOUNT_OF_SIMULATIONS = 10000000;
+	// 100000 is good enough for OM measures, 1000000 for scenarios measures
+	static final int AMOUNT_OF_SIMULATIONS = 100000;
 	
 	public static double getRankingDistanceOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
 		double bidsUtilA[] = getBidsUtil(spaceA);
