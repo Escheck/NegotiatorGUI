@@ -10,6 +10,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -77,8 +78,7 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return pearson correlation coefficient
 	 */
-	public double calculatePearsonCorrelationCoefficientBids(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace(); 
+	public double calculatePearsonCorrelationCoefficientBids(UtilitySpace estimatedSpace) {
 		return UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
 	}
 
@@ -93,8 +93,7 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return ranking distance
 	 */
-	public double calculateRankingDistanceBids(OpponentModel opponentModel) {
-		UtilitySpace estimatedSpace = opponentModel.getOpponentUtilitySpace();
+	public double calculateRankingDistanceBids(UtilitySpace estimatedSpace) {
 		return UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS);
 	}
 	
@@ -146,7 +145,7 @@ public class OpponentModelMeasures {
 		return Math.abs(realNash.utilityB - estimatedNash.utilityB);
 	}
 	
-	public double calculateAvgDiffParetoBidToEstimate(OpponentModel opponentModel) {
+	public double calculateAvgDiffParetoBidToEstimate(UtilitySpace estimatedSpace) {
 		double sum = 0;
 		
 		// its a difference, not a distance, as we know how we evaluate our own bid
@@ -156,7 +155,7 @@ public class OpponentModelMeasures {
 			double estOpp;
 			try {
 				realOpp = opponentUS.getUtility(paretoBid);
-				estOpp = opponentModel.getOpponentUtilitySpace().getUtility(paretoBid);
+				estOpp = estimatedSpace.getUtility(paretoBid);
 				sum += Math.abs(realOpp - estOpp);
 			} catch (Exception e) {
 				e.printStackTrace();
