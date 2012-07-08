@@ -8,7 +8,9 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
 import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
-import negotiator.boaframework.opponentmodel.UniformModel;
+import negotiator.boaframework.opponentmodel.NashFrequencyModel;
+import negotiator.boaframework.opponentmodel.SmithFrequencyModel;
+import negotiator.boaframework.opponentmodel.OppositeModel;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -28,8 +30,8 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "Tracelogs/Experiment 1/Deterministic3.csv";
-		String outPath = "log/QM_Results_Deterministic3_AgentXFM.csv";
+		String logPath = "Tracelogs/Experiment 1/Deterministic.csv";
+		String outPath = "log/QM_Results_Deterministic_SmithFreq.csv";
 
 		
 		TraceLoader loader = new TraceLoader();
@@ -40,7 +42,7 @@ public class TraceProcessor {
 	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size() + " " + traces.get(a).getOpponentProfile());
-			opponentModel = new AgentXFrequencyModel();
+			opponentModel = new SmithFrequencyModel();
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
@@ -65,16 +67,16 @@ public class TraceProcessor {
 						}
 						currentSample++;
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
-						BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), opponentModel.getOpponentUtilitySpace(), false);
-						omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(opponentModel));
-						omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(opponentModel));
+						UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
+						BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false);
+						omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
+						omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));
 						omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasures.calculateRankingDistanceWeights(opponentModel));
 						omMeasuresResults.addAverageDifferenceBetweenBids(omMeasures.calculateAvgDiffBetweenBids(opponentModel));
-
 						omMeasuresResults.addAverageDifferenceBetweenIssueWeights(omMeasures.calculateAvgDiffBetweenIssueWeights(opponentModel));
 						omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
 						omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
-						omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasures.calculateAvgDiffParetoBidToEstimate(opponentModel));
+						omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasures.calculateAvgDiffParetoBidToEstimate(estimatedOpponentUS));
 						omMeasuresResults.addPercentageOfCorrectlyEstimatedParetoBids(omMeasures.calculatePercCorrectlyEstimatedParetoBids(estimatedBS));
 						omMeasuresResults.addPercentageOfIncorrectlyEstimatedParetoBids(omMeasures.calculatePercIncorrectlyEstimatedParetoBids(estimatedBS));
 						omMeasuresResults.addParetoFrontierDistance(omMeasures.calculateParetoFrontierDistance(estimatedBS));
