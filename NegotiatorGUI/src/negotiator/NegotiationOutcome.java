@@ -153,8 +153,18 @@ public class NegotiationOutcome {
 				double yield = Math.max(minDemandedUtil, fyu);
 				competitiveness = (yield - fyu) / (1 - fyu);
 				cooperation = 1 - competitiveness;
+				System.out.println("fyu: "+fyu);
+				System.out.println("minDemandedUtil: "+minDemandedUtil);
+				System.out.println("yield: "+yield);
+
+				System.out.println("competitiveness: "+competitiveness);
+				System.out.println("cooperation: "+cooperation);
+
+
 			} else {
 				cooperation = -1;
+				System.out.println("Bids is Empty");
+
 			}
 		}
 		
@@ -236,8 +246,27 @@ public class NegotiationOutcome {
 		
 		double minDemandedUtil;
 		if(!bids.isEmpty()){
+			System.out.println("agentX: "+agentX);
+			System.out.println("lastAction: "+lastAction);
+
+
 			BidPoint minDemandedBid = Collections.min(bids, comp);
-			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+			System.out.println("minDemandedBid: "+minDemandedBid.utilityA);
+			if(agentX.equals("A")){
+				if(lastAction.toString().equals("(Accept)") && minDemandedBid.utilityA > agentAutility){
+					minDemandedUtil = agentAutility;
+				} else{
+					minDemandedUtil = minDemandedBid.utilityA;
+				}
+			}else {
+				if(lastAction.toString().equals("(Accept)") && minDemandedBid.utilityB > agentButility){
+					minDemandedUtil = agentButility;
+				} else{
+					minDemandedUtil = minDemandedBid.utilityB;
+				}
+			}
+
+			 //minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
 		}else { 
 			minDemandedUtil = -1;
 		
