@@ -10,7 +10,7 @@ import negotiator.issue.Issue;
 
 /**
  * Simple baseline opponent model which just mirror's the utility space of the agent.
- * Note that the model does not measure the issue weights, it makes no sense
+ * Note that the model does not measure the issue weights, it makes no sense.
  * 
  * @author Mark Hendrikx
  */
@@ -35,13 +35,9 @@ public class OppositeModel extends OpponentModel {
 		return 0.0;
 	}
 	
+	//
 	public double getWeight(Issue issue) {
-		if (negotiationSession.getIssues().size() == 1) {
-			return 1.0;
-		}
-		int divider = negotiationSession.getIssues().size() - 1;
-		double agentWeight = negotiationSession.getUtilitySpace().getWeight(issue.getNumber());
-		return ((1.0 - agentWeight) / (double) divider);
+		return negotiationSession.getUtilitySpace().getWeight(issue.getNumber());
 	}
 	
 	@Override
