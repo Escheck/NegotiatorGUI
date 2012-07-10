@@ -88,4 +88,8 @@ public abstract class OpponentModel {
 	public String getName() {
 		return "Default";
 	}
+
+	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+		
+	}
 }

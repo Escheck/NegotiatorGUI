@@ -4,6 +4,7 @@ import negotiator.Bid;
 import negotiator.Global;
 import negotiator.boaframework.OpponentModel;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.utility.UtilitySpace;
 
 /**
  * The perfect opponent model. Note that for using this model
@@ -24,6 +25,11 @@ public class PerfectModel extends OpponentModel {
 		} else {
 			System.err.println("Global.experimentalSetup should be enabled!");
 		}	
+	}
+	
+	@Override
+	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+		this.opponentUtilitySpace = opponentUtilitySpace;
 	}
 
 	@Override

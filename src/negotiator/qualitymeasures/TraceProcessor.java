@@ -8,7 +8,8 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
 import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
-import negotiator.boaframework.opponentmodel.NashFrequencyModel;
+import negotiator.boaframework.opponentmodel.PerfectModel;
+import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 import negotiator.boaframework.opponentmodel.SmithFrequencyModel;
 import negotiator.boaframework.opponentmodel.OppositeModel;
 import negotiator.utility.UtilitySpace;
@@ -30,8 +31,8 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "Tracelogs/Experiment 1/Deterministic.csv";
-		String outPath = "log/QM_Results_Deterministic_SmithFreq.csv";
+		String logPath = "Tracelogs/Experiment 1/Nondeterministic.csv";
+		String outPath = "log/Perfect.csv";
 
 		
 		TraceLoader loader = new TraceLoader();
@@ -42,7 +43,7 @@ public class TraceProcessor {
 	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size() + " " + traces.get(a).getOpponentProfile());
-			opponentModel = new SmithFrequencyModel();
+			opponentModel = new PerfectModel();
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
@@ -50,6 +51,7 @@ public class TraceProcessor {
 			try {
 				opponentModel.init(negotiationSession, null);
 				UtilitySpace opponentSpace = new UtilitySpace(negotiationSession.getUtilitySpace().getDomain(), mainDir + "/" + trace.getOpponentProfile());
+				opponentModel.setOpponentUtilitySpace(opponentSpace);
 				omMeasures = new OpponentModelMeasures(negotiationSession.getUtilitySpace(), opponentSpace);
 			} catch (Exception e) {
 				e.printStackTrace();
