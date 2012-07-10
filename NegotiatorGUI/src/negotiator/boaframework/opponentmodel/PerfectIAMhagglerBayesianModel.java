@@ -722,4 +722,9 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 		domain = null;
 		utilitySpace = null;
 	}
+	
+	@Override
+	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+		this.opponentUtilitySpace = opponentUtilitySpace;
+	}
 }
