@@ -25,11 +25,14 @@
 		<opponentmodel description="Bayesian Model" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
 		<opponentmodel description="Scalable Bayesian Model" classPath="negotiator.boaframework.opponentmodel.ScalableBayesianModel"/>
 		<opponentmodel description="IAMhaggler Bayesian Model" classPath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel" tooltip="'a' for use all bids"/>
+		<opponentmodel description="Perfect IAMhaggler Bay. Model" classPath="negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel"/>
 		<opponentmodel description="FSEGA Bayesian Model" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
 		<opponentmodel description="Perfect Model" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
 		<opponentmodel description="Smith Frequency Model" classPath="negotiator.boaframework.opponentmodel.SmithFrequencyModel"/>
 		<opponentmodel description="Nash Frequency Model" classPath="negotiator.boaframework.opponentmodel.NashFrequencyModel"/>
 		<opponentmodel description="AgentX Frequency Model" classPath="negotiator.boaframework.opponentmodel.AgentXFrequencyModel"/>
+		<opponentmodel description="Opposite Model" classPath="negotiator.boaframework.opponentmodel.OppositeModel"/>
+		<opponentmodel description="Uniform Model" classPath="negotiator.boaframework.opponentmodel.UniformModel"/>
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
