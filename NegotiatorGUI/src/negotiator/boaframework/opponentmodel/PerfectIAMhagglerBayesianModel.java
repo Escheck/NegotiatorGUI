@@ -351,6 +351,9 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 		double u = getExpectedUtility(bid);
 		if (minUtility == null || maxUtility == null)
 			findMinMaxUtility();
+		if (Double.isNaN(u)) {
+			return 0.0;
+		}
 		return (u - minUtility) / (maxUtility - minUtility);
 	}
 
