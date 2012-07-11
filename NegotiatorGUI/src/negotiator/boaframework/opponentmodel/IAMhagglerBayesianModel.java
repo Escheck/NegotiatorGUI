@@ -338,6 +338,9 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 		double u = getExpectedUtility(bid);
 		if (minUtility == null || maxUtility == null)
 			findMinMaxUtility();
+		if (Double.isNaN(u)) {
+			return 0.0;
+		}
 		return (u - minUtility) / (maxUtility - minUtility);
 	}
 
@@ -650,6 +653,7 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 				continue;
 			}
 			double w = 0;
+			
 			for (WeightHypothesis weightHypothesis : weightHypotheses.get(i))
 				w += weightHypothesis.getProbability() * weightHypothesis.getWeight();
 			u += w * getExpectedEvaluationValue(bid, i);
