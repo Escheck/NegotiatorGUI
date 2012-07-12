@@ -12,15 +12,21 @@ import java.io.Serializable;
 public class ScoreKeeper<A> implements Comparator<A>, Serializable
 {
 	protected Map<A, Integer> m;
+	protected int max;
+	protected int total;
 	
 	public ScoreKeeper()
 	{
 		m = new HashMap<A, Integer>();
+		total = 0;
+		max = 0;
 	}
 	
 	public ScoreKeeper(ScoreKeeper<A> sk)
 	{
 		this.m = sk.m;
+		this.max = sk.max;
+		this.total = sk.total;
 	}
 	
 	public void score(A a)
@@ -28,7 +34,12 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
-		m.put(a, ++freq);
+		freq++;
+		if (freq > max) {
+			max = freq;
+		}
+		total++;
+		m.put(a, freq);
 	}
 
 	public void score(A a, int weight)
@@ -36,7 +47,12 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
-		m.put(a, freq + weight);
+		int newValue = freq + weight;
+		if (newValue > max) {
+			max = newValue;
+		}
+		total += weight;
+		m.put(a, newValue);
 	}
 	
 	public int getScore(A a)
@@ -45,6 +61,22 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		if (freq == null)
 			freq = 0;
 		return freq;
+	}
+	
+	public double getNormalizedScore(A a) {
+		Integer score = m.get(a);
+		if (score == null) {
+			score = 0;
+		}
+		return ((double) score / (double) max);
+	}
+	
+	public double getRelativeScore(A a) {
+		Integer score = m.get(a);
+		if (score == null) {
+			score = 0;
+		}
+		return ((double) score / (double) total);
 	}
 
 	public int compare(A o1, A o2)
@@ -74,6 +106,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return sorted;
 	}
 
+	public int getMaxValue() {
+		return max;
+	}
+	
 	public String toString(int n)
 	{
 		TreeMap<A, Integer> sorted = getSortedCopy();
