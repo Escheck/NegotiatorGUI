@@ -8,10 +8,12 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
 import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
-import negotiator.boaframework.opponentmodel.PerfectModel;
+import negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel;
 import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
-import negotiator.boaframework.opponentmodel.SmithFrequencyModel;
+import negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel;
 import negotiator.boaframework.opponentmodel.OppositeModel;
+import negotiator.boaframework.opponentmodel.SmithFrequencyModel;
+import negotiator.boaframework.opponentmodel.SmithFrequencyModelV2;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -31,8 +33,8 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "Tracelogs/Experiment 1/Nondeterministic.csv";
-		String outPath = "log/Perfect.csv";
+		String logPath = "Tracelogs/Experiment 1/Deterministic6.csv";
+		String outPath = "log/Deterministic6_opposite.csv";
 
 		
 		TraceLoader loader = new TraceLoader();
@@ -43,7 +45,7 @@ public class TraceProcessor {
 	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size() + " " + traces.get(a).getOpponentProfile());
-			opponentModel = new PerfectModel();
+			opponentModel = new OppositeModel();
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
@@ -69,21 +71,36 @@ public class TraceProcessor {
 						}
 						currentSample++;
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
-						UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
-						BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false);
-						omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
-						omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));
-						omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasures.calculateRankingDistanceWeights(opponentModel));
-						omMeasuresResults.addAverageDifferenceBetweenBids(omMeasures.calculateAvgDiffBetweenBids(opponentModel));
-						omMeasuresResults.addAverageDifferenceBetweenIssueWeights(omMeasures.calculateAvgDiffBetweenIssueWeights(opponentModel));
-						omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
-						omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
-						omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasures.calculateAvgDiffParetoBidToEstimate(estimatedOpponentUS));
-						omMeasuresResults.addPercentageOfCorrectlyEstimatedParetoBids(omMeasures.calculatePercCorrectlyEstimatedParetoBids(estimatedBS));
-						omMeasuresResults.addPercentageOfIncorrectlyEstimatedParetoBids(omMeasures.calculatePercIncorrectlyEstimatedParetoBids(estimatedBS));
-						omMeasuresResults.addParetoFrontierDistance(omMeasures.calculateParetoFrontierDistance(estimatedBS));
-						estimatedBS = null;
-						System.gc();
+						if (currentSample == 1 || !(opponentModel instanceof OppositeModel)) {
+							UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
+							BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false);
+							omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
+							omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));
+							omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasures.calculateRankingDistanceWeights(opponentModel));
+							omMeasuresResults.addAverageDifferenceBetweenBids(omMeasures.calculateAvgDiffBetweenBids(opponentModel));
+							omMeasuresResults.addAverageDifferenceBetweenIssueWeights(omMeasures.calculateAvgDiffBetweenIssueWeights(opponentModel));
+							omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
+							omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
+							omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasures.calculateAvgDiffParetoBidToEstimate(estimatedOpponentUS));
+							omMeasuresResults.addPercentageOfCorrectlyEstimatedParetoBids(omMeasures.calculatePercCorrectlyEstimatedParetoBids(estimatedBS));
+							omMeasuresResults.addPercentageOfIncorrectlyEstimatedParetoBids(omMeasures.calculatePercIncorrectlyEstimatedParetoBids(estimatedBS));
+							omMeasuresResults.addParetoFrontierDistance(omMeasures.calculateParetoFrontierDistance(estimatedBS));
+							estimatedBS = null;
+							estimatedOpponentUS = null;
+							System.gc();
+						} else {
+							omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList().get(0));
+							omMeasuresResults.addRankingDistanceOfBids(omMeasuresResults.getRankingDistanceOfBidsList().get(0));
+							omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasuresResults.getRankingDistanceOfIssueWeightsList().get(0));
+							omMeasuresResults.addAverageDifferenceBetweenBids(omMeasuresResults.getAverageDifferenceBetweenBidsList().get(0));
+							omMeasuresResults.addAverageDifferenceBetweenIssueWeights(omMeasuresResults.getAverageDifferenceBetweenIssueWeightsList().get(0));
+							omMeasuresResults.addKalaiDistance(omMeasuresResults.getKalaiDistanceList().get(0));
+							omMeasuresResults.addNashDistance(omMeasuresResults.getNashDistanceList().get(0));
+							omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasuresResults.getAverageDifferenceOfParetoFrontierList().get(0));
+							omMeasuresResults.addPercentageOfCorrectlyEstimatedParetoBids(omMeasuresResults.getPercentageOfCorrectlyEstimatedParetoBidsList().get(0));
+							omMeasuresResults.addPercentageOfIncorrectlyEstimatedParetoBids(omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList().get(0));
+							omMeasuresResults.addParetoFrontierDistance(omMeasuresResults.getParetoFrontierDistanceList().get(0));
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
