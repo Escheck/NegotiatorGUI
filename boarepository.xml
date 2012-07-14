@@ -20,10 +20,12 @@
 		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.Multi_AC"/>
 	</acceptanceconditions>
 	<opponentmodels>
+		<opponentmodel description="AgentLG Model" classPath="negotiator.boaframework.opponentmodel.AgentLGModel"/>
 		<opponentmodel description="No Model" classPath="negotiator.boaframework.opponentmodel.NoModel"/>
 		<opponentmodel description="HardHeaded Frequency Model" classPath="negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel" tooltip="'l' for learning coef. 'v' for value addition"/>
 		<opponentmodel description="Bayesian Model" classPath="negotiator.boaframework.opponentmodel.BayesianModel" tooltip="'m' for most probable hypothesis only"/>
 		<opponentmodel description="Scalable Bayesian Model" classPath="negotiator.boaframework.opponentmodel.ScalableBayesianModel"/>
+		<opponentmodel description="Perfect Scalable Bay. Model" classPath="negotiator.boaframework.opponentmodel.PerfectScalableBayesianModel"/>
 		<opponentmodel description="IAMhaggler Bayesian Model" classPath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel" tooltip="'a' for use all bids"/>
 		<opponentmodel description="Perfect IAMhaggler Bay. Model" classPath="negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel"/>
 		<opponentmodel description="FSEGA Bayesian Model" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
@@ -33,6 +35,8 @@
 		<opponentmodel description="AgentX Frequency Model" classPath="negotiator.boaframework.opponentmodel.AgentXFrequencyModel"/>
 		<opponentmodel description="Opposite Model" classPath="negotiator.boaframework.opponentmodel.OppositeModel"/>
 		<opponentmodel description="Uniform Model" classPath="negotiator.boaframework.opponentmodel.UniformModel"/>
+		<opponentmodel description="Smith Frequency Model V2" classPath="negotiator.boaframework.opponentmodel.SmithFrequencyModelV2"/>
+		<opponentmodel description="CUHKFrequencyModelV2" classPath="negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2"/>
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy"/>
