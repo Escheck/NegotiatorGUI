@@ -51,7 +51,7 @@ public class BidSpace {
 	 * The first space must contain the domain.
 	 * @param spaceA
 	 * @param spaceB
-	 * @param exclude bids
+	 * @param only store the bid points and not the bids to save memory
 	 * @throws Exception
 	 */
 	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids) throws Exception
