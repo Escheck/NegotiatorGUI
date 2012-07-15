@@ -15,7 +15,11 @@ import negotiator.boaframework.opponentmodel.NoModel;
  * 		Optimal Negotiation Strategies for Agents with Incomplete Information
  * 		http://eprints.ecs.soton.ac.uk/6151/1/atal01.pdf
  * 
- * The default was extended to enable usage of opponent models.
+ * The default strategy was extended to enable the usage of opponent models.
+ * 
+ * Note that this agent is not fully equivalent to the theoretical model, loading the domain
+ * may take some time, which may lead to the agent skipping the first bid. A better implementation
+ * is GeniusTimeDependent_Offering. 
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
@@ -47,11 +51,13 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		negotiationSession.setOutcomeSpace(outcomespace);
 		this.opponentModel = model;
-		this.omStrategy = oms;
-
-		
+		this.omStrategy = oms;	
 	}
 	
+	/**
+	 * Method which initializes the agent by setting all parameters.
+	 * The parameter "e" is the only parameter which is required.
+	 */
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;
@@ -92,7 +98,9 @@ public class TimeDependent_Offering extends OfferingStrategy {
 
 	/**
 	 * Simple offering strategy which retrieves the target utility
-	 * and finds 
+	 * and looks for the nearest bid if no opponent model is specified.
+	 * If an opponent model is specified, then the agent return a bid according
+	 * to the opponent model strategy.
 	 */
 	@Override
 	public BidDetails determineNextBid() {

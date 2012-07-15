@@ -12,7 +12,7 @@ import negotiator.utility.UtilitySpace;
 /**
  * The OpponentModel. This model manages the opponents preferences, stores the bids and based
  * on the number of times the opponent proposes a specific option in a bid, that option becomes
- * more important and our agent uses this information to construct its own bids. 
+ * more important and our agent uses this information to construct its own bids.
  */
 public class SmithModel extends OpponentModel
 {

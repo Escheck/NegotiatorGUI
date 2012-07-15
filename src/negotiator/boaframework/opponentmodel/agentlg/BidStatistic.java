@@ -5,7 +5,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 
 /**
- * Class that is used to learn opponent utility.
+ * Class that is used by the opponent model of the ANAC2012 AgentLG.
  */
 public class BidStatistic {
 

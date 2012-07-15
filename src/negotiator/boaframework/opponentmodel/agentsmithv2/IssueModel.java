@@ -6,23 +6,28 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 
 /**
- * Model of one issue, takes all values of the opponent on this issue. Then the
- * utility and it's weight can be calculated on this issue. In the OpponentModel this
- * information is used to determine the utility of the other party. 
+ * Class which keeps track of the issues for an optimized version of the Smith Frequency Model.
+ * 
+ * @author Mark Hendrikx
  */
 public class IssueModel {
+	
+	/** Object to keep track of how many times each value of the issue has been offered */
 	private ScoreKeeper<Value> keeper;
+	/** The index of the issue in the domain's XML file */
 	private int issueNr;
 	
 	/**
-	 * Constructor
-	 * @param lIssue
+	 * @param issue of which values is kept track in this class
 	 */
-	public IssueModel(Issue lIssue) {
+	public IssueModel(Issue issue) {
 		keeper = new ScoreKeeper<Value>();
-		this.issueNr = lIssue.getNumber();
+		this.issueNr = issue.getNumber();
 	}
 	
+	/**
+	 * Method which scores the value which was offered.
+	 */
 	public void addValue(Bid pBid) {
 		keeper.score(getBidValueByIssue(pBid, issueNr));
 	}
