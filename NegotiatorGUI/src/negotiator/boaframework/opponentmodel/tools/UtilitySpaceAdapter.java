@@ -7,7 +7,7 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * Some opponent models do not use the UtilitySpace-object. Using this
- * object a UtilitySpace-object can be created for each opponent model.
+ * object, a UtilitySpace-object can be created for each opponent model.
  * 
  * @author Mark Hendrikx
  */

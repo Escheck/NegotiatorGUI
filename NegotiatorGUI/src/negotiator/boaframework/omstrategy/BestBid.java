@@ -3,7 +3,6 @@ package negotiator.boaframework.omstrategy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -12,6 +11,9 @@ import negotiator.boaframework.OpponentModel;
 /**
  * This class uses an opponent model to determine the next bid for the opponent, while taking
  * the opponent's preferences into account. The opponent model is used to select the best bid.
+ * 
+ * Note that the same behavior can be achieved by using OfferBestN, albeit at a higher
+ * computational cost.
  * 
  * @author Mark Hendrikx
  */
@@ -44,20 +46,24 @@ public class BestBid extends OMStrategy {
 	}
 	
 	/**
-	 * Returns the best bid for the opponent given a set of more-or-less
-	 * equally prefered bids.
+	 * Returns the best bid for the opponent given a set of similarly
+	 * preferred bids.
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
 		
-		// determine the utility for the opponent for each of the bids
+		// 1. If there is only a single bid, return this bid
 		if (allBids.size() == 1) {
 			return allBids.get(0);
 		}
 		double bestUtil = -1;
 		BidDetails bestBid = allBids.get(0);
 		
+		// 2. Check that not all bids are assigned at utility of 0
+		// to ensure that the opponent model works. If the opponent model
+		// does not work, offer a random bid.
 		boolean allWereZero = true;
+		// 3. Determine the best bid
 		for (BidDetails bid : allBids) {
 			double evaluation = model.getBidEvaluation(bid.getBid());
 			if (evaluation > 0.0001) {
@@ -68,6 +74,8 @@ public class BestBid extends OMStrategy {
 				bestUtil = evaluation;
 			}
 		}
+		// 4. The opponent model did not work, therefore, offer a random
+		// bid.
 		if (allWereZero) {
 			Random r = new Random();
 			return allBids.get(r.nextInt(allBids.size()));

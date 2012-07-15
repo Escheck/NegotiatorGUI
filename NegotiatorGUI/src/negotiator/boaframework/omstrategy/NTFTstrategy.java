@@ -13,7 +13,16 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
 
 /**
- * Implements the opponent model strategy used in the NTFT agent.
+ * Implements the opponent model strategy used by the NiceTitForTat agent
+ * in the ANAC2011. The strategy selects a random bid from the best N bids. What is
+ * special in comparison to OfferBestN, is that N depends on the domain size.
+ * Furthermore, the strategy stops updating the opponent model before the deadline.
+ * The time at which the updating stops depends on the domain size.
+ * 
+ * This component is part of:
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * 
  * @author Mark Hendrikx
  */
@@ -32,6 +41,13 @@ public class NTFTstrategy extends OMStrategy {
 		initializeAgent(negotiationSession, model);
 	}
 	
+	/**
+	 * Initializes the agent by storing the size of the domain, and checking
+	 * if the domain is large.
+	 * 
+	 * @param negoSession
+	 * @param model
+	 */
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
 		super.init(negotiationSession, model);
 		this.possibleBids = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
@@ -39,6 +55,12 @@ public class NTFTstrategy extends OMStrategy {
 		random = new Random();
 	}
 
+	/**
+	 * Selects a random bid from the best N bids, where N depends on the
+	 * domain size.
+	 * 
+	 * @return nextBid to be offered
+	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> bidsInRange) {
 		ArrayList<BidDetails> bidsOM = new ArrayList<BidDetails>();
@@ -76,6 +98,13 @@ public class NTFTstrategy extends OMStrategy {
 		return nextBid;
 	}
 	
+	/**
+	 * Method which specifies when the opponent model may be updated.
+	 * In small domains the model may be updated up till 0.99 of the time.
+	 * In large domains the updating process stops half way.
+	 * 
+	 * @return true if the opponent model may be updated
+	 */
 	@Override
 	public boolean canUpdateOM() {
 		// in the last seconds we don't want to lose any time

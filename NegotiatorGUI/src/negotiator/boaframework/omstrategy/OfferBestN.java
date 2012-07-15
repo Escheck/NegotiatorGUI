@@ -47,7 +47,11 @@ public class OfferBestN extends OMStrategy {
 		this.negotiationSession = negotiationSession;
 		this.model = model;
 		if (parameters.get("n") != null) {
-			initializeAgent(negotiationSession, model, parameters.get("n").intValue());
+			int n = parameters.get("n").intValue();
+			if (n == 1) {
+				throw new Exception("For \"n\"=1 use BestBid instead.");
+			}
+			initializeAgent(negotiationSession, model, n);
 		} else {
 			throw new Exception("Constant \"n\" for amount of best bids was not set.");
 		}
@@ -65,12 +69,11 @@ public class OfferBestN extends OMStrategy {
 	}
 	
 	/**
-	 * Returns the (likely) best bid for the opponent given a set of more-or-less
-	 * equally prefered bids.
+	 * Returns a random bid from the set of N best bids.
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
-		// determine the utility for the opponent for each of the bids
+		// 1. Determine the utility for the opponent for each of the bids
 		ArrayList<BidDetails> oppBids = new ArrayList<BidDetails>(allBids.size());
 		for (BidDetails bidDetail : allBids) {
 			Bid bid = bidDetail.getBid();
@@ -78,10 +81,10 @@ public class OfferBestN extends OMStrategy {
 			oppBids.add(newBid);
 		}
 		
-		// sort the bids on the utility for the opponent
+		// 2. Sort the bids on the utility for the opponent
 		Collections.sort(oppBids, comp);
 		
-		// select a random bid from the N best bids and offer this bid
+		// 3. Select a random bid from the N best bids and offer this bid
 		int entry = rand.nextInt(Math.min(bestN, oppBids.size()));
 		Bid opponentBestBid = oppBids.get(entry).getBid();
 		BidDetails nextBid = null;

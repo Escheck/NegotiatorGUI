@@ -10,18 +10,23 @@ import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
- * The OpponentModel. This model manages the opponents preferences, stores the bids and based
- * on the number of times the opponent proposes a specific option in a bid, that option becomes
- * more important and our agent uses this information to construct its own bids. 
+ * Highly optimized version of the Smith Frequency Model.
+ * The value weights are estimated based on frequency. The issue weights are
+ * calculated based on the distribution of the value weights.
+ * 
+ * @author Mark Hendrikx
  */
-public class SmithModelV2 extends OpponentModel
-{
+public class SmithModelV2 extends OpponentModel {
+	
+	/** Object for each issue which keeps track how many times each value was offered */
 	private HashMap<Issue, IssueModel> fIssueModels;
+	/** All issues in the domain. Cached for performance reasons */
 	private ArrayList<Issue> lIssues;
+	/** Issue weights in the current iteration of the model. Cached for performance */
 	private HashMap<Issue, Double> weights;
 	
 	/**
-	 *  Constructor
+	 * Creates a highly optimized version of the SmithFrequencyModel.
 	 */
 	public SmithModelV2(UtilitySpace space)
 	{
