@@ -11,8 +11,8 @@ import negotiator.boaframework.OpponentModel;
 
 /**
  * Simple class used to load the repository of decoupled agent components.
- * The main difference with the agent and domain repositories, is that this approach
- * does not use reflection.
+ * 
+ * @author Mark Hendrikx
  */
 public class BOAagentRepository {
 	
@@ -42,28 +42,6 @@ public class BOAagentRepository {
 	public Object clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();
 	}
-
-	/*
-	 * 		
-	private void loadOpponentModels() {				
-		//ANAC2010 defaults
-		omDefaults.put("AgentSmith", "Smith Frequency");
-		omDefaults.put("AgentFSEGA", "FSEGA Bayesian");
-		omDefaults.put("Nozomi", "Null");
-		omDefaults.put("Agent K", "Null");
-		omDefaults.put("Yushu", "Null");
-		omDefaults.put("IAMcrazyHaggler", "Null");
-
-		//ANAC2011 defaults
-		omDefaults.put("Nice-Tit-For-Tat", "Bayesian scalable");
-		omDefaults.put("TheNegotiator", "Null"); 
-		omDefaults.put("HardHeaded", "Frequency"); 
-		omDefaults.put("BRAMAgent", "Null");
-		omDefaults.put("Agent K2", "Null");
-		omDefaults.put("Gahboninho", "Null");
-		omDefaults.put("IAMhaggler2011", "Null");
-	}
-	*/
 
 	public ArrayList<String> getOfferingStrategies() {
 		return new ArrayList<String>(repositoryParser.getBiddingStrategies().keySet());

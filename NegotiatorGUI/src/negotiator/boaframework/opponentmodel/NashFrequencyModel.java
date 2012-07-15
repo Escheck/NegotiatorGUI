@@ -31,6 +31,9 @@ import negotiator.utility.UtilitySpace;
  * 		issue has a utility > 0. We will then interpolate between the max utility value and the min utility value.
  *
  * Adapted by Mark Hendrikx to be compatible with the BOA framework.
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * 
  * @author Roland van der Linden, Mark Hendrikx
  */

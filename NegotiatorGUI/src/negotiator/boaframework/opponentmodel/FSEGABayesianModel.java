@@ -15,6 +15,11 @@ import negotiator.utility.UtilitySpace;
  * This bug is not visible in the behavior of FSEGA, as the agent does not appear
  * to ever use an OM.
  * 
+ * Adapted by Mark Hendrikx to be compatible with the BOA framework.
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class FSEGABayesianModel extends OpponentModel {

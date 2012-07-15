@@ -1,4 +1,5 @@
 package negotiator.boaframework.opponentmodel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import agents.bayesianopponentmodel.EvaluatorHypothesis;
@@ -8,7 +9,6 @@ import negotiator.Domain;
 import negotiator.Global;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.opponentmodel.iamhaggler.TimeConcessionFunction;
 import negotiator.boaframework.opponentmodel.iamhaggler.WeightHypothesis;
 import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
@@ -25,9 +25,12 @@ import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
 /**
- * IAMhagglerModel by Colin Williams.
- * Adapted by Mark Hendrikx to work with the decoupled framework.
- *  
+ * IAMhagglerModel by Colin Williams, adapted for the BOA framework.
+ * Modified such that it has perfect knowledge about the opponent's strategy.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Colin Williams, Mark Hendrikx
  */
 public class PerfectIAMhagglerBayesianModel extends OpponentModel {

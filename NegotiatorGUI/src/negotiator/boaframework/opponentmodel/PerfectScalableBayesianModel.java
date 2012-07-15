@@ -1,7 +1,6 @@
 package negotiator.boaframework.opponentmodel;
 
 import java.util.HashMap;
-import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import agents.bayesianopponentmodel.PerfectBayesianOpponentModelScalable;
 import negotiator.Bid;
@@ -14,8 +13,12 @@ import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Adapter for BayesianOpponentModelScalable.
+ * Adapter for BayesianOpponentModelScalable for the BOA framework.
+ * Modified such that it has perfect knowledge about the opponent's strategy.
  * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class PerfectScalableBayesianModel extends OpponentModel {

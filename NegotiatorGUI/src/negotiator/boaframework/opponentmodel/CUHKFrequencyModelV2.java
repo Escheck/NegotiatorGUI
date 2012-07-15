@@ -12,24 +12,41 @@ import negotiator.issue.Value;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Heavily modified version of the ANAC2012 CUKHAgent opponent model.
- * This version is adapted to work with the BOA framework.
+ * Optimized version of the ANAC2012 CUKHAgent opponent model.
+ * Adapted by Mark Hendrikx to be compatible with the BOA framework.
+ *
+ * This model keeps track of how many times each value has been offered. In the author's implementation
+ * the sum of the value scores is used to quantify the quality of the bid. In my BOA-compatible implementation
+ * I divide the sum of the value scores by the maximum possible score to normalize the score to a utility.
  * 
+ * Note that after 100 bids the model is no longer updated.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class CUHKFrequencyModelV2 extends OpponentModel {
 
+	/** History of unique bids, contains at most 100 bids */
     private ArrayList<Bid> bidHistory;
+    /** List of Hashmaps storing how much each value has been offered for each issue */
     private ArrayList<HashMap<Value, Integer>> opponentBidsStatisticsDiscrete;
+    /** Optimization which stores the score of the most prefered value for each issue */
     private HashMap<Integer, Integer> maxPreferencePerIssue;
+    /** Maximum amount unique bids which may be stored by the agent. After this limit the OM is not updated */
     private int maximumBidsStored = 100;
+    /** Cache the issues of the domain to improve performance */
     private ArrayList<Issue> issues;
+    /** Highest possible sum of values */
     private int maxPossibleTotal = 0;
+    /** After 100 bids the utilityspace does not chance, and can therefore be cached */
     private UtilitySpace cache = null;
+    /** Boolean which indicates if the utilityspaced is arleady cached */
 	private boolean cached = false;
     
     /**
-     * initialization
+     * initialization of the model in which the issues are cached and the score keeper for each issue is created.
      */
     public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
     	this.bidHistory = new ArrayList<Bid>();
@@ -122,10 +139,13 @@ public class CUHKFrequencyModelV2 extends OpponentModel {
         return (double) totalBidValue / (double) maxPossibleTotal;
     }
     
+    /**
+     * Returns the estimated utilityspace. After 100 unique bids the opponent model is not
+     * longer updated, and therefore a cached version can be used.
+     */
     public UtilitySpace getOpponentUtilitySpace() {
     	if (!cached && this.bidHistory.size() >= this.maximumBidsStored) {
     		cached  = true;
-    		
     		cache = new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
     	} else if (this.bidHistory.size() < this.maximumBidsStored) {
 			return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
@@ -133,6 +153,9 @@ public class CUHKFrequencyModelV2 extends OpponentModel {
     	return cache;
 	}
     
+    /**
+     * This model does not rely on issue weights. Therefore, the issue weight is uniform.
+     */
     public double getWeight(Issue issue) {
 		return (1.0 / (double) issues.size());
 	}
