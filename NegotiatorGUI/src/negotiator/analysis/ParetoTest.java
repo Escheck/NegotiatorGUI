@@ -14,21 +14,23 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.qualitymeasures.ScenarioInfo;
 import negotiator.utility.UtilitySpace;
-import negotiator.xml.OrderedSimpleElement;
 
 /**
  * This class can be used to test if the implementation of the Pareto frontier
  * algorithm in BidSpace returns the correct results on each domain.
+ * The algorithm is compared against a simple bruteforce algorithm.
+ * 
+ * No effort was made to optimize the bruteforce algorithm as I wanted to be
+ * sure that it is correct. Therefore, it is not advised to check domains with
+ * more than 200.000 bids.
  * 
  * @author Mark Hendrikx
  * @contact m.j.c.hendrikx@student.tudelft.nl
  */
 public class ParetoTest {
 
-	
 	/**
 	 * Create an XML parser to parse the domainrepository.
-	 * @author Mark Hendrikx
 	 */
 	static class DomainParser extends DefaultHandler {
 
@@ -71,30 +73,35 @@ public class ParetoTest {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		// 1. Path to main directory in which Genius is installed
 		String dir = "c:/Users/Mark/workspace/Genius/";
+		// 2. Compare the two algorithms for all domains.
 		process(dir);
 	}
 
 	/**
-	 * Calculates all metrics and saves the results. This is NOT the place
-	 * to add mew metrics.
+	 * Simple method to compare if the algorithm for calculating the Pareto-bids in the
+	 * BidSpace class returns the right results.
 	 * 
-	 * @param dir path to Genius main dir
+	 * @param dir in which Genius is installed
 	 * @throws Exception
 	 */
 	public static void process(String dir) throws Exception {
 		ArrayList<ScenarioInfo> domains = parseDomainFile(dir);
 		
 		for (ScenarioInfo domainSt : domains) {
+			// 1. Load the domain
 			Domain domain = new Domain(dir + domainSt.getDomain());
 			UtilitySpace utilitySpaceA, utilitySpaceB;
 			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
 			utilitySpaceB =  new UtilitySpace(domain, dir + domainSt.getPrefProfB());
 			
+			// 2. Determine all Pareto-bids using both a bruteforce algorithm and algorithm in the BidSpace class
 			ArrayList<BidPoint> realParetoBids = bruteforceParetoBids(domain, utilitySpaceA, utilitySpaceB);
 			BidSpace space = new BidSpace(utilitySpaceA, utilitySpaceB);
 			ArrayList<BidPoint> estimatedParetoBids = space.getParetoFrontier();
 			
+			// 3. Check if there is a difference in the output
 			if (checkValidity(estimatedParetoBids, realParetoBids)) {
 				System.out.println("No problems in: " + domain.getName());
 			} else {
@@ -112,6 +119,13 @@ public class ParetoTest {
 		System.out.println("Finished processing domains");
 	}
 	
+	/**
+	 * Check if two lists of bids points are equal.
+	 * 
+	 * @param estimatedParetoBids
+	 * @param realParetoBids
+	 * @return
+	 */
 	private static boolean checkValidity(ArrayList<BidPoint> estimatedParetoBids, ArrayList<BidPoint> realParetoBids) {
 		if (realParetoBids.size() != estimatedParetoBids.size()) {
 			return false;
@@ -151,6 +165,14 @@ public class ParetoTest {
 		return handler.getDomains();
 	}
 	
+	/**
+	 * Bruteforce algorithm to calculate the Pareto-bids.
+	 * 
+	 * @param domain
+	 * @param spaceA
+	 * @param spaceB
+	 * @return set of Pareto-bids
+	 */
 	private static ArrayList<BidPoint> bruteforceParetoBids(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB) {
 		SortedOutcomeSpace outcomeSpaceA = new SortedOutcomeSpace(spaceA);
 		ArrayList<BidPoint> paretoBids = new ArrayList<BidPoint>();

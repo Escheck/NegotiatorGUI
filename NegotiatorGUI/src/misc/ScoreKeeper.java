@@ -6,15 +6,29 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
 import java.io.Serializable;
 
+/**
+ * Simple class which can be used to keep track of the score of a set of objects.
+ * An example of using this class is to count how many times a set of values
+ * has been offered by the opponent.
+ * 
+ * @author Tim Baarslag, Mark Hendrikx
+ *
+ * @param <A> key of the hashmap, for example a Value-object
+ */
 public class ScoreKeeper<A> implements Comparator<A>, Serializable
 {
+	/** Map of objects and their score **/
 	protected Map<A, Integer> m;
+	/** The max score in the map **/
 	protected int max;
+	/** The sum of all scores in the map **/
 	protected int total;
 	
+	/**
+	 * Creates a ScoreKeeper object by initializing the hashmap.
+	 */
 	public ScoreKeeper()
 	{
 		m = new HashMap<A, Integer>();
@@ -22,6 +36,9 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		max = 0;
 	}
 	
+	/**
+	 * Clones an existing ScoreKeeper object.
+	 */
 	public ScoreKeeper(ScoreKeeper<A> sk)
 	{
 		this.m = sk.m;
@@ -29,6 +46,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		this.total = sk.total;
 	}
 	
+	/**
+	 * Adds one to the score of the given object.
+	 * @param a object to which one must be added to its score
+	 */
 	public void score(A a)
 	{
 		Integer freq = m.get(a);
@@ -42,19 +63,28 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		m.put(a, freq);
 	}
 
-	public void score(A a, int weight)
+	/**
+	 * Method used to add a given score to a given object.
+	 * @param a object to which the given score must be added
+	 * @param score to be added to the object
+	 */
+	public void score(A a, int score)
 	{
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
-		int newValue = freq + weight;
+		int newValue = freq + score;
 		if (newValue > max) {
 			max = newValue;
 		}
-		total += weight;
+		total += score;
 		m.put(a, newValue);
 	}
 	
+	/**
+	 * @param a object from which the score must be returned
+	 * @return score of the object
+	 */
 	public int getScore(A a)
 	{
 		Integer freq = m.get(a);
@@ -63,6 +93,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return freq;
 	}
 	
+	/**
+	 * @param a object from which the score must be returned
+	 * @return score of the object divided by the heighest score
+	 */
 	public double getNormalizedScore(A a) {
 		Integer score = m.get(a);
 		if (score == null) {
@@ -71,6 +105,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return ((double) score / (double) max);
 	}
 	
+	/**
+	 * @param a object from which the score must be returned
+	 * @return score of the object divided by the sum of all scores
+	 */
 	public double getRelativeScore(A a) {
 		Integer score = m.get(a);
 		if (score == null) {
@@ -106,6 +144,9 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return sorted;
 	}
 
+	/**
+	 * @return score of the object with the heighest score.
+	 */
 	public int getMaxValue() {
 		return max;
 	}
@@ -124,6 +165,9 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return s;
 	}
 	
+	/**
+	 * @return sum of all scores
+	 */
 	public int getTotal()
 	{
 		int total = 0;
