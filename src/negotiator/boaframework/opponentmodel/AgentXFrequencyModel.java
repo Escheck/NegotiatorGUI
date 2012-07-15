@@ -2,7 +2,6 @@ package negotiator.boaframework.opponentmodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import negotiator.Bid;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
@@ -20,7 +19,10 @@ import negotiator.utility.UtilitySpace;
  * Contains value- and issue-processors to deal with opponent bids. 
  * 
  * Adapted by Mark Hendrikx to be compatible with the BOA framework.
- * 
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author E. Jacobs, Mark Hendrikx
  */
 public class AgentXFrequencyModel extends OpponentModel {
@@ -126,10 +128,10 @@ public class AgentXFrequencyModel extends OpponentModel {
 	}
 	
 	/**
-	 * Calculates the utility to our opponnent of the bid received as a parameter
+	 * Calculates the utility to our opponent of the bid received as a parameter
 	 * using the current knowledge given by our opponent model
 	 * @param bid
-	 * @return utility value for our opponnent
+	 * @return utility value for our opponent
 	 */
 	public double getBidEvaluation(Bid bid) {
 		
@@ -155,10 +157,16 @@ public class AgentXFrequencyModel extends OpponentModel {
 		return utility;
 	}
 	
+	/**
+	 * @return the weight of the issue.
+	 */
 	public double getWeight(Issue issue) {
 		return getIssueProcessor().getWeightByIssue((IssueDiscrete)issue);
 	}
 	
+	/**
+	 * @return utilityspace created by using the opponent model adapter.
+	 */
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
 	}

@@ -11,8 +11,11 @@ import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Adapter for the Frequency Model of Agent Smith.
- * 
+ * Adapter for the Frequency Model for the BOA framework.
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class SmithFrequencyModel extends OpponentModel {

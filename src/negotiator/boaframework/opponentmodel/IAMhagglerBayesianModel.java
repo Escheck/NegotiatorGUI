@@ -23,9 +23,11 @@ import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
 /**
- * IAMhagglerModel by Colin Williams.
- * Adapted by Mark Hendrikx to work with the decoupled framework.
- *  
+ * IAMhagglerModel by Colin Williams, adapted for the BOA framework.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Colin Williams, Mark Hendrikx
  */
 public class IAMhagglerBayesianModel extends OpponentModel {

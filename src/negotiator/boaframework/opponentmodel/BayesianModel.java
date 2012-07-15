@@ -1,7 +1,6 @@
 package negotiator.boaframework.opponentmodel;
 
 import java.util.HashMap;
-
 import agents.bayesianopponentmodel.BayesianOpponentModel;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import negotiator.Bid;
@@ -14,13 +13,24 @@ import negotiator.utility.UtilitySpace;
 /**
  * Adapter for BayesianModel. Note that this model only works on small domains.
  * 
+ * Adapted by Mark Hendrikx to be compatible with the BOA framework.
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class BayesianModel extends OpponentModel {
 
-	BayesianOpponentModel model;
+	/** Reference to the normal Bayesian Opponent Model */
+	private BayesianOpponentModel model;
+	/** Index of the first issue weight */
 	private int startingBidIssue = 0;
 	
+	/**
+	 * Initializes the opponent model. If the parameter m is set to a value greater than zero,
+	 * only the best hypothesis about the opponent's utility space is used.
+	 */
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
@@ -51,19 +61,23 @@ public class BayesianModel extends OpponentModel {
 		return true;
 	}
 
+	/**
+	 * Update the opponent model by updating all hypotheses
+	 * about the opponent's preference profile.
+	 * 
+	 * @param opponentBid
+	 * @param time of offering
+	 */
 	@Override
 	public void updateModel(Bid opponentBid, double time) {
 		try {
-			// time is not used by this opponent model
-			if (model == null) {
-				System.out.println("is null");
-			}
 			model.updateBeliefs(opponentBid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	
 	@Override
 	public double getBidEvaluation(Bid bid) {
 		try {
@@ -74,10 +88,16 @@ public class BayesianModel extends OpponentModel {
 		return 0;
 	}
 
+	/**
+	 * @return estimated issue weight of the given issue.
+	 */
 	public double getWeight(Issue issue) {
 		return model.getNormalizedWeight(issue, startingBidIssue);
 	}
 	
+	/**
+	 * @return utilityspace created by using the opponent model adapter.
+	 */
 	@Override
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);

@@ -11,7 +11,7 @@ import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Adapter for the Frequency Model of Agent Smith.
+ * Adapter for the optimized version of the Frequency Model of Agent Smith.
  * 
  * @author Mark Hendrikx
  */

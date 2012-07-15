@@ -11,11 +11,36 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.utility.UtilitySpace;
 
+/**
+ * Adaptation of the opponent model used by AgentLG in the ANAC2012 to
+ * be compatible with the BOA framework.
+ * 
+ * Note that originally, the model sums up all value scores which
+ * entails that the total preference of a bid can be as high as the issue count.
+ * The value score was equal to the amount of times the value was offered
+ * divided by total amount of bids offered by the opponent.
+ * 
+ * In my implementation I normalize each value score by the highest value, similar
+ * to the implementation of preference profiles in Genius. Finally I sum all results
+ * and divide by the amount of issues. This is identical to assuming that the issue
+ * weights are uniform.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
+ * @author Mark Hendrikx
+ */
 public class AgentLGModel extends OpponentModel {
 	
+	/** Creates objects to keep track of how many times each value has been offered for an issue */
 	private HashMap<Issue,BidStatistic> statistic = new HashMap<Issue,BidStatistic>();
+	/** Cache the issues of the domain for performanc reasons */
 	private ArrayList<Issue> issues;
 	
+	/**
+	 * Initialize the opponent model by creating an object to keep track of the values
+	 * for each issue.
+	 */
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
 		issues = negotiationSession.getUtilitySpace().getDomain().getIssues();
@@ -24,6 +49,13 @@ public class AgentLGModel extends OpponentModel {
 		}
 	}
 	
+	/**
+	 * Update the opponent model by updating the value score
+	 * for each issue.
+	 * 
+	 * @param opponentBid
+	 * @param time of offering
+	 */
 	@Override
 	public void updateModel(Bid opponentBid, double time) {	
 		try
@@ -40,8 +72,7 @@ public class AgentLGModel extends OpponentModel {
 
 
 	/**
-	 * returns opponent bid utility that calculated from the vote statistics.
-	 *
+	 * @return utility of the opponent's bid
 	 */
 	public double getBidEvaluation(Bid bid) {
 		double ret=0;
@@ -55,10 +86,16 @@ public class AgentLGModel extends OpponentModel {
 		return (ret / issues.size());
 	}
 	
+	/**
+	 * @return the uniform issue weight
+	 */
 	public double getWeight(Issue issue) {
 		return (1.0 / issues.size());
 	}
 	
+	/**
+	 * @return utilityspace created by using the opponent model adapter.
+	 */
 	@Override
 	public UtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());

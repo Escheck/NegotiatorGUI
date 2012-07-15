@@ -11,8 +11,11 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Adapter for BayesianOpponentModelScalable.
- * 
+ * Adapter for BayesianOpponentModelScalable for the BOA framework.
+ *
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ *
  * @author Mark Hendrikx
  */
 public class ScalableBayesianModel extends OpponentModel {
