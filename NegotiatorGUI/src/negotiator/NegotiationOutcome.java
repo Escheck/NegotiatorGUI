@@ -142,30 +142,35 @@ public class NegotiationOutcome {
 	{
 		double minDemandedUtil;
 		double fyu;
-		double competitiveness;
-		double cooperation;
+		double bsCR;
+		double normACCR;
+		double totalCR;
+		
+		//double cooperation;
 		if (Global.LOG_COMPETITIVENESS)
 		{
-			minDemandedUtil = getMinDemandedUtil(agentX, bids);
 			BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
 			fyu = getFYU(agentX, bidSpace);
-			if(minDemandedUtil != -1){
-				double yield = Math.max(minDemandedUtil, fyu);
-				competitiveness = (yield - fyu) / (1 - fyu);
-				cooperation = 1 - competitiveness;
-				/*System.out.println("fyu: "+fyu);
-				System.out.println("minDemandedUtil: "+minDemandedUtil);
-				System.out.println("yield: "+yield);
-
-				System.out.println("competitiveness: "+competitiveness);
-				System.out.println("cooperation: "+cooperation);
-				 */
-
-			} else {
-				cooperation = -1;
-				System.out.println("Bids is Empty");
-
+			
+			minDemandedUtil = getMinDemandedUtil(agentX, bids);
+			bsCR = determineCR(agentX, bids, fyu, minDemandedUtil);
+			
+			double minUtil = agentX.equals("A") ? agentAutility : agentButility;
+			totalCR =  determineCR(agentX, bids, fyu, minUtil);
+			if(totalCR < bsCR)
+				totalCR = bsCR;
+			
+			if(1-bsCR == 0){
+				normACCR = 0;
+			} else{
+				normACCR = (totalCR - bsCR)/ (1-bsCR);
 			}
+			
+			System.out.println("Total_CR: " + totalCR);
+			System.out.println("BS_CRCR: " + bsCR);
+			System.out.println("normalized_AC_CR: " + normACCR);
+
+			
 		}
 		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
@@ -183,7 +188,12 @@ public class NegotiationOutcome {
 		{
 			outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
 			outcome.setAttribute("FYU",""+fyu);
-			outcome.setAttribute("cooperation",""+cooperation);
+			outcome.setAttribute("Total_CR",""+totalCR);
+			outcome.setAttribute("BS_CR",""+bsCR);
+			outcome.setAttribute("AC_CR",""+normACCR);
+
+
+			//outcome.setAttribute("cooperation",""+cooperation);
 		}
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
@@ -192,7 +202,22 @@ public class NegotiationOutcome {
 		outcome.setAttribute("normalizedUtility",""+normalized);
 		return outcome;
 	}
+	
+	private double determineCR(String agentX, ArrayListXML<BidPoint> bids, double fyu, double minUtil){
+		double CR;
+		if(minUtil != -1){
+			double yield = Math.max(minUtil, fyu);
+			double competitiveness = (yield - fyu) / (1 - fyu);
+			CR = 1 - competitiveness;
 
+		} else {
+			CR = -1;
+			System.out.println("Bids is Empty");
+
+		}
+		
+		return CR;
+	}
 	
 	public ArrayListXML<BidPoint> getAgentABids() {
 		return AgentABids;
@@ -231,6 +256,7 @@ public class NegotiationOutcome {
 		return fyu;
 	}
 
+	
 	/**
 	 * Gets the smallest utility an agent was willing to ask
 	 */
@@ -252,21 +278,9 @@ public class NegotiationOutcome {
 
 			BidPoint minDemandedBid = Collections.min(bids, comp);
 			//System.out.println("minDemandedBid: "+minDemandedBid.utilityA);
-			if(agentX.equals("A")){
-				if(lastAction.toString().equals("(Accept)") && minDemandedBid.utilityA > agentAutility){
-					minDemandedUtil = agentAutility;
-				} else{
-					minDemandedUtil = minDemandedBid.utilityA;
-				}
-			}else {
-				if(lastAction.toString().equals("(Accept)") && minDemandedBid.utilityB > agentButility){
-					minDemandedUtil = agentButility;
-				} else{
-					minDemandedUtil = minDemandedBid.utilityB;
-				}
-			}
+			
 
-			 //minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
 		}else { 
 			minDemandedUtil = -1;
 		

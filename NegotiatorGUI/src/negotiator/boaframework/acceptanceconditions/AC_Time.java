@@ -27,8 +27,8 @@ public class AC_Time extends AcceptanceStrategy {
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
-		if (parameters.get("c") != null) {
-			constant = parameters.get("c");
+		if (parameters.get("t") != null) {
+			constant = parameters.get("t");
 		} else {
 			throw new Exception("Constant \"c\" for the threshold was not set.");
 		}
