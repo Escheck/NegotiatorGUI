@@ -30,7 +30,7 @@ import com.mysql.jdbc.Statement;
  * 
  * NOTE: if the log is very large (>200 MB), for example when using MAC, a memory
  * error is likely to occur when reconstructing the log. For future work the method
- * should be adapted to work without the StringBuffer class.
+ * could be adapted to immediately write the results to a file.
  * 
  * @author Mark Hendrikx
  * @version 17-12-11

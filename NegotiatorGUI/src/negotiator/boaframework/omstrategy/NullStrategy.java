@@ -9,7 +9,7 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
 
 /**
- * Baseline strategy which simply returns a random bid from the given array of bid.
+ * Baseline strategy which simply returns a random bid from the given array of bids.
  *  
  * @author Mark Hendrikx
  */
@@ -34,6 +34,9 @@ public class NullStrategy extends OMStrategy {
 		}
 	}
 	
+	/**
+	 * @return random bid from the given array of bids.
+	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
 		return allBids.get(rand.nextInt(allBids.size()));

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import misc.Pair;
 
 /**
- * Class used to store the information of a decoupled parameter.
+ * Class used to store the information of a BOA parameter.
  * 
  * Please report bugs to author.
  * 

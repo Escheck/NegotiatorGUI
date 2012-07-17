@@ -12,13 +12,12 @@ import negotiator.utility.UtilitySpace;
  * Methods have been optimized to work with a sorted list.
  * Useful if someone wants to quickly implement an agent.
  * 
- * @author Alex Dirkzwager
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class SortedOutcomeSpace extends OutcomeSpace {
 
 	public SortedOutcomeSpace(UtilitySpace utilSpace) {
-		generateAllBids(utilSpace);
-		utilitySpace = utilSpace;
+		super(utilSpace);
 		Collections.sort(allBids, new BidDetailsSorterUtility());
 	}
 	
@@ -113,11 +112,17 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 		return middle;
 	}
 	
+	/**
+	 * @return best bid in the domain.
+	 */
 	@Override
 	public BidDetails getMaxBidPossible(){
 		return allBids.get(0);
 	}
 	
+	/**
+	 * @return worst bid in the domain.
+	 */
 	public BidDetails getMinBidPossible() {
 		return allBids.get(allBids.size() - 1);
 	}

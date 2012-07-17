@@ -15,9 +15,13 @@ import java.io.Serializable;
 public class BOAagentInfo implements Serializable {
 	
 	private static final long serialVersionUID = 2868410344415899340L;
+	/** Offering strategy of the specified agent */
 	private BOAcomponent offeringStrategy;
+	/** Acceptance strategy of the specified agent */
 	private BOAcomponent acceptanceStrategy;
+	/** Opponent model of the specified agent */
 	private BOAcomponent opponentModel;
+	/** Opponent model strategy of the specified agent */
 	private BOAcomponent omStrategy;
 
 	/**

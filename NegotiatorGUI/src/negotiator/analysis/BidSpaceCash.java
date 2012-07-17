@@ -26,6 +26,13 @@ public class BidSpaceCash {
 		}
 	}
 	
+	/**
+	 * A bidspace which is added to the cache must ultimately be removed to free
+	 * computational resources.
+	 * 
+	 * @param spaceA
+	 * @param spaceB
+	 */
 	public static void removeBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
 		if (bidSpaceCash.get(spaceA).get(spaceB) != null) {
 			bidSpaceCash.get(spaceA).remove(spaceB);

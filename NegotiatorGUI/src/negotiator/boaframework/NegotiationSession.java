@@ -12,7 +12,7 @@ import negotiator.utility.UtilitySpace;
 /**
  * This is an abstract class which manages all the negotiation Session pertinent information to a single agent
  * 
- @author Alex Dirkzwager
+ @author Alex Dirkzwager, Mark Hendrikx
  */
 public class NegotiationSession {
 	
@@ -69,6 +69,13 @@ public class NegotiationSession {
 	 */
 	public double getTime() {
 		return timeline.getTime();
+	}
+	
+	public Domain getDomain() {
+		if (utilitySpace != null) {
+			return utilitySpace.getDomain();
+		}
+		return null;
 	}
 	
 	public UtilitySpace getUtilitySpace(){

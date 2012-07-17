@@ -10,7 +10,7 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * This class generates the complete outcome space and is therefore
- * Useful if someone wants to quickly implement an agent.
+ * useful if someone wants to quickly implement an agent.
  * Note that while this outcomespace is faster upon initialization,
  * the sorted outcomespace class is faster during the negotiation.
  * 
@@ -23,8 +23,10 @@ public class OutcomeSpace {
 	/** List of all possible bids in the domain */
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
 	
-	public OutcomeSpace() { }
-	
+	/**
+	 * Creates an unsorted outcome space.
+	 * @param utilSpace
+	 */
 	public OutcomeSpace(UtilitySpace utilSpace) {
 		this.utilitySpace = utilSpace;
 		generateAllBids(utilSpace);
@@ -32,7 +34,6 @@ public class OutcomeSpace {
 	
 	/**
 	 * Generates all the possible bids in the domain
-	 * 
 	 * @param utilSpace
 	 */
 	public void generateAllBids(UtilitySpace utilSpace) {
@@ -122,6 +123,9 @@ public class OutcomeSpace {
 		return closestBid;
 	}	
 	
+	/**
+	 * @return best bid in the domain.
+	 */
 	public BidDetails getMaxBidPossible(){
 		BidDetails maxBid = allBids.get(0);
 		for(BidDetails bid : allBids){
@@ -132,6 +136,9 @@ public class OutcomeSpace {
 		return maxBid;
 	}
 	
+	/**
+	 * @return worst bid in the domain.
+	 */
 	public BidDetails getMinBidPossible(){
 		BidDetails minBid = allBids.get(0);
 		for(BidDetails bid : allBids){
@@ -142,6 +149,9 @@ public class OutcomeSpace {
 		return minBid;
 	}
 
+	/**
+	 * @return index of the bid with the utility closest to the given utilty.
+	 */
 	public int getIndexOfBidNearUtility(double utility) {
 		double closesDistance = 1;
 		int best = 0;

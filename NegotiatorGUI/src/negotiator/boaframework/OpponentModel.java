@@ -8,35 +8,61 @@ import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
 
 /**
- * This is the abstract class for the agents Opponent Model.
+ * Describes an opponent model of an agent of the BOA framework.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
 public abstract class OpponentModel {
 	
+	/** Reference to the negotiation state */
 	protected NegotiationSession negotiationSession;
+	/** Reference to the estimated opponent's utility state */
 	protected UtilitySpace opponentUtilitySpace;
+	/** Boolean to indicate that the model has been cleared to free resources */
 	private boolean cleared;
 	
-	public void init(NegotiationSession domainKnow, HashMap<String, Double> parameters) throws Exception {
-		negotiationSession = domainKnow;
-		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
+	/**
+	 * Initializes the model. The init method should always be called after creating an opponent model.
+	 * 
+	 * @param negotiationSession reference to the state of the negotiation
+	 * @param parameters
+	 * @throws Exception
+	 */
+	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
+		this.negotiationSession = negotiationSession;
+		opponentUtilitySpace = new UtilitySpace(negotiationSession.getUtilitySpace());
 		cleared = false;
 	}
 	
-	public void init(NegotiationSession domainKnow) {
-		negotiationSession = domainKnow;
-		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
+	/**
+	 * Alternative init method to initialize the model without setting parameters.
+	 * @param negotiationSession reference to the state of the negotiation
+	 */
+	public void init(NegotiationSession negotiationSession) {
+		this.negotiationSession = negotiationSession;
+		opponentUtilitySpace = new UtilitySpace(negotiationSession.getUtilitySpace());
+		cleared = false;
 	}
 
+	/**
+	 * Method used to update the opponent model.
+	 * @param opponentBid
+	 */
 	public void updateModel(Bid opponentBid) {
 		updateModel(opponentBid, negotiationSession.getTime());
 	}
 	
+	/**
+	 * Method used to update the opponent model.
+	 * @param opponentBid
+	 */
 	public abstract void updateModel(Bid bid, double time);
 	
 	/**
-	 * Determines the utility of the opponent according to the OpponentModel
+	 * Determines the utility of a bid according to the preference profile.
 	 * @param Bid
 	 * @return Utility of the bid
 	 */
@@ -49,23 +75,41 @@ public abstract class OpponentModel {
 		return -1;
 	}
 	
+	/**
+	 * @return the estimated utility space of the opponent
+	 */
 	public UtilitySpace getOpponentUtilitySpace(){
 		return opponentUtilitySpace;
 	}
 
-	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { 
-		
-	}
+	/**
+	 * Method which may be overwritten by an opponent model to get access to the opponent's
+	 * utilityspace.
+	 * 
+	 * @param fNegotiation
+	 */
+	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { }
+	
+	/**
+	 * Method which may be overwritten by an opponent model to get access to the opponent's
+	 * utilityspace.
+	 * 
+	 * @param opponentUtilitySpace
+	 */
+	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) { }
 	
 	/**
 	 * Returns the weight of a particular issue in the domain.
-	 * @param issueID
-	 * @return
+	 * @param issue from which the weight should be returned
+	 * @return weight of the given issue
 	 */
 	public double getWeight(Issue issue) {
 		return opponentUtilitySpace.getWeight(issue.getNumber());
 	}
 	
+	/**
+	 * @return set of all estimated issue weights.
+	 */
 	public double[] getIssueWeights() {
 		double estimatedIssueWeights[] = new double[negotiationSession.getUtilitySpace().getDomain().getIssues().size()];
 		int i = 0;
@@ -76,20 +120,25 @@ public abstract class OpponentModel {
 		return estimatedIssueWeights;
 	}
 	
+	/**
+	 * Removes references to the objects used by the opponent model.
+	 */
 	public void cleanUp() {
 		negotiationSession = null;
 		cleared = true;
 	}
 
+	/**
+	 * @return if the opponent model is in a usable state.
+	 */
 	public boolean isCleared() {
 		return cleared;
 	}
 
+	/**
+	 * @return name of the opponent model.
+	 */
 	public String getName() {
 		return "Default";
-	}
-
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
-		
 	}
 }

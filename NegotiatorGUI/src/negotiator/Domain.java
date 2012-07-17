@@ -396,7 +396,10 @@ public class Domain
 	}
 	
 	/**
-	 * get all issues as an arraylist.
+	 * Returns all issues as an arraylist.
+	 * Note that it is wise cache the issues, as this implementation is quite
+	 * computationally expensive.
+	 * 
 	 * @author W.Pasman
 	 * @return arraylist of all issues in the domain.
 	 */
