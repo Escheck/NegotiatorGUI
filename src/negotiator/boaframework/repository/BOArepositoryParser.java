@@ -6,24 +6,32 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * IDEAS
- * Add support for default values?
+ * Simple XML parser which parses the BOA repository and stores the information
+ * for easy access.
  * 
  * @author Mark Hendrikx
  */
 class BOArepositoryParser extends DefaultHandler {
-
+	/** List of bidding strategies in the repository */
 	HashMap<String, BOArepItem> biddingStrategies = new HashMap<String, BOArepItem>();
+	/** List of acceptance strategies in the repository */
 	HashMap<String, BOArepItem> acceptanceConditions = new HashMap<String, BOArepItem>();
+	/** List of opponent models in the repository */
 	HashMap<String, BOArepItem> opponentModels = new HashMap<String, BOArepItem>();
+	/** List of opponent model strategies in the repository */
 	HashMap<String, BOArepItem> omStrategies = new HashMap<String, BOArepItem>();
 
+	/** Modes in which the parser can be in */
 	private enum Modes { BS, AC, OM, OMS, NULL }
 	private Modes mode = Modes.NULL;
 	
+	/**
+	 * Main method used to parse the repository.
+	 */
 	public void startElement(String nsURI, String strippedName,
 			String tagName, Attributes attributes) throws SAXException {
 		
+		// 1. If the mode of the parser is currently unknown, determin it.
 		if (mode.equals(Modes.NULL)) {
 			if (tagName.equals("biddingstrategies")) {
 				mode = Modes.BS;
@@ -38,9 +46,9 @@ class BOArepositoryParser extends DefaultHandler {
 					throw new SAXException("Unsupported tag: " + tagName + " in XML");
 				}
 			}
+		// 2. ELSE if the parser is in a mode, read an element and store it.
 		} else {
 			String description = attributes.getValue(0);
-			
 			
 			if (mode.equals(Modes.BS)) {
 				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
@@ -61,6 +69,9 @@ class BOArepositoryParser extends DefaultHandler {
 		}
 	}
 	
+	/**
+	 * If the parser finished reading a section, switch the current mode to unknown.
+	 */
 	public void endElement(String nsURI, String strippedName,
 			String tagName) throws SAXException {
 		
@@ -70,18 +81,30 @@ class BOArepositoryParser extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * @return bidding strategies in the BOA repository.
+	 */
 	public HashMap<String, BOArepItem> getBiddingStrategies() {
 		return biddingStrategies;
 	}
 
+	/**
+	 * @return acceptance strategies in the BOA repository.
+	 */
 	public HashMap<String, BOArepItem> getAcceptanceConditions() {
 		return acceptanceConditions;
 	}
 
+	/**
+	 * @return opponent models in the BOA repository.
+	 */
 	public HashMap<String, BOArepItem> getOpponentModels() {
 		return opponentModels;
 	}
 
+	/**
+	 * @return opponent model strategies in the BOA repository.
+	 */
 	public HashMap<String, BOArepItem> getOMStrategies() {
 		return omStrategies;
 	}

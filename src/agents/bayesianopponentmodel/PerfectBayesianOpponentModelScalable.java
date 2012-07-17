@@ -1,24 +1,23 @@
 package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
-
-
-
 import negotiator.Bid;
-import negotiator.Global;
 import negotiator.issue.*;
-import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.*;
 
+/**
+ * Version of the standard Scalable Bayesian Model which uses the opponent's utilityspace
+ * to calculate the real utility of the opponent's bid. This is equivalent to having complete
+ * knowledge about the opponent's decision function.
+ * 
+ * @author Mark Hendrikx
+ */
 public class PerfectBayesianOpponentModelScalable extends OpponentModel {
-	
 
 	private UtilitySpace fUS;
 	private ArrayList<ArrayList<WeightHypothesis2>> fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
-//	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;
-//	public ArrayList<Bid> fBiddingHistory; // previous bids of the opponent, not our bids.
-//	private ArrayList<UtilitySpaceHypothesis> fUSHyps;
+
 	ArrayList<Issue> issues;
 	private double[] fExpectedWeights;
 	private UtilitySpace opponentSpace;

@@ -26,7 +26,7 @@ import negotiator.boaframework.opponentmodel.NoModel;
  * This class describes a basic decoupled agent. The TheDecoupledAgent class extends
  * this class and sets the required parameters.
  * 
- * @author Alex Dirkzwager
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
 public abstract class BOAagent extends Agent {
 

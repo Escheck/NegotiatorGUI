@@ -3,16 +3,19 @@ package negotiator.boaframework.opponentmodel;
 import negotiator.Bid;
 import negotiator.Global;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
 
 /**
- * An opponent model symbolizing perfect knowledge about the opponent's preferences.
- * Note that for using this model experimentalSetup should be enabled in global.
+ * The theoretically worst opponent model. Note that for using this model
+ * experimentalSetup should be enabled in global.
  * 
  * @author Mark Hendrikx
  */
-public class PerfectModel extends OpponentModel {
+public class WorstModel extends OpponentModel {
+
+	private UtilitySpaceAdapter worstUtilitySpace;
 
 	@Override
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession session) {
@@ -24,18 +27,20 @@ public class PerfectModel extends OpponentModel {
 			}
 		} else {
 			System.err.println("Global.experimentalSetup should be enabled!");
-		}	
+		}
+		this.worstUtilitySpace = new UtilitySpaceAdapter(this, opponentUtilitySpace.getDomain());
 	}
 	
 	@Override
 	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
 		this.opponentUtilitySpace = opponentUtilitySpace;
+		this.worstUtilitySpace = new UtilitySpaceAdapter(this, opponentUtilitySpace.getDomain());
 	}
 
 	@Override
 	public double getBidEvaluation(Bid bid) {
 		try {
-			return opponentUtilitySpace.getUtility(bid);
+			return 1.0 - opponentUtilitySpace.getUtility(bid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,7 +49,11 @@ public class PerfectModel extends OpponentModel {
 
 	@Override
 	public String getName() {
-		return "Perfect Model";
+		return "Worst Model";
+	}
+	
+	public UtilitySpace getOpponentUtilitySpace(){
+		return worstUtilitySpace;
 	}
 	
 	public void updateModel(Bid opponentBid, double time) { }

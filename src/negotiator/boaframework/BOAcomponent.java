@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Creates a decoupled component consisting of the classname of the component,
+ * Creates a BOA component consisting of the classname of the component,
  * the type of the component, and all parameters.
  * 
  * Please report bugs to author.

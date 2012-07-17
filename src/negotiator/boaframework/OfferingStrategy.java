@@ -4,7 +4,10 @@ import java.util.HashMap;
 import negotiator.bidding.BidDetails;
 
 /**
- * This is an abstract class for the agents offering strategy
+ * Describes a bidding strategy of an agent of the BOA framework.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11

@@ -3,7 +3,10 @@ package negotiator.boaframework;
 import java.util.HashMap;
 
 /**
- * This is an abstract class for the agents acceptance strategy.
+ * Describes an acceptance strategy of an agent of the BOA framework.
+ * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */

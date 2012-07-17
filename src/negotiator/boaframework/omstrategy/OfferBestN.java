@@ -69,7 +69,7 @@ public class OfferBestN extends OMStrategy {
 	}
 	
 	/**
-	 * Returns a random bid from the set of N best bids.
+	 * @return random bid from the subset of N best bids in the given set.
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
