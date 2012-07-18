@@ -145,6 +145,7 @@ public class NegotiationOutcome {
 		double bsCR;
 		double normACCR;
 		double totalCR;
+		double acCR;
 		
 		//double cooperation;
 		if (Global.LOG_COMPETITIVENESS)
@@ -160,16 +161,13 @@ public class NegotiationOutcome {
 			if(totalCR < bsCR)
 				totalCR = bsCR;
 			
+			acCR = (totalCR - bsCR);
+			
 			if(1-bsCR == 0){
 				normACCR = 0;
 			} else{
-				normACCR = (totalCR - bsCR)/ (1-bsCR);
+				normACCR = acCR / (1-bsCR);
 			}
-			
-			System.out.println("Total_CR: " + totalCR);
-			System.out.println("BS_CRCR: " + bsCR);
-			System.out.println("normalized_AC_CR: " + normACCR);
-
 			
 		}
 		
@@ -190,7 +188,8 @@ public class NegotiationOutcome {
 			outcome.setAttribute("FYU",""+fyu);
 			outcome.setAttribute("Total_CR",""+totalCR);
 			outcome.setAttribute("BS_CR",""+bsCR);
-			outcome.setAttribute("AC_CR",""+normACCR);
+			outcome.setAttribute("AC_CR",""+acCR);
+			outcome.setAttribute("Normalized_AC_CR",""+normACCR);
 
 
 			//outcome.setAttribute("cooperation",""+cooperation);
