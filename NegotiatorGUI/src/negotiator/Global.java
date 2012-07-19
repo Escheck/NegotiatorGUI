@@ -102,6 +102,8 @@ public class Global {
 	 * The only side-effect is that it is not possible to retrieve the Pareto bids
 	 * given the bid points. This could be a problem for quality measures, but in this
 	 * case the alternate constructor of BidSpace can be used.
+	 * 
+	 * Also, this boolean ensures that all bidspaces are not calculated beforehand.
 	 */
 	public static final boolean LOW_MEMORY_MODE = true;
 	
@@ -110,6 +112,10 @@ public class Global {
 	 * heavy, it is advisable to use it with the PAUSABLE_TIMELINE option.
 	 */
 	public static final boolean RECORD_OPPONENT_TRACE = false;
+
+	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
+
+	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
 	public Global() {}
 

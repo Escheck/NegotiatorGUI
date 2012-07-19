@@ -20,6 +20,7 @@ import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidPointSorterB;
 import negotiator.analysis.BidSpace;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
+import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -56,6 +57,7 @@ public class NegotiationOutcome {
 	private final AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession;
 	private final Action lastAction;
 	private int runNr = 0;
+	private OpponentModelMeasuresResults omMeasuresResults = null;
 
 	/** Creates a new instance of NegotiationOutcome 
 	 * @param alternatingOffersBilateralAtomicNegoSession 
@@ -194,6 +196,13 @@ public class NegotiationOutcome {
 
 			//outcome.setAttribute("cooperation",""+cooperation);
 		}
+		
+		if (omMeasuresResults != null) {
+			if (agentX.equals("A")) {
+				setOMMeasures(outcome);
+			}
+		}
+		
 		//		outcome.setAttribute("agentADiscUtil", "" + (agentX.equals("A") ? agentAutilityDiscount : ""));
 		//		outcome.setAttribute("agentBDiscUtil", "" + (agentX.equals("B") ? agentButilityDiscount : ""));
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
@@ -202,6 +211,21 @@ public class NegotiationOutcome {
 		return outcome;
 	}
 	
+	private void setOMMeasures(OrderedSimpleElement outcome) {
+		outcome.setAttribute("Pearson_Correlation_Bids", omMeasuresResults.getPearsonCorrelationCoefficientOfBidsList().get(0) + "");
+		outcome.setAttribute("Ranking_Distance_Bids", omMeasuresResults.getRankingDistanceOfBidsList().get(0) + "");
+		outcome.setAttribute("Ranking_Distance_Issue_Weights", omMeasuresResults.getRankingDistanceOfIssueWeightsList().get(0) + "");
+		outcome.setAttribute("Average_Difference_Bids", omMeasuresResults.getAverageDifferenceBetweenBidsList().get(0) + "");
+		outcome.setAttribute("Average_Difference_Issue_Weights", omMeasuresResults.getAverageDifferenceBetweenIssueWeightsList().get(0) + "");	
+		outcome.setAttribute("Kalai_Difference", omMeasuresResults.getKalaiDistanceList().get(0) + "");
+		outcome.setAttribute("Nash_Difference", omMeasuresResults.getNashDistanceList().get(0) + "");	
+		outcome.setAttribute("Difference_Pareto_Frontier", omMeasuresResults.getAverageDifferenceOfParetoFrontierList().get(0) + "");
+		outcome.setAttribute("Percentage_Correct_Pareto_Bids", omMeasuresResults.getPercentageOfCorrectlyEstimatedParetoBidsList().get(0) + "");
+		outcome.setAttribute("Percentage_Incorrect_Pareto_Bids", omMeasuresResults.getPercentageOfIncorrectlyEstimatedParetoBidsList().get(0) + "");
+		outcome.setAttribute("Pareto_Frontier_Distance", omMeasuresResults.getParetoFrontierDistanceList().get(0) + "");
+	}
+
+
 	private double determineCR(String agentX, ArrayListXML<BidPoint> bids, double fyu, double minUtil){
 		double CR;
 		if(minUtil != -1){
@@ -385,5 +409,11 @@ public class NegotiationOutcome {
 
 	public boolean getAgentAFirst() {
 		return agentAstarts;
+	}
+
+
+	public void setNegotiationOutcome(
+			OpponentModelMeasuresResults omMeasuresResults) {
+		this.omMeasuresResults  = omMeasuresResults;
 	}
 }

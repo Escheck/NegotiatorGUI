@@ -31,7 +31,7 @@ import misc.SetTools;
 
 /**
  * This form is used to input the decoupled agents.
- * The GUI was originally created using Netbeans, and is therefore probably
+ * The GUI was originally created using Netbeans, and is therefore probably still
  * compatible with their form editor.
  * 
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)

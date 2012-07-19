@@ -17,7 +17,7 @@ import negotiator.boaframework.OpponentModel;
 public class BestBid extends OMStrategy {
 
 	/**  when to stop updating the opponentmodel */
-	double updateThreshold = 1.0;
+	double updateThreshold = 1.1;
 	
 	/**
 	 * Empty constructor used for reflexion. Note this constructor assumes that init
