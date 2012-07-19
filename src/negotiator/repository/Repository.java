@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 import negotiator.Domain;
+import negotiator.Global;
 import negotiator.exceptions.Warning;
 import negotiator.utility.UtilitySpace;
 /**
@@ -193,7 +194,7 @@ public class Repository
 	/****************** code that creates repos if none exists ********************/
 	public static Repository get_domain_repos() throws Exception
 	{
-		final String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
+		final String FILENAME= Global.DOMAIN_REPOSITORY; // ASSUMPTION  there is only one domain repository
 		return get_domain_repos(FILENAME,"");
 
 	}

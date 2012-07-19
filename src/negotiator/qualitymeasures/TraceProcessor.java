@@ -9,10 +9,11 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
 import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
 import negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel;
+import negotiator.boaframework.opponentmodel.PerfectModel;
 import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 import negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel;
 import negotiator.boaframework.opponentmodel.OppositeModel;
-import negotiator.boaframework.opponentmodel.SmithFrequencyModel;
+import negotiator.boaframework.opponentmodel.WorstModel;
 import negotiator.boaframework.opponentmodel.SmithFrequencyModelV2;
 import negotiator.utility.UtilitySpace;
 
@@ -33,8 +34,8 @@ public class TraceProcessor {
 	
 	public static void main(String[] args) {
 		String mainDir = "c:/Users/Mark/workspace/Genius"; 
-		String logPath = "Tracelogs/Experiment 1/Deterministic6.csv";
-		String outPath = "log/Deterministic6_opposite.csv";
+		String logPath = "Tracelogs/Experiment 1/Nondeterministic11.csv";
+		String outPath = "log/Test.csv";
 
 		
 		TraceLoader loader = new TraceLoader();
@@ -45,7 +46,7 @@ public class TraceProcessor {
 	private static void processTraces(String outPath, ArrayList<Trace> traces, String mainDir) {
 		for (int a = 0; a < traces.size(); a++) {
 			System.out.println("Processing trace " + (a + 1) + "/" + traces.size() + " " + traces.get(a).getOpponentProfile());
-			opponentModel = new OppositeModel();
+			opponentModel = new PerfectModel();
 			Trace trace = traces.get(a);
 			NegotiationSession negotiationSession = new NegotiationSessionWrapper(trace, mainDir);
 			OpponentModelMeasuresResults omMeasuresResults = new OpponentModelMeasuresResults();
@@ -71,7 +72,7 @@ public class TraceProcessor {
 						}
 						currentSample++;
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
-						if (currentSample == 1 || !(opponentModel instanceof OppositeModel)) {
+						if (currentSample == 1 || !(opponentModel instanceof OppositeModel || opponentModel instanceof WorstModel)) {
 							UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
 							BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false);
 							omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));

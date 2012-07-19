@@ -18,6 +18,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.opponentmodel.NoModel;
@@ -448,6 +449,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
+		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
@@ -478,6 +480,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				time,
 				distanceToNash
 		);
+		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
@@ -487,6 +490,38 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		}
 	}
 
+	private void calculateFinalAccuracy(NegotiationOutcome negoOutcome) {
+		if (Global.CALCULATE_FINAL_ACCURACY) {
+			if (agentA instanceof BOAagent) {
+				OpponentModel opponentModel = ((BOAagent) agentA).getOpponentModel();
+				if (!(opponentModel instanceof NoModel)) {
+					UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
+					BidSpace estimatedBS = null;
+					try {
+						estimatedBS = new BidSpace(spaceA, estimatedOpponentUS, false);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
+					omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));
+					omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasures.calculateRankingDistanceWeights(opponentModel));
+					omMeasuresResults.addAverageDifferenceBetweenBids(omMeasures.calculateAvgDiffBetweenBids(opponentModel));
+					omMeasuresResults.addAverageDifferenceBetweenIssueWeights(omMeasures.calculateAvgDiffBetweenIssueWeights(opponentModel));
+					omMeasuresResults.addKalaiDistance(omMeasures.calculateKalaiDiff(estimatedBS));
+					omMeasuresResults.addNashDistance(omMeasures.calculateNashDiff(estimatedBS));
+					omMeasuresResults.addAverageDifferenceOfParetoFrontier(omMeasures.calculateAvgDiffParetoBidToEstimate(estimatedOpponentUS));
+					omMeasuresResults.addPercentageOfCorrectlyEstimatedParetoBids(omMeasures.calculatePercCorrectlyEstimatedParetoBids(estimatedBS));
+					omMeasuresResults.addPercentageOfIncorrectlyEstimatedParetoBids(omMeasures.calculatePercIncorrectlyEstimatedParetoBids(estimatedBS));
+					omMeasuresResults.addParetoFrontierDistance(omMeasures.calculateParetoFrontierDistance(estimatedBS));
+					estimatedBS = null;
+					estimatedOpponentUS = null;
+					System.gc();
+				}
+				negoOutcome.setNegotiationOutcome(omMeasuresResults);
+			}
+			
+		}
+	}
 	private void processDataForLogging(double time, boolean agreement) {
 		if (Global.RECORD_OPPONENT_TRACE) {
 			matchDataLogger.addMeasure("time", omMeasuresResults.getTimePointList());
