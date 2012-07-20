@@ -104,6 +104,7 @@ public class TournamentRunner implements Runnable
 				log = runDistributedTournament(0);
 				NegoGUIApp.negoGUIView.getFrame().setVisible(true);
 			} else {
+				System.out.println("ND");
 				log = runTournament();
 			}
 
@@ -181,6 +182,7 @@ public class TournamentRunner implements Runnable
 				// 3. Run the matches and store the outcomes
 				for (Protocol s: job.getSessions()) {
 					int runNr = determineRunNr(s);
+					previousSession = s.hashCode();
 					s.setRun(runNr);
 					synchronized(this) { 
 						for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);	
