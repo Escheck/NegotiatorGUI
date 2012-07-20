@@ -516,8 +516,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					estimatedBS = null;
 					estimatedOpponentUS = null;
 					System.gc();
+					negoOutcome.setNegotiationOutcome(omMeasuresResults);
 				}
-				negoOutcome.setNegotiationOutcome(omMeasuresResults);
 			}
 			
 		}
