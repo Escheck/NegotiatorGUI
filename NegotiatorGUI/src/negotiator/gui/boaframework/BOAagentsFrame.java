@@ -1,5 +1,6 @@
 package negotiator.gui.boaframework;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -88,6 +90,8 @@ public class BOAagentsFrame extends JDialog {
     private JButton removeAgents;
     private JButton saveButton;
     private JButton cancelButton;
+    private JButton addAgentListButton;
+
     
     private JSeparator seperator;
     
@@ -106,7 +110,7 @@ public class BOAagentsFrame extends JDialog {
     	nullParam = new BOAparameter("null", 1, 1, 1);
     }
 
-    public ArrayList<BOAagentInfo> getResult() {
+    public ArrayList<BOAagentInfo> getResult(ArrayList<BOAagentInfo> BOAagentList) {
     	initFrameGUI();
         initOfferingStrategyGUI();
         initAcceptanceStrategyGUI();
@@ -115,6 +119,11 @@ public class BOAagentsFrame extends JDialog {
         initAgentsGUI();
         loadLists();
         initControls();
+        
+        for(BOAagentInfo agent: BOAagentList){
+			agentsModel.addElement(agent);
+        }
+        
         if (DEBUG) {
         	asParamsModel.addElement(new BOAparameter("a", 1, 1, 1));
         	asParamsModel.addElement(new BOAparameter("b", 0, 0, 1));
@@ -200,7 +209,18 @@ public class BOAagentsFrame extends JDialog {
 			}
 		});
     	
-    	addAgents.addActionListener(new ActionListener() {
+    	/*addAgentListButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<BOAagentInfo> agentList = new AgentListFrame(NegoGUIApp.negoGUIView.getFrame(), "test").getReuslt();
+				/*
+				for(BOAagentInfo agent: agentList){
+					agentsModel.addElement(agent);
+
+				}
+				
+			}
+		});
+    	*/    	addAgents.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (osList.getSelectedIndex() >= 0 && asList.getSelectedIndex() >= 0 && 
 						omList.getSelectedIndex() >= 0 && omsList.getSelectedIndex() >= 0) {
@@ -294,6 +314,9 @@ public class BOAagentsFrame extends JDialog {
         addAgents = new JButton();
         addAgents.setText("Add agents");
         getContentPane().add(addAgents, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 580, 140, 30));
+        //addAgentListButton = new JButton();
+        //addAgentListButton.setText("Add AgentList");
+       // getContentPane().add(addAgentListButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 580, 140, 30));
         removeAgents = new JButton();
         removeAgents.setText("Remove selection");
         getContentPane().add(removeAgents, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 580, 140, 30));
@@ -303,6 +326,7 @@ public class BOAagentsFrame extends JDialog {
         cancelButton = new JButton();
         cancelButton.setText("Cancel");
         getContentPane().add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(472, 580, 140, 30));
+        
 	}
 
     private void initOfferingStrategyGUI() {
@@ -475,6 +499,8 @@ public class BOAagentsFrame extends JDialog {
 			}
 			BOAagentInfo agent = new BOAagentInfo(os, as, om, oms);
 			agentsModel.addElement(agent);
+
+			
 		}
 	}
 	

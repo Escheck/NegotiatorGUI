@@ -46,6 +46,9 @@ public class Tournament implements Serializable
 	 */
 	public final int TournamentNumber;
 	int nrOfRunsPerSession;
+	ArrayList<BOAagentInfo> BOAagentListA;
+	ArrayList<BOAagentInfo> BOAagentListB;
+
 	
 	/** the time (ms) that GUI and non-GUI agents will get for a nego session 
 	 * TODO Wouter: this is quick hack, make sure they get set properly.*/
@@ -235,4 +238,22 @@ public class Tournament implements Serializable
 		}
 		return agentVars;
 	}
+	
+	
+	public ArrayList<BOAagentInfo> getBOAagentA(){
+		return BOAagentListA;
+	}
+	
+	public ArrayList<BOAagentInfo> getBOAagentB(){
+		return BOAagentListB;
+	}
+	
+	public void setBOAagentA(ArrayList<BOAagentInfo> BOAagentList){
+		BOAagentListA = BOAagentList;
+	}
+	
+	public void setBOAagentB(ArrayList<BOAagentInfo> BOAagentList){
+		BOAagentListB = BOAagentList;
+	}
+	
 }
