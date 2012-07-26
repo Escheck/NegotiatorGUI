@@ -175,11 +175,23 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
 			v.setValues(newtvs);
 		} else if (v instanceof BOAagentVariable) {
-			ArrayList<BOAagentInfo> newv=(ArrayList<BOAagentInfo>)new BOAagentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult();
-			if (newv==null) return;
-			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-			for (BOAagentInfo item: newv) newtvs.add(new BOAagentValue(item));
-				v.setValues(newtvs);
+			ArrayList<BOAagentInfo> newv;
+			if(((BOAagentVariable) v).getSide().equals("A")){
+				newv=(ArrayList<BOAagentInfo>)new BOAagentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult(tournament.getBOAagentA());
+				if (newv==null) return;
+				tournament.setBOAagentA(newv);
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+				for (BOAagentInfo item: newv) newtvs.add(new BOAagentValue(item));
+					v.setValues(newtvs);
+			}else {
+				newv=(ArrayList<BOAagentInfo>)new BOAagentsFrame(NegoGUIApp.negoGUIView.getFrame()).getResult(tournament.getBOAagentB());
+				if (newv==null) return;
+				tournament.setBOAagentB(newv);
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+				for (BOAagentInfo item: newv) newtvs.add(new BOAagentValue(item));
+					v.setValues(newtvs);
+			}
+			
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
 			if(value==null) return;
