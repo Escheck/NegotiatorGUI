@@ -46,8 +46,8 @@ public class Tournament implements Serializable
 	 */
 	public final int TournamentNumber;
 	int nrOfRunsPerSession;
-	ArrayList<BOAagentInfo> BOAagentListA;
-	ArrayList<BOAagentInfo> BOAagentListB;
+	ArrayList<BOAagentInfo> BOAagentListA = new ArrayList<BOAagentInfo>();
+	ArrayList<BOAagentInfo> BOAagentListB = new ArrayList<BOAagentInfo>();
 
 	
 	/** the time (ms) that GUI and non-GUI agents will get for a nego session 
