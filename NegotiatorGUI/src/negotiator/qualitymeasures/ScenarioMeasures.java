@@ -83,7 +83,7 @@ public class ScenarioMeasures {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String dir = "c:/Users/Mark/workspace/Genius/";
+		String dir = "./";
 		process(dir);
 	}
 

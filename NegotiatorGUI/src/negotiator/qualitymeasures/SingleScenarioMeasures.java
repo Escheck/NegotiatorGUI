@@ -1,9 +1,11 @@
 package negotiator.qualitymeasures;
 
+import java.util.ArrayList;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
+
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
@@ -25,12 +27,48 @@ public class SingleScenarioMeasures {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
-
-		String domainLocation = args[0];
-		String profileALocation = args[1];
-		String profileBLocation = args[2];
-		outputLocation = args[3];
+	public static void main(String[] args) throws Exception 
+	{
+		String domainLocation;
+		String profileALocation;
+		String profileBLocation;
+		
+//		domainLocation = args[0];
+//		profileALocation = args[1];
+//		profileBLocation = args[2];
+//		outputLocation = args[3];
+		
+		
+//		String path = "E:/ANAC original resources/etc/2010/EnglandZimbabwe/";
+//		domainLocation = path + "EnglandZimbabwe_domain.xml";
+//		profileALocation = path + "England.xml";
+//		profileBLocation = path + "Zimbabwe.xml";
+		
+//		String path = "E:/ANAC original resources/etc/2010/ItexvsCypress/";
+//		domainLocation = path + "ItexvsCypress_domain.xml";
+//		profileALocation = path + "ItexvsCypress_Itex.xml";
+//		profileBLocation = path + "ItexvsCypress_Cypress.xml";
+		
+//		String path = "E:/ANAC original resources/etc/2010/Thompson/";
+//		domainLocation = path + "thompson_employment.xml";
+//		profileALocation = path + "thompson_employer_utilityspace.xml";
+//		profileBLocation = path + "thompson_employee_utilityspace.xml";
+		
+//		String path = "E:/ANAC original resources/etc/2010/Travel/";
+//		domainLocation = path + "travel_domain.xml";
+//		profileALocation = path + "travel_fanny.xml";
+//		profileBLocation = path + "travel_chox.xml";
+		
+//		String path = "E:/ANAC original resources/etc/2011/final/Grocery/";
+//		domainLocation = path + "grocery_domain.xml";
+//		profileALocation = path + "grocery_domain_sam.xml";
+//		profileBLocation = path + "grocery_domain_mary.xml";
+		
+		String path = "E:/ANAC original resources/etc/2011/final/Laptop/";
+		domainLocation = path + "laptop_domain.xml";
+		profileALocation = path + "laptop_buyer_utility.xml";
+		profileBLocation = path + "laptop_seller_utility.xml";
+		outputLocation = path;
 		
 		/*
 		String domainLocation = "D:/etc/2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml";
