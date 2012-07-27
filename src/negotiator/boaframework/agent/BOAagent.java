@@ -28,16 +28,16 @@ import negotiator.boaframework.opponentmodel.NoModel;
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
-public abstract class BOAagent extends Agent {
-
+public abstract class BOAagent extends Agent 
+{
 	/** when to accept */
 	protected AcceptanceStrategy acceptConditions;
-	/** link to domain */
-	protected NegotiationSession negotiationSession;
 	/** what to offer */
 	protected OfferingStrategy offeringStrategy;
 	/**  used to determine the utility of a bid for the opponent */
 	protected OpponentModel opponentModel;
+	/** link to domain */
+	protected NegotiationSession negotiationSession;
 	/** which bid to select using an opponent model */
 	protected OMStrategy omStrategy;
 	/** used to store MAC outcomes */
