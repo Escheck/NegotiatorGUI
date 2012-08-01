@@ -134,7 +134,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			System.out.println("starting with agent "+currentAgent);
 			//Main.log("Agent " + currentAgent.getName() + " begins");
 			fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
-			omMeasures = new OpponentModelMeasures(spaceA, spaceB);
+			if (Global.RECORD_OPPONENT_TRACE) {
+				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
+			}
 			checkForMAC();
 			
 			while(!stopNegotiation) {
