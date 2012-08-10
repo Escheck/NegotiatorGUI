@@ -36,7 +36,9 @@ public class AC_Next extends AcceptanceStrategy {
 			a = parameters.get("a");
 			b = parameters.get("b");
 		} else {
-			throw new Exception("Parameters were not set.");
+			a = 1;
+			b = 0;
+			//throw new Exception("Parameters were not set. Default Values are used a = 1 and b = 0");
 		}
 	}
 	

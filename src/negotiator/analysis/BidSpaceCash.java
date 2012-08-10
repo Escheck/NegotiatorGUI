@@ -34,11 +34,13 @@ public class BidSpaceCash {
 	 * @param spaceB
 	 */
 	public static void removeBidSpace(UtilitySpace spaceA, UtilitySpace spaceB) {
-		if (bidSpaceCash.get(spaceA).get(spaceB) != null) {
-			bidSpaceCash.get(spaceA).remove(spaceB);
-		}
-		if (bidSpaceCash.get(spaceA).size() == 0) {
-			bidSpaceCash.remove(spaceA);
+		if(!bidSpaceCash.isEmpty()){
+			if (bidSpaceCash.get(spaceA).get(spaceB) != null) {
+				bidSpaceCash.get(spaceA).remove(spaceB);
+			}
+			if (bidSpaceCash.get(spaceA).size() == 0) {
+				bidSpaceCash.remove(spaceA);
+			}
 		}
 	}
 	

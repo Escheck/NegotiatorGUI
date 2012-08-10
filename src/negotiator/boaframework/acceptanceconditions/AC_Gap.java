@@ -47,8 +47,9 @@ public class AC_Gap extends AcceptanceStrategy{
 	public Actions determineAcceptability() {
 		if(!negotiationSession.getOwnBidHistory().getHistory().isEmpty()) {
 			double opponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-			double ownLastBidUtil = negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-			if (opponentBidUtil + constant >= ownLastBidUtil) {
+			double prevMyBidUtil = negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+
+			if (opponentBidUtil + constant >= prevMyBidUtil) {
 				return Actions.Accept;
 			}
 		}
