@@ -1,7 +1,6 @@
 package negotiator.boaframework.opponentmodel;
 
 import java.util.HashMap;
-
 import negotiator.Bid;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;

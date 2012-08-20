@@ -1,4 +1,5 @@
 package negotiator.boaframework.opponentmodel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import agents.bayesianopponentmodel.EvaluatorHypothesis;
@@ -67,7 +68,7 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	}
 
 	/**
-	 * Just an auxiliar funtion to calculate the index where issues start on a bid
+	 * Just an auxiliary function to calculate the index where issues start on a bid
 	 * because we found out that it depends on the domain.
 	 * @return true when the received index is the proper index
 	 */
@@ -110,7 +111,7 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	}
 
 	/**
-	 * Initialise the evaluator hypotheses.
+	 * Initialize the evaluator hypotheses.
 	 */
 	private void initEvaluatorHypotheses() {
 		evaluatorHypotheses = new ArrayList<ArrayList<EvaluatorHypothesis>>();
@@ -482,17 +483,9 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 			{
 			case MAX:
 				extremeEval = Math.max(integerEvaluator.getEvaluation(integerEvaluator.getUpperBound()), integerEvaluator.getEvaluation(integerEvaluator.getLowerBound()));
-				//if(integerEvaluator.getFuncType() == EVALFUNCTYPE.TRIANGULAR)
-				//{
-				//	extremeEval = Math.max(extremeEval, integerEvaluator.getEvaluation(integerEvaluator.getTopParam()));
-				//}
 				break;
 			case MIN:
 				extremeEval = Math.min(integerEvaluator.getEvaluation(integerEvaluator.getUpperBound()), integerEvaluator.getEvaluation(integerEvaluator.getLowerBound()));
-				//if(integerEvaluator.getFuncType() == EVALFUNCTYPE.TRIANGULAR)
-				//{
-				//	extremeEval = Math.min(extremeEval, integerEvaluator.getEvaluation(integerEvaluator.getTopParam()));
-				//}
 				break;
 			}
 			break;

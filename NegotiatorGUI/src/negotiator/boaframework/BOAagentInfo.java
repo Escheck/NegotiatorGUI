@@ -3,7 +3,7 @@ package negotiator.boaframework;
 import java.io.Serializable;
 
 /**
- * This class is a container which describes a full boa agent.
+ * This class is a container which describes a full BOA agent.
  * This object is used to carry the information from the GUI to the
  * agent loader.
  * 
