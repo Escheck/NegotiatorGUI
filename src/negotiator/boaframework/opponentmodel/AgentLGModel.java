@@ -16,7 +16,7 @@ import negotiator.utility.UtilitySpace;
  * be compatible with the BOA framework.
  * 
  * Note that originally, the model sums up all value scores which
- * entails that the total preference of a bid can be as high as the issue count.
+ * entails that the total preference of a bid can be as high as offered bids * issues.
  * The value score was equal to the amount of times the value was offered
  * divided by total amount of bids offered by the opponent.
  * 

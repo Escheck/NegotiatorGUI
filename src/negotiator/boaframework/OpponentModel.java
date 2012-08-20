@@ -1,7 +1,6 @@
 package negotiator.boaframework;
 
 import java.util.HashMap;
-
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.protocol.BilateralAtomicNegotiationSession;

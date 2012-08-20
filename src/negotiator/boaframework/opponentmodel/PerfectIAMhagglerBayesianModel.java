@@ -30,7 +30,7 @@ import negotiator.utility.UtilitySpace;
  * 
  * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
- *
+ * 
  * @author Colin Williams, Mark Hendrikx
  */
 public class PerfectIAMhagglerBayesianModel extends OpponentModel {
@@ -81,7 +81,7 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 	}
 
 	/**
-	 * Just an auxiliar funtion to calculate the index where issues start on a bid
+	 * Just an auxiliary function to calculate the index where issues start on a bid
 	 * because we found out that it depends on the domain.
 	 * @return true when the received index is the proper index
 	 */
