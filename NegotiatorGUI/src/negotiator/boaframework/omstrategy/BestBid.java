@@ -16,7 +16,8 @@ import negotiator.boaframework.OpponentModel;
  */
 public class BestBid extends OMStrategy {
 
-	/**  when to stop updating the opponentmodel */
+	/**  when to stop updating the opponentmodel. Note that this value
+	 * 	 is not exactly one as a match sometimes lasts slightly longer. */
 	double updateThreshold = 1.1;
 	
 	/**
@@ -45,6 +46,8 @@ public class BestBid extends OMStrategy {
 	/**
 	 * Returns the best bid for the opponent given a set of similarly
 	 * preferred bids.
+	 * 
+	 * @return bid to be offered to opponent
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
@@ -82,6 +85,8 @@ public class BestBid extends OMStrategy {
 	/**
 	 * The opponent model may be updated, unless the time is higher
 	 * than a given constant.
+	 * 
+	 * @return true if model may be updated
 	 */
 	@Override
 	public boolean canUpdateOM() {

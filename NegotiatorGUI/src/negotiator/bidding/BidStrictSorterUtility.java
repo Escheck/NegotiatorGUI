@@ -9,8 +9,9 @@ import negotiator.utility.UtilitySpace;
  * have the same utility, then their order can be interchanged.
  * This guarantees a unique ordering. Note that this class should ONLY be used
  * when ordering is important (for example to test equivalence of agent strategies).
+ * 
+ * @author Mark Hendrikx
  */
-
 public class BidStrictSorterUtility implements Comparator<Bid>{
 	
 	private UtilitySpace  utilitySpace;

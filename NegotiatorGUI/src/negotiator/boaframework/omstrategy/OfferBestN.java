@@ -97,8 +97,10 @@ public class OfferBestN extends OMStrategy {
 	}
 
 	/**
-	 * The opponent model may be updated, unless the time is higher
-	 * than a given constant.
+	 * Specifies that the opponent model may be updated when the current time
+	 * is smaller than the deadline.
+	 * 
+	 * @return true if the model may be updated
 	 */
 	@Override
 	public boolean canUpdateOM() {

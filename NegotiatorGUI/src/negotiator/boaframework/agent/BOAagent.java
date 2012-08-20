@@ -1,9 +1,7 @@
 package negotiator.boaframework.agent;
 
 import java.util.ArrayList;
-
 import misc.Pair;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;

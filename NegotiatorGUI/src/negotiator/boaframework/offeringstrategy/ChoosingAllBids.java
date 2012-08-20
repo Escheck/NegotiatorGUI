@@ -1,6 +1,5 @@
 package negotiator.boaframework.offeringstrategy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
@@ -22,8 +21,6 @@ import negotiator.boaframework.SortedOutcomeSpace;
 public class ChoosingAllBids extends OfferingStrategy {
 	/** counter used to determine which bid to offer from the sorted list of possible bids */
 	private int counter = 0;
-	/** reference to all bids */
-	private ArrayList<BidDetails> allBids;
 	
 	/**
 	 * Empty constructor used for reflexion. Note this constructor assumes that init
@@ -51,9 +48,6 @@ public class ChoosingAllBids extends OfferingStrategy {
 		
 		SortedOutcomeSpace space = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		negotiationSession.setOutcomeSpace(space);
-		
-		allBids = (ArrayList<BidDetails>) negotiationSession.getOutcomeSpace().getAllOutcomes();
-		this.opponentModel = model;
 	}
 	
 	/**
@@ -62,8 +56,8 @@ public class ChoosingAllBids extends OfferingStrategy {
 	 */
 	@Override
 	public BidDetails determineNextBid() {
-		nextBid = this.allBids.get(counter);
-		if (counter < allBids.size() - 1) {
+		nextBid = negotiationSession.getOutcomeSpace().getAllOutcomes().get(counter);
+		if (counter < negotiationSession.getOutcomeSpace().getAllOutcomes().size() - 1) {
 			counter++;
 		}
 		
