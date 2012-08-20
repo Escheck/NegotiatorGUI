@@ -268,6 +268,8 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 				decoupledElementID.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
 				decoupledElementID.setAttribute("opponent_model", getOpponentModelName(agentName));
 			}
+			
+			
 			tournamentQM.setAttribute("average_time_of_agreement", getAverageTimeOfAgreement(outcomes, agentName) + "");
 			tournamentQM.setAttribute("std_time_of_agreement", getStandardDeviationOfTimeOfAgreement(runs, outcomes, agentName) + "");
 			tournamentQM.setAttribute("average_time_of_end_of_negotiation", getAverageEndOfNegotiation(outcomes, agentName) + "");

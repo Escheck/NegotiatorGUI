@@ -197,6 +197,15 @@ public class NegotiationOutcome {
 			//outcome.setAttribute("cooperation",""+cooperation);
 		}
 		
+		OrderedSimpleElement decoupledElementID = new OrderedSimpleElement("DecoupledElementID");
+		if(agentName.contains("bs")) {
+			outcome.addChildElement(decoupledElementID);
+
+			decoupledElementID.setAttribute("offering_strategy", getOfferingStrategyName(agentName));
+			decoupledElementID.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
+			decoupledElementID.setAttribute("opponent_model", getOpponentModelName(agentName));
+		}
+		
 		if (omMeasuresResults != null) {
 			if (agentX.equals("A")) {
 				setOMMeasures(outcome);
@@ -366,7 +375,59 @@ public class NegotiationOutcome {
 		
 		if (addBids)
 			outcome.addChildElement(bidsToXML());
+		
 		return outcome;
+	}
+	
+	/**
+	 * Method used for getting the name of an offering strategy component
+	 * of a decoupled agent.
+	 * 
+	 * @param agentName
+	 * @return name of bidding strategy
+	 */
+	private static String getOfferingStrategyName(String agentName) {
+		int left = agentName.indexOf("bs:");
+		int right = agentName.indexOf("as:");
+
+		String agentOfferingStrategyName = agentName.substring(left + 3, right);
+		agentOfferingStrategyName = agentOfferingStrategyName.trim();
+
+		return agentOfferingStrategyName;
+	}
+	
+	/**
+	 * Method used for getting the name of an acceptance strategy component
+	 * of a decoupled agent.
+	 * 
+	 * @param agentName
+	 * @return name of acceptance strategy
+	 */
+	private static String getAcceptanceStrategyName(String agentName) {
+		int left = agentName.indexOf("as:");
+		int right = agentName.indexOf("om:");
+
+		String agentAcceptanceStrategyName = agentName.substring(left + 3, right);
+		agentAcceptanceStrategyName = agentAcceptanceStrategyName.trim();
+		
+		return agentAcceptanceStrategyName;
+	}
+	
+	/**
+	 * Method used for getting the name of an opponent model component
+	 * of a decoupled agent.
+	 * 
+	 * @param agentName
+	 * @return name of opponent model
+	 */
+	private static String getOpponentModelName(String agentName) {
+		int left = agentName.indexOf("om:");
+		int right = agentName.indexOf("oms:");
+
+		String agentOpponentModelName = agentName.substring(left + 3, right);
+		agentOpponentModelName = agentOpponentModelName.trim();
+		
+		return agentOpponentModelName;
 	}
 
 	private OrderedSimpleElement bidsToXML()

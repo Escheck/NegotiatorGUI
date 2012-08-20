@@ -24,6 +24,8 @@ public abstract class OfferingStrategy {
 	/** Reference to helper class used if there are dependencies between
 	 * the acceptance condition an offering strategy  */
 	protected SharedAgentState helper;
+	/** Boolean to see if endNegotiation is called */
+	protected boolean endNegotiation;
 	
 	/**
 	 * Initializes the offering strategy. If parameters are used,
@@ -37,6 +39,7 @@ public abstract class OfferingStrategy {
 		this.negotiationSession = negotiationSession;
 		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
+		this.endNegotiation = false;
 	}
 	
 	/**
@@ -63,5 +66,9 @@ public abstract class OfferingStrategy {
 	
 	public SharedAgentState getHelper() {
 		return helper;
+	}
+
+	public boolean isEndNegotiation() {
+		return endNegotiation;
 	}
 }
