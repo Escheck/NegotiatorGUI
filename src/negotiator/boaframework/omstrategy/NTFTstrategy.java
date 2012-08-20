@@ -19,10 +19,8 @@ import negotiator.boaframework.OpponentModel;
  * Furthermore, the strategy stops updating the opponent model before the deadline.
  * The time at which the updating stops depends on the domain size.
  * 
- * This component is part of:
- * 
- * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
- * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * This component is part of the NiceTitForTat strategy introduced by T. Baarslag
+ * in the ANAC 2011.
  * 
  * @author Mark Hendrikx
  */

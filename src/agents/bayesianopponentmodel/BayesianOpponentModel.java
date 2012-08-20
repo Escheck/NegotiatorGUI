@@ -12,6 +12,11 @@ import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
+/**
+ * Implementation of the Bayesian Model.
+ * Opponent modelling in automated multi-issue negotiation using bayesian learning
+ * by K. Hindriks, D. Tykhonov
+ */
 public class BayesianOpponentModel extends OpponentModel{
 	
 	private UtilitySpace fUS;

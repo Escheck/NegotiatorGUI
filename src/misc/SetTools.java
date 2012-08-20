@@ -12,6 +12,13 @@ import java.util.Set;
  */
 public class SetTools {
 
+	/**
+	 * Given a list of sets, this method returns a set of sets symbolizing
+	 * the Cartesian product of the given sets.
+	 * 
+	 * @param sets
+	 * @return set of sets symbolizing the Cartesian product
+	 */
 	public static Set<Set<Object>> cartesianProduct(Set<?>... sets) {
 	    if (sets.length < 2) {
 	    	Iterator<?> setIterator = sets[0].iterator();

@@ -8,6 +8,17 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.utility.*;
 
+/**
+ * Implementation of the Scalable Bayesian Model.
+ * 
+ * KNOWN BUGS:
+ * 1. Opponent model does not take the opponent's strategy into account, in contrast
+ * to the original paper which depicts an assumption about the opponent'strategy
+ * which adapts over time.
+ * 
+ * 2. The opponent model becomes invalid after a while as NaN occurs in some hypotheses,
+ * corrupting the overall estimation.
+ */
 public class BayesianOpponentModelScalable extends OpponentModel {
 	
 

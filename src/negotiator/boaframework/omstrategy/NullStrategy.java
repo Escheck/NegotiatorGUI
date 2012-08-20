@@ -16,7 +16,9 @@ import negotiator.boaframework.OpponentModel;
 public class NullStrategy extends OMStrategy {
 
 	private Random rand;
-	private double updateThreshold = 1.0;
+	/**  when to stop updating the opponentmodel. Note that this value
+	 * 	 is not exactly one as a match sometimes lasts slightly longer. */
+	private double updateThreshold = 1.1;
 	
 	public NullStrategy() {}
 	

@@ -26,9 +26,11 @@ import negotiator.xml.SimpleElement;
  * the more win-win solutions are available. The lower the bid distribution,
  * the more close bids are on average to the Pareto-frontier.
  * 
- * Generating a domain can take a few seconds for small domains (<5000 bids)
+ * Generating a domain can take a few seconds for small domains (< 5000 bids)
  * and up to an hour for large domains (> 200.000 bids) depending on the requested
  * configuration.
+ * 
+ * Instructions on how to class can be found in the main method.
  * 
  * Note that this class can be easily extended to include other metrics to
  * which the generated domain must adhere.
@@ -90,19 +92,28 @@ public class DomainGenerator {
 		double[] result = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
 		boolean found = false;
 
+		// while no satisfying scenario is found
 		while (!found) {
+			// vary utility space A if both should be varied
 			if (varyBoth) {
 				randomizeUtilSpace(spaceA, biasForHighOpp);
 			}
+			// OR only the second utility space
 			randomizeUtilSpace(spaceB, biasForHighOpp);
 			result = calculateDistances(spaceA, spaceB);
 
-			if (result[0] >= opp.getLowerbound() && result[0] < opp.getUpperbound() && result[1] >= dist.getLowerbound() && result[1] < dist.getUpperbound()) {
+			// if the scenario satisfies the bounds, then a result is found
+			if (result[0] >= opp.getLowerbound() && result[0] < opp.getUpperbound() &&
+					result[1] >= dist.getLowerbound() && result[1] < dist.getUpperbound()) {
 				found = true;
 			}
 			result = null;
 		}
-		JOptionPane.showMessageDialog(null, "saved to: " + logToDirB);
+		if (!varyBoth) {
+			JOptionPane.showMessageDialog(null, "saved to: " + logToDirB);
+		} else {
+			JOptionPane.showMessageDialog(null, "saved to: " + logToDirA + "\n and " + logToDirB);
+		}
 		if (varyBoth) {
 			writeXMLtoFile(spaceA.toXML(), logToDirA);
 		}
@@ -111,7 +122,7 @@ public class DomainGenerator {
 	
 	/**
 	 * Method which randomizes a given utility space. If the bias parameter is true,
-	 * then the result may be more likely to be a profile with a high oppositio.
+	 * then the result may be more likely to be a profile with a high opposition.
 	 * 
 	 * @param utilitySpace profile to be randomized
 	 * @param bias towards domains with a high opposition

@@ -120,7 +120,7 @@ public class ParetoTest {
 	}
 	
 	/**
-	 * Check if two lists of bids points are equal.
+	 * Check if two lists of bid points are equal.
 	 * 
 	 * @param estimatedParetoBids
 	 * @param realParetoBids
