@@ -123,6 +123,9 @@ public abstract class BOAagent extends Agent
 		} else {
 			// else make a normal bid
 			bid = offeringStrategy.determineNextBid();
+			if(offeringStrategy.isEndNegotiation()){
+				return new EndNegotiation(this.getAgentID());
+			}
 		}
 		
 		// if the offering strategy made a mistake and didn't set a bid: accept
@@ -140,7 +143,7 @@ public abstract class BOAagent extends Agent
 		} else {
 			startingAgent = true;
 		}
-		
+
 		if (decision.equals(Actions.Break)) {
 			System.out.println("send EndNegotiation");
 			return new EndNegotiation(this.getAgentID());

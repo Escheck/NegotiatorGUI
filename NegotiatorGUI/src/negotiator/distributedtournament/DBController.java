@@ -48,6 +48,8 @@ public class DBController {
 	/** password for DB */
 	private static String passwordStored = "";
 	
+	private final int NUMBER_OUTCOMES_PER_LOG = 1000;
+	
 	private DBController() { }
 	
 	/**
@@ -445,30 +447,66 @@ public class DBController {
 		// avoid overloading the DB with requests (there are more clients)
 		ResultSet outcomes = getLog(jobID);
 		
-		// 2. Get the filename of the to-be-created log
-		String outcomesFileName = Global.getDistributedOutcomesFileName();
-		File outcomesFile = new File(outcomesFileName);
-		boolean exists = outcomesFile.exists();
-
-		// 3. Store the outcomes retrieved from the DB in a log
+		//to get the amount of rows in the ResultSet
+		int rowCount = 0;  
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
-			if (!exists) {
-				out.write("<a>\n");
+			rowCount = outcomes.last() ? outcomes.getRow() : 0;	// Determine number of rows  
+			outcomes.beforeFirst();  
+			System.out.println("Number of Logs: " + rowCount);// We want next() to go to first row  
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		for(int x = 0; x <(rowCount/NUMBER_OUTCOMES_PER_LOG) + 1; x++){
+
+			// 2. Get the filename of the to-be-created log
+			String outcomesFileName = Global.getDistributedOutcomesFileName();
+			if(!(rowCount < NUMBER_OUTCOMES_PER_LOG)){
+				String[] outcomesFileNameSplit = outcomesFileName.split("\\.");
+				//outcomesFileNameSplit[0].concat(outcomesFileNameSplit[1] + outcomesFileNameSplit[2]);
+				outcomesFileName = outcomesFileName.replace(".xml", "-Part"+ (x+1) + ".xml");
 			}
 
-			while (outcomes.next()) {			
-				try {
-					out.write(extractBytes(outcomes.getBytes(1)));
-				} catch (Exception e) {
-					e.printStackTrace();
+			File outcomesFile = new File(outcomesFileName);
+			boolean exists = outcomesFile.exists();
+	
+			// 3. Store the outcomes retrieved from the DB in a log
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
+				if (!exists) {
+					out.write("<a>\n");
 				}
+
+				while(outcomes.getRow()/NUMBER_OUTCOMES_PER_LOG == x){
+				//while (outcomes.next()) {		
+					outcomes.next();
+					try {
+						out.write(extractBytes(outcomes.getBytes(1)));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					if(outcomes.isLast()){
+						break;
+					}
+				} 
+				if(!(outcomes.getRow()%NUMBER_OUTCOMES_PER_LOG==0) && !(outcomes.getRow()/NUMBER_OUTCOMES_PER_LOG == x)){
+					System.out.println("Error writing Log: Outcome written in wrong file");
+					System.out.println("Outcome Number: " + outcomes.getRow());
+					System.out.println("Modulo Outcome Number: " + outcomes.getRow()/NUMBER_OUTCOMES_PER_LOG);
+					System.out.println("File Number: " + x); 
+				}
+				//}
+				out.write("</a>\n");
+				out.close();
+				System.out.println("closed Log file: " + outcomesFileName);
+			} catch (Exception e) {
+				new Warning("Exception during closing log:"+e);
+				e.printStackTrace();
 			}
-			out.write("</a>\n");
-			out.close();
-		} catch (Exception e) {
-			new Warning("Exception during closing log:"+e);
-			e.printStackTrace();
 		}
 		close();
 	}
