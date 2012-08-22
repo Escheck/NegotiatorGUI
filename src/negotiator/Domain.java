@@ -74,6 +74,7 @@ public class Domain
     {
     	name = filename.getAbsolutePath();
     	SimpleDOMParser parser = new SimpleDOMParser();
+//    		System.out.println("Opening: " + filename.getAbsolutePath());
     		BufferedReader file = new BufferedReader(new FileReader(filename));                  
     		root = parser.parse(file);
     		
