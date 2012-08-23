@@ -34,6 +34,9 @@ import negotiator.xml.SimpleElement;
  * @author Dmytro Tykhonov & Koen Hindriks
  * Numerous modifications W.Pasman
  * 
+ * OPTIMIZATION
+ * I believe that some of these methods can still be optimized by caching the results.
+ * For example, the getIssues method is called each round by some agents.
  */
 
 public class Domain 

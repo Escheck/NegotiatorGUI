@@ -2,6 +2,7 @@ package agents;
 
 import negotiator.Bid;
 import negotiator.BidHistory;
+import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
@@ -21,7 +22,7 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	/** Is set by subclass */
 	@SuppressWarnings("unused")
 	private double e;
-	private BidHistory outcomeSpace;
+	private SortedOutcomeSpace outcomeSpace;
 	private double Pmax;
 	private double Pmin;
 
@@ -54,9 +55,9 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	public void init()
 	{
 		super.init();
-		outcomeSpace = new BidHistory(utilitySpace);
-		Pmax = outcomeSpace.getBestBidDetails().getMyUndiscountedUtil();
-		Pmin = outcomeSpace.getWorstBidDetails().getMyUndiscountedUtil();
+		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
+		Pmax = outcomeSpace.getAllOutcomes().get(0).getMyUndiscountedUtil();
+		Pmin = outcomeSpace.getAllOutcomes().get(outcomeSpace.getAllOutcomes().size() - 1).getMyUndiscountedUtil();
 		log("Pmin = " + Pmin);
 		log("Pmax = " + Pmax);
 	}
@@ -89,7 +90,7 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	 */
 	public Bid pickBidOfUtility(double utility)
 	{
-		return outcomeSpace.getBidDetailsOfUtility(utility).getBid();
+		return outcomeSpace.getBidNearUtility(utility).getBid();
 	}
 	
 	public Bid makeBid()

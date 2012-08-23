@@ -41,8 +41,6 @@ import negotiator.utility.UtilitySpace;
  *    with Multi_AC in its name exists.
  */
 public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomicNegotiationSession {
-
-	//AlternatingOffersNegotiationSession session;
 	/**
 	 * stopNegotiation indicates that the session has now ended.
 	 * it is checked after every call to the agent,
@@ -72,6 +70,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	private boolean agentAWithMultiAC = false;
 	private boolean agentBWithMultiAC = false;
 	private ArrayList<ArrayList<OutcomeTuple>> completeList = new ArrayList<ArrayList<OutcomeTuple>>();
+	/** Uses to keep track of the results of quantifying the accuracy of an opponent model
+	 *  during a negotiation */
 	private OpponentModelMeasures omMeasures;
 
 	/** load the runtime objects to start negotiation */
@@ -170,7 +170,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					if(lastAction instanceof EndNegotiation) {
 						System.out.println("EndNegotiation was called");
 						stopNegotiation= true;
-						if(hasMAC()){						
+						if (hasMAC()) {						
 							createMACOutcomes(timeline);
 						} else {
 							badOutcome(timeline, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
@@ -298,10 +298,18 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 	}
 
-	private void processOnlineData() throws Exception {
+	/**
+	 * Log the negotiation trace during the negotiation
+	 * @throws Exception
+	 */
+	private void processOnlineData() {
 		if (Global.RECORD_OPPONENT_TRACE) {
 			if (Global.PAUSABLE_TIMELINE) {
-				timeline.pause();
+				try {
+					timeline.pause();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			if (fAgentBBids.size() > 0) {
 				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).bid;
@@ -311,7 +319,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				}
 			}
 			if (Global.PAUSABLE_TIMELINE) {
-				timeline.resume();
+				try {
+					timeline.resume();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -320,7 +332,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * Checks if one of the agents MAC has
 	 */
 	private boolean checkForMAC() {
-		if(hasMAC()){
+		if (hasMAC()) {
 			return true;
 		} else {			
 			if(agentA instanceof BOAagent && ((BOAagent) agentA).getAcceptanceStrategy().isMAC()) {

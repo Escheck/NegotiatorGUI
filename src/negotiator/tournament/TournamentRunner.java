@@ -236,7 +236,6 @@ public class TournamentRunner implements Runnable
 			} else {
 				// 7. Retrieve the log from the database and save it
 				DBController.getInstance().reconstructLog(jobID);
-				DBController.getInstance().close();
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "No job has been scheduled under the given sessionname.");

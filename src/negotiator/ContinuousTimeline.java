@@ -3,6 +3,7 @@ package negotiator;
 
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).
+ * The timeline renormalizes real time.
  */
 public class ContinuousTimeline extends Timeline
 {

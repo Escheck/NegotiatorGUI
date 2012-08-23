@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="dep/mysql-connector-java-5.1.18-bin.jar"/>
 	<classpathentry kind="lib" path="dep/jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="dep/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="dep/IAMhaggler2011packages.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
