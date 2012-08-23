@@ -38,9 +38,6 @@ public abstract class Agent
     public Integer			sessionNumber;
     public Integer			sessionTotalNumber;
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
-     // Wouter: disabled 21aug08, are not necessarily run from a negotiation session.
-     // particularly we now have NegotiationSession2 replacing NegotiationSession.
-
     protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues;
     // the strategy parameters are parameters of the negotiation strategy, for example the concession
     // factor of the TDT-agent.

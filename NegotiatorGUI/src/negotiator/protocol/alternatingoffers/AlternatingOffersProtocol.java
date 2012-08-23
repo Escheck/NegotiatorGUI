@@ -37,11 +37,6 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
-/**
- * BUGS
- * 1. The last bid is excluded for the trajectory analysis as it it not always correctly
- * saved.
- */
 public class AlternatingOffersProtocol extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
@@ -90,74 +85,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	private BidSpace bidSpace=null;
 	
 	/** END OF fields copied from the NegotiationTemplate class */
-
-	/** 
-	 * Creates a new instance of Negotiation 
-	 * @param agtA AgentRepItem (agent descriptor) for agent A.
-	 * @param agtB idem agent B.
-	 * @param profA ProfileRep Item (the profile descriptor) for agent A.
-	 * @param profB idem agent B.
-	 * @param nameA the run-name for agent A. This is not the class name!
-	 * @param nameB idem agent B.
-	 * @param agtApar parameters for Agent A. null is equivalent to empty parameters list.
-	 * @param agtBpar idem for agent B.
-	 * @param sessionnr
-	 * @param totalsessions
-	 * @param forceStartA true to force start with agent A. with false, start agent is chosen randomly.
-	 * @param ael is the callback point for bidding events. null means you won't be given call backs.
-	 * @param gui_time is the time (ms) available for normal GUI agents
-	 * @param non_gui_time is the time(ms) available for agents that are agents involving user interaction 
-	 * 		which is indicated by Agent.isUIAgent().
-	 * @param tournamentnr is the number of the tournament of which this session is a part, or -1 if this session is no part of a tournament.
-	 * @throws Exception
-	 */
-	/* public AlternatingOffersMetaProtocol(AgentRepItem agtA, AgentRepItem agtB, ProfileRepItem profA, ProfileRepItem profB,
-    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
-    	agentArep=agtA;
-    	agentBrep=agtB;
-
-    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time, tournamentnr);
-    }
-
-    public AlternatingOffersMetaProtocol(Agent agtA, Agent agtB, ProfileRepItem profA, ProfileRepItem profB,
-    		String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-    		int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time, int tournamentnr) throws Exception {
-    	agentA=agtA;
-    	agentB=agtB;
-    	continueSetup( profA,  profB, nameA,nameB, agtApar, agtBpar, sessionnr, totalsessions, forceStartA,gui_time,non_gui_time,tournamentnr);
-    }*/
-
-
-
-	/*    private void continueSetup(ProfileRepItem profA, ProfileRepItem profB,
-	String nameA, String nameB,HashMap<AgentParameterVariable,AgentParamValue> agtApar,HashMap<AgentParameterVariable,AgentParamValue> agtBpar,
-	int sessionnr, int totalsessions,boolean forceStartA, int gui_time, int non_gui_time,int tournamentnr) throws Exception {
-
-        non_gui_nego_time=non_gui_time;
-    	gui_nego_time=gui_time;
-    	tournamentNumber=tournamentnr;
-    	setProfileArep(profA);
-    	setProfileBrep(profB);
-    	setAgentAname(nameA);
-    	setAgentBname(nameB);
-    	if (agtApar!=null) setAgentAparams(agtApar);
-    	if (agtBpar!=null) setAgentBparams(agtBpar);
-    	sessionNumber=sessionnr;
-    	if (tournamentNumber==-1) sessionNumber=non_tournament_next_session_nr++;
-    	sessionTotalNumber=totalsessions;
-    	startingWithA=forceStartA;
-    	//actionEventListener.add(ael);
-    	startingAgent=getAgentAname();
-    	if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-    		startingAgent=getAgentBname();
-    	}
-   		fFileName = getProfileArep().getDomain().getURL().getFile();
-		loadFromFile(fFileName);
-    	check();
-    }
-	 */  
-
 
 	/***************** RUN A NEGO SESSION. code below comes from NegotiationManager ****************************/
 
@@ -484,35 +411,6 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	}
 
-
-	/**
-	 * 
-	 * @param fileName
-	 * @param mf points to the MainFrame GUI that currently also holds the application data (...)
-	 * @throws Exception if there are problems reading the file.
-	 */
-	/*public static void loadParamsFromFile (String fileName, MainFrame mf) throws Exception
-	{
-		SimpleDOMParser parser = new SimpleDOMParser();
-		try {
-			BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));		
-			SimpleElement root = parser.parse(file);
-
-            mf.setNemberOfSessions(root.getAttribute("number_of_sessions"));
-            SimpleElement xml_agentA = (SimpleElement)(root.getChildByTagName("agent")[0]);
-            mf.setAgentAName(xml_agentA.getAttribute("name"));
-            mf.setAgentAClassName(xml_agentA.getAttribute("class"));
-            mf.setAgentAUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentA.getAttribute("utility_space"));
-            SimpleElement xml_agentB = (SimpleElement)(root.getChildByTagName("agent")[1]);
-            mf.setAgentBName(xml_agentB.getAttribute("name"));
-            mf.setAgentBClassName(xml_agentB.getAttribute("class"));
-            mf.setAgentBUtilitySpace((new File(fileName)).getParentFile().toString()+"/"+  xml_agentB.getAttribute("utility_space"));
-        } catch (Exception e) {
-            throw new IOException("Problem loading parameters from "+fileName+": "+e.getMessage());
-        }
-    }
-	 */
-
 	public Domain getDomain() {
 		return domain;
 	}
@@ -574,26 +472,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		return getAgentRepItem(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}
 
-
-	/*    public Agent getAgentA() {
-    	if(agentA==null)
-    		if(sessionrunner!=null)
-    			return sessionrunner.agentA;
-    		else
-    			return null;
-    	else
-    	return agentA;
-    }
-    public Agent getAgentB() {
-    	if(agentB==null)
-    		if(sessionrunner!=null)
-    			return sessionrunner.agentB;
-    		else
-    			return null;
-    	else
-    	return agentB;
-    }
-	 */
 	public String getAgentAStrategyName() {
 		return getAgentARep().getName();
 
@@ -715,118 +593,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		return sessions;
 	}
 
-	public static ArrayList<Protocol> getTournamentSessionsBlaBla(Tournament tournament) throws Exception {
-
-		session_number=1;
-		// get agent A and B value(s)
-		ArrayList<AgentVariable> agents = tournament.getAgentVars();
-		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
-		ArrayList<TournamentValue> agentAvalues=agents.get(0).getValues();
-		if (agentAvalues.isEmpty()) 
-			throw new IllegalStateException("Agent A does not contain any values!");
-		ArrayList<TournamentValue> agentBvalues=agents.get(1).getValues();
-		if (agentBvalues.isEmpty()) 
-			throw new IllegalStateException("Agent B does not contain any values!");
-
-		String path ="file:etc/templates/journal_learning/six_issues/";
-		DomainRepItem domain = new DomainRepItem(new URL(path+"six_issues.xml"));
-		ArrayList<ProfileRepItem> profilesA=new ArrayList<ProfileRepItem>(); //tournament.getProfiles();
-		/*profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_d_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_t.xml"),domain));*/
-		/*profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_t_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u1.xml"),domain));*/
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u2_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u3_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u2_u3_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u2_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u2_u2_u1_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u3_u3_u3_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_l_u1_u1_u3_u2.xml"),domain));
-
-		/*profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_d_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_t_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_d.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_t.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));*/
-		/*	profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u2.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u2_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u3_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u3.xml"),domain));
-
-	profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u2_u3_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u2_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u2_u2_u1_u3.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u3_u3_u3_u1.xml"),domain));
-		profilesA.add(new ProfileRepItem(new URL(path+"a_n_u1_u1_u3_u2.xml"),domain));*/
-
-		ArrayList<ProfileRepItem> profilesB=new ArrayList<ProfileRepItem>();		
-		profilesB.add(new ProfileRepItem(new URL(path+"b_l_d_d.xml"),domain));
-		/**		profilesB.add(new ProfileRepItem(new URL(path+"b_l_u_u.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_d_d.xml"),domain));
-		profilesB.add(new ProfileRepItem(new URL(path+"b_lr_u_u.xml"),domain));*/
-		//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_d_d.xml"),domain));
-		//		profilesB.add(new ProfileRepItem(new URL(path+"b_n_u_u.xml"),domain));
-		//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_d_d.xml"),domain));
-		//		profilesB.add(new ProfileRepItem(new URL(path+"b_nr_u_u.xml"),domain));
-		// we need to exhaust the possible combinations of all variables.
-		// we iterate explicitly over the profile and agents, because we need to permutate
-		// only the parameters for the selected agents.
-		ArrayList<Protocol>sessions =new ArrayList<Protocol>();
-		for (ProfileRepItem profileA: profilesB) {
-			for (ProfileRepItem profileB: profilesA) {
-				if (!(profileA.getDomain().equals(profileB.getDomain())) ) continue; // domains must match. Optimizable by selecting matching profiles first...
-				if (profileA.equals(profileB)) continue;
-				for (TournamentValue agentAval: agentAvalues ) {
-					AgentRepItem agentA=((AgentValue)agentAval).getValue();
-					for (TournamentValue agentBval: agentBvalues) {
-						AgentRepItem agentB=((AgentValue)agentBval).getValue();
-						sessions.addAll(allParameterCombis(tournament, agentA,agentB,profileA,profileB));
-					}
-				}
-
-			}
-		}
-		return sessions;
-	}
-
-
 	/** 
 	 * This is a recursive function that iterates over all *parameters* and tries all values for each,
 	 * recursively calling itself to iterate over the remaining parameters.
@@ -921,16 +687,10 @@ public class AlternatingOffersProtocol extends Protocol {
 		}	    	
 	}
 
-
 	@Override
 	public void cleanUP() 
 	{
 		agentA = null;
 		agentB = null;
 	}
-
-
-
-
-
 }

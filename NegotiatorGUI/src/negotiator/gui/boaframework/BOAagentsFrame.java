@@ -1,6 +1,5 @@
 package negotiator.gui.boaframework;
 
-import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +12,6 @@ import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -42,7 +40,10 @@ import misc.SetTools;
 public class BOAagentsFrame extends JDialog {
 
 	private static final long serialVersionUID = 5946539859382260420L;
+	
 	private JLabel decoupledLabel;
+	
+	// GUI elements of the bidding strategy
 	private JLabel osLabel;
 	private JScrollPane osListPane;
     private JList osList;
@@ -53,6 +54,7 @@ public class BOAagentsFrame extends JDialog {
 	private JButton addOsParam;
 	private JButton removeOsParam;
 	
+	// GUI elements of the acceptance strategy
     private JLabel asLabel;
     private JScrollPane asListPane;
     private JList asList;
@@ -63,6 +65,7 @@ public class BOAagentsFrame extends JDialog {
     private JButton addAsParam;
     private JButton removeAsParam;
     
+    // GUI elements of the opponent model
     private JLabel omLabel;
     private JScrollPane omListPane;
     private JList omList;
@@ -73,6 +76,7 @@ public class BOAagentsFrame extends JDialog {
     private JButton addOmParam;
     private JButton removeOmParam;
     
+    // GUI elements of the opponent model strategy
 	private JLabel omsLabel;
 	private JScrollPane omsListPane;
     private JList omsList;
@@ -83,6 +87,7 @@ public class BOAagentsFrame extends JDialog {
 	private JButton addOmsParam;
 	private JButton removeOmsParam;
     
+	// GUI elements of the overview of BOA agents
     private JScrollPane agentsListPane;
     private JList agentsList;
     private DefaultListModel agentsModel;
@@ -92,9 +97,10 @@ public class BOAagentsFrame extends JDialog {
     private JButton cancelButton;
     private JButton addAgentListButton;
 
-    
     private JSeparator seperator;
     
+    // variable which indicates if the some parameters of the four components
+    // should be preset.
     private final static boolean DEBUG = false;
     
     // the null parameter is a parameter added to strategies without

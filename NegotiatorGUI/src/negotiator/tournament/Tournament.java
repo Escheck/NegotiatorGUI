@@ -48,12 +48,6 @@ public class Tournament implements Serializable
 	int nrOfRunsPerSession;
 	ArrayList<BOAagentInfo> BOAagentListA = new ArrayList<BOAagentInfo>();
 	ArrayList<BOAagentInfo> BOAagentListB = new ArrayList<BOAagentInfo>();
-
-	
-	/** the time (ms) that GUI and non-GUI agents will get for a nego session 
-	 * TODO Wouter: this is quick hack, make sure they get set properly.*/
-	 
-	
 	ArrayList<TournamentVariable> variables=new ArrayList<TournamentVariable>();
 		// ASSSUMPTIONS: variable 0 is the ProfileVariable.
 		// variable 1 is AgentVariable for agent A.
@@ -208,6 +202,11 @@ public class Tournament implements Serializable
 		return "Variables: " + variables + "\nSessions: " + sessions;
 	}
 
+	/**
+	 * Converts the descriptions of the BOA framework agents to actual agents compatible
+	 * with Genius.
+	 * @return list of Genius compatible agents
+	 */
 	public ArrayList<AgentVariable> getDecoupledAgentVars() {
 		ArrayList<BOAagentVariable> decoupledAgentVars=new ArrayList<BOAagentVariable>();
 		for (TournamentVariable v: variables) {

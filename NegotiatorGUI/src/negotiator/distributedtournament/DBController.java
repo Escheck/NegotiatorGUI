@@ -28,10 +28,6 @@ import com.mysql.jdbc.Statement;
  * it is assumed that we are communicating with a busy webserver. Therefore, each
  * time a group of operations has been performed, the connection is closed.
  * 
- * NOTE: if the log is very large (>200 MB), for example when using MAC, a memory
- * error is likely to occur when reconstructing the log. For future work the method
- * could be adapted to immediately write the results to a file.
- * 
  * @author Mark Hendrikx
  * @version 17-12-11
  */
@@ -47,7 +43,9 @@ public class DBController {
 	private static String userStored = "";
 	/** password for DB */
 	private static String passwordStored = "";
-	
+	/** how many outcomes may be stored in a single file. The
+	 * problem with tools such as Excel, is that they can only
+	 * import a limited amount of data */
 	private final int NUMBER_OUTCOMES_PER_LOG = 1000;
 	
 	private DBController() { }
@@ -222,6 +220,12 @@ public class DBController {
 		return sessionID;
 	}
 
+	/**
+	 * Given the jobID of the tournament, the tournament is requested from
+	 * the database and stored as a Tournament object.
+	 * @param jobID of the tournament to be retrieved
+	 * @return tournament object with the given jobID
+	 */
 	public Tournament getTournament(int jobID) {
 		Tournament tournament = null;
 		try {
@@ -257,7 +261,7 @@ public class DBController {
 	public Job getJob(int jobID, ArrayList<Protocol> sessions) {
 		Job job = null;
 		try {
-			// 1. Get the lastest job with the given name. From this job,
+			// 1. Get the latest job with the given name. From this job,
 			// select the group which was stored first and is not yet executed.
 			// Finally, for this group of sessions retrieve all information.
 			PreparedStatement preparedStatement = conn.prepareStatement(
@@ -332,7 +336,7 @@ public class DBController {
 	 * 
 	 * @return if the DB is successfully closed
 	 */
-	public boolean close() {
+	private boolean close() {
 		if (conn != null) {
 			try {
 				if (!conn.isClosed())
@@ -505,6 +509,7 @@ public class DBController {
 				System.out.println("closed Log file: " + outcomesFileName);
 			} catch (Exception e) {
 				new Warning("Exception during closing log:"+e);
+				close();
 				e.printStackTrace();
 			}
 		}

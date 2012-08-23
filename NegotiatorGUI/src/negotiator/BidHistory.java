@@ -20,6 +20,7 @@ public class BidHistory {
 	
 	// list used to store the bids in the order in which they are received
 	private List<BidDetails> bidList;
+	/** Set this boolean to true if you want to verify that two agents are exactly equal */
 	private final boolean TEST_EQUIVALENCE = false;
 	
 	/**
@@ -29,21 +30,6 @@ public class BidHistory {
 	 */
 	public BidHistory(ArrayList<BidDetails> bids) {
 		bidList =  bids;
-	}
-	
-	public BidHistory(UtilitySpace utilSpace) {
-		BidIterator bidsIter = new BidIterator(utilSpace.getDomain());
-		bidList = new ArrayList<BidDetails>();
-		while (bidsIter.hasNext()) {
-			Bid bid = bidsIter.next();
-			double util = 0;
-			try {
-				util = utilSpace.getUtility(bid);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			bidList.add(new BidDetails(bid, util,-1.0));
-		}
 	}
 	
 	/**
