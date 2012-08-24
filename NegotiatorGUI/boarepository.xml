@@ -4,7 +4,8 @@
 		<biddingstrategy description="Other - Offer decreasing utility" classPath="negotiator.boaframework.offeringstrategy.other.ChoosingAllBids"/>
 		<biddingstrategy description="Other - Time dependent" classPath="negotiator.boaframework.offeringstrategy.other.TimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
 		<biddingstrategy description="Other - Random walker" classPath="negotiator.boaframework.offeringstrategy.other.Random_Offering"/>
-		
+		<biddingstrategy description="Other - Better Time dependent" classPath="negotiator.boaframework.offeringstrategy.other.GeniusTimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
+				
         <biddingstrategy description="ANAC2010 - Agent FSEGA" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentFSEGA_Offering"/>
 		<biddingstrategy description="ANAC2010 - Agent Smith" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentSmith_Offering"/>
 		<biddingstrategy description="ANAC2010 - Nozomi" classPath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
