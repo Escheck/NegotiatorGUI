@@ -12,6 +12,14 @@
 		<biddingstrategy description="ANAC2010 - Yushu" classPath="negotiator.boaframework.offeringstrategy.anac2010.Yushu_Offering"/>
 		<biddingstrategy description="ANAC2010 - IAMHaggler2010" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMhaggler2010_Offering"/>
 		<biddingstrategy description="ANAC2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMCrazyHaggler_Offering" tooltip="'b' for minimum utility."/>
+	
+		<biddingstrategy description="ANAC2011 - Agent K2" classPath="negotiator.boaframework.offeringstrategy.anac2011.AgentK2_Offering"/>
+		<biddingstrategy description="ANAC2011 - BRAMAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.BRAMAgent_Offering"/>
+		<biddingstrategy description="ANAC2011 - Gahboninho" classPath="negotiator.boaframework.offeringstrategy.anac2011.Gahboninho_Offering"/>
+		<biddingstrategy description="ANAC2011 - HardHeaded" classPath="negotiator.boaframework.offeringstrategy.anac2011.HardHeaded_Offering"/>
+		<biddingstrategy description="ANAC2011 - Nice-Tit-For-Tat" classPath="negotiator.boaframework.offeringstrategy.anac2011.NiceTitForTat_Offering"/>
+		<biddingstrategy description="ANAC2011 - The Negotiator" classPath="negotiator.boaframework.offeringstrategy.anac2011.TheNegotiator_Offering"/>
+		<biddingstrategy description="ANAC2011 - IAMHaggler2011" classPath="negotiator.boaframework.offeringstrategy.IAMhaggler2011_Offering"/>
 	</biddingstrategies>
 	<acceptanceconditions>
 		<acceptancecondition description="Other - False" classPath="negotiator.boaframework.acceptanceconditions.AC_False"/>
