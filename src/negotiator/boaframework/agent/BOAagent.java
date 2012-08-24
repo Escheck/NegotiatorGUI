@@ -17,7 +17,7 @@ import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeSpace;
 import negotiator.boaframework.OutcomeTuple;
-import negotiator.boaframework.acceptanceconditions.Multi_AcceptanceCondition;
+import negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition;
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
