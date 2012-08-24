@@ -24,7 +24,7 @@ public class AgentK2SAS extends SharedAgentState{
 	
 	public AgentK2SAS (NegotiationSession negoSession) {
 		negotiationSession = negoSession;
-		NAME = "AgentK";
+		NAME = "AgentK2";
 		offeredBidMap = new HashMap<Bid, Double>();
 		sum = 0.0;
 		sum2 = 0.0;

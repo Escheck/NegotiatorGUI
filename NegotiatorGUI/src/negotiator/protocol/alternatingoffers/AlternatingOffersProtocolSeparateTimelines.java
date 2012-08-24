@@ -7,8 +7,6 @@ import java.util.Random;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.net.URL;
-
-import misc.SpaceDistance;
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -283,7 +281,6 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			
 			//calculate distance between the two spaces
 			
-			SpaceDistance dist =null;// new SpaceDistance(getAgentAUtilitySpace(),getAgentBUtilitySpace());
 			SimpleElement xmlDistance =null;//  dist.calculateDistances();
 			//xmlDistance.setTagName("opposition");
 			

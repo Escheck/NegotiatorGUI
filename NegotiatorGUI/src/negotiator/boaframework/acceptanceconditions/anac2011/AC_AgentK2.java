@@ -37,7 +37,7 @@ public class AC_AgentK2 extends AcceptanceStrategy {
 		this.negotiationSession = negotiationSession;
 		this.offeringStrategy = os;
 
-		if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentK"))) {
+		if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentK2"))) {
 			helper = new AgentK2SAS(negotiationSession);
 			activeHelper = true;
 		} else {	

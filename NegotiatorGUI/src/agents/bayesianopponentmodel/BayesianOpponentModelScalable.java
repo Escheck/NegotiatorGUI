@@ -9,7 +9,10 @@ import negotiator.issue.*;
 import negotiator.utility.*;
 
 /**
- * Implementation of the Scalable Bayesian Model.
+ * Implementation of the scalable Bayesian Model.
+ * 
+ * Opponent Modelling in Automated Multi-Issue Negotiation Using Bayesian Learning
+ * by K. Hindriks, D. Tykhonov
  * 
  * KNOWN BUGS:
  * 1. Opponent model does not take the opponent's strategy into account, in contrast
