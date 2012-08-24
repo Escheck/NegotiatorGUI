@@ -1,31 +1,48 @@
-package negotiator.boaframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.HashMap;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.BidHistory;
 
 /**
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
  * "Acceptance Conditions in Automated Negotiation"
  * 
- * This Acceptance Condition accepts a bid if it is higher than any bid seen so far
+ * This Acceptance Condition averages the opponents bids made in the previous time window. 
+ * If the bid is higher than the average it will accept
  * 
  * @author Alex Dirkzwager
  */
-public class AC_CombiMax extends AcceptanceStrategy {
+public class AC_CombiAvg extends AcceptanceStrategy {
 
-	public AC_CombiMax() { }
+	private double time;
 	
-	public AC_CombiMax(NegotiationSession negoSession, OfferingStrategy strat) {
+	public AC_CombiAvg() { }
+	
+	public AC_CombiAvg(NegotiationSession negoSession, OfferingStrategy strat, double t){
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
+		this.time = t;
 	}
 	
+	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
+		if (parameters.get("t") != null) {
+			time = parameters.get("t");
+		} else {
+			throw new Exception("Paramaters were not correctly set");
+		}
 	}
+	
+	@Override
+	public String printParameters() {
+		return "[t: " + time + "]";
+	}
+	
 	
 	@Override
 	public Actions determineAcceptability() {
@@ -33,16 +50,22 @@ public class AC_CombiMax extends AcceptanceStrategy {
 			return Actions.Accept;
 		}
 		
-		if(negotiationSession.getTime() < 0.99) {
+		if(negotiationSession.getTime() < time) {
 			return Actions.Reject;
 		}
 		
 		double offeredUndiscountedUtility = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-		double bestUtil = negotiationSession.getOpponentBidHistory().getBestBidDetails().getMyUndiscountedUtil();
+		double now = negotiationSession.getTime();
+		double timeLeft = 1 - now;
 		
-		if (offeredUndiscountedUtility >= bestUtil)
+		double window = timeLeft;
+		BidHistory recentBids = negotiationSession.getOpponentBidHistory().filterBetweenTime(now - window, now);
+
+		double avgOfBetterBids = recentBids.getAverageUtility();
+		double expectedUtilOfWaitingForABetterBid = avgOfBetterBids;
+
+		if (offeredUndiscountedUtility >= expectedUtilOfWaitingForABetterBid)
 			return Actions.Accept;
-		
 		return Actions.Reject;
 	}
 }

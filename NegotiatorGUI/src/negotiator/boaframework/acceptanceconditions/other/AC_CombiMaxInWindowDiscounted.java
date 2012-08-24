@@ -1,4 +1,4 @@
-package negotiator.boaframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.HashMap;
 

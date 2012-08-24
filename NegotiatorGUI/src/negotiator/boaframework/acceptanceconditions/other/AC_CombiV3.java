@@ -1,4 +1,4 @@
-package negotiator.boaframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.HashMap;
 import negotiator.boaframework.AcceptanceStrategy;
@@ -7,35 +7,38 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
 /**
- * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
- * "Acceptance Conditions in Automated Negotiation"
+ * This acceptance condition uses AC_next to determine when to accept.
+ * In addition, the agent also accepts when a given time has passed,
+ * and the utility of the opponent's bid is higher than a given constant.
  * 
- * This Acceptance Conditions is a combination of AC_Time and AC_Next -> (AC_Time OR AC_Next)
- * 
- * @author Alex Dirkzwager
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
-public class AC_Combi extends AcceptanceStrategy {
+public class AC_CombiV3 extends AcceptanceStrategy{
 
 	private double a;
 	private double b;
+	private double c;
 	private double time;
 	
-	public AC_Combi() { }
+public AC_CombiV3() { }
 	
-	public AC_Combi(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c){
+	public AC_CombiV3(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c){
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		this.a = a;
 		this.b = b;
+		this.c = c;
 		this.time = t;
 	}
 	
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
-		if (parameters.get("c") != null  && parameters.get("t")!=null) {
+		this.offeringStrategy = strat;
+		if (parameters.get("a") != null  || parameters.get("b")!=null || parameters.get("c") != null  && parameters.get("t")!=null){
 			a = parameters.get("a");
 			b = parameters.get("b");
+			c = parameters.get("c");
 			time = parameters.get("t");
 		} else {
 			throw new Exception("Paramaters were not correctly set");
@@ -44,17 +47,26 @@ public class AC_Combi extends AcceptanceStrategy {
 	
 	@Override
 	public String printParameters() {
-		return "[a: " + a + " b: " + b + " t: " + time + "]";
+		return "[a: " + a + " b: " + b + " t: " + time + " c: " + c + "]";
 	}
 	
 	@Override
 	public Actions determineAcceptability() {
-		
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-		if (a * lastOpponentBidUtil + b >= nextMyBidUtil || negotiationSession.getTime() >= time) {
+
+		double target = a * nextMyBidUtil + b;
+		if (target > 1.0) {
+			target = 1.0;
+		}
+		if (lastOpponentBidUtil >= target) {
+			return Actions.Accept;
+		}
+
+		if (negotiationSession.getTime() > time && lastOpponentBidUtil > c) {
 			return Actions.Accept;
 		}
 		return Actions.Reject;
 	}
+
 }
