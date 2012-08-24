@@ -1,4 +1,4 @@
-package negotiator.boaframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.HashMap;
 import negotiator.boaframework.AcceptanceStrategy;
@@ -7,27 +7,30 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
 /**
- * This acceptance condition uses AC_next to determine when to accept.
- * In addition, the agent also accepts when a given time has passed,
- * and the utility of the opponent's bid is higher than a given constant.
+ * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
+ * "Acceptance Conditions in Automated Negotiation"
  * 
- * @author Alex Dirkzwager, Mark Hendrikx
+ * This Acceptance Conditions is a combination of AC_Time and AC_Next
+ * 
+ * @author Alex Dirkzwager
  */
-public class AC_CombiV3 extends AcceptanceStrategy{
+public class AC_CombiV2 extends AcceptanceStrategy {
 
 	private double a;
 	private double b;
 	private double c;
+	private double d;
 	private double time;
 	
-public AC_CombiV3() { }
+	public AC_CombiV2() { }
 	
-	public AC_CombiV3(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c){
+	public AC_CombiV2(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c, double d){
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		this.a = a;
 		this.b = b;
 		this.c = c;
+		this.d = d;
 		this.time = t;
 	}
 	
@@ -39,6 +42,7 @@ public AC_CombiV3() { }
 			a = parameters.get("a");
 			b = parameters.get("b");
 			c = parameters.get("c");
+			d = parameters.get("d");
 			time = parameters.get("t");
 		} else {
 			throw new Exception("Paramaters were not correctly set");
@@ -47,7 +51,7 @@ public AC_CombiV3() { }
 	
 	@Override
 	public String printParameters() {
-		return "[a: " + a + " b: " + b + " t: " + time + " c: " + c + "]";
+		return "[a: " + a + " b: " + b + " t: " + time + " c: " + c + " d: " + d + "]";
 	}
 	
 	@Override
@@ -55,18 +59,19 @@ public AC_CombiV3() { }
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 
-		double target = a * nextMyBidUtil + b;
-		if (target > 1.0) {
-			target = 1.0;
-		}
-		if (lastOpponentBidUtil >= target) {
+		if (lastOpponentBidUtil > d) {
 			return Actions.Accept;
 		}
-
-		if (negotiationSession.getTime() > time && lastOpponentBidUtil > c) {
-			return Actions.Accept;
+		
+		if (negotiationSession.getDiscountFactor() != 0.0 && c < negotiationSession.getDiscountFactor()) {
+			if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
+				return Actions.Accept;
+			}
+		} else {
+			if (a * lastOpponentBidUtil + b >= nextMyBidUtil && negotiationSession.getTime() >= time) {
+				return Actions.Accept;
+			}
 		}
 		return Actions.Reject;
 	}
-
 }

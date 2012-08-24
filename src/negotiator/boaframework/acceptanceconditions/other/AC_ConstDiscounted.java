@@ -1,6 +1,7 @@
-package negotiator.boaframework.acceptanceconditions;
+package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.HashMap;
+
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
@@ -13,15 +14,15 @@ import negotiator.boaframework.OfferingStrategy;
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */
-public class AC_Const extends AcceptanceStrategy {
+public class AC_ConstDiscounted extends AcceptanceStrategy {
 
 	private double constant;
 	
-	public AC_Const() { }
+	public AC_ConstDiscounted() { }
 	
-	public AC_Const(NegotiationSession negoSession, double c){
+	public AC_ConstDiscounted(NegotiationSession negoSession, double c){
 		this.negotiationSession = negoSession;
-		this.constant = c;
+		this.constant = c * (Math.pow(negoSession.getDiscountFactor(), negoSession.getTime()));
 	}
 
 	@Override
