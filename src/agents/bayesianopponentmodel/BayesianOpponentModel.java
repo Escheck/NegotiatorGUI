@@ -13,8 +13,9 @@ import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Implementation of the Bayesian Model.
- * Opponent modelling in automated multi-issue negotiation using bayesian learning
+ * Implementation of the unscalable Bayesian Model.
+ * 
+ * Opponent Modelling in Automated Multi-Issue Negotiation Using Bayesian Learning
  * by K. Hindriks, D. Tykhonov
  */
 public class BayesianOpponentModel extends OpponentModel{

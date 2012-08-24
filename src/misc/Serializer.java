@@ -16,6 +16,12 @@ import java.io.OutputStream;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * Series of methods to (un)serialize an object to a string
+ * to store it as a file.
+ * 
+ * @author Tim Baarslag
+ */
 public class Serializer<A>
 {
 	private final String fileName;
@@ -79,8 +85,10 @@ public class Serializer<A>
 		return null;
 	}
 
-
-	
+	/**
+	 * Writes an object to the hard drive.
+	 * @param a
+	 */
 	public void writeToDisk(A a)
 	{
 		OutputStream os = null;
