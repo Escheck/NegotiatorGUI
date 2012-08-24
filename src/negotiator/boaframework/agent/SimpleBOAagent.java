@@ -5,7 +5,7 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.acceptanceconditions.AC_Next;
-import negotiator.boaframework.offeringstrategy.TimeDependent_Offering;
+import negotiator.boaframework.offeringstrategy.other.TimeDependent_Offering;
 import negotiator.boaframework.omstrategy.NullStrategy;
 import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 

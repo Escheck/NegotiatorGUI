@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="boarepository.xml">
     <biddingstrategies>
-		<biddingstrategy description="Other - Offer decreasing utility" classPath="negotiator.boaframework.offeringstrategy.ChoosingAllBids"/>
-		<biddingstrategy description="Other - Time dependent" classPath="negotiator.boaframework.offeringstrategy.TimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
-		<biddingstrategy description="Other - Random walker" classPath="negotiator.boaframework.offeringstrategy.Random_Offering"/>
+		<biddingstrategy description="Other - Offer decreasing utility" classPath="negotiator.boaframework.offeringstrategy.other.ChoosingAllBids"/>
+		<biddingstrategy description="Other - Time dependent" classPath="negotiator.boaframework.offeringstrategy.other.TimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
+		<biddingstrategy description="Other - Random walker" classPath="negotiator.boaframework.offeringstrategy.other.Random_Offering"/>
+		
+        <biddingstrategy description="ANAC2010 - Agent FSEGA" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentFSEGA_Offering"/>
+		<biddingstrategy description="ANAC2010 - Agent Smith" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentSmith_Offering"/>
+		<biddingstrategy description="ANAC2010 - Nozomi" classPath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
+		<biddingstrategy description="ANAC2010 - Agent K" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentK_Offering"/>
+		<biddingstrategy description="ANAC2010 - Yushu" classPath="negotiator.boaframework.offeringstrategy.anac2010.Yushu_Offering"/>
+		<biddingstrategy description="ANAC2010 - IAMHaggler2010" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMhaggler2010_Offering"/>
+		<biddingstrategy description="ANAC2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMCrazyHaggler_Offering" tooltip="'b' for minimum utility."/>
 	</biddingstrategies>
 	<acceptanceconditions>
 		<acceptancecondition description="Other - False" classPath="negotiator.boaframework.acceptanceconditions.AC_False"/>
