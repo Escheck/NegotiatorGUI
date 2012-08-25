@@ -2,6 +2,11 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 
+/**
+ * Simple class to hold the results of the opponent model measures.
+ * 
+ * @author Mark Hendrikx
+ */
 public class OpponentModelMeasuresResults {
 	
 	private ArrayList<Double> timePointList;

@@ -1,20 +1,13 @@
 package negotiator.qualitymeasures;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.opponentmodel.AgentXFrequencyModel;
-import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
-import negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel;
 import negotiator.boaframework.opponentmodel.PerfectModel;
-import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
-import negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel;
 import negotiator.boaframework.opponentmodel.OppositeModel;
 import negotiator.boaframework.opponentmodel.WorstModel;
-import negotiator.boaframework.opponentmodel.SmithFrequencyModelV2;
 import negotiator.utility.UtilitySpace;
 
 /**

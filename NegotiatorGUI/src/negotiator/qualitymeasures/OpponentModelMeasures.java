@@ -10,7 +10,6 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -47,6 +46,9 @@ public class OpponentModelMeasures {
 	private double paretoSurface;
 	/** Outcomespace of the opponent used to look up the index of the bid **/
 	private SortedOutcomeSpace opponentOutcomeSpace;
+	/** Amount of runs for Monte Carlo estimation. More is more accurate at the cost
+	 * of computational speed */
+	private static final int AMOUNT_OF_SIMULATIONS = 100000;
 	
 	/**
 	 * Creates the measures object by storing a reference to both utility spaces
@@ -81,10 +83,6 @@ public class OpponentModelMeasures {
 	public double calculatePearsonCorrelationCoefficientBids(UtilitySpace estimatedSpace) {
 		return UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
 	}
-
-	public void setRealIssueWeights(double[] realIssueWeights) {
-		this.realIssueWeights = realIssueWeights;
-	}
 	
 	/**
 	 * Calculates the ranking distance by comparing the utility of each bid estimated
@@ -94,7 +92,7 @@ public class OpponentModelMeasures {
 	 * @return ranking distance
 	 */
 	public double calculateRankingDistanceBids(UtilitySpace estimatedSpace) {
-		return UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS);
+		return UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS, AMOUNT_OF_SIMULATIONS);
 	}
 	
 	/**
@@ -145,6 +143,13 @@ public class OpponentModelMeasures {
 		return Math.abs(realNash.utilityB - estimatedNash.utilityB);
 	}
 	
+	/**
+	 * Calculates the average difference between the real estimated pareto bids and their
+	 * estimated utility for the opponent.
+	 * 
+	 * @param estimatedSpace
+	 * @return average difference in utility for the Pareto optimal bids
+	 */
 	public double calculateAvgDiffParetoBidToEstimate(UtilitySpace estimatedSpace) {
 		double sum = 0;
 		
@@ -164,6 +169,14 @@ public class OpponentModelMeasures {
 		return sum / realParetoBids.size();
 	}
 	
+	/**
+	 * Calculate the amount of real Pareto bids which have been found by the opponent model.
+	 * Note that the estimated utility space may have more or less Pareto bids than there
+	 * really are.
+	 * 
+	 * @param estimatedBS
+	 * @return percentage of found real Pareto bids
+	 */
 	public double calculatePercCorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
 		ArrayList<Bid> estimatedPFBids = null;
 		try {
@@ -183,6 +196,14 @@ public class OpponentModelMeasures {
 		return ((double)count / (double)realParetoBids.size());
 	}
 	
+	/**
+	 * Calculate the percentage of bids in the estimated Pareto bids which is really
+	 * Pareto optimal.
+	 * 
+	 * @param estimatedBS
+	 * @return percentage of real Pareto optimal bids given the set of estimated Pareto
+	 * optimal bids
+	 */
 	public double calculatePercIncorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
 		ArrayList<Bid> estimatedPFBids = null;
 		try {
@@ -203,6 +224,11 @@ public class OpponentModelMeasures {
 	}
 	
 	/**
+	 * This methods calculates the Pareto frontier distance using the following steps:
+	 * 1. Map the estimated Pareto-bids to the real space.
+	 * 2. Calculate the surface beneath the real Pareto bids and estimated Pareto bids.
+	 * 3. Subtract the surfaces and return the absolute difference.
+	 * 
 	 * Note that the Pareto frontier difference can be positive and negative.
 	 * In general, the mapped estimate of the Pareto frontier will have less surface;
 	 * however, it can happen that less Pareto-points were estimated. In this case
@@ -260,6 +286,10 @@ public class OpponentModelMeasures {
 		return (rectangleSurface + triangleSurface);
 	}
 	
+	/**
+	 * @param opponentBid
+	 * @return index of the opponent's bid in the sorted outcome space
+	 */
 	public int getOpponentBidIndex(Bid opponentBid) {
 		BidDetails oBid = null;
 		try {
@@ -270,13 +300,17 @@ public class OpponentModelMeasures {
 		return opponentOutcomeSpace.getAllOutcomes().indexOf(oBid);
 	}
 
-	public double calculateAvgDiffBetweenBids(OpponentModel model) {
+	/**
+	 * @param opponentModel
+	 * @return average difference between the real and estimated utility
+	 */
+	public double calculateAvgDiffBetweenBids(OpponentModel opponentModel) {
 		double difference = 0;
 		BidIterator iterator = new BidIterator(opponentUS.getDomain());
 		while (iterator.hasNext()) {
 			Bid bid = iterator.next();
 			try {
-				difference += Math.abs(opponentUS.getUtility(bid) - model.getBidEvaluation(bid));
+				difference += Math.abs(opponentUS.getUtility(bid) - opponentModel.getBidEvaluation(bid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -284,6 +318,10 @@ public class OpponentModelMeasures {
 		return difference / (double) opponentUS.getDomain().getNumberOfPossibleBids();
 	}
 
+	/**
+	 * @param opponentModel
+	 * @return average difference between the real and estimated issue weights
+	 */
 	public double calculateAvgDiffBetweenIssueWeights(
 			OpponentModel opponentModel) {
 		double difference = 0;
