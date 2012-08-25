@@ -7,6 +7,12 @@ import misc.Pair;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 
+/**
+ * Captures a single negotiation trace of the opponent, and
+ * optionally the results of measures applied to this trace.
+ * 
+ * @author Mark Hendrikx
+ */
 public class Trace {
 	
 	private ArrayList<Pair<Integer, BidDetails>> offeredBids;

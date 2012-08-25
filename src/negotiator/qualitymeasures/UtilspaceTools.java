@@ -8,23 +8,24 @@ import negotiator.analysis.BidPoint;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
+/**
+ * Collection of useful methods to analyze a pair of utility spaces.
+ * 
+ * @author Mark Hendrikx
+ */
 public class UtilspaceTools {
 
 	// if the amount of bids is larger or equal to this value, exact calculation
 	// takes to long and an estimation procedure is used.
 	static final int MAX_SIZE_FOR_EXACT_CALCULATION = 80000;
-	// how many times the estimation procedure should be repeated.
-	// Higher amount of simulations results in better estimate.
-	// 100000 is good enough for OM measures, 1000000 for scenarios measures
-	static final int AMOUNT_OF_SIMULATIONS = 100000;
 	
-	public static double getRankingDistanceOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getRankingDistanceOfBids(UtilitySpace spaceA, UtilitySpace spaceB, int simulations) {
 		double bidsUtilA[] = getBidsUtil(spaceA);
 		double bidsUtilB[] = getBidsUtil(spaceB);
 		if (bidsUtilA.length <= MAX_SIZE_FOR_EXACT_CALCULATION) {
 			return calculateRankingDistance(bidsUtilA, bidsUtilB);
 		}
-		return calculateRankingDistanceMonteCarlo(bidsUtilA, bidsUtilB, AMOUNT_OF_SIMULATIONS);
+		return calculateRankingDistanceMonteCarlo(bidsUtilA, bidsUtilB, simulations);
 	}
 	
 	public static double getPearsonCorrelationCoefficientOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
