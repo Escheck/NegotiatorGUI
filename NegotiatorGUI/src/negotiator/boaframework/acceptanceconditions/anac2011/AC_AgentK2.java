@@ -12,7 +12,10 @@ import negotiator.boaframework.sharedagentstate.anac2011.AgentK2SAS;
 
 /**
  * This is the decoupled Acceptance Condition from Agent K (ANAC2010).
- * The code was taken from the ANAC2010 Agent K and adapted to work within the Decoupledframework.
+ * The code was taken from the ANAC2010 Agent K and adapted to work within the BOA framework.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  *
  * @author Mark Hendrikx
  * @version 25/12/11

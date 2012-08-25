@@ -10,8 +10,11 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2011.GahboninhoSAS;
 
 /**
- * Decoupled version of the offering strategy of Gahboninho.
- * The code was adapted to convey more information if a crash occurs.
+ * This is the decoupled Offering Strategy for Gahboninho (ANAC2011)
+ * The code was taken from the ANAC2011 Gahboninho and adapted to work within the BOA framework
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  * 
  * @author Mark Hendrikx
  */

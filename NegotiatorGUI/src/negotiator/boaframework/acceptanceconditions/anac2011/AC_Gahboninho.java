@@ -11,9 +11,15 @@ import negotiator.boaframework.sharedagentstate.anac2011.GahboninhoSAS;
 /**
  * @author Mark Hendrikx and Alex Dirkzwager
  * 
- * In the original version there is a bug in the opponent model.
- * In practice, it is only updated once.
- *
+ * This is the decoupled Acceptance Conditions from the Gahboninho (ANAC2011).
+ * The code was taken from the ANAC2011 Gahboninho and adapted to work within the BOA framework.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
+ * BUG
+ * In the original version the opponent model is only updated once, which
+ * is good for the performance of the agent, as the model is very slow.
  */
 public class AC_Gahboninho extends AcceptanceStrategy {
 	

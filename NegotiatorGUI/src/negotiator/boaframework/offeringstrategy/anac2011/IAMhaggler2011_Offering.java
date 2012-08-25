@@ -32,11 +32,15 @@ import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBi
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
- * @author Colin Williams
+ * This is the decoupled Offering Strategy for IAMhaggler2011 (ANAC2011).
+ * The code was taken from the ANAC2011 IAMhaggler2011 and adapted to work within the BOA framework.
  * 
- *         The IAMhaggler Agent, created for ANAC 2011. Designed by C. R.
- *         Williams, V. Robu, E. H. Gerding and N. R. Jennings.
+ * The default opponent model implementation selects the best bid for the opponent.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
+ * @author Mark Hendrikx
  */
 public class IAMhaggler2011_Offering extends OfferingStrategy {
 	

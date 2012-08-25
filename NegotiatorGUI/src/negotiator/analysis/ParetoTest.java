@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
 /**
  * This class can be used to test if the implementation of the Pareto frontier
  * algorithm in BidSpace returns the correct results on each domain.
- * The algorithm is compared against a simple bruteforce algorithm.
+ * The efficient algorithm is compared against a simple bruteforce algorithm.
  * 
  * No effort was made to optimize the bruteforce algorithm as I wanted to be
  * sure that it is correct. Therefore, it is not advised to check domains with

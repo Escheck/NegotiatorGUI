@@ -15,6 +15,9 @@ import negotiator.boaframework.OfferingStrategy;
  * bid plus a constant (the gap) is higher than the utility of the next bid.
  * The acceptance condition is a restricted version of AC_next.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager
  */
 public class AC_Gap extends AcceptanceStrategy{

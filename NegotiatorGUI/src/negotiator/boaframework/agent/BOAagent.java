@@ -21,7 +21,7 @@ import negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondit
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
- * This class describes a basic decoupled agent. The TheDecoupledAgent class extends
+ * This class describes a basic decoupled agent. The TheBOAagent class extends
  * this class and sets the required parameters.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
@@ -32,7 +32,7 @@ public abstract class BOAagent extends Agent
 	protected AcceptanceStrategy acceptConditions;
 	/** what to offer */
 	protected OfferingStrategy offeringStrategy;
-	/**  used to determine the utility of a bid for the opponent */
+	/** used to determine the utility of a bid for the opponent */
 	protected OpponentModel opponentModel;
 	/** link to domain */
 	protected NegotiationSession negotiationSession;
@@ -45,6 +45,9 @@ public abstract class BOAagent extends Agent
     /** if this agent started */
     private boolean startingAgent;
     
+    /**
+     * Initializes the agent and creates a new negotiation session object.
+     */
     @Override
 	public void init() {
 		super.init();
@@ -84,14 +87,17 @@ public abstract class BOAagent extends Agent
 	 * @param Action by opponent in current turn
 	 */
 	public void ReceiveMessage(Action opponentAction) {
+		// 1. if the opponent made a bid
 		if(opponentAction instanceof Offer) {
 			Bid bid = ((Offer)opponentAction).getBid();
+			// 2. store the opponent's trace
 			try {
 				BidDetails opponentBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid), negotiationSession.getTime());
 				negotiationSession.getOpponentBidHistory().add(opponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			// 3. if there is an opponent model, update it using the opponent's bid
 			if (opponentModel != null && !(opponentModel instanceof NoModel)) {
 				if (omStrategy.canUpdateOM()) {
 					opponentModel.updateModel(bid);
@@ -142,6 +148,7 @@ public abstract class BOAagent extends Agent
 			startingAgent = true;
 		}
 
+		// check if the agent decided to break toff the negotiation
 		if (decision.equals(Actions.Break)) {
 			System.out.println("send EndNegotiation");
 			return new EndNegotiation(this.getAgentID());
@@ -172,11 +179,15 @@ public abstract class BOAagent extends Agent
 		return null;
 	}
 	
+	public OfferingStrategy getOfferingStrategy() {
+		return offeringStrategy;
+	}
+	
 	public OpponentModel getOpponentModel() {
 		return opponentModel;
 	}
 	
-	public AcceptanceStrategy getAcceptanceStrategy(){
+	public AcceptanceStrategy getAcceptanceStrategy() {
 		return acceptConditions;
 	}
 	
@@ -206,8 +217,7 @@ public abstract class BOAagent extends Agent
 	/**
 	 * Clear the agent's variables.
 	 */
-	public void cleanUp() 
-	{
+	public void cleanUp() {
 		offeringStrategy = null;
 		acceptConditions = null;
 		omStrategy = null;

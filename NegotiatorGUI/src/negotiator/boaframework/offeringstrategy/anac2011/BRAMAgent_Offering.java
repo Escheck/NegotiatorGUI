@@ -21,11 +21,14 @@ import negotiator.issue.ValueReal;
 
 /**
  * This is the decoupled Offering Strategy for BRAMAgent (ANAC2011)
- * The code was taken from the ANAC2011 BRAMAgent and adapted to work within the Decoupledframework
+ * The code was taken from the ANAC2011 BRAMAgent and adapted to work within the BOA framework
  * 
  * There is no opponent model implementation, as the agent uses an approach in which it first
  * tries to make a bid by taking the last ten opponent bids into account. If this fails, the
  * array of possible bids is directly used to select a bid.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */

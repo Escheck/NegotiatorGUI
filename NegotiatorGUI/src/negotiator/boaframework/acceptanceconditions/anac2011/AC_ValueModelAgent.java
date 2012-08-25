@@ -7,7 +7,15 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.sharedagentstate.anac2011.ValueModelAgentSAS;
 
-
+/**
+ * This is the decoupled Acceptance Conditions for ValueModelAgent (ANAC2011).
+ * The code was taken from the ANAC2011 ValueModelAgent and adapted to work within the BOA framework.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
+ * @author Mark Hendrikx
+ */
 public class AC_ValueModelAgent extends AcceptanceStrategy {
 	
     public AC_ValueModelAgent() { }

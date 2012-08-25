@@ -10,8 +10,10 @@ import negotiator.boaframework.OfferingStrategy;
  * This Acceptance Condition accepts an opponent bid if the utility is higher
  * than the previous bid the agent made.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
- *
  */
 public class AC_Previous extends AcceptanceStrategy{
 	

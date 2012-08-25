@@ -12,6 +12,9 @@ import negotiator.boaframework.OfferingStrategy;
  * 
  * This Acceptance Conditions is a combination of AC_Time and AC_Next
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager
  */
 public class AC_CombiV2 extends AcceptanceStrategy {

@@ -12,6 +12,9 @@ import negotiator.boaframework.OfferingStrategy;
  * (non)-negligible. The parameter e determines when a domain is
  * marked as discounted or not.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class AC_CombiV4 extends AcceptanceStrategy{
