@@ -10,6 +10,9 @@ import negotiator.utility.UtilitySpace;
  * An opponent model symbolizing perfect knowledge about the opponent's preferences.
  * Note that for using this model experimentalSetup should be enabled in global.
  * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * 
  * @author Mark Hendrikx
  */
 public class PerfectModel extends OpponentModel {

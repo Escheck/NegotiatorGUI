@@ -8,6 +8,12 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SharedAgentState;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 Agent K2.
+ * The code was taken from the ANAC2010 Agent K2 and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class AgentK2SAS extends SharedAgentState{
 
 	private NegotiationSession negotiationSession;

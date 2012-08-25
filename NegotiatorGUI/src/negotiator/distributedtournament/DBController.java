@@ -45,7 +45,7 @@ public class DBController {
 	private static String passwordStored = "";
 	/** how many outcomes may be stored in a single file. The
 	 * problem with tools such as Excel, is that they can only
-	 * import a limited amount of data */
+	 * import a limited amount of data. */
 	private final int NUMBER_OUTCOMES_PER_LOG = 1000;
 	
 	private DBController() { }
@@ -468,9 +468,7 @@ public class DBController {
 
 			// 2. Get the filename of the to-be-created log
 			String outcomesFileName = Global.getDistributedOutcomesFileName();
-			if(!(rowCount < NUMBER_OUTCOMES_PER_LOG)){
-				String[] outcomesFileNameSplit = outcomesFileName.split("\\.");
-				//outcomesFileNameSplit[0].concat(outcomesFileNameSplit[1] + outcomesFileNameSplit[2]);
+			if (!(rowCount < NUMBER_OUTCOMES_PER_LOG)){
 				outcomesFileName = outcomesFileName.replace(".xml", "-Part"+ (x+1) + ".xml");
 			}
 
@@ -484,7 +482,7 @@ public class DBController {
 					out.write("<a>\n");
 				}
 
-				while(outcomes.getRow()/NUMBER_OUTCOMES_PER_LOG == x){
+				while (outcomes.getRow() / NUMBER_OUTCOMES_PER_LOG == x){
 				//while (outcomes.next()) {		
 					outcomes.next();
 					try {
@@ -574,6 +572,7 @@ public class DBController {
 			"############################################################################\n" +
 			"# * Only 1 DT should be active per Genius, as the DB connection is shared  #\n" +
 			"# * Start Genius multiple times to benefit from multiple cores on 1 PC     #\n" +
+			"# * If the outcomes should not be split, increase NUMBER_OUTCOMES_PER_LOG  #\n" +
 			"############################################################################\n\n\n";	
 		return tutorial;
 	}

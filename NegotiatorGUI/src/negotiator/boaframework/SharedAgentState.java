@@ -11,8 +11,7 @@ package negotiator.boaframework;
  * 
  * Note that the only requirement by this class is the implementation of the name. The name
  * should be used to verify that the component which calculates (a part of) the results is
- * available. If this is not the case, the separate component requiring the information calculate
- * the results itself.
+ * available.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */

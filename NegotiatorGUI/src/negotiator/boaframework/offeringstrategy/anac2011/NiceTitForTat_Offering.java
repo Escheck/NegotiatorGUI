@@ -19,7 +19,7 @@ import negotiator.boaframework.sharedagentstate.anac2011.NiceTitForTatSAS;
 
 /**
  * This is the decoupled Offering Strategy for NiceTitForTat (ANAC2011).
- * The code was taken from the ANAC2011 NiceTitForTat and adapted to work within the Decoupledframework.
+ * The code was taken from the ANAC2011 NiceTitForTat and adapted to work within the BOA framework.
  * 
  * >>Extension of opponent model>>
  * As default the agent implements a behavior when an opponent model is

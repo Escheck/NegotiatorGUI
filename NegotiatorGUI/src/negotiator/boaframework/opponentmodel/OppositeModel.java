@@ -11,6 +11,9 @@ import negotiator.issue.Issue;
  * Simple baseline opponent model which just mirror's the utility space of the agent.
  * Note that the model does not measure the issue weights, it makes no sense.
  * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * 
  * @author Mark Hendrikx
  */
 public class OppositeModel extends OpponentModel {

@@ -7,6 +7,12 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SharedAgentState;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 HardHeaded.
+ * The code was taken from the ANAC2011 HardHeaded and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class HardHeadedSAS extends SharedAgentState{
 
 	private NegotiationSession negotiationSession;

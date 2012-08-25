@@ -2,6 +2,12 @@ package negotiator.boaframework.sharedagentstate.anac2011;
 
 import negotiator.boaframework.SharedAgentState;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 ValueModelAgent.
+ * The code was taken from the ANAC2011 ValueModelAgent and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class ValueModelAgentSAS extends SharedAgentState {
 
 	private double opponentMaxBidUtil = 0;

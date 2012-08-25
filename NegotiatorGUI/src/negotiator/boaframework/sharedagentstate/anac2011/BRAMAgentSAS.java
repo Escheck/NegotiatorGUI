@@ -3,6 +3,12 @@ import negotiator.Bid;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SharedAgentState;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 BRAMAagent.
+ * The code was taken from the ANAC2011 BRAMAagent and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class BRAMAgentSAS extends SharedAgentState{
 
 	private NegotiationSession negotiationSession;

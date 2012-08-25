@@ -9,6 +9,12 @@ import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.GahboninhoOM
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.IssueManager;
 import negotiator.utility.UtilitySpace;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 Gahboninho.
+ * The code was taken from the ANAC2011 Gahboninho and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class GahboninhoSAS extends SharedAgentState {
 	private GahboninhoOM om;
 	private IssueManager im;
