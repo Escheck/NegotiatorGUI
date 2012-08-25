@@ -15,6 +15,9 @@ import negotiator.Bid;
  * Note that while this tool allows to test a large amount of AC's in the same trace,
  * there is a computational cost. Therefore we recommend to use at most 50 AC's.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager
  */
 public class Multi_AcceptanceCondition extends AcceptanceStrategy {

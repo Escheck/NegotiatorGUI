@@ -16,7 +16,7 @@ import negotiator.boaframework.sharedagentstate.anac2011.TheNegotiatorSAS;
 
 /**
  * This is the decoupled Offering Strategy for TheNegotiator (ANAC2011).
- * The code was taken from the ANAC2011 TheNegotiator and adapted to work within the Decoupledframework.
+ * The code was taken from the ANAC2011 TheNegotiator and adapted to work within the BOA framework.
  * 
  * Adapted to be compatible with an opponent model.
  * 

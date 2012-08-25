@@ -11,6 +11,9 @@ import negotiator.boaframework.OfferingStrategy;
  * In addition, the agent also accepts when a given time has passed,
  * and the utility of the opponent's bid is higher than a given constant.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class AC_CombiV3 extends AcceptanceStrategy{

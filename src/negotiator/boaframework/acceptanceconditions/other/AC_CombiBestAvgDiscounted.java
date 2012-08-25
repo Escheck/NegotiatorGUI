@@ -16,6 +16,9 @@ import negotiator.BidHistory;
  * This Acceptance Condition averages the opponents bids (which are better than the bid that was offered) made in the previous time window. 
  * If the bid is higher than the average it will accept
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager
  */
 public class AC_CombiBestAvgDiscounted extends AcceptanceStrategy {

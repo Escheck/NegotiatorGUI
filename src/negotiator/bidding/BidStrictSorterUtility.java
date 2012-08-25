@@ -37,7 +37,6 @@ public class BidStrictSorterUtility implements Comparator<Bid>{
 		    else
 		        return ((Integer) b1.hashCode()).compareTo(b2.hashCode());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return -1;

@@ -12,6 +12,9 @@ import negotiator.boaframework.OfferingStrategy;
  * 
  * This Acceptance Condition accepts a bid if it is higher than any bid seen so far
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager
  */
 public class AC_CombiMax extends AcceptanceStrategy {

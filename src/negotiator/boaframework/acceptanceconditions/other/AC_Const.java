@@ -10,6 +10,9 @@ import negotiator.boaframework.OfferingStrategy;
 /**
  * This Acceptance Condition accepts an opponent bid if the utility is above a constant.
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 15-12-11
  */

@@ -21,14 +21,17 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 
 /**
- * This is the decoupled Offering Strategy for Agent K (ANAC2010).
- * The code was taken from the ANAC2010 AgentK and adapted to work within the Decoupledframework.
+ * This is the decoupled Offering Strategy for Agent K2 (ANAC2010).
+ * The code was taken from the ANAC2011 AgentK2 and adapted to work within the BOA framework.
  * 
  * OPPONENT MODEL EXTENSION
- * The strategy was extended to incorperate an opponent model. Previously, in one case a random
+ * The strategy was extended to incorporate an opponent model. Previously, in one case a random
  * bid was chosen from a list of candidates; this was replaced by selecting the best bid for the
  * opponent. In the other case, the strategy chooses the best bid for the opponent from the set 
  * of all possible bids with a minimum target utility.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  * 
  * @author Mark Hendrikx
  */

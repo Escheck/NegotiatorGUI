@@ -19,12 +19,15 @@ import negotiator.boaframework.sharedagentstate.anac2011.HardHeadedSAS;
 
 /**
  * This is the decoupled Offering Strategy for HardHeaded (ANAC2011).
- * The code was taken from the ANAC2011 HardHeaded and adapted to work within the Decoupledframework.
+ * The code was taken from the ANAC2011 HardHeaded and adapted to work within the BOA framework.
  * 
  * >>Extension of opponent model>>
  * As default the agent uses the frequency model to select the best bid
  * from a small set of bids. The agent is extended such that other models
  * can be used. If no opponent model is given, then a random bid is chosen.
+ * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */

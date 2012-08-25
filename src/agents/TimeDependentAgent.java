@@ -6,13 +6,13 @@ import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
- * 
+ * Adapted by Mark Hendrikx to use the SortedOutcomeSpace instead of BidHistory.
  *
  * [1]	S. Shaheen Fatima  Michael Wooldridge  Nicholas R. Jennings
  * 		Optimal Negotiation Strategies for Agents with Incomplete Information
  * 		http://eprints.ecs.soton.ac.uk/6151/1/atal01.pdf
  * 
- * @author Tim Baarslag
+ * @author Tim Baarslag, Mark Hendrikx
  */
 public abstract class TimeDependentAgent extends BilateralAgent
 {	

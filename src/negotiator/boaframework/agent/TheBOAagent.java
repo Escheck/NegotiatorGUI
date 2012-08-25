@@ -17,9 +17,9 @@ import negotiator.boaframework.repository.BOAagentRepository;
 public class TheBOAagent extends BOAagent {
 
 	/** name of the agent */
-	String name = "";
+	private String name = "";
 	/** information object which stores the decoupled agent */
-	BOAagentInfo dagent;
+	private BOAagentInfo dagent;
 	
 	/**
 	 * Loads and initializes the decoupled components of the agent.

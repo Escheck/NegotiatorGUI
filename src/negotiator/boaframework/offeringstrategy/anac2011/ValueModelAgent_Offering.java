@@ -17,19 +17,12 @@ import negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent.ValueMo
 import negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent.ValueSeperatedBids;
 import negotiator.boaframework.sharedagentstate.anac2011.ValueModelAgentSAS;
 
-//This agent uses a very complex form of temporal difference reinforcement
-//learning to learn opponent's utility space.
-//The learning is focused on finding the amount of utility lost by
-//opponent for each value.
-//However, as the bid (expected) utilities represent the decrease in all
-//issues, we needed away to decide which values should change the most.
-//We use estimations of standard deviation and reliability to decide how
-//to make the split.
-//The reliability is also used to decide the learning factor of the individual
-//learning.
-//The agent then tries to slow down the compromise rate, until we have to be fair.
-
-//This is the agent of Asaf, Dror and Gal.
+/**
+ * This is the decoupled Offering Strategy for ValueModelAgent (ANAC2011).
+ * The code was taken from the ANAC2011 ValueModelAgent and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class ValueModelAgent_Offering extends OfferingStrategy {
 	
 	private ValueModeler opponentUtilModel = null;

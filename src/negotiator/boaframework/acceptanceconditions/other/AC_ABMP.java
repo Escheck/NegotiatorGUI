@@ -6,11 +6,15 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 
 /**
- * Acceptance condition of the ABMP agent.
+ * This is the decoupled Acceptance Condition from ABMP Agent.
+ * The code was taken from the ABMP Agent and adapted to work within the BOA framework.
  * 
  * http://www.verwaart.nl/culture/posterBNAIC2009ABMP.pdf
  * http://www.iids.org/publications/IJCAI01.ABMP.pdf
  * 
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
+ *
  * @author Alex Dirkzwager
  */
 public class AC_ABMP extends AcceptanceStrategy {
