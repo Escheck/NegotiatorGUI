@@ -16,6 +16,12 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 TheNegotiator.
+ * The code was taken from the ANAC2011 TheNegotiator and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class TheNegotiatorSAS extends SharedAgentState {
 	
 	private final boolean TEST_EQUIVALENCE = false;

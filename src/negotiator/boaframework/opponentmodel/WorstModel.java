@@ -11,6 +11,9 @@ import negotiator.utility.UtilitySpace;
  * The theoretically worst opponent model. Note that for using this model
  * experimentalSetup should be enabled in global.
  * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * 
  * @author Mark Hendrikx
  */
 public class WorstModel extends OpponentModel {

@@ -1,11 +1,16 @@
 package negotiator.boaframework.sharedagentstate.anac2011;
 
 import java.util.ArrayList;
-
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SharedAgentState;
 
+/**
+ * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 Nice Tit for Tat.
+ * The code was taken from the ANAC2011 Nice Tit for Tat and adapted to work within the BOA framework.
+ * 
+ * @author Mark Hendrikx
+ */
 public class NiceTitForTatSAS extends SharedAgentState{
 	
 	private NegotiationSession negotiationSession;

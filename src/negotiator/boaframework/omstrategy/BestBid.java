@@ -11,7 +11,7 @@ import negotiator.boaframework.OpponentModel;
 /**
  * This class uses an opponent model to determine the next bid for the opponent, while taking
  * the opponent's preferences into account. The opponent model is used to select the best bid.
-
+ *
  * @author Mark Hendrikx
  */
 public class BestBid extends OMStrategy {

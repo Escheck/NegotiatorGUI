@@ -9,6 +9,9 @@ import negotiator.bidding.BidDetails;
  * This is the abstract class which determines when the opponent model
  * may be updated, and how it used to select a bid for the opponent.
  * 
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * 
  * @author Mark Hendrikx
  */
 public abstract class OMStrategy {
@@ -21,6 +24,9 @@ public abstract class OMStrategy {
 	private final double RANGE_INCREMENT = 0.01;
 	/** Amount of bids expected in window */
 	private final int EXPECTED_BIDS_IN_WINDOW = 100;
+	/** Intitial range which is being searched for similarly preferable bids.
+	 *  This range is increased with the RANGE_INCREMENT until EXPECTED_BIDS_IN_WINDOW
+	 *  are found or the window is of maximum size */
 	private final double INITIAL_WINDOW_RANGE = 0.01;
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
@@ -90,5 +96,8 @@ public abstract class OMStrategy {
 		return getBid(bids);
 	}
 	
+	/**
+	 * @return if given the negotiation state the opponent model may be updated
+	 */
 	public abstract boolean canUpdateOM();
 }
