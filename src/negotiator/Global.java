@@ -28,10 +28,10 @@ public class Global {
 	public static String[] args;
 	
 	public static boolean batchMode = false;
-	public static boolean fDebug = false;
+	public static boolean fDebug = true;
 	public static boolean analysisEnabled = true; // set to true to enable the
 													// realtime analysis tool.
-	public static boolean experimentalSetup = false;// set to true to allow agent
+	public static boolean experimentalSetup = true;// set to true to allow agent
 													// to access negotiation
 													// environment
 	public static String outcomesFile = "outcomes.xml";
@@ -59,7 +59,7 @@ public class Global {
 	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
 	
 	/** Log things like competitiveness and minDemandedUtil */
-	public static final boolean LOG_COMPETITIVENESS = false;
+	public static final boolean LOG_COMPETITIVENESS = true;
 
 	/** Enables experimental vars in a tournament */
 	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
@@ -68,18 +68,18 @@ public class Global {
 	public static final boolean DISABLE_NORMAL_LOG = false;
 	
 	/** Enables the use of Decoupled Agents in the GUI. */
-	public static final boolean DECOUPLED_AGENTS_ENABLED = false;
+	public static final boolean DECOUPLED_AGENTS_ENABLED = true;
 	
 	/** Enables the distributed tournaments functionality of Genius. Also automatically enables
 	 * decoupled agents, as the GUI does not allow unfilled rows.
 	 */
-	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = false;
+	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
 	
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
-	public static final boolean DISCRETE_TIMELINE = false;
+	public static final boolean DISCRETE_TIMELINE = true;
 	
 	/** Defines the amount of round used for descrite timeline */
-	public static final int TOTAL_ROUNDS = 1000;
+	public static final int TOTAL_ROUNDS = 3000;
 	
 	
 	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
@@ -95,7 +95,7 @@ public class Global {
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
 	/** Enable a large set of analysis metrics from which the results are stored in a separate log */
-	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = false;
+	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = true;
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
@@ -118,18 +118,17 @@ public class Global {
 	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
 	public Global() {}
-
+	
 	static {
 		if((DISCRETE_TIMELINE == true && fDebug == false)|| DISCRETE_TIMELINE == false && fDebug == true){
 			try {
 				throw new Exception("Discrete Time and fDebug have to be either both true or both false");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/**
 	 * @param args
 	 *            the command line arguments

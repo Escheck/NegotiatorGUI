@@ -302,4 +302,12 @@ public class BidHistory {
 		int index = rand.nextInt(size);
 		return bidList.get(index);
 	}
+	
+	/**
+	 * Checks if BidHistory (array) is empty or not
+	 * @return
+	 */
+	public boolean isEmpty(){
+		return bidList.isEmpty();
+	}
 }

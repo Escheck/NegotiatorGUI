@@ -44,7 +44,7 @@ public class OpponentBidHistory {
         opponentBidsStatisticsForInteger = new ArrayList<ArrayList<Integer>>();
     }
 
-    protected void addBid(Bid bid, UtilitySpace utilitySpace) {
+    public void addBid(Bid bid, UtilitySpace utilitySpace) {
         if (bidHistory.indexOf(bid) == -1) {
             bidHistory.add(bid);
         }
@@ -61,14 +61,14 @@ public class OpponentBidHistory {
         }
     }
 
-    protected Bid getBestBidInHistory() {
+    public Bid getBestBidInHistory() {
         return this.bid_maximum_from_opponent;
     }
 
     /**
      * initialization
      */
-    protected void initializeDataStructures(Domain domain) {
+    public void initializeDataStructures(Domain domain) {
         try {
             ArrayList<Issue> issues = domain.getIssues();
             for (Issue lIssue : issues) {
@@ -115,8 +115,8 @@ public class OpponentBidHistory {
      * This function updates the opponent's Model by calling the
      * updateStatistics method
      */
-    protected void updateOpponentModel(Bid bidToUpdate, Domain domain, UtilitySpace utilitySpace) {
-        this.addBid(bidToUpdate, utilitySpace);
+    public void updateOpponentModel(Bid bidToUpdate, Domain domain, UtilitySpace utilitySpace) {
+    	this.addBid(bidToUpdate, utilitySpace);
 
         if (bidCounter.get(bidToUpdate) == null) {
             bidCounter.put(bidToUpdate, 1);
@@ -230,7 +230,7 @@ public class OpponentBidHistory {
     }
     //choose a bid which is optimal for the opponent among a set of candidate bids.
 
-    protected Bid ChooseBid(List<Bid> candidateBids, Domain domain) {
+    public Bid ChooseBid(List<Bid> candidateBids, Domain domain) {
         int upperSearchLimit = 200;//100;
         if (candidateBids.isEmpty()) {
             System.out.println("test");
@@ -388,7 +388,7 @@ public class OpponentBidHistory {
      * return the best bid from the opponent's bidding history
      */
 
-    protected Bid chooseBestFromHistory(UtilitySpace utilitySpace) {
+    public Bid chooseBestFromHistory(UtilitySpace utilitySpace) {
         double max = -1;
         Bid maxBid = null;
         try {
@@ -405,7 +405,7 @@ public class OpponentBidHistory {
     }
 
     //one way to predict the concession degree of the opponent
-    protected double concedeDegree(UtilitySpace utilitySpace) {
+    public double concedeDegree(UtilitySpace utilitySpace) {
         int numOfBids = bidHistory.size();
         HashMap<Bid, Integer> bidCounter = new HashMap<Bid, Integer>();
         try {
@@ -446,7 +446,7 @@ public class OpponentBidHistory {
         return Math.sqrt(sum / (n - 1));
     }
 
-    protected int getSize() {
+    public int getSize() {
         int numOfBids = bidHistory.size();
         HashMap<Bid, Integer> bidCounter = new HashMap<Bid, Integer>();
         try {
@@ -467,7 +467,7 @@ public class OpponentBidHistory {
     }
 
    //Another way to predict the opponent's concession degree
-    protected double getConcessionDegree() {
+    public double getConcessionDegree() {
         int numOfBids = bidHistory.size();
         double numOfDistinctBid = 0;
         int historyLength = 10;

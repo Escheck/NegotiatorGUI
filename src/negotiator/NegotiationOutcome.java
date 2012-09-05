@@ -18,9 +18,11 @@ import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidPointSorterB;
+import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
+import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -39,8 +41,8 @@ public class NegotiationOutcome {
 	public Double agentAutilityDiscount;
 	public Double agentButilityDiscount;
 	public String ErrorRemarks; // non-null if something happens crashing the negotiation
-	public ArrayListXML<BidPoint> AgentABids;
-	public ArrayListXML<BidPoint> AgentBBids;
+	public ArrayListXML<BidPointTime> AgentABids;
+	public ArrayListXML<BidPointTime> AgentBBids;
 	public Double agentAmaxUtil;
 	public Double agentBmaxUtil;
 	public boolean agentAstarts; // true if A starts, false if B starts
@@ -77,8 +79,8 @@ public class NegotiationOutcome {
 			Double agentAutilityDiscount,
 			Double agentButilityDiscount,
 			String err,
-			ArrayList<BidPoint> AgentABidsP,
-			ArrayList<BidPoint> AgentBBidsP,
+			ArrayList<BidPointTime> agentASize,
+			ArrayList<BidPointTime> agentBSize,
 			Double agentAmaxUtilP,
 			Double agentBmaxUtilP,
 			boolean startingWithA, // true if A starts, false if B starts
@@ -101,8 +103,8 @@ public class NegotiationOutcome {
 		this.agentBclass=agentBclass;
 		this.domainName = domainName;
 		this.additional = additional;
-		AgentABids=new ArrayListXML<BidPoint>(AgentABidsP);
-		AgentBBids=new ArrayListXML<BidPoint>(AgentBBidsP);
+		AgentABids=new ArrayListXML<BidPointTime>(agentASize);
+		AgentBBids=new ArrayListXML<BidPointTime>(agentBSize);
 		ErrorRemarks=err;
 		agentAmaxUtil=agentAmaxUtilP;
 		agentBmaxUtil=agentBmaxUtilP;
@@ -140,7 +142,7 @@ public class NegotiationOutcome {
 	 * @return
 	 */
 	SimpleElement resultsOfAgent(String agentX, String agentName, String agentClass, String utilspacefilename,
-			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPoint> bids, boolean addBids)
+			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPointTime> bids, boolean addBids)
 	{
 		double minDemandedUtil;
 		double fyu;
@@ -148,6 +150,7 @@ public class NegotiationOutcome {
 		double normACCR;
 		double totalCR;
 		double acCR;
+		
 		
 		//double cooperation;
 		if (Global.LOG_COMPETITIVENESS)
@@ -176,26 +179,6 @@ public class NegotiationOutcome {
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
-		outcome.setAttribute("agentClass", agentClass);
-		outcome.setAttribute("utilspace", utilspacefilename);
-		outcome.setAttribute("Opponent-agentName", oppName);
-		outcome.setAttribute("Opponent-agentClass", oppClass);
-		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
-		outcome.setAttribute("finalUtility",""+agentAUtil);
-		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
-		
-		if (Global.LOG_COMPETITIVENESS)
-		{
-			outcome.setAttribute("minDemandedUtility",""+minDemandedUtil);
-			outcome.setAttribute("FYU",""+fyu);
-			outcome.setAttribute("Total_CR",""+totalCR);
-			outcome.setAttribute("BS_CR",""+bsCR);
-			outcome.setAttribute("AC_CR",""+acCR);
-			outcome.setAttribute("Normalized_AC_CR",""+normACCR);
-
-
-			//outcome.setAttribute("cooperation",""+cooperation);
-		}
 		
 		OrderedSimpleElement decoupledElementID = new OrderedSimpleElement("DecoupledElementID");
 		if(agentName.contains("bs")) {
@@ -205,6 +188,42 @@ public class NegotiationOutcome {
 			decoupledElementID.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
 			decoupledElementID.setAttribute("opponent_model", getOpponentModelName(agentName));
 		}
+		
+		outcome.setAttribute("agentClass", agentClass);
+		outcome.setAttribute("utilspace", utilspacefilename);
+		outcome.setAttribute("Opponent-agentName", oppName);
+		outcome.setAttribute("Opponent-agentClass", oppClass);
+		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
+		outcome.setAttribute("finalUtility",""+agentAUtil);
+		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
+		
+		
+		double bestAcceptableBid;
+		double bestDiscountedAccepableBid;
+		if(agentX.equals("A")){
+			bestAcceptableBid = getMaxRecievedUtil(agentX, AgentBBids);
+			bestDiscountedAccepableBid = getMaxDiscountedRecievedUtil(agentX, AgentBBids);
+		} else {
+			bestAcceptableBid = getMaxRecievedUtil(agentX, AgentABids);
+			bestDiscountedAccepableBid = getMaxDiscountedRecievedUtil(agentX, AgentABids);
+		}
+		outcome.setAttribute("bestAcceptableBid", String.valueOf(bestAcceptableBid));
+		outcome.setAttribute("bestDiscountedAccepableBid", String.valueOf(bestDiscountedAccepableBid));
+		
+		if (Global.LOG_COMPETITIVENESS)
+		{
+			outcome.setAttribute("minDemandedUtility", String.valueOf(minDemandedUtil));
+			outcome.setAttribute("FYU",String.valueOf(fyu));
+			outcome.setAttribute("Total_CR",String.valueOf(totalCR));
+			outcome.setAttribute("BS_CR",String.valueOf(bsCR));
+			outcome.setAttribute("AC_CR",String.valueOf(acCR));
+			outcome.setAttribute("Normalized_AC_CR",String.valueOf(normACCR));
+
+
+			//outcome.setAttribute("cooperation",""+cooperation);
+		}
+		
+		
 		
 		if (omMeasuresResults != null) {
 			if (agentX.equals("A")) {
@@ -235,7 +254,7 @@ public class NegotiationOutcome {
 	}
 
 
-	private double determineCR(String agentX, ArrayListXML<BidPoint> bids, double fyu, double minUtil){
+	private double determineCR(String agentX, ArrayListXML<BidPointTime> bids, double fyu, double minUtil){
 		double CR;
 		if(minUtil != -1){
 			double yield = Math.max(minUtil, fyu);
@@ -251,11 +270,11 @@ public class NegotiationOutcome {
 		return CR;
 	}
 	
-	public ArrayListXML<BidPoint> getAgentABids() {
+	public ArrayListXML<BidPointTime> getAgentABids() {
 		return AgentABids;
 	}
 
-	public ArrayListXML<BidPoint> getAgentBBids() {
+	public ArrayListXML<BidPointTime> getAgentBBids() {
 		return AgentBBids;
 	}
 
@@ -287,12 +306,67 @@ public class NegotiationOutcome {
 
 		return fyu;
 	}
+	
+	/**
+	 * Gets the largest discounted utility an agent was offered from the opponent
+	 */
+	private double getMaxDiscountedRecievedUtil(String agentX, ArrayListXML<BidPointTime> bids)
+	{
+		double discountFactorA = alternatingOffersBilateralAtomicNegoSession.getAgentAUtilitySpace().getDiscountFactor();
+		double discountFactorB = alternatingOffersBilateralAtomicNegoSession.getAgentBUtilitySpace().getDiscountFactor();
+
+		
+		double maxRecievedDiscountedUtil = 0;
+		if(!bids.isEmpty()){
+			for(BidPointTime bidPointTime : bids){
+				double discountedBidPoint;
+				if(agentX.equals("A")){
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.utilityA, bidPointTime.time, discountFactorA);
+				}else {
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.utilityB, bidPointTime.time, discountFactorB);
+				}
+				
+				if(discountedBidPoint > maxRecievedDiscountedUtil){
+					maxRecievedDiscountedUtil = bidPointTime.time;
+				}
+			
+			}
+		}
+			
+		return maxRecievedDiscountedUtil;
+	}
+	
+	/**
+	 * Gets the largest utility an agent was offered from the opponent
+	 */
+	private double getMaxRecievedUtil(String agentX, ArrayListXML<BidPointTime> bids)
+	{
+		Comparator<BidPoint> comp = null;
+		if ("A".equals(agentX))
+			comp = new BidPointSorterA();
+		else if ("B".equals(agentX))
+			comp = new BidPointSorterB();
+		else
+			System.err.println("Unknown agent " + agentX);
+		
+		double maxRecievedUtil;
+		if(!bids.isEmpty()){
+
+			BidPointTime minDemandedBid = Collections.max(bids, comp);
+
+			 maxRecievedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+		}else { 
+			maxRecievedUtil = -1;
+		
+		}
+		return maxRecievedUtil;
+	}
 
 	
 	/**
 	 * Gets the smallest utility an agent was willing to ask
 	 */
-	private double getMinDemandedUtil(String agentX, ArrayListXML<BidPoint> bids)
+	private double getMinDemandedUtil(String agentX, ArrayListXML<BidPointTime> bids)
 	{
 		Comparator<BidPoint> comp = null;
 		if ("A".equals(agentX))

@@ -13,6 +13,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.IllegalAction;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointTime;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
@@ -162,16 +163,18 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                        //Main.log("Utility of " + agentB.getName() +": " + utilB);
                        fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
                        //save last results 
-                       BidPoint p=null;
-               		   p=new BidPoint(lastBid,
+                       long timeAfterStart = System.currentTimeMillis() - startTimeMillies; 
+
+                       
+                       BidPointTime p=null;
+               		   p=new BidPointTime(lastBid,
                				   spaceA.getUtility(lastBid),
-               				   spaceB.getUtility(lastBid));
+               				   spaceB.getUtility(lastBid), timeAfterStart);
                        if(currentAgent.equals(agentA))                    {
                     	   fAgentABids.add(p);
                        } else{
                     	   fAgentBBids.add(p);
                        }
-                       long timeAfterStart = System.currentTimeMillis() - startTimeMillies; 
                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        

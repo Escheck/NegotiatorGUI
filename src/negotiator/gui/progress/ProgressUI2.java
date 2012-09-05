@@ -29,6 +29,7 @@ import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
@@ -369,8 +370,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		
 		if (Global.HIGHLIGHT_LAST_BID)
 		{
-			ArrayList<BidPoint> agentABids = session.getAgentABids();
-			ArrayList<BidPoint> agentBBids = session.getAgentBBids();
+			ArrayList<BidPointTime> agentABids = session.getAgentABids();
+			ArrayList<BidPointTime> agentBBids = session.getAgentBBids();
 			if (!agentABids.isEmpty())
 			{
 				BidPoint bidPointA = agentABids.get(agentABids.size() - 1);

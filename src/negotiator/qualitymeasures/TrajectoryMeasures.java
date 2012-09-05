@@ -3,8 +3,11 @@ package negotiator.qualitymeasures;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import negotiator.ArrayListXML;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.xml.OrderedSimpleElement;
 
@@ -17,8 +20,8 @@ import negotiator.xml.OrderedSimpleElement;
  */
 public class TrajectoryMeasures {
 
-	ArrayList<BidPoint> agentABids;
-	ArrayList<BidPoint> agentBBids;
+	ArrayList<BidPointTime> agentABids;
+	ArrayList<BidPointTime> agentBBids;
 	Domain domain;
 	boolean agentAFirst;
 	private final double SILENTTHRESHOLD = 0.0001;
@@ -40,10 +43,10 @@ public class TrajectoryMeasures {
 	private BidSpace bidSpace;
 	
 
-	public TrajectoryMeasures(ArrayList<BidPoint> agentABids,
-			ArrayList<BidPoint> agentBBids, BidSpace bidSpace) {
-		this.agentABids = agentABids;
-		this.agentBBids = agentBBids;
+	public TrajectoryMeasures(ArrayListXML<BidPointTime> arrayListXML,
+			ArrayListXML<BidPointTime> arrayListXML2, BidSpace bidSpace) {
+		this.agentABids = arrayListXML;
+		this.agentBBids = arrayListXML2;
 		this.bidSpace = bidSpace;
 	}
 

@@ -20,6 +20,14 @@ public class Queue {
 		theArray = new Double[DEFAULT_CAPACITY];
 		makeEmpty( );
 	}
+	
+    /**
+     * Construct the queue.
+     */
+    public Queue(int size) {
+        theArray = new Double[size];
+        makeEmpty( );
+    }
 
 	/**
 	 * Test if the queue is logically empty.
