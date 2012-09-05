@@ -1,7 +1,6 @@
 package agents;
 
 import negotiator.Bid;
-import negotiator.BidHistory;
 import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
@@ -19,9 +18,6 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	/** k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility */
 	private static final double k = 0;
 	
-	/** Is set by subclass */
-	@SuppressWarnings("unused")
-	private double e;
 	private SortedOutcomeSpace outcomeSpace;
 	private double Pmax;
 	private double Pmin;
@@ -72,9 +68,13 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	 * That is, the offer will always be between the value range, 
 	 * at the beginning it will give the initial constant and when the deadline is reached, it
 	 * will offer the reservation value.
+	 * 
+	 * For e = 0 (special case), it will behave as a Hardliner.
 	 */
 	public double f(double t)
 	{
+		if (getE() == 0)
+			return k;
 		double ft = k + (1 - k) * Math.pow(t, 1 / getE());
 		log("f(t) = " + ft);
 		return ft;
@@ -98,7 +98,7 @@ public abstract class TimeDependentAgent extends BilateralAgent
 		double time = timeline.getTime();
 		double utilityGoal = p(time);
 		Bid b = pickBidOfUtility(utilityGoal);
-		log("t = " + round2(time) + ". Aiming for " + round2(utilityGoal));
+//		log("[e=" + getE() + "] t = " + round2(time) + ". Aiming for " + round2(utilityGoal));
 		return b;
 	}
 
