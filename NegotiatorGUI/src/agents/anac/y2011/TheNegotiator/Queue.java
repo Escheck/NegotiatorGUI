@@ -21,6 +21,7 @@ public class Queue {
         makeEmpty( );
     }
 
+
     /**
      * Test if the queue is logically empty.
      * @return true if empty, false otherwise.

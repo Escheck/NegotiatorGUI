@@ -8,6 +8,7 @@ import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.events.ActionEvent;
@@ -32,8 +33,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	Action 			lastAction = null;				// the last action that has been done (also included Accept, etc.)
     protected	Protocol 		protocol;
     protected 	int				sessionNumber;
-    protected 	ArrayList<BidPoint> 	fAgentABids;
-    protected 	ArrayList<BidPoint> 	fAgentBBids;
+    protected 	ArrayList<BidPointTime> 	fAgentABids;
+    protected 	ArrayList<BidPointTime> 	fAgentBBids;
     protected 	BidSpace		bidSpace;
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentAparams;
 	protected 	HashMap<AgentParameterVariable,AgentParamValue> agentBparams;
@@ -75,8 +76,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         	agentA.fNegotiation = this;
         	agentB.fNegotiation = this;
         }
-        fAgentABids = new ArrayList<BidPoint>();
-        fAgentBBids = new ArrayList<BidPoint>();
+        fAgentABids = new ArrayList<BidPointTime>();
+        fAgentBBids = new ArrayList<BidPointTime>();
 
         matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
         								agentA.getName(), spaceA.getFileName(), 
@@ -170,11 +171,11 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 		return lAgentAUtilities; 
 	}
 	
-	public ArrayList<BidPoint> getAgentABids() {
+	public ArrayList<BidPointTime> getAgentABids() {
 		return fAgentABids;
 	}
 	
-	public ArrayList<BidPoint> getAgentBBids() {
+	public ArrayList<BidPointTime> getAgentBBids() {
 		return fAgentBBids;
 	}
 

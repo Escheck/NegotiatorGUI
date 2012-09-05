@@ -347,6 +347,37 @@ public class UtilitySpace {
 //    	System.out.println(util + " * " + discount + "^" + time + " = " + discountedUtil);
     	return discountedUtil;
     }
+    
+    /**
+     * Computes:
+     * 
+     * discountedUtil = util * Math.pow(discount, time).
+     * 
+     * Checks for bounds on the discount factor and time.
+     */
+	public static double discount(double util, double time, double discountFactor)
+	{
+		double discount = discountFactor;
+    	if (discountFactor <= 0 || discountFactor >= 1)
+    	{
+    		discount = 1;
+    		if (discountFactor < 0 || discountFactor > 1)
+    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
+    	}
+    	if (time < 0)
+    	{
+			System.err.println("Warning: time = " + time + " < 0, using time = 0 instead.");
+    		time = 0;
+    	}
+    	if (time > 1)
+    	{
+			System.err.println("Warning: time = " + time + " > 1, using time = 1 instead.");
+    		time = 1;
+    	}
+    	
+    	double discountedUtil = util * Math.pow(discount, time);
+		return discountedUtil;
+	}
 
     /**
      * Computes:

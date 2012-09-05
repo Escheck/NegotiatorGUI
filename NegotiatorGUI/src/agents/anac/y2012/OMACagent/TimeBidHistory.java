@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.io.*;
 
 //ver. 1.06
-class TimeBidHistory {	
+public class TimeBidHistory {	
 	private List<Bid> fMyBids;
 	private List<Bid> fOpponentBids;
 	public List<Double> fTimes;  //new, record the time of receiving counter-offers

@@ -16,6 +16,7 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
+import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCash;
 import negotiator.boaframework.OpponentModel;
@@ -141,7 +142,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			
 			while(!stopNegotiation) {
 				//            	timeline.printTime();
-				try {
+				double time = timeline.getTime();
+
+				try {					
 					//inform agent about last action of his opponent
 					currentAgent.ReceiveMessage(lastAction);
 					String deadlineReachedMsg = "Deadline reached while waiting for [" + currentAgent + "]";
@@ -149,9 +152,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					if(timeline.isDeadlineReached()) {
 						//if there is a MAC being used
 						if(hasMAC()){
-							createMACOutcomes(timeline);
+							createMACOutcomes(time);
 						} else {
- 							badOutcome(timeline, deadlineReachedMsg);   
+ 							badOutcome(time, deadlineReachedMsg);   
 						}
 					}
 					if (stopNegotiation) return;
@@ -159,9 +162,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					lastAction = currentAgent.chooseAction();
 					if(timeline.isDeadlineReached()) {
 						if(hasMAC()){
-							createMACOutcomes(timeline);
+							createMACOutcomes(time);
 						} else {
-							badOutcome(timeline, deadlineReachedMsg);   
+							badOutcome(time, deadlineReachedMsg);   
 						}
 					}
 
@@ -171,9 +174,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						System.out.println("EndNegotiation was called");
 						stopNegotiation= true;
 						if (hasMAC()) {						
-							createMACOutcomes(timeline);
+							createMACOutcomes(time);
 						} else {
-							badOutcome(timeline, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
+							badOutcome(time, "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement");
 						}
 						checkAgentActivity(currentAgent);
 					} else if (lastAction instanceof Offer) {
@@ -181,7 +184,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						fireLogMessage("Nego","Agent " + currentAgent.getName() + " sent the following offer:");
 						lastBid  = ((Offer)lastAction).getBid();
 						if (lastBid == null) {
-							badOutcome(timeline, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
+							badOutcome(time, "Agent [" + currentAgent.getName() + "] sent an offer with null in it, so the negotiation ended without agreement");
 							return;
 						}
 						//Main.log(lastAction.toString());
@@ -193,10 +196,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 						//Main.log("Utility of " + agentB.getName() +": " + utilB);
 						fireLogMessage("Nego","Utility of " + agentB.getName() +": " + utilB);
 						//save last results 
-						BidPoint p=null;
-						p=new BidPoint(lastBid,
+						
+						
+						BidPointTime p=null;
+						p=new BidPointTime(lastBid,
 								spaceA.getUtility(lastBid),
-								spaceB.getUtility(lastBid));
+								spaceB.getUtility(lastBid), time);
 						
 						if (!timeline.isDeadlineReached()) {
 							// if agent A just made an offer
@@ -205,10 +210,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 								processOnlineData();
 							} else{
 								fAgentBBids.add(p);
-							}
+							}							
 						}
 						
-						double time = timeline.getTime();
 						double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
 						double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
 
@@ -219,9 +223,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					}                   
 					else if (lastAction instanceof Accept) {
 						if(hasMAC()){
-							createMACOutcomes(timeline);
+							createMACOutcomes(time);
 						} else {
-							createOutcome(lastBid, timeline, false, null);
+							createOutcome(lastBid, time, false, null);
 						}
 					} else {  // lastAction instanceof unknown action, e.g. null.
 						throw new Exception("unknown action by agent "+currentAgent.getName());
@@ -254,12 +258,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 						//checkForMAC();
 						if(!hasMAC()){	
-							newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+							newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), time, distanceToNash);
 							}else {
 								System.out.println("Error thrown: with MAC agent");
 								for(ArrayList<OutcomeTuple> outcomeTupleList : completeList )
 								for(OutcomeTuple outcomeTuple : outcomeTupleList){
-									newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), timeline.getTime(), distanceToNash);
+									newOutcome(currentAgent, agentAUtility,agentBUtility,0,0, "Caught exception. Agent [" + currentAgent.getName() + "] sent " + lastAction + ". Details: "+e.toString(), time, distanceToNash);
 									changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
 									System.out.println("OutcomeTuple: " + outcomeTuple.toString());
 									MACoutcomes.add(no);
@@ -373,9 +377,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	
 	
 	/**Creates a bad Outcome, which is an outcome with an error**/
-	protected void badOutcome(Timeline timeline, String logMsg) throws Exception
+	protected void badOutcome(double time, String logMsg) throws Exception
 	{
-		double time = timeline.getTime();
 		stopNegotiation=true;
 		double rvADiscounted = spaceA.getReservationValueWithDiscount(time);
 		double rvBDiscounted = spaceB.getReservationValueWithDiscount(time);
@@ -391,7 +394,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	/**Creates the different outcomes for an agent that is using a MAC
 	 * Calls createOutcome which actually creates the outcome to be logged.
 	 ***/
-	protected void createMACOutcomes(Timeline timeline) throws Exception
+	protected void createMACOutcomes(double time) throws Exception
 	{
 		System.out.println("createBadMACOutcomes");
 		getOutcomeTuples();
@@ -404,11 +407,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				} else if(outcomeTuple.getLogMsgType() == "breakoff"){
 					logMsg = "Agent [" + currentAgent.getName() + "] sent EndNegotiation, so the negotiation ended without agreement";
 				} else if(outcomeTuple.getLogMsgType()=="accept"){
-					createOutcome(outcomeTuple.getLastBid(), timeline, true, outcomeTuple);
+					createOutcome(outcomeTuple.getLastBid(), time, true, outcomeTuple);
 					continue;
 				}
 					
-				badOutcome(timeline, logMsg);
+				badOutcome(time, logMsg);
 				changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
 				MACoutcomes.add(no);
 			}
@@ -475,7 +478,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	
 	
 	/**Creates a newOutcome for the MAC where the amount of Bids is different than in the final stage of the negotiation**/
-	private void newOutcome(Agent currentAgent, Action lastAction, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, ArrayList<BidPoint> agentASize, ArrayList<BidPoint> agentBSize, double time, double distanceToNash) throws Exception 
+	private void newOutcome(Agent currentAgent, Action lastAction, double utilA, double utilB, double utilADiscount, double utilBDiscount, String message, ArrayList<BidPointTime> agentASize, ArrayList<BidPointTime> agentBSize, double time, double distanceToNash) throws Exception 
 	{
 		no=new NegotiationOutcome(this, sessionNumber, lastAction,
 				agentA.getName(),  agentB.getName(),
@@ -483,7 +486,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 				utilA,utilB,
 				utilADiscount,utilBDiscount,
 				message,
-				(ArrayList<BidPoint>)agentASize, (ArrayList<BidPoint>)agentBSize,
+				(ArrayList<BidPointTime>)agentASize, (ArrayList<BidPointTime>)agentBSize,
 				1.0,
 				1.0,
 				startingWithA, 
@@ -589,7 +592,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	}
 	
 	/**Creates an actual outcome object that can be logged**/
-	public void createOutcome(Bid lastBid, Timeline time, boolean isMac, OutcomeTuple outcomeTuple) throws Exception{
+	public void createOutcome(Bid lastBid, double time, boolean isMac, OutcomeTuple outcomeTuple) throws Exception{
 		
 		stopNegotiation = true;
 		//Accept accept = (Accept)lastAction;
@@ -599,8 +602,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		double agentBUtilityDisc;
 		double distanceToNash;
 		
-		agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time.getTime());
-		agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time.getTime());
+		agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, time);
+		agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, time);
 
 		agentAUtility = spaceA.getUtility(lastBid);
 		agentBUtility = spaceB.getUtility(lastBid);
@@ -610,22 +613,22 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		distanceToNash = lastbidPoint.distanceTo(nash);	
 		
 		if(isMac){
-			ArrayList<BidPoint> subAgentABids;
-			ArrayList<BidPoint>  subAgentBBids;
+			ArrayList<BidPointTime> subAgentABids;
+			ArrayList<BidPointTime>  subAgentBBids;
 			
 			if(fAgentABids.size()==outcomeTuple.getAgentASize() || fAgentBBids.size()==outcomeTuple.getAgentBSize()){
 				subAgentABids = fAgentABids;
 				subAgentBBids = fAgentBBids;
 			}else {
-				subAgentABids =  new ArrayList<BidPoint>(fAgentABids.subList(0, outcomeTuple.getAgentASize() + 1));
-				subAgentBBids = new ArrayList<BidPoint>(fAgentBBids.subList(0, outcomeTuple.getAgentBSize() + 1));
+				subAgentABids =  new ArrayList<BidPointTime>(fAgentABids.subList(0, outcomeTuple.getAgentASize() + 1));
+				subAgentBBids = new ArrayList<BidPointTime>(fAgentBBids.subList(0, outcomeTuple.getAgentBSize() + 1));
 			}
 			newOutcome(currentAgent, new Accept(agentB.getAgentID()), agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null,subAgentABids, subAgentBBids, outcomeTuple.getTime(), distanceToNash);
 			changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
 			MACoutcomes.add(no);
 
 		} else{
-			newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null, time.getTime(), distanceToNash);
+			newOutcome(currentAgent, agentAUtility,agentBUtility,agentAUtilityDisc,agentBUtilityDisc, null, time, distanceToNash);
 		}		
 	}
 	

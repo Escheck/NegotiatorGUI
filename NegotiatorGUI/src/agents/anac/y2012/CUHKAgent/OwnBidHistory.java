@@ -34,7 +34,7 @@ public class OwnBidHistory {
         BidHistory = new ArrayList<Bid>();
     }
 
-    protected void addBid(Bid bid, UtilitySpace utilitySpace) {
+    public void addBid(Bid bid, UtilitySpace utilitySpace) {
         if (BidHistory.indexOf(bid) == -1) {
             BidHistory.add(bid);
         }
@@ -64,7 +64,7 @@ public class OwnBidHistory {
         }
     }
 
-    protected int numOfBidsProposed() {
+    public int numOfBidsProposed() {
         return BidHistory.size();
     }
 
