@@ -165,7 +165,6 @@ import negotiator.utility.UtilitySpace;
 			
 			
 			double targetUtility = getTarget(opponentUtility, negotiationSession.getTime());
-			System.out.println("Real Haggler targetUtil:" + targetUtility);
 
 			if(targetUtility <= maxUtility && previousTargetUtility > maxUtility)
 				return bestReceivedBid;
