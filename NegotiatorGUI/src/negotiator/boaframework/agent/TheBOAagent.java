@@ -26,13 +26,15 @@ public class TheBOAagent extends BOAagent {
 	 */
 	@Override
 	public void agentSetup() {
+
 		// load the class names of each object
 		String os = dagent.getOfferingStrategy().getClassname();
 		String as = dagent.getAcceptanceStrategy().getClassname();
 		String om = dagent.getOpponentModel().getClassname();
 		String oms = dagent.getOMStrategy().getClassname();
-		
+
 		// create the actual objects using reflexion
+
 		offeringStrategy = BOAagentRepository.getInstance().getOfferingStrategy(os);
 		acceptConditions = BOAagentRepository.getInstance().getAcceptanceStrategy(as);
 		opponentModel = BOAagentRepository.getInstance().getOpponentModel(om);

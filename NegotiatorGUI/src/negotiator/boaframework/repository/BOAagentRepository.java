@@ -85,6 +85,7 @@ public class BOAagentRepository {
 	 */
 	public OfferingStrategy getOfferingStrategy(String name) {
 		BOArepItem item = repositoryParser.getBiddingStrategies().get(name);
+		System.out.println(name);
 		ClassLoader loader = Global.class.getClassLoader();
 		OfferingStrategy os = null;
 		try {
