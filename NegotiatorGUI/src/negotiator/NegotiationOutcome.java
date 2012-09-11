@@ -180,13 +180,12 @@ public class NegotiationOutcome {
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
 		
-		OrderedSimpleElement decoupledElementID = new OrderedSimpleElement("DecoupledElementID");
 		if(agentName.contains("bs")) {
-			outcome.addChildElement(decoupledElementID);
 
-			decoupledElementID.setAttribute("offering_strategy", getOfferingStrategyName(agentName));
-			decoupledElementID.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
-			decoupledElementID.setAttribute("opponent_model", getOpponentModelName(agentName));
+
+			outcome.setAttribute("offering_strategy", getOfferingStrategyName(agentName));
+			outcome.setAttribute("acceptance_strategy", getAcceptanceStrategyName(agentName));
+			outcome.setAttribute("opponent_model", getOpponentModelName(agentName));
 		}
 		
 		outcome.setAttribute("agentClass", agentClass);

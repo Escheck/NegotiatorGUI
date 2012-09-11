@@ -3,7 +3,7 @@ package negotiator.qualitymeasures;
 /**
  * Simple object used to the information of a negotiation outcome.
  * 
- * @author Mark Hendrikx
+ * @author Mark Hendrikx and Alex Dirkzwager
  */
 public class OutcomeInfo {
 	
@@ -39,7 +39,106 @@ public class OutcomeInfo {
 	private double explorationB;
 	private double jointExploration;
 	private double socialWelfare;
+	private int runNumber;
+	private double ACbestTheoreticalA;
+	private double ACbestDiscountedTheoreticalA;
+	public double getACbestTheoreticalA() {
+		return ACbestTheoreticalA;
+	}
+
+	public void setACbestTheoreticalA(double aCbestTheoreticalA) {
+		ACbestTheoreticalA = aCbestTheoreticalA;
+	}
+
+	public double getACbestDiscountedTheoreticalA() {
+		return ACbestDiscountedTheoreticalA;
+	}
+
+	public void setACbestDiscountedTheoreticalA(double aCbestDiscountedTheoreticalA) {
+		ACbestDiscountedTheoreticalA = aCbestDiscountedTheoreticalA;
+	}
+
+	public double getACbestTheoreticalB() {
+		return ACbestTheoreticalB;
+	}
+
+	public void setACbestTheoreticalB(double aCbestTheoreticalB) {
+		ACbestTheoreticalB = aCbestTheoreticalB;
+	}
+
+	public double getACbestDiscountedTheoreticalB() {
+		return ACbestDiscountedTheoreticalB;
+	}
+
+	public void setACbestDiscountedTheoreticalB(double aCbestDiscountedTheoreticalB) {
+		ACbestDiscountedTheoreticalB = aCbestDiscountedTheoreticalB;
+	}
+
+	private double ACbestTheoreticalB;
+	private double ACbestDiscountedTheoreticalB;
+	private String BiddingStrategyA;
+	private String AcceptanceStrategyA;
+	private String OpponentModelA;
+	private String BiddingStrategyB;
+	private String AcceptanceStrategyB;
+	private String OpponentModelB;
 	
+	public String getBiddingStrategyA() {
+		return BiddingStrategyA;
+	}
+
+	public void setBiddingStrategyA(String biddingStrategyA) {
+		BiddingStrategyA = biddingStrategyA;
+	}
+
+	public String getAcceptanceStrategyA() {
+		return AcceptanceStrategyA;
+	}
+
+	public void setAcceptanceStrategyA(String acceptanceStrategyA) {
+		AcceptanceStrategyA = acceptanceStrategyA;
+	}
+
+	public String getOpponentModelA() {
+		return OpponentModelA;
+	}
+
+	public void setOpponentModelA(String opponentModelA) {
+		OpponentModelA = opponentModelA;
+	}
+
+	public String getBiddingStrategyB() {
+		return BiddingStrategyB;
+	}
+
+	public void setBiddingStrategyB(String biddingStrategyB) {
+		BiddingStrategyB = biddingStrategyB;
+	}
+
+	public String getAcceptanceStrategyB() {
+		return AcceptanceStrategyB;
+	}
+
+	public void setAcceptanceStrategyB(String acceptanceStrategyB) {
+		AcceptanceStrategyB = acceptanceStrategyB;
+	}
+
+	public String getOpponentModelB() {
+		return OpponentModelB;
+	}
+
+	public void setOpponentModelB(String opponentModelB) {
+		OpponentModelB = opponentModelB;
+	}
+
+	public int getRunNumber() {
+		return runNumber;
+	}
+
+	public void setRunNumber(int runNumber) {
+		this.runNumber = runNumber;
+	}
+
 	public double getTimeOfAgreement() {
 		return timeOfAgreement;
 	}
