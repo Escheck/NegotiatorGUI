@@ -8,7 +8,7 @@ import negotiator.boaframework.OfferingStrategy;
  * This class implements the Simple Agent a.k.a. Zero Intelligence, Random Walker offering strategy.
  * This will choose a bid at random to offer the opponent.
  * 
- * This strategy has no straight-forward extension of using opponent models.
+ * This strategy has no straightforward extension of using opponent models.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */

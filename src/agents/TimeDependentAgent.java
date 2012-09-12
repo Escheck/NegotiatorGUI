@@ -1,6 +1,9 @@
 package agents;
 
+import java.util.List;
+
 import negotiator.Bid;
+import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 
 /**
@@ -52,8 +55,9 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	{
 		super.init();
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
-		Pmax = outcomeSpace.getAllOutcomes().get(0).getMyUndiscountedUtil();
-		Pmin = outcomeSpace.getAllOutcomes().get(outcomeSpace.getAllOutcomes().size() - 1).getMyUndiscountedUtil();
+		List<BidDetails> allOutcomes = outcomeSpace.getAllOutcomes();
+		Pmax = allOutcomes.get(0).getMyUndiscountedUtil();
+		Pmin = allOutcomes.get(allOutcomes.size() - 1).getMyUndiscountedUtil();
 		log("Pmin = " + Pmin);
 		log("Pmax = " + Pmax);
 	}

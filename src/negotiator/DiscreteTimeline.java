@@ -13,7 +13,7 @@ public class DiscreteTimeline extends Timeline
     private int cRound;
 
     /**
-     * Creates a timeline with a deadline of {@link #totalSeconds} number of seconds.
+     * Creates a timeline with a deadline of {@link #totalRounds} number of rounds.
      */
 	public DiscreteTimeline(int totalRounds)
 	{	 
@@ -92,6 +92,14 @@ public class DiscreteTimeline extends Timeline
 		return totalRounds - cRound - 1;
 	}
 	
+	/**
+	 * Be careful, this is not equal to the initializing value!
+	 */
+	public int getTotalRounds()
+	{
+		return totalRounds;
+	}
+
 	/**
 	 * The number of rounds left for ourself.
 	 */

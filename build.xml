@@ -433,7 +433,11 @@
 		</target>
 	
 	<target name ="makeGeniusForStudentsAssignment2012" depends="makeNegoSimulatorWithAllAgentJar">
-		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten"/>
+		<echo message="Todo:"/>
+		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten, en andere Global zaken zoals
+			BOA uit"/>
+	    <echo message="Pas de data aan in de assignment, en zet hem daarna in /doc/assignmentXXXX.pdf"/>
+		
 			<copy todir="${tmp}">
 				<fileset dir="." includes="domainrep_AIT2011.xml"/>
 				<globmapper from="domainrep_AIT2011.xml" to="domainrepository.xml" />

@@ -2,6 +2,8 @@ package negotiator.boaframework;
 
 import java.util.HashMap;
 
+import negotiator.protocol.BilateralAtomicNegotiationSession;
+
 /**
  * Describes an acceptance strategy of an agent of the BOA framework.
  * 
@@ -39,6 +41,13 @@ public abstract class  AcceptanceStrategy {
 	public String printParameters(){
 		return "";
 	}
+	
+	/**
+	 * Method which may be overwritten to get access to the opponent's utilityspace in an experimental setup.
+	 * 
+	 * @param fNegotiation
+	 */
+	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation) { }
 	
 	/**
 	 * Determines the either to accept and offer or not.
