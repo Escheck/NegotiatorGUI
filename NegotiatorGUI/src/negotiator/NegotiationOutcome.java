@@ -433,7 +433,8 @@ public class NegotiationOutcome {
 				agentAname, agentAclass, agentAutilSpaceName,
 				agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids, addBids));
 		if(additional!=null && !additional.isEmpty()) outcome.addChildElement(additional);
-		if (ErrorRemarks != null) outcome.setAttribute("errors",ErrorRemarks);
+		outcome.setAttribute("errors", (ErrorRemarks != null) ? ErrorRemarks : "");
+			
 		String startingagent="B"; if (agentAstarts) startingagent="A";
 		outcome.setAttribute("startingAgent",startingagent);
 		

@@ -2,8 +2,9 @@ package negotiator.bidding;
 
 import java.util.Comparator;
 
-import negotiator.bidding.BidDetails;
-
+/**
+ * Sorts {@link BidDetails} high to low.
+ */
 public class BidDetailsSorterUtility implements Comparator<BidDetails>
 {
 	public int compare(BidDetails b1, BidDetails b2)

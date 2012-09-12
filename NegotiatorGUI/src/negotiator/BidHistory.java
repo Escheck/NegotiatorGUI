@@ -28,7 +28,7 @@ public class BidHistory {
 	 * by the negotiation agent.
 	 * @param bids
 	 */
-	public BidHistory(ArrayList<BidDetails> bids) {
+	public BidHistory(List<BidDetails> bids) {
 		bidList =  bids;
 	}
 	
@@ -52,13 +52,24 @@ public class BidHistory {
 	
 	/**
 	 * Returns the set of bids with a utility of at least u1 and at most u2: (u1, u2].
+	 * If u1 = u2, then it returns all bids with utility u1.
 	 * @param u1
 	 * @param u2
 	 * @return bids with a utility in (u1, u2]
 	 */
-	public BidHistory filterBetweenUtility(double u1, double u2)
+	public BidHistory filterBetweenUtility(double minU, double maxU)
 	{
-		return filterBetween(u1, u2, 0, 1.1);		
+		if (minU == maxU)
+			return filterUtility(minU);
+			
+		BidHistory bidHistory = new BidHistory();
+		for (BidDetails b : bidList)
+		{
+			if (minU < b.getMyUndiscountedUtil() &&
+					b.getMyUndiscountedUtil() <= maxU)
+				bidHistory.add(b);
+		}
+		return bidHistory;				
 	}
 
 	/**
@@ -82,6 +93,19 @@ public class BidHistory {
 				bidHistory.add(b);
 		}
 		return bidHistory;			
+	}
+	
+	/**
+	 * Returns the set of bids with utility u.
+	 * @param u
+	 */
+	public BidHistory filterUtility(double u)
+	{
+		BidHistory bidHistory = new BidHistory();
+		for (BidDetails b : bidList)
+			if (b.getMyUndiscountedUtil() == u)
+				bidHistory.add(b);
+		return bidHistory;				
 	}
 	
 	/**
