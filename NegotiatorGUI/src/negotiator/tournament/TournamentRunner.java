@@ -104,7 +104,6 @@ public class TournamentRunner implements Runnable
 				log = runDistributedTournament(0);
 				NegoGUIApp.negoGUIView.getFrame().setVisible(true);
 			} else {
-				System.out.println("ND");
 				log = runTournament();
 			}
 

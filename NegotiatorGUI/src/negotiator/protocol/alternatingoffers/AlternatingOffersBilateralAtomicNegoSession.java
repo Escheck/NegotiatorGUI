@@ -3,6 +3,7 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.ContinuousTimeline;
@@ -132,12 +133,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			if (startingAgent.equals(agentAname)) currentAgent=agentA;
 			else currentAgent=agentB;
 
-			System.out.println("starting with agent "+currentAgent);
+			System.out.println("starting with agent "+currentAgent.getName());
 			//Main.log("Agent " + currentAgent.getName() + " begins");
 			fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
-			if (Global.RECORD_OPPONENT_TRACE) {
+			if (Global.RECORD_OPPONENT_TRACE)
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
-			}
 			checkForMAC();
 			
 			while(!stopNegotiation) {
