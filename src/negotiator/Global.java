@@ -27,6 +27,13 @@ public class Global {
 	public static Logger logger;
 	public static String[] args;
 	
+	/** Path to domain repository */
+	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
+	/** Path to agent repository */
+	public static final String AGENT_REPOSITORY = "agentrepository.xml";
+	/** Path to protocol repository */
+	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
+	
 	public static boolean batchMode = false;
 	public static boolean fDebug = true;
 	public static boolean analysisEnabled = true; // set to true to enable the
@@ -112,8 +119,6 @@ public class Global {
 	 * heavy, it is advisable to use it with the PAUSABLE_TIMELINE option.
 	 */
 	public static final boolean RECORD_OPPONENT_TRACE = false;
-
-	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
 
 	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	

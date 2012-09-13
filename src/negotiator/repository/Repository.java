@@ -241,7 +241,7 @@ public class Repository
 
 	}
 	public static Repository getProtocolRepository() {
-		final String FILENAME="protocolrepository.xml";
+		final String FILENAME = Global.PROTOCOL_REPOSITORY;
 		Repository repos;
 
 		try {
@@ -272,7 +272,7 @@ public class Repository
 	}
 
 	public static Repository get_agent_repository() {
-		final String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
+		final String FILENAME=Global.AGENT_REPOSITORY; // ASSUMPTION: there is only one agent repository
 		Repository repos;
 
 		try {
