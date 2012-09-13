@@ -3,6 +3,52 @@
     <items>
         <agentRepItems/>
         <domainRepItem>
+            <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
+                <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
+                <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/anac/y2010/ItexvsCypress/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/anac/y2010/ItexvsCypress/ItexvsCypress_Cypress.xml"/>
+                <profile url="file:etc/templates/anac/y2010/ItexvsCypress/ItexvsCypress_Itex.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/anac/y2010/Travel/travel_domain.xml">
+                <profile url="file:etc/templates/anac/y2010/Travel/travel_chox.xml"/>
+                <profile url="file:etc/templates/anac/y2010/Travel/travel_fanny.xml"/>
+            </domainRepItem>
+
+			<domainRepItem url="file:etc/templates/anac/y2011/Car/adg.xml">
+				<profile url="file:etc/templates/anac/y2011/Car/adg_deal.xml" />
+				<profile url="file:etc/templates/anac/y2011/Car/adg_deal2.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/Amsterdam/Amsterdam_domain.xml">
+				<profile url="file:etc/templates/anac/y2011/Amsterdam/Amsterdam_party1.xml" />
+				<profile url="file:etc/templates/anac/y2011/Amsterdam/Amsterdam_party2.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/Camera/camera_domain.xml">
+				<profile url="file:etc/templates/anac/y2011/Camera/camera_seller_utility.xml" />
+				<profile url="file:etc/templates/anac/y2011/Camera/camera_buyer_utility.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/NiceOrDie/NiceOrDie.xml">
+				<profile url="file:etc/templates/anac/y2011/NiceOrDie/NiceOrDie1.xml" />
+				<profile url="file:etc/templates/anac/y2011/NiceOrDie/NiceOrDie2.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/Energy/energy_domain.xml">
+				<profile url="file:etc/templates/anac/y2011/Energy/energy_consumer.xml" />
+				<profile url="file:etc/templates/anac/y2011/Energy/energy_distributor.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/Grocery/Grocery_domain.xml">
+				<profile url="file:etc/templates/anac/y2011/Grocery/Grocery_domain_sam.xml" />
+				<profile url="file:etc/templates/anac/y2011/Grocery/Grocery_domain_mary.xml" />
+			</domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2011/IS_BT_Acquisition/IS_BT_Acquisition.xml">
+				<profile url="file:etc/templates/anac/y2011/IS_BT_Acquisition/IS_BT_Acquisition_IS_prof.xml" />
+				<profile url="file:etc/templates/anac/y2011/IS_BT_Acquisition/IS_BT_Acquisition_BT_prof.xml" />
+			</domainRepItem>			
+			<domainRepItem url="file:etc/templates/anac/y2011/Laptop/laptop_domain.xml">
+				<profile url="file:etc/templates/anac/y2011/Laptop/laptop_buyer_utility.xml" />
+				<profile url="file:etc/templates/anac/y2011/Laptop/laptop_seller_utility.xml" />
+			</domainRepItem>
+			
             <domainRepItem url="file:etc/templates/laptopdomain/laptop_domain.xml">
                 <profile url="file:etc/templates/laptopdomain/laptop_seller_utility.xml"/>
                 <profile url="file:etc/templates/laptopdomain/laptop_buyer_utility.xml"/>
