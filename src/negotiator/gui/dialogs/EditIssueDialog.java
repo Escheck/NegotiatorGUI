@@ -112,9 +112,7 @@ public class EditIssueDialog extends NewIssueDialog {
 			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
 			if (utilSpace != null) {
 				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
-				for(EVALFUNCTYPE x: EVALFUNCTYPE.values()) {
-					
-				}
+
 				if (eval != null) {
 					switch (eval.getFuncType()) {
 					case LINEAR:
