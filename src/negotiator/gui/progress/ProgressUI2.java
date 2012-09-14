@@ -305,6 +305,18 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		try {
 			if(pb!=null)
 				bidChart.setPossibleBids(pb);
+			
+			Double resA = session.getAgentAUtilitySpace().getReservationValue();
+			Double resB = session.getAgentBUtilitySpace().getReservationValue();
+			
+			// Reservation values
+			if (resA != null && resB != null && (resA > 0.0 || resB > 0.0)) {
+				double[][] rvA = getReservationValueA(resA, resB);
+				bidChart.setBidderAReservationValue(rvA);
+				double[][] rvB = getReservationValueB(resA, resB);
+				bidChart.setBidderBReservationValue(rvB);
+			}	
+			
 			double [][] paretoB = getPareto();
 			if(paretoB!=null)
 				bidChart.setPareto(paretoB);
@@ -325,6 +337,26 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+	
+	private double[][] getReservationValueA(double resA, double resB) 
+	{
+		double [] [] rvA = new double [2] [2];
+		rvA[0][0]= resA;
+		rvA[1][0]= resB;
+		rvA[0][1]= resA;
+		rvA[1][1]= 1.0;
+		return rvA;
+	}
+	
+	private double[][] getReservationValueB(double resA, double resB) 
+	{
+		double [] [] rvB = new double [2] [2];
+		rvB[0][0]= resA;
+		rvB[1][0]= resB;
+		rvB[0][1]= 1;
+		rvB[1][1]= resB;
+		return rvB;
 	}
 	
 	/** 
