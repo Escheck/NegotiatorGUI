@@ -23,6 +23,8 @@ public class BidChart {
 	private double [][] pareto;
 	private double [][] bidSeriesA_;
 	private double [][] bidSeriesB_;
+	private double [][] bidderAReservationValue;
+	private double [][] bidderBReservationValue;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
@@ -31,6 +33,8 @@ public class BidChart {
 	private DefaultXYDataset paretoData = new DefaultXYDataset();
 	private DefaultXYDataset bidderAData = new DefaultXYDataset();
 	private DefaultXYDataset bidderBData = new DefaultXYDataset();
+	private DefaultXYDataset bidderAReservationValueData = new DefaultXYDataset();
+	private DefaultXYDataset bidderBReservationValueData = new DefaultXYDataset();
 	private DefaultXYDataset nashData = new DefaultXYDataset();
 	private DefaultXYDataset kalaiData = new DefaultXYDataset();
 	private DefaultXYDataset agreementData = new DefaultXYDataset();
@@ -44,6 +48,7 @@ public class BidChart {
 	final XYDotRenderer lastBidARenderer = new XYDotRenderer();
 	final XYDotRenderer lastBidBRenderer = new XYDotRenderer();
 	final XYItemRenderer paretoRenderer = new XYLineAndShapeRenderer(true,false);
+	final XYItemRenderer reservationValueRenderer = new XYLineAndShapeRenderer(true,false);
 	final XYItemRenderer lineARenderer = new XYLineAndShapeRenderer();
 	final XYItemRenderer lineBRenderer = new XYLineAndShapeRenderer();
 	private NumberAxis domainAxis;
@@ -106,13 +111,23 @@ public class BidChart {
    
 	}
         
-	public void setBidSeriesB(double [][] bidSeriesB){
+	public void setBidSeriesB(double [][] bidSeriesB) {
 		this.bidSeriesB_ = bidSeriesB;
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
 				bidderBData.addSeries("Agent B's bids",bidSeriesB_);
 		    }
 		});		
+	}
+	
+	public void setBidderAReservationValue(double [][] bidderAReservationValue) {
+		this.bidderAReservationValue = bidderAReservationValue;
+		bidderAReservationValueData.addSeries("Agent A's reservation value", bidderAReservationValue);   
+	}
+        
+	public void setBidderBReservationValue(double [][] bidderBReservationValue) {
+		this.bidderBReservationValue = bidderBReservationValue;
+		bidderBReservationValueData.addSeries("Agent B's reservation value", bidderBReservationValue);   
 	}
 	
 	public void setNash(double[][]nash){
@@ -145,6 +160,7 @@ public class BidChart {
         rangeAxis = new NumberAxis(agentBName);
         dotRenderer.setDotHeight(2);
         dotRenderer.setDotWidth(2);
+		reservationValueRenderer.setSeriesPaint(0,Color.GRAY);
         nashRenderer.setDotHeight(5);
         nashRenderer.setDotWidth(5);
         nashRenderer.setSeriesPaint(0,Color.black);
@@ -198,6 +214,10 @@ public class BidChart {
 	    plot.setRenderer(8, lastBidARenderer);
 	    plot.setDataset(9, lastBidBData);
 	    plot.setRenderer(9, lastBidBRenderer);
+		plot.setDataset(10, bidderAReservationValueData);
+	    plot.setRenderer(10, reservationValueRenderer);
+	    plot.setDataset(11, bidderBReservationValueData);
+	    plot.setRenderer(11, reservationValueRenderer);
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
         // return a new chart containing the overlaid plot...
         JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);

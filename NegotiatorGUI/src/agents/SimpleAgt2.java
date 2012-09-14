@@ -1,3 +1,4 @@
+package agents;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -7,7 +8,6 @@ import java.util.Random;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
-import negotiator.utility.UtilitySpace;
 
 
 /**
@@ -20,25 +20,18 @@ public class SimpleAgt2 extends Agent
 {
     private Action actionOfPartner=null;
     private static final double MINIMUM_BID_UTILITY = 0.5;
-    
-    
-    	// just here to suggest possibilities, not used in this agent.
-    private int sessionNumber;			
-    private int sessionTotalNumber;
- 
-    /**
-     * init is called when a next session starts with the same opponent.
-     */
-    public void init(int sessionNumberP, int sessionTotalNumberP, Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-        super.init (sessionNumberP, sessionTotalNumberP, startTimeP,totalTimeP,us);
-        sessionNumber = sessionNumberP;
-        sessionTotalNumber = sessionTotalNumberP;
-    }
 
 	public void ReceiveMessage(Action opponentAction) {
         actionOfPartner = opponentAction;
     }
     
+	public static String getVersion() { return "3.1"; }
+	
+	@Override
+	public String getName()
+	{
+		return "Simple Agent v2";
+	}
  
 	public Action chooseAction()
     {
@@ -54,7 +47,7 @@ public class SimpleAgt2 extends Agent
                 if (P>Math.random()) action = new Accept(this);
                 else action = chooseRandomBidAction();               
             }
-            Thread.sleep(1000); // just for fun
+            sleep(0.005); // just for fun
         } catch (Exception e) { 
         	System.out.println("Exception in ChooseAction:"+e.getMessage());
         	action=new Accept(this); // best guess if things go wrong. 

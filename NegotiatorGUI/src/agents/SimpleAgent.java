@@ -72,6 +72,7 @@ public class SimpleAgent extends Agent
 				// accept under certain circumstances
 				if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
 					action = new Accept(getAgentID());
+				
 			}
 			sleep(0.005); // just for fun
 		} catch (Exception e) { 
