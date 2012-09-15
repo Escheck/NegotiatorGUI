@@ -18,12 +18,13 @@ import negotiator.gui.ExtendedListModel;
  * 
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
  * @version 04/12/11
+ * @param <B>
  */
 public class RepItemVarUI<A> extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JButton okButton = new JButton("Ok");
-	private JButton cancelButton = new JButton("Cancel");
+	private JButton clearButton = new JButton("Clear selection");
 	private JList profileList = new JList();
 	private JScrollPane scrollPane = new JScrollPane();
 	private ArrayList<A> result;
@@ -46,19 +47,24 @@ public class RepItemVarUI<A> extends JDialog {
 	 * 
 	 * @return
 	 */
-	public List<A> getResult(ArrayList<A> items) {
+	public List<A> getResult(ArrayList<A> items, ArrayList<A> selectedItems) {
 
 		// Set the list model
 		model = new ExtendedListModel<A>();
 		profileList.setModel(model);
 		
 		model.setInitialContent(items);
-
+		
 		// Set a custom selection model (each click toggles a listitem on/off)
 		profileList.setSelectionModel(new MultiListSelectionModel());
-
+		
+		// Select previously selected items
+		for (A item : selectedItems) {
+			profileList.setSelectedValue(item, true);
+		}
+		
 		scrollPane.setViewportView(profileList);
-
+		
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<A> profiles = new ArrayList<A>();
@@ -70,8 +76,9 @@ public class RepItemVarUI<A> extends JDialog {
 			}
 		});
 
-		cancelButton.addActionListener(new ActionListener() {
+		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				result = new ArrayList<A>();
 				dispose();
 			}
 		});
@@ -101,9 +108,9 @@ public class RepItemVarUI<A> extends JDialog {
 																.addGap(18, 18,
 																		18)
 																.addComponent(
-																		cancelButton,
+																		clearButton,
 																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		87,
+																		120,
 																		javax.swing.GroupLayout.PREFERRED_SIZE)))
 								.addContainerGap()));
 		layout.setVerticalGroup(layout
@@ -120,7 +127,7 @@ public class RepItemVarUI<A> extends JDialog {
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(okButton)
-												.addComponent(cancelButton))
+												.addComponent(clearButton))
 								.addContainerGap()));
 		setVisible(true);
 		return result;
