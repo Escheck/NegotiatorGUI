@@ -92,7 +92,8 @@ public class BOAagentsFrame extends JDialog {
     private JList agentsList;
     private DefaultListModel agentsModel;
     private JButton addAgents;
-    private JButton removeAgents;
+    private JButton clearSelection;
+    private JButton clearAll;
     private JButton saveButton;
     private JButton cancelButton;
     private JButton addAgentListButton;
@@ -203,9 +204,16 @@ public class BOAagentsFrame extends JDialog {
 			}
 		});
     	
-    	removeAgents.addActionListener(new ActionListener() {
+    	clearSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeSelectedIndices(agentsList, agentsModel);
+			}
+		});
+    	
+    	clearAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result = new ArrayList<BOAagentInfo>();
+				dispose();
 			}
 		});
     	
@@ -323,15 +331,20 @@ public class BOAagentsFrame extends JDialog {
         //addAgentListButton = new JButton();
         //addAgentListButton.setText("Add AgentList");
        // getContentPane().add(addAgentListButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 580, 140, 30));
-        removeAgents = new JButton();
-        removeAgents.setText("Remove selection");
-        getContentPane().add(removeAgents, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 580, 140, 30));
+        clearSelection = new JButton();
+        clearSelection.setText("Clear selection");
+        getContentPane().add(clearSelection, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 580, 140, 30));
+        
+        clearAll = new JButton();
+        clearAll.setText("Clear all");
+        getContentPane().add(clearAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 580, 140, 30));
+        
         saveButton = new JButton();
         saveButton.setText("Save");
-        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 580, 140, 30));
+        getContentPane().add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 580, 140, 30));
         cancelButton = new JButton();
         cancelButton.setText("Cancel");
-        getContentPane().add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(472, 580, 140, 30));
+        getContentPane().add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(578, 580, 140, 30));
         
 	}
 
