@@ -257,8 +257,8 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 				{agentBParams+= entry.getKey().varToString() + " " + entry.getValue().toString(); i++;}
 			resultTable.getModel().setValueAt(agentBParams,session-1,5);//agent a param
 		}
-		resultTable.getModel().setValueAt(evt.getProfileA().toString(),session-1,0);//profile 1
-		resultTable.getModel().setValueAt(evt.getProfileB().toString(),session-1,1);//profile 2
+		resultTable.getModel().setValueAt(evt.getProfileA().getName(),session-1,0);//profile 1
+		resultTable.getModel().setValueAt(evt.getProfileB().getName(),session-1,1);//profile 2
 		resultTable.getModel().setValueAt(evt.getAgentAName(),session-1,2);//agent a
 		resultTable.getModel().setValueAt(evt.getAgentBName(),session-1,3);//agent b
 	    
