@@ -154,7 +154,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		 // IMHO the strong typechecking gives maybe even more problems than it resolves...
 		if (v instanceof ProfileVariable) {
 			ArrayList<ProfileRepItem> items = getProfileRepItems();
-			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new RepItemVarUI<ProfileRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select profiles").getResult(items);//(AgentVariable)v);
+			ArrayList<ProfileRepItem> newv=(ArrayList<ProfileRepItem>)new RepItemVarUI<ProfileRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select profiles").getResult(items, tournament.getProfiles());//(AgentVariable)v);
 			if (newv==null) return; // cancel pressed.
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
@@ -169,10 +169,20 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			v.setValues(newtvs);			
 		} else if (v instanceof AgentVariable) {
 			ArrayList<AgentRepItem> items = getAgentRepItems();
-			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new RepItemVarUI<AgentRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select agents").getResult(items);
+			ArrayList<AgentRepItem> prevSelected = new ArrayList<AgentRepItem>();
+			
+			for (TournamentValue wrappedAgent : v.getValues()) {
+				AgentValue agentValue = ((AgentValue)wrappedAgent);
+				prevSelected.add(agentValue.getValue());
+			}
+			
+			ArrayList<AgentRepItem> newv=(ArrayList<AgentRepItem>)new RepItemVarUI<AgentRepItem>(NegoGUIApp.negoGUIView.getFrame(), "Select agents").getResult(items, prevSelected);
 			if (newv==null) return; // cancel pressed.
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-			for (AgentRepItem profitem: newv) newtvs.add(new AgentValue(profitem));
+			
+			for (AgentRepItem profitem: newv) {
+				newtvs.add(new AgentValue(profitem));
+			}
 			v.setValues(newtvs);
 		} else if (v instanceof BOAagentVariable) {
 			ArrayList<BOAagentInfo> newv;
