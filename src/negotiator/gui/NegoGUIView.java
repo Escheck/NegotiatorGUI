@@ -57,7 +57,6 @@ public class NegoGUIView extends FrameView {
 	private NegoGUIComponent activeComponent = null;
     public NegoGUIView(SingleFrameApplication app) {
         super(app);
-
         initComponents(); 
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -191,7 +190,6 @@ public class NegoGUIView extends FrameView {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         mainPanel = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();

@@ -542,7 +542,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
     public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception
     {
-        return getTournamentSessions(tournament, Global.SELF_PLAY, Global.PLAY_BOTH_SIDES);
+        return getTournamentSessions(tournament, tournament.getOption("playAgainstSelf"), tournament.getOption("playBothSides"));
     }
     
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides) throws Exception {

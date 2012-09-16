@@ -35,7 +35,7 @@ public class Global {
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
 	
 	public static boolean batchMode = false;
-	public static boolean fDebug = true;
+	public static boolean fDebug = false;
 	public static boolean analysisEnabled = true; // set to true to enable the
 													// realtime analysis tool.
 	public static boolean experimentalSetup = true;// set to true to allow agent
@@ -48,9 +48,6 @@ public class Global {
 	/** Set to true to write to {@link #outcomesFile} with a lot more information */
 	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
 	
-	/** Every agent plays as each preference profile */
-	public static final boolean PLAY_BOTH_SIDES = true;
-	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
 	public static final boolean LOG_TO_DATED_FILES = !false;
@@ -59,9 +56,6 @@ public class Global {
 
 	/** Show all bid points in the GUI chart */
 	public static final boolean SHOW_ALL_BIDS = !false;
-
-	/** Agents play themselves in a tournament */
-	public static final boolean SELF_PLAY = false;
 
 	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
 	
@@ -83,7 +77,7 @@ public class Global {
 	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
 	
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
-	public static final boolean DISCRETE_TIMELINE = true;
+	public static final boolean DISCRETE_TIMELINE = false;
 	
 	/** Defines the amount of round used for descrite timeline */
 	public static final int TOTAL_ROUNDS = 3000;
