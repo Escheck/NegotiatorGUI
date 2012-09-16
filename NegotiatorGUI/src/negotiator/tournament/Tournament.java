@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import misc.Serializer;
@@ -59,18 +60,20 @@ public class Tournament implements Serializable
 	public static final int VARIABLE_AGENT_A = 2;
 	public static final int VARIABLE_AGENT_B = 3;
 	public static final int VARIABLE_NUMBER_OF_RUNS = 4;
+	public static final int VARIABLE_TOURNAMENT_OPTIONS = 5;
 	
 	// parameters for the decoupled agents framework
-	public static final int VARIABLE_DECOUPLED_A = 5;
-	public static final int VARIABLE_DECOUPLED_B = 6;
+	public static final int VARIABLE_DECOUPLED_A = 6;
+	public static final int VARIABLE_DECOUPLED_B = 7;
 	
 	// Database parameters; used for distributed tournaments
-	public static final int VARIABLE_DB_LOCATION = 7;
-	public static final int VARIABLE_DB_USER = 8;
-	public static final int VARIABLE_DB_PASSWORD = 9;
-	public static final int VARIABLE_DB_SESSIONNAME = 10;
+	public static final int VARIABLE_DB_LOCATION = 8;
+	public static final int VARIABLE_DB_USER = 9;
+	public static final int VARIABLE_DB_PASSWORD = 10;
+	public static final int VARIABLE_DB_SESSIONNAME = 11;
 	
 	ArrayList<Protocol> sessions=null;
+	HashMap<String, Boolean> tournamentOptions = new HashMap<String, Boolean>();
 
 	/** creates empty tournament with the next TournamenNumber */
 		static int next_number=1;
@@ -254,5 +257,12 @@ public class Tournament implements Serializable
 	public void setBOAagentB(ArrayList<BOAagentInfo> BOAagentList){
 		BOAagentListB = BOAagentList;
 	}
+
+	public HashMap<String, Boolean> getConfiguration() {
+		return tournamentOptions;
+	}
 	
+	public void setConfiguration(HashMap<String, Boolean> tournamentOptions) {
+		this.tournamentOptions = tournamentOptions;
+	}
 }
