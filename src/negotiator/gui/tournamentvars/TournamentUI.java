@@ -56,6 +56,7 @@ import negotiator.tournament.VariablesAndValues.ProtocolValue;
 import negotiator.tournament.VariablesAndValues.ProtocolVariable;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
+import negotiator.tournament.VariablesAndValues.TournamentOptionsValue;
 import negotiator.tournament.VariablesAndValues.TournamentOptionsVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
@@ -210,8 +211,11 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			newtvs.add(value);
 			v.setValues(newtvs);
 		} else if (v instanceof TournamentOptionsVariable) {
-			HashMap<String, Boolean> optionsMap = (new TournamentOptionsUI(NegoGUIApp.negoGUIView.getFrame())).getResult(tournament.getConfiguration());
-			tournament.setConfiguration(optionsMap);
+			HashMap<String, Boolean> optionsMap = (new TournamentOptionsUI(NegoGUIApp.negoGUIView.getFrame())).getResult(tournament.getOptions());
+			TournamentValue value = new TournamentOptionsValue(optionsMap);
+			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
+			newtvs.add(value);
+			v.setValues(newtvs);
 		}else if (distributed) {
 		
 			if (v instanceof DBLocationVariable) {
