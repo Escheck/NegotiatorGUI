@@ -23,6 +23,8 @@ import negotiator.tournament.VariablesAndValues.ProtocolValue;
 import negotiator.tournament.VariablesAndValues.ProtocolVariable;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
+import negotiator.tournament.VariablesAndValues.TournamentOptionsValue;
+import negotiator.tournament.VariablesAndValues.TournamentOptionsVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
@@ -73,8 +75,7 @@ public class Tournament implements Serializable
 	public static final int VARIABLE_DB_SESSIONNAME = 11;
 	
 	ArrayList<Protocol> sessions=null;
-	HashMap<String, Boolean> tournamentOptions = new HashMap<String, Boolean>();
-
+	
 	/** creates empty tournament with the next TournamenNumber */
 		static int next_number=1;
 	public Tournament()
@@ -148,6 +149,16 @@ public class Tournament implements Serializable
 			count = Integer.parseInt(runs.getValues().get(0).toString()); 
 		}
 		return count;
+	}
+	
+	public HashMap<String, Boolean> getOptions() {
+		int count = 1;
+		TournamentVariable options = (TournamentOptionsVariable)variables.get(VARIABLE_TOURNAMENT_OPTIONS);
+		if (options != null && options.getValues().size() > 0) {
+			
+			return ((TournamentOptionsValue)(options.getValues().get(0))).getValue();
+		}
+		return null;
 	}
 	
 	
@@ -256,13 +267,5 @@ public class Tournament implements Serializable
 	
 	public void setBOAagentB(ArrayList<BOAagentInfo> BOAagentList){
 		BOAagentListB = BOAagentList;
-	}
-
-	public HashMap<String, Boolean> getConfiguration() {
-		return tournamentOptions;
-	}
-	
-	public void setConfiguration(HashMap<String, Boolean> tournamentOptions) {
-		this.tournamentOptions = tournamentOptions;
 	}
 }

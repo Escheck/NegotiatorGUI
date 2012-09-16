@@ -183,7 +183,7 @@ public class TournamentOptionsUI extends JDialog {
 			if (prevConfig.containsKey("logSessions"))
 				logSessionsCheck.setSelected(prevConfig.get("logSessions"));
 			if (prevConfig.containsKey("logDetailedAnalysis"))
-				logDetailedAnalysisCheck.setSelected(prevConfig.get("logDetailedAnalysis"));;
+				logDetailedAnalysisCheck.setSelected(prevConfig.get("logDetailedAnalysis"));
 		}
 		
 	}
