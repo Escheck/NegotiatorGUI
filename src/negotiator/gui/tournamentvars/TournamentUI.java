@@ -7,6 +7,7 @@
 package negotiator.gui.tournamentvars;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JButton;
@@ -55,6 +56,7 @@ import negotiator.tournament.VariablesAndValues.ProtocolValue;
 import negotiator.tournament.VariablesAndValues.ProtocolVariable;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
+import negotiator.tournament.VariablesAndValues.TournamentOptionsVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
@@ -200,15 +202,17 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
 				for (BOAagentInfo item: newv) newtvs.add(new BOAagentValue(item));
 					v.setValues(newtvs);
-			}
-			
+			}	
 		} else if(v instanceof TotalSessionNumberVariable) {
 			TotalSessionNumberValue value =	(TotalSessionNumberValue)(new SingleValueVarUI(NegoGUIApp.negoGUIView.getFrame())).getResult();
 			if(value==null) return;
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
 			newtvs.add(value);
 			v.setValues(newtvs);
-		} else if (distributed) {
+		} else if (v instanceof TournamentOptionsVariable) {
+			HashMap<String, Boolean> optionsMap = (new TournamentOptionsUI(NegoGUIApp.negoGUIView.getFrame())).getResult(tournament.getConfiguration());
+			tournament.setConfiguration(optionsMap);
+		}else if (distributed) {
 		
 			if (v instanceof DBLocationVariable) {
 				SingleStringVarUI gui = new SingleStringVarUI(NegoGUIApp.negoGUIView.getFrame());
@@ -438,6 +442,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		agentVar.setSide("B");
 		fillposition(vars,Tournament.VARIABLE_AGENT_B,agentVar);
 		fillposition(vars,Tournament.VARIABLE_NUMBER_OF_RUNS, new TotalSessionNumberVariable());
+		fillposition(vars, Tournament.VARIABLE_TOURNAMENT_OPTIONS, new TournamentOptionsVariable());
 		
 		// Ignore possible dead code warning displayed here, it is has to do with the 
 		// values of the global variables.
