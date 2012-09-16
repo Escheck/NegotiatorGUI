@@ -152,7 +152,6 @@ public class Tournament implements Serializable
 	}
 	
 	public HashMap<String, Boolean> getOptions() {
-		int count = 1;
 		TournamentVariable options = (TournamentOptionsVariable)variables.get(VARIABLE_TOURNAMENT_OPTIONS);
 		if (options != null && options.getValues().size() > 0) {
 			
@@ -161,6 +160,11 @@ public class Tournament implements Serializable
 		return null;
 	}
 	
+	public boolean getOption(String option) {
+		HashMap<String, Boolean> options = getOptions();
+		return (options != null && options.containsKey(option) && options.get(option));
+
+	}
 	
 	public ProtocolRepItem getProtocol() throws Exception {
 		for (TournamentVariable v: variables) {
