@@ -211,7 +211,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 			newtvs.add(value);
 			v.setValues(newtvs);
 		} else if (v instanceof TournamentOptionsVariable) {
-			HashMap<String, Boolean> optionsMap = (new TournamentOptionsUI(NegoGUIApp.negoGUIView.getFrame())).getResult(tournament.getOptions());
+			HashMap<String, Integer> optionsMap = (new TournamentOptionsUI(NegoGUIApp.negoGUIView.getFrame())).getResult(tournament.getOptions());
 			TournamentValue value = new TournamentOptionsValue(optionsMap);
 			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>();
 			newtvs.add(value);

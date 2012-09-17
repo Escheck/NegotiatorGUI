@@ -151,19 +151,20 @@ public class Tournament implements Serializable
 		return count;
 	}
 	
-	public HashMap<String, Boolean> getOptions() {
+	public HashMap<String, Integer> getOptions() {
 		TournamentVariable options = (TournamentOptionsVariable)variables.get(VARIABLE_TOURNAMENT_OPTIONS);
 		if (options != null && options.getValues().size() > 0) {
-			
 			return ((TournamentOptionsValue)(options.getValues().get(0))).getValue();
 		}
 		return null;
 	}
 	
-	public boolean getOption(String option) {
-		HashMap<String, Boolean> options = getOptions();
-		return (options != null && options.containsKey(option) && options.get(option));
-
+	public int getOption(String option) {
+		HashMap<String, Integer> options = getOptions();
+		if (options == null || !options.containsKey(option)) {
+			return 0;
+		}
+		return options.get(option);
 	}
 	
 	public ProtocolRepItem getProtocol() throws Exception {

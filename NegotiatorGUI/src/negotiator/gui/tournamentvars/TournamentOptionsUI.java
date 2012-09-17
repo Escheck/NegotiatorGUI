@@ -24,7 +24,7 @@ public class TournamentOptionsUI extends JDialog {
     private JCheckBox playBothSidesCheck;  
     private JLabel playAgainstSelf;
     private JCheckBox playAgainstSelfCheck;
-    private HashMap<String, Boolean> config;
+    private HashMap<String, Integer> config;
 
     // Buttons
     private JButton okButton;
@@ -36,9 +36,9 @@ public class TournamentOptionsUI extends JDialog {
 		this.setSize(frame.getSize().width / 3, frame.getSize().height / 2);
 	}
     
-    public HashMap<String, Boolean> getResult(HashMap<String, Boolean> prevConfig) {
+    public HashMap<String, Integer> getResult(HashMap<String, Integer> prevConfig) {
     	if (prevConfig == null) {
-    		config = new HashMap<String, Boolean>();
+    		config = new HashMap<String, Integer>();
     	} else {
     		config = prevConfig;
     	}
@@ -72,8 +72,8 @@ public class TournamentOptionsUI extends JDialog {
         okButton.setMinimumSize(new java.awt.Dimension(80, 25));
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                config.put("playBothSides", playBothSidesCheck.isSelected());
-                config.put("playAgainstSelf", playAgainstSelfCheck.isSelected());
+                config.put("playBothSides", playBothSidesCheck.isSelected() ? 1 : 0);
+                config.put("playAgainstSelf", playAgainstSelfCheck.isSelected() ? 1 : 0);
                 dispose();
             }
         });
@@ -145,10 +145,11 @@ public class TournamentOptionsUI extends JDialog {
 		return config;
     }
 
-	private void restoreOptions(HashMap<String, Boolean> prevConfig) {
+    
+	private void restoreOptions(HashMap<String, Integer> prevConfig) {
 		if (prevConfig != null) {
-			playBothSidesCheck.setSelected(prevConfig.containsKey("playBothSides") && prevConfig.get("playBothSides"));
-			playAgainstSelfCheck.setSelected(prevConfig.containsKey("playAgainstSelf") && prevConfig.get("playAgainstSelf"));
+			playBothSidesCheck.setSelected(prevConfig.containsKey("playBothSides") && prevConfig.get("playBothSides") != 0);
+			playAgainstSelfCheck.setSelected(prevConfig.containsKey("playAgainstSelf") && prevConfig.get("playAgainstSelf") != 0);
 		}
 		
 	}

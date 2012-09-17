@@ -104,7 +104,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		
 		startTime=new Date();
 		startTimeMillies=System.currentTimeMillis();
-		
+
 		try {
 			double agentAUtility,agentBUtility;
 
