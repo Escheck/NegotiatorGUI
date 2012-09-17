@@ -64,9 +64,6 @@ public class Global {
 
 	/** Enables experimental vars in a tournament */
 	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
-
-	/** Disable logging. Useful for distributed sessions, as partial log are in that case not printed. */
-	public static final boolean DISABLE_NORMAL_LOG = false;
 	
 	/** Enables the use of Decoupled Agents in the GUI. */
 	public static final boolean DECOUPLED_AGENTS_ENABLED = true;
@@ -79,7 +76,7 @@ public class Global {
 	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
 	public static final boolean DISCRETE_TIMELINE = false;
 	
-	/** Defines the amount of round used for descrite timeline */
+	/** Defines the amount of round used for discrete timeline */
 	public static final int TOTAL_ROUNDS = 3000;
 	
 	
@@ -94,9 +91,6 @@ public class Global {
 	 * clicking in the GUI, but also introduces a giant memory leak as all protocols are remembered
 	 * and thus all agents. */
 	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
-	
-	/** Enable a large set of analysis metrics from which the results are stored in a separate log */
-	public static final boolean TOURNAMENT_ANALYSIS_ENABLED = true;
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.

@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ public class TournamentRunner implements Runnable
 	private boolean runSingleSession = false; 
 	private List<Protocol> sessions;
 	ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
+	HashMap<String, Integer> configuration = new HashMap<String, Integer>();
 	
 	// Options related to distributed tournaments
 	private boolean distributed = false;
@@ -60,6 +62,7 @@ public class TournamentRunner implements Runnable
 	public TournamentRunner(Tournament t,NegotiationEventListener ael) throws Exception {
 		sessions = getSessionsFromTournament(t);
 		negotiationEventListeners.add(ael);
+		configuration = new HashMap<String, Integer>(t.getOptions());
 	}
 	
 	public TournamentRunner(NegotiationEventListener ael) {
@@ -76,6 +79,7 @@ public class TournamentRunner implements Runnable
 	public TournamentRunner(Tournament t,NegotiationEventListener ael, boolean runSingleSession) throws Exception {
 		this(t, ael);
 		this.runSingleSession = runSingleSession;
+		configuration = new HashMap<String, Integer>(t.getOptions());
 	}
 	
 	/**
@@ -107,13 +111,18 @@ public class TournamentRunner implements Runnable
 				log = runTournament();
 			}
 
-			if (!Global.DISABLE_NORMAL_LOG) {
+			// DEFAULT: normal logging enabled
+			if (configuration == null || configuration.get("logSessions") != 0) {
 				if (Global.EXTENSIVE_OUTCOMES_LOG)
 					AlternatingOffersProtocol.closeLog(true);
 				AlternatingOffersProtocol.closeLog(false);
 				
 			}
-			TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
+			
+			// DEFAULT: no detailed analysis
+			if (configuration != null && configuration.get("logDetailedAnalysis") != 0) {
+				TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
+			}
 			
 			if (distributed) {
 				JOptionPane.showMessageDialog(null, "Finished jobs of session: \"" + sessionname + "\".\nThe log is stored in the log directory.");
