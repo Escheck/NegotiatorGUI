@@ -13,9 +13,9 @@
       <item index="3" value="Cherries" cost="0.0" evaluation="3" />
       <item index="4" value="Grapes" cost="0.0" evaluation="3" />
       <item index="5" value="Pears" cost="0.0" evaluation="10" />
-      <item index="5" value="Oranges" cost="0.0" evaluation="3" />
-      <item index="6" value="Melons" cost="0.0" evaluation="8" />
-      <item index="7" value="Strawberries" cost="0.0" evaluation="9" />
+      <item index="6" value="Oranges" cost="0.0" evaluation="3" />
+      <item index="7" value="Melons" cost="0.0" evaluation="8" />
+      <item index="8" value="Strawberries" cost="0.0" evaluation="9" />
     </issue>
     <issue index="3" name="Snacks" vtype="discrete" type="discrete" etype="discrete">
       <item index="1" value="Chocolate bars" cost="0.0" evaluation="1" />
