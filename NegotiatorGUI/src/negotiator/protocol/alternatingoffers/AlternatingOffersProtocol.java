@@ -225,7 +225,9 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	public void createExtraLogData() {
 		outcome.setRunNr(getRun());
-		if (Global.TOURNAMENT_ANALYSIS_ENABLED) {
+
+		// DEFAULT: no detailed analysis
+		if (configuration != null && configuration.get("logDetailedAnalysis") != 0) {
 			// Calculate the opponent model quality measures and log them
 			UtilityMeasures disCalc = new UtilityMeasures(getBidSpace());
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
@@ -245,13 +247,13 @@ public class AlternatingOffersProtocol extends Protocol {
 			}
 		}
 
-		if (!Global.DISABLE_NORMAL_LOG) {
+		// DEFAULT: normal logging enabled
+		if (configuration == null || configuration.get("logSessions") != 0) {
 			writeOutcomeToLog(false);
 			if (Global.EXTENSIVE_OUTCOMES_LOG)
 				writeOutcomeToLog(true);
 		}
 	}
-
 
 	protected AlternatingOffersBilateralAtomicNegoSession newAlternatingOffersBilateralAtomicNegoSession() throws Exception
 	{
