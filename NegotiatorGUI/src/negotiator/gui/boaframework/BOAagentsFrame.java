@@ -212,8 +212,8 @@ public class BOAagentsFrame extends JDialog {
     	
     	clearAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result = new ArrayList<BOAagentInfo>();
-				dispose();
+				agentsList.clearSelection();
+				agentsModel.clear();
 			}
 		});
     	

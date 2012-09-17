@@ -79,8 +79,7 @@ public class RepItemVarUI<A> extends JDialog {
 
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result = new ArrayList<A>();
-				dispose();
+				profileList.clearSelection();
 			}
 		});
 		
