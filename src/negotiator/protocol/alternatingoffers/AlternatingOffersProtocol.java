@@ -90,9 +90,10 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
+			HashMap<String, Integer> configuration)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams);
+		super(agentRepItems, profileRepItems, agentParams, configuration);
 		sessionTotalNumber = 1;
 	}
 	/**
@@ -243,6 +244,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				outcome.additional.addChildElement(tjQualityMeasures);	
 			}
 		}
+
 		if (!Global.DISABLE_NORMAL_LOG) {
 			writeOutcomeToLog(false);
 			if (Global.EXTENSIVE_OUTCOMES_LOG)
@@ -655,7 +657,7 @@ public class AlternatingOffersProtocol extends Protocol {
 			HashMap<AgentParameterVariable,AgentParamValue>[] params = new HashMap[2];
 			params[0] = paramsA;
 			params[1] = paramsB;
-			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params); 
+			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params, tournament.getOptions()); 
 			for (int k = 0; k < numberOfSessions; k++) {
 				sessions.add(session);
 			}

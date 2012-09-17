@@ -23,9 +23,10 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 
 	public MultiPhaseAuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
+			HashMap<String, Integer> configuration)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams);
+		super(agentRepItems, profileRepItems, agentParams, configuration);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -229,7 +230,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 		params[0] = paramsA;
 		params[1] = paramsB;
 		params[2] = paramsB;
-		MultiPhaseAuctionProtocol session = new  MultiPhaseAuctionProtocol(agents,  profiles,	params) ;
+		MultiPhaseAuctionProtocol session = new  MultiPhaseAuctionProtocol(agents,  profiles,	params, tournament.getOptions()) ;
 		return session;
 
 	}
