@@ -171,7 +171,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		sessionrunner.setStartingWithA(startingWithA);
 		/* This eventually fills the GUI columns */
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
-		if(Global.fDebug) {
+		if(Global.fDebug || getConfiguration().get("protocolMode") == 1) {
 			sessionrunner.run();
 		} else {
 			negoThread = new Thread(sessionrunner);
@@ -250,8 +250,10 @@ public class AlternatingOffersProtocol extends Protocol {
 		// DEFAULT: normal logging enabled
 		if (configuration == null || configuration.get("logSessions") != 0) {
 			writeOutcomeToLog(false);
-			if (Global.EXTENSIVE_OUTCOMES_LOG)
+			// DEFAULT: extensive log disabled
+			if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
 				writeOutcomeToLog(true);
+			}
 		}
 	}
 

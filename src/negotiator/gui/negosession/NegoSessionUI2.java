@@ -119,7 +119,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
 		};
 */
 		ProgressUI2 graphlistener=null;
-		if(fShowProgressUI) graphlistener=new ProgressUI2();
+		if(fShowProgressUI) graphlistener=new ProgressUI2(false, true);
 		Protocol ns;
 		try {
 			ns = Global.createProtocolInstance(protocol, agents, agentProfiles, null);

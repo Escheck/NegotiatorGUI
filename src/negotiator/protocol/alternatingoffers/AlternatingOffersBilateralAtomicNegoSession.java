@@ -108,8 +108,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		try {
 			double agentAUtility,agentBUtility;
 
-			if (Global.DISCRETE_TIMELINE){
-				timeline = new DiscreteTimeline(Global.TOTAL_ROUNDS);			
+			// DEFAULT: time-based protocol
+			if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("protocolMode") &&
+					protocol.getConfiguration().get("protocolMode") == 1) {
+				timeline = new DiscreteTimeline(protocol.getConfiguration().get("deadline"));			
 			} else {
 				if (Global.PAUSABLE_TIMELINE) {
 					timeline = new PausableContinuousTimeline(totalTime);
@@ -136,8 +138,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 			System.out.println("starting with agent "+currentAgent.getName());
 			//Main.log("Agent " + currentAgent.getName() + " begins");
 			fireLogMessage("Nego","Agent " + currentAgent.getName() + " begins");
-			if (Global.RECORD_OPPONENT_TRACE)
+			// DEFAULT: disable trace logging
+			if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("logNegotiationTrace") &&
+					protocol.getConfiguration().get("logNegotiationTrace") == 1) {
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
+			}
 			checkForMAC();
 			
 			while(!stopNegotiation) {
@@ -307,7 +312,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 	 * @throws Exception
 	 */
 	private void processOnlineData() {
-		if (Global.RECORD_OPPONENT_TRACE) {
+		// DEFAULT: disable trace logging
+		if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("logNegotiationTrace") &&
+						protocol.getConfiguration().get("logNegotiationTrace") == 1) {
 			if (Global.PAUSABLE_TIMELINE) {
 				try {
 					timeline.pause();
@@ -540,7 +547,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		}
 	}
 	private void processDataForLogging(double time, boolean agreement) {
-		if (Global.RECORD_OPPONENT_TRACE) {
+		// DEFAULT: disable trace logging
+		if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("logNegotiationTrace") &&
+				protocol.getConfiguration().get("logNegotiationTrace") == 1) {
 			matchDataLogger.addMeasure("time", omMeasuresResults.getTimePointList());
 			matchDataLogger.addMeasure("bidindices", omMeasuresResults.getBidIndices());
 			matchDataLogger.writeToFileCompact(time, agreement, protocol.getRun());

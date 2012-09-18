@@ -245,8 +245,12 @@ public abstract class Protocol implements Runnable, Serializable {
 		result = prime * result + Arrays.hashCode(profileRepItems);
 		return result;
 	}
-	
-    @Override
+
+    public HashMap<String, Integer> getConfiguration() {
+		return configuration;
+	}
+
+	@Override
     public String toString()
     {
     	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
@@ -257,6 +261,8 @@ public abstract class Protocol implements Runnable, Serializable {
 		this.runNr  = runNr;
 	}
 
+	
+	
 	public int getRun() {
 		return runNr;
 	}

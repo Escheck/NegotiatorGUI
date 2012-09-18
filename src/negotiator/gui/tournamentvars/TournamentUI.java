@@ -406,7 +406,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
 	void start(boolean distributed, String sessionname) throws Exception {
-		ProgressUI2 progressUI = new ProgressUI2();
+		ProgressUI2 progressUI = new ProgressUI2(tournament.getOptions());
 		TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
 		
