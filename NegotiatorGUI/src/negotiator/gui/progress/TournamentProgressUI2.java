@@ -66,7 +66,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 								.get(selected_session_nr);
 
 						if (ui == null) { /* not there yet, make it */
-							ui = new ProgressUI2();
+							ui = new ProgressUI2(false, true);
 							ui.fillGUI(ng);
 							SessionDetailsUI.put(selected_session_nr, ui);
 						}
@@ -295,7 +295,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 
 					ProgressUI2 ui = SessionDetailsUI.get(selected_session_nr);
 					if (ui == null) { /* not there yet, make it */
-						ui = new ProgressUI2();
+						ui = new ProgressUI2(false, true);
 						ui.fillGUI(ng);
 						SessionDetailsUI.put(selected_session_nr, ui);
 					}

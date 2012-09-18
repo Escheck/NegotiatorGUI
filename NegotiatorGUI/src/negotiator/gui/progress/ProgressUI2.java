@@ -7,6 +7,7 @@
 package negotiator.gui.progress;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -50,13 +51,30 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	protected BilateralAtomicNegotiationSession session;
 	private TextArea logText;
 	private JPanel chart;
+	private boolean showAllBids = false;
+	private boolean showLastBid = false;
 	
-    /** Creates new form ProgressUI2 */
-    public ProgressUI2() {
+    /** Creates new form ProgressUI2 
+     * @param hashMap */
+    public ProgressUI2(HashMap<String, Integer> options) {
         initComponents();
 		bidChart = new BidChart();
 		progressinfo = new ProgressInfo();
-		//biddingTable = new  JTable(progressinfo);
+		// DEFAULT: show all bids
+		showAllBids = (options == null) || (options.containsKey("showAllBids") && options.get("showAllBids") == 1);
+		// DEFAULT: show last bid
+		showLastBid = (options == null) || (options.containsKey("showLastBid") && options.get("showLastBid") == 1);
+		biddingTable.setModel(progressinfo);
+		biddingTable.setGridColor(Color.lightGray);
+		ProgressUI1("initialized...",bidChart,biddingTable);
+    }
+    
+    public ProgressUI2(boolean showAllBids, boolean showLastBid) {
+        initComponents();
+		bidChart = new BidChart();
+		progressinfo = new ProgressInfo();
+		this.showAllBids = showAllBids;
+		this.showLastBid = showLastBid;
 		biddingTable.setModel(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
 		ProgressUI1("initialized...",bidChart,biddingTable);
@@ -297,7 +315,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		bidChart.setAgentBName("Agent B:"+agentBName);
 		BidSpace bs = session.getBidSpace();
 		double [][] pb = null;
-		if (Global.SHOW_ALL_BIDS)
+		if (showAllBids)
 			pb = getAllBidsInBidSpace();
 
 		double [][] nash = new double [2][1];
@@ -400,7 +418,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			bidChart.setAgreementPoint(ap);
 		}
 		
-		if (Global.HIGHLIGHT_LAST_BID)
+		if (showLastBid)
 		{
 			ArrayList<BidPointTime> agentABids = session.getAgentABids();
 			ArrayList<BidPointTime> agentBBids = session.getAgentBBids();

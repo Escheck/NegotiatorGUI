@@ -113,8 +113,10 @@ public class TournamentRunner implements Runnable
 
 			// DEFAULT: normal logging enabled
 			if (configuration == null || configuration.get("logSessions") != 0) {
-				if (Global.EXTENSIVE_OUTCOMES_LOG)
+				// DEFAULT: extensive log disabled
+				if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
 					AlternatingOffersProtocol.closeLog(true);
+				}
 				AlternatingOffersProtocol.closeLog(false);
 				
 			}

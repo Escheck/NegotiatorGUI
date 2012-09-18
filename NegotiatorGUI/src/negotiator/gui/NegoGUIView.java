@@ -734,7 +734,7 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
             CSVLoader csvLoader = new CSVLoader(csvFileChooser.getSelectedFile().getPath());
             List<Protocol> sessions = csvLoader.getSessions();
             
-            ProgressUI2 progressUI = new ProgressUI2();
+            ProgressUI2 progressUI = new ProgressUI2(true, true);
             TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
             NegoGUIApp.negoGUIView.addTab("Run from file: " + csvLoader.getFilePath(), tournamentProgressUI);
                       

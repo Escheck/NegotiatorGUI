@@ -35,7 +35,6 @@ public class Global {
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
 	
 	public static boolean batchMode = false;
-	public static boolean fDebug = false;
 	public static boolean analysisEnabled = true; // set to true to enable the
 													// realtime analysis tool.
 	public static boolean experimentalSetup = true;// set to true to allow agent
@@ -44,9 +43,8 @@ public class Global {
 	public static String outcomesFile = "outcomes.xml";
 
 	public static String logPrefix = "";
-	
-	/** Set to true to write to {@link #outcomesFile} with a lot more information */
-	public static final boolean EXTENSIVE_OUTCOMES_LOG = false;
+
+	public static boolean fDebug = false;
 	
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
@@ -54,11 +52,6 @@ public class Global {
 	
 	public static final boolean SHOW_TIME = !false;
 
-	/** Show all bid points in the GUI chart */
-	public static final boolean SHOW_ALL_BIDS = !false;
-
-	public static final boolean	HIGHLIGHT_LAST_BID	= !false;
-	
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = true;
 
@@ -72,13 +65,6 @@ public class Global {
 	 * decoupled agents, as the GUI does not allow unfilled rows.
 	 */
 	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
-	
-	/** Enables the use of a discrete timeline (rounds) NOTE: if this is used fDebug should be true */
-	public static final boolean DISCRETE_TIMELINE = false;
-	
-	/** Defines the amount of round used for discrete timeline */
-	public static final int TOTAL_ROUNDS = 3000;
-	
 	
 	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
 	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
@@ -101,26 +87,10 @@ public class Global {
 	 * Also, this boolean ensures that all bidspaces are not calculated beforehand.
 	 */
 	public static final boolean LOW_MEMORY_MODE = true;
-	
-	/**
-	 * Use this feature to record the opponent's trace. Note that while this feature is not
-	 * heavy, it is advisable to use it with the PAUSABLE_TIMELINE option.
-	 */
-	public static final boolean RECORD_OPPONENT_TRACE = false;
 
 	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
 	public Global() {}
-	
-	static {
-		if((DISCRETE_TIMELINE == true && fDebug == false)|| DISCRETE_TIMELINE == false && fDebug == true){
-			try {
-				throw new Exception("Discrete Time and fDebug have to be either both true or both false");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	/**
 	 * @param args
