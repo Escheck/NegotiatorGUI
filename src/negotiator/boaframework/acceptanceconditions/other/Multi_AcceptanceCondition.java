@@ -2,11 +2,14 @@ package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import negotiator.analysis.BidPointTime;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OutcomeTuple;
+import negotiator.boaframework.agent.BOAagent;
 import negotiator.Bid;
 
 /**
@@ -26,6 +29,10 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	protected ArrayList<AcceptanceStrategy> ACList;
 	// list of outcomes; an outcome is added when an AC accepts, or the negotiation ended
 	protected ArrayList<OutcomeTuple> outcomes;
+	
+	private boolean firstTime = false;
+	private boolean startingAgent = false;
+
 	
 	public Multi_AcceptanceCondition() { }
 
@@ -48,9 +55,8 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	 */
 	@Override
 	public Actions determineAcceptability() {
-		boolean startingAgent = false;
-		
-		if(!startingAgent && negotiationSession.getOpponentBidHistory().getHistory().isEmpty()){
+	
+		if(!firstTime && (negotiationSession.getOpponentBidHistory().size() == negotiationSession.getOwnBidHistory().size())){
 			startingAgent = true;
 		}
 		
@@ -60,22 +66,25 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 			String name = a.getClass().getSimpleName() + " " + printParameters(a);
 			double time = negotiationSession.getTime();
 			OutcomeTuple outcome;
-
 			if (a.determineAcceptability().equals(Actions.Accept)) {
 				System.out.println(name + " accepted Bid" + " Util: " + negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil());
 
 
 				//sets the amount of bids made for agent A and agent B
+				System.out.println("StartingAgent: " + startingAgent);
+				System.out.println("own Size: " +  negotiationSession.getOwnBidHistory().size());
+				System.out.println("opponentSize: " + negotiationSession.getOwnBidHistory().size());
+
 				if(startingAgent) {
-					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"accept");
+					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"accept", "agentA");
 				}else {
-					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size(), "accept");
+					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size(), "accept", "agentB");
 
 				}
 				outcomes.add(outcome);
 				acceptors.add(a);
 			} else if (a.determineAcceptability().equals(Actions.Break)) {
-				outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"breakoff");
+				outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"breakoff", "");
 				outcomes.add(outcome);
 				acceptors.add(a);
 			}
@@ -109,5 +118,43 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	@Override
 	public boolean isMAC(){
 		return true;
+	}
+	
+	public void remainingACAccept(Bid lastBid, double time, ArrayList<BidPointTime> fAgentABids, ArrayList<BidPointTime> fAgentBBids, String acceptedBy){
+		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
+		
+		for(AcceptanceStrategy strat : ACList) {	
+			String name = strat.getClass().getSimpleName() + " " + printParameters(strat);
+			OutcomeTuple tuple = new OutcomeTuple(lastBid, name, time, fAgentABids.size(), fAgentBBids.size(), "accept", acceptedBy);
+			outcomes.add(tuple);
+			acceptors.add(strat);
+			
+		}
+		ACList.removeAll(acceptors);
+	}
+	
+	public void remainingACDeadline(){
+		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
+		
+		for(AcceptanceStrategy strat : ACList) {	
+			String name = strat.getClass().getSimpleName() + " " + printParameters(strat);
+			OutcomeTuple tuple = new OutcomeTuple(null, name, 1, -1, -1, "deadline", "");
+			outcomes.add(tuple);
+			acceptors.add(strat);
+			
+		}
+		ACList.removeAll(acceptors);
+	}
+	
+	public void remainingACJudgeTimeout(){
+		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
+		for(AcceptanceStrategy strat : ACList) {	
+			String name = strat.getClass().getSimpleName() + " " + printParameters(strat);
+			OutcomeTuple tuple = new OutcomeTuple(null, name, 1, -1, -1, "Judge Timeout", "");
+			outcomes.add(tuple);
+			acceptors.add(strat);
+			
+		}
+		ACList.removeAll(acceptors);
 	}
 }

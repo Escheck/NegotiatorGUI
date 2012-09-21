@@ -55,6 +55,9 @@ public class AC_Next extends AcceptanceStrategy {
 	public Actions determineAcceptability() {
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+		//System.out.println("nextMyBidUtil: " + nextMyBidUtil);
+		//System.out.println("lastOpponentBidUtil: " + lastOpponentBidUtil);
+
 		if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
 			return Actions.Accept;
 		}

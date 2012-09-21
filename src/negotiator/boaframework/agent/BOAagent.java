@@ -42,8 +42,6 @@ public abstract class BOAagent extends Agent
     public ArrayList<Pair<Bid, String>> savedOutcomes;
     /** space of possible bids */
     protected OutcomeSpace outcomeSpace;
-    /** if this agent started */
-    private boolean startingAgent;
     
     /**
      * Initializes the agent and creates a new negotiation session object.
@@ -144,9 +142,7 @@ public abstract class BOAagent extends Agent
 		Actions decision = Actions.Reject;
 		if (!negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
 			decision = acceptConditions.determineAcceptability();
-		} else {
-			startingAgent = true;
-		}
+		} 
 
 		// check if the agent decided to break toff the negotiation
 		if (decision.equals(Actions.Break)) {
@@ -162,23 +158,6 @@ public abstract class BOAagent extends Agent
 		}
 	}
 	
-	/**
-	 * Returns the negotiation outcomes saved by the MAC.
-	 * @return outcomes saved by MAC.
-	 */
-	public ArrayList<OutcomeTuple> getSavedOutcomes() {
-		if(acceptConditions instanceof Multi_AcceptanceCondition) {
-			if(((Multi_AcceptanceCondition) acceptConditions).getACList().isEmpty()){
-				return ((Multi_AcceptanceCondition) acceptConditions).getOutcomes();
-			} else{
-				syncSavedOutcomes();
-				return ((Multi_AcceptanceCondition) acceptConditions).getOutcomes();
-
-			}
-		}
-		return null;
-	}
-	
 	public OfferingStrategy getOfferingStrategy() {
 		return offeringStrategy;
 	}
@@ -189,29 +168,6 @@ public abstract class BOAagent extends Agent
 	
 	public AcceptanceStrategy getAcceptanceStrategy() {
 		return acceptConditions;
-	}
-	
-	/**
-	 * Sync the outcomes stored by the agent for the MAC.
-	 */
-	public void syncSavedOutcomes(){
-		for(AcceptanceStrategy strat : ((Multi_AcceptanceCondition) acceptConditions).getACList()) {
-			String name = strat.getClass().getSimpleName() + " " + ((Multi_AcceptanceCondition)acceptConditions).printParameters(strat);
-			OutcomeTuple newTuple;
-			if(negotiationSession.getTime() < 1.0){
-				if(startingAgent){
-					System.out.println("starting agent and time < 1.0");
-					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"");
-				} else{
-					System.out.println("!starting agent and time < 1.0");
-					newTuple = new OutcomeTuple(negotiationSession.getOwnBidHistory().getLastBidDetails().getBid(), name, negotiationSession.getTime(), negotiationSession.getOpponentBidHistory().size(), negotiationSession.getOwnBidHistory().size(),"");
-				}
-			}else {
-				newTuple = new OutcomeTuple(null, name, 1, -1, -1, "deadline");
-			}
-			((Multi_AcceptanceCondition) acceptConditions).getOutcomes().add(newTuple);
-		}
-		((Multi_AcceptanceCondition) acceptConditions).getACList().clear();
 	}
 
 	/**
