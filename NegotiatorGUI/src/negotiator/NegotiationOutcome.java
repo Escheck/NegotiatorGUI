@@ -60,6 +60,7 @@ public class NegotiationOutcome {
 	private final Action lastAction;
 	private int runNr = 0;
 	private OpponentModelMeasuresResults omMeasuresResults = null;
+	private String acceptedBy;
 
 	/** Creates a new instance of NegotiationOutcome 
 	 * @param alternatingOffersBilateralAtomicNegoSession 
@@ -87,7 +88,8 @@ public class NegotiationOutcome {
 			String domainName,
 			String agentAutilSpaceNameP,
 			String agentButilSpaceNameP,
-			SimpleElement additional, double time, double distanceToNash
+			SimpleElement additional, double time, double distanceToNash,
+			String acceptedBy
 	) 
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
@@ -112,6 +114,7 @@ public class NegotiationOutcome {
 		agentAutilSpaceName=agentAutilSpaceNameP;
 		agentButilSpaceName=agentButilSpaceNameP;
 		this.time = time;
+		this.acceptedBy = acceptedBy;
 	}
 
 
@@ -197,12 +200,12 @@ public class NegotiationOutcome {
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
 		
 		
-		double bestAcceptableBid;
-		double bestDiscountedAccepableBid;
-		if(agentX.equals("A")){
+		double bestAcceptableBid = 0;
+		double bestDiscountedAccepableBid = 0;
+		if(agentX.equals("A") && acceptedBy.equals("agentA")){
 			bestAcceptableBid = getMaxRecievedUtil(agentX, AgentBBids);
 			bestDiscountedAccepableBid = getMaxDiscountedRecievedUtil(agentX, AgentBBids);
-		} else {
+		} else if(agentX.equals("B") && acceptedBy.equals("agentB")){
 			bestAcceptableBid = getMaxRecievedUtil(agentX, AgentABids);
 			bestDiscountedAccepableBid = getMaxDiscountedRecievedUtil(agentX, AgentABids);
 		}
@@ -235,6 +238,7 @@ public class NegotiationOutcome {
 		outcome.setAttribute("maxUtility",""+agentAMaxUtil);
 		Double normalized=0.; if (agentAMaxUtil>0) { normalized = agentAUtil/agentAMaxUtil; }
 		outcome.setAttribute("normalizedUtility",""+normalized);
+		outcome.setAttribute("AcceptedBy", acceptedBy);
 		return outcome;
 	}
 	
@@ -425,7 +429,6 @@ public class NegotiationOutcome {
 		outcome.setAttribute("domain", domainName);
 		outcome.setAttribute("lastAction", "" + lastAction);
 		outcome.setAttribute("runNumber", runNr + "");
-
 		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
 				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids));
