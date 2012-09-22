@@ -40,8 +40,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected JTextField integerMinField;
 	protected JTextField integerOtherField;
-	protected JTextField integerLinearField;
-	protected JTextField integerParameterField;
+	protected JTextField integerUtilityLowestValue;
+	protected JTextField integerUtilityHighestValue;
 	protected JTextField integerMaxField;
 	
 	protected JTextField realMinField;
@@ -94,8 +94,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 
 		integerMinField = new JTextField(15);
 		integerOtherField = new JTextField(15);
-		integerLinearField = new JTextField(15);
-		integerParameterField = new JTextField(15);
+		integerUtilityLowestValue = new JTextField(15);
+		integerUtilityHighestValue = new JTextField(15);
 		
 		integerMaxField = new JTextField(15);
 		realMinField = new JTextField(15);
@@ -191,14 +191,14 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 
 		JPanel lin = new JPanel();
 		lin.setAlignmentX(Component.LEFT_ALIGNMENT);
-		lin.add(new JLabel("Linear: "));
-		lin.add(integerLinearField);
+		lin.add(new JLabel("Util. lowest value: "));
+		lin.add(integerUtilityLowestValue);
 		panel.add(lin);		
 
 		JPanel par = new JPanel();
 		par.setAlignmentX(Component.LEFT_ALIGNMENT);
-		par.add(new JLabel("Constant: "));
-		par.add(integerParameterField);
+		par.add(new JLabel("Util. heighest value: "));
+		par.add(integerUtilityHighestValue);
 		panel.add(par);	
 		
 		JPanel max = new JPanel();
@@ -210,10 +210,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
-			integerLinearField.setEnabled(false);
-			integerLinearField.setToolTipText("Disabled until there is a Utility Space.");
-			integerParameterField.setEnabled(false);
-			integerParameterField.setToolTipText("Disabled until there is a Utility Space.");
+			integerUtilityLowestValue.setEnabled(false);
+			integerUtilityLowestValue.setToolTipText("Disabled until there is a Utility Space.");
+			integerUtilityHighestValue.setEnabled(false);
+			integerUtilityHighestValue.setToolTipText("Disabled until there is a Utility Space.");
 		}
 		
 		return panel;
@@ -344,15 +344,15 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		else return 0;
 	}
 
-	protected int getIntegerLinear() throws InvalidInputException {
-		if(!integerLinearField.getText().equals(""))
-			return Integer.parseInt(integerLinearField.getText());
+	protected double getUtilityLowestInteger() throws InvalidInputException {
+		if(!integerUtilityLowestValue.getText().equals(""))
+			return Double.parseDouble(integerUtilityLowestValue.getText());
 		else return 0;
 	}
 	
-	protected int getIntegerParameter() throws InvalidInputException {
-		if(!integerParameterField.getText().equals(""))
-		return Integer.parseInt(integerParameterField.getText());
+	protected double getUtilityHeighestInteger() throws InvalidInputException {
+		if(!integerUtilityHighestValue.getText().equals(""))
+			return Double.parseDouble(integerUtilityHighestValue.getText());
 		else return 0;
 	}	
 	
@@ -517,19 +517,12 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				min = getIntegerMin();
 				max = getIntegerMax();
 				
-				if(! integerLinearField.getText().equals("")){
+				if(! integerUtilityLowestValue.getText().equals("")){
 					//evInt = new EvaluatorInteger();
 					//evInt.setWeight(0.0);
 					((EvaluatorInteger)evaluator).setLowerBound(min);
 					((EvaluatorInteger)evaluator).setUpperBound(max);
-					((EvaluatorInteger)evaluator).setLinearParam(getIntegerLinear());
-				}
-				if(! integerParameterField.getText().equals("")){
-					//evInt = new EvaluatorInteger();
-					//evInt.setWeight(0.0);
-					((EvaluatorInteger)evaluator).setLowerBound(min);
-					((EvaluatorInteger)evaluator).setUpperBound(max);
-					((EvaluatorInteger)evaluator).setConstantParam(getIntegerParameter());
+					((EvaluatorInteger)evaluator).setLinearFunction(getUtilityLowestInteger(), getUtilityHeighestInteger());
 				}
 			}
 			catch (InvalidInputException e) {
