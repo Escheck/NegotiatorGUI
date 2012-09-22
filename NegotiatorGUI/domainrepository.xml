@@ -323,6 +323,10 @@
                 <profile url="file:etc/templates/anac/y2012/Travel/Travel-C-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2012/Travel/Travel-C-prof2.xml"/>
             </domainRepItem>
+            <domainRepItem url="file:etc/templates/linear/IntegerDomain/IntegerDomain.xml">
+                <profile url="file:etc/templates/linear/IntegerDomain/IntegerDomain-prof1.xml"/>
+                <profile url="file:etc/templates/linear/IntegerDomain/IntegerDomain-prof2.xml"/>
+            </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
     </items>
