@@ -291,8 +291,8 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
             spaceB.getFileName(),
             additionalLog,
             -1, 
-            -1
-            );
+            -1,
+            "");
     	
     	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
         	System.currentTimeMillis()-startTimeMillies,utilA,utilB,utilADiscount,utilBDiscount,message, true);

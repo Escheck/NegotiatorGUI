@@ -171,7 +171,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		sessionrunner.setStartingWithA(startingWithA);
 		/* This eventually fills the GUI columns */
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
-		if(Global.fDebug || getConfiguration().get("protocolMode") == 1) {
+		if(Global.fDebug || (getConfiguration() != null && getConfiguration().size() > 0 && getConfiguration().get("protocolMode") == 1)) {
 			sessionrunner.run();
 		} else {
 			negoThread = new Thread(sessionrunner);
@@ -227,7 +227,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		outcome.setRunNr(getRun());
 
 		// DEFAULT: no detailed analysis
-		if (configuration != null && configuration.get("logDetailedAnalysis") != 0) {
+		if (configuration != null && configuration.size() > 0 && configuration.get("logDetailedAnalysis") != 0) {
 			// Calculate the opponent model quality measures and log them
 			UtilityMeasures disCalc = new UtilityMeasures(getBidSpace());
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
@@ -248,10 +248,10 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 
 		// DEFAULT: normal logging enabled
-		if (configuration == null || configuration.get("logSessions") != 0) {
+		if (configuration == null || configuration.size() == 0 || (configuration.get("logSessions") != 0)) {
 			writeOutcomeToLog(false);
 			// DEFAULT: extensive log disabled
-			if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
+			if (configuration != null && configuration.size() > 0 && configuration.get("logNegotiationTrace") != 0) {
 				writeOutcomeToLog(true);
 			}
 		}

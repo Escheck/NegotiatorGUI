@@ -83,18 +83,11 @@ public class SouthamptonUtilitySpace {
 		double utility = 0;	
 		switch(eval.getFuncType()) {
 		case LINEAR:
-			utility = maxLinear(eval.getLinearParam(), eval.getConstantParam());
+			utility = maxLinear(eval.getSlope(), eval.getOffset());
 			if (utility < eval.getLowerBound())
 				utility = eval.getLowerBound();
 			else if (utility > eval.getUpperBound())
 				utility = eval.getUpperBound();
-			break;
-		case CONSTANT:
-			utility = eval.getLowerBound();
-			break;
-		case TRIANGULAR:
-		case TRIANGULAR_VARIABLE_TOP:
-			utility = maxTriangular(eval.getLinearParam(), eval.getConstantParam(), eval.getTopParam());
 			break;
 		default:
 			return null;

@@ -233,8 +233,8 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 				lHypEvalInteger = new EvaluatorInteger();
 				lHypEvalInteger.setUpperBound(lIssue.getUpperBound());
 				lHypEvalInteger.setLowerBound(lIssue.getLowerBound());
-				lHypEvalInteger.setConstantParam(-lHypEvalInteger.getLowerBound() / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
-				lHypEvalInteger.setLinearParam(1.0 / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
+				lHypEvalInteger.setOffset(-lHypEvalInteger.getLowerBound() / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
+				lHypEvalInteger.setSlope(1.0 / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
 				lEvaluatorHypothesis = new EvaluatorHypothesis(lHypEvalInteger);
 				lEvaluatorHypothesis.setDesc("uphill");
 				lEvalHyps.add(lEvaluatorHypothesis);
@@ -243,8 +243,8 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 				lHypEvalInteger = new EvaluatorInteger();
 				lHypEvalInteger.setUpperBound(lIssue.getUpperBound());
 				lHypEvalInteger.setLowerBound(lIssue.getLowerBound());
-				lHypEvalInteger.setConstantParam(1.0 + lHypEvalInteger.getLowerBound() / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
-				lHypEvalInteger.setLinearParam(-1.0 / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
+				lHypEvalInteger.setOffset(1.0 + lHypEvalInteger.getLowerBound() / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
+				lHypEvalInteger.setSlope(-1.0 / (lHypEvalInteger.getUpperBound() - lHypEvalInteger.getLowerBound()));
 				lEvaluatorHypothesis = new EvaluatorHypothesis(lHypEvalInteger);
 				lEvaluatorHypothesis.setDesc("downhill");
 				lEvalHyps.add(lEvaluatorHypothesis);

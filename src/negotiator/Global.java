@@ -184,13 +184,13 @@ public class Global {
 
 		Class klass = loader.loadClass(protRepItem.getClassPath());
 		Class[] paramTypes = { AgentRepItem[].class, ProfileRepItem[].class,
-				HashMap[].class };
+				HashMap[].class, HashMap.class};
 
 		Constructor cons = klass.getConstructor(paramTypes);
 
 		System.out.println("Found the constructor: " + cons);
 
-		Object[] args = { agentRepItems, profileRepItems, agentParams };
+		Object[] args = { agentRepItems, profileRepItems, agentParams, new HashMap<String, Integer>()};
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
