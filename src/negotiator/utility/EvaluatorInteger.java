@@ -67,7 +67,7 @@ public class EvaluatorInteger implements Evaluator {
 	public Double getEvaluation(int pValue) {
 		double utility;		
 
-		utility = EVALFUNCTYPE.evalLinear(pValue, slope, offset);
+		utility = EVALFUNCTYPE.evalLinear(pValue - lowerBound, slope, offset);
 		if (utility<0)
 			utility = 0;
 		else if (utility > 1)
