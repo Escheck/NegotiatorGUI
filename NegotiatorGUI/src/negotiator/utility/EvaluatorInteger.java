@@ -14,8 +14,6 @@ public class EvaluatorInteger implements Evaluator {
 	EVALFUNCTYPE type;
 	private double slope = 0.0;
 	private double offset = 0.0;
-	private double utilLowestValue;
-	private double utilHeighestValue;
 		
 	public EvaluatorInteger() {
 		fweight = 0;
@@ -92,11 +90,17 @@ public class EvaluatorInteger implements Evaluator {
 	}	
 	
 	public double getUtilLowestValue() {
-		return utilLowestValue;
+		if (slope == 0.0 && offset == 0.0) {
+			return 0;
+		}
+		return offset;
 	}
 
 	public double getUtilHeighestValue() {
-		return utilHeighestValue;
+		if (slope == 0.0 && offset == 0.0) {
+			return 0;
+		}
+		return (offset + slope * (upperBound - lowerBound));
 	}
 
 	/**
@@ -119,8 +123,6 @@ public class EvaluatorInteger implements Evaluator {
 			double utilHighInt) {
 		slope = (utilHighInt - utilLowInt) / (-lowerBound + upperBound);
 		offset = utilLowInt;
-		this.utilLowestValue = utilLowInt;
-		this.utilHeighestValue = utilHighInt;
 	}
 	
 	public void loadFromXML(SimpleElement pRoot) {
