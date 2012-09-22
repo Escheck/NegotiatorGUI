@@ -1005,13 +1005,9 @@ public class UtilitySpace {
     				thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
     				SimpleElement thisIntEval = new SimpleElement("evaluator");
     				EVALFUNCTYPE ievtype = iev.getFuncType();
-    				if(ievtype == EVALFUNCTYPE.LINEAR){
-    					thisIntEval.setAttribute("ftype", "linear");
-    					thisIntEval.setAttribute("parameter1", ""+iev.getLinearParam());
-    				}else if(ievtype == EVALFUNCTYPE.CONSTANT){
-    					thisIntEval.setAttribute("ftype", "constant");
-    					thisIntEval.setAttribute("parameter0", ""+iev.getConstantParam());
-    				}
+					thisIntEval.setAttribute("ftype", "linear");
+					thisIntEval.setAttribute("slope", ""+iev.getSlope());
+					thisIntEval.setAttribute("offset", ""+iev.getOffset());
     				issueL.addChildElement(thisIntEval);
     				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
     				break;

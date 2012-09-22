@@ -107,22 +107,18 @@ public class EditIssueDialog extends NewIssueDialog {
 		else if (issue instanceof IssueInteger) {
 			this.issueType.setSelectedItem(INTEGER);
 			this.issueType.setEnabled(false);
+			this.nameField.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, INTEGER);
 			integerMinField.setText("" + ((IssueInteger)issue).getLowerBound());
 			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
+			integerMinField.setEnabled(false);
+			integerMaxField.setEnabled(false);
 			if (utilSpace != null) {
 				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
 
 				if (eval != null) {
-					switch (eval.getFuncType()) {
-					case LINEAR:
-						integerLinearField.setText("" + eval.getLinearParam());
-					case CONSTANT:
-						integerParameterField.setText("" + eval.getConstantParam());
-					default:
-						break;
-						
-					}
+					integerUtilityLowestValue.setText("" + eval.getUtilLowestValue());
+					integerUtilityHighestValue.setText("" + eval.getUtilHeighestValue());
 				}
 			}
 		}
@@ -161,6 +157,9 @@ public class EditIssueDialog extends NewIssueDialog {
 		}
 	}
 	
+
+
+	
 	/**
 	 * Overrides actionPerformed from NewIssueDialog.
 	 */
@@ -168,22 +167,41 @@ public class EditIssueDialog extends NewIssueDialog {
 	{
 		if (e.getSource() == okButton) {
 			if (issue == null) return;
-			updateIssue(issue);
 			
-			//Notify the model that the contents of the treetable have changed
-			NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
-			
-			(model.getIssueValuePanel(issue)).displayValues(issue);
-			model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-			
-			//if (model.getUtilitySpace() == null) {
-			//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-			//}
-			//else {
-			//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+			boolean valid = true;
+			if (issue instanceof IssueInteger) {
+				double utilLIV = Double.parseDouble(integerUtilityLowestValue.getText());
+				double utilHIV = Double.parseDouble(integerUtilityHighestValue.getText());
+				if (utilLIV < 0.0 || utilLIV > 1.0) {
+					valid = false;
+					JOptionPane.showConfirmDialog(null, "The utility of the lowest value should be \n" +
+														"in the range [0, 1]", "Input",
+														JOptionPane.PLAIN_MESSAGE);
+				} else if (utilHIV < 0.0 || utilHIV > 1.0) {
+					valid = false;
+					JOptionPane.showConfirmDialog(null, "The utility of the heighest value should be \n" +
+														"in the range [0, 1]", "Input",
+														JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+			if (valid){
+				updateIssue(issue);
+				
+				//Notify the model that the contents of the treetable have changed
+				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
+				
+				(model.getIssueValuePanel(issue)).displayValues(issue);
+				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				
+				//if (model.getUtilitySpace() == null) {
+				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
 				//}
-			
-			this.dispose();
+				//else {
+				//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
+					//}
+				
+				this.dispose();
+			}
 		}			
 		else if (e.getSource() == cancelButton) {
 			this.dispose();

@@ -4,23 +4,20 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 public class EvaluatorInteger implements Evaluator {
 	
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock;
-	int lowerBound;
-	int upperBound;
+	private int lowerBound;
+	private int upperBound;
 	EVALFUNCTYPE type;
-	HashMap<Integer, Double> fParam;
+	private double slope = 0.0;
+	private double offset = 0.0;
+	private double utilLowestValue;
+	private double utilHeighestValue;
 		
 	public EvaluatorInteger() {
-		fParam = new HashMap<Integer, Double>();
-		
 		fweight = 0;
 	}
 
@@ -64,42 +61,18 @@ public class EvaluatorInteger implements Evaluator {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		switch(this.type) {
-		case LINEAR:
-			Double d = EVALFUNCTYPE.evalLinear(lTmp, this.fParam.get(1), this.fParam.get(0));
-			if (d<0)
-				d=0.0;
-			else if (d>1)
-				d=1.0;
-			return d;
-		case CONSTANT:
-			return new Double(this.fParam.get(0));
-		default:
-			return -1.;
-		}	
+		return getEvaluation(lTmp);
 	}
+	
 	public Double getEvaluation(int pValue) {
 		double utility;		
-		switch(this.type) {
-		case LINEAR:
-			utility = EVALFUNCTYPE.evalLinear(pValue, this.fParam.get(1), this.fParam.get(0));
-			if (utility<0)
-				utility = 0;
-			else if (utility > 1)
-				utility = 1;
-			return utility;
-		case CONSTANT:
-			return this.fParam.get(0);
-		case TRIANGULAR:
-			utility = EVALFUNCTYPE.evalTriangular(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2));
-			return utility;
-		case TRIANGULAR_VARIABLE_TOP:
-			utility = EVALFUNCTYPE.evalTriangularVariableTop(pValue, this.fParam.get(0), this.fParam.get(1), this.fParam.get(2), this.fParam.get(3));
-			return utility;
-		default:
-			return -1.0;
-		}	
-		
+
+		utility = EVALFUNCTYPE.evalLinear(pValue, slope, offset);
+		if (utility<0)
+			utility = 0;
+		else if (utility > 1)
+			utility = 1;
+		return utility;
 	}
 	
 	public EVALUATORTYPE getType() {
@@ -118,6 +91,14 @@ public class EvaluatorInteger implements Evaluator {
 		return upperBound;
 	}	
 	
+	public double getUtilLowestValue() {
+		return utilLowestValue;
+	}
+
+	public double getUtilHeighestValue() {
+		return utilHeighestValue;
+	}
+
 	/**
 	 * Sets the lower bound of this evaluator.
 	 * @param lb The new lower bound
@@ -133,75 +114,13 @@ public class EvaluatorInteger implements Evaluator {
 	public void setUpperBound(int ub){
 		upperBound = ub;
 	}
-	
-	/**
-	 * Sets the ftype of this evaluator
-	 * @param ft The ftype, either <code>"linear"</code> or <code>"constant"</code>
-	 */
-	public void setftype(String ft){
-		type = EVALFUNCTYPE.convertToType(ft);
-	}
-	
-	/**
-	 * Sets the linear parameter for this evaluator, and changes the ftype to linear.
-	 * @param par0 The linear parameter
-	 */
-	public void setLinearParam(int par0){
-		setftype("linear");
-		fParam.put(new Integer(1), new Double(par0) );
-	}
-	public void setLinearParam(double par0){
-		setftype("linear");
-		fParam.put(new Integer(1), new Double(par0) );
-	}
-	
 
-	/**
-	 * 
-	 * @return The linear parameter of this Evaluator, or 0 if it doesn't exist.
-	 */		
-	public double getLinearParam(){
-		try{
-			return fParam.get(new Integer(1));
-		}catch(Exception e){
-			//do nothing
-		}
-		return 0;
-	}
-	/**
-	 * Sets the constant parameter for this evaluetor, and changes the ftype to constant.
-	 * @param par1 The constant parameter.
-	 */
-	public void setConstantParam(double par1){
-		setftype("constant");
-		fParam.put(new Integer(0), new Double(par1));
-	}
-
-	/**
-	 * 
-	 * @return The constant parameter of this Evaluator, or 0 if it doesn't exist.
-	 */	
-	public double getConstantParam(){
-		try{
-			return fParam.get(new Integer(0));
-		}catch(Exception e){
-			//do nothing.
-		}
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @return The top parameter of this Evaluator, or 0 if it doesn't exist.
-	 */
-	public double getTopParam() {
-		try{
-			return fParam.get(new Integer(2));
-		}catch(Exception e){
-			System.out.println("Top parameter does not exist");
-			e.printStackTrace();
-		}
-		return 0;
+	public void setLinearFunction(double utilLowInt,
+			double utilHighInt) {
+		slope = (utilHighInt - utilLowInt) / (-lowerBound + upperBound);
+		offset = utilLowInt;
+		this.utilLowestValue = utilLowInt;
+		this.utilHeighestValue = utilHighInt;
 	}
 	
 	public void loadFromXML(SimpleElement pRoot) {
@@ -210,19 +129,8 @@ public class EvaluatorInteger implements Evaluator {
 		this.upperBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("evaluator");
 		if(xml_items.length != 0){
-			String ftype = ((SimpleElement)xml_items[0]).getAttribute("ftype");
-			if (ftype!=null)
-				this.type = EVALFUNCTYPE.convertToType(ftype);
-			// TODO: define exception.
-			switch(this.type) {
-			case LINEAR:
-				this.fParam.put(1, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter1")));
-				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
-				break;
-			case CONSTANT:
-				this.fParam.put(0, Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("parameter0")));
-				break;
-			}
+			this.slope = Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("slope"));
+			this.offset = Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("offset"));
 		}
 	}
 	
@@ -232,8 +140,6 @@ public class EvaluatorInteger implements Evaluator {
 	 * @return The modified simpleElement with all evaluator properties set.
 	 */
 	public SimpleElement setXML(SimpleElement evalObj){
-		
-		
 		return evalObj;
 	}
 	
@@ -242,17 +148,28 @@ public class EvaluatorInteger implements Evaluator {
 		//TODO: implement isComplete in the EvaluatorInteger
 		return null;
 	}
-	
-	
+
+	public double getSlope() {
+		return slope;
+	}
+
+	public void setSlope(double slope) {
+		this.slope = slope;
+	}
+
+	public double getOffset() {
+		return offset;
+	}
+
+	public void setOffset(double offset) {
+		this.offset = offset;
+	}
+
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
 	{
 		throw new Exception("getCost not implemented for EvaluatorInteger");
 	}
 
-	public void showStatistics() {
-		// TODO Auto-generated method stub
-		
-	}
 	public EvaluatorInteger clone()
 	{
 		EvaluatorInteger ed=new EvaluatorInteger();
@@ -261,13 +178,13 @@ public class EvaluatorInteger implements Evaluator {
 		ed.type = type; 
 		ed.setUpperBound(upperBound);
 		ed.setLowerBound(lowerBound);
-		try{
-			for (Entry<Integer, Double> entry:fParam.entrySet())
-				ed.fParam.put(new Integer(entry.getKey()), new Double(entry.getValue()));
-		}
-		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
-
+		ed.slope = slope;
+		ed.offset = offset;
 		return ed;
 	}
 
+	@Override
+	public void showStatistics() {
+		// TODO Auto-generated method stub
+	}
 }

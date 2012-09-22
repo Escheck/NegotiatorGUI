@@ -14,8 +14,8 @@ public enum EVALFUNCTYPE { CONSTANT, LINEAR, FARATIN, TRIANGULAR, TRIANGULAR_VAR
 		else return null;
 	}
 
-	public static double evalLinear(double x, double coef1, double coef0) {
-		return coef1*x+coef0;
+	public static double evalLinear(double x, double slope, double offset) {
+		return slope * x + offset;
 	}
 	public static double evalLinearRev(double y, double coef1, double coef0) {
 		return (y-coef0)/coef1;
