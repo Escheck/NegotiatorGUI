@@ -2,7 +2,7 @@ package misc;
 
 
 /**
- * This is a tuple class which is used to pass on a target utility range.
+ * This is a tuple class which is used to pass on a double range.
  * 
  * @author Alex Dirkzwager
  */

@@ -2,6 +2,7 @@ package agents.anac.y2012.MetaAgent.agents.MrFriendly;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import negotiator.Bid;
 import negotiator.Timeline;
@@ -235,7 +236,7 @@ public class OpponentModel {
 		switch(i.getType()) {
 			case DISCRETE:
 				IssueDiscrete id = (IssueDiscrete)i;
-				ArrayList<ValueDiscrete> valsD = id.getValues();
+				List<ValueDiscrete> valsD = id.getValues();
 				HashMap<String, Integer> counters = new HashMap<String, Integer>();
 				for(ValueDiscrete v : valsD){
 					counters.put(v.getValue(), 0);

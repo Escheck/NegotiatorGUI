@@ -1,17 +1,20 @@
 package negotiator.gui.dialogs;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
-
-import javax.swing.*;
-
-import negotiator.gui.dialogs.*;
-import negotiator.gui.dialogs.NewObjectiveDialog.InvalidInputException;
-import negotiator.gui.tree.*;
-import negotiator.issue.*;
-import negotiator.utility.*;
-import jtreetable.*;
+import java.util.List;
+import javax.swing.JOptionPane;
+import negotiator.gui.tree.NegotiatorTreeTableModel;
+import negotiator.gui.tree.TreeFrame;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.EvaluatorInteger;
+import negotiator.utility.EvaluatorReal;
+import negotiator.utility.UtilitySpace;
+import java.awt.CardLayout;
 
 /**
  * 
@@ -20,9 +23,7 @@ import jtreetable.*;
  * This launches a editissue dialog window.
  * Wouter: this is ugly. The EditIssueDialog also handles editing of evaluators.
  * it gets access to the util space via the treeFrame, the parent of this dialog.
- * 
  */
-
 public class EditIssueDialog extends NewIssueDialog {
 	
 	//Attributes
@@ -65,7 +66,7 @@ public class EditIssueDialog extends NewIssueDialog {
 			this.issueType.setSelectedItem(DISCRETE);
 			this.issueType.setEnabled(false);
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, DISCRETE);
-			ArrayList<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
+			List<ValueDiscrete> values = ((IssueDiscrete)issue).getValues();
 
 			String valueString = "";
 			String descString="";

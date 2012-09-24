@@ -8,6 +8,7 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -499,7 +500,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		{
 			if (!(issue instanceof IssueDiscrete))
 				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
-			ArrayList<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
+			List<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
 			JComboBox cbox=new JComboBox();
 			EvaluatorDiscrete eval=null;
 			if (utilitySpace!=null) eval=(EvaluatorDiscrete)utilitySpace.getEvaluator(issue.getNumber());

@@ -1,15 +1,36 @@
 package negotiator.gui.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
-
-import negotiator.gui.tree.*;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
-import negotiator.issue.*;
-import negotiator.utility.*;
+import negotiator.gui.tree.TreeFrame;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.Objective;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.Evaluator;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.EvaluatorInteger;
+import negotiator.utility.EvaluatorReal;
+import negotiator.utility.UtilitySpace;
 
 
 /**
@@ -480,7 +501,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				((IssueDiscrete)issue).clear();
 				((IssueDiscrete)issue).addValues(values);
 			}
-			ArrayList<ValueDiscrete> v_enum = ((IssueDiscrete)issue).getValues();
+			List<ValueDiscrete> v_enum = ((IssueDiscrete)issue).getValues();
 
 			 // load values into discrete evaluator
 			if(evaluator!=null && evalues!=null)

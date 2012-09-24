@@ -10,7 +10,7 @@ import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCash;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -223,7 +223,7 @@ public class DomainGenerator {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCash.getBidSpace(utilitySpaceA, utilitySpaceB);
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
 			
 			if (bidSpace == null) {
 				try {   

@@ -1,6 +1,7 @@
 package negotiator.issue;
 
 import negotiator.xml.SimpleElement;
+import misc.RangeInt;
 
 /**
 *
@@ -33,20 +34,21 @@ public class IssueInteger extends Issue {
 	
 	// Class method
 	public boolean checkInRange(ValueInteger val) {
-			return ( ((ValueInteger)val).getValue() >= range.getLowerBound() && ((ValueInteger)val).getValue() <= range.getUpperBound());
+			return ( ((ValueInteger)val).getValue() >= range.getLowerbound() && 
+					((ValueInteger)val).getValue() <= range.getUpperbound());
 	}
 	
 	public final int getLowerBound() {
-		return range.getLowerBound();
+		return range.getLowerbound();
 	}
 	
 	public final int getUpperBound() {
-		return range.getUpperBound();
+		return range.getUpperbound();
 	}
 	
 	public final boolean setUpperBound(int up){
-		if(up > range.lowerBound){
-			range.upperBound=up;
+		if(up > range.getLowerbound()){
+			range.setUpperbound(up);
 			return true;
 		}else{
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
@@ -56,8 +58,8 @@ public class IssueInteger extends Issue {
 	}
 	
 	public final boolean setLowerBound(int lo){
-		if(lo < range.upperBound){
-			range.lowerBound=lo;
+		if(lo < range.getUpperbound()){
+			range.setLowerbound(lo);
 			return true;
 		}else{
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
@@ -87,5 +89,10 @@ public class IssueInteger extends Issue {
 	@Override
 	public ISSUETYPE getType() {
 		return ISSUETYPE.INTEGER;
+	}
+	
+	@Override
+	public String convertToString() {
+		return "integer";
 	}
 }

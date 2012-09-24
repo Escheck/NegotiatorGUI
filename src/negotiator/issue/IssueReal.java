@@ -96,4 +96,9 @@ public class IssueReal extends Issue {
 	public ISSUETYPE getType() {
 		return ISSUETYPE.REAL;
 	}
+	
+	@Override
+	public String convertToString() {
+		return "real";
+	}
 }

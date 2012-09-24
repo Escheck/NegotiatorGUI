@@ -2,6 +2,8 @@ package negotiator.issue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import negotiator.xml.SimpleElement;
 /**
 *
@@ -13,44 +15,37 @@ public class IssueDiscrete extends Issue {
 		
 	/** Wouter: the alternatives (String objects) for the issue.
 	"value" is misleading, this is NOT the utility value but the name of the alternative */
-	ArrayList<ValueDiscrete> issueValues; 
+	List<ValueDiscrete> values; 
 	
 	 // the descriptions for each value
 	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
-	private HashMap<ValueDiscrete, Double> fCosts=new HashMap<ValueDiscrete, Double>();
-
-	private int numberOfValues; // Wouter: imho should not be done this way
-
-
+	private HashMap<ValueDiscrete, Double> costs = new HashMap<ValueDiscrete, Double>();
 	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
-		numberOfValues = values.length;
-	    issueValues = new ArrayList<ValueDiscrete>();
-	    for(int i=0; i<numberOfValues;i++) {
-	        issueValues.add(new ValueDiscrete(values[i]));
+	    this.values = new ArrayList<ValueDiscrete>();
+	    for(int i=0; i< values.length;i++) {
+	        this.values.add(new ValueDiscrete(values[i]));
 	    }
 	}	
 	
 	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent, Double[] cost) {
 		super(name, issueNumber, objParent);		
-		numberOfValues = values.length;
-		issueValues = new ArrayList<ValueDiscrete>();
-	    for(int i=0; i<numberOfValues;i++) {
+		this.values = new ArrayList<ValueDiscrete>();
+	    for(int i=0; i< values.length;i++) {
 	    	ValueDiscrete v=new ValueDiscrete(values[i]);
-	        issueValues.add(v);
-	        fCosts.put(v, cost[i]);
+	        this.values.add(v);
+	        costs.put(v, cost[i]);
 	    }
 	}
 	
 	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent, Double[] cost) {
 		super(name, issueNumber, objParent);		
-		numberOfValues = values.length;
-		issueValues = new ArrayList<ValueDiscrete>();
-	    for(int i=0; i<numberOfValues;i++) {
+		this.values = new ArrayList<ValueDiscrete>();
+	    for(int i=0; i<values.length;i++) {
 			ValueDiscrete v=new ValueDiscrete(values[i]);
-	        issueValues.add(v);
-	        fCosts.put(v, cost[i]);
+	        this.values.add(v);
+	        costs.put(v, cost[i]);
 	        if (descriptions!=null && descriptions[i]!=null) fDesc.put(v,descriptions[i]);
 	    }
 	}
@@ -63,18 +58,18 @@ public class IssueDiscrete extends Issue {
 		if (!equalContents((Objective)o)) return false; // check the basic things like name
 		 // NOTE, we use .equals on issueValues which is an ArrayList.
 		 // therefore the ORDER of the issues is critical as well (as it should)
-		return issueValues.equals( ((IssueDiscrete)o).getValues());
+		return values.equals( ((IssueDiscrete)o).getValues());
 	}
 	public int getNumberOfValues() {
-	    return issueValues.size();
+	    return values.size();
 	}
 		
 	public ValueDiscrete getValue(int index) {
-		return (ValueDiscrete)issueValues.get(index);
+		return (ValueDiscrete)values.get(index);
 	}
 	
 	public String getStringValue(int index) {
-		return ((ValueDiscrete)issueValues.get(index)).getValue();
+		return ((ValueDiscrete)values.get(index)).getValue();
 	}
 	    
 	/** 
@@ -82,8 +77,8 @@ public class IssueDiscrete extends Issue {
 	 * @return index holding that value, or -1 if value is not one of the alternatives.
 	 */
 	public int getValueIndex(String value) {
-	    for(int i=0;i<numberOfValues;i++)
-	        if(issueValues.get(i).toString().equals(value)) {
+	    for(int i=0;i<values.size();i++)
+	        if(values.get(i).toString().equals(value)) {
 	            return i;
 	        }
 	    return -1;
@@ -94,8 +89,8 @@ public class IssueDiscrete extends Issue {
 	 * @return index holding that value, or -1 if value is not one of the alternatives.
 	 */
 	public int getValueIndex(ValueDiscrete value) {
-	    for(int i=0;i<numberOfValues;i++)
-	        if(issueValues.get(i).equals(value)) {
+	    for(int i=0;i<values.size();i++)
+	        if(values.get(i).equals(value)) {
 	            return i;
 	        }
 	    return -1;
@@ -106,7 +101,7 @@ public class IssueDiscrete extends Issue {
 	 *
 	 */
 	public void clear(){
-		issueValues.clear();
+		values.clear();
 	}
 	
 	/**
@@ -114,7 +109,7 @@ public class IssueDiscrete extends Issue {
 	 * @param valname The name of the value to add.
 	 */
 	public void addValue(String valname){
-		issueValues.add(new ValueDiscrete(valname));
+		values.add(new ValueDiscrete(valname));
 	}
 	
 	/**
@@ -123,7 +118,7 @@ public class IssueDiscrete extends Issue {
 	 */
 	public void addValues(String[] valnames){
 		for(int ind=0; ind < valnames.length; ind++){
-			issueValues.add(new ValueDiscrete(valnames[ind]));
+			values.add(new ValueDiscrete(valnames[ind]));
 		}
 	}
 	
@@ -136,8 +131,8 @@ public class IssueDiscrete extends Issue {
 	 * Gives an enumeration over all values in this discrete issue.
 	 * @return An enumeration containing <code>valueDiscrete</code>
 	 */
-	public ArrayList<ValueDiscrete> getValues() {
-		return issueValues;
+	public List<ValueDiscrete> getValues() {
+		return values;
 	}
 	
 	/**
@@ -152,11 +147,11 @@ public class IssueDiscrete extends Issue {
 		thisIssue.setAttribute("type", "discrete");
 		thisIssue.setAttribute("vtype", "discrete");
 		//TODO find some way of putting the items in. Probably in much the same way as weights.
-		for(int item_ind = 0; item_ind < numberOfValues; item_ind++){
+		for(int item_ind = 0; item_ind < values.size(); item_ind++){
 			SimpleElement thisItem = new SimpleElement("item");
 			thisItem.setAttribute("index", "" + (item_ind +1)); //One off error?
-			thisItem.setAttribute("value", issueValues.get(item_ind).toString());
-			String desc=fDesc.get(issueValues.get(item_ind));
+			thisItem.setAttribute("value", values.get(item_ind).toString());
+			String desc=fDesc.get(values.get(item_ind));
 			if (desc!=null) thisItem.setAttribute("description", desc);
 			thisIssue.addChildElement(thisItem);
  		}
@@ -182,11 +177,16 @@ public class IssueDiscrete extends Issue {
 	{ return fDesc.get(val); }
 	
 	public Double getCost(ValueDiscrete val) {
-		return fCosts.get(val);
+		return costs.get(val);
 	}
 
 	@Override
 	public ISSUETYPE getType() {
 		return ISSUETYPE.DISCRETE;
+	}
+
+	@Override
+	public String convertToString() {
+		return "discrete";
 	}
 }
