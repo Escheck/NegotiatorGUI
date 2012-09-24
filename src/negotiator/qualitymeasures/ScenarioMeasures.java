@@ -16,7 +16,7 @@ import negotiator.Domain;
 import negotiator.Global;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCash;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
@@ -221,7 +221,7 @@ public class ScenarioMeasures {
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double result = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCash.getBidSpace(utilitySpaceA, utilitySpaceB);
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
 			
 			if (bidSpace == null) {
 				try {   
@@ -249,7 +249,7 @@ public class ScenarioMeasures {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCash.getBidSpace(utilitySpaceA, utilitySpaceB);
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
 			
 			if (bidSpace == null) {
 				try {   

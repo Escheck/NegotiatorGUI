@@ -1,11 +1,7 @@
 package negotiator.issue;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Vector;
-
-import negotiator.exceptions.ValueTypeError;
 import negotiator.xml.SimpleElement;
 /**
 *
@@ -188,5 +184,9 @@ public class IssueDiscrete extends Issue {
 	public Double getCost(ValueDiscrete val) {
 		return fCosts.get(val);
 	}
-	
+
+	@Override
+	public ISSUETYPE getType() {
+		return ISSUETYPE.DISCRETE;
+	}
 }

@@ -1,5 +1,6 @@
 package negotiator.issue;
 
+import misc.Range;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -13,7 +14,7 @@ public class IssueReal extends Issue {
 	// Class fields
 	// Assumption 1: real-valued issues have a fixed range, with a lower and upper bound.
 	// Assumption 2: value ranges for issue are shared between agents.
-	RangeReal range;
+	private Range range;
 	//use this value for discrete operations in the analysis
 	//TODO make it template parameter
 	private int fNumberOfDiscretizationSteps = 21;
@@ -21,30 +22,30 @@ public class IssueReal extends Issue {
 	
 	public IssueReal(String name, int issueNumber, double min, double max) {
 		super(name, issueNumber);
-		range = new RangeReal(min, max);
+		range = new Range(min, max);
 	}
 	
 	public IssueReal(String name, int issueNumber, double min, double max, Objective objParent) {
 		super(name, issueNumber, objParent);
-		range = new RangeReal(min, max);
+		range = new Range(min, max);
 	}
 	
 	// Class method
 	public boolean checkInRange(ValueReal val) {
-			return ( ((ValueReal)val).getValue() >= range.getLowerBound() && ((ValueReal)val).getValue() <= range.getUpperBound());
+			return ( ((ValueReal)val).getValue() >= range.getLowerbound() && ((ValueReal)val).getValue() <= range.getUpperbound());
 	}
 	
 	public final double getLowerBound() {
-		return range.getLowerBound();
+		return range.getLowerbound();
 	}
 	
 	public final double getUpperBound() {
-		return range.getUpperBound();
+		return range.getUpperbound();
 	}
 	
 	public final boolean setUpperBound(double up){
-		if(up > range.lowerBound){
-			range.upperBound=up;
+		if(up > range.getLowerbound()){
+			range.setUpperbound(up);
 			return true;
 		}else{
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
@@ -54,8 +55,8 @@ public class IssueReal extends Issue {
 	}
 	
 	public final boolean setLowerBound(double lo){
-		if(lo < range.upperBound){
-			range.lowerBound=lo;
+		if(lo < range.getUpperbound()){
+			range.setLowerbound(lo);
 			return true;
 		}else{
 			System.out.println("Minimum bound exceeds maximum bound in integer-valued issue!");
@@ -89,5 +90,10 @@ public class IssueReal extends Issue {
 		//todo find way of adding items.
 		return thisIssue;
 		
+	}
+
+	@Override
+	public ISSUETYPE getType() {
+		return ISSUETYPE.REAL;
 	}
 }

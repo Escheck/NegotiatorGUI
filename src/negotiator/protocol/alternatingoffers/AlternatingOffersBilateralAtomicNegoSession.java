@@ -19,7 +19,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCash;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeTuple;
@@ -510,7 +510,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
 		if (Global.LOW_MEMORY_MODE) {
-			BidSpaceCash.removeBidSpace(spaceA, spaceB);
+			BidSpaceCache.removeBidSpace(spaceA, spaceB);
 		}
 	}
 	
@@ -542,7 +542,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		fireNegotiationActionEvent(currentAgent,lastAction,sessionNumber,
 				System.currentTimeMillis()-startTimeMillies,time,utilA,utilB,utilADiscount,utilBDiscount,message, true);
 		if (Global.LOW_MEMORY_MODE) {
-			BidSpaceCash.removeBidSpace(spaceA, spaceB);
+			BidSpaceCache.removeBidSpace(spaceA, spaceB);
 		}
 	}
 
