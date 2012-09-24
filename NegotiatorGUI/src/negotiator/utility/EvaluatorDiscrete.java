@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -295,7 +296,7 @@ public class EvaluatorDiscrete implements Evaluator {
 				throw new Exception("this discrete evaluator is associated with something of type "+whichobj.getClass());
 			// check that each issue value has an evaluator.
 			IssueDiscrete issue=(IssueDiscrete)whichobj;
-			ArrayList<ValueDiscrete>  values=issue.getValues();
+			List<ValueDiscrete>  values=issue.getValues();
 			for (ValueDiscrete value: values) 
 				if (fEval.get(value)==null) throw new Exception("the value "+value+" has no evaluation in the objective ");
 		}

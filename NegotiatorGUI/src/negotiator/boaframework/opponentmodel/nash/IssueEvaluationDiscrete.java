@@ -2,6 +2,7 @@ package negotiator.boaframework.opponentmodel.nash;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import negotiator.issue.IssueDiscrete;
@@ -62,7 +63,7 @@ public class IssueEvaluationDiscrete extends AIssueEvaluation
 	 */
 	protected void initValueFrequencyMap() 
 	{
-		ArrayList<ValueDiscrete> discreteValues = this.getIssueDiscrete().getValues();
+		List<ValueDiscrete> discreteValues = this.getIssueDiscrete().getValues();
 		this.valueFrequencyMap = new HashMap<String, Integer>(discreteValues.size());
 		
 		//Get all possible values of the discrete issue and give all of them frequency zero.
@@ -77,7 +78,7 @@ public class IssueEvaluationDiscrete extends AIssueEvaluation
 	 */
 	private void initValueWeightMap() 
 	{
-		ArrayList<ValueDiscrete> discreteValues = this.getIssueDiscrete().getValues();
+		List<ValueDiscrete> discreteValues = this.getIssueDiscrete().getValues();
 		this.normalizedValueWeightMap = new HashMap<String, Double>(discreteValues.size());
 		
 		//Get all possible values of the discrete issue and them weight -1.

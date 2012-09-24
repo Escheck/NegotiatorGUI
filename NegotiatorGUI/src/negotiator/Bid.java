@@ -228,8 +228,7 @@ public final class Bid implements XMLable
 
 			Value lVal = fValues.get(lIssue.getNumber());
 			SimpleElement lXMLIssue = new SimpleElement("issue");
-			lXMLIssue.setAttribute("type",
-					Issue.convertToString(lIssue.getType()));
+			lXMLIssue.setAttribute("type", lIssue.convertToString());
 			lXMLIssue.setAttribute("index", String.valueOf(lIssue.getNumber()));
 			lXMLBid.addChildElement(lXMLIssue); SimpleElement lXMLItem=null;		 
 			switch(lVal.getType()) { 

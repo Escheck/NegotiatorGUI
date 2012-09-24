@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -466,7 +467,7 @@ public class BidTable {
 			switch(theIssue.getType()) {
 				case DISCRETE:
 					IssueDiscrete theIssueDiscrete = (IssueDiscrete)theIssue;
-					ArrayList<ValueDiscrete> vals = theIssueDiscrete.getValues();
+					List<ValueDiscrete> vals = theIssueDiscrete.getValues();
 					for(ValueDiscrete v : vals){
 						valueset.put(theIssueDiscrete.getNumber(), v);
 						recursiveArrayFiller(issues, (depth+1), valueset);

@@ -1,6 +1,7 @@
 package negotiator.boaframework.opponentmodel.agentx;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
@@ -23,7 +24,7 @@ public class DiscreteValueProcessor {
 	 * Creates a valueProcessor containing ranks of and number of bids on a list of values. Use getValues from the Issue class to get such a list.
 	 * @param valList
 	 */
-	public DiscreteValueProcessor(ArrayList<?> valList){
+	public DiscreteValueProcessor(List<?> valList){
 		for (Object o : valList){
 			if (o instanceof ValueDiscrete){
 				valueList.add((ValueDiscrete) o);
