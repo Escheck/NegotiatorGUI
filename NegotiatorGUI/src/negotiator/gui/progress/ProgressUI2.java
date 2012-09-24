@@ -8,6 +8,7 @@ package negotiator.gui.progress;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -247,7 +248,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 
     private double[][] getPareto(){
 		double [][] pareto=null;
-		ArrayList <BidPoint>paretoBids = null;
+		List <BidPoint>paretoBids = null;
 		BidSpace bs = session.getBidSpace();
 		if(bs==null)System.out.println("bidspace == null");
 		else{

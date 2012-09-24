@@ -1,9 +1,7 @@
 package negotiator.analysis;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -11,39 +9,45 @@ import negotiator.Global;
 import negotiator.utility.UtilitySpace;
 
 /**
- * @author W.Pasman 15nov07
  * BidSpace is a class that can store and do analysis of a space of bids.
- * There seems lot of overlap with the Analysis class.
- * But to be safe I did not try to modify the Analysis class and introduced a new class.
+ * @author Dmytro Tykhonov, Tim Baarslag, Wouter Pasman
  */
 public class BidSpace {
-	UtilitySpace utilspaceA;
-	UtilitySpace utilspaceB;
-	/** equal to utilspaceA.domain = utilspaceB.domain */
-	Domain domain;
-	public ArrayList<BidPoint> bidPoints;
+	private UtilitySpace [] utilspaces;
+	/** equal for all utility spaces */
+	private Domain domain;
+	public ArrayList<BidPoint> bidPoints; // size = size(domain)
 	
 	/** All cache */
-	ArrayList<BidPoint> paretoFrontier=null; // not yet set.
-	BidPoint kalaiSmorodinsky=null; // null if not set.
-	BidPoint nash=null; // null if not set.
+	List<BidPoint> paretoFrontier=null; // null if not yet computed
+	BidPoint kalaiSmorodinsky=null; // null if not yet computed
+	BidPoint nash=null; // null if not yet computed
 	
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB) throws Exception
-	{
-		utilspaceA=spaceA;
-		utilspaceB=spaceB;
-		if (utilspaceA==null || utilspaceB==null)
-			throw new NullPointerException("util space is null");
-		domain=utilspaceA.getDomain();
-		utilspaceA.checkReadyForNegotiation("spaceA", domain);
-		utilspaceB.checkReadyForNegotiation("spaceA", domain);
+	public BidSpace(UtilitySpace[] spaces) throws Exception {
+		initializeUtilitySpaces(spaces);
 		if (Global.LOW_MEMORY_MODE) {
-			BuildSpace(true);
+			buildSpace(true);
 		} else {
-			BuildSpace(false);
+			buildSpace(false);
 		}
 	}
 	
+	private void initializeUtilitySpaces(UtilitySpace[] spaces) throws Exception {
+		utilspaces = spaces.clone();
+		for (UtilitySpace utilitySpace : spaces) 
+		{
+			if (utilitySpace==null)
+				throw new NullPointerException("util space is null: " + spaces);
+		}
+		domain = utilspaces[0].getDomain();
+		for (UtilitySpace space : spaces) {
+			space.checkReadyForNegotiation(domain);
+		}
+	}
+
+	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB) throws Exception {
+		this(new UtilitySpace [] {spaceA, spaceB});
+	}	
 	
 	/**
 	 * special version that does NOT check the *second* utility space for
@@ -56,36 +60,33 @@ public class BidSpace {
 	 */
 	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids) throws Exception
 	{
-		utilspaceA=spaceA;
-		utilspaceB=spaceB;
-		if (utilspaceA==null || utilspaceB==null)
-			throw new NullPointerException("util space is null");
-		domain=utilspaceA.getDomain();
-		utilspaceA.checkReadyForNegotiation("spaceA", domain);
-		BuildSpace(excludeBids);
+		UtilitySpace[] spaces = { spaceA, spaceB };
+		initializeUtilitySpaces(spaces);
+		buildSpace(excludeBids);
 	}
-	/*
-	 * Create the space with all bid points from the two util spaces.
-	 * @throws exception if utility can not be computed for some poitn.
+	
+	/**
+	 * Create the space with all bid points from all the {@link UtilitySpace}s.
+	 * @throws exception if utility can not be computed for some point.
 	 * This should not happen as it seems we checked beforehand that all is set OK.
 	 */
-	void BuildSpace(boolean excludeBids) throws Exception
+	private void buildSpace(boolean excludeBids) throws Exception
 	{
-		// initially allocating the right size improves computational efficiency and memory cost
-		bidPoints=new ArrayList<BidPoint>((int)domain.getNumberOfPossibleBids());
+		bidPoints=new ArrayList<BidPoint>();
 		BidIterator lBidIter = new BidIterator(domain);
 		
 		// if low memory mode, do not store the actual. At the time of writing this
 		// has no side-effects
-		if (excludeBids) {
-			while(lBidIter.hasNext()) {
-				Bid bid = lBidIter.next();
-				bidPoints.add(new BidPoint(null, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
+		while(lBidIter.hasNext()) {
+			Bid bid = lBidIter.next();
+			Double[] utils = new Double[utilspaces.length];
+			for(int i =0; i<utilspaces.length;i++) {
+				utils[i] = utilspaces[i].getUtility(bid);
 			}
-		} else {
-			while(lBidIter.hasNext()) {
-				Bid bid = lBidIter.next();
-				bidPoints.add(new BidPoint(bid, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
+			if (excludeBids) {
+				bidPoints.add(new BidPoint(null, utils));
+			} else {
+				bidPoints.add(new BidPoint(bid, utils));
 			}
 		}
 	}
@@ -94,7 +95,7 @@ public class BidSpace {
 	 * @return The Pareto frontier. The order is  ascending utilityA.
 	 * @throws Exception
 	 */
-	public ArrayList<BidPoint> getParetoFrontier() throws Exception
+	public List<BidPoint> getParetoFrontier() throws Exception
 	{
 		boolean isBidSpaceAvailable = !bidPoints.isEmpty();
 		if (paretoFrontier==null)
@@ -102,22 +103,21 @@ public class BidSpace {
 			long t = System.nanoTime();
 			if (isBidSpaceAvailable)
 			{
-//				System.out.println("ParetoFrontier start computation for known bid space of size " + bidPoints.size());
 				paretoFrontier = computeParetoFrontier(bidPoints).getFrontier();
-//				System.out.println("ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");;
 				return paretoFrontier;
 			}
 
-//			System.out.println("ParetoFrontier start computation for very large bid space of size "  + domain.getNumberOfPossibleBids());
 			ArrayList<BidPoint> subPareto = new ArrayList<BidPoint >();
 			BidIterator lBidIter = new BidIterator(domain);
 			ArrayList<BidPoint> tmpBidPoints = new ArrayList<BidPoint>();
 			boolean isSplitted = false;
 			int count=0;
-			while(lBidIter.hasNext()) 
-			{
+			while(lBidIter.hasNext()) {
 				Bid bid = lBidIter.next();
-				tmpBidPoints.add(new BidPoint(bid, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
+				Double[] utils = new Double[utilspaces.length];
+				for(int i=0; i<utilspaces.length;i++)
+					utils[i] = utilspaces[i].getUtility(bid);
+				tmpBidPoints.add(new BidPoint(bid,utils));
 				count++;
 				if(count>500000) 
 				{
@@ -134,7 +134,6 @@ public class BidSpace {
 				paretoFrontier = computeParetoFrontier(subPareto).getFrontier();		// merge sub-pareto's
 			else
 				paretoFrontier = subPareto;
-			System.out.println("Multi-ParetoFrontier end computation:"+ (System.nanoTime() - t) / 1000000 + "ms.");
 		}
 		return paretoFrontier;
 	}
@@ -153,14 +152,13 @@ public class BidSpace {
 			frontier.mergeIntoFrontier(p);
 
 		frontier.sort();
-//		System.out.println("Frontier = " + frontier.size() + ": " + frontier);
 		return frontier;
 	}
 	
-	public ArrayList<Bid> getParetoFrontierBids() throws Exception
+	public List<Bid> getParetoFrontierBids() throws Exception
 	{
 		ArrayList<Bid> bids=new ArrayList<Bid> ();
-		ArrayList<BidPoint> points=getParetoFrontier();
+		List<BidPoint> points = getParetoFrontier();
 		for (BidPoint p:points) bids.add(p.bid);
 		return bids;
 	}
@@ -179,16 +177,20 @@ public class BidSpace {
 		if (kalaiSmorodinsky!=null) return kalaiSmorodinsky;
 		if(getParetoFrontier().size()<1) 
 			throw new AnalysisException("kalaiSmorodinsky product: Pareto frontier is unavailable.");
-		double minassymetry=2; // every point in space will have lower assymetry than this.
+		double asymmetry=2; // every point in space will have lower asymmetry than this.
 		for (BidPoint p:paretoFrontier)
 		{
-			double asymofp = Math.abs(p.getUtilityA()-p.getUtilityB());
-			if (asymofp<minassymetry) { kalaiSmorodinsky=p; minassymetry=asymofp; }
+			double asymofp = 0;
+			for(int i=0;i<utilspaces.length;i++) {
+				for(int j=i+1;j<utilspaces.length;j++) {
+					asymofp += Math.abs(p.getUtility(i)-p.getUtility(j));
+				}
+			}
+			
+			if (asymofp<asymmetry) { kalaiSmorodinsky=p; asymmetry=asymofp; }
 		}
 		return kalaiSmorodinsky;
 	}
-	
-	
 	
 	/**
 	 * Calculates the undiscounted Nash optimal outcome. Assumes that Pareto frontier is already built.
@@ -199,53 +201,59 @@ public class BidSpace {
 	 */
 	public BidPoint getNash() throws Exception 
 	{
-		if (nash!=null) return nash;
-		if(getParetoFrontier().size()<1) 
-			throw new AnalysisException("Nash product: Pareto frontier is unavailable.");
+		if (nash != null)
+			return nash;
+		if (getParetoFrontier().size() < 1)
+			throw new AnalysisException(
+					"Nash product: Pareto frontier is unavailable.");
 		double maxp = -1;
-		double agentAresValue=0, agentBresValue=0;
-		if(utilspaceA.getReservationValue()!=null) agentAresValue = utilspaceA.getReservationValue();
-		if(utilspaceB.getReservationValue()!=null) agentBresValue = utilspaceB.getReservationValue();
-		for (BidPoint p:paretoFrontier)
-		{
-			double utilofp = (p.getUtilityA() -agentAresValue)*(p.getUtilityB()-agentBresValue);
-			if (utilofp>maxp) { nash=p; maxp=utilofp; }
+		double[] agentResValue = new double[utilspaces.length];
+		for (int i = 0; i < utilspaces.length; i++)
+			if (utilspaces[i].getReservationValue() != null)
+				agentResValue[i] = utilspaces[i].getReservationValue();
+			else
+				agentResValue[i] = .0;
+		for (BidPoint p : paretoFrontier) {
+			double utilofp = 1;
+			for (int i = 0; i < utilspaces.length; i++)
+				utilofp = utilofp * (p.getUtility(i) - agentResValue[i]);
+
+			if (utilofp > maxp) {
+				nash = p;
+				maxp = utilofp;
+			}
 		}
 		return nash;
 	}
 	
-	/**
+/**
 	 * Calculate own coordinate 
 	 * @param opponentUtility
 	 * @return the utility of us on the pareto curve
 	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier contains utilityB=NAN.
 	 * Still unclear why utilB evaluates to NAN though...
 	 */
-	public double OurUtilityOnPareto(double opponentUtility) throws Exception
+	public double ourUtilityOnPareto(double opponentUtility) throws Exception
 	{
 		if (opponentUtility<0. || opponentUtility>1.)
 			throw new Exception("opponentUtil "+opponentUtility+" is out of [0,1].");
-		ArrayList<BidPoint> pareto=getParetoFrontier();
+		List<BidPoint> pareto=getParetoFrontier();
 		// our utility is along A axis, opp util along B axis.
 
 		//add endpoints to pareto curve such that utilB spans [0,1] entirely
-		if (pareto.get(0).getUtilityB()<1) pareto.add(0,new BidPoint(null,0.,1.));
-		if (pareto.get(pareto.size()-1).getUtilityB()>0) pareto.add(new BidPoint(null,1.,0.));
+		if (pareto.get(0).getUtility(1)<1) pareto.add(0,new BidPoint(null,new Double[] {0.,1.}));
+		if (pareto.get(pareto.size()-1).getUtility(1)>0) pareto.add(new BidPoint(null,new Double[] {1.,0.}));
 		if (pareto.size()<2) throw new Exception("Pareto has only 1 point?!"+pareto);
 		// pareto is monotonically descending in utilB direction.
 		int i=0;
-//		System.out.println("Searching for opponentUtility = " + opponentUtility);
-		while (! (pareto.get(i).getUtilityB()>=opponentUtility && opponentUtility>=pareto.get(i+1).getUtilityB())) 
-		{
-//			System.out.println(i + ". Trying [" + pareto.get(i).utilityB +  ", " + pareto.get(i+1).utilityB + "]");
+		while (! (pareto.get(i).getUtility(1)>=opponentUtility && opponentUtility>pareto.get(i+1).getUtility(1))) 
 			i++;
-		}
-		
-		double oppUtil1=pareto.get(i).getUtilityB(); // this is the high value
-		double oppUtil2=pareto.get(i+1).getUtilityB(); // the low value
+
+		double oppUtil1=pareto.get(i).getUtility(1); // this is the high value
+		double oppUtil2=pareto.get(i+1).getUtility(1); // the low value
 		double f=(opponentUtility-oppUtil1)/(oppUtil2-oppUtil1); // f in [0,1] is relative distance from point i.
 		// close to point i means f~0. close to i+1 means f~1
-		double lininterpol=(1-f)*pareto.get(i).getUtilityA()+f*pareto.get(i+1).getUtilityA();
+		double lininterpol=(1-f)*pareto.get(i).getUtility(0)+f*pareto.get(i+1).getUtility(0);
 		return lininterpol;
 	}
 	
@@ -265,30 +273,24 @@ public class BidSpace {
 	 * @param excludeList Bids to be excluded from the search.
 	 * @return best point, or null if none remaining.
 	 */
-	public BidPoint NearestBidPoint(double utilA,double utilB,double weightA,double weightB,
+	public BidPoint getNearestBidPoint(double utilA,double utilB,double weightA,double weightB,
 			ArrayList<Bid> excludeList)
 	{
 		System.out.println("determining nearest bid to "+utilA+","+utilB);
-//		System.out.println("excludes="+excludeList);
+		System.out.println("excludes="+excludeList);
 		double mindist=9.; // paretospace distances are always smaller than 2
 		BidPoint bestPoint=null;
 		double r;
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			//disabled excluding 16-11-2010
-			//for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
-			// WERKT NIET????if (excludeList.indexOf(p.bid)!=-1) continue; 
-			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
-			// although manual claims that indexOf is using equals???
+			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
 			if (contains) continue;
-			r=weightA*sq(p.getUtilityA()-utilA)+weightB*sq(p.getUtilityB()-utilB);
+			r=weightA*sq(p.getUtility(0)-utilA)+weightB*sq(p.getUtility(1)-utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
-		System.out.println("point found: (" + bestPoint.getUtilityA() + ", " + bestPoint.getUtilityB() + ") ="+bestPoint.bid);
-		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
-//		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
-		//System.out.println();
+		System.out.println("point found="+bestPoint.bid);
+		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
 		return bestPoint;
 	}
 	

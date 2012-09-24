@@ -288,7 +288,7 @@ public class NegotiationOutcome {
 	 */
 	public static double getFYU(String agentX, BidSpace bidSpace)
 	{
-		ArrayList<BidPoint> paretoFrontier = null;
+		List<BidPoint> paretoFrontier = null;
 		try
 		{
 			paretoFrontier = bidSpace.getParetoFrontier();

@@ -2,6 +2,8 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
@@ -65,8 +67,9 @@ public class OpponentModelMeasures {
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
-			realParetoBids = realBS.getParetoFrontierBids();
-			paretoSurface = calculateParetoSurface((ArrayList<BidPoint>) realBS.getParetoFrontier().clone());
+			realParetoBids = new ArrayList<Bid>(realBS.getParetoFrontierBids());
+			ArrayList<BidPoint> realParetoBidPoints = new ArrayList<BidPoint>(realBS.getParetoFrontier());
+			paretoSurface = calculateParetoSurface(realParetoBidPoints);
 			opponentOutcomeSpace = new SortedOutcomeSpace(opponentUS);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +181,7 @@ public class OpponentModelMeasures {
 	 * @return percentage of found real Pareto bids
 	 */
 	public double calculatePercCorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
-		ArrayList<Bid> estimatedPFBids = null;
+		List<Bid> estimatedPFBids = null;
 		try {
 			estimatedPFBids = estimatedBS.getParetoFrontierBids();
 		} catch (Exception e) {
@@ -205,7 +208,7 @@ public class OpponentModelMeasures {
 	 * optimal bids
 	 */
 	public double calculatePercIncorrectlyEstimatedParetoBids(BidSpace estimatedBS) {
-		ArrayList<Bid> estimatedPFBids = null;
+		List<Bid> estimatedPFBids = null;
 		try {
 			estimatedPFBids = estimatedBS.getParetoFrontierBids();
 		} catch (Exception e) {
@@ -239,9 +242,9 @@ public class OpponentModelMeasures {
 	 */
 	public double calculateParetoFrontierDistance(BidSpace estimatedBS) {
 		// 1. map bids of estimated frontier to real space
-		ArrayList<BidPoint> estimatedPFBP = new ArrayList<BidPoint>();
+		List<BidPoint> estimatedPFBP = new ArrayList<BidPoint>();
 		try {
-			ArrayList<Bid> estimatedPFBids = estimatedBS.getParetoFrontierBids();
+			List<Bid> estimatedPFBids = estimatedBS.getParetoFrontierBids();
 			for (Bid bid : estimatedPFBids) {
 				estimatedPFBP.add(new BidPoint(null, ownUS.getUtility(bid), opponentUS.getUtility(bid)));
 			}
@@ -253,7 +256,7 @@ public class OpponentModelMeasures {
 		return Math.abs(paretoSurface - estimatedParetoSurface);
 	}
 	
-	private double calculateParetoSurface(ArrayList<BidPoint> paretoFrontier) {
+	private double calculateParetoSurface(List<BidPoint> paretoFrontier) {
 		// Add 0.0; 1.0 and 1.0; 0.0 to set
 		boolean foundZero = false;
 		boolean foundOne = false;

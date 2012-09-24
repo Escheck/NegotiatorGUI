@@ -220,14 +220,14 @@ public class UtilitySpace {
      * @param d is the domain in which nego is taking place
      * throws if problem occurs.
      */
-    public void checkReadyForNegotiation(String agentName, Domain dom) throws Exception
+    public void checkReadyForNegotiation(Domain dom) throws Exception
     {
         // check if utility spaces are instance of the domain
         // following checks normally succeed, as the domain of the domain space is enforced in the loader.
         if (!(dom.equals(domain)))
-        	throw new Exception("domain of agent "+agentName+"does not match the negotiation domain");
+        	throw new Exception("domain does not match the negotiation domain");
         String err=IsComplete();
-        if (err!=null) throw new Exception("utility space '"+ fileName +"' of agent "+agentName+" is incomplete\n"+err);
+        if (err!=null) throw new Exception("utility space '"+ fileName +"' is incomplete\n"+err);
         
 //        TODO 
 //         if (!checkTreeNormalization()) 
