@@ -99,7 +99,7 @@ public class ParetoTest {
 			// 2. Determine all Pareto-bids using both a bruteforce algorithm and algorithm in the BidSpace class
 			ArrayList<BidPoint> realParetoBids = bruteforceParetoBids(domain, utilitySpaceA, utilitySpaceB);
 			BidSpace space = new BidSpace(utilitySpaceA, utilitySpaceB);
-			ArrayList<BidPoint> estimatedParetoBids = space.getParetoFrontier();
+			ArrayList<BidPoint> estimatedParetoBids = new ArrayList(space.getParetoFrontier());
 			
 			// 3. Check if there is a difference in the output
 			if (checkValidity(estimatedParetoBids, realParetoBids)) {

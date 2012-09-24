@@ -1,6 +1,7 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -199,7 +200,7 @@ public class ScenarioMeasures {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		ArrayList<Bid> bids = null;
+		List<Bid> bids = null;
 		try {
 			bids = space.getParetoFrontierBids();
 		} catch (Exception e) {

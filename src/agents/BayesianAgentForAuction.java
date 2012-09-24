@@ -248,9 +248,9 @@ public class BayesianAgentForAuction extends Agent {
 		log("our target opponent utility="+OurTargetBidOppUtil);
 		
 		// find the target on the pareto curve
-		double targetUtil=bs.OurUtilityOnPareto(OurTargetBidOppUtil);
+		double targetUtil=bs.ourUtilityOnPareto(OurTargetBidOppUtil);
 		
-		BidPoint bp= bs.NearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
+		BidPoint bp= bs.getNearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,1,myPreviousBids);
 		log("found bid "+bp);
 		return bp.bid;
 	}

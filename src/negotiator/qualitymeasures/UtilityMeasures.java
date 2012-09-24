@@ -1,6 +1,6 @@
 package negotiator.qualitymeasures;
 
-import java.util.ArrayList;
+import java.util.List;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.xml.OrderedSimpleElement;
@@ -69,7 +69,7 @@ public class UtilityMeasures {
 	private double calculateParetoDistance(double utilA, double utilB) {
 		double paretoDistance = 2.0;
 		try {
-			ArrayList<BidPoint> bids = bidSpace.getParetoFrontier();
+			List<BidPoint> bids = bidSpace.getParetoFrontier();
 
 			for (BidPoint bid : bids) {
 				double dist = UtilspaceTools.distanceBetweenTwoPoints(bid.getUtilityA(), bid.getUtilityB(), utilA, utilB);

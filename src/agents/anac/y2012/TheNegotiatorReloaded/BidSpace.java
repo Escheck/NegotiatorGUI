@@ -29,8 +29,8 @@ public class BidSpace {
 		if (utilspaceA==null || utilspaceB==null)
 			throw new NullPointerException("util space is null");
 		domain=utilspaceA.getDomain();
-		utilspaceA.checkReadyForNegotiation("spaceA", domain);
-		utilspaceB.checkReadyForNegotiation("spaceA", domain);
+		utilspaceA.checkReadyForNegotiation(domain);
+		utilspaceB.checkReadyForNegotiation(domain);
 		BuildSpace();
 	}
 	
@@ -53,7 +53,7 @@ public class BidSpace {
 		if (utilspaceA==null || utilspaceB==null)
 			throw new NullPointerException("util space is null");
 		domain=utilspaceA.getDomain();
-		utilspaceA.checkReadyForNegotiation("spaceA", domain);
+		utilspaceA.checkReadyForNegotiation(domain);
 		BuildSpace();
 	}
 	
