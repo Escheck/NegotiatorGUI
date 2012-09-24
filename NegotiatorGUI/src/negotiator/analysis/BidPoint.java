@@ -39,15 +39,30 @@ public class BidPoint
 		}
 		return result;
 	}
-	
-	boolean equals(BidPoint pt)
-	{
-		return bid.equals(pt.bid);
-	}
+
+
 	
 	@Override
-	public int hashCode()
-	{
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BidPoint other = (BidPoint) obj;
+		if (bid == null) {
+			if (other.bid != null)
+				return false;
+		} else if (!bid.equals(other.bid))
+			return false;
+		if (!Arrays.equals(utility, other.utility))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bid == null) ? 0 : bid.hashCode());
@@ -75,21 +90,18 @@ public class BidPoint
 		return utility[1];
 	}
 	
-	/**
-	 * @param p
-	 * @return whether <b>this</b> is (not-strictly) dominated by p.
-	 */
 	public boolean isDominatedBy(BidPoint p)
 	{
-		boolean result = true;
-		for(int i=0;i<utility.length;i++) {
-			if(this.utility[i] > p.getUtility(i)) {
-				result = false;
-				break;
-			}
+
+		if ((this != p && (p.getUtilityA() > this.getUtilityA() &&
+				p.getUtilityB() >= this.getUtilityB()) ||
+				(p.getUtilityA() >= this.getUtilityA() &&
+				p.getUtilityB() > this.getUtilityB()))){
+				return true;
 		}
-		return result;
+		return false;
 	}
+	
 
 	public double getTwoDimensionalDistance(BidPoint b) {
 		return Math.sqrt(Math.pow((this.getUtilityA() - b.getUtilityA()), 2) + Math.pow((this.getUtilityB() - b.getUtilityB()), 2));
