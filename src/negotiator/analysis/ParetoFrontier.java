@@ -84,9 +84,9 @@ public class ParetoFrontier
 		Collections.sort(frontier, new Comparator<BidPoint>() {
 			
 			public int compare(BidPoint x, BidPoint y) {
-				if (x.utilityA < y.utilityA)
+				if (x.getUtilityA() < y.getUtilityA())
 					return -1;
-				else if (x.utilityA > y.utilityA)
+				else if (x.getUtilityA() > y.getUtilityA())
 					return 1;
 				else
 					return 0;

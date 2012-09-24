@@ -85,15 +85,15 @@ public class TrajectoryMeasures {
 	 */
 	private void processBid(BidPoint prevBid, BidPoint bid, boolean isAgentA) {
 		
-		double utilMine = bid.utilityA;
-		double utilTheirs = bid.utilityB;
-		double prevUtilMine = prevBid.utilityA;
-		double prevUtilTheirs = prevBid.utilityB;
+		double utilMine = bid.getUtilityA();
+		double utilTheirs = bid.getUtilityB();
+		double prevUtilMine = prevBid.getUtilityA();
+		double prevUtilTheirs = prevBid.getUtilityB();
 		if (!isAgentA) {
-			utilMine = bid.utilityB;
-			utilTheirs = bid.utilityA;
-			prevUtilMine = prevBid.utilityB;
-			prevUtilTheirs = prevBid.utilityA;
+			utilMine = bid.getUtilityB();
+			utilTheirs = bid.getUtilityA();
+			prevUtilMine = prevBid.getUtilityB();
+			prevUtilTheirs = prevBid.getUtilityA();
 		}
 
 		if (Math.abs(utilMine - prevUtilMine) <= SILENTTHRESHOLD && Math.abs(utilTheirs - prevUtilTheirs) <= SILENTTHRESHOLD) {

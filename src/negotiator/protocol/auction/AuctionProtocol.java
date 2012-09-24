@@ -121,13 +121,13 @@ public class AuctionProtocol extends Protocol {
 				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Nash");
 				BidSpace bidSpace = BidSpaceCash.getBidSpace(getAgentUtilitySpaces(0), getAgentUtilitySpaces(i+1));
-				solution.setAttribute("utilityA", String.valueOf(bidSpace.getNash().utilityA));
-				solution.setAttribute("utilityB", String.valueOf(bidSpace.getNash().utilityB));
+				solution.setAttribute("utilityA", String.valueOf(bidSpace.getNash().getUtilityA()));
+				solution.setAttribute("utilityB", String.valueOf(bidSpace.getNash().getUtilityB()));
 				solution = new SimpleElement("solution");
 				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Kalai");
-				solution.setAttribute("utilityA", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityA));
-				solution.setAttribute("utilityB", String.valueOf(bidSpace.getKalaiSmorodinsky().utilityB));
+				solution.setAttribute("utilityA", String.valueOf(bidSpace.getKalaiSmorodinsky().getUtilityA()));
+				solution.setAttribute("utilityB", String.valueOf(bidSpace.getKalaiSmorodinsky().getUtilityB()));
 			}
 		}		
 		catch (Exception e) {

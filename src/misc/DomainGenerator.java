@@ -205,12 +205,12 @@ public class DomainGenerator {
 		try {
 			BidSpace bidSpace = new BidSpace(utilitySpaceA, utilitySpaceB);
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
-			return kalai.distanceTo(new BidPoint(null, 1.0, 1.0));
+			return kalai.getTwoDimensionalDistance(new BidPoint(null, 1.0, 1.0));
 		} catch (Exception e) { e.printStackTrace(); }
 		
 		return result;
 	}
-	
+
 	/**
 	 * Calculate the bid distribution of the scenario
 	 * 

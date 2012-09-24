@@ -15,18 +15,7 @@ public class BidPointTime extends BidPoint{
 	
 	@Override
 	public String toString(){
-		return "BidPointTime ["+bid+" utilA["+utilityA+"],utilB["+utilityB+"], Time["+time+"]]";
-	}
-	
-	@Override
-	public SimpleElement toXML()
-	{
-		SimpleElement xml = new OrderedSimpleElement("BidPoint");
-		xml.addChildElement(bid.toXML());
-		xml.setAttribute("utilityA", String.valueOf(utilityA));
-		xml.setAttribute("utilityB", String.valueOf(utilityB));
-		xml.setAttribute("time", String.valueOf(time));
-		return xml;
+		return "BidPointTime ["+bid+" utilA["+getUtilityA()+"],utilB["+getUtilityB()+"], Time["+time+"]]";
 	}
 	
 	@Override
@@ -43,15 +32,15 @@ public class BidPointTime extends BidPoint{
 				return false;
 		} else if (!bid.equals(other.bid))
 			return false;
-		if (utilityA == null) {
-			if (other.utilityA != null)
+		if (getUtilityA() == null) {
+			if (other.getUtilityA() != null)
 				return false;
-		} else if (!utilityA.equals(other.utilityA))
+		} else if (!getUtilityA().equals(other.getUtilityA()))
 			return false;
-		if (utilityB == null) {
-			if (other.utilityB != null)
+		if (getUtilityB() == null) {
+			if (other.getUtilityB() != null)
 				return false;
-		} else if (!utilityB.equals(other.utilityB))
+		} else if (!getUtilityB().equals(other.getUtilityB()))
 			return false;
 		if (time == null) {
 			if (other.time != null)

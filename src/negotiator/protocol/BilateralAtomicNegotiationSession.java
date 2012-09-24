@@ -159,8 +159,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 			int i=0;
 	    	for (BidPoint p:fAgentABids)
 	    	{
-	        	lAgentAUtilities [0][i] = p.utilityA;
-	        	lAgentAUtilities [1][i] = p.utilityB;
+	        	lAgentAUtilities [0][i] = p.getUtilityA();
+	        	lAgentAUtilities [1][i] = p.getUtilityB();
 	        	i++;
 	    	}
         } catch (Exception e) {
@@ -186,8 +186,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 			int i=0;
 	    	for (BidPoint p:fAgentBBids)
 	    	{
-	        	lAgentBUtilities [0][i] = p.utilityA;
-	        	lAgentBUtilities [1][i] = p.utilityB;
+	        	lAgentBUtilities [0][i] = p.getUtilityA();
+	        	lAgentBUtilities [1][i] = p.getUtilityB();
 	        	i++;
 	    	}
 	 	} catch (Exception e) {

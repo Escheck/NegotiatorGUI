@@ -398,15 +398,15 @@ public class AlternatingOffersProtocol extends Protocol {
 			int i=0;
 			for (BidPoint p:pAgentABids)
 			{
-				lAgentAUtilities [i][0] = p.utilityA;
-				lAgentAUtilities [i][1] = p.utilityB;
+				lAgentAUtilities [i][0] = p.getUtilityA();
+				lAgentAUtilities [i][1] = p.getUtilityB();
 				i++;
 			}
 			i=0;
 			for (BidPoint p:pAgentBBids)
 			{
-				lAgentBUtilities [i][0] = p.utilityA;
-				lAgentBUtilities [i][1] = p.utilityB;
+				lAgentBUtilities [i][0] = p.getUtilityA();
+				lAgentBUtilities [i][1] = p.getUtilityB();
 				i++;
 			}
 

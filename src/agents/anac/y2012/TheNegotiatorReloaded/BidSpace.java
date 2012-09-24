@@ -67,7 +67,7 @@ public class BidSpace {
 	{
 		bidPoints=new ArrayList<BidPoint>();
 		BidIterator lBidIter = new BidIterator(domain);
-		
+
 		while(lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();
 			bidPoints.add(new BidPoint(null, utilspaceA.getUtility(bid), utilspaceB.getUtility(bid)));
@@ -155,7 +155,7 @@ public class BidSpace {
 		ArrayList<BidPoint> list1=(ArrayList<BidPoint>)(pareto1.clone()); 
 		ArrayList<BidPoint> list2=(ArrayList<BidPoint>)(pareto2.clone());
 		 // make sure that the first pareto list has the left most point.
-		if (list1.get(0).utilityA>list2.get(0).utilityA) 
+		if (list1.get(0).getUtilityA() >list2.get(0).getUtilityA()) 
 		{
 			ArrayList<BidPoint> list3;
 			list3=list1; list1=list2; list2=list3; // swap list1,list2......
@@ -167,7 +167,7 @@ public class BidSpace {
 		 // determine if the first point of list1 can be kept.
 		 // the only criterium is the first point of list 2, 
 		 // it must be OK with list 1 because that is already a pareto frontier.
-		if (firstpoint.utilityB>list2.get(0).utilityB) { 
+		if (firstpoint.getUtilityB() > list2.get(0).getUtilityB()) { 
 				 // left point must be higher than next
 				newpareto.add(0,firstpoint);
 		}
@@ -200,7 +200,7 @@ public class BidSpace {
 		double minassymetry=2; // every point in space will have lower assymetry than this.
 		for (BidPoint p:paretoFrontier)
 		{
-			double asymofp = Math.abs(p.utilityA-p.utilityB);
+			double asymofp = Math.abs(p.getUtilityA()-p.getUtilityB());
 			if (asymofp<minassymetry) { kalaiSmorodinsky=p; minassymetry=asymofp; }
 		}
 		return kalaiSmorodinsky;
@@ -226,7 +226,7 @@ public class BidSpace {
 		if(utilspaceB.getReservationValue()!=null) agentBresValue = utilspaceB.getReservationValue();
 		for (BidPoint p:paretoFrontier)
 		{
-			double utilofp = (p.utilityA -agentAresValue)*(p.utilityB-agentBresValue);
+			double utilofp = (p.getUtilityA() -agentAresValue)*(p.getUtilityB() -agentBresValue);
 			if (utilofp>maxp) { nash=p; maxp=utilofp; }
 		}
 		return nash;
@@ -247,23 +247,23 @@ public class BidSpace {
 		// our utility is along A axis, opp util along B axis.
 
 		//add endpoints to pareto curve such that utilB spans [0,1] entirely
-		if (pareto.get(0).utilityB<1) pareto.add(0,new BidPoint(null,0.,1.));
-		if (pareto.get(pareto.size()-1).utilityB>0) pareto.add(new BidPoint(null,1.,0.));
+		if (pareto.get(0).getUtilityB() <1) pareto.add(0,new BidPoint(null,0.,1.));
+		if (pareto.get(pareto.size()-1).getUtilityB() >0) pareto.add(new BidPoint(null,1.,0.));
 		if (pareto.size()<2) throw new Exception("Pareto has only 1 point?!"+pareto);
 		// pareto is monotonically descending in utilB direction.
 		int i=0;
 //		System.out.println("Searching for opponentUtility = " + opponentUtility);
-		while (! (pareto.get(i).utilityB>=opponentUtility && opponentUtility>=pareto.get(i+1).utilityB)) 
+		while (! (pareto.get(i).getUtilityB() >=opponentUtility && opponentUtility>=pareto.get(i+1).getUtilityB())) 
 		{
 //			System.out.println(i + ". Trying [" + pareto.get(i).utilityB +  ", " + pareto.get(i+1).utilityB + "]");
 			i++;
 		}
 		
-		double oppUtil1=pareto.get(i).utilityB; // this is the high value
-		double oppUtil2=pareto.get(i+1).utilityB; // the low value
+		double oppUtil1=pareto.get(i).getUtilityB(); // this is the high value
+		double oppUtil2=pareto.get(i+1).getUtilityB() ; // the low value
 		double f=(opponentUtility-oppUtil1)/(oppUtil2-oppUtil1); // f in [0,1] is relative distance from point i.
 		// close to point i means f~0. close to i+1 means f~1
-		double lininterpol=(1-f)*pareto.get(i).utilityA+f*pareto.get(i+1).utilityA;
+		double lininterpol=(1-f)*pareto.get(i).getUtilityA() +f*pareto.get(i+1).getUtilityA();
 		return lininterpol;
 	}
 	
@@ -300,10 +300,10 @@ public class BidSpace {
 			//neither ArrayList.contains nor ArrayList.indexOf seem to use .equals
 			// although manual claims that indexOf is using equals???
 			if (contains) continue;
-			r=weightA*sq(p.utilityA-utilA)+weightB*sq(p.utilityB-utilB);
+			r=weightA*sq(p.getUtilityA() - utilA)+weightB*sq(p.getUtilityB() -utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
-		System.out.println("point found: (" + bestPoint.utilityA + ", " + bestPoint.utilityB + ") ="+bestPoint.bid);
+		System.out.println("point found: (" + bestPoint.getUtilityA() + ", " + bestPoint.getUtilityB() + ") ="+bestPoint.bid);
 		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
 //		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
 		//System.out.println();
