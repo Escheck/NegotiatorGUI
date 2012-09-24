@@ -230,7 +230,7 @@ public class ScenarioMeasures {
 				}
 			}
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
-			return kalai.getTwoDimensionalDistance(new BidPoint(null, 1.0, 1.0));
+			return kalai.getDistance(new BidPoint(null, 1.0, 1.0));
 		} catch (Exception e) { e.printStackTrace(); }
 		
 		return result;
