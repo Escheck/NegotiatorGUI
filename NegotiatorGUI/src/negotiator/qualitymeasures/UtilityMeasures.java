@@ -31,8 +31,8 @@ public class UtilityMeasures {
 		
 		try {
 			BidPoint nash = bidSpace.getNash();
-			double nashA = nash.utilityA;
-			double nashB = nash.utilityB;
+			double nashA = nash.getUtilityA();
+			double nashB = nash.getUtilityB();
 			nashDistance = UtilspaceTools.distanceBetweenTwoPoints(nashA, nashB, utilA, utilB);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,8 +50,8 @@ public class UtilityMeasures {
 		double kalaiDistance = 0;
 		try {
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
-			double kalaiA = kalai.utilityA;
-			double kalaiB = kalai.utilityB;
+			double kalaiA = kalai.getUtilityA();
+			double kalaiB = kalai.getUtilityB();
 			kalaiDistance = UtilspaceTools.distanceBetweenTwoPoints(kalaiA, kalaiB, utilA, utilB);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class UtilityMeasures {
 			ArrayList<BidPoint> bids = bidSpace.getParetoFrontier();
 
 			for (BidPoint bid : bids) {
-				double dist = UtilspaceTools.distanceBetweenTwoPoints(bid.utilityA, bid.utilityB, utilA, utilB);
+				double dist = UtilspaceTools.distanceBetweenTwoPoints(bid.getUtilityA(), bid.getUtilityB(), utilA, utilB);
 				if (dist < paretoDistance) {
 					paretoDistance = dist;
 				}

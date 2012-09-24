@@ -198,8 +198,8 @@ public class NiceTitForTat_Offering extends OfferingStrategy {
 				
 	
 				BidPoint nash = bs.getNash();
-				if (nash != null && nash.utilityA != null)
-					myNashUtility = nash.utilityA;
+				if (nash != null && nash.getUtilityA() != null)
+					myNashUtility = nash.getUtilityA();
 			}
 			myNashUtility *= nashMultiplier;
 

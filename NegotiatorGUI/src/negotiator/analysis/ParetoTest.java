@@ -108,11 +108,11 @@ public class ParetoTest {
 				System.out.println("Found difference in: " + domain.getName());
 				System.out.println("REAL " + realParetoBids.size());
 				for (int i = 0; i < realParetoBids.size(); i++) {
-					System.out.println(realParetoBids.get(i).bid + " " + realParetoBids.get(i).utilityA + " " + realParetoBids.get(i).utilityB);
+					System.out.println(realParetoBids.get(i).bid + " " + realParetoBids.get(i).getUtilityA() + " " + realParetoBids.get(i).getUtilityB());
 				}
 				System.out.println("ESTIMATE " + estimatedParetoBids.size());
 				for (int i = 0; i < estimatedParetoBids.size(); i++) {
-					System.out.println(estimatedParetoBids.get(i).utilityA + " " + estimatedParetoBids.get(i).utilityB);
+					System.out.println(estimatedParetoBids.get(i).getUtilityA() + " " + estimatedParetoBids.get(i).getUtilityB());
 				}
 			}
 		}
@@ -133,8 +133,8 @@ public class ParetoTest {
 		for (BidPoint paretoBid : realParetoBids) {
 			boolean found = false;
 			for (int a = 0; a < estimatedParetoBids.size(); a++) {
-				if (estimatedParetoBids.get(a).utilityA.equals(paretoBid.utilityA) &&
-						estimatedParetoBids.get(a).utilityB.equals(paretoBid.utilityB)) {
+				if (estimatedParetoBids.get(a).getUtilityA().equals(paretoBid.getUtilityA()) &&
+						estimatedParetoBids.get(a).getUtilityB().equals(paretoBid.getUtilityB())) {
 					found = true;
 					break;
 				}

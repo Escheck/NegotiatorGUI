@@ -261,8 +261,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 				pareto = new double [2][paretoBids.size()];
 				for(int i=0; i<paretoBids.size();i++) 
 				  {
-					pareto[0][i]= paretoBids.get(i).utilityA;
-					pareto[1][i]= paretoBids.get(i).utilityB;
+					pareto[0][i]= paretoBids.get(i).getUtilityA();
+					pareto[1][i]= paretoBids.get(i).getUtilityB();
 				  }
 			}
 		}
@@ -281,7 +281,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 				possibleBids = new double [2][allBids.size()];
 				int i=0;
 				for(BidPoint p: bs.bidPoints) 
-				  {possibleBids[0][i]= p.utilityA; possibleBids[1][i]= p.utilityB; i++;}
+				  {possibleBids[0][i]= p.getUtilityA(); possibleBids[1][i]= p.getUtilityB(); i++;}
 				//bidChart.setPossibleBids(possibleBids);
 			}else{
 				System.out.println("possibleBids is null");
@@ -341,14 +341,14 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			
 			//nash
 			BidPoint bp1= bs.getNash();
-			nash[0][0]= bp1.utilityA;
-			nash[1][0]= bp1.utilityB;
+			nash[0][0]= bp1.getUtilityA();
+			nash[1][0]= bp1.getUtilityB();
 			if(nash!=null)
 				bidChart.setNash(nash);	
 			//kalai
 			BidPoint bp2 = bs.getKalaiSmorodinsky();
-			kalai[0][0]= bp2.utilityA;
-			kalai[1][0]= bp2.utilityB;
+			kalai[0][0]= bp2.getUtilityA();
+			kalai[1][0]= bp2.getUtilityB();
 			if(kalai!=null)
 				bidChart.setKalai(kalai);
 		} catch (Exception e) {
@@ -443,8 +443,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		if (bidPoint == null)
 			return null;
 		double [][] pA = new double [2][1];
-		pA[0][0] = bidPoint.utilityA;
-		pA[1][0] = bidPoint.utilityB;
+		pA[0][0] = bidPoint.getUtilityA();
+		pA[1][0] = bidPoint.getUtilityB();
 		return pA;
 	}
 	

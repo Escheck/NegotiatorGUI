@@ -301,9 +301,9 @@ public class NegotiationOutcome {
 		BidPoint bestOutcomeForB = paretoFrontier.get(0);
 		double fyu = Double.NaN;
 		if ("A".equals(agentX))
-			fyu = bestOutcomeForB.utilityA;
+			fyu = bestOutcomeForB.getUtilityA();
 		else if ("B".equals(agentX))
-			fyu = bestOutcomeForA.utilityB;
+			fyu = bestOutcomeForA.getUtilityB();
 		else
 			System.err.println("Unknown agent " + agentX);
 
@@ -324,9 +324,9 @@ public class NegotiationOutcome {
 			for(BidPointTime bidPointTime : bids){
 				double discountedBidPoint;
 				if(agentX.equals("A")){
-					discountedBidPoint = UtilitySpace.discount(bidPointTime.utilityA, bidPointTime.time, discountFactorA);
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityA(), bidPointTime.time, discountFactorA);
 				}else {
-					discountedBidPoint = UtilitySpace.discount(bidPointTime.utilityB, bidPointTime.time, discountFactorB);
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityB(), bidPointTime.time, discountFactorB);
 				}
 				
 				if(discountedBidPoint > maxRecievedDiscountedUtil){
@@ -357,7 +357,7 @@ public class NegotiationOutcome {
 
 			BidPointTime minDemandedBid = Collections.max(bids, comp);
 
-			 maxRecievedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+			 maxRecievedUtil = agentX.equals("A") ? minDemandedBid.getUtilityA() : minDemandedBid.getUtilityB();
 		}else { 
 			maxRecievedUtil = -1;
 		
@@ -389,7 +389,7 @@ public class NegotiationOutcome {
 			//System.out.println("minDemandedBid: "+minDemandedBid.utilityA);
 			
 
-			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.utilityA : minDemandedBid.utilityB;
+			 minDemandedUtil = agentX.equals("A") ? minDemandedBid.getUtilityA() : minDemandedBid.getUtilityB();
 		}else { 
 			minDemandedUtil = -1;
 		
@@ -519,8 +519,8 @@ public class NegotiationOutcome {
 				BidPoint a = AgentABids.get(i);
 				SimpleElement xmlBidpoint = new OrderedSimpleElement("bidpoint");
 				xmlBidpoint.setAttribute("fromAgent", "A");
-				xmlBidpoint.setAttribute("utilityA", String.valueOf(a.utilityA));
-				xmlBidpoint.setAttribute("utilityB", String.valueOf(a.utilityB));
+				xmlBidpoint.setAttribute("utilityA", String.valueOf(a.getUtilityA()));
+				xmlBidpoint.setAttribute("utilityB", String.valueOf(a.getUtilityB()));
 				bids.addChildElement(xmlBidpoint);
 			}
 
@@ -529,8 +529,8 @@ public class NegotiationOutcome {
 				BidPoint b = AgentBBids.get(i);
 				SimpleElement xmlBidpoint = new OrderedSimpleElement("bidpoint");
 				xmlBidpoint.setAttribute("fromAgent", "B");
-				xmlBidpoint.setAttribute("utilityA", String.valueOf(b.utilityA));
-				xmlBidpoint.setAttribute("utilityB", String.valueOf(b.utilityB));
+				xmlBidpoint.setAttribute("utilityA", String.valueOf(b.getUtilityA()));
+				xmlBidpoint.setAttribute("utilityB", String.valueOf(b.getUtilityB()));
 				bids.addChildElement(xmlBidpoint);
 			}
 		}

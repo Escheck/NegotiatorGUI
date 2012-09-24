@@ -268,11 +268,11 @@ public class BayesianAgentForAuction extends Agent {
 		double bestbidutil=0;
 		for (BidPoint p:bs.bidPoints)
 		{
-			if (Math.abs(ourUtility-p.utilityA)<ALLOWED_UTILITY_DEVIATION
-					&& p.utilityB>bestbidutil && !myPreviousBids.contains(p.bid))
+			if (Math.abs(ourUtility-p.getUtilityA())<ALLOWED_UTILITY_DEVIATION
+					&& p.getUtilityB()>bestbidutil && !myPreviousBids.contains(p.bid))
 			{
 				bestbid=p;
-				bestbidutil=p.utilityB;
+				bestbidutil=p.getUtilityB();
 			}
 		}
 		if (bestbid==null) return null;
@@ -374,8 +374,8 @@ public class BayesianAgentForAuction extends Agent {
 		for(BidPoint b : bidpoints) {
 			if (b.equals(pBid)) continue; // skip the pBid itself
 			//tmpBidOppU = fOpponentModel.getNormalizedUtility(b);
-			tmpBidOppU = b.utilityB;
-			tmpBidMyU  = b.utilityA;
+			tmpBidOppU = b.getUtilityB();
+			tmpBidMyU  = b.getUtilityA();
 			r2 = sq(tmpBidOppU-pBidOppU)+sq(tmpBidMyU - pBidMyU);
 			delta=Math.abs(r2-targetRadius2);
 			if (delta<smallestDeltaSoFar)
@@ -417,7 +417,7 @@ public class BayesianAgentForAuction extends Agent {
 		BidPoint lBid=null;
 		double lBidOppU=-1;
 		for(BidPoint b : bids) {
-			double util = b.utilityB;
+			double util = b.getUtilityB();
 			if(Math.abs(util-targetutil)<Math.abs(lBidOppU-targetutil)) { 
 				lBid = b;
 				lBidOppU=util;

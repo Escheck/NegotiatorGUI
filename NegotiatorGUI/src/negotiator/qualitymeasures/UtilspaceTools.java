@@ -130,7 +130,7 @@ public class UtilspaceTools {
 	}
 	
 	public static double distanceBetweenTwoBidPoints(BidPoint a, BidPoint b) {
-		return distanceBetweenTwoPoints(a.utilityA, a.utilityB, b.utilityA, b.utilityB);
+		return distanceBetweenTwoPoints(a.getUtilityA(), a.getUtilityB(), b.getUtilityA(), b.getUtilityB());
 	}
 	
 	/**

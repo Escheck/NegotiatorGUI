@@ -49,7 +49,7 @@ public class DomainAnalyzer {
 				try {
 					BidSpace space = new BidSpace(ownUtilSpace, opponentModel.getOpponentUtilitySpace(), true);
 					BidPoint kalai = space.getKalaiSmorodinsky();
-					kalaiPoint = kalai.utilityA;
+					kalaiPoint = kalai.getUtilityA();
 					previousKalaiPoint = kalaiPoint;
 				} catch (Exception e) {
 					e.printStackTrace();

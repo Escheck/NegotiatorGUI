@@ -122,7 +122,7 @@ public class OpponentModelMeasures {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Math.abs(realKalai.utilityB - estimatedKalai.utilityB);
+		return Math.abs(realKalai.getUtilityB() - estimatedKalai.getUtilityB());
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class OpponentModelMeasures {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Math.abs(realNash.utilityB - estimatedNash.utilityB);
+		return Math.abs(realNash.getUtilityB() - estimatedNash.getUtilityB());
 	}
 	
 	/**
@@ -258,9 +258,9 @@ public class OpponentModelMeasures {
 		boolean foundZero = false;
 		boolean foundOne = false;
 		for (int i = 0; i < paretoFrontier.size(); i++) {
-			if (paretoFrontier.get(i).utilityA.equals(0.0)) {
+			if (paretoFrontier.get(i).getUtilityA().equals(0.0)) {
 				foundZero = true;
-			} else if (paretoFrontier.get(i).utilityA.equals(1.0)) {
+			} else if (paretoFrontier.get(i).getUtilityA().equals(1.0)) {
 				foundOne = true;
 			}
 		}
@@ -280,8 +280,8 @@ public class OpponentModelMeasures {
 	private double calculateSurfaceBelowTwoPoints(BidPoint higher, BidPoint lower) {
 		
 		// since the bidpoints are discrete, the surface can be decomposed in a triangle and a rectangle
-		double rectangleSurface = lower.utilityB * (lower.utilityA - higher.utilityA);
-		double triangleSurface = ((higher.utilityB - lower.utilityB) * (lower.utilityA - higher.utilityA)) / 2;
+		double rectangleSurface = lower.getUtilityB() * (lower.getUtilityA() - higher.getUtilityA());
+		double triangleSurface = ((higher.getUtilityB() - lower.getUtilityB()) * (lower.getUtilityA() - higher.getUtilityA())) / 2;
 
 		return (rectangleSurface + triangleSurface);
 	}

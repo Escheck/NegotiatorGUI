@@ -1,30 +1,43 @@
 package negotiator.analysis;
 
 
+import java.util.Arrays;
 import negotiator.Bid;
-import negotiator.XMLable;
-import negotiator.xml.OrderedSimpleElement;
-import negotiator.xml.SimpleElement;
 
 /**
- * 
- * 
- * @author W.Pasman
- * BidPoint is a point with two utilities for the two agents.
+ * BidPoint is a bid with utilities of the agents in a negotiation.
+ * This class is used in the outcome space analysis.
+ * @author Tim Baarslag & Dmytro Tykhonov
  */
-public class BidPoint implements XMLable {
+public class BidPoint 
+{
 	public Bid bid;
-	public Double utilityA;
-	public Double utilityB;
+	private Double [] utility;
+	private static final String[] alphabet = new String[] {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	
-	public BidPoint(Bid b,Double uA, Double uB)
+	public BidPoint(Bid b, Double[] util)
 	{
-		bid=b; utilityA=uA; utilityB=uB;
+		bid=b; 
+		utility = util.clone();
 	}
+	
+	public BidPoint(Bid b, double utilA, double utilB)
+	{
+		bid=b;
+		Double[] utilities = new Double[2];
+		utilities[0] = utilA;
+		utilities[1] = utilB;
+		this.utility = utilities;
+	}
+	
 	
 	public String toString()
 	{
-		return "BidPoint ["+bid+" utilA["+utilityA+"],utilB["+utilityB+"]]";
+		String result = "BidPoint ["+bid;
+		for(int i=0;i<utility.length;i++) {
+			result += "util"+alphabet[i]+"["+utility[i]+"],";
+		}
+		return result;
 	}
 	
 	boolean equals(BidPoint pt)
@@ -32,18 +45,34 @@ public class BidPoint implements XMLable {
 		return bid.equals(pt.bid);
 	}
 	
-	public double distanceTo(BidPoint b)
+	@Override
+	public int hashCode()
 	{
-		return Math.sqrt(Math.pow(utilityA - b.utilityA, 2) + Math.pow(utilityB - b.utilityB, 2));
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bid == null) ? 0 : bid.hashCode());
+		result = prime * result + Arrays.hashCode(utility);
+		return result;
+	}
+
+	public Bid getBid() 
+	{
+		return bid;
 	}
 	
-	public SimpleElement toXML()
+	public Double getUtility(int index) 
 	{
-		SimpleElement xml = new OrderedSimpleElement("BidPoint");
-		xml.addChildElement(bid.toXML());
-		xml.setAttribute("utilityA", String.valueOf(utilityA));
-		xml.setAttribute("utilityB", String.valueOf(utilityB));
-		return xml;
+		return utility[index];
+	}
+	
+	public Double getUtilityA()
+	{
+		return utility[0];
+	}
+	
+	public Double getUtilityB()
+	{
+		return utility[1];
 	}
 	
 	/**
@@ -52,51 +81,17 @@ public class BidPoint implements XMLable {
 	 */
 	public boolean isDominatedBy(BidPoint p)
 	{
-		if ((this != p && (p.utilityA > this.utilityA &&
-				p.utilityB >= this.utilityB) ||
-				(p.utilityA >= this.utilityA &&
-				p.utilityB > this.utilityB))){
-				return true;
+		boolean result = true;
+		for(int i=0;i<utility.length;i++) {
+			if(this.utility[i] > p.getUtility(i)) {
+				result = false;
+				break;
+			}
 		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bid == null) ? 0 : bid.hashCode());
-		result = prime * result
-				+ ((utilityA == null) ? 0 : utilityA.hashCode());
-		result = prime * result
-				+ ((utilityB == null) ? 0 : utilityB.hashCode());
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BidPoint other = (BidPoint) obj;
-		if (bid == null) {
-			if (other.bid != null)
-				return false;
-		} else if (!bid.equals(other.bid))
-			return false;
-		if (utilityA == null) {
-			if (other.utilityA != null)
-				return false;
-		} else if (!utilityA.equals(other.utilityA))
-			return false;
-		if (utilityB == null) {
-			if (other.utilityB != null)
-				return false;
-		} else if (!utilityB.equals(other.utilityB))
-			return false;
-		return true;
+	public double getTwoDimensionalDistance(BidPoint b) {
+		return Math.sqrt(Math.pow((this.getUtilityA() - b.getUtilityA()), 2) + Math.pow((this.getUtilityB() - b.getUtilityB()), 2));
 	}
 }

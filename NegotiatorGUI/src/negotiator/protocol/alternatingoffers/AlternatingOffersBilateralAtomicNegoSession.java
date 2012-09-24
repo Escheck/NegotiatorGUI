@@ -286,7 +286,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 					{
 						BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 						BidPoint nash = bidSpace.getNash();
-						double distanceToNash = lastbidPoint.distanceTo(nash);
+						double distanceToNash = lastbidPoint.getTwoDimensionalDistance(nash);
 
 						//checkForMAC();
 						if(!hasMAC()){	
@@ -420,7 +420,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		
 		BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
 		BidPoint nash = getBidSpace().getNash();
-		double distanceToNash = lastbidPoint.distanceTo(nash);
+		double distanceToNash = lastbidPoint.getTwoDimensionalDistance(nash);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, logMsg, time, distanceToNash, "");
 	}
 
@@ -609,7 +609,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 
 			BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
 			BidPoint nash = getBidSpace().getNash();
-			double distanceToNash = lastbidPoint.distanceTo(nash);
+			double distanceToNash = lastbidPoint.getTwoDimensionalDistance(nash);
 			if(!hasMAC()){	
 				newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted, "JudgeTimeout: negotiation was timed out", time, distanceToNash, "");
 			}else {
@@ -660,7 +660,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends BilateralAtomic
 		
 		BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility, agentBUtility);
 		BidPoint nash = getBidSpace().getNash();
-		distanceToNash = lastbidPoint.distanceTo(nash);	
+		distanceToNash = lastbidPoint.getTwoDimensionalDistance(nash);	
 
 		if(isMac){
 			ArrayList<BidPointTime> subAgentABids = null;
