@@ -302,7 +302,7 @@ public class BidSpace {
 		}
 		double distance = Double.POSITIVE_INFINITY;
 		for (BidPoint paretoBid : paretoFrontier) {
-			double paretoDistance = bid.getTwoDimensionalDistance(paretoBid);
+			double paretoDistance = bid.getDistance(paretoBid);
 			if (paretoDistance < distance) {
 				distance = paretoDistance;
 			}

@@ -7,7 +7,7 @@ import negotiator.Bid;
 /**
  * BidPoint is a bid with utilities of the agents in a negotiation.
  * This class is used in the outcome space analysis.
- * @author Tim Baarslag & Dmytro Tykhonov
+ * @author Tim Baarslag, Dmytro Tykhonov, Mark Hendrikx
  */
 public class BidPoint 
 {
@@ -40,8 +40,6 @@ public class BidPoint
 		return result;
 	}
 
-
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,20 +88,31 @@ public class BidPoint
 		return utility[1];
 	}
 	
-	public boolean isDominatedBy(BidPoint p)
+	public boolean isStrictlyDominatedBy(BidPoint other)
 	{
-
-		if ((this != p && (p.getUtilityA() > this.getUtilityA() &&
-				p.getUtilityB() >= this.getUtilityB()) ||
-				(p.getUtilityA() >= this.getUtilityA() &&
-				p.getUtilityB() > this.getUtilityB()))){
-				return true;
+		if (this == other) {
+			return false;
 		}
-		return false;
+
+		boolean atleastOneBetter = false;
+		
+		for (int i = 0; i < utility.length; i++) {
+			if (other.utility[i] >= this.utility[i]) {
+				if (other.utility[i] > this.utility[i]) {
+					atleastOneBetter = true;
+				}
+			} else {
+				return false;
+			}
+		}
+		return atleastOneBetter;
 	}
 	
-
-	public double getTwoDimensionalDistance(BidPoint b) {
-		return Math.sqrt(Math.pow((this.getUtilityA() - b.getUtilityA()), 2) + Math.pow((this.getUtilityB() - b.getUtilityB()), 2));
+	public double getDistance(BidPoint other) {
+		double sum = 0;
+		for (int i = 0; i < utility.length; i++) {
+			sum += Math.pow(this.utility[i] - other.utility[i], 2);
+		}
+		return Math.sqrt(sum);
 	}
 }

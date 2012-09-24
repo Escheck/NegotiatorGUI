@@ -23,9 +23,9 @@ public class ParetoFrontier
 	{
 		for (BidPoint f : frontier)
 		{
-			if (b.isDominatedBy(f))		// we will not add this point
+			if (b.isStrictlyDominatedBy(f))		// we will not add this point
 				return;
-			if (f.isDominatedBy(b))		// we will merge this point into the frontier
+			if (f.isStrictlyDominatedBy(b))		// we will merge this point into the frontier
 			{
 				merge(b);
 				return;
@@ -41,7 +41,7 @@ public class ParetoFrontier
 		ArrayList<BidPoint> toBeRemoved = new ArrayList<BidPoint>();
 		for (BidPoint f : frontier)
 		{
-			if (f.isDominatedBy(b))		// delete dominated frontier points
+			if (f.isStrictlyDominatedBy(b))		// delete dominated frontier points
 				toBeRemoved.add(f);
 		}
 		frontier.removeAll(toBeRemoved);
@@ -68,7 +68,7 @@ public class ParetoFrontier
 	public boolean isBelowFrontier(BidPoint b)
 	{
 		for (BidPoint f : this.getFrontier())
-			if (b.isDominatedBy(f))
+			if (b.isStrictlyDominatedBy(f))
 				return true;
 		return false;
 	}
