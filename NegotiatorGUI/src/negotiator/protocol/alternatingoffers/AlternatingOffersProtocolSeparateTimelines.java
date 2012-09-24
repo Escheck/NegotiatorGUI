@@ -14,7 +14,7 @@ import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCash;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
@@ -759,12 +759,12 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles,params, tournament.getOptions()); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
-			BidSpace bidSpace = BidSpaceCash.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
 			if(bidSpace!=null) {
 				session.setBidSpace(bidSpace);
 			} else {
 				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
-				BidSpaceCash.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
+				BidSpaceCache.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
 				session.setBidSpace(bidSpace);
 			}
 		} else {

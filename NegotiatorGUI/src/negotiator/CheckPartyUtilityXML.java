@@ -71,7 +71,7 @@ public class CheckPartyUtilityXML extends JPanel
     {
     	System.out.println("Checking "+filename);
     	UtilitySpace us=new UtilitySpace(partyDomain,filename);
-    	us.checkReadyForNegotiation(filename, partyDomain);
+    	us.checkReadyForNegotiation(partyDomain);
     	System.out.println("Checking cost fields...");
     	checkCostFields(us);
     	System.out.println("Check succesfull!\n\n");

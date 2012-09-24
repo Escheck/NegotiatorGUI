@@ -84,4 +84,8 @@ public class IssueInteger extends Issue {
 		
 	}
 	
+	@Override
+	public ISSUETYPE getType() {
+		return ISSUETYPE.INTEGER;
+	}
 }

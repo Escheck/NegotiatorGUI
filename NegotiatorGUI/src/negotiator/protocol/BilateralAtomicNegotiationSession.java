@@ -10,7 +10,7 @@ import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCash;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.qualitymeasures.CSVlogger;
@@ -129,10 +129,10 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     public BidSpace getBidSpace() { 
     	if(bidSpace==null) {
     		try {    	
-    			bidSpace = BidSpaceCash.getBidSpace(spaceA, spaceB);
+    			bidSpace = BidSpaceCache.getBidSpace(spaceA, spaceB);
     			if (bidSpace==null) {    				
     				bidSpace=new BidSpace(spaceA,spaceB);
-    				BidSpaceCash.addBidSpaceToCash(spaceA, spaceB, bidSpace);
+    				BidSpaceCache.addBidSpaceToCash(spaceA, spaceB, bidSpace);
     			}
     		} catch (Exception e) {
     			e.printStackTrace();

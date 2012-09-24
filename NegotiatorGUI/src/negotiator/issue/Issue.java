@@ -10,19 +10,14 @@ package negotiator.issue;
 import negotiator.xml.SimpleElement;
 
 /**
+ * Class {@link Issue} represents a negotiation issue to be settled in a negotiation. 
+ * Issues in a domain are identified by unique <code>index</code> field.
  *
- * @author Koen Hindriks
+ * @author Tim Baarslag & Dmytro Tykhonov
  * 
  */
-
-public class Issue extends Objective {
+public abstract class Issue extends Objective {
     
-    // Class fields
-	//private String name;
-	//int issueNumber;
-	//
-	//Modified by Richard
-	
     // Constructor
     public Issue(String name, int issueNumber) {
         super(null, name, issueNumber);
@@ -32,23 +27,8 @@ public class Issue extends Objective {
     	super(parent, name, issueNumber);
     }
     
-    // Class methods
+    public abstract ISSUETYPE getType();
     
-    public ISSUETYPE getType() {
-    	if (this instanceof IssueDiscrete)
-    		return ISSUETYPE.DISCRETE;
-// TODO: Remove.
-//    	else if (this instanceof IssueDiscreteWCost)
-//    		return ISSUETYPE.DISCRETEWCOST;
-    	else if (this instanceof IssueInteger)
-    		return ISSUETYPE.INTEGER;
-    	else if (this instanceof IssueReal)
-    		return ISSUETYPE.REAL;
-// TODO: Remove.
-//    	else if (this instanceof IssuePrice)
-//    		return ISSUETYPE.PRICE;
-    	else return null;
-    }
 	//
     /**
      * Converts ISSUETYPE enumeration to a string. Reverse functiong for 
@@ -111,41 +91,12 @@ public class Issue extends Objective {
 
 	}
 	
-	protected class RangeReal {
-		
-		// Class fields
-		double lowerBound;
-		double upperBound;
-		
-		// Constructor
-		protected RangeReal(double min, double max) {
-			if (min>max)
-				System.out.println("Lower bound in real range exceeds upper bound!");
-				// TO DO: Define exception.
-			if (min==max) // issue warning.
-				System.out.println("Lower bound equals upper bound in range.");
-			lowerBound = min;
-			upperBound = max;
-		}
-		
-		// Class methods
-		protected double getLowerBound() {
-			return lowerBound;
-		}
-		
-		protected double getUpperBound() {
-			return upperBound;
-		}
-
-	}
-	
 	/**
 	 * Overrides addChild from Objective to do nothing, since Issues can't have children. This
 	 * method simply returns without doing anything. 
 	 * @param newObjective gets negated.
 	 */
-	public void addChild(Objective newObjective) {
-	}
+	public void addChild(Objective newObjective) { }
 	
 	/**
 	 * Returns a SimpleElement representation of this issue.
