@@ -50,8 +50,6 @@ public class IssueDiscrete extends Issue {
 	    }
 	}
 	
-
-	
 	public boolean equals(Object o)
 	{
 		if (!(o instanceof IssueDiscrete)) return false;
@@ -64,6 +62,9 @@ public class IssueDiscrete extends Issue {
 	    return values.size();
 	}
 		
+	/**
+	 * Get value by its Sting representation, <b>null</b> otherwise.
+	 */
 	public ValueDiscrete getValue(int index) {
 		return (ValueDiscrete)values.get(index);
 	}
@@ -158,10 +159,7 @@ public class IssueDiscrete extends Issue {
 		return thisIssue;
 		
 	}
-	
-	// Wouter: fromXML is currently incorporated in Domain.java. 
-	// TODO I think it should be here.
-    
+
 	/**
 	 * Sets the desc for value <code>val</code>. If the value doesn't exist yet in this Evaluator,
 	 * add it as well.
