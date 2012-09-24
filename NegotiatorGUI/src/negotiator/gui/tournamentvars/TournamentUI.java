@@ -688,14 +688,6 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     			}
     			// the user STARTED and ACCEPTED or the user JOINED
     			if (response == 0) {
-    				int disableGUI = JOptionPane.showConfirmDialog(null, "Disable the GUI to improve performance?\n" +
-							"Note that the GUI is shown again after all jobs have\n" +
-							"been processed.\n", "Input",
-							JOptionPane.YES_NO_OPTION);
-    				if (disableGUI == 0) {
-    					NegoGUIApp.negoGUIView.getFrame().setVisible(false);
-    				}
-
     				start(true, sessionname);
     			}
 			} catch (Exception e) {

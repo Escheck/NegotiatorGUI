@@ -51,6 +51,8 @@ public class TournamentOptionsUI extends JDialog {
     private JLabel showLastBid;
     private JCheckBox showLastBidCheck;
     private JLabel visualization;
+    private JLabel disableGUI;
+    private JCheckBox disableGUICheck;
     private HashMap<String, Integer> config;
 
     public TournamentOptionsUI(Frame frame) {
@@ -182,6 +184,11 @@ public class TournamentOptionsUI extends JDialog {
         showLastBidCheck = new JCheckBox();
         showLastBid.setText("Show last bid");
         
+        //		OPTION: disable GUI
+        disableGUI = new JLabel();
+        disableGUICheck = new JCheckBox();
+        disableGUI.setText("Disable GUI");
+        
         okButton = new JButton();
         okButton.setText("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +217,7 @@ public class TournamentOptionsUI extends JDialog {
                 config.put("logFinalAccuracy", logFinalAccuracyCheck.isSelected() ? 1 : 0);
                 config.put("showAllBids", showAllBidsCheck.isSelected() ? 1 : 0);
                 config.put("showLastBid", showLastBidCheck.isSelected() ? 1 : 0);
+                config.put("disableGUI", disableGUICheck.isSelected() ? 1 : 0);
     			
                 if (allValid) {
                 	dispose();
@@ -240,43 +248,48 @@ public class TournamentOptionsUI extends JDialog {
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addComponent(deadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(protocolMode, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logNegotiationTrace, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(protocolSettings)
-                            .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logDetailedAnalysis, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                                    .addComponent(playBothSidesCheck)
-                                    .addComponent(playAgainstSelfCheck)
-                                    .addComponent(logSessionsCheck)
-                                    .addComponent(logDetailedAnalysisCheck)
-                                    .addComponent(logNegotiationTraceCheck)
-                                    .addComponent(showAllBidsCheck)
-                                    .addComponent(showLastBidCheck)
-                                    .addComponent(logFinalAccuracyCheck))
-                                .addGap(25, 25, 25))
-                            .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-                                    .addComponent(protocolModeSelector, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(deadlineTextField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(sessionGeneration)
-                    .addComponent(playAgainstSelf, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logging)
-                    .addComponent(logSessions, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(visualization)
-                    .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                    .addComponent(deadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(protocolMode, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(logNegotiationTrace, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(protocolSettings)
+                                    .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(logDetailedAnalysis, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(disableGUI, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(45, 45, 45)
+                                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
+                                            .addComponent(playBothSidesCheck)
+                                            .addComponent(playAgainstSelfCheck)
+                                            .addComponent(logSessionsCheck)
+                                            .addComponent(logDetailedAnalysisCheck)
+                                            .addComponent(logNegotiationTraceCheck)
+                                            .addComponent(showAllBidsCheck)
+                                            .addComponent(showLastBidCheck)
+                                            .addComponent(logFinalAccuracyCheck)
+                                            .addComponent(disableGUICheck))
+                                        .addGap(25, 25, 25))
+                                    .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+                                            .addComponent(protocolModeSelector, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(deadlineTextField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(sessionGeneration)
+                            .addComponent(playAgainstSelf, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(logging)
+                            .addComponent(logSessions, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(visualization)
+                            .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
@@ -322,22 +335,25 @@ public class TournamentOptionsUI extends JDialog {
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(visualization)
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showAllBidsCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                            .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showAllBidsCheck))
                         .addPreferredGap(ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                            .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cancelButton))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(showLastBidCheck)
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                            .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showLastBidCheck))
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addComponent(disableGUI, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(disableGUICheck))
+                .addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
         );
+        
         pack();
         setVisible(true);
 		return config;
@@ -360,6 +376,7 @@ public class TournamentOptionsUI extends JDialog {
 			logFinalAccuracyCheck.setSelected(prevConfig.containsKey("logFinalAccuracy") && prevConfig.get("logFinalAccuracy") != 0);
 			showAllBidsCheck.setSelected(prevConfig.containsKey("showAllBids") && prevConfig.get("showAllBids") != 0);
 			showLastBidCheck.setSelected(prevConfig.containsKey("showLastBid") && prevConfig.get("showLastBid") != 0);
+			disableGUICheck.setSelected(prevConfig.containsKey("disableGUI") && prevConfig.get("disableGUI") != 0);
 		}
 		
 	}
