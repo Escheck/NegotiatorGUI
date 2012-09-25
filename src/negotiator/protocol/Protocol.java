@@ -3,12 +3,10 @@ package negotiator.protocol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
-
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -30,6 +28,10 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
+/**
+ * Abstract class for the manager of protocols.
+ * Implement start() to define the protocol. 
+ */
 public abstract class Protocol implements Runnable, Serializable {
     protected Thread negoThread = null;
     protected TournamentRunner tournamentRunner;
@@ -53,16 +55,11 @@ public abstract class Protocol implements Runnable, Serializable {
     
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();    
 
-    private SimpleElement fRoot;
-//	private String fFileName;    
+    private SimpleElement fRoot;  
 	private int runNr = 0;
 	protected HashMap<String, Integer> configuration;
-
-	public abstract String getName();
-	
+	public abstract String getName();	
 	public abstract NegotiationOutcome getNegotiationOutcome();
-	
-	//public Agent getAgent(int index);
 	
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		throw new Exception("This protocol cannot be used in a tournament");
@@ -96,63 +93,16 @@ public abstract class Protocol implements Runnable, Serializable {
 		agentNames = new String[profileRepItems.length];
 		agentNames[0] = "Agent A";
 		agentNames[1] = "Agent B";
+		
 		//load the utility space		
 		agentUtilitySpaces = new UtilitySpace[profileRepItems.length]; 
 		for(int i=0;i<profileRepItems.length;i++) {
 			ProfileRepItem profile = profileRepItems[i];
-			agentUtilitySpaces[i] =  Repository.get_domain_repos().getUtilitySpace(domain, profile); //new UtilitySpace(domain, profile.getURL().getFile());
-			//System.out.println("utility space statistics for "+"Agent "+agentAUtilitySpaceFileName);
-			//fAgentAUtilitySpace.showStatistics();
+			agentUtilitySpaces[i] =  Repository.get_domain_repos().getUtilitySpace(domain, profile);
 		}
 		return;
 
 	}
-	
-	/**
-	 * @param fileName Wouter: I think this is the domain.xml file.
-	 */
-	private void loadFromFile(String fileName)  throws Exception
-	{
-		SimpleDOMParser parser = new SimpleDOMParser();
-		BufferedReader file = new BufferedReader(new FileReader(new File(fileName)));                  
-		fRoot = parser.parse(file);
-		/*            if (root.getAttribute("negotiation_type").equals("FDP"))this.negotiationType = FAIR_DEVISION_PROBLEM;
-        else thisnegotiationType = CONVENTIONAL_NEGOTIATION;*/
-		SimpleElement xml_utility_space = (SimpleElement)(fRoot.getChildByTagName("utility_space")[0]);
-		domain = new Domain(xml_utility_space);
-		loadAgentsUtilitySpaces();
-		if (Global.analysisEnabled && !Global.batchMode)
-		{
-			if(fRoot.getChildByTagName("analysis").length>0) {
-				//fAnalysis = new Analysis(this, (SimpleElement)(fRoot.getChildByTagName("analysis")[0]));
-			} else {
-				//propose to build an analysis
-/*				Object[] options = {"Yes","No"};                  
-				int n = JOptionPane.showOptionDialog(null,
-						"You have no analysis available for this template. Do you want build it?",
-						"No Analysis",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						options,
-						options);
-				if(n==0) {*/
-					//bidSpace=new BidSpace(fAgentAUtilitySpace,fAgentBUtilitySpace);
-					//fAnalysis = Analysis.getInstance(this);
-					//  save the analysis to the cache
-					//fAnalysis.saveToCache();
-				//}
-				
-			}//if
-		}
-		//if(fAnalysis!=null) showAnalysis();	
-		//if (bidSpace!=null) showAnalysis();
-	}
-
-    void check() throws Exception {
-    	//if (!(getProfileArep().getDomain().equals(getProfileBrep().getDomain())))
-    		//throw new IllegalArgumentException("profiles "+getProfileArep()+" and "+getProfileBrep()+" have a different domain.");
-    }
     
     public void addNegotiationEventListener(NegotiationEventListener listener) {
     	if(!actionEventListener.contains(listener))
@@ -251,18 +201,16 @@ public abstract class Protocol implements Runnable, Serializable {
 	}
 
 	@Override
-    public String toString()
-    {
+    public String toString() {
     	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
     }
+	
     public abstract void cleanUP();
 
 	public void setRun(int runNr) {
 		this.runNr  = runNr;
 	}
 
-	
-	
 	public int getRun() {
 		return runNr;
 	}

@@ -3,12 +3,10 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
-
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -37,6 +35,11 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
+/**
+ * Manager of the Alternating Offers protocol: 
+ * Loads and initializes agents, domain, etc. Signals the start/stop of negotiations by calling {@link BilateralAtomicNegotiationSession}.
+ * Manages time-outs.
+ */
 public class AlternatingOffersProtocol extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
@@ -132,12 +135,12 @@ public class AlternatingOffersProtocol extends Protocol {
 
 
 
-	/** do test run of negotiation session.
-	 * There may be multiple test runs of a single session, for isntance to take the average score.
+	/**
+	 * Run a negotiation session.
+	 * There may be multiple test runs of a single session, for instance to take the average score.
 	 * returns the result in the global field "outcome"
 	 * @param nr is the sessionTestNumber
 	 * @throws Exception
-	 * 
 	 */
 	protected void runNegotiationSession(int nr)  throws Exception
 	{
@@ -189,9 +192,6 @@ public class AlternatingOffersProtocol extends Protocol {
 				}
 			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
 		}
-		//System.out.println("nego finished. "+System.currentTimeMillis()/1000);
-		//synchronized (this) { try { wait(1000); } catch (Exception e) { System.out.println("2nd wait gets exception:"+e);} }
-
 		stopNegotiation();
 
 		
@@ -208,7 +208,6 @@ public class AlternatingOffersProtocol extends Protocol {
 			outcome=sessionrunner.no;
 			createExtraLogData();
 		} else{
-			//System.out.println("sessionrunner count: " + sessionrunner.outcomes.size());
 			for(NegotiationOutcome savedOutcome: sessionrunner.MACoutcomes) {
 				outcome = savedOutcome;
 				outcome.additional = new SimpleElement("additional");
@@ -216,7 +215,6 @@ public class AlternatingOffersProtocol extends Protocol {
 				createExtraLogData();
 			}
 		}
-		
 		sessionrunner.cleanUp();
 	}
 	

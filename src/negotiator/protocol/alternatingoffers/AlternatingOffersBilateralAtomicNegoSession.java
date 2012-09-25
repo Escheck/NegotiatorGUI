@@ -37,14 +37,6 @@ import negotiator.utility.UtilitySpace;
 /**
  * This is an updated version which has shared deadlines for both agents,
  * implemented with {@link Timeline}.
- * 
- * KNOWN BUGS: 1. In some cases, when a bad outcome is created, there is a
- * nullpointer. Likely to occur when a computationally heavy agent plays on
- * Energy.
- * 
- * 2. MAC does not always store the outcomes for each separate acceptance
- * condition. This occurs in less than 1% of the matches, and can be easily
- * detected by checking if an agent with Multi_AC in its name exists.
  */
 public class AlternatingOffersBilateralAtomicNegoSession extends
 		BilateralAtomicNegotiationSession {

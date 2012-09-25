@@ -4,21 +4,17 @@ import misc.Range;
 import negotiator.xml.SimpleElement;
 
 /**
-*
 * @author Koen Hindriks
-* 
 */
 
 public class IssueReal extends Issue {
 	
-	// Class fields
 	// Assumption 1: real-valued issues have a fixed range, with a lower and upper bound.
 	// Assumption 2: value ranges for issue are shared between agents.
 	private Range range;
 	//use this value for discrete operations in the analysis
 	//TODO make it template parameter
 	private int fNumberOfDiscretizationSteps = 21;
-	// Constructors
 	
 	public IssueReal(String name, int issueNumber, double min, double max) {
 		super(name, issueNumber);
@@ -30,7 +26,6 @@ public class IssueReal extends Issue {
 		range = new Range(min, max);
 	}
 	
-	// Class method
 	public boolean checkInRange(ValueReal val) {
 			return ( ((ValueReal)val).getValue() >= range.getLowerbound() && ((ValueReal)val).getValue() <= range.getUpperbound());
 	}

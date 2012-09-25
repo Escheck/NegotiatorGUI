@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.ArrayList;
-
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import negotiator.xml.SimpleElement;
@@ -16,25 +15,19 @@ import javax.swing.tree.TreePath;
 * The whole code needs a review anyway, though with current use it works fine :-)
 * 
 * @author Richard Noorlandt 
-* 
 */
-
 public class Objective implements MutableTreeNode 
 {
 	
 	//Attributes
 	private int number;
 	private String name;
-	
-	
 	private String description="";
 	private Object userObject; //can be a picture, for instance
 	private Objective parent; // Wouter: null if no parent available?
 	private ArrayList<Objective> children = new ArrayList<Objective>();
 		
-	//Constructors
-	public Objective() {
-	}
+	public Objective() { }
 	
 	public Objective(Objective parent) {
 		this.parent = parent;
@@ -52,19 +45,14 @@ public class Objective implements MutableTreeNode
 		this.number = nr;
 	}
 	
-	//Methods
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		/*result = prime * result
-				+ ((children == null) ? 0 : children.hashCode());*/
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + number;
-		/*result = prime * result + ((parent == null) ? 0 : parent.hashCode());*/
 		return result;
 	}
 	
@@ -78,41 +66,7 @@ public class Objective implements MutableTreeNode
 		if (!(o instanceof Objective)) return false;
 		return equalContents((Objective)o);
 	}
-/*
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Objective other = (Objective) obj;
-		if (children == null) {
-			if (other.children != null)
-				return false;
-		} else if (!children.equals(other.children))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (number != other.number)
-			return false;
-		if (parent == null) {
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
-			return false;
-		return true;
-	}
-	*/
+
 	/**
 	 * check the contents but don't check for the class type anymore.
 	 * @param obj the objective to be compared

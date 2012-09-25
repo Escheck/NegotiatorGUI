@@ -2,31 +2,32 @@ package negotiator.issue;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
 
+/**
+ * @author Dmytro Tykhonov
+ */
 @XmlRootElement
 public class ValueReal extends Value {
-	
-	// Class fields
+
 	@XmlAttribute
-	double value;
+	private double value;
 	
-	public ValueReal() {
-		// TODO Auto-generated constructor stub
-	}
+	public ValueReal() { }
 	
-	// Constructor
 	public ValueReal(double r) {
 		value = r;
 	}
 	
-	// Class methods
 	public ISSUETYPE getType() {
 		return ISSUETYPE.REAL;
 	}
 	
 	public double getValue() {
 		return value;
+	}
+	
+	public void setValue(double value) {
+		this.value = value;
 	}
 	
 	public String toString() {
@@ -44,5 +45,4 @@ public class ValueReal extends Value {
 			} else
 			return false;
 	}
-
 }
