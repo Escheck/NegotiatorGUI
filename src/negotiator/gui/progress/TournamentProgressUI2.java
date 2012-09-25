@@ -149,7 +149,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         );
         pnlTournamentOverViewLayout.setVerticalGroup(
             pnlTournamentOverViewLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
         );
 
         jSplitPane1.setTopComponent(pnlTournamentOverView);
