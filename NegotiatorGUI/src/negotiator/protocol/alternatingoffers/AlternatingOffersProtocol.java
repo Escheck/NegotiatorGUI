@@ -60,7 +60,6 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
 	/** Total negotiation time available in seconds. This also changes {@link AlternatingOffersBilateralAtomicNegoSession.totalTime} */
-	public final static int non_gui_nego_time = 180;
 	public final static int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
 
 	protected Agent agentA;
@@ -167,8 +166,15 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 
 		sessionrunner = newAlternatingOffersBilateralAtomicNegoSession();
-		if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
-		else totalTime = non_gui_nego_time;
+		if(agentA.isUIAgent()||agentB.isUIAgent()) {
+			totalTime = gui_nego_time;
+		} else {
+			if (configuration != null && configuration.containsKey("deadline")) {
+				totalTime = configuration.get("deadline");
+			} else {
+				totalTime = 180;
+			}
+		}
 		sessionrunner.setTotalTime(totalTime);
 		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);
@@ -266,8 +272,7 @@ public class AlternatingOffersProtocol extends Protocol {
 				getAgentBUtilitySpace(), 
 				getAgentAparams(),
 				getAgentBparams(),
-				startingAgent,
-				non_gui_nego_time);
+				startingAgent);
 	}
 
 

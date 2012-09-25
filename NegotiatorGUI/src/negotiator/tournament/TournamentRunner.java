@@ -217,6 +217,7 @@ public class TournamentRunner implements Runnable
 				DBController.getInstance().storeResult(job.getSessionID(), builder.toString());
 				job = DBController.getInstance().getJob(jobID, sessions);
 			}
+			
 			// 6. Check for outstanding sessions. If outstanding sessions are detected, wait
 			int openSessions = DBController.getInstance().getRunningSessions(jobID);
 			if (openSessions > 0) {
