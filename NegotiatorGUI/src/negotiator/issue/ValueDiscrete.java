@@ -6,20 +6,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ValueDiscrete  extends Value {
 
-	// Class fields
 	@XmlAttribute
 	public String value;
 	
-	public ValueDiscrete() {
-		
-	}
+	public ValueDiscrete() { }
 	
-	// Constructor
 	public ValueDiscrete(String s) {
 		value = s;
 	}
 	
-	// Class methods
 	public final ISSUETYPE getType() {
 		return ISSUETYPE.DISCRETE;
 	}
@@ -48,8 +43,5 @@ public class ValueDiscrete  extends Value {
 				return (value.equals(val));
 			} else				
 			return false;
-		
 	}
-	
-	
 }

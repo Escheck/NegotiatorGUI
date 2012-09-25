@@ -3,22 +3,19 @@ package negotiator.issue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import negotiator.xml.SimpleElement;
-/**
-*
-* @author Koen Hindriks
-* 
-*/
 
+/**
+ * @author Tim Baarslag & Dmytro Tykhonov
+ */
 public class IssueDiscrete extends Issue {
 		
-	/** Wouter: the alternatives (String objects) for the issue.
-	"value" is misleading, this is NOT the utility value but the name of the alternative */
-	List<ValueDiscrete> values; 
+	/** List of possible values the issue can have */
+	private List<ValueDiscrete> values; 
 	
 	 // the descriptions for each value
 	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
+	/** For each value a certain cost: specifically made for Party domain, functioning as a constraint */
 	private HashMap<ValueDiscrete, Double> costs = new HashMap<ValueDiscrete, Double>();
 	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {

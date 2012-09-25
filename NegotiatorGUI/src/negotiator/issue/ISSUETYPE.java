@@ -4,7 +4,7 @@ public enum ISSUETYPE {	UNKNOWN, DISCRETE, INTEGER, REAL, OBJECTIVE;
 
 	public static ISSUETYPE convertToType(String typeString) {
 
-		//If typeString is null for some reason (i.e. not spceified in the XML template
+		// If typeString is null for some reason (i.e. not spceified in the XML template
 		// then we assume that we have DISCRETE type
 		if(typeString==null) return ISSUETYPE.DISCRETE;
 		else if (typeString.equalsIgnoreCase("integer"))

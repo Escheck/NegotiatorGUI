@@ -155,16 +155,36 @@ public class EvaluatorInteger implements Evaluator {
 		return slope;
 	}
 
+	@Deprecated
+	public double getLinearParam() {
+		return getSlope();
+	}
+	
 	public void setSlope(double slope) {
 		this.slope = slope;
 	}
 
+	@Deprecated
+	public void setLinearParam(double linearParam) {
+		setSlope(linearParam);
+	}
+	
 	public double getOffset() {
 		return offset;
+	}
+	
+	@Deprecated
+	public double getConstantParam() {
+		return getOffset();
 	}
 
 	public void setOffset(double offset) {
 		this.offset = offset;
+	}
+	
+	@Deprecated
+	public void setConstantParam(double offset) {
+		setOffset(offset);
 	}
 
 	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception

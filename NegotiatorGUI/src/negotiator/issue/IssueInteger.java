@@ -4,20 +4,16 @@ import negotiator.xml.SimpleElement;
 import misc.RangeInt;
 
 /**
-*
-* @author Koen Hindriks
-* 
+ * Assumption 1: integer-valued issues have a fixed range, with a lower and upper bound.
+ * Assumption 2: value ranges for issue are shared between agents.
+ * Assumption 3: step size for integer valued issue is 1.
+ *
+ * @author Tim Baarslag & Koen Hindriks & Dmytro Tykhonov 
 */
-
 public class IssueInteger extends Issue {
+
+	private RangeInt range;
 	
-	// Class fields
-	// Assumption 1: integer-valued issues have a fixed range, with a lower and upper bound.
-	// Assumption 2: value ranges for issue are shared between agents.
-	// Assumption 3: step size for integer valued issue is 1.
-	RangeInt range;
-	
-	// Constructors
 	public IssueInteger(String name, int issueNumber, int min, int max) {
 		super(name, issueNumber);
 		if (min>max)
@@ -32,10 +28,9 @@ public class IssueInteger extends Issue {
 		range = new RangeInt(min, max);
 	}
 	
-	// Class method
 	public boolean checkInRange(ValueInteger val) {
-			return ( ((ValueInteger)val).getValue() >= range.getLowerbound() && 
-					((ValueInteger)val).getValue() <= range.getUpperbound());
+		return ( ((ValueInteger)val).getValue() >= range.getLowerbound() && 
+				((ValueInteger)val).getValue() <= range.getUpperbound());
 	}
 	
 	public final int getLowerBound() {
@@ -66,6 +61,7 @@ public class IssueInteger extends Issue {
 			return false;
 		}
 	}
+	
 	/**
 	 * Returns a SimpleElement representation of this issue.
 	 * @return The SimpleElement with this issues attributes

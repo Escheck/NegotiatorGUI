@@ -5,16 +5,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ValueInteger extends Value {
-	
-	//	 Class fields
+
 	@XmlAttribute
-	int value;
+	private int value;
 	
-	public ValueInteger() {
-		// TODO Auto-generated constructor stub
-	}
+	public ValueInteger() { }
 	
-	// Constructor
 	public ValueInteger(int i) {
 		value = i;
 	}
@@ -43,5 +39,4 @@ public class ValueInteger extends Value {
 			} else				
 			return false;
 	}
-
 }
