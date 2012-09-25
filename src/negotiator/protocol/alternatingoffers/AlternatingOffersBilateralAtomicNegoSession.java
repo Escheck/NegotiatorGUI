@@ -58,8 +58,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	protected Date startTime;
 	protected long startTimeMillies; // idem.
 	/** In ms. */
-	protected Integer totalTime = 1000 * AlternatingOffersProtocol.non_gui_nego_time;
-	Integer totTime; // total time, seconds, of this negotiation session.
+	protected Integer totalTime = 1000 * 180;
 	protected int sessionTotalNumber = 1;
 	protected Protocol protocol;
 
@@ -83,13 +82,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			UtilitySpace spaceA, UtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
-			String startingAgent, int totalTime) throws Exception {
+			String startingAgent) throws Exception {
 
 		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
 				agentAparams, agentBparams);
 		this.protocol = protocol;
 		this.startingAgent = startingAgent;
-		this.totTime = totalTime;
 		
 		if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("disableGUI") &&
 				protocol.getConfiguration().get("disableGUI") == 1) {
@@ -118,10 +116,14 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				timeline = new DiscreteTimeline(protocol.getConfiguration()
 						.get("deadline"));
 			} else {
+				if (protocol.getConfiguration() != null && 
+						protocol.getConfiguration().containsKey("deadline")) {
+					totalTime = protocol.getConfiguration().get("deadline");
+				}
 				if (Global.PAUSABLE_TIMELINE) {
 					timeline = new PausableContinuousTimeline(totalTime);
 				} else {
-					timeline = new ContinuousTimeline((int) (totalTime));
+					timeline = new ContinuousTimeline(totalTime);
 				}
 			}
 

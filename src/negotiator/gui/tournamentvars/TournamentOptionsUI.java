@@ -82,10 +82,8 @@ public class TournamentOptionsUI extends JDialog {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (protocolModeSelector.getSelectedIndex() == 0) {
                 	deadline.setText("Deadline (seconds)");
-                	deadlineTextField.setEnabled(false);
                 } else {
                 	deadline.setText("Deadline (rounds)");
-                	deadlineTextField.setEnabled(true);
                 }
             }
         });

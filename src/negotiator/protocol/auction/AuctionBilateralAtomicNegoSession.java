@@ -18,7 +18,7 @@ public class AuctionBilateralAtomicNegoSession extends AlternatingOffersBilatera
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent, int totalTime) throws Exception {
 		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
-				agentAparams, agentBparams, startingAgent, totalTime);
+				agentAparams, agentBparams, startingAgent);
 		// TODO Auto-generated constructor stub
 	}
 
