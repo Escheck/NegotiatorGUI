@@ -19,15 +19,28 @@ import negotiator.boaframework.OfferingStrategy;
  */
 public class AC_CombiMax extends AcceptanceStrategy {
 
+	private double time;
+	
 	public AC_CombiMax() { }
 	
-	public AC_CombiMax(NegotiationSession negoSession, OfferingStrategy strat) {
+	public AC_CombiMax(NegotiationSession negoSession, OfferingStrategy strat, double time) {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
+		this.time = time;
 	}
 	
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
+		if (parameters.get("t") != null) {
+			time = parameters.get("t");
+		} else {
+			throw new Exception("Paramaters were not correctly set");
+		}
+	}
+	
+	@Override
+	public String printParameters() {
+		return "[t: " + time + "]";
 	}
 	
 	@Override
@@ -36,7 +49,7 @@ public class AC_CombiMax extends AcceptanceStrategy {
 			return Actions.Accept;
 		}
 		
-		if(negotiationSession.getTime() < 0.99) {
+		if(negotiationSession.getTime() < time) {
 			return Actions.Reject;
 		}
 		

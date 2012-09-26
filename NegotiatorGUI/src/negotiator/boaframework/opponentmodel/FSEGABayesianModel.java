@@ -29,6 +29,7 @@ public class FSEGABayesianModel extends OpponentModel {
 
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
+		this.negotiationSession = negotiationSession;
 		model = new FSEGAOpponentModel(negotiationSession.getUtilitySpace());
 		while (!testIndexOfFirstIssue(negotiationSession.getUtilitySpace().getDomain().getRandomBid(), startingBidIssue)){
 			startingBidIssue++;
