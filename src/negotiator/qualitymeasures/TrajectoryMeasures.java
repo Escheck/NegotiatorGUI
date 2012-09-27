@@ -124,7 +124,6 @@ public class TrajectoryMeasures {
 				totalParetoBidsB++;
 			}
 		}
-		System.out.println(paretoBids.size() + " " + agentBBids.size());
 		percParetoBidsB = (double) totalParetoBidsB / (double) agentBBids.size();
 	}
 	
