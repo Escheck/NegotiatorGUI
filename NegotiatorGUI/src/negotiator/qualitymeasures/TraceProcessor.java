@@ -67,7 +67,7 @@ public class TraceProcessor {
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
 						if (currentSample == 1 || !(opponentModel instanceof OppositeModel || opponentModel instanceof WorstModel)) {
 							UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
-							BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false);
+							BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false, true);
 							omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
 							omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));
 							omMeasuresResults.addRankingDistanceOfIssueWeights(omMeasures.calculateRankingDistanceWeights(opponentModel));

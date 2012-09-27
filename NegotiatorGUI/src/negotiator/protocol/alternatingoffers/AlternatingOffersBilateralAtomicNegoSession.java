@@ -668,7 +668,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					BidSpace estimatedBS = null;
 					try {
 						estimatedBS = new BidSpace(spaceA, estimatedOpponentUS,
-								false);
+								false, true);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

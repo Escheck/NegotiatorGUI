@@ -194,7 +194,7 @@ public class NiceTitForTat extends BilateralAgent
 			
 			double nashMultiplier = getNashMultiplier(initialGap);
 			if (DOMAINSIZE < 200000) {
-				bs = new BidSpace(utilitySpace, new OpponentModelUtilSpace(opponentModel), true);
+				bs = new BidSpace(utilitySpace, new OpponentModelUtilSpace(opponentModel), true, false);
 				
 				BidPoint nash = bs.getNash();
 				if (nash != null && nash.getUtilityA() != null)

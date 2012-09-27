@@ -196,7 +196,7 @@ public class ScenarioMeasures {
 			UtilitySpace utilitySpaceB) {
 		BidSpace space = null;
 		try {
-			space = new BidSpace(utilitySpaceA, utilitySpaceB, false);
+			space = new BidSpace(utilitySpaceA, utilitySpaceB, false, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

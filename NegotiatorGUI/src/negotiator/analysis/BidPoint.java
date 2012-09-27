@@ -54,8 +54,15 @@ public class BidPoint
 				return false;
 		} else if (!bid.equals(other.bid))
 			return false;
-		if (!Arrays.equals(utility, other.utility))
+		if (this.utility.length != other.utility.length) {
 			return false;
+		}
+		
+		for (int i = 0; i < this.utility.length; i++) {
+			if (!this.utility[i].equals(other.utility[i])) {
+				return false;
+			}
+		}
 		return true;
 	}
 
