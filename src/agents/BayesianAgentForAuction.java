@@ -226,7 +226,7 @@ public class BayesianAgentForAuction extends Agent {
 		log("Get next bid ...");
 		
 		
-		BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true);
+		BidSpace bs=new BidSpace(utilitySpace,new OpponentModelUtilSpace(fOpponentModel),true,true);
 		//System.out.println("Bidspace:\n"+bs);
 		
 		 // compute opponent's concession

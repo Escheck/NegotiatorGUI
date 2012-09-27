@@ -2,9 +2,11 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import negotiator.ArrayListXML;
+import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointTime;
@@ -39,6 +41,8 @@ public class TrajectoryMeasures {
 	double concessionB;
 	double explorationRateA;
 	double explorationRateB;
+	double percParetoBidsA;
+	double percParetoBidsB;
 	double jointExplorationRate;
 	private BidSpace bidSpace;
 	
@@ -50,31 +54,78 @@ public class TrajectoryMeasures {
 		this.bidSpace = bidSpace;
 	}
 
+	private boolean listContainsBidPoint(BidPoint bid, ArrayList<BidPoint> list) {
+		for (int i = 0; i < list.size(); i++) {
+			if (bid.getUtilityA().equals(list.get(i).getUtilityA()) &&
+					bid.getUtilityB().equals(list.get(i).getUtilityB())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void calculateExplorationRates() {
 		// strictly, it can happen that multiple bids have the same utility for both parties
-		Set<BidPoint> setA = new HashSet<BidPoint>();
-		Set<BidPoint> setB = new HashSet<BidPoint>();
-		Set<BidPoint> setJoint = new HashSet<BidPoint>();
-		Set<BidPoint> setAll = new HashSet<BidPoint>();
+		ArrayList<BidPoint> setA = new ArrayList<BidPoint>();
+		ArrayList<BidPoint> setB = new ArrayList<BidPoint>();
+		ArrayList<BidPoint> setJoint = new ArrayList<BidPoint>();
+		ArrayList<BidPoint> setAll = new ArrayList<BidPoint>();
 		
 		
 		for (int i = 0; i < bidSpace.bidPoints.size(); i++) {
-			setAll.add(bidSpace.bidPoints.get(i));
+			if (!listContainsBidPoint(bidSpace.bidPoints.get(i), setAll)) {
+				setAll.add(bidSpace.bidPoints.get(i));
+			}
 		}
 		
 		for (int i = 0; i < agentABids.size(); i++) {
-			setA.add(agentABids.get(i));
-			setJoint.add(agentABids.get(i));
+			if (!listContainsBidPoint(agentABids.get(i), setA)) {
+				setA.add(agentABids.get(i));
+			}
+			if (!listContainsBidPoint(agentABids.get(i), setJoint)) {
+				setJoint.add(agentABids.get(i));
+			}
 		}
 		
 		for (int i = 0; i < agentBBids.size(); i++) {
-			setB.add(agentBBids.get(i));
-			setJoint.add(agentBBids.get(i));
+			if (!listContainsBidPoint(agentBBids.get(i), setB)) {
+				setB.add(agentBBids.get(i));
+			}
+			if (!listContainsBidPoint(agentBBids.get(i), setJoint)) {
+				setJoint.add(agentBBids.get(i));
+			}
 		}
-		
 		explorationRateA = (double)setA.size() / (double)setAll.size();
 		explorationRateB = (double)setB.size() / (double)setAll.size();
 		jointExplorationRate = (double)setJoint.size() / (double)setAll.size();
+	}
+	
+	private void calculatePercentageParetoBids() {
+		ArrayList<BidPoint> paretoBids = null;
+		try {
+			paretoBids = new ArrayList<BidPoint>(bidSpace.getParetoFrontier());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int totalParetoBidsA = 0;
+		for (int i = 0; i < agentABids.size(); i++) {
+			BidPoint point = agentABids.get(i);
+			if (listContainsBidPoint(point, paretoBids)) {
+				totalParetoBidsA++;
+			}
+		}
+		percParetoBidsA = (double) totalParetoBidsA / (double) agentABids.size();
+		
+		int totalParetoBidsB = 0;
+		for (int i = 0; i < agentBBids.size(); i++) {
+			BidPoint point = agentBBids.get(i);
+			if (listContainsBidPoint(point, paretoBids)) {
+				totalParetoBidsB++;
+			}
+		}
+		System.out.println(paretoBids.size() + " " + agentBBids.size());
+		percParetoBidsB = (double) totalParetoBidsB / (double) agentBBids.size();
 	}
 	
 	/**
@@ -223,6 +274,10 @@ public class TrajectoryMeasures {
 		agentB.setAttribute("exploration_rate", explorationRateB + "");
 		agentA.setAttribute("joint_exploration_rate", jointExplorationRate + "");
 		agentB.setAttribute("joint_exploration_rate", jointExplorationRate + "");
+		
+		calculatePercentageParetoBids();
+		agentA.setAttribute("perc_pareto_bids", percParetoBidsA + "");
+		agentB.setAttribute("perc_pareto_bids", percParetoBidsB + "");
 		
 		return tjQualityMeasures;
 	}

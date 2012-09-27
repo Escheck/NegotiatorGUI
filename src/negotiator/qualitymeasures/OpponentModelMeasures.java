@@ -63,7 +63,7 @@ public class OpponentModelMeasures {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentModelUS;
 		try {
-			BidSpace realBS = new BidSpace(ownUS, opponentUS, false);
+			BidSpace realBS = new BidSpace(ownUS, opponentUS, false, true);
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
 			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);

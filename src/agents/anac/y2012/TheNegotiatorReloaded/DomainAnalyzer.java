@@ -47,7 +47,7 @@ public class DomainAnalyzer {
 		if (opponentModel != null && !(opponentModel instanceof NullModel)) {
 			if (omStrategy.canUpdateOM()) {
 				try {
-					BidSpace space = new BidSpace(ownUtilSpace, opponentModel.getOpponentUtilitySpace(), true);
+					BidSpace space = new BidSpace(ownUtilSpace, opponentModel.getOpponentUtilitySpace(), true, true);
 					BidPoint kalai = space.getKalaiSmorodinsky();
 					kalaiPoint = kalai.getUtilityA();
 					previousKalaiPoint = kalaiPoint;

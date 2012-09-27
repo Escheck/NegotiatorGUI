@@ -49,19 +49,21 @@ public class BidSpace {
 		this(new UtilitySpace [] {spaceA, spaceB});
 	}	
 	
-	/**
-	 * special version that does NOT check the *second* utility space for
-	 * compatibility with the domain. Use on your own risk.
-	 * The first space must contain the domain.
-	 * @param spaceA
-	 * @param spaceB
-	 * @param only store the bid points and not the bids to save memory
-	 * @throws Exception
-	 */
 	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids) throws Exception
 	{
 		UtilitySpace[] spaces = { spaceA, spaceB };
 		initializeUtilitySpaces(spaces);
+		buildSpace(excludeBids);
+	}
+	
+	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids, boolean skipCheckSpaceB) throws Exception
+	{
+		if (spaceA==null || spaceB==null)
+			throw new NullPointerException("util space is null");
+		UtilitySpace[] spaces = { spaceA, spaceB };
+		utilspaces = spaces.clone();
+		domain = utilspaces[0].getDomain();
+		spaceA.checkReadyForNegotiation(domain);
 		buildSpace(excludeBids);
 	}
 	

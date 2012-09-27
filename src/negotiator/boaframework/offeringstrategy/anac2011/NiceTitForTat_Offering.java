@@ -194,7 +194,7 @@ public class NiceTitForTat_Offering extends OfferingStrategy {
 		{
 			double nashMultiplier = getNashMultiplier(initialGap);
 			if (DOMAINSIZE < 200000) {
-				bs = new BidSpace(negotiationSession.getUtilitySpace(), opponentModel.getOpponentUtilitySpace(), true);
+				bs = new BidSpace(negotiationSession.getUtilitySpace(), opponentModel.getOpponentUtilitySpace(), true, true);
 				
 	
 				BidPoint nash = bs.getNash();
