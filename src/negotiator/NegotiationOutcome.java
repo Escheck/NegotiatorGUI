@@ -22,6 +22,7 @@ import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
+import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
@@ -31,6 +32,7 @@ import negotiator.xml.SimpleElement;
  * @author dmytro
  */
 public class NegotiationOutcome {
+	private OutcomeInfo outcomeInfo;
 	public int sessionNumber;
 	public String agentAname; 	// the name of the agent
 	public String agentBname;
@@ -71,50 +73,36 @@ public class NegotiationOutcome {
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
 	public NegotiationOutcome(AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession, int sessionNumber, 
-			Action lastAction, String agentAname,
-			String agentBname,
-			String agentAclass,
-			String agentBclass,
-			Double agentAutility,
-			Double agentButility,
-			Double agentAutilityDiscount,
-			Double agentButilityDiscount,
-			String err,
+			Action lastAction, 
 			ArrayList<BidPointTime> agentASize,
 			ArrayList<BidPointTime> agentBSize,
-			Double agentAmaxUtilP,
-			Double agentBmaxUtilP,
 			boolean startingWithA, // true if A starts, false if B starts
-			String domainName,
-			String agentAutilSpaceNameP,
-			String agentButilSpaceNameP,
-			SimpleElement additional, double time, double distanceToNash,
-			String acceptedBy
+			SimpleElement additional, double distanceToNash, OutcomeInfo outcomeInfo
 	) 
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
 		this.sessionNumber = sessionNumber;
 		this.lastAction = lastAction;
-		this.agentAutility = agentAutility;
-		this.agentButility = agentButility;
-		this.agentAutilityDiscount = agentAutilityDiscount;
-		this.agentButilityDiscount = agentButilityDiscount;
-		this.agentAname = agentAname;
-		this.agentBname = agentBname;
-		this.agentAclass=agentAclass;
-		this.agentBclass=agentBclass;
-		this.domainName = domainName;
+		this.agentAutility = outcomeInfo.getAgentAutility();
+		this.agentButility = outcomeInfo.getAgentButility();
+		this.agentAutilityDiscount = outcomeInfo.getAgentAutilityDiscount();
+		this.agentButilityDiscount = outcomeInfo.getAgentButilityDiscount();
+		this.agentAname = outcomeInfo.getAgentAname();
+		this.agentBname = outcomeInfo.getAgentBname();
+		this.agentAclass= outcomeInfo.getAgentAclass();
+		this.agentBclass= outcomeInfo.getAgentBclass();
+		this.domainName = outcomeInfo.getDomainName();
 		this.additional = additional;
 		AgentABids=new ArrayListXML<BidPointTime>(agentASize);
 		AgentBBids=new ArrayListXML<BidPointTime>(agentBSize);
-		ErrorRemarks=err;
-		agentAmaxUtil=agentAmaxUtilP;
-		agentBmaxUtil=agentBmaxUtilP;
+		ErrorRemarks= outcomeInfo.getErrorRemarks();
+		agentAmaxUtil= outcomeInfo.getAgentAmaxUtil();
+		agentBmaxUtil= outcomeInfo.getAgentBmaxUtil();
 		agentAstarts=startingWithA;
-		agentAutilSpaceName=agentAutilSpaceNameP;
-		agentButilSpaceName=agentButilSpaceNameP;
-		this.time = time;
-		this.acceptedBy = acceptedBy;
+		agentAutilSpaceName= outcomeInfo.getAgentAutilSpaceName();
+		agentButilSpaceName= outcomeInfo.getAgentButilSpaceName();
+		this.time = outcomeInfo.getTimeOfAgreement();
+		this.acceptedBy = outcomeInfo.getAcceptedBy();
 	}
 
 

@@ -30,6 +30,7 @@ import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.OpponentModelMeasures;
+import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -296,7 +297,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					} else if (lastAction instanceof Accept) {
 						String acceptedBy = (currentAgent.equals(agentA)) ? "agentA"
 								: "agentB";
-						System.out.println("AcceptedBy: " + acceptedBy);
 						if (agentAWithMultiAC
 								&& acceptedBy.equalsIgnoreCase("agentB")) {
 							AcceptanceStrategy AC = ((BOAagent) agentA)
@@ -481,6 +481,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				// System.out.println("agentAWithMultiAC: " +
 				// agentAWithMultiAC);
 			}
+
 			if (agentB instanceof BOAagent
 					&& ((BOAagent) agentB).getAcceptanceStrategy().isMAC()) {
 				agentBWithMultiAC = true;
@@ -598,22 +599,18 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double utilADiscount, double utilBDiscount, String message,
 			double time, double distanceToNash, String acceptedBy)
 			throws Exception {
-		no = new NegotiationOutcome(this, sessionNumber, lastAction,
-				agentA.getName(), agentB.getName(), agentA.getClass()
-						.getCanonicalName(), agentB.getClass()
-						.getCanonicalName(), utilA, utilB, utilADiscount,
-				utilBDiscount,
-				message,
-				fAgentABids,
-				fAgentBBids,
-				1.0,
-				1.0,
-				// This is super slow
-				// spaceA.getUtility(spaceA.getMaxUtilityBid()),
-				// spaceB.getUtility(spaceB.getMaxUtilityBid()),
-				startingWithA, spaceA.getDomain().getName(),
-				spaceA.getFileName(), spaceB.getFileName(), additionalLog,
-				time, distanceToNash, acceptedBy);
+			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
+					agentA.getClass().getCanonicalName(), 
+					agentB.getClass().getCanonicalName(), 
+					utilA, utilB, utilADiscount, utilBDiscount, 
+					message, 1.0, 1.0,
+					spaceA.getDomain().getName(),
+					spaceA.getFileName(), spaceB.getFileName(),
+					time, acceptedBy
+			);
+			
+			
+		no = new NegotiationOutcome(this, sessionNumber, lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -637,15 +634,18 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			ArrayList<BidPointTime> agentASize,
 			ArrayList<BidPointTime> agentBSize, double time,
 			double distanceToNash, String acceptedBy) throws Exception {
-		no = new NegotiationOutcome(this, sessionNumber, lastAction,
-				agentA.getName(), agentB.getName(), agentA.getClass()
-						.getCanonicalName(), agentB.getClass()
-						.getCanonicalName(), utilA, utilB, utilADiscount,
-				utilBDiscount, message, (ArrayList<BidPointTime>) agentASize,
-				(ArrayList<BidPointTime>) agentBSize, 1.0, 1.0, startingWithA,
-				spaceA.getDomain().getName(), spaceA.getFileName(),
-				spaceB.getFileName(), additionalLog, time, distanceToNash,
-				acceptedBy);
+		OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
+				agentA.getClass().getCanonicalName(), 
+				agentB.getClass().getCanonicalName(), 
+				utilA, utilB, utilADiscount, utilBDiscount, 
+				message, 1.0, 1.0,
+				spaceA.getDomain().getName(),
+				spaceA.getFileName(), spaceB.getFileName(),
+				time, acceptedBy
+		);
+		
+		
+		no = new NegotiationOutcome(this, sessionNumber, lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -823,6 +823,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				newOutcome(currentAgent, agentAUtility, agentBUtility,
 						agentAUtilityDisc, agentBUtilityDisc, null, time,
 						distanceToNash, acceptedBy);
+				System.out.println("OutcomeTuple is null");
 				MACoutcomes.add(no);
 			} else {
 
@@ -843,8 +844,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						agentBUtilityDisc, null, subAgentABids, subAgentBBids,
 						outcomeTuple.getTime(), distanceToNash,
 						outcomeTuple.getAcceptedBy());
-				changeNameofAC(agentAWithMultiAC, agentBWithMultiAC,
-						outcomeTuple);
+				changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
 				MACoutcomes.add(no);
 			}
 
