@@ -65,8 +65,9 @@ public class TournamentRunner implements Runnable
 		configuration = new HashMap<String, Integer>(t.getOptions());
 	}
 	
-	public TournamentRunner(NegotiationEventListener ael) {
+	public TournamentRunner(NegotiationEventListener ael, HashMap<String, Integer> configuration) {
 		negotiationEventListeners.add(ael);
+		this.configuration = configuration;
 	}
 	
 	/** 
@@ -113,13 +114,15 @@ public class TournamentRunner implements Runnable
 
 
 			// DEFAULT: extensive log disabled
-			if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
+			if (configuration != null && configuration.containsKey("logNegotiationTrace") &&
+					configuration.get("logNegotiationTrace") != 0) {
 				AlternatingOffersProtocol.closeLog(true);
 			}
 			AlternatingOffersProtocol.closeLog(false);
 			
 			// DEFAULT: no detailed analysis
-			if (configuration != null && configuration.get("logDetailedAnalysis") != 0) {
+			if (configuration != null && configuration.containsKey("logDetailedAnalysis") &&
+					configuration.get("logDetailedAnalysis") != 0) {
 				TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
 			}
 			

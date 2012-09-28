@@ -417,7 +417,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
 		TournamentRunner runner = new TournamentRunner (tournament, tournamentProgressUI);
 		if (distributed) {
-			runner = new TournamentRunner (tournamentProgressUI);
+			runner = new TournamentRunner (tournamentProgressUI, tournament.getOptions());
 			runner.setDistributed(distributed, sessionname);
 			//NegoGUIApp.negoGUIView.getFrame().setVisible(false);
 		}
