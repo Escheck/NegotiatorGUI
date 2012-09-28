@@ -40,6 +40,8 @@ public class OutcomeInfo {
 	private double jointExploration;
 	private double socialWelfare;
 	private int runNumber;
+	private double percParetoBidsA;
+	private double percParetoBidsB;
 	private double ACbestTheoreticalA;
 	private double ACbestDiscountedTheoreticalA;
 	public double getACbestTheoreticalA() {
@@ -396,6 +398,22 @@ public class OutcomeInfo {
 
 	public void setSocialWelfare(double socialWelfare) {
 		this.socialWelfare = socialWelfare;
+	}
+
+	public double getPercParetoBidsA() {
+		return percParetoBidsA;
+	}
+
+	public void setPercParetoBidsA(double percParetoBidsA) {
+		this.percParetoBidsA = percParetoBidsA;
+	}
+
+	public double getPercParetoBidsB() {
+		return percParetoBidsB;
+	}
+
+	public void setPercParetoBidsB(double percParetoBidsB) {
+		this.percParetoBidsB = percParetoBidsB;
 	}
 
 	@Override

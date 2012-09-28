@@ -23,6 +23,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * 
  * Using the main a tournament measures log can be created afterwards.
  * 
+ * BUG?
+ * This class assumes that the agent does not play against itself.
+ * 
  * @author Mark Hendrikx, Alex Dirkzwager
  */
 public class TournamentMeasures {
@@ -101,6 +104,7 @@ public class TournamentMeasures {
 				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue("concession_moves")));
 				outcome.setExplorationA(Double.parseDouble(attributes.getValue("exploration_rate")));
 				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+				outcome.setPercParetoBidsA(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
 			} else if (tagName.equals("trajectory") && attributes.getValue("agent").equals("B")) {
 				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue("silent_moves")));
 				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue("selfish_moves")));
@@ -110,6 +114,7 @@ public class TournamentMeasures {
 				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue("concession_moves")));
 				outcome.setExplorationB(Double.parseDouble(attributes.getValue("exploration_rate")));
 				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+				outcome.setPercParetoBidsB(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
 			}
 			return found;
 		}
@@ -300,6 +305,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			
 			trajectorAnalysisQM.setAttribute("average_exploration", getAverageExploration(outcomes, agentName) + "");
 			trajectorAnalysisQM.setAttribute("average_joint_exploration", getAverageJointExploration(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("perc_pareto_bids", getAveragePercentageParetoBids(outcomes, agentName) + "");
 
 			// discard invalid trajectories
 			ArrayList<OutcomeInfo> newOutcomes = discardInvalidTrajectories(outcomes);
@@ -668,6 +674,32 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfo> outc
 			}
 		}
 		return (double)totalJointExploration / (double)totalSessions;
+	}
+	
+	/**
+	 * Returns the average percentage of bids offered by the opponent which
+	 * were Pareto optimal.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return average percentage of Pareto bids
+	 */
+	private static double getAveragePercentageParetoBids(
+			ArrayList<OutcomeInfo> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalPercParetoBids = 0;
+		for (OutcomeInfo outcome : outcomes) {
+			if (outcome.getAgentNameA().equals(agentName)) {
+				totalSessions++;
+				totalPercParetoBids += outcome.getPercParetoBidsA();
+			} else {
+				if (outcome.getAgentNameB().equals(agentName)) {
+					totalSessions++;
+					totalPercParetoBids += outcome.getPercParetoBidsB();
+				}
+			}
+		}
+		return (double)totalPercParetoBids / (double)totalSessions;
 	}
 	
 	/**
