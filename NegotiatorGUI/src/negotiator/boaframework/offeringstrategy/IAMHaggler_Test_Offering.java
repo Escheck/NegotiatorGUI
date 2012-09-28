@@ -22,6 +22,7 @@ import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
+	private static final int SLOTS = 25;
 	private IAMhaggler_Concession IAMhagglerConcession;
 	private IAMHagglerOpponentConcessionModel concessionModel;
 	protected BidCreator bidCreator;
@@ -42,7 +43,7 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, opponentModel, omStrategy, parameters);
 		this.negotiationSession = negotiationSession;
-		concessionModel = new IAMHagglerOpponentConcessionModel(25, negotiationSession.getUtilitySpace());
+		concessionModel = new IAMHagglerOpponentConcessionModel(SLOTS, negotiationSession.getUtilitySpace());
 		IAMhagglerConcession = new IAMhaggler_Concession(negotiationSession.getUtilitySpace());
 		bidCreator = new RandomBidCreator();
 	}
@@ -72,18 +73,19 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 			dfs.setDecimalSeparator('.');
 			formatter.setDecimalFormatSymbols(dfs);
 
-			System.out.println("Means\tVariance\t2 SD");
-			for (int i = 0; i <= 25; i++)
+			System.out.println("Mean\tVariance\t2 SD\tMean\tMean - 2SD\tMean + 2SD");
+			for (int i = 0; i <= SLOTS; i++)
 			{
 				double var = variances.get(i, 0);
 				double sd = Math.sqrt(var);
 				double mean = means.get(i, 0);
 
-				System.out.println(mean + "\t" + formatter.format(var) + "\t" + (2 * sd));
+				System.out.println(mean + "\t" + formatter.format(var) + "\t" + (2 * sd) + "\t" 
+						+ mean + "\t" + (mean - 2*sd) + "\t" + (mean + 2*sd));
 			}
 		}
 
-		double targetUtil = 0.75;
+		double targetUtil = 1;
 
 
 
@@ -92,7 +94,7 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 		//double targetUtil = IAMhagglerConcession.getTarget(opponentUtility, negotiationSession.getTime());
 
 		//System.out.println("TestHaggler targetUtil:" + targetUtil);
-		Bid bid = bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtil - 0.25, targetUtil +0.25);
+		Bid bid = bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtil, targetUtil +0.25);
 		try {
 			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid));
 		} catch (Exception e) {
