@@ -250,15 +250,11 @@ public class AlternatingOffersProtocol extends Protocol {
 				outcome.additional.addChildElement(tjQualityMeasures);	
 			}
 		}
-
-		// DEFAULT: normal logging enabled
-		if (configuration == null || configuration.size() == 0 || (configuration.get("logSessions") != 0)) {
 			writeOutcomeToLog(false);
 			// DEFAULT: extensive log disabled
 			if (configuration != null && configuration.size() > 0 && configuration.get("logNegotiationTrace") != 0) {
 				writeOutcomeToLog(true);
 			}
-		}
 	}
 
 	protected AlternatingOffersBilateralAtomicNegoSession newAlternatingOffersBilateralAtomicNegoSession() throws Exception
