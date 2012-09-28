@@ -1,6 +1,7 @@
 package negotiator.boaframework.offeringstrategy.other;
 
 import java.util.HashMap;
+
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -108,6 +109,8 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		double utilityGoal;
 		utilityGoal = p(time);
 		
+//		System.out.println("[e=" + e + ", Pmin = " + BilateralAgent.round2(Pmin) + "] t = " + BilateralAgent.round2(time) + ". Aiming for " + utilityGoal);
+		
 		// if there is no opponent model available
 		if (opponentModel instanceof NoModel) {
 			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
@@ -127,14 +130,20 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 * That is, the offer will always be between the value range, 
 	 * at the beginning it will give the initial constant and when the deadline is reached, it
 	 * will offer the reservation value.
+	 * 
+	 * For e = 0 (special case), it will behave as a Hardliner.
 	 */
-	public double f(double t) {
+	public double f(double t)
+	{
+		if (e == 0)
+			return k;
 		double ft = k + (1 - k) * Math.pow(t, 1.0/e);
 		return ft;
 	}
 
 	/**
 	 * Makes sure the target utility with in the acceptable range according to the domain
+	 * Goes from Pmax to Pmin!
 	 * @param t
 	 * @return double
 	 */
