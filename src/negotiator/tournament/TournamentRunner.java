@@ -153,13 +153,11 @@ public class TournamentRunner implements Runnable
 				s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 				wait();
 			}
-			
-			if(!Global.REMEMBER_PREVIOUS_SESSIONS) {
-				sessions.set(i, null);
-				System.gc();
-				System.gc();
-				System.gc();
-			}
+
+			sessions.set(i, null);
+			System.gc();
+			System.gc();
+			System.gc();
 		}
 		return Global.getOutcomesFileName();
 	}
@@ -205,12 +203,11 @@ public class TournamentRunner implements Runnable
 							AlternatingOffersProtocol as = (AlternatingOffersProtocol) s;
 							builder.append(as.getOutcome());
 						}
-						if(!Global.REMEMBER_PREVIOUS_SESSIONS) {
-							sessions.set(sessions.indexOf(s), null);
-							System.gc();
-							System.gc();
-							System.gc();
-						}
+
+						sessions.set(sessions.indexOf(s), null);
+						System.gc();
+						System.gc();
+						System.gc();
 					}
 				}
 				// 5. Store the outcome of the job and mark it done

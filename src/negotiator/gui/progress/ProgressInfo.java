@@ -9,7 +9,7 @@ class ProgressInfo extends AbstractTableModel{
 	//public Bid oppOldBid;
 	//public UtilitySpace utilitySpace;
 	private static final int NUMBER_OF_COLUMNS = 8; 
-	private String[] colNames={"Round","Side","utilA","utilB","utilA discount","utilB discount", Global.SHOW_TIME ? "Time" : " Opp. model"};
+	private String[] colNames={"Round","Side","utilA","utilB","utilA discount","utilB discount", "Time"};
 	private Object[][] data;
 	
 	public ProgressInfo() 

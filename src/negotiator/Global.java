@@ -35,8 +35,7 @@ public class Global {
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
 	
 	public static boolean batchMode = false;
-	public static boolean analysisEnabled = true; // set to true to enable the
-													// realtime analysis tool.
+
 	public static boolean experimentalSetup = true;// set to true to allow agent
 													// to access negotiation
 													// environment
@@ -49,8 +48,6 @@ public class Global {
 	public static final Date loadDate = Calendar.getInstance().getTime();
 	/** Use extensive data-named logging files */
 	public static final boolean LOG_TO_DATED_FILES = !false;
-	
-	public static final boolean SHOW_TIME = !false;
 
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = true;
@@ -72,11 +69,6 @@ public class Global {
 	 * is raised to 30 minutes if this functionality is enabled.
 	 */
 	public static final boolean PAUSABLE_TIMELINE = false;
-	
-	/** WARNING: enabling this functionality allows the user to view previous tournaments by
-	 * clicking in the GUI, but also introduces a giant memory leak as all protocols are remembered
-	 * and thus all agents. */
-	public static final boolean REMEMBER_PREVIOUS_SESSIONS = false;
 	
 	/**
 	 * Using this option is recommended when your PC has less than 4 GB of RAM.
