@@ -58,7 +58,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	/* time/deadline */
 	protected Date startTime;
 	protected long startTimeMillies; // idem.
-	/** In ms. */
+	/** Default setting is 3min. This is the number of ms. */
 	protected Integer totalTime = 1000 * 180;
 	protected int sessionTotalNumber = 1;
 	protected Protocol protocol;
