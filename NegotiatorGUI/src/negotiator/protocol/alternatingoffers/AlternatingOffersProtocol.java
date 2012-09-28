@@ -18,7 +18,7 @@ import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.TrajectoryMeasures;
-import negotiator.qualitymeasures.UtilityMeasures;
+import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;

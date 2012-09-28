@@ -71,10 +71,6 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 
 
 				//sets the amount of bids made for agent A and agent B
-				System.out.println("StartingAgent: " + startingAgent);
-				System.out.println("own Size: " +  negotiationSession.getOwnBidHistory().size());
-				System.out.println("opponentSize: " + negotiationSession.getOwnBidHistory().size());
-
 				if(startingAgent) {
 					outcome = new OutcomeTuple(lastOpponentBid, name, time, negotiationSession.getOwnBidHistory().size(), negotiationSession.getOpponentBidHistory().size(),"accept", "agentA");
 				}else {

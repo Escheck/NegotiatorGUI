@@ -15,7 +15,7 @@ import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
 import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
-import negotiator.qualitymeasures.TournamentMeasures;
+import negotiator.qualitymeasures.logmanipulation.TournamentMeasures;
 
 /**
  * TournamentRunner is a class that runs a tournament. It computes all combinations of the sessions from the {@link Tournament}
@@ -123,7 +123,7 @@ public class TournamentRunner implements Runnable
 			// DEFAULT: no detailed analysis
 			if (configuration != null && configuration.containsKey("logDetailedAnalysis") &&
 					configuration.get("logDetailedAnalysis") != 0) {
-				TournamentMeasures.process(log, Global.getTournamentOutcomeFileName());
+				TournamentMeasures.runTournamenetMeasure(log, Global.getTournamentOutcomeFileName());
 			}
 			
 			if (distributed) {
