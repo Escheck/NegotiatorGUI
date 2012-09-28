@@ -155,7 +155,7 @@ public class QOAgent extends Agent {
 				break;
 			case QMessages.ACCEPT:
 			{
-				lAction = new Accept(this);
+				lAction = new Accept(this.getAgentID());
 			}
 				break;
 			case QMessages.REJECT:

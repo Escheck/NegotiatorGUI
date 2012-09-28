@@ -16,7 +16,7 @@ public class Action {
 	public Action() {}
 	
     /** Creates a new instance of Action 
-     * @param agent is the agent performing the action. 
+     * @param agentID is the agent performing the action. 
      * Note that by referring to the agent class object we effectively prevent the agent
      * from garbage collection. */
     public Action(AgentID agentID) {

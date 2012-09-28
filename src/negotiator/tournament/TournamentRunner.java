@@ -123,7 +123,7 @@ public class TournamentRunner implements Runnable
 			// DEFAULT: no detailed analysis
 			if (configuration != null && configuration.containsKey("logDetailedAnalysis") &&
 					configuration.get("logDetailedAnalysis") != 0) {
-				TournamentMeasures.runTournamenetMeasure(log, Global.getTournamentOutcomeFileName());
+				TournamentMeasures.runTournamentMeasures(log, Global.getTournamentOutcomeFileName());
 			}
 			
 			if (distributed) {

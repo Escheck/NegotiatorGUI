@@ -4,8 +4,6 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
-import java.util.HashMap;
-
 public class EvaluatorObjective implements Evaluator {
 	
 	// Class fields

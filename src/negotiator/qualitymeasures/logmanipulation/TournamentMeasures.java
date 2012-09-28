@@ -1,20 +1,10 @@
 package negotiator.qualitymeasures.logmanipulation;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import negotiator.exceptions.Warning;
 import negotiator.qualitymeasures.logmanipulation.NegotiationLogParser.ResultsParser;
 import negotiator.xml.OrderedSimpleElement;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Class which calculates statistics from the measures derived from the outcomes log.
@@ -50,7 +40,7 @@ public class TournamentMeasures {
 		}
 	}
 	
-	public static void runTournamenetMeasure(String in, String out) throws Exception{
+	public static void runTournamentMeasures(String in, String out) throws Exception{
 		ResultsParser resultsParser = NegotiationLogParser.parseLog(in);
 		OrderedSimpleElement results = calculateMeasures(resultsParser.getOutcomes(), resultsParser.getOutcomesAsRuns(), resultsParser.getAgents());
 		NegotiationLogParser.writeXMLtoFile(results, out);
@@ -65,14 +55,13 @@ public class TournamentMeasures {
 	 * @param agents
 	 * @return XML-object with results of calculated measures.
 	 */
-public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfoDerived> outcomes, ArrayList<ArrayList<OutcomeInfoDerived>> runs, HashSet<String> agents) {
-	OrderedSimpleElement tournamentQualityMeasures = new OrderedSimpleElement("tournament_quality_measures");
-	
-	for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
+	public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfoDerived> outcomes, ArrayList<ArrayList<OutcomeInfoDerived>> runs, HashSet<String> agents) {
+		OrderedSimpleElement tournamentQualityMeasures = new OrderedSimpleElement("tournament_quality_measures");
+		for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
 			String agentName = agentsIter.next();
+			System.out.println("Loop for: " + agentName);
 			OrderedSimpleElement agentElement = new OrderedSimpleElement("NegotiationOutcome");
 			agentElement.setAttribute("Agent", agentName);
-			tournamentQualityMeasures.addChildElement(agentElement);
 		
 			OrderedSimpleElement tournamentQM = new OrderedSimpleElement("TournamentQM");
 			agentElement.addChildElement(tournamentQM);
@@ -107,6 +96,7 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfoDerive
 			
 			trajectorAnalysisQM.setAttribute("average_exploration", getAverageExploration(outcomes, agentName) + "");
 			trajectorAnalysisQM.setAttribute("average_joint_exploration", getAverageJointExploration(outcomes, agentName) + "");
+			trajectorAnalysisQM.setAttribute("perc_pareto_bids", getAveragePercentageParetoBids(outcomes, agentName) + "");
 
 			// discard invalid trajectories
 			ArrayList<OutcomeInfoDerived> newOutcomes = discardInvalidTrajectories(outcomes);
@@ -542,6 +532,32 @@ public static OrderedSimpleElement calculateMeasures(ArrayList<OutcomeInfoDerive
 			}
 		}
 		return totalPareto / totalSessions;
+	}
+	
+	/**
+	 * Returns the average percentage of bids offered by the opponent which
+	 * were Pareto optimal.
+	 * 
+	 * @param outcomes
+	 * @param agentName
+	 * @return average percentage of Pareto bids
+	 */
+	private static double getAveragePercentageParetoBids(
+			ArrayList<OutcomeInfoDerived> outcomes, String agentName) {
+		int totalSessions = 0;
+		double totalPercParetoBids = 0;
+		for (OutcomeInfoDerived outcome : outcomes) {
+			if (outcome.getAgentAname().equals(agentName)) {
+				totalSessions++;
+				totalPercParetoBids += outcome.getPercParetoBidsA();
+			} else {
+				if (outcome.getAgentBname().equals(agentName)) {
+					totalSessions++;
+					totalPercParetoBids += outcome.getPercParetoBidsB();
+				}
+			}
+		}
+		return (double)totalPercParetoBids / (double)totalSessions;
 	}
 	
 	/**

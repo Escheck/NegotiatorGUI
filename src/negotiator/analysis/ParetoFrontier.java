@@ -16,24 +16,23 @@ public class ParetoFrontier
 	}
 	
 	/**
-	 * @param b
-	 * @param frontier
+	 * @param bidpoint bid to be added to the Pareto frontier.
 	 */
-	public void mergeIntoFrontier(BidPoint b)
+	public void mergeIntoFrontier(BidPoint bidpoint)
 	{
 		for (BidPoint f : frontier)
 		{
-			if (b.isStrictlyDominatedBy(f))		// we will not add this point
+			if (bidpoint.isStrictlyDominatedBy(f))		// we will not add this point
 				return;
-			if (f.isStrictlyDominatedBy(b))		// we will merge this point into the frontier
+			if (f.isStrictlyDominatedBy(bidpoint))		// we will merge this point into the frontier
 			{
-				merge(b);
+				merge(bidpoint);
 				return;
 			}
 		}
 		
 		// b is not above or below the frontier, so it must be part of the frontier
-		frontier.add(b);
+		frontier.add(bidpoint);
 	}
 	
 	private void merge(BidPoint b)

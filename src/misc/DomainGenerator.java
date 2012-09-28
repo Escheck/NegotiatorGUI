@@ -179,7 +179,7 @@ public class DomainGenerator {
 	 * @param element
 	 * @param utilitySpaceA
 	 * @param utilitySpaceB
-	 * @return
+	 * @return the opposition and bid distribution of a domain
 	 */
 	public static double[] calculateDistances(UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);

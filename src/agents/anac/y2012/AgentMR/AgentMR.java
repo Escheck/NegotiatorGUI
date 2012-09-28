@@ -105,7 +105,6 @@ public class AgentMR extends Agent {
 					offeredutil = getUtility(partnerBid);
 				}
 
-				// Ã¥Ë†ï¿½Ã¥â€ºÅ¾Ã£â€šÂªÃ£Æ’â€¢Ã£â€šÂ¡Ã£Æ’Â¼Ã¥â€¡Â¦Ã§ï¿½â€ 
 				if (firstOffer) {
 					//System.out.println("Original partnerBid: " + partnerBid);
 					//System.out.println("Original offeredutil: " + offeredutil);
@@ -122,19 +121,16 @@ public class AgentMR extends Agent {
 					} else {
 						p = 0.80;
 					}
-					firstOffer = !firstOffer; // Ã¥Ë†ï¿½Ã¥â€ºÅ¾Ã£â€šÂªÃ£Æ’â€¢Ã£â€šÂ¡Ã£Æ’Â¼Ã¥â€¡Â¦Ã§ï¿½â€ Ã§Âµâ€šÃ¤Âºâ€ 
+					firstOffer = !firstOffer;
 				}
 
-				updateMinimumBidUtility(time); // Ã©â€“Â¾Ã¥â‚¬Â¤(MBU)Ã¥â€¡Â¦Ã§ï¿½â€ 
-
-				// BidÃ§Â§Â»Ã¥â€¹â€¢Ã¥â€¡Â¦Ã§ï¿½â€ 
-				if (partnerBid.equals(previousPartnerBid)) { // Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦ï¿½ï¿½Ã§Â¤ÂºÃ£ï¿½Å’Ã¥Â¤â€°Ã£â€šï¿½Ã£â€šâ€°Ã£ï¿½ÂªÃ£ï¿½â€žÃ¥Â Â´Ã¥ï¿½Ë†
+				updateMinimumBidUtility(time);
+				if (partnerBid.equals(previousPartnerBid)) {
 					if (currentBidNumber > 0 && 0.5 > 0.65) {
-						currentBidNumber--; // Ã§Â¢ÂºÃ§Å½â€¡Ã§Å¡â€žÃ£ï¿½Â«BidÃ£â€šâ€™Ã§Â§Â»Ã¥â€¹â€¢
+						currentBidNumber--;
 					}
 				}
 
-				// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦Å“â‚¬Ã¥Â¤Â§BidÃ£â€šâ€™Ã¦â€ºÂ´Ã¦â€“Â°
 				if (offeredutil > offereMaxUtility) {
 					offereMaxBid = partnerBid;
 					offereMaxUtility = offeredutil;
@@ -145,7 +141,7 @@ public class AgentMR extends Agent {
 					}
 				}
 
-				// forecastingÃ¥â€¡Â¦Ã§ï¿½â€ 
+				// forecasting
 				if ((time > 0.5) && forecastTime) {
 					updateSigmoidFunction();
 					forecastTime = !forecastTime;
@@ -157,62 +153,46 @@ public class AgentMR extends Agent {
 				//System.out.println("Orig condition3: " + bidRunk.contains(partnerBid));
 
 				
-				// AcceptÃ¥â€¡Â¦Ã§ï¿½â€ 
-				// 1. AcceptPÃ£ï¿½Â®Ã¤Â¸â€¹Ã©â„¢ï¿½Ã£â€šâ€™Ã¨Â¶â€¦Ã£ï¿½Ë†Ã£ï¿½Å¸Ã¥Â Â´Ã¥ï¿½Ë†
-				// 2. Ã©â€“Â¾Ã¥â‚¬Â¤(MBU)Ã£â€šâ€™Ã¨Â¶â€¦Ã£ï¿½Ë†Ã£ï¿½Å¸BidÃ£ï¿½Å’Ã¦ï¿½ï¿½Ã§Â¤ÂºÃ£ï¿½â€¢Ã£â€šÅ’Ã£ï¿½Å¸Ã¥Â Â´Ã¥ï¿½Ë†
-				// 3. Ã¦â€”Â¢Ã£ï¿½Â«Ã£ï¿½â€œÃ£ï¿½Â¡Ã£â€šâ€°Ã£ï¿½Å’BidÃ£â€šâ€™Ã£ï¿½â€”Ã£ï¿½Å¸BidÃ£ï¿½Å’Ã¦ï¿½ï¿½Ã§Â¤ÂºÃ£ï¿½â€¢Ã£â€šÅ’Ã£ï¿½Å¸Ã¥Â Â´Ã¥ï¿½Ë†
 				if ((P > MINIMUM_ACCEPT_P) || (offeredutil > minimumBidUtility)
 						|| bidRunk.contains(partnerBid)) {
 					action = new Accept(getAgentID());
 				} else {
-					// Ã§â€ºÂ¸Ã¦â€°â€¹Ã¦ï¿½ï¿½Ã§Â¤ÂºÃ£ï¿½Â®Ã¦Å“â‚¬Ã¥Â¤Â§BidUtiltyÃ£ï¿½Å’MBUÃ¤Â»Â¥Ã¤Â¸Å Ã£ï¿½ÂªÃ£â€šâ€°Ã£ï¿½ï¿½Ã£â€šÅ’Ã£â€šâ€™BidÃ£ï¿½â€”Ã§Â¶Å¡Ã£ï¿½â€˜Ã£â€šâ€¹
-					// Ã¦â€”Â©Ã¦Å“Å¸Ã¥ï¿½Ë†Ã¦â€žï¿½Ã¥Â½Â¢Ã¦Ë†ï¿½Ã£â€šâ€™Ã¥â€ºÂ³Ã£â€šâ€¹
 					if (offereMaxUtility > minimumBidUtility) {
 						//System.out.println("Origional NextBid1: " + offereMaxBid);
 
 						action = new Offer(getAgentID(), offereMaxBid);
 					}
-					// Ã¦Å“â‚¬Ã§Âµâ€šBidÃ¥â€¡Â¦Ã§ï¿½â€ 
-					// Ã§â€¢â„¢Ã¤Â¿ï¿½Ã¤Â¾Â¡Ã¦Â Â¼Ã£ï¿½Å’Ã£ï¿½ÂªÃ£ï¿½â€˜Ã£â€šÅ’Ã£ï¿½Â°Ã¥ï¿½Ë†Ã¦â€žï¿½Ã¥Â½Â¢Ã¦Ë†ï¿½Ã£â€šâ€™Ã¦Å“â‚¬Ã¥â€žÂªÃ¥â€¦Ë†Ã£ï¿½Â¨Ã£ï¿½â„¢Ã£â€šâ€¹
 					else if (time > 0.985) {
-						// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦Å“â‚¬Ã¥Â¤Â§BidÃ£â€šâ€™BidÃ£ï¿½â€”Ã£â‚¬ï¿½Ã¥ï¿½Ë†Ã¦â€žï¿½Ã¥Â½Â¢Ã¦Ë†ï¿½
 						if (offereMaxUtility > reservation) {
 							//System.out.println("Origional NextBid2: " + offereMaxBid);
 
 							action = new Offer(getAgentID(), offereMaxBid);
-						} else { // Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦Å“â‚¬Ã¥Â¤Â§BidUtilÃ£ï¿½Å’Ã§â€¢â„¢Ã¤Â¿ï¿½Ã¤Â¾Â¡Ã¦Â Â¼Ã¤Â»Â¥Ã¤Â¸â€¹Ã£ï¿½ÂªÃ£â€šâ€°Ã¨â€¡ÂªÃ¥Ë†â€ Ã£ï¿½Â®Ã¦Å“â‚¬Ã¥Â¤Â§Ã£ï¿½Â®Ã¨Â­Â²Ã¦Â­Â©BidÃ£â€šâ€™Ã¨Â¡Å’Ã£ï¿½â€ 
+						} else {
 							action = new Offer(getAgentID(),
 									bidRunk.get(bidRunk.size() - lastBidNumber));
 							//System.out.println("Origional NextBid3: " + 	bidRunk.get(bidRunk.size() - lastBidNumber));
 
 							lastBidNumber++;
 						}
-					}
-					// Ã©â‚¬Å¡Ã¥Â¸Â¸BidÃ¥â€¡Â¦Ã§ï¿½â€ 
-					// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦ï¿½ï¿½Ã§Â¤ÂºBidÃ£ï¿½Å’Ã¤Â¸â‚¬Ã¥Â®Å¡Ã¤Â»Â¥Ã¤Â¸Å Ã£â€šâ€™Ã¨Â¶â€¦Ã£ï¿½Ë†Ã£ï¿½Å¸Ã¥Â Â´Ã¥ï¿½Ë†
-					else	{	
+					} else	{	
 						
 						//System.out.println("Original offeredutil: " + offeredutil);
 						//System.out.println("Original getMinimumOffereDutil: " + minimumOffereDutil);
 						
 						if (offeredutil > minimumOffereDutil) {
 						HashMap<Bid, Double> getBids = getBidTable(1);
-						// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®BidÃ£ï¿½Â®Ã¨Â¿â€˜Ã£ï¿½ï¿½Ã£ï¿½Â«MBUÃ¤Â»Â¥Ã¤Â¸Å Ã£ï¿½Â®BidÃ£ï¿½Å’Ã¥Â­ËœÃ¥Å“Â¨Ã£ï¿½â€”Ã£ï¿½Å¸Ã¥Â Â´Ã¥ï¿½Ë†
+						
 						if (getBids.size() >= 1) {
-							// BidTableÃ£â€šâ€™Ã¥Ë†ï¿½Ã¦Å“Å¸Ã¥Å’â€“Ã£Æ’Â»Ã¥â€ ï¿½Ã¦Â§â€¹Ã§Â¯â€°
 							currentBidNumber = 0;
 							bidRunk.clear();
 							bidTables = getBids;
 							sortBid(getBids); // Sort BidTable
-						} else { // Ã©â‚¬Å¡Ã¥Â¸Â¸Ã£ï¿½Â®BidÃ¦Â¤Å“Ã§Â´Â¢
+						} else {
 							getBids = getBidTable(2);
 							if (getBids.size() >= 1) {
 								sortBid(getBids); // Sort BidTable
 								Bid maxBid = getMaxBidUtility(getBids);
-								// Ã¨Â¦â€¹Ã£ï¿½Â¤Ã£ï¿½â€˜Ã£ï¿½Å¸BidÃ£ï¿½Â®Ã£ï¿½â€ Ã£ï¿½Â¡Ã¦Å“â‚¬Ã¥Â¤Â§Ã£ï¿½Â®Ã§â€¢ÂªÃ¥ï¿½Â·Ã£â€šâ€™Ã¥â€°Â²Ã£â€šÅ Ã¥Â½â€œÃ£ï¿½Â¦
 								currentBidNumber = bidRunk.indexOf(maxBid);
-								//System.out.println("Original currentBidNumberChange0");
-
 							}
 						}
 						action = new Offer(getAgentID(),
@@ -256,7 +236,6 @@ public class AgentMR extends Agent {
 						}
 					}
 				}
-				// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¤Â¸â‚¬Ã£ï¿½Â¤Ã¥â€°ï¿½Ã£ï¿½Â®BidÃ£â€šâ€™Ã¨Â¨ËœÃ¦â€ Â¶Ã£ï¿½â€”Ã£ï¿½Â¦Ã£ï¿½Å Ã£ï¿½ï¿½
 				previousPartnerBid = partnerBid;
 			}}
 		} catch (Exception e) {
@@ -266,22 +245,20 @@ public class AgentMR extends Agent {
 		return action;
 	}
 
-	// Ã§â€¢â„¢Ã¤Â¿ï¿½Ã¤Â¾Â¡Ã¦Â Â¼
 	private void getReservationFactor() {
 		if (utilitySpace.getReservationValue() != null) {
 			reservation = utilitySpace.getReservationValue();
 		}
 	}
 
-	// Ã¥â€°Â²Ã¥Â¼â€¢Ã§Å½â€¡Ã£ï¿½Â®Ã¦Å“â€°Ã§â€žÂ¡
 	private void getDiscountFactor() {
 		if (utilitySpace.getDiscountFactor() > 0.0) {
-			discountFactor = true; // Ã¥â€°Â²Ã¥Â¼â€¢Ã§Å½â€¡Ã¦Å“â€°Ã£â€šÅ 
+			discountFactor = true;
 		} else
-			discountFactor = false; // Ã¥â€°Â²Ã¥Â¼â€¢Ã§Å½â€¡Ã§â€žÂ¡Ã£ï¿½â€”
+			discountFactor = false;
 	}
 
-	// forecastingÃ¥â€¡Â¦Ã§ï¿½â€ 
+	// forecasting
 	private void newupdateSigmoidFunction() {
 		double latestObservation = observationUtility.get(observationUtility.size() - 1);
 		double concessionPercent = Math.abs(latestObservation - firstOffereUtility) / (1.0 - firstOffereUtility);
@@ -294,11 +271,10 @@ public class AgentMR extends Agent {
 
 	private void updateSigmoidFunction() {
 		int observationSize = observationUtility.size();
-		double latestObservation = observationUtility.get(observationSize - 1); // Ã¦Å“â‚¬Ã¦â€“Â°Ã£ï¿½Â®Ã§â€ºÂ¸Ã¦â€°â€¹BidUtil
+		double latestObservation = observationUtility.get(observationSize - 1);
 		double concessionPercent = Math.abs(latestObservation - firstOffereUtility) / (1.0 - firstOffereUtility);
 		
 		if (discountFactor) {
-			// AgentÃ¨Â­Â²Ã¦Â­Â©Ã£ï¿½ÂªÃ£ï¿½â€”Ã£ï¿½Â¨Ã¥Ë†Â¤Ã¦â€“Â­
 			if ((concessionPercent < 0.20) ||
 					(observationSize < 3)) {
 				percent = 0.35;
@@ -307,12 +283,11 @@ public class AgentMR extends Agent {
 				percent = 0.45;
 			}
 		} else {
-			// AgentÃ¨Â­Â²Ã¦Â­Â©Ã£ï¿½ÂªÃ£ï¿½â€”Ã£ï¿½Â¨Ã¥Ë†Â¤Ã¦â€“Â­
 			if ((concessionPercent < 0.20) ||
 					(observationSize < 3)) {
 				percent = 0.50;
 				sigmoidGain = -4;
-			} else if (concessionPercent > 0.60) { // AgentÃ¨Â­Â²Ã¦Â­Â©Ã¥Â¤Â§
+			} else if (concessionPercent > 0.60) { // Agent
 				percent = 0.80;
 				sigmoidGain = -6;
 			} else {
@@ -321,7 +296,6 @@ public class AgentMR extends Agent {
 		}
 	}
 
-	// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¦ï¿½ï¿½Ã§Â¤ÂºBidÃ£ï¿½â€¹Ã£â€šâ€°Ã¦Å“â‚¬Ã¥Â¤Â§Ã£ï¿½Â®Ã£â€šâ€šÃ£ï¿½Â®Ã£â€šâ€™Ã¨Â¿â€�Ã£ï¿½â„¢
 	private Bid getMaxBidUtility(HashMap<Bid, Double> bidTable) {
 		Double maxBidUtility = 0.0;
 		Bid maxBid = null;
@@ -335,42 +309,40 @@ public class AgentMR extends Agent {
 	}
 
 	private void updateMinimumBidUtility(double time) {
-		alpha = (1.0 - firstOffereUtility) * percent; // Ã¥Ë†ï¿½Ã¦Å“Å¸UtilityÃ£ï¿½Â¨Ã£ï¿½Â®Ã¥Â·Â®x%
+		alpha = (1.0 - firstOffereUtility) * percent;
 		//System.out.println("Original percent: " + percent);
 		//System.out.println("Original alpha: " + alpha);
 		//System.out.println("Original firstOffereUtility: " + firstOffereUtility);
 
 
-		// Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Ã¥Ë†ï¿½Ã¦Å“Å¸Utility+alphaÃ£â€šâ€™MBUÃ¤Â¸â€¹Ã©â„¢ï¿½Ã£ï¿½Â¨Ã£ï¿½â€”Ã£ï¿½Å¸sigmoidFuncÃ£ï¿½Â®Ã¥Â®Å¡Ã§Â¾Â©Ã¥Å¸Å¸Ã£â€šâ€™Ã¨Â¨Ë†Ã§Â®â€”
 		double mbuInfimum = firstOffereUtility + alpha;
 		//System.out.println("Original firstOffereUtility: " + firstOffereUtility);
 
 
 		if (mbuInfimum >= 1.0) {
-			mbuInfimum = 0.999; // 0Ã©â„¢Â¤Ã§Â®â€”Ã¥Â¯Â¾Ã§Â­â€“
+			mbuInfimum = 0.999;
 		} else if (mbuInfimum <= 0.70) {
-			mbuInfimum = 0.70; // MODÃ¤Â¸â€¹Ã©â„¢ï¿½
+			mbuInfimum = 0.70;
 		}
 		sigmoidX = 1 - ((1 / sigmoidGain) * Math.log(mbuInfimum / (1 - mbuInfimum)));
 
 		minimumBidUtility = 1 - (1 / (1 + Math.exp(sigmoidGain
-				* (time - sigmoidX)))); // Ã£â€šÂ·Ã£â€šÂ°Ã£Æ’Â¢Ã£â€šÂ¤Ã£Æ’â€°Ã©â€“Â¢Ã¦â€¢Â°Ã£ï¿½Â§Ã¦Å½Â¨Ã§Â§Â»
+				* (time - sigmoidX))));
 		//System.out.println("Original sigmoidX: " + sigmoidX);
 		//System.out.println("Original sigmoidGain: " + sigmoidGain);
 
 
-		if (minimumBidUtility < reservation) { // Ã§â€¢â„¢Ã¤Â¿ï¿½Ã¤Â¾Â¡Ã¦Â Â¼Ã¤Â»Â¥Ã¤Â¸â€¹Ã£ï¿½Â«Ã£ï¿½Â¯Ã¤Â¸â€¹Ã£ï¿½â€™Ã£ï¿½ÂªÃ£ï¿½â€ž
+		if (minimumBidUtility < reservation) {
 			minimumBidUtility = reservation;
 		}
 
-		// Ã§â€ºÂ¸Ã¦â€°â€¹Ã¨Â¨Â±Ã¥Â®Â¹BidÃ¤Â¸â€¹Ã©â„¢ï¿½(MOD)
 		minimumOffereDutil =  minimumBidUtility * p;
 
 
 	}
 
 	/**
-	 * BidTableÃ£â€šâ€™Ã©â„¢ï¿½Ã©Â â€ Ã£â€šÂ½Ã£Æ’Â¼Ã£Æ’Ë†
+	 * BidTable
 	 *
 	 * @param bidTable
 	 */
@@ -382,7 +354,6 @@ public class AgentMR extends Agent {
 		}
 		if(!EQUIVALENCE_TEST){
 
-			// BidÃ£â€šÂ½Ã£Æ’Â¼Ã£Æ’Ë†Ã¥â€¡Â¦Ã§ï¿½â€ 
 			Collections.sort(bidRunk, new Comparator<Bid>() {
 				@Override
 				public int compare(Bid o1, Bid o2) {
@@ -401,10 +372,10 @@ public class AgentMR extends Agent {
 	}
 
 	/**
-	 * BidÃ£ï¿½â€¹Ã£â€šâ€°Ã¨Â¿â€˜Ã£ï¿½â€žÃ£ï¿½â€¹Ã£ï¿½Â¤UtilityÃ£ï¿½Å’Ã©Â«ËœÃ£ï¿½â€žÃ£â€šâ€šÃ£ï¿½Â®Ã£â€šâ€™Ã¦Å½Â¢Ã§Â´Â¢
+	 * Bid
 	 *
 	 * @param maxBid
-	 * @return
+	 * @return hashmap of bid, utility
 	 * @throws Exception
 	 */
 	private HashMap<Bid, Double> getBidTable(int flag) throws Exception {
@@ -420,9 +391,9 @@ public class AgentMR extends Agent {
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
 				for (ValueDiscrete value : lIssueDiscrete.getValues()) {
 					if (flag == 0) {
-						standardBid = utilitySpace.getMaxUtilityBid(); // Ã¨â€¡ÂªÃ¥Ë†â€ Ã£ï¿½Â®Ã¦Å“â‚¬Ã©Â«ËœÃ¥â‚¬Â¤
-					} else if (flag == 1) {
-						standardBid = ((Offer) actionOfPartner).getBid(); // Ã§â€ºÂ¸Ã¦â€°â€¹Ã£ï¿½Â®Bid
+						standardBid = utilitySpace.getMaxUtilityBid();
+						} else if (flag == 1) {
+						standardBid = ((Offer) actionOfPartner).getBid();
 					} else {
 						standardBid = bidRunk.get(currentBidNumber);
 					}

@@ -1,13 +1,11 @@
 package negotiator.utility;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import negotiator.Bid;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
@@ -16,8 +14,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.xml.SimpleElement;
 
 /**
- * 
- * @author wouter
+ * @author W. Pasman
  * Since 8oct07: only POSITIVE integer values acceptable as evaluation value.
  */
 public class EvaluatorDiscrete implements Evaluator {
@@ -37,7 +34,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	} 
 
 	/**
-	 * @returns the weight for this evaluator, a value between 0 and 1.
+	 * @return the weight for this evaluator, a value between 0 and 1.
 	 */	
 	public double getWeight(){
 		return fweight;
@@ -90,7 +87,6 @@ public class EvaluatorDiscrete implements Evaluator {
 	}
 	
 	/**
-	 * @author W.Pasman
 	 * @return the largest evaluation value available
 	 * @throws exception if there are no alternatives.
 	 */
@@ -106,7 +102,6 @@ public class EvaluatorDiscrete implements Evaluator {
 	/**
 	 * @param the utilityspace settings, the complete bid and the idnumber of the issue to be evaluated
 	 * @return the normalized evaluation value.
-	 * @author Koen, Dmytro
 	 * modified W.Pasman 8oct07: now normalization happens here.
 	 * 
 	 * TODO Wouter: this function seems weird. 
@@ -133,7 +128,6 @@ public class EvaluatorDiscrete implements Evaluator {
 	}
 	
 	/** 
-	 * @author W.Pasman
 	 * @param EvalValueL
 	 * @return normalized EvalValue
 	 * @throws exception if no evaluators or illegal values in evaluator.

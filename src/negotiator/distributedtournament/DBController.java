@@ -170,10 +170,10 @@ public class DBController {
 	/**
 	 * Returns the last issued job with the given session name.
 	 * 
-	 * @param sessionname
+	 * @param sessionname name of the session.
 	 * @return jobID if success, else 0
 	 */
-	public int getJobID(String name) {
+	public int getJobID(String sessionname) {
 		int sessionID = 0;
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(
@@ -181,7 +181,7 @@ public class DBController {
 				"FROM Jobs " +
 				"WHERE sessionname =  ?");
 			
-			preparedStatement.setString(1, name);
+			preparedStatement.setString(1, sessionname);
 			ResultSet set = preparedStatement.executeQuery();
 			if (set.next()) {
 				sessionID = set.getInt(1);
@@ -582,7 +582,7 @@ public class DBController {
 	 * of 1 / 60.
 	 * 
 	 * @param data
-	 * @return
+	 * @return compressed string
 	 * @throws UnsupportedEncodingException
 	 * @throws IOException
 	 */

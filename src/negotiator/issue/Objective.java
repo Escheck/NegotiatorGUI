@@ -14,7 +14,7 @@ import javax.swing.tree.TreePath;
 * the parent that it has a new child yet. Also check the constructors for this...
 * The whole code needs a review anyway, though with current use it works fine :-)
 * 
-* @author Richard Noorlandt 
+* @author Richard Noorlandt, W. Pasman
 */
 public class Objective implements MutableTreeNode 
 {
@@ -279,7 +279,6 @@ public class Objective implements MutableTreeNode
 	}
 	
 	/**
-	 * @author W.Pasman
 	 * @param ID is the ID number of the needed child
 	 * @return Objective, or null.
 	 */
@@ -500,7 +499,6 @@ public class Objective implements MutableTreeNode
 	
 	
 	/**
-	 * @author W.Pasman
 	 * @return treepath to (and including) this objective.
 	 * requires that the parent fields are set properly and
 	 * that this implements MutableTreeNode. 

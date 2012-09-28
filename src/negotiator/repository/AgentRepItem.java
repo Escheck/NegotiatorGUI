@@ -27,7 +27,7 @@ public class AgentRepItem implements RepItem
 	}
 	
 	/**
-	 * @returns true if agentName and classPath equal. Note that agentName alone is sufficient to be equal as keys are unique.
+	 * @return true if agentName and classPath equal. Note that agentName alone is sufficient to be equal as keys are unique.
 	 */
 	public boolean equals(Object o) {
 		if (!(o instanceof AgentRepItem)) return false;
