@@ -1,12 +1,14 @@
 package negotiator.boaframework.offeringstrategy;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 import Jama.Matrix;
 
 import negotiator.Bid;
+import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.IAMhaggler_Concession;
 import negotiator.boaframework.NegotiationSession;
@@ -24,9 +26,9 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	private IAMHagglerOpponentConcessionModel concessionModel;
 	protected BidCreator bidCreator;
 
-	
+
 	public IAMHaggler_Test_Offering() { }
-	
+
 	public IAMHaggler_Test_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
 	}
@@ -44,7 +46,7 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 		IAMhagglerConcession = new IAMhaggler_Concession(negotiationSession.getUtilitySpace());
 		bidCreator = new RandomBidCreator();
 	}
-	
+
 	@Override
 	public BidDetails determineOpeningBid() {
 		if(!negotiationSession.getOpponentBidHistory().isEmpty()){
@@ -55,36 +57,40 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 	@Override
 	public BidDetails determineNextBid() {
-		
-		concessionModel.updateModel(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil(), negotiationSession.getTime());
-		
-		Matrix variences = concessionModel.getVariance();
-		if(variences != null){
 
-		StringWriter variancesWriter = new StringWriter();
-		PrintWriter variancesPrintWriter = new PrintWriter(variancesWriter);
-		variences.print(variancesPrintWriter, 10, 4);
-		System.out.println("variances: " + variancesWriter.getBuffer().toString());
-		System.out.println("Variance at 0: " + concessionModel.getVarianceAt(0));
-		System.out.println("Variance at 25: " + concessionModel.getVarianceAt(25));
-		
+		concessionModel.updateModel(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil(), negotiationSession.getTime());
+
+		Matrix variances = concessionModel.getVariance();
 		Matrix means = concessionModel.getMeans();
-		StringWriter meanWriter = new StringWriter();
-		PrintWriter meanPrintWriter = new PrintWriter(meanWriter);
-		means.print(meanPrintWriter, 10, 4);
-		System.out.println("means: " + meanWriter.getBuffer().toString());
-		System.out.println("Means at 0: " + concessionModel.getMeanAt(0));
-		System.out.println("Means at 25: " + concessionModel.getMeanAt(25));
+		int round = ((DiscreteTimeline) negotiationSession.getTimeline()).getRound();
+		System.out.println();
+		System.out.println("Round " + round + (variances == null ? ". Estimates still null" : ""));
+		if(variances != null){
+
+			DecimalFormat formatter = new DecimalFormat("#.########");
+			DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+			dfs.setDecimalSeparator('.');
+			formatter.setDecimalFormatSymbols(dfs);
+
+			System.out.println("Means\tVariance\t2 SD");
+			for (int i = 0; i <= 25; i++)
+			{
+				double var = variances.get(i, 0);
+				double sd = Math.sqrt(var);
+				double mean = means.get(i, 0);
+
+				System.out.println(mean + "\t" + formatter.format(var) + "\t" + (2 * sd));
+			}
 		}
-		
+
 		double targetUtil = 0.75;
 
-		
-		
-		
+
+
+
 		//double opponentUtility = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 		//double targetUtil = IAMhagglerConcession.getTarget(opponentUtility, negotiationSession.getTime());
-		
+
 		//System.out.println("TestHaggler targetUtil:" + targetUtil);
 		Bid bid = bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtil - 0.25, targetUtil +0.25);
 		try {
