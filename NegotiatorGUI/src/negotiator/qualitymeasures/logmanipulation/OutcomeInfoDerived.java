@@ -52,6 +52,8 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	private double Normalized_AC_CR_B;
 	private double normalizedUtilityA;
 	private double normalizedUtilityB;
+	private double percParetoBidsA;
+	private double percParetoBidsB;
 	
 	public String getCurrentTime() {
 		return currentTime;
@@ -349,5 +351,19 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 		FYUB = fYUB;
 	}
 	
-	
+	public double getPercParetoBidsA() {
+		return percParetoBidsA;
+	}
+
+	public void setPercParetoBidsA(double percParetoBidsA) {
+		this.percParetoBidsA = percParetoBidsA;
+	}
+
+	public double getPercParetoBidsB() {
+		return percParetoBidsB;
+	}
+
+	public void setPercParetoBidsB(double percParetoBidsB) {
+		this.percParetoBidsB = percParetoBidsB;
+	}
 }

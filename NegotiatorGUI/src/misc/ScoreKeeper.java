@@ -198,7 +198,7 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	
 	/**
 	 * Pas op, neem weights mee!
-	 * @return
+	 * @return objects in the scoring map
 	 */
 	public Set<A> getElements()
 	{

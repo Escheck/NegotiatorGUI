@@ -1,7 +1,6 @@
 package misc;
 
 import java.util.List;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 

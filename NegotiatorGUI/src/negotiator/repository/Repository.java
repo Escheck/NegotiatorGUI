@@ -55,7 +55,6 @@ public class Repository
 		items=rep.getItems();
 	}
 
-	/** @author Dmytro */
 	public Repository load(String fileName) throws Exception {
 		Repository rep = null;
 		JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class,ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class);		
@@ -67,7 +66,6 @@ public class Repository
 		return rep;
 	}
 
-	/** @author Dmytro */
 	public void save() {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class, ProtocolRepItem.class);		

@@ -102,8 +102,7 @@ public class NegotiationLogParser {
 				outcome.setNormalized_AC_CR_B(Double.parseDouble(attributes.getValue("Normalized_AC_CR")));
 				outcome.setAgentBmaxUtil(Double.parseDouble(attributes.getValue("maxUtility")));
 				outcome.setNormalizedUtilityB(Double.parseDouble(attributes.getValue("normalizedUtility")));
-				found = true;
-				
+				found = true;	
 			}
 			return found;
 		}
@@ -133,6 +132,7 @@ public class NegotiationLogParser {
 				outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue("concession_moves")));
 				outcome.setExplorationA(Double.parseDouble(attributes.getValue("exploration_rate")));
 				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+				outcome.setPercParetoBidsA(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
 			} else if (tagName.equals("trajectory") && attributes.getValue("agent").equals("B")) {
 				outcome.setSilentMovesB(Double.parseDouble(attributes.getValue("silent_moves")));
 				outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue("selfish_moves")));
@@ -142,6 +142,7 @@ public class NegotiationLogParser {
 				outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue("concession_moves")));
 				outcome.setExplorationB(Double.parseDouble(attributes.getValue("exploration_rate")));
 				outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+				outcome.setPercParetoBidsB(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
 			}
 			return found;
 		}

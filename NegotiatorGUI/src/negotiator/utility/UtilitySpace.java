@@ -1,12 +1,3 @@
-/*
- * UtilitySpace.java
- *
- * Created on November 6, 2006, 10:49 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package negotiator.utility;
 
 import java.util.ArrayList;
@@ -16,11 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -47,7 +36,7 @@ import negotiator.xml.SimpleElement;
  * 
  * Wouter 15nov: un-done the final, students may hack what they want, but they work with a copy anyway.
  * 
- * @author Dmytro Tykhonov & Koen Hindriks 
+ * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
 
 public class UtilitySpace {
@@ -142,8 +131,7 @@ public class UtilitySpace {
      * The price we pay for that is that we now have an ugly switch inside the code,
      * losing some modularity.
      * @param obj the objective to create an evaluator for
-     * @return the defualt evaluator
-     * @author W.Pasman
+     * @return the default evaluator
      */
     public Evaluator DefaultEvaluator(Objective obj)
     {
@@ -215,7 +203,6 @@ public class UtilitySpace {
     }
     
     /**
-     * @author W.Pasman
      * check if this utility space is ready for negotiation.
      * @param d is the domain in which nego is taking place
      * throws if problem occurs.
@@ -413,7 +400,6 @@ public class UtilitySpace {
 
     
     /**
-     * @author W.Pasman
      * CHeck that the constraints are not violated.
      * This is an ad-hoc solution, we need structural support 
      * for constraints. Soft, hard constraints, a constraint space etc.
@@ -450,7 +436,6 @@ public class UtilitySpace {
      * Totally revised, brute-force search now.
      * @return a bid with the maximum utility value attainable in this util space
      * @throws Exception if there is no bid at all in this util space.
-     * @author W.Pasman
      */
 	public final Bid getMaxUtilityBid() throws Exception
 	{
@@ -487,7 +472,6 @@ public class UtilitySpace {
 	}
 	
 	/**
-	 * @author Herbert. Modified Wouter.
 	 * @param filename The name of the xml file to parse.
 	 * @throws exception if error occurs, e.g. file not found
 	 */
@@ -502,7 +486,6 @@ public class UtilitySpace {
 	
 	
 	/**
-	 * @author hdevos
 	 * Loads the weights and issues for the evaluators.
 	 * @param root The current root of the XML structure.
 	 */
@@ -1038,10 +1021,9 @@ public class UtilitySpace {
     
     /**
       * Wouter: this function *should* check that the domainSubtreeP is a subtree of the utilSubtreeP, 
-     * and that all leaf nodes are complete.
-     * However currently we only check that all the leaf nodes are complete,
-    * @author W.Pasman
-     * @return null if util space is complete, else returns string containging explanation why not.
+      * and that all leaf nodes are complete.
+      * However currently we only check that all the leaf nodes are complete,
+      * @return null if util space is complete, else returns string containging explanation why not.
      */
     public String IsComplete() 
 	// Oh damn, problem, we don't have the domain template here anymore.
@@ -1060,47 +1042,7 @@ public class UtilitySpace {
     	}
     	return null;
     }
-
-
-    /**
-     * as we don't have the domain tree we can't do the check as we hoped to do .
-     * @param utilSubtreeP
-     * @param domainSubtreeP
-     * @return  Stringg containing explanation why not a subtree, or null.
-     * @author W.Pasman
-    String IsSubtreeAndComplete(Objective utilSubtreeP,Objective domainSubtreeP)
-    {
-    	if (utilSubtreeP.isLeaf() && domainSubtreeP.isLeaf())
-    	{
-    		// check the evaluator at the utilSubtree, whether it agrees with the domain description and is complete
-    		// if it is a leaf, it is an Issue and there should be an evaluator.
-    		// note, the non-leaf nodes do not need an evaluator.
-    		blabla
-    	}
-    	else
-    	{
-    			// check all objectives in the domain. 
-    		for (Objective domSpaceObj:domainSubtreeP.getChildren())
-    		{
-    			 // get child from utilSubtreeP that has same ID. These should match.
-    			 // we do this because order of children may differ.
-    			Objective matchingUtilSpaceObj=utilSubtreeP.getChildWithID(domSpaceObj.getNumber());
-    			if (matchingUtilSpaceObj==null)
-    				return "The utility space has no objective matching domainspace object "+domSpaceObj.getName();
-    			String checksubtrees=IsSubtreeAndComplete(matchingUtilSpaceObj,domSpaceObj);
-    			if (checksubtrees!=null) return checksubtrees;
-    		}
-    		 // strictly it don't matter if there is more in the util space under this node, but 
-    		 // lets give a warning...
-    		if (utilSubtreeP.getChildren().size()<domainSubtreeP.getChildren().size())
-    			//Wouter: need to make this a messagebox or so, how did that work??
-    			System.out.println("WARNING: utility space has more objectives than the domain space under the node"+
-    					domainSubtreeP.getName());
-    	}
-    	return null;
-    }
-     */
-
+    
     /**
      * compute the cost of the given bid. 
      * There is also getCost in Evaluator but it currently only works for EvaluatorDiscrete.

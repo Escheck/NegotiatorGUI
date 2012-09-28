@@ -44,13 +44,13 @@ public class SimpleAgt2 extends Agent
                 double offeredutil=utilitySpace.getUtility(partnerBid);
                 double time=((new Date()).getTime()-startTime.getTime())/(1000.*totalTime);
                 double P=Paccept(offeredutil,time);
-                if (P>Math.random()) action = new Accept(this);
+                if (P>Math.random()) action = new Accept(this.getAgentID());
                 else action = chooseRandomBidAction();               
             }
             sleep(0.005); // just for fun
         } catch (Exception e) { 
         	System.out.println("Exception in ChooseAction:"+e.getMessage());
-        	action=new Accept(this); // best guess if things go wrong. 
+        	action=new Accept(this.getAgentID()); // best guess if things go wrong. 
         }
         return action;
     }
@@ -65,7 +65,7 @@ public class SimpleAgt2 extends Agent
         Bid nextBid=null ;
         try { nextBid = getRandomBid(); }
         catch (Exception e) { System.out.println("Problem with received bid:"+e.getMessage()+". cancelling bidding"); }
-        if (nextBid == null) return (new Accept(this));                
+        if (nextBid == null) return (new Accept(this.getAgentID()));                
         return (new Offer(this, nextBid));
     }
 	   

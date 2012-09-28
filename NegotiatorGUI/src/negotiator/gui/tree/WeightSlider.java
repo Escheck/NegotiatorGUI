@@ -99,7 +99,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	/**
 	 * Sets this slider to be visible or invisible, dependent on whether there is an evaluator available. When there is no evaluator, the
 	 * slider wil always be invisible.
-	 * @parem vis True makes the slider visible, false wil hide the slider.
+	 * @param vis True makes the slider visible, false wil hide the slider.
 	 */
 	public void setVisible(boolean vis){
 		if(((tableModel.getUtilitySpace() != null) && (tableModel.getUtilitySpace().getEvaluator(objective.getNumber()) == null)) || (objective.getName().equals("root"))){

@@ -120,7 +120,7 @@ public abstract class Agent
     /**
      * A convenience method to get the utility of a bid. This method will take discount factors into account (if any), 
      * using the status of the current {@link #timeline}.
-     * @see {@link UtilitySpace}.
+     * @see UtilitySpace
      */
     public double getUtility(Bid bid)
     {
