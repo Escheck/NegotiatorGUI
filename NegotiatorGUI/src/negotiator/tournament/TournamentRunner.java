@@ -111,15 +111,12 @@ public class TournamentRunner implements Runnable
 				log = runTournament();
 			}
 
-			// DEFAULT: normal logging enabled
-			if (configuration == null || configuration.get("logSessions") != 0) {
-				// DEFAULT: extensive log disabled
-				if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
-					AlternatingOffersProtocol.closeLog(true);
-				}
-				AlternatingOffersProtocol.closeLog(false);
-				
+
+			// DEFAULT: extensive log disabled
+			if (configuration != null && configuration.get("logNegotiationTrace") != 0) {
+				AlternatingOffersProtocol.closeLog(true);
 			}
+			AlternatingOffersProtocol.closeLog(false);
 			
 			// DEFAULT: no detailed analysis
 			if (configuration != null && configuration.get("logDetailedAnalysis") != 0) {

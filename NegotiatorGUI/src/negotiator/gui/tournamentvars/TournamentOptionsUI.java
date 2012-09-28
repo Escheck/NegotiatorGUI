@@ -34,8 +34,6 @@ public class TournamentOptionsUI extends JDialog {
 	private JCheckBox logFinalAccuracyCheck;
 	private JLabel logNegotiationTrace;
     private JCheckBox logNegotiationTraceCheck;
-    private JLabel logSessions;
-    private JCheckBox logSessionsCheck;
     private JLabel logging;
     private JButton okButton;
     private JLabel playAgainstSelf;
@@ -114,58 +112,22 @@ public class TournamentOptionsUI extends JDialog {
         logging.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         logging.setText("Logging");
         
-    	// 		OPTION: log sessions
-    	logSessions = new JLabel();
-        logSessionsCheck = new JCheckBox();
-        logSessions.setText("Log sessions");
-        logSessionsCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (!logSessionsCheck.isSelected()) {
-                	logDetailedAnalysisCheck.setSelected(false);
-                	logNegotiationTraceCheck.setSelected(false);
-                	logFinalAccuracyCheck.setSelected(false);
-                }
-            }
-        });
-        
         //		OPTION: log detailed analysis
         logDetailedAnalysis = new JLabel();
         logDetailedAnalysisCheck = new JCheckBox();
         logDetailedAnalysis.setText("Log detailed analysis");
-        logDetailedAnalysisCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (logDetailedAnalysisCheck.isSelected()) {
-                	logSessionsCheck.setSelected(true);
-                }
-            }
-        });
         
         //		OPTION: log negotiation trace
         logNegotiationTrace = new JLabel();
         logNegotiationTraceCheck = new JCheckBox();
         logNegotiationTraceCheck.setEnabled(false);
         logNegotiationTrace.setText("Log negotiation trace");
-        logNegotiationTraceCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (logNegotiationTraceCheck.isSelected()) {
-                	logSessionsCheck.setSelected(true);
-                }
-            }
-        });
 
         //		OPTION: log final accuracy
         logFinalAccuracy = new JLabel();
         logFinalAccuracyCheck = new JCheckBox();
         logFinalAccuracyCheck.setEnabled(false);
         logFinalAccuracy.setText("Log final accuracy");
-        logFinalAccuracyCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (logFinalAccuracyCheck.isSelected()) {
-                	logSessionsCheck.setSelected(true);
-                }
-            }
-        });
-        
 
         // HEADER: visualization
         visualization = new JLabel();
@@ -210,7 +172,6 @@ public class TournamentOptionsUI extends JDialog {
                 config.put("playBothSides", playBothSidesCheck.isSelected() ? 1 : 0);
                 config.put("playAgainstSelf", playAgainstSelfCheck.isSelected() ? 1 : 0);
                 config.put("logDetailedAnalysis", logDetailedAnalysisCheck.isSelected() ? 1 : 0);
-                config.put("logSessions", logSessionsCheck.isSelected() ? 1 : 0);
                 config.put("logNegotiationTrace", logNegotiationTraceCheck.isSelected() ? 1 : 0);
                 config.put("logFinalAccuracy", logFinalAccuracyCheck.isSelected() ? 1 : 0);
                 config.put("showAllBids", showAllBidsCheck.isSelected() ? 1 : 0);
@@ -261,7 +222,6 @@ public class TournamentOptionsUI extends JDialog {
                                         .addGroup(layout.createParallelGroup(Alignment.TRAILING)
                                             .addComponent(playBothSidesCheck)
                                             .addComponent(playAgainstSelfCheck)
-                                            .addComponent(logSessionsCheck)
                                             .addComponent(logDetailedAnalysisCheck)
                                             .addComponent(logNegotiationTraceCheck)
                                             .addComponent(showAllBidsCheck)
@@ -277,7 +237,6 @@ public class TournamentOptionsUI extends JDialog {
                             .addComponent(sessionGeneration)
                             .addComponent(playAgainstSelf, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(logging)
-                            .addComponent(logSessions, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(visualization)
@@ -314,10 +273,6 @@ public class TournamentOptionsUI extends JDialog {
                     .addComponent(playAgainstSelfCheck))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(logging)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(logSessions, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logSessionsCheck))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                     .addComponent(logDetailedAnalysis, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
@@ -370,7 +325,6 @@ public class TournamentOptionsUI extends JDialog {
 			playAgainstSelfCheck.setSelected(prevConfig.containsKey("playAgainstSelf") && prevConfig.get("playAgainstSelf") != 0);
 			logDetailedAnalysisCheck.setSelected(prevConfig.containsKey("logDetailedAnalysis") && prevConfig.get("logDetailedAnalysis") != 0);
 			logNegotiationTraceCheck.setSelected(prevConfig.containsKey("logNegotiationTrace") && prevConfig.get("logNegotiationTrace") != 0);
-			logSessionsCheck.setSelected(prevConfig.containsKey("logSessions") && prevConfig.get("logSessions") != 0);
 			logFinalAccuracyCheck.setSelected(prevConfig.containsKey("logFinalAccuracy") && prevConfig.get("logFinalAccuracy") != 0);
 			showAllBidsCheck.setSelected(prevConfig.containsKey("showAllBids") && prevConfig.get("showAllBids") != 0);
 			showLastBidCheck.setSelected(prevConfig.containsKey("showLastBid") && prevConfig.get("showLastBid") != 0);
