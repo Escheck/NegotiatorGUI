@@ -46,58 +46,10 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
         initComponents(); 
 		sessionProgress = pUI;
 		negoSession = pUI.session;
-		String[] colNames={"Prof. A","Prof. B","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","utilA discount","utilB discount", Global.SHOW_TIME ? "Time" : "Details"};
+		String[] colNames={"Prof. A","Prof. B","AgentA","AgentB","AgentA params","AgentB params","Rounds","utilA","utilB","utilA discount","utilB discount", "Time"};
 		resultTableModel = new NegoTableModel (colNames);
 		resultTable.setModel(resultTableModel);
 		// add a listener to receive selection events:
-		if (Global.REMEMBER_PREVIOUS_SESSIONS) {
-			resultTable.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
-						JTable target = (JTable) e.getSource();
-						int row = target.getSelectedRow();
-						int column = target.getSelectedColumn();
-						BilateralAtomicNegotiationSession ng = sessionArray.get(row);
-						// System.out.println(ng.getLog());
-						int selected_session_nr = ng.getSessionNumber();
-						int selected_test_nr = ng.getTestNumber();
-
-						ProgressUI2 ui = SessionDetailsUI
-								.get(selected_session_nr);
-
-						if (ui == null) { /* not there yet, make it */
-							ui = new ProgressUI2(false, true);
-							ui.fillGUI(ng);
-							SessionDetailsUI.put(selected_session_nr, ui);
-						}
-						/* make it visible or select it */
-						int index = NegoGUIApp.negoGUIView.getMainTabbedPane()
-								.indexOfComponent(ui);
-						if (index == -1) { /* not in the tabs, make new tab */
-							String tabname;
-							int tournr = ng.getTournamentNumber();
-							if (tournr != -1)
-								tabname = "Tour." + tournr + " Prog."
-										+ selected_session_nr + "."
-										+ selected_test_nr;
-							else
-								tabname = "Sess." + selected_session_nr + "."
-										+ selected_test_nr + " Prog.";
-
-							NegoGUIApp.negoGUIView.addTab(tabname, ui);
-							// oldUI = selectedSessionUI;
-							// fillGUI(ng);
-							// NegoGUIApp.negoGUIView.replaceTab(getTabString(),
-							// oldUI,selectedSessionUI);
-						} else { /* already in the tabs, select it */
-							NegoGUIApp.negoGUIView.getMainTabbedPane()
-									.setSelectedComponent(ui);
-						}
-
-					}
-				}
-			});
-		}
     }
 
     /** This method is called from within the constructor to
@@ -217,8 +169,7 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 			resultTable.getModel().setValueAt(evt.getNormalizedUtilityB(),session-1,8);//util b
 			resultTable.getModel().setValueAt(evt.getUtilADiscount(),session-1,9);//util a
 			resultTable.getModel().setValueAt(evt.getUtilBDsicount(),session-1,10);//util b
-			if (Global.SHOW_TIME)
-				resultTable.getModel().setValueAt(evt.getTime(),session-1,11);//details???
+			resultTable.getModel().setValueAt(evt.getTime(),session-1,11);//details???
 		}
 	}
 
@@ -239,11 +190,6 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		sessionProgress.session = negoSession;
 		//if(negoSession.sessionTestNumber<1)
 		negoSession.addNegotiationEventListener(sessionProgress);
-		
-		//add the current session to the array
-		if (Global.REMEMBER_PREVIOUS_SESSIONS) {
-			sessionArray.add(negoSession);
-		}
 		
 		int i=0;
 		if(!(negoSession.getAgentAparams()==null)) {
@@ -272,57 +218,4 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
 		
 	}
-	
-	public class MyListSelectionListener implements ListSelectionListener {
-        JTable table;
-        // It is necessary to keep the table since it is not possible
-        // to determine the table from the event's source
-        MyListSelectionListener(JTable table) {
-            this.table = table;
-        }
-        public void valueChanged(ListSelectionEvent e) {
-			if (Global.REMEMBER_PREVIOUS_SESSIONS) {
-				if (e.getSource() == table.getSelectionModel()
-						&& table.getRowSelectionAllowed()) {
-					int row = table.getSelectedRow();
-					// System.out.println("selection event happened;row "+row+" selected.");
-					// show ProgressUI for selected session:
-					BilateralAtomicNegotiationSession ng = sessionArray
-							.get(row);
-					// System.out.println(ng.getLog());
-					int selected_session_nr = ng.getSessionNumber();
-					int selected_test_nr = ng.getTestNumber();
-
-					ProgressUI2 ui = SessionDetailsUI.get(selected_session_nr);
-					if (ui == null) { /* not there yet, make it */
-						ui = new ProgressUI2(false, true);
-						ui.fillGUI(ng);
-						SessionDetailsUI.put(selected_session_nr, ui);
-					}
-					/* make it visible or select it */
-					int index = NegoGUIApp.negoGUIView.getMainTabbedPane()
-							.indexOfComponent(ui);
-					if (index == -1) { /* not in the tabs, make new tab */
-						String tabname;
-						int tournr = ng.getTournamentNumber();
-						if (tournr != -1)
-							tabname = "Tour." + tournr + " Prog."
-									+ selected_session_nr + "."
-									+ selected_test_nr;
-						else
-							tabname = "Sess." + selected_session_nr + "."
-									+ selected_test_nr + " Prog.";
-
-						NegoGUIApp.negoGUIView.addTab(tabname, ui);
-					} else { /* already in the tabs, select it */
-						NegoGUIApp.negoGUIView.getMainTabbedPane()
-								.setSelectedComponent(ui);
-					}
-				}
-			}
-		}
-
-    }
-
-	
 }
