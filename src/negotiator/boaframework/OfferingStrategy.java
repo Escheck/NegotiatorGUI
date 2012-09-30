@@ -1,6 +1,7 @@
 package negotiator.boaframework;
 
 import java.util.HashMap;
+
 import negotiator.bidding.BidDetails;
 
 /**
@@ -70,5 +71,10 @@ public abstract class OfferingStrategy {
 
 	public boolean isEndNegotiation() {
 		return endNegotiation;
+	}
+	
+	public NegotiationSession getNegotiationSession()
+	{
+		return negotiationSession;
 	}
 }
