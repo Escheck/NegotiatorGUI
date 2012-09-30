@@ -24,9 +24,6 @@ import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -38,6 +35,9 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 
 /**
  *
