@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ParetoFrontier 
 {
-	private ArrayList<BidPoint> frontier;
+	private List<BidPoint> frontier;
 	
 	public ParetoFrontier() 
 	{
@@ -50,7 +50,6 @@ public class ParetoFrontier
 	/**
 	 * @author TB
 	 * @param points
-	 * @param frontier
 	 * @return All points lying strictly above the frontier
 	 */
 	public List<BidPoint> filterPointsAboveFrontier(List<BidPoint> points)
@@ -98,7 +97,7 @@ public class ParetoFrontier
 		return frontier.size();
 	}
 	
-	public ArrayList<BidPoint> getFrontier() 
+	public List<BidPoint> getFrontier() 
 	{
 		return frontier;
 	}
