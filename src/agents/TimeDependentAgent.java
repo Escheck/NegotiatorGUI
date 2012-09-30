@@ -5,6 +5,7 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
+import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
