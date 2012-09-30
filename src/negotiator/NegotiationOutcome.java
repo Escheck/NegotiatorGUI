@@ -255,7 +255,7 @@ public class NegotiationOutcome
 
 		} else {
 			CR = -1;
-			System.out.println("Bids is Empty");
+			System.out.println("No bids exchanged; no CR computed.");
 
 		}
 		
