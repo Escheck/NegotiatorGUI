@@ -336,7 +336,7 @@
                 <profile url="file:etc/templates/pie/pie_A.xml"/>
                 <profile url="file:etc/templates/pie/pie_B.xml"/>
             </domainRepItem>
-			<domainRepItem url="file:.etc/templates/thompson/thompson_employment.xml">
+			<domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
             </domainRepItem>
