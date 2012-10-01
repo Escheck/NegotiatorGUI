@@ -312,13 +312,13 @@ public class NegotiationOutcome
 			for(BidPointTime bidPointTime : bids){
 				double discountedBidPoint;
 				if(agentX.equals("A")){
-					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityA(), bidPointTime.time, discountFactorA);
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityA(), bidPointTime.getTime(), discountFactorA);
 				}else {
-					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityB(), bidPointTime.time, discountFactorB);
+					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityB(), bidPointTime.getTime(), discountFactorB);
 				}
 				
 				if(discountedBidPoint > maxRecievedDiscountedUtil){
-					maxRecievedDiscountedUtil = bidPointTime.time;
+					maxRecievedDiscountedUtil = bidPointTime.getTime();
 				}
 			
 			}

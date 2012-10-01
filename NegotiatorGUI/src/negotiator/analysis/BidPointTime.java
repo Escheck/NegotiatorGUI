@@ -1,53 +1,76 @@
 package negotiator.analysis;
 
 import negotiator.Bid;
-import negotiator.xml.OrderedSimpleElement;
-import negotiator.xml.SimpleElement;
 
+/**
+ * Specialized version of a BidPoint for the case that there are two agents.
+ * In this case, the time of offering the bid can be recorded.
+ * 
+ * @author Alex Dirkzwager
+ */
 public class BidPointTime extends BidPoint{
 	
-	public Double time;
+	/** Time at which the bid was offered to the opponent. */
+	private double time;
 
-	public BidPointTime(Bid b, Double uA, Double uB, double time) {
-		super(b, uA, uB);
+	/**
+	 * Create a BidPointTime object, which is a tuple of a specific
+	 * bid, the utility of this bid for both agents, and the time at
+	 * which the bid was offered.
+	 * 
+	 * @param bid of which the utilities are recorded.
+	 * @param utilityA utility of the agent for agent A.
+	 * @param utilityB utility of the agent for agent B.
+	 * @param time at which the bid was offered.
+	 */
+	public BidPointTime(Bid bid, Double utilityA, Double utilityB, double time) {
+		super(bid, utilityA, utilityB);
 		this.time = time;
 	}
 	
 	@Override
 	public String toString(){
-		return "BidPointTime ["+bid+" utilA["+getUtilityA()+"],utilB["+getUtilityB()+"], Time["+time+"]]";
+		return "BidPointTime ["+getBid()+" utilA["+getUtilityA()+"],utilB["+getUtilityB()+"], Time["+time+"]]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		long temp;
+		temp = Double.doubleToLongBits(time);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		BidPointTime other = (BidPointTime) obj;
-		if (bid == null) {
-			if (other.bid != null)
-				return false;
-		} else if (!bid.equals(other.bid))
-			return false;
-		if (getUtilityA() == null) {
-			if (other.getUtilityA() != null)
-				return false;
-		} else if (!getUtilityA().equals(other.getUtilityA()))
-			return false;
-		if (getUtilityB() == null) {
-			if (other.getUtilityB() != null)
-				return false;
-		} else if (!getUtilityB().equals(other.getUtilityB()))
-			return false;
-		if (time == null) {
-			if (other.time != null)
-				return false;
-		} else if (!time.equals(other.time))
+		if (Double.doubleToLongBits(time) != Double
+				.doubleToLongBits(other.time))
 			return false;
 		return true;
 	}
 
+	/**
+	 * Returns the time at which the bid was offered.
+	 * @return time of offering.
+	 */
+	public double getTime() {
+		return time;
+	}
+
+	/**
+	 * Sets the time at which the bid is offered.
+	 * @param time of offering.
+	 */
+	public void setTime(double time) {
+		this.time = time;
+	}
 }

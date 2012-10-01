@@ -1,38 +1,36 @@
 package negotiator.analysis;
 
-
 import java.util.Arrays;
 import negotiator.Bid;
 
 /**
- * BidPoint is a bid with utilities of the agents in a negotiation.
- * This class is used in the outcome space analysis.
+ * A BidPoint is a tuple which contains the utility of a particular
+ * bid for each agent.
+ * 
  * @author Tim Baarslag, Dmytro Tykhonov, Mark Hendrikx
  */
-public class BidPoint 
-{
-	public Bid bid;
+public class BidPoint {
+	
+	/** Bid of which the utilities are shown. */
+	private Bid bid;
+	/** Array holding the utility of the bid for each agent. */
 	private Double [] utility;
+	/** Array used to convert the index of an agent to a character. */
 	private static final String[] alphabet = new String[] {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	
-	public BidPoint(Bid b, Double[] util)
-	{
-		bid=b; 
-		utility = util.clone();
+	/**
+	 * Create a BidPoint by given the bid and the tuple
+	 * of utilities for that bid.
+	 * 
+	 * @param bid from which the utilities are stored.
+	 * @param utility tuple of utilities of the bid.
+	 */
+	public BidPoint(Bid bid, Double... utility) {
+		this.bid = bid; 
+		this.utility = utility.clone();
 	}
 	
-	public BidPoint(Bid b, double utilA, double utilB)
-	{
-		bid=b;
-		Double[] utilities = new Double[2];
-		utilities[0] = utilA;
-		utilities[1] = utilB;
-		this.utility = utilities;
-	}
-	
-	
-	public String toString()
-	{
+	public String toString() {
 		String result = "BidPoint ["+bid;
 		for(int i=0;i<utility.length;i++) {
 			result += "util"+alphabet[i]+"["+utility[i]+"],";
@@ -75,28 +73,53 @@ public class BidPoint
 		return result;
 	}
 
-	public Bid getBid() 
-	{
+	/**
+	 * Bid from which the utilities are represented.
+	 * This bid may be null to save memory.
+	 * 
+	 * @return bid which utilities are represented.
+	 */
+	public Bid getBid() {
 		return bid;
 	}
 	
-	public Double getUtility(int index) 
-	{
+	/**
+	 * Returns the utility of the bid for the i'th agent
+	 * (agent A = 0, etc.).
+	 * 
+	 * @return utility of the bid for the i'th agent.
+	 */
+	public Double getUtility(int index) {
 		return utility[index];
 	}
 	
-	public Double getUtilityA()
-	{
+	/**
+	 * Returns the utility of the bid for agent A.
+	 * @return utility for agent A.
+	 */
+	public Double getUtilityA() {
 		return utility[0];
 	}
 	
+	/**
+	 * Returns the utility of the bid for agent B.
+	 * @return utility for agent B.
+	 */
 	public Double getUtilityB()
 	{
 		return utility[1];
 	}
 	
-	public boolean isStrictlyDominatedBy(BidPoint other)
-	{
+	/**
+	 * Returns true if this BidPoint is strictly dominated by
+	 * another BidPoint. A BidPoint is dominated when the utility
+	 * of the other bid for at least one agent is higher and
+	 * equal for the other agent.
+	 * 
+	 * @param other BidPoint.
+	 * @return true if "other" dominates "this".
+	 */
+	public boolean isStrictlyDominatedBy(BidPoint other) {
 		if (this == other) {
 			return false;
 		}
@@ -115,6 +138,13 @@ public class BidPoint
 		return atleastOneBetter;
 	}
 	
+	/**
+	 * Returns the distance between this BidPoint and another BidPoint.
+	 * sqrt((Tx - Ox) ^ 2 + (Ty - Oy) ^ 2 + ...).
+	 * 
+	 * @param other
+	 * @return
+	 */
 	public double getDistance(BidPoint other) {
 		double sum = 0;
 		for (int i = 0; i < utility.length; i++) {

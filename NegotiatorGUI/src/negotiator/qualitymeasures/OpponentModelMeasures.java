@@ -7,7 +7,7 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
-import negotiator.analysis.BidPointSorterAutil;
+import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
@@ -271,7 +271,7 @@ public class OpponentModelMeasures {
 		if (!foundOne) { paretoFrontier.add(new BidPoint(null, 1.0, 0.0)); }
 		
 		// Order bids on utilityA
-		Collections.sort(paretoFrontier, new BidPointSorterAutil());
+		Collections.sort(paretoFrontier, new BidPointSorterA());
 
 		double surface = 0;
 		for (int i = 0; i < paretoFrontier.size() - 1; i++) {

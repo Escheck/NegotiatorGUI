@@ -147,7 +147,7 @@ public class BayesianAgent extends Agent {
 		//excludeBids.add(myPreviousBids.get(myPreviousBids.size()-1));
 		BidPoint bp = bs.getNearestBidPoint(targetUtil,OurTargetBidOppUtil,.5,.1,myPreviousBids);
 		log("found bid "+bp);
-		return bp.bid;
+		return bp.getBid();
 	}
 	
 	/**
@@ -164,14 +164,14 @@ public class BayesianAgent extends Agent {
 		for (BidPoint p:bs.bidPoints)
 		{
 			if (Math.abs(ourUtility-p.getUtilityA())<ALLOWED_UTILITY_DEVIATION
-					&& p.getUtilityB() > bestbidutil && !myPreviousBids.contains(p.bid))
+					&& p.getUtilityB() > bestbidutil && !myPreviousBids.contains(p.getBid()))
 			{
 				bestbid=p;
 				bestbidutil=p.getUtilityB();
 			}
 		}
 		if (bestbid==null) return null;
-		return bestbid.bid;
+		return bestbid.getBid();
 	}
 	
 	
@@ -277,7 +277,7 @@ public class BayesianAgent extends Agent {
 				smallestDeltaSoFar = delta; 
 			}				
 		if (nearestbid==null) throw new Exception("bid space seems empty??");
-		return nearestbid.bid;
+		return nearestbid.getBid();
 	}
 	
 	private Bid getNextBidSmart(Bid pOppntBid) throws Exception 
@@ -314,7 +314,7 @@ public class BayesianAgent extends Agent {
 				lBidOppU=util;
 			}		
 		}
-		return lBid.bid;
+		return lBid.getBid();
 	}
 	
 	/**

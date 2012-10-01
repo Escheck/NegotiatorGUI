@@ -96,15 +96,15 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			for (AuctionBilateralAtomicNegoSession s: sessions) {
 				if(s.getNegotiationOutcome().agentAutility>lMaxUtil) {
 					lSecondPrice = lMaxUtil;
-					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).bid;
-					lBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).bid;
+					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
+					lBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
 					lMaxUtil = s.getNegotiationOutcome().agentAutility;
 					//secondBestSession = winnerSession;
 					winnerSession = s;
 					winnerSessionIndex = i;
 				} else if(s.getNegotiationOutcome().agentAutility>lSecondPrice) { 
 					lSecondPrice = s.getNegotiationOutcome().agentAutility;
-					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).bid;
+					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
 				}
 				i++;
 				numberOfOffers += s.getNegotiationOutcome().AgentABids.size() +s.getNegotiationOutcome().AgentBBids.size();
@@ -180,7 +180,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 				//secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
 				//secondPhaseSession.getNegotiationOutcome().
 				if(secondPhaseSession.getNegotiationOutcome().ErrorRemarks!=null) bContinue = false; 
-				lBestBid = secondPhaseSession.getNegotiationOutcome().AgentABids.get(secondPhaseSession.getNegotiationOutcome().AgentABids.size()-1).bid;
+				lBestBid = secondPhaseSession.getNegotiationOutcome().AgentABids.get(secondPhaseSession.getNegotiationOutcome().AgentABids.size()-1).getBid();
 				numberOfSession++;
 				numberOfOffers += (secondPhaseSession.getNegotiationOutcome().AgentABids.size()+secondPhaseSession.getNegotiationOutcome().AgentBBids.size());
 			}

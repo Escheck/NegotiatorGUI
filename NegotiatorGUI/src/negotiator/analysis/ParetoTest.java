@@ -108,7 +108,7 @@ public class ParetoTest {
 				System.out.println("Found difference in: " + domain.getName());
 				System.out.println("REAL " + realParetoBids.size());
 				for (int i = 0; i < realParetoBids.size(); i++) {
-					System.out.println(realParetoBids.get(i).bid + " " + realParetoBids.get(i).getUtilityA() + " " + realParetoBids.get(i).getUtilityB());
+					System.out.println(realParetoBids.get(i).getBid() + " " + realParetoBids.get(i).getUtilityA() + " " + realParetoBids.get(i).getUtilityB());
 				}
 				System.out.println("ESTIMATE " + estimatedParetoBids.size());
 				for (int i = 0; i < estimatedParetoBids.size(); i++) {

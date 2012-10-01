@@ -3,7 +3,7 @@ package negotiator.analysis;
 import java.util.Comparator;
 
 /**
- * Sorts {@link BidPoint}s in utilityA.
+ * Sorts {@link BidPoint} based on their utility for agent A.
  */
 public class BidPointSorterA implements Comparator<BidPoint>
 {
@@ -21,4 +21,3 @@ public class BidPointSorterA implements Comparator<BidPoint>
 	        return ((Integer) b1.hashCode()).compareTo(b2.hashCode());
 	}
 }
-
