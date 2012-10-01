@@ -1,19 +1,12 @@
 package negotiator.gui;
 
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import java.awt.Panel;
-
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JDialog;
-
-import negotiator.repository.ProfileRepItem;
-
 
 /**
  * open a modal OK/Cancel dialog. 
@@ -25,6 +18,8 @@ import negotiator.repository.ProfileRepItem;
  *
  */
 public abstract class DefaultOKCancelDialog extends JDialog {
+
+	private static final long serialVersionUID = 9106032262508127313L;
 	JButton okbutton=new JButton("OK");
 	JButton cancelbutton=new JButton("Cancel");
 	Object the_result=null; // will be set after ok button is pressed. null in other cases (eg cancel)

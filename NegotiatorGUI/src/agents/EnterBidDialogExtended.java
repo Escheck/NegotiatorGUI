@@ -71,7 +71,6 @@ public class EnterBidDialogExtended extends JDialog {
     // Wouter: we have some whitespace in the buttons,
     // that makes nicer buttons and also artificially increases the window size.
     private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
-    private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Negotiation");
     private JButton buttonBid=new JButton("       Do Bid       ");
     private JPanel buttonPanel=new JPanel();    
@@ -239,13 +238,6 @@ public class EnterBidDialogExtended extends JDialog {
         	selectedAction = new Offer(agent.getAgentID(),bid);         
         	setVisible(false);
         }
-    }
-
-    
-    private void buttonSkipActionPerformed(java.awt.event.ActionEvent evt) {
-    	System.out.println("cancel performed!");
-        selectedAction = null;
-        setVisible(false);
     }
 
     private void buttonAcceptActionPerformed(java.awt.event.ActionEvent evt) {

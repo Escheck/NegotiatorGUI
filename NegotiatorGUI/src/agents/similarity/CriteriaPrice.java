@@ -8,9 +8,6 @@ import java.util.HashMap;
 import negotiator.Bid;
 import negotiator.issue.ValueReal;
 import negotiator.utility.EVALFUNCTYPE;
-import negotiator.utility.EVALUATORTYPE;
-import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**

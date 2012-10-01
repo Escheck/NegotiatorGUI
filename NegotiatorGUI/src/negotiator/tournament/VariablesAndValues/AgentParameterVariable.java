@@ -13,6 +13,8 @@ import negotiator.AgentParam;
  */
 public class AgentParameterVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = -8223126402840072070L;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

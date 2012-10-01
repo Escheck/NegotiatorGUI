@@ -8,17 +8,10 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Vector;
 import java.util.HashMap;
-
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.*;
 
 /**
@@ -27,14 +20,10 @@ import negotiator.utility.*;
  */
 
 public class ABMPAgent extends Agent {
-	private String myName;
 	private Action messageOpponent;
-	private int sessionNumber;
-	private int sessionTotalNumber;
 	//private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
-	private static final double BREAK_OFF_POINT = 0.5;
 //	private double[] fIssueWeight;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 
@@ -289,21 +278,6 @@ public class ABMPAgent extends Agent {
 		lConcessionStep = getNegotiationSpeed() * (1 - lMinUtility / myUtility) * lUtilityGap;
 		System.out.println(lConcessionStep);
 		return lConcessionStep;
-	}
-
-	
-	// Quicksort algorithm that returns a sorted list of issue indices based on weights
-	
-	private void quickSort(double[] lWeights, int[] lSortedIndex, int left, int right) {
-		int pivotIndex;
-		
-	    // if (right > left)
-    	pivotIndex = left;
-	    int pivotNewIndex = partition(lWeights, lSortedIndex, left, right, pivotIndex);
-	    if (pivotNewIndex > left+1)
-	    	quickSort(lWeights, lSortedIndex, left, pivotNewIndex-1);
-	    if (pivotNewIndex+1<right)
-	    	quickSort(lWeights, lSortedIndex, pivotNewIndex+1, right);
 	}
 	
 	private int partition(double[] lWeights, int[] lSortedIndex, int left, int right, int pivotIndex) {

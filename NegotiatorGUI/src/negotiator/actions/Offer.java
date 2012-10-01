@@ -62,7 +62,7 @@ public class Offer extends Action {
      * Returns the bid offered by the agent which
      * created this offer.
      * 
-     * @return
+     * @return bid to offer.
      */
     public Bid getBid() {
         return bid;

@@ -5,12 +5,8 @@ import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.awt.BorderLayout;
-
 import negotiator.AgentParam;
-import negotiator.repository.*;
 import negotiator.gui.DefaultOKCancelDialog;
-import negotiator.exceptions.Warning;
 import javax.swing.JComboBox;
 /**
  * this shows a dialog where the user can select the parameter name 

@@ -1,14 +1,10 @@
 package negotiator.gui.domainrepository;
 
-import java.awt.*;
-import javax.swing.*;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.*;
-
 import java.util.ArrayList;
 import negotiator.repository.*;
 import javax.swing.tree.TreeModel;
-import negotiator.exceptions.*;
 
 /**
  * Tree is not so simple. The DomainRepItem and ProfileRepItem are not so easy to navigate through,.

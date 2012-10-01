@@ -5,7 +5,6 @@
 
 package negotiator.gui.tab;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,8 +13,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Stroke;
-
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -33,11 +30,8 @@ public class CloseTabPaneEnhancedUI extends CloseTabPaneUI {
     
     private static final Color whiteColor = Color.white;
     
-    private static final Color transparent = new Color(0x184EB6);//0, 0, 0, 0);
-    private static final Color nearBlack = new Color(0, 0, 0, 80);
-    
+    private static final Color transparent = new Color(0x184EB6);//0, 0, 0, 0);   
     private static final Color lightBlue = new Color(0x8CA9FF);//70, 150, 200, 50);
-    
     private static final Color lightWhite = new Color(150, 150, 150, 50);
     
     //private static final Color selectedColor = new Color(15, 70, 180);

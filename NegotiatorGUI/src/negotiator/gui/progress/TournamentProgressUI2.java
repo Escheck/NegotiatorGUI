@@ -3,15 +3,6 @@ package negotiator.gui.progress;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
 import negotiator.actions.EndNegotiation;
@@ -19,8 +10,6 @@ import negotiator.events.ActionEvent;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
-import negotiator.gui.ExcelAdapter;
-import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -33,7 +22,6 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 public class TournamentProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener{
 	private NegoTableModel resultTableModel; // the table model	
 	private BilateralAtomicNegotiationSession negoSession;
-	private ArrayList <BilateralAtomicNegotiationSession> sessionArray;
 	private int session;
 	private ProgressUI2 sessionProgress;
 	/** modified Wouter 4nov08: SesssionDetailsUI contains list of pairs <session number, ProgressUI> */
@@ -41,7 +29,6 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 	
     /** Creates new form TournamentProgressUI2 */
     public TournamentProgressUI2(ProgressUI2 pUI) {
-    	sessionArray = new ArrayList<BilateralAtomicNegotiationSession>();
     	jPanel1 = pUI;
         initComponents(); 
 		sessionProgress = pUI;

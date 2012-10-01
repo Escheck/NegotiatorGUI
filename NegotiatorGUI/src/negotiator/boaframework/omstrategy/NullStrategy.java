@@ -10,6 +10,7 @@ import negotiator.boaframework.OpponentModel;
 
 /**
  * Baseline strategy which simply returns a random bid from the given array of bids.
+ * Basically, the opponent model is ignored.
  *  
  * @author Mark Hendrikx
  */
@@ -19,9 +20,17 @@ public class NullStrategy extends OMStrategy {
 	/**  when to stop updating the opponentmodel. Note that this value
 	 * 	 is not exactly one as a match sometimes lasts slightly longer. */
 	private double updateThreshold = 1.1;
-	
+
+	/**
+	 * Empty constructor used for reflexion. Note this constructor assumes that init
+	 * is called next.
+	 */
 	public NullStrategy() {}
 	
+	/**
+	 * Normal constructor used to initialize the NullStrategy opponent model strategy.
+	 * @param negotiationSession symbolizing the negotiation state.
+	 */
 	public NullStrategy(NegotiationSession negotiationSession) {
 		this.negotiationSession = negotiationSession;
 		rand = new Random();
@@ -37,13 +46,23 @@ public class NullStrategy extends OMStrategy {
 	}
 	
 	/**
-	 * @return random bid from the given array of bids.
+	 * Returns a random bid from the give array of similarly
+	 * preferred bids.
+	 * 
+	 * @param allBids list of similarly preferred bids.
+	 * @return random bid from given array.
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
 		return allBids.get(rand.nextInt(allBids.size()));
 	}
 
+	/**
+	 * Returns true if the opponent model be updated,
+	 * which is in this case if the time is lower than the given
+	 * threshold.
+	 * @return true if model may be updated.
+	 */
 	@Override
 	public boolean canUpdateOM() {
 		return negotiationSession.getTime() < updateThreshold;

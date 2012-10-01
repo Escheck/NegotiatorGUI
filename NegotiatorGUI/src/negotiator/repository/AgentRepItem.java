@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 public class AgentRepItem implements RepItem
 {
+	private static final long serialVersionUID = 2395318378966487611L;
 	@XmlAttribute
 	String agentName; /**  the key: short but unique name of the agent as it will be known in the nego system.
 	 						* This is an arbitrary but unique label for this TYPE of agent.

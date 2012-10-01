@@ -1,6 +1,5 @@
 package agents.qoagent;
 
-import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 /*

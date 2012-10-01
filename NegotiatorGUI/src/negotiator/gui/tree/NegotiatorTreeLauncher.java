@@ -1,7 +1,6 @@
 package negotiator.gui.tree;
 
 import negotiator.*;
-import negotiator.xml.*;
 import negotiator.issue.*;
 
 /**

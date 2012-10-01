@@ -1,20 +1,14 @@
 package agents;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueReal;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
 
 public class FuzzyAgent extends Agent {
 

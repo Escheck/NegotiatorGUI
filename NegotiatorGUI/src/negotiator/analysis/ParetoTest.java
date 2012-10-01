@@ -25,7 +25,6 @@ import negotiator.utility.UtilitySpace;
  * more than 200.000 bids.
  * 
  * @author Mark Hendrikx
- * @contact m.j.c.hendrikx@student.tudelft.nl
  */
 public class ParetoTest {
 
@@ -120,11 +119,12 @@ public class ParetoTest {
 	}
 	
 	/**
-	 * Check if two lists of bid points are equal.
+	 * Check if the output of the efficient algorithm and the brutefore algorithm
+	 * to calculate the Pareto-optimal bids are identical.
 	 * 
-	 * @param estimatedParetoBids
-	 * @param realParetoBids
-	 * @return
+	 * @param estimatedParetoBids Pareto-bids as estimated by an efficient algorithm in the BidSpace class.
+	 * @param realParetoBids Pareto-bids as calculated by the bruteforce algorithm.
+	 * @return true if both sets contain the same Pareto-optimal bids.
 	 */
 	private static boolean checkValidity(ArrayList<BidPoint> estimatedParetoBids, ArrayList<BidPoint> realParetoBids) {
 		if (realParetoBids.size() != estimatedParetoBids.size()) {

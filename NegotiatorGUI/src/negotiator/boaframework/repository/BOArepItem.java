@@ -2,7 +2,7 @@ package negotiator.boaframework.repository;
 
 /**
  * Class used to represent an item in the BOArepository.
- * An item in the BOA repository ahs a classPath and may have a tooltip.
+ * An item in the BOA repository has a classPath and may have a tooltip.
  * 
  * @author Mark Hendrikx
  */

@@ -6,7 +6,6 @@ import java.util.Random;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URL;
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -20,7 +19,6 @@ import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.TrajectoryMeasures;
 import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
 import negotiator.repository.AgentRepItem;
-import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
@@ -41,6 +39,8 @@ import negotiator.xml.SimpleElement;
  * Manages time-outs.
  */
 public class AlternatingOffersProtocol extends Protocol {
+	
+	private static final long serialVersionUID = 7472004245336770247L;
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
@@ -66,8 +66,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	protected Agent agentB;
 
 	/** fields copied from the NegotiationTemplate class */
-
-	private SimpleElement fAdditional;
 
 	AlternatingOffersBilateralAtomicNegoSession sessionrunner;
 	/** END OF fields copied from the NegotiationTemplate class */
@@ -487,9 +485,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	}
 	public void setBidSpace(BidSpace pBidSpace) {
 		bidSpace = pBidSpace;
-	}
-	public void setAdditional(SimpleElement e) {
-		fAdditional = e;
 	}
 
 

@@ -23,10 +23,15 @@ class BOArepositoryParser extends DefaultHandler {
 
 	/** Modes in which the parser can be in */
 	private enum Modes { BS, AC, OM, OMS, NULL }
+	/** Current mode the parser is in. */
 	private Modes mode = Modes.NULL;
 	
 	/**
 	 * Main method used to parse the repository.
+	 * @param nsURI of the XML element.
+	 * @param strippedName of the XML element.
+	 * @param tagName of the XML element.
+	 * @param attributes of the XML element.
 	 */
 	public void startElement(String nsURI, String strippedName,
 			String tagName, Attributes attributes) throws SAXException {
@@ -70,7 +75,10 @@ class BOArepositoryParser extends DefaultHandler {
 	}
 	
 	/**
-	 * If the parser finished reading a section, switch the current mode to unknown.
+	 * Method which switches the state of the parser if a section has ended.
+	 * @param nsURI of the XML element.
+	 * @param strippedName of the XML element.
+	 * @param tagName of the XML element.
 	 */
 	public void endElement(String nsURI, String strippedName,
 			String tagName) throws SAXException {

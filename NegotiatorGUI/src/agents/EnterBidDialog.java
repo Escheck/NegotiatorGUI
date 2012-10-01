@@ -1,44 +1,25 @@
-/*
- * EnterBidDialog.java
- *
- * Created on November 16, 2006, 10:18 AM
- */
-
 package agents;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-
 import negotiator.exceptions.Warning;
-
 import javax.swing.*;
 import javax.swing.table.*; 
 import java.awt.Color;
-
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.table.AbstractTableModel;
-
 import negotiator.Agent;
 import negotiator.Bid;
-
 import negotiator.utility.UtilitySpace;
 import negotiator.actions.*;
-
-import negotiator.issue.*;
-import negotiator.utility.EvaluatorDiscrete;
 
 /**
  *
  * @author  W.Pasman
  */
 public class EnterBidDialog extends JDialog {
-	
+
+	private static final long serialVersionUID = -8582527630534972700L;
 	private NegoInfo negoinfo; // the table model	
     private negotiator.actions.Action selectedAction;
     private Agent agent;    
@@ -46,7 +27,6 @@ public class EnterBidDialog extends JDialog {
     // Wouter: we have some whitespace in the buttons,
     // that makes nicer buttons and also artificially increases the window size.
     private JButton buttonAccept=new JButton(" Accept Opponent Bid ");
-    private JButton buttonSkip=new JButton("Skip Turn");
     private JButton buttonEnd=new JButton("End Negotiation");
     private JButton buttonBid=new JButton("       Do Bid       ");
     private JPanel buttonPanel=new JPanel();    
@@ -87,7 +67,6 @@ public class EnterBidDialog extends JDialog {
         //BidTable.setModel(negoinfo); // need a model for column size etc...
        	 // Why doesn't this work???
         BidTable.setGridColor(Color.lightGray);
-        String[] values = new String[]{"item1", "item2", "item3"};
         JPanel tablepane=new JPanel(new BorderLayout());
         tablepane.add(BidTable.getTableHeader(), "North");
         tablepane.add(BidTable,"Center");
@@ -147,13 +126,6 @@ public class EnterBidDialog extends JDialog {
         	selectedAction = new Offer(agent.getAgentID(),bid);         
         	setVisible(false);
         }
-    }
-
-    
-    private void buttonSkipActionPerformed(java.awt.event.ActionEvent evt) {
-    	System.out.println("cancel performed!");
-        selectedAction = null;
-        setVisible(false);
     }
 
     private void buttonAcceptActionPerformed(java.awt.event.ActionEvent evt) {

@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import java.net.URL;
 import javax.swing.JTree;
 import javax.swing.tree.*;
-
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
@@ -12,19 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.*;
 import javax.swing.JButton;
-
 import negotiator.Domain;
 import negotiator.repository.*;
 import negotiator.utility.UtilitySpace;
-
 import javax.swing.JFileChooser;
-import java.io.FileFilter;
-
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
@@ -123,7 +115,7 @@ public class DomainRepositoryUI implements NegoGUIComponent
 		frame.add(buttons,BorderLayout.EAST);
 		frame.add(scrollpane,BorderLayout.CENTER);
 		frame.pack();
-		frame.show();
+		frame.setVisible(true);
 	}
 	private void initTree(){
 		// create the tree

@@ -96,7 +96,7 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable {
 	 * score is defined as the score divided by the highest score in the
 	 * map.
 	 * 
-	 * @param the object from which the score is requested.
+	 * @param a the object from which the score is requested.
 	 * @return score of the object divided by the highest score.
 	 */
 	public double getNormalizedScore(A a) {

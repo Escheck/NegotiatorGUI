@@ -26,13 +26,22 @@ public class BestBid extends OMStrategy {
 	 */
 	public BestBid() { }
 
+	/**
+	 * Normal constructor used to initialize the BestBid opponent model strategy.
+	 * @param negotiationSession symbolizing the negotiation state.
+	 * @param model used by the opponent model strategy.
+	 */
 	public BestBid(NegotiationSession negotiationSession, OpponentModel model) {
 		super.init(negotiationSession, model);
 	}
 	
 	/**
-	 * Initializes the opponent model strategy. If a value for the paramter t is given, then
+	 * Initializes the opponent model strategy. If a value for the parameter t is given, then
 	 * it is set to this value. Otherwise, the default value is used.
+	 * 
+	 * @param negotiationSession state of the negotiation.
+	 * @param model opponent model used in conjunction with this opponent modeling strategy.
+	 * @param parameters set of parameters for this opponent model strategy.
 	 */
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, model);
@@ -47,7 +56,8 @@ public class BestBid extends OMStrategy {
 	 * Returns the best bid for the opponent given a set of similarly
 	 * preferred bids.
 	 * 
-	 * @return bid to be offered to opponent
+	 * @param list of the bids considered for offering.
+	 * @return bid to be offered to opponent.
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
@@ -86,7 +96,7 @@ public class BestBid extends OMStrategy {
 	 * The opponent model may be updated, unless the time is higher
 	 * than a given constant.
 	 * 
-	 * @return true if model may be updated
+	 * @return true if model may be updated.
 	 */
 	@Override
 	public boolean canUpdateOM() {

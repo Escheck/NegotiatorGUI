@@ -2,19 +2,14 @@ package negotiator.gui.tournamentvars;
 
 import java.awt.Frame;
 import java.awt.Panel;
-import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
-
-import negotiator.exceptions.Warning;
 import negotiator.gui.DefaultOKCancelDialog;
-import negotiator.repository.AgentRepItem;
-import negotiator.repository.RepItem;
-import negotiator.repository.Repository;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 
 public class SingleValueVarUI extends DefaultOKCancelDialog {
+
+	private static final long serialVersionUID = -2316094573538048269L;
 	private JTextField textField;
 	
 	public SingleValueVarUI(Frame frame) {

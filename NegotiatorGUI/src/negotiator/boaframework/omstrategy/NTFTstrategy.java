@@ -35,17 +35,17 @@ public class NTFTstrategy extends OMStrategy {
 		initializeAgent(negotiationSession, model);
 	}
 	
-	public void init(NegotiationSession negotiationSession, OpponentModel model) {
-		initializeAgent(negotiationSession, model);
-	}
-	
 	/**
 	 * Initializes the agent by storing the size of the domain, and checking
 	 * if the domain is large.
 	 * 
-	 * @param negoSession
-	 * @param model
+	 * @param negotiationSession state of the negotiation.
+	 * @param model opponent model used in conjunction with this opponent modeling strategy.
 	 */
+	public void init(NegotiationSession negotiationSession, OpponentModel model) {
+		initializeAgent(negotiationSession, model);
+	}
+	
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
 		super.init(negotiationSession, model);
 		this.possibleBids = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
@@ -57,6 +57,7 @@ public class NTFTstrategy extends OMStrategy {
 	 * Selects a random bid from the best N bids, where N depends on the
 	 * domain size.
 	 * 
+	 * @param set of similarly preferred bids.
 	 * @return nextBid to be offered
 	 */
 	@Override

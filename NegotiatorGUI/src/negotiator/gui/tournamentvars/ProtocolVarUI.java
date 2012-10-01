@@ -6,14 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
 import java.awt.Panel;
-import javax.swing.JDialog;
-
 import negotiator.repository.*;
 import negotiator.gui.DefaultOKCancelDialog;
 import negotiator.exceptions.Warning;

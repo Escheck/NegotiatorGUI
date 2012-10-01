@@ -1,7 +1,6 @@
 package negotiator.boaframework;
 
 import java.util.HashMap;
-
 import negotiator.bidding.BidDetails;
 
 /**
@@ -44,37 +43,48 @@ public abstract class OfferingStrategy {
 	}
 	
 	/**
-	 * determines the first bid to be offered by the agent
-	 * @return UTBid the beginBid
+	 * Determines the first bid to be offered by the agent
+	 * @return the opening bid of the agent.
 	 */
 	public abstract BidDetails determineOpeningBid();
 
 	
 	/**
-	 * determines the next bid the agent will offer to the opponent
-	 * @return UTBid the nextBid
+	 * Determines the next bid the agent will offer to the opponent
+	 * @return bid to offer to the opponent.
 	 */
 	public abstract BidDetails determineNextBid();
 		
-	
+	/**
+	 * @return next bid to be offered to the opponent.
+	 */
 	public BidDetails getNextBid(){
 		return nextBid;
 	}
 	
-	public void setNextBid(BidDetails counterBid) {
-		nextBid = counterBid;
+	/**
+	 * Set the next bid of the agent. This method is automatically
+	 * called by the BOA framework.
+	 * @param nextBid to offer to the opponent.
+	 */
+	public void setNextBid(BidDetails nextBid) {
+		this.nextBid = nextBid;
 	}
 	
+	/**
+	 * Return the Helper-object. A helper is used to hold the code
+	 * shared between the offering strategy and acceptance strategy.
+	 * A good design does not require a helper.
+	 * @return helper with shared code.
+	 */
 	public SharedAgentState getHelper() {
 		return helper;
 	}
 
+	/**
+	 * @return true if the negotiation should be ended.
+	 */
 	public boolean isEndNegotiation() {
 		return endNegotiation;
-	}
-	
-	public NegotiationSession getNegotiationSession()
-	{
-		return negotiationSession;
 	}
 }
