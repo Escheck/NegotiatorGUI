@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.events.ActionEvent;
@@ -18,14 +17,16 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 
 /**
- * @author Colin R. Williams
- *
  * Class to allow Negotiations to be run from the command line, without the use of a GUI.
+ * 
+ * @author Colin R. Williams
  */
 public class CommandLineRunner {
 
 	/**
-	 * @param args
+	 * Main method used to launch a negotiation specified as commandline commands.
+	 * 
+	 * @param args specification of the tournament parameters.
 	 */
 	public static void main(String[] args) {
 		CommandLineOptions options = new CommandLineOptions();
@@ -34,14 +35,13 @@ public class CommandLineRunner {
 			Global.logPrefix = options.outputFile;
 			start(options.protocol, options.domain, options.profiles, options.agents, options.outputFile);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public static void start(String p, String domainFile, List<String> profiles, List<String> agents, String outputFile) throws Exception {
+	private static void start(String p, String domainFile, List<String> profiles, List<String> agents, String outputFile) throws Exception {
 		
-		if(profiles.size() != agents.size())
+		if (profiles.size() != agents.size())
 			throw new IllegalArgumentException("Number of profiles does not match number of agents.");
 		
 		Protocol ns = null;
@@ -75,7 +75,6 @@ public class CommandLineRunner {
 					fw.write("\n");
 					fw.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -92,8 +91,6 @@ public class CommandLineRunner {
 				// Nothing to be done
 			}
 		});
-		
 		ns.startSession();
 	}
-	
 }

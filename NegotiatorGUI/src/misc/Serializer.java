@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -22,38 +21,47 @@ import sun.misc.BASE64Encoder;
  * 
  * @author Tim Baarslag
  */
-public class Serializer<A>
-{
+public class Serializer<A> {
+	
+	/** Path to the file in which the serialized class must be stored. */
 	private final String fileName;
-	private final String classDescription;
+	/** If it should be reported if the file cannot be found. */
 	private final boolean log; 
-	
-	public Serializer(String fileName)
-	{
-		this(fileName, "");
-	}
 
-	public Serializer(String fileName, String description)
-	{
-		this(fileName, description, false);
+	/**
+	 * Create an object to serialize a class. The filename specifies the 
+	 * path in which the serialized class is stored. File not found exceptions
+	 * are not reported.
+	 * @param filename path to file in which the serialized class is stored.
+	 */
+	public Serializer(String fileName) {
+		this(fileName, false);
 	}
 	
-	public Serializer(String fileName, String description, boolean log)
-	{
+	/**
+	 * Create an object to serialize a class. The filename specifies the 
+	 * path in which the serialized class is stored.
+	 * @param filename path to file in which the serialized class is stored.
+	 * @param log specifies if file not found exceptions should be reported.
+	 */
+	public Serializer(String fileName, boolean log) {
 		super();
 		this.fileName = fileName;
-		this.classDescription = description;
 		this.log = log;
 	}
 
+	@SuppressWarnings("unchecked")
+	/**
+	 * Read a serialized object from a file and restore it.
+	 * @return unserialized object.
+	 */
 	public A readFromDisk()
 	{
 		InputStream is = null;
 		ObjectInputStream ois = null;
 		A obj = null;
 
-		final String classMsg = "".equals(classDescription) ? "" : " in " + classDescription;
-		final String errorMsg = "Error opening ("+fileName+")" + classMsg + ":\n";
+		final String errorMsg = "Error opening ("+fileName+").\n";
 		try
 		{
 			is = new BufferedInputStream(new FileInputStream(fileName), 50000 * 1024);
@@ -81,13 +89,13 @@ public class Serializer<A>
 		{
 			System.out.println(errorMsg + e);
 		}
-		System.out.println(fileName + " is old " + classMsg + "; It should be rebuilt.");
+		System.out.println(fileName + " is old; It should be rebuilt.");
 		return null;
 	}
 
 	/**
-	 * Writes an object to the hard drive.
-	 * @param a
+	 * Serializes an object to the specified file.
+	 * @param a object to be serialized.
 	 */
 	public void writeToDisk(A a)
 	{
@@ -101,7 +109,6 @@ public class Serializer<A>
 			oos.writeObject(a);
 			oos.close();
 			os.close();
-			System.out.println(classDescription + " written.");
 		} catch (IOException ex)
 		{
 			ex.printStackTrace();
@@ -112,8 +119,8 @@ public class Serializer<A>
 	 * Serializes an object to a string encoded by using Base64 to
 	 * avoid characterset problems.
 	 * 
-	 * @param a object to serialize
-	 * @return serialized object
+	 * @param a object to serialize.
+	 * @return serialized object.
 	 */
 	public String writeToString(A a) {
 		BASE64Encoder encode = new BASE64Encoder();
@@ -133,11 +140,12 @@ public class Serializer<A>
 		return out;
 	}
 	
+	@SuppressWarnings("unchecked")
 	/**
 	 * Converts a string back to an object.
 	 * 
-	 * @param str serialized object
-	 * @return unserialized object
+	 * @param str serialized object.
+	 * @return unserialized object.
 	 */
 	public A readStringToObject(String str) {
 		BASE64Decoder decode = new BASE64Decoder();

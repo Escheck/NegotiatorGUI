@@ -5,24 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import negotiator.ArrayListXML;
-import negotiator.actions.Action;
-import negotiator.analysis.BidPointTime;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
-import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.xml.OrderedSimpleElement;
-import negotiator.xml.SimpleElement;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import sun.management.resources.agent;
 
 public class NegotiationLogParser {
 	

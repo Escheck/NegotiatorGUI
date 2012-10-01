@@ -33,7 +33,6 @@ import negotiator.xml.SimpleElement;
  */
 public class NegotiationOutcome 
 {
-	private OutcomeInfo outcomeInfo;
 	public int sessionNumber;
 	public String agentAname; 	// the name of the agent
 	public String agentBname;

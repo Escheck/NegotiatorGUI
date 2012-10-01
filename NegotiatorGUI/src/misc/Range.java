@@ -4,7 +4,7 @@ package misc;
 /**
  * This is a tuple class which is used to pass on a double range.
  * 
- * @author Alex Dirkzwager
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class Range {
 
@@ -13,30 +13,51 @@ public class Range {
 	/** Upper bound of the specified window */
 	private double upperbound;
 	
+	/**
+	 * Specifies a continuous range.
+	 * 
+	 * @param lowerbound of the range.
+	 * @param upperbound of the range.
+	 */
 	public Range(double lowerbound, double upperbound){
 		this.lowerbound = lowerbound;
 		this.upperbound = upperbound;
 	}
 	
+	/**
+	 * Returns the upperbound of the range.
+	 * @return upperbound of range.
+	 */
 	public double getUpperbound(){
 		return upperbound;
 	}
 	
+	/**
+	 * Returns the lowerbound of the range.
+	 * @return lowerbound of range.
+	 */
 	public double getLowerbound(){
 		return lowerbound;
 	}
 	
-	public void setUpperbound(double ubound){
-		upperbound = ubound;
-	}
-	
-	public void setLowerbound(double lbound){
-		lowerbound = lbound;
+	/**
+	 * Set the upperbound of the range.
+	 * @param upperbound of the range.
+	 */
+	public void setUpperbound(double upperbound){
+		this.upperbound = upperbound;
 	}
 	
 	/**
-	 * Enlarges the upper bound by the given increment.
-	 * 
+	 * Set the lowerbound of the range.
+	 * @param lowerbound of the range.
+	 */
+	public void setLowerbound(double lowerbound){
+		this.lowerbound = lowerbound;
+	}
+	
+	/**
+	 * Increases the upperbound by the given increment.
 	 * @param increment
 	 */
 	public void increaseUpperbound(double increment) {
