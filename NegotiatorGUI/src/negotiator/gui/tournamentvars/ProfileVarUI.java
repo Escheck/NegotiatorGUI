@@ -16,6 +16,7 @@ import negotiator.gui.DefaultOKCancelDialog;
 
 class ProfileVarUI extends DefaultOKCancelDialog {
 	
+	private static final long serialVersionUID = 8196930793789291675L;
 	ArrayList<MyCheckBox> checkboxes; // copy of what's in the panel, for easy check-out
 	ArrayList<ProfileRepItem> oldselection; // what was selected before?
 	/**
@@ -63,6 +64,7 @@ class ProfileVarUI extends DefaultOKCancelDialog {
 }
 
 class MyCheckBox extends JCheckBox {
+	private static final long serialVersionUID = 1563538739566690033L;
 	public ProfileRepItem profileRepItem;
 	public MyCheckBox(ProfileRepItem profileitem,boolean selected) { 
 		super(""+profileitem.getURL(),selected); 

@@ -332,8 +332,6 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 			}
 		}			
 		fEvaluatorHyps = lEvaluatorHyps;
-	//	}
-		printEvalsDistribution();
 	}
 	public boolean haveSeenBefore(Bid pBid) {
 		for(Bid tmpBid : fBiddingHistory) {
@@ -389,49 +387,6 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		
 		return u;
 	}
-
-	
-	private void printBestHyp() {
-		double[] lBestWeights = new double[fUS.getDomain().getIssues().size()];
-		EvaluatorHypothesis[] lBestEvals = new EvaluatorHypothesis[fUS.getDomain().getIssues().size()];
-		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
-			//find best weight
-			double lMaxWeightProb = -1;
-			for(int j=0;j<fWeightHyps.get(i).size();j++){
-				if(fWeightHyps.get(i).get(j).getProbability()>lMaxWeightProb) {
-					lMaxWeightProb = fWeightHyps.get(i).get(j).getProbability();
-					lBestWeights[i] = fWeightHyps.get(i).get(j).getWeight();
-				}
-			}
-			//find best evaluation fn
-			double lMaxEvalProb = -1;
-			for(int j=0;j<fEvaluatorHyps.get(i).size();j++){
-				if(fEvaluatorHyps.get(i).get(j).getProbability()>lMaxEvalProb ) {
-					lMaxEvalProb = fEvaluatorHyps.get(i).get(j).getProbability();
-					lBestEvals[i] = fEvaluatorHyps.get(i).get(j);
-				}
-			}
-			
-		}
-/*		//print all weights
-		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
-			System.out.print(String.format("%1.2f", getExpectedWeight(i))+";");			
-		}
-		//print all Evaluators
-		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
-			System.out.print(lBestEvals[i].getDesc()+";");			
-		}
-		System.out.println();
-	*/	
-	}
-	void printEvalsDistribution() {
-/*		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
-			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) 
-				System.out.print(String.format("%1.2f", fEvaluatorHyps.get(i).get(j).getProbability())+";");
-			System.out.println();
-		}*/
-		
-	}
 	
 	public double getNormalizedWeight(Issue i, int startingNumber) {
 		double sum = 0;
@@ -439,9 +394,5 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 			sum += getExpectedWeight(issue.getNumber() - startingNumber);
 		}
 		return (getExpectedWeight(i.getNumber() - startingNumber)) / sum;
-	}
-	
-
-		
-	
+	}	
 }

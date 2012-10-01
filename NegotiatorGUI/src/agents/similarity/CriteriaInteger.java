@@ -1,12 +1,10 @@
 package agents.similarity;
 
 import java.util.HashMap;
-
 import negotiator.Bid;
 import negotiator.issue.ValueInteger;
 import negotiator.utility.EVALFUNCTYPE;
 import negotiator.utility.EVALUATORTYPE;
-import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 
 public class CriteriaInteger implements Criteria {

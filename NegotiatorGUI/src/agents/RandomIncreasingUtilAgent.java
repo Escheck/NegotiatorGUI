@@ -14,7 +14,6 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
 
-
 /**
  *
  * @author W.Pasman 6nov08
@@ -32,11 +31,6 @@ public class RandomIncreasingUtilAgent extends Agent
     /** the maximum opponent utility we saw so far */
     private double max_opponent_utility=0;
     Bid max_opponent_bid=null; 
-    
-    
-    	// just here to suggest possibilities, not used in this agent.
-    private int sessionNumber;			
-    private int sessionTotalNumber;
  
     /**
      * init is called when a next session starts with the same opponent.

@@ -3,8 +3,6 @@ package negotiator.gui.dialogs;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import jtreetable.*;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
@@ -16,6 +14,7 @@ import negotiator.utility.*;
 
 public class NewObjectiveDialog extends JDialog implements ActionListener {
 
+	private static final long serialVersionUID = 4665460273597895313L;
 	//Attributes	
 	protected JButton okButton;
 	protected JButton cancelButton;
@@ -51,13 +50,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	public NewObjectiveDialog(TreeFrame owner, boolean modal, String name) {
 		super();
 		this.treeFrame = owner;
-		//this.treeTable = treeTable;
 
-			//Wouter: set weightCheck according to utility space setting
-		Objective selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
-		UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
-		//if (selected!=null && uts !=null) 
-		//	weightCheck=uts.getEvaluator(selected.getNumber()).???
 		initPanels();
 		
 		this.pack();
@@ -169,12 +162,10 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		String name;
 		int number;
 		//String description;
-		boolean hasEvaluator;
 		Objective selected; //The Objective that is seleced in the tree, which will be the new Objective's parent.
 		try {
 			name = getObjectiveName();
 			number = treeFrame.getNegotiatorTreeTableModel().getHighestObjectiveNr() + 1;
-			hasEvaluator = getWeightCheck();
 		//	description = getObjectiveDescription();
 		}
 		catch (InvalidInputException e) {
@@ -227,6 +218,9 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	}
 	
 	protected class InvalidInputException extends Exception {
+
+		private static final long serialVersionUID = 866805428763450366L;
+
 		protected InvalidInputException() {
 			super();
 		}

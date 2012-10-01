@@ -1,14 +1,9 @@
 package negotiator.gui.dialogs;
 
-import java.awt.*;
-
-import javax.swing.JOptionPane;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.utility.EvaluatorObjective;
 import negotiator.utility.UtilitySpace;
-
-import jtreetable.JTreeTable;
 
 /**
  * Maakt dialog om objectives mee te editen
@@ -17,6 +12,7 @@ import jtreetable.JTreeTable;
  */
 public class EditObjectiveDialog extends NewObjectiveDialog {
 	
+	private static final long serialVersionUID = -4676092883901671518L;
 	//Attributes
 	Objective objective;
 	

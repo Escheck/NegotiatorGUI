@@ -85,9 +85,7 @@ public class QMessages
 			}
 				break;
 			case OFFER:
-			{
-				String sAttribute, sValue;
-				
+			{	
 				sFormattedMsg = "type offer" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 
@@ -98,9 +96,7 @@ public class QMessages
 			}
 				break;
 			case COUNTER_OFFER:
-			{
-				String sAttribute, sValue;
-				
+			{			
 				sFormattedMsg = "type counter_offer" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 
@@ -161,8 +157,6 @@ public class QMessages
 				break; 
 			case QUERY:
 			{
-				String sAttribute, sValue;
-				
 				sFormattedMsg = "type query" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 

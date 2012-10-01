@@ -1,12 +1,9 @@
 package negotiator.gui.tree.actions;
 
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import jtreetable.*;
-import negotiator.issue.*;
 import negotiator.gui.dialogs.*;
-import negotiator.gui.tree.*;
 import negotiator.gui.tree.*;
 
 /**

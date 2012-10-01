@@ -12,7 +12,8 @@ import javax.swing.table.*;
 */
 
 public class WeightSliderCellEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
-	
+
+	private static final long serialVersionUID = -18549774953873547L;
 	//Attributes
 	NegotiatorTreeTableModel tableModel;
 	

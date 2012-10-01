@@ -19,7 +19,8 @@ import negotiator.exceptions.Warning;
 @XmlRootElement
 public class ProfileRepItem implements RepItem
 {
-    @XmlAttribute
+	private static final long serialVersionUID = -5071749178482314158L;
+	@XmlAttribute
     URL url; 	// URL is not accepted by JAXB xml thingie. We convert in getURL().
     @XmlTransient
     DomainRepItem domain;

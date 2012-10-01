@@ -18,7 +18,7 @@ class Agent
 	//general variables
 //DT:	private ServerThread m_st; //Allows access to the agent's thread at the server
 //DT:	private MultiServer m_server; //Allows access to the server
-	private Vector m_vecIssues; //The negotiation issues of the agent and their status
+	private Vector<Issue> m_vecIssues; //The negotiation issues of the agent and their status
 	private boolean m_bHasOpponent; //Whether the agent has an opponent or not
 	private boolean m_bHasMediator; //Whether the agent has a mediator or not
 	private boolean m_bSupportMediator; //Whether the agent supports a mediator or not
@@ -111,7 +111,7 @@ class Agent
 		m_nPort = 0;
 		m_dScore=0;
 
-		m_vecIssues=new Vector();
+		m_vecIssues=new Vector<Issue>();
 
 		//reading issues from the appropriate utility file
 		try
@@ -207,7 +207,7 @@ class Agent
 	* Input: A vector of issues.
 	* Output: None.
 	****************************************************************/
-	public void setIssuesVector(Vector vec)
+	public void setIssuesVector(Vector<Issue> vec)
 	{
 		m_vecIssues=vec;
 	}
@@ -218,7 +218,7 @@ class Agent
 	* Input: None.
 	* Output: A vector of issues.
 	***************************************************************/
-	public Vector getIssuesVector()
+	public Vector<Issue> getIssuesVector()
 	{
 		return m_vecIssues;
 	}

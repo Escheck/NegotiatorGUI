@@ -17,8 +17,9 @@ package negotiator.exceptions;
  */
 public class BidDoesNotExistInDomainException  extends NegotiatorException
 {
-    
-    /** Creates a new instance of BidDoesNotExistInDomainException */
+	private static final long serialVersionUID = 8880379988438321709L;
+
+	/** Creates a new instance of BidDoesNotExistInDomainException */
     public BidDoesNotExistInDomainException(String msg) 
     {
     	super(msg);

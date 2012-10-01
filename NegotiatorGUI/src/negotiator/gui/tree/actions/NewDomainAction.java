@@ -2,11 +2,9 @@ package negotiator.gui.tree.actions;
 
 import javax.swing.*;
 import java.awt.event.*;
-
 import negotiator.Domain;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
-import negotiator.utility.*;
 
 /**
 *

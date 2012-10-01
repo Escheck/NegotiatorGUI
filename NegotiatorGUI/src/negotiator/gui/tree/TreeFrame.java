@@ -32,7 +32,8 @@ import negotiator.issue.*;
  */
 
 public class TreeFrame extends JPanel implements NegoGUIComponent{
-	
+
+	private static final long serialVersionUID = 9072786889017106286L;
 	//Attributes
 	private static final Color UNSELECTED = Color.WHITE;
 	private static final Color HIGHLIGHT = Color.YELLOW;

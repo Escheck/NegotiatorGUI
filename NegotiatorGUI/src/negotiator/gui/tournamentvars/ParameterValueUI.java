@@ -14,6 +14,8 @@ import negotiator.gui.DefaultOKCancelDialog;
  */
 
 public class ParameterValueUI extends DefaultOKCancelDialog {
+
+	private static final long serialVersionUID = -5857332044292237979L;
 	Panel panel;
 	JTextField values;
 	

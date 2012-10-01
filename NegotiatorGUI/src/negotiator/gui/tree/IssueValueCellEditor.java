@@ -11,7 +11,8 @@ import javax.swing.table.*;
 */
 
 public class IssueValueCellEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
-	
+
+	private static final long serialVersionUID = -7575662197085471060L;
 	//Attributes
 	NegotiatorTreeTableModel tableModel;
 	

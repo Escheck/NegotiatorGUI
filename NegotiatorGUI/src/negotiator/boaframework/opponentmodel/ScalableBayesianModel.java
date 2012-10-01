@@ -53,6 +53,7 @@ public class ScalableBayesianModel extends OpponentModel {
 	 */
 	private boolean testIndexOfFirstIssue(Bid bid, int i){
 		try{
+			@SuppressWarnings("unused")
 			ValueDiscrete valueOfIssue = (ValueDiscrete) bid.getValue(i);
 		}
 		catch (Exception e) {

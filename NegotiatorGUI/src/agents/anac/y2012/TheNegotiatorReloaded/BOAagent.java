@@ -1,7 +1,5 @@
 package agents.anac.y2012.TheNegotiatorReloaded;
 
-import java.util.ArrayList;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -28,8 +26,6 @@ public abstract class BOAagent extends Agent {
 	protected OMStrategy omStrategy;
     /** space of possible bids */
     protected OutcomeSpace outcomeSpace;
-    /** if this agent started */
-    private boolean startingAgent;
     
 	public void init() {
 		super.init();
@@ -120,8 +116,6 @@ public abstract class BOAagent extends Agent {
 		Actions decision = Actions.Reject;
 		if (!negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
 			decision = acceptConditions.determineAcceptability();
-		} else {
-			startingAgent = true;
 		}
 		
 		if (decision.equals(Actions.Break)) {

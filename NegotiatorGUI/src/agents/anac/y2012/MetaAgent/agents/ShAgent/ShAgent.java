@@ -29,7 +29,6 @@ public class ShAgent extends Agent {
 	private Action actionOfPartner = null;
 	private Bid partnerFirstBid = null;
 	private Bid partnerBestBid = null;
-	private double partnerBestBidUtility = 0;
 	private double threshold;
 	
 	private Bid maxUtilityBid = null;
@@ -138,7 +137,6 @@ public class ShAgent extends Agent {
 			if(newUtil > oldUtil)
 			{
 				this.partnerBestBid = bid;
-				this.partnerBestBidUtility = newUtil;
 			}
 		}
 		
@@ -196,26 +194,6 @@ public class ShAgent extends Agent {
 	}
 
 	/**
-	 * Choose the bid to offer to the opponent
-	 * @return
-	 */
-	private Action chooseBidAction()
-	{
-		if (opponentModel.getNumberOfRemainingTurns() <= 3)
-		{
-			if (partnerBestBid != null)
-			{
-				return new Offer(this.getAgentID(), this.partnerBestBid);
-			}
-		}
-		
-		//TODO
-		
-		return null;
-		
-	}
-
-	/**
 	 * Returns the utility of the bid without the discount factor.
 	 * @param bid
 	 * @return
@@ -262,17 +240,6 @@ public class ShAgent extends Agent {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
-		}
-		
-		
-		public HashMap<Issue, ArrayList<Value>> getPreferredValuesPerIssue()
-		{
-			return preferredValuesPerIssue;
-		}
-		
-		public ArrayList<Value> getPreferredValuesPerIssue(Issue issue)
-		{
-			return preferredValuesPerIssue.get(issue);
 		}
 		
 		private void BuildValuePreferences() throws Exception
@@ -533,12 +500,7 @@ public class ShAgent extends Agent {
 		 * For each issue, a list of values in the order that they were offered by the opponent 
 		 * It is assumed that the opponent offers the values in the order of his preference
 		 */
-		private HashMap<Issue, ArrayList<Value>> opponentPrefferedValuePerIssue = new HashMap<Issue, ArrayList<Value>>();
-		
-		private Bid lastOpponentBid = null;
-		
-		private UtilitySpace utilitySpace;
-		
+		private HashMap<Issue, ArrayList<Value>> opponentPrefferedValuePerIssue = new HashMap<Issue, ArrayList<Value>>();	
 		private Timeline timeline;
 		
 
@@ -546,32 +508,8 @@ public class ShAgent extends Agent {
 		private int turnNumber = 0;
 		private double lastTurnStartTime = 0;
 		
-		
-		/**
-		 * The number of issues that the opponent compromised on in the last bid
-		 */
-		private int numCompromisedIssues;
-		
-		/**
-		 * The number if issues in which the opponent "hardened" his offer
-		 * i.e. he chose a value with a better utility for him 
-		 */
-		private int numHardenedIssues;
-		
-		
-		public int getNumCompromisedIssues()
-		{
-			return numCompromisedIssues;
-		}
-		
-		public int getNumHardenedIssues()
-		{
-			return numHardenedIssues;
-		}
-		
 		public OpponentModel(UtilitySpace utilitySpace, Timeline timeline)
 		{
-			this.utilitySpace = utilitySpace;
 			this.timeline = timeline;
 			
 			allIssues = utilitySpace.getDomain().getIssues();
@@ -610,42 +548,6 @@ public class ShAgent extends Agent {
 					//do nothing
 				}				
 			}
-			
-			numCompromisedIssues = 0;
-			numHardenedIssues = 0;
-			if (lastOpponentBid != null)
-			{
-				for (Issue issue : allIssues)
-				{
-					try 
-					{
-						Value thisValue = bid.getValue(issue.getNumber());
-						Value lastValue = lastOpponentBid.getValue(issue.getNumber());
-						
-						if (!thisValue.equals(lastValue))
-						{
-							int thisIndex = opponentPrefferedValuePerIssue.get(issue).indexOf(thisValue);
-							int lastIndex = opponentPrefferedValuePerIssue.get(issue).indexOf(lastValue);
-							
-							if (lastIndex > thisIndex)
-							{
-								numCompromisedIssues++;
-							}
-							else
-							{
-								//the opponent increased his value for this issue
-								numHardenedIssues++;
-							}
-						}
-					} 
-					catch (Exception e) 
-					{
-						//do nothing
-					}
-				}
-			}
-			
-			lastOpponentBid = bid;
 		}
 		
 		/**
@@ -661,77 +563,5 @@ public class ShAgent extends Agent {
 			
 			lastTurnStartTime = currTime;						
 		}
-		
-		/**
-		 * Get an assumption of the number of remaining turns in the game
-		 * @return
-		 */
-		public int getNumberOfRemainingTurns()
-		{
-			double avgTurnTime = 0;
-			if (turnNumber < previousTurnTimesArr.length + 2) //ignore the first 2 turns
-			{
-				if (turnNumber == 0)
-				{
-					return 10000; //a lot
-				}
-				else
-				{
-					avgTurnTime = previousTurnTimesArr[turnNumber-1];
-				}
-			}
-			
-			else
-			{
-				for (double time : previousTurnTimesArr)
-				{
-					avgTurnTime += time;
-				}
-				avgTurnTime /= previousTurnTimesArr.length;
-			}
-				
-			int res = (int) Math.floor((1 - lastTurnStartTime) / avgTurnTime);
-
-			//System.out.println("* ShAgent: current time: " + lastTurnStartTime + ", num turns remaining: " + res);
-			
-			return res;
-		}
-		
-
-		/**
-		 * Return the issues that are currently in agreement
-		 * @param bid - our proposed bid, to compare to the opponents last bid 
-		 * @return
-		 */
-		public ArrayList<Issue> getIssuesInAgreement(Bid bid)
-		{
-			ArrayList<Issue> issuesInAgreement = new ArrayList<Issue>();
-			for (Issue issue : allIssues)
-			{
-				try 
-				{
-					Value ourValue = bid.getValue(issue.getNumber());
-					Value hisValue = lastOpponentBid.getValue(issue.getNumber());
-					
-					if (ourValue.equals(hisValue))
-					{
-						issuesInAgreement.add(issue);
-					}
-				} 
-				catch (Exception e) 
-				{
-					//do nothing
-				}
-			}
-			
-			return issuesInAgreement;
-			
-		}
-		
-		
-		
 	}
-
 }
-
-

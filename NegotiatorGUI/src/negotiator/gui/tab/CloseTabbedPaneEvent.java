@@ -15,7 +15,8 @@ import java.awt.event.MouseEvent;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class CloseTabbedPaneEvent extends Event {
-	
+
+	private static final long serialVersionUID = -4161018393520953835L;
 	private String description;
 	private MouseEvent e;
 	private int overTabIndex;

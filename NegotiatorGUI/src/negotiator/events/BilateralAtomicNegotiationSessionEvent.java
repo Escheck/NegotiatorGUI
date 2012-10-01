@@ -5,6 +5,8 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 
 public class BilateralAtomicNegotiationSessionEvent extends NegotiationEvent {
+
+	private static final long serialVersionUID = 552153047729387858L;
 	private BilateralAtomicNegotiationSession session;
 	private ProfileRepItem profileA;
 	private ProfileRepItem profileB;

@@ -2,11 +2,9 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModel;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
-
 import negotiator.Agent;
 import negotiator.AgentParam;
 import negotiator.Bid;
@@ -32,10 +30,6 @@ public class BayesianAgent extends Agent {
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private Bid fOpponentPreviousBid = null;
-	
-	private static final double BREAK_OFF_POINT = 0.5;
-	
-
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	/** See paper. Standard = TIT_FOR_TAT */
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM, TIT_FOR_TAT};
@@ -48,7 +42,6 @@ public class BayesianAgent extends Agent {
 	private ArrayList<Bid> myPreviousBids;
 	private boolean fSkipDistanceCalc = false;
 	private boolean logging = !false;
-	private int fRound;
 	// Class constructor
 	public BayesianAgent() {
 		super();
@@ -80,8 +73,8 @@ public class BayesianAgent extends Agent {
 		fSmartSteps = 0;
 		myPreviousBids = new ArrayList<Bid>();
 		prepareOpponentModel();			
-		fRound =0;
 	} 
+	
 	protected void prepareOpponentModel() {
 		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);	
 	}
@@ -174,112 +167,6 @@ public class BayesianAgent extends Agent {
 		return bestbid.getBid();
 	}
 	
-	
-		/**
-		 * Wouter: Try to find a bid that has same utility for ourself
-		 * but max utility for opponent.
-		 * @author Dmytro
-		 * @param pBid
-		 * @return
-		 * @throws Exception
-		 */
-	private Bid getSmartBid(Bid pBid) throws Exception {
-		Bid lBid=null;
-		double lExpectedUtility = -1;
-		double lUtility = utilitySpace.getUtility(pBid);
-		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
-//		int i=1;
-		while(lIter.hasNext()) {
-			Bid tmpBid = lIter.next();
-//			System.out.println(tmpBid);
-//			System.out.println(String.valueOf(i++));
-			if(Math.abs(utilitySpace.getUtility(tmpBid)-lUtility)<ALLOWED_UTILITY_DEVIATION) {
-				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpExpecteUtility = fOpponentModel.getNormalizedUtility(tmpBid);
-				if(lTmpExpecteUtility > lExpectedUtility) {
-					lExpectedUtility= lTmpExpecteUtility ;
-					lBid = tmpBid;
-				}
-			}				
-		} 		
-		//check if really found a better bid. if not return null
-		if(fOpponentModel.getNormalizedUtility(lBid)>(fOpponentModel.getNormalizedUtility(pBid)+0.04))
-			return lBid;
-		else
-			return null;
-	}
-	
-	
-	/**
-	 * Finds a Pareto efficient bid on the circle of radius pRadius with a center in pBid bid. 
-	 * @author Dmytro Tykhonov, W.Pasman
-	 * @param pBid - bid that defines the circle 
-	 * @param pRadius - radius of the circle
-	 * @return a Pareto efficient bid on the circle 
-	 * @throws Exception
-	 */
-	private Bid getBidOfRadius(Bid pBid, double pRadius) throws Exception {
-		Bid lBid=null;		
-		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
-//		ArrayList<Bid> lCircle = new ArrayList<Bid>();
-		double pBidOppU = fOpponentModel.getNormalizedUtility(pBid);
-		double pBidMyU  = utilitySpace.getUtility(pBid);		
-		while(lIter.hasNext()) {
-			Bid tmpBid = lIter.next();
-			double tmpBidOppU = fOpponentModel.getNormalizedUtility(tmpBid);
-			double tmpBidMyU  = utilitySpace.getUtility(tmpBid);
-			double lRSquare   = (tmpBidOppU-pBidOppU)*(tmpBidOppU-pBidOppU)+
-					   		    (tmpBidMyU - pBidMyU)*(tmpBidMyU - pBidMyU);
-			if(Math.abs(lRSquare-pRadius*pRadius)<sq(ALLOWED_UTILITY_DEVIATION)) {
-//				lCircle.add(tmpBid);
-				if(lBid==null) {
-					lBid = tmpBid;
-				} else {
-					if((tmpBidMyU>utilitySpace.getUtility(lBid))&&
-					   (tmpBidOppU>fOpponentModel.getNormalizedUtility(lBid))) 
-					lBid = tmpBid;
-				}
-			}				
-		} //while
-		return lBid;
-	}
-	
-	/** check the points in given bid list, and find point closest to given radius.
-	 * You can use this function to check any list of bidpoints, either the (guessed) pareto frontier
-	 * or just the entire bidspace. 
-	 * @author W.Pasman
-	 * @param bidpoints is the list of points to be checked.
-	 * @param pBid
-	 * @param targetRadius
-	 * @return bid that is at distance pRadius from pBid as close as possible, but NOT equal to pBid 
-	 * @throws Exception
-	 */
-	private Bid getBidAtDistance(ArrayList<BidPoint> bidpoints, Bid pBid, double targetRadius) throws Exception 
-	{
-		if (targetRadius<0) throw new Exception ("targetRadius<0");
-		double targetRadius2=sq(targetRadius); // target radius squared.
-		BidPoint nearestbid=null;			
-		double smallestDeltaSoFar = 999.; // square of closest bid so far. any bid will be closer than this.
-		
-		double pBidOppU = fOpponentModel.getNormalizedUtility(pBid);
-		double pBidMyU  = utilitySpace.getUtility(pBid);	
-		
-		double tmpBidOppU, tmpBidMyU, r2, delta;
-		for(BidPoint b : bidpoints) {
-			if (b.equals(pBid)) continue; // skip the pBid itself
-			//tmpBidOppU = fOpponentModel.getNormalizedUtility(b);
-			tmpBidOppU = b.getUtilityB();
-			tmpBidMyU  = b.getUtilityA();
-			r2 = sq(tmpBidOppU-pBidOppU)+sq(tmpBidMyU - pBidMyU);
-			delta=Math.abs(r2-targetRadius2);
-			if (delta<smallestDeltaSoFar)
-				nearestbid = b;
-				smallestDeltaSoFar = delta; 
-			}				
-		if (nearestbid==null) throw new Exception("bid space seems empty??");
-		return nearestbid.getBid();
-	}
-	
 	private Bid getNextBidSmart(Bid pOppntBid) throws Exception 
 	{
 		double lMyUtility, lOppntUtility, lTargetUtility;
@@ -296,62 +183,6 @@ public class BayesianAgent extends Agent {
 		return getTradeOff(lTargetUtility, pOppntBid);
 	}
 	
-	/**
-	 * Search a bid in given space close to given utility.
-	 * @param targetutil
-	 * @param bids
-	 * @return the bid having opponent utility as close as possible to pOppUtil
-	 * @throws Exception
-	 */
-	private Bid getBidWithUtil(double targetutil, ArrayList<BidPoint> bids) throws Exception 
-	{
-		BidPoint lBid=null;
-		double lBidOppU=-1;
-		for(BidPoint b : bids) {
-			double util = b.getUtilityB();
-			if(Math.abs(util-targetutil)<Math.abs(lBidOppU-targetutil)) { 
-				lBid = b;
-				lBidOppU=util;
-			}		
-		}
-		return lBid.getBid();
-	}
-	
-	/**
-	 * Search for a bid with a given target utility in opponent space according to
-	 * the learned model and maximal utility for my self.
-	 * Uses ALLOWED_UTILITY_DEVIATION to allow some deviation from the target utility
-	 * 
-	 * Wouter: modified 20nov, as it appears that bid spaces in practice have gaps.
-	 * Awaiting Dmytro's feedback on this, I propose to 
-	 * 
-	 * @param pOppUtil - target utility in opponent's space 
-	 * @return bid with maximal utility in own space and the target utility in the opponent's space
-	 * @throws Exception if there is no bid (should be rare!)
-	 */
-	private Bid getMaxBidForOppUtil(double pOppUtil) throws Exception 
-	{
-		Bid lBid=null;
-		double lUtility = -1;
-		BidIterator lIter = new BidIterator(utilitySpace.getDomain());
-//		int i=1;
-		while(lIter.hasNext()) {
-			Bid tmpBid = lIter.next();
-//			System.out.println(tmpBid);
-//			System.out.println(String.valueOf(i++));
-			if(Math.abs(fOpponentModel.getNormalizedUtility(tmpBid)-pOppUtil)<ALLOWED_UTILITY_DEVIATION) {
-				//double lTmpSim = fSimilarity.getSimilarity(tmpBid, pOppntBid);
-				double lTmpUtility = utilitySpace.getUtility(tmpBid);
-				if(lTmpUtility > lUtility) {
-					lUtility= lTmpUtility ;
-					lBid = tmpBid;
-				}
-			}				
-		} //while
-		if (lBid==null) throw new Exception("there is no bid with opponent utility "+pOppUtil);
-		return lBid;
-		
-	}
 	private Bid getTradeOff(double pUtility, Bid pOppntBid) throws Exception
 	{
 		Bid lBid=null;

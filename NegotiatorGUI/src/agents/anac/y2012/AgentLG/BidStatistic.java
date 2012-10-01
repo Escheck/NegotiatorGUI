@@ -47,14 +47,12 @@ public class BidStatistic {
 	
 	public int getMostVotedCount()
 	{
-		Value maxval = null;
 		Integer maxtimes=0;
 		for(Value val:valStatis.keySet())
 		{
 			if (valStatis.get(val)>maxtimes)
 			{
 				maxtimes=valStatis.get(val);
-				maxval=val;
 			}
 		}
 		return maxtimes;

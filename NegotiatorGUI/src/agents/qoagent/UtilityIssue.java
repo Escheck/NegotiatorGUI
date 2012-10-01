@@ -14,7 +14,7 @@ public class UtilityIssue
 	public String sSide;
 	public double dAttributeWeight;
 	public String sExplanation;
-	public ArrayList lstUtilityValues; // list of UtilityValue
+	public ArrayList<UtilityValue> lstUtilityValues; // list of UtilityValue
 	
 	//the constructor inits the side, attribute name and the explanation
 	//to empty strings, and the utility values array to an empty array.
@@ -24,6 +24,6 @@ public class UtilityIssue
 		sAttributeName = "";
 		dAttributeWeight = 0;
 		sExplanation = "";
-		lstUtilityValues = new ArrayList();
+		lstUtilityValues = new ArrayList<UtilityValue>();
 	}
 }

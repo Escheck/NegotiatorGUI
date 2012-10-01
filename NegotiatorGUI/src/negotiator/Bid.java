@@ -106,7 +106,7 @@ public final class Bid implements XMLable
 	public String toString() {
         String s = "Bid[";
         Set<Entry<Integer, Value>> value_set = fValues.entrySet();
-        Iterator value_it = value_set.iterator();
+        Iterator<Entry<Integer, Value>> value_it = value_set.iterator();
         while(value_it.hasNext()){
         	int ind = ((Entry<Integer, Value>)value_it.next()).getKey();
         	Object tmpobj = fDomain.getObjective(ind); //Objective isn't recognized here, GKW. hdv

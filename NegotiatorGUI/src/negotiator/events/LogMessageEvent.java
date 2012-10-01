@@ -2,6 +2,7 @@ package negotiator.events;
 
 public class LogMessageEvent extends NegotiationEvent {
 
+	private static final long serialVersionUID = 7174221341200309069L;
 	private String source;
 	private String message;
 	

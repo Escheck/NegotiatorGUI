@@ -1,6 +1,5 @@
 package agents.qoagent2;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,16 +51,16 @@ public class QAgentsCore {
 	public static final int AGENT_TYPES_NUM = 3;
 	
 	// list of all possible england types - each value is FullUtility
-	private ArrayList m_EnglandAgentTypesList; 
+	private ArrayList<QAgentType> m_EnglandAgentTypesList; 
 	//	list of all possible zimbabwe types - each value is FullUtility
-	private ArrayList m_ZimbabweAgentTypesList;
+	private ArrayList<QAgentType> m_ZimbabweAgentTypesList;
 	
 	// list of all possible england types - each value is FullUtility
 	// values for the next turn
-	private ArrayList m_EnglandAgentTypesNextTurnList; 
+	private ArrayList<QAgentType> m_EnglandAgentTypesNextTurnList; 
 	//	list of all possible zimbabwe types - each value is FullUtility
 	// values for the next turn
-	private ArrayList m_ZimbabweAgentTypesNextTurnList;
+	private ArrayList<QAgentType> m_ZimbabweAgentTypesNextTurnList;
 
 	
 	private QAgentType m_CurrentAgentType;
@@ -1102,8 +1101,8 @@ public class QAgentsCore {
 			if (bCalculateForAllAgents)
 			{
 				// choose the best value from all possible values
-				ArrayList dSortedValuesList = new ArrayList();
-				ArrayList sSortedValuesList = new ArrayList();
+				ArrayList<Double> dSortedValuesList = new ArrayList<Double>();
+				ArrayList<String> sSortedValuesList = new ArrayList<String>();
 				
 				double dCurrentValue = QAgentType.VERY_SMALL_NUMBER;
 				boolean bFoundInd = false;
@@ -1292,24 +1291,8 @@ public class QAgentsCore {
 			} // end if-else: calculate for all agents or only one
 		} // end calculateEquilibrium
 
-		/**
-		 * @return
-		 */
-		private boolean getDoesOpponentEnd() {
-			File f = new File(".");
-			//System.out.println("Path = " + f.getAbsolutePath());
-			if (f.getAbsolutePath().contains("Opp Ends"))
-				return true;
-			
-			return false;
-		}
-
 		public void calculateEquilibrium(QAgentType oppAgentType, boolean bOppEnds, int nMaxTurns, int nAgentType, int nEquilibriumNum, boolean bCalculateForAllAgents, boolean bCalcForNextTurn, int nCurrentTurn)
-		{
-			double dCurrentAgreementValue = QAgentType.VERY_SMALL_NUMBER;
-			double dCurrentRecvValue = QAgentType.VERY_SMALL_NUMBER;
-			double dCurrentOppValue = QAgentType.VERY_SMALL_NUMBER;
-			
+		{	
 			QCombinedAgreement ca = new QCombinedAgreement();
 //			ca.m_dAgentAgreementValue = dCurrentRecvValue;
 //			ca.m_dOpponentAgreementValue = dCurrentOppValue;
@@ -1608,11 +1591,11 @@ public class QAgentsCore {
 		m_CurrentAgentType = null;
 		m_CurrentAgentNextTurnType = null;
 		
-		m_EnglandAgentTypesList = new ArrayList();
-		m_ZimbabweAgentTypesList = new ArrayList();
+		m_EnglandAgentTypesList = new ArrayList<QAgentType>();
+		m_ZimbabweAgentTypesList = new ArrayList<QAgentType>();
 		
-		m_EnglandAgentTypesNextTurnList = new ArrayList();
-		m_ZimbabweAgentTypesNextTurnList = new ArrayList();
+		m_EnglandAgentTypesNextTurnList = new ArrayList<QAgentType>();
+		m_ZimbabweAgentTypesNextTurnList = new ArrayList<QAgentType>();
 		
 		m_sProbFileName = "logs\\prob" + sNow + ".";
 
@@ -1644,11 +1627,11 @@ public class QAgentsCore {
 		m_CurrentAgentType = null;
 		m_CurrentAgentNextTurnType = null;
 		
-		m_EnglandAgentTypesList = new ArrayList();
-		m_ZimbabweAgentTypesList = new ArrayList();
+		m_EnglandAgentTypesList = new ArrayList<QAgentType>();
+		m_ZimbabweAgentTypesList = new ArrayList<QAgentType>();
 		
-		m_EnglandAgentTypesNextTurnList = new ArrayList();
-		m_ZimbabweAgentTypesNextTurnList = new ArrayList();
+		m_EnglandAgentTypesNextTurnList = new ArrayList<QAgentType>();
+		m_ZimbabweAgentTypesNextTurnList = new ArrayList<QAgentType>();
 		
 		m_sProbFileName = "logs\\prob" + sNow + ".";
 
@@ -1934,7 +1917,7 @@ public class QAgentsCore {
 	 * @param dGeneralValues - array of the general values
 	 * @return line - the new line
 	 */
-	public String readUtilityDetails(UtilitySpace utilitySpace, ArrayList lstUtilityDetails, double dGeneralValues[])
+	public String readUtilityDetails(UtilitySpace utilitySpace, ArrayList<UtilityDetails> lstUtilityDetails, double dGeneralValues[])
 	{
 		UtilityDetails utilityDetails = null;
 

@@ -279,35 +279,4 @@ public class ABMPAgent extends Agent {
 		System.out.println(lConcessionStep);
 		return lConcessionStep;
 	}
-	
-	private int partition(double[] lWeights, int[] lSortedIndex, int left, int right, int pivotIndex) {
-	    double pivotValue = lWeights[pivotIndex];
-	    swap(lWeights, pivotIndex, right); // Move pivot to end
-	    swap(lSortedIndex, pivotIndex, right);
-	    int storeIndex = left;
-        for (int i=left; i<right; i++) {
-            if (lWeights[i] <= pivotValue) {
-            	swap(lWeights, storeIndex, i);
-            	swap(lSortedIndex, storeIndex, i);
-            	storeIndex = storeIndex + 1;
-            }
-        }
-        swap(lWeights, right, storeIndex); // Move pivot to its final place
-        swap(lSortedIndex, right, storeIndex);
-        return storeIndex;
-	}
-	
-	private void swap(double[] values, int fromIndex, int toIndex) {
-		double x = values[fromIndex];
-		values[fromIndex] = values[toIndex];
-		values[toIndex] = x;
-	}
-	
-	private void swap(int[] values, int fromIndex, int toIndex) {
-		int x = values[fromIndex];
-		values[fromIndex] = values[toIndex];
-		values[toIndex] = x;
-	}
-
-	
 }

@@ -14,7 +14,8 @@ import org.jdesktop.application.Action;
  */
 public class ParameterUI extends javax.swing.JFrame {
 
-    /** Creates new form ParameterUI */
+	private static final long serialVersionUID = -1654392920038470259L;
+	/** Creates new form ParameterUI */
     public ParameterUI() {
         initComponents();
     }

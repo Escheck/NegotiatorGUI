@@ -65,19 +65,19 @@ public class AutomatedAgentsCore {
 	
 	// list of all possible Side A agent types (Eng/Emp)
     // each value is FullUtility
-	private ArrayList m_SideA_AgentTypesList; 
+	private ArrayList<AutomatedAgentType> m_SideA_AgentTypesList; 
 	//	list of all possible Side B types (Zim/Job Can)
     //  each value is FullUtility
-	private ArrayList m_SideB_AgentTypesList;
+	private ArrayList<AutomatedAgentType> m_SideB_AgentTypesList;
 	
 	// list of all possible Side A agent types (Eng/Emp)
     // with values of the next turn
     // each value is FullUtility
-	private ArrayList m_SideA_AgentTypesNextTurnList; 
+	private ArrayList<AutomatedAgentType> m_SideA_AgentTypesNextTurnList; 
 	//	list of all possible Side B agent types (Zim/Job Can)
     // with values of the next turn
     // each value is FullUtility
-	private ArrayList m_SideB_AgentTypesNextTurnList;
+	private ArrayList<AutomatedAgentType> m_SideB_AgentTypesNextTurnList;
 
 	// automated agent utility values for current turn
 	private AutomatedAgentType m_CurrentAgentType;
@@ -203,15 +203,15 @@ public class AutomatedAgentsCore {
         setAgentTools(agentTools);
         setAbstractAgent(abstractAgent);
         m_CurrentAgentNextTurnType = null;
-        m_SideA_AgentTypesNextTurnList = new ArrayList();
-        m_SideB_AgentTypesNextTurnList = new ArrayList();
+        m_SideA_AgentTypesNextTurnList = new ArrayList<AutomatedAgentType>();
+        m_SideB_AgentTypesNextTurnList = new ArrayList<AutomatedAgentType>();
         
         m_sLogFileName = sFileName;
 		
 		m_CurrentAgentType = null;
 		
-		m_SideA_AgentTypesList = new ArrayList();
-		m_SideB_AgentTypesList = new ArrayList();
+		m_SideA_AgentTypesList = new ArrayList<AutomatedAgentType>();
+		m_SideB_AgentTypesList = new ArrayList<AutomatedAgentType>();
 		
 
 		for (int i = 0; i < AGENT_TYPES_NUM; ++i)
@@ -534,7 +534,7 @@ public class AutomatedAgentsCore {
 	 * @param dGeneralValues - array of the general values
 	 * @return line - the new line
 	 */
-	public String readUtilityDetails(BufferedReader br, String line, ArrayList lstUtilityDetails, double dGeneralValues[])
+	public String readUtilityDetails(BufferedReader br, String line, ArrayList<UtilityDetails> lstUtilityDetails, double dGeneralValues[])
 	{
 		UtilityDetails utilityDetails = null;
 		

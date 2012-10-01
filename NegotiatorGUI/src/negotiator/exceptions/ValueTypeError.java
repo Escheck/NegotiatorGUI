@@ -8,6 +8,8 @@ package negotiator.exceptions;
  */
 public class ValueTypeError extends NegotiatorException {
 
+	private static final long serialVersionUID = 1705444081255396664L;
+
 	// Constructor
     public ValueTypeError(String msg) {
     	super(msg);

@@ -1,10 +1,5 @@
 package agents;
 
-import java.util.Date;
-
-import javax.management.relation.Role;
-
-import agents.BayesianAgentForAuction.ACTIONTYPE;
 import negotiator.AgentParam;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -86,9 +81,6 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 					// Other agent started, lets propose my initial bid.
 					lAction = proposeInitialBid();
 				else {
-	                double offeredutil=utilitySpace.getUtility(lOppntBid);
-	                double time=timeline.getTime();
-	                double P=Paccept(offeredutil,time);
 	                //log("time="+time+" offeredutil="+offeredutil+" accept probability P="+P);
 	               if (utilitySpace.getUtility(lOppntBid)*1.05 >= utilitySpace.getUtility(myLastBid)
 	            	/*|| .05*P>Math.random()*/ )	   
@@ -104,10 +96,6 @@ public class BayesianAgentForAuctionMultiPhase extends BayesianAgentForAuction {
 	                	} else {
 	                		
 	                		lAction=new Offer(getAgentID(),lnextBid);
-                            
-                            //Liviu: it doesn't allow proposing null bid
-                            if(lnextBid == null)
-                                lnextBid = myPreviousBids.get(myPreviousBids.size() - 1);
 	                	                             
 	                		myProviderLastBid = lnextBid;
 	                		// Propose counteroffer. Get next bid.

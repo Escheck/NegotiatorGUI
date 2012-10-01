@@ -50,12 +50,6 @@ class BidComparator implements java.util.Comparator<Bid>
 public class DecUtilAgent extends Agent
 {
     private Action actionOfPartner=null;
-    private static final double MINIMUM_BID_UTILITY = 0.5;
-    
-    
-    	// just here to suggest possibilities, not used in this agent.
-    private int sessionNumber;			
-    private int sessionTotalNumber;
     ArrayList<Bid> bids=new ArrayList<Bid>();
     int nextBidIndex=0; // what's the next bid from bids to be done.
  
@@ -83,11 +77,6 @@ public class DecUtilAgent extends Agent
             if(actionOfPartner==null) action = new Offer(getAgentID(),bids.get(nextBidIndex++));
             if(actionOfPartner instanceof Offer)
             {
-                Bid partnerBid = ((Offer)actionOfPartner).getBid();
-                double offeredutil=utilitySpace.getUtility(partnerBid);
-                double time=timeline.getTime();
-//                double P=Paccept(offeredutil,time);
-//                if (.02*P>Math.random()) action = new Accept(getAgentID());
                 action = new Offer(getAgentID(),bids.get(nextBidIndex++));               
             }
 //            Thread.sleep(300); // 3 bids per second is good enough.
@@ -97,9 +86,7 @@ public class DecUtilAgent extends Agent
         }
         return action;
     }
-    
-
-	   
+      
 	/**
 	 * This function determines the accept probability for an offer.
 	 * At t=0 it will prefer high-utility offers.
@@ -124,5 +111,4 @@ public class DecUtilAgent extends Agent
 	}
 	
 	double sq(double x) { return x*x; }
-
 }

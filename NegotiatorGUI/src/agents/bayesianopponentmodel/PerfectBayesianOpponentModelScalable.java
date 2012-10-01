@@ -379,32 +379,6 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 		return u;
 	}
 
-	
-	private void printBestHyp() {
-		double[] lBestWeights = new double[fUS.getDomain().getIssues().size()];
-		EvaluatorHypothesis[] lBestEvals = new EvaluatorHypothesis[fUS.getDomain().getIssues().size()];
-		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
-			//find best weight
-			double lMaxWeightProb = -1;
-			for(int j=0;j<fWeightHyps.get(i).size();j++){
-				if(fWeightHyps.get(i).get(j).getProbability()>lMaxWeightProb) {
-					lMaxWeightProb = fWeightHyps.get(i).get(j).getProbability();
-					lBestWeights[i] = fWeightHyps.get(i).get(j).getWeight();
-				}
-			}
-			//find best evaluation fn
-			double lMaxEvalProb = -1;
-			for(int j=0;j<fEvaluatorHyps.get(i).size();j++){
-				if(fEvaluatorHyps.get(i).get(j).getProbability()>lMaxEvalProb ) {
-					lMaxEvalProb = fEvaluatorHyps.get(i).get(j).getProbability();
-					lBestEvals[i] = fEvaluatorHyps.get(i).get(j);
-				}
-			}
-			
-		}
-	}
-
-	
 	public double getNormalizedWeight(Issue i, int startingNumber) {
 		double sum = 0;
 		for (Issue issue : fDomain.getIssues()) {

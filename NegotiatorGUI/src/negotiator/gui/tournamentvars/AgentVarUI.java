@@ -1,16 +1,10 @@
 package negotiator.gui.tournamentvars;
 
-
 import java.awt.Frame;
 import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import java.awt.Panel;
-import javax.swing.JDialog;
-
 import negotiator.repository.*;
 import negotiator.gui.DefaultOKCancelDialog;
 import negotiator.exceptions.Warning;
@@ -21,6 +15,7 @@ import negotiator.exceptions.Warning;
  */
 public class AgentVarUI extends DefaultOKCancelDialog {
 
+	private static final long serialVersionUID = -818117929109204461L;
 	ArrayList<AgentCheckBox> checkboxes; // copy of what's in the panel, for easy check-out. 
 
 	public AgentVarUI(Frame owner) {
@@ -54,6 +49,7 @@ public class AgentVarUI extends DefaultOKCancelDialog {
 }
 
 class AgentCheckBox extends JCheckBox {
+	private static final long serialVersionUID = 6093906940313944816L;
 	public AgentRepItem agentRepItem;
 	public AgentCheckBox(AgentRepItem agtRepItem) { 
 		super(""+agtRepItem.getName()); 

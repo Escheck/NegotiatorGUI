@@ -92,8 +92,7 @@ public class TimeBidHistory {
 	public void addOpponentBidnTime(double oppU, Bid pBid, double time) {
 		double undisOppU = oppU/Math.pow(discount,time);
 		double nTime=time;
-		ArrayList<Issue> lIssues = getIssues();	
-		
+
 		if (pBid == null)
 			throw new IllegalArgumentException("vBid can't be null.");
 		

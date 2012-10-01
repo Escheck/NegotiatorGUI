@@ -15,6 +15,7 @@ import java.io.Serializable;
  */
 public abstract class TournamentVariable  implements Serializable
 {
+	private static final long serialVersionUID = 5326059723219308268L;
 	ArrayList<TournamentValue> values=new ArrayList<TournamentValue>(); /** ordered list of values this var can take */
 
 	 /** add given value to the array of values */

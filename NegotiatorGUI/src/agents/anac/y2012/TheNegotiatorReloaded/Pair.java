@@ -1,13 +1,11 @@
 package agents.anac.y2012.TheNegotiatorReloaded;
 
-import java.io.Serializable;
-
 /**
  * A simple tuple class.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx, Julian de Ruiter
  */
-public class Pair<A, B> implements Serializable {
+public class Pair<A, B> {
  
   private A fst;
   private B snd;

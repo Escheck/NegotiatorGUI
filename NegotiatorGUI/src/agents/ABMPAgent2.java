@@ -14,14 +14,10 @@ import negotiator.utility.*;
 
 public class ABMPAgent2 extends Agent {
 
-	private String myName;
 	private Action messageOpponent;
-	private int sessionNumber;
-	private int sessionTotalNumber; 
 	//private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
-	private static final double BREAK_OFF_POINT = 0.5;
 	//private double[] fIssueWeight;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private double fOldTargetUtility; 
@@ -306,49 +302,6 @@ public class ABMPAgent2 extends Agent {
 		return lConcessionStep;
 	}
 
-	
-	// Quicksort algorithm that returns a sorted list of issue indices based on weights
-	
-	private void quickSort(double[] lWeights, int[] lSortedIndex, int left, int right) {
-		int pivotIndex;
-		
-	    // if (right > left)
-    	pivotIndex = left;
-	    int pivotNewIndex = partition(lWeights, lSortedIndex, left, right, pivotIndex);
-	    if (pivotNewIndex > left+1)
-	    	quickSort(lWeights, lSortedIndex, left, pivotNewIndex-1);
-	    if (pivotNewIndex+1<right)
-	    	quickSort(lWeights, lSortedIndex, pivotNewIndex+1, right);
-	}
-	
-	private int partition(double[] lWeights, int[] lSortedIndex, int left, int right, int pivotIndex) {
-	    double pivotValue = lWeights[pivotIndex];
-	    swap(lWeights, pivotIndex, right); // Move pivot to end
-	    swap(lSortedIndex, pivotIndex, right);
-	    int storeIndex = left;
-        for (int i=left; i<right; i++) {
-            if (lWeights[i] <= pivotValue) {
-            	swap(lWeights, storeIndex, i);
-            	swap(lSortedIndex, storeIndex, i);
-            	storeIndex = storeIndex + 1;
-            }
-        }
-        swap(lWeights, right, storeIndex); // Move pivot to its final place
-        swap(lSortedIndex, right, storeIndex);
-        return storeIndex;
-	}
-	
-	private void swap(double[] values, int fromIndex, int toIndex) {
-		double x = values[fromIndex];
-		values[fromIndex] = values[toIndex];
-		values[toIndex] = x;
-	}
-	
-	private void swap(int[] values, int fromIndex, int toIndex) {
-		int x = values[fromIndex];
-		values[fromIndex] = values[toIndex];
-		values[toIndex] = x;
-	}
 	private Bid getBidRandomWalk(double lowerBound, double upperBoud)  throws Exception{
 		Bid lBid = null, lBestBid = null;
 

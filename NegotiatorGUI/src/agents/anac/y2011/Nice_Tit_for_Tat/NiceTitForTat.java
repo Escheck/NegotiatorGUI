@@ -359,6 +359,7 @@ public class NiceTitForTat extends BilateralAgent
 		return false;
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	protected Action makeAcceptAction()
 	{

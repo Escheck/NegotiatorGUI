@@ -358,28 +358,6 @@ public class OMACagent extends Agent
 				
 	}
 	
-	private int getMaxPoint(int cur, float ar[]){
-		int temp =cur;
-		
-		for( int i=cur; i < 99; i++){
-			if( ar[temp] < ar[i+1])
-				temp = i+1;
-		}
-		
-		return temp;
-	}
-	
-	private int getMinPoint(int cur, float ar[]){
-		int temp =cur;
-		
-		for( int i=cur; i < 99; i++){
-			if( ar[temp] > ar[i+1])
-				temp = i+1;
-		}
-		
-		return temp;
-	}
-	
 	private Bid genRanBid(double min, double max){
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>
 		ArrayList<Issue> issues=utilitySpace.getDomain().getIssues();

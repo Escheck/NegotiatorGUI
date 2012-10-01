@@ -5,12 +5,10 @@ import java.awt.event.*;
 import java.text.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
 import negotiator.issue.*;
 import negotiator.utility.*;
 
 /**
-*
 * @author Richard Noorlandt
 * 
 * Wouter: WeightSlider is a GUI component in the Tree,
@@ -18,7 +16,8 @@ import negotiator.utility.*;
 */
 
 public class WeightSlider extends JPanel implements ChangeListener, ItemListener {
-	
+
+	private static final long serialVersionUID = 4049454839954128143L;
 	//Attributes
 	static final int MIN_VALUE = 0;
 	static final int MAX_VALUE = 1000;
@@ -32,7 +31,6 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	private JCheckBox lock;
 	private JSlider slider;
 	private JFormattedTextField valueField;
-	private boolean locked = false;
 	
 	private double weight = 0; // < Might change, should probably be done from within objective, model or evaluator. Ony the question is: which?
 	
@@ -204,14 +202,12 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	 */
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
-			locked = true;
 			slider.setEnabled(false);
 			valueField.setEnabled(false);
 			tableModel.getUtilitySpace().lock(objective);
 		}
 		//Otherwise, it is deselected
 		else {
-			locked = false;
 			slider.setEnabled(true);
 			valueField.setEnabled(true);
 			tableModel.getUtilitySpace().unlock(objective);

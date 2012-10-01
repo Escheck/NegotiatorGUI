@@ -12,7 +12,8 @@ import negotiator.issue.*;
 public class IssueRealValuePanel extends IssueValuePanel {
 
 	//Attributes
-	
+	private static final long serialVersionUID = 28688258478356130L;
+
 	//Constructors
 	public IssueRealValuePanel(NegotiatorTreeTableModel model, IssueReal issue) {
 		super(model, issue);
