@@ -102,7 +102,6 @@ public class BidSpace {
 		boolean isBidSpaceAvailable = !bidPoints.isEmpty();
 		if (paretoFrontier==null)
 		{		
-			long t = System.nanoTime();
 			if (isBidSpaceAvailable)
 			{
 				paretoFrontier = computeParetoFrontier(bidPoints).getFrontier();
@@ -161,7 +160,7 @@ public class BidSpace {
 	{
 		ArrayList<Bid> bids=new ArrayList<Bid> ();
 		List<BidPoint> points = getParetoFrontier();
-		for (BidPoint p:points) bids.add(p.bid);
+		for (BidPoint p:points) bids.add(p.getBid());
 		return bids;
 	}
 	
@@ -286,13 +285,13 @@ public class BidSpace {
 		for (BidPoint p:bidPoints)
 		{
 			boolean contains=false;
-			for (Bid b:excludeList) { if (b.equals(p.bid)) { contains=true; break; } }
+			for (Bid b:excludeList) { if (b.equals(p.getBid())) { contains=true; break; } }
 			if (contains) continue;
 			r=weightA*sq(p.getUtility(0)-utilA)+weightB*sq(p.getUtility(1)-utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
-		System.out.println("point found="+bestPoint.bid);
-		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
+		System.out.println("point found="+bestPoint.getBid());
+		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.getBid().equals(excludeList.get(1)));
 		return bestPoint;
 	}
 	

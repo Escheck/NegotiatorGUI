@@ -3,7 +3,7 @@ package negotiator.analysis;
 import java.util.Comparator;
 
 /**
- * Sorts {@link BidPoint}s in utilityA.
+ * Sorts {@link BidPoint} based on their utility for agent B.
  */
 public class BidPointSorterB implements Comparator<BidPoint>
 {

@@ -451,7 +451,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				}
 			}
 			if (fAgentBBids.size() > 0) {
-				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).bid;
+				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).getBid();
 				if (lastOpponentBid != null) {
 					omMeasuresResults.addTimePoint(timeline.getTime());
 					omMeasuresResults.addBidIndex(omMeasures
