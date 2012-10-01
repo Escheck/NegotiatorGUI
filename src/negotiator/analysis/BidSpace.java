@@ -9,22 +9,39 @@ import negotiator.Global;
 import negotiator.utility.UtilitySpace;
 
 /**
- * BidSpace is a class that can store and do analysis of a space of bids.
+ * A collection of utilityspaces can be viewed as a space in which
+ * a bid is assigned multiple point corresponding to the utility
+ * of the bid for different agents. We refer to this space
+ * as a BidSpace. This class allows to calculate the properties of
+ * this space.
+ * 
  * @author Dmytro Tykhonov, Tim Baarslag, Wouter Pasman
  */
 public class BidSpace {
-	private UtilitySpace [] utilspaces;
-	/** equal for all utility spaces */
-	private Domain domain;
-	public ArrayList<BidPoint> bidPoints; // size = size(domain)
 	
-	/** All cache */
+	/** Collection of utility spaces constituting the space. */
+	private UtilitySpace [] utilspaces;
+	/** Domain of the utility spaces. */
+	private Domain domain;
+	/** List of all bidpoints in the domain. */
+	public ArrayList<BidPoint> bidPoints;
+	
+	/** Cached Pareto frontier. */
 	List<BidPoint> paretoFrontier=null; // null if not yet computed
+	/** Cached Kalai-Smorodinsky solution. The solution is assumed to be unique. */
 	BidPoint kalaiSmorodinsky=null; // null if not yet computed
+	/** Cached Nash solution. The solution is assumed to be unique. */
 	BidPoint nash=null; // null if not yet computed
 	
-	public BidSpace(UtilitySpace[] spaces) throws Exception {
-		initializeUtilitySpaces(spaces);
+	/**
+	 * Default constructor used to construct a multidimensional bidding space.
+	 *
+	 * @param utilityspaces of which the bidding space consists.
+	 * @throws Exception is thrown when one of the utility spaces is corrupt.
+	 */
+	public BidSpace(UtilitySpace... utilityspaces) throws Exception {
+		initializeUtilitySpaces(utilityspaces);
+
 		if (Global.LOW_MEMORY_MODE) {
 			buildSpace(true);
 		} else {
@@ -32,45 +49,72 @@ public class BidSpace {
 		}
 	}
 	
-	private void initializeUtilitySpaces(UtilitySpace[] spaces) throws Exception {
-		utilspaces = spaces.clone();
-		for (UtilitySpace utilitySpace : spaces) 
-		{
-			if (utilitySpace==null)
-				throw new NullPointerException("util space is null: " + spaces);
-		}
-		domain = utilspaces[0].getDomain();
-		for (UtilitySpace space : spaces) {
-			space.checkReadyForNegotiation(domain);
-		}
-	}
-
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB) throws Exception {
-		this(new UtilitySpace [] {spaceA, spaceB});
-	}	
-	
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids) throws Exception
+	/**
+	 * Constructor to create a BidSpace given exactly two utility spaces.
+	 * The main difference is that if excludeBids is true, then only the
+	 * bid points are saved. This has is a good way to save memory.
+	 * 
+	 * @param utilityspaceA utilityspace of agent A.
+	 * @param utilityspaceB utilityspace of agent B.
+	 * @param excludeBids if the real bids should be saved or not.
+	 * @throws Exception is thrown when one of the utility spaces is corrupt.
+	 */
+	public BidSpace(UtilitySpace utilityspaceA, UtilitySpace utilityspaceB, boolean excludeBids) throws Exception
 	{
-		UtilitySpace[] spaces = { spaceA, spaceB };
+		UtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		initializeUtilitySpaces(spaces);
 		buildSpace(excludeBids);
 	}
 	
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB, boolean excludeBids, boolean skipCheckSpaceB) throws Exception
+	/**
+	 * Constructor which is identical to its three parameter version, except for the
+	 * argument skipCheckSpaceB. Independent of the value of this parameter, this
+	 * constructor skips the security checks for the second utilityspace. This is
+	 * interesting if you use the utility of an opponent model in which some variables
+	 * of the utilityspace may not be set.
+	 * 
+	 * @param utilityspaceA utilityspace of agent A.
+	 * @param utilityspaceB utilityspace of agent B.
+	 * @param excludeBids if the real bids should be saved or not.
+	 * @param skipCheckSpaceB skip security checks for the utilityspace of agent B.
+	 * @throws Exception if something goes wrong when calculating the utility of a bid.
+	 */
+	public BidSpace(UtilitySpace utilityspaceA, UtilitySpace utilityspaceB, boolean excludeBids, boolean skipCheckSpaceB) throws Exception
 	{
-		if (spaceA==null || spaceB==null)
+		if (utilityspaceA == null || utilityspaceB == null)
 			throw new NullPointerException("util space is null");
-		UtilitySpace[] spaces = { spaceA, spaceB };
+		UtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		utilspaces = spaces.clone();
 		domain = utilspaces[0].getDomain();
-		spaceA.checkReadyForNegotiation(domain);
+		utilityspaceA.checkReadyForNegotiation(domain);
 		buildSpace(excludeBids);
 	}
 	
 	/**
+	 * Initializes the utility spaces by checking if they are valid.
+	 * This procedure also clones the spaces such that manipulating them
+	 * is not useful for an agent.
+	 * 
+	 * @param utilityspaces to be initialized and validated.
+	 * @throws Exception if one of the utility spaces is null.
+	 */
+	private void initializeUtilitySpaces(UtilitySpace[] utilityspaces) throws Exception {
+		utilspaces = utilityspaces.clone();
+		for (UtilitySpace utilitySpace : utilityspaces) 
+		{
+			if (utilitySpace==null)
+				throw new NullPointerException("util space is null: " + utilityspaces);
+		}
+		domain = utilspaces[0].getDomain();
+		for (UtilitySpace space : utilityspaces) {
+			space.checkReadyForNegotiation(domain);
+		}
+	}
+	
+	/**
 	 * Create the space with all bid points from all the {@link UtilitySpace}s.
+	 * @param excludeBids if true do not store the real bids.
 	 * @throws exception if utility can not be computed for some point.
-	 * This should not happen as it seems we checked beforehand that all is set OK.
 	 */
 	private void buildSpace(boolean excludeBids) throws Exception
 	{
@@ -79,7 +123,7 @@ public class BidSpace {
 		
 		// if low memory mode, do not store the actual. At the time of writing this
 		// has no side-effects
-		while(lBidIter.hasNext()) {
+		while (lBidIter.hasNext()) {
 			Bid bid = lBidIter.next();
 			Double[] utils = new Double[utilspaces.length];
 			for(int i =0; i<utilspaces.length;i++) {
@@ -94,11 +138,14 @@ public class BidSpace {
 	}
 	
 	/**
+	 * Returns the Pareto fronier. If the Pareto frontier is unknown, then
+	 * it is computed using an efficient algorithm. If the utilityspace
+	 * contains more than 500000 bids, then a suboptimal algorithm is used.
+	 * 
 	 * @return The Pareto frontier. The order is  ascending utilityA.
-	 * @throws Exception
+	 * @throws Exception if the utility of a bid can not be calculated.
 	 */
-	public List<BidPoint> getParetoFrontier() throws Exception
-	{
+	public List<BidPoint> getParetoFrontier() throws Exception {
 		boolean isBidSpaceAvailable = !bidPoints.isEmpty();
 		if (paretoFrontier==null)
 		{		
@@ -120,7 +167,7 @@ public class BidSpace {
 					utils[i] = utilspaces[i].getUtility(bid);
 				tmpBidPoints.add(new BidPoint(bid,utils));
 				count++;
-				if(count>500000) 
+				if(count > 500000) 
 				{
 					subPareto.addAll(computeParetoFrontier(tmpBidPoints).getFrontier());
 					tmpBidPoints = new ArrayList<BidPoint >();
@@ -141,13 +188,11 @@ public class BidSpace {
 	
 	/**
 	 * Private because it should be called only with the bids as built by BuildSpace.
+ 	 * @param points the ArrayList<BidPoint> as computed by BuildSpace and stored in bidpoints.
 	 * @return the sorted pareto frontier of the bidpoints.
-	 * @author Tim Baarslag
-	 * @param points the ArrayList<BidPoint> as computed by BuildSpace and stored in bidpoints.
 	 * @throws Exception if problem occurs
 	 */
-	private ParetoFrontier computeParetoFrontier(List<BidPoint> points) throws Exception
-	{
+	private ParetoFrontier computeParetoFrontier(List<BidPoint> points) throws Exception {
 		ParetoFrontier frontier = new ParetoFrontier();
 		for (BidPoint p: points)
 			frontier.mergeIntoFrontier(p);
@@ -156,8 +201,13 @@ public class BidSpace {
 		return frontier;
 	}
 	
-	public List<Bid> getParetoFrontierBids() throws Exception
-	{
+	/**
+	 * Method which returns a list of the Pareto efficient bids.
+	 * 
+	 * @return Pareto-efficient bids.
+	 * @throws Exception if the utility of a bid cannot be calculated
+	 */
+	public List<Bid> getParetoFrontierBids() throws Exception {
 		ArrayList<Bid> bids=new ArrayList<Bid> ();
 		List<BidPoint> points = getParetoFrontier();
 		for (BidPoint p:points) bids.add(p.getBid());
@@ -167,14 +217,13 @@ public class BidSpace {
 	
 	/**
 	 * Calculates Kalai-Smorodinsky optimal outcome. Assumes that Pareto frontier is already built.
-	 * Kalai-Smorodinsky is the point on paretofrontier 
-	 * that has least difference in utilities for A and B
+	 * Kalai-Smorodinsky is the point on paretofrontier that has least difference in utilities for A and B.
+	 * 
 	 * @author Dmytro Tykhonov, cleanup by W.Pasman
 	 * @returns the kalaiSmorodinsky BidPoint.
 	 * @throws AnalysisException
 	 */
-	public BidPoint getKalaiSmorodinsky() throws Exception 
-	{	
+	public BidPoint getKalaiSmorodinsky() throws Exception {
 		if (kalaiSmorodinsky!=null) return kalaiSmorodinsky;
 		if(getParetoFrontier().size()<1) 
 			throw new AnalysisException("kalaiSmorodinsky product: Pareto frontier is unavailable.");
@@ -195,13 +244,13 @@ public class BidSpace {
 	
 	/**
 	 * Calculates the undiscounted Nash optimal outcome. Assumes that Pareto frontier is already built.
-	 * Nash is the point on paretofrontier that has max product of utilities for A and B
+	 * Nash is the point on paretofrontier that has max product of utilities for A and B.
+	 * 
 	 * @author Dmytro Tykhonov, cleanup by W.Pasman
 	 * @returns the Nash BidPoint.
 	 * @throws AnalysisException
 	 */
-	public BidPoint getNash() throws Exception 
-	{
+	public BidPoint getNash() throws Exception {
 		if (nash != null)
 			return nash;
 		if (getParetoFrontier().size() < 1)
@@ -227,15 +276,17 @@ public class BidSpace {
 		return nash;
 	}
 	
-/**
-	 * Calculate own coordinate 
-	 * @param opponentUtility
-	 * @return the utility of us on the pareto curve
-	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier contains utilityB=NAN.
-	 * Still unclear why utilB evaluates to NAN though...
+	/**
+	 * Returns the nearest Pareto-optimal bid given the opponent's utility (agent B).
+	 * 
+	 * @param opponentUtility the utility for the opponent.
+	 * @return the utility of us on the pareto curve.
+	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier
+	 * contains utilityB = NaN, which may occur if the opponent model creating the utility space
+	 * is corrupt.
 	 */
-	public double ourUtilityOnPareto(double opponentUtility) throws Exception
-	{
+	public double ourUtilityOnPareto(double opponentUtility) throws Exception {
+		
 		if (opponentUtility<0. || opponentUtility>1.)
 			throw new Exception("opponentUtil "+opponentUtility+" is out of [0,1].");
 		List<BidPoint> pareto=getParetoFrontier();
@@ -258,19 +309,18 @@ public class BidSpace {
 		return lininterpol;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		return bidPoints.toString();
 	}
 		
 	/**
-	 * find the bid with the minimal distance weightA*DeltaUtilA^2+weightB*DeltaUtilB^2
-	 * where DeltaUtilA is the difference between given utilA and the actual util of bid
+	 * Finds the bid with the minimal distance weightA*DeltaUtilA^2+weightB*DeltaUtilB^2
+	 * where DeltaUtilA is the difference between given utilA and the actual utility of the bid.
 	 * @author W.Pasman
-	 * @param utilA the agent-A utility of the point to be found
-	 * @param utilB the agent-B utility of the point to be found
-	 * @param weightA weight in A direction
-	 * @param weightB weight in B direction
+	 * @param utilA the agent-A utility of the point to be found.
+	 * @param utilB the agent-B utility of the point to be found.
+	 * @param weightA weight in A direction.
+	 * @param weightB weight in B direction.
 	 * @param excludeList Bids to be excluded from the search.
 	 * @return best point, or null if none remaining.
 	 */
@@ -287,7 +337,7 @@ public class BidSpace {
 			boolean contains=false;
 			for (Bid b:excludeList) { if (b.equals(p.getBid())) { contains=true; break; } }
 			if (contains) continue;
-			r=weightA*sq(p.getUtility(0)-utilA)+weightB*sq(p.getUtility(1)-utilB);
+			r=weightA*Math.pow((p.getUtility(0)-utilA), 2)+weightB* Math.pow((p.getUtility(1)-utilB), 2);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
 		System.out.println("point found="+bestPoint.getBid());
@@ -295,6 +345,14 @@ public class BidSpace {
 		return bestPoint;
 	}
 	
+	/**
+	 * Method which given a bid point determines the distance to the
+	 * nearest Pareto-optimal bid. If the distance is small, than the
+	 * bid is near Pareto-optimal.
+	 * 
+	 * @param bid for which the smallest distance to the Pareto frontier is found.
+	 * @return distance to the nearest Pareto-optimal bid.
+	 */
 	public double distanceToNearestParetoBid(BidPoint bid) {
 		if (paretoFrontier == null) {
 			try {
@@ -312,6 +370,4 @@ public class BidSpace {
 		}
 		return distance;
 	}
-	
-	public double sq(double x) { return x*x; }
 }
