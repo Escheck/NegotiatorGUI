@@ -1,28 +1,30 @@
 package negotiator.actions;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import negotiator.AgentID;
 
 /**
+ * Class which symbolizes a high level action.
+ * 
  * @author Tim Baarslag and Dmytro Tykhonov
  */
-@XmlRootElement
-public class Action {
+public abstract class Action {
 
-	@XmlElement
+	/** ID of the agent which performed the action. */
     protected AgentID agentID;
     
 	public Action() {}
 	
     /** Creates a new instance of Action 
      * @param agentID is the agent performing the action. 
-     * Note that by referring to the agent class object we effectively prevent the agent
-     * from garbage collection. */
+	 */
     public Action(AgentID agentID) {
         this.agentID = agentID;
     }
 	
+    /**
+     * Returns the agent which performed the action.
+     * @return action performing the action.
+     */
     public AgentID getAgent() {
         return agentID;
     }

@@ -1,25 +1,25 @@
 package negotiator.actions;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import negotiator.Agent;
 import negotiator.AgentID;
 import negotiator.Bid;
 
 /**
+ * Class which symbolizes an offer of an agent for the opponent.
+ * 
  * @author Tim Baarslag and Dmytro Tykhonov
  */
-@XmlRootElement
 public class Offer extends Action {
 
-    @XmlElement
-    protected Bid bid;
+	/** Bid to be offered to the opponent. */
+    private Bid bid;
     
-    public Offer() { }
-	
-    /** Creates a new instance of SendBid */
+    /**
+     * Creates an action symbolizing an offer for the opponent.
+     * @param agent which created the offer.
+     * @param bid for the opponent.
+     */
     public Offer(AgentID agent, Bid bid) {
-        super(agent);
         this.bid = bid;
     }
     
@@ -48,14 +48,26 @@ public class Offer extends Action {
 		return true;
 	}
 	
-	/** Creates a new instance of SendBid */
+	/**
+	 * Creates an action symbolizing an offer to the opponent.
+	 * 
+	 * @param agent which created this offer.
+	 * @param bid
+	 */
     public Offer(Agent agent, Bid bid) {
         this(agent.getAgentID(), bid);
     }
     
+    /**
+     * Returns the bid offered by the agent which
+     * created this offer.
+     * 
+     * @return
+     */
     public Bid getBid() {
         return bid;
     }
+    
     public String toString() {
         return "(Offer: " + (bid == null ? "null" : bid.toString()) + ")";
     }

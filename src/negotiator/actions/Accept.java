@@ -1,19 +1,26 @@
 package negotiator.actions;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import negotiator.AgentID;
 
 /**
+ * This class is used to create an action which symbolizes
+ * that an agent accepts an offer.
+ *  
  * @author Dmytro Tykhonov
  */
-@XmlRootElement
 public class Accept extends Action {
 
+	/**
+	 * Action to accept an opponent's bid.
+	 */
     public Accept() { }
-
-    /** Creates a new instance of AcceptBid */
+    
+    /**
+     * Action to accept an opponent's bid.
+     * @param agentID of the opponent.
+     */
     public Accept(AgentID agentID) {
-        super(agentID);
+    	this.agentID = agentID;
     }
     
     public String toString() {
