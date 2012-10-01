@@ -4,33 +4,32 @@ import java.util.List;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
+/**
+ * This class is used to interpret commandline parameters specified when starting Genius.
+ */
 public class CommandLineOptions
 {
-	public boolean silent = false;
-	/** Automatically open new tournament tab on start up */
+	/** Option "s", automatically open new tournament tab on start up. */
 	public boolean newTournament = false;
-	/** Automatically start new tournament on start up */
+	/** Option "t", automatically start tournament on start up. */
 	public boolean startTournament = false;
-	/** Automatically quit after the tournament */
+	/** Option "q", automatically quit after the tournament finished. */
 	public boolean quitWhenTournamentDone = false;
+	/** Option "a", specify a list of agents for the commandline runner. */
 	public List<String> agents;
+	/** Option "p", specify a list of profiles for the commandline runner. */
 	public List<String> profiles;
+	/** Option "r", specify a protocol for the commandline runner. */
 	public String protocol = "negotiator.protocol.alternatingoffers.AlternatingOffersProtocol";
+	/** Option "d", specify a domain. */
 	public String domain;
+	/** Option "f", specify the output file for the commandline runner. */
 	public String outputFile;
-	
-	public static void main(String[] args)
-	{
-		CommandLineOptions commandLineOptions = new CommandLineOptions();
-        commandLineOptions.parse(new String [] {"-s", "foo", "-q"} );
-        System.out.println(commandLineOptions.silent);
-        System.out.println((Double)0.2 + (Double)0.1 + (Double)0.4);
-    }
 
+	@SuppressWarnings("unchecked")
 	public void parse(String [] args)
 	{
 		OptionParser parser = new OptionParser( "stq:q::a:p:d:f:r:" );
-
         OptionSet options = parser.parse(args);
 
         if (options.has("s"))
@@ -49,16 +48,5 @@ public class CommandLineOptions
         	domain = (String) options.valueOf("d");
         if (options.has("f"))
         	outputFile = (String) options.valueOf("f");
-                
-//        System.out.println( options.has( "c" ) );
-//        System.out.println( options.hasArgument( "c" ) );
-//        System.out.println( options.valueOf( "c" ) );
-//        System.out.println( options.valuesOf( "c" ) );
-//
-//        System.out.println( options.has( "q" ) );
-//        System.out.println( options.hasArgument( "q" ) );
-//        System.out.println( options.valueOf( "q" ) );
-//        System.out.println( options.valuesOf( "q" ) );
 	}
-
 }

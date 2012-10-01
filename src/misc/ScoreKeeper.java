@@ -17,11 +17,12 @@ import java.io.Serializable;
  *
  * @param <A> key of the hashmap, for example a Value-object
  */
-public class ScoreKeeper<A> implements Comparator<A>, Serializable
-{
+public class ScoreKeeper<A> implements Comparator<A>, Serializable {
+	
+	private static final long serialVersionUID = -8974661138458056269L;
 	/** Map of objects and their score **/
 	protected Map<A, Integer> m;
-	/** The max score in the map **/
+	/** The highest score in the map **/
 	protected int max;
 	/** The sum of all scores in the map **/
 	protected int total;
@@ -29,18 +30,17 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	/**
 	 * Creates a ScoreKeeper object by initializing the hashmap.
 	 */
-	public ScoreKeeper()
-	{
+	public ScoreKeeper() {
 		m = new HashMap<A, Integer>();
 		total = 0;
 		max = 0;
 	}
 	
 	/**
-	 * Clones an existing ScoreKeeper object.
+	 * Clones the given scorekeeper-object.
+	 * @param sk object keeper which is cloned.
 	 */
-	public ScoreKeeper(ScoreKeeper<A> sk)
-	{
+	public ScoreKeeper(ScoreKeeper<A> sk) {
 		this.m = sk.m;
 		this.max = sk.max;
 		this.total = sk.total;
@@ -48,10 +48,9 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	
 	/**
 	 * Adds one to the score of the given object.
-	 * @param a object to which one must be added to its score
+	 * @param a object to which one must be added to its score.
 	 */
-	public void score(A a)
-	{
+	public void score(A a) {
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
@@ -65,11 +64,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 
 	/**
 	 * Method used to add a given score to a given object.
-	 * @param a object to which the given score must be added
-	 * @param score to be added to the object
+	 * @param a object to which the given score must be added.
+	 * @param score to be added to the object.
 	 */
-	public void score(A a, int score)
-	{
+	public void score(A a, int score) {
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
@@ -82,11 +80,11 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 	
 	/**
-	 * @param a object from which the score must be returned
-	 * @return score of the object
+	 * Returns the score of the given object.
+	 * @param a object from which the score must be returned.
+	 * @return score of the object.
 	 */
-	public int getScore(A a)
-	{
+	public int getScore(A a) {
 		Integer freq = m.get(a);
 		if (freq == null)
 			freq = 0;
@@ -94,8 +92,12 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 	
 	/**
-	 * @param a object from which the score must be returned
-	 * @return score of the object divided by the heighest score
+	 * Returns the normalized score of the given object. The normalized
+	 * score is defined as the score divided by the highest score in the
+	 * map.
+	 * 
+	 * @param the object from which the score is requested.
+	 * @return score of the object divided by the highest score.
 	 */
 	public double getNormalizedScore(A a) {
 		Integer score = m.get(a);
@@ -106,6 +108,9 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 	
 	/**
+	 * Returns the relative score of a given object.
+	 * The relative score is the score of the object divided by
+	 * the sum of all scores in the map.
 	 * @param a object from which the score must be returned
 	 * @return score of the object divided by the sum of all scores
 	 */
@@ -145,7 +150,8 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 
 	/**
-	 * @return score of the object with the heighest score.
+	 * Returns the highest score in the map.
+	 * @return score of the object with the highest score.
 	 */
 	public int getMaxValue() {
 		return max;
@@ -166,6 +172,7 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 	
 	/**
+	 * Returns the sum of all scores.
 	 * @return sum of all scores
 	 */
 	public int getTotal()
@@ -177,27 +184,7 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 	}
 	
 	/**
-	 * @return Random A, gewogen naar score
-	 * TODO: kan sneller
-	 */
-	public A getRandom()
-	{
-		double r = Math.random();
-		double t = getTotal();
-		double gezochteScore = r * t;	// bv gezochteScore [0, 1) matcht met score 1
-		int score = 0;
-		for (A a : m.keySet())
-		{
-			score += m.get(a);
-			if (score > gezochteScore)
-				return a;
-		}
-		// KN
-		return null;
-	}
-	
-	/**
-	 * Pas op, neem weights mee!
+	 * Returns the objects from which the score is registered.
 	 * @return objects in the scoring map
 	 */
 	public Set<A> getElements()
@@ -205,6 +192,10 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable
 		return m.keySet();
 	}
 	
+	/**
+	 * Returns a Mathematica list plot of the map.
+	 * @return Mathematica list plot of the map.
+	 */
 	public String toMathematicaListPlot()
 	{
 		StringBuilder s = new StringBuilder("data={");

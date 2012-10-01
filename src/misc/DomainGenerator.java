@@ -39,15 +39,18 @@ import negotiator.xml.SimpleElement;
  */
 public class DomainGenerator {
 	
-	// Definitions of ranges for the opposition used in my experiments
-	private static Range LOW_OPP = new Range(0.05, 0.20);
-	private static Range MED_OPP = new Range(0.20, 0.35);
-	private static Range HIGH_OPP = new Range(0.35, 0.55);
-	// Definitions of ranges for the bid distribution used in my experiments
-	private static Range LOW_DIST = new Range(0.05, 0.20);
-	private static Range MED_DIST = new Range(0.20, 0.35);
-	private static Range HIGH_DIST = new Range(0.35, 0.50);
+	/** Range in which the opposition of the generated scenario may lie. */
+	private static Range OPPOSITION = new Range(0.05, 0.20);
+	/** Range in which the bid distribution of the generated scenario may lie. */
+	private static Range BID_DISTRIBUTION = new Range(0.35, 0.50);
 	
+	/**
+	 * This method generates a utility space for a given domain.
+	 * Please follow the numbered steps inside this method.
+	 * 
+	 * @param args is ignored.
+	 * @throws Exception when something goes wrong when storing the new domain.
+	 */
 	public static void main(String[] args) throws Exception {
 		// 1. Specify the path to the directory in which the domain files are located
 		String dir = "c:/Users/Mark/workspace/Genius/etc/AccuracyTestSet/Thompson/";
@@ -68,23 +71,23 @@ public class DomainGenerator {
 		// new preference profiles instead of solely the B side. The before last parameter is used to bias the
 		// search by using a strictly incorrect method to normalize the weights. For domains with a high opposition
 		// it was noted that setting this value to true may lead to earlier results.
-		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, MED_OPP, MED_DIST, false, false);
+		findDomain(domain, utilitySpaceA, utilitySpaceB, logToDirA, logToDirB, OPPOSITION, BID_DISTRIBUTION, false, false);
 	}
 
 	/**
 	 * Method which keeps generating new domains until a domain satisfying the bounds
 	 * on the opposition and bid distribution is found.
 	 * 
-	 * @param domain for which the profile should be generated
-	 * @param spaceA preference profile of side A
-	 * @param spaceB preference profile of side B
-	 * @param logToDirA directory to log the new side A profile
-	 * @param logToDirB directory to log the new side B profile
-	 * @param opp range for opposition
-	 * @param dist range for bid distribution
-	 * @param biasForHighOpp bias search method to find domains with a high opposition faster
-	 * @param varyBoth if false then solely a new preference profile for the B side is created
-	 * @throws Exception when something goes wrong when storing the new domain
+	 * @param domain for which the profile should be generated.
+	 * @param spaceA preference profile of side A.
+	 * @param spaceB preference profile of side B.
+	 * @param logToDirA directory to log the new side A profile.
+	 * @param logToDirB directory to log the new side B profile.
+	 * @param opp range for opposition.
+	 * @param dist range for bid distribution.
+	 * @param biasForHighOpp bias search method to find domains with a high opposition faster.
+	 * @param varyBoth if false then solely a new preference profile for the B side is created.
+	 * @throws Exception when something goes wrong when storing the new domain.
 	 */
 	public static void findDomain(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB, String logToDirA, String logToDirB, Range opp, Range dist, boolean biasForHighOpp, boolean varyBoth) throws Exception {
 		System.out.println("Starting random domain generator");
@@ -124,8 +127,8 @@ public class DomainGenerator {
 	 * Method which randomizes a given utility space. If the bias parameter is true,
 	 * then the result may be more likely to be a profile with a high opposition.
 	 * 
-	 * @param utilitySpace profile to be randomized
-	 * @param bias towards domains with a high opposition
+	 * @param utilitySpace profile to be randomized.
+	 * @param bias towards domains with a high opposition.
 	 */
 	private static void randomizeUtilSpace(UtilitySpace utilitySpace, boolean bias) {
 		
@@ -154,8 +157,8 @@ public class DomainGenerator {
 	/**
 	 * Stores an XML-element to a file.
 	 * 
-	 * @param simpleElement to be stored
-	 * @param logPath path to log the XML file
+	 * @param simpleElement to be stored.
+	 * @param logPath path to log the XML file.
 	 */
 	private static void writeXMLtoFile(SimpleElement simpleElement, String logPath) {
 		try {
@@ -176,12 +179,11 @@ public class DomainGenerator {
 	 * Calculate all metrics. This method should be extended if you want
 	 * to add your own measures. 
 	 * 
-	 * @param element
-	 * @param utilitySpaceA
-	 * @param utilitySpaceB
-	 * @return the opposition and bid distribution of a domain
+	 * @param utilitySpaceA utility space of side A.
+	 * @param utilitySpaceB utility space of side B.
+	 * @return the opposition (position 0) and bid distribution (position 1) of a scenario.
 	 */
-	public static double[] calculateDistances(UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+	private static double[] calculateDistances(UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
 		double bidDistribution = calculateBidDistribution(utilitySpaceA, utilitySpaceB);
 		
@@ -195,9 +197,9 @@ public class DomainGenerator {
 	 * Calculate the opposition of the domain, the distance to 1.0.
 	 * This is a measure of competitiveness.
 	 * 
-	 * @param utilitySpaceA
-	 * @param utilitySpaceB
-	 * @return
+	 * @param utilitySpaceA utility space of side A.
+	 * @param utilitySpaceB utility space of side B.
+	 * @return opposition of the given scenario.
 	 */
 	private static double calculateOpposition(
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
@@ -212,11 +214,11 @@ public class DomainGenerator {
 	}
 
 	/**
-	 * Calculate the bid distribution of the scenario
+	 * Calculate the bid distribution of the scenario.
 	 * 
-	 * @param utilitySpaceA
-	 * @param utilitySpaceB
-	 * @return
+	 * @param utilitySpaceA utility space of side A.
+	 * @param utilitySpaceB utility space of side B.
+	 * @return bid distribution of the given scenario.
 	 */
 	private static double calculateBidDistribution(
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {

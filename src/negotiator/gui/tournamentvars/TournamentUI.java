@@ -88,7 +88,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
         
         String name = "previousTournament";
         if (distributed) { name += "Distributed"; }
-        previousTournament = new Serializer<Tournament>(name, "Previous tournament setup");
+        previousTournament = new Serializer<Tournament>(name);
         
         final Tournament readFromDisk = previousTournament.readFromDisk();
 		if (readFromDisk == null)

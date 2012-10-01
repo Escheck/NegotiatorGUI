@@ -6,15 +6,15 @@ import java.util.Set;
 
 /**
  * Class which generates the Cartesian product of a list of sets.
- * An iterative approach would have been faster, but also less clear.
+ * Can be optimized by using an iterative approach.
  * 
  * @author Mark Hendrikx
  */
 public class SetTools {
 
 	/**
-	 * Given a list of sets, this method returns a set of sets symbolizing
-	 * the Cartesian product of the given sets.
+	 * Given a list of sets, this method returns the Cartesian product
+	 * of the given sets.
 	 * 
 	 * @param sets
 	 * @return set of sets symbolizing the Cartesian product
