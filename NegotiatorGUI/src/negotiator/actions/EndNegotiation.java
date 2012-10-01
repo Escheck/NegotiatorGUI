@@ -1,19 +1,25 @@
 package negotiator.actions;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import negotiator.AgentID;
 
 /**
+ * Class which symbolizes the action to leave a negotiation.
+ * 
  * @author Dmytro Tykhonov
  */
-@XmlRootElement
 public class EndNegotiation extends Action {
     
+    /**
+     * Action to end the negotiation.
+     */
 	public EndNegotiation() { }
 	
-    /** Creates a new instance of BreakNegotiation */
-    public EndNegotiation(AgentID agent) {
-        super(agent);
+    /**
+     * Action to end the negotiation.
+     * @param agentID of the opponent
+     */
+    public EndNegotiation(AgentID agentID) {
+    	this.agentID = agentID;
     }
 	
     public String toString() {
