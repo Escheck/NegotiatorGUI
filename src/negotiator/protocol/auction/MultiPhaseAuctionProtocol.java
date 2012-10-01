@@ -21,6 +21,7 @@ import negotiator.tournament.VariablesAndValues.TournamentValue;
 
 public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 
+	private static final long serialVersionUID = 7674974180914595832L;
 	public MultiPhaseAuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
@@ -88,23 +89,16 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			//determine winner
 			double lMaxUtil= Double.NEGATIVE_INFINITY;
 			double lSecondPrice = Double.NEGATIVE_INFINITY;
-			Bid lSecondBestBid = null;
-			AuctionBilateralAtomicNegoSession winnerSession = null;
-			//				NegotiationSession2 secondBestSession = null;
 			int winnerSessionIndex=0, i=0;
 			Bid lBestBid=null;
 			for (AuctionBilateralAtomicNegoSession s: sessions) {
 				if(s.getNegotiationOutcome().agentAutility>lMaxUtil) {
 					lSecondPrice = lMaxUtil;
-					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
 					lBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
 					lMaxUtil = s.getNegotiationOutcome().agentAutility;
-					//secondBestSession = winnerSession;
-					winnerSession = s;
 					winnerSessionIndex = i;
 				} else if(s.getNegotiationOutcome().agentAutility>lSecondPrice) { 
 					lSecondPrice = s.getNegotiationOutcome().agentAutility;
-					lSecondBestBid = s.getNegotiationOutcome().AgentABids.get(s.getNegotiationOutcome().AgentABids.size()-1).getBid();
 				}
 				i++;
 				numberOfOffers += s.getNegotiationOutcome().AgentABids.size() +s.getNegotiationOutcome().AgentBBids.size();

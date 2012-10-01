@@ -17,7 +17,9 @@ import negotiator.NegotiationOutcome;
  * @author  dmytro
  */
 public class SessionFrame extends javax.swing.JFrame {
-    SessionOutcomesTableModel model;
+
+	private static final long serialVersionUID = 6256283365107340837L;
+	SessionOutcomesTableModel model;
     /** Creates new form SessionFrame */
     public SessionFrame(String agentAName, String agentBName) {
         super();
@@ -67,14 +69,18 @@ public class SessionFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
    class SessionOutcomesTableModel extends AbstractTableModel {
-        private Vector sessionOutcomes;
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6609705810860923115L;
+		private Vector<NegotiationOutcome> sessionOutcomes;
 //        private NegotiationTemplate nt;
         private String agentAName;
         private String agentBName;
         public SessionOutcomesTableModel (String agentAName, String agentBName)  {
             this.agentAName = agentAName;
             this.agentBName = agentBName;
-            sessionOutcomes = new Vector();
+            sessionOutcomes = new Vector<NegotiationOutcome>();
         }
         public int getColumnCount() {return 4;}
 

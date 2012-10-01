@@ -1,10 +1,8 @@
 package negotiator.boaframework.opponentmodel.nash;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
@@ -246,7 +244,6 @@ public class IssueEvaluationDiscrete extends AIssueEvaluation
 	{
 		String result = super.toString();
 		String nl = "\n";
-		String pre = "   ";
 		
 		result += "===== ValueFrequencyMap =====" + nl;
 		result += "===== NormalizedValueWeightMap =====" + nl;

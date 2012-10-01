@@ -26,6 +26,8 @@ import org.jdesktop.application.Action;
  * @author  dmytro
  */
 public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUIComponent {
+
+	private static final long serialVersionUID = 2692787665652874858L;
 	private static final boolean fShowProgressUI = true; 
     /** Creates new form NegoSessionUI2 */
     public NegoSessionUI2() { 

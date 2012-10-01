@@ -421,26 +421,6 @@ public class OpponentBidHistory {
         return ((double) bidCounter.size() / utilitySpace.getDomain().getNumberOfPossibleBids());
     }
 
-    private double StandardDeviationMean(double[] data) {
-        // Calculate the mean 
-        double mean = 0;
-        final int n = data.length;
-        if (n < 2) {
-            return Double.NaN;
-        }
-        for (int i = 0; i < n; i++) {
-            mean += data[i];
-        }
-        mean /= n;
-        // calculate the sum of squares 
-        double sum = 0;
-        for (int i = 0; i < n; i++) {
-            final double v = data[i] - mean;
-            sum += v * v;
-        }
-        return Math.sqrt(sum / (n - 1));
-    }
-
     public int getSize() {
         int numOfBids = bidHistory.size();
         HashMap<Bid, Integer> bidCounter = new HashMap<Bid, Integer>();

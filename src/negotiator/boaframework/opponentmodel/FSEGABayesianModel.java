@@ -37,12 +37,13 @@ public class FSEGABayesianModel extends OpponentModel {
 	}
 	
 	/**
-	 * Just an auxiliar funtion to calculate the index where issues start on a bid
+	 * Just an auxiliary function to calculate the index where issues start on a bid
 	 * because we found out that it depends on the domain.
 	 * @return true when the received index is the proper index
 	 */
 	private boolean testIndexOfFirstIssue(Bid bid, int i){
 		try{
+			@SuppressWarnings("unused")
 			ValueDiscrete valueOfIssue = (ValueDiscrete) bid.getValue(i);
 		}
 		catch (Exception e) {

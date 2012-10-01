@@ -43,6 +43,7 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
  */
 public class Tournament implements Serializable
 {
+	private static final long serialVersionUID = -7088222038853719662L;
 	/** TournamentNumber is used to give a unique reference to this tournament to the user.
 	 * So the first tournament the user creates is tournament 1, the second 2, etc.
 	 * The number is used in the tabs, eg "tour1" as tab name.

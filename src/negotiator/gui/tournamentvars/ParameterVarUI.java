@@ -15,6 +15,8 @@ import javax.swing.JComboBox;
  */
 
 public class ParameterVarUI extends DefaultOKCancelDialog {
+
+	private static final long serialVersionUID = -6545959412141722703L;
 	Panel panel;
 	JComboBox combobox;
 	

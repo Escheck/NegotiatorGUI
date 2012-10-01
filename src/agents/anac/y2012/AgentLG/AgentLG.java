@@ -1,7 +1,7 @@
 package agents.anac.y2012.AgentLG;
+
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;

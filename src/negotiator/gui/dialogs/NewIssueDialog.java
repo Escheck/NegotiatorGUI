@@ -529,8 +529,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		else if (selectedType == INTEGER) {
 			int min;
-			int linear;
-			int parameter;
 			int max;
 			
 			//Evaluator evInt = null;
@@ -563,7 +561,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		else if (selectedType == REAL) {
 			double min;
-			double other;
 			double max;
 			//Evaluator evReal = null;
 			try {

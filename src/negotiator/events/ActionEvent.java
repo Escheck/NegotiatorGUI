@@ -18,6 +18,7 @@ import negotiator.gui.progress.TournamentProgressUI2;
  */
 public class ActionEvent extends NegotiationEvent
 {
+	private static final long serialVersionUID = -7118939924897219697L;
 	Agent actor;
 	Action act;   				// Bid, Accept, etc.
 	int round;					// integer 0,1,2,...: round in the overall bidding.

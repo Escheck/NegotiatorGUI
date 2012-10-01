@@ -3,10 +3,8 @@ package negotiator.gui.tree.actions;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
-
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.tree.*;
-import negotiator.gui.dialogs.*;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.xml.SimpleElement;
 

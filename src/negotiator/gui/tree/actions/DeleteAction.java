@@ -9,13 +9,12 @@ import negotiator.issue.Objective;
 import jtreetable.JTreeTable;
 
 /**
-*
 * @author Richard Noorlandt
-* 
 */
 
 public class DeleteAction extends AbstractAction {
 	
+	private static final long serialVersionUID = -1792879132845717465L;
 	//Attributes
 	JTreeTable treeTable;
 	

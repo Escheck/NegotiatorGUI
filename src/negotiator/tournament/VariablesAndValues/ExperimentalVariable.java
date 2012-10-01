@@ -6,6 +6,7 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class ExperimentalVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = -8560060884848539056L;
 	private String side = null;
 	
 	@Override

@@ -1,8 +1,6 @@
 package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -325,11 +323,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		fPreviousBidUtility = fPreviousBidUtility-EXPECTED_CONCESSION_STEP;
 		//findMinMaxUtility();
 	}
-	
-	private void sortHyps() {
-		Collections.sort(fUSHyps, new HypsComparator());
-	}
-	
+
 	private void buildEvaluationHypsRecursive(ArrayList<EvaluatorHypothesis[]> pHyps,
 											  EvaluatorHypothesis[] pEval,
 											  int m) {

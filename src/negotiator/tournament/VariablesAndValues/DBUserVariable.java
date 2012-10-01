@@ -6,6 +6,8 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class DBUserVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = -1851516553702855611L;
+
 	@Override
 	public void addValue(TournamentValue a) throws Exception {
 	}

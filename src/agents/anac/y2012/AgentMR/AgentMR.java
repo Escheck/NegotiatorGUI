@@ -24,7 +24,6 @@ public class AgentMR extends Agent {
 	private static boolean discountFactor;
 	private static double minimumBidUtility;
 	private static double minimumOffereDutil;
-	private static Bid previousPartnerBid = null;
 	private static Bid offereMaxBid = null;
 	private static double offereMaxUtility;
 	private static double firstOffereUtility;
@@ -106,10 +105,6 @@ public class AgentMR extends Agent {
 				}
 
 				if (firstOffer) {
-					//System.out.println("Original partnerBid: " + partnerBid);
-					//System.out.println("Original offeredutil: " + offeredutil);
-
-					previousPartnerBid = partnerBid;
 					offereMaxBid = partnerBid; 
 					offereMaxUtility = offeredutil; 
 					firstOffereUtility = offeredutil; 
@@ -125,11 +120,6 @@ public class AgentMR extends Agent {
 				}
 
 				updateMinimumBidUtility(time);
-				if (partnerBid.equals(previousPartnerBid)) {
-					if (currentBidNumber > 0 && 0.5 > 0.65) {
-						currentBidNumber--;
-					}
-				}
 
 				if (offeredutil > offereMaxUtility) {
 					offereMaxBid = partnerBid;
@@ -236,7 +226,6 @@ public class AgentMR extends Agent {
 						}
 					}
 				}
-				previousPartnerBid = partnerBid;
 			}}
 		} catch (Exception e) {
 			e.printStackTrace();

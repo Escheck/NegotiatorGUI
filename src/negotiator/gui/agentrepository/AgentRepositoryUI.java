@@ -86,6 +86,7 @@ public class AgentRepositoryUI implements NegoGUIComponent
 	}
 	private void initTable() {
 		dataModel = new AbstractTableModel() {
+			private static final long serialVersionUID = -4985008096999143587L;
 			final String columnnames[] = {"Agent Name","Filename (full path)","Version","Description"};
 			
 			public int getColumnCount() { 

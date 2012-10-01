@@ -14,7 +14,7 @@ import negotiator.issue.*;
 
 public class SelectedInfoPanel extends JPanel {
 
-	//Attributes
+	private static final long serialVersionUID = -3883594454850601610L;
 	private TitledBorder mainBorder;
 	private JLabel name;
 	private JLabel nameLabel;

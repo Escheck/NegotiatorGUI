@@ -1,11 +1,13 @@
 package negotiator.tournament.VariablesAndValues;
 
 /**
- * @author Mark
+ * @author Mark Hendrikx
  * Stores the sessionname of the database.
  */
 public class DBPasswordVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = 563404623019296025L;
+
 	@Override
 	public void addValue(TournamentValue a) throws Exception {
 	}

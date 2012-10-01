@@ -1,10 +1,8 @@
 package negotiator.gui.tree.actions;
 
-import java.awt.Frame;
 import java.awt.event.*;
 import javax.swing.*;
 import negotiator.gui.dialogs.*;
-
 import jtreetable.JTreeTable;
 import negotiator.gui.tree.*;
 
@@ -16,7 +14,7 @@ import negotiator.gui.tree.*;
 
 
 public class AddIssueAction extends AbstractAction {
-	
+	private static final long serialVersionUID = -3180369207410940284L;
 	//Attributes
 	private JTreeTable treeTable;
 	private TreeFrame owner;

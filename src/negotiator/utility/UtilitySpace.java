@@ -494,7 +494,7 @@ public class UtilitySpace {
         //We get an Objective or issue from the SimpleElement structure,
         //get it's number of children:
 		int nrOfWeights = 0;
-		String what = currentRoot.getTagName();
+		// String what = currentRoot.getTagName();
 /*		if(!what.equals("Objective") || !what.equals("utility_space")){ //are the only two tags that can have weights
 			loadTreeRecursive((SimpleElement)(currentRoot.getChildElements())[0]); //It's the utility_space tag. Ignore.
 		}
@@ -575,8 +575,6 @@ public class UtilitySpace {
         	}
             else if (type.equals(etype)) {
             		evalType = EVALUATORTYPE.convertToType(type);
-            } else if (etype!=null && type==null) {
-            	evalType = EVALUATORTYPE.convertToType(etype);
             } else if (type!=null && etype==null) { // Used label "type" instead of label "vtype".
             	evalType = EVALUATORTYPE.convertToType(type);
             } else {

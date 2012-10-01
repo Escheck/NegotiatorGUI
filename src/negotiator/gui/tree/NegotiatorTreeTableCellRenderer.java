@@ -1,13 +1,10 @@
 package negotiator.gui.tree;
 
 import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.table.*;
-
 import jtreetable.*;
-import negotiator.gui.tree.*;
 
 /**
 * This class is a modification of the TreeTableCellRenderer which can be found as an inner

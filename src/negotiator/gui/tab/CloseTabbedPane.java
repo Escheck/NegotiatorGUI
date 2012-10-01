@@ -184,7 +184,7 @@ public class CloseTabbedPane extends JTabbedPane implements Serializable  {
 		
 		frame.addWindowFocusListener(windowFocusListener);
 
-		frame.show();
+		frame.setVisible(true);
 		frame.toFront();
 
 	}

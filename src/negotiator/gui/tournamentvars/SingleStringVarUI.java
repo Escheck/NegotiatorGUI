@@ -10,6 +10,7 @@ import negotiator.gui.DefaultOKCancelDialog;
 
 public class SingleStringVarUI extends DefaultOKCancelDialog 
 {
+	private static final long serialVersionUID = -6935071049618754059L;
 	private JTextField textField;
 	
 	public SingleStringVarUI(Frame frame) {

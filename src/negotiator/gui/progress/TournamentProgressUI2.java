@@ -1,6 +1,5 @@
 package negotiator.gui.progress;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 import negotiator.NegotiationEventListener;

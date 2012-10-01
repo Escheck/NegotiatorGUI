@@ -4,6 +4,7 @@ import negotiator.repository.AgentRepItem;
 
 public class AgentValue extends TournamentValue
 {
+	private static final long serialVersionUID = -1479458519909188852L;
 	AgentRepItem value;	
 	
 	public AgentValue(AgentRepItem val) { value=val; }

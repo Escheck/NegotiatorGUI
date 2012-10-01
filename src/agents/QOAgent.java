@@ -1,5 +1,5 @@
 package agents;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import negotiator.*;
@@ -10,6 +10,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
 import agents.qoagent2.*;
+
 public class QOAgent extends Agent {
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private agents.qoagent2.QOAgent m_QOAgent;
@@ -48,7 +49,6 @@ public class QOAgent extends Agent {
 	@Override
 	public void ReceiveMessage(Action opponentAction) {
 		String sMessage= "";
-		Action lAction = null;
 		ACTIONTYPE lActionType;
 		Bid lOppntBid = null;
 		lActionType = getActionType(opponentAction);

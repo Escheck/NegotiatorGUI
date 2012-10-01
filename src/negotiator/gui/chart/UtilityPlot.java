@@ -10,8 +10,9 @@ import org.jfree.data.xy.*;
 import javax.swing.*;
 
 public class UtilityPlot extends JPanel{
+
+	private static final long serialVersionUID = 8533262082855615666L;
 	private DefaultXYDataset dataset = new DefaultXYDataset();
-	private String headline = "";
 	private String xAxisLabel = "round";
 	private String yAxisLabel = "my utility of bid";
 	private ChartPanel panel;

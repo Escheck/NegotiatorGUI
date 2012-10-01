@@ -20,7 +20,9 @@ public class Warning {
 	public final static int DEFAULT_SUPPRESSION_NUMBER=5;
 	
 	
-	protected class MyWarningException extends Exception {}
+	protected class MyWarningException extends Exception {
+
+		private static final long serialVersionUID = 2047098752954743217L;}
 	
 	// Class fields
 	static Hashtable<String,Integer>

@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import negotiator.repository.*;
 
-
 class AddAgentUI extends JDialog
 {
+	private static final long serialVersionUID = 7195524790423946550L;
 	JLabel agtnamelabel=new JLabel("Agent Name");
 	JTextField agentname=new JTextField();
 	

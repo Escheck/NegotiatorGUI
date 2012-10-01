@@ -18,8 +18,6 @@ public class BidChart {
 	private double [][] pareto;
 	private double [][] bidSeriesA_;
 	private double [][] bidSeriesB_;
-	private double [][] bidderAReservationValue;
-	private double [][] bidderBReservationValue;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
@@ -116,12 +114,10 @@ public class BidChart {
 	}
 	
 	public void setBidderAReservationValue(double [][] bidderAReservationValue) {
-		this.bidderAReservationValue = bidderAReservationValue;
 		bidderAReservationValueData.addSeries("Agent A's reservation value", bidderAReservationValue);   
 	}
         
 	public void setBidderBReservationValue(double [][] bidderBReservationValue) {
-		this.bidderBReservationValue = bidderBReservationValue;
 		bidderBReservationValueData.addSeries("Agent B's reservation value", bidderBReservationValue);   
 	}
 	

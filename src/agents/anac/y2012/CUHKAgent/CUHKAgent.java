@@ -1,14 +1,9 @@
-/*
- * CUHKAgent
- * @author Justinhao
- */
 package agents.anac.y2012.CUHKAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.List;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -30,20 +25,14 @@ import negotiator.issue.ValueReal;
  */
 public class CUHKAgent extends Agent {
 
-    private final double domainthreshold = 2000;
     private double totalTime;
     private Action ActionOfOpponent = null;
     private double maximumOfBid;
-    private int maximumOfRound;
     private OwnBidHistory ownBidHistory;
     private OpponentBidHistory opponentBidHistory;
     private double minimumUtilityThreshold;
-    private final int limitValue = 5;//10;
     private double utilitythreshold;
-    private double delta; // searching range
     private double MaximumUtility;
-    private int limit;//the maximimum number of trials for each searching range
-    private double numberOfRounds;
     private double timeLeftBefore;
     private double timeLeftAfter;
     private double maximumTimeOfOpponent;
@@ -53,13 +42,9 @@ public class CUHKAgent extends Agent {
     private double concedeToDiscountingFactor_original;
     private double minConcedeToDiscountingFactor;
     private ArrayList<ArrayList<Bid>> bidsBetweenUtility;
-    private double previousToughnessDegree;
     private boolean concedeToOpponent;
     private boolean toughAgent; //if we propose a bid that was proposed by the opponnet, then it should be accepted. 
-    private boolean guessOpponentType;
-    private int opponentType;
     private double alpha1;//the larger alpha is, the more tough the agent is.
-    private int debug = 0;
     private Bid bid_maximum_utility;//the bid with the maximum utility over the utility space.
     private double reservationValue;
     //@override
@@ -73,10 +58,6 @@ public class CUHKAgent extends Agent {
             this.bid_maximum_utility = utilitySpace.getMaxUtilityBid();
             this.utilitythreshold = utilitySpace.getUtility(bid_maximum_utility); //initial utility threshold
             this.MaximumUtility = this.utilitythreshold;
-            this.delta = 0.01; //searching range
-            this.limit = 10;
-            this.previousToughnessDegree = 0;
-            this.numberOfRounds = 0;
             this.timeLeftAfter = 0;
             this.timeLeftBefore = 0;
             this.totalTime = timeline.getTotalTime();
@@ -87,7 +68,6 @@ public class CUHKAgent extends Agent {
             if (utilitySpace.getDiscountFactor() <= 1D && utilitySpace.getDiscountFactor() > 0D) {
                 this.discountingFactor = utilitySpace.getDiscountFactor();
             }
-            this.guessOpponentType = false;
             this.chooseUtilityThreshold();
             this.calculateBidsBetweenUtility();
             this.chooseConcedeToDiscountingDegree();
@@ -95,7 +75,6 @@ public class CUHKAgent extends Agent {
             this.timeLeftAfter = timeline.getCurrentTime();
             this.concedeToOpponent = false;
             this.toughAgent = false;
-            this.opponentType = 0;
             this.alpha1 = 2;
             this.reservationValue = 0;
             if (utilitySpace.getReservationValue() > 0) {
@@ -269,7 +248,6 @@ public class CUHKAgent extends Agent {
      */
     private Bid BidToOffer() {
         Bid bidReturned = null;
-        int test = 0;
         double decreasingAmount_1 = 0.05;
         double decreasingAmount_2 = 0.25;
         try {
@@ -316,7 +294,7 @@ public class CUHKAgent extends Agent {
                 return bestBidOfferedByOpponent;
             }
             List<Bid> candidateBids = this.getBidsBetweenUtility(minimumOfBid, maximumOfBid);
-            test = candidateBids.size();
+
             bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain());
             if (bidReturned == null) {
                 System.out.println("no bid is searched warning");
