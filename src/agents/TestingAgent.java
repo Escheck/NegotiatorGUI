@@ -82,7 +82,6 @@ public class TestingAgent extends Agent
 			if(actionOfPartner==null) action = chooseRandomBidAction();
 			if(actionOfPartner instanceof Offer)
 			{
-				Bid partnerBid = ((Offer)actionOfPartner).getBid();
 				// get current time
 				double time = timeline.getTime();
 				System.out.println("t = " + Math.round(100 * time) / 100.0

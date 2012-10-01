@@ -1,7 +1,6 @@
 package negotiator.boaframework.agent;
 
 import misc.Serializer;
-
 import negotiator.boaframework.BOAagentInfo;
 import negotiator.boaframework.repository.BOAagentRepository;
 
@@ -55,6 +54,9 @@ public class TheBOAagent extends BOAagent {
 		dagent = null;
 	}
 
+	/**
+	 * Returns the name of the agent.
+	 */
 	@Override
 	public String getName() {
 		return name;

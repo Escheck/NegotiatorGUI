@@ -1,28 +1,13 @@
-/*
- * UIAgent.java
- *
- * Created on November 16, 2006, 10:15 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package agents;
 
 import javax.swing.JOptionPane;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Domain;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  *

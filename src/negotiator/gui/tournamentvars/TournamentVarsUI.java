@@ -14,14 +14,11 @@ import javax.swing.table.*;
 import javax.swing.JButton;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.awt.Dimension;
-
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.repository.*;
-
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.*;
@@ -30,6 +27,7 @@ import negotiator.AgentParam;
 
 public class TournamentVarsUI extends JFrame {
 	
+	private static final long serialVersionUID = 4615897367828395899L;
 	Tournament tournament; // this contains the variables and their possible values.
 	AbstractTableModel dataModel;
 	final JTable table;
@@ -55,6 +53,7 @@ public class TournamentVarsUI extends JFrame {
 
 		
 		dataModel = new AbstractTableModel() {
+			private static final long serialVersionUID = -4864463293407722013L;
 			final String columnnames[] = {"Variable","Values"};
 			
 			public int getColumnCount() { 

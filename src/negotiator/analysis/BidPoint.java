@@ -142,8 +142,8 @@ public class BidPoint {
 	 * Returns the distance between this BidPoint and another BidPoint.
 	 * sqrt((Tx - Ox) ^ 2 + (Ty - Oy) ^ 2 + ...).
 	 * 
-	 * @param other
-	 * @return
+	 * @param other bidpoint to which the distance is calculated.
+	 * @return distance to the given bidpoint.
 	 */
 	public double getDistance(BidPoint other) {
 		double sum = 0;

@@ -3,13 +3,9 @@ package negotiator.protocol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.Serializable;
 import negotiator.Agent;
 import negotiator.Domain;
-import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.NegotiationOutcome;
 import negotiator.actions.Action;
@@ -25,7 +21,6 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
-import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -33,7 +28,8 @@ import negotiator.xml.SimpleElement;
  * Implement start() to define the protocol. 
  */
 public abstract class Protocol implements Runnable, Serializable {
-    protected Thread negoThread = null;
+	private static final long serialVersionUID = -7994042965683386295L;
+	protected Thread negoThread = null;
     protected TournamentRunner tournamentRunner;
     /**
      * stopNegotiation indicates that the session has now ended.

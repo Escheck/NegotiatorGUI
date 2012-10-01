@@ -32,7 +32,7 @@ public class Serializer<A> {
 	 * Create an object to serialize a class. The filename specifies the 
 	 * path in which the serialized class is stored. File not found exceptions
 	 * are not reported.
-	 * @param filename path to file in which the serialized class is stored.
+	 * @param fileName path to file in which the serialized class is stored.
 	 */
 	public Serializer(String fileName) {
 		this(fileName, false);
@@ -41,7 +41,7 @@ public class Serializer<A> {
 	/**
 	 * Create an object to serialize a class. The filename specifies the 
 	 * path in which the serialized class is stored.
-	 * @param filename path to file in which the serialized class is stored.
+	 * @param fileName path to file in which the serialized class is stored.
 	 * @param log specifies if file not found exceptions should be reported.
 	 */
 	public Serializer(String fileName, boolean log) {

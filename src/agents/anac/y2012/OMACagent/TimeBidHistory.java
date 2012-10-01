@@ -1,42 +1,10 @@
 package agents.anac.y2012.OMACagent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Comparator;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.Set;
-
-import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.actions.Accept;
-import negotiator.actions.Action;
-import negotiator.actions.Offer;
 import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
-import negotiator.issue.IssueInteger;
-import negotiator.issue.IssueReal;
-import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
-import negotiator.issue.ValueInteger;
-import negotiator.issue.ValueReal;
-import negotiator.Domain;
-import negotiator.utility.Evaluator;
 import negotiator.utility.UtilitySpace;
-import negotiator.AgentID;
-
-import java.io.BufferedWriter; 
-import java.io.FileWriter; 
-import java.io.File;
-import java.io.Writer; 
-import java.io.FileNotFoundException; 
-import java.io.IOException; 
-import java.io.*;
 
 //ver. 1.06
 public class TimeBidHistory {	

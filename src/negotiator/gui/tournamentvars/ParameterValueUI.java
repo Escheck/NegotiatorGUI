@@ -3,17 +3,9 @@ package negotiator.gui.tournamentvars;
 import java.awt.Panel;
 import java.awt.Frame;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.Vector;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-
-import negotiator.AgentParam;
-import negotiator.repository.*;
 import negotiator.gui.DefaultOKCancelDialog;
-import negotiator.exceptions.Warning;
-import javax.swing.JComboBox;
 /**
  * this shows a dialog where the user can enter the parameter values
  * These should be comma-separated doubles. 

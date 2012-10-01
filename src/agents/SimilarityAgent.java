@@ -1,11 +1,9 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Map.Entry;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -14,10 +12,6 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import agents.similarity.Similarity;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
-
 
 public class SimilarityAgent extends Agent {
 	
@@ -25,7 +19,6 @@ public class SimilarityAgent extends Agent {
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
 	private Similarity fSimilarity;
-	private static final double BREAK_OFF_POINT = 0.5;;
 	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
 	private enum STRATEGY {SMART, SERIAL, RESPONSIVE, RANDOM};
 	private STRATEGY fStrategy = STRATEGY.SMART;
@@ -123,117 +116,7 @@ public class SimilarityAgent extends Agent {
 		}
 		return lBid;
 	}
-/*	private Bid getTradeOff(double pUtility, Bid pOppntBid, double pE) {
-		ArrayList<Object> lE = new ArrayList<Object>();
-		for(int i=0;i<utilitySpace.getNrOfEvaluators();i++) {
-			switch(utilitySpace.getEvaluator(i).getType()) {
-			case DISCRETE:
-				ArrayList<Double> lDeltas = new ArrayList<Double>();
-				IssueDiscrete lIssue = (IssueDiscrete)(utilitySpace.getIssue(i));
-				EvaluatorDiscrete lEval = (EvaluatorDiscrete)(utilitySpace.getEvaluator(i));
-				for(int j=0;j<lIssue.getNumberOfValues();j++) {
-					double lDelta = lEval.getEvaluation(lIssue.getValue(j))-lEval.getEvaluation((ValueDiscrete)(pOppntBid.getValue(i))); 
-					if(lDelta > 0)
-						lDeltas.add(lDelta);
-				}
-				lE.add(lDeltas);
-				break;				
-			case REAL:
-			case PRICE:
-				EvaluatorReal lEvalReal = (EvaluatorReal)(utilitySpace.getEvaluator(i));
-				lE.add(new Double(1-lEvalReal.getEvaluation(((ValueReal)(pOppntBid.getValue(i))).getValue())));
-				break;
-			}//switch
-		}//for
-		//calculate Emax
-		double lEmax = 0;
-		for(int i=0;i<utilitySpace.getNrOfEvaluators();i++) {
-			switch(utilitySpace.getEvaluator(i).getType()) {
-			case DISCRETE:
-				ArrayList<Double> lDeltas = (ArrayList<Double>) (lE.get(i));
-				lEmax += utilitySpace.getWeight(i)*getMaxE(lDeltas);
-				break;				
-			case REAL:
-			case PRICE:
-				lEmax += utilitySpace.getWeight(i)*(Double)(lE.get(i));
-				break;
-			}
-		}
-		//small delta (3)
-		double lSmallDelta = 0.01 * lEmax;
-		if(lEmax>pE+lSmallDelta) {
-			int k =0;
-			double lEn = 0;
-			ArrayList<Double[]> r = new ArrayList<Double[]>();
-			while(lEn<pE) {
-				r.add(new Double[utilitySpace.getNrOfEvaluators()]);
-				k++;
-				for(int i=0;i<utilitySpace.getNrOfEvaluators();i++) {
-					if(lEn<pE) {
-						switch(utilitySpace.getEvaluator(i).getType()) {
-						case DISCRETE:							
-							ArrayList<Double> lDeltas = (ArrayList<Double>) (lE.get(i));
-							ArrayList<Double> lNewDeltas = new ArrayList<Double>(); 
-							for(int n=0;n<lDeltas.size();n++)
-								if(lDeltas.get(n)<=(pE-lEn)/utilitySpace.getWeight(i));
-							int lRandomIndex = (new Double(Math.random()*lDeltas.size())).intValue();
-							r.get(k-1)[i] = lNewDeltas.get(lRandomIndex);							
-							break;				
-						case REAL:
-						case PRICE:
-							Double lEUpperBound = (Double)(lE.get(i));
-							double lRandomValue = Math.random()*lEUpperBound;
-							if(lRandomValue<(pE-lEn)/utilitySpace.getWeight(i))
-								r.get(k-1)[i] = lRandomValue;
-							else
-								r.get(k-1)[i] = (pE-lEn)/utilitySpace.getWeight(i);
-							break;
-						}
-						
-					} else
-						r.get(k-1)[i] = new Double(0);
-					lEn += utilitySpace.getWeight(i)*r.get(k-1)[i];
-					//recalculate Es
-					lE.clear();
-					switch(utilitySpace.getEvaluator(i).getType()) {
-					case DISCRETE:
-						ArrayList<Double> lDeltas = new ArrayList<Double>();
-						IssueDiscrete lIssue = (IssueDiscrete)(utilitySpace.getIssue(i));
-						EvaluatorDiscrete lEval = (EvaluatorDiscrete)(utilitySpace.getEvaluator(i));
-						//calculate total r
-						double r_total = 0;
-						for(int j=i;j<=k;j++) r_total += r.get(j)[i];
-						for(int j=0;j<lIssue.getNumberOfValues();j++) {
-							double lDelta = lEval.getEvaluation(lIssue.getValue(j))-lEval.getEvaluation((ValueDiscrete)(pOppntBid.getValue(i)))-r_total; 
-							if(lDelta > 0)
-								lDeltas.add(lDelta);
-						}
-						lE.add(lDeltas);
-						break;				
-					case REAL:
-					case PRICE:
-						EvaluatorReal lEvalReal = (EvaluatorReal)(utilitySpace.getEvaluator(i));
-						lE.add(new Double(1-lEvalReal.getEvaluation(((ValueReal)(pOppntBid.getValue(i))).getValue())));
-						break;
-					}
-					
-				}//for
-			}//while
-			Value[] lValues = new Value[utilitySpace.getNrOfEvaluators()];
-			for(int i=0;i<utilitySpace.getNrOfEvaluators();i++) {
-				double lEIncrease = 0;
-				for(int j=1;j<=k;j++) lEIncrease +=r.get(j)[i];
-				
-			} //for
-		} //if
-	}*/
-	private double getMaxE(ArrayList<Double> pE) {
-		double lMax = pE.get(0);
-		for(int i=1;i<pE.size();i++)
-			if(pE.get(i)>lMax)
-				lMax = pE.get(i);
-		return lMax;
-	}
+	
 	private Bid getTradeOffExhaustive(double pUtility, Bid pOppntBid) {
 		Bid lBid=null;
 		double lSim = -1;
@@ -329,7 +212,6 @@ public class SimilarityAgent extends Agent {
 
 
 	private Bid getBidRandomWalk(double lowerBound, double upperBoud) throws Exception{
-		Bid lBid = null, lBestBid = null;
 		//find all suitable bids
 		ArrayList<Bid> lBidsRange = new ArrayList<Bid>();
 		BidIterator lIter = new BidIterator(utilitySpace.getDomain());

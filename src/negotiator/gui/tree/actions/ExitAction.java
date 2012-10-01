@@ -14,6 +14,7 @@ import java.awt.event.*;
 
 public class ExitAction extends AbstractAction {
 	
+	private static final long serialVersionUID = -8827588874403334039L;
 	//Attributes
 	private TreeFrame frame;
 	

@@ -12,7 +12,7 @@ import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 /**
  * Simple adapter which can be used to convert a BOA Agent to a normal Agent.
  * This is interesting for example for the ANAC competition in which BOA Agents are
- * currently not (yet) accepted.
+ * not (yet) accepted.
  * 
  * @author Alex Dirkzwager
  */

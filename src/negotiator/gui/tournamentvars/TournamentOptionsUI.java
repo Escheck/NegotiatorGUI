@@ -2,15 +2,12 @@ package negotiator.gui.tournamentvars;
 
 import java.awt.Frame;
 import java.util.HashMap;
-import java.util.regex.Pattern;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;

@@ -219,8 +219,7 @@ public class BidSpace {
 	 * Calculates Kalai-Smorodinsky optimal outcome. Assumes that Pareto frontier is already built.
 	 * Kalai-Smorodinsky is the point on paretofrontier that has least difference in utilities for A and B.
 	 * 
-	 * @author Dmytro Tykhonov, cleanup by W.Pasman
-	 * @returns the kalaiSmorodinsky BidPoint.
+	 * @return the kalaiSmorodinsky BidPoint.
 	 * @throws AnalysisException
 	 */
 	public BidPoint getKalaiSmorodinsky() throws Exception {
@@ -246,8 +245,7 @@ public class BidSpace {
 	 * Calculates the undiscounted Nash optimal outcome. Assumes that Pareto frontier is already built.
 	 * Nash is the point on paretofrontier that has max product of utilities for A and B.
 	 * 
-	 * @author Dmytro Tykhonov, cleanup by W.Pasman
-	 * @returns the Nash BidPoint.
+	 * @return the Nash BidPoint.
 	 * @throws AnalysisException
 	 */
 	public BidPoint getNash() throws Exception {
@@ -316,7 +314,7 @@ public class BidSpace {
 	/**
 	 * Finds the bid with the minimal distance weightA*DeltaUtilA^2+weightB*DeltaUtilB^2
 	 * where DeltaUtilA is the difference between given utilA and the actual utility of the bid.
-	 * @author W.Pasman
+	 *
 	 * @param utilA the agent-A utility of the point to be found.
 	 * @param utilB the agent-B utility of the point to be found.
 	 * @param weightA weight in A direction.

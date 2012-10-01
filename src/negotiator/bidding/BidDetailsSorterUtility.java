@@ -3,7 +3,8 @@ package negotiator.bidding;
 import java.util.Comparator;
 
 /**
- * Sorts {@link BidDetails} high to low.
+ * Comparator which sorts a set of BidDetails based on their utility.
+ * The bid with the highest utility is on the front of the list.
  */
 public class BidDetailsSorterUtility implements Comparator<BidDetails>
 {
@@ -21,4 +22,3 @@ public class BidDetailsSorterUtility implements Comparator<BidDetails>
 	        return ((Integer) b1.hashCode()).compareTo(b2.hashCode());
 	}
 }
-

@@ -1,20 +1,7 @@
-/*
- * SimpleAgent.java
- *
- * Created on November 6, 2006, 9:55 AM
- *
- */
-
 package agents;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Vector;
-
-
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;

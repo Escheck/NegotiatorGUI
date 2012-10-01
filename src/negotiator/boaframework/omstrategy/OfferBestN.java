@@ -38,10 +38,24 @@ public class OfferBestN extends OMStrategy {
 	 */
 	public OfferBestN() { }
 
+	/**
+	 * Normal constructor used to initialize the OfferBestN opponent model strategy.
+	 * @param negotiationSession symbolizing the negotiation state.
+	 * @param model opponent model strategy used by this opponent model strategy.
+	 * @param n amount of best bids from which a random bid is selected.
+	 */
 	public OfferBestN(NegotiationSession negotiationSession, OpponentModel model, int n) {
 		initializeAgent(negotiationSession, model, n);
 	}
 	
+	/**
+	 * Initializes the agent by storing the size of the domain, and checking
+	 * if the domain is large.
+	 * 
+	 * @param negotiationSession state of the negotiation.
+	 * @param model opponent model used in conjunction with this opponent modeling strategy.
+	 * @param parameters set of parameters for this opponent model strategy.
+	 */
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, model);
 		this.negotiationSession = negotiationSession;
@@ -69,6 +83,10 @@ public class OfferBestN extends OMStrategy {
 	}
 	
 	/**
+	 * First this method determines the N best bids given the array of
+	 * similarly preferred bids. Next, a random bid is offered from this set.
+	 * 
+	 * @param allBids list of similarly preferred bids.
 	 * @return random bid from the subset of N best bids in the given set.
 	 */
 	@Override

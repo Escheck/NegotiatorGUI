@@ -16,8 +16,6 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeSpace;
-import negotiator.boaframework.OutcomeTuple;
-import negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition;
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
@@ -158,14 +156,26 @@ public abstract class BOAagent extends Agent
 		}
 	}
 	
+	/**
+	 * Returns the offering strategy of the agent.
+	 * @return offeringstrategy of the agent.
+	 */
 	public OfferingStrategy getOfferingStrategy() {
 		return offeringStrategy;
 	}
 	
+	/**
+	 * Returns the opponent model of the agent.
+	 * @return opponent model of the agent.
+	 */
 	public OpponentModel getOpponentModel() {
 		return opponentModel;
 	}
 	
+	/**
+	 * Returns the acceptance strategy of the agent.
+	 * @return acceptance strategy of the agent.
+	 */
 	public AcceptanceStrategy getAcceptanceStrategy() {
 		return acceptConditions;
 	}

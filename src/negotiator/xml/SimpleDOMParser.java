@@ -6,7 +6,6 @@ package negotiator.xml;
 
 import java.io.Reader;
 import java.io.IOException;
-import java.io.EOFException;
 import java.util.Stack;
 
 /**
@@ -18,11 +17,11 @@ public class SimpleDOMParser {
 	private static final int[] cdata_end = {']', ']', '>'};
 
 	private Reader reader;
-	private Stack elements;
+	private Stack<SimpleElement> elements;
 	private SimpleElement currentElement;
 
 	public SimpleDOMParser() {
-		elements = new Stack();
+		elements = new Stack<SimpleElement>();
 		currentElement = null;
 	}
 

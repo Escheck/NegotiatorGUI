@@ -1,10 +1,8 @@
 package agents;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;

@@ -31,6 +31,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class CheckPartyUtilityXML extends JPanel
 {
+	private static final long serialVersionUID = -1982241379549713469L;
 	Domain partyDomain=null;
 	UtilitySpace costSpace=null; // utili space holding correct costs.
 	

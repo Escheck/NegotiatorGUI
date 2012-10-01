@@ -6,18 +6,11 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
-import javax.swing.table.*;
 import javax.swing.JButton;
 import negotiator.repository.*;
-import java.util.ArrayList;
-import negotiator.repository.*;
-import negotiator.exceptions.Warning;
 
 
 class AddAgentUI extends JDialog

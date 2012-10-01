@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
-import javax.swing.event.ListDataListener;
 
 /**
  * Extends the default ListModel by allowing it to be loaded afterwards

@@ -10,27 +10,38 @@ import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
 
 /**
- * This is an abstract class which manages all the negotiation Session pertinent information to a single agent
+ * This is a class which manages all the negotiation session pertinent
+ * information to a single agent.
  * 
- @author Alex Dirkzwager, Mark Hendrikx
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class NegotiationSession {
 	
-	/** Optional outcomespace which should be set manually */
+	/** Optional outcomespace which should be set manually. */
 	protected OutcomeSpace outcomeSpace;
-	/** History of bids made by the opponent */
+	/** History of bids made by the opponent. */
 	protected BidHistory opponentBidHistory;
-	/** History of bids made by the agent */
+	/** History of bids made by the agent. */
 	protected BidHistory ownBidHistory;
-	/** Reference to the negotiation domain */
+	/** Reference to the negotiation domain. */
 	protected Domain domain;
-	/** Reference to the agent's preference profile for the domain */
+	/** Reference to the agent's preference profile for the domain. */
 	protected UtilitySpace utilitySpace;
-	/** Reference to the timeline */
+	/** Reference to the timeline. */
 	protected Timeline timeline;
 
+	/**
+	 * Special constructor used by the NegotiationSessionWrapper.
+	 * Do not use this constructor for other purposes.
+	 */
 	protected NegotiationSession() { }
 	
+	/**
+	 * Create a negotiation session which is used to keep track of the
+	 * negotiation state.
+	 * @param utilitySpace of the agent.
+	 * @param timeline of the current negotiation.
+	 */
 	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline){
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
@@ -40,37 +51,71 @@ public class NegotiationSession {
 	}
 	
 	/**
-	 * Returns a list of bids offered by the opponent.
-	 * @return a list of of opponent bids
+	 * Create a negotiation session which is used to keep track of the
+	 * negotiation state.
+	 * @param utilitySpace of the agent.
+	 * @param timeline of the current negotiation.
+	 * @param outcomeSpace representation of the possible outcomes.
+	 */
+	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace){
+		this.utilitySpace = utilitySpace;
+		this.timeline = timeline;
+		this.domain = utilitySpace.getDomain();
+		this.opponentBidHistory = new BidHistory();
+		this.ownBidHistory = new BidHistory();
+		this.outcomeSpace = outcomeSpace;
+	}
+	
+	/**
+	 * Returns the bidding history of the opponent.
+	 * @return bidding history of the opponent.
 	 */
 	public BidHistory getOpponentBidHistory(){
 		return opponentBidHistory;
 	}
 	
+	/**
+	 * Returns the bidding history of the agent.
+	 * @return bidding history of the agent.
+	 */
 	public BidHistory getOwnBidHistory(){
 		return ownBidHistory;
 	}
-	
+	/**
+	 * Returns the discount factor of the utilityspace.
+	 * Each utilityspace has a unique discount factor.
+	 * @return discount factor of the utilityspace.
+	 */
 	public double getDiscountFactor() {
 		return utilitySpace.getDiscountFactor();
 	}
 	
+	/**
+	 * @return issues of the domain.
+	 */
 	public ArrayList<Issue> getIssues(){
 		return domain.getIssues();
 	}
 	
+	/**
+	 * @return timeline of the negotiation.
+	 */
 	public Timeline getTimeline(){
 		return timeline;
 	}
 	
 	/**
-	 * gets the normalized time (t = [0,1])
-	 * @return time normalized
+	 * Returns the normalized time (t = [0,1])
+	 * @return normalized time.
 	 */
 	public double getTime() {
 		return timeline.getTime();
 	}
 	
+	/**
+	 * Returns the negotiation domain.
+	 * @return domain of the negotiation.
+	 */
 	public Domain getDomain() {
 		if (utilitySpace != null) {
 			return utilitySpace.getDomain();
@@ -78,20 +123,38 @@ public class NegotiationSession {
 		return null;
 	}
 	
+	/**
+	 * Returns the utilityspace of the agent.
+	 * @return utilityspace of the agent.
+	 */
 	public UtilitySpace getUtilitySpace(){
 		return utilitySpace;
 	}
 	
-	public OutcomeSpace getOutcomeSpace(){
+	/**
+	 * Returns the space of possible outcomes in the domain.
+	 * The returned value may be null.
+	 * 
+	 * @return outcomespace if available.
+	 */
+	public OutcomeSpace getOutcomeSpace() {
 		return outcomeSpace;
 	}
 	
-	public void setOutcomeSpace(OutcomeSpace space) {
-		this.outcomeSpace = space;
+	/**
+	 * Method used to set the outcomespace. Setting an outcomespace
+	 * makes method such as getMaxBidinDomain much more efficient.
+	 * 
+	 * @param outcomeSpace to be set.
+	 */
+	public void setOutcomeSpace(OutcomeSpace outcomeSpace) {
+		this.outcomeSpace = outcomeSpace;
 	}
 	
 	/**
 	 * Returns the best bid in the domain.
+	 * If the outcomespace is set, it is used in this step.
+	 * Else a highly inefficient method is used.
 	 */
 	public BidDetails getMaxBidinDomain() {
 		BidDetails maxBid = null;
@@ -110,6 +173,8 @@ public class NegotiationSession {
 	
 	/**
 	 * Returns the worst bid in the domain.
+	 * If the outcomespace is set, it is used in this step.
+	 * Else a highly inefficient method is used.
 	 */
 	public BidDetails getMinBidinDomain() {
 		BidDetails minBid = null;
@@ -126,7 +191,15 @@ public class NegotiationSession {
 		return minBid;
 	}	
 	
+	/**
+	 * Returns the discounted utility of a bid given the bid and the
+	 * time at which it was offered.
+	 * 
+	 * @param bid which discount utility is requested.
+	 * @param time at which the bid was offered.
+	 * @return
+	 */
 	public double getDiscountedUtility(Bid bid, double time){
-		return utilitySpace.getUtilityWithDiscount(bid, timeline.getTime());
+		return utilitySpace.getUtilityWithDiscount(bid, time);
 	}
 }

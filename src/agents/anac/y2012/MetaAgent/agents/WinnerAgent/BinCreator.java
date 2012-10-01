@@ -4,7 +4,6 @@ package agents.anac.y2012.MetaAgent.agents.WinnerAgent;
 import java.util.ArrayList;
 import java.util.Vector;
 import negotiator.issue.Value;
-import negotiator.issue.ValueReal;
 
 public abstract class BinCreator {
 	int numOfBins;

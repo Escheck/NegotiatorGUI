@@ -1,7 +1,5 @@
 package negotiator.boaframework.opponentmodel;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import negotiator.utility.UtilitySpace;
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;

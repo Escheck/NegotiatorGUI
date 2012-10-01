@@ -9,6 +9,7 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class AgentParamValue extends TournamentValue
 {
+	private static final long serialVersionUID = 1391633175859262227L;
 	Double value;
 
 	public AgentParamValue(Double v) {

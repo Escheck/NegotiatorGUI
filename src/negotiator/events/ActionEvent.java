@@ -1,6 +1,5 @@
 package negotiator.events;
 
-import misc.Pair;
 import negotiator.Agent;
 import negotiator.actions.Action;
 import negotiator.gui.progress.TournamentProgressUI2;

@@ -1,11 +1,7 @@
 package negotiator.gui.chart;
 
 import java.awt.Color;
-
 import javax.swing.SwingUtilities;
-
-import negotiator.Global;
-
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -15,7 +11,6 @@ import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
-
 
 public class BidChart {
 	

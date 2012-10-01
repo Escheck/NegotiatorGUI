@@ -25,8 +25,6 @@ import negotiator.issue.ValueReal;
 public class BRAMAgent2 extends Agent {
 	/* FINAL VARIABLES */
 	private final double TIME_TO_CREATE_BIDS_ARRAY = 2.0;//The time that we allocate to creating the bids array
-	private final int RANDOM_INTERVAL = 8;//Random values are created from 0 to this number
-	private final int RANDOM_OFFSET = 4;//The range of the offset of the RANDOM_INTERVAL
 	private final double FREQUENCY_OF_PROPOSAL = 0.2;//If the frequency of the proposal is larger than this variable than we won't propose it
 	//The threshold will be calculated as percentage of the required utility depending of the elapsed time 
 
@@ -47,12 +45,10 @@ public class BRAMAgent2 extends Agent {
     private int lastPositionInBidArray;//The position in the bid array of the our agent last offer 
     private int[] bidsCountProposalArray;//An array that saves the number of offers that were made per each bid
     private int numOfProposalsFromOurBidsArray;//The number of proposals that were made - NOT including the proposals that were made in the TIME_TO_OFFER_MAX_BID time
-    private double minRequiredUtility;//The smallest utility of all the bids that our agent had offered
     private double offeredUtility;//The utility of the current bid that the opponent had offered
     private double threshold;//The threshold - we will accept any offer that its utility is larger than the threshold
     private int randomInterval;
     private int randomOffset;
-    private double endNegotiationUtility;
     /* Data Structures for any type of issue */
 	private ArrayList<ArrayList<Integer>> opponentBidsStatisticsForReal;
 	private ArrayList<HashMap<Value, Integer>> opponentBidsStatisticsDiscrete;
@@ -77,11 +73,9 @@ public class BRAMAgent2 extends Agent {
         try {
 			bestBid = this.utilitySpace.getMaxUtilityBid();
 			maxUtility =  this.utilitySpace.getUtilityWithDiscount(bestBid, timeline);
-			minRequiredUtility = maxUtility;
 			ourBidsArray.add(bestBid);//The offer with the maximum utility will be offered at the beginning
 			threshold = maxUtility;
 			previousOfferedBid = bestBid;
-			endNegotiationUtility = this.utilitySpace.getReservationValueUndiscounted();
 			
 			random100 = new Random(100);
 		      random200 = new Random(200);

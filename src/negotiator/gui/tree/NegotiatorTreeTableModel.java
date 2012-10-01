@@ -1,16 +1,12 @@
 package negotiator.gui.tree;
 
 import jtreetable.*;
-
-import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.table.*;
 import javax.swing.tree.*;
 import negotiator.*;
 import negotiator.issue.*;
 import negotiator.utility.*;
-import negotiator.gui.dialogs.NewObjectiveDialog;
 /**
 *
 * @author Richard Noorlandt

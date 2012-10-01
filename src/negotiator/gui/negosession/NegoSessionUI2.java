@@ -7,14 +7,8 @@
 package negotiator.gui.negosession;
 
 import java.util.ArrayList;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-
 import negotiator.Global;
-import negotiator.NegotiationEventListener;
-import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;

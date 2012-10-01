@@ -1,9 +1,9 @@
 package negotiator.tournament.VariablesAndValues;
 
-import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProtocolRepItem;
 
 public class ProtocolValue extends TournamentValue {
+	private static final long serialVersionUID = -2565640538778156974L;
 	ProtocolRepItem value;	
 	
 	public ProtocolValue(ProtocolRepItem val) { value=val; }

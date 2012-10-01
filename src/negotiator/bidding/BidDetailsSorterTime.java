@@ -1,9 +1,12 @@
 package negotiator.bidding;
 
 import java.util.Comparator;
-
 import negotiator.bidding.BidDetails;
 
+/**
+ * Comparator which sorts a set of BidDetails based on their time of offering.
+ * The bid which was offered last is on the front of the list.
+ */
 public class BidDetailsSorterTime  implements Comparator<BidDetails> {
 	public int compare(BidDetails b1, BidDetails b2)
 	{
@@ -11,6 +14,7 @@ public class BidDetailsSorterTime  implements Comparator<BidDetails> {
 			throw new NullPointerException();
 		if (b1.equals(b2))
 			return 0;
+		
 		if (b1.getTime() > b2.getTime())
 			return -1;
 		else if (b1.getTime() < b2.getTime())

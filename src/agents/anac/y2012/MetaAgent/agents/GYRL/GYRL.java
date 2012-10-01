@@ -1,16 +1,10 @@
 package agents.anac.y2012.MetaAgent.agents.GYRL;
 
-import java.io.*;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
-
 import negotiator.*;
 import negotiator.actions.*;
-import negotiator.issue.*;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;

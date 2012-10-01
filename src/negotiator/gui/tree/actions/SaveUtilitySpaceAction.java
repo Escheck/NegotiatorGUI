@@ -3,11 +3,9 @@ package negotiator.gui.tree.actions;
 import javax.swing.*;
 import java.io.*;
 import java.awt.event.*;
-
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.tree.*;
-import negotiator.repository.Repository;
 import negotiator.utility.UtilitySpace;
 
 /**

@@ -3,7 +3,6 @@ package agents.anac.y2011.Nice_Tit_for_Tat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import negotiator.Bid;
@@ -14,7 +13,6 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
-import negotiator.boaframework.Actions;
 
 
 /**
@@ -39,7 +37,6 @@ public class NiceTitForTat extends BilateralAgent
 	private double	initialGap;
 	private final boolean TEST_EQUIVALENCE = false;
 	private Random random100;
-	private int round = 0;
 	
 
 	@Override
@@ -71,7 +68,6 @@ public class NiceTitForTat extends BilateralAgent
 	@Override
 	public Bid chooseCounterBid()
 	{
-		round++;
 		Bid opponentLastBid = getOpponentLastBid();
 		
 		double time = timeline.getTime();
@@ -276,7 +272,6 @@ public class NiceTitForTat extends BilateralAgent
 	@Override
 	public Bid chooseOpeningBid()
 	{
-		round++;
 		try
 		{
 			return utilitySpace.getMaxUtilityBid();

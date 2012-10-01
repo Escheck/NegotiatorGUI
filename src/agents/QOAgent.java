@@ -2,15 +2,12 @@ package agents;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import negotiator.*;
 import negotiator.issue.*;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 import agents.qoagent2.*;
 public class QOAgent extends Agent {
