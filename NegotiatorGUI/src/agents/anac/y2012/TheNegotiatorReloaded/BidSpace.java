@@ -179,7 +179,7 @@ public class BidSpace {
 	{
 		ArrayList<Bid> bids=new ArrayList<Bid> ();
 		ArrayList<BidPoint> points=getParetoFrontier();
-		for (BidPoint p:points) bids.add(p.bid);
+		for (BidPoint p:points) bids.add(p.getBid());
 		return bids;
 	}
 	
@@ -303,7 +303,7 @@ public class BidSpace {
 			r=weightA*sq(p.getUtilityA() - utilA)+weightB*sq(p.getUtilityB() -utilB);
 			if (r<mindist) { mindist=r; bestPoint=p; }
 		}
-		System.out.println("point found: (" + bestPoint.getUtilityA() + ", " + bestPoint.getUtilityB() + ") ="+bestPoint.bid);
+		System.out.println("point found: (" + bestPoint.getUtilityA() + ", " + bestPoint.getUtilityB() + ") ="+bestPoint.getBid());
 		//System.out.println("p.bid is in excludelist:"+excludeList.indexOf(bestPoint.bid));
 //		if (excludeList.size()>1) System.out.println("bid equals exclude(1):"+bestPoint.bid.equals(excludeList.get(1)));
 		//System.out.println();
