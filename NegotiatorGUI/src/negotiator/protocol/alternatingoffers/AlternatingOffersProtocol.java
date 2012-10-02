@@ -231,7 +231,8 @@ public class AlternatingOffersProtocol extends Protocol {
 		// DEFAULT: no detailed analysis
 		if (configuration != null && configuration.size() > 0 && configuration.get("logDetailedAnalysis") != 0) {
 			// Calculate the opponent model quality measures and log them
-			UtilityMeasures disCalc = new UtilityMeasures(getBidSpace());
+			UtilitySpace[] spaces = { getAgentAUtilitySpace(), getAgentBUtilitySpace() };
+			UtilityMeasures disCalc = new UtilityMeasures(BidSpaceCache.getBidSpace(spaces));
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
 			
 			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
@@ -430,26 +431,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	public SimpleElement domainToXML(){
 		return domain.toXML(); 		
 	}
-
-    public BidSpace getBidSpace() { 
-    	
-    	UtilitySpace spaceA = getAgentAUtilitySpace();
-    	UtilitySpace spaceB = getAgentBUtilitySpace();
-    	
-    	if (bidSpace==null) {
-    		try {
-    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
-    				bidSpace = BidSpaceCache.getCachedSpace();
-    			} else {  				
-    				bidSpace = new BidSpace(spaceA, spaceB);
-    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
-    			}
-    		} catch (Exception e) {
-    			e.printStackTrace();
-			}
-    	}
-    	return bidSpace;     	
-    }
 
 	public String getAgentAname() {
 		return getAgentName(ALTERNATING_OFFERS_AGENT_A_INDEX);
@@ -669,21 +650,13 @@ public class AlternatingOffersProtocol extends Protocol {
 			}
 			if (!Global.LOW_MEMORY_MODE) {
 				//check if the analysis is already made for the prefs. profiles
-				UtilitySpace spaceA = session.getAgentAUtilitySpace();
-				UtilitySpace spaceB = session.getAgentBUtilitySpace();
-				BidSpace bidSpace = null;
-	    		try {
-	    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
-	    				bidSpace = BidSpaceCache.getCachedSpace();
-	    				session.setBidSpace(bidSpace);
-	    			} else {  				
-	    				bidSpace = new BidSpace(spaceA, spaceB);
-	    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
-	    			}
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
+				try {
+					BidSpace space = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
+					session.setBidSpace(space);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			}
+				}
 		} else {
 			// pick next variable, and compute all permutations.
 			AssignedParameterVariable v=allparameters.get(0);

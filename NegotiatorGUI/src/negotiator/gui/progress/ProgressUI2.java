@@ -30,6 +30,7 @@ import negotiator.actions.Accept;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
@@ -248,7 +249,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
     private double[][] getPareto(){
 		double [][] pareto=null;
 		List <BidPoint>paretoBids = null;
-		BidSpace bs = session.getBidSpace();
+		
+		BidSpace bs = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), 
+													session.getAgentBUtilitySpace());
 		if(bs==null)System.out.println("bidspace == null");
 		else{
 			try {
@@ -272,7 +275,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	private double[][] getAllBidsInBidSpace(){
 		//save the possible bids in double [][] and display in graph 
 		double [][] possibleBids=null;
-		BidSpace bs = session.getBidSpace();
+		BidSpace bs = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), 
+				session.getAgentBUtilitySpace());
 		if(bs.bidPoints.size()>300000) return possibleBids;
 		else{
 			ArrayList<BidPoint> allBids = bs.bidPoints;// always gives a nullpointer
@@ -312,7 +316,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		
 		bidChart.setAgentAName("Agent A:"+agentAName);
 		bidChart.setAgentBName("Agent B:"+agentBName);
-		BidSpace bs = session.getBidSpace();
+		BidSpace bs = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), 
+				session.getAgentBUtilitySpace());
 		double [][] pb = null;
 		if (showAllBids)
 			pb = getAllBidsInBidSpace();

@@ -526,7 +526,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		double rvB = spaceB.getReservationValueUndiscounted();
 
 		BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
-		BidPoint nash = getBidSpace().getNash();
+		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
 		double distanceToNash = lastbidPoint.getDistance(nash);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
@@ -740,7 +740,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double rvB = spaceB.getReservationValueUndiscounted();
 
 			BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
-			BidPoint nash = getBidSpace().getNash();
+			BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
 			double distanceToNash = lastbidPoint.getDistance(nash);
 			if (!hasMAC()) {
 				newOutcome(currentAgent, rvA, rvB, rvADiscounted,
@@ -806,7 +806,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 		BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility,
 				agentBUtility);
-		BidPoint nash = getBidSpace().getNash();
+		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
 		distanceToNash = lastbidPoint.getDistance(nash);
 
 		if (isMac) {

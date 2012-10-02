@@ -752,13 +752,8 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles,params, tournament.getOptions()); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
-			BidSpace bidSpace = null;
-			if (BidSpaceCache.isCached(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace())) {
-				bidSpace = BidSpaceCache.getCachedSpace();
-			} else {
-				bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
-				BidSpaceCache.cacheBidSpace(bidSpace, session.getAgentAUtilitySpace().getFileName(), session.getAgentBUtilitySpace().getFileName());
-			}
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(),
+															session.getAgentBUtilitySpace());
 			session.setBidSpace(bidSpace);
 		} else {
 			// pick next variable, and compute all permutations.

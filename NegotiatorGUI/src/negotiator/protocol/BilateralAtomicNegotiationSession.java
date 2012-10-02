@@ -124,22 +124,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     	agentA.cleanUp();
     	agentB.cleanUp();
     }
-	
-    public BidSpace getBidSpace() { 
-    	if (bidSpace==null) {
-    		try {
-    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
-    				bidSpace = BidSpaceCache.getCachedSpace();
-    			} else {  				
-    				bidSpace = new BidSpace(spaceA, spaceB);
-    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
-    			}
-    		} catch (Exception e) {
-    			e.printStackTrace();
-			}
-    	}
-    	return bidSpace;     	
-    }
     
     public Bid getLastBid()
 	{
