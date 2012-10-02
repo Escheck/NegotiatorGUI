@@ -20,6 +20,9 @@ public class AC_Previous extends AcceptanceStrategy{
 	private double a;
 	private double b;
 
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_Previous() { }
 	
 	public AC_Previous(NegotiationSession negoSession, double alpha, double beta){

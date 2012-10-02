@@ -47,7 +47,11 @@ public class NTFTstrategy extends OMStrategy {
 	}
 	
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
-		super.init(negotiationSession, model);
+		try {
+			super.init(negotiationSession, model);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.possibleBids = negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
 		domainIsBig = (possibleBids > 10000);
 		random = new Random();

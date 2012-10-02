@@ -24,6 +24,9 @@ public class AC_Gap extends AcceptanceStrategy{
 
 	private double constant;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_Gap() { }
 	
 	public AC_Gap(NegotiationSession negoSession, double c){

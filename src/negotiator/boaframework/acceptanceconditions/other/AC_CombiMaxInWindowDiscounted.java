@@ -24,6 +24,9 @@ public class AC_CombiMaxInWindowDiscounted extends AcceptanceStrategy {
 	
 	private double time;
 
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_CombiMaxInWindowDiscounted() { }
 
 	public AC_CombiMaxInWindowDiscounted(NegotiationSession negoSession, OfferingStrategy strat, double t){

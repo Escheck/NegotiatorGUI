@@ -77,7 +77,11 @@ public class OfferBestN extends OMStrategy {
 	}
 	
 	private void initializeAgent(NegotiationSession negotiationSession, OpponentModel model, int n) {
-		super.init(negotiationSession, model);
+		try {
+			super.init(negotiationSession, model);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.rand = new Random();
 		this.bestN = n;
 	}

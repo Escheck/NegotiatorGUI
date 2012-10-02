@@ -184,8 +184,14 @@ public class DomainGenerator {
 	 * @return the opposition (position 0) and bid distribution (position 1) of a scenario.
 	 */
 	private static double[] calculateDistances(UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
-		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
-		double bidDistribution = calculateBidDistribution(utilitySpaceA, utilitySpaceB);
+		BidSpace bidSpace = null;
+		try {
+			bidSpace = new BidSpace(utilitySpaceA, utilitySpaceB);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		double opposition = calculateOpposition(bidSpace);
+		double bidDistribution = calculateBidDistribution(bidSpace, utilitySpaceA, utilitySpaceB);
 		
 		double[] result = new double[2];
 		result[0] = opposition;
@@ -201,14 +207,14 @@ public class DomainGenerator {
 	 * @param utilitySpaceB utility space of side B.
 	 * @return opposition of the given scenario.
 	 */
-	private static double calculateOpposition(
-			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+	private static double calculateOpposition(BidSpace bidSpace) {
 		double result = 0;
 		try {
-			BidSpace bidSpace = new BidSpace(utilitySpaceA, utilitySpaceB);
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
 			return kalai.getDistance(new BidPoint(null, 1.0, 1.0));
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return result;
 	}
@@ -220,20 +226,11 @@ public class DomainGenerator {
 	 * @param utilitySpaceB utility space of side B.
 	 * @return bid distribution of the given scenario.
 	 */
-	private static double calculateBidDistribution(
+	private static double calculateBidDistribution(BidSpace bidSpace,
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
-			
-			if (bidSpace == null) {
-				try {   
-					bidSpace=new BidSpace(utilitySpaceA, utilitySpaceB);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 			while (iterator.hasNext()) {
 				Bid bid = iterator.next();
 				BidPoint point = new BidPoint(bid, utilitySpaceA.getUtility(bid), utilitySpaceB.getUtility(bid));

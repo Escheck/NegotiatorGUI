@@ -22,7 +22,6 @@ import negotiator.xml.SimpleElement;
 
 public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	
-	
     protected 	Agent   		agentA;
     protected 	Agent   		agentB;
     protected 	UtilitySpace 	spaceA;
@@ -127,12 +126,13 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     }
 	
     public BidSpace getBidSpace() { 
-    	if(bidSpace==null) {
-    		try {    	
-    			bidSpace = BidSpaceCache.getBidSpace(spaceA, spaceB);
-    			if (bidSpace==null) {    				
-    				bidSpace=new BidSpace(spaceA,spaceB);
-    				BidSpaceCache.addBidSpaceToCash(spaceA, spaceB, bidSpace);
+    	if (bidSpace==null) {
+    		try {
+    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
+    				bidSpace = BidSpaceCache.getCachedSpace();
+    			} else {  				
+    				bidSpace = new BidSpace(spaceA, spaceB);
+    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
     			}
     		} catch (Exception e) {
     			e.printStackTrace();

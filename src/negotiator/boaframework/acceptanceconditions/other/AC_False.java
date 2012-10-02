@@ -14,8 +14,14 @@ import negotiator.boaframework.Actions;
  */
 public class AC_False extends AcceptanceStrategy {
 
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_False() { }
 
+	/**
+	 * @return reject any bid.
+	 */
 	@Override
 	public Actions determineAcceptability() {
 		return Actions.Reject;

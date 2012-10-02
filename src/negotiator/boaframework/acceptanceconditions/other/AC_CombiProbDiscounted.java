@@ -25,9 +25,11 @@ import negotiator.BidHistory;
 public class AC_CombiProbDiscounted extends AcceptanceStrategy {
 	
 	private double time;
-
-	public AC_CombiProbDiscounted() {
-	}
+	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
+	public AC_CombiProbDiscounted() { }
 
 	public AC_CombiProbDiscounted(NegotiationSession negoSession, OfferingStrategy strat,
 			double t) {

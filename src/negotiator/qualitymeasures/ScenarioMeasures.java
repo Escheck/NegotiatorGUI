@@ -168,9 +168,15 @@ public class ScenarioMeasures {
 		double pearsonCorrWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
 		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB, MONTE_CARLO_SIMULATIONS);
 		double pearsonCorrUtil	= UtilspaceTools.getPearsonCorrelationCoefficientOfBids(utilitySpaceA, utilitySpaceB);
-		double opposition = calculateOpposition(utilitySpaceA, utilitySpaceB);
-		double paretoDistance = calculateAverageParetoDistance(utilitySpaceA, utilitySpaceB);
-		int paretoBids = calculateAmountOfParetoBids(utilitySpaceA, utilitySpaceB);
+		BidSpace bidSpace = null;
+		try {
+			bidSpace = new BidSpace(utilitySpaceA, utilitySpaceB);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		double opposition = calculateOpposition(bidSpace, utilitySpaceA, utilitySpaceB);
+		double paretoDistance = calculateAverageParetoDistance(bidSpace, utilitySpaceA, utilitySpaceB);
+		int paretoBids = calculateAmountOfParetoBids(bidSpace, utilitySpaceA, utilitySpaceB);
 		
 		element.setAttribute("bids_count", (int)utilitySpaceA.getDomain().getNumberOfPossibleBids() + "");
 		element.setAttribute("issue_count", utilitySpaceA.getDomain().getIssues().size() + "");
@@ -192,17 +198,11 @@ public class ScenarioMeasures {
 	 * @param utilitySpaceB
 	 * @return amount of Pareto bids
 	 */
-	private static int calculateAmountOfParetoBids(UtilitySpace utilitySpaceA,
+	private static int calculateAmountOfParetoBids(BidSpace bidSpace, UtilitySpace utilitySpaceA,
 			UtilitySpace utilitySpaceB) {
-		BidSpace space = null;
-		try {
-			space = new BidSpace(utilitySpaceA, utilitySpaceB, false, true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		List<Bid> bids = null;
 		try {
-			bids = space.getParetoFrontierBids();
+			bids = bidSpace.getParetoFrontierBids();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -218,18 +218,9 @@ public class ScenarioMeasures {
 	 * @return opposition of scenario
 	 */
 	private static double calculateOpposition(
-			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+			BidSpace bidSpace, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		double result = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
-			
-			if (bidSpace == null) {
-				try {   
-					bidSpace=new BidSpace(utilitySpaceA, utilitySpaceB);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
 			return kalai.getDistance(new BidPoint(null, 1.0, 1.0));
 		} catch (Exception e) { e.printStackTrace(); }
@@ -244,20 +235,11 @@ public class ScenarioMeasures {
 	 * @param utilitySpaceB
 	 * @return average pareto distance of the scenario
 	 */
-	private static double calculateAverageParetoDistance(
+	private static double calculateAverageParetoDistance(BidSpace bidSpace,
 			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {
-			BidSpace bidSpace = BidSpaceCache.getBidSpace(utilitySpaceA, utilitySpaceB);
-			
-			if (bidSpace == null) {
-				try {   
-					bidSpace=new BidSpace(utilitySpaceA, utilitySpaceB);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 			while (iterator.hasNext()) {
 				Bid bid = iterator.next();
 				BidPoint point = new BidPoint(bid, utilitySpaceA.getUtility(bid), utilitySpaceB.getUtility(bid));

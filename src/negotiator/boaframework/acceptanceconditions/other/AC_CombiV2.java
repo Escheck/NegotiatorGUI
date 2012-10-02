@@ -25,6 +25,9 @@ public class AC_CombiV2 extends AcceptanceStrategy {
 	private double d;
 	private double time;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_CombiV2() { }
 	
 	public AC_CombiV2(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c, double d){

@@ -1,15 +1,5 @@
-/*
- * Bid.java
- *
- * Created on November 6, 2006, 10:24 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package negotiator;
 
-// import negotiator.xml.SimpleElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,13 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
@@ -33,11 +21,11 @@ import negotiator.xml.SimpleElement;
 
 /**
  * 
- * @author Dmytro Tykhonov & Koen Hindriks
+ * 
  * Wouter: a bid is a set of <idnumber,value> pairs, where idnumber is the unique number of the issue,
  * and value is the picked alternative.
+ * @author Dmytro Tykhonov & Koen Hindriks
  */
-
 @XmlRootElement
 public final class Bid implements XMLable
 {
@@ -49,12 +37,13 @@ public final class Bid implements XMLable
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
 	public Bid(){fValues = new HashMap<Integer, Value>();}
+	
 	/**
 	 * create a new bid in a domain. Partially checks the validity of the bid as well
 	 * There is only this constructor because we require that ALL values in the domain
 	 * get assigned a value.
-	 * @param domainP: the domain in which the bid is done
-	 * @param bidsP: HashMap, which is a set of pairs <issueID,value>
+	 * @param domainP the domain in which the bid is done
+	 * @param bidP HashMap, which is a set of pairs <issueID,value>
 	 * @throws Exception if the bid is not a legal bid in the domain.
 	 */
 	public Bid(Domain domainP, HashMap<Integer,Value> bidP) throws Exception

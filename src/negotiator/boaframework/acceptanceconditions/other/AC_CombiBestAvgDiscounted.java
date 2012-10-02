@@ -25,6 +25,9 @@ public class AC_CombiBestAvgDiscounted extends AcceptanceStrategy {
 
 	private double time;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_CombiBestAvgDiscounted() { }
 	
 	public AC_CombiBestAvgDiscounted(NegotiationSession negoSession, OfferingStrategy strat, double t){

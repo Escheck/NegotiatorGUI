@@ -23,7 +23,10 @@ public class AC_CombiV3 extends AcceptanceStrategy{
 	private double c;
 	private double time;
 	
-public AC_CombiV3() { }
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
+	public AC_CombiV3() { }
 	
 	public AC_CombiV3(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c){
 		this.negotiationSession = negoSession;

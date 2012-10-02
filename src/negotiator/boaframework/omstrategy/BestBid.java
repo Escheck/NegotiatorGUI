@@ -32,7 +32,11 @@ public class BestBid extends OMStrategy {
 	 * @param model used by the opponent model strategy.
 	 */
 	public BestBid(NegotiationSession negotiationSession, OpponentModel model) {
-		super.init(negotiationSession, model);
+		try {
+			super.init(negotiationSession, model);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

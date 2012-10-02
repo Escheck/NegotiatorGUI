@@ -431,18 +431,25 @@ public class AlternatingOffersProtocol extends Protocol {
 		return domain.toXML(); 		
 	}
 
-	public BidSpace getBidSpace() { 
-		bidSpace = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace());
-		if(bidSpace==null) {
-			try {
-				bidSpace=new BidSpace(getAgentAUtilitySpace(),getAgentBUtilitySpace());
-			} catch (Exception e) {
-				e.printStackTrace();
+    public BidSpace getBidSpace() { 
+    	
+    	UtilitySpace spaceA = getAgentAUtilitySpace();
+    	UtilitySpace spaceB = getAgentBUtilitySpace();
+    	
+    	if (bidSpace==null) {
+    		try {
+    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
+    				bidSpace = BidSpaceCache.getCachedSpace();
+    			} else {  				
+    				bidSpace = new BidSpace(spaceA, spaceB);
+    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
 			}
-		}
-		return bidSpace;     	
-	}
-
+    	}
+    	return bidSpace;     	
+    }
 
 	public String getAgentAname() {
 		return getAgentName(ALTERNATING_OFFERS_AGENT_A_INDEX);
@@ -662,13 +669,19 @@ public class AlternatingOffersProtocol extends Protocol {
 			}
 			if (!Global.LOW_MEMORY_MODE) {
 				//check if the analysis is already made for the prefs. profiles
-				BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
-				if(bidSpace!=null) {
-					session.setBidSpace(bidSpace);
-				} else {
-					bidSpace = new BidSpace(session.getAgentAUtilitySpace(),session.getAgentBUtilitySpace());
-					BidSpaceCache.addBidSpaceToCash(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace(), bidSpace);
-					session.setBidSpace(bidSpace);
+				UtilitySpace spaceA = session.getAgentAUtilitySpace();
+				UtilitySpace spaceB = session.getAgentBUtilitySpace();
+				BidSpace bidSpace = null;
+	    		try {
+	    			if (BidSpaceCache.isCached(spaceA, spaceB)) {
+	    				bidSpace = BidSpaceCache.getCachedSpace();
+	    				session.setBidSpace(bidSpace);
+	    			} else {  				
+	    				bidSpace = new BidSpace(spaceA, spaceB);
+	    				BidSpaceCache.cacheBidSpace(bidSpace, spaceA.getFileName(), spaceB.getFileName());
+	    			}
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
 				}
 			}
 		} else {
