@@ -4,6 +4,7 @@ import negotiator.boaframework.BOAagentInfo;
 
 public class BOAagentValue extends TournamentValue
 {
+	private static final long serialVersionUID = 4154311572147986731L;
 	BOAagentInfo value;	
 	
 	public BOAagentValue(BOAagentInfo val) { value = val; }

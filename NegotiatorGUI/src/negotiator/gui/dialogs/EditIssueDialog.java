@@ -25,8 +25,8 @@ import java.awt.CardLayout;
  * it gets access to the util space via the treeFrame, the parent of this dialog.
  */
 public class EditIssueDialog extends NewIssueDialog {
-	
-	//Attributes
+
+	private static final long serialVersionUID = 5730169200768833303L;
 	private Issue issue;
 	
 	//Constructors

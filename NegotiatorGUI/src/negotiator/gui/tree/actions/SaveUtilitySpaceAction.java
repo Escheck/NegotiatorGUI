@@ -15,7 +15,8 @@ import negotiator.utility.UtilitySpace;
 */
 
 public class SaveUtilitySpaceAction extends AbstractAction {
-	
+
+	private static final long serialVersionUID = 2149617679285470784L;
 	//Attributes
 	private TreeFrame parent;
 	private File openedFile;

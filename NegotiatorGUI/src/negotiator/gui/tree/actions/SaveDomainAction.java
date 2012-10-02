@@ -16,7 +16,7 @@ import negotiator.xml.SimpleElement;
 
 public class SaveDomainAction extends AbstractAction {
 	
-	//Attributes
+	private static final long serialVersionUID = 4235599353427899964L;
 	private TreeFrame parent;
 	private File openedFile;
 	private final JFileChooser fileChooser;

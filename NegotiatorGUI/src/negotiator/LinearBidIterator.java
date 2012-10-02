@@ -9,15 +9,9 @@ import negotiator.issue.*;
 
 public class LinearBidIterator extends BidIterator {
 
-	private double maxUtil;
-	private double minUtil;
-	private UtilitySpace utilSpace;
 	private List<Issue> sortedIssues;
 	public LinearBidIterator(Domain domain, final UtilitySpace space, double maxUtil, double minUtil) {
 		super(domain);
-		this.maxUtil = maxUtil;
-		this.minUtil = minUtil;
-		this.utilSpace = utilSpace;
 		sortedIssues = new LinkedList<Issue>();
 		//sort issues wrt their weights
 		sortedIssues.addAll(space.getDomain().getIssues());

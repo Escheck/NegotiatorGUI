@@ -545,6 +545,7 @@ public class AlternatingOffersProtocol extends Protocol {
         return getTournamentSessions(tournament, tournament.getOption("playAgainstSelf") != 0, tournament.getOption("playBothSides") != 0);
     }
     
+	@SuppressWarnings("unused")
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides) throws Exception {
 		session_number=1;
 		// get agent A and B value(s)

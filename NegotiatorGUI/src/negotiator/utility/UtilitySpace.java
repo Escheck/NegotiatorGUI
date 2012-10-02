@@ -985,7 +985,6 @@ public class UtilitySpace {
     				thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
     				thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
     				SimpleElement thisIntEval = new SimpleElement("evaluator");
-    				EVALFUNCTYPE ievtype = iev.getFuncType();
 					thisIntEval.setAttribute("ftype", "linear");
 					thisIntEval.setAttribute("slope", ""+iev.getSlope());
 					thisIntEval.setAttribute("offset", ""+iev.getOffset());
@@ -1126,48 +1125,6 @@ public class UtilitySpace {
     	return fileName;
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-/*		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
-		result = prime * result
-				+ ((fEvaluators == null) ? 0 : fEvaluators.hashCode());
-		result = prime
-				* result
-				+ ((fReservationValue == null) ? 0 : fReservationValue
-						.hashCode());
-						*/
-		return result;
-	}
-
-/*	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UtilitySpace other = (UtilitySpace) obj;
-		if (domain == null) {
-			if (other.domain != null)
-				return false;
-		} else if (!domain.equals(other.domain))
-			return false;
-		if (fEvaluators == null) {
-			if (other.fEvaluators != null)
-				return false;
-		} else if (!fEvaluators.equals(other.fEvaluators))
-			return false;
-		if (fReservationValue == null) {
-			if (other.fReservationValue != null)
-				return false;
-		} else if (!fReservationValue.equals(other.fReservationValue))
-			return false;
-		return true;
-	}
-*/	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof UtilitySpace)) return false;

@@ -5,6 +5,7 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class BOAagentVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = 6409851887801713416L;
 	private String side = null;
 	public void addValue(TournamentValue a) throws Exception {
 		if (!(a instanceof BOAagentValue))

@@ -166,39 +166,6 @@ public class DNAgent extends Agent {
 		return newPopulation;
 	}
 	
-	/**
-	 * Update population for the genetic algorithm
-	 * @return new ArrayList<Bid>
-	 * @throws Exception 
-	 */
-	private ArrayList<Bid> updatePopulation(Bid partnerBid) throws Exception{
-		ArrayList<Bid> parents=null;
-		ArrayList<Bid> crossover=null;
-		ArrayList<Bid> mutation=null;
-		ArrayList<Bid> newPopulation=new ArrayList<Bid>();
-		
-		//Selection
-		parents=performSelection(selectionSize);		
-		//The opponent's bid always is part of the new parents set
-		//parents.add(partnerBid);
-		
-		//Crossover
-		crossover=performCrossover(parents,crossoverSize);
-		
-		//Mutation
-		mutation=performMutation(parents,mutationSize);
-		
-		//New population is the sum of the three lists
-		newPopulation.addAll(parents);
-		newPopulation.addAll(crossover);
-		newPopulation.addAll(mutation);
-		
-		//System.out.println("Updated population. New population size: "+newPopulation.size());
-		
-		
-		return newPopulation;
-	}
-	
 	private ArrayList<Bid> updatePopulation(ArrayList<Bid> partnerBids) throws Exception{
 		ArrayList<Bid> parents=null;
 		ArrayList<Bid> crossover=null;
@@ -265,49 +232,7 @@ public class DNAgent extends Agent {
 		
 		return selection;
 	}
-	
-	private ArrayList<Bid> performCrossover(ArrayList<Bid> parents, int crossoverNumber) throws Exception{
-		ArrayList<Bid> crossover=new ArrayList<Bid>();
-		HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>
-		ArrayList<Issue> issues=utilitySpace.getDomain().getIssues();
-		Random rand=new Random();
-		
-		
-		//Randomly add elements generated from combining issue values of two parents
-		while (crossover.size()<crossoverNumber) {
-			//Randomly choose two parents
-			int indexFather=rand.nextInt(parents.size());
-			int indexMother;
-			do {
-				indexMother=rand.nextInt(parents.size());
-			}while (indexMother==indexFather);
-			Bid father=parents.get(indexFather);
-			Bid mother=parents.get(indexMother);
-			
-			Bid son=null;
-			
-			for(Issue lIssue:issues) 
-			{
-				int issueIndex=lIssue.getNumber();
-				//Flip a coin
-				if (rand.nextBoolean()){
-					values.put(issueIndex,father.getValue(issueIndex));
-				}else{
-					values.put(issueIndex,mother.getValue(issueIndex));
-				}
-				
-			}
-			son=new Bid(utilitySpace.getDomain(),values);
-			if (getUtility(son)>=currentAspirationLevel){
-				crossover.add(son);
-			}
-			
-			
-		}
-		
-		return crossover;
-	}
-	
+
 	private ArrayList<Bid> performCrossover(ArrayList<Bid> fathers, ArrayList<Bid> mothers,int crossoverNumber) throws Exception{
 		ArrayList<Bid> crossover=new ArrayList<Bid>();
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>

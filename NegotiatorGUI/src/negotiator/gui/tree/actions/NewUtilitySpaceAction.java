@@ -14,8 +14,8 @@ import negotiator.utility.UtilitySpace;
 */
 
 public class NewUtilitySpaceAction extends AbstractAction {
-	
-	//Attributes
+
+	private static final long serialVersionUID = -3205550696716420579L;
 	TreeFrame parent;
 	
 	//Constructors

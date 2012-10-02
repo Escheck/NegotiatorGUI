@@ -14,7 +14,7 @@ import negotiator.gui.tree.*;
 
 public class LoadDomainAction extends AbstractAction {
 
-	//Attributes
+	private static final long serialVersionUID = -7929574473590343355L;
 	private TreeFrame parent;
 	private File openedFile;
 	private final JFileChooser fileChooser;

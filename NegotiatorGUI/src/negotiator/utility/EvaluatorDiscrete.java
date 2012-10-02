@@ -241,7 +241,6 @@ public class EvaluatorDiscrete implements Evaluator {
 	{
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("item");
 		int nrOfValues = xml_items.length;
-		double cost;
 		ValueDiscrete value;
 				
 		for(int j=0;j<nrOfValues;j++) {
@@ -262,10 +261,10 @@ public class EvaluatorDiscrete implements Evaluator {
             	// first, that check against maxCost is already done in setCost. And second, why not set the cost if it is smaller than maxCost??
             	// if (maxCost<cost) { maxCost = cost; setCost(value, cost);} 
             }
-            String descStr=((SimpleElement)xml_items[j]).getAttribute("description");
+            ((SimpleElement)xml_items[j]).getAttribute("description");
         }
 		try {
-			Integer i = getEvalMax();
+			getEvalMax();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -327,7 +326,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @return value that has maximum utility
 	 */
 	public Value getMaxValue() {
-		  Iterator it = fEval.entrySet().iterator();
+		  Iterator<Map.Entry<ValueDiscrete, Integer>> it = fEval.entrySet().iterator();
 		  Integer lTmp = Integer.MIN_VALUE;
 		  ValueDiscrete lValue = null;
 	        while (it.hasNext()) {
@@ -341,7 +340,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	}
 
 	public Value getMinValue() {
-		  Iterator it = fEval.entrySet().iterator();
+		  Iterator<Map.Entry<ValueDiscrete, Integer>> it = fEval.entrySet().iterator();
 		  Integer lTmp = Integer.MAX_VALUE;
 		  ValueDiscrete lValue = null;
 	        while (it.hasNext()) {

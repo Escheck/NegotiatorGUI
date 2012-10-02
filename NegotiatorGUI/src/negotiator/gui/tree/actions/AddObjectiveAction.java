@@ -14,7 +14,8 @@ import negotiator.gui.tree.*;
 
 
 public class AddObjectiveAction extends AbstractAction {
-	
+
+	private static final long serialVersionUID = -7860001446232441466L;
 	//Attributes
 	JTreeTable treeTable;
 	TreeFrame owner;

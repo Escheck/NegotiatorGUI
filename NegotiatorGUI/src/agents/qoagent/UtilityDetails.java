@@ -10,13 +10,13 @@ import java.util.ArrayList;
 public class UtilityDetails
 {
 	public String sTitle;
-	public ArrayList lstUtilityIssues; // list of UtilityIssue
+	public ArrayList<UtilityIssue> lstUtilityIssues; // list of UtilityIssue
 	
 	//the constructor inits the title to an empty string, and the
 	//utility issues array to an empty array
 	public UtilityDetails()
 	{
 		sTitle = "";
-		lstUtilityIssues = new ArrayList();
+		lstUtilityIssues = new ArrayList<UtilityIssue>();
 	}
 }

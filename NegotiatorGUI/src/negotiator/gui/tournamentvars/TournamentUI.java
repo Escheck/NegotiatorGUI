@@ -113,6 +113,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		}
 		
 		dataModel = new AbstractTableModel() {
+			private static final long serialVersionUID = 818546692511677395L;
 			final String columnnames[] = {"Variable","Values"};
 			
 			public int getColumnCount() { 

@@ -232,7 +232,7 @@ public class Domain
 //          Collect values and/or corresponding parameters for issue type.
             Object[] xml_items;
             Object[] xml_item;
-            int nrOfItems, minI, maxI, item_index;
+            int nrOfItems, minI, maxI;
             double minR, maxR;
             String[] values;
             String[] desc;
@@ -249,7 +249,6 @@ public class Domain
                 cost = new Double[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) {
                 	// TODO: check range of indexes.
-                    item_index = Integer.valueOf(((SimpleElement)xml_items[k]).getAttribute("index"));
                     values[k] = ((SimpleElement)xml_items[k]).getAttribute("value");
                     desc[k]=((SimpleElement)xml_items[k]).getAttribute("description");
                     if(((SimpleElement)xml_items[k]).getAttribute("cost")!=null)
@@ -286,7 +285,6 @@ public class Domain
                 values = new String[nrOfItems];
                 cost = new Double[nrOfItems];
                 for(int k=0;k<nrOfItems;k++) { 
-                    item_index = Integer.valueOf(((SimpleElement)xml_items[j]).getAttribute("index"));
                     values[k] = ((SimpleElement)xml_items[j]).getAttribute("value");
                     if(((SimpleElement)xml_items[j]).getAttribute("cost")!=null)
                     	cost[k] = Double.valueOf(((SimpleElement)xml_items[j]).getAttribute("cost"));
