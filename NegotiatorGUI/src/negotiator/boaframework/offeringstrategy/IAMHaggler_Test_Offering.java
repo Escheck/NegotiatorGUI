@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import Jama.Matrix;
-
 import negotiator.Bid;
 import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
@@ -18,6 +16,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
+import Jama.Matrix;
 
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
@@ -51,7 +50,11 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	@Override
 	public BidDetails determineOpeningBid() {
 		if(!negotiationSession.getOpponentBidHistory().isEmpty()){
-			concessionModel.updateModel(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil(), negotiationSession.getTime());
+			double myUndiscountedUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+			double time = negotiationSession.getTime();
+			concessionModel.updateModel(myUndiscountedUtil, time);
+			System.out.println("IAMHagglerOpponentConcessionModel initialized with u = " + myUndiscountedUtil + ", t = " + time);
+			
 		}
 		return negotiationSession.getMaxBidinDomain();
 	}
@@ -59,7 +62,10 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	@Override
 	public BidDetails determineNextBid() {
 
-		concessionModel.updateModel(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil(), negotiationSession.getTime());
+		double myUndiscountedUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+		double time = negotiationSession.getTime();
+		concessionModel.updateModel(myUndiscountedUtil, time);
+		System.out.println("IAMHagglerOpponentConcessionModel updated with u = " + myUndiscountedUtil + ", t = " + time);
 
 		Matrix variances = concessionModel.getVariance();
 		Matrix means = concessionModel.getMeans();
