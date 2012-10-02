@@ -23,6 +23,7 @@ public class Queue {
 	
     /**
      * Construct the queue.
+     * @param size of the queue.
      */
     public Queue(int size) {
         theArray = new Double[size];
@@ -50,7 +51,6 @@ public class Queue {
 	 * Return and remove the least recently inserted item
 	 * from the queue.
 	 * @return the least recently inserted item in the queue.
-	 * @throws UnderflowException if the queue is empty.
 	 */
 	public Double dequeue( )
 	{
@@ -67,7 +67,6 @@ public class Queue {
 	 * Get the least recently inserted item in the queue.
 	 * Does not alter the queue.
 	 * @return the least recently inserted item in the queue.
-	 * @throws UnderflowException if the queue is empty.
 	 */
 	public Double getFront( )
 	{
@@ -119,6 +118,9 @@ public class Queue {
 		back = currentSize - 1;
 	}
 
+	/**
+	 * @return amount of elements in the queue.
+	 */
 	public int size() {
 		return currentSize;
 	}

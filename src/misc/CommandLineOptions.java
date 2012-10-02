@@ -26,6 +26,10 @@ public class CommandLineOptions
 	/** Option "f", specify the output file for the commandline runner. */
 	public String outputFile;
 
+	/**
+	 * Method used to parse the commandline options.
+	 * @param args arguments given to the commandline.
+	 */
 	@SuppressWarnings("unchecked")
 	public void parse(String [] args)
 	{

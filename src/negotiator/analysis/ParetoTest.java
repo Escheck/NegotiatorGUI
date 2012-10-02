@@ -68,8 +68,8 @@ public class ParetoTest {
 
 	/**
 	 * 
-	 * @param args
-	 * @throws Exception
+	 * @param args are ignored.
+	 * @throws Exception may occur if there are problems reading files.
 	 */
 	public static void main(String[] args) throws Exception {
 		// 1. Path to main directory in which Genius is installed
@@ -83,7 +83,7 @@ public class ParetoTest {
 	 * BidSpace class returns the right results.
 	 * 
 	 * @param dir in which Genius is installed
-	 * @throws Exception
+	 * @throws Exception when an error occurs on parsing the files.
 	 */
 	public static void process(String dir) throws Exception {
 		ArrayList<ScenarioInfo> domains = parseDomainFile(dir);

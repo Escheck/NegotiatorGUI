@@ -47,10 +47,8 @@ public class QAgentType {
 	public static final int NO_TYPE = -1;
 	public static final int ENGLAND_TYPE = 0;
 	public static final int ZIMBABWE_TYPE = 1;
-	
-	private String m_sAgentName;
-	
-	private Hashtable m_mapAgreementToRanking;
+
+	private Hashtable<String, Integer> m_mapAgreementToRanking;
 	
 	private boolean m_bEquilibriumAgent = false;
 
@@ -76,7 +74,6 @@ public class QAgentType {
 		m_bEquilibriumAgent = bEquilibriumAgent;
 		m_mapAgreementToRanking = new Hashtable();
 		m_nType = NO_TYPE;
-		m_sAgentName = "";
 		
 		m_dBestAgreementValue = VERY_SMALL_NUMBER;
 		m_dWorstAgreementValue = VERY_HIGH_NUMBER;
@@ -101,11 +98,6 @@ public class QAgentType {
 		m_dMaxValue = VERY_HIGH_NUMBER; //06-05-06
 		
 		m_dTypeProbability = (double)1 / (double)QAgentsCore.AGENT_TYPES_NUM;
-	}
-
-	public void setName(String sName)
-	{
-		m_sAgentName = sName;
 	}
 	
 	/**
@@ -170,9 +162,6 @@ public class QAgentType {
 		m_dTotalAgreementsPointsAboveSQ = 0;
 		
 		double dAgreementValue = 0;
-		double dCurrentIssueValue = 0;
-		int nCurrentIssueImportance = 0;
-		int nCurrentIssueWeight = 0;
 		int nValuesNum = 0;
 		
 		// initialization
@@ -339,7 +328,6 @@ public class QAgentType {
 
 		String sAgreement;
 		int nRanking = 0;
-		double dRankingProb = 0;
 		
 		int nMessageRanking = getAgreementRanking(sRejectedMsg);
 		double dPrevTypeProbability = getTypeProbability();
@@ -766,10 +754,6 @@ public class QAgentType {
 		pw.println("------------" + sSourceFileName + "----------");
 		
 		double dAgreementValue = 0;
-		double dCurrentIssueValue = 0;
-		int nCurrentIssueImportance = 0;
-		int nCurrentIssueWeight = 0;
-		int nValuesNum = 0;
 		
 		int nIssuesNum = getIssuesNum();
 		

@@ -22,6 +22,9 @@ public class EndNegotiation extends Action {
     	this.agentID = agentID;
     }
 	
+    /**
+     * @return string representation of action: "(EndNegotiation)".
+     */
     public String toString() {
         return "(EndNegotiation)";
     }    

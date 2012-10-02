@@ -30,6 +30,9 @@ public class BidPoint {
 		this.utility = utility.clone();
 	}
 	
+	/**
+	 * @return string representation of the object.
+	 */
 	public String toString() {
 		String result = "BidPoint ["+bid;
 		for(int i=0;i<utility.length;i++) {
@@ -38,6 +41,10 @@ public class BidPoint {
 		return result;
 	}
 
+    /**
+     * @param obj object to which this object is compared.
+     * @return true if this object is equal to the given object.
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -64,6 +71,9 @@ public class BidPoint {
 		return true;
 	}
 
+    /**
+     * @return hashcode of this object.
+     */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,6 +97,7 @@ public class BidPoint {
 	 * Returns the utility of the bid for the i'th agent
 	 * (agent A = 0, etc.).
 	 * 
+	 * @param index of the agent of which the utility should be returned.
 	 * @return utility of the bid for the i'th agent.
 	 */
 	public Double getUtility(int index) {

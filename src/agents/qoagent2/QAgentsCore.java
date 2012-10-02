@@ -185,21 +185,8 @@ public class QAgentsCore {
 			m_dNextTurnQOValue = QAgentType.VERY_SMALL_NUMBER;
 			
 			m_nNextTurnOppType = QAgentType.NO_TYPE;
-			
-			// nash variables
-			double dNashValue = QAgentType.VERY_SMALL_NUMBER;
-			double dOppNashSelectedValue = 0;
-			double dAgentNashSelectedValue = 0;
-			String sNashAgreement = "";
-			
+
 			int nIssuesNum = m_CurrentAgentType.getIssuesNum();
-			
-			// opponent types variables
-			/* 06-05-06
-			int OpponentShortTermIdx[] = new int[nIssuesNum];
-			int OpponentLongTermIdx[] = new int[nIssuesNum];
-			int OpponentCompromiseIdx[] = new int[nIssuesNum];
-			*/
 
 			//06-05-06
 			int OpponentShortTermIdx[][] = new int[OFFER_SET_SIZE][nIssuesNum];
@@ -224,7 +211,6 @@ public class QAgentsCore {
 			}
 			
 			// nash variables
-			String sOpponentCompromiseNashAgreement, sOpponentShortTermNashAgreement, sOpponentLongTermNashAgreement;
 			double dCurrentNashValue = QAgentType.VERY_SMALL_NUMBER;
 			double dOpponentCompromiseNashValue = QAgentType.VERY_SMALL_NUMBER; 
 			double dOpponentLongTermNashValue = QAgentType.VERY_SMALL_NUMBER;
@@ -325,12 +311,6 @@ public class QAgentsCore {
 						bCalcOpponentLongTerm = true;
 				}
 			}
-			
-			double dAgreementValue = 0;
-			double dCurrentIssueValue = 0;
-			int nCurrentIssueImportance = 0;
-			int nCurrentIssueWeight = 0;
-			int nValuesNum = 0;
 			
 			int CurrentAgreementIdx[] = new int[nIssuesNum];
 			int MaxIssueValues[] = new int[nIssuesNum];
@@ -568,7 +548,6 @@ public class QAgentsCore {
 						if (dCurrentNashValue > dOpponentCompromiseNashValue)
 						{
 							dOpponentCompromiseNashValue = dCurrentNashValue;
-							sOpponentCompromiseNashAgreement = m_CurrentAgentType.getAgreementStr(CurrentAgreementIdx);
 						}
 					}
 				}
@@ -682,7 +661,6 @@ public class QAgentsCore {
 						if (dCurrentNashValue > dOpponentLongTermNashValue)
 						{
 							dOpponentLongTermNashValue = dCurrentNashValue;
-							sOpponentLongTermNashAgreement = m_CurrentAgentType.getAgreementStr(CurrentAgreementIdx);
 						}
 					}
 				}
@@ -796,7 +774,6 @@ public class QAgentsCore {
 						if (dCurrentNashValue > dOpponentShortTermNashValue)
 						{
 							dOpponentShortTermNashValue = dCurrentNashValue;
-							sOpponentShortTermNashAgreement = m_CurrentAgentType.getAgreementStr(CurrentAgreementIdx);
 						}
 					}
 				}
@@ -1760,11 +1737,8 @@ public class QAgentsCore {
 		QAgentType compromiseType = new QAgentType(m_bEquilibriumAgent);
 		compromiseType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilitySide_BCompromise.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[COMPROMISE_TYPE_IDX], compromiseType);
 		
-		compromiseType.setName("ZimComp");
 		m_ZimbabweAgentTypesList.set(COMPROMISE_TYPE_IDX, compromiseType);
 		
 		QAgentType agentTypeNextTurn = compromiseType;
@@ -1781,11 +1755,8 @@ public class QAgentsCore {
 		QAgentType shortTermType = new QAgentType(m_bEquilibriumAgent);
 		shortTermType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilitySide_BShortTerm.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[SHORT_TERM_TYPE_IDX], shortTermType);
 				
-		shortTermType.setName("Side_BShort");
 		m_ZimbabweAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
 		
 		QAgentType agentTypeNextTurn = shortTermType;
@@ -1802,11 +1773,8 @@ public class QAgentsCore {
 		QAgentType longTermType = new QAgentType(m_bEquilibriumAgent);
 		longTermType.setAgentType(QAgentType.ZIMBABWE_TYPE);
 		
-		String sFileName = "utilitySide_BLongTerm.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[LONG_TERM_TYPE_IDX], longTermType);
 		
-		longTermType.setName("Side_BLong");
 		m_ZimbabweAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
 		
 		QAgentType agentTypeNextTurn = longTermType;
@@ -1823,11 +1791,8 @@ public class QAgentsCore {
 		QAgentType compromiseType = new QAgentType(m_bEquilibriumAgent);
 		compromiseType.setAgentType(QAgentType.ENGLAND_TYPE);
 	
-		String sFileName = "utilitySide_ACompromise.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[COMPROMISE_TYPE_IDX], compromiseType);
 		
-		compromiseType.setName("Side_AComp");
 		
 		m_EnglandAgentTypesList.set(COMPROMISE_TYPE_IDX, compromiseType);
 		
@@ -1845,11 +1810,8 @@ public class QAgentsCore {
 		QAgentType shortTermType = new QAgentType(m_bEquilibriumAgent);
 		shortTermType.setAgentType(QAgentType.ENGLAND_TYPE);
 		
-		String sFileName = "utilitySide_AShortTerm.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[SHORT_TERM_TYPE_IDX], shortTermType);
 		
-		shortTermType.setName("Side_AShort");
 		m_EnglandAgentTypesList.set(SHORT_TERM_TYPE_IDX, shortTermType);
 
 		QAgentType agentTypeNextTurn = shortTermType;
@@ -1866,11 +1828,8 @@ public class QAgentsCore {
 		QAgentType longTermType = new QAgentType(m_bEquilibriumAgent);
 		longTermType.setAgentType(QAgentType.ENGLAND_TYPE);
 		
-		String sFileName = "utilitySide_ALongTerm.txt";
-		
 		createAgentTypeFromFile(m_Agent.opponentModels[LONG_TERM_TYPE_IDX], longTermType);
 		
-		longTermType.setName("Side_ALong");
 		m_EnglandAgentTypesList.set(LONG_TERM_TYPE_IDX, longTermType);
 		
 		QAgentType agentTypeNextTurn = longTermType;
@@ -2226,11 +2185,9 @@ public class QAgentsCore {
 	{
 		QAgentType agentType = null;
 		double dPrevTypeProbability = 0;
-		double dPrevOfferValue = 0;
 		double dPrevOfferProbability = 0;
 		double dOfferSum = 0;
 		double dUpdatedTypeProbability = 0;
-		double dProbDiff = 0;
 		double dAgentOfferSum = 0;
 		
 		String sRejectedMsg = m_CurrentAgentType.getAgreementStr(CurrentAgreementIdx);

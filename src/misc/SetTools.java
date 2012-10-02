@@ -15,9 +15,8 @@ public class SetTools {
 	/**
 	 * Given a list of sets, this method returns the Cartesian product
 	 * of the given sets.
-	 * @param <A>
-	 * 
-	 * @param sets
+	 * @param <A> class of object contained in set.
+	 * @param sets sets of objects which Cartesian product must be determined.
 	 * @return set of sets symbolizing the Cartesian product
 	 */
 	public static <A> Set<Set<A>> cartesianProduct(Set<A>... sets) {

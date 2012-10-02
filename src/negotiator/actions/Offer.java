@@ -23,6 +23,9 @@ public class Offer extends Action {
         this.bid = bid;
     }
     
+    /**
+     * @return hashcode of this object.
+     */
     @Override
 	public int hashCode() {
 		final int prime = 31;
@@ -31,6 +34,10 @@ public class Offer extends Action {
 		return result;
 	}
     
+    /**
+     * @param obj object to which this object is compared.
+     * @return true if this object is equal to the given object.
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -52,7 +59,7 @@ public class Offer extends Action {
 	 * Creates an action symbolizing an offer to the opponent.
 	 * 
 	 * @param agent which created this offer.
-	 * @param bid
+	 * @param bid to be offered to the opponent.
 	 */
     public Offer(Agent agent, Bid bid) {
         this(agent.getAgentID(), bid);
@@ -68,6 +75,9 @@ public class Offer extends Action {
         return bid;
     }
     
+    /**
+     * @return string representation of action: "(Offer: BID)".
+     */
     public String toString() {
         return "(Offer: " + (bid == null ? "null" : bid.toString()) + ")";
     }

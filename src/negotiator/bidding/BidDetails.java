@@ -52,7 +52,7 @@ public class BidDetails implements Comparable<BidDetails>{
 	
 	/**
 	 * Set the bid.
-	 * @param bid
+	 * @param bid to be set in this object.
 	 */
 	public void setBid(Bid bid) {
 		this.bid = bid;
@@ -90,6 +90,9 @@ public class BidDetails implements Comparable<BidDetails>{
 		this.time = time;
 	}
 	
+	/**
+	 * @return string representation of the object (u=UTILITY, t=TIME).
+	 */
 	@Override
 	public String toString()
 	{
@@ -115,6 +118,9 @@ public class BidDetails implements Comparable<BidDetails>{
 		return value;
 	}
 
+    /**
+     * @return hashcode of this object.
+     */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,6 +134,10 @@ public class BidDetails implements Comparable<BidDetails>{
 		return result;
 	}
 
+    /**
+     * @param obj object to which this object is compared.
+     * @return true if this object is equal to the given object.
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
