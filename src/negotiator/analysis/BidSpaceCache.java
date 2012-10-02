@@ -1,36 +1,45 @@
 package negotiator.analysis;
 
 import java.util.Arrays;
-
 import negotiator.utility.UtilitySpace;
 
+/**
+ * Caches the BidSpace such that we don't have to recompute it each time.
+ * Only one BidSpace can be stored at a time to limit the memory costs.
+ * 
+ * @author Mark Hendrikx
+ */
 public class BidSpaceCache {
 	
+	/** String representation of the stored domains. */
 	private static String[] identifier;
+	/** Reference to the cached BidSpace. */
 	private static BidSpace cachedBidSpace;
-	
-	public static void cacheBidSpace(BidSpace bidSpace, String ... ident) throws Exception {
-		// extra check, just to be sure that we are not calculating the space twice.
-		if (isCached(ident)) {
-			throw new Exception("This space is already cached. Check that you are not " +
-								"calculating the space multiple times.");
-		} else {
-			System.out.println("CACHING: " + ident);
-			identifier = ident;
-			cachedBidSpace = bidSpace;
+
+	/**
+	 * Method used to load a BidSpace. If the BidSpace is already
+	 * cached, then the cached BidSpace is used. Otherwise, the
+	 * BidSpace is constructed.
+	 * 
+	 * @param spaces from which a BidSpace must be constructed.
+	 * @return BidSpace belonging to the given UtilitySpace's.
+	 */
+	public static BidSpace getBidSpace(UtilitySpace ... spaces) {
+		// determine the unique identifier of the given utilityspaces.
+		String[] ident = new String[spaces.length];
+		for (int i = 0; i < spaces.length; i++) {
+			ident[i] = spaces[i].getFileName();
 		}
-	}
-	
-	public static BidSpace getCachedSpace() {
-		return cachedBidSpace;
-	}
-	
-	public static boolean isCached(String[] ident) {
-		return Arrays.equals(ident, identifier);
-	}
-	
-	public static boolean isCached(UtilitySpace spaceA, UtilitySpace spaceB) {
-		String[] ident = {spaceA.getFileName(), spaceB.getFileName()};
-		return Arrays.equals(ident, identifier);
+		
+		// check if the space is already cached. If not, create bidspace.
+		if (!Arrays.equals(ident, identifier)) {
+			try {
+				cachedBidSpace = new BidSpace(spaces);
+				identifier = ident;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return cachedBidSpace;	
 	}
 }

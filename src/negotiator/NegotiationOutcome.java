@@ -20,6 +20,7 @@ import negotiator.analysis.BidPointSorterA;
 import negotiator.analysis.BidPointSorterB;
 import negotiator.analysis.BidPointTime;
 import negotiator.analysis.BidSpace;
+import negotiator.analysis.BidSpaceCache;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
@@ -145,7 +146,9 @@ public class NegotiationOutcome
 		//double cooperation;
 		if (Global.LOG_COMPETITIVENESS)
 		{
-			BidSpace bidSpace = alternatingOffersBilateralAtomicNegoSession.getBidSpace();
+			UtilitySpace[] spaces = { alternatingOffersBilateralAtomicNegoSession.getAgentAUtilitySpace(),
+									alternatingOffersBilateralAtomicNegoSession.getAgentBUtilitySpace() };
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(spaces);
 			fyu = getFYU(agentX, bidSpace);
 			
 			minDemandedUtil = getMinDemandedUtil(agentX, bids);
