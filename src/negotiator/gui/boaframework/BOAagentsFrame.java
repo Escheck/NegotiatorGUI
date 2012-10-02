@@ -247,7 +247,7 @@ public class BOAagentsFrame extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<BOAagentInfo> agents = new ArrayList<BOAagentInfo>();
 				for (int i = 0; i < agentsModel.getSize(); i++) {
-					agents.add((BOAagentInfo) agentsModel.getElementAt(i));
+					agents.add(agentsModel.getElementAt(i));
 				}
 				result = agents;
 				dispose();
@@ -496,14 +496,14 @@ public class BOAagentsFrame extends JDialog {
 		Set<BOAcomponent> omStrat = generateStrategies(omModel.getElementAt(omList.getSelectedIndex()), getParameters(omParamsModel), "om");
 		Set<BOAcomponent> omsStrat = generateStrategies(omsModel.getElementAt(omsList.getSelectedIndex()), getParameters(omsParamsModel), "oms");
 		
-		Set<Set<Object>> result = SetTools.cartesianProduct(osStrat, asStrat, omStrat, omsStrat);
-		Iterator strategyIterator = result.iterator();
+		Set<Set<BOAcomponent>> result = SetTools.cartesianProduct(osStrat, asStrat, omStrat, omsStrat);
+		Iterator<Set<BOAcomponent>> strategyIterator = result.iterator();
 		while (strategyIterator.hasNext()) {
-			Set<BOAcomponent> fullStrat = (Set<BOAcomponent>) strategyIterator.next();
-			Iterator strat = fullStrat.iterator();
+			Set<BOAcomponent> fullStrat = strategyIterator.next();
+			Iterator<BOAcomponent> strat = fullStrat.iterator();
 			BOAcomponent os = null, as = null, om = null, oms = null;
 			while (strat.hasNext()) {
-				BOAcomponent strategy = (BOAcomponent) strat.next();
+				BOAcomponent strategy = strat.next();
 				if (strategy.getType().equals("bs")) {
 					os = strategy;
 				} else if (strategy.getType().equals("as")) {
@@ -525,20 +525,21 @@ public class BOAagentsFrame extends JDialog {
 			ArrayList<BOAparameter> parameters, String type) {
 
 		// retrieve all sets of parameters
-		Set[] params = new Set[parameters.size()];
+		@SuppressWarnings("unchecked") // something strange in Java, google "Cannot create a generic array of"
+		Set<Pair<String, Double>>[] params = new Set[parameters.size()];
 		for (int i = 0; i < parameters.size(); i++) {
 			params[i] = parameters.get(i).getValuePairs();
 		}
-		Set<Set<Object>> result = SetTools.cartesianProduct(params);
+		Set<Set<Pair<String, Double>>> result = SetTools.cartesianProduct(params);
 		
 		Set<BOAcomponent> strategies = new HashSet<BOAcomponent>();
-		Iterator<Set<Object>> combinationsIterator = result.iterator();
+		Iterator<Set<Pair<String, Double>>> combinationsIterator = result.iterator();
 
 		while (combinationsIterator.hasNext()) {
 			// all combinations
-			Set<Object> set = combinationsIterator.next();
+			Set<Pair<String, Double>> set = combinationsIterator.next();
 			BOAcomponent strat = new BOAcomponent(classname, type);
-			Iterator<Object> paramIterator = set.iterator();
+			Iterator<Pair<String, Double>> paramIterator = set.iterator();
 			// a set of 
 			while (paramIterator.hasNext()) {
 				Pair<String, Double> pair = (Pair<String, Double>) paramIterator.next();
@@ -555,7 +556,7 @@ public class BOAagentsFrame extends JDialog {
 
 		if (model != null && model.size() > 0) {
 			for (int i = 0; i < model.getSize(); i++) {
-				profiles.add((BOAparameter) model.getElementAt(i));
+				profiles.add(model.getElementAt(i));
 			}
 		} else {
 			profiles.add(nullParam);

@@ -86,17 +86,6 @@ public class Global {
 	
 	public Global() {}
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	private static void checkArguments(String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("-d"))
-				fDebug = true;
-		}
-	}
-
 	public static String getCurrentTime() {
 		Calendar cal = Calendar.getInstance(TimeZone.getDefault());
 		String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";

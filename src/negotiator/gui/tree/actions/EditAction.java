@@ -14,6 +14,7 @@ import negotiator.issue.*;
 
 public class EditAction extends AbstractAction {
 	
+	private static final long serialVersionUID = -4491726706262184805L;
 	//Attributes
 	TreeFrame treeFrame;
 	//JTreeTable treeTable;

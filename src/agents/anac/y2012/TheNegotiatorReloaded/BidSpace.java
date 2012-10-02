@@ -152,8 +152,8 @@ public class BidSpace {
 
 		 // clone because we will remove elements from the list but we want to keep the orig lists.
 		 // This looks bit ugly....
-		ArrayList<BidPoint> list1=(ArrayList<BidPoint>)(pareto1.clone()); 
-		ArrayList<BidPoint> list2=(ArrayList<BidPoint>)(pareto2.clone());
+		ArrayList<BidPoint> list1 = new ArrayList<BidPoint>(pareto1); 
+		ArrayList<BidPoint> list2 = new ArrayList<BidPoint>(pareto2);
 		 // make sure that the first pareto list has the left most point.
 		if (list1.get(0).getUtilityA() >list2.get(0).getUtilityA()) 
 		{

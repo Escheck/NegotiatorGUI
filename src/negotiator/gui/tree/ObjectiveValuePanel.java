@@ -11,8 +11,8 @@ import negotiator.issue.*;
 
 public class ObjectiveValuePanel extends IssueValuePanel {
 
-//Attributes
-	
+	private static final long serialVersionUID = -4899545167184650567L;
+
 	//Constructors
 	public ObjectiveValuePanel(NegotiatorTreeTableModel model, Objective objective) {
 		super(model, objective);

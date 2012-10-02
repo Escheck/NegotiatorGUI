@@ -15,17 +15,18 @@ public class SetTools {
 	/**
 	 * Given a list of sets, this method returns the Cartesian product
 	 * of the given sets.
+	 * @param <A>
 	 * 
 	 * @param sets
 	 * @return set of sets symbolizing the Cartesian product
 	 */
-	public static Set<Set<Object>> cartesianProduct(Set<?>... sets) {
+	public static <A> Set<Set<A>> cartesianProduct(Set<A>... sets) {
 	    if (sets.length < 2) {
-	    	Iterator<?> setIterator = sets[0].iterator();
-	    	HashSet<Set<Object>> mainSet = new HashSet<Set<Object>>();
+	    	Iterator<A> setIterator = sets[0].iterator();
+	    	Set<Set<A>> mainSet = new HashSet<Set<A>>();
 	    	while (setIterator.hasNext()) {
-	    		Object item = setIterator.next();
-	    		Set<Object> set = new HashSet<Object>();
+	    		A item = setIterator.next();
+	    		Set<A> set = new HashSet<A>();
 	    		set.add(item);
 	    		mainSet.add(set);
 	    	}
@@ -34,13 +35,13 @@ public class SetTools {
 	    return _cartesianProduct(0, sets);
 	}
 
-	private static Set<Set<Object>> _cartesianProduct(int index, Set<?>... sets) {
-	    Set<Set<Object>> ret = new HashSet<Set<Object>>();
+	private static <A> Set<Set<A>> _cartesianProduct(int index, Set<A>... sets) {
+	    Set<Set<A>> ret = new HashSet<Set<A>>();
 	    if (index == sets.length) {
-	        ret.add(new HashSet<Object>());
+	        ret.add(new HashSet<A>());
 	    } else {
-	        for (Object obj : sets[index]) {
-	            for (Set<Object> set : _cartesianProduct(index+1, sets)) {
+	        for (A obj : sets[index]) {
+	            for (Set<A> set : _cartesianProduct(index+1, sets)) {
 	                set.add(obj);
 	                ret.add(set);
 	            }

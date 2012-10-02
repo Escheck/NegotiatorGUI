@@ -98,8 +98,6 @@ public class QOAgent extends Agent {
 			case QMessages.OFFER:
 			case QMessages.COUNTER_OFFER:
 			{
-				String sAttribute, sValue;
-				
 /*				sFormattedMsg = "type offer" +
 						" source " + m_agent.getAgentId() +
 						" target " + m_agent.getOpponentAgentId() + 

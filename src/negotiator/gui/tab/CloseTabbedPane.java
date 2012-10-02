@@ -33,6 +33,8 @@ import javax.swing.plaf.TabbedPaneUI;
 
 public class CloseTabbedPane extends JTabbedPane implements Serializable  {
 
+	private static final long serialVersionUID = -819489825604971110L;
+
 	private int overTabIndex = -1;
 
 	private CloseTabPaneUI paneUI;
@@ -53,14 +55,6 @@ public class CloseTabbedPane extends JTabbedPane implements Serializable  {
 
 		super.setUI(paneUI);
 	}
-        private void initComponents() {
-		super.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
-		paneUI = new CloseTabPaneEnhancedUI();
-		//paneUI = (CloseTabProxyUI) CloseTabProxyUI.createUI(this);//new CloseTabProxyUI((TabbedPaneUI)UIManager.getUI(this));
-
-		super.setUI(paneUI);        
-        }
 	/**
 	 * Returns the index of the last tab on which the mouse did an action.
 	 */

@@ -38,6 +38,7 @@ import negotiator.xml.SimpleElement;
  */
 @Deprecated
 public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
+	private static final long serialVersionUID = -7728106021893090285L;
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
@@ -282,20 +283,11 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			
 			//calculate distance between the two spaces
 			
-			SimpleElement xmlDistance =null;//  dist.calculateDistances();
-			//xmlDistance.setTagName("opposition");
-			
 			if(fAdditional!=null) { 
 				if(outcome.additional==null) {
 					outcome.additional = new SimpleElement("additional");
 				}
 				outcome.additional.addChildElement(fAdditional);				
-			}
-			if(xmlDistance!=null) { 
-				if(outcome.additional==null) {
-					outcome.additional = new SimpleElement("additional");
-				}
-				outcome.additional.addChildElement(xmlDistance);				
 			}
 
 			try {
@@ -752,6 +744,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			ProfileRepItem[] profiles = new ProfileRepItem[2];
 			profiles[0] = profileA;
 			profiles[1] = profileB;
+	        @SuppressWarnings("unchecked") // Google creating generic array types in Java
 			HashMap<AgentParameterVariable,AgentParamValue>[] params = new HashMap[2];
 			params[0] = paramsA;
 			params[1] = paramsB;

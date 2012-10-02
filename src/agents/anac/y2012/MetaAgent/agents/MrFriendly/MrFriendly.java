@@ -16,12 +16,6 @@ public class MrFriendly extends Agent{
 	private static final double FIRST_TIME_BOUNDARY = 0.90;
 	
 	/**
-	 * If the time fraction is greater than or equal to this boundary, we try to end the
-	 * session well by offering the best bid he gave us.
-	 */
-	private static final double LAST_CHANCE_TIME_BOUNDARY = 0.991;
-	
-	/**
 	 * Minimum number of opponent bids we want before we switch from not-giving-in strategy
 	 * to using the model to find a Pareto solution
 	 */

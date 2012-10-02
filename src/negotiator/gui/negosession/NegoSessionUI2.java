@@ -448,23 +448,13 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnParamsAgentA;
     private javax.swing.JButton btnParamsAgentB;
-    private javax.swing.JButton btnParamsAgentB1;
-    private javax.swing.JButton btnParamsAgentB2;
     private javax.swing.JButton btnStart;
     private javax.swing.JComboBox cmbAgentA;
     private javax.swing.JComboBox cmbAgentB;
-    private javax.swing.JComboBox cmbAgentB1;
-    private javax.swing.JComboBox cmbAgentB2;
     private javax.swing.JComboBox cmbPrefProfileA;
     private javax.swing.JComboBox cmbPrefProfileB;
-    private javax.swing.JComboBox cmbPrefProfileB1;
-    private javax.swing.JComboBox cmbPrefProfileB2;
     private javax.swing.JComboBox cmbProtocol;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -473,45 +463,26 @@ public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUICompone
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTextField txtGUITimeout;
     private javax.swing.JTextField txtNonGUITimeout;
     private javax.swing.JTextField txtParamsAgentA;
     private javax.swing.JTextField txtParamsAgentB;
-    private javax.swing.JTextField txtParamsAgentB1;
-    private javax.swing.JTextField txtParamsAgentB2;
     // End of variables declaration//GEN-END:variables
-	public void addAction() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void addAction() { }
 
-	public void editAction() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void editAction() { }
 
 	public JButton[] getButtons() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void removeAction() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeAction() {}
 
-	public void saveAction() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void saveAction() { }
 
 }
 /** this is to override the toString of an AgentRepItem, to show only the short name. */

@@ -66,17 +66,18 @@ public abstract class Protocol implements Runnable, Serializable {
     	protocolThread.start();
     }
     
-    
-    public Protocol(AgentRepItem[] agentRepItems,
+	public Protocol(AgentRepItem[] agentRepItems,
     				ProfileRepItem[] profileRepItems,
     				HashMap<AgentParameterVariable,
     				AgentParamValue>[] agentParams,
     				HashMap<String, Integer> configuration) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
-    	if (agentParams!=null) 
+    	if (agentParams!=null) {
     		this.agentParams = agentParams.clone();
-    	else this.agentParams = new HashMap[agentRepItems.length];
+    	} else {
+    		this.agentParams = new HashMap[agentRepItems.length];
+		}
     	this.configuration = new HashMap<String, Integer>(configuration);
     	loadAgentsUtilitySpaces();
     }

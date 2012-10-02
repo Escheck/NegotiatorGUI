@@ -22,6 +22,8 @@ import negotiator.xml.SimpleElement;
 
 public class ArrayListXML<E> extends ArrayList<E> implements XMLable
 {
+	private static final long serialVersionUID = 2308241807299226296L;
+
 	ArrayListXML(ArrayList<E> l) { super(l); } // useful to cast ArrayList to ArrayListXML.
 	
    public SimpleElement toXML()

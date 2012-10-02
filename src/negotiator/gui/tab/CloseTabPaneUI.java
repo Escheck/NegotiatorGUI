@@ -795,19 +795,6 @@ public class CloseTabPaneUI extends BasicTabbedPaneUI {
 		return min;
 	}
 
-	/**
-	 * Returns a point which is translated from the specified point in the
-	 * JTabbedPane's coordinate space to the coordinate space of the
-	 * ScrollableTabPanel. This is used for SCROLL_TAB_LAYOUT ONLY.
-	 */
-	private Point translatePointToTabPanel(int srcx, int srcy, Point dest) {
-		Point vpp = tabScroller.viewport.getLocation();
-		Point viewp = tabScroller.viewport.getViewPosition();
-		dest.x = srcx + vpp.x + viewp.x;
-		dest.y = srcy + vpp.y + viewp.y;
-		return dest;
-	}
-
 	// BasicTabbedPaneUI methods
 
 	// Tab Navigation methods

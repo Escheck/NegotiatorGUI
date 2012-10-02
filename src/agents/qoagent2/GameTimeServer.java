@@ -13,7 +13,8 @@ import java.net.*;
  ****************************************************************/
 class GameTimeServer extends JPanel implements Runnable
 {
-//DT:	private ServerThread m_st = null; //Allows access to the agent's thread at the server
+	private static final long serialVersionUID = -7439433284667379204L;
+	//DT:	private ServerThread m_st = null; //Allows access to the agent's thread at the server
 //DT:	private MultiServer m_server; //Allows access to the server
 	private Agent m_agent; //Allows access to the agent running the stop watch
 	private int m_nMaxTurn; //Number of turns in the negotiation

@@ -217,7 +217,8 @@ public class CSVLoader
          }
 
          //load agent parameters for side A
-         HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsAp = new HashMap[agentsARI.length];
+         @SuppressWarnings("unchecked") // Google creating generic array types in Java
+		HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsAp = new HashMap[agentsARI.length];
          for(int i = 0; i < agentsARI.length; i++)
          {
              agentParamsAp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
@@ -331,7 +332,8 @@ public class CSVLoader
         System.arraycopy(agentsA, 0, agentsRI, 0, agentsA.length);
         System.arraycopy(agentsB, 0, agentsRI, agentsA.length, agentsB.length);
             
-        HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[totalNumberOfAgents];
+        @SuppressWarnings("unchecked") // Google creating generic array types in Java
+		HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[totalNumberOfAgents];
         for(int i = 0; i < agentParamsp.length; i++)
         {
             agentParamsp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();

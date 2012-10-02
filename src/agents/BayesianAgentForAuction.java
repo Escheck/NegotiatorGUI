@@ -420,11 +420,6 @@ public class BayesianAgentForAuction extends Agent {
 	                	} else {
 	                		
 	                		lAction=new Offer(getAgentID(),lnextBid);
-                            
-                                                    
-                            //Liviu: it doesn't allow proposing null bid
-                            if(lnextBid == null)
-                                lnextBid = myPreviousBids.get(myPreviousBids.size() - 1);
 	                	 
 	                		// Propose counteroffer. Get next bid.
 	                		// Check if utility of the new bid is lower than utility of the opponent's last bid

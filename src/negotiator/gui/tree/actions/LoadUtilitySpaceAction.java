@@ -15,7 +15,7 @@ import negotiator.utility.*;
 
 public class LoadUtilitySpaceAction extends AbstractAction {
 
-	//Attributes
+	private static final long serialVersionUID = 5384760243177590552L;
 	private TreeFrame parent;
 	private File openedFile;
 	private final JFileChooser fileChooser;

@@ -5,6 +5,7 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class AgentVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = -7857863575808230226L;
 	private String side = null;
 	public void addValue(TournamentValue a) throws Exception
 	{

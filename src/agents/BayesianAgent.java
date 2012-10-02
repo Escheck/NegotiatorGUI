@@ -356,29 +356,6 @@ public class BayesianAgent extends Agent {
 		if(logging) 
 			System.out.println(pMessage);
 	}
-
-	/**
-	 * This function determines the accept probability for an offer.
-	 * At t=0 it will prefer high-utility offers.
-	 * As t gets closer to 1, it will accept lower utility offers with increasing probability.
-	 * it will never accept offers with utility 0.
-	 * @param u is the utility 
-	 * @param t is the time as fraction of the total available time 
-	 * (t=0 at start, and t=1 at end time)
-	 * @return the probability of an accept at time t
-	 * @throws Exception if you use wrong values for u or t.
-	 * 
-	 */
-	private double Paccept(double u, double t1) throws Exception
-	{
-		double t=t1*t1*t1; // get more relaxed more to the end.
-		if (u<0 || u>1.05) throw new Exception("utility "+u+" outside [0,1]");
-		if (t<0 || t>1) throw new Exception("time "+t+" outside [0,1]");
-		if (u>1.) u=1.;
-		
-		if (t==0.5) return u;
-		return (u - 2.*u*t + 2.*(-1. + t + Math.sqrt(sq(-1. + t) + u*(-1. + 2*t))))/(-1. + 2*t);
-	}
 	
 	private double sq(double x) { return x*x; }
 	

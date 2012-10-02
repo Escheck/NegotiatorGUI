@@ -16,13 +16,11 @@ import negotiator.gui.tree.*;
 public class AddIssueAction extends AbstractAction {
 	private static final long serialVersionUID = -3180369207410940284L;
 	//Attributes
-	private JTreeTable treeTable;
 	private TreeFrame owner;
 	
 	//Constructors
 	public AddIssueAction(TreeFrame dialogOwner, JTreeTable treeTable) {
 		super("Add Issue");
-		this.treeTable = treeTable;
 		this.owner = dialogOwner;
 	}
 	

@@ -14,6 +14,7 @@ import negotiator.issue.*;
 
 public class NewDomainAction extends AbstractAction {
 
+	private static final long serialVersionUID = 2219192688486419782L;
 	//Attributes
 	private TreeFrame parent;
 	

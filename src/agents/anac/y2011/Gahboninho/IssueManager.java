@@ -339,7 +339,7 @@ public class IssueManager
 				try 
 				{
 					
-					Bid newBid = new Bid(US.getDomain(),(HashMap<Integer, Value>) B.clone() );
+					Bid newBid = new Bid(US.getDomain(),new HashMap<Integer, Value>(B));
 					
 					double BidUtil = US.getUtility(newBid);
 					

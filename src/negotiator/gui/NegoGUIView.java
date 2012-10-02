@@ -10,22 +10,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
-
 import javax.swing.Icon;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.TreePath;
 import negotiator.CSVLoader;
-
 import org.jdesktop.application.Action;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.TaskMonitor;
-
 import negotiator.Domain;
 import negotiator.Global;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
@@ -52,7 +48,6 @@ import negotiator.utility.UtilitySpace;
 public class NegoGUIView extends FrameView {
 	private static final boolean fTournamentEnabled =true;
 	private static final boolean dTournamentEnabled =true;
-	private AgentRepositoryUI agentRep = null;
 	private DomainRepositoryUI domainRep = null;
 	private NegoGUIComponent activeComponent = null;
     public NegoGUIView(SingleFrameApplication app) {
@@ -115,7 +110,7 @@ public class NegoGUIView extends FrameView {
         
         //custom
         try{
-        	agentRep = new AgentRepositoryUI(tableAgents);
+        	new AgentRepositoryUI(tableAgents);
         	domainRep = new DomainRepositoryUI(treeDomains);
         } catch (Exception e) {
 			// TODO: handle exception
@@ -696,8 +691,6 @@ private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
 
-    private JDialog aboutBox;
-    
     public  CloseTabbedPane getMainTabbedPane() {
     	return closeTabbedPane1;
     }
