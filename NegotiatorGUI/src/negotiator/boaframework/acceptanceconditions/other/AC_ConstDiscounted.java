@@ -21,6 +21,9 @@ public class AC_ConstDiscounted extends AcceptanceStrategy {
 
 	private double constant;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_ConstDiscounted() { }
 	
 	public AC_ConstDiscounted(NegotiationSession negoSession, double c){

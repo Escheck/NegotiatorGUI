@@ -19,6 +19,9 @@ public class AC_Time extends AcceptanceStrategy {
 
 	private double constant;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_Time() { }
 	
 	public AC_Time(NegotiationSession negoSession, double c){

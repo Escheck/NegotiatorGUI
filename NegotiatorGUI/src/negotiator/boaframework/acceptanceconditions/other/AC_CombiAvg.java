@@ -23,6 +23,9 @@ public class AC_CombiAvg extends AcceptanceStrategy {
 
 	private double time;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_CombiAvg() { }
 	
 	public AC_CombiAvg(NegotiationSession negoSession, OfferingStrategy strat, double t){

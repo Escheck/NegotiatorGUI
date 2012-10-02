@@ -24,8 +24,10 @@ public class AC_CombiProb extends AcceptanceStrategy {
 	
 	private double time;
 
-	public AC_CombiProb() {
-	}
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
+	public AC_CombiProb() { }
 
 	public AC_CombiProb(NegotiationSession negoSession, OfferingStrategy strat,
 			double t) {

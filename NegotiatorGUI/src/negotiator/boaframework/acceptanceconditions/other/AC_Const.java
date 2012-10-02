@@ -20,6 +20,9 @@ public class AC_Const extends AcceptanceStrategy {
 
 	private double constant;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_Const() { }
 	
 	public AC_Const(NegotiationSession negoSession, double c){

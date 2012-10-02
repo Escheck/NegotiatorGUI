@@ -1,6 +1,12 @@
 package negotiator.issue;
 
-public enum ISSUETYPE {	UNKNOWN, DISCRETE, INTEGER, REAL, OBJECTIVE;
+public enum ISSUETYPE {
+	/** If the type of the issue is unknown. */
+	UNKNOWN,
+	/** If the issue is discrete. */
+	DISCRETE,
+	/** If the issue is represented by a linear function. */
+	INTEGER, REAL, OBJECTIVE;
 
 	public static ISSUETYPE convertToType(String typeString) {
 

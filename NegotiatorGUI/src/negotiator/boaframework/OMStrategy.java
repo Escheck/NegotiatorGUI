@@ -29,16 +29,27 @@ public abstract class OMStrategy {
 	 *  are found or the window is of maximum size */
 	private final double INITIAL_WINDOW_RANGE = 0.01;
 	
+	
+	/**
+	 * Initialize method to be used by the BOA framework.
+	 * @param negotiationSession state of the negotiation.
+	 * @param model opponent model to which the opponent model strategy applies.
+	 * @param parameters for the opponent model strategy, for example the maximum update time.
+	 * @throws Exception thrown when initializing the opponent model strategy fails.
+	 */
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
-		initializeAgent(negotiationSession, model);
+		this.negotiationSession = negotiationSession;
+		this.model = model;
 	}
 	
-	public void init(NegotiationSession negotiationSession, OpponentModel model) {
-		initializeAgent(negotiationSession, model);
-	}
-	
-	private void initializeAgent(NegotiationSession negotiationSession,
-			OpponentModel model) {
+	/**
+	 * Initialize method which my be used when the opponent model strategy has no parameters,
+	 * or when the default values for these parameters should be used.
+	 * @param negotiationSession state of the negotiation.
+	 * @param model opponent model to which the opponent model strategy applies.4
+	 * @throws Exception when initializing the agent fails.
+	 */
+	public void init(NegotiationSession negotiationSession, OpponentModel model) throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.model = model;
 	}
@@ -76,10 +87,13 @@ public abstract class OMStrategy {
 
 	/**
 	 * Use this method in case no range is specified, but only a target utility.
+	 * The method looks at the bids in the range [targetUtility,
+	 * targetUtility + INITIAL_WINDOW_RANGE]. If there are less than EXPECTED_BIDS_IN_WINDOW
+	 * in the window, then the upperbound is increased by RANGE_INCREMENT.
 	 * 
 	 * @param space of all possible outcomes
-	 * @param range of utility
-	 * @return bid
+	 * @param targetUtility minimum utility to 
+	 * @return bid selected by using the opponent model strategy.
 	 */
 	public BidDetails getBid(SortedOutcomeSpace space, double targetUtility) {
 		Range range = new Range(targetUtility, targetUtility + INITIAL_WINDOW_RANGE);

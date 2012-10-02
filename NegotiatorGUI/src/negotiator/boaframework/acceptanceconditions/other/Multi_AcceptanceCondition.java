@@ -31,7 +31,9 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	private boolean firstTime = false;
 	private boolean startingAgent = false;
 
-	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public Multi_AcceptanceCondition() { }
 
 	@Override

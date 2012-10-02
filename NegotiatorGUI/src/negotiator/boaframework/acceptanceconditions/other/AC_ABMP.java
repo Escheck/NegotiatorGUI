@@ -21,6 +21,9 @@ public class AC_ABMP extends AcceptanceStrategy {
 
 	private static final double UTIlITYGAPSIZE = 0.05;
 			
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_ABMP() { }
 
 	public AC_ABMP(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {

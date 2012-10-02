@@ -31,8 +31,11 @@ public abstract class OfferingStrategy {
 	 * Initializes the offering strategy. If parameters are used,
 	 * this method should be overridden.
 	 * 
-	 * @param negotiationSession
-	 * @param parameters
+	 * @param negotiationSession state of the negotiation.
+	 * @param opponentModel opponent model which may be used.
+	 * @param omStrategy opponent model strategy which may be used.
+	 * @param parameters optional parameters for the offering strategy.
+	 * @throws Exception if the offering strategy fails to initialize.
 	 */
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, 
 						OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {

@@ -20,6 +20,9 @@ import negotiator.boaframework.OutcomeTuple;
  */
 public class AC_MAC extends Multi_AcceptanceCondition {
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_MAC() { }
 
 	@Override

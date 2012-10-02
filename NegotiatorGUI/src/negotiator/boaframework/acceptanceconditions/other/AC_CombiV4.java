@@ -26,7 +26,10 @@ public class AC_CombiV4 extends AcceptanceStrategy{
 	private double e;
 	private boolean discountedDomain;
 	
-public AC_CombiV4() { }
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
+	public AC_CombiV4() { }
 
 	public AC_CombiV4(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double c, double d, double e){
 		

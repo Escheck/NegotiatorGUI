@@ -105,7 +105,6 @@ public class NegotiationOutcome
 		this.acceptedBy = outcomeInfo.getAcceptedBy();
 	}
 
-
 	public String toString() {
 		String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
 		return String.valueOf(sessionNumber) + " agentAName="+agentAname + " agentBName=" + agentBname + 

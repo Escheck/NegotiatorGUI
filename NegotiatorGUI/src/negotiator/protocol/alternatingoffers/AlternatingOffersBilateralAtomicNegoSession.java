@@ -619,9 +619,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					System.currentTimeMillis() - startTimeMillies, time, utilA,
 					utilB, utilADiscount, utilBDiscount, message, true);
 		}
-		if (Global.LOW_MEMORY_MODE) {
-			BidSpaceCache.removeBidSpace(spaceA, spaceB);
-		}
 	}
 
 	/**
@@ -652,9 +649,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		fireNegotiationActionEvent(currentAgent, lastAction, fAgentABids.size() + fAgentBBids.size(),
 				System.currentTimeMillis() - startTimeMillies, time, utilA,
 				utilB, utilADiscount, utilBDiscount, message, true);
-		if (Global.LOW_MEMORY_MODE) {
-			BidSpaceCache.removeBidSpace(spaceA, spaceB);
-		}
 	}
 
 	private void calculateFinalAccuracy(NegotiationOutcome negoOutcome) {

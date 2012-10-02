@@ -21,6 +21,9 @@ public class AC_Next extends AcceptanceStrategy {
 	private double a;
 	private double b;
 
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_Next() { }
 	
 	public AC_Next(NegotiationSession negoSession, OfferingStrategy strat, double alpha, double beta){

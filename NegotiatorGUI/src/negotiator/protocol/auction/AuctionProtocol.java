@@ -122,7 +122,7 @@ public class AuctionProtocol extends Protocol {
 				SimpleElement solution = new SimpleElement("solution");
 				optimalPoints.addChildElement(solution);
 				solution.setAttribute("type", "Nash");
-				BidSpace bidSpace = BidSpaceCache.getBidSpace(getAgentUtilitySpaces(0), getAgentUtilitySpaces(i+1));
+				BidSpace bidSpace = new BidSpace(getAgentUtilitySpaces(0), getAgentUtilitySpaces(i+1));
 				solution.setAttribute("utilityA", String.valueOf(bidSpace.getNash().getUtilityA()));
 				solution.setAttribute("utilityB", String.valueOf(bidSpace.getNash().getUtilityB()));
 				solution = new SimpleElement("solution");
