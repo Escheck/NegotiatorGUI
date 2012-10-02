@@ -6,6 +6,8 @@ import java.io.Serializable;
  * A simple tuple class.
  * 
  * @author Alex Dirkzwager, Mark Hendrikx, Julian de Ruiter
+ * @param <A> class of the first object.
+ * @param <B> class of the second object.
  */
 public class Pair<A, B> implements Serializable {
 
@@ -49,6 +51,9 @@ public class Pair<A, B> implements Serializable {
 	 */
 	public void setSecond(B v) { snd = v; }
 
+	/**
+	 * @return string representation of string.
+	 */
 	public String toString() {
 		return "Pair[" + fst + "," + snd + "]";
 	}
@@ -57,6 +62,9 @@ public class Pair<A, B> implements Serializable {
 		return (x == null && y == null) || (x != null && x.equals(y));
 	}
 
+	/**
+	 * @return true if this and other object are equal.
+	 */
 	public boolean equals(Object other) {
 		return
 		other instanceof Pair &&
@@ -64,6 +72,9 @@ public class Pair<A, B> implements Serializable {
 		equals(snd, ((Pair<?, ?>)other).snd);
 	}
 
+	/**
+	 * @return hashcode of this object.
+	 */
 	public int hashCode() {
 		if (fst == null) return (snd == null) ? 0 : snd.hashCode() + 1;
 		else if (snd == null) return fst.hashCode() + 2;

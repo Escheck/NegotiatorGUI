@@ -141,6 +141,9 @@ public class opponentOffers {
 	 * invoked when a new bid is proposed by the opponent.
 	 * for each issue, the count for the proposed value in this bid is updated.
 	 * in addition, the sorted values list for this issue is updated if required
+	 * @param b update the bidding statistics using bid b.
+	 * @return 
+	 * @throws Exception 
 	 */
 	public boolean updateBid(Bid b) throws Exception
 	{
@@ -210,6 +213,7 @@ public class opponentOffers {
 
 	/**
 	 * get our average utility from the opponent's offer
+	 * @return average utility offered by the opponent.
 	 */
 	public double getOurAvgUtilFromOppOffers()
 	{
@@ -218,6 +222,7 @@ public class opponentOffers {
 	
 	/**
 	 * get our max utility from the opponent's offer
+	 * @return max utility offered by the opponent.
 	 */
 	public double getOurMaxUtilFromOppOffers()
 	{
@@ -226,6 +231,7 @@ public class opponentOffers {
 	
 	/**
 	 * get the opponent's concession rate
+	 * @return opponent's concession rate
 	 */
 	public double getOppConcessionRate()
 	{
@@ -235,6 +241,8 @@ public class opponentOffers {
 	 * calculates an approximation of the opponent's utility for the given bid
 	 * issue weights are determined as explained in getIssueWeights method
 	 * value utilities are determined as explained in getValueUtility method
+	 * @param b bid from which the utility must be estimated.
+	 * @return estimated utility of the opponent's bid.
 	 */
 	public double getOpponentUtility(Bid b)
 	{

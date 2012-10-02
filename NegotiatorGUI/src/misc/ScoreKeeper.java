@@ -122,7 +122,11 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable {
 		return ((double) score / (double) total);
 	}
 
-	public int compare(A o1, A o2)
+	/**
+	 * Comparator to compare the score of two objects.
+	 * @return -1 iff score o1 > o2, 1 if vice versa, else 0.
+	 */
+	public int compare(final A o1, final A o2)
 	{
 		if (o1 == null || o2 == null)
 			throw new NullPointerException();
@@ -136,12 +140,19 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable {
             return ((Integer) o1.hashCode()).compareTo(o2.hashCode());
 	}
 	
+	/**
+	 * @return string representation of the ScoreKeeper.
+	 */
 	public String toString()
 	{
 		TreeMap<A, Integer> sorted = getSortedCopy();
 		return getElements().size() + " entries, " + getTotal() + " total: " + sorted.toString() + "\n";
 	}
 
+	/**
+	 * @return sorted version of the ScoreKeeper based on the score
+	 * of the elements.
+	 */
 	public TreeMap<A, Integer> getSortedCopy()
 	{
 		TreeMap<A, Integer> sorted = new TreeMap<A, Integer>(this);
@@ -155,20 +166,6 @@ public class ScoreKeeper<A> implements Comparator<A>, Serializable {
 	 */
 	public int getMaxValue() {
 		return max;
-	}
-	
-	public String toString(int n)
-	{
-		TreeMap<A, Integer> sorted = getSortedCopy();
-		String s = getElements().size() + " entries, " + getTotal() + " total. Top " + n + " entries:\n";
-		int i = 0;
-		for (A a : sorted.keySet())
-		{
-			s += a.toString() + "=" + sorted.get(a) + "\n";
-			if (i++ > n)
-				break;
-		}
-		return s;
 	}
 	
 	/**

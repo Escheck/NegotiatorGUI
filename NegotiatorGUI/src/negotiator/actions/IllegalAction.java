@@ -23,6 +23,9 @@ public class IllegalAction extends Action {
         this.details = details;
     }
 	
+    /**
+     * @return string representation of action: "(IllegalAction-DETAILS)".
+     */
     public String toString() {
         return "(IllegalAction- "+details+")";
     }    

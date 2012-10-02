@@ -41,18 +41,6 @@ public class AutomatedAgentType {
 	
 	private String m_sAgentName;
 	
-	private class IdxToValue
-	{
-		public int AgreementIdx[];
-		public double dAgreementValue;
-		
-		IdxToValue()
-		{
-			dAgreementValue = 0;
-			AgreementIdx = new int[MAX_ISSUES];
-		}
-	}
-	
     /*****************************************************************
      * Method name: AutomatedAgentType()
      * Goal: Initializes the agent

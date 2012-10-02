@@ -23,6 +23,9 @@ public class Accept extends Action {
     	this.agentID = agentID;
     }
     
+    /**
+     * @return string representation of action: "(Accept)".
+     */
     public String toString() {
         return "(Accept)";
     }    

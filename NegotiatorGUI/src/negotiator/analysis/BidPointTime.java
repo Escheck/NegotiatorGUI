@@ -28,11 +28,17 @@ public class BidPointTime extends BidPoint{
 		this.time = time;
 	}
 	
+    /**
+     * @return string representation of the object..
+     */
 	@Override
 	public String toString(){
 		return "BidPointTime ["+getBid()+" utilA["+getUtilityA()+"],utilB["+getUtilityB()+"], Time["+time+"]]";
 	}
 
+    /**
+     * @return hashcode of this object.
+     */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -43,6 +49,10 @@ public class BidPointTime extends BidPoint{
 		return result;
 	}
 
+    /**
+     * @param obj object to which this object is compared.
+     * @return true if this object is equal to the given object.
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

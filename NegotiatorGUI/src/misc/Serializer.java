@@ -20,6 +20,7 @@ import sun.misc.BASE64Encoder;
  * to store it as a file.
  * 
  * @author Tim Baarslag
+ * @param <A> class of the object which is serialized.
  */
 public class Serializer<A> {
 	
@@ -50,11 +51,11 @@ public class Serializer<A> {
 		this.log = log;
 	}
 
-	@SuppressWarnings("unchecked")
 	/**
 	 * Read a serialized object from a file and restore it.
 	 * @return unserialized object.
 	 */
+	@SuppressWarnings("unchecked")
 	public A readFromDisk()
 	{
 		InputStream is = null;
@@ -140,13 +141,13 @@ public class Serializer<A> {
 		return out;
 	}
 	
-	@SuppressWarnings("unchecked")
 	/**
 	 * Converts a string back to an object.
 	 * 
 	 * @param str serialized object.
 	 * @return unserialized object.
 	 */
+	@SuppressWarnings("unchecked")
 	public A readStringToObject(String str) {
 		BASE64Decoder decode = new BASE64Decoder();
 
@@ -167,6 +168,9 @@ public class Serializer<A> {
 		return (A)out;
 	}
 
+	/**
+	 * @return filename in which the object should be/is serialized.
+	 */
 	public String getFileName() {
 		return fileName;
 	}

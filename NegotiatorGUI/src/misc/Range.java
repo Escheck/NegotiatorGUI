@@ -58,7 +58,7 @@ public class Range {
 	
 	/**
 	 * Increases the upperbound by the given increment.
-	 * @param increment
+	 * @param increment amount which should be added to the upperbound.
 	 */
 	public void increaseUpperbound(double increment) {
 		upperbound = upperbound + increment;

@@ -150,11 +150,6 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
         
     }
 
-	/**********************button functionality***********************
-	 * 
-	 * E.g. when you edit the {@link AgentVariable}s, you go to the {@link AgentVarUI}, where the agent repository is loaded.
-	 * */
-
 	void editVariable(TournamentVariable v) throws Exception {
 		 // numerous classes here result in highly duplicate code and pretty unreadable code as well.....
 		 // IMHO the strong typechecking gives maybe even more problems than it resolves...

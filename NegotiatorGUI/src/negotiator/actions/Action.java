@@ -12,6 +12,9 @@ public abstract class Action {
 	/** ID of the agent which performed the action. */
     protected AgentID agentID;
     
+    /**
+     * Empty constructor used for inheritance.
+     */
 	public Action() {}
 	
     /** Creates a new instance of Action 
@@ -29,7 +32,8 @@ public abstract class Action {
         return agentID;
     }
 	
-    public String toString() {
-        return "(Unknown action)";
-    }    
+    /**
+     * Enforces that actions implements a string-representation.
+     */
+    public abstract String toString();   
 }

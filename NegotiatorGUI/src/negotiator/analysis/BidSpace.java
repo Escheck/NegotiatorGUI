@@ -219,8 +219,8 @@ public class BidSpace {
 	 * Calculates Kalai-Smorodinsky optimal outcome. Assumes that Pareto frontier is already built.
 	 * Kalai-Smorodinsky is the point on paretofrontier that has least difference in utilities for A and B.
 	 * 
-	 * @return the kalaiSmorodinsky BidPoint.
-	 * @throws AnalysisException
+	 * @return the Kalai-Smorodinsky BidPoint.
+	 * @throws Exception when the Pareto frontier is invalid.
 	 */
 	public BidPoint getKalaiSmorodinsky() throws Exception {
 		if (kalaiSmorodinsky!=null) return kalaiSmorodinsky;
@@ -246,7 +246,7 @@ public class BidSpace {
 	 * Nash is the point on paretofrontier that has max product of utilities for A and B.
 	 * 
 	 * @return the Nash BidPoint.
-	 * @throws AnalysisException
+	 * @throws Exception when the Pareto frontier is invalid.
 	 */
 	public BidPoint getNash() throws Exception {
 		if (nash != null)
@@ -279,7 +279,7 @@ public class BidSpace {
 	 * 
 	 * @param opponentUtility the utility for the opponent.
 	 * @return the utility of us on the pareto curve.
-	 * @throws exception if getPareto fails or other cases, e.g. paretoFrontier
+	 * @throws Exception if getPareto fails or other cases, e.g. paretoFrontier
 	 * contains utilityB = NaN, which may occur if the opponent model creating the utility space
 	 * is corrupt.
 	 */
@@ -307,6 +307,9 @@ public class BidSpace {
 		return lininterpol;
 	}
 	
+	/**
+	 * @return string representation of the BidSpace, which is basically a long list of all bid its bid points.
+	 */
 	public String toString() {
 		return bidPoints.toString();
 	}

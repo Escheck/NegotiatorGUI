@@ -7,6 +7,10 @@ import java.util.Comparator;
  */
 public class BidPointSorterA implements Comparator<BidPoint>
 {
+	/**
+	 * Comperator. If utility b1 < b2 then -1, else if > then 1, else
+	 * compare hashcodes.
+	 */
 	public int compare(BidPoint b1, BidPoint b2)
 	{
 		if (b1 == null || b2 == null)
