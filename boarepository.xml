@@ -22,6 +22,7 @@
 		<biddingstrategy description="ANAC2011 - The Negotiator" classPath="negotiator.boaframework.offeringstrategy.anac2011.TheNegotiator_Offering"/>
 		<biddingstrategy description="ANAC2011 - IAMHaggler2011" classPath="negotiator.boaframework.offeringstrategy.anac2011.IAMhaggler2011_Offering"/>
 		<biddingstrategy description="ANAC2011 - ValueModelAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.ValueModelAgent_Offering"/>
+		<biddingstrategy description="Other - IAH predictor" classPath="negotiator.boaframework.offeringstrategy.IAMHaggler_Test_Offering" tooltip= "'s' for amount of time samples per regression. 'r' amount of regressions."/>
 		
 	</biddingstrategies>
 	<acceptanceconditions>
