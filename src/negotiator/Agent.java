@@ -12,6 +12,7 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
 import negotiator.actions.Action;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -74,7 +75,8 @@ public abstract class Agent
         this.sessionTotalNumber = sessionTotalNumber;
     	utilitySpace=us;
     	parametervalues=params;
-    	System.out.println("Agent " + getName() + " initted with parameters " + parametervalues);
+    	if (parametervalues != null && !parametervalues.isEmpty())
+    		System.out.println("Agent " + getName() + " initted with parameters " + parametervalues);
         return;
     }
     

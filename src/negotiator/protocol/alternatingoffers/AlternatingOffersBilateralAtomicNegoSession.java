@@ -146,7 +146,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			else
 				currentAgent = agentB;
 
-			System.out.println("starting with agent " + currentAgent.getName());
+			System.out.println("Negotiation started. Agent " + currentAgent.getName() + " starts.");
 			// Main.log("Agent " + currentAgent.getName() + " begins");
 			if (showGUI) {
 				fireLogMessage("Nego", "Agent " + currentAgent.getName()
