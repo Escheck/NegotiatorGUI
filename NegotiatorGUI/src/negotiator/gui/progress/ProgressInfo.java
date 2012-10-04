@@ -31,7 +31,7 @@ class ProgressInfo extends AbstractTableModel{
 	
 	public void reset()
 	{
-		System.out.println("reset the JTable now.");
+//		System.out.println("reset the JTable now.");
 		data = new Object [NUMBER_OF_COLUMNS][colNames.length];
 		fireTableDataChanged();
 	}

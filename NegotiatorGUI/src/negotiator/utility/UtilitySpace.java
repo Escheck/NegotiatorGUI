@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -833,7 +835,6 @@ public class UtilitySpace {
     	}
 //    	System.out.println("freeCount + lockedCount = " + freeCount + " + " + lockedCount);
     	if(freeCount + lockedCount == 1){
-    		System.out.println("At least the IF works...");
     		Enumeration<Objective> singleChild = obj.children();
     		while(singleChild.hasMoreElements()) {
     			Objective tmpObj = singleChild.nextElement();
