@@ -38,7 +38,7 @@ public class TournamentOptionsUI extends JDialog {
     private JLabel playBothSides;
     private JCheckBox playBothSidesCheck;
     private JLabel protocolMode;
-    private JComboBox<String> protocolModeSelector;
+    private JComboBox protocolModeSelector;
     private JLabel protocolSettings;
     private JLabel sessionGeneration;
     private JLabel showAllBids;
@@ -72,7 +72,7 @@ public class TournamentOptionsUI extends JDialog {
         protocolMode = new JLabel();
         protocolMode.setText("Protocol mode");
         String[] options = {"Time", "Rounds"};
-        protocolModeSelector = new JComboBox<String>(options);
+        protocolModeSelector = new JComboBox(options);
         protocolModeSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (protocolModeSelector.getSelectedIndex() == 0) {

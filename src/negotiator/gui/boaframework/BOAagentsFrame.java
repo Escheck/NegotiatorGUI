@@ -46,51 +46,51 @@ public class BOAagentsFrame extends JDialog {
 	// GUI elements of the bidding strategy
 	private JLabel osLabel;
 	private JScrollPane osListPane;
-    private JList<String> osList;
+    private JList osList;
     private ExtendedListModel<String> osModel;
     private JScrollPane osParamsPane;
-	private JList<BOAparameter> osParams;
-	private DefaultListModel<BOAparameter> osParamsModel;
+	private JList osParams;
+	private DefaultListModel osParamsModel;
 	private JButton addOsParam;
 	private JButton removeOsParam;
 	
 	// GUI elements of the acceptance strategy
     private JLabel asLabel;
     private JScrollPane asListPane;
-    private JList<String> asList;
+    private JList asList;
     private ExtendedListModel<String> asModel;
     private JScrollPane asParamsPane;
-    private JList<BOAparameter> asParams;
-    private DefaultListModel<BOAparameter> asParamsModel;
+    private JList asParams;
+    private DefaultListModel asParamsModel;
     private JButton addAsParam;
     private JButton removeAsParam;
     
     // GUI elements of the opponent model
     private JLabel omLabel;
     private JScrollPane omListPane;
-    private JList<String> omList;
+    private JList omList;
     private ExtendedListModel<String> omModel;
     private JScrollPane omParamsPane;
-    private JList<BOAparameter> omParams;
-    private DefaultListModel<BOAparameter> omParamsModel;
+    private JList omParams;
+    private DefaultListModel omParamsModel;
     private JButton addOmParam;
     private JButton removeOmParam;
     
     // GUI elements of the opponent model strategy
 	private JLabel omsLabel;
 	private JScrollPane omsListPane;
-    private JList<String> omsList;
+    private JList omsList;
     private ExtendedListModel<String> omsModel;
     private JScrollPane omsParamsPane;
-	private JList<BOAparameter> omsParams;
-	private DefaultListModel<BOAparameter> omsParamsModel;
+	private JList omsParams;
+	private DefaultListModel omsParamsModel;
 	private JButton addOmsParam;
 	private JButton removeOmsParam;
     
 	// GUI elements of the overview of BOA agents
     private JScrollPane agentsListPane;
-    private JList<BOAagentInfo> agentsList;
-    private DefaultListModel<BOAagentInfo> agentsModel;
+    private JList agentsList;
+    private DefaultListModel agentsModel;
     private JButton addAgents;
     private JButton clearSelection;
     private JButton clearAll;
@@ -247,7 +247,7 @@ public class BOAagentsFrame extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<BOAagentInfo> agents = new ArrayList<BOAagentInfo>();
 				for (int i = 0; i < agentsModel.getSize(); i++) {
-					agents.add(agentsModel.getElementAt(i));
+					agents.add((BOAagentInfo) agentsModel.getElementAt(i));
 				}
 				result = agents;
 				dispose();
@@ -256,7 +256,7 @@ public class BOAagentsFrame extends JDialog {
     	
 	}
 
-    private <A> void removeSelectedIndices(JList<A> list, DefaultListModel<A> model) {
+    private void removeSelectedIndices(JList list, DefaultListModel model) {
     	if (list.getSelectedIndices().length > 0) {
     		int[] tmp = list.getSelectedIndices();
     		int[] selectedIndices = list.getSelectedIndices();
@@ -295,7 +295,7 @@ public class BOAagentsFrame extends JDialog {
 		omsModel.setInitialContent(omStrategies);
 		omsList.setModel(omsModel);
 		
-		agentsModel = new DefaultListModel<BOAagentInfo>();
+		agentsModel = new DefaultListModel();
 		agentsList.setModel(agentsModel);
     }
     
@@ -319,7 +319,7 @@ public class BOAagentsFrame extends JDialog {
         agentsListPane = new JScrollPane();
         getContentPane().add(agentsListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 395, 1000, 180));
         // Instantiate the list
-        agentsList = new JList<BOAagentInfo>();
+        agentsList = new JList();
         agentsList.setSelectionModel(new MultiListSelectionModel());
         agentsListPane.setViewportView(agentsList);
         // Instantiate the buttons
@@ -354,7 +354,7 @@ public class BOAagentsFrame extends JDialog {
     	osListPane = new JScrollPane();
     	getContentPane().add(osListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, 220, 200));
     	// Instantiate the list
-    	osList =  new JList<String>() {
+    	osList =  new JList() {
 			private static final long serialVersionUID = 1L;
 
 			public String getToolTipText(MouseEvent evt) {
@@ -369,8 +369,8 @@ public class BOAagentsFrame extends JDialog {
         osParamsPane = new JScrollPane();
         getContentPane().add(osParamsPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 235, 220, 80));
         // Instantiate the params list
-        osParamsModel = new DefaultListModel<BOAparameter>();
-        osParams = new JList<BOAparameter>(osParamsModel);
+        osParamsModel = new DefaultListModel();
+        osParams = new JList(osParamsModel);
         osParams.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         osParamsPane.setViewportView(osParams);
     	// Instantiate the buttons
@@ -390,7 +390,7 @@ public class BOAagentsFrame extends JDialog {
         asListPane = new JScrollPane();
         getContentPane().add(asListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 35, 220, 200));
     	// Instantiate the list
-        asList = new JList<String>() {
+        asList = new JList() {
 			private static final long serialVersionUID = 1L;
 
 			public String getToolTipText(MouseEvent evt) {
@@ -405,8 +405,8 @@ public class BOAagentsFrame extends JDialog {
         asParamsPane = new JScrollPane();
         getContentPane().add(asParamsPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 235, 220, 80));
     	// Instantiate the params list
-        asParamsModel = new DefaultListModel<BOAparameter>();
-        asParams = new JList<BOAparameter>(asParamsModel);
+        asParamsModel = new DefaultListModel();
+        asParams = new JList(asParamsModel);
         asParams.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         asParamsPane.setViewportView(asParams);
     	// Instantiate the button
@@ -426,7 +426,7 @@ public class BOAagentsFrame extends JDialog {
         omsListPane = new JScrollPane();
         getContentPane().add(omsListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 35, 220, 200));
         // Instantiate the list
-        omsList = new JList<String>() {
+        omsList = new JList() {
 			private static final long serialVersionUID = 1L;
 
 			public String getToolTipText(MouseEvent evt) {
@@ -441,8 +441,8 @@ public class BOAagentsFrame extends JDialog {
         omsParamsPane = new JScrollPane();
         getContentPane().add(omsParamsPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 235, 220, 80));
         // Instantiate the params list
-        omsParamsModel = new DefaultListModel<BOAparameter>();
-        omsParams = new JList<BOAparameter>(omsParamsModel);
+        omsParamsModel = new DefaultListModel();
+        omsParams = new JList(omsParamsModel);
         omsParams.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         omsParamsPane.setViewportView(omsParams);
         // Instantiate the button
@@ -462,7 +462,7 @@ public class BOAagentsFrame extends JDialog {
         omListPane = new JScrollPane();
         getContentPane().add(omListPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 35, 220, 200));
         // Instantiate the list
-        omList = new JList<String>() {
+        omList = new JList() {
 			private static final long serialVersionUID = 1L;
 
 			public String getToolTipText(MouseEvent evt) {
@@ -477,8 +477,8 @@ public class BOAagentsFrame extends JDialog {
         omParamsPane = new JScrollPane();
         getContentPane().add(omParamsPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 235, 220, 80));
         // Instantiate the params list
-        omParamsModel = new DefaultListModel<BOAparameter>();
-        omParams = new JList<BOAparameter>(omParamsModel);
+        omParamsModel = new DefaultListModel();
+        omParams = new JList(omParamsModel);
         omParams.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         omParamsPane.setViewportView(omParams);
         // Instantiate the button
@@ -551,12 +551,12 @@ public class BOAagentsFrame extends JDialog {
 		return strategies;
 	}
 
-	private ArrayList<BOAparameter> getParameters(DefaultListModel<BOAparameter> model) {
+	private ArrayList<BOAparameter> getParameters(DefaultListModel model) {
 		ArrayList<BOAparameter> profiles = new ArrayList<BOAparameter>();
 
 		if (model != null && model.size() > 0) {
 			for (int i = 0; i < model.getSize(); i++) {
-				profiles.add(model.getElementAt(i));
+				profiles.add((BOAparameter) model.getElementAt(i));
 			}
 		} else {
 			profiles.add(nullParam);

@@ -447,7 +447,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	// the issues, in row order as in the GUI. Init to empty, to enable 
 	// freshly initialized NegoInfo to give useful results to the GUI.
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
-	public ArrayList<JComboBox<String>> comboBoxes; // the combo boxes for the second column, ordered to row number
+	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
 	NegoInfo(Bid our,Bid opponent, UtilitySpace us) throws Exception
 	{
@@ -487,13 +487,13 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	
 	void makeComboBoxes() throws Exception
 	{
-		comboBoxes=new ArrayList<JComboBox<String>>();
+		comboBoxes=new ArrayList<JComboBox>();
 		for (Issue issue:issues)
 		{
 			if (!(issue instanceof IssueDiscrete))
 				System.out.println("Problem: issue "+issue+" is not IssueDiscrete. ");
 			List<ValueDiscrete> values=((IssueDiscrete)issue).getValues();
-			JComboBox<String> cbox=new JComboBox<String>();
+			JComboBox cbox=new JComboBox();
 			EvaluatorDiscrete eval=null;
 			if (utilitySpace!=null) eval=(EvaluatorDiscrete)utilitySpace.getEvaluator(issue.getNumber());
 			for (ValueDiscrete val:values) {
@@ -508,7 +508,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 				cbox.addItem(val+utilinfo);
 			}
 			comboBoxes.add( cbox);
-			for (JComboBox<String> b:comboBoxes) b.addActionListener(this);
+			for (JComboBox b:comboBoxes) b.addActionListener(this);
 		}
 	}
 	
