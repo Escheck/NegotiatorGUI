@@ -19,10 +19,9 @@ import Jama.Matrix;
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
-	private static final int SLOTS = 25;
-	private IAMhaggler_Concession IAMhagglerConcession;
 	private IAMHagglerOpponentConcessionModel concessionModel;
 	protected BidCreator bidCreator;
+	private int amountOfSamples;
 
 	public IAMHaggler_Test_Offering() { }
 
@@ -34,8 +33,22 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, opponentModel, omStrategy, parameters);
 		this.negotiationSession = negotiationSession;
-		concessionModel = new IAMHagglerOpponentConcessionModel(SLOTS, negotiationSession.getUtilitySpace());
-		IAMhagglerConcession = new IAMhaggler_Concession(negotiationSession.getUtilitySpace());
+		double amountOfRegressions;
+		if (parameters.containsKey("r")) {
+			amountOfRegressions = parameters.get("r");
+		} else {
+			System.out.println("Using default 10 for amount of regressions.");
+			amountOfRegressions = 10;
+		}
+		if (parameters.containsKey("s")) {
+			double value = parameters.get("s");
+			amountOfSamples = (int) value;
+		} else {
+			amountOfSamples = 100;
+			System.out.println("Using default 100 for amount of samples.");
+		}
+		
+		concessionModel = new IAMHagglerOpponentConcessionModel((int) amountOfRegressions, negotiationSession.getUtilitySpace(), amountOfSamples);
 		bidCreator = new RandomBidCreator();
 	}
 
@@ -70,15 +83,18 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 			DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 			dfs.setDecimalSeparator('.');
 			formatter.setDecimalFormatSymbols(dfs);
+			
 
-			System.out.println("Mean\tVariance\t2 SD\tMean\tMean - 2SD\tMean + 2SD");
-			for (int i = 0; i <= SLOTS; i++)
+			System.out.println("Current time\tCurrent utility\tPrediction for time\tMean\tVariance\t2 SD\tMean\tMean - 2SD\tMean + 2SD");
+
+			for (int i = 0; i <= amountOfSamples; i++)
 			{
 				double var = variances.get(i, 0);
 				double sd = Math.sqrt(var);
 				double mean = means.get(i, 0);
+				double predForTime = ((double) i / (double) amountOfSamples);
 
-				System.out.println(mean + "\t" + formatter.format(var) + "\t" + (2 * sd) + "\t" 
+				System.out.println(time + "\t" + myUndiscountedUtil + "\t" + predForTime + "\t" + mean + "\t" + formatter.format(var) + "\t" + (2 * sd) + "\t" 
 						+ mean + "\t" + (mean - 2*sd) + "\t" + (mean + 2*sd));
 			}
 		}

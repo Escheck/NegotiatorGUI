@@ -42,7 +42,7 @@ public class IAMHagglerOpponentConcessionModel {
 	 * @param numberOfSlots (within the total negotiation
 	 * @param utilitySpace
 	 */
-	public IAMHagglerOpponentConcessionModel(int numberOfSlots, UtilitySpace utilitySpace){
+	public IAMHagglerOpponentConcessionModel(int numberOfSlots, UtilitySpace utilitySpace, int amountOfSamples){
 		double discountingFactor = 0.5;
 		try
 		{
@@ -54,7 +54,7 @@ public class IAMHagglerOpponentConcessionModel {
 		}
 		if(discountingFactor == 0)
 			discountingFactor = 1;
-		makeTimeSamples(numberOfSlots);
+		makeTimeSamples(amountOfSamples);
 		this.slots = numberOfSlots;
 		BasicPrior[] bps = { new BasicPrior(11, 0.252, 0.5),
 				new BasicPrior(11, 0.166, 0.5), new BasicPrior(1, .01, 1.0) };
@@ -73,7 +73,6 @@ public class IAMHagglerOpponentConcessionModel {
 	 * @param time
 	 */
 	public void updateModel(double opponentUtility, double time) {
-		
 		// Calculate the current time slot
 		int timeSlot = (int) Math.floor(time * slots);
 		
@@ -117,34 +116,6 @@ public class IAMHagglerOpponentConcessionModel {
 
 		if (regressionUpdateRequired && opponentTimes.size() > 0) {
 			double gradient = 0.9 - intercept;
-			
-			/* Commented by author
-			double[] x = new double[opponentTimes.size()];
-			double[] yAdjust = new double[opponentTimes.size()];
-			double[] y = new double[opponentUtilities.size()];
-			
-			int i;
-			i = 0;
-			for (double d : opponentTimes) {
-				x[i++] = d;
-			}
-			i = 0;
-			for (double d : opponentTimes) {
-				yAdjust[i++] = intercept + (gradient * d);
-			}
-			i = 0;
-			for (double d : opponentUtilities) {
-				y[i++] = d;
-			}
-
-			Matrix matrixX = new Matrix(x, x.length);
-			Matrix matrixYAdjust = new Matrix(yAdjust, yAdjust.length);
-			Matrix matrixY = new Matrix(y, y.length);
-
-			matrixY.minusEquals(matrixYAdjust);
-			
-			//GaussianProcessMixture predictor = regression.calculateRegression(matrixX, matrixY);
-			*/
 
 			GaussianProcessMixture predictor;
 
@@ -177,19 +148,6 @@ public class IAMHagglerOpponentConcessionModel {
 			means = prediction.getMean().plus(matrixTimeSamplesAdjust);
 			
 			variances = prediction.getVariance();
-/*
-			StringWriter variancesWriter = new StringWriter();
-			PrintWriter variancesPrintWriter = new PrintWriter(variancesWriter);
-			variances.print(variancesPrintWriter, 10, 4);
-			System.out.println("variances: " + variancesWriter.getBuffer().toString());
-
-			
-			StringWriter meanWriter = new StringWriter();
-			PrintWriter meanPrintWriter = new PrintWriter(meanWriter);
-			means.print(meanPrintWriter, 10, 4);
-			System.out.println("means: " + meanWriter.getBuffer().toString());
-		*/	
-			
 		}
 	}
 	
