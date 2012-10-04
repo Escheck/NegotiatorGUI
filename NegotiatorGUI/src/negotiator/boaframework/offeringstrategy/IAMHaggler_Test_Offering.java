@@ -1,10 +1,8 @@
 package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-
 import negotiator.Bid;
 import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
@@ -26,18 +24,12 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	private IAMHagglerOpponentConcessionModel concessionModel;
 	protected BidCreator bidCreator;
 
-
 	public IAMHaggler_Test_Offering() { }
 
 	public IAMHaggler_Test_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see agents.southampton.SouthamptonAgent#init()
-	 */
 	@Override
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, opponentModel, omStrategy, parameters);

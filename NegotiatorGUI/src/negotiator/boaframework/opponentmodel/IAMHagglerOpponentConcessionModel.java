@@ -33,6 +33,7 @@ public class IAMHagglerOpponentConcessionModel {
 	private double intercept;
 	private double maxUtilityInTimeSlot;
 	private Matrix matrixTimeSamplesAdjust;
+	private int slots;
 
 
 
@@ -53,7 +54,8 @@ public class IAMHagglerOpponentConcessionModel {
 		}
 		if(discountingFactor == 0)
 			discountingFactor = 1;
-		makeTimeSamples(numberOfSlots);	
+		makeTimeSamples(numberOfSlots);
+		this.slots = numberOfSlots;
 		BasicPrior[] bps = { new BasicPrior(11, 0.252, 0.5),
 				new BasicPrior(11, 0.166, 0.5), new BasicPrior(1, .01, 1.0) };
 		CovarianceFunction cf = new SumCovarianceFunction(
@@ -73,8 +75,8 @@ public class IAMHagglerOpponentConcessionModel {
 	public void updateModel(double opponentUtility, double time) {
 		
 		// Calculate the current time slot
-		int timeSlot = (int) Math.floor(time * 36);
-
+		int timeSlot = (int) Math.floor(time * slots);
+		
 		boolean regressionUpdateRequired = false;
 		if (lastTimeSlot == -1) {
 			regressionUpdateRequired = true;
@@ -84,7 +86,7 @@ public class IAMHagglerOpponentConcessionModel {
 		if (timeSlot != lastTimeSlot) {
 			if (lastTimeSlot != -1) {
 				// Store the data from the time slot
-				opponentTimes.add((lastTimeSlot + 0.5) / 36.0);
+				opponentTimes.add((lastTimeSlot + 0.5) / slots);
 				if(opponentUtilities.size() == 0)
 				{
 					intercept = Math.max(0.5, maxUtilityInTimeSlot);
@@ -113,7 +115,7 @@ public class IAMHagglerOpponentConcessionModel {
 			return;
 		}
 
-		if (regressionUpdateRequired) {
+		if (regressionUpdateRequired && opponentTimes.size() > 0) {
 			double gradient = 0.9 - intercept;
 			
 			/* Commented by author
