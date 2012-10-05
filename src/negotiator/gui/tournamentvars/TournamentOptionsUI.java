@@ -145,6 +145,19 @@ public class TournamentOptionsUI extends JDialog {
         disableGUI = new JLabel();
         disableGUICheck = new JCheckBox();
         disableGUI.setText("Disable GUI");
+        disableGUICheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (disableGUICheck.isSelected()) {
+                	showLastBidCheck.setSelected(false);
+                	showLastBidCheck.setEnabled(false);
+                	showAllBidsCheck.setSelected(false);
+                	showAllBidsCheck.setEnabled(false);
+                } else {
+                	showLastBidCheck.setEnabled(true);
+                	showAllBidsCheck.setEnabled(true);
+                }
+            }
+        });
         
         okButton = new JButton();
         okButton.setText("Ok");
@@ -326,6 +339,10 @@ public class TournamentOptionsUI extends JDialog {
 			showAllBidsCheck.setSelected(prevConfig.containsKey("showAllBids") && prevConfig.get("showAllBids") != 0);
 			showLastBidCheck.setSelected(prevConfig.containsKey("showLastBid") && prevConfig.get("showLastBid") != 0);
 			disableGUICheck.setSelected(prevConfig.containsKey("disableGUI") && prevConfig.get("disableGUI") != 0);
+			if (disableGUICheck.isSelected()) {
+				showAllBidsCheck.setEnabled(false);
+				showLastBidCheck.setEnabled(false);
+			}
 		}
 		
 	}
