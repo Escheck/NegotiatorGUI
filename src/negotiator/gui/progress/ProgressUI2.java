@@ -36,6 +36,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.tournament.TournamentConfiguration;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -58,14 +59,14 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 	
     /** Creates new form ProgressUI2 
      * @param hashMap */
-    public ProgressUI2(HashMap<String, Integer> options) {
+    public ProgressUI2() {
         initComponents();
 		bidChart = new BidChart();
 		progressinfo = new ProgressInfo();
 		// DEFAULT: show all bids
-		showAllBids = (options == null) || (options.containsKey("showAllBids") && options.get("showAllBids") == 1);
+		showAllBids = TournamentConfiguration.getBooleanOption("showAllBids", true);
 		// DEFAULT: show last bid
-		showLastBid = (options == null) || (options.containsKey("showLastBid") && options.get("showLastBid") == 1);
+		showLastBid = TournamentConfiguration.getBooleanOption("showLastBid", true);
 		biddingTable.setModel(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
 		ProgressUI1("initialized...",bidChart,biddingTable);

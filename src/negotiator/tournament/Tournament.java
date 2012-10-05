@@ -160,14 +160,6 @@ public class Tournament implements Serializable
 		return null;
 	}
 	
-	public int getOption(String option) {
-		HashMap<String, Integer> options = getOptions();
-		if (options == null || !options.containsKey(option)) {
-			return 0;
-		}
-		return options.get(option);
-	}
-	
 	public ProtocolRepItem getProtocol() throws Exception {
 		for (TournamentVariable v: variables) {
 			if (v instanceof ProtocolVariable) {

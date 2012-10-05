@@ -162,10 +162,9 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 
 	public AlternatingOffersProtocolSeparateTimelines(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			HashMap<String, Integer> configuration)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, configuration);
+		super(agentRepItems, profileRepItems, agentParams);
 		sessionTotalNumber = 1;
 	}
 
@@ -749,7 +748,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 
-			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles,params, tournament.getOptions()); 
+			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles, params); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(),

@@ -31,6 +31,7 @@ import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.OpponentModelMeasures;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -90,10 +91,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		this.protocol = protocol;
 		this.startingAgent = startingAgent;
 		
-		if (protocol.getConfiguration() != null && protocol.getConfiguration().containsKey("disableGUI") &&
-				protocol.getConfiguration().get("disableGUI") == 1) {
-			showGUI = false;
-		}
+		showGUI = !TournamentConfiguration.getBooleanOption("disableGUI", false);
 	}
 
 	/**
@@ -111,16 +109,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double agentAUtility, agentBUtility;
 
 			// DEFAULT: time-based protocol
-			if (protocol.getConfiguration() != null
-					&& protocol.getConfiguration().containsKey("protocolMode")
-					&& protocol.getConfiguration().get("protocolMode") == 1) {
-				timeline = new DiscreteTimeline(protocol.getConfiguration()
-						.get("deadline"));
+			if (TournamentConfiguration.getBooleanOption("protocolMode", false)) {
+				timeline = new DiscreteTimeline(TournamentConfiguration.getIntegerOption("deadline", 180));
 			} else {
-				if (protocol.getConfiguration() != null && 
-						protocol.getConfiguration().containsKey("deadline")) {
-					totalTime = protocol.getConfiguration().get("deadline");
-				}
+				totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
 				if (Global.PAUSABLE_TIMELINE) {
 					timeline = new PausableContinuousTimeline(totalTime);
 				} else {
@@ -153,10 +145,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						+ " begins");
 			}
 			// DEFAULT: disable trace logging
-			if (protocol.getConfiguration() != null
-					&& protocol.getConfiguration().containsKey(
-							"logNegotiationTrace")
-					&& protocol.getConfiguration().get("logNegotiationTrace") == 1) {
+			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			}
 			checkForMAC();
@@ -439,10 +428,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 */
 	private void processOnlineData() {
 		// DEFAULT: disable trace logging
-		if (protocol.getConfiguration() != null
-				&& protocol.getConfiguration().containsKey(
-						"logNegotiationTrace")
-				&& protocol.getConfiguration().get("logNegotiationTrace") == 1) {
+		if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 			if (Global.PAUSABLE_TIMELINE) {
 				try {
 					timeline.pause();
@@ -707,10 +693,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 	private void processDataForLogging(double time, boolean agreement) {
 		// DEFAULT: disable trace logging
-		if (protocol.getConfiguration() != null
-				&& protocol.getConfiguration().containsKey(
-						"logNegotiationTrace")
-				&& protocol.getConfiguration().get("logNegotiationTrace") == 1) {
+		if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 			matchDataLogger.addMeasure("time",
 					omMeasuresResults.getTimePointList());
 			matchDataLogger.addMeasure("bidindices",

@@ -53,7 +53,6 @@ public abstract class Protocol implements Runnable, Serializable {
 
     private SimpleElement fRoot;  
 	private int runNr = 0;
-	protected HashMap<String, Integer> configuration;
 	public abstract String getName();	
 	public abstract NegotiationOutcome getNegotiationOutcome();
 	
@@ -69,8 +68,7 @@ public abstract class Protocol implements Runnable, Serializable {
 	public Protocol(AgentRepItem[] agentRepItems,
     				ProfileRepItem[] profileRepItems,
     				HashMap<AgentParameterVariable,
-    				AgentParamValue>[] agentParams,
-    				HashMap<String, Integer> configuration) throws Exception{
+    				AgentParamValue>[] agentParams) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
     	if (agentParams!=null) {
@@ -78,7 +76,6 @@ public abstract class Protocol implements Runnable, Serializable {
     	} else {
     		this.agentParams = new HashMap[agentRepItems.length];
 		}
-    	this.configuration = new HashMap<String, Integer>(configuration);
     	loadAgentsUtilitySpaces();
     }
 	protected void loadAgentsUtilitySpaces() throws Exception
@@ -191,10 +188,6 @@ public abstract class Protocol implements Runnable, Serializable {
 		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
 		result = prime * result + Arrays.hashCode(profileRepItems);
 		return result;
-	}
-
-    public HashMap<String, Integer> getConfiguration() {
-		return configuration;
 	}
 
 	@Override

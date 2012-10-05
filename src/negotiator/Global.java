@@ -52,7 +52,7 @@ public class Global {
 	public static final boolean LOG_TO_DATED_FILES = !false;
 
 	/** Log things like competitiveness and minDemandedUtil */
-	public static final boolean LOG_COMPETITIVENESS = true;
+	public static final boolean LOG_COMPETITIVENESS = false;
 
 	/** Enables experimental vars in a tournament */
 	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
@@ -167,13 +167,13 @@ public class Global {
 
 		Class klass = loader.loadClass(protRepItem.getClassPath());
 		Class[] paramTypes = { AgentRepItem[].class, ProfileRepItem[].class,
-				HashMap[].class, HashMap.class};
+				HashMap[].class};
 
 		Constructor cons = klass.getConstructor(paramTypes);
 
 		System.out.println("Found the constructor: " + cons);
 
-		Object[] args = { agentRepItems, profileRepItems, agentParams, new HashMap<String, Integer>()};
+		Object[] args = { agentRepItems, profileRepItems, agentParams};
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
