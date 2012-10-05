@@ -17,11 +17,20 @@ public class BidStrictSorterUtility implements Comparator<Bid>{
 	
 	private UtilitySpace utilitySpace;
 	
+	/**
+	 * Initializes the comperator by setting the bidding space.
+	 * The utility space is necessary to evaluate the utility of the bids.
+	 * @param utilitySpace used to evaluate the utility of the bids.
+	 */
 	public BidStrictSorterUtility(UtilitySpace utilitySpace) {
 		super();
 		this.utilitySpace = utilitySpace;
 	}
 
+	/**
+	 * Comperator. If util b1 > b2 then -1, else if < then 1, else
+	 * compare hashcodes.
+	 */
 	public int compare(Bid b1, Bid b2)
 	{
 		try{
@@ -30,7 +39,7 @@ public class BidStrictSorterUtility implements Comparator<Bid>{
 			if (utilitySpace.getUtility(b1) == utilitySpace.getUtility(b2)) {
 				return String.CASE_INSENSITIVE_ORDER.compare(b1.toString(), b2.toString());
 			}
-			if (utilitySpace.getUtility(b1)> utilitySpace.getUtility(b2))
+			if (utilitySpace.getUtility(b1) > utilitySpace.getUtility(b2))
 				return -1;
 			else if (utilitySpace.getUtility(b1)< utilitySpace.getUtility(b2))
 		        return 1;

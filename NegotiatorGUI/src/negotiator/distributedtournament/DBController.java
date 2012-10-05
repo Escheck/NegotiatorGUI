@@ -127,7 +127,7 @@ public class DBController {
 	 * splitting all sessions into smaller groups.
 	 * 
 	 * @param sessionName name of the session given to the tournament
-	 * @param t
+	 * @param t tournament from which the jobs are derived.
 	 */
 	public void createJob(String sessionName, Tournament t) {
 		
@@ -255,8 +255,9 @@ public class DBController {
 	/**
 	 * Gets a group of sessions to run.
 	 * 
-	 * @param name of the tournament session
-	 * @return Job of sessions to be executed
+	 * @param jobID id of the main job.
+	 * @param sessions array of all jobs of the tournament.
+	 * @return subset of the full array of jobs which still needs to be executed.
 	 */
 	public Job getJob(int jobID, ArrayList<Protocol> sessions) {
 		Job job = null;
@@ -399,7 +400,7 @@ public class DBController {
 	/**
 	 * Returns if a sessionname exists.
 	 * 
-	 * @param sessionName
+	 * @param sessionName name of the tournament.
 	 * @return true if exists
 	 */
 	public boolean existsSessionName(String sessionName) {
@@ -581,10 +582,10 @@ public class DBController {
 	 * Compresses the data to be stored in the database. This can result in a compression rate
 	 * of 1 / 60.
 	 * 
-	 * @param data
+	 * @param data to be compressed.
 	 * @return compressed string
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
+	 * @throws UnsupportedEncodingException if UTF-8 encoding is not supported.
+	 * @throws IOException if there is a problem reading the string.
 	 */
 	public static byte[] compressBytes(String data) throws UnsupportedEncodingException, IOException {
         byte[] input = data.getBytes("UTF-8");
@@ -609,11 +610,11 @@ public class DBController {
 	/**
 	 * Decompress a compressed string.
 	 * 
-	 * @param input
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
-	 * @throws DataFormatException
+	 * @param input compressed byte array which needs to be decompressed.
+	 * @return decompressed string.
+	 * @throws UnsupportedEncodingException if UTF-8 encoding is not supported.
+	 * @throws IOException if there is a problem reading the byte array.
+	 * @throws DataFormatException should not happen.
 	 */
 	public static String extractBytes(byte[] input) throws UnsupportedEncodingException, IOException, DataFormatException {
         Inflater ifl = new Inflater();

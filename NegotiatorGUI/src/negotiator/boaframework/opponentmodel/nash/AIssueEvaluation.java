@@ -86,7 +86,7 @@ public abstract class AIssueEvaluation
 	
 	/**
 	 * This method tells us whether a first value has been offered or not.
-	 * @return
+	 * @return true if first value has been offered.
 	 */
 	public boolean isFirstValueOffered()
 	{

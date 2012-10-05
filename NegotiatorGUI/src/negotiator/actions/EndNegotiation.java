@@ -18,9 +18,8 @@ public class EndNegotiation extends Action {
      * Action to end the negotiation.
      * @param agentID of the opponent
      */
-    public EndNegotiation(AgentID agentID) {
-    	this.agentID = agentID;
-    }
+    @Deprecated
+    public EndNegotiation(AgentID agentID) { }
 	
     /**
      * @return string representation of action: "(EndNegotiation)".

@@ -26,6 +26,9 @@ public class AC_AgentK2 extends AcceptanceStrategy {
 	private boolean activeHelper = false;
 	private final boolean TEST_EQUIVALENCE = false;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
     public AC_AgentK2() { }
     
 	public AC_AgentK2(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {

@@ -24,6 +24,9 @@ public class AC_HardHeaded extends AcceptanceStrategy {
 	private double prevUtil = 1.0;
 	private double lowestOfferBidUtil = 1.0;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_HardHeaded() { }
 	
 	public AC_HardHeaded(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {

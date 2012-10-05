@@ -21,6 +21,9 @@ import negotiator.boaframework.sharedagentstate.anac2011.NiceTitForTatSAS;
  */
 public class AC_NiceTitForTat extends AcceptanceStrategy {
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_NiceTitForTat() { }
 	
 	public AC_NiceTitForTat(NegotiationSession negoSession,
