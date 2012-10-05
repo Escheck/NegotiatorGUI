@@ -10,6 +10,7 @@ import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
@@ -198,7 +199,6 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements Negotia
 		//System.out.println("resetting the GUI after NegotiationSessionEvent.");
 		sessionProgress.resetGUI();
 		sessionProgress.setNegotiationSession(negoSession);
-		
 	}
 
 	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {

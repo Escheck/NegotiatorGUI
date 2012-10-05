@@ -169,7 +169,9 @@ public class AlternatingOffersProtocol extends Protocol {
 		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);
 		/* This eventually fills the GUI columns */
-		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
+		if (!TournamentConfiguration.getBooleanOption("disableGUI", false)) {
+			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
+		}
 		if(Global.fDebug || TournamentConfiguration.getBooleanOption("protocolMode", false)) {
 			sessionrunner.run();
 		} else {
