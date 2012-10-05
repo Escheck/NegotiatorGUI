@@ -61,7 +61,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
      * @param hashMap */
     public ProgressUI2() {
         initComponents();
-		bidChart = new BidChart();
+        if (!TournamentConfiguration.getBooleanOption("disableGUI", false)) {
+        	bidChart = new BidChart();
+        }
 		progressinfo = new ProgressInfo();
 		// DEFAULT: show all bids
 		showAllBids = TournamentConfiguration.getBooleanOption("showAllBids", true);
@@ -69,7 +71,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		showLastBid = TournamentConfiguration.getBooleanOption("showLastBid", true);
 		biddingTable.setModel(progressinfo);
 		biddingTable.setGridColor(Color.lightGray);
-		ProgressUI1("initialized...",bidChart,biddingTable);
+		if (!TournamentConfiguration.getBooleanOption("disableGUI", false)) {
+			ProgressUI1("initialized...",bidChart,biddingTable);
+		}
     }
     
     public ProgressUI2(boolean showAllBids, boolean showLastBid) {
@@ -527,6 +531,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		bidChart.removeAllPlots();
 		//clear table
 		progressinfo.reset();
+		
 		round = 0;
 	}
 	

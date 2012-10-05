@@ -203,7 +203,6 @@ public class TournamentOptionsUI extends JDialog {
         
         restoreOptions(config);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Options");
         setName("optionsFrame"); // NOI18N
         setResizable(false);
