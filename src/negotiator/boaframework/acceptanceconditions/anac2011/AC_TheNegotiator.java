@@ -19,6 +19,9 @@ import negotiator.boaframework.sharedagentstate.anac2011.TheNegotiatorSAS;
  */
 public class AC_TheNegotiator extends AcceptanceStrategy{
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_TheNegotiator() { }
 	
 	public AC_TheNegotiator(NegotiationSession negoSession,

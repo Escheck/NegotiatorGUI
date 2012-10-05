@@ -10,7 +10,6 @@ import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;

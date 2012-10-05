@@ -21,8 +21,7 @@ public class BestBid extends OMStrategy {
 	double updateThreshold = 1.1;
 	
 	/**
-	 * Empty constructor used for reflexion. Note this constructor assumes that init
-	 * is called next.
+	 * Empty constructor for the BOA framework.
 	 */
 	public BestBid() { }
 

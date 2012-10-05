@@ -19,7 +19,16 @@ public class Offer extends Action {
      * @param agent which created the offer.
      * @param bid for the opponent.
      */
+    @Deprecated
     public Offer(AgentID agent, Bid bid) {
+        this.bid = bid;
+    }
+    
+    /**
+     * Creates an action symbolizing an offer for the opponent.
+     * @param bid for the opponent.
+     */
+    public Offer(Bid bid) {
         this.bid = bid;
     }
     

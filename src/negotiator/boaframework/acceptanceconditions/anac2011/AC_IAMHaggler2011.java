@@ -23,6 +23,9 @@ public class AC_IAMHaggler2011 extends AcceptanceStrategy {
 	private double maximum_aspiration = 0.9;
 	private final double acceptMultiplier = 1.02;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_IAMHaggler2011() { }
 	
 	public AC_IAMHaggler2011(NegotiationSession negoSession,

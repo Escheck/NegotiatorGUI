@@ -18,6 +18,9 @@ import negotiator.boaframework.sharedagentstate.anac2011.ValueModelAgentSAS;
  */
 public class AC_ValueModelAgent extends AcceptanceStrategy {
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
     public AC_ValueModelAgent() { }
     
 	public AC_ValueModelAgent(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {

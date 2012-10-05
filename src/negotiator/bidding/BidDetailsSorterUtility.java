@@ -8,6 +8,10 @@ import java.util.Comparator;
  */
 public class BidDetailsSorterUtility implements Comparator<BidDetails>
 {
+	/**
+	 * Comperator. If util b1 > b2 then -1, else if < then 1, else
+	 * compare hashcodes.
+	 */
 	public int compare(BidDetails b1, BidDetails b2)
 	{
 		if (b1 == null || b2 == null)

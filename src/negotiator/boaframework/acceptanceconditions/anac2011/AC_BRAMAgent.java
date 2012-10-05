@@ -26,6 +26,9 @@ public class AC_BRAMAgent extends AcceptanceStrategy {
 	private BidDetails bestBid;
 	private Bid worstBid;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AC_BRAMAgent() { }
 	
 	public AC_BRAMAgent(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {

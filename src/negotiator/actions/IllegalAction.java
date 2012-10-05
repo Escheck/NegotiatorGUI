@@ -19,10 +19,21 @@ public class IllegalAction extends Action {
      * @param agent to blame.
      * @param details of the error.
      */
+    @Deprecated
     public IllegalAction(AgentID agent,String details) {
         this.details = details;
     }
 	
+    /**
+     * Specifies that an agent returned an action not
+     * fitting the protocol.
+     * 
+     * @param details of the error.
+     */
+    public IllegalAction(String details) {
+        this.details = details;
+    }
+    
     /**
      * @return string representation of action: "(IllegalAction-DETAILS)".
      */

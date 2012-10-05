@@ -80,7 +80,7 @@ public abstract class BOAagent extends Agent
 	 * Store the actions made by a partner.
 	 * First store the bid in the history, then update the opponent model.
 	 * 
-	 * @param Action by opponent in current turn
+	 * @param opponentAction by opponent in current turn
 	 */
 	public void ReceiveMessage(Action opponentAction) {
 		// 1. if the opponent made a bid
@@ -124,14 +124,14 @@ public abstract class BOAagent extends Agent
 			// else make a normal bid
 			bid = offeringStrategy.determineNextBid();
 			if(offeringStrategy.isEndNegotiation()){
-				return new EndNegotiation(this.getAgentID());
+				return new EndNegotiation();
 			}
 		}
 		
 		// if the offering strategy made a mistake and didn't set a bid: accept
 		if (bid == null) {
 			System.out.println("Error in code, null bid was given");
-			return new Accept(this.getAgentID());
+			return new Accept();
 		} else {
 			offeringStrategy.setNextBid(bid);
 		}
@@ -145,14 +145,14 @@ public abstract class BOAagent extends Agent
 		// check if the agent decided to break toff the negotiation
 		if (decision.equals(Actions.Break)) {
 			System.out.println("send EndNegotiation");
-			return new EndNegotiation(this.getAgentID());
+			return new EndNegotiation();
 		}
 		//if agent does not accept, it offers the counter bid
 		if(decision.equals(Actions.Reject)){
 			negotiationSession.getOwnBidHistory().add(bid);
-			return new Offer(this.getAgentID(), bid.getBid());
+			return new Offer(bid.getBid());
 		} else {
-			return new Accept(this.getAgentID());
+			return new Accept();
 		}
 	}
 	
