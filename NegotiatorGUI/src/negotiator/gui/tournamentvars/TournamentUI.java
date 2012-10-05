@@ -35,6 +35,7 @@ import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -404,7 +405,8 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
 	void start(boolean distributed, String sessionname) throws Exception {
-		ProgressUI2 progressUI = new ProgressUI2(tournament.getOptions());
+		TournamentConfiguration.setConfiguration(tournament.getOptions());
+		ProgressUI2 progressUI = new ProgressUI2();
 		TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
 		
@@ -415,7 +417,7 @@ public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
 		TournamentRunner runner = new TournamentRunner (tournament, tournamentProgressUI);
 		if (distributed) {
-			runner = new TournamentRunner (tournamentProgressUI, tournament.getOptions());
+			runner = new TournamentRunner (tournamentProgressUI);
 			runner.setDistributed(distributed, sessionname);
 			//NegoGUIApp.negoGUIView.getFrame().setVisible(false);
 		}

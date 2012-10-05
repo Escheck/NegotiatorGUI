@@ -24,10 +24,9 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 	private static final long serialVersionUID = 7674974180914595832L;
 	public MultiPhaseAuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			HashMap<String, Integer> configuration)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, configuration);
+		super(agentRepItems, profileRepItems, agentParams);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -225,7 +224,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 		params[0] = paramsA;
 		params[1] = paramsB;
 		params[2] = paramsB;
-		MultiPhaseAuctionProtocol session = new  MultiPhaseAuctionProtocol(agents,  profiles,	params, tournament.getOptions()) ;
+		MultiPhaseAuctionProtocol session = new  MultiPhaseAuctionProtocol(agents,  profiles,	params) ;
 		return session;
 
 	}

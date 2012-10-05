@@ -21,6 +21,7 @@ import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -79,10 +80,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	static int session_number;
 
 	/** fields copied from the NegotiationTemplate class */
-
-
-	//private Analysis fAnalysis;
-	private BidSpace bidSpace=null;
 	
 	/** END OF fields copied from the NegotiationTemplate class */
 
@@ -90,10 +87,9 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			HashMap<String, Integer> configuration)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, configuration);
+		super(agentRepItems, profileRepItems, agentParams);
 		sessionTotalNumber = 1;
 	}
 	/**
@@ -167,18 +163,14 @@ public class AlternatingOffersProtocol extends Protocol {
 		if(agentA.isUIAgent()||agentB.isUIAgent()) {
 			totalTime = gui_nego_time;
 		} else {
-			if (configuration != null && configuration.containsKey("deadline")) {
-				totalTime = configuration.get("deadline");
-			} else {
-				totalTime = 180;
-			}
+			totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
 		}
 		sessionrunner.setTotalTime(totalTime);
 		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);
 		/* This eventually fills the GUI columns */
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
-		if(Global.fDebug || (getConfiguration() != null && getConfiguration().size() > 0 && getConfiguration().get("protocolMode") == 1)) {
+		if(Global.fDebug || TournamentConfiguration.getBooleanOption("protocolMode", false)) {
 			sessionrunner.run();
 		} else {
 			negoThread = new Thread(sessionrunner);
@@ -186,12 +178,13 @@ public class AlternatingOffersProtocol extends Protocol {
 			negoThread.start();
 			try {
 				synchronized (this) {
-					System.out.println("waiting NEGO_TIMEOUT="+totalTime*1000 + 10000);
+					int time = totalTime * 1000;
+					System.out.println("waiting NEGO_TIMEOUT="+(time + 10000));
 					// wait will unblock early if negotiation is finished in time.
 					if (Global.PAUSABLE_TIMELINE) {
-						wait(totalTime*10000 + 10000);
+						wait(time*10000 + 10000);
 					} else {
-						wait(totalTime*1000 + 10000);
+						wait(time*1000 + 10000);
 					}
 				}
 			} catch (InterruptedException ie) { new Warning("wait cancelled:",ie); }
@@ -229,12 +222,12 @@ public class AlternatingOffersProtocol extends Protocol {
 		outcome.setRunNr(getRun());
 
 		// DEFAULT: no detailed analysis
-		if (configuration != null && configuration.size() > 0 && configuration.get("logDetailedAnalysis") != 0) {
+		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
 			// Calculate the opponent model quality measures and log them
 			UtilitySpace[] spaces = { getAgentAUtilitySpace(), getAgentBUtilitySpace() };
 			UtilityMeasures disCalc = new UtilityMeasures(BidSpaceCache.getBidSpace(spaces));
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
-			
+			BidSpace bidSpace = BidSpaceCache.getBidSpace(this.getAgentAUtilitySpace(), this.getAgentBUtilitySpace());
 			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
 			SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
 			
@@ -251,7 +244,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 			writeOutcomeToLog(false);
 			// DEFAULT: extensive log disabled
-			if (configuration != null && configuration.size() > 0 && configuration.get("logNegotiationTrace") != 0) {
+			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 				writeOutcomeToLog(true);
 			}
 	}
@@ -471,10 +464,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		return getAgentBRep().getName();
 
 	}
-	public void setBidSpace(BidSpace pBidSpace) {
-		bidSpace = pBidSpace;
-	}
-
 
 	/**
 	 * @return total available time for entire nego, in seconds.
@@ -530,7 +519,8 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
     public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception
     {
-        return getTournamentSessions(tournament, tournament.getOption("playAgainstSelf") != 0, tournament.getOption("playBothSides") != 0);
+        return getTournamentSessions(tournament, TournamentConfiguration.getBooleanOption("playAgainstSelf", false),
+        											TournamentConfiguration.getBooleanOption("playBothSides", true));
     }
     
 	@SuppressWarnings("unused")
@@ -644,19 +634,10 @@ public class AlternatingOffersProtocol extends Protocol {
 			HashMap<AgentParameterVariable,AgentParamValue>[] params = new HashMap[2];
 			params[0] = paramsA;
 			params[1] = paramsB;
-			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params, tournament.getOptions()); 
+			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params); 
 			for (int k = 0; k < numberOfSessions; k++) {
 				sessions.add(session);
 			}
-			if (!Global.LOW_MEMORY_MODE) {
-				//check if the analysis is already made for the prefs. profiles
-				try {
-					BidSpace space = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(), session.getAgentBUtilitySpace());
-					session.setBidSpace(space);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				}
 		} else {
 			// pick next variable, and compute all permutations.
 			AssignedParameterVariable v=allparameters.get(0);
