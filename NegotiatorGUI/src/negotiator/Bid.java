@@ -180,13 +180,6 @@ public final class Bid implements XMLable
 				lTmp = lXMLItem.getText();
 				lValue = new ValueInteger(Integer.valueOf(lTmp));
 				break;
-
-			// case PRICE:
-			// lXMLItem =
-			// (SimpleElement)(((SimpleElement)lXMLIssues[i]).getChildByTagName("value"))[0];
-			// lTmp = lXMLItem.getText();
-			// lValue = new ValuePrice(Double.valueOf(lTmp));
-			// break;
 			case REAL:
 				lXMLItem = (SimpleElement) (((SimpleElement) lXMLIssues[i])
 						.getChildByTagName("value"))[0];
@@ -237,11 +230,6 @@ public final class Bid implements XMLable
 				lXMLItem = new  SimpleElement("value");
 				lXMLItem.setText(String.valueOf(lRealVal.getValue())); 
 				break; 
-				// case PRICE: 
-				// ValueReal lPriceVal = (ValueReal)(fValues[i]); 
-				// lXMLValue =  new SimpleElement("value"); 
-				// lXMLValue.setText(String.valueOf(lPriceVal.getValue())); 
-				// break; 
 			}//switch
 			lXMLIssue.addChildElement(lXMLItem); 
 		}

@@ -708,11 +708,7 @@ public class UtilitySpace {
     		break;
     	case OBJECTIVE:
     		ev = new EvaluatorObjective();
-    		break;
-    /*	case PRICE:
-    		ev = new EvaluatorPrice();
-    		break;
-    */		
+    		break;	
     	}
     	fEvaluators.put(obj, ev);
     	return ev;

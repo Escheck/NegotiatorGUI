@@ -55,7 +55,7 @@ public class BidIterator implements Iterator {
 		ArrayList<Issue> lIssues = fDomain.getIssues(); 
 		for(int i=0;i<fNumberOfIssues;i++) {
 			Issue lIssue = lIssues.get(i);
-//			to loop through the Real and Price Issues we use discretization
+//			to loop through the Real Issues we use discretization
 			int lNumberOfValues=0;
 			switch(lIssue.getType()) {
 			case INTEGER:
@@ -70,13 +70,7 @@ public class BidIterator implements Iterator {
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
 				lNumberOfValues = lIssueDiscrete.getNumberOfValues();
 				break;
-/* Removed by DT because KH removed PRICE
- * 
- 			case PRICE:
-				IssuePrice lIssuePrice = (IssuePrice)lIssue;
-				lNumberOfValues = lIssuePrice.getNumberOfDiscretizationSteps();
-				break;*/
-			}// switch
+			}
 			if(lNewIndexes [i]<lNumberOfValues-1) {
 				lNewIndexes [i]++;
 				break;
@@ -114,21 +108,12 @@ public class BidIterator implements Iterator {
 					lOneStep = (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())/(lIssueReal.getNumberOfDiscretizationSteps()-1);
 					lValues.put(lIssue.getNumber(),new ValueReal(lIssueReal.getLowerBound()+lOneStep*fValuesIndexes[i]));
 					break;
-					/* Removed by DT because KH removed PRICE
-					 * 
-					
-				case PRICE: 
-					IssuePrice lIssuePrice=(IssuePrice)lIssue;
-					lOneStep = (lIssuePrice.getUpperBound()-lIssuePrice.getLowerBound())/lIssuePrice.getNumberOfDiscretizationSteps();
-					lValues[i]= new ValueReal(lIssuePrice.getLowerBound()+lOneStep*fValuesIndexes[i]);
-					break;
-*/					
 				case DISCRETE:
 					IssueDiscrete lIssueDiscrete = (IssueDiscrete)lIssue;
 					lValues.put(lIssue.getNumber(), lIssueDiscrete.getValue(fValuesIndexes[i]));
 					break;
-				}// switch
-			}//for		
+				}
+			}		
 			
 			lBid = new Bid(fDomain, lValues);
 		} catch (Exception e) {

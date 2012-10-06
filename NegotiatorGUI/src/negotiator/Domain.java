@@ -266,14 +266,6 @@ public class Domain
             	maxR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
             	child = new IssueReal(name, index, minR, maxR);
             	break;
- // Issue values cannot be of type "price" anymore... TODO: Remove when everything works.
- //           case PRICE:
- //           	// Collect range bounds for integer-valued issue from xml template
- //           	xml_item = childIssues.getChildByTagName("range");
- //           	minR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("lowerbound"));
- //           	maxR = Integer.valueOf(((SimpleElement)xml_item).getAttribute("upperbound"));
- //           	issue = new IssuePrice(name, index, minR, maxR);
- //           	break;
             default: // By default, create discrete-valued issue
             	// Collect discrete values for discrete-valued issue from xml template
             	xml_items = childIssues.getChildByTagName("item");
@@ -416,12 +408,8 @@ public class Domain
 			case REAL:
 				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueReal)lIssue).getNumberOfDiscretizationSteps();
 				break;
-				//TODO: Finish getNumberOfPossibleBids() for Integer, Real and Price issues
-/*			case INTEGER:
-				lNumberOfPossibleBids = lNumberOfPossibleBids * ((IssueInteger)lIssue).get;
-				break;
-			}*/
-			}//switch
+				//TODO: Finish getNumberOfPossibleBids() for Integer, Real issues
+			}
 		}
 		return lNumberOfPossibleBids;
 	}
