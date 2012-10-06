@@ -135,7 +135,10 @@ public class TournamentRunner implements Runnable
 
 	private String runTournament() throws InterruptedException {
 		for (int i = 0; i < sessions.size(); i++) {
-
+			
+			if (TournamentConfiguration.getBooleanOption("disableGUI", false)) {
+				System.out.println("TOURNAMENT PROGRESS: starting match " + (i + 1) + " of " + sessions.size());
+			}
 			
 			int runNr = determineRunNr(sessions.get(i));
 			previousSession = sessions.get(i).hashCode();

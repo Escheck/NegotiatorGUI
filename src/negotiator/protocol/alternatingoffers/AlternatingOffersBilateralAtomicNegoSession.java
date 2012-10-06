@@ -63,6 +63,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	protected Integer totalTime = 1000 * 180;
 	protected int sessionTotalNumber = 1;
 	protected Protocol protocol;
+	private boolean traceLoggingEnabled;
 
 	public Agent currentAgent = null; // agent currently bidding.
 	private Timeline timeline;
@@ -92,6 +93,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		this.startingAgent = startingAgent;
 		
 		showGUI = !TournamentConfiguration.getBooleanOption("disableGUI", false);
+		traceLoggingEnabled = TournamentConfiguration.getBooleanOption("logNegotiationTrace", false);
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						+ " begins");
 			}
 			// DEFAULT: disable trace logging
-			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
+			if (traceLoggingEnabled) {
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			}
 			checkForMAC();
@@ -428,7 +430,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 */
 	private void processOnlineData() {
 		// DEFAULT: disable trace logging
-		if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
+		if (traceLoggingEnabled) {
 			if (Global.PAUSABLE_TIMELINE) {
 				try {
 					timeline.pause();
