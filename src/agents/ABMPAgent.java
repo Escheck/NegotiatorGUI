@@ -233,22 +233,10 @@ public class ABMPAgent extends Agent {
 			Objective lIssue = issues.get(i);
 			if(lIssue.getType() == ISSUETYPE.REAL) {
 				lTE[i] += lRestUtitility/lNrOfRealIssues;
-				switch(utilitySpace.getEvaluator(lIssue.getNumber()).getType()) {
-				case REAL:
-					EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssue.getNumber()));
-					double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
+				EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssue.getNumber()));
+				double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
 //					lIssueIndex[i] = new ValueReal(r);
-					lIssueIndex.put(new Integer(lIssue.getNumber()), new ValueReal(r));
-					break;
-				case PRICE:
-					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(lIssue.getNumber()));
-//					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound());
-					lIssueIndex.put(new Integer(lIssue.getNumber()), new ValueReal(lPriceEvaluator.getLowerBound()));
-					Bid lTempBid = new Bid(utilitySpace.getDomain(), lIssueIndex);
-//					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
-					lIssueIndex.put(new Integer(lIssue.getNumber()), lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]));
-					break;
-				}
+				lIssueIndex.put(new Integer(lIssue.getNumber()), new ValueReal(r));	
 			}
 		}
 		

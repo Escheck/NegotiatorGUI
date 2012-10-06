@@ -15,8 +15,6 @@ public class IssueDiscrete extends Issue {
 	
 	 // the descriptions for each value
 	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
-	/** For each value a certain cost: specifically made for Party domain, functioning as a constraint */
-	private HashMap<ValueDiscrete, Double> costs = new HashMap<ValueDiscrete, Double>();
 	
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
@@ -26,23 +24,21 @@ public class IssueDiscrete extends Issue {
 	    }
 	}	
 	
-	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent, Double[] cost) {
+	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
 		super(name, issueNumber, objParent);		
 		this.values = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i< values.length;i++) {
 	    	ValueDiscrete v=new ValueDiscrete(values[i]);
 	        this.values.add(v);
-	        costs.put(v, cost[i]);
 	    }
 	}
 	
-	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent, Double[] cost) {
+	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent) {
 		super(name, issueNumber, objParent);		
 		this.values = new ArrayList<ValueDiscrete>();
 	    for(int i=0; i<values.length;i++) {
 			ValueDiscrete v=new ValueDiscrete(values[i]);
 	        this.values.add(v);
-	        costs.put(v, cost[i]);
 	        if (descriptions!=null && descriptions[i]!=null) fDesc.put(v,descriptions[i]);
 	    }
 	}
@@ -170,10 +166,7 @@ public class IssueDiscrete extends Issue {
 	
 	public String getDesc(ValueDiscrete val)
 	{ return fDesc.get(val); }
-	
-	public Double getCost(ValueDiscrete val) {
-		return costs.get(val);
-	}
+
 
 	@Override
 	public ISSUETYPE getType() {

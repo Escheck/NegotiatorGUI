@@ -23,13 +23,9 @@ public class EvaluatorDiscrete implements Evaluator {
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock; 
 	private HashMap<ValueDiscrete, Integer> fEval;
-	private HashMap<ValueDiscrete, Double> fCost;
-	private double maxCost = 0;
 	private Integer evalMax= null;
 	public EvaluatorDiscrete() {
 		fEval = new HashMap<ValueDiscrete, Integer>();
-		fCost = new HashMap<ValueDiscrete, Double>();
-		
 		fweight = 0;
 	} 
 
@@ -141,56 +137,10 @@ public class EvaluatorDiscrete implements Evaluator {
 		return EvalValueL.doubleValue()/getEvalMax().doubleValue(); // this will throw if problem.
 	}
 	
-	/** 
-	 * 
-	 * @param the alternative name 
-	 * @return cost, null if no cost available.
-	 */
-	public Double getCost(Value value) {
-		return fCost.get(value); // return null if no cost set for this issue.
-		//if (fCost.get(value)!=null)
-		//	return fCost.get(value);
-		//else return 0;
-	}
-	
-	public double getMaxCost() {
-		return maxCost;
-	}
-	
 	public EVALUATORTYPE getType() {
 		return EVALUATORTYPE.DISCRETE;
 	}
-	
-	/**
-	 * Sets the maximum cost
-	 * @param mc
-	 */
-	public void setMaxCost(double mc){
-		maxCost = mc;
-	}
-	
-	/**
-	 * Adds a valueDiscrete with evaluation and cost to this Evaluator. Sets maxCost to cost if 
-	 * it turns out that the new cost is higher than the maximum.
-	 * 
-	 * @param name The name of the ValueDiscrete.
-	 * @param evaluation The evaluation of the value
-	 * @param cost The cost.
-	 */
-	/*
-	public void set_Value(String name, double evaluation, double cost){
-		Double valEval = fEval.get(new ValueDiscrete(name));
-		if(valEval == 0)		{
-		Value val = new ValueDiscrete(name);
-		}
-		fEval.put((ValueDiscrete)val, new Double(evaluation));
-		if(maxCost < cost){
-			maxCost = cost;
-			fCost.put((ValueDiscrete)val, new Double(cost));
-		}
-	}
-	*/
-	
+
 	/**
 	 * Sets the evaluation for Value <code>val</code>. If this value doesn't exist yet in this Evaluator,
 	 * adds it as well.
@@ -204,37 +154,12 @@ public class EvaluatorDiscrete implements Evaluator {
 		fEval.put((ValueDiscrete)val, new Integer(utility));
 		calcEvalMax();
 	}
-
-	/**
-	 * Sets the cost for value <code>val</code>. If the value doesn't exist yet in this Evaluator,
-	 * add it as well. Note that here isn't an evaluation for it if we add it through here.
-	 * @param val The value to have it's cost set/modified
-	 * @param cost The new cost of the value.
-	 */
-	public void setCost(ValueDiscrete val, Double cost)
-	{
-		//Wouter: I don't get this code...
-    	//  why not set the cost if it is smaller than maxCost??
-
-		// if(maxCost < cost){
-		//	maxCost = cost;
-		//	fCost.put((ValueDiscrete)val, new Double(cost));
-		//}
-		if(cost==null)
-			cost=new Double(0);
-		fCost.put(val, cost);
-		 if (cost>maxCost) maxCost=cost;
-	}
-	
-
 	
 	/**
-	 * wipe evaluation values and cost.
+	 * wipe evaluation values.
 	 */
 	public void clear(){
 		fEval.clear();
-		fCost.clear();
-		
 	}
 	
 	public void loadFromXML(SimpleElement pRoot)
@@ -252,15 +177,6 @@ public class EvaluatorDiscrete implements Evaluator {
             	}
             	catch (Exception e) { System.out.println("Problem reading XML file: "+e.getMessage());}
             }          
-            String sCost = ((SimpleElement)xml_items[j]).getAttribute("cost");
-            if (sCost!=null) {
-            	//cost = Double.valueOf(sCost);
-            	setCost((ValueDiscrete)value,Double.valueOf(sCost));
-            	
-            	// Wouter: sorry but I don't get the following old code at all....
-            	// first, that check against maxCost is already done in setCost. And second, why not set the cost if it is smaller than maxCost??
-            	// if (maxCost<cost) { maxCost = cost; setCost(value, cost);} 
-            }
             ((SimpleElement)xml_items[j]).getAttribute("description");
         }
 		try {
@@ -296,20 +212,6 @@ public class EvaluatorDiscrete implements Evaluator {
 		catch (Exception e)
 		{ return  "Problem with objective "+whichobj.getName()+":" + e.getMessage();}
 		return null;
-	}
-
-	/**
-	 * throws exception if problem with computation.
-	 * @return  the cost of issue with given id. May throw if the bid is incomplete or utilityspace has problems
-	 */
-	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
-	{
-		if (bid==null) throw new NullPointerException("bid=null, cant compute cost");
-		ValueDiscrete val=(ValueDiscrete)bid.getValue(index);
-		if (val==null) throw new NullPointerException("bid "+index+" has no value");
-		Double cost= fCost.get(val);
-		if (cost==null) throw new NullPointerException("no cost associated with value "+val);
-		return cost;
 	}
 
 	public void addEvaluation (ValueDiscrete pValue, Integer pEval) {
@@ -359,12 +261,9 @@ public class EvaluatorDiscrete implements Evaluator {
 	{
 		EvaluatorDiscrete ed=new EvaluatorDiscrete();
 		ed.setWeight(fweight);
-		ed.setMaxCost(getMaxCost());
 		try{
 			for (ValueDiscrete val:fEval.keySet())
 				ed.setEvaluation(val, fEval.get(val));
-			for (ValueDiscrete val:fCost.keySet())
-				ed.setCost(val, fCost.get(val));
 		}
 		catch (Exception e)  { System.out.println("INTERNAL ERR. clone fails"); }
 
@@ -384,14 +283,11 @@ public class EvaluatorDiscrete implements Evaluator {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((evalMax == null) ? 0 : evalMax.hashCode());
-		result = prime * result + ((fCost == null) ? 0 : fCost.hashCode());
 		result = prime * result + ((fEval == null) ? 0 : fEval.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(fweight);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + (fweightLock ? 1231 : 1237);
-		temp = Double.doubleToLongBits(maxCost);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -409,11 +305,6 @@ public class EvaluatorDiscrete implements Evaluator {
 				return false;
 		} else if (!evalMax.equals(other.evalMax))
 			return false;
-		if (fCost == null) {
-			if (other.fCost != null)
-				return false;
-		} else if (!fCost.equals(other.fCost))
-			return false;
 		if (fEval == null) {
 			if (other.fEval != null)
 				return false;
@@ -423,9 +314,6 @@ public class EvaluatorDiscrete implements Evaluator {
 				.doubleToLongBits(other.fweight))
 			return false;
 		if (fweightLock != other.fweightLock)
-			return false;
-		if (Double.doubleToLongBits(maxCost) != Double
-				.doubleToLongBits(other.maxCost))
 			return false;
 		return true;
 	}

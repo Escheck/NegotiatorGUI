@@ -282,13 +282,6 @@ public class EvaluatorReal implements Evaluator {
 	{
 		return null;
 	}
-	
-	
-	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
-	{
-		//throw new Exception("getCost not implemented for EvaluatorReal");
-		return new Double(0);
-	}
 
 	public Value getMaxValue() {
 

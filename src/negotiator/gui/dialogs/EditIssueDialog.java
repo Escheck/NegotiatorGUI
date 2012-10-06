@@ -84,9 +84,8 @@ public class EditIssueDialog extends NewIssueDialog {
 				EvaluatorDiscrete eval = (EvaluatorDiscrete)utilSpace.getEvaluator(issue.getNumber());
 				if (eval!=null)
 				{
-					 // load the eval and cost values
+					 // load the eval values
 					valueString = "";
-					String costString="";
 					
 					for (ValueDiscrete val: values) 
 					{
@@ -94,14 +93,9 @@ public class EditIssueDialog extends NewIssueDialog {
 						//System.out.println("util="+util);
 						if (util!=null) valueString=valueString+util;
 						
-						Double cost=eval.getCost(val);
-						if (cost!=null) costString=costString+cost;
-						
 						valueString=valueString+"\n";
-						costString=costString+"\n";
 											}
 					discreteTextEvaluationArea.setText(valueString);
-					discreteCostEvaluationArea.setText(costString);
 				}
 			}
 		}

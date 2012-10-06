@@ -15,7 +15,6 @@ import negotiator.issue.ValueReal;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
-import negotiator.utility.EvaluatorPrice;
 import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
@@ -325,14 +324,6 @@ public class BidChooser {
 						for (int i=0; i<= 10; i++ )
 						{
 							retValues.add(new ValueInteger(eI.getLowerBound()+i*intervalInteger));
-						}
-						break;
-		case PRICE:	
-						EvaluatorPrice eP = ((EvaluatorPrice)e);
-						double intervalPrice =(eP.getUpperBound()-eP.getLowerBound())/10;
-						for (int i=0; i<= 10; i++ )
-						{
-							retValues.add(new ValueReal(eP.getLowerBound()+i*intervalPrice));
 						}
 						break;
 	}

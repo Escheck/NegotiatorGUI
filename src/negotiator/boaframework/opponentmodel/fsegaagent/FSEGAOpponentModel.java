@@ -102,7 +102,6 @@ public class FSEGAOpponentModel extends OpponentModel
 					break;
 				
 				//Eval hypothesis for real / price attributes
-				case PRICE:
 				case REAL:
 					lEvalHyps = new ArrayList<EvaluatorHypothesis>();
 					aaEvaluatorHypothesis.add(lEvalHyps);

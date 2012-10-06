@@ -1,6 +1,8 @@
 package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
+
+import agents.anac.y2012.TheNegotiatorReloaded.EvaluatorHypothesis;
 import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.utility.*;
@@ -46,58 +48,19 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
 		int lTotalTriangularFns = 4;		
 		for(int i =0; i<fUS.getNrOfEvaluators();i++) {
+			ArrayList<EvaluatorHypothesis> lEvalHyps;
+			EvaluatorReal lHypEvalReal;
+			EvaluatorInteger lHypEvalInteger;
+			EvaluatorHypothesis lEvaluatorHypothesis;
 			switch(fUS.getEvaluator(issues.get(i).getNumber()).getType()) {
-			case PRICE:
-				ArrayList<EvaluatorHypothesis> lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-				fEvaluatorHyps.add(lEvalHyps);
-				//EvaluatorReal lEval = (EvaluatorReal)(fUS.getEvaluator(i));
-				IssueReal lIssuePrice = (IssueReal)(fDomain.getIssue(i));
-				//uphill
-				EvaluatorReal lHypEval = new EvaluatorReal();
-				lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEval.setLowerBound(lIssuePrice.getLowerBound());
-				lHypEval.setType(EVALFUNCTYPE.LINEAR);
-				lHypEval.addParam(1, (double)1/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
-				lHypEval.addParam(0, -lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
-				EvaluatorHypothesis lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-				lEvaluatorHypothesis.setDesc("uphill");
-				lEvalHyps.add(lEvaluatorHypothesis);
-				//downhill
-				lHypEval = new EvaluatorReal();
-				lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEval.setLowerBound(lIssuePrice.getLowerBound());				
-				lHypEval.setType(EVALFUNCTYPE.LINEAR);				
-				lHypEval.addParam(1, -(double)1/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
-				lHypEval.addParam(0, (double)1+lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
-				lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-				lEvalHyps.add(lEvaluatorHypothesis);
-				lEvaluatorHypothesis.setDesc("downhill");
-				for(int k=1;k<=lTotalTriangularFns;k++) {
-					//triangular
-					lHypEval = new EvaluatorReal();
-					lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-					lHypEval.setLowerBound(lIssuePrice.getLowerBound());
-					lHypEval.setType(EVALFUNCTYPE.TRIANGULAR);
-					lHypEval.addParam(0, lHypEval.getLowerBound());
-					lHypEval.addParam(1, lHypEval.getUpperBound());
-					double lMaxPoint = lHypEval.getLowerBound()+(double)k*(lHypEval.getUpperBound()-lHypEval.getLowerBound())/(lTotalTriangularFns+1);
-					lHypEval.addParam(2, lMaxPoint);				
-					lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-					lEvalHyps.add(lEvaluatorHypothesis);
-					lEvaluatorHypothesis.setDesc("triangular " + String.valueOf(lMaxPoint));
-				}
-				for(int k=0;k<lEvalHyps.size();k++) {
-					lEvalHyps.get(k).setProbability((double)1/lEvalHyps.size());
-				}
-				
-			break;
-				
+
 			case REAL:
 				lEvalHyps = new ArrayList<EvaluatorHypothesis>();				
 				fEvaluatorHyps.add(lEvalHyps);
 				//EvaluatorReal lEval = (EvaluatorReal)(fUS.getEvaluator(i));
 				IssueReal lIssue = (IssueReal)(fDomain.getIssue(i));				
 				//uphill
+				EvaluatorReal lHypEval;
 				lHypEval = new EvaluatorReal();
 				lHypEval.setUpperBound(lIssue.getUpperBound());
 				lHypEval.setLowerBound(lIssue.getLowerBound());

@@ -560,13 +560,12 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			else  try {bid=getBid(); } 
 			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
 			String val;
-			try	{val=utilitySpace.getCost(bid).toString();	}
+			try	{val="0";	}
 			catch (Exception e) { 
 				new Warning("Exception during cost calculation:"+e.getMessage(),false,1); 
 				val="XXX"; }
 			
 			JTextArea result=new JTextArea(val);
-			if (utilitySpace.constraintsViolated(bid)) result.setBackground(Color.red);
 			return result;
 		}
 		if (row==issues.size()+1)

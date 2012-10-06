@@ -1,11 +1,9 @@
 package negotiator.utility;
 
-public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, PRICE, OBJECTIVE;
+public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, OBJECTIVE;
 
 	public static EVALUATORTYPE convertToType(String typeString) {
-		if (typeString.equalsIgnoreCase("price"))
-        	return EVALUATORTYPE.PRICE;
-        else if (typeString.equalsIgnoreCase("integer"))
+        if (typeString.equalsIgnoreCase("integer"))
         	return EVALUATORTYPE.INTEGER;
         else if (typeString.equalsIgnoreCase("real"))
         	return EVALUATORTYPE.REAL;

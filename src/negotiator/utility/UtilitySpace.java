@@ -43,9 +43,6 @@ import negotiator.xml.SimpleElement;
 
 public class UtilitySpace {
 	
-	public enum CHECK_CONSTRAINTS {DO_CHECK, DO_NOT_CHECK};
-	/** For checking costs */
-	public static CHECK_CONSTRAINTS fCheckConstraints = CHECK_CONSTRAINTS.DO_NOT_CHECK;
 	// Class fields
     protected Domain domain;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -93,15 +90,6 @@ public class UtilitySpace {
         	for (Objective obj:objectives) {
         		Evaluator eval =  DefaultEvaluator(obj);
         		fEvaluators.put(obj, eval);
-        		if(eval instanceof EvaluatorDiscrete) {
-        			EvaluatorDiscrete evalDisc = (EvaluatorDiscrete)eval;
-        			IssueDiscrete issue = (IssueDiscrete)obj;        			
-
-        			for(Value val: issue.getValues()) {
-        				ValueDiscrete valDisc = (ValueDiscrete)val;
-        				evalDisc.setCost(valDisc, issue.getCost(valDisc));
-        			}
-        		}
         	}
         	
         }
@@ -253,8 +241,6 @@ public class UtilitySpace {
     {
     	EVALUATORTYPE type;
         double utility = 0, financialUtility = 0, financialRat = 0;
-        if(fCheckConstraints == CHECK_CONSTRAINTS.DO_CHECK)
-        	if (constraintsViolated(bid)) return 0.;
         
         Objective root = domain.getObjectivesRoot();
         Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();
@@ -268,10 +254,6 @@ public class UtilitySpace {
         	case REAL:
 //    			System.out.println(is + " weight = " + eval.getWeight() + " with value " + bid.getValue(is.getNumber()) + " -> " + getEvaluation(is.getNumber(), bid));
         		utility += eval.getWeight()*getEvaluation(is.getNumber(),bid);
-        		break;
-        	case PRICE:
-        		financialUtility = getEvaluation(is.getNumber(),bid);
-        		financialRat = ((EvaluatorPrice)eval).rationalityfactor;
         		break;
         	}
         }
@@ -398,26 +380,6 @@ public class UtilitySpace {
     	double discountedUtil = util * Math.pow(discount, time);
 		return discountedUtil;
 	}
-    
-
-    
-    /**
-     * CHeck that the constraints are not violated.
-     * This is an ad-hoc solution, we need structural support 
-     * for constraints. Soft, hard constraints, a constraint space etc.
-     * @param bid the bid to be checked
-     * @return true if the bid violates constraint, else false.
-     */
-    public boolean constraintsViolated(Bid bid)
-    {
-    	Double cost=0.;
-    	try { cost=getCost(bid); } catch (Exception e) 
-    	{ 
-    		System.out.println("can not compute cost:"+e.getMessage()+"- assuming constraints violated");
-    		return true; 
-    	}
-    	return cost>1200.;
-    }
     
     /**
      * gets the utility of one issue in the bid.
@@ -564,8 +526,7 @@ public class UtilitySpace {
  			//System.out.println("objectives_index: " + o_ind + " vs length:" + xml_objectives.length +" to fill something of lenght: "+ xml_obj_issues.length);
  			xml_obj_issues[(o_ind + i_ind) ] = xml_objectives[o_ind];
  		}  
-//        boolean issueWithCost = false;
-//        double[] cost;
+
         for(int i=0;i<xml_obj_issues.length;i++) {
             index = Integer.valueOf(((SimpleElement)xml_obj_issues[i]).getAttribute("index"));
             type = ((SimpleElement)xml_obj_issues[i]).getAttribute("type");
@@ -595,13 +556,6 @@ public class UtilitySpace {
             		break;
             	case REAL:
             		lEvaluator = new EvaluatorReal();
-            		break;
-            	case PRICE:
-            		if (indexEvalPrice>-1)
-            			System.out.println("Multiple price evaluators in utility template file!");
-            		// TODO: Define exception.
-            		indexEvalPrice = index-1;
-            		lEvaluator = new EvaluatorPrice();
             		break;
             	case OBJECTIVE:
             		lEvaluator = new EvaluatorObjective();		
@@ -908,10 +862,10 @@ public class UtilitySpace {
     }
     
     /**
-     * Wouter: I assume this adds the utilities (weights and cost) from this utility space
+     * Wouter: I assume this adds the utilities (weights) from this utility space
      * to a given domain. It modifies the currentLevel so the return value is superfluous.
      * @param currentLevel is pointer to a XML tree describing the domain.
-     * @return XML tree with the weights and cost set. NOTE: currentLevel is modified anyway.
+     * @return XML tree with the weights. NOTE: currentLevel is modified anyway.
      */
     private SimpleElement toXMLrecurse(SimpleElement currentLevel){
     	//go through all tags.
@@ -971,12 +925,6 @@ public class UtilitySpace {
     					EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
     					Integer eval = dev.getValue(theIssue.getValue(itemInd));
     					((SimpleElement)items[itemInd]).setAttribute("evaluation", ""+eval);
-    					
-    					Double cost = dev.getCost(theIssue.getValue(itemInd));
-    					if (cost!=null) ((SimpleElement)items[itemInd]).setAttribute("cost", ""+cost);
-    					
-    					//String desc = dev.getDesc(theIssue.getValue(itemInd));
-    					//if (desc!=null) tmpItem.setAttribute("description", ""+desc);
     				}
     				break;
     			case INTEGER:
@@ -1039,33 +987,6 @@ public class UtilitySpace {
     		if (mess!=null) return mess;
     	}
     	return null;
-    }
-    
-    /**
-     * compute the cost of the given bid. 
-     * There is also getCost in Evaluator but it currently only works for EvaluatorDiscrete.
-     * Need more clarity on how to deal with this.
-     * For instance, one could argue that the evaluator for the root object
-     * should be able to compute cost of the entire bid.
-     * @throws if cost can not be computed for some reason.
-     * @return computed cost
-     * @author W.Pasman
-     */
-    public Double getCost(Bid bid) throws Exception
-    {
-    	Double totalCost=0.0;
-    	Double costofissue;
-    	for (Issue issue: domain.getIssues())
-    	{
-    		int ID=issue.getNumber();
-    		try {costofissue=getEvaluator(ID).getCost(this, bid, ID); }
-    		catch (Exception e) { 
-    			new Warning("getcost:"+e.getMessage()+". using 0",false,1);
-    			costofissue=0.; 
-    		}
-    		totalCost += costofissue;;
-    	}
-    	return totalCost;
     }
     
     public void showStatistics()

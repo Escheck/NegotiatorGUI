@@ -56,7 +56,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected JTextArea discreteTextArea;
 	protected JTextArea discreteTextEvaluationArea;
-	protected JTextArea discreteCostEvaluationArea;
 	protected JTextArea discreteDescEvaluationArea;
 	
 	protected JTextField integerMinField;
@@ -107,8 +106,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		//Initialize the input components
 		discreteTextArea = new JTextArea(20, 10);
 		discreteTextEvaluationArea = new JTextArea(20,4);
-		discreteCostEvaluationArea = new JTextArea(20,4);
-		discreteCostEvaluationArea.setEditable(false);
 		discreteDescEvaluationArea = new JTextArea(20,40);
 		discreteDescEvaluationArea.setEditable(false);
 
@@ -155,7 +152,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		JPanel textPanel = new JPanel();
 		JPanel evalPanel = new JPanel();
-		JPanel costPanel = new JPanel();
 		JPanel descPanel = new JPanel();
 		
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
@@ -171,12 +167,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		evalPanel.add(evalLabel);
 		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
 		panel.add(evalPanel);
-
-		costPanel.setLayout(new BoxLayout(costPanel, BoxLayout.PAGE_AXIS));
-		JLabel costLabel = new JLabel("Cost of value");
-		costPanel.add(costLabel);
-		costPanel.add(new JScrollPane(discreteCostEvaluationArea));
-		panel.add(costPanel);
 		
 		descPanel.setLayout(new BoxLayout(descPanel, BoxLayout.PAGE_AXIS));
 		JLabel descLabel = new JLabel("Description");
@@ -306,7 +296,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	 * Gets the evaluations for the discrete issue from the input field in this dialog. 
 	 * @return An  arrayList with the evaluations. 
 	 * Now returns elements with value 0 to indicate non-entered (empty field) values.
-	 * Cost can not be edited anyway so not returned now.
+	 *
 	 * @throws InvalidInputException 
 	 */
 	protected ArrayList<Integer> getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
@@ -326,32 +316,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		return evalues;
 	}
-	
-	/**
-	 * Gets the costs for the discrete issue from the input field in this dialog. 
-	 * @return An  arrayList with the costs. 
-	 * Now returns elements with value 0 to indicate non-entered (empty field) values.
-	 * Cost can not be edited anyway so not returned now.
-	 * @throws InvalidInputException 
-	 */
-	protected ArrayList<Double> getDiscreteCosts() throws InvalidInputException, ClassCastException {
-		String[] evalueStrings = discreteCostEvaluationArea.getText().split("\n",-1);
-		for (String i:evalueStrings) System.out.println(">"+i);
-
-		ArrayList<Double> costs=new ArrayList<Double>();
-		for(int i = 0; i<evalueStrings.length; i++)
-		{
-			Double value=0.;
-			if(!evalueStrings[i].equals(""))
-			{
-				value=Double.valueOf(evalueStrings[i]);
-				if (value<0) throw new InvalidInputException("Encountered "+value+". Negative cost are not allowed");
-			}
-			costs.add(value); 
-		}
-		return costs;
-	}
-	
 	
 	protected int getIntegerMin() throws InvalidInputException {
 		if(!integerMinField.getText().equals(""))
@@ -476,7 +440,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			//EvaluatorDiscrete evDis = null;
 			String[] values;
 			ArrayList<Integer> evalues = null;
-			ArrayList<Double> costs=null;
 			try {
 				values = getDiscreteValues(); 
 			}
@@ -487,7 +450,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			try{
 				evalues = getDiscreteEvalutions();
 				if (evalues==null) System.out.println("No evalues");
-				costs=getDiscreteCosts();
 			}catch (Exception f){ //Can also be a casting exception.
 					JOptionPane.showMessageDialog(this, "Problem reading evaluation values:"+f.getMessage());
 			}
@@ -515,7 +477,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 						if (i < evalues.size() && evalues.get(i)!=0) // evalues field is 0 if error occured at that field.
 						{
 							((EvaluatorDiscrete) evaluator).setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
-							((EvaluatorDiscrete) evaluator).setCost(((ValueDiscrete)v_enum.get(i)), costs.get(i));
 						}
 					}
 				}
