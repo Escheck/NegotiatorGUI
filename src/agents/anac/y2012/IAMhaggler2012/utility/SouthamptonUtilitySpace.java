@@ -58,16 +58,6 @@ public class SouthamptonUtilitySpace {
     	{
     		return getMaxValueInteger((EvaluatorInteger)lEvaluator);
     	}
-    	/*
-    	if(lEvaluator.getClass() == EvaluatorObjective.class)
-    	{
-    		return ((EvaluatorObjective)lEvaluator).getMaxValue();
-    	}
-    	if(lEvaluator.getClass() == EvaluatorPrice.class)
-    	{
-    		return ((EvaluatorPrice)lEvaluator).getMaxValue();
-    	}
-    	*/
     	if(lEvaluator.getClass() == EvaluatorReal.class)
     	{
     		return getMaxValueReal((EvaluatorReal)lEvaluator);

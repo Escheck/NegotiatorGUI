@@ -245,7 +245,7 @@ public class ABMPAgent2 extends Agent {
 		// TODO: Think about how to (re)distribute remaining concession over MULTIPLE real issues. In car example
 		// not important. Low priority.
 		double lRestUtitility = lUtilityGap + lTotalConcession;
-		// Distribute remaining utility of real and/or price issues. Integers still to be done. See above.
+		// Distribute remaining utility of real issues. Integers still to be done. See above.
 		for (i = 0; i < nrOfIssues; i++) {
 			Issue lIssue = lIssues.get(i);//getNegotiationTemplate().getDomain().getIssue(i);
 			if(lIssue.getType() == ISSUETYPE.REAL) {
