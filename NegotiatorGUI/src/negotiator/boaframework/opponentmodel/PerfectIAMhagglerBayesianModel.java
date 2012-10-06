@@ -135,56 +135,7 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 			EvaluatorInteger lHypEvalInteger;
 			EvaluatorHypothesis lEvaluatorHypothesis;
 			switch (utilitySpace.getEvaluator(utilitySpace.getIssue(i).getNumber()).getType()) {
-			case PRICE:
-			{
-				lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-				evaluatorHypotheses.add(lEvalHyps);
-
-				IssueReal lIssuePrice = (IssueReal) utilitySpace.getIssue(i);
-
-				/* Uphill */
-				lHypEvalReal = new EvaluatorReal();
-				lHypEvalReal.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEvalReal.setLowerBound(lIssuePrice.getLowerBound());
-				lHypEvalReal.setType(EVALFUNCTYPE.LINEAR);
-				lHypEvalReal.addParam(1, 1.0 / (lHypEvalReal.getUpperBound() - lHypEvalReal.getLowerBound()));
-				lHypEvalReal.addParam(0, -lHypEvalReal.getLowerBound() / (lHypEvalReal.getUpperBound() - lHypEvalReal.getLowerBound()));
-				lEvaluatorHypothesis = new EvaluatorHypothesis(lHypEvalReal);
-				lEvaluatorHypothesis.setDesc("uphill");
-				lEvalHyps.add(lEvaluatorHypothesis);
-
-				/* Triangular */
-				for (int k = 1; k <= totalTriangularFunctions; ++k) {
-					lHypEvalReal = new EvaluatorReal();
-					lHypEvalReal.setUpperBound(lIssuePrice.getUpperBound());
-					lHypEvalReal.setLowerBound(lIssuePrice.getLowerBound());
-					lHypEvalReal.setType(EVALFUNCTYPE.TRIANGULAR);
-					lHypEvalReal.addParam(0, lHypEvalReal.getLowerBound());
-					lHypEvalReal.addParam(1, lHypEvalReal.getUpperBound());
-					double lMaxPoint = lHypEvalReal.getLowerBound() + (double) k * (lHypEvalReal.getUpperBound() - lHypEvalReal.getLowerBound())
-							/ (totalTriangularFunctions + 1);
-					lHypEvalReal.addParam(2, lMaxPoint);
-					lEvaluatorHypothesis = new EvaluatorHypothesis(lHypEvalReal);
-					lEvalHyps.add(lEvaluatorHypothesis);
-					lEvaluatorHypothesis.setDesc("triangular " + String.valueOf(lMaxPoint));
-				}
-				for (int k = 0; k < lEvalHyps.size(); ++k) {
-					lEvalHyps.get(k).setProbability(1.0 / lEvalHyps.size());
-				}
-
-				/* Downhill */
-				lHypEvalReal = new EvaluatorReal();
-				lHypEvalReal.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEvalReal.setLowerBound(lIssuePrice.getLowerBound());
-				lHypEvalReal.setType(EVALFUNCTYPE.LINEAR);
-				lHypEvalReal.addParam(1, -1.0 / (lHypEvalReal.getUpperBound() - lHypEvalReal.getLowerBound()));
-				lHypEvalReal.addParam(0, 1.0 + lHypEvalReal.getLowerBound() / (lHypEvalReal.getUpperBound() - lHypEvalReal.getLowerBound()));
-				lEvaluatorHypothesis = new EvaluatorHypothesis(lHypEvalReal);
-				lEvaluatorHypothesis.setDesc("downhill");
-				lEvalHyps.add(lEvaluatorHypothesis);
-
-				break;
-			}
+			
 			case REAL:
 			{
 				lEvalHyps = new ArrayList<EvaluatorHypothesis>();

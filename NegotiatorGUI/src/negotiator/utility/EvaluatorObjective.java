@@ -73,14 +73,6 @@ public class EvaluatorObjective implements Evaluator {
 		return 0.0;  //TODO hdevos: Do what here, only it's children have values. Or so i gather.
 	}
 	
-	public double getCost(Value value) {
-		return 0.0;  //TODO hdevos: Eh.. what value?
-	}
-	
-	public double getMaxCost() {
-		return 0.0;  //TODO hdevos: Same here.
-	}
-	
 	public EVALUATORTYPE getType() {
 		return EVALUATORTYPE.OBJECTIVE;
 	}
@@ -105,16 +97,5 @@ public class EvaluatorObjective implements Evaluator {
 		return "Internal error: isComplete should be checked only with Issues, not with Objectives";
 	}
 	
-	
-	/**
-	 * see also UtilitySpace.getCost
-	 */
-	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
-	{
-		throw new Exception("getCost not implemented for EvaluatorObjective");
-	}
-	
 	public void showStatistics() { System.out.println("weight="+fweight); }
-
-
 }

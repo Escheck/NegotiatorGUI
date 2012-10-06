@@ -187,11 +187,6 @@ public class EvaluatorInteger implements Evaluator {
 		setOffset(offset);
 	}
 
-	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception
-	{
-		throw new Exception("getCost not implemented for EvaluatorInteger");
-	}
-
 	public EvaluatorInteger clone()
 	{
 		EvaluatorInteger ed=new EvaluatorInteger();

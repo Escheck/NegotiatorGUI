@@ -58,56 +58,16 @@ public class BayesianOpponentModel extends OpponentModel{
 		fEvaluatorHyps =  new ArrayList<ArrayList<EvaluatorHypothesis>> ();
 		int lTotalTriangularFns = 1;
 		for(int i =0; i<fUS.getNrOfEvaluators();i++) {
+			ArrayList<EvaluatorHypothesis> lEvalHyps = new ArrayList<EvaluatorHypothesis>();
+			lEvalHyps = new ArrayList<EvaluatorHypothesis>();
+			fEvaluatorHyps.add(lEvalHyps);
 			switch(fUS.getEvaluator(issues.get(i).getNumber()).getType()) {
-			case PRICE:
-				ArrayList<EvaluatorHypothesis> lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-				fEvaluatorHyps.add(lEvalHyps);
-				//EvaluatorReal lEval = (EvaluatorReal)(fUS.getEvaluator(i));
-				IssueReal lIssuePrice = (IssueReal)(fDomain.getIssue(i));
-				//uphill
-				EvaluatorReal lHypEval = new EvaluatorReal();
-				lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEval.setLowerBound(lIssuePrice.getLowerBound());
-				lHypEval.setType(EVALFUNCTYPE.LINEAR);
-				lHypEval.addParam(1, 1.0/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
-				lHypEval.addParam(0, -lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
-				EvaluatorHypothesis lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-				lEvaluatorHypothesis.setDesc("uphill");
-				lEvalHyps.add(lEvaluatorHypothesis);
-				//downhill
-				lHypEval = new EvaluatorReal();
-				lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-				lHypEval.setLowerBound(lIssuePrice.getLowerBound());				
-				lHypEval.setType(EVALFUNCTYPE.LINEAR);				
-				lHypEval.addParam(1, -1./(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
-				lHypEval.addParam(0, 1.+lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
-				lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-				lEvalHyps.add(lEvaluatorHypothesis);
-				lEvaluatorHypothesis.setDesc("downhill");
-				//triangular
-				for(int k=1;k<=lTotalTriangularFns;k++) {
-					//triangular
-					lHypEval = new EvaluatorReal();
-					lHypEval.setUpperBound(lIssuePrice.getUpperBound());
-					lHypEval.setLowerBound(lIssuePrice.getLowerBound());
-					lHypEval.setType(EVALFUNCTYPE.TRIANGULAR);
-					lHypEval.addParam(0, lHypEval.getLowerBound());
-					lHypEval.addParam(1, lHypEval.getUpperBound());
-					lHypEval.addParam(2, lHypEval.getLowerBound()+(double)k*(lHypEval.getUpperBound()-lHypEval.getLowerBound())/(lTotalTriangularFns+1));				
-					lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
-					lEvalHyps.add(lEvaluatorHypothesis);
-					lEvaluatorHypothesis.setDesc("triangular");
-				}
-				for(int k=0;k<lEvalHyps.size();k++) {
-					lEvalHyps.get(k).setProbability((double)1./lEvalHyps.size());
-				}
-				break;
-				
+			
 			case REAL:
-				lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-				fEvaluatorHyps.add(lEvalHyps);
 				//EvaluatorReal lEval = (EvaluatorReal)(fUS.getEvaluator(i));
 				IssueReal lIssue = (IssueReal)(fDomain.getIssue(i));
+				EvaluatorReal lHypEval = new EvaluatorReal();
+				EvaluatorHypothesis lEvaluatorHypothesis;
 				if(USE_DOMAIN_KNOWLEDGE) {
 					//uphill
 					lHypEval = new EvaluatorReal();

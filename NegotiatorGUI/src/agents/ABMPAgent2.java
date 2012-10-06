@@ -250,24 +250,9 @@ public class ABMPAgent2 extends Agent {
 			Issue lIssue = lIssues.get(i);//getNegotiationTemplate().getDomain().getIssue(i);
 			if(lIssue.getType() == ISSUETYPE.REAL) {
 				lTE[i] += lRestUtitility/lNrOfRealIssues;
-				switch(utilitySpace.getEvaluator(lIssues.get(i).getNumber()).getType()) {
-				case REAL:
-					EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssues.get(i).getNumber()));
-					double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
-					lIssueIndex[i] = new ValueReal(r);
-					break;
-				case PRICE:
-					EvaluatorPrice lPriceEvaluator=(EvaluatorPrice)(utilitySpace.getEvaluator(i));
-					lIssueIndex [i] =  new ValueReal(lPriceEvaluator.getLowerBound());
-					HashMap<Integer, Value> lValues = new HashMap<Integer, Value>();
-					for(i=0;i<nrOfIssues;i++) {
-						lValues.put(lIssues.get(i).getNumber(), lIssueIndex[i]);
-					}
-					
-					Bid lTempBid = new Bid(utilitySpace.getDomain(), lValues);
-					lIssueIndex[i] =  lPriceEvaluator.getValueByEvaluation(utilitySpace, lTempBid, lTE[i]);
-					break;
-				}
+				EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssues.get(i).getNumber()));
+				double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
+				lIssueIndex[i] = new ValueReal(r);
 			}
 		}
 		HashMap<Integer, Value> lValues = new HashMap<Integer, Value>();

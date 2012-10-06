@@ -55,16 +55,6 @@ public interface Evaluator {
 	 */
 	public String isComplete(Objective whichObjective);
 	
-	/**
-	 * Wouter: added 19oct. Returns cost associated to 
-	 * @param uspace is the entire utiltyspace. This is because in future scenarios
-	 * the cost of someissue can depend on other issues and their values.
-	 * For example, you may get reduction depending if you also buy something else.
-	 * @param index is the issue that you want the cost of
-	 * @return the cost
-	 */
-	public Double getCost(UtilitySpace uspace, Bid bid, int index) throws Exception;
-	
 	public Evaluator clone();
 	
 	// print statistics of this evaluator. For analysis 
