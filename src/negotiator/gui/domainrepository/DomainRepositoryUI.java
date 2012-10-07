@@ -9,8 +9,6 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import negotiator.Domain;
@@ -18,10 +16,8 @@ import negotiator.repository.*;
 import negotiator.utility.UtilitySpace;
 import javax.swing.JFileChooser;
 import negotiator.exceptions.Warning;
-import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.TreeFrame;
-
 
 /**
  * A user interface to the agent repository 
@@ -48,20 +44,6 @@ public class DomainRepositoryUI implements NegoGUIComponent
 		domainrepository=Repository.get_domain_repos();
 		initTree();
 		tree.setModel(treemodel);
-		final NegoGUIComponent comp = this;
-		tree.addFocusListener(new FocusListener() {
-
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-				NegoGUIApp.negoGUIView.setActiveComponent(comp); 
-			}
-
-			public void focusLost(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 	}	
 	public DomainRepositoryUI() throws Exception
 	{
