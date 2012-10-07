@@ -1,20 +1,22 @@
 package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import negotiator.Bid;
+
+import Jama.Matrix;
+
 import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
-import negotiator.boaframework.IAMhaggler_Concession;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
-import Jama.Matrix;
 
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
@@ -22,6 +24,9 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 	private IAMHagglerOpponentConcessionModel concessionModel;
 	protected BidCreator bidCreator;
 	private int amountOfSamples;
+	private BidDetails MAX_UTILITY_BID;
+	private Matrix variances;
+	private Matrix means;
 
 	public IAMHaggler_Test_Offering() { }
 
@@ -44,12 +49,15 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 			double value = parameters.get("s");
 			amountOfSamples = (int) value;
 		} else {
-			amountOfSamples = 100;
-			System.out.println("Using default 100 for amount of samples.");
+			amountOfSamples = 10;
+			System.out.println("Using default 10 for amount of samples.");
 		}
 		
 		concessionModel = new IAMHagglerOpponentConcessionModel((int) amountOfRegressions, negotiationSession.getUtilitySpace(), amountOfSamples);
 		bidCreator = new RandomBidCreator();
+		MAX_UTILITY_BID = negotiationSession.getMaxBidinDomain();
+		SortedOutcomeSpace outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+		negotiationSession.setOutcomeSpace(outcomespace);
 	}
 
 	@Override
@@ -61,7 +69,7 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 			System.out.println("IAMHagglerOpponentConcessionModel initialized with u = " + myUndiscountedUtil + ", t = " + time);
 			
 		}
-		return negotiationSession.getMaxBidinDomain();
+		return MAX_UTILITY_BID;
 	}
 
 	@Override
@@ -69,14 +77,14 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 		double myUndiscountedUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
 		double time = negotiationSession.getTime();
-		concessionModel.updateModel(myUndiscountedUtil, time);
-		System.out.println("IAMHagglerOpponentConcessionModel updated with u = " + myUndiscountedUtil + ", t = " + time);
-
-		Matrix variances = concessionModel.getVariance();
-		Matrix means = concessionModel.getMeans();
 		int round = ((DiscreteTimeline) negotiationSession.getTimeline()).getRound();
+		concessionModel.updateModel(myUndiscountedUtil, time);
+
+		variances = concessionModel.getVariance();
+		means = concessionModel.getMeans();
 		System.out.println();
 		System.out.println("Round " + round + (variances == null ? ". Estimates still null" : ""));
+		System.out.println("model has been updated with u = " + myUndiscountedUtil + ", at t = " + time + " (which was offered in round " + (round - 1) + ").");
 		if(variances != null){
 
 			DecimalFormat formatter = new DecimalFormat("#.########");
@@ -99,23 +107,21 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 			}
 		}
 
-		double targetUtil = 1;
-
-
-
-
-		//double opponentUtility = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-		//double targetUtil = IAMhagglerConcession.getTarget(opponentUtility, negotiationSession.getTime());
-
-		//System.out.println("TestHaggler targetUtil:" + targetUtil);
-		Bid bid = bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtil, targetUtil +0.25);
-		try {
-			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return nextBid;
+		return MAX_UTILITY_BID;
 	}
-
+	
+	public Matrix getMeans()
+	{
+		return means;
+	}
+	
+	public Matrix getVariances()
+	{
+		return variances;
+	}
+	
+	public int getAmountOfSamples()
+	{
+		return amountOfSamples;
+	}
 }
