@@ -1,13 +1,14 @@
 package negotiator.gui.domainrepository;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-
 import negotiator.exceptions.Warning;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 
 public class MyTreeNode extends DefaultMutableTreeNode {
+
+	private static final long serialVersionUID = -4929729243877782033L;
 	RepItem repository_item;
 	
 	public MyTreeNode(RepItem item)

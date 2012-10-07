@@ -72,9 +72,9 @@ public class Repository
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					new Boolean(true));
-
 			marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, this),new File(fileName));
 		} catch (Exception e) {
+			e.printStackTrace();
 			new Warning("xml save failed: "+e); //e.printStackTrace();
 		}
 
@@ -91,6 +91,23 @@ public class Repository
 		}
 		return null;
 	}
+	
+	public boolean removeProfileRepItem(ProfileRepItem item) {
+		System.out.println(item.getName());
+		for (int i = 0; i < items.size(); i++) {
+			System.out.println(items.get(i).getName());
+			DomainRepItem drp = (DomainRepItem) items.get(i);
+			for (int a = 0; a < drp.getProfiles().size(); a++) {
+				ProfileRepItem pri = drp.getProfiles().get(a);
+				if (pri.getName().equals(item.getName())) {
+					drp.getProfiles().remove(a);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public String toString() {
 		String ret="{";
 		for (RepItem i: items) {

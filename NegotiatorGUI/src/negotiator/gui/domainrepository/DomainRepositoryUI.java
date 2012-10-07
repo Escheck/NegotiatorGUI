@@ -1,301 +1,133 @@
 package negotiator.gui.domainrepository;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.JTree;
-import javax.swing.tree.*;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import negotiator.Domain;
-import negotiator.repository.*;
-import negotiator.utility.UtilitySpace;
+import negotiator.repository.DomainRepItem;
+import negotiator.repository.Repository;
+import negotiator.repository.RepItem;
+import negotiator.repository.ProfileRepItem;
 import javax.swing.JFileChooser;
-import negotiator.exceptions.Warning;
-import negotiator.gui.tree.TreeFrame;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
- * A user interface to the agent repository 
- * @author wouter
- *
+ * A user interface to the domain repository 
+ * @author Wouter Pasman, Mark Hendrikx
  */
 public class DomainRepositoryUI
 {
-	JButton	adddomainbutton=new JButton("Add Domain");
-	JButton	removedomainbutton=new JButton("Remove Domain");
-	JButton addprofilebutton=new JButton("Add Profile");
-	JButton removeprofilebutton=new JButton("Remove Profile");
-	JButton editbutton=new JButton("Edit");
+	private Repository domainrepository;
+	private MyTreeNode root=new MyTreeNode(null);
+	private JTree scenarioTree;
+	private DefaultTreeModel scenarioTreeModel;
 	
-
-	Repository domainrepository; // TODO locate this somewhere better
-	JFrame frame;
-	MyTreeNode root=new MyTreeNode(null);
-	JTree tree;
-	DefaultTreeModel treemodel;
 	public DomainRepositoryUI(JTree pTree) throws Exception
 	{
-		this.tree = pTree;
-		domainrepository=Repository.get_domain_repos();
+		this.scenarioTree = pTree;
+		domainrepository = Repository.get_domain_repos();
 		initTree();
-		tree.setModel(treemodel);
+		scenarioTree.setModel(scenarioTreeModel);
+		
 	}	
-	public DomainRepositoryUI() throws Exception
-	{
-		domainrepository=Repository.get_domain_repos();
-		frame = new JFrame();
-		frame.setTitle("Negotiation Domains and Preference Profile Repository");
-		frame.setLayout(new BorderLayout());
 	
-		 // CREATE THE BUTTONS
-		JPanel buttons=new JPanel();
-		buttons.setLayout(new BoxLayout(buttons,BoxLayout.Y_AXIS));
-		adddomainbutton.addActionListener(new ActionListener() {	
-			public void actionPerformed(ActionEvent e) {
-				try { adddomain(); } 
-				catch (Exception err)  { new Warning("add domain failed:"+err);}
-			}
-		});
-		removedomainbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try { removedomain(); }
-				catch (Exception err)  { new Warning("remove domain failed:"+err);}
-			}
-		});
-		addprofilebutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try { addprofile(); }
-				catch (Exception err)  { new Warning("remove failed:"+err);}
-			}
-		});
-		removeprofilebutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try { removeprofile(); }
-				catch (Exception err)  { new Warning("remove failed:"+err);}
-			}
-		});
-		editbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try { edit(); }
-				catch (Exception err)  { new Warning("remove failed:"+err); err.printStackTrace();}
-			}
-		});
-		buttons.add(adddomainbutton);
-		buttons.add(removedomainbutton);
-		buttons.add(addprofilebutton);
-		buttons.add(removeprofilebutton);
-		buttons.add(editbutton);
-		tree=new JTree();
-		initTree();
-		JScrollPane scrollpane = new JScrollPane(tree);
-
-		frame.add(buttons,BorderLayout.EAST);
-		frame.add(scrollpane,BorderLayout.CENTER);
-		frame.pack();
-		frame.setVisible(true);
-	}
 	private void initTree(){
-		// create the tree
+		// for all domains in the domain repository
 		for (RepItem repitem: domainrepository.getItems()) {
 			DomainRepItem dri=(DomainRepItem)repitem;
-			MyTreeNode newchild=new MyTreeNode(dri);
-			for (ProfileRepItem profileitem: dri.getProfiles())
-			{
-				newchild.add(new MyTreeNode(profileitem));
+			MyTreeNode domainNode = new MyTreeNode(dri);
+			// add all preference profiles of the domain as nodes
+			for (ProfileRepItem profileitem: dri.getProfiles()) {
+				domainNode.add(new MyTreeNode(profileitem));
 			}
-			root.add(newchild);
+			root.add(domainNode);
 		}
 			
-		treemodel=new DefaultTreeModel(root);
-		tree.setModel(treemodel);
+		scenarioTreeModel = new DefaultTreeModel(root);
+		scenarioTree.setModel(scenarioTreeModel);
+		Font currentFont = scenarioTree.getFont();
+		Font bigFont = new Font(currentFont.getName(), currentFont.getStyle(), currentFont.getSize() + 2);
+		scenarioTree.setRowHeight(23);
+		scenarioTree.setFont(bigFont);
+		scenarioTree.setRootVisible(false);
+		scenarioTree.setShowsRootHandles(true);
+		scenarioTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		scenarioTree.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	        	TreePath selPath = scenarioTree.getPathForLocation(e.getX(), e.getY());
+	            if (selPath == null){
+	                return;
+	            } else {
+	            	scenarioTree.setSelectionPath(selPath);
+	            }
+	            
+	            MyTreeNode node = (MyTreeNode) scenarioTree.getSelectionPath().getLastPathComponent();
+	            
+	            if (e.isPopupTrigger() && e.getComponent() instanceof JTree ) {
+	                JPopupMenu popup = createPopupMenu(node);
+	                popup.show(e.getComponent(), e.getX(), e.getY());
+	            }
+	        }
+		});
+	}
+
+	private JPopupMenu createPopupMenu(final MyTreeNode node) {
+		JPopupMenu popup = new JPopupMenu();
 		
-		tree.setRootVisible(false);
-		tree.setShowsRootHandles(true) ;
-	
+		JMenuItem addExistingDomain = new JMenuItem("Add existing domain");
+		JMenuItem addExistingPP = new JMenuItem("Add existing preference profile");
+		JMenuItem newDomain = new JMenuItem("New domain");
+		JMenuItem newPP = new JMenuItem("New preference profile");
+
+
+		popup.add(addExistingDomain);
+		popup.add(addExistingPP);
+		popup.add(newDomain);
+		popup.add(newPP);
+		
+		if (node.getRepositoryItem() instanceof ProfileRepItem) {
+			JMenuItem deletePP = new JMenuItem("Delete preference profile");
+			 deletePP.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+					deleteProfile(node);
+	            }
+	         });
+			 popup.add(deletePP);
+		} else {
+			JMenuItem deletePP = new JMenuItem("Delete domain");
+			 deletePP.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            	deleteDomain(node);
+	            }
+	         });
+			 popup.add(deletePP);
+		}
+		return popup;
 	}
-	void adddomain() throws Exception { 
-		//System.out.println("Add domain to " +((MyTreeNode)(tree.getLastSelectedPathComponent())).getRepositoryItem());
-		JFileChooser fd=new JFileChooser(); 
-	    //ExampleFileFilter filter = new ExampleFileFilter();
-	    //filter.addExtension("xml");
-	    //filter.setDescription("domain xml file");
-	    //fd.setFileFilter(filter);
-		//fd.setFileFilter(filter);
-	    int returnVal = fd.showOpenDialog(frame);
-	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	        System.out.println("You chose to open this file: " +
-	             fd.getSelectedFile().toURL());
-	        DomainRepItem newnode=new DomainRepItem(fd.getSelectedFile().toURL());
-	        domainrepository.getItems().add(newnode);		        
-			treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
-			domainrepository.save();
-	     }	
-	}
-	public void adddomain(URL fileName) throws Exception { 
-	        DomainRepItem newnode=new DomainRepItem(fileName);
-	        
-	        domainrepository.getItems().add(newnode);		        
-			treemodel.insertNodeInto(new MyTreeNode(newnode), root, root.getChildCount());
-			domainrepository.save();
 	
-	}
-	
-	void removedomain() throws Exception {
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null) throw new Exception("please select a domain to remove first");
-		RepItem item=selection.getRepositoryItem();
-		if (!(item instanceof DomainRepItem))
-			throw new Exception("please select a domain node");
-		System.out.println("remove domain " +item);
-		domainrepository.getItems().remove(item);
-		treemodel.removeNodeFromParent(selection);
+	private void deleteDomain(MyTreeNode node) {
+		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();
+		scenarioTreeModel.removeNodeFromParent(node);
+		domainrepository.getItems().remove(dri);
 		domainrepository.save();
 	}
 	
-	
-	public void addprofile(URL fileName) throws Exception {
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null) throw new Exception("please select a domain to add the profile to");
-		RepItem item=selection.getRepositoryItem();
-		if (!(item instanceof DomainRepItem))
-			throw new Exception("please select a domain node");
-		
-        // TODO check that selected profile indeed belongs to our domain.
-        ProfileRepItem newnode=new ProfileRepItem(fileName,(DomainRepItem)item);
-        ((DomainRepItem)item).getProfiles().add(newnode);		        
-		treemodel.insertNodeInto(new MyTreeNode(newnode), selection, selection.getChildCount());
-		domainrepository.save();
-	    
-	}
-
-	
-	void addprofile() throws Exception {
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null) throw new Exception("please select a domain to add the profile to");
-		RepItem item=selection.getRepositoryItem();
-		if (!(item instanceof DomainRepItem))
-			throw new Exception("please select a domain node");
-		
-		JFileChooser fd=new JFileChooser(); 
-	    int returnVal = fd.showOpenDialog(frame);
-	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	        System.out.println("You chose to open this file: " +
-	             fd.getSelectedFile().toURL());
-	        // TODO check that selected profile indeed belongs to our domain.
-	        ProfileRepItem newnode=new ProfileRepItem(fd.getSelectedFile().toURL(),(DomainRepItem)item);
-	        ((DomainRepItem)item).getProfiles().add(newnode);		        
-			treemodel.insertNodeInto(new MyTreeNode(newnode), selection, selection.getChildCount());
-			domainrepository.save();
-	     }	
-	}
-	
-	void removeprofile() throws Exception {
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null) throw new Exception("please select a profile to remove first");
-		RepItem item=selection.getRepositoryItem();
-		if (!(item instanceof ProfileRepItem))
-			throw new Exception("please select a profile node");
-		System.out.println("remove profile " +item);
-		
-		DomainRepItem domain=((ProfileRepItem)item).getDomain();
-		domain.getProfiles().remove(item);
-		treemodel.removeNodeFromParent(selection);
+	private void deleteProfile(MyTreeNode node) {
+		ProfileRepItem pri = (ProfileRepItem) node.getRepositoryItem();
+		scenarioTreeModel.removeNodeFromParent(node);
+		domainrepository.removeProfileRepItem(pri);
 		domainrepository.save();
 	}
-
-	void edit() throws Exception {
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null ) 
-			throw new Exception("please first select an item to be edited");
-		RepItem item=selection.getRepositoryItem();
-		if (item instanceof DomainRepItem) {
-			URL filename=((DomainRepItem)item).getURL();
-	    	Domain domain=new Domain(filename.getFile());
-	    	TreeFrame treeFrame = new TreeFrame(domain);
-		}
-		else if (item instanceof ProfileRepItem) {
-			URL filename=((ProfileRepItem)item).getURL();
-			URL domainfilename=((ProfileRepItem)item).getDomain().getURL();
-
-	    	Domain domain=new Domain(domainfilename.getFile());
-	    	UtilitySpace us=new UtilitySpace(domain,filename.getFile());
-	    	TreeFrame treeFrame=new TreeFrame(domain, us);
-		}
-		else
-			throw new IllegalStateException("found unknown node in tree: "+item);
-		
-	}
-	
-	
-	
-	/******************DEMO CODE************************/
-
-	
-	
-	/** run this for a demo of AgentReposUI */
-	public static void main(String[] args) 
-	{
-		try {
-			new DomainRepositoryUI(); 
-			}
-		catch (Exception e) { new Warning("DomainRepositoryUI failed to launch: "+e); }
-	}
-	public void addAction() {
-		// TODO Auto-generated method stub
-		MyTreeNode selection=(MyTreeNode)(tree.getLastSelectedPathComponent());
-		if (selection==null) {
-			try {
-				adddomain();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}
-		RepItem item=selection.getRepositoryItem();
-		if (!(item instanceof DomainRepItem)) {
-			try {
-				adddomain();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else { 
-			try {
-				addprofile();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	public void editAction() {
-		// TODO Auto-generated method stub
-		try {
-			edit();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public JButton[] getButtons() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public void removeAction() {
-		// TODO Auto-generated method stub
-		
-	}
-	public void saveAction() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }
-
-
-
-
