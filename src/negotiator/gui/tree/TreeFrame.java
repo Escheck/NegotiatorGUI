@@ -10,7 +10,6 @@ import jtreetable.*;
 import negotiator.*;
 import negotiator.repository.DomainRepItem;
 import negotiator.utility.*;
-import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.actions.*;
 import negotiator.issue.*;
 
@@ -30,7 +29,7 @@ import negotiator.issue.*;
  * 
  */
 
-public class TreeFrame extends JPanel implements NegoGUIComponent {
+public class TreeFrame extends JPanel {
 
 	private static final long serialVersionUID = 9072786889017106286L;
 	//Attributes

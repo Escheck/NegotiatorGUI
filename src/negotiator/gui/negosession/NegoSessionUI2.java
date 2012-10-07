@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import negotiator.Global;
 import negotiator.gui.NegoGUIApp;
-import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
@@ -25,7 +24,7 @@ import org.jdesktop.application.Action;
  *
  * @author  dmytro
  */
-public class NegoSessionUI2 extends javax.swing.JPanel implements NegoGUIComponent {
+public class NegoSessionUI2 extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = 2692787665652874858L;
 	private static final boolean fShowProgressUI = true; 

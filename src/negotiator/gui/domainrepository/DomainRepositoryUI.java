@@ -16,7 +16,6 @@ import negotiator.repository.*;
 import negotiator.utility.UtilitySpace;
 import javax.swing.JFileChooser;
 import negotiator.exceptions.Warning;
-import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.TreeFrame;
 
 /**
@@ -24,7 +23,7 @@ import negotiator.gui.tree.TreeFrame;
  * @author wouter
  *
  */
-public class DomainRepositoryUI implements NegoGUIComponent 
+public class DomainRepositoryUI
 {
 	JButton	adddomainbutton=new JButton("Add Domain");
 	JButton	removedomainbutton=new JButton("Remove Domain");
