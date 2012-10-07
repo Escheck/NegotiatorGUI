@@ -24,7 +24,6 @@ import negotiator.boaframework.BOAagentInfo;
 import negotiator.distributedtournament.DBController;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
-import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.boaframework.BOAagentsFrame;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
@@ -42,7 +41,7 @@ import negotiator.tournament.VariablesAndValues.*;
 /**
  * @author  dmytro
  */
-public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
+public class TournamentUI extends javax.swing.JPanel
 {
 	private static final long serialVersionUID = -3629136950558234574L;
 
