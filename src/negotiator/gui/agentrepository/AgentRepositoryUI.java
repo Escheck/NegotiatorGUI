@@ -1,15 +1,15 @@
 package negotiator.gui.agentrepository;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JScrollPane;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.table.*;
 import javax.swing.JButton;
+import javax.swing.table.AbstractTableModel;
+
 import negotiator.repository.*;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIComponent;
@@ -30,47 +30,44 @@ public class AgentRepositoryUI implements NegoGUIComponent
 	public AgentRepositoryUI(JTable  pTable) {
 		this.table = pTable;
 		agentrepository = Repository.get_agent_repository();
+		
 		initTable();
 		table.setModel(dataModel);
-	}
-	public AgentRepositoryUI() throws Exception
-	{
-		agentrepository = Repository.get_agent_repository();
-		frame = new JFrame();
-		frame.setTitle("Agent Repository");
-		frame.setLayout(new BorderLayout());
-		initTable();
-		table = new JTable(dataModel);
-		table.setShowGrid(true);
-		
-		JScrollPane scrollpane = new JScrollPane(table);
-	 	
-	      // CREATE THE BUTTONS
-		JPanel buttons=new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		addbutton=new JButton("Add Agent");
-		addbutton.addActionListener(new ActionListener() {	
-			public void actionPerformed(ActionEvent e) {
-				try {addrow();}
-				catch (Exception err) { new Warning("add failed:"+err); }
-			}
+		table.setShowVerticalLines(false);
+		table.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	            int r = table.rowAtPoint(e.getPoint());
+	            if (r >= 0 && r < table.getRowCount()) {
+	                table.setRowSelectionInterval(r, r);
+	            } else {
+	                table.clearSelection();
+	            }
+
+	            int rowindex = table.getSelectedRow();
+	            if (rowindex < 0)
+	                return;
+	            if (e.isPopupTrigger() && e.getComponent() instanceof JTable ) {
+	                JPopupMenu popup = createPopupMenu();
+	                popup.show(e.getComponent(), e.getX(), e.getY());
+	            }
+	        }
 		});
-		removebutton=new JButton("Remove Agent");
-		removebutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				removerow(); }
-		});
-		buttons.add(addbutton);
-		buttons.add(removebutton);
-		
-		frame.add(buttons,BorderLayout.SOUTH);
-		frame.add(scrollpane,BorderLayout.CENTER);
-		frame.pack();
-		frame.setVisible(true);
 	}
+
+	private JPopupMenu createPopupMenu() {
+		JPopupMenu popup = new JPopupMenu();
+		JMenuItem addAgent = new JMenuItem("Add agent");
+		JMenuItem removeAgent = new JMenuItem("Remove agent");
+		popup.add(addAgent);
+		popup.add(removeAgent);
+		return popup;
+	}
+	
 	private void initTable() {
 		dataModel = new AbstractTableModel() {
 			private static final long serialVersionUID = -4985008096999143587L;
-			final String columnnames[] = {"Agent Name","Filename (full path)","Version","Description"};
+			final String columnnames[] = {"Agent Name","Description"};
 			
 			public int getColumnCount() { 
 				return columnnames.length; 
@@ -80,12 +77,17 @@ public class AgentRepositoryUI implements NegoGUIComponent
 			}
 			public Object getValueAt(int row, int col) { 
 			  	  AgentRepItem agt=(AgentRepItem)agentrepository.getItems().get(row);
+			  	  
 			  	  switch(col)
 			  	  {
-			  	  case 0:return agt.getName();
-			  	  case 1: return agt.getClassPath();
-			  	  case 2: return agt.getVersion();
-			  	  case 3: return agt.getDescription();
+			  	  case 0:
+			  		  String error = "";
+			  		  if (agt.getVersion().equals("ERR")) {
+			  			  error = " (LOADING FAILED)";
+			  		  }
+			  		  return agt.getName() + error;
+			  	  case 1:
+			  		  return agt.getDescription();
 			  	  
 			  	  }
 			  	  return col;
@@ -110,36 +112,10 @@ public class AgentRepositoryUI implements NegoGUIComponent
 
 	}
 	
-		//new AddAgentUI();
-	public void addrow() throws Exception {
-		System.out.println("add row "+table.getSelectedRow());
-		AgentRepItem ari=(new AddAgentUI(frame)).getAgentRepItem();
-		System.out.println("UI returned with "+ari);
-		if (ari.getName().length()==0)
-			throw new IllegalArgumentException("empty agent name is not allowed");
-		if (ari!=null) {
-			int row=agentrepository.getItems().size();
-			AgentRepItem otheragt=agentrepository.getAgentOfClass(ari.getClassPath());
-			if (otheragt!=null)
-				throw new IllegalArgumentException("Only one reference to a class is allowed, Agent "+otheragt.getName()+" is already of given class!");
-			agentrepository.getItems().add(ari);
-			dataModel.fireTableRowsInserted(row, row);
-			agentrepository.save();
-		}
-	}
-	
-	
-
-	/** run this for a demo of AgentReposUI */
-	public static void main(String[] args) 
-	{
-		try { new AgentRepositoryUI(); }
-		catch (Exception e) { new Warning("launch of AgentRepositoryUI failed: "+e); }
-	}
 	public void addAction() {
 		// TODO Auto-generated method stub
 		try {
-			addrow();
+			// addrow();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,10 +125,7 @@ public class AgentRepositoryUI implements NegoGUIComponent
 		// TODO Auto-generated method stub
 		
 	}
-	public JButton[] getButtons() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	public void removeAction() {
 		// TODO Auto-generated method stub
 		removerow();
