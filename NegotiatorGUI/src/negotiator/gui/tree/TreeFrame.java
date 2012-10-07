@@ -10,7 +10,6 @@ import jtreetable.*;
 import negotiator.*;
 import negotiator.repository.DomainRepItem;
 import negotiator.utility.*;
-import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 import negotiator.gui.tree.actions.*;
 import negotiator.issue.*;
@@ -31,7 +30,7 @@ import negotiator.issue.*;
  * 
  */
 
-public class TreeFrame extends JPanel implements NegoGUIComponent{
+public class TreeFrame extends JPanel implements NegoGUIComponent {
 
 	private static final long serialVersionUID = 9072786889017106286L;
 	//Attributes
@@ -83,21 +82,6 @@ public class TreeFrame extends JPanel implements NegoGUIComponent{
 		super();
 		
 		init(treeModel, null);
-		final NegoGUIComponent comp = this;
-		treeTable.addFocusListener(new FocusListener() {
-
-			public void focusGained(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-				NegoGUIApp.negoGUIView.setActiveComponent(comp); 
-			}
-
-			public void focusLost(FocusEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-		
 	}
 	
 	

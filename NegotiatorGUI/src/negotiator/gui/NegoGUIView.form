@@ -204,87 +204,8 @@
             </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JToolBar" name="toolBar">
-          <Properties>
-            <Property name="floatable" type="boolean" value="false"/>
-            <Property name="rollover" type="boolean" value="true"/>
-            <Property name="name" type="java.lang.String" value="toolBar" noResource="true"/>
-          </Properties>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JButton" name="openToolBarButton1">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="negotiator.gui.NegoGUIView" id="opnFileAction" methodName="opnFileAction"/>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="openToolBarButton1" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="saveToolBarButton">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="negotiator.gui.NegoGUIView" id="saveFileAction" methodName="saveFileAction"/>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="saveToolBarButton" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JToolBar$Separator" name="jSeparator3">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator3" noResource="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="addToolBarButton">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="negotiator.gui.NegoGUIView" id="addButtonAction" methodName="addButtonAction"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" resourceKey="addToolBarButton.font"/>
-                <Property name="text" type="java.lang.String" resourceKey="addToolBarButton.text"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="addToolBarButton" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="removeToolBarButton">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="negotiator.gui.NegoGUIView" id="removeButtonAction" methodName="removeButtonAction"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" resourceKey="removeToolBarButton.font"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="removeToolBarButton" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="editToolBarButton">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="negotiator.gui.NegoGUIView" id="editAction" methodName="editAction"/>
-                </Property>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
-                <Property name="name" type="java.lang.String" value="editToolBarButton" noResource="true"/>
-                <Property name="verticalTextPosition" type="int" value="3"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator2" noResource="true"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-      </SubComponents>
-    </Container>
+     
     <Container class="javax.swing.JMenuBar" name="menuBar">
       <Properties>
         <Property name="name" type="java.lang.String" value="menuBar" noResource="true"/>

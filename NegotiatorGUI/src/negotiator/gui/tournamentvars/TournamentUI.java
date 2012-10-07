@@ -37,35 +37,12 @@ import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.TournamentRunner;
-import negotiator.tournament.VariablesAndValues.AgentParamValue;
-import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.tournament.VariablesAndValues.AgentValue;
-import negotiator.tournament.VariablesAndValues.AgentVariable;
-import negotiator.tournament.VariablesAndValues.BOAagentValue;
-import negotiator.tournament.VariablesAndValues.BOAagentVariable;
-import negotiator.tournament.VariablesAndValues.DBLocationValue;
-import negotiator.tournament.VariablesAndValues.DBLocationVariable;
-import negotiator.tournament.VariablesAndValues.DBPasswordValue;
-import negotiator.tournament.VariablesAndValues.DBPasswordVariable;
-import negotiator.tournament.VariablesAndValues.DBSessionValue;
-import negotiator.tournament.VariablesAndValues.DBSessionVariable;
-import negotiator.tournament.VariablesAndValues.DBUserValue;
-import negotiator.tournament.VariablesAndValues.DBUserVariable;
-import negotiator.tournament.VariablesAndValues.ProfileValue;
-import negotiator.tournament.VariablesAndValues.ProfileVariable;
-import negotiator.tournament.VariablesAndValues.ProtocolValue;
-import negotiator.tournament.VariablesAndValues.ProtocolVariable;
-import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
-import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
-import negotiator.tournament.VariablesAndValues.TournamentOptionsValue;
-import negotiator.tournament.VariablesAndValues.TournamentOptionsVariable;
-import negotiator.tournament.VariablesAndValues.TournamentValue;
-import negotiator.tournament.VariablesAndValues.TournamentVariable;
+import negotiator.tournament.VariablesAndValues.*;
 
 /**
  * @author  dmytro
  */
-public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent 
+public class TournamentUI extends javax.swing.JPanel implements NegoGUIComponent
 {
 	private static final long serialVersionUID = -3629136950558234574L;
 

@@ -6,15 +6,12 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.*;
 import javax.swing.JButton;
 import negotiator.repository.*;
 import negotiator.exceptions.Warning;
-import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIComponent;
 
 /**
@@ -22,7 +19,7 @@ import negotiator.gui.NegoGUIComponent;
  * @author wouter
  *
  */
-public class AgentRepositoryUI implements NegoGUIComponent 
+public class AgentRepositoryUI implements NegoGUIComponent
 {
 	
 	JFrame frame;
@@ -35,20 +32,6 @@ public class AgentRepositoryUI implements NegoGUIComponent
 		agentrepository = Repository.get_agent_repository();
 		initTable();
 		table.setModel(dataModel);
-		final NegoGUIComponent comp = this;
-		table.addFocusListener(new FocusListener() {
-
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				NegoGUIApp.negoGUIView.setActiveComponent(comp);
-			}
-
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		
-		});
 	}
 	public AgentRepositoryUI() throws Exception
 	{
