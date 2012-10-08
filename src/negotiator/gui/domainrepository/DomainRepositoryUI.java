@@ -1,10 +1,8 @@
 package negotiator.gui.domainrepository;
 
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JTable;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,15 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.CodeSource;
-
 import javax.swing.JTree;
-
-import negotiator.Domain;
-import negotiator.Global;
-import negotiator.gui.NegoGUIApp;
+import negotiator.gui.GenericFileFilter;
 import negotiator.gui.agentrepository.DirectoryRestrictedFileSystemView;
-
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
@@ -149,25 +141,7 @@ public class DomainRepositoryUI
 		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
 		
 		// Filter such that only directories and .class files are shown.
-		FileFilter filter = new FileFilter() {
-			
-			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-			        return true;
-			    }
-				String name = f.getName();
-				int pos = name.lastIndexOf('.');
-				String ext = name.substring(pos+1);
-		        
-				return ext.equals("xml");
-			}
-
-			@Override
-			public String getDescription() {
-				return "Domain XML files (.xml)";
-			}
-		};
+		FileFilter filter = new GenericFileFilter("xml", "Domain XML files (.xml)");
 		fc.setFileFilter(filter);
 		
 		// Open the file picker

@@ -16,6 +16,7 @@ import java.security.CodeSource;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import negotiator.Global;
+import negotiator.gui.GenericFileFilter;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.Repository;
 
@@ -123,25 +124,7 @@ public class AgentRepositoryUI
 		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
 		
 		// Filter such that only directories and .class files are shown.
-		FileFilter filter = new FileFilter() {
-			
-			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-			        return true;
-			    }
-				String name = f.getName();
-				int pos = name.lastIndexOf('.');
-				String ext = name.substring(pos+1);
-		        
-				return ext.equals("class");
-			}
-
-			@Override
-			public String getDescription() {
-				return "Java class files (.class)";
-			}
-		};
+		FileFilter filter = new GenericFileFilter("class", "Java class files (.class)");
 		fc.setFileFilter(filter);
 		
 		// Open the file picker
