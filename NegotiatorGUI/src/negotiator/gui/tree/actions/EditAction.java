@@ -35,18 +35,7 @@ public class EditAction extends AbstractAction {
 			Objective obj = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
 			if (obj instanceof Issue) {
 				EditIssueDialog dialog = new EditIssueDialog(treeFrame, (Issue)obj);
-			}
-			/*
-			if (obj instanceof IssueDiscrete) {
-				EditIssueDialog dialog = new EditIssueDialog(treeTable, (Issue)obj);
-			}
-			else if (obj instanceof IssueInteger) {
-				EditIssueDialog dialog = new EditIssueDialog(treeTable, (Issue)obj);
-			}
-			else if (obj instanceof IssueReal) {
-				EditIssueDialog dialog = new EditIssueDialog(treeTable, (Issue)obj);
-			}*/
-			else if (obj instanceof Objective) {
+			} else if (obj instanceof Objective) {
 				EditObjectiveDialog dialog = new EditObjectiveDialog(treeFrame, obj);
 			}
 		}

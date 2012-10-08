@@ -100,11 +100,11 @@ public class DomainRepositoryUI
 				addDomain();
             }
         });
-		;
-
-
+		
 		popup.add(addExistingDomain);
+		addExistingDomain.setEnabled(false);
 		popup.add(addExistingPP);
+		addExistingPP.setEnabled(false);
 		popup.add(newDomain);
 		
 		if (node.getRepositoryItem() instanceof ProfileRepItem) {

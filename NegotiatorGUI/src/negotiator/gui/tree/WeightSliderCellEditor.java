@@ -26,8 +26,7 @@ public class WeightSliderCellEditor extends AbstractCellEditor implements TableC
 	
 	//Methods
 	public Object getCellEditorValue() {
-		//TODO TEST CODE!!
-		return null;//new Integer(7);
+		return null;
 	}
 	
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
