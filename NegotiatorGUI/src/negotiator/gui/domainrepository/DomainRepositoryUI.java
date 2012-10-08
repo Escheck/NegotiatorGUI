@@ -2,23 +2,34 @@ package negotiator.gui.domainrepository;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.CodeSource;
+
 import javax.swing.JTree;
+
+import negotiator.Domain;
+import negotiator.Global;
+import negotiator.gui.NegoGUIApp;
+import negotiator.gui.agentrepository.DirectoryRestrictedFileSystemView;
+
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.xml.SimpleElement;
 import javax.swing.JFileChooser;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -89,6 +100,11 @@ public class DomainRepositoryUI
 		JMenuItem addExistingDomain = new JMenuItem("Add existing domain");
 		JMenuItem addExistingPP = new JMenuItem("Add existing preference profile");
 		JMenuItem newDomain = new JMenuItem("New domain");
+		newDomain.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addDomain();
+            }
+        });
 		JMenuItem newPP = new JMenuItem("New preference profile");
 
 
@@ -106,17 +122,96 @@ public class DomainRepositoryUI
 	         });
 			 popup.add(deletePP);
 		} else {
-			JMenuItem deletePP = new JMenuItem("Delete domain");
-			 deletePP.addActionListener(new java.awt.event.ActionListener() {
+			JMenuItem deleteDomain = new JMenuItem("Delete domain");
+			deleteDomain.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(java.awt.event.ActionEvent evt) {
 	            	deleteDomain(node);
 	            }
 	         });
-			 popup.add(deletePP);
+			 popup.add(deleteDomain);
 		}
 		return popup;
 	}
 	
+	private void addDomain() {
+		// Get the root of Genius
+		String domainRoot = "";
+		String subdirectory = "etc" + File.separator + "templates" + File.separator;
+		try {
+			domainRoot = new java.io.File(".").getCanonicalPath() + File.separator + subdirectory;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Restrict file picker to root and subdirectories.
+		// Ok, you can escape if you put in a path as directory. We catch this later on.
+		FileSystemView fsv = new DirectoryRestrictedFileSystemView(new File(domainRoot));
+		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
+		
+		// Filter such that only directories and .class files are shown.
+		FileFilter filter = new FileFilter() {
+			
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+			        return true;
+			    }
+				String name = f.getName();
+				int pos = name.lastIndexOf('.');
+				String ext = name.substring(pos+1);
+		        
+				return ext.equals("xml");
+			}
+
+			@Override
+			public String getDescription() {
+				return "Domain XML files (.xml)";
+			}
+		};
+		fc.setFileFilter(filter);
+		
+		// Open the file picker
+		int returnVal = fc.showSaveDialog(null);
+		
+		// If file selected
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            // Catch people who tried to escape our directory
+            if (!file.getPath().startsWith(domainRoot)) {
+            	JOptionPane.showMessageDialog(null, "Only domains in the root or a subdirectory of the root are allowed.", "Agent import error", 0);
+            } else {
+	            String relativePath = file.getPath().substring(domainRoot.length());
+	            String domainName = file.getName();
+	            	
+	            String path = subdirectory + relativePath + ".xml";
+	    		DomainRepItem dri = null;
+				try {
+					dri = new DomainRepItem(new URL("file:" + path));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+	    		domainrepository.getItems().add(dri);
+	    		domainrepository.save();
+	    		scenarioTreeModel.insertNodeInto(new MyTreeNode(dri), root, root.getChildCount());
+	    		saveDomainAsFile(path, domainName);
+            }
+        }
+	}
+	
+	private void saveDomainAsFile(String relativePath, String domainName) {
+		SimpleElement template = new SimpleElement("negotiation_template");
+		SimpleElement utilSpace = new SimpleElement("utility_space");
+		SimpleElement objective = new SimpleElement("objective");
+		objective.setAttribute("index", "0");
+		objective.setAttribute("description", "");
+		objective.setAttribute("name", domainName);
+		objective.setAttribute("type", "objective");
+		objective.setAttribute("etype", "objective");
+		utilSpace.addChildElement(objective);
+		template.addChildElement(utilSpace);
+		template.saveToFile(relativePath);
+	}
+
 	private void deleteDomain(MyTreeNode node) {
 		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();
 		scenarioTreeModel.removeNodeFromParent(node);

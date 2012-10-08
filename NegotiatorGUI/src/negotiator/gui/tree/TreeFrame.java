@@ -21,6 +21,8 @@ import negotiator.issue.*;
 
 
 /**
+ * Frame from a domain.
+ * 
  * Wouter: JTreeTable probably has been downloaded from
  * http://java.sun.com/products/jfc/tsc/articles/treetable1/
  * 
@@ -47,11 +49,9 @@ public class TreeFrame extends JPanel {
 	//private PasteAction pasteAct;
 	private DeleteAction delAct;
 	private EditAction editAct;
-	private NewDomainAction newDomainAct;
 	private NewUtilitySpaceAction newUtilitySpaceAct;
 	private LoadDomainAction loadDomainAct;
 	private LoadUtilitySpaceAction loadUtilitySpaceAct;
-	private SaveDomainAction saveDomainAct;
 	private SaveUtilitySpaceAction saveUtilitySpaceAct;
 	private ExitAction exitAct;
 	
@@ -209,11 +209,9 @@ public class TreeFrame extends JPanel {
 		//pasteAct = new PasteAction(this);
 		delAct = new DeleteAction(treeTable);
 		editAct = new EditAction(this);
-		newDomainAct = new NewDomainAction(this);
 		newUtilitySpaceAct = new NewUtilitySpaceAction(this);
 		loadDomainAct = new LoadDomainAction(this, fileChooser);
 		loadUtilitySpaceAct = new LoadUtilitySpaceAction(this, fileChooser);
-		saveDomainAct = new SaveDomainAction(this, fileChooser);
 		saveUtilitySpaceAct = new SaveUtilitySpaceAction(this, fileChooser);
 		exitAct = new ExitAction(this);
 		
@@ -230,14 +228,12 @@ public class TreeFrame extends JPanel {
 		editMenu = new JMenu("Edit");
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
-		
-		fileMenu.add(newDomainAct);
+
 		fileMenu.add(newUtilitySpaceAct);
 		fileMenu.addSeparator();
 		fileMenu.add(loadDomainAct);
 		fileMenu.add(loadUtilitySpaceAct);
 		fileMenu.addSeparator();
-		fileMenu.add(saveDomainAct);
 		fileMenu.add(saveUtilitySpaceAct);
 		fileMenu.addSeparator();
 		fileMenu.add(exitAct);
@@ -425,9 +421,6 @@ public class TreeFrame extends JPanel {
 	}
 
 	public void saveAction() {
-		if(model.getUtilitySpace()==null)
-			saveDomainAct.actionPerformed(null);
-		else
 			saveUtilitySpaceAct.actionPerformed(null);
 	}
 	public DomainRepItem getDomainRepItem() {
