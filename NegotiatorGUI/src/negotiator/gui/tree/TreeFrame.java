@@ -49,7 +49,6 @@ public class TreeFrame extends JPanel {
 	//private PasteAction pasteAct;
 	private DeleteAction delAct;
 	private EditAction editAct;
-	private NewUtilitySpaceAction newUtilitySpaceAct;
 	private LoadDomainAction loadDomainAct;
 	private LoadUtilitySpaceAction loadUtilitySpaceAct;
 	private SaveUtilitySpaceAction saveUtilitySpaceAct;
@@ -209,7 +208,6 @@ public class TreeFrame extends JPanel {
 		//pasteAct = new PasteAction(this);
 		delAct = new DeleteAction(treeTable);
 		editAct = new EditAction(this);
-		newUtilitySpaceAct = new NewUtilitySpaceAction(this);
 		loadDomainAct = new LoadDomainAction(this, fileChooser);
 		loadUtilitySpaceAct = new LoadUtilitySpaceAction(this, fileChooser);
 		saveUtilitySpaceAct = new SaveUtilitySpaceAction(this, fileChooser);
@@ -229,7 +227,6 @@ public class TreeFrame extends JPanel {
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 
-		fileMenu.add(newUtilitySpaceAct);
 		fileMenu.addSeparator();
 		fileMenu.add(loadDomainAct);
 		fileMenu.add(loadUtilitySpaceAct);

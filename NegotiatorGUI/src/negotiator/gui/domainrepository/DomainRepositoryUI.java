@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.JTree;
+
+import negotiator.Domain;
 import negotiator.gui.GenericFileFilter;
 import negotiator.gui.agentrepository.DirectoryRestrictedFileSystemView;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
 import negotiator.repository.ProfileRepItem;
+import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -97,13 +100,12 @@ public class DomainRepositoryUI
 				addDomain();
             }
         });
-		JMenuItem newPP = new JMenuItem("New preference profile");
+		;
 
 
 		popup.add(addExistingDomain);
 		popup.add(addExistingPP);
 		popup.add(newDomain);
-		popup.add(newPP);
 		
 		if (node.getRepositoryItem() instanceof ProfileRepItem) {
 			JMenuItem deletePP = new JMenuItem("Delete preference profile");
@@ -114,6 +116,13 @@ public class DomainRepositoryUI
 	         });
 			 popup.add(deletePP);
 		} else {
+			JMenuItem newPP = new JMenuItem("New preference profile");
+			newPP.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            	newPreferenceProfile(node);
+	            }
+	         });
+			popup.add(newPP);
 			JMenuItem deleteDomain = new JMenuItem("Delete domain");
 			deleteDomain.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +134,67 @@ public class DomainRepositoryUI
 		return popup;
 	}
 	
+	private void newPreferenceProfile(MyTreeNode node) {
+		// get the directory of the domain
+		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();
+		String fullPath = dri.getURL().toString().substring(5); // remove "file:"
+		String[] split = fullPath.split("/");
+		String domainDir = fullPath.substring(0, fullPath.length() - split[split.length-1].length()).replace("/", File.separator);
+		String completePath = "";
+		try {
+			completePath = new java.io.File(".").getCanonicalPath() + File.separator + domainDir;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Restrict file picker to root and subdirectories.
+		// Ok, you can escape if you put in a path as directory. We catch this later on.
+		FileSystemView fsv = new DirectoryRestrictedFileSystemView(new File(completePath));
+		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
+		
+		// Filter such that only directories and .class files are shown.
+		FileFilter filter = new GenericFileFilter("xml", "Domain XML files (.xml)");
+		fc.setFileFilter(filter);
+		
+		// Open the file picker
+		int returnVal = fc.showSaveDialog(null);
+
+		// If file selected
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            // Catch people who tried to escape our directory
+            if (!file.getPath().startsWith(completePath)) {
+            	JOptionPane.showMessageDialog(null, "Only preference profiles in the root or a subdirectory of the root are allowed.", "Agent import error", 0);
+            } else {
+            	String nameInPath = file.getPath().substring(completePath.length());
+            	String fullPathOfPref = "file:" + domainDir + nameInPath + ".xml";
+            	ProfileRepItem newNode = null;
+				try {
+					newNode = new ProfileRepItem(new URL(fullPathOfPref), dri);
+	            	dri.getProfiles().add(newNode);
+	            	scenarioTreeModel.insertNodeInto(new MyTreeNode(newNode), node, node.getChildCount());
+	            	domainrepository.save();
+	            	
+	            	Domain domain = null;
+	        		try {
+	        			domain = new Domain(fullPath);
+	        		} catch (Exception e1) {
+	        			e1.printStackTrace();
+	        		}
+	        		UtilitySpace space = null;
+					try {
+						space = new UtilitySpace(domain, "");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+	        		
+	        		space.toXML().saveToFile(completePath + nameInPath + ".xml");
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+            }
+        }		        
+	}
+
 	private void addDomain() {
 		// Get the root of Genius
 		String domainRoot = "";
@@ -168,6 +238,7 @@ public class DomainRepositoryUI
 	    		domainrepository.save();
 	    		scenarioTreeModel.insertNodeInto(new MyTreeNode(dri), root, root.getChildCount());
 	    		saveDomainAsFile(path, domainName);
+	    		
             }
         }
 	}
