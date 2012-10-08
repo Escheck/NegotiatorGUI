@@ -25,7 +25,6 @@ import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
-import negotiator.issue.Objective;
 import negotiator.protocol.Protocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -315,36 +314,7 @@ public class NegoGUIView extends FrameView {
     		JOptionPane.showMessageDialog(this.getComponent(), "The tournament functionality is switched off in this version.");
     	}
     }
-    
-	static int profilenr=1;
-    @Action
-	public void newPrefProfile() {
-    	TreePath selPath = treeDomains.getSelectionPath();
-		TreeFrame tf;
-		MyTreeNode node = (MyTreeNode)(selPath.getLastPathComponent());
-		RepItem repItem = node.getRepositoryItem();
-		
-		try {
-			DomainRepItem domainRepItem = (DomainRepItem) repItem; 
-			Domain domain = new Domain( domainRepItem .getURL().getFile());
-			tf = new TreeFrame(domainRepItem , domain, new UtilitySpace(domain, ""));
-			addTab("Profile "+profilenr++, tf);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-    }
-
-    static int domainnr=1;
-    @Action
-    public void newDomain() {
-		Objective newRoot = new Objective(null, "root", 0);
-		Domain domain = new Domain();
-		domain.setObjectivesRoot(newRoot);
-    	TreeFrame tf = new TreeFrame(domain);
-    	addTab("Domain "+domainnr++, tf);
-    }
-    
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
     private javax.swing.JMenuItem jMenuItem1;

@@ -93,7 +93,6 @@ public class Repository
 	}
 	
 	public boolean removeProfileRepItem(ProfileRepItem item) {
-		System.out.println(item.getName());
 		for (int i = 0; i < items.size(); i++) {
 			System.out.println(items.get(i).getName());
 			DomainRepItem drp = (DomainRepItem) items.get(i);
