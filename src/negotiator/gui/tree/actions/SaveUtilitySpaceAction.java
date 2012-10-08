@@ -48,7 +48,7 @@ public class SaveUtilitySpaceAction extends AbstractAction {
 			saveUtilitySpace(openedFile);
 			try {
 				DomainRepositoryUI domainRep = NegoGUIApp.negoGUIView.getDomainRepositoryUI();
-				domainRep. addprofile(openedFile.toURL());
+				//domainRep.addProfile(openedFile.toURL());
 			} catch (Exception exc) {
 				// TODO: handle exception
 				exc.printStackTrace();
