@@ -186,7 +186,11 @@ public class EditIssueDialog extends NewIssueDialog {
 				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
 				
 				(model.getIssueValuePanel(issue)).displayValues(issue);
-				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
+				Object[] path = { model.getRoot() };
+				if (treeFrame.getTreeTable().getTree().getSelectionPath() != null) {
+					path = treeFrame.getTreeTable().getTree().getSelectionPath().getPath();
+				}
+				model.treeStructureChanged(this, path);
 				
 				//if (model.getUtilitySpace() == null) {
 				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());

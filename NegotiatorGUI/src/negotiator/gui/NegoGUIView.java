@@ -242,9 +242,10 @@ public class NegoGUIView extends FrameView {
                     RepItem repItem = node.getRepositoryItem();
                     if(repItem instanceof DomainRepItem) {
                         try {
+                        	boolean hasNoProfiles = ((DomainRepItem) repItem).getProfiles().size() == 0;
                         	String filename=((DomainRepItem) repItem).getURL().getFile();
                             Domain domain = new Domain( filename);
-                            tf = new TreeFrame(domain);
+                            tf = new TreeFrame(domain, hasNoProfiles);
                             addTab(StripExtension(GetPlainFileName(filename)), tf);
                         } catch (Exception e) {
                             e.printStackTrace();

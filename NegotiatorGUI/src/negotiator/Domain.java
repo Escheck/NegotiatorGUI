@@ -355,10 +355,12 @@ public class Domain
 	 * @return the SimpleElements representation of this Domain or <code>null</code> when there was an error.
 	 */
 	public SimpleElement toXML(){
-		SimpleElement root = new SimpleElement("utility_space");
+		SimpleElement root = new SimpleElement("negotiation_template");
+		SimpleElement utilRoot = new SimpleElement("utility_space");
 		//set attributes for this domain
-		root.setAttribute("number_of_issues", ""+0); //unknown right now
-		root.addChildElement(fObjectivesRoot.toXML());
+		utilRoot.setAttribute("number_of_issues", "" + fObjectivesRoot.getChildCount());
+		utilRoot.addChildElement(fObjectivesRoot.toXML());
+		root.addChildElement(utilRoot);
 		return root;
 	}
 	

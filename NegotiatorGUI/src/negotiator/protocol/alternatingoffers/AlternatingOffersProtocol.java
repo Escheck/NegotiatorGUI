@@ -137,8 +137,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	protected void runNegotiationSession(int nr)  throws Exception
 	{
-
-
 		//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 		agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 		agentA.setName(getAgentAname());
@@ -419,10 +417,6 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	public UtilitySpace getAgentBUtilitySpace() {
 		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_B_INDEX);
-	}
-
-	public SimpleElement domainToXML(){
-		return domain.toXML(); 		
 	}
 
 	public String getAgentAname() {
