@@ -402,10 +402,6 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}
 
-	public SimpleElement domainToXML(){
-		return domain.toXML(); 		
-	}
-
 	public BidSpace getBidSpace() { 
 		if(bidSpace==null) {
 			try {    	

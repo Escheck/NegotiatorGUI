@@ -3,7 +3,6 @@ package negotiator.gui.tree;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -14,18 +13,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import jtreetable.JTreeTable;
 import negotiator.Domain;
-import negotiator.gui.tree.actions.AddIssueAction;
-import negotiator.gui.tree.actions.EditAction;
+import negotiator.gui.dialogs.EditIssueDialog;
+import negotiator.gui.dialogs.NewIssueDialog;
 import negotiator.issue.Issue;
 import negotiator.issue.Objective;
 import negotiator.repository.DomainRepItem;
@@ -44,25 +40,26 @@ public class TreeFrame extends JPanel {
 	private static final Color HIGHLIGHT = Color.YELLOW;
 	private JTreeTable treeTable;
 	private NegotiatorTreeTableModel model;
-	private AddIssueAction addIssueAct;
-	private EditAction editAct;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	private DomainRepItem fDomainRepItem;
-	private JPopupMenu treePopupMenu;
+	// as we can't use this in a listener
+	private TreeFrame thisFrame;
+	private boolean hasNoProfiles;
 	
 	//Constructors
-	public TreeFrame(Domain domain) {
-		this(new NegotiatorTreeTableModel(domain));
+	public TreeFrame(Domain domain, boolean hasNoProfiles) {
+		this(new NegotiatorTreeTableModel(domain), hasNoProfiles);
 	}
 	
 	public TreeFrame(Domain domain, UtilitySpace utilitySpace) {
-		this(new NegotiatorTreeTableModel(domain, utilitySpace));
+		this(new NegotiatorTreeTableModel(domain, utilitySpace), false);
 	}
 
-	public TreeFrame(NegotiatorTreeTableModel treeModel) {
+	public TreeFrame(NegotiatorTreeTableModel treeModel, boolean hasNoProfiles) {
 		super();
+		this.hasNoProfiles = hasNoProfiles;
 		init(treeModel, null);
 	}
 	
@@ -71,25 +68,63 @@ public class TreeFrame extends JPanel {
 	}
 	
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
+		thisFrame = this;
 		model = treeModel;
 		setLayout(new BorderLayout());
-
 		//Initialize the table
 		initTable(model);
-		treeTable.addMouseListener(new TreePopupListener());
-		treeTable.getSelectionModel().addListSelectionListener(new TreeSelectionListener());		
-		initActions();
-		
+		treeTable.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	        	
+	        	if (e.getClickCount() == 2) {
+	        		Object selected = treeTable.getTree().getLastSelectedPathComponent();
+
+	        		if (selected instanceof Issue) {
+	        			new EditIssueDialog(thisFrame, (Issue) selected);
+	        		}
+	        	}
+	        }
+		});
 		//Initialize the Menu
 		initMenus();
-		initPopupMenus();
+		JPanel simplePanel = new JPanel();
 		
 		JButton saveButton = new JButton("Save changes");
 		Icon icon = new ImageIcon(getClass().getResource("../resources/save.png"));
 		saveButton.setPreferredSize(new Dimension(180, 60));
 		saveButton.setIcon(icon);
 		saveButton.setFont(saveButton.getFont().deriveFont(18.0f ));
-		JPanel simplePanel = new JPanel();
+		saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		if (model.getUtilitySpace() != null) { // this is a preference profile
+        			model.getUtilitySpace().toXML().saveToFile(model.getUtilitySpace().getFileName());
+        		} else { // this is a domain
+        			model.getDomain().toXML().saveToFile(model.getDomain().getName());
+        		}
+            }
+         });
+		
+		if (hasNoProfiles) {
+			JButton addIssue = new JButton("Add issue");
+			Icon icon2 = new ImageIcon(getClass().getResource("../resources/edit_add-32.png"));
+			addIssue.setPreferredSize(new Dimension(180, 60));
+			addIssue.setIcon(icon2);
+			addIssue.setFont(saveButton.getFont().deriveFont(18.0f ));
+			addIssue.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        		new NewIssueDialog(thisFrame);
+	            }
+	         });
+			simplePanel.add(addIssue);
+			
+			JButton removeIssue = new JButton("Remove issue");
+			Icon icon3 = new ImageIcon(getClass().getResource("../resources/edit_remove-32.png"));
+			removeIssue.setPreferredSize(new Dimension(180, 60));
+			removeIssue.setIcon(icon3);
+			removeIssue.setFont(saveButton.getFont().deriveFont(18.0f ));
+			simplePanel.add(removeIssue);
+		}
 		simplePanel.add(saveButton);
 		
 		
@@ -99,7 +134,7 @@ public class TreeFrame extends JPanel {
 			this.setSize(size);
 		
 	}
-	
+
 	private void initTable(NegotiatorTreeTableModel model) {
 		treeTable = new JTreeTable(model);
 		treeTable.setPreferredSize(new Dimension(1024, 300));
@@ -130,40 +165,12 @@ public class TreeFrame extends JPanel {
 		add(treePane, BorderLayout.CENTER);
 	}
 	
-	/**
-	 * Recreates the Actions. Note that it doesn't reinitialise the Buttons that are dependent on it!
-	 * The caller is responsible for this.
-	 */
-	private void initActions() {
-		//Create Actions
-		addIssueAct = new AddIssueAction(this, treeTable);
-		editAct = new EditAction(this);
-		
-		//Disable the actions, since no selection is made yet
-		addIssueAct.setEnabled(false);
-		editAct.setEnabled(false);
-	}
-	
 	private void initMenus() {
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu("File");
 		editMenu = new JMenu("Edit");
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
-
-		fileMenu.addSeparator();
-		fileMenu.addSeparator();
-		fileMenu.addSeparator();
-		editMenu.add(addIssueAct);
-		editMenu.addSeparator();
-		editMenu.add(editAct);
-	}
-	
-	private void initPopupMenus() {
-		treePopupMenu = new JPopupMenu();
-		treePopupMenu.add(addIssueAct);
-		treePopupMenu.addSeparator();
-		treePopupMenu.add(editAct);
 	}
 	
 	public JTreeTable getTreeTable() {
@@ -194,55 +201,15 @@ public class TreeFrame extends JPanel {
 		}
 	}
 	
+	public Objective getRoot() {
+		return (Objective) model.getRoot();
+	}
+	
 	protected void setRowBackground(Objective node, Color color) {
 		model.getNameField(node).setBackground(color);
 		model.getTypeField(node).setBackground(color);
 		model.getNumberField(node).setBackground(color);
 		model.getIssueValuePanel(node).setBackground(color);
-	}
-	
-	class TreePopupListener extends MouseAdapter {
-		
-		//Methods
-		public void mousePressed(MouseEvent e) {
-			maybeShowPopup(e);
-		}
-		
-		public void mouseReleased(MouseEvent e) {
-			maybeShowPopup(e);
-		} 
-		
-		private void maybeShowPopup(MouseEvent e) {
-			if (e.isPopupTrigger()) {
-				Point point = new Point(e.getX(), e.getY());
-				int rowIndex = treeTable.rowAtPoint(point);
-				if (rowIndex != -1) {
-					treeTable.setRowSelectionInterval(rowIndex, rowIndex);
-				}				
-				treePopupMenu.show(e.getComponent(), e.getX(), e.getY());
-			}
-		} 
-	}
-	
-	class TreeSelectionListener implements ListSelectionListener {
-		
-		//Methods
-		public void valueChanged(ListSelectionEvent e) {
-			Object selected = treeTable.getTree().getLastSelectedPathComponent();
-			
-			if (selected instanceof Issue) {
-				addIssueAct.setEnabled(false);
-				editAct.setEnabled(true);
-			}
-			else if (selected instanceof Objective) {
-				addIssueAct.setEnabled(true);
-				editAct.setEnabled(true);
-			}
-			
-			updateHighlights((Objective)selected);
-			treeTable.repaint();
-		}
-		
 	}
 
 	public DomainRepItem getDomainRepItem() {

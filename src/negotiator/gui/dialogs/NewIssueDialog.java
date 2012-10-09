@@ -276,16 +276,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	 * empty lines are not aloowed and just ignored..
 	 */
 	protected String[] getDiscreteValues() throws InvalidInputException {
-		/*int index;
-		int lastIndex = 0;
-		//String
-		while ((index = source.indexOf("\n")) != -1) {
-			String value = source.subString(lastIndex, index);
-			System.out.println(value);
-		}*/
 		String[] values = discreteTextArea.getText().split("\n");
-		for (int i = 0; i < values.length; i++)
-			System.out.println(values[i]);
 		return values;
 	}
 	
@@ -421,17 +412,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		//If no issue is given to be modified, 
 		//construct a new one that is the child of the selected Objective.
 		if (newIssue) {
-			try {
-				selected = (Objective) treeFrame.getTreeTable().getTree().getLastSelectedPathComponent();
-				if (selected == null) {
-					JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
-					return null;
-				}
-			}
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(this, "There is no valid parent selected for this objective.");
-				return null;
-			}
+			selected = treeFrame.getRoot();
 		}
 		
 		String selectedType = (String)issueType.getSelectedItem();
@@ -579,24 +560,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			Issue issue = constructIssue();
 			if (issue == null) 
 				return;
-			/*else {
-				//Notify the model that the contents of the treetable have changed.
-				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel();
-				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				this.dispose();
-			}*/
 			else {
 				//Notify the model that the contents of the treetable have changed
 				NegotiatorTreeTableModel model = (NegotiatorTreeTableModel)treeFrame.getNegotiatorTreeTableModel();
-				model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				
-				//if (model.getUtilitySpace() == null) {
-				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				//}
-				//else {
-				//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
-				//}
-				
+				Object[] path = { model.getRoot() };
+				model.treeStructureChanged(this, path);
 				this.dispose();
 			}
 		}			
@@ -608,5 +576,4 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, (String)e.getItem());
 	}
-
 }
