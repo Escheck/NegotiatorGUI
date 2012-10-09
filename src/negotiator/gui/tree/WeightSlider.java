@@ -72,7 +72,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		if (us != null)
 		{
 			Evaluator ev=us.getEvaluator(obj.getNumber());
-			if (ev==null) System.out.println("no evaluator found for "+obj);
+			//if (ev==null) System.out.println("no evaluator found for "+obj);
 			if (ev instanceof EvaluatorObjective) // should always be the case?? 
 				hasweight=((EvaluatorObjective)ev).getHasWeight();
 		}
@@ -81,7 +81,6 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		
 		//Added by Herbert
 		if((tableModel.getUtilitySpace() != null) && tableModel.getUtilitySpace().getEvaluator(obj.getNumber())== null || obj.getName().equals("root")){
-			System.out.println("No Evaluator");
 			slider.setVisible(false);
 			valueField.setVisible(false);
 			lock.setVisible(false);
@@ -181,15 +180,10 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 	}
 	
 	public void stateChanged(ChangeEvent e) {
-		//TODO Remove these silly debug thingies
-		//System.out.println("stateChanged called");
 		if (e.getSource() != slider){
-			//System.out.println("Ain't the slider");
 			return;
 		}
-		//System.out.println("\nJust slide with me!");
 		double newWeight = convertToDouble(slider.getValue());
-		System.out.println("new weight="+newWeight);
 		valueField.setValue(newWeight);
 		changeWeight(newWeight);
 	}
