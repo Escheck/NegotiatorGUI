@@ -149,6 +149,10 @@ public class TreeFrame extends JPanel {
 		
 	}
 
+	public boolean hasNoProfiles() {
+		return hasNoProfiles;
+	}
+	
 	private void initTable(NegotiatorTreeTableModel model) {
 		treeTable = new JTreeTable(model);
 		treeTable.setPreferredSize(new Dimension(1024, 300));

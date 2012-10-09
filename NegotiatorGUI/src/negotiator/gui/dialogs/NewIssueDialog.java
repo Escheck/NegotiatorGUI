@@ -168,10 +168,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			discreteTextEvaluationArea.setEnabled(false);
 			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
 		}
-		
-
-		
-
+		discreteTextArea.setEditable(false);
+		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null &&
+				treeFrame.hasNoProfiles()) { // so it's a domain with no profiles
+			discreteTextArea.setEditable(true);
+		}
 		return panel;
 	}
 	
