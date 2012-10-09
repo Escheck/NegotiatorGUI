@@ -110,7 +110,7 @@ public class TreeFrame extends JPanel {
 			Icon icon2 = new ImageIcon(getClass().getResource("../resources/edit_add-32.png"));
 			addIssue.setPreferredSize(new Dimension(180, 60));
 			addIssue.setIcon(icon2);
-			addIssue.setFont(saveButton.getFont().deriveFont(18.0f ));
+			addIssue.setFont(addIssue.getFont().deriveFont(18.0f ));
 			addIssue.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(java.awt.event.ActionEvent evt) {
 	        		new NewIssueDialog(thisFrame);
@@ -122,7 +122,21 @@ public class TreeFrame extends JPanel {
 			Icon icon3 = new ImageIcon(getClass().getResource("../resources/edit_remove-32.png"));
 			removeIssue.setPreferredSize(new Dimension(180, 60));
 			removeIssue.setIcon(icon3);
-			removeIssue.setFont(saveButton.getFont().deriveFont(18.0f ));
+			removeIssue.setFont(removeIssue.getFont().deriveFont(18.0f ));
+			removeIssue.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            	Object selected = treeTable.getTree().getLastSelectedPathComponent();
+	            	
+	            	if (selected instanceof Issue) {
+	            		((Issue) selected).removeFromParent();
+	                	// correct numbering
+	            		for (int i = 0; i < model.getDomain().getIssues().size(); i++) {
+	            			model.getDomain().getIssues().get(i).setNumber(i + 1); // + 1 for root
+	            		}
+	            		treeTable.updateUI();
+	            	}
+	            }
+	         });
 			simplePanel.add(removeIssue);
 		}
 		simplePanel.add(saveButton);

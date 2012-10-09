@@ -56,7 +56,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	protected JTextArea discreteTextArea;
 	protected JTextArea discreteTextEvaluationArea;
-	protected JTextArea discreteDescEvaluationArea;
 	
 	protected JTextField integerMinField;
 	protected JTextField integerOtherField;
@@ -106,8 +105,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		//Initialize the input components
 		discreteTextArea = new JTextArea(20, 10);
 		discreteTextEvaluationArea = new JTextArea(20,4);
-		discreteDescEvaluationArea = new JTextArea(20,40);
-		discreteDescEvaluationArea.setEditable(false);
 
 
 		integerMinField = new JTextField(15);
@@ -152,27 +149,18 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		JPanel textPanel = new JPanel();
 		JPanel evalPanel = new JPanel();
-		JPanel descPanel = new JPanel();
 		
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
 		JLabel textLabel = new JLabel("Edit the discrete values below.");
 		textPanel.add(textLabel);
 		textPanel.add(new JScrollPane(discreteTextArea));
 		panel.add(textPanel);
-		
-		
-		
+
 		evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
 		JLabel evalLabel = new JLabel("Evaluation values.");
 		evalPanel.add(evalLabel);
 		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
 		panel.add(evalPanel);
-		
-		descPanel.setLayout(new BoxLayout(descPanel, BoxLayout.PAGE_AXIS));
-		JLabel descLabel = new JLabel("Description");
-		descPanel.add(descLabel);
-		descPanel.add(new JScrollPane(discreteDescEvaluationArea));
-		panel.add(descPanel);
 		
 		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace()==null){
 			weightCheck.setEnabled(false);
