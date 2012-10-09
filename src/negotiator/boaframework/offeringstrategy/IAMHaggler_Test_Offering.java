@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import Jama.Matrix;
-
 import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
@@ -17,6 +15,8 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
+import negotiator.tournament.TournamentConfiguration;
+import Jama.Matrix;
 
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
@@ -42,15 +42,15 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 		if (parameters.containsKey("r")) {
 			amountOfRegressions = parameters.get("r");
 		} else {
-			System.out.println("Using default 10 for amount of regressions.");
-			amountOfRegressions = 10;
+			amountOfRegressions = 15;
+			System.out.println("Using default " + amountOfRegressions + " for amount of regressions.");
 		}
 		if (parameters.containsKey("s")) {
 			double value = parameters.get("s");
 			amountOfSamples = (int) value;
 		} else {
-			amountOfSamples = 10;
-			System.out.println("Using default 10 for amount of samples.");
+			amountOfSamples = TournamentConfiguration.getIntegerOption("deadline", 10) / 2;
+			System.out.println("Using default " + amountOfSamples + " for amount of samples.");
 		}
 		
 		concessionModel = new IAMHagglerOpponentConcessionModel((int) amountOfRegressions, negotiationSession.getUtilitySpace(), amountOfSamples);
