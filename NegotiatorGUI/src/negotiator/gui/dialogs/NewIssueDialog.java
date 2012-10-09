@@ -208,14 +208,20 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(max);
 
 		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
+			integerUtilityLowestValue.setEnabled(false);
+			integerUtilityHighestValue.setEnabled(false);
+			if (!treeFrame.hasNoProfiles()) {
+				integerMinField.setEnabled(false);
+				integerMaxField.setEnabled(false);
+			}
 			weightCheck.setEnabled(false);
 			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
-			integerUtilityLowestValue.setEnabled(false);
 			integerUtilityLowestValue.setToolTipText("Disabled until there is a Utility Space.");
-			integerUtilityHighestValue.setEnabled(false);
 			integerUtilityHighestValue.setToolTipText("Disabled until there is a Utility Space.");
+		} else {
+			integerMinField.setEnabled(false);
+			integerMaxField.setEnabled(false);
 		}
-		
 		return panel;
 	}
 	

@@ -104,8 +104,6 @@ public class EditIssueDialog extends NewIssueDialog {
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, INTEGER);
 			integerMinField.setText("" + ((IssueInteger)issue).getLowerBound());
 			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
-			integerMinField.setEnabled(false);
-			integerMaxField.setEnabled(false);
 			if (utilSpace != null) {
 				EvaluatorInteger eval = (EvaluatorInteger)utilSpace.getEvaluator(issue.getNumber());
 
@@ -163,18 +161,20 @@ public class EditIssueDialog extends NewIssueDialog {
 			
 			boolean valid = true;
 			if (issue instanceof IssueInteger) {
-				double utilLIV = Double.parseDouble(integerUtilityLowestValue.getText());
-				double utilHIV = Double.parseDouble(integerUtilityHighestValue.getText());
-				if (utilLIV < 0.0 || utilLIV > 1.0) {
-					valid = false;
-					JOptionPane.showConfirmDialog(null, "The utility of the lowest value should be \n" +
-														"in the range [0, 1]", "Input",
-														JOptionPane.PLAIN_MESSAGE);
-				} else if (utilHIV < 0.0 || utilHIV > 1.0) {
-					valid = false;
-					JOptionPane.showConfirmDialog(null, "The utility of the heighest value should be \n" +
-														"in the range [0, 1]", "Input",
-														JOptionPane.PLAIN_MESSAGE);
+				if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()!=null){
+					double utilLIV = Double.parseDouble(integerUtilityLowestValue.getText());
+					double utilHIV = Double.parseDouble(integerUtilityHighestValue.getText());
+					if (utilLIV < 0.0 || utilLIV > 1.0) {
+						valid = false;
+						JOptionPane.showConfirmDialog(null, "The utility of the lowest value should be \n" +
+															"in the range [0, 1]", "Input",
+															JOptionPane.PLAIN_MESSAGE);
+					} else if (utilHIV < 0.0 || utilHIV > 1.0) {
+						valid = false;
+						JOptionPane.showConfirmDialog(null, "The utility of the heighest value should be \n" +
+															"in the range [0, 1]", "Input",
+															JOptionPane.PLAIN_MESSAGE);
+					}
 				}
 			}
 			if (valid){
