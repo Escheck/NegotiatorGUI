@@ -77,8 +77,7 @@ public class EditIssueDialog extends NewIssueDialog {
 				if (desc!=null) descString=descString+desc;
 				descString=descString+"\n";
 			}
-			discreteTextArea.setText(valueString);	
-			
+			discreteTextArea.setText(valueString);
 			if (utilSpace != null) {
 				EvaluatorDiscrete eval = (EvaluatorDiscrete)utilSpace.getEvaluator(issue.getNumber());
 				if (eval!=null)

@@ -91,20 +91,14 @@ public class DomainRepositoryUI
 
 	private JPopupMenu createPopupMenu(final MyTreeNode node) {
 		JPopupMenu popup = new JPopupMenu();
-		
-		JMenuItem addExistingDomain = new JMenuItem("Add existing domain");
-		JMenuItem addExistingPP = new JMenuItem("Add existing preference profile");
+
 		JMenuItem newDomain = new JMenuItem("New domain");
 		newDomain.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				addDomain();
             }
         });
-		
-		popup.add(addExistingDomain);
-		addExistingDomain.setEnabled(false);
-		popup.add(addExistingPP);
-		addExistingPP.setEnabled(false);
+
 		popup.add(newDomain);
 		
 		if (node.getRepositoryItem() instanceof ProfileRepItem) {
