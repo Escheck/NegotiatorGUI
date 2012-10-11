@@ -171,7 +171,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		for(int j=0;j<nrOfValues;j++) {
             value = new ValueDiscrete(((SimpleElement)xml_items[j]).getAttribute("value"));
             String evaluationStr = ((SimpleElement)xml_items[j]).getAttribute("evaluation");
-            if(evaluationStr != null){
+            if(evaluationStr != null && !evaluationStr.equals("null")){
             	try {
             		this.fEval.put(value, Integer.valueOf(evaluationStr));
             	}
@@ -179,11 +179,6 @@ public class EvaluatorDiscrete implements Evaluator {
             }          
             ((SimpleElement)xml_items[j]).getAttribute("description");
         }
-		try {
-			getEvalMax();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -192,8 +187,6 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @return The modified simpleElement with all evaluator properties set.
 	 */
 	public SimpleElement setXML(SimpleElement evalObj){
-		
-		
 		return evalObj;
 	}
 	
