@@ -46,9 +46,6 @@
 %\fi
 
 
-\newcommand\AI[1]{{}} \newcommand\ANAC[1]{{#1}}
-%\newcommand\AI[1]{{#1}} \newcommand\ANAC[1]{{}}
-
 \usepackage{array}
 \usepackage{url}
 \usepackage{listings}
@@ -76,8 +73,8 @@
 \else
 \usepackage{graphicx}
 \fi
-\title{Negotiation User Guide - \ANAC{ANAC Version}\AI{AI Techniques (IN4010TU) Version}}
-\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser}
+\title{Negotiation User Guide}
+\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx}
 
 \date{\today}
 
@@ -113,7 +110,7 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-\abstract{In Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
+\abstract{\noindent In \Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
 
 \pagebreak
 \tableofcontents
@@ -123,7 +120,7 @@
 This section gives a crash course on some essential theory needed to understand the negotiation system. The negotiation objects that are used in a negotiation and utility values are discussed. 
 
 \subsection{Actions}
-In negotiation, the two parties take turns in doing the next negotiation action. The possible actions are:
+In negotiation, the two parties take turns in doing the next negotiation action. The possible actions implemented in \Genius~are:
 
 \begin{center}
 \begin{tabular}{cm{0.6\textwidth}}
@@ -132,36 +129,35 @@ In negotiation, the two parties take turns in doing the next negotiation action.
 \hline
 \textsc{Offer} & This action indicates that the agent proposes a new bid.\\
 \hline
-\textsc{EndNegotiation} & This action indicates that the agent terminates the entire negotiation, resulting in the reservation value being awarded to both players (see below; normally this is equal to the lowest possible score of zero for both agents).\\
+\textsc{EndNegotiation} & This action indicates that the agent terminates the negotiation, resulting in the reservation value being awarded to both players (see below).\\
 \hline
 \end{tabular}
 \end{center}
 
 \subsection{Negotiation Protocol}
-The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the protocol\AI{ for this assignment}.
+The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the default alternating offers protocol used in \Genius.
 
-Agent $A$ and $B$ take turns in the negotiation. One of the two agents is picked at random to start. When it is the turn of agent $X$ (X being $A$ or $B$), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent $X$ is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
+Agent $A$ and $B$ take turns in the negotiation. Agent $A$ starts the negotiation. When it is the turn of agent $X$ (X being $A$ or $B$), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent $X$ is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
 \begin{itemize}
 	\item the action of agent $X$ is an \textsc{Accept}. This action is possible only if the opponent actually did a bid. The last bid of the opponent is taken, and the utility of that bid is determined in the utility spaces of agent $A$ and $B$. The opponent is informed of this accept via the ReceiveMessage method (but now without the subsequent chooseAction).
-	\item the action returned is an \textsc{EndNegotiation}. The score of both agents is set to their reservation value.
+	\item the action returned is an \textsc{EndNegotiation}, which may be presented by an agent, or when the deadline has passed. The score of both agents is set to their reservation value.
 \end{itemize}
 
-So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also \ANAC{get their reservation values}\AI{score zero}. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
+So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also get their reservation values. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
  
 \subsection{Reservation Value}
+A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting) or by not reaching an agreement before the deadline associated with a negotiation session. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or: no agreement is reached, and both agents receive their reservation value instead.
 
-A reservation value is a real-valued value that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with a Best Alternative to a Negotiated Agreement (BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting) or by not reaching an agreement before the deadline associated with a negotiation session. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or: no agreement is reached, and both agents receive their reservation value instead.
-
-Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0). Given that utilities for outcomes range from 0 to 1, this essentially is the same as having no reservation value.
+Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0).
 
 
 \subsection{Time available for a Session}
+A negotiation lasts a predefined time in seconds, or alternatively, rounds. Note the difference between time and rounds: in a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as frozen inside a round; therefore computational cost does not play a role.
 
-Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be their reservation value (normally 0). Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds. Notice that manipulation of the available time (by delaying the response of the agent) can be an important factor influencing the negotiation results, and one improvement for the example agent (SimpleAgent) would be to be more careful about this.
+Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be their reservation value (normally 0). Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds. Notice that manipulation of the available time (by delaying the response of the agent) can be an important factor influencing the negotiation results.
 
-Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time. 
-
-\subsubsection{Discounting}
+Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time.
+\newline \newline
 Apart from a deadline, a scenario may also have \emph{discount factors}. Discount factors devaluate the value of the issues under negotiation as time passes. Time is shared between the agents, but the discount is private to, and can different between each agent. The implementation of discount factors is as follows. Let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent. Let $t$ in $[0, 1]$ be the current normalised time, as defined by the timeline. We compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
 \begin{eqnarray}
 U_D^t(\omega) = U(\omega) \cdot d^t
@@ -170,14 +166,12 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reserve price, it may be rational for an agent to break off the negotiation early and take the outside option.
 
-Note that, as opposed to having a fixed number of rounds, both the discount factor and deadline are measured in {\it real time}. This, in turn, introduces another factor of uncertainty since it is unknown to the agents how many negotiation rounds there will be, and how much time an opponent requires to compute a counter offer. Also, this computational time will typically change depending on the size of the outcome space. 
-
 \subsection{Negotiation Objects}
 The central data structures in the negotiation are the bid and the utilityspace. Both work in a domain. Figure~\ref{Fig:data structure and relation overview} shows an overview of the Domain and utility space data structures and their relations.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/datastructures.png}
+	\includegraphics[width=0.5\textwidth]{media/datastructures.png}
 	\caption{Overview of the data structures and relations.}\label{Fig:data structure and relation overview}
 \end{figure}
 
@@ -197,34 +191,14 @@ The exact formula for computation of the utilities is given in Equation~\ref{eqn
 
 The {\bf bid} is a set of values for each of the issues in the domain.
 
-\subsection{Utility of a Bid}
-
-A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. \AI{Sometimes, there are also fixed costs $\text{cost}(v_i)$ associated with each value.} The utility is the weighted sum of the normalized evaluation values\AI{, under the assumption that the cost is below the maximum cost of $M$. If the maximum cost is exceeded, the utility is zero}.
+\subsection{Optimality of a Bid}
+A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the normalized evaluation values.
 
 \begin{equation}
 	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
-	\ANAC{\label{eqn:Utility}}
+	\label{eqn:Utility}
 \end{equation}
 
-\AI
-{
-And when costs are associated with the domain:
-
-\begin{equation}
-	\text{Utility}(v_1, \ldots, v_n) = 
-		\begin{dcases*}
-			U(v_1, \ldots, v_n) & if CostSum$(v_1, \ldots, v_n) \leq M$\\
-			0 & if CostSum$(v_1, \ldots, v_n) > M$\\
-		\end{dcases*}
-		\AI{\label{eqn:Utility}}
-\end{equation}
-
-
-\begin{equation}
-	\text{CostSum}(v_1, \ldots, v_n) = \sum_{i=1}^{N} \text{cost}(v_i)
-\end{equation}
-}
-\subsection{Optimality of a Bid}
 For a single agent, the optimal bid is of course one with a maximum utility. But a more general notion of optimality of a negotiation involves the utility of both agents. Figure~\ref{Fig:utility plot} shows the utilities of all bids for the two parties in the negotiation. 
  
 \begin{figure}[htb]
@@ -233,7 +207,7 @@ For a single agent, the optimal bid is of course one with a maximum utility. But
 \caption{Utility plot. Each point indicates the utility for both agents of a particular bid. The red line is the Pareto optimal frontier.}\label{Fig:utility plot}
 \end{figure}
 
-There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure 2 for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality. The collection of Pareto optimal points is called the Pareto optimal frontier. Another approach is the Nash optimality. A Nash solution is a bid for which the product of the utilities of both agents is maximal. 
+There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure 2 for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality. The collection of Pareto optimal points is called the Pareto optimal frontier. Another approach is the Nash optimality. The Nash solution is the set of bids for which the product of the utilities of both agents is maximal. 
  
 \section{Installing the Environment}
 
@@ -244,11 +218,9 @@ You can run the negotiation environment on most systems running Java version 5 o
 To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
 
 \begin{itemize}
-	\AI{\item \texttt{assignment.pdf}, containing the assignment;}
 	\item \texttt{userguide.pdf}, this document;
 	\item \texttt{negosimulator.jar}, the negotiation simulator;
 	\item a \texttt{templates} folder, containing various domain spaces, all with a few sample utility spaces (xml files);
-	\AI{\item The \texttt{SimpleAgent.java} and \texttt{SimpleAgent.class} file.}
 \end{itemize}
 
 \subsection{Progress \& Error Messages}
@@ -342,7 +314,7 @@ After these fields have been set appropriately, you can press the Start button t
 
 If you selected an automatic negotiation agent, for instance SimpleAgent, there will not appear any window while that agent has the turn. The agent should pose its bid within a reasonable time. After the agent made its bid, the other agent is given the turn. If both agents are automatic, no windows will appear at all during the entire negotiation, and only the output windows will show the ongoing negotiation results.
 
-\AI{
+
 	\subsection{Using the UIAgent}
 
 	If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
@@ -380,7 +352,7 @@ If you selected an automatic negotiation agent, for instance SimpleAgent, there 
 		\includegraphics[width=0.4\textwidth]{media/image14.png}
 	\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
 	\end{figure}
-}
+
 \subsection{Negotiation Results}
 
 There are two types of results: the utility plot and the utility of the last bid for each round. Both are shown in the Progress tab, as displayed in Figure~\ref{Fig:progress}.
