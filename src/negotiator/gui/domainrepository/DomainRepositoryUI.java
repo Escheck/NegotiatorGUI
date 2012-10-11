@@ -113,7 +113,11 @@ public class DomainRepositoryUI
 			JMenuItem newPP = new JMenuItem("New preference profile");
 			newPP.addActionListener(new java.awt.event.ActionListener() {
 	            public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            	newPreferenceProfile(node);
+	            	if (domainHasIssues(node)) {
+	            		newPreferenceProfile(node);
+	            	} else {
+	            		JOptionPane.showMessageDialog(null, "Before creating a preference profile, the domain must be saved with at least one isue.", "Domain error", 0);
+	            	}
 	            }
 	         });
 			popup.add(newPP);
@@ -128,6 +132,20 @@ public class DomainRepositoryUI
 		return popup;
 	}
 	
+	protected boolean domainHasIssues(MyTreeNode node) {
+		// get the directory of the domain
+		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();
+		String fullPath = dri.getURL().toString().substring(5);
+		Domain domain = null;
+		try {
+			domain = new Domain(fullPath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return domain != null && domain.getIssues().size() > 0;
+	}
+
 	private void newPreferenceProfile(MyTreeNode node) {
 		// get the directory of the domain
 		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();

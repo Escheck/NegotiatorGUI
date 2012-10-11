@@ -287,13 +287,12 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	 */
 	protected ArrayList<Integer> getDiscreteEvalutions() throws InvalidInputException, ClassCastException {
 		String[] evalueStrings = discreteTextEvaluationArea.getText().split("\n",-1);
-		for (String i:evalueStrings) System.out.println(">"+i);
 
 		ArrayList<Integer> evalues=new ArrayList<Integer>();
 		for(int i = 0; i<evalueStrings.length; i++)
 		{
 			Integer value=0;
-			if(!evalueStrings[i].equals(""))
+			if (!evalueStrings[i].equals(""))
 			{
 				value=Integer.valueOf(evalueStrings[i]);
 				if (value<=0) throw new InvalidInputException("Encountered "+value+". Zero or negative numbers are not allowed here");
@@ -462,7 +461,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 				if(uts != null) uts.addEvaluator(issue, evaluator);
 			}
-			else System.out.println("WARNING. no update of values!! evDis="+evaluator);
 		}
 		else if (selectedType == INTEGER) {
 			int min;
