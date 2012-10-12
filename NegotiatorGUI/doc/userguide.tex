@@ -167,32 +167,22 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reserve price, it may be rational for an agent to break off the negotiation early and take the outside option.
 
 \subsection{Negotiation Objects}
-The central data structures in the negotiation are the bid and the utilityspace. Both work in a domain. Figure~\ref{Fig:data structure and relation overview} shows an overview of the Domain and utility space data structures and their relations.
+Agent participating in a negotiation interact in a scenario. A scenario specifies the possible bids by using the domain, and the preferences for each agent with a utility space for each agent. Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{media/datastructures.png}
-	\caption{Overview of the data structures and relations.}\label{Fig:data structure and relation overview}
+	\caption{Overview of the data structures and relations.}\label{Fig:overviewStructures}
 \end{figure}
 
-The {\bf domain} describes which issues are the subject of the negotiation. To give a concrete example of a domain, in the laptop domain the domain is a list of issues, where the issues are laptop, harddisk and monitor. Issues are being referred to via the {\bf issue ID},  a unique number for each issue. The domain description also describes the possible values that all the issues can take. In the laptop domain, all issues can have only discrete values, e.g. the harddisk issue can have only the values 60 Gb, 80 Gb and 120 Gb. These issues are an instance of IssueDiscrete. There are other types of Issue but discussion of them falls out of the scope of this short discussion.
+The {\bf Domain} describes which issues are the subject of the negotiation and which values an issue can take. To give a concrete example of a domain: in the laptop domain the issues are ``laptop'', ``harddisk'' and ``monitor''. The domain also describes the possible values that all the issues can take. In the laptop domain, the issues can only attain discrete values from a finite set, e.g. the ``harddisk'' issue can only have the values ``60 Gb'', ``80 Gb'' and ``120 Gb''. These issues are an instance of \textbf{IssueDiscrete}. There are other types of Issue, but discussion of them falls out of the scope of this short discussion.
 
-Issues are an instantiation of a more general {\bf Objective} class. The objective class itself is not relevant except that some functions return an Objective, and the returned object then has to be cast to an Issue or IssueDiscrete as needed.
+Combining these concepts, an agent can formulate a \textbf{Bid}: a mapping from each issue to a value. A valid bid in the laptop domain is for example a Dell Laptop with 80 Gb and a 17' inch monitor.
 
-The {\bf utilityspace} provides all the information enabling the computation of the utility of some bid. It is implemented as a list of evaluators, one evaluator for every issue in the domain. Because the issues in the laptop domain are all discrete issues, the evaluators are all EvaluatorDiscrete objects.
-
-The {\bf Evaluator} object contains a weight, and for each value that the issue can have it gives an evaluation-value and a cost value.
-
-The {\bf weight} indicates the relative importance of an issue. The sum of the weights of all issues is 1.0.
-
-The {\bf evaluation-value} gives the evaluation, or utility, associated with each value that an issue can take. For instance, for the harddisk issue above, the evaluation values could be 2 for the 60 Gb, 4 for the 80 Gb and 10 for the 120Gb, etc.
-
-The exact formula for computation of the utilities is given in Equation~\ref{eqn:Utility}.
-
-The {\bf bid} is a set of values for each of the issues in the domain.
+The {\bf UtilitySpace} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated. The utility is calculated using evaluators. Each issue has an evaluator corresponding to the type of the issue. The evaluator maps the evaluation of a value of an issue to a utility for that issue. The evaluator also specifies the importance of the issue in the form of a weight. The weights of all issues sum up to 1.0. To illustrate, the ``harddisk'' issue is of the type \textbf{IssueDiscrete}, and therefore its evaluator is of the type \textbf{EvaluatorDiscrete}. The exact formula for computation of the utility of a bid is given in Equation~\ref{eqn:Utility}.
 
 \subsection{Optimality of a Bid}
-A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the normalized evaluation values.
+Before discussing the optimality of a bid, we first need to formalize the concept of a bid. A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the normalized evaluation values.
 
 \begin{equation}
 	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
@@ -207,7 +197,9 @@ For a single agent, the optimal bid is of course one with a maximum utility. But
 \caption{Utility plot. Each point indicates the utility for both agents of a particular bid. The red line is the Pareto optimal frontier.}\label{Fig:utility plot}
 \end{figure}
 
-There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure 2 for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality. The collection of Pareto optimal points is called the Pareto optimal frontier. Another approach is the Nash optimality. The Nash solution is the set of bids for which the product of the utilities of both agents is maximal. 
+There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure 2 for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal points is called the Pareto optimal frontier.
+
+The challenge in an actual negotiation, is that the opponent in the default negotiation protocol hides its preference profile. This entails that an agent does not know how much the opponent prefers a bid. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. By default, there are already a few opponent models implemented in \Genius, such as the \textbf{HardHeadedFrequencyModel} used by the HardHeaded agent which won the ANAC2011.
  
 \section{Installing the Environment}
 
