@@ -202,47 +202,73 @@ There are multiple ways to define a more global ``optimum''. One approach to opt
 The challenge in an actual negotiation, is that the opponent in the default negotiation protocol hides its preference profile. This entails that an agent does not know how much the opponent prefers a bid. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. By default, there are already a few opponent models implemented in \Genius, such as the \textbf{HardHeadedFrequencyModel} used by the HardHeaded agent which won the ANAC2011.
  
 \section{Installing the Environment}
+The negotiation environment has been tested extensively on Mac OSX and Microsoft Windows. It should run on any machine running Java 6 or higher. This includes Solaris and Linux distributions. There are known issues with Linux (in particular Ubuntu and SUSE) mainly involving the visualization of the GUI. There are still a number of known bugs in the negotiation environment, but these should be non critical. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
 
-\subsection{System Requirements}
-You can run the negotiation environment on most systems running Java version 5 or 6. There are known issues with Linux (in particular Ubuntu and SUSE). You can download Java from the internet (www.sun.com/java) [sun07]. 
-
-\subsection{Installation}
 To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
 
 \begin{itemize}
 	\item \texttt{userguide.pdf}, this document;
 	\item \texttt{negosimulator.jar}, the negotiation simulator;
-	\item a \texttt{templates} folder, containing various domain spaces, all with a few sample utility spaces (xml files);
+	\item a \texttt{templates} folder, containing various scenarios.
 \end{itemize}
 
-\subsection{Progress \& Error Messages}
 When you run the negosimulator (by double-clicking the application), progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the negosimulator and enter
 \texttt{java -jar negosimulator.jar}
 This will start the simulator, and all system.out messages will appear in the console window. You may see some errors and warnings that are non-critical.
 
-\subsection{Bug reporting}
-The negotiation environment has been tested extensively on Mac OSX 10.9 and on Windows XP, Windows 7. It should run on any machine running Java 1.5.0 or higher. This includes Solaris, Linux, and more recent versions of Mac OSX and Microsoft Windows. There are known issues with Linux (in particular Ubuntu and SUSE). There are still a number of known bugs in the negotiation environment, and possibly new bugs will be discovered during the course. Please be patient when you discover a bug and first try to find an alternative way first. If this is unsuccessful, please report the bug to \url{ai@mmi.tudelft.nl} or \url{W.Pasman@tudelft.nl}.
- 
-\section{Profile Creation}
-The profile describes your personal preferences for a negotiation in a given domain. The profile is used to convert any bid in that domain to a value indicating how you would rate that bid. This is also called your utility of that bid. A profile is also called a utility space. Your utility space has a major impact on your final rating in the course, because it will be used to judge how well you completed the negotiations that you will perform. This section discusses how to edit your utility space.
+\section{Scenario Creation}
+A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
 
-\subsection{Start the Negosimulator}
-Start the negosimulator by double-clicking the \texttt{negosimulator.jar} file in the negotiator package. The negosimulator screen is displayed in Figure~\ref{Fig:negosimulator start}. The Domains and Preference Profiles tab contains a repository of domains and preference profiles (under the corresponding domain). Domains and preference profiles can be added or deleted with the green + and red -- buttons. The agents tab contains a repository of agents. Agents can also be added or deleted with the green + and red -- buttons.
+\subsection{Basic GUI Components}
+Start \Genius~by following the instructions in the previous section. After starting the simulator a screen similar to Figure~\ref{Fig:negosimulator start} is shown. This screen is divided in three portions:
+
+\begin{itemize}
+	\item The \textbf{Menubar} (blue border) allows us to start a new negotiation.
+	\item The \textbf{Components Panel} (red border) shows all available scenarios. By clicking the ``Agents'' tab all agents are shown.
+	\item The \textbf{Status Window} (green border) shows the status of the negotiation or structure of a selected domain or preference profile.
+\end{itemize}
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image6.png}
+	\includegraphics[width=0.6\textwidth]{media/image6.png}
 \caption{The negosimulator right after start-up.}\label{Fig:negosimulator start}
 \end{figure}
 
-\subsection{Load the Domain}
-Load the domain specification that you want to work with, by double-clicking one of the domains in the Domains and Preference Profiles tab, for instance laptop\_domain.xml. After loading the laptop domain the simulator will look like Figure~\ref{Fig:negosimulator domain loaded}. The left column shows the laptop domain, with the issues ``Laptop'', ``Harddisk'', and ``External Monitor''. The center column shows the type of the issue. The right column shows the values that are available for the issue.
+\subsection{Adding a Domain}
+By right clicking on the list of available scenarios in the Components Panel a popup menu with the option to create a new domain is shown. After clicking this option it is requested where the domain should be saved. As a domain is accompanied by a set of preference profiles, it is recommended to save the file in a new directory in the templates folder.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image7.png}
-\caption{The negosimulator after loading the laptop domain.}\label{Fig:negosimulator domain loaded}
+	\includegraphics[width=0.7\textwidth]{media/image7.png}
+\caption{The negosimulator after loading the laptop domain.}\label{Fig:newdomain}
 \end{figure}
+
+The next step is to scroll to the bottom of the list and double click the newly created domain. This shows a window similar to~\ref{Fig:newdomain}. A domain is created with zero issues. We can simply add an issue by pressing the ``add issue'' button. This results in the opening of a dialog similar to~\ref{fig:creatingIssueID}.
+
+The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty ``evaluation values'' window, later on when creating a preference profile we will use this tab to specify the preference of the values.
+
+Instead of a discrete issue, we can also add an integer issue. For an integer issue we first need to specify the lowest possible value and the highest value. Following, when creating a preference profile we need to specify the utility of the lowest value and the highest value. During the negotiation we can offer any value for the issue within the specified range. The utility of the value is a linear interpolation of the utility of the lowest and highest value of the range.
+
+The next step is to press ok to add the issue. Generally, a domain consists of multiple issues. We can simply add the other issues by repeating the process above. If you are happy with the domain, you can save it by pressing the save button.
+
+Finally, note that issues can only be added and removed when there are not yet preference profiles. This is to avoid inconsistencies between the preference profiles and the domains.
+
+\begin{figure}[ht]
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+	\includegraphics[width=0.8\textwidth]{media/image7a.png}
+\caption{Creating a discrete issue.}
+\label{fig:createIssueD}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+	\includegraphics[width=0.8\textwidth]{media/image7b.png}
+\caption{Creating an integer issue.}\label{Fig:createIssueI}
+\end{minipage}
+\end{figure}
+
+
 
 \subsection{Create a Preference Profile}
 We need to extend the domain that has now been loaded into an empty utility space for that domain. In the Domains and Preference Profiles tab, select the domain for which you want to create a new preference profile. Then select File $>$ New $>$ Preferences Profile. After this, the editor should look like Figure~\ref{Fig:negosimulator utility space created}. New as compared to Figure 4 is the ``Weight'' column, showing the importance associated with this issue. Notice the numbers and check boxes at the far right. If you do not see them in your window, you may need to resize the window and the headers.
@@ -540,6 +566,8 @@ A compiled agent can also be loaded by directly adding the agent to the reposito
 </repository>
 \end{lstlisting}
  
+ADDING AN AGENT IN THE GUI!
+
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
