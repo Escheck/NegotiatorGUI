@@ -117,52 +117,52 @@
 
 \pagebreak
 \section{Theory Crash Course}
-This section gives a crash course on some essential theory needed to understand the negotiation system. The negotiation objects that are used in a negotiation and utility values are discussed. 
+This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
 
-\subsection{Actions}
-In negotiation, the two parties take turns in doing the next negotiation action. The possible actions implemented in \Genius~are:
+\subsection{Negotiation Protocol}
+The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the bilateral alternating offers protocol used in \Genius.
+
+In the bilateral alternating offers protocol, the two parties -- agent $A$ and agent $B$ -- take turns. Agent $A$ starts the negotiation. Each turn an agent presents one of the three possible actions:
 
 \begin{center}
 \begin{tabular}{cm{0.6\textwidth}}
 \hline
 \textsc{Accept} & This action indicates that agent accepts the opponent's last bid.\\
 \hline
-\textsc{Offer} & This action indicates that the agent proposes a new bid.\\
+\textsc{Offer} & This action represents the bid made by an agent.\\
 \hline
-\textsc{EndNegotiation} & This action indicates that the agent terminates the negotiation, resulting in the reservation value being awarded to both players (see below).\\
+\textsc{EndNegotiation} & This action indicates that the agent terminates the negotiation.\\
 \hline
 \end{tabular}
 \end{center}
 
-\subsection{Negotiation Protocol}
-The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, and deviations from the protocol are caught and penalized. This section discusses the details of the default alternating offers protocol used in \Genius.
-
-Agent $A$ and $B$ take turns in the negotiation. Agent $A$ starts the negotiation. When it is the turn of agent $X$ (X being $A$ or $B$), that agent is informed about the action taken by the opponent. If the action was an \textsc{Offer}, agent $X$ is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. The turn taking stops and the final score (utility of the last bid) is determined for each of the agents, as follows:
+When it is an agent's turn, it is informed about the action taken by the opponent. If the action was an \textsc{Offer}, the agent is subsequently asked to determine its next action and the turn taking goes to the next round. If it is not an \textsc{Offer}, the negotiation has finished. There are three ways in which a negotiation can end:
 \begin{itemize}
-	\item the action of agent $X$ is an \textsc{Accept}. This action is possible only if the opponent actually did a bid. The last bid of the opponent is taken, and the utility of that bid is determined in the utility spaces of agent $A$ and $B$. The opponent is informed of this accept via the ReceiveMessage method (but now without the subsequent chooseAction).
-	\item the action returned is an \textsc{EndNegotiation}, which may be presented by an agent, or when the deadline has passed. The score of both agents is set to their reservation value.
+	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined in the utility spaces of agent $A$ and $B$. The opponent is informed of this action via the ReceiveMessage method.
+	\item The action returned is an \textsc{EndNegotiation}, which may be presented by an agent -- in which case it means that the agent walks away -- or when the deadline has passed. The score of both agents is set to their reservation value.
+	\item Finally, if an agent does not follow this protocol -- for instance by sending another action that is not one of the above or by crashing -- the agents will also get their reservation values.
 \end{itemize}
 
-So far for the protocol. If an agent does not follow this protocol, for instance by sending another action that is not one of the above or by crashing, the agents will also get their reservation values. If the agent deviates grossly from the protocol in such a way that it endangers the negotiation simulator itself, it may be disqualified entirely.
+
  
 \subsection{Reservation Value}
-A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA). A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either by breaking off the negotiation (a non-zero reservation value makes breaking off potentially interesting) or by not reaching an agreement before the deadline associated with a negotiation session. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or: no agreement is reached, and both agents receive their reservation value instead.
+A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA).
+
+A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either if a an agent leaves the negotiation, or by not reaching an agreement before the deadline. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or: no agreement is reached, and both agents receive their reservation value instead.
 
 Reservation values typically are different for each of the negotiating agents that negotiate in a session. In case no reservation value is set in a profile, the reservation value of an agent is set to zero (0).
 
 
-\subsection{Time available for a Session}
-A negotiation lasts a predefined time in seconds, or alternatively, rounds. Note the difference between time and rounds: in a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as frozen inside a round; therefore computational cost does not play a role.
+\subsection{Time Pressure}
+A negotiation lasts a predefined time in seconds, or alternatively rounds. The time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Notice that manipulation of the remaining time can be a factor influencing the negotiation results.
 
-Normally, each negotiation session is allowed to last at most 180 seconds. If no agreement has been reached before this time, the negotiation will be terminated by killing the negotiation agents, and the utility of both parties will be their reservation value (normally 0). Only if (at least) one of the agents is a GUI agent requiring user input, the deadline is set to 1800 seconds. Notice that manipulation of the available time (by delaying the response of the agent) can be an important factor influencing the negotiation results.
+There is an important difference between a time-based and rounds-based protocol. In a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as frozen inside a round; therefore computational cost does not play a role.
 
-Note that in the negotiation environment, the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation, and $t = 1$ represents the deadline. Agents should not rely on the assumption that the negotiation time window corresponds to 180 seconds in real--time, but are required only to rely on the normalized time.
-\newline \newline
-Apart from a deadline, a scenario may also have \emph{discount factors}. Discount factors devaluate the value of the issues under negotiation as time passes. Time is shared between the agents, but the discount is private to, and can different between each agent. The implementation of discount factors is as follows. Let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent. Let $t$ in $[0, 1]$ be the current normalised time, as defined by the timeline. We compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
+Apart from a deadline, a scenario may also have \emph{discount factors}. Discount factors decrease the utility of the bids under negotiation as time passes. Time is shared between the agents, but the discount is private to, and can different between each agent. The implementation of discount factors is as follows: let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent; let $t$ in $[0, 1]$ be the current normalized time, as defined by the timeline; we compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
 \begin{eqnarray}
 U_D^t(\omega) = U(\omega) \cdot d^t
 \end{eqnarray}
-If $d = 1$, the utility is not affected by time, and such a scenario is considered to be undiscounted, while if $d$ is very small there is high pressure on the agents to reach an agreement. Note that discount factors are part of the preference profiles and need not be \emph{symmetric} (i.e. $d$ can have different values for each agent).
+If $d = 1$, the utility is not affected by time, and such a scenario is considered to be undiscounted, while if $d$ is very small there is high pressure on the agents to reach an agreement. Note that discount factors are part of the preference profiles and therefore different agents may have a different discount factor.
 
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reserve price, it may be rational for an agent to break off the negotiation early and take the outside option.
 
@@ -396,6 +396,9 @@ Next, double-click Agent side A and select one or more agents from the window th
 	\includegraphics[width=0.4\textwidth]{media/image18.png}
 \caption{Progress tab for a tournament.}\label{Fig:tournament progress}
 \end{figure}
+
+
+DISCUSS TOURNAMENT OPTIONS!
 
 \section{Writing a Negotiation Agent}
 
