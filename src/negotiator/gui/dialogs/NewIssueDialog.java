@@ -94,7 +94,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	}
 	
 	private JPanel constructIssuePropertyPanel() {
-		String[] issueTypesTmp = {DISCRETE, INTEGER, REAL};
+		String[] issueTypesTmp = {DISCRETE, INTEGER};
 		issueTypes = issueTypesTmp;
 		
 		//Initialize the comboBox.
@@ -268,10 +268,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		String[] values = discreteTextArea.getText().split("\n");
 		return values;
 	}
-	
-	
 
-	
 	/**
 	 * Gets the evaluations for the discrete issue from the input field in this dialog. 
 	 * @return An  arrayList with the evaluations. 
