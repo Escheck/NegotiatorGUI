@@ -16,6 +16,7 @@ import java.security.CodeSource;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import negotiator.Global;
+import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.Repository;
