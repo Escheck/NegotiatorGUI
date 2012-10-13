@@ -55,13 +55,6 @@ public class EditIssueDialog extends NewIssueDialog {
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
 		
-		/*
-		if (utilSpace == null || (utilSpace.getEvaluator(issue.getNumber()) == null))
-			weightCheck.setSelected(false);
-		else
-			weightCheck.setSelected(true);
-		*/
-		
 		if (issue instanceof IssueDiscrete) {
 			this.issueType.setSelectedItem(DISCRETE);
 			this.issueType.setEnabled(false);
@@ -130,7 +123,6 @@ public class EditIssueDialog extends NewIssueDialog {
 					default:
 						break;
 					}
-					//realOtherField.setText(eval.); Herbert: what's realOtherField?
 				}
 			}
 		}
@@ -147,9 +139,6 @@ public class EditIssueDialog extends NewIssueDialog {
 			throw new InvalidInputException("Error reading objective number from (hidden) field.");
 		}
 	}
-	
-
-
 	
 	/**
 	 * Overrides actionPerformed from NewIssueDialog.
@@ -189,14 +178,7 @@ public class EditIssueDialog extends NewIssueDialog {
 					path = treeFrame.getTreeTable().getTree().getSelectionPath().getPath();
 				}
 				model.treeStructureChanged(this, path);
-				
-				//if (model.getUtilitySpace() == null) {
-				//	model.treeStructureChanged(this, treeFrame.getTreeTable().getTree().getSelectionPath().getPath());
-				//}
-				//else {
-				//	treeFrame.reinitTreeTable(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getDomain(), ((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace());
-					//}
-				
+
 				this.dispose();
 			}
 		}			
