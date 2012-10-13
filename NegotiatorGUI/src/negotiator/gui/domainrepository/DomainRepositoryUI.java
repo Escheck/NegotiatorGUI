@@ -15,6 +15,7 @@ import javax.swing.JTree;
 import negotiator.Domain;
 import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
+import negotiator.gui.NegoGUIView;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
@@ -38,14 +39,15 @@ public class DomainRepositoryUI
 	private MyTreeNode root=new MyTreeNode(null);
 	private JTree scenarioTree;
 	private DefaultTreeModel scenarioTreeModel;
+	private NegoGUIView negoView;
 	
-	public DomainRepositoryUI(JTree pTree) throws Exception
+	public DomainRepositoryUI(JTree pTree, NegoGUIView negoView) throws Exception
 	{
 		this.scenarioTree = pTree;
 		domainrepository = Repository.get_domain_repos();
 		initTree();
 		scenarioTree.setModel(scenarioTreeModel);
-		
+		this.negoView = negoView;
 	}	
 	
 	private void initTree(){
@@ -179,11 +181,12 @@ public class DomainRepositoryUI
             } else {
             	String nameInPath = file.getPath().substring(completePath.length());
             	String fullPathOfPref = "file:" + domainDir + nameInPath + ".xml";
-            	ProfileRepItem newNode = null;
+            	ProfileRepItem newPref = null;
 				try {
-					newNode = new ProfileRepItem(new URL(fullPathOfPref), dri);
-	            	dri.getProfiles().add(newNode);
-	            	scenarioTreeModel.insertNodeInto(new MyTreeNode(newNode), node, node.getChildCount());
+					newPref = new ProfileRepItem(new URL(fullPathOfPref), dri);
+	            	dri.getProfiles().add(newPref);
+	            	MyTreeNode newNode = new MyTreeNode(newPref);
+	            	scenarioTreeModel.insertNodeInto(newNode, node, node.getChildCount());
 	            	domainrepository.save();
 	            	
 	            	Domain domain = null;
@@ -198,8 +201,8 @@ public class DomainRepositoryUI
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-	        		
 	        		space.toXML().saveToFile(completePath + nameInPath + ".xml");
+	        		negoView.showRepositoryItemInTab(newPref, newNode);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}
@@ -248,9 +251,10 @@ public class DomainRepositoryUI
 				}
 	    		domainrepository.getItems().add(dri);
 	    		domainrepository.save();
-	    		scenarioTreeModel.insertNodeInto(new MyTreeNode(dri), root, root.getChildCount());
+	    		MyTreeNode newNode = new MyTreeNode(dri);
+	    		scenarioTreeModel.insertNodeInto(newNode, root, root.getChildCount());
 	    		saveDomainAsFile(path, domainName);
-	    		
+	    		negoView.showRepositoryItemInTab(dri, newNode);
             }
         }
 	}

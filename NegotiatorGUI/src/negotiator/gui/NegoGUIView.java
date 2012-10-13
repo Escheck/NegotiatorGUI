@@ -45,7 +45,7 @@ public class NegoGUIView extends FrameView {
 
         try{
         	new AgentRepositoryUI(tableAgents);
-        	domainRep = new DomainRepositoryUI(treeDomains);
+        	domainRep = new DomainRepositoryUI(treeDomains, this);
         } catch (Exception e) {
         	e.printStackTrace();
 		}
@@ -232,47 +232,47 @@ public class NegoGUIView extends FrameView {
          int selRow = treeDomains.getRowForLocation(evt.getX(), evt.getY());
          TreePath selPath = treeDomains.getPathForLocation(evt.getX(), evt.getY());
          if(selRow != -1) {
-             if(evt.getClickCount() == 1) {
-
-             }
-             else if(evt.getClickCount() == 2) {
+             if(evt.getClickCount() == 2) {
                 if(selPath!=null) {
-                    TreeFrame tf;
                     MyTreeNode node = (MyTreeNode)(selPath.getLastPathComponent());
                     RepItem repItem = node.getRepositoryItem();
-                    if(repItem instanceof DomainRepItem) {
-                        try {
-                        	boolean hasNoProfiles = ((DomainRepItem) repItem).getProfiles().size() == 0;
-                        	String filename=((DomainRepItem) repItem).getURL().getFile();
-                            Domain domain = new Domain( filename);
-                            tf = new TreeFrame(domain, hasNoProfiles);
-                            addTab(StripExtension(GetPlainFileName(filename)), tf);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        
-                        }                        
-                    } else if(repItem instanceof ProfileRepItem) {
-                        try {
-                        	MyTreeNode parentNode = (MyTreeNode)(node.getParent());
-                        	String filename=((ProfileRepItem) repItem).getURL().getFile();
-
-                            Domain domain = new Domain( ((DomainRepItem) (parentNode.getRepositoryItem()) ).getURL().getFile());
-                            UtilitySpace utilitySpace = new UtilitySpace(domain, filename);
-                            
-                            tf = new TreeFrame(domain,utilitySpace);
-                            addTab(StripExtension(GetPlainFileName(filename)), tf);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        
-                        }                        
-                    }                
+                    showRepositoryItemInTab(repItem, node);                
                 }
              }
          }
     
 }//GEN-LAST:event_treeDomainsMouseClicked
 
-    @Action
+    public void showRepositoryItemInTab(RepItem repItem, MyTreeNode node) {
+        TreeFrame tf;
+    	if(repItem instanceof DomainRepItem) {
+            try {
+            	boolean hasNoProfiles = ((DomainRepItem) repItem).getProfiles().size() == 0;
+            	String filename=((DomainRepItem) repItem).getURL().getFile();
+                Domain domain = new Domain( filename);
+                tf = new TreeFrame(domain, hasNoProfiles);
+                addTab(StripExtension(GetPlainFileName(filename)), tf);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }                        
+        } else if(repItem instanceof ProfileRepItem) {
+            try {
+            	MyTreeNode parentNode = (MyTreeNode)(node.getParent());
+            	String filename=((ProfileRepItem) repItem).getURL().getFile();
+
+                Domain domain = new Domain( ((DomainRepItem) (parentNode.getRepositoryItem()) ).getURL().getFile());
+                UtilitySpace utilitySpace = new UtilitySpace(domain, filename);
+                
+                tf = new TreeFrame(domain,utilitySpace);
+                addTab(StripExtension(GetPlainFileName(filename)), tf);
+            } catch (Exception e) {
+                e.printStackTrace();
+            
+            }                        
+        }
+	}
+
+	@Action
     public void newNegoSession() {
     	//JFrame frame = new JFrame();
     	try {  
