@@ -36,6 +36,7 @@
 
 % This is now the recommended way for checking for PDFLaTeX:
 \usepackage{ifpdf}
+\usepackage{comment}
 
 %\newif\ifpdf
 %\ifx\pdfoutput\undefined
@@ -224,7 +225,7 @@ Start \Genius~by following the instructions in the previous section. After start
 
 \begin{itemize}
 	\item The \textbf{Menubar} (blue border) allows us to start a new negotiation.
-	\item The \textbf{Components Panel} (red border) shows all available scenarios. By clicking the ``Agents'' tab all agents are shown.
+	\item The \textbf{Components Window} (red border) shows all available scenarios and agents.
 	\item The \textbf{Status Window} (green border) shows the status of the negotiation or structure of a selected domain or preference profile.
 \end{itemize}
 
@@ -234,8 +235,8 @@ Start \Genius~by following the instructions in the previous section. After start
 \caption{The negosimulator right after start-up.}\label{Fig:negosimulator start}
 \end{figure}
 
-\subsection{Adding a Domain}
-By right clicking on the list of available scenarios in the Components Panel a popup menu with the option to create a new domain is shown. After clicking this option it is requested where the domain should be saved. As a domain is accompanied by a set of preference profiles, it is recommended to save the file in a new directory in the templates folder.
+\subsection{Creatingyy a Domain}
+By right clicking on the list of available scenarios in the Components Window a popup menu with the option to create a new domain is shown. After clicking this option it is requested where the domain should be saved. As a domain is accompanied by a set of preference profiles, it is recommended to save the file in a new directory in the templates folder. After saving the domain a window similar to Figure~\ref{Fig:newdomain} is shown. Initially, a domain contains zero issues. We can simply add an issue by pressing the ``Add issue'' button. This results in the opening of a dialog similar to Figure~\ref{fig:createIssueD}.
 
 \begin{figure}[htb]
 	\centering
@@ -243,13 +244,11 @@ By right clicking on the list of available scenarios in the Components Panel a p
 \caption{The negosimulator after loading the laptop domain.}\label{Fig:newdomain}
 \end{figure}
 
-The next step is to scroll to the bottom of the list and double click the newly created domain. This shows a window similar to~\ref{Fig:newdomain}. A domain is created with zero issues. We can simply add an issue by pressing the ``add issue'' button. This results in the opening of a dialog similar to~\ref{fig:creatingIssueID}.
+The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty evaluation values window, later on when creating a preference profile we will use this tab to specify the preference of each value.
 
-The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty ``evaluation values'' window, later on when creating a preference profile we will use this tab to specify the preference of the values.
+Instead of a discrete issue, we can also add an integer issue as shown in Figure~\ref{fig:createIssueI}. For an integer issue we first need to specify the lowest possible value and the highest value. Following, when creating a preference profile we need to specify the utility of the lowest value and the highest value. During the negotiation we can offer any value for the issue within the specified range.
 
-Instead of a discrete issue, we can also add an integer issue. For an integer issue we first need to specify the lowest possible value and the highest value. Following, when creating a preference profile we need to specify the utility of the lowest value and the highest value. During the negotiation we can offer any value for the issue within the specified range. The utility of the value is a linear interpolation of the utility of the lowest and highest value of the range.
-
-The next step is to press ok to add the issue. Generally, a domain consists of multiple issues. We can simply add the other issues by repeating the process above. If you are happy with the domain, you can save it by pressing the save button.
+The next step is to press ``Ok'' to add the issue. Generally, a domain consists of multiple issues. We can simply add the other issues by repeating the process above. If you are satisfied with the domain, you can save it by pressing  ``Saving changes''.
 
 Finally, note that issues can only be added and removed when there are not yet preference profiles. This is to avoid inconsistencies between the preference profiles and the domains.
 
@@ -260,136 +259,62 @@ Finally, note that issues can only be added and removed when there are not yet p
 \caption{Creating a discrete issue.}
 \label{fig:createIssueD}
 \end{minipage}
-\hspace{0.5cm}
 \begin{minipage}[b]{0.45\linewidth}
 \centering
 	\includegraphics[width=0.8\textwidth]{media/image7b.png}
-\caption{Creating an integer issue.}\label{Fig:createIssueI}
+\caption{Creating an integer issue.}\label{fig:createIssueI}
 \end{minipage}
 \end{figure}
 
-
-
-\subsection{Create a Preference Profile}
-We need to extend the domain that has now been loaded into an empty utility space for that domain. In the Domains and Preference Profiles tab, select the domain for which you want to create a new preference profile. Then select File $>$ New $>$ Preferences Profile. After this, the editor should look like Figure~\ref{Fig:negosimulator utility space created}. New as compared to Figure 4 is the ``Weight'' column, showing the importance associated with this issue. Notice the numbers and check boxes at the far right. If you do not see them in your window, you may need to resize the window and the headers.
+\subsection{Creating a Preference Profile}
+Now that we created a domain, the next step is to add a set of preference profile. By right clicking on the domain a popup menu is opened which has an option to create a new preference profile. Selecting this option results in the opening of a new window which looks similar to Figure~\ref{fig:utilcreated}. It should be noted that when a domain has one or more preference profiles the issues can no longer be modified.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image8.png}
-\caption{The negosimulator after creating a new utility space.}\label{Fig:negosimulator utility space created}
+	\includegraphics[width=0.8\textwidth]{media/image8.png}
+\caption{The negosimulator after creating a new utility space.}\label{fig:utilcreated}
 \end{figure}
 
-Now you are ready to start customizing your utility space to reflect your personal preferences. The next two steps will deal with this.
+Now you are ready to start customizing your utility space to reflect your personal preferences. There are two steps: setting the importance of the issues and setting the preference of the values of the issues. To start with the first step, you can adjust the relative weights of the issues by using the sliders next to that issue. Note that when you slide a slider, the weights of the other sliders are automatically updated such that the all weights still sum up to one. If you do not want this behavior, you can lock the weight of an issue by selecting the checkbox behind it.
 
-\subsection{Set the Evaluation Values}
-In this step the utility values for each value will be set for each of the issues. Select one of the issues by clicking on the name of the issue (do not select the ``LaptopDomain'' which is not an issue). The selected name will turn blue and a large yellow area will appear. Then click the ``Edit'' button. The editor for discrete issues will pop up (see Figure~\ref{Fig:discrete issue editor}).
+Now that we determined the weights of the issues, it is a good idea to save the utility space by selecting ``Save changes''. The next and final step is to set the evaluation of the issues. To specify the evaluation of an issue you can double click it to open a new window looking similar to Figure~\ref{fig:createIssueD} or Figure~\ref{fig:createIssueI} depending on the type of the issue.
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image9.png}
-\caption{The discrete-issue editor.}\label{Fig:discrete issue editor}
-\end{figure}
+For a discrete issue we need to specify the evaluation value of each discrete value. A specific value can be assigned any positive non-zero integer as evaluation value. During the negotiation the utility of value is determined by dividing the value by the highest value for that particular issue. To illustrate, if we give 60 Gb evaluation 5, 80 Gb evaluation 8, and 120 Gb evaluation 10; then the utilities of these values are respectively 0.5, 0.8, and 1.0.
 
-Now you can edit the column Evaluation values by clicking in the blank column under ``Evaluation values''. You can enter the evaluation values, one per line, matching the values on your hand-written profile. Only integer numbers larger than 0 are allowed. To introduce a strong preference of one issue over other issues, just make the number very large. The window will look like Figure~\ref{Fig:discrete issue editor edited} after editing.
+Specifying the preference of a integer issue is even easier. In this case we simply need to specify the utility of the lowest possible value for that issue and the utility of the highest possible value. The utility of a value in this range is calculated during the negotiation by using linear interpolation of the utilities of both given utilities. If you are satisfied with the profile you can save it by pressing ``Save changes''. 
 
-Do not edit the first column. Doing so will change the domain, resulting in a utility space that does not fit the laptop domain. The other columns should not be edited either for the same reasons. The editor will not allow editing of these values anyway, but you can also edit the xml files by hand in which case you have to be careful not to touch those fields.
-When adjusting the evaluation values, keep in mind that the utility of a bid will be zero if the cost constraint is violated (see Equation 1).
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image10.png}
-\caption{The discrete-issue editor after entering the evaluation values.}\label{Fig:discrete issue editor edited}
-\end{figure}
-
-If you are satisfied with the evaluation values, press the Ok button. If you entered an illegal value, a warning will appear and the evaluation values will not be changed. Repeat step 4 for the other issues, until all evaluation values of all issues have been set.
-
-\subsection{Set the Issue Weights}
-As a final step to tune your utility space, you can adjust the relative weights of the issues, by using the sliders next to that issue. You can lock the weight value of an issue by clicking the checkbox next to the slider. The sum of the weights is automatically kept at 1, causing all unlocked sliders to change when you drag one of them.
-
-\subsection{Save your Utility Space}
-
-Once you have set all sliders and have filled out the evaluations for the options under each issue, select File $>$ Save or click the save button, and save your file. It is possible to save incomplete utility space, for later completion although this is not recommended. Use an appropriate non-existing filename that refers to the domain it is related to, and makes clear it is a utility space file, e.g. laptop\_buyer\_utility.xml. The preference profile is automatically added to the repository under the domain.
- 
 \section{Running Negotiations}
-To run a negotiation session, select File $>$ New $>$ Negotiation Session. The Session tab pops up (Figure~\ref{Fig:negotiation set-up}). 
+This section discusses how to run a negotiation. There are three main modes to run a negotiation:
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image11.png}
-\caption{The negotiation set-up screen.}\label{Fig:negotiation set-up}
-\end{figure}
-
-You need to set up the following items:
 \begin{itemize}
-	\item The negotiation protocol. Only the Alternating offers is possible at this time. You can also use ``Alternating Offers with separate deadlines (deprecated)'' protocol for backwards compatibility with agents written for older versions of \Genius.
-	\item Agent A/B preferences profile: the xml file containing the utility space of agent A/B. Usually this is a file with a name like laptop\_A/B\_utility.xml.
-	\item Agent A/B name: the name of the negotiation agent that party A/B in the negotiation wants to use. You can use the provided agents, or use your own agent placed in the directory containing the \texttt{negotiator.jar} file. UIAgent allows you to manually control party A/B in the negotiation. SimpleAgent is an agent that automatically handles the negotiation for party A/B.
+	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users. Advanced users are recommended to create a tournament as it supports more options.
+	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains.
+	\item \textbf{Distributed tournament}. A distributed tournament is a tournament divided among multiple computers. This mode can be used to run large tournament in a reasonable amount of time.
 \end{itemize}
 
-After these fields have been set appropriately, you can press the Start button to run the negotiation sessions.
+Before going into detail on how each of these modes work, we first discuss the two types of agents which can be used: automated agents and non-automated agents. Automated agents are agents which can compete against other agents in a negotiation without relying on input by a user. In general, these agents are able to make a large amount of bids in a limited amount of time.
 
-\subsection{Using an Automatic Agent}
-
-If you selected an automatic negotiation agent, for instance SimpleAgent, there will not appear any window while that agent has the turn. The agent should pose its bid within a reasonable time. After the agent made its bid, the other agent is given the turn. If both agents are automatic, no windows will appear at all during the entire negotiation, and only the output windows will show the ongoing negotiation results.
+In contrast, non-automated agents are agents that are fully controlled by the user. These types of agents ask the user each round which action they should make. \Genius~by default includes the UIAgent -- which has a simple user interface -- and the more extensive Extended UIAgent.
 
 
-	\subsection{Using the UIAgent}
-
-	If you selected the UIAgent for Agent A/B, the window as shown in Figure~\ref{Fig:uiagent gui} will pop up every time input from negotiation agent A/B is needed.
-
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[width=0.4\textwidth]{media/image12.png}
-	\caption{The GUI of UIAgent.}\label{Fig:uiagent gui}
-	\end{figure}
-
-	This GUI has three main components: the text field at the top level, the table showing the last bid and a possible next bid, and a row of buttons at the bottom.
-	The text field shows some text about the current negotiation state.
-
-	The table has three columns: 
-	\begin{itemize}
-		\item The left column shows the names of the issues in the domain
-		\item The center column shows the evaluation values for the issues as proposed in the last bid of the opponent (or ``-'' if this is the first round)
-		\item The right column shows the current picked values for the issues. You can edit the current pick by clicking on the fields, which will open the combo boxes in the fields (Figure 10).
-	\end{itemize}
-
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[width=0.4\textwidth]{media/image13.png}
-	\caption{Combo box opens after clicking on a field, allowing change of the picked values for the next bid.}
-	\end{figure}
-
-	The last two rows of the table show the cost and utility of the last opponent's bid and your current bid. The cost field will turn red if you exceed the maximum cost of 1200. The utility is shown as a percentage, and also as a bar of matching size. These values are computed according to your utility space, as that determines your score, and also because you have no access to the opponent's utility space. The lower three buttons allow you to submit the next bid as set in the right column, or to accept the opponent's last bid.
-
-	\subsection{Using the Extended UIAgent}
-
-	The extended UIAgent is similar to the UIAgent. It additionally shows a table and a plot of the utilities of all bids made in the session (Figure~\ref{Fig:uiagent extended gui}).
-
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[width=0.4\textwidth]{media/image14.png}
-	\caption{The GUI of UIAgent Extended.}\label{Fig:uiagent extended gui}
-	\end{figure}
-
-\subsection{Negotiation Results}
-
-There are two types of results: the utility plot and the utility of the last bid for each round. Both are shown in the Progress tab, as displayed in Figure~\ref{Fig:progress}.
+\subsection{Running a Negotiation Session}
+To run a negotiation session select ``Start'' and then ``Negotiation Session''. This opens a window similar to Figure~\ref{Fig:session}. Before pressing ``start'' to run the negotiation the following parameters should be specified:
+\begin{itemize}
+	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
+	\item \textbf{Side A/Side B}. The configuration of both agents which negotiate against each other.
+	\item \textbf{Preference profile}. The preference profile to be used by the agent of that side.
+	\item \textbf{Agent name}. The agent which should participate in the negotiation.
+\end{itemize}
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image15.png}
-\caption{Progress tab. The utility plot also shows the Pareto Frontier (the red line), and the bidding sequence of agent A and agent B (the green and the blue lines).}\label{Fig:progress}
+	\includegraphics[width=0.6\textwidth]{media/image11.png}
+\caption{A negotiation session.}\label{Fig:session}
 \end{figure}
 
-\subsubsection{The Utility Plot}
-
-A utility plot will be provided during each negotiation. The plot shows points corresponding to all possible bids, the Pareto Frontier, Nash and Kalai points, all bids made by both agents and the final agreement.
-
-\subsubsection{Exchanged Offers}
-
-The results of the negotiation are shown in the Exchanged Offers part. This shows four columns: the session number, the final utility for agent A and B, and the Protol ErrorRemarks column. The utilities are the utilities of the final, accepted bid, as measured in the utility spaces of agent A and B (see the section Utility of a Bid).
 
 \subsection{Running a Tournament}
+\begin{comment}
 
 Besides running a single negotiation session, it is also possible to run a tournament. In a tournament, a negotiation session is held for every possible combination of chosen agents and preference profiles for each side. To do this, select File $>$ New $>$ Tournament. The Tournament tab will appear as displayed in Figure~\ref{Fig:tournament}. 
  
@@ -417,8 +342,35 @@ Next, double-click Agent side A and select one or more agents from the window th
 
 
 DISCUSS TOURNAMENT OPTIONS!
+\end{comment}
 
-\section{Writing a Negotiation Agent}
+
+\subsection{Running a Distributed Tournament}
+Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius.
+
+Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split into smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
+
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=7cm]{media/Decoupled_DTsettings.png}
+	\caption{Creating a distributed tournament.}
+	\label{fig:dtsettings}
+\end{figure}
+
+It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament; when there are no unclaimed jobs left, each client checks whether all sessions have been processed.  If all the jobs have been processed then each client reconstructs the full log of the tournament, if not all the processes have been processed, then the client waits, as it is possible that another client is still busy with a job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
+
+The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
+
+Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius~and agent code.
+
+The database structure can be created by using the SQL dump which can be found in the directory \textit{database}. 
+
+
+
+
+
+
+\section{Creating a Negotiation Agent}
 
 
 This section discusses how you create an automatic negotiation agent. To explain this, the SimpleAgent.java code as provided in the installation package will be discussed.
@@ -855,27 +807,6 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 
 \end{lstlisting}
 
-
-
-\section{Distributed Genius}
-Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius.
-
-Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split into smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
-
-\begin{figure}[h!] 
-	\center
-	\includegraphics[width=7cm]{media/Decoupled_DTsettings.png}
-	\caption{Creating a distributed tournament.}
-	\label{fig:dtsettings}
-\end{figure}
-
-It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament; when there are no unclaimed jobs left, each client checks whether all sessions have been processed.  If all the jobs have been processed then each client reconstructs the full log of the tournament, if not all the processes have been processed, then the client waits, as it is possible that another client is still busy with a job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
-
-The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
-
-Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius~and agent code.
-
-The database structure can be created by using the SQL dump which can be found in the directory \textit{database}. 
 
 \section{Conclusions}
 Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
