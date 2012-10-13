@@ -86,6 +86,7 @@ public class TreeFrame extends JPanel {
 	        	}
 	        }
 		});
+		treeTable.setRowHeight(40);
 		//Initialize the Menu
 		initMenus();
 		JPanel simplePanel = new JPanel();
