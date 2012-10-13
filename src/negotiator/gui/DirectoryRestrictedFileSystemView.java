@@ -1,4 +1,4 @@
-package negotiator.gui.agentrepository;
+package negotiator.gui;
 
 import java.io.File;
 import java.io.IOException;
