@@ -41,13 +41,15 @@ import negotiator.utility.UtilitySpace;
  *
  */
 public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
+
+	private static final long serialVersionUID = 329109532781050011L;
 	//Variables
 	protected static final String DISCRETE = "Discrete";
 	protected static final String INTEGER = "Integer";
 	protected static final String REAL = "Real";
 	
 	protected JComboBox issueType;
-	protected String[] issueTypes;// = {DISCRETE, INTEGER, REAL}; <- for some weird reason this doesn't work
+	protected String[] issueTypes;
 	protected JPanel issuePropertyCards;
 	protected JPanel issuePropertyPanel;
 	protected JPanel discretePanel;
@@ -84,9 +86,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	//Methods
 	protected void initPanels() {
-		super.initPanels();
-		weightCheck.setEnabled(false);
-		weightCheck.setSelected(true);		
+		super.initPanels();	
 		JPanel tmpIssPropP = constructIssuePropertyPanel();
 
 		this.add(tmpIssPropP, BorderLayout.CENTER);
@@ -135,11 +135,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		issuePropertyPanel.setLayout(new BorderLayout());
 		issuePropertyPanel.add(issueType, BorderLayout.PAGE_START);
 		issuePropertyPanel.add(issuePropertyCards, BorderLayout.CENTER);
-		/*
-		if(this.weightCheck.isSelected()){
-			weightCheck.setEnabled(false);
-		}
-		*/
+
 		return issuePropertyPanel;
 	}
 	
@@ -163,8 +159,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(evalPanel);
 		
 		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace()==null){
-			weightCheck.setEnabled(false);
-			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			discreteTextEvaluationArea.setEnabled(false);
 			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
 		}
@@ -214,8 +208,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				integerMinField.setEnabled(false);
 				integerMaxField.setEnabled(false);
 			}
-			weightCheck.setEnabled(false);
-			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			integerUtilityLowestValue.setToolTipText("Disabled until there is a Utility Space.");
 			integerUtilityHighestValue.setToolTipText("Disabled until there is a Utility Space.");
 		} else {
@@ -254,8 +246,6 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.add(max);
 
 		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
-			weightCheck.setEnabled(false);
-			weightCheck.setToolTipText("Disabled until there is a Utility Space.");
 			realLinearField.setEnabled(false);
 			realLinearField.setToolTipText("Disabled until there is a Utility Space.");
 			realParameterField.setEnabled(false);
@@ -263,6 +253,10 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		
 		return panel;
+	}
+	
+	protected boolean getWeightCheck(){
+		return true;
 	}
 	
 	/*

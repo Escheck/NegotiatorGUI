@@ -18,22 +18,12 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	//Attributes	
 	protected JButton okButton;
 	protected JButton cancelButton;
-	
 	protected JLabel nameLabel;
 	protected JLabel numberLabel;
-	//protected JLabel descriptionLabel;
-	protected JLabel weightLabel;
-	
 	protected JTextField nameField;
 	protected JTextField numberField; //TODO: make this non editable
-	protected JCheckBox weightCheck;
-	//JTextArea descriptionArea;
-	
 	protected TreeFrame treeFrame;
-	//protected JTreeTable treeTable;
-	
-	//Constructors
-	
+
 	public NewObjectiveDialog(TreeFrame owner) {
 		this(owner, false);
 	}
@@ -63,11 +53,6 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		
 		this.add(constructBasicPropertyPanel(), BorderLayout.NORTH);
 		this.add(constructButtonPanel(), BorderLayout.SOUTH);
-/*		
-		if(this.weightCheck.isSelected()){
-			weightCheck.setEnabled(false);
-		}
-*/		
 	}
 	
 	private JPanel constructBasicPropertyPanel() {
@@ -76,38 +61,22 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		nameLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		numberLabel = new JLabel("Number:");
 		numberLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		weightLabel = new JLabel("Has Weight:");
-		weightLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-//		descriptionLabel = new JLabel("Description:");
-//		descriptionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
+
 		//Initialize the fields
 		nameField = new JTextField();
 		nameField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		numberField = new JTextField();
 		numberField.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		numberField.setEditable(false);
-//		numberField.setText("" + (((NegotiatorTreeTableModel)treeTable.getTree().getModel()).getHighestObjectiveNr() + 1));
-		weightCheck = new JCheckBox();
-		weightCheck.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		descriptionArea = new JTextArea();
-//		descriptionArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.PAGE_AXIS));
 		
 		labelPanel.add(new JLabel("Name:"));
-//		labelPanel.add(new JLabel("Number:"));
-		//labelPanel.add(new JLabel("Description:"));
-		labelPanel.add(new JLabel("has Weight:"));
 		
 		JPanel fieldPanel = new JPanel();
 		fieldPanel.setLayout(new BoxLayout(fieldPanel, BoxLayout.PAGE_AXIS));
 		
 		fieldPanel.add(nameField);
-//		fieldPanel.add(numberField);
-	//	fieldPanel.add(descriptionArea);
-		fieldPanel.add(weightCheck);
 		
 		JPanel basicPropertyPanel = new JPanel();
 		basicPropertyPanel.setBorder(BorderFactory.createTitledBorder("Basic Properties"));
@@ -148,14 +117,12 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 	}
 	
 	protected String getObjectiveDescription() throws InvalidInputException {
-		//TODO Add side effect: check the input, and throw exception
-	//	return descriptionArea.getText();
 		return "";
 	}
 	
+	// overridden by issues
 	protected boolean getWeightCheck(){
-		return weightCheck.isSelected();
-		
+		return false;
 	}
 	
 	protected Objective constructObjective() {
