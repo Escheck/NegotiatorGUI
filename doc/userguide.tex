@@ -314,7 +314,7 @@ To run a negotiation session select ``Start'' and then ``Negotiation Session''. 
 
 
 \subsection{Running a Tournament}
-Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel an using pivot tables. A tournament can be created by first selecting ``Start'' and then ``New tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
+Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel an using pivot tables. A tournament can be created by first selecting ``Start'' and then ``Tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
 
 
 \begin{figure}[htb]
@@ -357,33 +357,26 @@ In contrast to the negotiation session mode, a large set of tournament options c
 \end{itemize}
 
 \subsection{Running a Distributed Tournament}
-Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius.
+A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Following, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
 
-Distributed \Genius ~works with a central MySQL database. A job can be submitted to the database by creating a distributed tournament. The job is automatically split into smaller jobs, which can be divided among users. The option to create a distributed tournament can accessed by selecting ``Distributed tournament'' in the ``New'' menu. If this option is not available, then Distributed \Genius ~is disabled. Figure~\ref{fig:dtsettings} shows the GUI used for creating a distributed tournament.
+Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data which we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{database}.
 
-\begin{figure}[h!] 
-	\center
-	\includegraphics[width=7cm]{media/Decoupled_DTsettings.png}
-	\caption{Creating a distributed tournament.}
-	\label{fig:dtsettings}
-\end{figure}
+The next step is to specify a tournament to run. Towards this end, select ``Start'' and then ``Distributed tournament''. This opens a GUI similar to Figure~\ref{Fig:tournament}, except for the following four options:
 
-It can happen that a client crashes, or is shut down, while processing a job. In this case, a claimed but unfinished session of a job remains in the database. This problem is resolved at the end of the tournament; when there are no unclaimed jobs left, each client checks whether all sessions have been processed.  If all the jobs have been processed then each client reconstructs the full log of the tournament, if not all the processes have been processed, then the client waits, as it is possible that another client is still busy with a job. If a timeout occurs, then the claimed jobs are reset and redivided. Effectively, this ensures that every tournament is processed fully before the log is retrieved and reconstructed.
+\begin{itemize}
+	\item \textbf{Database address}. The address of the database, for example \url{sql.ewi.tudelft.nl:3306/DG}.
+	\item \textbf{Database user}. The username of the account for the database.
+	\item \textbf{Database password}. The password of the user account for the database.
+	\item \textbf{Database sessionname}. The identifier of the tournament. The identifier is needed as multiple distributed tournaments can be run at the same time.
+\end{itemize}
 
-The GUI of the distributed tournament is similar to the normal tournament GUI, except for the last four database options. First, note that the \textit{database address} assumes that a port is given (here 3306) and a database name (DistributedGenius). The \textit{user} and \textit{password} field correspond to the database username and password. Finally, the \textit{sessionname} is the name of the tournament.
+After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and protocol and selecting ``Join distributed tournament''. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory.
 
-Two buttons are shown in the distributed tournament GUI: a button to create a tournament and a button to join a tournament. To join a tournament \textbf{only} the protocol and sessionname are required. The other options are ignored. Note that it is assumed that every client uses the same version of \Genius~and agent code.
-
-The database structure can be created by using the SQL dump which can be found in the directory \textit{database}. 
-
-
-
+It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
 
 
 
 \section{Creating a Negotiation Agent}
-
-
 This section discusses how you create an automatic negotiation agent. To explain this, the SimpleAgent.java code as provided in the installation package will be discussed.
 It is assumed that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://java.sun.com/docs/books/tutorial/index.html}. The Java API definitions can be found on \url{http://java.sun.com/j2se/1.5.0/docs/api/index.html}.
 In the first place, a negotiation agent has to extend the negotiator.agents.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
