@@ -370,32 +370,33 @@ The next step is to specify a tournament to run. Towards this end, select ``Star
 	\item \textbf{Database sessionname}. The identifier of the tournament. The identifier is needed as multiple distributed tournaments can be run at the same time.
 \end{itemize}
 
-After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and protocol and selecting ``Join distributed tournament''. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory.
+After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and protocol and selecting ``Join distributed tournament''. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory. Figure~\ref{fig:dtournament} summarizes the process.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.50\textwidth]{media/DistributedGenius.png}
+\caption{Distributed tournament process.}\label{fig:dtournament}
+\end{figure}
 
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
 
-
-
 \section{Creating a Negotiation Agent}
-This section discusses how you create an automatic negotiation agent. To explain this, the SimpleAgent.java code as provided in the installation package will be discussed.
-It is assumed that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://java.sun.com/docs/books/tutorial/index.html}. The Java API definitions can be found on \url{http://java.sun.com/j2se/1.5.0/docs/api/index.html}.
-In the first place, a negotiation agent has to extend the negotiator.agents.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
+This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, you might want to implement a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that an agent is defined as a separate implementation of a bidding strategy, acceptance, and opponent model. This entails that existing components can be reused.
+
+In this section we assume that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
+In the first place, a negotiation agent has to extend the negotiator.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: ReceiveMessage, init, and chooseAction.
 
 \begin{table}
 \begin{tabular}{m{0.9\textwidth}}
 \hline
 \texttt{UtilitySpace utilitySpace}\\
-The current utility space. This usually is an instance of the \texttt{UtilitySpace} that you specified in the negotiation set-up screen (Figure 8).\\
+The preference profile of the scenario.\\
 \hline
 \texttt{public Timeline timeline}\\
-Use timeline for everything time-related, such as \texttt{getTime()}. Other time-related fields are deprecated. See the \texttt{Timeline} class for more details.\\
-\hline
-\texttt{public void sleep(double fraction)}\\
-Let the agent wait. Example:\\
-\texttt{sleep(0.1)} will let the agent sleep for 10\% of the negotiation time (as defined by the Timeline).\\
+Use timeline for every time-related by using \texttt{getTime()}.\\
 \hline
 \texttt{public double getUtility(Bid bid)}\\
-A convenience method to get the utility of a bid. This method will take discount factors into account, using the status of the current timeline.\\
+A convenience method to get the utility of a bid taking the discount factor into account.\\
 \hline
 \texttt{void init()}\\
 Informs the agent about beginning of a new negotiation session.\\
@@ -405,7 +406,6 @@ Informs the agent which action the opponent did.\\
 \hline
 \texttt{Action chooseAction()}\\
 This function should return the action your agent wants to make next.\\
-This function is called immediately after a ReceiveMessage, and only if the opponent made an Offer or if this is the first round in the session.\\
 \hline
 \texttt{String getName()}\\
 Returns the name of the agent. Please override this to give a proper name to your agent.\\
@@ -414,46 +414,34 @@ Returns the name of the agent. Please override this to give a proper name to you
 \caption{The most important methods and fields of the Agent class.}
 \end{table}
 
-By extending Agent, your agent can access the fields as it likes.  
-To implement your agent, you have to override two or three three classes:
-
-\begin{itemize}
-	\item \texttt{public void ReceiveMessage(Action opponentAction)}
-	\item \texttt{public Action chooseAction()}
-	\item \texttt{public void init ()}
-\end{itemize}
-
-\subsection{ReceiveMessage}
+\subsection{Receiving the Opponent's Action}
 The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just did \texttt{opponentAction}. The \texttt{opponentAction} may be null if you are the first to place a bid, or an \texttt{Offer} containing the bid of the opponent. It may also be an \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to return an \texttt{Action} to make the next step in the negotiation.
 
-In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage} (Figure~\ref{Code:ReceiveMessage}). This will be the typical code for automatic negotiation agents.
+In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
 
-\begin{figure}[htb]
 \begin{lstlisting}
-public void ReceiveMessage(Action opponentAction) 
-{
+public void ReceiveMessage(Action opponentAction) {
 	actionOfPartner = opponentAction;
 }
 \end{lstlisting}
-\caption{Example code for \texttt{ReceiveMessage}.}\label{Code:ReceiveMessage}
-\end{figure}
 
-\subsection{ChooseAction}
-Figure~\ref{Code:chooseAction} shows the example code for the \texttt{chooseAction} method. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error (see Negotiation Protocol) and results in a score of 0!).
+\subsection{Choosing an Action}
+Below show the code of the method \texttt{chooseAction} for SimpleAgent. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error and results in a utility of 0.0).
+
 The sample code works as follows. If we are the first to place a bid, we place a random bid with sufficient utility (see the .java file for the details on that). Else, we determine the probability to accept the bid, depending on the utility of the offered bid and the remaining time. Finally, we randomly accept or pose a new random bid.
 
-\begin{figure}[htb]
+While this strategy works, in general it will lead to suboptimal results as it does not take the opponent into account. More advanced agents try to model the opponent's strategy or preference profile.
+
 \begin{lstlisting}
-public Action chooseAction()
-{
+public Action chooseAction() {
 	Action action = null;
-	try 
-	{ 
-		if(actionOfPartner==null) action = chooseRandomBidAction();
-		if(actionOfPartner instanceof Offer)
-		{
-			Bid partnerBid = ((Offer)actionOfPartner).getBid();
+	try { 
+		if (actionOfPartner == null) {
+			action = chooseRandomBidAction();
+		}
+		if (actionOfPartner instanceof Offer) {
+			Bid partnerBid = ((Offer) actionOfPartner).getBid();
 			double offeredUtilFromOpponent = getUtility(partnerBid);
 			// get current time
 			double time = timeline.getTime();
@@ -463,28 +451,24 @@ public Action chooseAction()
 			double myOfferedUtil = getUtility(myBid);
 			
 			// accept under certain circumstances
-			if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
+			if (isAcceptable(offeredUtilFromOpponent,myOfferedUtil,time)) {
 				action = new Accept(getAgentID());
+			}
 		}
-		sleep(0.005); // just for fun
 	} catch (Exception e) { 
-		System.out.println("Exception in ChooseAction:"+e.getMessage());
-		action=new Accept(getAgentID()); // best guess if things go wrong. 
+		e.printStackTrace();
+		action = new Accept(getAgentID()); // best guess if things go wrong. 
 	}
 	return action;
 }
 \end{lstlisting}
-\caption{Example code for \texttt{chooseAction}.}\label{Code:chooseAction}
-\end{figure}
 
-The $P_\text{accept}$ function is a probabilistic acceptance function where P equals:
+The method \textit{isAcceptable} implements the probabilistic acceptance function$P_\text{accept}$:
 
 \begin{equation}
 	P_\text{accept} = \dfrac{u - 2ut + 2\left(t - 1 + \sqrt{(t - 1)^2 + u(2t - 1)}\right)}{2t - 1}
 \end{equation}
-where $u$ is the utility of the bid made by the opponent (as measured in our utility space), and $t$ is the current time as a fraction of the total available time. 
-Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utility and remaining time. It can take quite some time to figure out a formula that suits the requirements, but it is at the heart of the example agent.
-
+where $u$ is the utility of the bid made by the opponent (as measured in our utility space), and $t$ is the current time as a fraction of the total available time. Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utility and remaining time. Note that this function only decides if a bid is acceptable or not. More advanced acceptance strategies also use the EndNegotiation action.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.3\textwidth]{media/image21.pdf}
@@ -493,9 +477,42 @@ Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utilit
 %\subsection{Init}
 %An important consideration for the implementation is that an agent may participate in multiple negotiation sessions with the same opponent. This enables the agent to learn from the previous sessions. For this reason, the negotiation environment calls the method \texttt{init} before starting the new session.
  
-The UtilitySpace and its functions should be considered as `given',  
-You may want to override the \texttt{init} function, to catch the \texttt{sessionNumber} and \texttt{sessionTotalNumber}. See the \texttt{SimpleAgent.java} example file.
 Automatic agents have to negotiate on their own, and are not allowed to communicate with a human user. Therefore, do not override the \texttt{isUIAgent()} function in automatic negotiation agents.
+
+\subsection{Other Useful Classes}
+This section provides an overview of classes which might be useful when implementing an agent.
+
+\begin{center}
+\begin{tabular}{|l|p{10.5cm}|}
+\hline
+\textsc{BidDetails} & Container to store a bid and its utility.\\
+\hline
+\textsc{BidDetailsTime} & Container to store a bid, its utility, and the time of offering.\\
+\hline
+\textsc{BidHistory} & Structure which can be used to keep track of the bids presented by the agent and its opponent.\\
+\hline
+\textsc{BidIterator} & Structure which can be used to retrieve all bids in the outcome space. It may be more interesting to use \textit{SortedOutcomeSpace}.\\
+\hline
+\textsc{EvaluatorDiscrete} & Evaluator which returns the utility of a value of a discrete issue. Note that this is the utility unweighted by the issue weight.\\
+\hline
+\textsc{EvaluatorInteger} & Evaluator which returns the utility of a value of an integer issue. Note that this is the utility unweighted by the issue weight.\\
+\hline
+\textsc{Issue} & Represents and issue under negotiation.\\
+\hline
+\textsc{IssueDiscrete} & A discrete issue.\\
+\hline
+\textsc{IssueInteger} & An integer issue.\\
+\hline
+\textsc{Pair} & A simple pair of two objects.\\
+\hline
+\textsc{Range} & Can be used to describe a continuous range.\\
+\hline
+\textsc{SortedOutcomeSpace} & Structure which stores all possible bids and their utilities. This class implements efficient search algorithms which can be used toe efficiently search the space of possible bids for bids satisfying specific properties.\\
+\hline
+\textsc{UtilitySpace} & Representation of a preference profile. It is recommended to use this class when implementing a model of the opponent's preference profile.\\
+\hline
+\end{tabular}
+\end{center}
 
 \subsection{Compiling an Agent}
 
@@ -527,7 +544,7 @@ ADDING AN AGENT IN THE GUI!
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
-\section{BOA framework}\label{sec:boa}
+\section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, you may opt to use the \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to reuse existing components. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
 
 The advantages of separating the negotiation strategy into these three components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
