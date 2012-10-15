@@ -384,7 +384,8 @@ It should be noted that currently there is no option in \Genius~to delete old to
 This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, you might want to implement a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that an agent is defined as a separate implementation of a bidding strategy, acceptance, and opponent model. This entails that existing components can be reused.
 
 In this section we assume that you are familiar with programming in Java. In case you need more information about JAVA programming, please use the following link: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
-In the first place, a negotiation agent has to extend the negotiator.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: ReceiveMessage, init, and chooseAction.
+
+An easy way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the negotiationsimulator.jar as a library to the project such that the classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the negotiator.Agent class. Table 1 shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: ReceiveMessage, init, and chooseAction. Note that \Genius has no problems with loading agents which consist of multiple classes.
 
 \begin{table}
 \begin{tabular}{m{0.9\textwidth}}
@@ -480,7 +481,7 @@ where $u$ is the utility of the bid made by the opponent (as measured in our uti
 Automatic agents have to negotiate on their own, and are not allowed to communicate with a human user. Therefore, do not override the \texttt{isUIAgent()} function in automatic negotiation agents.
 
 \subsection{Other Useful Classes}
-This section provides an overview of classes which might be useful when implementing an agent.
+This section provides an overview of classes which might be useful when implementing an agent. For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
 \begin{center}
 \begin{tabular}{|l|p{10.5cm}|}
@@ -515,15 +516,23 @@ This section provides an overview of classes which might be useful when implemen
 \end{center}
 
 \subsection{Compiling an Agent}
+To compile the agent, you have to put \texttt{YourAgent.java} code in the directory containing the \texttt{negotiator.jar} file, and use the command line: \texttt{javac -cp negosimulator.jar YourAgent.java}. In Eclipse you can more easily copy the class from the ``bin'' folder.
 
-To compile the agent, you put \texttt{YourAgent.java} code in the directory containing the \texttt{negotiator.jar} file, and use the command line
+The next step is to load the agent in \Genius. Towards this end, first we should move the agent to the directory of \Genius. Note that the directory in which the agent should be put depends on your project. If for example you have a project with a package ``agents'' in which the agent is located, then the agent should be moved in a folder ``agents'' in the root of your \Genius~installation. An agent may consist of multiple class files. The next step is to add the agent in \Genius. This can be done in two ways:
 
-\texttt{javac -cp negosimulator.jar YourAgent.java}
+\begin{itemize}	\item \textbf{Loading the agent using the GUI}. An agent can be easily added by going to the ``Agents'' tab in the ``Components Window'' (see Figure~\ref{fig:addAgent}). Next, pressing right click opens a popup with the option to add a new agent. The final step is to select the main class of your agent.
 
-After compilation, the resulting \texttt{YourAgent.class} file can be loaded into the negotiator simulator by typing ``YourAgent'' (fill in your actual agent name) in the negotiation set-up screen (Figure 8). Make sure your agent can be found in the same directory structure as is indicated by its package header.
+	\item \textbf{Loading the agent using XML}. A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. The code below visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
+\end{itemize}
 
-\subsection{Loading an Agent with Parameters}
-A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. The code below visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
+In general, if there is a problem loading your agent the message ``(LOADING FAILED)'' is added after the name of your agent. In this case check that your agent is in the right directory.
+
+\begin{figure}[h] 
+	\center
+	\includegraphics[width=5.5cm]{media/AddAgent.png}
+	\caption{Adding an agent using the GUI.}
+	\label{fig:addAgent}
+\end{figure}
 
 \begin{lstlisting}
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -538,11 +547,6 @@ A compiled agent can also be loaded by directly adding the agent to the reposito
 <filename>agentrepository.xml</filename>
 </repository>
 \end{lstlisting}
- 
-ADDING AN AGENT IN THE GUI!
-
-\section{Data structures}
-For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
 \section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, you may opt to use the \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to reuse existing components. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
@@ -827,6 +831,9 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 }
 
 \end{lstlisting}
+
+\section{Conclusion}
+bugreport and Genius constantly evolving.
 
 
 %\bibliographystyle{plain}
