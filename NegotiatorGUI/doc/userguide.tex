@@ -287,9 +287,9 @@ Specifying the preference of a integer issue is even easier. In this case we sim
 This section discusses how to run a negotiation. There are three main modes to run a negotiation:
 
 \begin{itemize}
-	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users. Advanced users are recommended to create a tournament as it supports more options.
-	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains.
-	\item \textbf{Distributed tournament}. A distributed tournament is a tournament divided among multiple computers. This mode can be used to run large tournament in a reasonable amount of time.
+	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users.
+	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the matches are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables.
+	\item \textbf{Distributed tournament}. A distributed tournament is a tournament which is stored in a database and can therefore be divided among multiple computers to speed up calculation.
 \end{itemize}
 
 Before going into detail on how each of these modes work, we first discuss the two types of agents which can be used: automated agents and non-automated agents. Automated agents are agents which can compete against other agents in a negotiation without relying on input by a user. In general, these agents are able to make a large amount of bids in a limited amount of time.
@@ -298,7 +298,7 @@ In contrast, non-automated agents are agents that are fully controlled by the us
 
 
 \subsection{Running a Negotiation Session}
-To run a negotiation session select ``Start'' and then ``Negotiation Session''. This opens a window similar to Figure~\ref{Fig:session}. Before pressing ``start'' to run the negotiation the following parameters should be specified:
+To run a negotiation session select ``Start'' and then ``Negotiation Session''. This opens a window similar to Figure~\ref{Fig:session}. The following parameters need to be specified to run a negotiationS:
 \begin{itemize}
 	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
 	\item \textbf{Side A/Side B}. The configuration of both agents which negotiate against each other.
@@ -314,36 +314,47 @@ To run a negotiation session select ``Start'' and then ``Negotiation Session''. 
 
 
 \subsection{Running a Tournament}
-\begin{comment}
+Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel an using pivot tables. A tournament can be created by first selecting ``Start'' and then ``New tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
 
-Besides running a single negotiation session, it is also possible to run a tournament. In a tournament, a negotiation session is held for every possible combination of chosen agents and preference profiles for each side. To do this, select File $>$ New $>$ Tournament. The Tournament tab will appear as displayed in Figure~\ref{Fig:tournament}. 
- 
+
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{media/image16.png}
+	\includegraphics[width=0.8\textwidth]{media/image16.png}
 \caption{Tournament tab.}\label{Fig:tournament}
 \end{figure}
 
-Double-click Preference profiles and select at least two profiles from the window that pops up (Figure~\ref{Fig:profile}). For every chosen domain, at least two profiles should be chosen. For example, choose laptop\_seller\_utility.xml and laptop\_buyer\_utility.xml.
+\begin{itemize}
+	\item \textbf{Protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
+	\item \textbf{Preference profiles}. The set of scenarios on which the agents should compete. Each selected scenario should feature at least two preference profiles.
+	\item \textbf{Agent side A/B}. The set of agents in set A competes against all agents in set B.
+	\item \textbf{Number of sessions}. The number of times each match should be repeated.
+	\item \textbf{Tournament options}. Options which specify how to run the tournament (see below).
+	\item \textbf{BOA Agent side A/B}. Type of agents which consist of multiple components (see~Section~\ref{sec:boa}).
+\end{itemize}
 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image17.png}
-\caption{Profile Selector.}\label{Fig:profile}
-\end{figure}
-
-Next, double-click Agent side A and select one or more agents from the window that pops up. Do the same for Agent side B and press the Start button. A Progress tab will appear as displayed in Figure~\ref{Fig:tournament progress}. This tab contains the same information as a Progress tab for a single negotiation session, but additionally it has a tournament overview. If you click on a session in this overview, the details of that session will be displayed.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/image18.png}
-\caption{Progress tab for a tournament.}\label{Fig:tournament progress}
-\end{figure}
-
-
-DISCUSS TOURNAMENT OPTIONS!
-\end{comment}
-
+In contrast to the negotiation session mode, a large set of tournament options can be specified which influence the composition and running of the tournament. There are four categories of options:
+\begin{itemize}
+	\item \textsc{Protocol settings}
+	\begin{itemize}
+		\item \textbf{Protocol mode}. Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
+		\item \textbf{Deadline}. Depending on the protocol mode, this is the maximum amount of time in seconds or amount of rounds. Note that a single round corresponds to the turn of a single agent.
+	\end{itemize}
+	\item \textsc{Session generation}
+	\begin{itemize}
+		\item \textbf{Play both sides}. When generating the matches, should each pair of agents play both sides on a scenario or not.
+		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the matches in which agents negotiate against themselves are removed.
+	\end{itemize}
+	\item \textsc{Logging}
+	\begin{itemize}
+		\item \textbf{Log detailed analysis}. Enabling this option activates a set of quality measures to capture the quality of the negotiation process. The quality measures are added to the default log. In addition, for the whole tournament an overview log is created. This log is prefixed with ``TM-''.
+	\end{itemize}
+	\item \textsc{Visualization}
+	\begin{itemize}
+		\item \textbf{Show all bids}. When enabled all bids in a scenario are visualized as red points in the negotiation status window. This option has a minor impact on performance.
+		\item \textbf{Show last bid}. When enabled the last bid is marked with a special symbol to make it clear which move an agent performed. This has a negligible impact on performance.
+		\item \textbf{Disable GUI}. When enabled most GUI elements are disabled. This speeds-up the negotiation up to a factor of 200 times. The progress of the tournament is printed to the console.
+	\end{itemize}
+\end{itemize}
 
 \subsection{Running a Distributed Tournament}
 Even if MAC is used, the full negotiation space can still be too large to explore on a single computer. Distributed \Genius ~is an extension to \Genius ~which allows to share a single tournament with multiple instances of \Genius.
@@ -523,7 +534,7 @@ ADDING AN AGENT IN THE GUI!
 \section{Data structures}
 For the documentation of the data structures that are relevant when writing a negotiation agent, please refer to the javadoc that can be found in your download of \Genius. 
 
-\section{BOA framework}
+\section{BOA framework}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, you may opt to use the \textit{BOA framework} available in \Genius: a negotiation agent architecture which allows to reuse existing components. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between three different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); and finally, one that tries to guess the opponent's preferences (\textit{opponent model}). The overall negotiation strategy is a result of the complex interaction between these components.
 
 The advantages of separating the negotiation strategy into these three components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
@@ -807,12 +818,6 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 
 \end{lstlisting}
 
-
-\section{Conclusions}
-Any comments and suggestions on the negotiation system and manuals can be mailed to \url{ai@mmi.tudelft.nl}.
-
-\section{References}
-\textbf{[sun07]} Sun Developer Network, JDK 6 Update 3. \url{http://java.sun.com/javase/downloads/index.jsp}
 
 %\bibliographystyle{plain}
 %\bibliography{}
