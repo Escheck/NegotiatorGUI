@@ -732,10 +732,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			if (!hasMAC()) {
 				newOutcome(currentAgent, rvA, rvB, rvADiscounted,
 						rvBDiscounted,
-						"JudgeTimeout: negotiation was timed out", time,
+						"JudgeTimeout: negotiation was timed out because agent is in loop or failed compiling", time,
 						distanceToNash, "");
 			} else {
-				System.out.println("Judge Timeout: with MAC agent");
+				System.out.println("JudgeTimeout: with MAC agent");
 
 				if (agentAWithMultiAC) {
 					AcceptanceStrategy AC = ((BOAagent) agentA)
