@@ -850,11 +850,18 @@ public class UtilitySpace {
     public SimpleElement toXML(){
     	SimpleElement root = (domain.getObjectivesRoot()).toXML(); // convert the domain. 
     	root = toXMLrecurse(root);
-    	SimpleElement rootWrapper = new SimpleElement("utility_space"); 
-    	//can't really say overhere how many issues there are inhere.
-    	// Wouter: huh??? Just count them??
+    	SimpleElement rootWrapper = new SimpleElement("utility_space");
     	rootWrapper.addChildElement(root);
-    	return rootWrapper;//but how to get the correct values in place?
+    	
+    	SimpleElement discountFactor = new SimpleElement("discount_factor");
+    	discountFactor.setAttribute("value", getDiscountFactor() + "");
+    	rootWrapper.addChildElement(discountFactor);
+    	
+    	SimpleElement reservationValue = new SimpleElement("reservation");
+    	reservationValue.setAttribute("value", getReservationValueUndiscounted() + "");
+    	rootWrapper.addChildElement(reservationValue);
+    	
+    	return rootWrapper;
     }
     
     /**
@@ -995,6 +1002,20 @@ public class UtilitySpace {
     }
     
     /**
+     * @param newRV new reservation value.
+     */
+    public void setReservationValue(double newRV) {
+    	fReservationValue = newRV;
+    }
+    
+    /**
+     * @param newDiscount new discount factor.
+     */
+    public void setDiscount(double newDiscount) {
+    	discountFactor = newDiscount;
+    }
+    
+    /**
      * The reservation value is the least favourable point at which one will accept a negotiated agreement. 
      * Also sometimes referred to as the ‘walk away’ point. 
      * 
@@ -1052,7 +1073,9 @@ public class UtilitySpace {
 		//check evaluators
 		for(Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
 			Evaluator eval2 = obj2.getEvaluator(entry.getKey().getNumber());
-			if(!entry.getValue().equals(eval2)) return false;
+			if (!entry.getValue().equals(eval2)) {
+				return false;
+			}
 		}
 		return true;
 	}

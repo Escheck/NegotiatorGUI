@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -47,6 +48,8 @@ public class TreeFrame extends JPanel {
 	// as we can't use this in a listener
 	private TreeFrame thisFrame;
 	private boolean hasNoProfiles;
+	private JTextField discount;
+	private JTextField reservationValue;
 	
 	//Constructors
 	public TreeFrame(Domain domain, boolean hasNoProfiles) {
@@ -99,12 +102,28 @@ public class TreeFrame extends JPanel {
 		saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
         		if (model.getUtilitySpace() != null) { // this is a preference profile
+        			double newDiscount = 0.0;
+        			try {
+        				newDiscount = Double.parseDouble(discount.getText());
+        			} catch (Exception e) {
+        				JOptionPane.showMessageDialog(null, "The discount value is not valid.");
+        				return;
+        			}
+        			double newRV = 0.0;
+        			try {
+        				newRV = Double.parseDouble(reservationValue.getText());
+        			} catch (Exception e) {
+        				JOptionPane.showMessageDialog(null, "The reservation value is not valid.");
+        				return;
+        			}
+        			model.getUtilitySpace().setDiscount(newDiscount);
+        			model.getUtilitySpace().setReservationValue(newRV);
         			model.getUtilitySpace().toXML().saveToFile(model.getUtilitySpace().getFileName());
         		} else { // this is a domain
         			model.getDomain().toXML().saveToFile(model.getDomain().getName());
         		}
             }
-         });
+		});
 		
 		if (hasNoProfiles) {
 			JButton addIssue = new JButton("Add issue");
@@ -142,6 +161,15 @@ public class TreeFrame extends JPanel {
 		}
 		simplePanel.add(saveButton);
 		
+		if (model.getUtilitySpace() != null) {
+			simplePanel.add(new JLabel("Discount: "));
+			discount = new JTextField(model.getUtilitySpace().getDiscountFactor() + "", 5);
+			simplePanel.add(discount);
+			
+			simplePanel.add(new JLabel("Reservation value: "));
+			reservationValue = new JTextField(model.getUtilitySpace().getReservationValueUndiscounted() + "", 5);
+			simplePanel.add(reservationValue);
+		}
 		
 		add(simplePanel, BorderLayout.SOUTH);
 		
@@ -156,7 +184,7 @@ public class TreeFrame extends JPanel {
 	
 	private void initTable(NegotiatorTreeTableModel model) {
 		treeTable = new JTreeTable(model);
-		treeTable.setPreferredSize(new Dimension(1024, 300));
+		treeTable.setPreferredSize(new Dimension(1024, 600));
 		treeTable.setPreferredScrollableViewportSize(new Dimension(1024, 300));
 		treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		treeTable.setRowSelectionAllowed(true);
