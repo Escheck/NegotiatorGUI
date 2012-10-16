@@ -49,20 +49,14 @@ public class AlternatingOffersProtocol extends Protocol {
 	int sessionTotalNumber;
 	int sessionNumber; // the main session number: increases with different session setups
 	public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
-
-
-
-	boolean startingWithA=true;
+	boolean startingWithA = true;
 	ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	protected String startingAgent; // agentAname or agnetBname
 
 	NegotiationOutcome outcome;
 
 
-	private Integer totalTime; // will be set only AFTER running the session, because it depends on whether agent isUIAgent() or not
-	/** Total negotiation time available in seconds. This also changes {@link AlternatingOffersBilateralAtomicNegoSession.totalTime} */
-	public final static int gui_nego_time=60*30; 	// Nego time if a GUI is involved in the nego
-
+	private Integer totalTime;
 	protected Agent agentA;
 	protected Agent agentB;
 
@@ -156,11 +150,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		}
 
 		sessionrunner = newAlternatingOffersBilateralAtomicNegoSession();
-		if(agentA.isUIAgent()||agentB.isUIAgent()) {
-			totalTime = gui_nego_time;
-		} else {
-			totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
-		}
+		totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
 		sessionrunner.setTotalTime(totalTime);
 		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);

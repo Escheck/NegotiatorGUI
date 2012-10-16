@@ -10,6 +10,13 @@ public class TournamentConfiguration {
 		configuration = config;
 	}
 	
+	public static void addOption(String option, int value) {
+		if (configuration == null) {
+			configuration = new HashMap<String, Integer>();
+		}
+		configuration.put(option, value);
+	}
+	
 	public static boolean getBooleanOption(String option, boolean defaultSetting) {
 		boolean result = defaultSetting;
 		if (configuration != null && configuration.containsKey(option)) {
