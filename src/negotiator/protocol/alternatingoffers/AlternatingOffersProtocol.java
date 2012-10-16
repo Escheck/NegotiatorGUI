@@ -137,6 +137,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		//java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
 		agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 		agentB.setName(getAgentBname());
+		
 		//Passes the Experimental Variables to agent A and B
 		
 
