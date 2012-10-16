@@ -7,6 +7,13 @@ package negotiator;
 public abstract class Timeline {
     protected boolean hasDeadline;
     protected boolean paused = false;
+    /** In a time-based protocol, time passes within a round. In contrast,
+     * in a rounds-based protocol time only passes when the action is presented.
+     */
+    protected enum Type {
+        Time,
+        Rounds;
+    }
 
 	/**
 	 * Gets the time, running from t = 0 (start) to t = 1 (deadline).
@@ -31,6 +38,10 @@ public abstract class Timeline {
 	
 	public void resume() throws Exception {
 		throw new Exception("This timeline can not be paused and resumed.");
+	}
+	
+	public Type getType() {
+		return Type.Time;
 	}
 	
 	public boolean isPaused() {

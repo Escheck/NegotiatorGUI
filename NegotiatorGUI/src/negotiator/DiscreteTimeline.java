@@ -1,5 +1,7 @@
 package negotiator;
 
+import negotiator.Timeline.Type;
+
 /**
  * Implementation of the timeline in which time is divided in rounds.
  * Time does not pass within a round. Note that requesting the total
@@ -108,6 +110,10 @@ public class DiscreteTimeline extends Timeline
 		return (int) Math.floor(getRoundsLeft() / 2);
 	}
 
+	public Type getType() {
+		return Type.Rounds;
+	}
+	
 	@Override
 	public double getCurrentTime() {
 		return cRound;
