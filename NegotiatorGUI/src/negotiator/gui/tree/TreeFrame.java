@@ -101,10 +101,14 @@ public class TreeFrame extends JPanel {
 		saveButton.setFont(saveButton.getFont().deriveFont(18.0f ));
 		saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		if (model.getUtilitySpace() != null) { // this is a preference profile
+        		if (model.getUtilitySpace() != null) {
         			double newDiscount = 0.0;
         			try {
         				newDiscount = Double.parseDouble(discount.getText());
+        				if (newDiscount < 0 || newDiscount > 1) {
+        					JOptionPane.showMessageDialog(null, "The discount value is not valid.");
+        					return;
+        				}
         			} catch (Exception e) {
         				JOptionPane.showMessageDialog(null, "The discount value is not valid.");
         				return;
@@ -112,6 +116,10 @@ public class TreeFrame extends JPanel {
         			double newRV = 0.0;
         			try {
         				newRV = Double.parseDouble(reservationValue.getText());
+        				if (newRV < 0 || newRV > 1) {
+        					JOptionPane.showMessageDialog(null, "The reservation value is not valid.");
+        					return;
+        				}
         			} catch (Exception e) {
         				JOptionPane.showMessageDialog(null, "The reservation value is not valid.");
         				return;
