@@ -343,6 +343,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					try {
 						BidPoint lastbidPoint = new BidPoint(lastBid,
 								agentAUtility, agentBUtility);
+						UtilitySpace[] spaces = { spaceA, spaceB };
+						bidSpace = BidSpaceCache.getBidSpace(spaces);
 						BidPoint nash = bidSpace.getNash();
 						double distanceToNash = lastbidPoint.getDistance(nash);
 
