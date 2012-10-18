@@ -117,7 +117,7 @@ public class AgentRepositoryUI
 	
 	public void addAction() {
 		// Get the root of Genius
-		String root = getRoot();
+		String root = Global.getBinaryRoot();
 		
 		// Restrict file picker to root and subdirectories.
 		// Ok, you can escape if you put in a path as directory. We catch this later on.
@@ -151,32 +151,6 @@ public class AgentRepositoryUI
 	            dataModel.fireTableDataChanged();
             }
         }
-	}
-
-	private String getRoot() {
-		boolean inJar = false;
-
-		try
-		{
-		  CodeSource cs = Global.class.getProtectionDomain().getCodeSource();
-		  inJar = cs.getLocation().toURI().getPath().endsWith(".jar");
-		}
-		catch (Exception e)
-		{
-		e.printStackTrace();
-		}
-		
-		String root = null;
-		try {
-			root = new java.io.File(".").getCanonicalPath() + File.separator;
-			if (!inJar) { // it returns the root of the project, but we should be in .bin
-				root += "bin" + File.separator;
-			} // else if Jar it returns the root of the directory
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return root;
 	}
 
 	public void removeAction() {

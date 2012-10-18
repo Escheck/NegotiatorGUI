@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 
 import negotiator.gui.NegoGUIApp;
@@ -312,5 +314,30 @@ public class Global {
 	public static String getOQMOutcomesFileName()
 	{
 		return "log/OQM " + getLoadDate() + ".csv";
+	}
+
+	public static String getBinaryRoot() {
+		String root = null;
+		try {
+			root = new java.io.File(".").getCanonicalPath() + File.separator;
+			if (!isJar()) { // it returns the root of the project, but we should be in .bin
+				root += "bin" + File.separator;
+			} // else if Jar it returns the root of the directory
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return root;
+	}
+	
+	public static boolean isJar() {
+		boolean inJar = false;
+		try {
+		  CodeSource cs = Global.class.getProtectionDomain().getCodeSource();
+		  inJar = cs.getLocation().toURI().getPath().endsWith(".jar");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return inJar;
 	}
 }

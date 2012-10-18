@@ -6,12 +6,16 @@
 
 package negotiator.gui.tournamentvars;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 
 import org.jdesktop.application.Action;
@@ -23,6 +27,8 @@ import negotiator.Global;
 import negotiator.boaframework.BOAagentInfo;
 import negotiator.distributedtournament.DBController;
 import negotiator.exceptions.Warning;
+import negotiator.gui.DirectoryRestrictedFileSystemView;
+import negotiator.gui.GenericFileFilter;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.boaframework.BOAagentsFrame;
 import negotiator.gui.progress.ProgressUI2;
@@ -524,6 +530,18 @@ public class TournamentUI extends javax.swing.JPanel
         btnStart.setText(resourceMap.getString("btnStart.text")); // NOI18N
         btnStart.setName("btnStart"); // NOI18N
         
+        JButton saveButton = new JButton("Save tournament");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSetup();
+            }
+        });
+        JButton loadButton = new JButton("Load tournament");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadSetup();
+            }
+        });
 
         btnStartNewDT = new javax.swing.JButton();
 		btnJoinDS = new javax.swing.JButton();
@@ -548,10 +566,12 @@ public class TournamentUI extends javax.swing.JPanel
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.HORIZONTAL, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .add(btnStart)
                     .add(btnStartNewDT)
-                    .add(btnJoinDS))
+                    .add(btnJoinDS)
+                    .add(saveButton)
+                    .add(loadButton))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -563,6 +583,8 @@ public class TournamentUI extends javax.swing.JPanel
                 .add(btnStart)
                 .add(btnStartNewDT)
                 .add(btnJoinDS)
+                .add(saveButton)
+                .add(loadButton)
                 .addContainerGap())
         );
 
@@ -584,18 +606,16 @@ public class TournamentUI extends javax.swing.JPanel
         );
     }// </editor-fold>//GEN-END:initComponents
 
-private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-// TODO add your handling code here:
-    if(evt.getClickCount()>1) {
-    	 TournamentVariable tv = tournament.getVariables().get(jTable1.getSelectedRow());
-    	 try {
-			editVariable(tv);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-}//GEN-LAST:event_jTable1MouseClicked
+	private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+	    if(evt.getClickCount() > 1) {
+	    	 TournamentVariable tv = tournament.getVariables().get(jTable1.getSelectedRow());
+	    	 try {
+				editVariable(tv);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	    }
+	}
 
     @Action
     public void startTournament() {
@@ -684,43 +704,60 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     // End of variables declaration//GEN-END:variables
 
 	public void addAction() {
-		// TODO Auto-generated method stub
 		try {
 			addrow();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
-
-	public void editAction() {
-		// TODO Auto-generated method stub
+	
+	public void saveSetup() {
+		JFileChooser fc = new JFileChooser();
 		
+		// Open the file picker
+		int returnVal = fc.showSaveDialog(this);
+		
+		// If file selected
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        	String path = fc.getSelectedFile().getPath();
+        	
+        	Serializer<Tournament> tournamentSerializer = new Serializer<Tournament>(path);
+        	tournamentSerializer.writeToDisk(tournament);
+        }
 	}
-
-	public JButton[] getButtons() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void loadSetup() {
+		JFileChooser fc = new JFileChooser();
+		
+		// Open the file picker
+		int returnVal = fc.showOpenDialog(this);
+		
+		// If file selected
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        	String path = fc.getSelectedFile().getPath();
+        	
+        	Serializer<Tournament> tournamentSerializer = new Serializer<Tournament>(path);
+        	Tournament t = tournamentSerializer.readFromDisk();
+        	
+        	try {
+        		correct_tournament(t);
+        		tournament = t;
+        	} catch (Exception e) {
+        		JOptionPane.showMessageDialog(null, "Invalid or outdated tournament specification.", "Tournament error", 0);
+        	}
+        }		
 	}
-
+		        
 	public void removeAction() {
-		// TODO Auto-generated method stub
 		try {
 			removerow();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public void saveAction() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public Tournament getTournament() { 
 		return tournament;
 	}
-
 }

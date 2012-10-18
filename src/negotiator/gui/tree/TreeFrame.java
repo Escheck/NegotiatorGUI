@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Enumeration;
+
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -95,7 +98,7 @@ public class TreeFrame extends JPanel {
 		JPanel simplePanel = new JPanel();
 		
 		JButton saveButton = new JButton("Save changes");
-		Icon icon = new ImageIcon(getClass().getResource("../resources/save.png"));
+		Icon icon = new ImageIcon(getClass().getClassLoader().getResource("negotiator/gui/resources/save.png"));
 		saveButton.setPreferredSize(new Dimension(180, 60));
 		saveButton.setIcon(icon);
 		saveButton.setFont(saveButton.getFont().deriveFont(18.0f ));
@@ -134,8 +137,9 @@ public class TreeFrame extends JPanel {
 		});
 		
 		if (hasNoProfiles) {
+			
 			JButton addIssue = new JButton("Add issue");
-			Icon icon2 = new ImageIcon(getClass().getResource("../resources/edit_add-32.png"));
+			Icon icon2 = new ImageIcon(getClass().getClassLoader().getResource("negotiator/gui/resources/edit_add-32.png"));
 			addIssue.setPreferredSize(new Dimension(180, 60));
 			addIssue.setIcon(icon2);
 			addIssue.setFont(addIssue.getFont().deriveFont(18.0f ));
@@ -147,7 +151,7 @@ public class TreeFrame extends JPanel {
 			simplePanel.add(addIssue);
 			
 			JButton removeIssue = new JButton("Remove issue");
-			Icon icon3 = new ImageIcon(getClass().getResource("../resources/edit_remove-32.png"));
+			Icon icon3 = new ImageIcon(getClass().getClassLoader().getResource("negotiator/gui/resources/edit_remove-32.png"));
 			removeIssue.setPreferredSize(new Dimension(180, 60));
 			removeIssue.setIcon(icon3);
 			removeIssue.setFont(removeIssue.getFont().deriveFont(18.0f ));
