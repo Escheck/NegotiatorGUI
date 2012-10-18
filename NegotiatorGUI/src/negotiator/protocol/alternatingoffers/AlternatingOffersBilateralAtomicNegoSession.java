@@ -636,9 +636,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
-		fireNegotiationActionEvent(currentAgent, lastAction, fAgentABids.size() + fAgentBBids.size(),
-				System.currentTimeMillis() - startTimeMillies, time, utilA,
-				utilB, utilADiscount, utilBDiscount, message, true);
+		if (showGUI) {
+			fireNegotiationActionEvent(currentAgent, lastAction, fAgentABids.size() + fAgentBBids.size(),
+					System.currentTimeMillis() - startTimeMillies, time, utilA,
+					utilB, utilADiscount, utilBDiscount, message, true);
+		}
 	}
 
 	private void calculateFinalAccuracy(NegotiationOutcome negoOutcome) {
