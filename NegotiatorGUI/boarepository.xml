@@ -6,24 +6,24 @@
 		<biddingstrategy description="Other - Random walker" classPath="negotiator.boaframework.offeringstrategy.other.Random_Offering"/>
 		<biddingstrategy description="Other - Better Time dependent" classPath="negotiator.boaframework.offeringstrategy.other.GeniusTimeDependent_Offering" tooltip="'e' for concession rate. 'k' for offset. 'min' for minimum utility. 'max' for maximum utility."/>
 				
-        <biddingstrategy description="ANAC2010 - Agent FSEGA" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentFSEGA_Offering"/>
-		<biddingstrategy description="ANAC2010 - Agent Smith" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentSmith_Offering"/>
-		<biddingstrategy description="ANAC2010 - Nozomi" classPath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
-		<biddingstrategy description="ANAC2010 - Agent K" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentK_Offering"/>
-		<biddingstrategy description="ANAC2010 - Yushu" classPath="negotiator.boaframework.offeringstrategy.anac2010.Yushu_Offering"/>
-		<biddingstrategy description="ANAC2010 - IAMHaggler2010" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMhaggler2010_Offering"/>
-		<biddingstrategy description="ANAC2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMCrazyHaggler_Offering" tooltip="'b' for minimum utility."/>
+        <biddingstrategy description="2010 - Agent FSEGA" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentFSEGA_Offering"/>
+		<biddingstrategy description="2010 - Agent Smith" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentSmith_Offering"/>
+		<biddingstrategy description="2010 - Nozomi" classPath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
+		<biddingstrategy description="2010 - Agent K" classPath="negotiator.boaframework.offeringstrategy.anac2010.AgentK_Offering"/>
+		<biddingstrategy description="2010 - Yushu" classPath="negotiator.boaframework.offeringstrategy.anac2010.Yushu_Offering"/>
+		<biddingstrategy description="2010 - IAMHaggler2010" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMhaggler2010_Offering"/>
+		<biddingstrategy description="2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.offeringstrategy.anac2010.IAMCrazyHaggler_Offering" tooltip="'b' for minimum utility."/>
 	
-		<biddingstrategy description="ANAC2011 - Agent K2" classPath="negotiator.boaframework.offeringstrategy.anac2011.AgentK2_Offering"/>
-		<biddingstrategy description="ANAC2011 - BRAMAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.BRAMAgent_Offering"/>
-		<biddingstrategy description="ANAC2011 - Gahboninho" classPath="negotiator.boaframework.offeringstrategy.anac2011.Gahboninho_Offering"/>
-		<biddingstrategy description="ANAC2011 - HardHeaded" classPath="negotiator.boaframework.offeringstrategy.anac2011.HardHeaded_Offering"/>
-		<biddingstrategy description="ANAC2011 - Nice-Tit-For-Tat" classPath="negotiator.boaframework.offeringstrategy.anac2011.NiceTitForTat_Offering"/>
-		<biddingstrategy description="ANAC2011 - The Negotiator" classPath="negotiator.boaframework.offeringstrategy.anac2011.TheNegotiator_Offering"/>
-		<biddingstrategy description="ANAC2011 - IAMHaggler2011" classPath="negotiator.boaframework.offeringstrategy.anac2011.IAMhaggler2011_Offering"/>
-		<biddingstrategy description="ANAC2011 - ValueModelAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.ValueModelAgent_Offering"/>
-		<biddingstrategy description="Other - IAH predictor" classPath="negotiator.boaframework.offeringstrategy.IAMHaggler_Test_Offering" tooltip= "'s' for amount of time samples per regression. 'r' amount of regressions."/>
+		<biddingstrategy description="2011 - Agent K2" classPath="negotiator.boaframework.offeringstrategy.anac2011.AgentK2_Offering"/>
+		<biddingstrategy description="2011 - BRAMAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.BRAMAgent_Offering"/>
+		<biddingstrategy description="2011 - Gahboninho" classPath="negotiator.boaframework.offeringstrategy.anac2011.Gahboninho_Offering"/>
+		<biddingstrategy description="2011 - HardHeaded" classPath="negotiator.boaframework.offeringstrategy.anac2011.HardHeaded_Offering"/>
+		<biddingstrategy description="2011 - Nice-Tit-For-Tat" classPath="negotiator.boaframework.offeringstrategy.anac2011.NiceTitForTat_Offering"/>
+		<biddingstrategy description="2011 - The Negotiator" classPath="negotiator.boaframework.offeringstrategy.anac2011.TheNegotiator_Offering"/>
+		<biddingstrategy description="2011 - IAMHaggler2011" classPath="negotiator.boaframework.offeringstrategy.anac2011.IAMhaggler2011_Offering"/>
+		<biddingstrategy description="2011 - ValueModelAgent" classPath="negotiator.boaframework.offeringstrategy.anac2011.ValueModelAgent_Offering"/>
 		
+		<biddingstrategy description="Other - IAH predictor" classPath="negotiator.boaframework.offeringstrategy.IAMHaggler_Test_Offering" tooltip= "'s' for amount of time samples per regression. 'r' amount of regressions."/>
 	</biddingstrategies>
 	<acceptanceconditions>
 		<acceptancecondition description="Other - False" classPath="negotiator.boaframework.acceptanceconditions.other.AC_False"/>
@@ -38,22 +38,22 @@
 		<acceptancecondition description="Other - CombiV3" classPath="negotiator.boaframework.acceptanceconditions.other.AC_CombiV3" tooltip= "'a' for multiplier. 'b' for constant'. 'c' for threshold. 't' for time."/>		
 		<acceptancecondition description="Other - CombiV4" classPath="negotiator.boaframework.acceptanceconditions.other.AC_CombiV4" tooltip="'a' for multiplier no discount. 'b' for constant no discount'. 'c' for multiplier discount. 'd' for constant discount. 'e' for discount threshold."/>
 				
-		<acceptancecondition description="ANAC2010 - Agent FSEGA" classPath="negotiator.boaframework.acceptanceconditionsanac2010..AC_AgentFSEGA"/>
-		<acceptancecondition description="ANAC2010 - Agent Smith" classPath="negotiator.boaframework.acceptanceconditionsanac2010..AC_AgentSmith"/>
-		<acceptancecondition description="ANAC2010 - Nozomi" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Nozomi"/>
-		<acceptancecondition description="ANAC2010 - Agent K" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentK"/>
-		<acceptancecondition description="ANAC2010 - Yushu" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Yushu"/>
-		<acceptancecondition description="ANAC2010 - IAMHaggler2010" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_IAMHaggler2010"/>
-		<acceptancecondition description="ANAC2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_IAMcrazyHaggler"/>
+		<acceptancecondition description="2010 - Agent FSEGA" classPath="negotiator.boaframework.acceptanceconditionsanac2010..AC_AgentFSEGA"/>
+		<acceptancecondition description="2010 - Agent Smith" classPath="negotiator.boaframework.acceptanceconditionsanac2010..AC_AgentSmith"/>
+		<acceptancecondition description="2010 - Nozomi" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Nozomi"/>
+		<acceptancecondition description="2010 - Agent K" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentK"/>
+		<acceptancecondition description="2010 - Yushu" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Yushu"/>
+		<acceptancecondition description="2010 - IAMHaggler2010" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_IAMHaggler2010"/>
+		<acceptancecondition description="2010 - IAMcrazyHaggler" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_IAMcrazyHaggler"/>
 		
-		<acceptancecondition description="ANAC2011 - Agent K2" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_AgentK2"/>
-		<acceptancecondition description="ANAC2011 - BRAMAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_BRAMAgent"/>
-		<acceptancecondition description="ANAC2011 - Gahboninho" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_Gahboninho"/>
-		<acceptancecondition description="ANAC2011 - HardHeaded" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_HardHeaded"/>
-		<acceptancecondition description="ANAC2011 - Nice-Tit-For-Tat" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_NiceTitForTat"/>
-		<acceptancecondition description="ANAC2011 - The Negotiator" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_TheNegotiator"/>
-		<acceptancecondition description="ANAC2011 - IAMHaggler2011" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_IAMHaggler2011"/>
-		<acceptancecondition description="ANAC2011 - ValueModelAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_ValueModelAgent"/>
+		<acceptancecondition description="2011 - Agent K2" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_AgentK2"/>
+		<acceptancecondition description="2011 - BRAMAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_BRAMAgent"/>
+		<acceptancecondition description="2011 - Gahboninho" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_Gahboninho"/>
+		<acceptancecondition description="2011 - HardHeaded" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_HardHeaded"/>
+		<acceptancecondition description="2011 - Nice-Tit-For-Tat" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_NiceTitForTat"/>
+		<acceptancecondition description="2011 - The Negotiator" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_TheNegotiator"/>
+		<acceptancecondition description="2011 - IAMHaggler2011" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_IAMHaggler2011"/>
+		<acceptancecondition description="2011 - ValueModelAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_ValueModelAgent"/>
 
 		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.other.Multi_AC"/>
 	</acceptanceconditions>

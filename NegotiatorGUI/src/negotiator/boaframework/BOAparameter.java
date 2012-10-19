@@ -130,4 +130,8 @@ public class BOAparameter {
 			return "";
 		}
 	}
+
+	public String getDescription() {
+		return "blablabla";
+	}
 }
