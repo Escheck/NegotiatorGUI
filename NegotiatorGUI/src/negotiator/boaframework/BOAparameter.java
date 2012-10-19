@@ -38,7 +38,12 @@ public class BOAparameter {
 	 * @param step of the range.
 	 */
 	public BOAparameter(String name, double low, double high, double step) {
-		new BOAparameter(name, low, high, step, "");
+		this.name = name;
+		this.low = low;
+		this.high = high;
+		this.step = step;
+		description = "";
+		generatePairs();
 	}
 
 	/**
