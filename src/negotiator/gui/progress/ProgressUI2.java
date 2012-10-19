@@ -7,9 +7,7 @@
 package negotiator.gui.progress;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -17,13 +15,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Accept;
@@ -46,7 +42,8 @@ import org.jfree.chart.JFreeChart;
  * @author  dmytro
  */
 public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener {
-	
+
+	private static final long serialVersionUID = -9120579814262948566L;
 	/** the table model at the bottom */
 	private ProgressInfo progressinfo;
 	protected int round = 0;

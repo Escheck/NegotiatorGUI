@@ -11,18 +11,14 @@ import java.util.Map.Entry;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.Timeline;
-import negotiator.exceptions.Warning;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
-import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
@@ -466,7 +462,6 @@ public class UtilitySpace {
 		//TODO hdevos: find a way of checking the number of issues in the Domain versus the number of issues in the UtilitySpace
 		
 		int index;
-		double weightsSum = 0;
 		//load reservation value
 		try {
 			if((currentRoot.getChildByTagName("reservation")!=null)&&(currentRoot.getChildByTagName("reservation").length>0)){
@@ -492,7 +487,6 @@ public class UtilitySpace {
 		EVALUATORTYPE evalType;
     	String type, etype;
         Evaluator lEvaluator=null;
-        int indexEvalPrice=-1;
         
         //Get the weights of the current children
 		Object[] xml_weights = currentRoot.getChildByTagName("weight");
@@ -505,7 +499,6 @@ public class UtilitySpace {
         	Integer indInt = new Integer(index);
         	Double valueDouble = new Double(dval);
         	tmpWeights.put(indInt, valueDouble);
-            weightsSum += tmpWeights.get(index); // For normalization purposes on this level. See below.
         }
         
 //      Collect evaluations for each of the issue values from file.
@@ -588,20 +581,6 @@ public class UtilitySpace {
             }
             tmpEvaluator.add(lEvaluator); //for normalisation purposes.
         }
-        //Normalize weights if sum of weights exceeds 1.
-        // Do not include weight for price evaluator! This weight represents "financial rationality factor".
-        // TODO: Always normalize weights to 1??
-        if (indexEvalPrice!=-1) {
-        	weightsSum -= tmpWeights.get(indexEvalPrice); //FIXME? hdv: -1 is an invalid index. So.. what gives? Why is it -1 in the original program?
-        }
-       /* if (weightsSum>1.0) { // Only normalize if sum of weights exceeds 1.
-        	for (int i=0;i<nrOfWeights;i++) {
-        		if (i!=indexEvalPrice) {
-        			tmpEvaluator.elementAt(i).setWeight(tmpEvaluator.elementAt(i).getWeight()/weightsSum); 
-        		}
-        	}
-        }
-       */ 
         
         //Recurse over all children:
         boolean returnval = false;
@@ -944,7 +923,6 @@ public class UtilitySpace {
     				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
     				break;
     			case REAL:
-    				Object[] RealRanges = issueL.getChildByTagName("range");
     				EvaluatorReal rev = (EvaluatorReal) ev;
     				SimpleElement thisRealEval = new SimpleElement("evaluator");
     				EVALFUNCTYPE revtype = rev.getFuncType();

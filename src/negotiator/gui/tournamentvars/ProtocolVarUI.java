@@ -18,6 +18,7 @@ import negotiator.exceptions.Warning;
  */
 public class ProtocolVarUI extends DefaultOKCancelDialog {
 
+	private static final long serialVersionUID = -6106919299675060907L;
 	ArrayList<ProtocolRadioButton> radioButtons; // copy of what's in the panel, for easy check-out. 
 
 	public ProtocolVarUI(Frame owner) {

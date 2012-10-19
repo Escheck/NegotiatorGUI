@@ -14,7 +14,6 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.SingleFrameApplication;
 import negotiator.Domain;
-import negotiator.Global;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
@@ -113,9 +112,7 @@ public class NegoGUIView extends FrameView {
         JMenu startMenu = new javax.swing.JMenu();
         newSessionMenuItem = new javax.swing.JMenuItem();
         newTournamentMenuItem = new javax.swing.JMenuItem();
-        if (Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
-        	newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
-        }
+    	newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         mainPanel.setName("mainPanel"); // NOI18N
@@ -207,11 +204,9 @@ public class NegoGUIView extends FrameView {
         newTournamentMenuItem.setName("newTournamentMenuItem"); // NOI18N
         startMenu.add(newTournamentMenuItem);
         
-        if (Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
-        	newDistributedTournamentMenuItem.setAction(actionMap.get("newDistributedTournamentAction")); // NOI18N
-        	newDistributedTournamentMenuItem.setName("newDistributedTournamentMenuItem"); // NOI18N
-        	startMenu.add(newDistributedTournamentMenuItem);
-        }
+    	newDistributedTournamentMenuItem.setAction(actionMap.get("newDistributedTournamentAction")); // NOI18N
+    	newDistributedTournamentMenuItem.setName("newDistributedTournamentMenuItem"); // NOI18N
+    	startMenu.add(newDistributedTournamentMenuItem);
 
         jMenuItem1.setAction(actionMap.get("runCSVFile")); // NOI18N
         jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N

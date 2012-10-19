@@ -19,7 +19,6 @@ public class Accept extends Action {
      * Action to accept an opponent's bid.
      * @param agentID of the opponent.
      */
-    @Deprecated
     public Accept(AgentID agentID) { }
     
     /**

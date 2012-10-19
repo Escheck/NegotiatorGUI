@@ -12,12 +12,6 @@ package negotiator;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-
-import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
-import negotiator.issue.ValueDiscrete;
-import negotiator.utility.Evaluator;
-import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.UtilitySpace;
 
 

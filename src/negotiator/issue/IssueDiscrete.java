@@ -6,6 +6,9 @@ import java.util.List;
 import negotiator.xml.SimpleElement;
 
 /**
+ * Specific type of issue in which the value of the issue are a set of objects.
+ * An example of a discrete issue is the color of car with the values {Red, Blue, Black}.
+ * 
  * @author Tim Baarslag & Dmytro Tykhonov
  */
 public class IssueDiscrete extends Issue {
@@ -16,6 +19,14 @@ public class IssueDiscrete extends Issue {
 	 // the descriptions for each value
 	private HashMap<ValueDiscrete, String> fDesc=new HashMap<ValueDiscrete, String>();
 	
+	/**
+	 * Create a new discrete issue given the name of the issue, its unique ID,
+	 * and an array of possible values.
+	 * 
+	 * @param name of the issue.
+	 * @param issueNumber uniqueID of the isue.
+	 * @param values which the issue may take.
+	 */
 	public IssueDiscrete(String name, int issueNumber, String values[]) {
 		super(name, issueNumber);		
 	    this.values = new ArrayList<ValueDiscrete>();
@@ -24,6 +35,15 @@ public class IssueDiscrete extends Issue {
 	    }
 	}	
 	
+	/**
+	 * Create a new discrete issue given the name of the issue, its unique ID,
+	 * its parent, and an array of possible values.
+	 * 
+	 * @param name of the issue.
+	 * @param issueNumber uniqueID of the isue.
+	 * @param values which the issue may take.
+	 * @param objParent parent objective of the issue.
+	 */
 	public IssueDiscrete(String name, int issueNumber, String values[], Objective objParent) {
 		super(name, issueNumber, objParent);		
 		this.values = new ArrayList<ValueDiscrete>();
@@ -33,6 +53,16 @@ public class IssueDiscrete extends Issue {
 	    }
 	}
 	
+	/**
+	 * Create a new discrete issue given the name of the issue, its unique ID,
+	 * its parent, and an array of possible values and a description for each value.
+	 * 
+	 * @param name of the issue.
+	 * @param issueNumber uniqueID of the isue.
+	 * @param values which the issue may take.
+	 * @param descriptions array with a description for each value.
+	 * @param objParent parent of the issue.
+	 */
 	public IssueDiscrete(String name, int issueNumber, String values[], String descriptions[],Objective objParent) {
 		super(name, issueNumber, objParent);		
 		this.values = new ArrayList<ValueDiscrete>();
@@ -51,17 +81,27 @@ public class IssueDiscrete extends Issue {
 		 // therefore the ORDER of the issues is critical as well (as it should)
 		return values.equals( ((IssueDiscrete)o).getValues());
 	}
+	
+	/**
+	 * @return amount of values.
+	 */
 	public int getNumberOfValues() {
 	    return values.size();
 	}
 		
 	/**
 	 * Get value by its Sting representation, <b>null</b> otherwise.
+	 * @param index of the value to be returned.
+	 * @return value with the given index in the array of values for this issue.
 	 */
 	public ValueDiscrete getValue(int index) {
 		return (ValueDiscrete)values.get(index);
 	}
 	
+	/**
+	 * @param index of the value.
+	 * @return string of the value, for example "Red".
+	 */
 	public String getStringValue(int index) {
 		return ((ValueDiscrete)values.get(index)).getValue();
 	}
@@ -92,7 +132,6 @@ public class IssueDiscrete extends Issue {
 	
 	/**
 	 * Removes all values from this Issue.
-	 *
 	 */
 	public void clear(){
 		values.clear();
@@ -116,9 +155,8 @@ public class IssueDiscrete extends Issue {
 		}
 	}
 	
-	
-	public boolean checkInRange(ValueDiscrete val) {
-			return (getValueIndex(((ValueDiscrete)val).getValue())!=-1);
+	public boolean checkInRange(Value value) {
+			return (getValueIndex(((ValueDiscrete)value).getValue())!=-1);
 	}
 	
 	/**
@@ -164,8 +202,12 @@ public class IssueDiscrete extends Issue {
 		fDesc.put(val, desc);
 	}
 	
-	public String getDesc(ValueDiscrete val)
-	{ return fDesc.get(val); }
+	/**
+	 * @param value
+	 * @return description of the given value. A description is an optional explanation of the value.
+	 */
+	public String getDesc(ValueDiscrete value)
+	{ return fDesc.get(value); }
 
 
 	@Override

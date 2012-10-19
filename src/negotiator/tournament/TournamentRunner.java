@@ -1,11 +1,8 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.distributedtournament.DBController;

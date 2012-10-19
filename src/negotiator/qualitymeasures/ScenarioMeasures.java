@@ -16,7 +16,6 @@ import negotiator.Domain;
 import negotiator.Global;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;

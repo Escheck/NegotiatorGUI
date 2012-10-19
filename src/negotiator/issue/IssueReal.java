@@ -26,8 +26,8 @@ public class IssueReal extends Issue {
 		range = new Range(min, max);
 	}
 	
-	public boolean checkInRange(ValueReal val) {
-			return ( ((ValueReal)val).getValue() >= range.getLowerbound() && ((ValueReal)val).getValue() <= range.getUpperbound());
+	public boolean checkInRange(Value val) {
+		return ( ((ValueReal)val).getValue() >= range.getLowerbound() && ((ValueReal)val).getValue() <= range.getUpperbound());
 	}
 	
 	public final double getLowerBound() {

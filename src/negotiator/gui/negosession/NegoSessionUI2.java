@@ -7,9 +7,7 @@
 package negotiator.gui.negosession;
 
 import java.util.ArrayList;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import negotiator.Global;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI2;
@@ -21,7 +19,6 @@ import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.tournament.TournamentConfiguration;
-
 import org.jdesktop.application.Action;
 
 /**

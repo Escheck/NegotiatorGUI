@@ -10,11 +10,21 @@ import negotiator.xml.SimpleElement;
  */
 public abstract class Issue extends Objective {
     
-    // Constructor
+    /**
+     * Creates a new issue give its name and number.
+     * @param name of the issue.
+     * @param issueNumber unique ID of the issue.
+     */
     public Issue(String name, int issueNumber) {
         super(null, name, issueNumber);
     }
     
+    /**
+     * Creates a new issue give its name, number, and parent.
+     * @param name of the issue.
+     * @param issueNumber uniqueID of the issue.
+     * @param parent objective of the issue.
+     */
     public Issue (String name, int issueNumber, Objective parent) {
     	super(parent, name, issueNumber);
     }
@@ -26,9 +36,13 @@ public abstract class Issue extends Objective {
      */
     public abstract String convertToString();
     
-    public boolean checkInRange(Value val) {
-    	return false;
-    }
+    /**
+     * Method to check if the given value is in the range specified
+     * by the issue.
+     * @param value to be checked.
+     * @return true if in range.
+     */
+    public abstract boolean checkInRange(Value value);
 	
 	/**
 	 * Overrides addChild from Objective to do nothing, since Issues can't have children. This
