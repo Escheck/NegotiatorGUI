@@ -552,24 +552,6 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	{
 		if (row==issues.size())
 		{
-			if (col==0) return new JLabel("COST (in your utilspace):");
-			
-			if (utilitySpace==null) return new JLabel("No UtilSpace");
-			Bid bid;
-			if (col==1) bid=opponentOldBid; 
-			else  try {bid=getBid(); } 
-			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
-			String val;
-			try	{val="0";	}
-			catch (Exception e) { 
-				new Warning("Exception during cost calculation:"+e.getMessage(),false,1); 
-				val="XXX"; }
-			
-			JTextArea result=new JTextArea(val);
-			return result;
-		}
-		if (row==issues.size()+1)
-		{
 			if (col==0) return new JLabel("Utility:");
 			if (utilitySpace==null) return new JLabel("No UtilSpace");
 			Bid bid;
@@ -586,6 +568,9 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 				bar.setIndeterminate(true); }
 
 			return bar;
+		}
+		if (row==issues.size() + 1) {
+			return null;
 		}
 		switch (col)
 		{
