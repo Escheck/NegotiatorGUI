@@ -414,8 +414,6 @@ public class AuctionProtocol extends Protocol {
 		}
 
 		NegotiationOutcome outcome=sessionrunner.no;
-		//sf.addNegotiationOutcome(outcome);        // add new result to the outcome list.
-		SimpleElement fAdditional = null;
 		
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("outcomes.xml",true));

@@ -217,8 +217,6 @@ public class Domain
         	else if (type.equals(vtype)) {
             	// Both "type" as well as "vtype" attribute, but consistent.
             		issueType = ISSUETYPE.convertToType(type);
-            } else if (vtype!=null && type==null) {
-            	issueType = ISSUETYPE.convertToType(vtype);
             } else if (type!=null && vtype==null) { // Used label "type" instead of label "vtype".
             	issueType = ISSUETYPE.convertToType(type);
             } else {
