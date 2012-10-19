@@ -54,7 +54,7 @@ public abstract class  AcceptanceStrategy {
 	/**
 	 * Determines to either to either accept or reject the opponent's bid
 	 * or even quit the negotiation.
-	 * @return one of three possible actions: Accept, Reject, Break.
+	 * @return one of three possible actions: Actions.Accept, Actions.Reject, Actions.Break.
 	 */
 	public abstract Actions determineAcceptability();
 	

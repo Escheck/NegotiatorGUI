@@ -25,7 +25,7 @@ public class BOAagentInfo implements Serializable {
 	private BOAcomponent omStrategy;
 
 	/**
-	 * Creates a container object describing a decoupled agent.
+	 * Creates a container object describing a BOA agent.
 	 * @param bs the bidding strategy of the agent
 	 * @param as the acceptance strategy of the agent
 	 * @param om the opponent model of the agent
@@ -39,38 +39,37 @@ public class BOAagentInfo implements Serializable {
 		this.omStrategy = oms;
 	}
 	
+	/**
+	 * @return offering strategy of the BOA Agent.
+	 */
 	public BOAcomponent getOfferingStrategy() {
 		return offeringStrategy;
 	}
 
-	public void setOfferingStrategy(BOAcomponent offeringStrategy) {
-		this.offeringStrategy = offeringStrategy;
-	}
-
+	/**
+	 * @return acceptance strategy of the BOA Agent.
+	 */
 	public BOAcomponent getAcceptanceStrategy() {
 		return acceptanceStrategy;
 	}
 
-	public void setAcceptanceStrategy(BOAcomponent acceptanceStrategy) {
-		this.acceptanceStrategy = acceptanceStrategy;
-	}
-
+	/**
+	 * @return opponent model of the BOA Agent.
+	 */
 	public BOAcomponent getOpponentModel() {
 		return opponentModel;
 	}
 
-	public void setOpponentModel(BOAcomponent opponentModel) {
-		this.opponentModel = opponentModel;
-	}
-	
+	/**
+	 * @return opponent model strategy of the BOA Agent.
+	 */
 	public BOAcomponent getOMStrategy() {
 		return omStrategy;
 	}
 
-	public void setOMStrategy(BOAcomponent omStrategy) {
-		this.omStrategy = omStrategy;
-	}
-	
+	/**
+	 * @return name of the BOA Agent.
+	 */
 	public String getName() {
 		return toString();
 	}

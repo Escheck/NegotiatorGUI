@@ -19,6 +19,9 @@ public abstract class SharedAgentState {
 	
 	protected String NAME;
 	
+	/**
+	 * @return name of the SAS component.
+	 */
 	public String getName() {
 		return NAME;
 	}

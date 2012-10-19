@@ -91,9 +91,4 @@ public abstract class OfferingStrategy {
 	public boolean isEndNegotiation() {
 		return endNegotiation;
 	}
-	
-	public NegotiationSession getNegotiationSession()
-	{
-		return negotiationSession;
-	}
 }

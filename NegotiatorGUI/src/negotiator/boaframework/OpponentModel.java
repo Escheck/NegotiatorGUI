@@ -56,18 +56,19 @@ public abstract class OpponentModel {
 	
 	/**
 	 * Method used to update the opponent model.
-	 * @param opponentBid
+	 * @param bid to update the model with.
+	 * @param time at which the bid was offered.
 	 */
 	public abstract void updateModel(Bid bid, double time);
 	
 	/**
 	 * Determines the utility of a bid according to the preference profile.
-	 * @param Bid
+	 * @param bid of which the utility is calculated.
 	 * @return Utility of the bid
 	 */
-	public double getBidEvaluation(Bid b){
+	public double getBidEvaluation(Bid bid){
 		try {
-			return opponentUtilitySpace.getUtility(b);
+			return opponentUtilitySpace.getUtility(bid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
