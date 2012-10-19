@@ -11,8 +11,6 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
-import java.io.IOException;
-import java.security.CodeSource;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import negotiator.Global;

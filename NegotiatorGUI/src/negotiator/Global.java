@@ -59,14 +59,6 @@ public class Global {
 	/** Enables experimental vars in a tournament */
 	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
 	
-	/** Enables the use of Decoupled Agents in the GUI. */
-	public static final boolean DECOUPLED_AGENTS_ENABLED = true;
-	
-	/** Enables the distributed tournaments functionality of Genius. Also automatically enables
-	 * decoupled agents, as the GUI does not allow unfilled rows.
-	 */
-	public static final boolean DISTRIBUTED_TOURNAMENTS_ENABLED = true;
-	
 	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
 	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
 	 * and therefore will judge a timeout after more than 3 minutes passed. To avoid this problem, the waiting time

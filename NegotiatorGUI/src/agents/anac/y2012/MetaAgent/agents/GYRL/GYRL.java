@@ -2,7 +2,6 @@ package agents.anac.y2012.MetaAgent.agents.GYRL;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.ArrayList;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -20,11 +19,6 @@ public class GYRL extends Agent
 {
 	//define variable to hold the last action of the other agent
     private Action actionOfPartner=null;
-    
-    private int sessionNumber;			
-    private int sessionTotalNumber;
-    //private Timeline timeline;
-    private ArrayList<Bid> offeredBids;
     private double MaxUtility;
     private double MinUtility;
     private HashMap<AgentParameterVariable, AgentParamValue> params;

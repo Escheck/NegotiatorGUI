@@ -14,8 +14,8 @@ public class SimpleAgentNew extends Agent {
 	private Action actionOfPartner = null;
 
 	// just here to suggest possibilities, not used in this agent.
-	private int sessionNumber;
-	private int sessionTotalNumber;
+	// private int sessionNumber;
+	// private int sessionTotalNumber;
 
 	private final int FIRST_THR = 180;
 	private final int SECOND_THR = 90;

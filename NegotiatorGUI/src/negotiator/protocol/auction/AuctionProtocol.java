@@ -3,11 +3,9 @@ package negotiator.protocol.auction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.net.URL;
-
 import negotiator.Agent;
 import negotiator.AgentParam;
 import negotiator.Bid;
@@ -15,7 +13,6 @@ import negotiator.BidIterator;
 import negotiator.Global;
 import negotiator.NegotiationOutcome;
 import negotiator.analysis.BidSpace;
-import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;

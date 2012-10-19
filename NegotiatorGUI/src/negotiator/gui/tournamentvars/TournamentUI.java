@@ -6,29 +6,19 @@
 
 package negotiator.gui.tournamentvars;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
-
 import org.jdesktop.application.Action;
-
 import misc.Serializer;
-
 import negotiator.AgentParam;
-import negotiator.Global;
 import negotiator.boaframework.BOAagentInfo;
 import negotiator.distributedtournament.DBController;
 import negotiator.exceptions.Warning;
-import negotiator.gui.DirectoryRestrictedFileSystemView;
-import negotiator.gui.GenericFileFilter;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.boaframework.BOAagentsFrame;
 import negotiator.gui.progress.ProgressUI2;
@@ -415,7 +405,6 @@ public class TournamentUI extends javax.swing.JPanel
 	 * 	Tournaments setings tab
 	 * 
 	 */
-	@SuppressWarnings("unused")
 	private void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars = t.getVariables();
@@ -432,14 +421,12 @@ public class TournamentUI extends javax.swing.JPanel
 		
 		// Ignore possible dead code warning displayed here, it is has to do with the 
 		// values of the global variables.
-		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
-			BOAagentVariable decoupledAgentVarA = new BOAagentVariable();
-			decoupledAgentVarA.setSide("A");
-			fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
-			BOAagentVariable decoupledAgentVarB = new BOAagentVariable();
-			decoupledAgentVarB.setSide("B");
-			fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
-		}
+		BOAagentVariable decoupledAgentVarA = new BOAagentVariable();
+		decoupledAgentVarA.setSide("A");
+		fillposition(vars, Tournament.VARIABLE_DECOUPLED_A, decoupledAgentVarA);
+		BOAagentVariable decoupledAgentVarB = new BOAagentVariable();
+		decoupledAgentVarB.setSide("B");
+		fillposition(vars,Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);	
 		
 		// create fields for connecting to a database
 		if (distributed) {

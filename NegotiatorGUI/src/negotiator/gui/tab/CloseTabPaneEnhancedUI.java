@@ -225,7 +225,9 @@ public class CloseTabPaneEnhancedUI extends CloseTabPaneUI {
     protected class ScrollableTabButton extends
             CloseTabPaneUI.ScrollableTabButton {
         
-        public ScrollableTabButton(int direction) {
+		private static final long serialVersionUID = 1854834043556447949L;
+
+		public ScrollableTabButton(int direction) {
             super(direction);
             setRolloverEnabled(true);
         }

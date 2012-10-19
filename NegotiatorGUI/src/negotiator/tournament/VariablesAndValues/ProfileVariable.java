@@ -12,6 +12,8 @@ package negotiator.tournament.VariablesAndValues;
  */
 public class ProfileVariable extends TournamentVariable
 {
+	private static final long serialVersionUID = -2392550149317557540L;
+
 	public void addValue(TournamentValue v) throws Exception
 	{
 		if (!(v instanceof ProfileValue))

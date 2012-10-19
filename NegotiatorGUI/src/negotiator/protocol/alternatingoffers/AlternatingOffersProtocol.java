@@ -508,17 +508,15 @@ public class AlternatingOffersProtocol extends Protocol {
         											TournamentConfiguration.getBooleanOption("playBothSides", true));
     }
     
-	@SuppressWarnings("unused")
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides) throws Exception {
 		session_number=1;
 		// get agent A and B value(s)
 		ArrayList<AgentVariable> agents = tournament.getAgentVars();
 
-		if (Global.DECOUPLED_AGENTS_ENABLED || Global.DISTRIBUTED_TOURNAMENTS_ENABLED) {
-			ArrayList<AgentVariable> decoupledAgents = tournament.getDecoupledAgentVars();
-			agents.get(0).getValues().addAll(decoupledAgents.get(0).getValues());
-			agents.get(1).getValues().addAll(decoupledAgents.get(1).getValues());
-		}
+		ArrayList<AgentVariable> decoupledAgents = tournament.getDecoupledAgentVars();
+		agents.get(0).getValues().addAll(decoupledAgents.get(0).getValues());
+		agents.get(1).getValues().addAll(decoupledAgents.get(1).getValues());
+		
 		if (agents.size()!=2) throw new IllegalStateException("Tournament does not contain 2 agent variables");
 		ArrayList<TournamentValue> agentAvalues=agents.get(0).getValues();
 		if (agentAvalues.isEmpty()) 

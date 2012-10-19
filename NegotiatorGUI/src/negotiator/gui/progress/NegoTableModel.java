@@ -3,10 +3,10 @@ package negotiator.gui.progress;
 import javax.swing.table.AbstractTableModel;
 
 public class NegoTableModel extends AbstractTableModel{
-	
+
+	private static final long serialVersionUID = 2854132547932201984L;
 	private String[] colNames;
 	private Object[][] data;
-	private static final int NUMBER_OF_COLUMNS = 8;
 	public NegoTableModel(String[] colNames) 
 	{
 		super();

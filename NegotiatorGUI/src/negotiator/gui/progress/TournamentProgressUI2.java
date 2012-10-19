@@ -10,7 +10,6 @@ import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
@@ -20,6 +19,7 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
  * Modified by Alex Dirkzwager and Mark Hendrikx to eliminate memory leaks.
  */
 public class TournamentProgressUI2 extends javax.swing.JPanel implements NegotiationEventListener{
+	private static final long serialVersionUID = 508838224709629821L;
 	private NegoTableModel resultTableModel; // the table model	
 	private BilateralAtomicNegotiationSession negoSession;
 	private int session;
