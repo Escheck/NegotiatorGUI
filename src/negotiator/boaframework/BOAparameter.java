@@ -25,6 +25,8 @@ public class BOAparameter {
 	private double step;
 	/** set of separate values which the specified variable should attain */
 	private HashSet<Pair<String, Double>> valuePairs;
+	/** description of the parameter */
+	private String description;
 	
 	/**
 	 * Describes a parameter for a decoupled component.
@@ -36,10 +38,25 @@ public class BOAparameter {
 	 * @param step of the range.
 	 */
 	public BOAparameter(String name, double low, double high, double step) {
+		new BOAparameter(name, low, high, step, "");
+	}
+
+	/**
+	 * Describes a parameter for a decoupled component.
+	 * A parameter consists of a name, a description, and the possible values for the parameter.
+	 * 
+	 * @param name of the parameter.
+	 * @param low value of the range.
+	 * @param high value of the range.
+	 * @param step of the range.
+	 * @param description of the parameter.
+	 */
+	public BOAparameter(String name, double low, double high, double step, String description) {
 		this.name = name;
 		this.low = low;
 		this.high = high;
 		this.step = step;
+		this.description = description;
 		generatePairs();
 	}
 
@@ -71,26 +88,10 @@ public class BOAparameter {
 	}
 
 	/**
-	 * Set the name of the parameter.
-	 * @param name of the parameter.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
 	 * @return value for the lowerbound.
 	 */
 	public double getLow() {
 		return low;
-	}
-
-	/**
-	 * Sets the lowerbound of the parameter.
-	 * @param low lowerbound of the range.
-	 */
-	public void setLow(double low) {
-		this.low = low;
 	}
 
 	/**
@@ -101,26 +102,10 @@ public class BOAparameter {
 	}
 
 	/**
-	 * Sets the upperbound of the parameter.
-	 * @param high upperbound of the range.
-	 */
-	public void setHigh(double high) {
-		this.high = high;
-	}
-
-	/**
 	 * @return stepsize of the range.
 	 */
 	public double getStep() {
 		return step;
-	}
-
-	/**
-	 * Sets the stepsize of the parameter.
-	 * @param step stepsize of the rang.
-	 */
-	public void setStep(double step) {
-		this.step = step;
 	}
 	
 	public String toString() {
@@ -131,7 +116,10 @@ public class BOAparameter {
 		}
 	}
 
+	/**
+	 * @return description of the parameter.
+	 */
 	public String getDescription() {
-		return "blablabla";
+		return description;
 	}
 }

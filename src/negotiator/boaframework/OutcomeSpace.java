@@ -59,16 +59,16 @@ public class OutcomeSpace {
 	
 	
 	/**
-	 * gets a list of bids (from possibleBids) that have a utility within the
+	 * Returns a list of bids (from possibleBids) that have a utility within the
 	 * given range.
 	 * 
-	 * @param range
-	 * @return list of BidDetails
+	 * @param range in which the bids must be found.
+	 * @return list of bids which a utility in the given range.
 	 */
-	public List<BidDetails> getBidsinRange (Range r){
+	public List<BidDetails> getBidsinRange (Range range){
 		ArrayList<BidDetails> result = new ArrayList<BidDetails>();
-		double upperbound = r.getUpperbound();
-		double lowerbound = r.getLowerbound();
+		double upperbound = range.getUpperbound();
+		double lowerbound = range.getLowerbound();
 		
 		for(BidDetails bid: allBids){
 			if (bid.getMyUndiscountedUtil() > lowerbound && bid.getMyUndiscountedUtil() < upperbound){
@@ -79,49 +79,13 @@ public class OutcomeSpace {
 	}
 	
 	/**
-	 * gets a list of bids (from possibleBids) that have a utility between the range
-	 * @param range
-	 * @return list of BidDetails
-	 */
-	public List<BidDetails> getBidsinDiscountedRange (Range r, double time){
-		ArrayList<BidDetails> result = new ArrayList<BidDetails>();
-		double upperbound = r.getUpperbound();
-		double lowerbound = r.getLowerbound();
-		
-
-		for(BidDetails bid: allBids){
-			if (utilitySpace.getUtilityWithDiscount(bid.getBid(), time) > lowerbound && utilitySpace.getUtilityWithDiscount(bid.getBid(), time) < upperbound){
-				result.add(bid);
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * gets a BidDetails which is closest to the give utility
-	 * @param utility
+	 * gets a BidDetails which is closest to the given utility
+	 * @param utility to which the found bid must be closest.
 	 * @return BidDetails
 	 */
 	public BidDetails getBidNearUtility(double utility) {
 		return allBids.get(getIndexOfBidNearUtility(utility));
 	}
-	
-	/**
-	 * gets a BidDetails which is closest to the give utility
-	 * @param utility
-	 * @return BidDetails
-	 */
-	public BidDetails getBidNearDiscountedUtility(double utility, double time) {
-		BidDetails closestBid = null;
-		double closestDistance = 1;
-		for(BidDetails bid : allBids){
-			if(Math.abs(utilitySpace.getUtilityWithDiscount(bid.getBid(), time)-utility) < closestDistance) {
-				closestBid = bid;
-				closestDistance = Math.abs(bid.getMyUndiscountedUtil()-utility);
-			}
-		}
-		return closestBid;
-	}	
 	
 	/**
 	 * @return best bid in the domain.
@@ -150,6 +114,7 @@ public class OutcomeSpace {
 	}
 
 	/**
+	 * @param utility to which the found bid must be closest.
 	 * @return index of the bid with the utility closest to the given utilty.
 	 */
 	public int getIndexOfBidNearUtility(double utility) {

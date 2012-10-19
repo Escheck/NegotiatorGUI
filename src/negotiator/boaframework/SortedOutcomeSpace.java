@@ -16,6 +16,12 @@ import negotiator.utility.UtilitySpace;
  */
 public class SortedOutcomeSpace extends OutcomeSpace {
 
+	/**
+	 * Instantiates a SortedOutcomeSpace: an enumeration of all possible bids in the domain
+	 * which can be efficiently searched using the provided methods.
+	 * 
+	 * @param utilSpace utilityspace of the agent.
+	 */
 	public SortedOutcomeSpace(UtilitySpace utilSpace) {
 		super(utilSpace);
 		Collections.sort(allBids, new BidDetailsSorterUtility());

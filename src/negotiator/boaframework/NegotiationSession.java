@@ -155,6 +155,7 @@ public class NegotiationSession {
 	 * Returns the best bid in the domain.
 	 * If the outcomespace is set, it is used in this step.
 	 * Else a highly inefficient method is used.
+	 * @return bid with lowest highest possible utility.
 	 */
 	public BidDetails getMaxBidinDomain() {
 		BidDetails maxBid = null;
@@ -175,6 +176,7 @@ public class NegotiationSession {
 	 * Returns the worst bid in the domain.
 	 * If the outcomespace is set, it is used in this step.
 	 * Else a highly inefficient method is used.
+	 * @return bid with lowest possible utility.
 	 */
 	public BidDetails getMinBidinDomain() {
 		BidDetails minBid = null;
@@ -197,7 +199,7 @@ public class NegotiationSession {
 	 * 
 	 * @param bid which discount utility is requested.
 	 * @param time at which the bid was offered.
-	 * @return
+	 * @return discounted utility of the given bid at the given time.
 	 */
 	public double getDiscountedUtility(Bid bid, double time){
 		return utilitySpace.getUtilityWithDiscount(bid, time);
