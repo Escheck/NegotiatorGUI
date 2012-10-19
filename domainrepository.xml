@@ -327,8 +327,7 @@
                 <profile url="file:etc/templates/linear/IntegerDomain/IntegerDomain-prof1.xml"/>
                 <profile url="file:etc/templates/linear/IntegerDomain/IntegerDomain-prof2.xml"/>
             </domainRepItem>
-            
-             <domainRepItem url="file:etc/templates/kite/kite_domain.xml">
+            <domainRepItem url="file:etc/templates/kite/kite_domain.xml">
                 <profile url="file:etc/templates/kite/kite_A.xml"/>
                 <profile url="file:etc/templates/kite/kite_B.xml"/>
             </domainRepItem>
@@ -336,10 +335,11 @@
                 <profile url="file:etc/templates/pie/pie_A.xml"/>
                 <profile url="file:etc/templates/pie/pie_B.xml"/>
             </domainRepItem>
-			<domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
+            <domainRepItem url="file:etc/templates/thompson/thompson_employment.xml">
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
             </domainRepItem>
+            <domainRepItem url="file:etc/templates/test.xml"/>
         </domainRepItem>
         <protocolRepItem/>
     </items>
