@@ -428,6 +428,12 @@
 		<echo message="Todo:"/>
 	    <echo message="Assignment updaten"/>
 		<echo message="Laatste versie manual"/>
+		<echo message="Javadoc updaten en toevoegen"/>
+		<echo message="BOA components"/>
+		<echo message="Voeg TNR toe als BOA"/>
+		<echo message="Versie nummer aanpassen"/>
+		<echo message="Fix UI Agent"/>
+		
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>
 			<globmapper from="domainrep_AIT2012.xml" to="domainrepository.xml" />
@@ -458,11 +464,13 @@
 			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
 			<zipfileset dir="${build}/agents/anac/y2011" includes="HardHeaded/,Gahboninho/,IAMhaggler2011/" prefix="negotiator/agents/anac/y2011"/>
+			<zipfileset dir="${build}/agents/anac/y2012" includes="AgentLG/,CUHKAgent/,OMACagent/" prefix="negotiator/agents/anac/y2012"/>		
 			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
 			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/anac/y2011" prefix="negotiator/etc/templates/anac/y2011"/>
 		</zip>
+		<ant target="cleanup"/>
 	</target>
 </project>

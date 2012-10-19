@@ -71,7 +71,7 @@ public class EnterBidDialog extends JDialog {
         tablepane.add(BidTable.getTableHeader(), "North");
         tablepane.add(BidTable,"Center");
         pane.add(tablepane,"Center");
-
+        BidTable.setRowHeight(35);
         	// create south panel: the buttons:
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(buttonEnd); 
