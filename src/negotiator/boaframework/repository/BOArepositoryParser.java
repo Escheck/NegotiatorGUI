@@ -1,6 +1,10 @@
 package negotiator.boaframework.repository;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+
+import negotiator.boaframework.BOAparameter;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,10 +25,8 @@ class BOArepositoryParser extends DefaultHandler {
 	/** List of opponent model strategies in the repository */
 	HashMap<String, BOArepItem> omStrategies = new HashMap<String, BOArepItem>();
 
-	/** Modes in which the parser can be in */
-	private enum Modes { BS, AC, OM, OMS, NULL }
-	/** Current mode the parser is in. */
-	private Modes mode = Modes.NULL;
+	
+	private BOArepItem currentItem;
 	
 	/**
 	 * Main method used to parse the repository.
@@ -35,41 +37,15 @@ class BOArepositoryParser extends DefaultHandler {
 	 */
 	public void startElement(String nsURI, String strippedName,
 			String tagName, Attributes attributes) throws SAXException {
-		
-		// 1. If the mode of the parser is currently unknown, determin it.
-		if (mode.equals(Modes.NULL)) {
-			if (tagName.equals("biddingstrategies")) {
-				mode = Modes.BS;
-			} else if (tagName.equals("acceptanceconditions")) {
-				mode = Modes.AC;
-			} else if (tagName.equals("opponentmodels")) {
-				mode = Modes.OM;
-			} else if (tagName.equals("omstrategies")) {
-				mode = Modes.OMS;
-			} else {
-				if (!tagName.equals("repository")) {
-					throw new SAXException("Unsupported tag: " + tagName + " in XML");
-				}
-			}
-		// 2. ELSE if the parser is in a mode, read an element and store it.
+
+		if (tagName.equals("biddingstrategy") || tagName.equals("acceptancecondition") ||
+				tagName.equals("opponentmodel") || tagName.equals("omstrategy")) {
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1));
 		} else {
-			String description = attributes.getValue(0);
-			
-			if (mode.equals(Modes.BS)) {
-				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
-				biddingStrategies.put(description, item);
-			}
-			if (mode.equals(Modes.AC)) {
-				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
-				acceptanceConditions.put(description, item);
-			}
-			if (mode.equals(Modes.OM)) {
-				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
-				opponentModels.put(description, item);
-			}
-			if (mode.equals(Modes.OMS)) {
-				BOArepItem item = new BOArepItem(attributes.getValue(1), attributes.getValue(2));
-				omStrategies.put(description, item);
+			if (tagName.equals("parameter")) {
+				currentItem.addParameter(new BOAparameter(attributes.getValue(0), 
+															new BigDecimal(attributes.getValue(1)), 
+															attributes.getValue(2)));
 			}
 		}
 	}
@@ -83,9 +59,14 @@ class BOArepositoryParser extends DefaultHandler {
 	public void endElement(String nsURI, String strippedName,
 			String tagName) throws SAXException {
 		
-		if (tagName.equals("biddingstrategies") || tagName.equals("acceptanceconditions") ||
-				tagName.equals("opponentmodels") || tagName.equals("omstrategies")) {
-			mode = Modes.NULL;
+		if (tagName.equals("biddingstrategy")) {
+			biddingStrategies.put(currentItem.getName(), currentItem);
+		} else if (tagName.equals("acceptancecondition")) {
+			acceptanceConditions.put(currentItem.getName(), currentItem);
+		} else if (tagName.equals("opponentmodel")) {
+			opponentModels.put(currentItem.getName(), currentItem);
+		} else if (tagName.equals("omstrategy")) {
+			omStrategies.put(currentItem.getName(), currentItem);
 		}
 	}
 

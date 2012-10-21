@@ -1,5 +1,9 @@
 package negotiator.boaframework.repository;
 
+import java.util.ArrayList;
+
+import negotiator.boaframework.BOAparameter;
+
 /**
  * Class used to represent an item in the BOArepository.
  * An item in the BOA repository has a classPath and may have a tooltip.
@@ -7,19 +11,26 @@ package negotiator.boaframework.repository;
  * @author Mark Hendrikx
  */
 public class BOArepItem {
+	/** Name of the item */
+	private String name;
 	/** Classpath of the item in the repository */
 	private String classPath;
-	/** Optional tooltip of the item in the repository */
-	private String tooltip;
+	/** Collection of parameters, their description and their default */
+	private ArrayList<BOAparameter> parameters;
 	
-	/**
-	 * Captures the path and tooltip of a BOA component.
-	 * @param classPath
-	 * @param tooltip
-	 */
-	public BOArepItem(String classPath, String tooltip) {
+	public BOArepItem(String classPath, ArrayList<BOAparameter> parameters) {
 		this.classPath = classPath;
-		this.tooltip = tooltip;
+		this.parameters = parameters;
+	}
+	
+	public BOArepItem(String name, String classPath) {
+		this.name = name;
+		this.classPath = classPath;
+		this.parameters = new ArrayList<BOAparameter>();
+	}
+	
+	public void addParameter(BOAparameter parameter) {
+		parameters.add(parameter);
 	}
 	
 	/**
@@ -29,26 +40,19 @@ public class BOArepItem {
 		return classPath;
 	}
 
-	/**
-	 * Sets the classpath of the BOA component.
-	 * @param classPath of the BOA component.
-	 */
-	public void setClassPath(String classPath) {
-		this.classPath = classPath;
+	public ArrayList<BOAparameter> getParameters() {
+		return parameters;
 	}
-
-	/**
-	 * @return tooltip associated with the BOA component.
-	 */
-	public String getTooltip() {
-		return tooltip;
+	
+	public String getName() {
+		return name;
 	}
-
-	/**
-	 * Set the tooltip of the BOA component.
-	 * @param tooltip of the BOA component.
-	 */
-	public void setTooltip(String tooltip) {
-		this.tooltip = tooltip;
+	
+	public String toString() {
+		String output = name + " " + classPath + " ";
+		for (BOAparameter parameter : parameters) {
+			output += "PARAMETER: " + parameter.toString() + " ";
+		}
+		return output;
 	}
 }

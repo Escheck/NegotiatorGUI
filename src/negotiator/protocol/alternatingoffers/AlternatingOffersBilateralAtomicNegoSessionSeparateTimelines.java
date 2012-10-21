@@ -119,8 +119,6 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                    }
                    if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
                        stopNegotiation=true;
-                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
-                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
                        newOutcome(currentAgent,0.,0., 0.,0., action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
                    }
                    if (stopNegotiation) return;
@@ -135,8 +133,6 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                    }
                    if(totalTimeAgentA>totalTimePerAgent||totalTimeAgentB>totalTimePerAgent) {
                        stopNegotiation=true;
-                       double utilA=spaceA.getUtility(spaceA.getMaxUtilityBid()); // normalized utility
-                       double utilB=spaceB.getUtility(spaceB.getMaxUtilityBid());
                        newOutcome(currentAgent,0.,0., 0.,0.,action, "Agent "+currentAgent.getName()+" ended the negotiation without agreement");                	   
                    }
                    

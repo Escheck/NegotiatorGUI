@@ -73,6 +73,7 @@
 	<target name="unpackJOpt" depends="makeTempDir">		
 			<unzip src="${dep}/jopt-simple-3.2-rc1.jar" dest="${tmp}"/>
 	</target>
+	
 	<target name="unpackIAMhaggler" depends="makeTempDir">
 		<unzip src="${dep}/IAMhaggler2011packages.jar" dest="${tmp}"/>
 	</target>
@@ -429,14 +430,17 @@
 	    <echo message="Assignment updaten"/>
 		<echo message="Laatste versie manual"/>
 		<echo message="Javadoc updaten en toevoegen"/>
-		<echo message="BOA components"/>
-		<echo message="Voeg TNR toe als BOA"/>
+		<echo message="BOA components (zie repository AIT2012 en pas param-formaat aan)"/>
+		<echo message="Voeg TNR toe als BOA (denk aan parameters, deze staan niet juist)"/>
 		<echo message="Versie nummer aanpassen"/>
-		<echo message="Fix UI Agent"/>
 		
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>
 			<globmapper from="domainrep_AIT2012.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset file="${repositories}/boa/boarepository_AIT2012.xml"/>
+			<globmapper from="boarepository_AIT2012.xml" to="boarepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/agents/agentrep_AIT2012.xml"/>

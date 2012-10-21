@@ -46,14 +46,12 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
-		if (parameters != null && parameters.get("l") != null && parameters.get("v") != null) {
+		if (parameters != null && parameters.get("l") != null) {
 			learnCoef = parameters.get("l");
-			learnValueAddition = parameters.get("v").intValue();
 		} else {
 			learnCoef = 0.2;
-			learnValueAddition = 1;
-			System.out.println("Constant \"l\" and \"v\" were not set. Assumed default values.");
 		}
+		learnValueAddition = 1;
 		initializeModel();
 	}
 	

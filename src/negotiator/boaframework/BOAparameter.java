@@ -1,5 +1,6 @@
 package negotiator.boaframework;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import misc.Pair;
 
@@ -18,13 +19,13 @@ public class BOAparameter {
 	/** Name of the parameter. */
 	private String name;
 	/** Lowerbound of the specified range. */
-	private double low;
+	private BigDecimal low;
 	/** Upperbound of the specified range. */
-	private double high;
+	private BigDecimal high;
 	/** Step size of the specified range. */
-	private double step;
+	private BigDecimal step;
 	/** set of separate values which the specified variable should attain */
-	private HashSet<Pair<String, Double>> valuePairs;
+	private HashSet<Pair<String, BigDecimal>> valuePairs;
 	/** description of the parameter */
 	private String description;
 	
@@ -37,12 +38,21 @@ public class BOAparameter {
 	 * @param high value of the range.
 	 * @param step of the range.
 	 */
-	public BOAparameter(String name, double low, double high, double step) {
+	public BOAparameter(String name, BigDecimal low, BigDecimal high, BigDecimal step) {
 		this.name = name;
 		this.low = low;
 		this.high = high;
 		this.step = step;
 		description = "";
+		generatePairs();
+	}
+	
+	public BOAparameter(String name, BigDecimal defaultValue, String description) {
+		this.name = name;
+		this.description = description;
+		this.low = defaultValue;
+		this.high = defaultValue;
+		this.step = BigDecimal.ONE;
 		generatePairs();
 	}
 
@@ -56,7 +66,7 @@ public class BOAparameter {
 	 * @param step of the range.
 	 * @param description of the parameter.
 	 */
-	public BOAparameter(String name, double low, double high, double step, String description) {
+	public BOAparameter(String name, BigDecimal low, BigDecimal high, BigDecimal step, String description) {
 		this.name = name;
 		this.low = low;
 		this.high = high;
@@ -70,9 +80,9 @@ public class BOAparameter {
 	 * given the range and step size of the component.
 	 */
 	private void generatePairs() {
-		valuePairs = new HashSet<Pair<String, Double>>();
-		for (double value = low; value <= high; value += step) {
-			valuePairs.add(new Pair<String, Double>(name, value));
+		valuePairs = new HashSet<Pair<String, BigDecimal>>();
+		for (BigDecimal value = low; value.compareTo(high) <= 0; value = value.add(step)) {
+			valuePairs.add(new Pair<String, BigDecimal>(name, value));
 		}
 	}
 	
@@ -81,7 +91,7 @@ public class BOAparameter {
 	 * [Lowerbound:Stepsize:Upperbound].
 	 * @return possible values for the parameter specified.
 	 */
-	public HashSet<Pair<String, Double>> getValuePairs() {
+	public HashSet<Pair<String, BigDecimal>> getValuePairs() {
 		return valuePairs;
 	}
 	
@@ -95,26 +105,29 @@ public class BOAparameter {
 	/**
 	 * @return value for the lowerbound.
 	 */
-	public double getLow() {
+	public BigDecimal getLow() {
 		return low;
 	}
 
 	/**
 	 * @return upperbound of the range.
 	 */
-	public double getHigh() {
+	public BigDecimal getHigh() {
 		return high;
 	}
 
 	/**
 	 * @return stepsize of the range.
 	 */
-	public double getStep() {
+	public BigDecimal getStep() {
 		return step;
 	}
 	
 	public String toString() {
 		if (!name.equals("null")) {
+			if (low.compareTo(high) == 0) {
+				return name + ": " + low;
+			}
 			return name + ": [" + low + " : " + step + " : " + high + "]";
 		} else {
 			return "";

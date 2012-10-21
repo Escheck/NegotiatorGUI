@@ -42,8 +42,6 @@ public class AC_ValueModelAgent extends AcceptanceStrategy {
 		boolean skip = ((ValueModelAgentSAS)helper).shouldSkipAcceptDueToCrash();
 		if (negotiationSession.getOpponentBidHistory().size() > 0) {
 
-			
-			
 			if (!skip && negotiationSession.getTime() > 0.98 && negotiationSession.getTime() <= 0.99) {
 				if (((ValueModelAgentSAS)helper).getOpponentUtil() >= ((ValueModelAgentSAS)helper).getLowestApprovedInitial() - 0.01) {
 					return Actions.Accept;
