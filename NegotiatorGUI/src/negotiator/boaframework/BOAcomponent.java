@@ -2,6 +2,7 @@ package negotiator.boaframework;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class BOAcomponent implements Serializable {
 	private String type;
 	/** Parameters which should be used to initialize the component upon creation */
 	private HashMap<String, BigDecimal> parameters;
+	
+	private ArrayList<BOAparameter> orgParam;
 
 	/**
 	 * Creates a BOA component consisting of the classname of the components, the type,
@@ -54,6 +57,13 @@ public class BOAcomponent implements Serializable {
 		this.parameters = new HashMap<String, BigDecimal>();
 	}
 	
+	public BOAcomponent(String classname, String type, ArrayList<BOAparameter> orgParam) {
+		this.classname = classname;
+		this.type = type;
+		this.parameters = new HashMap<String, BigDecimal>();
+		this.orgParam = orgParam;
+	}
+
 	/**
 	 * Add a parameter to the set of parameters of this component.
 	 * 
@@ -99,6 +109,10 @@ public class BOAcomponent implements Serializable {
 	    return map;
 	}
 
+	public ArrayList<BOAparameter> getOriginalParameters() {
+		return orgParam;
+	}
+	
 	public String toString() {
 		String params = "";
 		if (parameters.size() > 0) {
