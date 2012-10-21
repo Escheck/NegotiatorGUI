@@ -384,7 +384,7 @@ public class BOAagentsFrame extends JDialog {
 				Pair<String, BigDecimal> pair = (Pair<String, BigDecimal>) paramIterator.next();
 				strat.addParameter(pair.getFirst(), pair.getSecond());
 			}
-			strat.getParameters().remove("null");
+			strat.getFullParameters().remove("null");
 			strategies.add(strat);
 		}
 		return strategies;
