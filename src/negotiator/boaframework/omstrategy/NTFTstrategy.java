@@ -47,6 +47,7 @@ public class NTFTstrategy extends OMStrategy {
 	}
 	
 	private void initializeAgent(NegotiationSession negoSession, OpponentModel model) {
+		this.negotiationSession = negoSession;
 		try {
 			super.init(negotiationSession, model);
 		} catch (Exception e) {

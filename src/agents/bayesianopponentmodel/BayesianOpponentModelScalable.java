@@ -1,9 +1,6 @@
 package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
-
-
-
 import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.utility.*;
@@ -55,24 +52,23 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		int lTotalTriangularFns = 4;		
 		for(int i =0; i<fUS.getNrOfEvaluators();i++) {
 			ArrayList<EvaluatorHypothesis> lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-			lEvalHyps = new ArrayList<EvaluatorHypothesis>();
-			fEvaluatorHyps.add(lEvalHyps);
-			switch(fUS.getEvaluator(issues.get(i).getNumber()).getType()) {
 			
+			
+			switch(fUS.getEvaluator(issues.get(i).getNumber()).getType()) {
+				
 			case REAL:
-				EvaluatorReal lHypEval = new EvaluatorReal();
-				EvaluatorHypothesis lEvaluatorHypothesis;
+				lEvalHyps = new ArrayList<EvaluatorHypothesis>();				
 				fEvaluatorHyps.add(lEvalHyps);
 				//EvaluatorReal lEval = (EvaluatorReal)(fUS.getEvaluator(i));
 				IssueReal lIssue = (IssueReal)(fDomain.getIssue(i));				
 				//uphill
-				lHypEval = new EvaluatorReal();
+				EvaluatorReal lHypEval = new EvaluatorReal();
 				lHypEval.setUpperBound(lIssue.getUpperBound());
 				lHypEval.setLowerBound(lIssue.getLowerBound());
 				lHypEval.setType(EVALFUNCTYPE.LINEAR);
 				lHypEval.addParam(1, (double)1/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));
 				lHypEval.addParam(0, -lHypEval.getLowerBound()/(lHypEval.getUpperBound()-lHypEval.getLowerBound()));				
-				lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
+				EvaluatorHypothesis lEvaluatorHypothesis = new EvaluatorHypothesis (lHypEval);
 				lEvaluatorHypothesis.setDesc("uphill");
 				lEvalHyps.add(lEvaluatorHypothesis);
 				//downhill
@@ -292,6 +288,8 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 			}
 		}			
 		fEvaluatorHyps = lEvaluatorHyps;
+	//	}
+		printEvalsDistribution();
 	}
 	public boolean haveSeenBefore(Bid pBid) {
 		for(Bid tmpBid : fBiddingHistory) {
@@ -347,6 +345,49 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		
 		return u;
 	}
+
+	
+	private void printBestHyp() {
+		double[] lBestWeights = new double[fUS.getDomain().getIssues().size()];
+		EvaluatorHypothesis[] lBestEvals = new EvaluatorHypothesis[fUS.getDomain().getIssues().size()];
+		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
+			//find best weight
+			double lMaxWeightProb = -1;
+			for(int j=0;j<fWeightHyps.get(i).size();j++){
+				if(fWeightHyps.get(i).get(j).getProbability()>lMaxWeightProb) {
+					lMaxWeightProb = fWeightHyps.get(i).get(j).getProbability();
+					lBestWeights[i] = fWeightHyps.get(i).get(j).getWeight();
+				}
+			}
+			//find best evaluation fn
+			double lMaxEvalProb = -1;
+			for(int j=0;j<fEvaluatorHyps.get(i).size();j++){
+				if(fEvaluatorHyps.get(i).get(j).getProbability()>lMaxEvalProb ) {
+					lMaxEvalProb = fEvaluatorHyps.get(i).get(j).getProbability();
+					lBestEvals[i] = fEvaluatorHyps.get(i).get(j);
+				}
+			}
+			
+		}
+/*		//print all weights
+		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
+			System.out.print(String.format("%1.2f", getExpectedWeight(i))+";");			
+		}
+		//print all Evaluators
+		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
+			System.out.print(lBestEvals[i].getDesc()+";");			
+		}
+		System.out.println();
+	*/	
+	}
+	void printEvalsDistribution() {
+/*		for(int i=0;i<fUS.getDomain().getIssues().size();i++) {
+			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) 
+				System.out.print(String.format("%1.2f", fEvaluatorHyps.get(i).get(j).getProbability())+";");
+			System.out.println();
+		}*/
+		
+	}
 	
 	public double getNormalizedWeight(Issue i, int startingNumber) {
 		double sum = 0;
@@ -354,5 +395,9 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 			sum += getExpectedWeight(issue.getNumber() - startingNumber);
 		}
 		return (getExpectedWeight(i.getNumber() - startingNumber)) / sum;
-	}	
+	}
+	
+
+		
+	
 }
