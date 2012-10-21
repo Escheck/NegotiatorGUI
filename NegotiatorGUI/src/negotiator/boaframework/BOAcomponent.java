@@ -85,6 +85,10 @@ public class BOAcomponent implements Serializable {
 		return decreaseAccuracy(parameters);
 	}
 	
+	public HashMap<String, BigDecimal> getFullParameters() {
+		return parameters;
+	}
+	
 	private HashMap<String, Double> decreaseAccuracy(HashMap<String, BigDecimal> parameters) {
 		Iterator<Entry<String, BigDecimal>> it = parameters.entrySet().iterator();
 		HashMap<String, Double> map = new HashMap<String, Double>();
