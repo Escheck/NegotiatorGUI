@@ -30,8 +30,6 @@ public class SimpleAgentNew extends Agent {
 	Map<Bid, Integer> rejectedBidsCounterMap = new HashMap<Bid, Integer>();
 	Map<Value, Integer> itemsCounterMap = new HashMap<Value, Integer>();
 
-	private int offeredBidsCounter = 0;
-
 	/**
 	 * init is called when a next session starts with the same opponent.
 	 */
@@ -67,8 +65,6 @@ public class SimpleAgentNew extends Agent {
 			if (actionOfPartner instanceof Offer) {
 				Bid partnerBid = ((Offer) actionOfPartner).getBid();
 
-				offeredBidsCounter++;
-
 				if (offeredBidsCounterMap.get(partnerBid) == null)
 					offeredBidsCounterMap.put(partnerBid, 0);
 
@@ -85,9 +81,6 @@ public class SimpleAgentNew extends Agent {
 
 				double time = ((new Date()).getTime() - startTime.getTime()) / (1000.);
 				boolean accept = acceptStrategy(partnerBid, time);
-				System.out.println(time);
-				System.out.println(accept);
-
 				if (accept)
 					action = new Accept(this.getAgentID());
 				else

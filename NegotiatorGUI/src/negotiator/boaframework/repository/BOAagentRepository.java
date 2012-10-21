@@ -107,16 +107,6 @@ public class BOAagentRepository {
 	}
 	
 	/**
-	 * Method used to get the tooltip of the offering strategy with the given name.
-	 * 
-	 * @param name of the offering strategy which tooltip should be loaded.
-	 * @return tooltip associated with the name.
-	 */
-	public static String getOfferingStrategyTooltip(String name) {
-		return repositoryParser.getBiddingStrategies().get(name).getTooltip();
-	}
-	
-	/**
 	 * Method used to load the acceptance strategy associated with the given name.
 	 * 
 	 * @param name of the acceptance strategy to be loaded.
@@ -132,26 +122,6 @@ public class BOAagentRepository {
 			e.printStackTrace();
 		}
 		return as;
-	}
-	
-	/**
-	 * Method used to get the tooltip of the acceptance strategy with the given name.
-	 * 
-	 * @param name of the acceptance strategy which tooltip should be loaded.
-	 * @return tooltip associated with the name.
-	 */
-	public static String getAcceptanceStrategyTooltip(String name) {
-		return repositoryParser.getAcceptanceConditions().get(name).getTooltip();
-	}
-	
-	/**
-	 * Method used to get the tooltip of the opponent model with the given name.
-	 * 
-	 * @param name of the opponent model which tooltip should be loaded.
-	 * @return tooltip associated with the name.
-	 */
-	public static String getOpponentModelTooltip(String name) {
-		return repositoryParser.getOpponentModels().get(name).getTooltip();
 	}
 	
 	/**
@@ -171,6 +141,22 @@ public class BOAagentRepository {
 		}
 		return om;
 	}
+	
+	public BOArepItem getOpponentModelRepItem(String name) {
+		return repositoryParser.getOpponentModels().get(name);
+	}
+	
+	public BOArepItem getBiddingStrategyRepItem(String name) {
+		return repositoryParser.getBiddingStrategies().get(name);
+	}
+
+	public BOArepItem getAcceptanceStrategyRepItem(String name) {
+		return repositoryParser.getAcceptanceConditions().get(name);
+	}
+	
+	public BOArepItem getOpponentModelStrategyRepItem(String name) {
+		return repositoryParser.getOMStrategies().get(name);
+	}
 
 	/**
 	 * Method used to load the opponent model strategy associated with the given name.
@@ -188,15 +174,5 @@ public class BOAagentRepository {
 			e.printStackTrace();
 		}
 		return oms;
-	}
-	
-	/**
-	 * Method used to get the tooltip of the opponent model strategy with the given name.
-	 * 
-	 * @param name of the opponent model strategy which tooltip should be loaded.
-	 * @return tooltip associated with the name.
-	 */
-	public static String getOpponentModelStrategyTooltip(String name) {
-		return repositoryParser.getOMStrategies().get(name).getTooltip();
 	}
 }

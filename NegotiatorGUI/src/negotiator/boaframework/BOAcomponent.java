@@ -1,7 +1,11 @@
 package negotiator.boaframework;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Creates a BOA component consisting of the classname of the component,
@@ -20,7 +24,7 @@ public class BOAcomponent implements Serializable {
 	/** Type of the component, for example "as" for acceptance condition */
 	private String type;
 	/** Parameters which should be used to initialize the component upon creation */
-	private HashMap<String, Double> parameters;
+	private HashMap<String, BigDecimal> parameters;
 
 	/**
 	 * Creates a BOA component consisting of the classname of the components, the type,
@@ -30,7 +34,7 @@ public class BOAcomponent implements Serializable {
 	 * @param type of the component (for example bidding strategy).
 	 * @param strategyParam parameters of the component.
 	 */
-	public BOAcomponent(String classname, String type, HashMap<String, Double> strategyParam) {
+	public BOAcomponent(String classname, String type, HashMap<String, BigDecimal> strategyParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = strategyParam;
@@ -47,7 +51,7 @@ public class BOAcomponent implements Serializable {
 	public BOAcomponent(String classname, String type) {
 		this.classname = classname;
 		this.type = type;
-		this.parameters = new HashMap<String, Double>();
+		this.parameters = new HashMap<String, BigDecimal>();
 	}
 	
 	/**
@@ -56,7 +60,7 @@ public class BOAcomponent implements Serializable {
 	 * @param name of the parameter.
 	 * @param value of the parameter.
 	 */
-	public void addParameter(String name, double value) {
+	public void addParameter(String name, BigDecimal value) {
 		parameters.put(name, value);
 	}
 
@@ -73,14 +77,24 @@ public class BOAcomponent implements Serializable {
 	public String getType() {
 		return type;
 	}
-
+	
 	/**
 	 * @return parameters of the component.
 	 */
 	public HashMap<String, Double> getParameters() {
-		return parameters;
+		return decreaseAccuracy(parameters);
 	}
 	
+	private HashMap<String, Double> decreaseAccuracy(HashMap<String, BigDecimal> parameters) {
+		Iterator<Entry<String, BigDecimal>> it = parameters.entrySet().iterator();
+		HashMap<String, Double> map = new HashMap<String, Double>();
+	    while (it.hasNext()) {
+	        Map.Entry<String, BigDecimal> pairs = (Entry<String, BigDecimal>)it.next();
+	        map.put(pairs.getKey(), pairs.getValue().doubleValue());
+	    }
+	    return map;
+	}
+
 	public String toString() {
 		String params = "";
 		if (parameters.size() > 0) {

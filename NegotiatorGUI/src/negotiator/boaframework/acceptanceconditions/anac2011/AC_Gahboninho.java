@@ -26,6 +26,8 @@ public class AC_Gahboninho extends AcceptanceStrategy {
 	private boolean activeHelper = false;
 	private boolean done = false;
 	
+	public AC_Gahboninho() { }
+	
 	public AC_Gahboninho(NegotiationSession negotiationSession,
 			OfferingStrategy offeringStrategy) {
 		initializeAgent(negotiationSession,offeringStrategy);
