@@ -22,6 +22,9 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 import misc.Pair;
@@ -71,6 +74,7 @@ public class BOAagentsFrame extends JDialog {
     
     // BUTTONS
     private JButton addAgentButton;
+    private JButton editAgentButton;
     private JButton saveButton;
     
     // the null parameter is a parameter added to strategies without
@@ -297,6 +301,44 @@ public class BOAagentsFrame extends JDialog {
     		   }
     	   }
         });
+        
+        agentsList.addListSelectionListener(new ListSelectionListener() {
+        	public void valueChanged(ListSelectionEvent e) {
+    		  	JList list = (JList) e.getSource();
+    	  		if ((list.getValueIsAdjusting())) {
+    	  			BOAagentInfo s = (BOAagentInfo) list.getSelectedValue();
+    	  			if (s != null) {
+	    	  			biddingStrategyCB.setSelectedItem(s.getOfferingStrategy().getClassname());
+	    	  			biddingStrategyCB.updateUI();
+	    	  			if (s.getOfferingStrategy().getOriginalParameters() != null && s.getOfferingStrategy().getOriginalParameters().size() > 0) {
+	    	  				biddingStrategyTF.setText(s.getOfferingStrategy().getOriginalParameters());
+	    	  				biddingStrategyTF.updateUI();
+	    	  			}
+	    	  			
+	    	  			acceptanceStrategyCB.setSelectedItem(s.getAcceptanceStrategy().getClassname());
+	    	  			acceptanceStrategyCB.updateUI();
+	    	  			if (s.getAcceptanceStrategy().getOriginalParameters() != null && s.getAcceptanceStrategy().getOriginalParameters().size() > 0) {
+	    	  				acceptanceStrategyTF.setText(s.getAcceptanceStrategy().getOriginalParameters());
+	    	  				acceptanceStrategyTF.updateUI();
+	    	  			}
+	    	  			
+	    	  			opponentModelCB.setSelectedItem(s.getOpponentModel().getClassname());
+	    	  			opponentModelCB.updateUI();
+	    	  			if (s.getOpponentModel().getOriginalParameters() != null && s.getOpponentModel().getOriginalParameters().size() > 0) {
+	    	  				opponentModelTF.setText(s.getOpponentModel().getOriginalParameters());
+	    	  				opponentModelTF.updateUI();
+	    	  			}
+	    	  			
+	    	  			omStrategyCB.setSelectedItem(s.getOMStrategy().getClassname());
+	    	  			omStrategyCB.updateUI();
+	    	  			if (s.getOMStrategy().getOriginalParameters() != null && s.getOMStrategy().getOriginalParameters().size() > 0) {
+	    	  				omStrategyTF.setText(s.getOMStrategy().getOriginalParameters());
+	    	  				omStrategyTF.updateUI();
+	    	  			}
+    	  			}
+    	  		}
+        	}
+        });
         getContentPane().add(agentsListSP, new AbsoluteConstraints(10, 165, 980, 290));
     }
     
@@ -304,6 +346,10 @@ public class BOAagentsFrame extends JDialog {
     	addAgentButton = new JButton();
     	addAgentButton.setText("Add agent");
     	getContentPane().add(addAgentButton, new AbsoluteConstraints(10, 100, 105, -1));
+    	
+    	editAgentButton = new JButton();
+    	editAgentButton.setText("Edit agent");
+    	getContentPane().add(editAgentButton, new AbsoluteConstraints(120, 100, 105, -1));
     	
     	saveButton = new JButton();
     	saveButton.setText("Save agents");
@@ -325,6 +371,18 @@ public class BOAagentsFrame extends JDialog {
 				}
 				result = agents;
 				dispose();
+			}
+		});
+    	
+    	editAgentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BOAagentInfo s = (BOAagentInfo) agentsList.getSelectedValue();
+				if (s == null) {
+					JOptionPane.showMessageDialog(null, "Please select an agent to edit.", "Edit notification", 1);
+				} else {
+					agentsModel.removeElement(s);
+					generateAgentCombinations();
+				}
 			}
 		});
     }
@@ -377,7 +435,8 @@ public class BOAagentsFrame extends JDialog {
 		while (combinationsIterator.hasNext()) {
 			// all combinations
 			Set<Pair<String, BigDecimal>> set = combinationsIterator.next();
-			BOAcomponent strat = new BOAcomponent(classname, type);
+			parameters.remove(nullParam);
+			BOAcomponent strat = new BOAcomponent(classname, type, parameters);
 			Iterator<Pair<String, BigDecimal>> paramIterator = set.iterator();
 			// a set of 
 			while (paramIterator.hasNext()) {
