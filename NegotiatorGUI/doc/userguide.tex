@@ -528,16 +528,17 @@ The next step is to load the agent in \Genius. Towards this end, first we should
 \end{lstlisting}
 
 \section{Creating a BOA Agent}\label{sec:boa}
-Instead of implementing your negotiating agent from scratch, we recommend you opt to use the \textit{BOA framework} available in \Genius. The BOA negotiation agent architecture allows to reuse existing components. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction is made between four different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); one that tries to guess the opponent's preferences (\textit{opponent model}), and finally a component which specifies how the opponent model is used (\textit{opponent model strategy}). The overall negotiation strategy is a result of the complex interaction between these components.
+Instead of implementing your negotiating agent from scratch, we recommend you create a BOA agent using the \textit{BOA framework}. The BOA negotiation agent architecture allows to reuse existing components from other BOA agents. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction can be made between four different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); one that tries to guess the opponent's preferences (\textit{opponent model}), and finally a component which specifies how the opponent model is used (\textit{opponent model strategy}). The overall negotiation strategy is a result of the interaction between these components.
 
-The advantages of separating the negotiation strategy into these three components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the identification of unique interacting components \textit{simplifies the creation of new negotiation strategies}.
+The advantages of separating the negotiation strategy into these four components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the reuse of existing components \textit{simplifies the creation of new negotiation strategies}.
 
 \subsection{How it works}
-A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of three components:
+A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of four components:
 \begin{description}
   \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it.%, passing one or multiple bids and see how they compare within the opponent's utility space.
 
   \item[Opponent model] An opponent model is in the BOA framework a learning technique that constructs a model of the opponent's preference profile.% In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
+  \item[Opponent model strategy] Specifies how the opponent model is used. An example is to select the best bid for the opponent given a set of similarly preferred bids.
   \item[Acceptance strategy] The acceptance strategy determines whether the bid that the opponent has presented is acceptable.
 \end{description}
 The components interact in the following way (the full process is visualized in Figure~\ref{fig:flowchart}). When receiving an opponent bid, the BOA agent first updates the \textit{bidding history} and \textit{opponent model} to make sure the most up to date data is used, maximizing the information known about the environment and opponent.
@@ -548,7 +549,7 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 
 \begin{figure}[t] 
 	\center
-	\includegraphics[width=14cm]{media/Decoupled_FlowChart.png}
+	\includegraphics[width=14cm]{media/BOAflow.png}
 	\caption{The BOA Framework Architecture.}
 	\label{fig:flowchart}
 \end{figure}
@@ -556,18 +557,11 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 \subsection{Using Existing Components}
 In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The first step in using the BOA framework, is to ensure it is enabled. The framework is enabled if the selected items visualized in Figure~\ref{fig:settings} are visible when creating a \textit{new tournament}.%. If the framework is not enabled, it can be enabled by changing the value of the variable \textit{DECOUPLED\_AGENTS\_ENABLED} in the \textit{Global} class located in the package \textit{negotiator}.
 
-\begin{figure}[h!]
-	\center
-	\includegraphics[width=5cm]{media/Decoupled_TournamentSettings.png}
-	\caption{Tournament settings. The selected items indicate that the BOA framework is enabled.}
-	\label{fig:settings}
-\end{figure}
-
 The BOA framework GUI, visualized in Figure~\ref{fig:decoupledGUI}, can be opened by clicking in the \textit{Values} section next to the \textit{BOA Agent Side A} or \textit{BOA Agent Side B}. In this GUI four component types are shown: \textit{bidding strategy}, \textit{acceptance strategy}, \textit{opponent model}, and the \textit{opponent model strategy}.
 
 \begin{figure}[h!]
 	\center
-	\includegraphics[width=15cm]{media/Decoupled_DecoupledGUI.png}
+	\includegraphics[width=15cm]{media/BOAgui.png}
 	\caption{The BOA framework GUI.}
 	\label{fig:decoupledGUI}
 \end{figure}
@@ -576,7 +570,7 @@ Our goal in this section is to create three variants of \textit{SimpleBOAagent}.
 
 \begin{figure}[h!] 
 	\center
-	\includegraphics[width=5cm]{media/Decoupled_Param.png}
+	\includegraphics[width=12cm]{media/BOAparam.png}
 	\caption{Adding a parameter.}
 	\label{fig:decoupledparam}
 \end{figure}

@@ -38,13 +38,12 @@ public class AC_Next extends AcceptanceStrategy {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 
-		if (parameters.get("a") != null || parameters.get("b") !=null) {
+		if (parameters.get("a") != null || parameters.get("b") != null) {
 			a = parameters.get("a");
 			b = parameters.get("b");
 		} else {
 			a = 1;
 			b = 0;
-			//throw new Exception("Parameters were not set. Default Values are used a = 1 and b = 0");
 		}
 	}
 	
@@ -58,9 +57,7 @@ public class AC_Next extends AcceptanceStrategy {
 	public Actions determineAcceptability() {
 		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
 		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-		//System.out.println("nextMyBidUtil: " + nextMyBidUtil);
-		//System.out.println("lastOpponentBidUtil: " + lastOpponentBidUtil);
-
+		
 		if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
 			return Actions.Accept;
 		}

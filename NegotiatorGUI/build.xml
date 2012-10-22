@@ -430,9 +430,6 @@
 	    <echo message="Assignment updaten"/>
 		<echo message="Laatste versie manual"/>
 		<echo message="Javadoc updaten en toevoegen"/>
-		<echo message="BOA components (zie repository AIT2012 en pas param-formaat aan)"/>
-		<echo message="Voeg TNR toe als BOA (denk aan parameters, deze staan niet juist)"/>
-		<echo message="Versie nummer aanpassen"/>
 		
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>
@@ -461,18 +458,21 @@
 		<copy todir="${tmp}/doc">
 			<fileset dir="doc" includes="userguide.pdf"/>
 		</copy>
-	
+
 		<zip destfile="${dist}/negotiator.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>							
 			<zipfileset dir="${tmp}" includes="doc/" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="${build}/agents/anac/y2011" includes="HardHeaded/,Gahboninho/,IAMhaggler2011/" prefix="negotiator/agents/anac/y2011"/>
-			<zipfileset dir="${build}/agents/anac/y2012" includes="AgentLG/,CUHKAgent/,OMACagent/" prefix="negotiator/agents/anac/y2012"/>		
-			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
+			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="negotiator/BOA example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="negotiator/BOA example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="negotiator/BOA example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="negotiator/BOA Agent Example"/>
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator/Agent Example"/>
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
 			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/anac/y2011" prefix="negotiator/etc/templates/anac/y2011"/>
 		</zip>
 		<ant target="cleanup"/>
