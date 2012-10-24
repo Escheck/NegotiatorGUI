@@ -214,6 +214,8 @@ When you run the negosimulator (by double-clicking the application or using open
 \texttt{java -jar negosimulator.jar}.
 This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
 
+Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when running Java, for example \texttt{java -Xmx2512M -Xms2512M -jar negosimulator.jar}.
+
 \section{Scenario Creation}
 A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
 
