@@ -49,7 +49,6 @@ public class BOAcomponent implements Serializable {
 	 * 
 	 * @param classname of the component.
 	 * @param type of the component (for example bidding strategy).
-	 * @param type
 	 */
 	public BOAcomponent(String classname, String type) {
 		this.classname = classname;
@@ -57,6 +56,15 @@ public class BOAcomponent implements Serializable {
 		this.parameters = new HashMap<String, BigDecimal>();
 	}
 	
+	/**
+	 * Variant of the main constructor in which it is assumed that the component has no
+	 * parameters. In addition a backup is made of the original BigDecimal specification of the
+	 * parameters. This is used to avoid rounding errors in the GUI.
+	 * 
+	 * @param classname of the component.
+	 * @param type of the component (for example bidding strategy).
+	 * @param orgParam backup of original parameters
+	 */
 	public BOAcomponent(String classname, String type, ArrayList<BOAparameter> orgParam) {
 		this.classname = classname;
 		this.type = type;
@@ -95,6 +103,9 @@ public class BOAcomponent implements Serializable {
 		return decreaseAccuracy(parameters);
 	}
 	
+	/**
+	 * @return original parameters as specified in the GUI.
+	 */
 	public HashMap<String, BigDecimal> getFullParameters() {
 		return parameters;
 	}
@@ -109,6 +120,9 @@ public class BOAcomponent implements Serializable {
 	    return map;
 	}
 
+	/**
+	 * @return the full parameters objects used to specify each parameter.
+	 */
 	public ArrayList<BOAparameter> getOriginalParameters() {
 		return orgParam;
 	}

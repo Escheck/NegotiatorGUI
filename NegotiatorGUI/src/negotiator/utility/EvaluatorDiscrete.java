@@ -14,16 +14,28 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.xml.SimpleElement;
 
 /**
- * @author W. Pasman
- * Since 8oct07: only POSITIVE integer values acceptable as evaluation value.
+ * This class is used to convert the value of a discrete issue to a utility.
+ * This object stores a mapping from each discrete value to a positive integer,
+ * the evaluation of the value. When asked for the utility of a value, the
+ * evaluation of the value is divided by the highest evaluation in the map.
+ * Note that this utility is not yet multiplied by the weight of the issue and
+ * therefore in the range [0,1].
+ * 
+ * @author Wouter Pasman
  */
 public class EvaluatorDiscrete implements Evaluator {
+	// Since 8oct07: only POSITIVE integer values acceptable as evaluation value.
 	
 	// Class fields
 	private double fweight; //the weight of the evaluated Objective or Issue.
 	private boolean fweightLock; 
 	private HashMap<ValueDiscrete, Integer> fEval;
 	private Integer evalMax= null;
+
+	/**
+	 * Creates a new discrete evaulator with weight 0 and
+	 * no values.
+	 */
 	public EvaluatorDiscrete() {
 		fEval = new HashMap<ValueDiscrete, Integer>();
 		fweight = 0;
@@ -146,11 +158,12 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * 
 	 * @param val The value to add or have its evaluation modified.
 	 * @param evaluation The new evaluation.
+	 * @throws Exception if evaluation 
 	 */
-	public void setEvaluation(Value val, int utility ) throws Exception
+	public void setEvaluation(Value val, int evaluation ) throws Exception
 	{
-		if (utility<0) throw new Exception("utility values have to be >0");
-		fEval.put((ValueDiscrete)val, new Integer(utility));
+		if (evaluation < 0) throw new Exception("Evaluation values have to be >= 0");
+		fEval.put((ValueDiscrete)val, new Integer(evaluation));
 		calcEvalMax();
 	}
 	

@@ -286,10 +286,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			if (!evalueStrings[i].equals(""))
 			{
 				value=Integer.valueOf(evalueStrings[i]);
-				if (value<=0) throw new InvalidInputException("Encountered "+value+". Zero or negative numbers are not allowed here");
+				if (value < 0) throw new InvalidInputException("Encountered "+value+". Negative numbers are not allowed here");
 			}
 			evalues.add(value); 
 		}
+		System.out.println(evalues);
 		return evalues;
 	}
 	
@@ -440,7 +441,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 				
 					for (int i=0; i<v_enum.size(); i++) 
 					{
-						if (i < evalues.size() && evalues.get(i)!=0) // evalues field is 0 if error occured at that field.
+						if (i < evalues.size()) // evalues field is 0 if error occured at that field.
 						{
 							((EvaluatorDiscrete) evaluator).setEvaluation(((Value)v_enum.get(i)), evalues.get(i));
 						}

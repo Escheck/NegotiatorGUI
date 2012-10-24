@@ -970,15 +970,6 @@ public class UtilitySpace {
     	return null;
     }
     
-    public void showStatistics()
-    {
-    	for (Objective obj: fEvaluators.keySet())
-    	{
-    		System.out.print("Objective "+obj.getName()+" ");
-    		fEvaluators.get(obj).showStatistics();
-    	}
-    }
-    
     /**
      * @param newRV new reservation value.
      */
