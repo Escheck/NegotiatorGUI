@@ -61,12 +61,15 @@ public class NegotiationLogParser {
 				outcome.setAgentAutilityDiscount(Double.parseDouble(attributes.getValue("discountedUtility")));
 				outcome.setACbestTheoreticalA(Double.parseDouble(attributes.getValue("bestAcceptableBid")));
 				outcome.setACbestDiscountedTheoreticalA(Double.parseDouble(attributes.getValue("bestDiscountedAccepableBid")));
-				outcome.setMinDemandedUtilityA(Double.parseDouble(attributes.getValue("minDemandedUtility")));
-				outcome.setFYUA(Double.parseDouble(attributes.getValue("FYU")));
-				outcome.setTotal_CR_A(Double.parseDouble(attributes.getValue("Total_CR")));
-				outcome.setBS_CR_A(Double.parseDouble(attributes.getValue("BS_CR")));
-				outcome.setAC_CR_A(Double.parseDouble(attributes.getValue("AC_CR")));
-				outcome.setNormalized_AC_CR_A(Double.parseDouble(attributes.getValue("Normalized_AC_CR")));
+				if(attributes.getValue("minDemandedUtility") != null){
+					outcome.setMinDemandedUtilityA(Double.parseDouble(attributes.getValue("minDemandedUtility")));
+					outcome.setFYUA(Double.parseDouble(attributes.getValue("FYU")));
+					outcome.setTotal_CR_A(Double.parseDouble(attributes.getValue("Total_CR")));
+					outcome.setBS_CR_A(Double.parseDouble(attributes.getValue("BS_CR")));
+					outcome.setAC_CR_A(Double.parseDouble(attributes.getValue("AC_CR")));
+					outcome.setNormalized_AC_CR_A(Double.parseDouble(attributes.getValue("Normalized_AC_CR")));
+				}
+
 				outcome.setAgentAmaxUtil(Double.parseDouble(attributes.getValue("maxUtility")));
 				outcome.setNormalizedUtilityA(Double.parseDouble(attributes.getValue("normalizedUtility")));
 				outcome.setAcceptedBy(attributes.getValue("AcceptedBy"));
@@ -83,12 +86,14 @@ public class NegotiationLogParser {
 				outcome.setAgentButilityDiscount(Double.parseDouble(attributes.getValue("discountedUtility")));
 				outcome.setACbestTheoreticalB(Double.parseDouble(attributes.getValue("bestAcceptableBid")));
 				outcome.setACbestDiscountedTheoreticalB(Double.parseDouble(attributes.getValue("bestDiscountedAccepableBid")));
-				outcome.setMinDemandedUtilityB(Double.parseDouble(attributes.getValue("minDemandedUtility")));
-				outcome.setFYUB(Double.parseDouble(attributes.getValue("FYU")));
-				outcome.setTotal_CR_B(Double.parseDouble(attributes.getValue("Total_CR")));
-				outcome.setBS_CR_B(Double.parseDouble(attributes.getValue("BS_CR")));
-				outcome.setAC_CR_B(Double.parseDouble(attributes.getValue("AC_CR")));
-				outcome.setNormalized_AC_CR_B(Double.parseDouble(attributes.getValue("Normalized_AC_CR")));
+				if(attributes.getValue("minDemandedUtility") != null){
+					outcome.setMinDemandedUtilityB(Double.parseDouble(attributes.getValue("minDemandedUtility")));
+					outcome.setFYUB(Double.parseDouble(attributes.getValue("FYU")));
+					outcome.setTotal_CR_B(Double.parseDouble(attributes.getValue("Total_CR")));
+					outcome.setBS_CR_B(Double.parseDouble(attributes.getValue("BS_CR")));
+					outcome.setAC_CR_B(Double.parseDouble(attributes.getValue("AC_CR")));
+					outcome.setNormalized_AC_CR_B(Double.parseDouble(attributes.getValue("Normalized_AC_CR")));
+				}
 				outcome.setAgentBmaxUtil(Double.parseDouble(attributes.getValue("maxUtility")));
 				outcome.setNormalizedUtilityB(Double.parseDouble(attributes.getValue("normalizedUtility")));
 				found = true;	
