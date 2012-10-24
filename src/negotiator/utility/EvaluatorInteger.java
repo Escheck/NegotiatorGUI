@@ -1,9 +1,18 @@
 package negotiator.utility;
 
 import negotiator.Bid;
-import negotiator.issue.*;
+import negotiator.issue.Objective;
+import negotiator.issue.ValueInteger;
 import negotiator.xml.SimpleElement;
 
+/**
+ * This class is used to convert the value of an integer issue to a utility.
+ * This object stores the range of the issue and a linear function mapping each
+ * value to a utility. Note that this utility is not yet normalized by the issue
+ * weight and is therefore in the range [0,1].
+ * 
+ * @author Wouter Pasman
+ */
 public class EvaluatorInteger implements Evaluator {
 	
 	// Class fields
@@ -14,7 +23,11 @@ public class EvaluatorInteger implements Evaluator {
 	EVALFUNCTYPE type;
 	private double slope = 0.0;
 	private double offset = 0.0;
-		
+	
+	/**
+	 * Creates a new integer evaluator with weight 0 and
+	 * no values.
+	 */
 	public EvaluatorInteger() {
 		fweight = 0;
 	}
@@ -147,7 +160,6 @@ public class EvaluatorInteger implements Evaluator {
 	
 	public String isComplete(Objective whichobj )
 	{
-		//TODO: implement isComplete in the EvaluatorInteger
 		return null;
 	}
 

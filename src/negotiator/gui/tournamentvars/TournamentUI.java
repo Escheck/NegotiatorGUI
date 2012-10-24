@@ -733,7 +733,8 @@ public class TournamentUI extends javax.swing.JPanel
         	} catch (Exception e) {
         		JOptionPane.showMessageDialog(null, "Invalid or outdated tournament specification.", "Tournament error", 0);
         	}
-        }		
+        }
+        this.updateUI();
 	}
 		        
 	public void removeAction() {
