@@ -3,23 +3,36 @@ package negotiator.issue;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Specifies an integer value. An example of an integer value is the
+ * value 3 for the issue price with range [0,10].
+ */
 @XmlRootElement
 public class ValueInteger extends Value {
 
 	@XmlAttribute
 	private int value;
 	
+	/**
+     * Creates an integer value without value.
+     */
 	public ValueInteger() { }
 	
+	/**
+     * Creates an integer value with a value.
+     * @param i value for an issue.
+     */
 	public ValueInteger(int i) {
 		value = i;
 	}
 	
-	// Class methods
 	public ISSUETYPE getType() {
 		return ISSUETYPE.INTEGER;
 	}
 	
+	/**
+	 * @return value of this issue.
+	 */
 	public int getValue() {
 		return value;
 	}

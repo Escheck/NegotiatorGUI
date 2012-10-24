@@ -30,7 +30,7 @@ public class BOAparameter {
 	private String description;
 	
 	/**
-	 * Describes a parameter for a decoupled component.
+	 * Describes a parameter for a BOA component.
 	 * A parameter consists of a name, and the possible values for the parameter.
 	 * 
 	 * @param name of the parameter.
@@ -47,6 +47,15 @@ public class BOAparameter {
 		generatePairs();
 	}
 	
+	/**
+	 * Describes a parameter for a BOA component.
+	 * A parameter consists of a name and a description.
+	 * The value of the parameter is set to a default value.
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @param description
+	 */
 	public BOAparameter(String name, BigDecimal defaultValue, String description) {
 		this.name = name;
 		this.description = description;

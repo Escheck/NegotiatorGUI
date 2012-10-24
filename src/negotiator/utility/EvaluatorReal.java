@@ -336,9 +336,4 @@ public class EvaluatorReal implements Evaluator {
 
 		return ed;
 	}
-	public void showStatistics()
-	{
-		System.out.println("weight="+getWeight()+" min="+getMinValue()+" max="+getMaxValue());		
-	}
-	
 }

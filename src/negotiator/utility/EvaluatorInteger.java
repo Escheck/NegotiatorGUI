@@ -199,9 +199,4 @@ public class EvaluatorInteger implements Evaluator {
 		ed.offset = offset;
 		return ed;
 	}
-
-	@Override
-	public void showStatistics() {
-		// TODO Auto-generated method stub
-	}
 }

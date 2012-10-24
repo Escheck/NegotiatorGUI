@@ -3,22 +3,37 @@ package negotiator.issue;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Specifies a discrete value. An example of a discrete value is the
+ * value "red" for the issue "car color".
+ */
 @XmlRootElement
 public class ValueDiscrete  extends Value {
 
+	/** Name of the value, for example "red". */
 	@XmlAttribute
 	public String value;
 	
+	/**
+      * Creates a discrete value without name.
+      */
 	public ValueDiscrete() { }
 	
-	public ValueDiscrete(String s) {
-		value = s;
+	/**
+	 * Creates a discrete value with a name.
+	 * @param name of the value.
+	 */
+	public ValueDiscrete(String name) {
+		value = name;
 	}
 	
 	public final ISSUETYPE getType() {
 		return ISSUETYPE.DISCRETE;
 	}
 	
+	/**
+	 * @return name of the value.
+	 */
 	public String getValue() {
 		return value;
 	}

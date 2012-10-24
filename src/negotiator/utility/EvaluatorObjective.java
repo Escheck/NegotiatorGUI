@@ -96,6 +96,4 @@ public class EvaluatorObjective implements Evaluator {
 	{
 		return "Internal error: isComplete should be checked only with Issues, not with Objectives";
 	}
-	
-	public void showStatistics() { System.out.println("weight="+fweight); }
 }

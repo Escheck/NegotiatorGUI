@@ -24,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 import misc.Pair;
@@ -42,6 +41,7 @@ import negotiator.gui.NegoGUIApp;
  */
 public class BOAagentsFrame extends JDialog {
 
+	private static final long serialVersionUID = -8031426652298029936L;
 	// BIDDING STRATEGY
     private JLabel biddingStrategyLabel;
     private JComboBox biddingStrategyCB;
@@ -344,12 +344,12 @@ public class BOAagentsFrame extends JDialog {
     
     private void initButtons() {
     	addAgentButton = new JButton();
-    	addAgentButton.setText("Add agent");
-    	getContentPane().add(addAgentButton, new AbsoluteConstraints(10, 100, 105, -1));
+    	addAgentButton.setText("Add agent(s)");
+    	getContentPane().add(addAgentButton, new AbsoluteConstraints(10, 100, 107, -1));
     	
     	editAgentButton = new JButton();
     	editAgentButton.setText("Edit agent");
-    	getContentPane().add(editAgentButton, new AbsoluteConstraints(120, 100, 105, -1));
+    	getContentPane().add(editAgentButton, new AbsoluteConstraints(120, 100, 107, -1));
     	
     	saveButton = new JButton();
     	saveButton.setText("Save agents");
