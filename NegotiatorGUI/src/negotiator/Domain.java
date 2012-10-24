@@ -40,23 +40,38 @@ public class Domain
     private String name;
     private SimpleElement root;
     
+    /**
+     * Creates an empty domain.
+     */
     public Domain()
     {
     	fObjectivesRoot = null;
     	name="";
     }
     
+    /**
+     * @return XML-representation of this domain.
+     */
     public SimpleElement getXMLRoot() 
     {
     	return root;
     }
     
+    /**
+     * Creates a domain given an XML-representation of the domain.
+     * @param root XML-representation of the domain.
+     */
     public Domain(SimpleElement root)
     {
     	this.root = root;
     	loadTreeFromXML(root);
     }
     
+    /**
+     * Creates a domain given the path to a file with an XML-representation.
+     * @param filename
+     * @throws Exception
+     */
     public Domain(String filename) throws Exception
     {    	
     	this(new File(filename));
@@ -86,27 +101,11 @@ public class Domain
     		loadTreeFromXML(xml_utility_space);
     }
     
-
-    /**
-     * check if two domains are equal.
-     * Checks for full structural equality, just all issues having the same name is not enough.
-     * @param d
-     * @return true if equal, else false. returns false also when fObjectivesRoot=null 
-     */
-/*    public boolean equals(Domain d)
-    {
-    	if (fObjectivesRoot==null) return false;
-    	return fObjectivesRoot.equals(d.getObjectivesRoot());
-    }
-  */  
-    /* Wouter: Warning, getIssue does NOT get issue with ID index, the name is WRONG
-     *  A better name would be getChild 
-     */
     /**
      * Returns an issue with a given index. Considers issues in the domain tree as a plain array (uses getIssues method to generate the array).
      * 
-     * @param index - index of the issue
-     * @return
+     * @param index of the issue.
+     * @return issue with the given index.
      */
     public final Objective getIssue(int index) {
     	return getIssues().get(index);
@@ -121,6 +120,9 @@ public class Domain
     	return fObjectivesRoot.getObjective(ID); 
     }
     
+    /**
+     * @return the highest level objctive.
+     */
     public final Objective getObjectivesRoot(){
     	return fObjectivesRoot; //TODO hdevos this could be done in a more elegant way. To discuss with Richard.
     }   
@@ -234,7 +236,6 @@ public class Domain
             double minR, maxR;
             String[] values;
             String[] desc;
-            Issue issue;
             switch(issueType) {
             case DISCRETE:
             	// Collect discrete values for discrete-valued issue from xml template            	
@@ -299,6 +300,7 @@ public class Domain
     
 	/** KH 070511: Moved to here since it is generic method that can be made available to all agents.
 	 * Wouter: NOTE, it is NOT checked whether the bid has a utility>0.
+	 * @param r random variable
 	 * @return a random bid
 	 */
 	public final Bid getRandomBid(Random r)
@@ -309,7 +311,6 @@ public class Domain
        int lNrOfOptions, lOptionIndex;
        
        // For each issue, compute a random value to return in bid.
-       int i;
        for (Issue lIssue: getIssues()) {
 			switch(lIssue.getType()) {
 			case DISCRETE:
@@ -440,6 +441,9 @@ public class Domain
 		return true;
 	}
 
+	/**
+	 * @return name of the given domain.
+	 */
 	public String getName() {
 		return name;
 	}

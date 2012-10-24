@@ -17,9 +17,8 @@ import negotiator.xml.SimpleElement;
  * ArrayListXML is an arraylist with an extra toXML function.
  * 
  * @author W.Pasman
- * 
+ * @param <E> type of the ArrayList
  */
-
 public class ArrayListXML<E> extends ArrayList<E> implements XMLable
 {
 	private static final long serialVersionUID = 2308241807299226296L;

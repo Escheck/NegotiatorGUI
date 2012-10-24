@@ -11,6 +11,8 @@ import negotiator.xml.SimpleElement;
 
 public interface XMLable
 {
-   public SimpleElement toXML();
-   //public Object fromXML();
+	/**
+	 * @return XML representation of the given object.
+	 */
+	public SimpleElement toXML();
 }

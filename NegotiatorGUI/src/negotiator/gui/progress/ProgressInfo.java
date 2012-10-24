@@ -49,7 +49,10 @@ class ProgressInfo extends AbstractTableModel{
     }
     
     public Object getValueAt(int row, int col) {
-        return data[row][col];
+    	if (row < NUMBER_OF_COLUMNS && col < colNames.length) {
+    		return data[row][col];
+    	}
+    	return null;
     }
     
 	public void setValueAt(Object value, int row, int col)  {

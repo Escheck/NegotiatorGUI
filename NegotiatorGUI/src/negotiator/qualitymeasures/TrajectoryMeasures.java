@@ -1,6 +1,9 @@
 package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 import negotiator.ArrayListXML;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
@@ -66,30 +69,19 @@ public class TrajectoryMeasures {
 		ArrayList<BidPoint> setJoint = new ArrayList<BidPoint>();
 		ArrayList<BidPoint> setAll = new ArrayList<BidPoint>();
 		
+		setAll.addAll(bidSpace.bidPoints);
+		setAll = removeDuplicates(setAll);
 		
-		for (int i = 0; i < bidSpace.bidPoints.size(); i++) {
-			if (!listContainsBidPoint(bidSpace.bidPoints.get(i), setAll)) {
-				setAll.add(bidSpace.bidPoints.get(i));
-			}
-		}
+		setA.addAll(agentABids);
+		setA = removeDuplicates(setA);
+
+		setB.addAll(agentBBids);
+		setB = removeDuplicates(setB);
 		
-		for (int i = 0; i < agentABids.size(); i++) {
-			if (!listContainsBidPoint(agentABids.get(i), setA)) {
-				setA.add(agentABids.get(i));
-			}
-			if (!listContainsBidPoint(agentABids.get(i), setJoint)) {
-				setJoint.add(agentABids.get(i));
-			}
-		}
+		setJoint.addAll(agentABids);
+		setJoint.addAll(agentBBids);
+		setJoint = removeDuplicates(setJoint);
 		
-		for (int i = 0; i < agentBBids.size(); i++) {
-			if (!listContainsBidPoint(agentBBids.get(i), setB)) {
-				setB.add(agentBBids.get(i));
-			}
-			if (!listContainsBidPoint(agentBBids.get(i), setJoint)) {
-				setJoint.add(agentBBids.get(i));
-			}
-		}
 		explorationRateA = (double)setA.size() / (double)setAll.size();
 		explorationRateB = (double)setB.size() / (double)setAll.size();
 		jointExplorationRate = (double)setJoint.size() / (double)setAll.size();
@@ -274,5 +266,21 @@ public class TrajectoryMeasures {
 		agentB.setAttribute("perc_pareto_bids", percParetoBidsB + "");
 		
 		return tjQualityMeasures;
+	}
+	
+	public ArrayList<BidPoint> removeDuplicates(ArrayList<BidPoint> list) {
+	    // ... the list is already populated
+	    Set<BidPoint> s = new TreeSet<BidPoint>(new Comparator<BidPoint>() {
+
+	        @Override
+	        public int compare(BidPoint o1, BidPoint o2) {
+	        	if (o1.getUtilityA().equals(o2.getUtilityA()) && o1.getUtilityB().equals(o2.getUtilityB())) {
+	        		return 0;
+	        	}
+	        	return -1;
+	        }
+	    });
+	    s.addAll(list);
+	    return new ArrayList<BidPoint>(s);
 	}
 }

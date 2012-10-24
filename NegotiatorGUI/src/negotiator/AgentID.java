@@ -14,6 +14,7 @@ public class AgentID {
 	public AgentID(String id) {
 		this.ID = id;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

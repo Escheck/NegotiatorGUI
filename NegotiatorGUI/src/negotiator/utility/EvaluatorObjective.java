@@ -4,6 +4,10 @@ import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.xml.SimpleElement;
 
+/**
+ * Evaulator for an objective. In the current implementation it makes no sense to
+ * create this type of object.
+ */
 public class EvaluatorObjective implements Evaluator {
 	
 	// Class fields
@@ -11,11 +15,17 @@ public class EvaluatorObjective implements Evaluator {
 	private boolean fweightLock;	
 	private boolean hasWeightP; // added Wouter, 11 oct 2007
 	
+	/**
+	 * Creates a new evaluator for an objective with a zero weight.
+	 */
 	public EvaluatorObjective() {
 		fweight = 0; //needs to be set later on.
 	}
 	
-	/** clone */ 
+	/**
+	 * Copies the data from the given EvaluatorObjective.
+	 * @param e other EvaluatorObjective
+	 */
 	public EvaluatorObjective(EvaluatorObjective e) {
 		fweight = e.getWeight();
 		fweightLock=e.weightLocked();
@@ -49,14 +59,17 @@ public class EvaluatorObjective implements Evaluator {
 		fweightLock = false;
 	}
 	
+	/**
+	 * @param doesHaveWeight signals that this objective has a weight.
+	 */
 	public void setHasWeight(boolean doesHaveWeight)
 	{ hasWeightP=doesHaveWeight; }
 	
-	
+	/**
+	 * @return true if objective has a weight.
+	 */
 	public boolean getHasWeight() { return hasWeightP; }
-	
-	
-	
+
 	/**
 	 * 
 	 * @return The state of the weightlock.
@@ -67,10 +80,6 @@ public class EvaluatorObjective implements Evaluator {
 
 	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
 		return 0.0; //TODO hdevos: Do what here, evaluate the bid for it's children?
-	}
-	
-	public Double getEvaluation(ValueDiscrete value) {
-		return 0.0;  //TODO hdevos: Do what here, only it's children have values. Or so i gather.
 	}
 	
 	public EVALUATORTYPE getType() {

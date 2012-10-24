@@ -102,7 +102,7 @@ public class EditIssueDialog extends NewIssueDialog {
 
 				if (eval != null) {
 					integerUtilityLowestValue.setText("" + eval.getUtilLowestValue());
-					integerUtilityHighestValue.setText("" + eval.getUtilHeighestValue());
+					integerUtilityHighestValue.setText("" + eval.getUtilHighestValue());
 				}
 			}
 		}
