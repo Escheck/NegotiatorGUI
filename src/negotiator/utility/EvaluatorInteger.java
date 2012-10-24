@@ -75,10 +75,14 @@ public class EvaluatorInteger implements Evaluator {
 		return getEvaluation(lTmp);
 	}
 	
-	public Double getEvaluation(int pValue) {
+	/**
+	 * @param value of an issue.
+	 * @return utility of the given value (range: [0,1]).
+	 */
+	public Double getEvaluation(int value) {
 		double utility;		
 
-		utility = EVALFUNCTYPE.evalLinear(pValue - lowerBound, slope, offset);
+		utility = EVALFUNCTYPE.evalLinear(value - lowerBound, slope, offset);
 		if (utility<0)
 			utility = 0;
 		else if (utility > 1)
@@ -90,29 +94,38 @@ public class EvaluatorInteger implements Evaluator {
 		return EVALUATORTYPE.INTEGER;
 	}
 	
+	/**
+	 * @return evaluation function type.
+	 */
 	public EVALFUNCTYPE getFuncType(){
 		return this.type;
 	}
 	
+	/**
+	 * @return lowerbound of the integer issue.
+	 */
 	public int getLowerBound() {
 		return lowerBound;
 	}
 	
+	/**
+	 * @return higherbound of the integer issue.
+	 */
 	public int getUpperBound() {
 		return upperBound;
 	}	
 	
+	/**
+	 * @return lowest possible utility value.
+	 */
 	public double getUtilLowestValue() {
-		if (slope == 0.0 && offset == 0.0) {
-			return 0;
-		}
 		return offset;
 	}
 
-	public double getUtilHeighestValue() {
-		if (slope == 0.0 && offset == 0.0) {
-			return 0;
-		}
+	/**
+	 * @return highest possible utility value.
+	 */
+	public double getUtilHighestValue() {
 		return (offset + slope * (upperBound - lowerBound));
 	}
 
@@ -132,6 +145,13 @@ public class EvaluatorInteger implements Evaluator {
 		upperBound = ub;
 	}
 
+	/**
+	 * Specifies the linear utility function of the issue by giving the
+	 * utility of the lowest value and the highest value.
+	 * 
+	 * @param utilLowInt utility of the lowest vale.
+	 * @param utilHighInt utility of the highest value.
+	 */
 	public void setLinearFunction(double utilLowInt,
 			double utilHighInt) {
 		slope = (utilHighInt - utilLowInt) / (-lowerBound + upperBound);
@@ -163,37 +183,65 @@ public class EvaluatorInteger implements Evaluator {
 		return null;
 	}
 
+	/**
+	 * @return slope of the linear utility function.
+	 */
 	public double getSlope() {
 		return slope;
 	}
 
+	/**
+	 * @return slope of the linear utility function.
+	 */
 	@Deprecated
 	public double getLinearParam() {
 		return getSlope();
 	}
 	
+	/**
+	 * Sets the slope of the linear utility function.
+	 * @param slope of the linear utility function.
+	 */
 	public void setSlope(double slope) {
 		this.slope = slope;
 	}
 
+	/**
+	 * Sets the slope of the linear utility function.
+	 * @param slope of the linear utility function.
+	 */
 	@Deprecated
-	public void setLinearParam(double linearParam) {
-		setSlope(linearParam);
+	public void setLinearParam(double slope) {
+		setSlope(slope);
 	}
 	
+	/**
+	 * @return offset of the linear utility function.
+	 */
 	public double getOffset() {
 		return offset;
 	}
 	
+	/**
+	 * @return offset of the linear utility function.
+	 */
 	@Deprecated
 	public double getConstantParam() {
 		return getOffset();
 	}
 
+	/**
+	 * Sets the offset of the linear utility function.
+	 * @param offset of the linear utility function.
+	 */
 	public void setOffset(double offset) {
 		this.offset = offset;
 	}
 	
+	/**
+	 * Sets the offset of the linear utility function.
+	 * @param offset of the linear utility function.
+	 */
 	@Deprecated
 	public void setConstantParam(double offset) {
 		setOffset(offset);

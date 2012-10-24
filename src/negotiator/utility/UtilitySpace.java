@@ -44,7 +44,6 @@ public class UtilitySpace {
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
     // in the Similarity agent
     private SimpleElement fXMLRoot;
-    public SimpleElement getXMLRoot() { return fXMLRoot;}
     private Double fReservationValue = null;
     
     private double discountFactor = 0;
@@ -61,7 +60,11 @@ public class UtilitySpace {
     	fEvaluators = new HashMap<Objective, Evaluator>();
     }
 	
-	  public UtilitySpace(Domain domain) {
+    /**
+     * Creates a new utilityspace of the given domain.
+     * @param domain for which the utilityspace should be specified.
+     */
+    public UtilitySpace(Domain domain) {
     	this.domain=domain;
     	fEvaluators = new HashMap<Objective, Evaluator>();
     }
@@ -71,7 +74,7 @@ public class UtilitySpace {
      * @param domain
      * @param fileName to read domain from. 
      * Set fileName to "" if no file available, in which case default evaluators are loaded..
-     * @throws if error occurs, e.g. if domain does not match the util space, or file not found.
+     * @throws Exception if error occurs, e.g. if domain does not match the util space, or file not found.
      */
     public UtilitySpace(Domain domain, String fileName) throws Exception
     {
@@ -91,7 +94,10 @@ public class UtilitySpace {
         }
     }
     
-    /** @return a clone of another utility space */
+    /**
+     * Copies the data from another UtilitySpace.
+     * @param us utilityspace to be cloned.
+     */
     public UtilitySpace(UtilitySpace us)
     {
     	domain=us.getDomain();
@@ -190,8 +196,8 @@ public class UtilitySpace {
     
     /**
      * check if this utility space is ready for negotiation.
-     * @param d is the domain in which nego is taking place
-     * throws if problem occurs.
+     * @param dom is the domain in which nego is taking place
+     * @throws Exception if utility space is incomplete (@see isComplete());
      */
     public void checkReadyForNegotiation(Domain dom) throws Exception
     {
@@ -210,7 +216,14 @@ public class UtilitySpace {
          
     }
     
-    /**Wouter: I think this should not be used anymore*/
+    /**
+     * @return XML root of this utilityspace.
+     */
+    public SimpleElement getXMLRoot() { return fXMLRoot;}
+    
+    /**
+     * @return number of issues.
+     */
     public final int getNrOfEvaluators() {
     	return fEvaluators.size();
     }
@@ -230,8 +243,9 @@ public class UtilitySpace {
     }
     
     /**
-     * Note: computes undiscounted utility.
-     * If a hard constraint is violated, the utility is 0.
+     * @param bid of which we are interested in its utility.
+     * @return undiscounted utility of the given bid.
+     * @throws Exception when bid is incomplete or invalid.
      */
     public double getUtility(Bid bid) throws Exception
     {
@@ -264,7 +278,7 @@ public class UtilitySpace {
      * @param bid
      * @param timeAfterStart
      * @param deadline
-     * @return
+     * @return discounted utility.
      * @throws Exception
      */
     @Deprecated
@@ -289,6 +303,9 @@ public class UtilitySpace {
      * 
      * For t = 0 the utility remains unchanged, and for t = 1 the original utility is multiplied by the discount factor. 
      * The effect is almost linear in between.
+     * @param bid of which we are interested in its utility.
+     * @param timeline indicating the time passed in the negotiation.
+     * @return discounted utility.
      */
     public double getUtilityWithDiscount(Bid bid, Timeline timeline)
     {
@@ -298,6 +315,9 @@ public class UtilitySpace {
     
     /**
      * @see #getUtilityWithDiscount(Bid, Timeline)
+     * @param bid of which we want to know the utility at the given time.
+     * @param time at which we want to know the utility of the bid.
+     * @return discounted utility.
      */
     public double getUtilityWithDiscount(Bid bid, double time)
     {
@@ -321,6 +341,11 @@ public class UtilitySpace {
      * discountedUtil = util * Math.pow(discount, time).
      * 
      * Checks for bounds on the discount factor and time.
+     * 
+     * @param util undiscounted utility.
+     * @param time at which we want to know the discounted utility.
+     * @param discountFactor of the preference profile.
+     * @return discounted version of the given utility at the given time.
      */
 	public static double discount(double util, double time, double discountFactor)
 	{
@@ -353,7 +378,7 @@ public class UtilitySpace {
      * 
      * Checks for bounds on the discount factor and time.
      */
-	public double discount(double util, double time)
+	private double discount(double util, double time)
 	{
 		double discount = discountFactor;
     	if (discountFactor <= 0 || discountFactor >= 1)
@@ -378,11 +403,13 @@ public class UtilitySpace {
 	}
     
     /**
-     * gets the utility of one issue in the bid.
-     * @param pIssueIndex
+     * Returns the utility of one issue in the bid. Note that this value
+     * is in the range [0,1] as it is not normalized by the issue weight.
+     * 
+     * @param pIssueIndex of the issue.
      * @param bid
-     * @return
-     * @throws Exception
+     * @return evaluation of the value of the issue of the given bid.
+     * @throws Exception if the bid or value is null.
      */
     public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
     
@@ -612,31 +639,43 @@ public class UtilitySpace {
 			System.out.println("Obje "+ issueID +" == null");
 		return 0.0; //fallthrough.
     }
-    public double setWeightSimple(Objective tmpObj, double wt){
+	
+	/**
+	 * Method which sets the weight of an issue without checking
+	 * normalization. This is faster than setWeightSimple if normalization
+	 * is ensured.
+	 * 
+     * @param objective of which the weights must be set.
+     * @param weight to which the weight of the objective must be set.
+	 */
+    public void setWeightSimple(Objective objective, double weight){
     	try{
-    		Evaluator ev = fEvaluators.get(tmpObj);
-   			ev.setWeight(wt); //set weight
-    	}catch(NullPointerException npe){
-    		return -1;
+    		Evaluator ev = fEvaluators.get(objective);
+   			ev.setWeight(weight); //set weight
+    	}catch(NullPointerException e){
+    		e.printStackTrace();
     	}
-    	return wt;
     }
     
-    
-	
-    public double setWeight(Objective tmpObj, double wt){
+    /**
+     * Method used to set the weight of the given objective.
+     * @param objective of which the weights must be set.
+     * @param weight to which the weight of the objective must be set.
+     * @return the new weight of the issue after normalization.
+     */
+    public double setWeight(Objective objective, double weight){
     	try{
-    		Evaluator ev = fEvaluators.get(tmpObj);
+    		Evaluator ev = fEvaluators.get(objective);
     		double oldWt = ev.getWeight();
     		if(!ev.weightLocked()){
-    			ev.setWeight(wt); //set weight
+    			ev.setWeight(weight); //set weight
     		}
-    		this.normalizeChildren(tmpObj.getParent());
+    		this.normalizeChildren(objective.getParent());
     		if(this.checkTreeNormalization()){
-    			return fEvaluators.get(tmpObj).getWeight();
+    			return fEvaluators.get(objective).getWeight();
     		}else{
     			ev.setWeight(oldWt); //set the old weight back.
-    			return fEvaluators.get(tmpObj).getWeight();
+    			return fEvaluators.get(objective).getWeight();
     		}
     	}catch(NullPointerException npe){
     		return -1;
@@ -663,6 +702,9 @@ public class UtilitySpace {
     	return domain.getObjective(index);
     }
     
+    /**
+     * @return domain belonging to this preference profile.
+     */
     public final Domain getDomain() {
         return domain;
     }
@@ -740,6 +782,13 @@ public class UtilitySpace {
     	return true;    	
     }
     
+    /**
+     * Normalizes the weights of objectives of the given objective
+     * so that they sum up to one.
+     * 
+     * @param obj of which the weights must be normalized.
+     * @return all evaluators using getEvaluators().
+     */
     public final Set<Map.Entry<Objective,Evaluator>> normalizeChildren(Objective obj){
     	Enumeration<Objective> childs = obj.children();
     	double RENORMALCORR=0.05; // we add this to all weight sliders to solve the slider-stuck-at-0 problem.
@@ -801,17 +850,12 @@ public class UtilitySpace {
     	
     	return getEvaluators();
     }
-    
-     public final Set<Map.Entry<Objective,Evaluator> > modifyWeight(Objective obj, double wt)
-     {
-    	 if(fEvaluators.get(obj).weightLocked() || wt > 1.0){
-    		 return getEvaluators();
-    	 }else{
-    		 fEvaluators.get(obj).setWeight(wt);
-    		 return normalizeChildren(obj.getParent());
-    	 }
-     }
 
+     /**
+      * Removes an evaluator.
+      * @param obj to be removed.
+      * @return true is successfully removed.
+      */
      public boolean removeEvaluator(Objective obj){
     	 try{
     		 fEvaluators.remove(obj);
@@ -991,15 +1035,17 @@ public class UtilitySpace {
      * This is value remains constant during the negotiation. 
      * However, by default, the reservation value descreases with time. To obtain the discounted version of 
      * the reservation value, use {@link #getReservationValueWithDiscount(Timeline)}.
+     * @return undiscounted reservation value of the preference profile (may be null).
      */
     public Double getReservationValue() 
     {
-    	return fReservationValue;
+    	return getReservationValueUndiscounted();
     }
     
     /**
      * Equivalent to {@link #getReservationValue()}, but always returns a double value. When the original reservation value is
      * <b>null</b> it returns the default value 0.
+     * @return undiscounted reservation value of the preference profile (never null). 
      * @see #getReservationValue()
      */
     public double getReservationValueUndiscounted() 
@@ -1011,6 +1057,8 @@ public class UtilitySpace {
     
     /**
      * The discounted version of {@link #getReservationValue()}.
+     * @param time at which we want to know the utility of the reservation value.
+     * @return discounted reservation value.
      */
     public double getReservationValueWithDiscount(double time) 
     {
@@ -1023,12 +1071,17 @@ public class UtilitySpace {
     
     /**
      * The discounted version of {@link #getReservationValue()}.
+     * @param timeline specifying the current time in the negotiation.
+     * @return discounted reservation value.
      */
     public double getReservationValueWithDiscount(Timeline timeline) 
     {
     	return getReservationValueWithDiscount(timeline.getTime());
     }
 
+    /**
+     * @return filename of this preference profile.
+     */
     public String getFileName() {
     	return fileName;
     }
@@ -1049,6 +1102,9 @@ public class UtilitySpace {
 		return true;
 	}
 
+	/**
+	 * @return discount factor of this preference profile.
+	 */
 	public final double getDiscountFactor() {
 		return discountFactor;
 	}

@@ -87,17 +87,6 @@ public class ContinuousTimeline extends Timeline
 		return t;
 	}
 	
-	
-	public static void main(String[] args)
-	{
-		ContinuousTimeline timeline = new ContinuousTimeline(60);
-		while (true)
-		{
-			timeline.printElapsedSeconds();
-			timeline.printTime();			
-		}
-	}
-
 	@Override
 	public double getTotalTime() {
 		return getTotalSeconds();
