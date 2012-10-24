@@ -33,7 +33,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	private Integer evalMax= null;
 
 	/**
-	 * Creates a new discrete evaulator with weight 0 and
+	 * Creates a new discrete evaluator with weight 0 and
 	 * no values.
 	 */
 	public EvaluatorDiscrete() {
@@ -76,12 +76,12 @@ public class EvaluatorDiscrete implements Evaluator {
 	}
 	
 	/**
-	 * @return the non-normalized evaluation. 
-	 * Or null if value is not an alternative.
+	 * @param value of which the evaluation is requested.
+	 * @return the non-normalized evaluation of the given value.
 	 */
-	public Integer getValue(ValueDiscrete alternativeP)
+	public Integer getValue(ValueDiscrete value)
 	{
-		return fEval.get(alternativeP);
+		return fEval.get(value);
 	}
 	
 	private void calcEvalMax() throws Exception{
@@ -96,7 +96,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	/**
 	 * @return the largest evaluation value available
-	 * @throws exception if there are no alternatives.
+	 * @throws Exception if there are no alternatives.
 	 */
 	public Integer getEvalMax() throws Exception
 	{
@@ -121,23 +121,42 @@ public class EvaluatorDiscrete implements Evaluator {
 		return normalize(fEval.get((ValueDiscrete)bid.getValue(ID)));
 	}
 	
-	public Double getEvaluation(ValueDiscrete altP) throws Exception 
+	/**
+	 * @param value of the issue.
+	 * @return normalized utility (between [0,1]) of the given value.
+	 * @throws Exception if value is null.
+	 */
+	public Double getEvaluation(ValueDiscrete value) throws Exception 
 	{
-		return normalize(fEval.get(altP));
+		return normalize(fEval.get(value));
 	}
-	public Integer getEvaluationNotNormalized(UtilitySpace uspace, Bid bid, int ID) throws Exception
+	
+	/**
+	 * @param bid
+	 * @param ID of the issue of which we are interested in the value
+	 * @return non-normalized evaluation (positive integer) of the given value.
+	 * @throws Exception if bid or value is null.
+	 */
+	public Integer getEvaluationNotNormalized(Bid bid, int ID) throws Exception
 	{
 		return fEval.get(((ValueDiscrete)bid.getValue(ID)));
 	}
-	public Integer getEvaluationNotNormalized(ValueDiscrete altP) throws Exception 
+	
+	/**
+	 * 
+	 * @param value of the issue.
+	 * @return non-normalized evaluation (positive integer) of the given value.
+	 * @throws Exception if value is null.
+	 */
+	public Integer getEvaluationNotNormalized(ValueDiscrete value) throws Exception 
 	{
-		return fEval.get(altP);
+		return fEval.get(value);
 	}
 	
 	/** 
 	 * @param EvalValueL
 	 * @return normalized EvalValue
-	 * @throws exception if no evaluators or illegal values in evaluator.
+	 * @throws Exception if no evaluators or illegal values in evaluator.
 	 * 
 	 * ASSUMED that Max value is at least 1, becaues EVERY evaluatordiscrete is at least 1.
 	 */
@@ -219,8 +238,13 @@ public class EvaluatorDiscrete implements Evaluator {
 		return null;
 	}
 
-	public void addEvaluation (ValueDiscrete pValue, Integer pEval) {
-		this.fEval.put(pValue, pEval);
+	/**
+	 * Add a new possible value to the issue.
+	 * @param value to be added to the issue.
+	 * @param evaluation of the value.
+	 */
+	public void addEvaluation (ValueDiscrete value, Integer evaluation) {
+		this.fEval.put(value, evaluation);
 		try {
 			calcEvalMax();
 		} catch (Exception e) {
@@ -230,7 +254,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	}
 	
 	/**
-	 * @return value that has maximum utility
+	 * @return value with the highest evaluation.
 	 */
 	public Value getMaxValue() {
 		  Iterator<Map.Entry<ValueDiscrete, Integer>> it = fEval.entrySet().iterator();
@@ -246,6 +270,9 @@ public class EvaluatorDiscrete implements Evaluator {
 		return lValue;
 	}
 
+	/**
+	 * @return value with the lowest evaluation.
+	 */
 	public Value getMinValue() {
 		  Iterator<Map.Entry<ValueDiscrete, Integer>> it = fEval.entrySet().iterator();
 		  Integer lTmp = Integer.MAX_VALUE;
@@ -274,16 +301,15 @@ public class EvaluatorDiscrete implements Evaluator {
 
 		return ed;
 	}
-	
-	public void showStatistics()
-	{
-		System.out.println("weight="+getWeight()+" min="+getMinValue()+" max="+getMaxValue());		
-	}
 
+	/**
+	 * @return valid values for this issue.
+	 */
 	public Set<ValueDiscrete> getValues() {
 		return fEval.keySet();
 	}
-		@Override
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
