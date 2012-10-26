@@ -200,7 +200,7 @@ There are multiple ways to define a more global ``optimum''. One approach to opt
 A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preference profile. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids for itself. By default, there are already a few opponent models implemented in \Genius, such as the \textit{HardHeadedFrequencyModel} used by the \textit{HardHeaded} agent which won the ANAC2011.
  
 \section{Running the Environment}
-The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. There are known issues with Linux (in particular Ubuntu and SUSE) mainly involving the visualization of the GUI. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
+The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
 
 To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
 
@@ -357,7 +357,7 @@ In contrast to the negotiation session mode, a large set of tournament options c
 	\end{itemize}
 \end{itemize}
 
-\subsection{Running a Distributed Tournament}
+\subsection{Advanced: Running a Distributed Tournament}
 A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Following, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
 
 Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data which we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{database}.
@@ -692,7 +692,7 @@ In the previous section we discussed how to create each type of BOA component. T
   </omstrategies>
 </repository>
 \end{lstlisting}
-\pagebreak
+
 \subsection{Advanced: Converting a BOA Agent to an Agent}
 To convert a BOA agent to a normal agent you have to create a class that extends \textit{BOA agent} and override the \textit{agentSetup} method. Below is an example of a BOA agent wrapped as a normal agent.
 
