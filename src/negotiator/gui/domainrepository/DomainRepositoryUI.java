@@ -72,9 +72,21 @@ public class DomainRepositoryUI
 		scenarioTree.setShowsRootHandles(true);
 		scenarioTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		scenarioTree.addMouseListener(new MouseAdapter() {
-	        @Override
+	        
+			// for Windows
+			@Override
 	        public void mouseReleased(MouseEvent e) {
-	        	if (e.getButton() == MouseEvent.BUTTON3) {
+	        	mouseCode(e);
+	        }
+	        
+			// for Linux
+	        @Override
+	        public void mousePressed(MouseEvent e) {
+	        	mouseCode(e);
+	        }
+
+			private void mouseCode(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
 		        	TreePath selPath = scenarioTree.getPathForLocation(e.getX(), e.getY());
 		            if (selPath == null){
 		            	JPopupMenu popup = createPopupMenu(null);
@@ -83,13 +95,13 @@ public class DomainRepositoryUI
 		            }
 		            
 		            MyTreeNode node = (MyTreeNode) selPath.getLastPathComponent();
-		            scenarioTree.setSelectionRow(root.getIndex(node));
+		            scenarioTree.setSelectionPath(selPath);
 		            if (e.isPopupTrigger() && e.getComponent() instanceof JTree ) {
 		                JPopupMenu popup = createPopupMenu(node);
 		                popup.show(e.getComponent(), e.getX(), e.getY());
 		            }
 	        	}
-	        }
+			}
 		});
 	}
 
