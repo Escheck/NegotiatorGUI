@@ -12,10 +12,12 @@ import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 
 import negotiator.gui.NegoGUIApp;
+import negotiator.gui.tournamentvars.TournamentOptionsUI;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 
@@ -272,7 +274,7 @@ public class Global {
 		if (!logPrefix.equals(""))
 			return logPrefix + "log.xml";
 		else if (LOG_TO_DATED_FILES)
-			return "log/" + getLoadDate() + ".xml";
+			return "log/" + getLoadDate() + getPostFix() + ".xml";
 		else
 			return outcomesFile;
 	}
@@ -280,7 +282,7 @@ public class Global {
 	public static String getDistributedOutcomesFileName()
 	{
 		if (LOG_TO_DATED_FILES)
-			return "log/DT-" + getLoadDate() + ".xml";
+			return "log/DT-" + getLoadDate() + getPostFix() + ".xml";
 		else
 			return outcomesFile;
 	}
@@ -288,7 +290,7 @@ public class Global {
 	public static String getTournamentOutcomeFileName()
 	{
 		if (LOG_TO_DATED_FILES)
-			return "log/TM-" + getLoadDate() + ".xml";
+			return "log/TM-" + getLoadDate() + getPostFix() + ".xml";
 		else
 			return outcomesFile;
 	}
@@ -298,14 +300,14 @@ public class Global {
 		if (!logPrefix.equals(""))
 			return logPrefix + "extensive_log.xml";
 		else if (LOG_TO_DATED_FILES)
-			return "log/extensive " + getLoadDate() + ".xml";
+			return "log/extensive " + getLoadDate() + getPostFix() + ".xml";
 		else
 			return "extensive " + outcomesFile;
 	}
 	
 	public static String getOQMOutcomesFileName()
 	{
-		return "log/OQM " + getLoadDate() + ".csv";
+		return "log/OQM " + getLoadDate() + getPostFix() + ".csv";
 	}
 
 	public static String getBinaryRoot() {
@@ -331,5 +333,17 @@ public class Global {
 			e.printStackTrace();
 		}
 		return inJar;
+	}
+	
+	private static String getPostFix() {
+		String postFix = "";
+		if (TournamentConfiguration.getBooleanOption("appendModeAndDeadline", false)) {
+			String mode = "time";
+			if (TournamentConfiguration.getBooleanOption("protocolMode", false)) {
+				mode = "rounds";
+			}
+			postFix += "_" + mode + "_" + TournamentConfiguration.getIntegerOption("deadline", 180);
+		}
+		return postFix;
 	}
 }

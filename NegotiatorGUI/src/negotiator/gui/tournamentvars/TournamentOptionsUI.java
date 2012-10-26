@@ -32,6 +32,8 @@ public class TournamentOptionsUI extends JDialog {
 	private JLabel logNegotiationTrace;
     private JCheckBox logNegotiationTraceCheck;
     private JLabel logging;
+    private JLabel appendModeAndDeadline;
+    private JCheckBox appendModeAndDeadlineCheck;
     private JButton okButton;
     private JLabel playAgainstSelf;
     private JCheckBox playAgainstSelfCheck;
@@ -126,6 +128,11 @@ public class TournamentOptionsUI extends JDialog {
         logFinalAccuracyCheck.setEnabled(false);
         logFinalAccuracy.setText("Log final accuracy");
 
+        //		OPTION: append mode and deadline
+        appendModeAndDeadline = new JLabel();
+        appendModeAndDeadlineCheck = new JCheckBox();
+        appendModeAndDeadline.setText("Append mode and deadline");
+        
         // HEADER: visualization
         visualization = new JLabel();
         visualization.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -187,7 +194,7 @@ public class TournamentOptionsUI extends JDialog {
                 config.put("showAllBids", showAllBidsCheck.isSelected() ? 1 : 0);
                 config.put("showLastBid", showLastBidCheck.isSelected() ? 1 : 0);
                 config.put("disableGUI", disableGUICheck.isSelected() ? 1 : 0);
-    			
+                config.put("appendModeAndDeadline", appendModeAndDeadlineCheck.isSelected() ? 1 : 0);
                 if (allValid) {
                 	dispose();
                 }
@@ -236,6 +243,7 @@ public class TournamentOptionsUI extends JDialog {
                                             .addComponent(showAllBidsCheck)
                                             .addComponent(showLastBidCheck)
                                             .addComponent(logFinalAccuracyCheck)
+                                            .addComponent(appendModeAndDeadlineCheck)
                                             .addComponent(disableGUICheck))
                                         .addGap(25, 25, 25))
                                     .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
@@ -248,6 +256,7 @@ public class TournamentOptionsUI extends JDialog {
                             .addComponent(logging)
                             .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(visualization)
                             .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -295,6 +304,10 @@ public class TournamentOptionsUI extends JDialog {
                     .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                     .addComponent(logFinalAccuracyCheck))
                 .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                    .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(appendModeAndDeadlineCheck))
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(visualization)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.TRAILING)
@@ -338,6 +351,8 @@ public class TournamentOptionsUI extends JDialog {
 			showAllBidsCheck.setSelected(prevConfig.containsKey("showAllBids") && prevConfig.get("showAllBids") != 0);
 			showLastBidCheck.setSelected(prevConfig.containsKey("showLastBid") && prevConfig.get("showLastBid") != 0);
 			disableGUICheck.setSelected(prevConfig.containsKey("disableGUI") && prevConfig.get("disableGUI") != 0);
+			appendModeAndDeadlineCheck.setSelected(prevConfig.containsKey("appendModeAndDeadline") && prevConfig.get("appendModeAndDeadline") != 0);
+			
 			if (disableGUICheck.isSelected()) {
 				showAllBidsCheck.setEnabled(false);
 				showLastBidCheck.setEnabled(false);
