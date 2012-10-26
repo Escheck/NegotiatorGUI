@@ -74,20 +74,21 @@ public class DomainRepositoryUI
 		scenarioTree.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseReleased(MouseEvent e) {
-	        	
-	        	TreePath selPath = scenarioTree.getPathForLocation(e.getX(), e.getY());
-	            if (selPath == null || scenarioTree.getSelectionPath() == null){
-	            	JPopupMenu popup = createPopupMenu(null);
-	            	popup.show(e.getComponent(), e.getX(), e.getY());
-	            	return;
-	            }
-	            
-	            MyTreeNode node = (MyTreeNode) scenarioTree.getSelectionPath().getLastPathComponent();
-	            
-	            if (e.isPopupTrigger() && e.getComponent() instanceof JTree ) {
-	                JPopupMenu popup = createPopupMenu(node);
-	                popup.show(e.getComponent(), e.getX(), e.getY());
-	            }
+	        	if (e.getButton() == MouseEvent.BUTTON3) {
+		        	TreePath selPath = scenarioTree.getPathForLocation(e.getX(), e.getY());
+		            if (selPath == null){
+		            	JPopupMenu popup = createPopupMenu(null);
+		            	popup.show(e.getComponent(), e.getX(), e.getY());
+		            	return;
+		            }
+		            
+		            MyTreeNode node = (MyTreeNode) selPath.getLastPathComponent();
+		            scenarioTree.setSelectionRow(root.getIndex(node));
+		            if (e.isPopupTrigger() && e.getComponent() instanceof JTree ) {
+		                JPopupMenu popup = createPopupMenu(node);
+		                popup.show(e.getComponent(), e.getX(), e.getY());
+		            }
+	        	}
 	        }
 		});
 	}
