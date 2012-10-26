@@ -159,7 +159,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		if (!TournamentConfiguration.getBooleanOption("disableGUI", false)) {
 			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(), getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
 		}
-		if(Global.fDebug || TournamentConfiguration.getBooleanOption("protocolMode", false)) {
+		if (TournamentConfiguration.getBooleanOption("protocolMode", false)) {
 			sessionrunner.run();
 		} else {
 			negoThread = new Thread(sessionrunner);

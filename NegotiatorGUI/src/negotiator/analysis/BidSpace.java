@@ -41,12 +41,7 @@ public class BidSpace {
 	 */
 	public BidSpace(UtilitySpace... utilityspaces) throws Exception {
 		initializeUtilitySpaces(utilityspaces);
-
-		if (Global.LOW_MEMORY_MODE) {
-			buildSpace(true);
-		} else {
-			buildSpace(false);
-		}
+		buildSpace(true);
 	}
 	
 	/**

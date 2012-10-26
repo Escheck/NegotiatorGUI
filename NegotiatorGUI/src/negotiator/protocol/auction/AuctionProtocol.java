@@ -19,6 +19,7 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
@@ -389,7 +390,7 @@ public class AuctionProtocol extends Protocol {
 					"Buyer",
 					3600);
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB, agentARepItem, agentBRepItem, "", "");
-		if(Global.fDebug) {
+		if(TournamentConfiguration.getBooleanOption("protocolMode", false)) {
 			sessionrunner.run();
 		} else {
 			int totalTime;

@@ -4,15 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
-
 import negotiator.gui.NegoGUIApp;
-import negotiator.gui.tournamentvars.TournamentOptionsUI;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -29,37 +26,23 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 public class Global {
 
 	private static AgentsLoader agentsLoader;
-	
-	public static Logger logger;
-	public static String[] args;
-	
+
 	/** Path to domain repository */
 	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
 	/** Path to agent repository */
 	public static final String AGENT_REPOSITORY = "agentrepository.xml";
 	/** Path to protocol repository */
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
-	
-	public static boolean batchMode = false;
 
 	public static boolean experimentalSetup = false;// set to true to allow agent
 													// to access negotiation
 													// environment
-	public static String outcomesFile = "outcomes.xml";
-
 	public static String logPrefix = "";
-
-	public static boolean fDebug = false;
 	
-	public static final Date loadDate = Calendar.getInstance().getTime();
-	/** Use extensive data-named logging files */
-	public static final boolean LOG_TO_DATED_FILES = !false;
+	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
-
-	/** Enables experimental vars in a tournament */
-	public static final boolean EXPERIMENTAL_VARS_ENABLED = false;
 	
 	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
 	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
@@ -67,16 +50,6 @@ public class Global {
 	 * is raised to 30 minutes if this functionality is enabled.
 	 */
 	public static final boolean PAUSABLE_TIMELINE = false;
-	
-	/**
-	 * Using this option is recommended when your PC has less than 4 GB of RAM.
-	 * The only side-effect is that it is not possible to retrieve the Pareto bids
-	 * given the bid points. This could be a problem for quality measures, but in this
-	 * case the alternate constructor of BidSpace can be used.
-	 * 
-	 * Also, this boolean ensures that all bidspaces are not calculated beforehand.
-	 */
-	public static final boolean LOW_MEMORY_MODE = true;
 
 	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
@@ -94,10 +67,6 @@ public class Global {
 		sdf.setTimeZone(TimeZone.getDefault());
 
 		return sdf.format(cal.getTime());
-	}
-
-	public static boolean isDebug() {
-		return fDebug;
 	}
 
 	public static String getLocalDirName() {
@@ -273,36 +242,25 @@ public class Global {
 	{
 		if (!logPrefix.equals(""))
 			return logPrefix + "log.xml";
-		else if (LOG_TO_DATED_FILES)
-			return "log/" + getLoadDate() + getPostFix() + ".xml";
-		else
-			return outcomesFile;
+		
+		return "log/" + getLoadDate() + getPostFix() + ".xml";
 	}
 	
 	public static String getDistributedOutcomesFileName()
 	{
-		if (LOG_TO_DATED_FILES)
-			return "log/DT-" + getLoadDate() + getPostFix() + ".xml";
-		else
-			return outcomesFile;
+		return "log/DT-" + getLoadDate() + getPostFix() + ".xml";
 	}
 	
 	public static String getTournamentOutcomeFileName()
 	{
-		if (LOG_TO_DATED_FILES)
-			return "log/TM-" + getLoadDate() + getPostFix() + ".xml";
-		else
-			return outcomesFile;
+		return "log/TM-" + getLoadDate() + getPostFix() + ".xml";
 	}
 	
 	public static String getExtensiveOutcomesFileName()
 	{
 		if (!logPrefix.equals(""))
 			return logPrefix + "extensive_log.xml";
-		else if (LOG_TO_DATED_FILES)
-			return "log/extensive " + getLoadDate() + getPostFix() + ".xml";
-		else
-			return "extensive " + outcomesFile;
+		return "log/extensive " + getLoadDate() + getPostFix() + ".xml";
 	}
 	
 	public static String getOQMOutcomesFileName()
