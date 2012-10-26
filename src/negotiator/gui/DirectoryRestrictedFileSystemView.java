@@ -21,12 +21,6 @@ public class DirectoryRestrictedFileSystemView extends FileSystemView
 
     @Override
     public File getHomeDirectory() { return rootDirectories[0]; }
-    
-    @Override
-    public File createNewFolder(File containingDir) throws IOException
-    {       
-        throw new UnsupportedOperationException("Unable to create directory");
-    }
 
     @Override
     public File[] getRoots()
@@ -44,4 +38,9 @@ public class DirectoryRestrictedFileSystemView extends FileSystemView
         }
         return false;
     }
+
+	@Override
+	public File createNewFolder(File folder) throws IOException {
+		return super.getFileSystemView().createNewFolder(folder);
+	}
 }
