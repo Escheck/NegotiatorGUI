@@ -4,7 +4,7 @@
         <agentRepItems>
             <agentRepItem description="Other - Bayesian Agent" classPath="agents.BayesianAgent" agentName="Other - Bayesian Agent"/>
             <agentRepItem description="Other - Simple UI agent" classPath="agents.UIAgent" agentName="Other - Simple UI agent"/>
-            <agentRepItem description="Other  The Random Walker" classPath="agents.SimpleAgent" agentName="Other  The Random Walker"/>
+            <agentRepItem description="Other - SimpleAgent" classPath="agents.SimpleAgent" agentName="Other - SimpleAgent"/>
             <agentRepItem description="Other - TDT Boulware" classPath="agents.TimeDependentAgentBoulware" agentName="Other - TDT Boulware"/>
         	<agentRepItem description="Other - TDT Conceder" classPath="agents.TimeDependentAgentConceder" agentName="Other - TDT Conceder"/>
 			<agentRepItem description="ANAC 2011 - Gahboninho" classPath="agents.anac.y2011.Gahboninho.Gahboninho" agentName="ANAC 2011 - Gahboninho"/>
