@@ -428,8 +428,11 @@
 	<target name ="makeGeniusForStudentsAssignment2012" depends="makeNegoSimulatorWithAllAgentJar">
 		<echo message="Todo:"/>
 	    <echo message="Assignment updaten"/>
-		<echo message="Laatste versie manual"/>
 		<echo message="Javadoc updaten en toevoegen"/>
+		<echo message="Add a domain with integers"/>
+		<echo message="Add Party domain"/>
+		<echo message="Create log folder"/>
+		<echo message="Include Measuring the Performance of Online Opponent Models in Automated Bilateral Negotiation"/>
 		
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>

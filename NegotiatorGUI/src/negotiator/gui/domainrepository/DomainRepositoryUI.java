@@ -74,11 +74,12 @@ public class DomainRepositoryUI
 		scenarioTree.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseReleased(MouseEvent e) {
+	        	
 	        	TreePath selPath = scenarioTree.getPathForLocation(e.getX(), e.getY());
-	            if (selPath == null){
-	                return;
-	            } else {
-	            	scenarioTree.setSelectionPath(selPath);
+	            if (selPath == null || scenarioTree.getSelectionPath() == null){
+	            	JPopupMenu popup = createPopupMenu(null);
+	            	popup.show(e.getComponent(), e.getX(), e.getY());
+	            	return;
 	            }
 	            
 	            MyTreeNode node = (MyTreeNode) scenarioTree.getSelectionPath().getLastPathComponent();
@@ -103,33 +104,35 @@ public class DomainRepositoryUI
 
 		popup.add(newDomain);
 		
-		if (node.getRepositoryItem() instanceof ProfileRepItem) {
-			JMenuItem deletePP = new JMenuItem("Delete preference profile");
-			 deletePP.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
-					deleteProfile(node);
-	            }
-	         });
-			 popup.add(deletePP);
-		} else {
-			JMenuItem newPP = new JMenuItem("New preference profile");
-			newPP.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            	if (domainHasIssues(node)) {
-	            		newPreferenceProfile(node);
-	            	} else {
-	            		JOptionPane.showMessageDialog(null, "Before creating a preference profile, the domain must be saved with at least one isue.", "Domain error", 0);
-	            	}
-	            }
-	         });
-			popup.add(newPP);
-			JMenuItem deleteDomain = new JMenuItem("Delete domain");
-			deleteDomain.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            	deleteDomain(node);
-	            }
-	         });
-			 popup.add(deleteDomain);
+		if (node != null) {
+			if (node.getRepositoryItem() instanceof ProfileRepItem) {
+				JMenuItem deletePP = new JMenuItem("Delete preference profile");
+				 deletePP.addActionListener(new java.awt.event.ActionListener() {
+		            public void actionPerformed(java.awt.event.ActionEvent evt) {
+						deleteProfile(node);
+		            }
+		         });
+				 popup.add(deletePP);
+			} else {
+				JMenuItem newPP = new JMenuItem("New preference profile");
+				newPP.addActionListener(new java.awt.event.ActionListener() {
+		            public void actionPerformed(java.awt.event.ActionEvent evt) {
+		            	if (domainHasIssues(node)) {
+		            		newPreferenceProfile(node);
+		            	} else {
+		            		JOptionPane.showMessageDialog(null, "Before creating a preference profile, the domain must be saved with at least one isue.", "Domain error", 0);
+		            	}
+		            }
+		         });
+				popup.add(newPP);
+				JMenuItem deleteDomain = new JMenuItem("Delete domain");
+				deleteDomain.addActionListener(new java.awt.event.ActionListener() {
+		            public void actionPerformed(java.awt.event.ActionEvent evt) {
+		            	deleteDomain(node);
+		            }
+		         });
+				 popup.add(deleteDomain);
+			}
 		}
 		return popup;
 	}
@@ -257,6 +260,7 @@ public class DomainRepositoryUI
 	    		negoView.showRepositoryItemInTab(dri, newNode);
             }
         }
+        scenarioTree.updateUI();
 	}
 	
 	private void saveDomainAsFile(String relativePath, String domainName) {

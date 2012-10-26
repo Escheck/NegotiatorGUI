@@ -1,5 +1,7 @@
 package negotiator.gui.agentrepository;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFileChooser;
@@ -26,37 +28,18 @@ import negotiator.repository.Repository;
 public class AgentRepositoryUI
 {
 	
+	private static final String ADD_AN_AGENT = "Add an agent";
 	JFrame frame;
 	JButton addbutton, removebutton;
 	Repository agentrepository;
 	AbstractTableModel dataModel;
 	final JTable table;
+	
 	public AgentRepositoryUI(JTable  pTable) {
 		this.table = pTable;
 		agentrepository = Repository.get_agent_repository();
 		
 		initTable();
-		table.setModel(dataModel);
-		table.setShowVerticalLines(false);
-		table.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseReleased(MouseEvent e) {
-	            int r = table.rowAtPoint(e.getPoint());
-	            if (r >= 0 && r < table.getRowCount()) {
-	                table.setRowSelectionInterval(r, r);
-	            } else {
-	                table.clearSelection();
-	            }
-
-	            int rowindex = table.getSelectedRow();
-	            if (rowindex < 0)
-	                return;
-	            if (e.isPopupTrigger() && e.getComponent() instanceof JTable ) {
-	                JPopupMenu popup = createPopupMenu();
-	                popup.show(e.getComponent(), e.getX(), e.getY());
-	            }
-	        }
-		});
 	}
 
 	private JPopupMenu createPopupMenu() {
@@ -97,7 +80,7 @@ public class AgentRepositoryUI
 			  	  switch(col) {
 				  	  case 0:
 				  		  String error = "";
-				  		  if (agt.getVersion().equals("ERR")) {
+				  		  if (agt.getVersion().equals("ERR") && !agt.getName().equals(ADD_AN_AGENT)) {
 				  			  error = " (LOADING FAILED)";
 				  		  }
 				  		  return agt.getName() + error;
@@ -111,6 +94,40 @@ public class AgentRepositoryUI
 			}
 		};
 		
+		if (agentrepository.getItems().size() == 0) {
+			addTemporaryAgent();
+			agentrepository.save();
+		}
+		
+		table.setModel(dataModel);
+		table.setShowVerticalLines(false);
+		table.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseReleased(MouseEvent e) {
+	            int r = table.rowAtPoint(e.getPoint());
+	            if (r >= 0 && r < table.getRowCount()) {
+	                table.setRowSelectionInterval(r, r);
+	            } else {
+	                table.clearSelection();
+	            }
+
+	            int rowindex = table.getSelectedRow();
+	            if (rowindex < 0)
+	                return;
+	            if (e.isPopupTrigger() && e.getComponent() instanceof JTable ) {
+	                JPopupMenu popup = createPopupMenu();
+	                popup.show(e.getComponent(), e.getX(), e.getY());
+	            }
+	        }
+		});
+		
+		table.addKeyListener(new KeyAdapter() {
+    	   public void keyReleased(KeyEvent ke) {
+    		   if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
+    			   removeAction();
+    		   }
+    	   }
+        });
 	}
 	
 	public void addAction() {
@@ -142,6 +159,13 @@ public class AgentRepositoryUI
 	            // Convert path to agent path as in XML file
 	            relativePath = relativePath.replace(File.separatorChar + "", ".");
 	            
+	            
+	            // Remove if 
+	            int row = table.getSelectedRow();
+	    		if (agentrepository.getItems().get(row).getName().equals(ADD_AN_AGENT)) {
+	    			agentrepository.getItems().remove(row);
+	    		}
+	    		
 	            // Load the agent and save it in the XML
 	            AgentRepItem rep = new AgentRepItem(file.getName().substring(0, file.getName().length() - 6), relativePath, "");
 	            agentrepository.getItems().add(rep);
@@ -151,10 +175,20 @@ public class AgentRepositoryUI
         }
 	}
 
-	public void removeAction() {
-		int row=table.getSelectedRow();
-		agentrepository.getItems().remove(row);
-		dataModel.fireTableRowsDeleted(row, row);
-		agentrepository.save();
+	public void removeAction() {	
+	   for (int i = 0; i < table.getSelectedRows().length; i++) {
+		   agentrepository.getItems().remove(table.getSelectedRows()[i]);
+	   }
+	   if (dataModel.getRowCount() == 0) {
+		   addTemporaryAgent();
+	   }
+	   dataModel.fireTableDataChanged();
+	   agentrepository.save();
+	}
+	
+	private void addTemporaryAgent() {
+		if (dataModel.getRowCount() == 0) {
+			agentrepository.getItems().add(new AgentRepItem(ADD_AN_AGENT, "", ""));
+		}
 	}
 }
