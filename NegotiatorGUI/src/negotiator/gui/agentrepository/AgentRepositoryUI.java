@@ -102,9 +102,20 @@ public class AgentRepositoryUI
 		table.setModel(dataModel);
 		table.setShowVerticalLines(false);
 		table.addMouseListener(new MouseAdapter() {
-	        @Override
+	        
+			// if Windows
+			@Override
 	        public void mouseReleased(MouseEvent e) {
-	            int r = table.rowAtPoint(e.getPoint());
+	            mouseCode(e);
+	        }
+			
+			// if Linux
+			public void mousePressed(MouseEvent e) {
+				mouseCode(e);
+			}
+			
+			private void mouseCode(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
 	            if (r >= 0 && r < table.getRowCount()) {
 	                table.setRowSelectionInterval(r, r);
 	            } else {
@@ -118,7 +129,7 @@ public class AgentRepositoryUI
 	                JPopupMenu popup = createPopupMenu();
 	                popup.show(e.getComponent(), e.getX(), e.getY());
 	            }
-	        }
+			}
 		});
 		
 		table.addKeyListener(new KeyAdapter() {
