@@ -21,6 +21,7 @@ import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
@@ -246,10 +247,9 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 			sessionrunner.setStartingWithA(startingWithA);
 			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
-			if(Global.fDebug) {
+			if(TournamentConfiguration.getBooleanOption("protocolMode", false)) {
 				sessionrunner.run();
 			} else {
-				
 				negoThread = new Thread(sessionrunner);
 				System.out.println("nego start. "+System.currentTimeMillis()/1000);
 				negoThread.start();
@@ -287,7 +287,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			}
 
 			try {
-				BufferedWriter out = new BufferedWriter(new FileWriter(Global.outcomesFile,true));
+				BufferedWriter out = new BufferedWriter(new FileWriter(Global.getOutcomesFileName(),true));
 				out.write(""+outcome.toXML());
 				out.close();
 			} catch (Exception e) {
