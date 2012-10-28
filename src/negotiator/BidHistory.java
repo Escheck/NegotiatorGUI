@@ -53,8 +53,8 @@ public class BidHistory {
 	/**
 	 * Returns the set of bids with a utility of at least u1 and at most u2: (u1, u2].
 	 * If u1 = u2, then it returns all bids with utility u1.
-	 * @param u1
-	 * @param u2
+	 * @param minU minimum utility.
+	 * @param maxU maximum utility.
 	 * @return bids with a utility in (u1, u2]
 	 */
 	public BidHistory filterBetweenUtility(double minU, double maxU)
@@ -75,11 +75,11 @@ public class BidHistory {
 	/**
 	 * Returns the set of bids offered between time instances t1 and t2: (t1, t2] and
 	 * with a utility in (u1, u2].
-	 * @param minU
-	 * @param maxU
-	 * @param minT
-	 * @param maxT
-	 * @return
+	 * @param minU minimum utility.
+	 * @param maxU maximum utility.
+	 * @param minT minimum time.
+	 * @param maxT maximum time.
+	 * @return bids with utility (minU, maxU] made in the time (minT, maxT].
 	 */
 	public BidHistory filterBetween(double minU, double maxU, double minT, double maxT)
 	{
@@ -97,7 +97,8 @@ public class BidHistory {
 	
 	/**
 	 * Returns the set of bids with utility u.
-	 * @param u
+	 * @param u utility.
+	 * @return set of bids with utility u.
 	 */
 	public BidHistory filterUtility(double u)
 	{
@@ -111,11 +112,12 @@ public class BidHistory {
 	/**
 	 * Returns the set of bids offered between time instances t1 and t2: (t1, t2] and
 	 * with a utility in (u1, u2].
-	 * @param minU
-	 * @param maxU
-	 * @param minT
-	 * @param maxT
-	 * @return
+	 * @param minU minimum discounted utility.
+	 * @param maxU maximum discounted utility.
+	 * @param minT minimum time.
+	 * @param maxT maximum time.
+	 * @param utilSpace preference profile used to find the discounted utility.
+	 * @return bids with discounted utility (minU, maxU] made in the time (minT, maxT].
 	 */
 	public BidHistory discountedFilterBetween(double minU, double maxU, double minT, double maxT, UtilitySpace utilSpace)
 	{
@@ -131,10 +133,9 @@ public class BidHistory {
 		return bidHistory;			
 	}
 	
-	
 	/**
 	 * Add an offered bid o the history.
-	 * @param offered bid
+	 * @param bid offered bid.
 	 */
 	public void add(BidDetails bid){
 		bidList.add(bid);
@@ -201,6 +202,7 @@ public class BidHistory {
 	
 	/**
 	 * Returns the bid with the highest discounted utility stored in the history.
+	 * @param util preference profile used to determine the discounted utility of a bid.
 	 * @return bid with highest utility
 	 */
 	public BidDetails getBestDiscountedBidDetails(UtilitySpace util){
@@ -239,8 +241,8 @@ public class BidHistory {
 	
 	/**
 	 * Returns a list of the top N bids which the opponent has offered.
-	 * @param count
-	 * @return a list of UTBids
+	 * @param count amount of N best bids.
+	 * @return a list of bids.
 	 */
 	public List<BidDetails> getNBestBids(int count) {
 		List<BidDetails> result = new ArrayList<BidDetails>();
@@ -258,10 +260,16 @@ public class BidHistory {
 		return result;
 	}
 
+	/**
+	 * @return amount of bids stored.
+	 */
 	public int size() {
 		return bidList.size();
 	}
 	
+	/**
+	 * @return average utility of bids stored.
+	 */
 	public double getAverageUtility() {
 		int size = size();
 		if (size == 0)
@@ -273,6 +281,10 @@ public class BidHistory {
 		return totalUtil / size;
 	}
 	
+	/**
+	 * @param utilSpace preference profile used to determine the discounted utility of a bid.
+	 * @return average discounted utility of bids stored.
+	 */
 	public double getAverageDiscountedUtility(UtilitySpace utilSpace) {
 		int size = size();
 		if (size == 0)
@@ -283,41 +295,39 @@ public class BidHistory {
 		}
 		return totalUtil / size;
 	}
-	
+
 	/**
-	 * Get the {@link BidDetails} of the {@link Bid} with utility closest to u.
+	 * Sorts the bids contained in this BidHistory object on utility.
+	 * @return sorted BidHistory.
 	 */
-	public BidDetails getBidDetailsOfUtility(double u) {
-		double minDistance = -1;
-		BidDetails closestBid = null;
-		for (BidDetails b : bidList)
-		{
-			double utility = b.getMyUndiscountedUtil();
-			if (Math.abs(utility - u) <= minDistance || minDistance == -1)
-			{
-				minDistance = Math.abs(utility - u);
-				closestBid = b;
-			}
-		}
-		return closestBid;
-	}
-	
 	public BidHistory sortToUtility() {
 		BidHistory sortedHistory = this;
 		Collections.sort(sortedHistory.getHistory(), new BidDetailsSorterUtility());
 		return sortedHistory;
 	}
 	
+	/**
+	 * Sorts the bids contained in this BidHistory object on time.
+	 * @return sorted BidHistory.
+	 */
 	public BidHistory sortToTime() {
 		BidHistory sortedHistory = this;
 		Collections.sort(sortedHistory.getHistory(), new BidDetailsSorterTime());
 		return sortedHistory;
 	}
 	
+	/**
+	 * @return random bid from this BidHistory.
+	 */
 	public BidDetails getRandom() {
 		return getRandom(new Random());
 	}
 	
+	/**
+	 * @param rand random generator.
+	 * @return random bid from this BidHistory using the
+	 * given random generator.
+	 */
 	public BidDetails getRandom(Random rand)
 	{
 		int size = size();
@@ -328,8 +338,8 @@ public class BidHistory {
 	}
 	
 	/**
-	 * Checks if BidHistory (array) is empty or not
-	 * @return
+	 * Checks if BidHistory (array) is empty or not.
+	 * @return true if no bids are stored.
 	 */
 	public boolean isEmpty(){
 		return bidList.isEmpty();

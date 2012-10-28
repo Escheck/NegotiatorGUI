@@ -5,7 +5,6 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
-import negotiator.Global;
 import negotiator.utility.UtilitySpace;
 
 /**

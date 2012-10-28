@@ -3,7 +3,6 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -13,18 +12,23 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 
 /**
+ * Class used to generate all bids in the domain.
+ * For issues with a continuous range discretization is used.
+ * If you want to search the set of generated bids efficiently,
+ * consider using SortedOutcomeSpace instead.
  * 
- * @author Dmytro
- * Wouter: BidIterator iterates through all bids in the domain.
- * It may result bids that do not fulfill the constraints 
- * and therefore may have utility 0.
- *
+ * @author Dmytro, Wouter
  */
-public class BidIterator implements Iterator {
+public class BidIterator implements Iterator<Bid> {
 	protected Domain fDomain;
 	protected int fNumberOfIssues;
 	protected int[] fValuesIndexes;
 	protected boolean fInit ;
+	
+	/**
+	 * Creates an iterator for the given outcomespace (domain).
+	 * @param pDomain of which we want to generate all bids.
+	 */
 	public BidIterator(Domain pDomain) {
 		fDomain = pDomain;
 		fInit=true;

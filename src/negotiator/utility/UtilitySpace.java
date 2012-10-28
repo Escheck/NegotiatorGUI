@@ -684,7 +684,7 @@ public class UtilitySpace {
     }
     
     /**
-     * @depricated Use getObjective
+     * @deprecated Use getObjective
      * 
      * @param index The index of the issue to 
      * @return the indexed objective or issue

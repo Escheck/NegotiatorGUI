@@ -478,8 +478,6 @@ public class Objective implements MutableTreeNode
 	
 	/**
 	 * Returns an xml representation of this Objective and all Objectives and issues underneath it.
-	 * 
-	 * @param showEvaluators Also print the respective evaluators to xml.
 	 */
 	public SimpleElement toXML(){
 		SimpleElement xmlTree = new SimpleElement("objective");

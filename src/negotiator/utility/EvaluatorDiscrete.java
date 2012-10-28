@@ -108,17 +108,14 @@ public class EvaluatorDiscrete implements Evaluator {
 	
 	
 	/**
-	 * @param the utilityspace settings, the complete bid and the idnumber of the issue to be evaluated
-	 * @return the normalized evaluation value.
-	 * modified W.Pasman 8oct07: now normalization happens here.
-	 * 
-	 * TODO Wouter: this function seems weird. 
-	 * The function evaluates "bid[idnumber]" as a discrete evaluator.
-	 * BUT if bid[idnumber] is not a discrete evaluator in the first place, very weird things may happen.
+	 * Returns the evaluation of the value of the issue of the bid.
+	 * @param uspace preference profile.
+	 * @param bid of which we want a value evaluated.
+	 * @param issueID unique id of the issue of which we want the evaluation.
 	 */
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int ID) throws Exception
+	public Double getEvaluation(UtilitySpace uspace, Bid bid, int issueID) throws Exception
 	{
-		return normalize(fEval.get((ValueDiscrete)bid.getValue(ID)));
+		return normalize(fEval.get((ValueDiscrete)bid.getValue(issueID)));
 	}
 	
 	/**

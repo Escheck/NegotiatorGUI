@@ -429,10 +429,6 @@
 		<echo message="Todo:"/>
 	    <echo message="Assignment updaten"/>
 		<echo message="Javadoc updaten en toevoegen"/>
-		<echo message="Add a domain with integers"/>
-		<echo message="Add Party domain"/>
-		<echo message="Create log folder"/>
-		<echo message="Include Measuring the Performance of Online Opponent Models in Automated Bilateral Negotiation"/>
 		
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>
@@ -452,7 +448,8 @@
 		</copy>	
 
 		<mkdir dir="${tmp}/doc"/>
-	
+		<mkdir dir="${tmp}/log"/>
+		
 		<copy todir="${tmp}/doc">
 			<fileset dir="doc" includes="assignment2012.pdf"/>
 			<globmapper from="assignment2012.pdf" to="assignment.pdf" />
@@ -465,11 +462,12 @@
 		<zip destfile="${dist}/negotiator.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>							
 			<zipfileset dir="${tmp}" includes="doc/" prefix="negotiator"/>
+			<zipfileset dir="${tmp}" includes="log" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="negotiator/BOA example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="negotiator/BOA example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="negotiator/BOA example"/>
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>	
+			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="negotiator/BOA Agent Example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="negotiator/BOA Agent Example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="negotiator/BOA Agent Example"/>
 			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="negotiator/BOA Agent Example"/>
 			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator/Agent Example"/>
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
@@ -477,6 +475,8 @@
 			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
 			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="negotiator"/>
 			<zipfileset dir="etc/templates/anac/y2011" prefix="negotiator/etc/templates/anac/y2011"/>
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
+			<zipfileset dir="etc/templates/CarLinear" prefix="negotiator/etc/templates/CarLinear"/>
 		</zip>
 		<ant target="cleanup"/>
 	</target>

@@ -3,15 +3,12 @@ package negotiator.utility;
 import negotiator.Bid;
 import negotiator.xml.SimpleElement;
 import negotiator.issue.Objective;
+
 /**
- * 
- * @author Dmytro?
- * 
  * Evaluator is an object that translates discrete values into an evaluation value.
  * The UtilitySpace attaches it to an issue.
- *  
+ * @author Dmytro
  */
-
 public interface Evaluator {
 	
 	// Interface methods
