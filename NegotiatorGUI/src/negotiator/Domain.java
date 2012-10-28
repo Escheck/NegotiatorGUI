@@ -1,23 +1,12 @@
-/*
- * Domain.java
- *
- * Created on November 16, 2006, 12:08 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package negotiator;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Random;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -29,10 +18,11 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
+
 /**
+ * Representation of the outcome space of a scenario.
  *
  * @author Dmytro Tykhonov & Koen Hindriks
- * Numerous modifications W.Pasman
  */
 public class Domain 
 {
@@ -136,7 +126,6 @@ public class Domain
     }
     
     /**
-     * @author Herbert
      * @param pRoot The SimpleElement that contains the root of the Objective tree.
      */
     private final void loadTreeFromXML(SimpleElement pRoot){
@@ -364,7 +353,6 @@ public class Domain
 	}
 	
 	/**
-	 * @author W.Pasman
 	 * @return all objectives (note, issues are also objectives!) in the domain
 	 */
 	public ArrayList<Objective> getObjectives()
@@ -380,7 +368,6 @@ public class Domain
 	 * Note that it is wise cache the issues, as this implementation is quite
 	 * computationally expensive.
 	 * 
-	 * @author W.Pasman
 	 * @return arraylist of all issues in the domain.
 	 */
 	public ArrayList<Issue> getIssues()

@@ -1,5 +1,10 @@
 package negotiator.utility;
 
+/**
+ * Enum specifying the possible evaluation types.
+ * This class can be used to convert the name of an evaluation type
+ * to an enum, for example "discrete" to EVALUATORTYPE.DISCRETE. 
+ */
 public enum EVALUATORTYPE {	DISCRETE, INTEGER, REAL, OBJECTIVE;
 
 	public static EVALUATORTYPE convertToType(String typeString) {

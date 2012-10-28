@@ -36,6 +36,9 @@ public final class Bid implements XMLable
 	@XmlJavaTypeAdapter(MyMapAdapter.class)
 	private HashMap<Integer, Value> fValues; // Wouter: the bid values  for each IssueID
 
+	/**
+	 * Create a new empty bid of which the values still must be set.
+	 */
 	public Bid(){fValues = new HashMap<Integer, Value>();}
 	
 	/**
@@ -68,7 +71,9 @@ public final class Bid implements XMLable
 
 
 	/**
+	 * @param issueNr number of an issue.
 	 * @return the picked value for given issue idnumber 
+	 * @throws Exception if there exist no issue with the given number.
 	 */
 	public Value getValue(int issueNr) throws Exception
 	{
@@ -81,17 +86,17 @@ public final class Bid implements XMLable
 		return v;
 	}
 
+	/**
+	 * Set the value of the issue with the given issueID to the given value.
+	 * @param issueId unique ID of an issue.
+	 * @param pValue value of the issue.
+	 */
 	public void setValue(int issueId, Value pValue) {
 		if (fValues.get(issueId).getType() == pValue.getType()) {
 			fValues.put(issueId, pValue);
-		} /*
-			 * TODO Throw an excpetion. else throw new
-			 * BidDoesNotExistInDomainException();
-			 */
+		}
 	}
-	public void setDomain(Domain domain) {
-		fDomain = domain;
-	}
+
 	public String toString() {
         String s = "Bid[";
         Set<Entry<Integer, Value>> value_set = fValues.entrySet();
@@ -112,12 +117,11 @@ public final class Bid implements XMLable
         return s;
     }
 
+	/**
+	 * @param pBid to which this bid must be compared.
+	 * @return true if the values of this and the given bid are equal.
+	 */
 	public boolean equals(Bid pBid) {
-		//System.out.println("comparing "+this+" with "+pBid);
-		/*
-		 * for(int i=0;i<fValues.length;i++) {
-		 * if(!fValues[i].equals(pBid.getValue(i))) { return false; } }
-		 */
 		return fValues.equals(pBid.getValues());
 	}
 	
@@ -133,71 +137,11 @@ public final class Bid implements XMLable
 	
 	/**
 	 * Helper function to enable the comparison between two Bids.
-	 * Wouter: changed to public for convenience.
-	 * @return
+	 * 
+	 * @return hashmap which specifies the selected value for each issue.
 	 */
 	protected HashMap<Integer, Value> getValues() {
-		 // create a clone, to avoid changing of the values.
 		return fValues;
-	}
-	
-
-	// DOES NO LONGER APPLY
-	// public String indexesToString() {
-	// String result ="";
-	// for(int i=0;i<fValues.length;i++) {
-	// result += String.valueOf(fValues[i])+";";
-	// }
-	// return result;
-	// }
-	// TODO re-do the save/load XML for bids
-	public Bid(Domain pDomain, SimpleElement pXMLBid) throws Exception
-	{
-		fDomain = pDomain;
-		fValues = new HashMap<Integer,Value>();
-		// fValuesIndexes = new int[pDomain.getNumberOfIssues()];
-		Object[] lXMLIssues = (pXMLBid.getChildByTagName("issue"));
-		Value lValue = null;
-		SimpleElement lXMLItem;
-		String lTmp;
-		for (int i = 0; i < lXMLIssues.length; i++) {
-			String indexStr = ((SimpleElement) lXMLIssues[i])
-					.getAttribute("index"); // find the index of this Issue.
-			int ind = new Integer(indexStr);
-			switch (fDomain.getObjective(ind).getType()) {
-			case DISCRETE:
-				lXMLItem = (SimpleElement) (((SimpleElement) lXMLIssues[i])
-						.getChildByTagName("item"))[0];
-				lTmp = lXMLItem.getAttribute("value");
-				// fValuesIndexes[Integer.valueOf(((SimpleElement)lXMLIssues[i]).getAttribute("index"))-1]
-				// =
-				// Integer.valueOf();
-				lValue = new ValueDiscrete(lTmp);
-				break;
-			case INTEGER:
-				lXMLItem = (SimpleElement) (((SimpleElement) lXMLIssues[i])
-						.getChildByTagName("value"))[0];
-				lTmp = lXMLItem.getText();
-				lValue = new ValueInteger(Integer.valueOf(lTmp));
-				break;
-			case REAL:
-				lXMLItem = (SimpleElement) (((SimpleElement) lXMLIssues[i])
-						.getChildByTagName("value"))[0];
-				lTmp = lXMLItem.getText();
-				lValue = new ValueReal(Double.valueOf(lTmp));
-				break;
-			case OBJECTIVE:
-				//TODO something with objectives.
-				//for now, do nothing. Objectives do not enter into bids.
-				break;
-				
-			// TODO:COMPLETED: DT implement Bid(Domain, SimpleElement) in Bid
-			// for the rest of the issue/value types
-			// TODO: DT add bid validation w.r.t. Domain, throw an exception
-			// BidDoesNotExist
-			}// switch
-			fValues.put(ind, lValue);
-		}
 	}
 
 	public SimpleElement toXML() {
@@ -244,7 +188,6 @@ public final class Bid implements XMLable
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		int code=0;
 		for(Entry<Integer, Value> lEntry : fValues.entrySet()) {
 			code = code + lEntry.getValue().hashCode();  
@@ -293,7 +236,7 @@ class Item {
 	  public Item(Integer key, Value val) {
 		  this.key = key;
 		  this.value = val;
-	  }
-	}
+  }
+}
 
 

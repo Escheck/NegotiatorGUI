@@ -55,17 +55,6 @@ public class BayesianAgent extends Agent {
 	{
 		return "Bayesian Agent";
 	}
-
-	 /** Dummy variables, for testing only. W.Pasman 19aug08 */
-	public static ArrayList<AgentParam> getParameters() { 
-		ArrayList<AgentParam> parameters=new ArrayList<AgentParam>();
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"risetime",0.,2.));
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"risetime",0.,2.));
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"tau",1.,4.));
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"epsilon",-2.,2.));
-		parameters.add(new AgentParam(BayesianAgent.class.getName(),"beta",18.3,22.17));
-		return parameters;
-	}
 	
 	public void init() {
 		messageOpponent = null;

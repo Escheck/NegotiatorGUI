@@ -1,18 +1,7 @@
-/*
- * Agent.java
- *
- * Created on November 6, 2006, 9:52 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package negotiator;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 import negotiator.actions.Action;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -20,51 +9,67 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
 
 /**
+ * A basic negotiation agent. You might want to consider using the BOA framework.
  *
  * @author Dmytro Tykhonov
  * @author W.Pasman
- * 
  */
 public abstract class Agent 
 {
+	/** ID of the agent as assigned by the protocol. */
 	private AgentID 		agentID;
+	/** Name of the name as set by the method setName. */
     private String          fName=null;
+    /** Preference profile of the agent as assigned by the tournamentrunner. */
     public  UtilitySpace    utilitySpace;
+    /** Date object specifying when the negotiation started. Use timeline instead.*/
     @Deprecated
     public	Date			startTime;
+    /** Total time which an agent has to complete the negotiation. Use timeline instead.*/
     @Deprecated
     public Integer			totalTime; // total time to complete entire nego, in seconds.
-    /** Use timeline for everything time-related */
+    /** Use timeline for everything time-related. */
     public Timeline timeline;
+    /** To be implemented correctly. */
     public Integer			sessionNumber;
+    /** To be implemented correctly. */
     public Integer			sessionTotalNumber;
+    /** Reference to protocol which is set when experimental setup is enabled. */
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
+    /** Parameters given to the agent which may be specified in the agent.*/
+    @Deprecated
     protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues;
-    // the strategy parameters are parameters of the negotiation strategy, for example the concession
-    // factor of the TDT-agent.
+    /** Parameters given to the agent which may be specified in the agent repository. */
 	protected StrategyParameters strategyParameters;
     
+	/**
+	 * Empty constructor used to initialize the agent.
+	 * Later on internalInit is called to set all variables.
+	 */
     public Agent() {
     	this.strategyParameters = new StrategyParameters();
     }
 
-    public static String getVersion() {return "unknown";};
     /**
-     * This method is called by the environment (SessionRunner) every time before starting a new 
-     * session after the internalInit method is called. User can override this method. 
+     * @return version of the agent.
      */
-    public void init() {
-    	
-    }
+    public static String getVersion() {return "unknown";};
     
     /**
-     * This method is called by the SessionRunner to initialize the agent with a new session information.
-     * @param sessionNumber number of the session
-     * @param sessionTotalNumber total number of sessions
+     * This method is called by the protocol every time before starting a new 
+     * session after the internalInit method is called. User can override this method. 
+     */
+    public void init() { }
+    
+    /**
+     * This method is called by the protocol to initialize the agent with a new session information.
+     * @param sessionNumber number of the session.
+     * @param sessionTotalNumber total number of sessions.
      * @param startTimeP
      * @param totalTimeP
-     * @param us utility space of the agent for the session
-     * @param params parameters of the agent
+     * @param timeline keeping track of the time in the negotiation.
+     * @param us utility space of the agent for the session.
+     * @param params parameters of the agent.
      */
     public final void internalInit(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
     		Integer totalTimeP, Timeline timeline, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
@@ -74,7 +79,7 @@ public abstract class Agent
         this.sessionNumber = sessionNumber;
         this.sessionTotalNumber = sessionTotalNumber;
     	utilitySpace=us;
-    	parametervalues=params;
+    	parametervalues = params;
     	if (parametervalues != null && !parametervalues.isEmpty())
     		System.out.println("Agent " + getName() + " initted with parameters " + parametervalues);
         return;
@@ -95,34 +100,37 @@ public abstract class Agent
      */
     public abstract Action chooseAction();
     
+    /**
+     * @return name of the agent.
+     */
     public String getName() 
     {
         return fName;
     }
     
     /**
-     * added W.Pasman 19aug08
-     * @return arraylist with all parameter names that this agent can handle
-     * defaults to an empty parameter list. Override when you use parameters.
+     * @return a type of parameters used solely by the BayesianAgent.
      */
-    public static ArrayList<AgentParam> getParameters() { 
-    	return new ArrayList<AgentParam>();
-    	}
-    
+    @Deprecated
     public HashMap<AgentParameterVariable,AgentParamValue> getParameterValues() {
     	return parametervalues;
     }
     
-    
+    /**
+     * Sets the name of the agent to the given name.
+     * @param pName to which the agent's name must be set.
+     */
     public final void setName(String pName) {
         if(this.fName==null) this.fName = pName;
         return;
     }
     
     /**
-     * A convenience method to get the utility of a bid. This method will take discount factors into account (if any), 
+     * A convenience method to get the discounted utility of a bid. This method will take discount factors into account (if any), 
      * using the status of the current {@link #timeline}.
      * @see UtilitySpace
+     * @param bid of which we are interested in the utility.
+     * @return discounted utility of the given bid.
      */
     public double getUtility(Bid bid)
     {
@@ -150,8 +158,7 @@ public abstract class Agent
     
     
     /**
-     * @author W.Pasman
-     * determine if this agent is communicating with the user about nego steps.
+     * Determine if this agent is communicating with the user about nego steps.
      * @return true if a human user is directly communicating with the agent in order
      * to steer the nego. This flag is used to determine the timeout for the
      * negotiation (larger with human users).
@@ -165,14 +172,19 @@ public abstract class Agent
      * The agent will not be able to do any negotiation actions here, just clean up.
      * To ensure that the agent can not sabotage the negotiation, 
      * this function will be called from a separate thread.
-     * 
-     * @author W.Pasman
      */
     public void cleanUp() {  }
     
+    /**
+     * @return ID of the agent as assigned by the protocol.
+     */
     public AgentID getAgentID() {
     	return agentID;
     }
+    
+    /**
+     * @param value to which the agent's ID must be set.
+     */
     public void setAgentID(AgentID value) {
     	agentID = value;
     }
@@ -187,7 +199,6 @@ public abstract class Agent
 	/**
 	 * Used to parse parameters presented in the agent repository. The particular
 	 * implementation below parses parameters such as time=0.9;e=1.0.
-	 * An example of an alternative implementation can be found in TheDecoupledAgent.
 	 * 
 	 * @param variables
 	 * @throws Exception
