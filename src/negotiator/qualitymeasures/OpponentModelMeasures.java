@@ -63,6 +63,7 @@ public class OpponentModelMeasures {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentModelUS;
 		try {
+			// we can't use the cache as we want to have the bids, not only the bidpoints.
 			BidSpace realBS = new BidSpace(ownUS, opponentUS, false, true);
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();

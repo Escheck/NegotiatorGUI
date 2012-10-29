@@ -15,7 +15,7 @@ public class BidPointSorterB implements Comparator<BidPoint>
 	{
 		if (b1 == null || b2 == null)
 			throw new NullPointerException();
-		if (b1.equals(b2))
+		if (b1.getUtilityB().equals(b2.getUtilityB()))
 			return 0;
 		if (b1.getUtilityB() < b2.getUtilityB())
 			return -1;
