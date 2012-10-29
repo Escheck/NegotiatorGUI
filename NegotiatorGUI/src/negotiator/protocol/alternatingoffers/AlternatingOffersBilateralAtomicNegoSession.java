@@ -3,12 +3,10 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.ContinuousTimeline;
 import negotiator.DiscreteTimeline;
-import negotiator.Global;
 import negotiator.NegotiationOutcome;
 import negotiator.PausableContinuousTimeline;
 import negotiator.Timeline;
@@ -147,7 +145,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						+ " begins");
 			}
 			// DEFAULT: disable trace logging
-			if (traceLoggingEnabled) {
+			if (traceLoggingEnabled || TournamentConfiguration.getBooleanOption("logFinalAccuracy", false)) {
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			}
 			checkForMAC();
@@ -644,11 +642,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	}
 
 	private void calculateFinalAccuracy(NegotiationOutcome negoOutcome) {
-		if (Global.CALCULATE_FINAL_ACCURACY) {
+		if (TournamentConfiguration.getBooleanOption("logFinalAccuracy", false)) {
 			if (agentA instanceof BOAagent) {
 				OpponentModel opponentModel = ((BOAagent) agentA)
 						.getOpponentModel();
 				if (!(opponentModel instanceof NoModel)) {
+
 					UtilitySpace estimatedOpponentUS = opponentModel
 							.getOpponentUtilitySpace();
 					BidSpace estimatedBS = null;

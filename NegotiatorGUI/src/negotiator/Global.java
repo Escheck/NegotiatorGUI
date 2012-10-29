@@ -40,8 +40,6 @@ public class Global {
 
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
-
-	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
 	public Global() {}
 

@@ -152,8 +152,16 @@ public class TournamentOptionsUI extends JDialog {
         //		OPTION: log final accuracy
         logFinalAccuracy = new JLabel();
         logFinalAccuracyCheck = new JCheckBox();
-        logFinalAccuracyCheck.setEnabled(false);
         logFinalAccuracy.setText("Log final accuracy");
+        logFinalAccuracyCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (logFinalAccuracyCheck.isSelected()) {
+                	JOptionPane.showMessageDialog(null, "Profiles the opponent model of the BOA agents on\n" +
+                										"side A.\n", "Option info", 1);
+        			
+                }
+            }
+        });
 
         //		OPTION: append mode and deadline
         appendModeAndDeadline = new JLabel();
