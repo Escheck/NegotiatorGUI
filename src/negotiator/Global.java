@@ -34,22 +34,12 @@ public class Global {
 	/** Path to protocol repository */
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
 
-	public static boolean experimentalSetup = false;// set to true to allow agent
-													// to access negotiation
-													// environment
 	public static String logPrefix = "";
 	
 	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Log things like competitiveness and minDemandedUtil */
 	public static final boolean LOG_COMPETITIVENESS = false;
-	
-	/** Enables the default timeline to be paused. DISCRETE_TIMELINE overrides this Global when enabled.
-	 * A problem with this approach, is that the AlternatingOffersProtocol class has no access to the timeline,
-	 * and therefore will judge a timeout after more than 3 minutes passed. To avoid this problem, the waiting time
-	 * is raised to 30 minutes if this functionality is enabled.
-	 */
-	public static final boolean PAUSABLE_TIMELINE = false;
 
 	public static final boolean CALCULATE_FINAL_ACCURACY = false;
 	
@@ -204,10 +194,6 @@ public class Global {
 			agentDescription = agent.getClass().getSimpleName();
 		
 		return agentDescription;
-	}
-	
-	public static boolean isExperimentalSetup() {
-		return experimentalSetup;
 	}
 
 	/**

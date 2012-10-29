@@ -1,10 +1,13 @@
 package negotiator.boaframework.opponentmodel;
 
+import javax.swing.JOptionPane;
+
 import negotiator.Bid;
 import negotiator.Global;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -23,12 +26,13 @@ public class WorstModel extends OpponentModel {
 	@Override
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession session) {
 		
-		if (Global.experimentalSetup) {
+		if (TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) {
 			opponentUtilitySpace = session.getAgentAUtilitySpace();
 			if (negotiationSession.getUtilitySpace().getFileName().equals(opponentUtilitySpace.getFileName())) {
 				opponentUtilitySpace = session.getAgentBUtilitySpace();
 			}
 		} else {
+			JOptionPane.showMessageDialog(null, "This opponent model needs access to the opponent's\npreferences. See tournament options.", "Model error", 0);
 			System.err.println("Global.experimentalSetup should be enabled!");
 		}
 		this.worstUtilitySpace = new UtilitySpaceAdapter(this, opponentUtilitySpace.getDomain());

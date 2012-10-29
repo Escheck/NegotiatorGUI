@@ -14,6 +14,7 @@ import negotiator.events.ActionEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.qualitymeasures.CSVlogger;
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -70,7 +71,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         	this.agentBparams = new HashMap<AgentParameterVariable, AgentParamValue>(agentBparams);
         else this.agentBparams = new HashMap<AgentParameterVariable, AgentParamValue>();
 
-        if(Global.isExperimentalSetup()) {
+        if(TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) {
         	agentA.fNegotiation = this;
         	agentB.fNegotiation = this;
         }
