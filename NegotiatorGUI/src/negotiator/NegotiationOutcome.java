@@ -35,7 +35,6 @@ import negotiator.xml.SimpleElement;
  */
 public class NegotiationOutcome 
 {
-	public int sessionNumber;
 	public String agentAname; 	// the name of the agent
 	public String agentBname;
 	public String agentAclass;	// the class file cotnaining that agent.
@@ -74,7 +73,7 @@ public class NegotiationOutcome
 	 * @param distanceToNash 
 	 * @param utilBDiscount 
 	 * @param utilADiscount */
-	public NegotiationOutcome(AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession, int sessionNumber, 
+	public NegotiationOutcome(AlternatingOffersBilateralAtomicNegoSession alternatingOffersBilateralAtomicNegoSession, int runNumber, 
 			Action lastAction, 
 			ArrayList<BidPointTime> agentASize,
 			ArrayList<BidPointTime> agentBSize,
@@ -83,7 +82,8 @@ public class NegotiationOutcome
 	) 
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
-		this.sessionNumber = sessionNumber;
+		this.runNr = runNumber;
+		System.out.println(runNr);
 		this.lastAction = lastAction;
 		this.agentAutility = outcomeInfo.getAgentAutility();
 		this.agentButility = outcomeInfo.getAgentButility();
@@ -109,7 +109,7 @@ public class NegotiationOutcome
 
 	public String toString() {
 		String startingagent="agentB"; if (agentAstarts) startingagent="agentA";
-		return String.valueOf(sessionNumber) + " agentAName="+agentAname + " agentBName=" + agentBname + 
+		return " agentAName="+agentAname + " agentBName=" + agentBname + 
 		" agentAutility="+agentAutility+ " agentButility="+agentButility+
 		" agentAutilityDiscount="+agentAutilityDiscount+ " agentButilityDiscount="+agentButilityDiscount+
 		" errors='"+ErrorRemarks+"'"+

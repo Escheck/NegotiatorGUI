@@ -31,7 +31,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected 	Bid 			lastBid    = null;				// the last bid that has been done
     protected 	Action 			lastAction = null;				// the last action that has been done (also included Accept, etc.)
     protected	Protocol 		protocol;
-    protected 	int				sessionNumber;
+    protected 	int				finalRound; // 0 during whole negotiation accept at agreement, in which case it is equal to rounds
     protected 	ArrayList<BidPointTime> 	fAgentABids;
     protected 	ArrayList<BidPointTime> 	fAgentBBids;
     protected 	BidSpace		bidSpace;
@@ -215,9 +215,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     public int getTournamentNumber() { 
     	return tournamentNumber; 
     }
-    public int getSessionNumber() { 
-    	return sessionNumber; 
-    }
+
     public int getTestNumber() { 
     	return 1;//TODO:protocol.getSessionTestNumber(); 
     }

@@ -31,9 +31,9 @@ public abstract class Agent
     /** Use timeline for everything time-related. */
     public Timeline timeline;
     /** To be implemented correctly. */
-    public Integer			sessionNumber;
+    public Integer			sessionRound;
     /** To be implemented correctly. */
-    public Integer			sessionTotalNumber;
+    public Integer			sessionRoundTotal;
     /** Reference to protocol which is set when experimental setup is enabled. */
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
     /** Parameters given to the agent which may be specified in the agent.*/
@@ -71,13 +71,13 @@ public abstract class Agent
      * @param us utility space of the agent for the session.
      * @param params parameters of the agent.
      */
-    public final void internalInit(int sessionNumber, int sessionTotalNumber, Date startTimeP, 
+    public final void internalInit(int sessionRound, int sessionRoundTotal, Date startTimeP, 
     		Integer totalTimeP, Timeline timeline, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
         this.timeline = timeline;
-        this.sessionNumber = sessionNumber;
-        this.sessionTotalNumber = sessionTotalNumber;
+        this.sessionRound = sessionRound;
+        this.sessionRoundTotal = sessionRoundTotal;
     	utilitySpace=us;
     	parametervalues = params;
     	if (parametervalues != null && !parametervalues.isEmpty())
@@ -156,7 +156,6 @@ public abstract class Agent
 		}
     }
     
-    
     /**
      * Determine if this agent is communicating with the user about nego steps.
      * @return true if a human user is directly communicating with the agent in order
@@ -164,6 +163,24 @@ public abstract class Agent
      * negotiation (larger with human users).
      */
     public boolean isUIAgent() { return false; }
+    
+    /**
+     * Determine if this agent can remember information if the same session is repeated.
+     * A normal agents is simply reset each round. If you do not want this, create a MultiRoundAgent.
+     */
+    public boolean isMultiRoundsCompatible() { return false; }
+    
+    /**
+     * Empty method never called for a normal Agent.
+     * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
+     */
+    public void beginSessionRound() { }
+    
+    /**
+     * Empty method never called for a normal Agent.
+     * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
+     */
+    public void endSessionRound() { }
     
     /**
      * This function cleans up the remainders of the agent: open windows etc.

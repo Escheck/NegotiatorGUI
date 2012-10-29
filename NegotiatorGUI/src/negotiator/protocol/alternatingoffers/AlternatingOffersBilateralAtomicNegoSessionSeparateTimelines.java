@@ -51,7 +51,6 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
     long startTimeMillies; //idem.
 	private Integer totalTime = 180000;
     Integer totTime; // total time, seconds, of this negotiation session.
-    private int sessionTotalNumber = 1;
     private Protocol protocol;
     
 	public Agent currentAgent=null; // agent currently bidding.
@@ -91,10 +90,10 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
             Timeline timeline = new ContinuousTimeline((int) (totalTimePerAgent / 1000));
             // note, we clone the utility spaces for security reasons, so that the agent
         	 // can not damage them.
-            agentA.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime, timeline,
+            agentA.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(),startTime,protocol.getTotalSessionRounds(), timeline,
             		new UtilitySpace(spaceA),agentAparams);
             agentA.init();
-            agentB.internalInit(sessionNumber, sessionTotalNumber,startTime,totalTime, timeline,
+            agentB.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(),startTime,protocol.getTotalSessionRounds(), timeline,
             		new UtilitySpace(spaceB),agentBparams);
             agentB.init();
             stopNegotiation = false;
@@ -174,7 +173,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
                        double agentAUtilityDisc = spaceA.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        double agentBUtilityDisc = spaceB.getUtilityWithDiscount(lastBid, timeAfterStart, totalTime * 1000);
                        
-	                   fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+	                   fireNegotiationActionEvent(currentAgent,action,finalRound,
 	                   		System.currentTimeMillis()-startTimeMillies,utilA,utilB,agentAUtilityDisc,agentBUtilityDisc,"bid by "+currentAgent.getName(), false);
 	                	
                        checkAgentActivity(currentAgent) ;
@@ -272,7 +271,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
     
     public void newOutcome(Agent currentAgent, double utilA, double utilB, double utilADiscount, double utilBDiscount, Action action, String message) throws Exception {
         
-    	no=new NegotiationOutcome(null, sessionNumber, 
+    	no=new NegotiationOutcome(null, finalRound, 
 			   action, agentA.getName(),  agentB.getName(),
             agentA.getClass().getCanonicalName(), agentB.getClass().getCanonicalName(),
             utilA,utilB,
@@ -290,7 +289,7 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
             -1,
             "");
     	
-    	fireNegotiationActionEvent(currentAgent,action,sessionNumber,
+    	fireNegotiationActionEvent(currentAgent,action,finalRound,
         	System.currentTimeMillis()-startTimeMillies,utilA,utilB,utilADiscount,utilBDiscount,message, true);
     		
     	
@@ -324,9 +323,6 @@ public class AlternatingOffersBilateralAtomicNegoSessionSeparateTimelines extend
 	}
 	public void setTotalTime(int val) {
 		totalTime = val;
-	}
-	public void setSessionTotalNumber(int val) {
-		sessionTotalNumber = val;
 	}
 }
 

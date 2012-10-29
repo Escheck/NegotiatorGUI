@@ -59,7 +59,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	protected long startTimeMillies; // idem.
 	/** Default setting is 3min. This is the number of ms. */
 	protected Integer totalTime = 1000 * 180;
-	protected int sessionTotalNumber = 1;
 	protected Protocol protocol;
 	private boolean traceLoggingEnabled;
 
@@ -101,7 +100,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 * for the time-out.
 	 */
 	public void run() {
-
 		startTime = new Date();
 		startTimeMillies = System.currentTimeMillis();
 
@@ -123,10 +121,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent
 			// can not damage them.
-			agentA.internalInit(sessionNumber, sessionTotalNumber, startTime,
+			agentA.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceA), agentAparams);
 			agentA.init();
-			agentB.internalInit(sessionNumber, sessionTotalNumber, startTime,
+			agentB.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceB), agentBparams);
 			agentB.init();
 
@@ -276,7 +274,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 						if (showGUI) {
 							fireNegotiationActionEvent(currentAgent, lastAction,
-									sessionNumber, System.currentTimeMillis()
+									finalRound, System.currentTimeMillis()
 											- startTimeMillies, time, utilA, utilB,
 									agentAUtilityDisc, agentBUtilityDisc, "bid by "
 											+ currentAgent.getName(), false);
@@ -598,7 +596,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			);
 			
 			
-		no = new NegotiationOutcome(this, sessionNumber, lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+		no = new NegotiationOutcome(this, this.protocol.getCurrentSessionRound(), lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -630,7 +628,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		);
 		
 		
-		no = new NegotiationOutcome(this, sessionNumber, lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+		no = new NegotiationOutcome(this, this.protocol.getCurrentSessionRound(), lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -704,7 +702,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			matchDataLogger.addMeasure("bidindices",
 					omMeasuresResults.getBidIndices());
 			matchDataLogger.writeToFileCompact(time, agreement,
-					protocol.getRun());
+					protocol.getCurrentSessionRound());
 		}
 	}
 
@@ -717,8 +715,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 * @author W.Pasman
 	 */
 	public void JudgeTimeout() {
-		System.out.println("Judging time-out.");
-
 		try {
 			// checkForMAC();
 			double time = 1;
@@ -871,9 +867,5 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 	public void setTotalTime(int val) {
 		totalTime = val;
-	}
-
-	public void setSessionTotalNumber(int val) {
-		sessionTotalNumber = val;
 	}
 }

@@ -47,8 +47,6 @@ public class SimpleAgentNew extends Agent {
 
 	public void init(int sessionNumberP, int sessionTotalNumberP,
 			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
-		sessionNumber = sessionNumberP;
-		sessionTotalNumber = sessionTotalNumberP;
 
 	}
 

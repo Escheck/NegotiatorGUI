@@ -52,9 +52,11 @@ public abstract class Protocol implements Runnable, Serializable {
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();    
 
     private SimpleElement fRoot;  
-	private int runNr = 0;
 	public abstract String getName();	
 	public abstract NegotiationOutcome getNegotiationOutcome();
+	
+	protected int currentSessionRound;
+	protected int totalSessionRounds;
 	
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		throw new Exception("This protocol cannot be used in a tournament");
@@ -68,9 +70,12 @@ public abstract class Protocol implements Runnable, Serializable {
 	public Protocol(AgentRepItem[] agentRepItems,
     				ProfileRepItem[] profileRepItems,
     				HashMap<AgentParameterVariable,
-    				AgentParamValue>[] agentParams) throws Exception{
+    				AgentParamValue>[] agentParams,
+    				int currentSessionRound, int totalSessionRounds) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
+    	this.currentSessionRound = currentSessionRound;
+    	this.totalSessionRounds = totalSessionRounds;
     	if (agentParams!=null) {
     		this.agentParams = agentParams.clone();
     	} else {
@@ -196,12 +201,12 @@ public abstract class Protocol implements Runnable, Serializable {
     }
 	
     public abstract void cleanUP();
-
-	public void setRun(int runNr) {
-		this.runNr  = runNr;
+    
+	public int getCurrentSessionRound() {
+		return currentSessionRound;
 	}
 
-	public int getRun() {
-		return runNr;
+	public int getTotalSessionRounds() {
+		return totalSessionRounds;
 	}
 }

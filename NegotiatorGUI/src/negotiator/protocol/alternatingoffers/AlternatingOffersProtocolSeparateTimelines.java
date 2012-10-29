@@ -43,13 +43,6 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
 
-
-	int sessionTotalNumber;
-	int sessionNumber; // the main session number: increases with different session setups
-	public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
-
-
-
 	boolean startingWithA=true;
 	ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	String startingAgent; // agentAname or agnetBname
@@ -160,10 +153,10 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 
 	public AlternatingOffersProtocolSeparateTimelines(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
+			int currentSessionRound, int totalSessionRounds)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams);
-		sessionTotalNumber = 1;
+		super(agentRepItems, profileRepItems, agentParams, currentSessionRound, totalSessionRounds);
 	}
 
 
@@ -187,17 +180,15 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 
 	/** this runs sessionTotalNumber of sessions with the provided settings */
 	public void startNegotiation() throws Exception {
-		// Main.log("Starting negotiations...");
-		for(int i=0;i<sessionTotalNumber;i++) {
-			//Main.log("Starting session " + String.valueOf(i+1));
-			if(tournamentRunner!=null) {
-				synchronized (tournamentRunner) {
-					runNegotiationSession(i+1);
-					tournamentRunner.notify();
-				}
-			} else
-				runNegotiationSession(i+1);
-		}
+
+		if(tournamentRunner!=null) {
+			synchronized (tournamentRunner) {
+				runNegotiationSession();
+				tournamentRunner.notify();
+			}
+		} else
+			runNegotiationSession();
+
 	}
 	
 
@@ -209,7 +200,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 	 * @throws Exception
 	 * 
 	 */
-	protected void runNegotiationSession(int nr)  throws Exception
+	protected void runNegotiationSession()  throws Exception
 	{
 
 			
@@ -221,7 +212,6 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			agentB = Global.loadAgent(getAgentBRep().getClassPath());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 			agentB.setName(getAgentBname());
 
-			sessionTestNumber=nr;
 			if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
 			//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
 			//SessionRunner sessionrunner=new SessionRunner(this);
@@ -244,7 +234,6 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			if(agentA.isUIAgent()||agentB.isUIAgent()) totalTime = gui_nego_time;
 			else totalTime = non_gui_nego_time;
 			sessionrunner.setTotalTime(totalTime);
-			sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 			sessionrunner.setStartingWithA(startingWithA);
 			fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  getProfileArep(), getProfileBrep(),getAgentARep(), getAgentBRep(), Global.getAgentDescription(agentA), Global.getAgentDescription(agentB));
 			if(TournamentConfiguration.getBooleanOption("protocolMode", false)) {
@@ -741,7 +730,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 
-			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles, params); 
+			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles, params, 0, 1); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(),

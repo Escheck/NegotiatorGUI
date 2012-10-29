@@ -39,9 +39,10 @@ public class AuctionProtocol extends Protocol {
 
 	public AuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
+			int cSR, int tSR)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams);
+		super(agentRepItems, profileRepItems, agentParams, cSR, tSR);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -243,7 +244,7 @@ public class AuctionProtocol extends Protocol {
 		params[0] = paramsA;
 		params[1] = paramsB;
 		params[2] = paramsB;
-		AuctionProtocol session = new  AuctionProtocol (agents,  profiles,	params);
+		AuctionProtocol session = new  AuctionProtocol (agents,  profiles,	params, 0, 1);
 		return session;
 
 	}
