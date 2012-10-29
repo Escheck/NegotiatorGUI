@@ -33,6 +33,8 @@ public class TournamentOptionsUI extends JDialog {
 	private JCheckBox logDetailedAnalysisCheck;
 	private JLabel logFinalAccuracy;
 	private JCheckBox logFinalAccuracyCheck;
+	private JLabel logCompetitiveness;
+	private JCheckBox logCompetitivenessCheck;
 	private JLabel logNegotiationTrace;
     private JCheckBox logNegotiationTraceCheck;
     private JLabel logging;
@@ -162,7 +164,12 @@ public class TournamentOptionsUI extends JDialog {
                 }
             }
         });
-
+        
+        //		OPTION: log competitiveness
+        logCompetitiveness = new JLabel();
+        logCompetitivenessCheck = new JCheckBox();
+        logCompetitiveness.setText("Log competitiveness");
+        
         //		OPTION: append mode and deadline
         appendModeAndDeadline = new JLabel();
         appendModeAndDeadlineCheck = new JCheckBox();
@@ -233,6 +240,8 @@ public class TournamentOptionsUI extends JDialog {
                 config.put("showLastBid", showLastBidCheck.isSelected() ? 1 : 0);
                 config.put("disableGUI", disableGUICheck.isSelected() ? 1 : 0);
                 config.put("appendModeAndDeadline", appendModeAndDeadlineCheck.isSelected() ? 1 : 0);
+                config.put("logCompetitiveness", logCompetitivenessCheck.isSelected() ? 1 : 0);
+                
                 if (allValid) {
                 	dispose();
                 }
@@ -285,6 +294,7 @@ public class TournamentOptionsUI extends JDialog {
                                             .addComponent(showAllBidsCheck)
                                             .addComponent(showLastBidCheck)
                                             .addComponent(logFinalAccuracyCheck)
+                                            .addComponent(logCompetitivenessCheck)
                                             .addComponent(appendModeAndDeadlineCheck)
                                             .addComponent(disableGUICheck))
                                         .addGap(25, 25, 25))
@@ -298,6 +308,7 @@ public class TournamentOptionsUI extends JDialog {
                             .addComponent(logging)
                             .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(logCompetitiveness, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                             .addComponent(visualization)
                             .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
@@ -355,6 +366,10 @@ public class TournamentOptionsUI extends JDialog {
                     .addComponent(logFinalAccuracyCheck))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                    .addComponent(logCompetitiveness, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logCompetitivenessCheck))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(Alignment.LEADING)
                     .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                     .addComponent(appendModeAndDeadlineCheck))
                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -404,6 +419,7 @@ public class TournamentOptionsUI extends JDialog {
 			showLastBidCheck.setSelected(prevConfig.containsKey("showLastBid") && prevConfig.get("showLastBid") != 0);
 			disableGUICheck.setSelected(prevConfig.containsKey("disableGUI") && prevConfig.get("disableGUI") != 0);
 			appendModeAndDeadlineCheck.setSelected(prevConfig.containsKey("appendModeAndDeadline") && prevConfig.get("appendModeAndDeadline") != 0);
+			logCompetitivenessCheck.setSelected(prevConfig.containsKey("logCompetitiveness") && prevConfig.get("logCompetitiveness") != 0);
 			
 			if (disableGUICheck.isSelected()) {
 				showAllBidsCheck.setEnabled(false);
