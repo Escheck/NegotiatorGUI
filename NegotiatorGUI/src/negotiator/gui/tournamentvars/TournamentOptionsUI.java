@@ -25,6 +25,10 @@ public class TournamentOptionsUI extends JDialog {
 	private JButton cancelButton;
 	private JLabel deadline;
 	private JTextField deadlineTextField;
+	private JLabel accessPartnerPreferences;
+	private JCheckBox accessPartnerPreferencesCheck;
+	private JLabel allowPausingTimeline;
+	private JCheckBox allowPausingTimelineCheck;
 	private JLabel logDetailedAnalysis;
 	private JCheckBox logDetailedAnalysisCheck;
 	private JLabel logFinalAccuracy;
@@ -79,8 +83,11 @@ public class TournamentOptionsUI extends JDialog {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (protocolModeSelector.getSelectedIndex() == 0) {
                 	deadline.setText("Deadline (seconds)");
+                	allowPausingTimelineCheck.setEnabled(true);
                 } else {
                 	deadline.setText("Deadline (rounds)");
+                	allowPausingTimelineCheck.setEnabled(false);
+                	allowPausingTimelineCheck.setSelected(false);
                 }
             }
         });
@@ -90,6 +97,26 @@ public class TournamentOptionsUI extends JDialog {
         deadline = new JLabel();
         deadline.setText("Deadline (seconds)");
         deadlineTextField = new JTextField();
+        
+        //		OPTION: access opponent's preferences
+		accessPartnerPreferences = new JLabel();
+		accessPartnerPreferencesCheck = new JCheckBox();
+        accessPartnerPreferences.setText("Access partner preferences");
+        
+        //		OPTION: all ow pausing time
+        allowPausingTimeline = new JLabel();
+        allowPausingTimelineCheck = new JCheckBox();
+        allowPausingTimeline.setText("Allow pausing timeline");
+        allowPausingTimelineCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (allowPausingTimelineCheck.isSelected()) {
+                	JOptionPane.showMessageDialog(null, "As threads are now not automatically quit when\n" +
+                										"an agent ignores the deadline, ensure that all\n" +
+                										"agents work correctly.", "Option info", 1);
+        			
+                }
+            }
+        });
         
         // HEADER: session generation
         sessionGeneration = new JLabel();
@@ -185,7 +212,10 @@ public class TournamentOptionsUI extends JDialog {
             	if (!allValid) {
             		JOptionPane.showMessageDialog(null, "Please input a valid deadline.");
             	}
+            	
+            	config.put("accessPartnerPreferences", accessPartnerPreferencesCheck.isSelected() ? 1 : 0);
             	config.put("protocolMode", protocolModeSelector.getSelectedIndex());
+            	config.put("allowPausingTimeline", allowPausingTimelineCheck.isSelected() ? 1 : 0);
                 config.put("playBothSides", playBothSidesCheck.isSelected() ? 1 : 0);
                 config.put("playAgainstSelf", playAgainstSelfCheck.isSelected() ? 1 : 0);
                 config.put("logDetailedAnalysis", logDetailedAnalysisCheck.isSelected() ? 1 : 0);
@@ -226,6 +256,8 @@ public class TournamentOptionsUI extends JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                                     .addComponent(deadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(accessPartnerPreferences, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(allowPausingTimeline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(protocolMode, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(logNegotiationTrace, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(protocolSettings)
@@ -236,6 +268,8 @@ public class TournamentOptionsUI extends JDialog {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(45, 45, 45)
                                         .addGroup(layout.createParallelGroup(Alignment.TRAILING)
+                                    		.addComponent(accessPartnerPreferencesCheck)
+                                    		.addComponent(allowPausingTimelineCheck)
                                             .addComponent(playBothSidesCheck)
                                             .addComponent(playAgainstSelfCheck)
                                             .addComponent(logDetailedAnalysisCheck)
@@ -279,6 +313,14 @@ public class TournamentOptionsUI extends JDialog {
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(deadline, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(deadlineTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+            	.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(accessPartnerPreferences, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accessPartnerPreferencesCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(allowPausingTimeline, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(allowPausingTimelineCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(sessionGeneration)
                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -343,6 +385,8 @@ public class TournamentOptionsUI extends JDialog {
 			if (prevConfig.containsKey("deadline")) {
 				deadlineTextField.setText(prevConfig.get("deadline") + "");
 			}
+			allowPausingTimelineCheck.setSelected(prevConfig.containsKey("allowPausingTimeline") && prevConfig.get("allowPausingTimeline") != 0);
+			accessPartnerPreferencesCheck.setSelected(prevConfig.containsKey("accessPartnerPreferences") && prevConfig.get("accessPartnerPreferences") != 0);
 			playBothSidesCheck.setSelected(prevConfig.containsKey("playBothSides") && prevConfig.get("playBothSides") != 0);
 			playAgainstSelfCheck.setSelected(prevConfig.containsKey("playAgainstSelf") && prevConfig.get("playAgainstSelf") != 0);
 			logDetailedAnalysisCheck.setSelected(prevConfig.containsKey("logDetailedAnalysis") && prevConfig.get("logDetailedAnalysis") != 0);

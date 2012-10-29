@@ -170,8 +170,8 @@ public class AlternatingOffersProtocol extends Protocol {
 					int time = totalTime * 1000;
 					System.out.println("waiting NEGO_TIMEOUT="+(time + 10000));
 					// wait will unblock early if negotiation is finished in time.
-					if (Global.PAUSABLE_TIMELINE) {
-						wait(time * 10 + 10000);
+					if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
+						wait(Long.MAX_VALUE);
 					} else {
 						wait(time + 10000);
 					}

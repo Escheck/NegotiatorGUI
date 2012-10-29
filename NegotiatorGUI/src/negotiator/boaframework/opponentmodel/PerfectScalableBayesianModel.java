@@ -1,6 +1,9 @@
 package negotiator.boaframework.opponentmodel;
 
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 import agents.bayesianopponentmodel.PerfectBayesianOpponentModelScalable;
 import negotiator.Bid;
@@ -10,6 +13,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -48,13 +52,14 @@ public class PerfectScalableBayesianModel extends OpponentModel {
 	@Override
 	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession session) {
 		
-		if (Global.experimentalSetup) {
+		if (TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) {
 			opponentUtilitySpace = session.getAgentAUtilitySpace();
 			if (negotiationSession.getUtilitySpace().getFileName().equals(opponentUtilitySpace.getFileName())) {
 				opponentUtilitySpace = session.getAgentBUtilitySpace();
 			}
 			model.setOpponentUtilitySpace(opponentUtilitySpace);
 		} else {
+			JOptionPane.showMessageDialog(null, "This opponent model needs access to the opponent's\npreferences. See tournament options.", "Model error", 0);
 			System.err.println("Global.experimentalSetup should be enabled!");
 		}	
 	}

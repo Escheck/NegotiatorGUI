@@ -115,7 +115,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				timeline = new DiscreteTimeline(TournamentConfiguration.getIntegerOption("deadline", 180));
 			} else {
 				totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
-				if (Global.PAUSABLE_TIMELINE) {
+				if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
 					timeline = new PausableContinuousTimeline(totalTime);
 				} else {
 					timeline = new ContinuousTimeline(totalTime);
@@ -151,7 +151,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			}
 			checkForMAC();
-
+			
 			while (!stopNegotiation) {
 				// timeline.printTime();
 				double time = timeline.getTime();
@@ -433,7 +433,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	private void processOnlineData() {
 		// DEFAULT: disable trace logging
 		if (traceLoggingEnabled) {
-			if (Global.PAUSABLE_TIMELINE) {
+			if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
 				try {
 					timeline.pause();
 				} catch (Exception e) {
@@ -448,7 +448,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 							.getOpponentBidIndex(lastOpponentBid));
 				}
 			}
-			if (Global.PAUSABLE_TIMELINE) {
+			if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
 				try {
 					timeline.resume();
 				} catch (Exception e) {
