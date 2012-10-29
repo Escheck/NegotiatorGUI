@@ -119,12 +119,6 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     	}
 	}
     
-	public void cleanUp() 
-    {
-    	agentA.cleanUp();
-    	agentB.cleanUp();
-    }
-    
     public Bid getLastBid()
 	{
 		return lastBid;

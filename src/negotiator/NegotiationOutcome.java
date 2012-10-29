@@ -83,7 +83,7 @@ public class NegotiationOutcome
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
 		this.runNr = runNumber;
-		System.out.println(runNr);
+	
 		this.lastAction = lastAction;
 		this.agentAutility = outcomeInfo.getAgentAutility();
 		this.agentButility = outcomeInfo.getAgentButility();

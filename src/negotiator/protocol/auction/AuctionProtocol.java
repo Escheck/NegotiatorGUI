@@ -40,9 +40,9 @@ public class AuctionProtocol extends Protocol {
 	public AuctionProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			int cSR, int tSR)
+			int tSR)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, cSR, tSR);
+		super(agentRepItems, profileRepItems, agentParams, tSR);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -192,15 +192,6 @@ public class AuctionProtocol extends Protocol {
 						getAgentUtilitySpaces(1+winnerSessionIndex), 
 						paramsA, paramsB); 
 
-
-			//TODO: secondPhaseSession.setAdditional(theoreticalOutcome);
-			//				for (NegotiationEventListener list: negotiationEventListeners) 
-			//					secondPhaseSession.addNegotiationEventListener(list);
-			//				fireBilateralAtomicNegotiationSessionEvent(secondPhaseSession, profileA, profileB, agentA, agentB);
-			//secondPhaseSession.run(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
-			for (AuctionBilateralAtomicNegoSession s: sessions) 
-				s.cleanUp();
-			secondPhaseSession.cleanUp();
 		} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
 	}
 
@@ -244,7 +235,7 @@ public class AuctionProtocol extends Protocol {
 		params[0] = paramsA;
 		params[1] = paramsB;
 		params[2] = paramsB;
-		AuctionProtocol session = new  AuctionProtocol (agents,  profiles,	params, 0, 1);
+		AuctionProtocol session = new  AuctionProtocol (agents,  profiles,	params, 1);
 		return session;
 
 	}
@@ -451,13 +442,4 @@ public class AuctionProtocol extends Protocol {
 		return runNegotiationSession(agentA, agentB, agentARepItem, agentBRepItem, agentAname, agentBname, profileRepItemA, profileRepItemB, spaceA, spaceB, agentAparams, agentBparams);
 
 	}
-
-	@Override
-	public void cleanUP() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
 }

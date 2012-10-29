@@ -412,16 +412,6 @@ public class NiceTitForTat extends BilateralAgent
 		}
 	}
 
-	@Override
-	public void cleanUp() 
-	{
-		// TODO Auto-generated method stub
-		super.cleanUp();
-		opponentModel = null;
-		myHistory = null;
-		opponentHistory = null;
-	}
-
 	protected static void log(String s) {
 	}
 

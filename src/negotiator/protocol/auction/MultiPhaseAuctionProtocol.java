@@ -27,14 +27,8 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
 			int cSR, int tSR)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, cSR, tSR);
+		super(agentRepItems, profileRepItems, agentParams, tSR);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void cleanUP() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -178,8 +172,6 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 				numberOfSession++;
 				numberOfOffers += (secondPhaseSession.getNegotiationOutcome().AgentABids.size()+secondPhaseSession.getNegotiationOutcome().AgentBBids.size());
 			}
-			for (AuctionBilateralAtomicNegoSession s: sessions) 
-				s.cleanUp();
 			//secondPhaseSession.cleanUp();
 			System.out.println("Results: number of sessions:"+String.valueOf(numberOfSession) + "; number of offers:"+String.valueOf(numberOfOffers));
 		} catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }

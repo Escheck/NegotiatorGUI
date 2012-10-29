@@ -55,7 +55,7 @@ public abstract class Protocol implements Runnable, Serializable {
 	public abstract String getName();	
 	public abstract NegotiationOutcome getNegotiationOutcome();
 	
-	protected int currentSessionRound;
+	protected int currentSessionRound = -1;
 	protected int totalSessionRounds;
 	
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
@@ -71,7 +71,7 @@ public abstract class Protocol implements Runnable, Serializable {
     				ProfileRepItem[] profileRepItems,
     				HashMap<AgentParameterVariable,
     				AgentParamValue>[] agentParams,
-    				int currentSessionRound, int totalSessionRounds) throws Exception{
+    				int totalSessionRounds) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
     	this.currentSessionRound = currentSessionRound;
@@ -199,8 +199,6 @@ public abstract class Protocol implements Runnable, Serializable {
     public String toString() {
     	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
     }
-	
-    public abstract void cleanUP();
     
 	public int getCurrentSessionRound() {
 		return currentSessionRound;
