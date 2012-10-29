@@ -24,6 +24,7 @@ import negotiator.analysis.BidSpaceCache;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
+import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
@@ -135,16 +136,16 @@ public class NegotiationOutcome
 	SimpleElement resultsOfAgent(String agentX, String agentName, String agentClass, String utilspacefilename,
 			String oppName, String oppClass, String oppUtilSpaceName, Double agentAUtil,Double agentAUtilDiscount,Double agentAMaxUtil, ArrayListXML<BidPointTime> bids, boolean addBids)
 	{
-		double minDemandedUtil;
-		double fyu;
-		double bsCR;
-		double normACCR;
-		double totalCR;
-		double acCR;
-		
+		double minDemandedUtil = -1;
+		double fyu = -1;
+		double bsCR = -1;
+		double normACCR = -1;
+		double totalCR = -1;
+		double acCR = -1;
+		boolean logCompetitiveness = TournamentConfiguration.getBooleanOption("logCompetitiveness", false);
 		
 		//double cooperation;
-		if (Global.LOG_COMPETITIVENESS)
+		if (logCompetitiveness)
 		{
 			UtilitySpace[] spaces = { alternatingOffersBilateralAtomicNegoSession.getAgentAUtilitySpace(),
 									alternatingOffersBilateralAtomicNegoSession.getAgentBUtilitySpace() };
@@ -202,7 +203,7 @@ public class NegotiationOutcome
 		outcome.setAttribute("bestAcceptableBid", String.valueOf(bestAcceptableBid));
 		outcome.setAttribute("bestDiscountedAccepableBid", String.valueOf(bestDiscountedAccepableBid));
 		
-		if (Global.LOG_COMPETITIVENESS)
+		if (logCompetitiveness)
 		{
 			outcome.setAttribute("minDemandedUtility", String.valueOf(minDemandedUtil));
 			outcome.setAttribute("FYU",String.valueOf(fyu));

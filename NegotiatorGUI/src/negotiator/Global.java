@@ -37,9 +37,6 @@ public class Global {
 	public static String logPrefix = "";
 	
 	private static final Date loadDate = Calendar.getInstance().getTime();
-
-	/** Log things like competitiveness and minDemandedUtil */
-	public static final boolean LOG_COMPETITIVENESS = false;
 	
 	public Global() {}
 
