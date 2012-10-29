@@ -571,13 +571,4 @@ public class BayesianAgent extends Agent {
 		fNegotiation.addAdditionalLog(lLearningPerformance);
 		
 	}
-
-
-	@Override
-	public void cleanUp() {
-		// TODO Auto-generated method stub
-		super.cleanUp();
-		fOpponentModel = null;
-		myPreviousBids = null;
-	}
 }

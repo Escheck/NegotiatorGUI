@@ -30,9 +30,10 @@ public abstract class Agent
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     /** Use timeline for everything time-related. */
     public Timeline timeline;
-    /** To be implemented correctly. */
+    /** A session can be repeated multiple times: a session round. This parameter specifies
+     * which session round we are at in the range [0, sessionRoundTotal - 1].*/
     public Integer			sessionRound;
-    /** To be implemented correctly. */
+    /** Amount of rounds of this session. */
     public Integer			sessionRoundTotal;
     /** Reference to protocol which is set when experimental setup is enabled. */
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
@@ -167,6 +168,7 @@ public abstract class Agent
     /**
      * Determine if this agent can remember information if the same session is repeated.
      * A normal agents is simply reset each round. If you do not want this, create a MultiRoundAgent.
+     * @return false
      */
     public boolean isMultiRoundsCompatible() { return false; }
     
@@ -175,22 +177,6 @@ public abstract class Agent
      * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
      */
     public void beginSessionRound() { }
-    
-    /**
-     * Empty method never called for a normal Agent.
-     * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
-     */
-    public void endSessionRound() { }
-    
-    /**
-     * This function cleans up the remainders of the agent: open windows etc.
-     * This function will be called when the agent is killed,
-     * typically when it was timed out in a nego session.
-     * The agent will not be able to do any negotiation actions here, just clean up.
-     * To ensure that the agent can not sabotage the negotiation, 
-     * this function will be called from a separate thread.
-     */
-    public void cleanUp() {  }
     
     /**
      * @return ID of the agent as assigned by the protocol.
@@ -233,5 +219,13 @@ public abstract class Agent
 				}
 			}
 		}
+	}
+
+	public Integer getSessionRound() {
+		return sessionRound;
+	}
+
+	public Integer getSessionRoundTotal() {
+		return sessionRoundTotal;
 	}
 }

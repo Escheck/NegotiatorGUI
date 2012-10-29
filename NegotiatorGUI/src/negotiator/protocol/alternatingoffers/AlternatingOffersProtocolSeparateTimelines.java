@@ -154,9 +154,9 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 	public AlternatingOffersProtocolSeparateTimelines(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			int currentSessionRound, int totalSessionRounds)
+			int totalSessionRounds)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, currentSessionRound, totalSessionRounds);
+		super(agentRepItems, profileRepItems, agentParams, totalSessionRounds);
 	}
 
 
@@ -730,7 +730,7 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 
-			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles, params, 0, 1); 
+			AlternatingOffersProtocolSeparateTimelines session =new AlternatingOffersProtocolSeparateTimelines(agents, profiles, params, 1); 
 			sessions.add(session);
 			//check if the analysis is already made for the prefs. profiles
 			BidSpace bidSpace = BidSpaceCache.getBidSpace(session.getAgentAUtilitySpace(),
@@ -752,17 +752,4 @@ public class AlternatingOffersProtocolSeparateTimelines extends Protocol {
 			} 
 		}	    	
 	}
-
-
-	@Override
-	public void cleanUP() {
-		agentA = null;
-		agentB = null;
-
-	}
-
-
-
-
-
 }

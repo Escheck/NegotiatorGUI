@@ -76,10 +76,9 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
-			int currentSessionRound, int totalSessionRounds)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams, int totalSessionRounds)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams, currentSessionRound, totalSessionRounds);
+		super(agentRepItems, profileRepItems, agentParams, totalSessionRounds);
 	}
 	/**
 	 * Warning. You can call run() directly (instead of using Thread.start() )
@@ -121,13 +120,17 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	protected void runNegotiationSession()  throws Exception
 	{
-		//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
-		agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
-		agentA.setName(getAgentAname());
-		//java.lang.ClassLoader loaderB =Global.class.getClassLoader();//ClassLoader.getSystemClassLoader();
-		agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
-		agentB.setName(getAgentBname());
+		currentSessionRound++;
+		if (currentSessionRound == 0 || !agentA.isMultiRoundsCompatible()) {
+			agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
+			agentA.setName(getAgentAname());
+		}
 		
+		if (currentSessionRound == 0 || !agentB.isMultiRoundsCompatible()) {
+			agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
+			agentB.setName(getAgentBname());
+		}
+
 		//Passes the Experimental Variables to agent A and B
 		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
 		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
@@ -186,7 +189,6 @@ public class AlternatingOffersProtocol extends Protocol {
 				createExtraLogData();
 			}
 		}
-		sessionrunner.cleanUp();
 	}
 	
 	/**
@@ -443,20 +445,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		return startingAgent;
 	}
 
-	public void setAgentA(Agent agent) {
-		agentA=agent;
-	}
-	public void setAgentB(Agent agent) {
-		agentB=agent;
-	}
-
-	public Agent getAgentA() {
-		return agentA;
-	}
-	public Agent getAgentB() {
-		return agentB;
-	}
-
 	public AlternatingOffersBilateralAtomicNegoSession getSessionRunner() {
 		return sessionrunner;    
 	}
@@ -602,8 +590,8 @@ public class AlternatingOffersProtocol extends Protocol {
 			params[0] = paramsA;
 			params[1] = paramsB;
 			
+			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params, numberOfSessions); 
 			for (int k = 0; k < numberOfSessions; k++) {
-				AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params, k, numberOfSessions); 
 				sessions.add(session);
 			}
 		} else {
@@ -621,12 +609,5 @@ public class AlternatingOffersProtocol extends Protocol {
 				allParameterCombis(tournament, newparameters, sessions, profileA,  profileB,agentA,  agentB,newchosenvalues);
 			} 
 		}	    	
-	}
-
-	@Override
-	public void cleanUP() 
-	{
-		agentA = null;
-		agentB = null;
 	}
 }
