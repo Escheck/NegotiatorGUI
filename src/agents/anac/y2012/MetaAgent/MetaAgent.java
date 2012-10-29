@@ -259,7 +259,7 @@ public class MetaAgent extends Agent {
 					
 					//initialize agent.
 					myAgent = selectAgent(getBestAgent());		
-					myAgent.internalInit(this.sessionNumber, this.sessionTotalNumber, this.startTime, this.totalTime, this.timeline, this.utilitySpace, this.parametervalues);
+					myAgent.internalInit(0, 1, this.startTime, this.totalTime, this.timeline, this.utilitySpace, this.parametervalues);
 					myAgent.setName(this.getName());
 					myAgent.setAgentID(this.getAgentID());
 					myAgent.init();

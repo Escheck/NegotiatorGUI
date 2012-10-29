@@ -137,10 +137,10 @@ public class TournamentRunner implements Runnable
 				System.out.println("TOURNAMENT PROGRESS: starting match " + (i + 1) + " of " + sessions.size());
 			}
 			
-			int runNr = determineRunNr(sessions.get(i));
+
 			previousSession = sessions.get(i).hashCode();
 			Protocol s = sessions.get(i);
-			s.setRun(runNr);
+
 			synchronized(this) { 
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
 				s.setTournamentRunner(this);
@@ -154,15 +154,6 @@ public class TournamentRunner implements Runnable
 			System.gc();
 		}
 		return Global.getOutcomesFileName();
-	}
-	
-	private int determineRunNr(Protocol protocol) {
-		if (protocol.hashCode() == previousSession) {
-			currentRunNr++;
-		} else {
-			currentRunNr = 0;
-		}
-		return currentRunNr;
 	}
 
 	private String runDistributedTournament(int previousOpenSessions) throws InterruptedException {
@@ -183,9 +174,7 @@ public class TournamentRunner implements Runnable
 				StringBuilder builder = new StringBuilder();
 				// 3. Run the matches and store the outcomes
 				for (Protocol s: job.getSessions()) {
-					int runNr = determineRunNr(s);
 					previousSession = s.hashCode();
-					s.setRun(runNr);
 					synchronized(this) { 
 						for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);	
 						s.setTournamentRunner(this);

@@ -44,11 +44,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	private static final long serialVersionUID = 7472004245336770247L;
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
-
-	/** always 1? */
-	int sessionTotalNumber;
-	int sessionNumber; // the main session number: increases with different session setups
-	public int sessionTestNumber; // the sub-session number: counts from 1 to sessionTotalNumber
 	boolean startingWithA = true;
 	ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	protected String startingAgent; // agentAname or agnetBname
@@ -81,10 +76,10 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	public AlternatingOffersProtocol(AgentRepItem[] agentRepItems,
 			ProfileRepItem[] profileRepItems,
-			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
+			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
+			int currentSessionRound, int totalSessionRounds)
 	throws Exception {
-		super(agentRepItems, profileRepItems, agentParams);
-		sessionTotalNumber = 1;
+		super(agentRepItems, profileRepItems, agentParams, currentSessionRound, totalSessionRounds);
 	}
 	/**
 	 * Warning. You can call run() directly (instead of using Thread.start() )
@@ -106,18 +101,13 @@ public class AlternatingOffersProtocol extends Protocol {
 
 	/** this runs sessionTotalNumber of sessions with the provided settings */
 	public void startNegotiation() throws Exception {
-		// Main.log("Starting negotiations...");
-		for(int i=0;i<sessionTotalNumber;i++) {
-
-//			System.out.println("Starting session " + String.valueOf(i+1));
-			if(tournamentRunner!=null) {
-				synchronized (tournamentRunner) {
-					runNegotiationSession(i+1);					
-					tournamentRunner.notify();
-				}
-			} else
-				runNegotiationSession(i+1);
-		}
+		if(tournamentRunner!=null) {
+			synchronized (tournamentRunner) {
+				runNegotiationSession();					
+				tournamentRunner.notify();
+			}
+		} else
+			runNegotiationSession();
 	}
 
 
@@ -129,7 +119,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * @param nr is the sessionTestNumber
 	 * @throws Exception
 	 */
-	protected void runNegotiationSession(int nr)  throws Exception
+	protected void runNegotiationSession()  throws Exception
 	{
 		//java.lang.ClassLoader loaderA = Global.class.getClassLoader();// .getSystemClassLoader()/*new java.net.URLClassLoader(new URL[]{agentAclass})*/;
 		agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
@@ -139,9 +129,6 @@ public class AlternatingOffersProtocol extends Protocol {
 		agentB.setName(getAgentBname());
 		
 		//Passes the Experimental Variables to agent A and B
-		
-
-		sessionTestNumber=nr;
 		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
 		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
 		//SessionRunner sessionrunner=new SessionRunner(this);
@@ -149,11 +136,9 @@ public class AlternatingOffersProtocol extends Protocol {
 		if ( (!startingWithA) && new Random().nextInt(2)==1) { 
 			startingAgent=getAgentBname();
 		}
-
 		sessionrunner = newAlternatingOffersBilateralAtomicNegoSession();
 		totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
 		sessionrunner.setTotalTime(totalTime);
-		sessionrunner.setSessionTotalNumber(sessionTotalNumber);
 		sessionrunner.setStartingWithA(startingWithA);
 		/* This eventually fills the GUI columns */
 		if (!TournamentConfiguration.getBooleanOption("disableGUI", false)) {
@@ -208,7 +193,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * Append quality measure information to the additional {@link #outcome} field.
 	 */
 	public void createExtraLogData() {
-		outcome.setRunNr(getRun());
 
 		// DEFAULT: no detailed analysis
 		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
@@ -617,8 +601,9 @@ public class AlternatingOffersProtocol extends Protocol {
 			HashMap<AgentParameterVariable,AgentParamValue>[] params = new HashMap[2];
 			params[0] = paramsA;
 			params[1] = paramsB;
-			AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params); 
+			
 			for (int k = 0; k < numberOfSessions; k++) {
+				AlternatingOffersProtocol session = new AlternatingOffersProtocol(agents, profiles,params, k, numberOfSessions); 
 				sessions.add(session);
 			}
 		} else {
