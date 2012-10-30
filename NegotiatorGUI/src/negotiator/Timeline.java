@@ -10,7 +10,7 @@ public abstract class Timeline {
     /** In a time-based protocol, time passes within a round. In contrast,
      * in a rounds-based protocol time only passes when the action is presented.
      */
-    protected enum Type {
+    public enum Type {
         Time,
         Rounds;
     }

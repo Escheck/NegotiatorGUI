@@ -64,8 +64,8 @@ public abstract class Agent
     
     /**
      * This method is called by the protocol to initialize the agent with a new session information.
-     * @param sessionNumber number of the session.
-     * @param sessionTotalNumber total number of sessions.
+     * @param sessionRound session round of this session.
+     * @param sessionRoundTotal total amount of session rounds.
      * @param startTimeP
      * @param totalTimeP
      * @param timeline keeping track of the time in the negotiation.
@@ -139,22 +139,22 @@ public abstract class Agent
     }
     
     /**
-     * Let the agent wait.
+     * Let the agent wait in case of a time-based protocol.
      * Example:<br>
      * sleep(0.1) will let the agent sleep for 10% of the negotiation time (as defined by the {@link Timeline}).
+     * 
      * @param fraction should be between 0 and 1.
      */
     public void sleep(double fraction)
     {
-    	long sleep = (long) ((timeline.getTotalTime() * 1000) * fraction);
-    	try
-		{
-			Thread.sleep(sleep);
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if (timeline.getType().equals(Timeline.Type.Time)) {
+	    	long sleep = (long) ((timeline.getTotalTime() * 1000) * fraction);
+	    	try {
+				Thread.sleep(sleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
     }
     
     /**
@@ -173,10 +173,18 @@ public abstract class Agent
     public boolean isMultiRoundsCompatible() { return false; }
     
     /**
-     * Empty method never called for a normal Agent.
+     * Method called after initializing an agent using init. This method is useful for
+     * MultiRoundAgent which init is only called once.
      * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
      */
     public void beginSessionRound() { }
+    
+    /**
+     * Method which informs an agent about the utility it received.
+     * Note that this method is only usefull if the agent is a MultiRoundAgent.
+     * @param dUtil discounted utility of previous session round.
+     */
+    public void endSessionRound(double dUtil) { }
     
     /**
      * @return ID of the agent as assigned by the protocol.
@@ -221,10 +229,16 @@ public abstract class Agent
 		}
 	}
 
+	/**
+	 * @return session round. If a session is first started it is zero.
+	 */
 	public Integer getSessionRound() {
 		return sessionRound;
 	}
 
+	/**
+	 * @return session round total. How many times the session is repeated.
+	 */
 	public Integer getSessionRoundTotal() {
 		return sessionRoundTotal;
 	}
