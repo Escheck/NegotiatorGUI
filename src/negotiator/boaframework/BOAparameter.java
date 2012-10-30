@@ -1,5 +1,6 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import misc.Pair;
@@ -14,7 +15,7 @@ import misc.Pair;
  * @author Mark Hendrikx (m.j.c.hendrikx@student.tudelft.nl)
  * @version 16-01-12
  */
-public class BOAparameter {
+public class BOAparameter implements Serializable{
 	
 	/** Name of the parameter. */
 	private String name;
