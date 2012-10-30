@@ -36,4 +36,8 @@ public class TournamentConfiguration {
 		}
 		return result;
 	}
+
+	public static HashMap<String, Integer> getOptions() {
+		return configuration;
+	}
 }

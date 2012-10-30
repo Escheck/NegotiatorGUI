@@ -646,7 +646,7 @@ public class TournamentUI extends javax.swing.JPanel
     	String user = tournament.getVariables().get(Tournament.VARIABLE_DB_USER).getValues().get(0).toString();
     	String password = tournament.getVariables().get(Tournament.VARIABLE_DB_PASSWORD).getValues().get(0).toString();
     	String sessionname = tournament.getVariables().get(Tournament.VARIABLE_DB_SESSIONNAME).getValues().get(0).toString();
-
+    	TournamentConfiguration.setConfiguration(tournament.getOptions());
     	// 2. Try to connect
     	if (DBController.connect(url, user, password)) {
     		try {
