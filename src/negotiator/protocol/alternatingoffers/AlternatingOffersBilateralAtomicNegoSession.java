@@ -593,6 +593,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double utilADiscount, double utilBDiscount, String message,
 			double time, double distanceToNash, String acceptedBy)
 			throws Exception {
+		
+			agentA.endSessionRound(utilADiscount);
+			agentB.endSessionRound(utilBDiscount);
+			
 			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
 					agentA.getClass().getCanonicalName(), 
 					agentB.getClass().getCanonicalName(), 
