@@ -95,6 +95,14 @@
 		<acceptancecondition description="2011 - The Negotiator" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_TheNegotiator"/>
 		<acceptancecondition description="2011 - IAMHaggler2011" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_IAMHaggler2011"/>
 		<acceptancecondition description="2011 - ValueModelAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2011.AC_ValueModelAgent"/>
+		
+		<acceptancecondition description="2012 - AgentLG" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_AgentLG"/>
+		<acceptancecondition description="2012 - AgentMR" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_AgentMR"/>
+		<acceptancecondition description="2012 - BRAMAgent2" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_BRAMAgent2"/>
+		<acceptancecondition description="2012 - CUHKAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_CUHKAgent"/>
+		<acceptancecondition description="2012 - IAMHaggler2012" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_IAMHaggler2012"/>
+		<acceptancecondition description="2012 - OMACagent" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_OMACagent"/>
+		
 		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition"/>
 	</acceptanceconditions>
 	<opponentmodels>
