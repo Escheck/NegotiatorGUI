@@ -7,6 +7,9 @@ import negotiator.BidIterator;
 import negotiator.Domain;
 
 public class OpponentModel {
+	
+	private boolean isCrashed = false;
+	
 	protected Domain fDomain;
 	public ArrayList<Bid> fBiddingHistory;
 	
@@ -19,8 +22,13 @@ public class OpponentModel {
 		if (minUtility==null || maxUtility==null) findMinMaxUtility();
 		double value = (u-minUtility)/(maxUtility-minUtility);
 		if (Double.isNaN(value)) {
+			if (!isCrashed) {
+				isCrashed = true;
+				System.err.println("Bayesian scalable encountered NaN and therefore crashed");
+			}
 			return 0.0;
 		}
+
 		return (u-minUtility)/(maxUtility-minUtility);
 	}
 	public void updateBeliefs(Bid pBid) throws Exception { };
@@ -44,5 +52,9 @@ public class OpponentModel {
 			if (minUtility>u) minUtility=u;
 			if (maxUtility<u) maxUtility=u;
 		}
+	}
+	
+	public boolean isCrashed() {
+		return isCrashed;
 	}
 }
