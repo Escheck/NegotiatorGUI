@@ -79,7 +79,7 @@ import negotiator.utility.UtilitySpace;
 		private UtilitySpace utilitySpace;
 		private SouthamptonUtilitySpace sus;
 		
-		public IAMHaggler2012_Offering() { }
+		public IAMHaggler2012_Offering() {System.out.println("TEST"); }
 		
 		public IAMHaggler2012_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 			init(negoSession, model, oms, null);
@@ -91,6 +91,7 @@ import negotiator.utility.UtilitySpace;
 		@Override
 		public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 			super.init(negoSession, model, omStrategy, parameters);	
+			
 			utilitySpace = negoSession.getUtilitySpace();
 			double discountingFactor = 0.5;
 			try
