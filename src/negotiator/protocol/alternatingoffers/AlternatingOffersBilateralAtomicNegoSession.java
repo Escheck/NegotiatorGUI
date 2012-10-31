@@ -546,8 +546,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		updateOutcomeTupleList();
 		for (ArrayList<OutcomeTuple> agentList : completeList) {
 			for (OutcomeTuple outcomeTuple : agentList) {
-				System.out.println("AgentList size: " + agentList.size());
-
 				String logMsg = "";
 				if (outcomeTuple.getLogMsgType() == "deadline") {
 					logMsg = "Deadline reached while waiting for ["
