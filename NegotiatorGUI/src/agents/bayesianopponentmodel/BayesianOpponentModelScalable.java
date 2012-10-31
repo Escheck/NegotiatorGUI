@@ -298,30 +298,32 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 		return false;
 	}
 	public void updateBeliefs(Bid pBid) throws Exception{
-		if(haveSeenBefore(pBid)) return;
-		fBiddingHistory.add(pBid);
-		
-		//do not update the bids if it is the first bid		
-		if(fBiddingHistory.size()>1) {
+		if (!isCrashed()) {
+			if(haveSeenBefore(pBid)) return;
+			fBiddingHistory.add(pBid);
 			
-			//update the weights
-			updateWeights();
-			//update evaluation functions
-			updateEvaluationFns();
-		} else {
-			//do not update the weights
-			//update evaluation functions
-			updateEvaluationFns();
-		} //if
-		
-//		System.out.println(getMaxHyp().toString());
-		//calculate utility of the next partner's bid according to the concession functions
-		fPreviousBidUtility = fPreviousBidUtility-0.003;
-		for(int i=0;i<fExpectedWeights.length;i++) {
-			fExpectedWeights[i] = getExpectedWeight(i);
+			//do not update the bids if it is the first bid		
+			if(fBiddingHistory.size()>1) {
+				
+				//update the weights
+				updateWeights();
+				//update evaluation functions
+				updateEvaluationFns();
+			} else {
+				//do not update the weights
+				//update evaluation functions
+				updateEvaluationFns();
+			} //if
+			
+	//		System.out.println(getMaxHyp().toString());
+			//calculate utility of the next partner's bid according to the concession functions
+			fPreviousBidUtility = fPreviousBidUtility-0.003;
+			for(int i=0;i<fExpectedWeights.length;i++) {
+				fExpectedWeights[i] = getExpectedWeight(i);
+			}
+			findMinMaxUtility();
+		//	printBestHyp();
 		}
-		findMinMaxUtility();
-	//	printBestHyp();
 	}
 	
 	/**
