@@ -173,13 +173,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 								AcceptanceStrategy AC = ((BOAagent) agentA)
 										.getAcceptanceStrategy();
 								((Multi_AcceptanceCondition) AC)
-										.remainingACDeadline();
+										.remainingAC("deadline");
 							}
 							if (agentBWithMultiAC) {
 								AcceptanceStrategy AC = ((BOAagent) agentB)
 										.getAcceptanceStrategy();
 								((Multi_AcceptanceCondition) AC)
-										.remainingACDeadline();
+										.remainingAC("deadline");
 							}
 							createMACOutcomes(time);
 						} else {
@@ -196,13 +196,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 								AcceptanceStrategy AC = ((BOAagent) agentA)
 										.getAcceptanceStrategy();
 								((Multi_AcceptanceCondition) AC)
-										.remainingACDeadline();
+										.remainingAC("deadline");
 							}
 							if (agentBWithMultiAC) {
 								AcceptanceStrategy AC = ((BOAagent) agentB)
 										.getAcceptanceStrategy();
 								((Multi_AcceptanceCondition) AC)
-										.remainingACDeadline();
+										.remainingAC("deadline");
 							}
 							createMACOutcomes(time);
 						} else {
@@ -217,6 +217,18 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						System.out.println("EndNegotiation was called");
 						stopNegotiation = true;
 						if (hasMAC()) {
+							if (agentAWithMultiAC) {
+								AcceptanceStrategy AC = ((BOAagent) agentA)
+										.getAcceptanceStrategy();
+								((Multi_AcceptanceCondition) AC)
+										.remainingAC("breakoff");
+							}
+							if (agentBWithMultiAC) {
+								AcceptanceStrategy AC = ((BOAagent) agentB)
+										.getAcceptanceStrategy();
+								((Multi_AcceptanceCondition) AC)
+										.remainingAC("breakoff");
+							}
 							createMACOutcomes(time);
 						} else {
 							badOutcome(
@@ -534,6 +546,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		updateOutcomeTupleList();
 		for (ArrayList<OutcomeTuple> agentList : completeList) {
 			for (OutcomeTuple outcomeTuple : agentList) {
+				System.out.println("AgentList size: " + agentList.size());
+
 				String logMsg = "";
 				if (outcomeTuple.getLogMsgType() == "deadline") {
 					logMsg = "Deadline reached while waiting for ["
@@ -749,12 +763,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				if (agentAWithMultiAC) {
 					AcceptanceStrategy AC = ((BOAagent) agentA)
 							.getAcceptanceStrategy();
-					((Multi_AcceptanceCondition) AC).remainingACJudgeTimeout();
+					((Multi_AcceptanceCondition) AC).remainingAC("Judge Timeout");
 				}
 				if (agentBWithMultiAC) {
 					AcceptanceStrategy AC = ((BOAagent) agentB)
 							.getAcceptanceStrategy();
-					((Multi_AcceptanceCondition) AC).remainingACJudgeTimeout();
+					((Multi_AcceptanceCondition) AC).remainingAC("Judge Timeout");
 				}
 				updateOutcomeTupleList();
 				for (ArrayList<OutcomeTuple> outcomeTupleList : completeList)

@@ -129,24 +129,12 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 		ACList.removeAll(acceptors);
 	}
 	
-	public void remainingACDeadline(){
+	public void remainingAC(String type){
 		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
 		
 		for(AcceptanceStrategy strat : ACList) {	
 			String name = strat.getClass().getSimpleName() + " " + printParameters(strat);
-			OutcomeTuple tuple = new OutcomeTuple(null, name, 1, -1, -1, "deadline", "");
-			outcomes.add(tuple);
-			acceptors.add(strat);
-			
-		}
-		ACList.removeAll(acceptors);
-	}
-	
-	public void remainingACJudgeTimeout(){
-		ArrayList<AcceptanceStrategy> acceptors = new ArrayList<AcceptanceStrategy>();
-		for(AcceptanceStrategy strat : ACList) {	
-			String name = strat.getClass().getSimpleName() + " " + printParameters(strat);
-			OutcomeTuple tuple = new OutcomeTuple(null, name, 1, -1, -1, "Judge Timeout", "");
+			OutcomeTuple tuple = new OutcomeTuple(null, name, 1, -1, -1, type, "");
 			outcomes.add(tuple);
 			acceptors.add(strat);
 			
