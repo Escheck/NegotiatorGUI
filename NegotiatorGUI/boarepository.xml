@@ -36,6 +36,14 @@
 			<parameter name="r" default="36.0" description="Amount of regressions"/>
 			<parameter name="s" default="100.0" description="Amount of time samples"/>
 		</biddingstrategy>
+		
+		<biddingstrategy description="2012 - AgentLG" classPath="negotiator.boaframework.offeringstrategy.anac2012.AgentLG_Offering"/>
+		<biddingstrategy description="2012 - AgentMR" classPath="negotiator.boaframework.offeringstrategy.anac2012.AgentMR_Offering"/>
+		<biddingstrategy description="2012 - BRAMAgent2" classPath="negotiator.boaframework.offeringstrategy.anac2012.BRAMAgent2_Offering"/>
+		<biddingstrategy description="2012 - CUHKAgent" classPath="negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent_Offering"/>
+		<biddingstrategy description="2012 - IAMHaggler2012" classPath="negotiator.boaframework.offeringstrategy.anac2012.IAMhaggler2012_Offering"/>
+		<biddingstrategy description="2012 - OMACagent" classPath="negotiator.boaframework.offeringstrategy.anac2012.OMACagent_Offering"/>
+
 	</biddingstrategies>
 	<acceptanceconditions>
 		<acceptancecondition description="Other - False" classPath="negotiator.boaframework.acceptanceconditions.other.AC_False"/>
