@@ -16,10 +16,11 @@ public class IllegalAction extends Action {
      * Specifies that an agent returned an action not
      * fitting the protocol.
      * 
-     * @param agent to blame.
+     * @param agentID id of agent to blame.
      * @param details of the error.
      */
-    public IllegalAction(AgentID agent,String details) {
+    public IllegalAction(AgentID agentID,String details) {
+    	super(agentID);
         this.details = details;
     }
 	

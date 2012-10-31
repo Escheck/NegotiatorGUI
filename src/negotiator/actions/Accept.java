@@ -19,7 +19,9 @@ public class Accept extends Action {
      * Action to accept an opponent's bid.
      * @param agentID of the opponent.
      */
-    public Accept(AgentID agentID) { }
+    public Accept(AgentID agentID) {
+		super(agentID);
+	}
     
     /**
      * @return string representation of action: "(Accept)".

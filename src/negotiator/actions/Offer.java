@@ -16,10 +16,11 @@ public class Offer extends Action {
     
     /**
      * Creates an action symbolizing an offer for the opponent.
-     * @param agent which created the offer.
+     * @param agentID id of the agent which created the offer.
      * @param bid for the opponent.
      */
-    public Offer(AgentID agent, Bid bid) {
+    public Offer(AgentID agentID, Bid bid) {
+		super(agentID);
         this.bid = bid;
     }
     
