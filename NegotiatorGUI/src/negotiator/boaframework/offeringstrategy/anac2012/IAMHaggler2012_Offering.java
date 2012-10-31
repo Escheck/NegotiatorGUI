@@ -133,6 +133,54 @@ import negotiator.utility.UtilitySpace;
 			sus = new SouthamptonUtilitySpace(utilitySpace);
 		}
 		
+		@Override
+		public BidDetails determineOpeningBid() {
+			return determineNextBid();
+		}
+
+		@Override
+		public BidDetails determineNextBid() {
+			Bid opponentBid =  negotiationSession.getOpponentBidHistory().getLastBid();
+			Bid b;
+			try {
+				b = handleOffer(opponentBid);
+				nextBid = new BidDetails(b, negotiationSession.getUtilitySpace().getUtility(b));			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return nextBid;
+		}
+		
+
+		/**
+		 * Handle an opponent's offer.
+		 * 
+		 * @param opponentBid
+		 *            The bid made by the opponent.
+		 * @return the action that we should take in response to the opponent's
+		 *         offer.
+		 * @throws Exception
+		 */
+		private Bid handleOffer(Bid opponentBid) throws Exception {
+			Bid bidToOffer;
+			if (negotiationSession.getOwnBidHistory().getHistory().isEmpty()) {
+				// Special case to handle first action
+				bidToOffer = proposeInitialBid();
+				if (bidToOffer == null) {
+					endNegotiation = true;
+				} 
+			} else {
+				bidToOffer = proposeNextBid(opponentBid);
+				if(bidToOffer == null)
+					endNegotiation = true;			
+			}
+
+			return bidToOffer;
+		}
+		
+		
 		/*
 		 * 
 		 * (non-Javadoc)
@@ -645,54 +693,5 @@ import negotiator.utility.UtilitySpace;
 
 	public double adjustDiscountFactor(double discountFactor) {
 		return discountFactor;
-	}
-
-	@Override
-	public BidDetails determineOpeningBid() {
-		return determineNextBid();
-	}
-
-	@Override
-	public BidDetails determineNextBid() {
-		Bid opponentBid =  negotiationSession.getOpponentBidHistory().getLastBid();
-		Bid b;
-		try {
-			b = handleOffer(opponentBid);
-			nextBid = new BidDetails(b, negotiationSession.getUtilitySpace().getUtility(b));			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return nextBid;
-	}
-	
-
-	/**
-	 * Handle an opponent's offer.
-	 * 
-	 * @param opponentBid
-	 *            The bid made by the opponent.
-	 * @return the action that we should take in response to the opponent's
-	 *         offer.
-	 * @throws Exception
-	 */
-	private Bid handleOffer(Bid opponentBid) throws Exception {
-		Bid bidToOffer;
-		if (negotiationSession.getOwnBidHistory().getHistory().isEmpty()) {
-			// Special case to handle first action
-			bidToOffer = proposeInitialBid();
-			if (bidToOffer == null) {
-				endNegotiation = true;
-			} 
-		} else {
-			bidToOffer = proposeNextBid(opponentBid);
-			if(bidToOffer == null)
-				endNegotiation = true;			
-		}
-
-		return bidToOffer;
-	}
-
-	
+	}	
 }

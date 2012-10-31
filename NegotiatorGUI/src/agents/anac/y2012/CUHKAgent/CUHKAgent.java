@@ -93,8 +93,13 @@ public class CUHKAgent extends Agent {
     public static String getVersion() {
         return "CUHKAgent_version_2";
     }
+    
+    @Override 
+    public String getName() {
+    	return "CUHKAgent";
+    }
+    
     //@override
-
     public Action chooseAction() {
         Action action = null;
         try {

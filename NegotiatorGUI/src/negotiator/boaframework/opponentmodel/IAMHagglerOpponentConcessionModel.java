@@ -90,6 +90,9 @@ public class IAMHagglerOpponentConcessionModel {
 				{
 					intercept = Math.max(0.5, maxUtilityInTimeSlot);
 					double[] timeSamplesAdjust = new double[timeSamples.getColumnDimension()];
+					System.out.println("timeSampleAdjusted[15]: " + timeSamplesAdjust.length);
+					
+					
 					int i = 0;
 					double gradient = 0.9 - intercept;
 					for (double d : timeSamples.getRowPackedCopy()) {
@@ -198,6 +201,7 @@ public class IAMHagglerOpponentConcessionModel {
 				timeSamplesArray[i] = ((double) i) / ((double) n);
 			}
 		}
+		System.out.println("timeSampleArray[15]: " + timeSamplesArray.length);
 		timeSamples = new Matrix(timeSamplesArray, 1);
 	}
 }
