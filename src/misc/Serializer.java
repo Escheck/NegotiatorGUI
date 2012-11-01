@@ -12,8 +12,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Series of methods to (un)serialize an object to a string
@@ -124,15 +123,13 @@ public class Serializer<A> {
 	 * @return serialized object.
 	 */
 	public String writeToString(A a) {
-		BASE64Encoder encode = new BASE64Encoder();
-
 		String out = null;
 		if (a != null) {
 			try {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(baos);
 				oos.writeObject(a);
-				out = encode.encode(baos.toByteArray());
+				out = DatatypeConverter.printBase64Binary(baos.toByteArray());
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
@@ -149,12 +146,10 @@ public class Serializer<A> {
 	 */
 	@SuppressWarnings("unchecked")
 	public A readStringToObject(String str) {
-		BASE64Decoder decode = new BASE64Decoder();
-
 		Object out = null;
 		if (str != null) {
 			try {
-				ByteArrayInputStream bios = new ByteArrayInputStream(decode.decodeBuffer(str));
+				ByteArrayInputStream bios = new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(str));
 				ObjectInputStream ois = new ObjectInputStream(bios);
 				out = ois.readObject();
 			} catch (IOException e) {
