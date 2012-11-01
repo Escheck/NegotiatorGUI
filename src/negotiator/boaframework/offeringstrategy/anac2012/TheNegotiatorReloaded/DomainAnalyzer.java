@@ -1,7 +1,10 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
 
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -44,7 +47,7 @@ public class DomainAnalyzer {
 	 */
 	public double calculateKalaiPoint() {
 		double kalaiPoint = DEFAULT_KALAI;
-		if (opponentModel != null && !(opponentModel instanceof NullModel)) {
+		if (opponentModel != null && !(opponentModel instanceof NoModel)) {
 			if (omStrategy.canUpdateOM()) {
 				try {
 					BidSpace space = new BidSpace(ownUtilSpace, opponentModel.getOpponentUtilitySpace(), true, true);

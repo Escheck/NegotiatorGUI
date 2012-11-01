@@ -1,4 +1,8 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
+
+import negotiator.BidHistory;
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NegotiationSession;
 
 /**
  * An analyzer which returns the type of bidding strategy employed by the opponent.

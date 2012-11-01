@@ -1,4 +1,8 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
+
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.SortedOutcomeSpace;
 
 public class TimeDependentFunction {
 	

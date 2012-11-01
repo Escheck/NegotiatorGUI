@@ -1,6 +1,11 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.acceptanceconditions.anac2012;
 
 import java.util.HashMap;
+import negotiator.BidHistory;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Actions;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OfferingStrategy;
 
 /**
  * Uses an extended implementation of AC_next_discounted as discussed in 

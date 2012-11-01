@@ -47,10 +47,21 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	private boolean useAll = false;
 	private int startingBidIssue = 0;
 	
+	// ADD PARAM TO USE ALL BIDS (default false)
+	// ADD TO SET BETA			(default 1.0)	b
+	// For IAH TNR true and 0.3
+	
 	@Override
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
-		opponentConcessionFunction = new TimeConcessionFunction(TimeConcessionFunction.Beta.LINEAR, TimeConcessionFunction.BREAKOFF);
+		double beta = 1.0;
+		if (parameters.containsKey("b")) {
+			beta = parameters.get("b");
+		}
+		if (parameters.containsKey("u") && parameters.get("u") > 0.0) {
+			useAll = true;
+		}
+		opponentConcessionFunction = new TimeConcessionFunction(beta, TimeConcessionFunction.BREAKOFF);
 		previousBidUtility = 1;
 		weightHypotheses = new ArrayList<ArrayList<WeightHypothesis>>();
 		evaluatorHypotheses = new ArrayList<ArrayList<EvaluatorHypothesis>>();
