@@ -25,8 +25,7 @@
 			<agentRepItem description="ANAC 2012 - IAMhaggler2012" classPath="agents.anac.y2012.IAMhaggler2012.IAMhaggler2012" agentName="ANAC 2012 - IAMhaggler2012"/>
 			<agentRepItem description="ANAC 2012 - MetaAgent" classPath="agents.anac.y2012.MetaAgent.MetaAgent" agentName="ANAC 2012 - MetaAgent"/>
 			<agentRepItem description="ANAC 2012 - OMACAgent" classPath="agents.anac.y2012.OMACagent.OMACagent" agentName="ANAC 2012 - OMACAgent"/>
-			<agentRepItem description="ANAC 2012 - TheNegotiatorReloaded" classPath="agents.anac.y2012.TheNegotiatorReloaded.TheNegotiatorReloaded" agentName="ANAC 2012 - TheNegotiatorReloaded"/>
-            <agentRepItem description="Bayesian Agent" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
+			<agentRepItem description="Bayesian Agent" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
             <agentRepItem description="Bayesian Agent for the two-phase multi-party auction" classPath="agents.BayesianAgentForAuction" agentName="BayesianAgentForAuction"/>
             <agentRepItem description="Bayesian Agent for the two-phase multi-party auction" classPath="agents.BayesianAgentForAuctionMultiPhase" agentName="BayesianAgentForAuctionMultiPhase"/>
             <agentRepItem description="Simple UI agent" classPath="agents.UIAgent" agentName="UIAgent"/>
