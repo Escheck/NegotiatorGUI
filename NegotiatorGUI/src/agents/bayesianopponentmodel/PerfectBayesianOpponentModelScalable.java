@@ -1,8 +1,6 @@
 package agents.bayesianopponentmodel;
 
 import java.util.ArrayList;
-
-import agents.anac.y2012.TheNegotiatorReloaded.EvaluatorHypothesis;
 import negotiator.Bid;
 import negotiator.issue.*;
 import negotiator.utility.*;
