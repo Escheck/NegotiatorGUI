@@ -1,4 +1,8 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
+
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OpponentModel;
 
 public class TimeManager {
 	
@@ -14,7 +18,7 @@ public class TimeManager {
 		this.negoSession = negoSession;
 		this.domainAnalyzer = new DomainAnalyzer(negoSession.getUtilitySpace(), opponentModel, omStrategy);
 		this.bsPredictor = new BSPredictor(negoSession, numberOfWindows);
-		this.windowInterval = negoSession.getTimeline().getTotalTime() / numberOfWindows;
+		this.windowInterval = 180 / numberOfWindows;
 		this.currentWindow = 0;
 	}
 	

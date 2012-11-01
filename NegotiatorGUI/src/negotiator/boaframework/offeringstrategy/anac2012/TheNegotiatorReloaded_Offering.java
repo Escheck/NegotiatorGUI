@@ -1,6 +1,15 @@
-package agents.anac.y2012.TheNegotiatorReloaded;
+package negotiator.boaframework.offeringstrategy.anac2012;
 
 import java.util.HashMap;
+
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.StrategyTypes;
+import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.TimeDependentFunction;
+import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.TimeManager;
 
 public class TheNegotiatorReloaded_Offering extends OfferingStrategy{
 	
