@@ -376,26 +376,38 @@ public class TournamentUI extends javax.swing.JPanel
 	 * Run it in different thread, so that we can return control to AWT/Swing
 	 * That is important to avoid deadlocks in case any negosession wants to open a frame.
 	 */
-	void start(boolean distributed, String sessionname) throws Exception {
+		
+	public void start(boolean distributed, String sessionname) throws Exception {
+		if (distributed) {
+			tournament = DBController.getInstance().getTournament(DBController.getInstance().getJobID(sessionname));
+		}
+		// it may have already been set if we used START instead of JOIN, however, the overhead is minimal
 		TournamentConfiguration.setConfiguration(tournament.getOptions());
+		
 		ProgressUI2 progressUI = new ProgressUI2();
 		TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(progressUI );
 		NegoGUIApp.negoGUIView.replaceTab("Tour."+tournament.TournamentNumber+" Progress", this, tournamentProgressUI);
+		
 		
 		// required for distributed, this sets the sessions to null (sessions are unserializable)
 		tournament.resetTournament();
 		previousTournament.writeToDisk(tournament);
 
 		//new Thread(new TournamentRunnerTwoPhaseAutction (tournament,tournamentProgressUI)).start();
-		TournamentRunner runner = new TournamentRunner (tournament, tournamentProgressUI);
+		
 		if (distributed) {
-			runner = new TournamentRunner (tournamentProgressUI);
-			runner.setDistributed(distributed, sessionname);
-			//NegoGUIApp.negoGUIView.getFrame().setVisible(false);
+			TournamentRunner runner = new TournamentRunner (tournamentProgressUI, distributed, sessionname);
+			new Thread(runner).start();
+		} else {
+			
+			TournamentRunner runner = new TournamentRunner (tournament, tournamentProgressUI);
+			new Thread(runner).start();
 		}
 		
+		
+		
 
-		new Thread(runner).start();
+		
 	}
 	
 	
@@ -646,7 +658,7 @@ public class TournamentUI extends javax.swing.JPanel
     	String user = tournament.getVariables().get(Tournament.VARIABLE_DB_USER).getValues().get(0).toString();
     	String password = tournament.getVariables().get(Tournament.VARIABLE_DB_PASSWORD).getValues().get(0).toString();
     	String sessionname = tournament.getVariables().get(Tournament.VARIABLE_DB_SESSIONNAME).getValues().get(0).toString();
-    	TournamentConfiguration.setConfiguration(tournament.getOptions());
+
     	// 2. Try to connect
     	if (DBController.connect(url, user, password)) {
     		try {
@@ -665,6 +677,7 @@ public class TournamentUI extends javax.swing.JPanel
 																		JOptionPane.YES_NO_OPTION);
     				}
     				if (response == 0) { // yes
+    					TournamentConfiguration.setConfiguration(tournament.getOptions());
     					DBController.getInstance().createJob(sessionname, tournament);
     				}
     			}

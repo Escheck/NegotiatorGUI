@@ -60,7 +60,9 @@ public class TournamentRunner implements Runnable
 		negotiationEventListeners.add(ael);
 	}
 	
-	public TournamentRunner(NegotiationEventListener ael) {
+	public TournamentRunner(NegotiationEventListener ael, boolean distributed, String sessionname) {
+		this.distributed = distributed;
+		this.sessionname = sessionname;
 		negotiationEventListeners.add(ael);
 	}
 	
@@ -74,16 +76,6 @@ public class TournamentRunner implements Runnable
 	public TournamentRunner(Tournament t,NegotiationEventListener ael, boolean runSingleSession) throws Exception {
 		this(t, ael);
 		this.runSingleSession = runSingleSession;
-	}
-	
-	/**
-	 * Enable distributed tournaments; which entails that a new job
-	 * is loaded when jobs are still available.
-	 * @param distributed
-	 */
-	public void setDistributed(boolean distributed, String sessionname) {
-		this.distributed = distributed;
-		this.sessionname = sessionname;
 	}
 	
 	/**
