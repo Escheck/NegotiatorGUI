@@ -3,6 +3,7 @@ package negotiator.boaframework;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -130,7 +131,16 @@ public class BOAcomponent implements Serializable {
 	public String toString() {
 		String params = "";
 		if (parameters.size() > 0) {
-			params = parameters.toString();
+			ArrayList<String> keys = new ArrayList<String>(parameters.keySet());
+			Collections.sort(keys);
+			params = "{";
+			for (int i = 0; i < keys.size(); i++) {
+				params += keys.get(i) + "=" + parameters.get(keys.get(i));
+				if (i < keys.size() - 1) {
+					params += ", ";
+				}
+			}
+			params += "}";
 		}
 		return type + ": " + classname + " " + params;
 	}
