@@ -121,19 +121,19 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent
 			// can not damage them.
-			agentA.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(), startTime,
+			agentA.internalInit(protocol.getMatch(), protocol.getTotalMatches(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceA), agentAparams);
-			if (protocol.getCurrentSessionRound() == 0 || !agentA.isMultiRoundsCompatible()) {
+			if (protocol.getMatch() == 0 || !agentA.isMultiRoundsCompatible()) {
 				agentA.init();
 			}
-			agentA.beginSessionRound();
+			agentA.beginMatch();
 			
-			agentB.internalInit(protocol.getCurrentSessionRound(), protocol.getTotalSessionRounds(), startTime,
+			agentB.internalInit(protocol.getMatch(), protocol.getTotalMatches(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceB), agentBparams);
-			if (protocol.getCurrentSessionRound() == 0 || !agentB.isMultiRoundsCompatible()) {
+			if (protocol.getMatch() == 0 || !agentB.isMultiRoundsCompatible()) {
 				agentB.init();
 			}
-			agentB.beginSessionRound();
+			agentB.beginMatch();
 			
 			
 			stopNegotiation = false;
@@ -606,8 +606,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double time, double distanceToNash, String acceptedBy)
 			throws Exception {
 		
-			agentA.endSessionRound(utilADiscount);
-			agentB.endSessionRound(utilBDiscount);
+			agentA.endMatch(utilADiscount);
+			agentB.endMatch(utilBDiscount);
 			
 			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
 					agentA.getClass().getCanonicalName(), 
@@ -620,7 +620,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			);
 			
 			
-		no = new NegotiationOutcome(this, this.protocol.getCurrentSessionRound(), lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+		no = new NegotiationOutcome(this, this.protocol.getMatch(), lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -652,7 +652,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		);
 		
 		
-		no = new NegotiationOutcome(this, this.protocol.getCurrentSessionRound(), lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+		no = new NegotiationOutcome(this, this.protocol.getMatch(), lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
@@ -726,7 +726,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			matchDataLogger.addMeasure("bidindices",
 					omMeasuresResults.getBidIndices());
 			matchDataLogger.writeToFileCompact(time, agreement,
-					protocol.getCurrentSessionRound());
+					protocol.getMatch());
 		}
 	}
 

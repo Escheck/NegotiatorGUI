@@ -13,7 +13,7 @@ package negotiator;
  *
  * @author Mark Hendrikx
  */
-public abstract class MultiRoundAgent extends Agent {
+public abstract class MultiMatchAgent extends Agent {
 	
 	/**
      * In contrast to a normal agent, can remember information during rounds.

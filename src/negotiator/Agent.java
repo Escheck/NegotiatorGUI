@@ -30,11 +30,11 @@ public abstract class Agent
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     /** Use timeline for everything time-related. */
     public Timeline timeline;
-    /** A session can be repeated multiple times: a session round. This parameter specifies
-     * which session round we are at in the range [0, sessionRoundTotal - 1].*/
-    public Integer			sessionRound;
-    /** Amount of rounds of this session. */
-    public Integer			sessionRoundTotal;
+    /** A session can be repeated multiple times, each repetition is called a match. This parameter specifies
+     * which match we are at in the range [0, totalMatches - 1].*/
+    public Integer			match;
+    /** Amount of matches, how many times this match is repeated in total. */
+    public Integer			totalMatches;
     /** Reference to protocol which is set when experimental setup is enabled. */
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
     /** Parameters given to the agent which may be specified in the agent.*/
@@ -64,21 +64,21 @@ public abstract class Agent
     
     /**
      * This method is called by the protocol to initialize the agent with a new session information.
-     * @param sessionRound session round of this session.
-     * @param sessionRoundTotal total amount of session rounds.
+     * @param match number of the current match.
+     * @param totalMatches how many times the match is repeated in total.
      * @param startTimeP
      * @param totalTimeP
      * @param timeline keeping track of the time in the negotiation.
      * @param us utility space of the agent for the session.
      * @param params parameters of the agent.
      */
-    public final void internalInit(int sessionRound, int sessionRoundTotal, Date startTimeP, 
+    public final void internalInit(int match, int totalMatches, Date startTimeP, 
     		Integer totalTimeP, Timeline timeline, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
         this.timeline = timeline;
-        this.sessionRound = sessionRound;
-        this.sessionRoundTotal = sessionRoundTotal;
+        this.match = match;
+        this.totalMatches = totalMatches;
     	utilitySpace=us;
     	parametervalues = params;
     	if (parametervalues != null && !parametervalues.isEmpty())
@@ -174,17 +174,19 @@ public abstract class Agent
     
     /**
      * Method called after initializing an agent using init. This method is useful for
-     * MultiRoundAgent which init is only called once.
-     * In a next version Genius the MultiRoundAgent should be made the superclass as it is more generic.
+     * MultiRoundAgent which init is only called once. The idea of this method is
+     * that the MultiMatchAgent is able to prepare itself for a new match.
      */
-    public void beginSessionRound() { }
+    public void beginMatch() { }
     
     /**
      * Method which informs an agent about the utility it received.
      * Note that this method is only usefull if the agent is a MultiRoundAgent.
+     * In this case the method can be used to clean up variables which are no longer
+     * needed.
      * @param dUtil discounted utility of previous session round.
      */
-    public void endSessionRound(double dUtil) { }
+    public void endMatch(double dUtil) { }
     
     /**
      * @return ID of the agent as assigned by the protocol.
@@ -230,16 +232,16 @@ public abstract class Agent
 	}
 
 	/**
-	 * @return session round. If a session is first started it is zero.
+	 * @return which match we are in. If a session is first started it is zero.
 	 */
-	public Integer getSessionRound() {
-		return sessionRound;
+	public Integer getMatch() {
+		return match;
 	}
 
 	/**
-	 * @return session round total. How many times the session is repeated.
+	 * @return total matches. How many times the session is repeated.
 	 */
-	public Integer getSessionRoundTotal() {
-		return sessionRoundTotal;
+	public Integer getTotalMatches() {
+		return totalMatches;
 	}
 }

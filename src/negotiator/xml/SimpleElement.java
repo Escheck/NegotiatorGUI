@@ -48,6 +48,10 @@ public class SimpleElement {
 		return attributes.get(name);
 	}
 
+	public HashMap<String, String> getAttributes() {
+		return attributes;
+	}
+	
 	public void setAttribute(String name, String value) {
 		attributes.put(name, value);
 	}
@@ -58,6 +62,10 @@ public class SimpleElement {
 
 	public Object[] getChildElements() {
 		return childElements.toArray();
+	}
+	
+	public LinkedList<SimpleElement> getChildElementsAsList() {
+		return childElements;
 	}
 	
 	public boolean isEmpty()
