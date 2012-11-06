@@ -55,8 +55,8 @@ public abstract class Protocol implements Runnable, Serializable {
 	public abstract String getName();	
 	public abstract NegotiationOutcome getNegotiationOutcome();
 	
-	protected int currentSessionRound = -1;
-	protected int totalSessionRounds;
+	protected int match = -1;
+	protected int totalMatches;
 	
 	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		throw new Exception("This protocol cannot be used in a tournament");
@@ -71,11 +71,10 @@ public abstract class Protocol implements Runnable, Serializable {
     				ProfileRepItem[] profileRepItems,
     				HashMap<AgentParameterVariable,
     				AgentParamValue>[] agentParams,
-    				int totalSessionRounds) throws Exception{
+    				int totalMatches) throws Exception{
     	this.agentRepItems = agentRepItems.clone();
     	this.profileRepItems = profileRepItems.clone();
-    	this.currentSessionRound = currentSessionRound;
-    	this.totalSessionRounds = totalSessionRounds;
+    	this.totalMatches = totalMatches;
     	if (agentParams!=null) {
     		this.agentParams = agentParams.clone();
     	} else {
@@ -200,11 +199,11 @@ public abstract class Protocol implements Runnable, Serializable {
     	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
     }
     
-	public int getCurrentSessionRound() {
-		return currentSessionRound;
+	public int getMatch() {
+		return match;
 	}
 
-	public int getTotalSessionRounds() {
-		return totalSessionRounds;
+	public int getTotalMatches() {
+		return totalMatches;
 	}
 }

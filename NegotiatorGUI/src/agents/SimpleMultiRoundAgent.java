@@ -1,7 +1,7 @@
 package agents;
 
 import negotiator.Bid;
-import negotiator.MultiRoundAgent;
+import negotiator.MultiMatchAgent;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 
@@ -13,7 +13,7 @@ import negotiator.actions.Offer;
  * 
  * @author Mark Hendrikx
  */
-public class SimpleMultiRoundAgent extends MultiRoundAgent {
+public class SimpleMultiRoundAgent extends MultiMatchAgent {
 
 	private double breakOff;
 	
@@ -25,17 +25,17 @@ public class SimpleMultiRoundAgent extends MultiRoundAgent {
 		System.out.println("SMRA - INIT");
 	}
 	
-	public void beginSessionRound() {
-		System.out.println("SMRA - BEGIN MATCH " + (getSessionRound() + 1) + " / " + getSessionRoundTotal());
+	public void beginMatch() {
+		System.out.println("SMRA - BEGIN MATCH " + (getMatch() + 1) + " / " + getTotalMatches());
 	}
 
 	/**
 	 * If an agreement is reached, the breakoff is set to the received discounted utility;
 	 * Else the breakoff value is decreased with a small constant.
 	 */
-	public void endSessionRound(double result) {
-		System.out.println("SMRA - END MATCH " + (getSessionRound() + 1) + " / " + getSessionRoundTotal());
-		if (getSessionRound() < getSessionRoundTotal()) { // we don't care about after the last round
+	public void endMatch(double result) {
+		System.out.println("SMRA - END MATCH " + (getMatch() + 1) + " / " + getTotalMatches());
+		if (getMatch() < getTotalMatches()) { // we don't care about after the last round
 			if (result > breakOff) {
 				this.breakOff = result;
 				System.out.println("SMRA - INCREASED BREAKOFF TO " + breakOff);

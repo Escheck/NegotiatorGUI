@@ -33,6 +33,7 @@ import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
+import negotiator.xml.XMLtoCSV;
 
 /**
  * Manager of the Alternating Offers protocol: 
@@ -120,13 +121,13 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	protected void runNegotiationSession()  throws Exception
 	{
-		currentSessionRound++;
-		if (currentSessionRound == 0 || !agentA.isMultiRoundsCompatible()) {
+		match++;
+		if (match == 0 || !agentA.isMultiRoundsCompatible()) {
 			agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 			agentA.setName(getAgentAname());
 		}
 		
-		if (currentSessionRound == 0 || !agentB.isMultiRoundsCompatible()) {
+		if (match == 0 || !agentB.isMultiRoundsCompatible()) {
 			agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 			agentB.setName(getAgentBname());
 		}
@@ -257,8 +258,10 @@ public class AlternatingOffersProtocol extends Protocol {
 			
 			if (extensive)
 				out.write(outcome.toXMLWithBids().toString());
-			else
+			else {
 				out.write(""+outcome.toXML());
+			}
+			
 			out.close();
 		} catch (Exception e) {
 			new Warning("Exception during writing s:"+e);
