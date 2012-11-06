@@ -33,7 +33,6 @@ import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
-import negotiator.xml.XMLtoCSV;
 
 /**
  * Manager of the Alternating Offers protocol: 
