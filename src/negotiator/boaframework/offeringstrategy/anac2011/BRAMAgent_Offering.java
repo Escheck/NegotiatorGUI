@@ -27,6 +27,8 @@ import negotiator.issue.ValueReal;
  * tries to make a bid by taking the last ten opponent bids into account. If this fails, the
  * array of possible bids is directly used to select a bid.
  * 
+ * DEFAULT OM: None
+ * 
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
  * 
