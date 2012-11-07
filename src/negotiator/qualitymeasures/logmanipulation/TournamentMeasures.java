@@ -25,8 +25,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "d:/Media Knowledge Engineering/Opponent Models 2/Data/Exp1-rounds-pareto.xml";
-			String out = "d:/Media Knowledge Engineering/Opponent Models 2/Data/Result.xml";
+			String in = "F:/Log.xml";
+			String out = "F:/Result.xml";
 			
 			
 			ResultsParser resultsParser = NegotiationLogParser.parseLog(in);
@@ -484,7 +484,7 @@ public class TournamentMeasures {
 			if (outcome.getAgentAname().equals(agentName) || outcome.getAgentBname().equals(agentName)) {
 				if (!onlyAgreements || outcome.isAgreement()) {
 					totalSessions++;
-					totalNash += outcome.getNashDistance();
+					totalNash += outcome.getNashDistanceA();
 				}
 			}
 		}
@@ -506,7 +506,7 @@ public class TournamentMeasures {
 			if (outcome.getAgentAname().equals(agentName) || outcome.getAgentBname().equals(agentName)) {
 				if (!onlyAgreements || outcome.isAgreement()) {
 					totalSessions++;
-					totalSocialWelfare += outcome.getSocialWelfare();
+					totalSocialWelfare += outcome.getSocialWelfareA();
 				}
 			}
 		}
@@ -527,7 +527,7 @@ public class TournamentMeasures {
 			if (outcome.getAgentAname().equals(agentName) || outcome.getAgentBname().equals(agentName)) {
 				if (!onlyAgreements || outcome.isAgreement()) {
 					totalSessions++;
-					totalPareto += outcome.getParetoDistance();
+					totalPareto += outcome.getParetoDistanceA();
 				}
 			}
 		}
@@ -574,7 +574,7 @@ public class TournamentMeasures {
 			if (outcome.getAgentAname().equals(agentName) || outcome.getAgentBname().equals(agentName)) {
 				if (!onlyAgreements || outcome.isAgreement()) {
 					totalSessions++;
-					totalKalai += outcome.getKalaiDistance();
+					totalKalai += outcome.getKalaiDistanceA();
 				}
 			}
 		}

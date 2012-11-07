@@ -4,8 +4,10 @@ package negotiator.xml;
  */
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
 
 import java.io.BufferedWriter;
@@ -71,6 +73,25 @@ public class SimpleElement {
 	public boolean isEmpty()
 	{
 		return attributes.isEmpty() && childElements.isEmpty();
+	}
+	
+	public void combineLists(HashMap<String,String> element){
+		//System.out.println("Testing");
+		//setAttribute("Key", "String");
+		attributes.put("Testing", "Here");
+		Iterator it = element.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+			setAttribute(pairs.getKey().toString(), pairs.getValue().toString());
+
+	        
+	        //System.out.println(pairs.getKey() + " = " + pairs.getValue());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+
+		//HashMap<String, String> temp = attributes;
+		//attributes.putAll(temp);
+		//attributes.putAll(element);
 	}
         
 	public Object[] getChildByTagName(String tagName) {

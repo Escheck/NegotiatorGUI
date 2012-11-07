@@ -28,11 +28,14 @@ public class NegotiationLogParser {
 
 
 		public void startElement(String nsURI, String strippedName, String tagName, Attributes attributes) throws SAXException {
+			processTournamentBasedQM(nsURI, strippedName, tagName, attributes);
+			/*
 			if (!processTournamentBasedQM(nsURI, strippedName, tagName, attributes)) {
 				if (!processUtilityBasedQM(nsURI, strippedName, tagName, attributes)) {
 					processTrajectoryBasedQM(nsURI, strippedName, tagName, attributes);
 				}
 			}
+			*/
 		}
 
 		private boolean processTournamentBasedQM(String nsURI, String strippedName, String tagName, Attributes attributes) {		
@@ -61,6 +64,8 @@ public class NegotiationLogParser {
 				outcome.setAgentAutilityDiscount(Double.parseDouble(attributes.getValue("discountedUtility")));
 				outcome.setACbestTheoreticalA(Double.parseDouble(attributes.getValue("bestAcceptableBid")));
 				outcome.setACbestDiscountedTheoreticalA(Double.parseDouble(attributes.getValue("bestDiscountedAccepableBid")));
+				
+				//Check if Competitiveness data is present
 				if(attributes.getValue("minDemandedUtility") != null){
 					outcome.setMinDemandedUtilityA(Double.parseDouble(attributes.getValue("minDemandedUtility")));
 					outcome.setFYUA(Double.parseDouble(attributes.getValue("FYU")));
@@ -72,6 +77,27 @@ public class NegotiationLogParser {
 
 				outcome.setAgentAmaxUtil(Double.parseDouble(attributes.getValue("maxUtility")));
 				outcome.setNormalizedUtilityA(Double.parseDouble(attributes.getValue("normalizedUtility")));
+				
+				//Checking if Trajectory data is present
+				if(attributes.getValue("silent_moves") != null){
+					outcome.setSilentMovesA(Double.parseDouble(attributes.getValue("silent_moves")));
+					outcome.setSelfishMovesA(Double.parseDouble(attributes.getValue("selfish_moves")));
+					outcome.setFortunateMovesA(Double.parseDouble(attributes.getValue("fortunate_moves")));
+					outcome.setUnfortunateMovesA(Double.parseDouble(attributes.getValue("unfortunate_moves")));
+					outcome.setNiceMovesA(Double.parseDouble(attributes.getValue("nice_moves")));
+					outcome.setConcessionMovesA(Double.parseDouble(attributes.getValue("concession_moves")));
+					outcome.setExplorationA(Double.parseDouble(attributes.getValue("exploration_rate")));
+					outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+					outcome.setPercParetoBidsA(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
+				}
+				
+				//Checking if Utility Based Quality Measure data is present
+				if(attributes.getValue("nash_distance") != null){
+					outcome.setNashDistanceA(Double.parseDouble(attributes.getValue("nash_distance")));
+					outcome.setParetoDistanceA(Double.parseDouble(attributes.getValue("pareto_distance")));
+					outcome.setKalaiDistanceA(Double.parseDouble(attributes.getValue("kalai_distance")));
+					outcome.setSocialWelfareA(Double.parseDouble(attributes.getValue("social_welfare")));
+				}
 				outcome.setAcceptedBy(attributes.getValue("AcceptedBy"));
 				found = true;
 			} else if (tagName.equals("resultsOfAgent") && attributes.getValue("agent").equals("B")) {
@@ -86,6 +112,8 @@ public class NegotiationLogParser {
 				outcome.setAgentButilityDiscount(Double.parseDouble(attributes.getValue("discountedUtility")));
 				outcome.setACbestTheoreticalB(Double.parseDouble(attributes.getValue("bestAcceptableBid")));
 				outcome.setACbestDiscountedTheoreticalB(Double.parseDouble(attributes.getValue("bestDiscountedAccepableBid")));
+				
+				//Check if Competitiveness data is present
 				if(attributes.getValue("minDemandedUtility") != null){
 					outcome.setMinDemandedUtilityB(Double.parseDouble(attributes.getValue("minDemandedUtility")));
 					outcome.setFYUB(Double.parseDouble(attributes.getValue("FYU")));
@@ -96,6 +124,27 @@ public class NegotiationLogParser {
 				}
 				outcome.setAgentBmaxUtil(Double.parseDouble(attributes.getValue("maxUtility")));
 				outcome.setNormalizedUtilityB(Double.parseDouble(attributes.getValue("normalizedUtility")));
+				
+				//Checking if Trajectory Quality Measure data is present
+				if(attributes.getValue("silent_moves") != null){
+					outcome.setSilentMovesB(Double.parseDouble(attributes.getValue("silent_moves")));
+					outcome.setSelfishMovesB(Double.parseDouble(attributes.getValue("selfish_moves")));
+					outcome.setFortunateMovesB(Double.parseDouble(attributes.getValue("fortunate_moves")));
+					outcome.setUnfortunateMovesB(Double.parseDouble(attributes.getValue("unfortunate_moves")));
+					outcome.setNiceMovesB(Double.parseDouble(attributes.getValue("nice_moves")));
+					outcome.setConcessionMovesB(Double.parseDouble(attributes.getValue("concession_moves")));
+					outcome.setExplorationB(Double.parseDouble(attributes.getValue("exploration_rate")));
+					outcome.setJointExploration(Double.parseDouble(attributes.getValue("joint_exploration_rate")));
+					outcome.setPercParetoBidsB(Double.parseDouble(attributes.getValue("perc_pareto_bids")));
+				}
+				
+				//Checking if Utility Based Quality Measure data is present
+				if(attributes.getValue("nash_distance") != null){
+					outcome.setNashDistanceB(Double.parseDouble(attributes.getValue("nash_distance")));
+					outcome.setParetoDistanceB(Double.parseDouble(attributes.getValue("pareto_distance")));
+					outcome.setKalaiDistanceB(Double.parseDouble(attributes.getValue("kalai_distance")));
+					outcome.setSocialWelfareB(Double.parseDouble(attributes.getValue("social_welfare")));
+				}
 				found = true;	
 			}
 			return found;
@@ -105,14 +154,17 @@ public class NegotiationLogParser {
 				String tagName, Attributes attributes) {
 			boolean found = false;
 			if (tagName.equals("utility_based_quality_measures")) {
+				/*
 				outcome.setNashDistance(Double.parseDouble(attributes.getValue("nash_distance")));
 				outcome.setParetoDistance(Double.parseDouble(attributes.getValue("pareto_distance")));
 				outcome.setKalaiDistance(Double.parseDouble(attributes.getValue("kalai_distance")));
 				outcome.setSocialWelfare(Double.parseDouble(attributes.getValue("social_welfare")));
+				*/
 				found = true;
 			}
 			return found;
 		}
+		
 		
 		private boolean processTrajectoryBasedQM(String nsURI,
 				String strippedName, String tagName, Attributes attributes) {

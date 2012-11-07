@@ -195,7 +195,6 @@ public class AlternatingOffersProtocol extends Protocol {
 	 * Append quality measure information to the additional {@link #outcome} field.
 	 */
 	public void createExtraLogData() {
-
 		// DEFAULT: no detailed analysis
 		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
 			// Calculate the opponent model quality measures and log them
@@ -206,16 +205,20 @@ public class AlternatingOffersProtocol extends Protocol {
 			TrajectoryMeasures trajCalc = new TrajectoryMeasures(outcome.getAgentABids(), outcome.getAgentBBids(), bidSpace);	
 			SimpleElement tjQualityMeasures = trajCalc.calculateMeasures();
 			
+			
 			if (outcome.additional==null) {
 				outcome.additional = new SimpleElement("additional");
 			}
 			
+			
 			if (utQualityMeasures != null) { 
-				outcome.additional.addChildElement(utQualityMeasures);				
+				outcome.qualityMeasures = utQualityMeasures;				
 			}
+			
 			if (tjQualityMeasures != null) {
-				outcome.additional.addChildElement(tjQualityMeasures);	
+				outcome.trajectoryMeasures = tjQualityMeasures;	
 			}
+			
 		}
 			writeOutcomeToLog(false);
 			// DEFAULT: extensive log disabled
