@@ -10,6 +10,7 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.AgentK2SAS;
 import negotiator.issue.Issue;
@@ -29,6 +30,8 @@ import negotiator.issue.ValueReal;
  * bid was chosen from a list of candidates; this was replaced by selecting the best bid for the
  * opponent. In the other case, the strategy chooses the best bid for the opponent from the set 
  * of all possible bids with a minimum target utility.
+ * 
+ * DEFAULT OM: None
  * 
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
@@ -58,7 +61,7 @@ public class AgentK2_Offering extends OfferingStrategy {
 			random300 = new Random();
 		}
 		
-		if (!(opponentModel instanceof NoModel)) {
+		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 	}
@@ -80,7 +83,7 @@ public class AgentK2_Offering extends OfferingStrategy {
         int size = bidTemp.size();
        
         if (size > 0) {
-        	if (opponentModel instanceof NoModel) {
+        	if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
         		int sindex = (int) Math.floor(random200.nextDouble() * size);
         		nextBid = bidTemp.get(sindex);
         	} else {
@@ -88,12 +91,11 @@ public class AgentK2_Offering extends OfferingStrategy {
         	}
         } else {
             double searchUtil = 0.0;
-            if (opponentModel instanceof NoModel) {
+            if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
 	            try {
 	                int loop = 0;
 	                while (searchUtil < ((AgentK2SAS)helper).getBidTarget()) {
 	                    if (loop > 500) {
-	
 	                        ((AgentK2SAS)helper).decrementBidTarget(0.01);
 	                        loop = 0;
 	                    }

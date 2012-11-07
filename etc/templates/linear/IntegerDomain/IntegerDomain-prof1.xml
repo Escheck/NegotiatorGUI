@@ -7,7 +7,7 @@
 </evaluator> 
 </issue> 
 <issue index="2" name="otherprice" vtype="integer" type="integer" etype="integer"> 
-<range lowerbound="-5" upperbound="5">  
+<range lowerbound="-5" upperbound="5"> 
 </range> 
 <evaluator slope="0.1" offset="0.0" ftype="linear"> 
 </evaluator> 
@@ -17,4 +17,8 @@
 <weight index="2" value="0.25"> 
 </weight> 
 </objective> 
+<discount_factor value="0.0"> 
+</discount_factor> 
+<reservation value="0.0"> 
+</reservation> 
 </utility_space> 

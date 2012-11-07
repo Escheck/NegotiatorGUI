@@ -143,6 +143,7 @@
 		</opponentmodel>
 		<opponentmodel description="FSEGA Bayesian Model" classPath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
 		<opponentmodel description="Perfect Model" classPath="negotiator.boaframework.opponentmodel.PerfectModel"/>
+		<opponentmodel description="Default Model" classPath="negotiator.boaframework.opponentmodel.DefaultModel"/>
 		<opponentmodel description="Worst Model" classPath="negotiator.boaframework.opponentmodel.WorstModel"/>
 		<opponentmodel description="Smith Frequency Model" classPath="negotiator.boaframework.opponentmodel.SmithFrequencyModel"/>
 		<opponentmodel description="Smith Frequency Model V2" classPath="negotiator.boaframework.opponentmodel.SmithFrequencyModelV2"/>
