@@ -12,7 +12,10 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+
+import sun.management.resources.agent;
 
 import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
@@ -55,6 +58,10 @@ public class NegotiationOutcome
 	public String agentAutilSpaceName;
 	public String agentButilSpaceName;
 	public SimpleElement additional;
+	public SimpleElement trajectoryMeasures;
+	public SimpleElement qualityMeasures;
+
+
 	public List<String> extraNames = new ArrayList<String>();
 	public List<String> extraValues = new ArrayList<String>();
 	public double time;
@@ -420,13 +427,27 @@ public class NegotiationOutcome
 		outcome.setAttribute("domain", domainName);
 		outcome.setAttribute("lastAction", "" + lastAction);
 		outcome.setAttribute("runNumber", runNr + "");
-		outcome.addChildElement(resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
+		SimpleElement agentResultsA = resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
-				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids));
-		outcome.addChildElement(resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
+				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids);
+		
+		SimpleElement agentResultsB = resultsOfAgent("B",agentBname,agentBclass,agentButilSpaceName,
 				agentAname, agentAclass, agentAutilSpaceName,
-				agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids, addBids));
-		if(additional!=null && !additional.isEmpty()) outcome.addChildElement(additional);
+				agentButility,agentButilityDiscount,agentBmaxUtil,AgentBBids, addBids);
+		
+		if(trajectoryMeasures!=null && !trajectoryMeasures.isEmpty()) {
+			agentResultsA.combineLists((HashMap<String, String>) ((SimpleElement) trajectoryMeasures.getChildElements()[0]).getAttributes().clone());
+			agentResultsB.combineLists((HashMap<String, String>) ((SimpleElement) trajectoryMeasures.getChildElements()[1]).getAttributes().clone());
+		}
+		
+		if(qualityMeasures!=null && !qualityMeasures.isEmpty()) {
+			agentResultsA.combineLists((HashMap<String, String>) qualityMeasures.getAttributes().clone());
+			agentResultsB.combineLists((HashMap<String, String>) qualityMeasures.getAttributes().clone());
+		}
+
+		outcome.addChildElement(agentResultsA);
+		outcome.addChildElement(agentResultsB);
+		
 		outcome.setAttribute("errors", (ErrorRemarks != null) ? ErrorRemarks : "");
 			
 		String startingagent="B"; if (agentAstarts) startingagent="A";
@@ -443,7 +464,6 @@ public class NegotiationOutcome
 		
 		if (addBids)
 			outcome.addChildElement(bidsToXML());
-		
 		return outcome;
 	}
 	

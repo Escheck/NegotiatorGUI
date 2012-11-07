@@ -15,9 +15,15 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	private String opponentModelB;
 	private String lastAction;
 	
-	private double nashDistance;
-	private double paretoDistance;
-	private double kalaiDistance;
+	private double nashDistanceA;
+	private double paretoDistanceA;
+	private double kalaiDistanceA;
+	private double socialWelfareA;
+	private double nashDistanceB;
+	private double paretoDistanceB;
+	private double kalaiDistanceB;
+	private double socialWelfareB;
+	
 	private double unfortunateMovesA;
 	private double unfortunateMovesB;
 	private double silentMovesA;
@@ -33,7 +39,6 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	private double explorationA;
 	private double explorationB;
 	private double jointExploration;
-	private double socialWelfare;
 	private double ACbestTheoreticalA;
 	private double ACbestDiscountedTheoreticalA;
 	private double ACbestTheoreticalB;
@@ -66,24 +71,6 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	}
 	public void setBids(int bids) {
 		this.bids = bids;
-	}
-	public double getNashDistance() {
-		return nashDistance;
-	}
-	public void setNashDistance(double nashDistance) {
-		this.nashDistance = nashDistance;
-	}
-	public double getParetoDistance() {
-		return paretoDistance;
-	}
-	public void setParetoDistance(double paretoDistance) {
-		this.paretoDistance = paretoDistance;
-	}
-	public double getKalaiDistance() {
-		return kalaiDistance;
-	}
-	public void setKalaiDistance(double kalaiDistance) {
-		this.kalaiDistance = kalaiDistance;
 	}
 	public double getUnfortunateMovesA() {
 		return unfortunateMovesA;
@@ -174,12 +161,6 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	}
 	public void setJointExploration(double jointExploration) {
 		this.jointExploration = jointExploration;
-	}
-	public double getSocialWelfare() {
-		return socialWelfare;
-	}
-	public void setSocialWelfare(double socialWelfare) {
-		this.socialWelfare = socialWelfare;
 	}
 
 	public double getACbestTheoreticalA() {
@@ -366,4 +347,54 @@ public class OutcomeInfoDerived extends OutcomeInfo{
 	public void setPercParetoBidsB(double percParetoBidsB) {
 		this.percParetoBidsB = percParetoBidsB;
 	}
+	public double getNashDistanceA() {
+		return nashDistanceA;
+	}
+	public void setNashDistanceA(double nashDistanceA) {
+		this.nashDistanceA = nashDistanceA;
+	}
+	public double getParetoDistanceA() {
+		return paretoDistanceA;
+	}
+	public void setParetoDistanceA(double paretoDistanceA) {
+		this.paretoDistanceA = paretoDistanceA;
+	}
+	public double getKalaiDistanceA() {
+		return kalaiDistanceA;
+	}
+	public void setKalaiDistanceA(double kalaiDistanceA) {
+		this.kalaiDistanceA = kalaiDistanceA;
+	}
+	public double getSocialWelfareA() {
+		return socialWelfareA;
+	}
+	public void setSocialWelfareA(double socialWelfareA) {
+		this.socialWelfareA = socialWelfareA;
+	}
+	public double getNashDistanceB() {
+		return nashDistanceB;
+	}
+	public void setNashDistanceB(double nashDistanceB) {
+		this.nashDistanceB = nashDistanceB;
+	}
+	public double getParetoDistanceB() {
+		return paretoDistanceB;
+	}
+	public void setParetoDistanceB(double paretoDistanceB) {
+		this.paretoDistanceB = paretoDistanceB;
+	}
+	public double getKalaiDistanceB() {
+		return kalaiDistanceB;
+	}
+	public void setKalaiDistanceB(double kalaiDistanceB) {
+		this.kalaiDistanceB = kalaiDistanceB;
+	}
+	public double getSocialWelfareB() {
+		return socialWelfareB;
+	}
+	public void setSocialWelfareB(double socialWelfareB) {
+		this.socialWelfareB = socialWelfareB;
+	}
+	
+	
 }
