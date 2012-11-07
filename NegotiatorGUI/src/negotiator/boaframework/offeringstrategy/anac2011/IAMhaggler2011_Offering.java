@@ -29,6 +29,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
+import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
@@ -36,6 +37,8 @@ import negotiator.boaframework.opponentmodel.NoModel;
  * The code was taken from the ANAC2011 IAMhaggler2011 and adapted to work within the BOA framework.
  * 
  * The default opponent model implementation selects the best bid for the opponent.
+ * 
+ * DEFAULT OM: None
  * 
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
@@ -79,7 +82,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
 
-		if (!(opponentModel instanceof NoModel)) {
+		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 		opponentBids = new ArrayList<Bid>();
@@ -179,7 +182,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 		// Now get a random bid in the range targetUtility ± 0.025
-		if (opponentModel instanceof NoModel) {
+		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
 			return bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtility - 0.025,
 				targetUtility + 0.025);
 		} else {

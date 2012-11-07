@@ -85,6 +85,10 @@ public abstract class OMStrategy {
 		return getBid(bids);
 	}
 
+	public void setOpponentModel(OpponentModel model) {
+		this.model = model;
+	}
+	
 	/**
 	 * Use this method in case no range is specified, but only a target utility.
 	 * The method looks at the bids in the range [targetUtility,

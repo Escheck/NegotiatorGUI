@@ -14,6 +14,8 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.offeringstrategy.anac2011.hardheaded.BidSelector;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.HardHeadedFrequencyModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.HardHeadedSAS;
 
@@ -25,6 +27,8 @@ import negotiator.boaframework.sharedagentstate.anac2011.HardHeadedSAS;
  * As default the agent uses the frequency model to select the best bid
  * from a small set of bids. The agent is extended such that other models
  * can be used. If no opponent model is given, then a random bid is chosen.
+ * 
+ * DEFAULT OM: HardHeadedFrequencyModel with default parameters
  * 
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
@@ -54,8 +58,13 @@ public class HardHeaded_Offering extends OfferingStrategy {
 	public HardHeaded_Offering() { }
 
 	@Override
-	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-		initializeAgent(domainKnow, model, oms);
+	public void init(NegotiationSession negotiationSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new HardHeadedFrequencyModel();
+			model.init(negotiationSession, null);
+			oms.setOpponentModel(model);
+		}
+		initializeAgent(negotiationSession, model, oms);
 	}
 
 	public void initializeAgent(NegotiationSession negoSession, OpponentModel model, OMStrategy oms){
@@ -66,7 +75,6 @@ public class HardHeaded_Offering extends OfferingStrategy {
 		this.omStrategy = oms;
 		helper = new HardHeadedSAS(negoSession);
 		Entry<Double, Bid> highestBid = BSelector.getBidList().lastEntry();
-
 		try {
 			maxUtil = negotiationSession.getUtilitySpace().getUtility(highestBid.getValue());
 		} catch (Exception e) {
@@ -163,14 +171,7 @@ public class HardHeaded_Offering extends OfferingStrategy {
 					
 					if (opponentModel instanceof NoModel) {
 						// Do nothing, using the last entry is random enough
-					} else {
-//						for(Entry<Double, Bid> entry : newBids.entrySet()){
-//							
-//							if(opponentModel.getBidEvaluation(entry.getValue()) > opponentModel.getBidEvaluation(bestBid.getValue())){
-//								bestBid = entry;
-//							}
-//						}
-						
+					} else {						
 						ArrayList<BidDetails> bids = new ArrayList<BidDetails>();
 						for (Entry<Double, Bid> entry : newBids.entrySet()) {
 							bids.add(new BidDetails(entry.getValue(), entry.getKey(), -1));

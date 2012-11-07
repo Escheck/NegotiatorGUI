@@ -11,6 +11,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.TheNegotiatorSAS;
 
@@ -178,7 +179,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 			}
 
 			// in this case we ignore the upperbound, as it doesn't matter if we take the opponent in to account
-			if (!(opponentModel instanceof NoModel)) {
+			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
 				ArrayList<BidDetails> temp = ((TheNegotiatorSAS)helper).getPossibleBids();
 				temp = new ArrayList<BidDetails>(temp.subList(uB, lB + 1));
 				BidDetails bid2 = omStrategy.getBid(temp);
@@ -223,7 +224,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 		}
 
 		if (count > 0) {
-			if (!(opponentModel instanceof NoModel)) {
+			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
 				bid = omStrategy.getBid(temp).getBid();
 			} else {
 				bid = temp.get(random200.nextInt(count)).getBid();
