@@ -55,10 +55,10 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
 		double beta = 1.0;
-		if (parameters.containsKey("b")) {
+		if (parameters != null && parameters.containsKey("b")) {
 			beta = parameters.get("b");
 		}
-		if (parameters.containsKey("u") && parameters.get("u") > 0.0) {
+		if (parameters != null && parameters.containsKey("u") && parameters.get("u") > 0.0) {
 			useAll = true;
 		}
 		opponentConcessionFunction = new TimeConcessionFunction(beta, TimeConcessionFunction.BREAKOFF);

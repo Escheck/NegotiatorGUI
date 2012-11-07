@@ -21,6 +21,8 @@ import negotiator.boaframework.sharedagentstate.anac2011.TheNegotiatorSAS;
  * 
  * Adapted to be compatible with an opponent model.
  * 
+ * DEFAULT OM: None
+ * 
  * @author Alex Dirkzwager, Mark Hendrikx
  * @version 27-12-11
  */
