@@ -134,13 +134,15 @@ public class TournamentUI extends javax.swing.JPanel
 			for (ProfileRepItem profitem: newv) newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
 		}else if(v instanceof ProtocolVariable) {
-			ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();
-			System.out.println("result new vars="+newv);
-			if (newv==null) return; // cancel pressed.
-			// make agentvalues for each selected agent and add to the agentvariable
-			ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
-			for (ProtocolRepItem protocolItem: newv) newtvs.add(new ProtocolValue(protocolItem));
-			v.setValues(newtvs);			
+			if (Repository.getProtocolRepository().getItems().size() != 1) {
+				ArrayList<ProtocolRepItem> newv=(ArrayList<ProtocolRepItem>)new ProtocolVarUI(NegoGUIApp.negoGUIView.getFrame()).getResult();
+				System.out.println("result new vars="+newv);
+				if (newv==null) return; // cancel pressed.
+				// make agentvalues for each selected agent and add to the agentvariable
+				ArrayList<TournamentValue> newtvs=new ArrayList<TournamentValue>(); 
+				for (ProtocolRepItem protocolItem: newv) newtvs.add(new ProtocolValue(protocolItem));
+				v.setValues(newtvs);
+			}
 		} else if (v instanceof AgentVariable) {
 			ArrayList<AgentRepItem> items = getAgentRepItems();
 			ArrayList<AgentRepItem> prevSelected = new ArrayList<AgentRepItem>();
