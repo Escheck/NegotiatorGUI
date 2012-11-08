@@ -10,6 +10,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -22,40 +24,42 @@ public class TournamentOptionsUI extends JDialog {
 
 	private static final long serialVersionUID = 6798249525629036801L;
 
-	private JButton cancelButton;
-	private JLabel deadline;
-	private JTextField deadlineTextField;
-	private JLabel accessPartnerPreferences;
-	private JCheckBox accessPartnerPreferencesCheck;
-	private JLabel allowPausingTimeline;
-	private JCheckBox allowPausingTimelineCheck;
-	private JLabel logDetailedAnalysis;
-	private JCheckBox logDetailedAnalysisCheck;
-	private JLabel logFinalAccuracy;
-	private JCheckBox logFinalAccuracyCheck;
-	private JLabel logCompetitiveness;
-	private JCheckBox logCompetitivenessCheck;
-	private JLabel logNegotiationTrace;
-    private JCheckBox logNegotiationTraceCheck;
-    private JLabel logging;
-    private JLabel appendModeAndDeadline;
+    private JCheckBox accessPartnerPreferencesCheck;
+    private JLabel accessPartnerPreferencesLabel;
+    private JCheckBox allowPausingTimelineCheck;
+    private JLabel allowPausingTimelineLabel;
     private JCheckBox appendModeAndDeadlineCheck;
-    private JButton okButton;
-    private JLabel playAgainstSelf;
-    private JCheckBox playAgainstSelfCheck;
-    private JLabel playBothSides;
-    private JCheckBox playBothSidesCheck;
-    private JLabel protocolMode;
-    private JComboBox protocolModeSelector;
-    private JLabel protocolSettings;
-    private JLabel sessionGeneration;
-    private JLabel showAllBids;
-    private JCheckBox showAllBidsCheck;
-    private JLabel showLastBid;
-    private JCheckBox showLastBidCheck;
-    private JLabel visualization;
-    private JLabel disableGUI;
+    private JLabel appendModeAndDeadlineLabel;
+    private JButton cancelButton;
+    private JTextField deadlineField;
+    private JLabel deadlineLabel;
     private JCheckBox disableGUICheck;
+    private JLabel disableGUILabel;
+    private JLabel logCompetitiveness;
+    private JCheckBox logCompetitivenessCheck;
+    private JCheckBox logDetailedAnalysisCheck;
+    private JLabel logDetailedAnalysisLabel;
+    private JCheckBox logNegotiationTraceCheck;
+    private JCheckBox logFinalAccuracyCheck;
+    private JLabel logFinalAccuracyLabel;
+    private JLabel logNegotiationTraceLabel;
+    private JPanel loggingTab;
+    private JButton okButton;
+    private JCheckBox playAgainstSelfCheck;
+    private JLabel playAgainstSelfLabel;
+    private JCheckBox playBothSidesCheck;
+    private JLabel playBothSidesLabel;
+    private JComboBox protocolModeSelector;
+    private JLabel protocolModeLabel;
+    private JPanel protocolSettingsTab;
+    private JButton resetToDefaultButton;
+    private JPanel sessionGenerationTab;
+    private JCheckBox showAllBidsCheck;
+    private JLabel showAllBidsLabel;
+    private JCheckBox showLastBidCheck;
+    private JLabel showLastBidLabel;
+    private JTabbedPane tabbedPane;
+    private JPanel visualizationTab;
     private HashMap<String, Integer> config;
 
     public TournamentOptionsUI(Frame frame) {
@@ -71,90 +75,167 @@ public class TournamentOptionsUI extends JDialog {
     		config = prevConfig;
     	}
 
-    	// HEADER: protocol settings
-        protocolSettings = new JLabel();
-        protocolSettings.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        protocolSettings.setText("Protocol settings");
-        
-        // 		OPTION: protocol mode
-        protocolMode = new JLabel();
-        protocolMode.setText("Protocol mode");
-        String[] options = {"Time", "Rounds"};
+    	tabbedPane = new javax.swing.JTabbedPane();
+    	initProtocolSettingsTab();
+    	initSessionGenerationTab();
+    	initLoggingTab();
+    	initVisualizationTab();
+    	initButtons();
+    	
+        restoreOptions(config);
+
+        setTitle("Options");
+        setName("optionsFrame"); // NOI18N
+        setResizable(false);
+
+        pack();
+        setVisible(true);
+		return config;
+    }
+    
+    private void initProtocolSettingsTab() {
+    	protocolSettingsTab = new JPanel();
+    	
+    	protocolModeLabel = new JLabel("Protocol mode");
+    	
+    	String[] options = {"Time", "Rounds"};
         protocolModeSelector = new JComboBox(options);
         protocolModeSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (protocolModeSelector.getSelectedIndex() == 0) {
-                	deadline.setText("Deadline (seconds)");
+                	deadlineLabel.setText("Deadline (seconds)");
                 	allowPausingTimelineCheck.setEnabled(true);
                 } else {
-                	deadline.setText("Deadline (rounds)");
+                	deadlineLabel.setText("Deadline (rounds)");
                 	allowPausingTimelineCheck.setEnabled(false);
                 	allowPausingTimelineCheck.setSelected(false);
                 }
             }
         });
+    	
+        deadlineLabel = new JLabel("Deadline (seconds)");
+        deadlineField = new JTextField();
         
-        // 		OPTION: deadline
-        deadline = new JLabel();
-        deadline = new JLabel();
-        deadline.setText("Deadline (seconds)");
-        deadlineTextField = new JTextField();
+        accessPartnerPreferencesLabel = new JLabel("Access partner preferences");
+        accessPartnerPreferencesCheck = new JCheckBox();
         
-        //		OPTION: access opponent's preferences
-		accessPartnerPreferences = new JLabel();
-		accessPartnerPreferencesCheck = new JCheckBox();
-        accessPartnerPreferences.setText("Access partner preferences");
-        
-        //		OPTION: all ow pausing time
-        allowPausingTimeline = new JLabel();
+        allowPausingTimelineLabel = new JLabel("Allow pausing timeline");
         allowPausingTimelineCheck = new JCheckBox();
-        allowPausingTimeline.setText("Allow pausing timeline");
         allowPausingTimelineCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (allowPausingTimelineCheck.isSelected()) {
                 	JOptionPane.showMessageDialog(null, "As threads are now not automatically quit when\n" +
                 										"an agent ignores the deadline, ensure that all\n" +
                 										"agents work correctly.", "Option info", 1);
-        			
                 }
             }
         });
         
-        // HEADER: session generation
-        sessionGeneration = new JLabel();
-        sessionGeneration.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        sessionGeneration.setText("Session generation");
-        
-		// 		OPTION: Play both sides
-        playBothSides = new JLabel();
-        playBothSidesCheck = new JCheckBox();
-        playBothSides.setText("Play both sides");
-        
-    	// 		OPTION: play against self
-        playAgainstSelf = new JLabel();
-        playAgainstSelfCheck = new JCheckBox();
-        playAgainstSelf.setText("Play against self");
-        
-    	// HEADER: logging
-        logging = new JLabel();
-        logging.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        logging.setText("Logging");
-        
-        //		OPTION: log detailed analysis
-        logDetailedAnalysis = new JLabel();
-        logDetailedAnalysisCheck = new JCheckBox();
-        logDetailedAnalysis.setText("Log detailed analysis");
-        
-        //		OPTION: log negotiation trace
-        logNegotiationTrace = new JLabel();
+        javax.swing.GroupLayout protocolSettingsTabLayout = new javax.swing.GroupLayout(protocolSettingsTab);
+        protocolSettingsTab.setLayout(protocolSettingsTabLayout);
+        protocolSettingsTabLayout.setHorizontalGroup(
+            protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addComponent(protocolModeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(protocolModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addComponent(accessPartnerPreferencesLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                        .addComponent(accessPartnerPreferencesCheck))
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addComponent(deadlineLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addComponent(allowPausingTimelineLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(allowPausingTimelineCheck)))
+                .addContainerGap())
+        );
+        protocolSettingsTabLayout.setVerticalGroup(
+            protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(protocolModeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(protocolModeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deadlineLabel))
+                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(accessPartnerPreferencesLabel)
+                    .addComponent(accessPartnerPreferencesCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(allowPausingTimelineLabel)
+                    .addComponent(allowPausingTimelineCheck))
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+        tabbedPane.addTab("Protocol settings", protocolSettingsTab);
+    }
+    
+    public void initSessionGenerationTab() {
+    	sessionGenerationTab = new JPanel();
+    	
+    	playBothSidesLabel = new JLabel("Play both sides");
+    	playBothSidesCheck = new JCheckBox();
+    	
+    	playAgainstSelfLabel = new JLabel("Play against self");
+    	playAgainstSelfCheck = new JCheckBox();
+    	
+        javax.swing.GroupLayout sessionGenerationTabLayout = new javax.swing.GroupLayout(sessionGenerationTab);
+        sessionGenerationTab.setLayout(sessionGenerationTabLayout);
+        sessionGenerationTabLayout.setHorizontalGroup(
+            sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+                        .addComponent(playBothSidesLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(playBothSidesCheck))
+                    .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+                        .addComponent(playAgainstSelfLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                        .addComponent(playAgainstSelfCheck)))
+                .addContainerGap())
+        );
+        sessionGenerationTabLayout.setVerticalGroup(
+            sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(playBothSidesLabel)
+                    .addComponent(playBothSidesCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(playAgainstSelfLabel)
+                    .addComponent(playAgainstSelfCheck))
+                .addContainerGap(164, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("Session generation", sessionGenerationTab);
+    }
+    
+    public void initLoggingTab() {
+    	loggingTab = new JPanel();
+    	
+    	logDetailedAnalysisLabel = new JLabel("Log detailed analysis");
+    	logDetailedAnalysisCheck = new JCheckBox();
+    	
+    	logNegotiationTraceLabel = new JLabel("Log negotiation trace");
         logNegotiationTraceCheck = new JCheckBox();
         logNegotiationTraceCheck.setEnabled(false);
-        logNegotiationTrace.setText("Log negotiation trace");
-
-        //		OPTION: log final accuracy
-        logFinalAccuracy = new JLabel();
+        
+        logFinalAccuracyLabel = new JLabel("Log final accuracy");
         logFinalAccuracyCheck = new JCheckBox();
-        logFinalAccuracy.setText("Log final accuracy");
         logFinalAccuracyCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (logFinalAccuracyCheck.isSelected()) {
@@ -165,35 +246,84 @@ public class TournamentOptionsUI extends JDialog {
             }
         });
         
-        //		OPTION: log competitiveness
-        logCompetitiveness = new JLabel();
+        logCompetitiveness = new JLabel("Log competitiveness");
         logCompetitivenessCheck = new JCheckBox();
-        logCompetitiveness.setText("Log competitiveness");
-        
-        //		OPTION: append mode and deadline
-        appendModeAndDeadline = new JLabel();
-        appendModeAndDeadlineCheck = new JCheckBox();
-        appendModeAndDeadline.setText("Append mode and deadline");
-        
-        // HEADER: visualization
-        visualization = new JLabel();
-        visualization.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        visualization.setText("Visualization");
-        
-        //		OPTION: show all bids
-        showAllBids = new JLabel();
-        showAllBidsCheck = new JCheckBox();
-        showAllBids.setText("Show all bids");
 
-        //		OPTION: show last bid
-        showLastBid = new JLabel();
-        showLastBidCheck = new JCheckBox();
-        showLastBid.setText("Show last bid");
+        appendModeAndDeadlineLabel = new JLabel("Append mode and deadline");
+        appendModeAndDeadlineCheck = new JCheckBox();
         
-        //		OPTION: disable GUI
-        disableGUI = new JLabel();
+        javax.swing.GroupLayout loggingTabLayout = new javax.swing.GroupLayout(loggingTab);
+        loggingTab.setLayout(loggingTabLayout);
+        loggingTabLayout.setHorizontalGroup(
+            loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loggingTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addComponent(logDetailedAnalysisLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logDetailedAnalysisCheck))
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addComponent(logNegotiationTraceLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logNegotiationTraceCheck))
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addComponent(logFinalAccuracyLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logFinalAccuracyCheck))
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addComponent(logCompetitiveness)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logCompetitivenessCheck))
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addComponent(appendModeAndDeadlineLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                        .addComponent(appendModeAndDeadlineCheck)))
+                .addContainerGap())
+        );
+        loggingTabLayout.setVerticalGroup(
+            loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loggingTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(loggingTabLayout.createSequentialGroup()
+                        .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(loggingTabLayout.createSequentialGroup()
+                                .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(logDetailedAnalysisLabel)
+                                    .addComponent(logDetailedAnalysisCheck))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(logNegotiationTraceLabel))
+                            .addComponent(logNegotiationTraceCheck))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(logFinalAccuracyLabel))
+                    .addComponent(logFinalAccuracyCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(logCompetitiveness)
+                    .addComponent(logCompetitivenessCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(loggingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(appendModeAndDeadlineLabel)
+                    .addComponent(appendModeAndDeadlineCheck))
+                .addContainerGap(72, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("Logging", loggingTab);
+    }
+    
+    public void initVisualizationTab() {
+    	visualizationTab = new JPanel();
+    	
+    	showAllBidsLabel = new JLabel("Show all bids");
+    	showAllBidsCheck = new JCheckBox();
+    	
+    	showLastBidLabel = new JLabel("Show last bid");
+    	showLastBidCheck = new JCheckBox();
+    	
+    	disableGUILabel = new JLabel();
         disableGUICheck = new JCheckBox();
-        disableGUI.setText("Disable GUI");
+        disableGUILabel.setText("Disable GUI");
         disableGUICheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (disableGUICheck.isSelected()) {
@@ -208,14 +338,58 @@ public class TournamentOptionsUI extends JDialog {
             }
         });
         
-        okButton = new JButton();
+		javax.swing.GroupLayout visualizationTabLayout = new javax.swing.GroupLayout(visualizationTab);
+        visualizationTab.setLayout(visualizationTabLayout);
+        visualizationTabLayout.setHorizontalGroup(
+            visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(visualizationTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(visualizationTabLayout.createSequentialGroup()
+                        .addComponent(showAllBidsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(showAllBidsCheck))
+                    .addGroup(visualizationTabLayout.createSequentialGroup()
+                        .addComponent(disableGUILabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(disableGUICheck))
+                    .addGroup(visualizationTabLayout.createSequentialGroup()
+                        .addComponent(showLastBidLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                        .addComponent(showLastBidCheck)))
+                .addContainerGap())
+        );
+        visualizationTabLayout.setVerticalGroup(
+            visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(visualizationTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(visualizationTabLayout.createSequentialGroup()
+                        .addGroup(visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(showAllBidsLabel)
+                            .addComponent(showAllBidsCheck))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showLastBidLabel))
+                    .addComponent(showLastBidCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(visualizationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(disableGUILabel)
+                    .addComponent(disableGUICheck))
+                .addContainerGap(135, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("Visualization", visualizationTab);
+    }
+    
+    private void initButtons() {
+    	okButton = new JButton();
         okButton.setText("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	boolean allValid = true;
             	
             	try {
-            		int deadline = Integer.parseInt(deadlineTextField.getText());
+            		int deadline = Integer.parseInt(deadlineField.getText());
             		if (deadline > 0) {
             			config.put("deadline", deadline);
             		} else {
@@ -255,150 +429,55 @@ public class TournamentOptionsUI extends JDialog {
             }
         });
         
-        restoreOptions(config);
-
-        setTitle("Options");
-        setName("optionsFrame"); // NOI18N
-        setResizable(false);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
+        resetToDefaultButton = new JButton("Reset to default");
+        resetToDefaultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                protocolModeSelector.setSelectedIndex(0);
+                deadlineField.setText("180");
+                accessPartnerPreferencesCheck.setSelected(false);
+                allowPausingTimelineCheck.setEnabled(true);
+                allowPausingTimelineCheck.setSelected(false);
+                playBothSidesCheck.setSelected(true);
+                playAgainstSelfCheck.setSelected(false);
+                logDetailedAnalysisCheck.setSelected(false);
+                logNegotiationTraceCheck.setSelected(false);
+                logFinalAccuracyCheck.setSelected(false);
+                logCompetitivenessCheck.setSelected(false);
+                appendModeAndDeadlineCheck.setSelected(false);
+                showAllBidsCheck.setSelected(true);
+                showAllBidsCheck.setEnabled(true);
+                showLastBidCheck.setSelected(true);
+                showLastBidCheck.setEnabled(true);
+                disableGUICheck.setSelected(false);
+            }
+        });
+        
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabbedPane)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(deadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(accessPartnerPreferences, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(allowPausingTimeline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(protocolMode, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(logNegotiationTrace, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(protocolSettings)
-                                    .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(logDetailedAnalysis, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(disableGUI, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(45, 45, 45)
-                                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                                    		.addComponent(accessPartnerPreferencesCheck)
-                                    		.addComponent(allowPausingTimelineCheck)
-                                            .addComponent(playBothSidesCheck)
-                                            .addComponent(playAgainstSelfCheck)
-                                            .addComponent(logDetailedAnalysisCheck)
-                                            .addComponent(logNegotiationTraceCheck)
-                                            .addComponent(showAllBidsCheck)
-                                            .addComponent(showLastBidCheck)
-                                            .addComponent(logFinalAccuracyCheck)
-                                            .addComponent(logCompetitivenessCheck)
-                                            .addComponent(appendModeAndDeadlineCheck)
-                                            .addComponent(disableGUICheck))
-                                        .addGap(25, 25, 25))
-                                    .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-                                            .addComponent(protocolModeSelector, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(deadlineTextField, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(sessionGeneration)
-                            .addComponent(playAgainstSelf, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logging)
-                            .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logCompetitiveness, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(visualization)
-                            .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(okButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(resetToDefaultButton)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(protocolSettings)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(protocolMode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(protocolModeSelector, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(deadline, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deadlineTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-            	.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(accessPartnerPreferences, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(accessPartnerPreferencesCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(allowPausingTimeline, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(allowPausingTimelineCheck, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(sessionGeneration)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(playBothSides, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(playBothSidesCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(playAgainstSelf, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(playAgainstSelfCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(logging)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(logDetailedAnalysis, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logDetailedAnalysisCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(logNegotiationTrace, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logNegotiationTraceCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(logFinalAccuracy, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logFinalAccuracyCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(logCompetitiveness, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logCompetitivenessCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(appendModeAndDeadline, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(appendModeAndDeadlineCheck))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(visualization)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addComponent(showAllBids, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showAllBidsCheck))
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addComponent(showLastBid, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showLastBidCheck))
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addComponent(disableGUI, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(disableGUICheck))
-                .addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okButton)
                     .addComponent(cancelButton)
-                    .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                    .addComponent(resetToDefaultButton))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
-        
-        pack();
-        setVisible(true);
-		return config;
     }
-
     
 	private void restoreOptions(HashMap<String, Integer> prevConfig) {
 		if (prevConfig != null && prevConfig.size() > 0) {
@@ -406,7 +485,7 @@ public class TournamentOptionsUI extends JDialog {
 				protocolModeSelector.setSelectedIndex(prevConfig.get("protocolMode"));
 			}
 			if (prevConfig.containsKey("deadline")) {
-				deadlineTextField.setText(prevConfig.get("deadline") + "");
+				deadlineField.setText(prevConfig.get("deadline") + "");
 			}
 			allowPausingTimelineCheck.setSelected(prevConfig.containsKey("allowPausingTimeline") && prevConfig.get("allowPausingTimeline") != 0);
 			accessPartnerPreferencesCheck.setSelected(prevConfig.containsKey("accessPartnerPreferences") && prevConfig.get("accessPartnerPreferences") != 0);
