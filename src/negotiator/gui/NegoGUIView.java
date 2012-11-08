@@ -1,8 +1,10 @@
 package negotiator.gui;
 
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -114,6 +116,11 @@ public class NegoGUIView extends FrameView {
         newTournamentMenuItem = new javax.swing.JMenuItem();
     	newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        
+        JMenu helpMenu = new javax.swing.JMenu();
+        manualMenuItem = new javax.swing.JMenuItem();
+        classDocumentationMenuItem = new javax.swing.JMenuItem();
+        aboutMenuItem = new javax.swing.JMenuItem(); 
 
         mainPanel.setName("mainPanel"); // NOI18N
 
@@ -213,9 +220,17 @@ public class NegoGUIView extends FrameView {
         jMenuItem1.setName("jMenuItem1"); // NOI18N
         startMenu.add(jMenuItem1);
         menuBar.add(startMenu);
+        menuBar.add(helpMenu);
 
-
-
+        helpMenu.setText(resourceMap.getString("helpMenu.text"));
+        
+        manualMenuItem.setAction(actionMap.get("openManual")); // NOI18N
+        helpMenu.add(manualMenuItem);
+        
+        classDocumentationMenuItem.setAction(actionMap.get("openDocumentation")); // NOI18N
+        helpMenu.add(classDocumentationMenuItem);
+        
+        
         setComponent(mainPanel);
         setMenuBar(menuBar);
         //mainPanel.hide();
@@ -298,6 +313,30 @@ public class NegoGUIView extends FrameView {
     }
     
     @Action
+    public void openManual() {
+    	if (Desktop.isDesktopSupported()) {
+    	    try {
+    	        File myFile = new File("doc/userguide.pdf");
+    	        Desktop.getDesktop().open(myFile);
+    	    } catch (IOException ex) {
+    	    	JOptionPane.showMessageDialog(this.getComponent(), "There is no program registered to open PDF files.");
+    	    }
+    	}
+    }
+    
+    @Action
+    public void openDocumentation() {
+    	if (Desktop.isDesktopSupported()) {
+    	    try {
+    	        File myFile = new File("javadoc/index.html");
+    	        Desktop.getDesktop().open(myFile);
+    	    } catch (IOException ex) {
+    	    	JOptionPane.showMessageDialog(this.getComponent(), "There is no program registered to open HTML files.");
+    	    }
+    	}
+    }
+    
+    @Action
     public void newDistributedTournamentAction() {
     	if(dTournamentEnabled) {
     		try {
@@ -325,6 +364,9 @@ public class NegoGUIView extends FrameView {
     private javax.swing.JMenuItem newSessionMenuItem;
     private javax.swing.JMenuItem newTournamentMenuItem;
     private javax.swing.JMenuItem newDistributedTournamentMenuItem;
+    private javax.swing.JMenuItem manualMenuItem;
+    private javax.swing.JMenuItem classDocumentationMenuItem;
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JTable tableAgents;
     private javax.swing.JTree treeDomains;
 
