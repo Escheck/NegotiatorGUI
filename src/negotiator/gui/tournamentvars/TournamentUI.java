@@ -420,8 +420,17 @@ public class TournamentUI extends javax.swing.JPanel
 	private void correct_tournament(Tournament t)
 	{
 		ArrayList<TournamentVariable> vars = t.getVariables();
-		fillposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());		
+		fillposition(vars,Tournament.VARIABLE_PROTOCOL,new ProtocolVariable());	
 		fillposition(vars,Tournament.VARIABLE_PROFILE,new ProfileVariable());
+		if (Repository.getProtocolRepository().getItems().size() == 1) {
+			ProtocolVariable protocol = new ProtocolVariable();
+			try {
+				protocol.addValue(new ProtocolValue((ProtocolRepItem)Repository.getProtocolRepository().getItems().get(0)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			vars.set(Tournament.VARIABLE_PROTOCOL, protocol);
+		}
 		AgentVariable agentVar = new AgentVariable();
 		agentVar.setSide("A");
 		fillposition(vars,Tournament.VARIABLE_AGENT_A,agentVar);
