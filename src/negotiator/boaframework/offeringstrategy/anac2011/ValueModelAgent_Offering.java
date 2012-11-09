@@ -21,6 +21,8 @@ import negotiator.boaframework.sharedagentstate.anac2011.ValueModelAgentSAS;
  * This is the decoupled Offering Strategy for ValueModelAgent (ANAC2011).
  * The code was taken from the ANAC2011 ValueModelAgent and adapted to work within the BOA framework.
  * 
+ * This agent has no OM implementation.
+ * 
  * @author Mark Hendrikx
  */
 public class ValueModelAgent_Offering extends OfferingStrategy {

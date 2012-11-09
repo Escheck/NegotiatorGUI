@@ -184,7 +184,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			return bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtility - 0.025,
 				targetUtility + 0.025);
 		} else {
-			return omStrategy.getBid(outcomespace, new Range(targetUtility - 0.025, targetUtility + 0.025)).getBid();
+			return omStrategy.getBid(outcomespace, targetUtility).getBid();
 		}
 	}
 

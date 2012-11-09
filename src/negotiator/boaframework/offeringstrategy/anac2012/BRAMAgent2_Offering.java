@@ -6,13 +6,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
-
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -25,12 +27,14 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of AgentLG
- * Note that the Opponent Model was not decoupled and thus
- * is integrated into this strategy
+ * 
+ * For the opponent model extension a range of bids is found near the target utility.
+ * The opponent model strategy uses the OM to select a bid from this range of bids.
+ * 
+ * DEFAULT OM: None
+ * 
  * @author Alex Dirkzwager
- *
  */
-
 public class BRAMAgent2_Offering extends OfferingStrategy {
 	
 	private boolean EQUIVELENCE_TEST = true;
@@ -38,16 +42,8 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 	
 	/* FINAL VARIABLES */
 	private final double TIME_TO_CREATE_BIDS_ARRAY = 2.0;//The time that we allocate to creating the bids array
-	private final int RANDOM_INTERVAL = 8;//Random values are created from 0 to this number
-	private final int RANDOM_OFFSET = 4;//The range of the offset of the RANDOM_INTERVAL
 	private final double FREQUENCY_OF_PROPOSAL = 0.2;//If the frequency of the proposal is larger than this variable than we won't propose it
 	//The threshold will be calculated as percentage of the required utility depending of the elapsed time 
-
-	
-	private final double THRESHOLD_PERC_FLEXIBILITY_1 = 0.07;
-	private final double THRESHOLD_PERC_FLEXIBILITY_2 = 0.15;
-	private final double THRESHOLD_PERC_FLEXIBILITY_3 = 0.3;
-	private final double THRESHOLD_PERC_FLEXIBILITY_4 = 0.6;
 	
 	//The number of opponent's bids that we save in order to learn its preferences
 	private final int OPPONENT_ARRAY_SIZE = 10;
@@ -59,12 +55,9 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
     private int lastPositionInBidArray;//The position in the bid array of the our agent last offer 
     private int[] bidsCountProposalArray;//An array that saves the number of offers that were made per each bid
     private int numOfProposalsFromOurBidsArray;//The number of proposals that were made - NOT including the proposals that were made in the TIME_TO_OFFER_MAX_BID time
-    private double minRequiredUtility;//The smallest utility of all the bids that our agent had offered
-    private double offeredUtility;//The utility of the current bid that the opponent had offered
     private double threshold;//The threshold - we will accept any offer that its utility is larger than the threshold
     private int randomInterval;
     private int randomOffset;
-    private double endNegotiationUtility;
     /* Data Structures for any type of issue */
 	private ArrayList<ArrayList<Integer>> opponentBidsStatisticsForReal;
 	private ArrayList<HashMap<Value, Integer>> opponentBidsStatisticsDiscrete;
@@ -75,11 +68,14 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 	private Random random300;
 	
 	  
-	
+	private SortedOutcomeSpace outcomespace;
 	private Bid previousOfferedBid;
 	private UtilitySpace utilitySpace;
 	
-public BRAMAgent2_Offering() { }
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
+	public BRAMAgent2_Offering() { }
 	
 	public BRAMAgent2_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
@@ -91,6 +87,9 @@ public BRAMAgent2_Offering() { }
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		super.init(negoSession, model, oms, parameters);
+		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
+		}
 		utilitySpace = negoSession.getUtilitySpace();
 		helper = new BRAMAgentSAS(negotiationSession);
 		
@@ -105,11 +104,9 @@ public BRAMAgent2_Offering() { }
         try {
 			bestBid = this.utilitySpace.getMaxUtilityBid();
 			maxUtility =  this.utilitySpace.getUtilityWithDiscount(bestBid, negoSession.getTimeline());
-			minRequiredUtility = maxUtility;
 			ourBidsArray.add(bestBid);//The offer with the maximum utility will be offered at the beginning
 			threshold = maxUtility;
 			previousOfferedBid = bestBid;
-			endNegotiationUtility = this.utilitySpace.getReservationValueUndiscounted();
 			
 			if(EQUIVELENCE_TEST){
 				random100 = new Random(100);
@@ -143,11 +140,6 @@ public BRAMAgent2_Offering() { }
 				nextBid = negotiationSession.getMaxBidinDomain();
 			}else {
 		    	Bid opponentBid  = negotiationSession.getOpponentBidHistory().getLastBid();
-
-				//If we start the negotiation, we will offer the bid with 
-				//the maximum utility for us
-	        	offeredUtility =  negotiationSession.getDiscountedUtility(negotiationSession.getOpponentBidHistory().getLastBid(), negotiationSession.getTime());
-	        	
 	  
 	        	Bid bidToRemove = null;
 	        	Bid bidToOffer = null;
@@ -168,24 +160,16 @@ public BRAMAgent2_Offering() { }
 		        		updateStatistics(opponentBid, false);
 		        		//Calculate the bid that the agent will offer
 		        		// bidToOffer is null if we want to end the negotiation
-		        		bidToOffer = getBidToOffer();
-		        		//System.out.println("Decoupled BidOffer: " + bidToOffer);
+		        		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+		        			bidToOffer = getBidToOffer();
+		        		} else {
+		        			threshold = ((BRAMAgentSAS) helper).getNewThreshold(ourBidsArray.get(ourBidsArray.size()-1), getBidToOffer());//Update the threshold according to the discount factor
+		        			bidToOffer = omStrategy.getBid(outcomespace, threshold).getBid();
+		        		}
 	
 			       }
 	        	
-	    		nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer));
-	
-			
-	/*
-				if (((offeredUtility < this.utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline())) && (negotiationSession.getTime() > 177.0/180.0)) && 
-				(this.utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline()) > this.utilitySpace.getUtilityWithDiscount(bidToOffer, negotiationSession.getTimeline()))){
-					return null;
-					action = new EndNegotiation(this.getAgentID());
-				}
-				else{
-					nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer));
-			    }	
-	  */    		
+	    		nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer));		
 			}
       
 		}catch (Exception e) { 
@@ -696,5 +680,4 @@ public BRAMAgent2_Offering() { }
 			bidsCountProposalArray[i] = 0;
 		}
 	}
-
 }

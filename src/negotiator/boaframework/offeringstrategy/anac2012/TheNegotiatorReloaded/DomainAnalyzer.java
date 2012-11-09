@@ -28,9 +28,9 @@ public class DomainAnalyzer {
 	/**
 	 * Set the domain analyzer variables and determine the domain size.
 	 * 
-	 * @param ownUtilSpace utility space of our agen
-	 * @param opponentModel used to estimate the opponent's preference profile
-	 * @param opponentHistory
+	 * @param ownUtilSpace utility space of our agent.
+	 * @param opponentModel used to estimate the opponent's preference profile.
+	 * @param omStrategy used to check if the opponent model may be updated.
 	 */
 	public DomainAnalyzer(UtilitySpace ownUtilSpace, OpponentModel opponentModel, OMStrategy omStrategy) {
 		this.opponentModel = opponentModel;
@@ -47,8 +47,11 @@ public class DomainAnalyzer {
 	 */
 	public double calculateKalaiPoint() {
 		double kalaiPoint = DEFAULT_KALAI;
+		// check if the opponent model is a real model
 		if (opponentModel != null && !(opponentModel instanceof NoModel)) {
+			// check if the opponent model may be updated, signaling that its estimate potentially changed
 			if (omStrategy.canUpdateOM()) {
+				// calculate new estimate of the Kalai-point
 				try {
 					BidSpace space = new BidSpace(ownUtilSpace, opponentModel.getOpponentUtilitySpace(), true, true);
 					BidPoint kalai = space.getKalaiSmorodinsky();
@@ -58,6 +61,8 @@ public class DomainAnalyzer {
 					e.printStackTrace();
 				}
 			} else {
+				// return previous Kalai point. In case there was no OM, or it was never updated, this
+				// value is set to a safe defualt.
 				kalaiPoint = previousKalaiPoint;
 			}
 		}
