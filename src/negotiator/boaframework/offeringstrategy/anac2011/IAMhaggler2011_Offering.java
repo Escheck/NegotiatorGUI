@@ -27,7 +27,6 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
@@ -63,7 +62,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	private double maxUtility;
 	private Bid bestReceivedBid;
 	private double previousTargetUtility;
-	protected BidCreator bidCreator;
+	protected RandomBidCreator bidCreator;
 	private SortedOutcomeSpace outcomespace;
 	protected double MAXIMUM_ASPIRATION = 0.9;
 	protected double acceptMultiplier = 1.02;

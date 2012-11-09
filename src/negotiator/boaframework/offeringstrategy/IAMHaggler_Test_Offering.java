@@ -12,7 +12,6 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
 import negotiator.tournament.TournamentConfiguration;
@@ -22,7 +21,7 @@ import Jama.Matrix;
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 	private IAMHagglerOpponentConcessionModel concessionModel;
-	protected BidCreator bidCreator;
+	protected RandomBidCreator bidCreator;
 	private int amountOfSamples;
 	private BidDetails MAX_UTILITY_BID;
 	private Matrix variances;

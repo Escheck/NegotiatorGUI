@@ -3,13 +3,10 @@ package negotiator.boaframework.offeringstrategy.anac2012;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
 import org.apache.commons.math.special.Erf;
-
 import agents.anac.y2012.IAMhaggler2012.utility.SouthamptonUtilitySpace;
-
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixturePrediction;
@@ -18,10 +15,7 @@ import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
-
-
 import Jama.Matrix;
-
 import misc.Pair;
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -30,8 +24,10 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.BidCreator;
+import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 
 import negotiator.utility.UtilitySpace;
 
@@ -69,17 +65,15 @@ import negotiator.utility.UtilitySpace;
 		private Matrix matrixTimeSamplesAdjust;
 		private double maxOfferedUtility = Double.MIN_VALUE;
 		private double minOfferedUtility = Double.MAX_VALUE;
-		
-		private BidCreator bidCreator;
-		
-		/**
-		 * Our maximum aspiration level.
-		 */
-		private boolean opponentIsHardHead;		
+		private SortedOutcomeSpace outcomespace;
+		private RandomBidCreator bidCreator;	
 		private UtilitySpace utilitySpace;
 		private SouthamptonUtilitySpace sus;
 		
-		public IAMHaggler2012_Offering() {System.out.println("TEST"); }
+		/**
+		 * Empty constructor for the BOA framework.
+		 */
+		public IAMHaggler2012_Offering() { }
 		
 		public IAMHaggler2012_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 			init(negoSession, model, oms, null);
@@ -91,6 +85,9 @@ import negotiator.utility.UtilitySpace;
 		@Override
 		public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 			super.init(negoSession, model, omStrategy, parameters);	
+			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+				outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+			}
 			
 			utilitySpace = negoSession.getUtilitySpace();
 			double discountingFactor = 0.5;
@@ -125,11 +122,7 @@ import negotiator.utility.UtilitySpace;
 			
 			maxUtility = 0;
 			previousTargetUtility = 1;			
-			
-			opponentIsHardHead = true;
 			bidCreator = new RandomBidCreator();
-
-
 
 			sus = new SouthamptonUtilitySpace(utilitySpace);
 		}
@@ -188,12 +181,11 @@ import negotiator.utility.UtilitySpace;
 		 * 
 		 * @see agents2011.southampton.IAMhaggler2011#proposeInitialBid()
 		 */
-		protected Bid proposeInitialBid() throws Exception {
+		private Bid proposeInitialBid() throws Exception {
 			Bid b = sus.getMaxUtilityBid();
 			if(utilitySpace.getUtilityWithDiscount(b, negotiationSession.getTimeline()) < utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline())) {
 				return null;
 			}
-			//System.out.println("Decoupled initialBid: " + b);
 			return b;
 		}
 		
@@ -219,9 +211,15 @@ import negotiator.utility.UtilitySpace;
 				return bestReceivedBid;
 			previousTargetUtility = targetUtility;
 
-			// Now get a random bid in the range targetUtility ± 0.025
-			Bid b = bidCreator.getBid(utilitySpace, targetUtility - 0.025,
-					targetUtility + 0.025);
+			Bid b = null;
+			if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+				// Now get a random bid in the range targetUtility ± 0.025
+				b = bidCreator.getBid(utilitySpace, targetUtility - 0.025,
+						targetUtility + 0.025);
+			} else {
+				b = omStrategy.getBid(outcomespace, targetUtility).getBid();
+			}
+			
 			if(utilitySpace.getUtilityWithDiscount(b, negotiationSession.getTimeline()) < utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline())) {
 				return utilitySpace.getMaxUtilityBid();
 			}
