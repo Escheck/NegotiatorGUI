@@ -23,6 +23,7 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.GahboninhoOM;
 
@@ -65,7 +66,6 @@ public class IssueManager
 	private Random random300;
 	private Random random400;
 	private NegotiationSession negotiationSession;
-	private OpponentModel opponentModel;
 	private OMStrategy omStrategy;
 	
 	public TreeMap<Double, Bid> getBids() {
@@ -147,11 +147,9 @@ public class IssueManager
 		return maxBid;
 	}
 	// fill utility-to-bid map here:
-	public IssueManager (NegotiationSession negoSession, OpponentModel omModel, OMStrategy oms, Timeline T, GahboninhoOM om)
+	public IssueManager (NegotiationSession negoSession, Timeline T, GahboninhoOM om)
 	{
 		this.negotiationSession = negoSession;
-		this.opponentModel = omModel;
-		this.omStrategy = oms;
 		
 		if (TEST_EQUIVALENCE) {
         	random100 = new Random(100);
@@ -690,24 +688,11 @@ public class IssueManager
 	public Bid GenerateBidWithAtleastUtilityOf (double MinUtility)
 	{
 		Entry<Double,Bid> selectedBid = null;
-		if (opponentModel != null && !(opponentModel instanceof NoModel)) {
-			SortedMap<Double, Bid> sortedMap = Bids.tailMap(MinUtility);
-			ArrayList<BidDetails> bidsList = new ArrayList<BidDetails>();
-			for (Bid bid : sortedMap.values()) {
-				try {
-					bidsList.add(new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid), -1));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return omStrategy.getBid(bidsList).getBid();
-		} else {
-			selectedBid = Bids.ceilingEntry(MinUtility);
-			if (selectedBid == null) {
-				 return this.maxBid;
-			}
-			return selectedBid.getValue();
+		selectedBid = Bids.ceilingEntry(MinUtility);
+		if (selectedBid == null) {
+			 return this.maxBid;
 		}
+		return selectedBid.getValue();
 	}
 	
 	public double getNoise() {

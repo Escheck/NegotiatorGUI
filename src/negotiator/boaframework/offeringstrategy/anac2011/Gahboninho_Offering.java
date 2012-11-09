@@ -7,11 +7,16 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.GahboninhoSAS;
 
 /**
  * This is the decoupled Offering Strategy for Gahboninho (ANAC2011)
  * The code was taken from the ANAC2011 Gahboninho and adapted to work within the BOA framework
+ * 
+ * DEFAULT OM: None
  * 
  * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
  * T. Baarslag, K. Hindriks, M. Hendrikx, A. Dirkzwager, C.M. Jonker
@@ -22,6 +27,7 @@ public class Gahboninho_Offering extends OfferingStrategy {
 	final int PlayerCount = 8;
 	private boolean WereBidsFiltered = false;
 	private int RoundCount = 0;
+	private SortedOutcomeSpace outcomespace;
 	
 	private int TotalFirstActions = 40;
 
@@ -29,6 +35,9 @@ public class Gahboninho_Offering extends OfferingStrategy {
 			throws Exception {
 		super.init(domainKnow, model, omStrategy, parameters);
 		helper = new GahboninhoSAS(negotiationSession, model, omStrategy);
+		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+		}
 	}
 
 	@Override
@@ -38,13 +47,14 @@ public class Gahboninho_Offering extends OfferingStrategy {
 	
 	@Override
 	public BidDetails determineNextBid() {
+		
 		BidDetails previousOpponentBid = null;
 		BidDetails opponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
 		int histSize = negotiationSession.getOpponentBidHistory().getHistory().size();
 		if (histSize >= 2) {
 			previousOpponentBid = negotiationSession.getOpponentBidHistory().getHistory().get(histSize - 1);
 		}
-
+		double threshold = -1;
 		if (opponentBid != null) {
 			
 			if (previousOpponentBid != null) {
@@ -62,7 +72,7 @@ public class Gahboninho_Offering extends OfferingStrategy {
 					e.printStackTrace();
 				}
 			}
-			double threshold = ((GahboninhoSAS) helper).getIssueManager().GetMinimumUtilityToAccept();
+			threshold = ((GahboninhoSAS) helper).getIssueManager().GetMinimumUtilityToAccept();
 			((GahboninhoSAS) helper).getIssueManager().setMinimumUtilForAcceptance(threshold);
 		}
 		
@@ -77,7 +87,7 @@ public class Gahboninho_Offering extends OfferingStrategy {
 				WereBidsFiltered = true;
 
 				int DesiredBidcount = (int) (RoundCount * (1 - negotiationSession.getTime()));
-
+				
 				if (((GahboninhoSAS) helper).getIssueManager().getBids().size() > 200) {
 					((GahboninhoSAS) helper).getIssueManager().setBids(((GahboninhoSAS) helper).getOpponentModel().FilterBids(((GahboninhoSAS) helper).getIssueManager().getBids(), DesiredBidcount));
 				}
@@ -113,10 +123,15 @@ public class Gahboninho_Offering extends OfferingStrategy {
 					* ((GahboninhoSAS) helper).getFirstActions());
 			((GahboninhoSAS) helper).decrementFirstActions();
 		} else {
+			// always execute this one, even when an OM has been set as this method has side-effects.
 			myBid = ((GahboninhoSAS) helper).getIssueManager().GenerateBidWithAtleastUtilityOf(((GahboninhoSAS) helper).getIssueManager().GetNextRecommendedOfferUtility());
 
-			if (((GahboninhoSAS) helper).getIssueManager().getInFrenzy() == true)
-				myBid = ((GahboninhoSAS) helper).getIssueManager().getBestEverOpponentBid();
+			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+				myBid = omStrategy.getBid(outcomespace, threshold).getBid();
+			} else {
+				if (((GahboninhoSAS) helper).getIssueManager().getInFrenzy() == true)
+					myBid = ((GahboninhoSAS) helper).getIssueManager().getBestEverOpponentBid();
+			}
 		}
 
 		try {

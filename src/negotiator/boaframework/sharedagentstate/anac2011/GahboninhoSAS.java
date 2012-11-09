@@ -37,7 +37,7 @@ public class GahboninhoSAS extends SharedAgentState {
 	
 	public void initObjects() {
 		om = new GahboninhoOM(utilSpace, timeline);
-		im = new IssueManager(negotiationSession, opponentModel, omStrategy, timeline, om);
+		im = new IssueManager(negotiationSession, timeline, om);
 		im.setNoise(im.getNoise() * im.GetDiscountFactor());
 	}
 	
