@@ -84,7 +84,7 @@ import negotiator.utility.UtilitySpace;
 		 */
 		@Override
 		public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-			super.init(negoSession, model, omStrategy, parameters);	
+			super.init(negoSession, model, oms, parameters);	
 			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
 				outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 			}
