@@ -34,7 +34,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 	private final boolean TEST_EQUIVALENCE = false;
 	
 	/**
-	 * Default contructor required for the Decoupled Framework.
+	 * Empty constructor for the BOA framework.
 	 */
 	public TheNegotiator_Offering() { }
 	
@@ -74,7 +74,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 	 * 
 	 * @param agentID of our agent
 	 * @param phase of the negotation
-	 * @param minimum threshold
+	 * @param threshold minimum threshold
 	 * @return (counter)offer
 	 */
 	public BidDetails determineOffer(int phase, double threshold) {
@@ -122,7 +122,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 	 * 
 	 * @param threshold
 	 * @param percentage
-	 * @return
+	 * @return upperbound on the threshold
 	 */
 	public double getUpperThreshold(double threshold, double percentage) {
 		int boundary = 0;

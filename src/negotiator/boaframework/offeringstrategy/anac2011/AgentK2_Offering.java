@@ -45,6 +45,9 @@ public class AgentK2_Offering extends OfferingStrategy {
 	private final boolean TEST_EQUIVALENCE = false;
 	private SortedOutcomeSpace outcomespace;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public AgentK2_Offering() { }
 
 	@Override

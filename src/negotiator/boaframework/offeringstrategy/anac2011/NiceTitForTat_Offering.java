@@ -14,7 +14,9 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
+import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 import negotiator.boaframework.sharedagentstate.anac2011.NiceTitForTatSAS;
 
 /**
@@ -25,6 +27,8 @@ import negotiator.boaframework.sharedagentstate.anac2011.NiceTitForTatSAS;
  * As default the agent implements a behavior when an opponent model is
  * used and when not. The only extension we made is to allow to switch
  * the opponent model.
+ * 
+ * DEFAULT OM: ScalableBayesianModel
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
@@ -37,16 +41,25 @@ public class NiceTitForTat_Offering extends OfferingStrategy {
 	private final boolean TEST_EQUIVALENCE = false;
 	private Random random100;
 
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public NiceTitForTat_Offering(){}
 	
 	@Override
-	public void init(NegotiationSession domainKnow, OpponentModel om, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-		initializeAgent(domainKnow, om, oms);
+	public void init(NegotiationSession negotiationSession, OpponentModel om, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (om instanceof DefaultModel) {
+			om = new ScalableBayesianModel();
+			om.init(negotiationSession, null);
+			oms.setOpponentModel(om);
+		}
+		initializeAgent(negotiationSession, om, oms);
 	}
 	
 	public void initializeAgent(NegotiationSession negoSession, OpponentModel om, OMStrategy oms){
 		this.negotiationSession = negoSession;
 		opponentModel = om;
+		
 		omStrategy = oms;
 		DOMAINSIZE = negoSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
 		helper = new NiceTitForTatSAS(negoSession);

@@ -69,13 +69,11 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	protected double acceptMultiplier = 1.02;
 	private ArrayList<Bid> opponentBids;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public IAMhaggler2011_Offering() { }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see agents.southampton.SouthamptonAgent#init()
-	 */
 	@Override
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;

@@ -31,16 +31,16 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 	private BidList iteratedBids = null;
 	private Bid myLastBid = null;
 	private int bidCount;
-	public BidList opponentBids;
-	public BidList ourBids;
+	private BidList opponentBids;
+	private BidList ourBids;
 	private OpponentModeler opponent;
 	private double lowestAcceptable;
 	private double lowestApproved;
-	public double opponentStartbidUtil;
+	private double opponentStartbidUtil;
 	private Bid opponentMaxBid;
-	public double myMaximumUtility;
+	private double myMaximumUtility;
 	private int amountOfApproved;
-	public double noChangeCounter;
+	private double noChangeCounter;
 	private boolean retreatMode;
 	private double concessionInOurUtility;
 	private double concessionInTheirUtility;
@@ -363,7 +363,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		return offer;
 	}
 
-	public BidDetails bestScan() {
+	private BidDetails bestScan() {
 		approvedBids.sortByOpponentUtil(opponentUtilModel);
 		BidDetails toOffer = null;
 		
@@ -395,7 +395,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		return toOffer;
 	}
 
-	public BidDetails exploreScan() {
+	private BidDetails exploreScan() {
 		BidDetails toOffer = null;
 		BidWrapper tempBid = seperatedBids.explore(bidCount);
 		if (tempBid != null) {
@@ -410,7 +410,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		return toOffer;
 	}
 
-	public BidDetails chickenGame(double timeToGive, double concessionPortion, double acceptableThresh) {
+	private BidDetails chickenGame(double timeToGive, double concessionPortion, double acceptableThresh) {
 		BidDetails toOffer = null;
 		
 		// set timeToGive to be 0.005 unless each turn is very
