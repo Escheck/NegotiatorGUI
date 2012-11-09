@@ -2,7 +2,10 @@ package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
 
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.NoModel;
 
 public class TimeDependentFunction {
 	
@@ -12,12 +15,16 @@ public class TimeDependentFunction {
 	private double Pmin;
 	private double Pmax;
 	private double utilityGoal = 1.0;
+	private OpponentModel opponentModel;
+	private OMStrategy oms;
+	private SortedOutcomeSpace outcomespace;
 	
-	public TimeDependentFunction(NegotiationSession negoSession) throws Exception {
-
-			this.negoSession = negoSession; 
-			SortedOutcomeSpace space = new SortedOutcomeSpace(negoSession.getUtilitySpace());
-			negoSession.setOutcomeSpace(space);
+	public TimeDependentFunction(NegotiationSession negoSession, OMStrategy oms, OpponentModel opponentModel) throws Exception {
+		this.negoSession = negoSession; 
+		this.outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
+		negoSession.setOutcomeSpace(outcomespace);
+		this.opponentModel = opponentModel;
+		this.oms = oms;
 	}
 	
 	public BidDetails getNextBid(double e, double k, double min, double max) {
@@ -30,7 +37,11 @@ public class TimeDependentFunction {
 
 		utilityGoal = p(time);
 		
-		return negoSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
+		if (opponentModel instanceof NoModel) {
+			return negoSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
+		} else {
+			return oms.getBid(outcomespace, utilityGoal);
+		}
 	}
 	
 	/**
@@ -44,7 +55,7 @@ public class TimeDependentFunction {
 	 * at the beginning it will give the initial constant and when the deadline is reached, it
 	 * will offer the reservation value.
 	 */
-	public double f(double t) {
+	private double f(double t) {
 		double ft = k + (1 - k) * Math.pow(t, 1.0/e);
 		return ft;
 	}
@@ -54,11 +65,7 @@ public class TimeDependentFunction {
 	 * @param t
 	 * @return double
 	 */
-	public double p(double t) {
+	private double p(double t) {
 		return Pmin + (Pmax - Pmin) * (1 - f(t));
-	}
-
-	public double getTargetUtility() {
-		return utilityGoal;
 	}
 }

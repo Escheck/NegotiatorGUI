@@ -32,10 +32,16 @@ public class TimeManager {
 		return false;
 	}
 
+	/**
+	 * @return estimated Kalai point for agent A.
+	 */
 	public double getKalai() {
 		return kalai;
 	}
 	
+	/**
+	 * @return estimated opponent's strategy (Conceder or Hardliner).
+	 */
 	public StrategyTypes getOpponentStrategy() {
 		return opponentStrategy;
 	}

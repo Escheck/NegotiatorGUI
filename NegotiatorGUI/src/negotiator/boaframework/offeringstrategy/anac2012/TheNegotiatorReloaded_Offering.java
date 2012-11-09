@@ -1,7 +1,6 @@
 package negotiator.boaframework.offeringstrategy.anac2012;
 
 import java.util.HashMap;
-
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -10,14 +9,26 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.StrategyTypes;
 import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.TimeDependentFunction;
 import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded.TimeManager;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel;
 
+/**
+ * The agent which finished third in the ANAC2013 and scored the highest on
+ * undiscounted domains. The agent uses a domain analyzer to select a TDT
+ * strategy. The parameters of the TDT function are varied based on the discount
+ * and the estimated Kalai-point.
+ *
+ * DEFAULT OM: IAMhagglerBayesianModel with custom parameters
+ * 
+ * @author Alex Dirzwager, Mark Hendrikx
+ */
 public class TheNegotiatorReloaded_Offering extends OfferingStrategy{
 	
 	private TimeManager timeManager;
 	private double kalaiPoint;
 	private TimeDependentFunction TDTFunction;
 	private StrategyTypes opponentStrategy;
-	public enum DiscountTypes {High, Medium, Low};
+	private enum DiscountTypes {High, Medium, Low};
 	private DiscountTypes discountType;
 	private double reservationValue;
 	private double maxBidTarget = 1.0;
@@ -30,21 +41,26 @@ public class TheNegotiatorReloaded_Offering extends OfferingStrategy{
 	 */
 	public TheNegotiatorReloaded_Offering() { }
 	
-	public TheNegotiatorReloaded_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
-		init(negoSession, model, oms, null);
-	}
-	
 	/**
 	 * Init required for the Decoupled Framework.
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
+		if (model instanceof DefaultModel) {
+			model = new IAMhagglerBayesianModel();
+			HashMap<String, Double> configuration = new HashMap<String, Double>();
+			configuration.put("u", 1.0);
+			configuration.put("b", 0.3);
+			model.init(negoSession, configuration);
+			oms.setOpponentModel(model);
+		}
+		
 		this.opponentModel = model;	
 		this.omStrategy = oms;
 		
 		this.timeManager = new TimeManager(negoSession, opponentModel, oms, WINDOWS);
-		this.TDTFunction = new TimeDependentFunction(negoSession);
+		this.TDTFunction = new TimeDependentFunction(negoSession, oms, opponentModel);
 		
 		discount = negoSession.getDiscountFactor();
 		discountType = getDiscountType(discount);
