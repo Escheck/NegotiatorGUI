@@ -230,6 +230,9 @@ public class NegoGUIView extends FrameView {
         classDocumentationMenuItem.setAction(actionMap.get("openDocumentation")); // NOI18N
         helpMenu.add(classDocumentationMenuItem);
         
+        aboutMenuItem.setAction(actionMap.get("openAbout")); // NOI18N
+        helpMenu.add(aboutMenuItem);
+        
         
         setComponent(mainPanel);
         setMenuBar(menuBar);
@@ -334,6 +337,12 @@ public class NegoGUIView extends FrameView {
     	    	JOptionPane.showMessageDialog(this.getComponent(), "There is no program registered to open HTML files.");
     	    }
     	}
+    }
+    
+    @Action
+    public void openAbout() {
+    	About about = new About();
+    	about.setVisible(true);
     }
     
     @Action
