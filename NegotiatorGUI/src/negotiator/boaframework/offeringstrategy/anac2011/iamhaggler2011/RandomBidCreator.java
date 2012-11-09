@@ -16,7 +16,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
 
-public class RandomBidCreator implements BidCreator {
+public class RandomBidCreator {
 
 	protected Random random;
 	private boolean TEST_EQUIVALENCE = false;
@@ -143,7 +143,6 @@ public class RandomBidCreator implements BidCreator {
 		}
 	}
 
-	@Override
 	public Bid getBid(UtilitySpace utilitySpace, double min, double max) {
 		return getRandomBid(utilitySpace, min, max);
 	}
