@@ -11,9 +11,8 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Adapter to opponent model of FSEGA. Weights become invalid after ~30 rounds.
- * This bug is not visible in the behavior of FSEGA, as the agent does not appear
- * to ever use an OM.
+ * Adapter to opponent model of FSEGA.
+ * This opponent model gives a nullpointer in UtilitySpaceHypothesis and therefore does not work.
  * 
  * Adapted by Mark Hendrikx to be compatible with the BOA framework.
  *
