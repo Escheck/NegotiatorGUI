@@ -10,6 +10,8 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.*;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -23,9 +25,8 @@ import negotiator.issue.ValueReal;
  * This is the decoupled Offering Strategy for BRAMAgent (ANAC2011)
  * The code was taken from the ANAC2011 BRAMAgent and adapted to work within the BOA framework
  * 
- * There is no opponent model implementation, as the agent uses an approach in which it first
- * tries to make a bid by taking the last ten opponent bids into account. If this fails, the
- * array of possible bids is directly used to select a bid.
+ * For the opponent model extension a range of bids is found near the target utility.
+ * The opponent model strategy uses the OM to select a bid from this range of bids.
  * 
  * DEFAULT OM: None
  * 
@@ -64,12 +65,19 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	private Random random200;
 	private Random random300;
 	private final boolean TEST_EQUIVALENCE = false;
+	private SortedOutcomeSpace outcomespace;
 	int round = 0;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public BRAMAgent_Offering(){}
 	
 	@Override
 	public void init(NegotiationSession domainKnow, OpponentModel om, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			outcomespace = new SortedOutcomeSpace(domainKnow.getUtilitySpace());
+		}
 		initializeAgent(domainKnow, om, oms);
 	}
 	
@@ -125,21 +133,25 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	        	if (opponentBidsArray.size() < OPPONENT_ARRAY_SIZE){//In this phase we are gathering information
 	        														//about the bids that the opponent is offering	
 	        		opponentBidsArray.add(opponentBid.getBid());
-	        		updateStatistics(opponentBid.getBid(), false);
+        			updateStatistics(opponentBid.getBid(), false);
 	        		bidToOffer = bestBid;
 	        	}
 	        	else {
 	        		//Remove the oldest bid and update the statistics
 	        		bidToRemove = opponentBidsArray.get(0);
-	        		updateStatistics(bidToRemove, true);
+        			updateStatistics(bidToRemove, true);
+
 	        		opponentBidsArray.remove(0);
 	        		//Add the new bid of the opponent and update the statistics
 	        		opponentBidsArray.add(opponentBid.getBid());
 	        		updateStatistics(opponentBid.getBid(), false);
-	        		//Calculate the bid that the agent will offer
-	        		bidToOffer = getBidToOffer();
+	        		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+	        			bidToOffer = getBidToOffer();
+	        		} else {
+	        			threshold = ((BRAMAgentSAS) helper).getNewThreshold(ourBidsArray.get(ourBidsArray.size()-1), getBidToOffer());//Update the threshold according to the discount factor
+	        			bidToOffer = omStrategy.getBid(outcomespace, threshold).getBid();
+	        		}
 	        	}
-				
 
 	        	nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer), negotiationSession.getTime());
         		

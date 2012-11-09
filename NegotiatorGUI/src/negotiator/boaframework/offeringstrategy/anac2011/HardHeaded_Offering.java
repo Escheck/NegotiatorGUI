@@ -55,6 +55,9 @@ public class HardHeaded_Offering extends OfferingStrategy {
 	private Random random100;
 	private Random random200;
 	
+	/**
+	 * Empty constructor for the BOA framework.
+	 */
 	public HardHeaded_Offering() { }
 
 	@Override

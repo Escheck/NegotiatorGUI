@@ -30,10 +30,6 @@ public class Gahboninho_Offering extends OfferingStrategy {
 		super.init(domainKnow, model, omStrategy, parameters);
 		helper = new GahboninhoSAS(negotiationSession, model, omStrategy);
 	}
-	
-	public String getName() {
-		return "Gahboninho V3";
-	}
 
 	@Override
 	public BidDetails determineOpeningBid() {
