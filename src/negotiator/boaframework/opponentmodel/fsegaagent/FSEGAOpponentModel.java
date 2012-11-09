@@ -101,7 +101,7 @@ public class FSEGAOpponentModel extends OpponentModel
 					lEvalHyps.add(lEvaluatorHypothesis);
 					break;
 				
-				//Eval hypothesis for real attributes
+				//Eval hypothesis for real / price attributes
 				case REAL:
 					lEvalHyps = new ArrayList<EvaluatorHypothesis>();
 					aaEvaluatorHypothesis.add(lEvalHyps);
@@ -367,10 +367,10 @@ public class FSEGAOpponentModel extends OpponentModel
 				double p = tmpUSHypothesis.getProbability();
 				double u = tmpUSHypothesis.getUtility(pBid);
 				lExpectedUtility += p * u;
-			}
+			}		
 		}
 		else
-		{		
+		{
 			for(int i = 0; i < uUSHypothesis.size(); i++)
 			{
 				UtilitySpaceHypothesis tmpUSHypothesis = uUSHypothesis.get(i);

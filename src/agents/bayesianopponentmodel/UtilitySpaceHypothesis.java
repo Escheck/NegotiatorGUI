@@ -47,8 +47,8 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 			try
 			{
 				u = u + fWeightHyp.getWeight(k)*fEvalHyp[k].getEvaluator().getEvaluation(fUS, pBid,issues.get(k).getNumber());
-			} catch (Exception e) {System.out.println("Exception in UtilSpaceHypo.getUtil:"+e.getMessage()+". using 0"); 
-				e.printStackTrace();
+			} catch (Exception e) {
+				u = 0;
 			}
 		}
 		return u;
