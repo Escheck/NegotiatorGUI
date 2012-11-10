@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Timeline;
@@ -13,6 +12,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent.OpponentBidHistory;
 import negotiator.boaframework.sharedagentstate.anac2012.CUHKAgentSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -22,17 +22,24 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
-import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
 import agents.anac.y2012.CUHKAgent.OwnBidHistory;
 
 /**
  * This is the decoupled Bidding Strategy of CUHKAgent
  * Note that the Opponent Model was not decoupled and thus
  * is integrated into this strategy
- * @author Alex Dirkzwager
- *
+ * 
+ * DEFAULT OM: Own
+ * 
+ * This agent determines a set of candidate bids each. As the agent does not concede
+ * significantly, using an OM is not expected to result in a gain.
+ * 
+ * If OM is none, then a random bid is selected from the set of candidateBids.
+ * If OM is default, then the agents own OM is used.
+ * If OM is otherwise, the set OM is used.
+ * 
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
-
 public class CUHKAgent_Offering extends OfferingStrategy {
 
     private BidDetails opponentBid = null;
@@ -71,7 +78,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
 	    try {
             maximumOfBid = this.utilitySpace.getDomain().getNumberOfPossibleBids();
             ownBidHistory = new OwnBidHistory();
-            opponentBidHistory = new OpponentBidHistory();
+            opponentBidHistory = new OpponentBidHistory(opponentModel, omStrategy);
             bidsBetweenUtility = new ArrayList<ArrayList<Bid>>();
             this.bid_maximum_utility = utilitySpace.getMaxUtilityBid();
             this.minConcedeToDiscountingFactor = 0.08;//0.1;
@@ -163,7 +170,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
 
                                     System.out.println("test I " + utilitySpace.getUtility(bid));
                                 } else {
-                                    bid = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain());
+                                    bid = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain(), this.utilitySpace);
                                     //System.out.println("Decoupled bid4: " + bid);
 
                                 }
@@ -271,7 +278,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
             }
             List<Bid> candidateBids = this.getBidsBetweenUtility(minimumOfBid, maximumOfBid);
             test = candidateBids.size();
-            bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain());
+            bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain(), this.utilitySpace);
             if (bidReturned == null) {
                 System.out.println("no bid is searched warning");
                 bidReturned = this.utilitySpace.getMaxUtilityBid();
