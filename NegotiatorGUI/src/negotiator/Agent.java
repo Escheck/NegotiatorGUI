@@ -30,11 +30,11 @@ public abstract class Agent
     public Integer			totalTime; // total time to complete entire nego, in seconds.
     /** Use timeline for everything time-related. */
     public Timeline timeline;
-    /** A session can be repeated multiple times, each repetition is called a match. This parameter specifies
+    /** A session can be repeated multiple times. This parameter specifies
      * which match we are at in the range [0, totalMatches - 1].*/
-    public Integer			match;
-    /** Amount of matches, how many times this match is repeated in total. */
-    public Integer			totalMatches;
+    public int				sessionNr;
+    /** Amount of repetitions of this session, how many times this session is repeated in total. */
+    public int				sessionsTotal;
     /** Reference to protocol which is set when experimental setup is enabled. */
     public BilateralAtomicNegotiationSession 	fNegotiation;// can be accessed only in the expermental setup 
     /** Parameters given to the agent which may be specified in the agent.*/
@@ -72,13 +72,13 @@ public abstract class Agent
      * @param us utility space of the agent for the session.
      * @param params parameters of the agent.
      */
-    public final void internalInit(int match, int totalMatches, Date startTimeP, 
+    public final void internalInit(int sessionNr, int sessionsTotal, Date startTimeP, 
     		Integer totalTimeP, Timeline timeline, UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
         startTime=startTimeP;
         totalTime=totalTimeP;
         this.timeline = timeline;
-        this.match = match;
-        this.totalMatches = totalMatches;
+        this.sessionNr = sessionNr;
+        this.sessionsTotal = sessionsTotal;
     	utilitySpace=us;
     	parametervalues = params;
     	if (parametervalues != null && !parametervalues.isEmpty())
@@ -177,16 +177,16 @@ public abstract class Agent
      * MultiRoundAgent which init is only called once. The idea of this method is
      * that the MultiMatchAgent is able to prepare itself for a new match.
      */
-    public void beginMatch() { }
+    public void beginSession() { }
     
     /**
      * Method which informs an agent about the utility it received.
-     * Note that this method is only usefull if the agent is a MultiRoundAgent.
+     * Note that this method is only useful if the agent is a MultiRoundAgent.
      * In this case the method can be used to clean up variables which are no longer
      * needed.
      * @param dUtil discounted utility of previous session round.
      */
-    public void endMatch(double dUtil) { }
+    public void endSession(double dUtil) { }
     
     /**
      * @return ID of the agent as assigned by the protocol.
@@ -232,16 +232,16 @@ public abstract class Agent
 	}
 
 	/**
-	 * @return which match we are in. If a session is first started it is zero.
+	 * @return which session we are in. If a session is first started it is zero.
 	 */
-	public Integer getMatch() {
-		return match;
+	public int getSessionNumber() {
+		return sessionNr;
 	}
 
 	/**
-	 * @return total matches. How many times the session is repeated.
+	 * @return total sessions. How many times the session is repeated.
 	 */
-	public Integer getTotalMatches() {
-		return totalMatches;
+	public int getSessionsTotal() {
+		return sessionsTotal;
 	}
 }

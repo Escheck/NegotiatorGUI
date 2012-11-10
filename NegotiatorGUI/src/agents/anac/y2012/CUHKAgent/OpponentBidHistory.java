@@ -1,6 +1,3 @@
-/*
- * OpponentBidHistory Class
- */
 package agents.anac.y2012.CUHKAgent;
 
 import java.util.ArrayList;
@@ -19,8 +16,10 @@ import negotiator.Domain;
 import negotiator.utility.UtilitySpace;
 
 /**
- *
- * @author Justin Operations related with the opponent's bid history
+ * Operations related with the opponent's bid history.
+ * The opponent's first 100 unique bids are remembered.
+ * 
+ * @author Justin
  */
 public class OpponentBidHistory {
 
@@ -120,12 +119,7 @@ public class OpponentBidHistory {
             counter++;
             bidCounter.put(bidToUpdate, counter);
         }
-        /*
-         * if (this.bidHistory.size() > this.maximumBidsStored) {
-         * this.updateStatistics(this.bidHistory.get(0), true, domain);
-         * this.updateStatistics(bidToUpdate, false, domain); } else {
-         * this.updateStatistics(bidToUpdate, false, domain); }
-         */
+
         if (this.bidHistory.size() <= this.maximumBidsStored) {
             this.updateStatistics(bidToUpdate, false, domain);
         }
@@ -226,6 +220,7 @@ public class OpponentBidHistory {
     //choose a bid which is optimal for the opponent among a set of candidate bids.
 
     public Bid ChooseBid(List<Bid> candidateBids, Domain domain) {
+    	
         int upperSearchLimit = 200;//100;
         if (candidateBids.isEmpty()) {
             System.out.println("test");

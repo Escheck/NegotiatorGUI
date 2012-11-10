@@ -119,7 +119,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 			throw new Exception("Cannot create protocol.");
 		}
 		if(fShowProgressUI) {
-			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		
+			NegoGUIApp.negoGUIView.replaceTab("Sess. Prog.", this, graphlistener);		
 			ns.addNegotiationEventListener(graphlistener);
 			//graphlistener.setNegotiationSession(ns);
 		}
