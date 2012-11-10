@@ -111,7 +111,7 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-\abstract{\noindent In \Genius, you can implement and analyze an agent that negotiates on your behalf. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
+\abstract{\noindent \Genius~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations.. This document describes how you can install the required environment, work with the provided agents, and write, compile, and run such an agent yourself.}
 
 \pagebreak
 \tableofcontents
@@ -147,7 +147,7 @@ When it is an agent's turn, it is informed about the opponent's action. Based on
 \subsection{Reservation Value}
 A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA).
 
-A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either if an agent leaves the negotiation, or by not reaching an agreement before the deadline. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or no agreement is reached, in which case both agents receive their reservation value instead. Reservation values typically differ for each negotiation agent. In case no reservation value is set in a profile, it is assumed 0.
+A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either if an agent leaves the negotiation, or by not reaching an agreement before the deadline. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or no agreement is reached, in which case both agents receive their reservation value instead. Reservation values typically differ for each negotiation agent. In case no reservation value is set in a profile, it is assumed to be 0.
 
 
 \subsection{Time Pressure}
@@ -197,7 +197,7 @@ For a single agent, the optimal bid is of maximum utility for the agent. Often t
 
 There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure~\ref{Fig:utility plot} for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal bids is called the Pareto optimal frontier.
 
-A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preference profile. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids for itself. By default, there are already a few opponent models implemented in \Genius, such as the \textit{HardHeadedFrequencyModel} used by the \textit{HardHeaded} agent which won the ANAC2011.
+A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preference profile. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids for itself. By default, there are already a few opponent models implemented in \Genius.
  
 \section{Running the Environment}
 The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
@@ -214,7 +214,7 @@ When you run the negosimulator (by double-clicking the application or using open
 \texttt{java -jar negosimulator.jar}.
 This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
 
-Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when running Java, for example \texttt{java -Xmx2512M -Xms2512M -jar negosimulator.jar}.
+Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when running Java, for example \texttt{java -Xmx1536M -Xms1536M -jar negosimulator.jar}.
 
 \section{Scenario Creation}
 A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
@@ -358,7 +358,7 @@ In contrast to the negotiation session mode, a large set of tournament options c
 \end{itemize}
 
 \subsection{Advanced: Running a Distributed Tournament}
-A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Following, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
+A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Next, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
 
 Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data which we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{database}.
 
@@ -380,6 +380,8 @@ After specifying the tournament and database parameters we can start the distrib
 \end{figure}
 
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
+
+\section{Quality Measures in Genius}
 
 \section{Creating a Negotiation Agent}
 This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to split these components which can be done by implementing a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.

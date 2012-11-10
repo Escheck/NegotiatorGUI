@@ -3,14 +3,17 @@ package negotiator.boaframework.offeringstrategy.anac2012;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import agents.anac.y2012.OMACagent.TimeBidHistory;
+import misc.Range;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -22,12 +25,14 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of OMACAgent
- * Note that the Opponent Model was not decoupled and thus
- * is integrated into this strategy
- * @author Alex Dirkzwager
  *
+ * For the opponent model extension a range of bids is found near the target utility.
+ * The opponent model strategy uses the OM to select a bid from this range of bids.
+ * 
+ * DEFAULT OM: None
+ * 
+ * @author Alex Dirkzwager, Mark Hendrikx
  */
-
 public class OMACagent_Offering extends OfferingStrategy{
 	
 	private double MINIMUM_UTILITY = 0.59; //0.618
@@ -36,26 +41,21 @@ public class OMACagent_Offering extends OfferingStrategy{
 	private double est_t = 0;
 	private double est_u = 0;
 	private TimeBidHistory mBidHistory; //new
-	public int intervals = 100;
-	public double timeInt = 1.0/(double)intervals;
-	
-	public double discount = 1.0;
+	private int intervals = 100;
+	private double timeInt = 1.0/(double)intervals;
+	private double discount = 1.0;
 	private Bid maxBid = null;      // the maxBid which can be made by itself
 	private double maxBidU = 0.0;   // the uti of the bid above
-	public double cTime = 0.0;
+	private double cTime = 0.0;
 	private int tCount = 0;
 	private double nextUti =0.96;
-	public int numberOfIssues = 0;
-	public double discountThreshold = 0.845D;
-	public int lenA = 0;
-	
-	public double exma;
-	public double est_mu;
-	public double est_mt;
-	public boolean debug = false;  //debug mode
-	public boolean detail = false;  //record counter-offer or not
+	private double discountThreshold = 0.845D;
+	private double exma;
+	private double est_mu;
+	private double est_mt;
 	private double maxTime = 180.0;
 	private UtilitySpace utilitySpace;
+	private SortedOutcomeSpace outcomespace;
 	
 	private Random randomnr;
 	private final boolean TEST_EQUIVALENCE = true;
@@ -71,6 +71,9 @@ public class OMACagent_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (!(model instanceof DefaultModel || model instanceof NoModel)) {
+			outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
+		}
 		super.init(negoSession, model, oms, parameters);
 		utilitySpace = negoSession.getUtilitySpace();
 		if(utilitySpace.getReservationValue() != null){
@@ -81,8 +84,6 @@ public class OMACagent_Offering extends OfferingStrategy{
 		
 		if(utilitySpace.getDiscountFactor() <= 1D && utilitySpace.getDiscountFactor() > 0D )
 			discount = utilitySpace.getDiscountFactor();
-				
-		numberOfIssues = utilitySpace.getDomain().getIssues().size();
 		
 		try{
 			maxBid  = utilitySpace.getMaxUtilityBid();
@@ -190,10 +191,13 @@ public class OMACagent_Offering extends OfferingStrategy{
 				}
 				
 				dval = val*Math.pow(discount, cTime);
-				bid = genRanBid(val*lower, val*upper);
-				//System.out.println("Decoupled genRandomBid1: " + bid);
+				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+					bid = genRanBid(val*lower, val*upper);
+				} else {
+					Range range = new Range(val*lower, val*upper);
+					bid = omStrategy.getBid(outcomespace, range).getBid();
+				}
 
-				
 				return bid;
 			}else if( cTime > 0.01*(tCount+delay) ){
 				nextUti = getNextUti();
@@ -202,17 +206,20 @@ public class OMACagent_Offering extends OfferingStrategy{
 		}else{
 			if( cTime <= discount/splitFactor ){			
 				if( resU <= 0.3 ){
-					//System.out.println("Decoupled return maxBid1");
-
 					return maxBid;
 				}else{
 					val = EU;
 				}
 				
 				dval = val*Math.pow(discount, cTime);
-				bid = genRanBid(val*(1.0-0.02), val*(1.0+0.02));
-				//System.out.println("Decoupled genRandomBid2: " + bid);
-
+				
+				
+				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+					bid = genRanBid(val*(1.0-0.02), val*(1.0+0.02));
+				} else {
+					Range range = new Range(val*(1.0-0.02), val*(1.0+0.02));
+					bid = omStrategy.getBid(outcomespace, range).getBid();
+				}
 				return bid;
 			}else if( cTime > 0.01*(tCount+(int)Math.floor(discount/splitFactor*100)) ){
 				nextUti = getNextUti();
@@ -222,8 +229,6 @@ public class OMACagent_Offering extends OfferingStrategy{
 			
 		if(nextUti == -3.0){		
 			if( resU <= 0.3 ){
-				//System.out.println("Decoupled return maxBid2");
-
 				return maxBid;
 			}else{
 				val = EU;
@@ -237,7 +242,14 @@ public class OMACagent_Offering extends OfferingStrategy{
 		laTime = mBidHistory.getMCtime()*maxTime;	
 		if( cTime * maxTime - laTime > 1.5 || cTime > 0.995  ){		
 			dval = val*Math.pow(discount, cTime);
-			bid = genRanBid(dval*lower, dval*upper);
+			
+			if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+				bid = genRanBid(dval*lower, dval*upper);
+			} else {
+				Range range = new Range(dval*lower, dval*upper);
+				bid = omStrategy.getBid(outcomespace, range).getBid();
+			}
+			
 			//System.out.println("Decoupled genRandomBid3: " + bid);
 
 		}else{
@@ -246,7 +258,12 @@ public class OMACagent_Offering extends OfferingStrategy{
 				//System.out.println("Decoupled return maxBid3");
 			}else{				
 				dval = adp*val*Math.pow(discount, cTime);
-				bid = genRanBid(dval*lower, dval*upper);
+				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+					bid = genRanBid(dval*lower, dval*upper);
+				} else {
+					Range range = new Range(dval*lower, dval*upper);
+					bid = omStrategy.getBid(outcomespace, range).getBid();
+				}
 				//System.out.println("Decoupled genRandomBid4: " + bid);
 			}					
 		}

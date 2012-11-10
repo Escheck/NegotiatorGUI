@@ -70,24 +70,20 @@ public class AgentLG_Offering extends OfferingStrategy {
 			else
 			{	
 				//Acceptance condition was here
+				
+				// Crossing of my bids with opponent's bids
 				if (bidLast)
 				{
 					bidToOffer = myLastBid;	
-					//System.out.println("Decoupled myLastBid2(): " + bidToOffer);
-
 				}
 				//there is lot of time ->learn the opponent and bid the 1/4 most optimal bids
-				else 
+				else {
 					if(time<0.6)
 					{
 						bidToOffer = bidChooser.getNextOptimicalBid(time);
-						//System.out.println("Decoupled getNextOptimicalBid(): " + bidToOffer);
-
 					} 
 					else 
 					{	
-						//System.out.println("Decoupled Time: " + (time));
-
 						//the time is over -> bid the opponents max utility bid for me 
 						if ( time>=0.9995)
 						{
@@ -102,10 +98,9 @@ public class AgentLG_Offering extends OfferingStrategy {
 						{	
 							//Comprise and chose better bid for the opponents that still good for me 
 							bidToOffer = bidChooser.getNextBid(time);
-							//System.out.println("Decoupled getNextBid(): " + bidToOffer);
-
 						}
-					}				
+					}	
+				}
 			}	
 			if (oppenentsBid.getOpponentsBids().contains(myLastBid))
 				bidLast= true;
