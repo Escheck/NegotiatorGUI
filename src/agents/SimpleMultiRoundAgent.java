@@ -25,17 +25,17 @@ public class SimpleMultiRoundAgent extends MultiMatchAgent {
 		System.out.println("SMRA - INIT");
 	}
 	
-	public void beginMatch() {
-		System.out.println("SMRA - BEGIN MATCH " + (getMatch() + 1) + " / " + getTotalMatches());
+	public void beginSession() {
+		System.out.println("SMRA - BEGIN SESSION " + (getSessionNumber() + 1) + " / " + getSessionsTotal());
 	}
 
 	/**
 	 * If an agreement is reached, the breakoff is set to the received discounted utility;
 	 * Else the breakoff value is decreased with a small constant.
 	 */
-	public void endMatch(double result) {
-		System.out.println("SMRA - END MATCH " + (getMatch() + 1) + " / " + getTotalMatches());
-		if (getMatch() < getTotalMatches()) { // we don't care about after the last round
+	public void endSession(double result) {
+		System.out.println("SMRA - END SESSION " + (getSessionNumber() + 1) + " / " + getSessionsTotal());
+		if (getSessionNumber() < getSessionsTotal()) { // we don't care about after the last round
 			if (result > breakOff) {
 				this.breakOff = result;
 				System.out.println("SMRA - INCREASED BREAKOFF TO " + breakOff);
