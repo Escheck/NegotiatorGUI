@@ -1,9 +1,8 @@
 package negotiator.boaframework.offeringstrategy.anac2012.AgentLR;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
-import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.bidding.BidStrictSorterUtility;
 import negotiator.issue.Issue;
@@ -33,7 +32,6 @@ public class BidChooser {
 	private int numPossibleBids=0;
 	private int index=0;
 	private double lastTimeLeft=0;
-	private AgentID agentID;
 	private int minSize = 160000;
 	private Bid myBestBid=null;
 	
@@ -41,44 +39,36 @@ public class BidChooser {
 		this.utilitySpace = utilitySpace;
 		this.opponentBids = OpponentBids;
 	}
-
 	
 	private void initBids() {
-		
-		//get all bids
 		allBids = getAllBids();
-		if(!TEST_EQUIVALENCE){
+		if (!TEST_EQUIVALENCE){
 			BidsComparator bidsComparator = new BidsComparator(utilitySpace);
 			Collections.sort(allBids, bidsComparator);
-
-		}else {
+		} else {
 			BidStrictSorterUtility bidsComparator = new BidStrictSorterUtility(utilitySpace);
 			Collections.sort(allBids, bidsComparator);
-
 		}
-
-		
 	}
 
 	/**
-	 * Calculate the next bid for the agent (from 1/4 most optimal bids)
+	 * Calculate the next bid for the agent (from 1/4 most optimal bids).
 	 * @throws Exception 
-	 * 
 	 */
 	public Bid getNextBid(double time) throws Exception
 	{
 		Bid possibleBid = null ;
 		try
 		{
-			Bid newBid= allBids.get(index);
+			Bid newBid = allBids.get(index);
 			possibleBid = newBid;
 			index++;
-			if (index>numPossibleBids)
+			if (index > numPossibleBids)
 			{
 				//the time is over compromising in a high rate
 				if (time>=0.9)
 				{
-					if (time-lastTimeLeft>0.008 )
+					if (time-lastTimeLeft > 0.008)
 					{						
 						double myBestUtility = utilitySpace.getUtility(myBestBid);
 						double	oppBestUtility = utilitySpace.getUtility(opponentBids.getOpponentsBids().get(0));
@@ -258,7 +248,19 @@ public class BidChooser {
 		return filterBids(bids, myBestUtility, oppBestUtility,0.75D);
     }
 
-
+	
+	/**
+	 * Given a set of bids, this method selects a subset of these bids by using a lowerbound
+	 * and upperbound. The lowerbound is based on a constant fraction and the utility of the 
+	 * opponent's first bid. The lowerbound is decreased if the set does not contain at least
+	 * a minimum amount of bids.
+	 * 
+	 * @param bids
+	 * @param myBestUtility
+	 * @param oppBestUtility
+	 * @param fraction
+	 * @return selection of bids
+	 */
 	private ArrayList<Bid> filterBids(ArrayList<Bid> bids,
 			double myBestUtility, double oppBestUtility, double fraction) {
 		double downBond =myBestUtility- (myBestUtility-oppBestUtility)*fraction;
@@ -343,17 +345,16 @@ public class BidChooser {
 		return  utilitySpace.getUtilityWithDiscount(allBids.get(numPossibleBids),time);
 	}
 	
-	/*
-	 * returns the bid with the minimum utility that the agent voted
-	 */
 	public Bid getMyminBidfromBids()
 	{
 		if (allBids == null)
 			initBids();
 		return allBids.get(numPossibleBids);
 	}
-	/*
-	 * returns the bid utility
+	
+	/**
+	 * @param bid from which we want to know the undiscounted utility.
+	 * @return undiscounted utility.
 	 */
 	public double getUtility(Bid bid)
 	{

@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 import negotiator.Bid;
-import negotiator.actions.Action;
-import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
@@ -122,29 +120,21 @@ public class AgentMR_Offering extends OfferingStrategy{
 				
 				// get current time
 				double time = negotiationSession.getTime();
-				//System.out.println("test: " + negotiationSession.getDiscountedUtility(negotiationSession.getOpponentBidHistory().getFirstBidDetails().getBid(), negotiationSession.getOpponentBidHistory().getFirstBidDetails().getTime()));
 				double offeredutil; 
 				if (discountFactor) {
 					offeredutil = getUtility(partnerBid.getBid())
 							* (1 / Math.pow(negotiationSession.getUtilitySpace().getDiscountFactor(),
 									time));
-					//System.out.println("Decoupled discount factor: ");
-
 				} else {
 					offeredutil = getUtility(partnerBid.getBid());
 
 				}
-				//System.out.println(firstOffer);
 				if (firstOffer) {
-					//System.out.println("Decoupled partnerBid: " + partnerBid.getBid());
-					//System.out.println("Decoupled offeredutil: " + offeredutil);
-
-					previousPartnerBid = partnerBid; // ç›¸æ‰‹ã�®é�ŽåŽ»Bidã‚’ã‚»ãƒƒãƒˆ
-					offereMaxBid = partnerBid; // ç›¸æ‰‹ã�®æœ€å¤§Bidã‚’ã‚»ãƒƒãƒˆ
-					offereMaxUtility = offeredutil; // ç›¸æ‰‹ã�®æœ€å¤§BidUtilã‚’ã‚»ãƒƒãƒˆ
-					((AgentMRSAS) helper).setFirstOffereUtility(offeredutil); // ç›¸æ‰‹ã�®åˆ�æœŸBidUtilã‚’ã‚»ãƒƒãƒˆ
-					//System.out.println("Decoupled firstOffereUtility: " + ((AgentMRSAS) helper).getFirstOffereUtility());
-
+					previousPartnerBid = partnerBid;
+					offereMaxBid = partnerBid;
+					offereMaxUtility = offeredutil;
+					((AgentMRSAS) helper).setFirstOffereUtility(offeredutil);
+					
 					observationUtility.add(offeredutil); // addObservation
 					if (offeredutil > 0.5) { // é€“æ¸›çŽ‡ã‚»ãƒƒãƒˆ
 						((AgentMRSAS) helper).setP(0.90);

@@ -35,45 +35,34 @@ import agents.anac.y2012.CUHKAgent.OwnBidHistory;
 
 public class CUHKAgent_Offering extends OfferingStrategy {
 
-	 private final double domainthreshold = 2000;
-	    private BidDetails opponentBid = null;
-	    private double maximumOfBid;
-	    private int maximumOfRound;
-	    private OwnBidHistory ownBidHistory;
-	    private OpponentBidHistory opponentBidHistory;
-	    private double minimumUtilityThreshold;
-	    private final int limitValue = 5;//10;
-	    private double delta; // searching range
-	    private int limit;//the maximimum number of trials for each searching range
-	    private double numberOfRounds;
-	    private double discountingFactor;
-	    private double concedeToDiscountingFactor_original;
-	    private double minConcedeToDiscountingFactor;
-	    private ArrayList<ArrayList<Bid>> bidsBetweenUtility;
-	    private double previousToughnessDegree; 
-	    private boolean guessOpponentType;
-	    private int opponentType;
-	    private double alpha1;//the larger alpha is, the more tough the agent is.
-	    private int debug = 0;
-	    private Bid bid_maximum_utility;//the bid with the maximum utility over the utility space.
-	    private double reservationValue;
-	    private UtilitySpace utilitySpace;
-	    private Timeline timeline;
-	    
-	    private Random random;
-		private final boolean TEST_EQUIVALENCE = false;
+    private BidDetails opponentBid = null;
+    private double maximumOfBid;
+    private OwnBidHistory ownBidHistory;
+    private OpponentBidHistory opponentBidHistory;
+    private double minimumUtilityThreshold;
+    private double discountingFactor;
+    private double concedeToDiscountingFactor_original;
+    private double minConcedeToDiscountingFactor;
+    private ArrayList<ArrayList<Bid>> bidsBetweenUtility;
+    private double alpha1;//the larger alpha is, the more tough the agent is.
+    private Bid bid_maximum_utility;//the bid with the maximum utility over the utility space.
+    private UtilitySpace utilitySpace;
+    private Timeline timeline;
+    
+    private Random random;
+	private final boolean TEST_EQUIVALENCE = false;
+
+    public CUHKAgent_Offering() { }
 	
-	    public CUHKAgent_Offering() { }
-		
-		public CUHKAgent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
-			init(negoSession, model, oms, null);
-		}
-		
-		/**
-		 * Init required for the Decoupled Framework.
-		 */
-		@Override
-		public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+	public CUHKAgent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
+		init(negoSession, model, oms, null);
+	}
+	
+	/**
+	 * Init required for the BOA Framework.
+	 */
+	@Override
+	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 	    super.init(negoSession, model, oms, parameters);
 		helper = new CUHKAgentSAS(negotiationSession);
 		
@@ -85,10 +74,6 @@ public class CUHKAgent_Offering extends OfferingStrategy {
             opponentBidHistory = new OpponentBidHistory();
             bidsBetweenUtility = new ArrayList<ArrayList<Bid>>();
             this.bid_maximum_utility = utilitySpace.getMaxUtilityBid();
-            this.delta = 0.01; //searching range
-            this.limit = 10;
-            this.previousToughnessDegree = 0;
-            this.numberOfRounds = 0;
             this.minConcedeToDiscountingFactor = 0.08;//0.1;
             this.discountingFactor = 1;
       
@@ -101,7 +86,6 @@ public class CUHKAgent_Offering extends OfferingStrategy {
             } else {
             	random = new Random();
             }
-            this.guessOpponentType = false;
             this.chooseUtilityThreshold();
 
             this.calculateBidsBetweenUtility();
@@ -109,17 +93,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
             
             this.opponentBidHistory.initializeDataStructures(utilitySpace.getDomain());
             ((CUHKAgentSAS) helper).setTimeLeftAfter(negoSession.getTimeline().getCurrentTime());
-
-            this.opponentType = 0;
-            this.alpha1 = 2;
-            this.reservationValue = 0;
-
-            if (utilitySpace.getReservationValue() > 0) {
-                this.reservationValue = utilitySpace.getReservationValue();
-            }
-
-       
-            
+            this.alpha1 = 2;  
         } catch (Exception e) {
             System.out.println("initialization error" + e.getMessage());
         }
