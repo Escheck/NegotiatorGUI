@@ -7,27 +7,18 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.JTree;
-
-import misc.Pair;
 import negotiator.Domain;
-import negotiator.gui.DirectoryRestrictedFileSystemView;
-import negotiator.gui.GenericFileFilter;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIView;
-import negotiator.gui.boaframework.ParameterFrame;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -168,65 +159,49 @@ public class DomainRepositoryUI
 	}
 
 	private void newPreferenceProfile(MyTreeNode node) {
-		// get the directory of the domain
+		
 		DomainRepItem dri = (DomainRepItem) node.getRepositoryItem();
-		String fullPath = dri.getURL().toString().substring(5); // remove "file:"
-		String[] split = fullPath.split("/");
-		String domainDir = fullPath.substring(0, fullPath.length() - split[split.length-1].length()).replace("/", File.separator);
-		String completePath = "";
-		try {
-			completePath = new java.io.File(".").getCanonicalPath() + File.separator + domainDir;
-		} catch (IOException e) {
-			e.printStackTrace();
+		String domainName = dri.getURL().toString().replace("file:", "");
+		String cleanName = domainName.replace(".xml", "").replace("_domain", "");
+		String path = "";
+		
+		int i = 1;
+		boolean found = false;
+		while (!found && i < 100) {
+			path = cleanName + "_util" + i + ".xml";
+			File file = new File(path);
+			if (!file.exists()) {
+				found = true;
+			}
+			i++;
 		}
-		// Restrict file picker to root and subdirectories.
-		// Ok, you can escape if you put in a path as directory. We catch this later on.
-		FileSystemView fsv = new DirectoryRestrictedFileSystemView(new File(completePath));
-		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
+		String url = "file:" + path;
+		ProfileRepItem newPref = null;
 		
-		// Filter such that only directories and .class files are shown.
-		FileFilter filter = new GenericFileFilter("xml", "Domain XML files (.xml)");
-		fc.setFileFilter(filter);
-		
-		// Open the file picker
-		int returnVal = fc.showSaveDialog(null);
-
-		// If file selected
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            // Catch people who tried to escape our directory
-            if (!file.getPath().startsWith(completePath)) {
-            	JOptionPane.showMessageDialog(null, "Only preference profiles in the root or a subdirectory of the root are allowed.", "Agent import error", 0);
-            } else {
-            	String nameInPath = file.getPath().substring(completePath.length());
-            	String fullPathOfPref = "file:" + domainDir + nameInPath + ".xml";
-            	ProfileRepItem newPref = null;
-				try {
-					newPref = new ProfileRepItem(new URL(fullPathOfPref), dri);
-	            	dri.getProfiles().add(newPref);
-	            	MyTreeNode newNode = new MyTreeNode(newPref);
-	            	scenarioTreeModel.insertNodeInto(newNode, node, node.getChildCount());
-	            	domainrepository.save();
-	            	
-	            	Domain domain = null;
-	        		try {
-	        			domain = new Domain(fullPath);
-	        		} catch (Exception e1) {
-	        			e1.printStackTrace();
-	        		}
-	        		UtilitySpace space = null;
-					try {
-						space = new UtilitySpace(domain, "");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-	        		space.toXML().saveToFile(completePath + nameInPath + ".xml");
-	        		negoView.showRepositoryItemInTab(newPref, newNode);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-            }
-        }		        
+		try {
+			newPref = new ProfileRepItem(new URL(url), dri);
+        	dri.getProfiles().add(newPref);
+        	MyTreeNode newNode = new MyTreeNode(newPref);
+        	scenarioTreeModel.insertNodeInto(newNode, node, node.getChildCount());
+        	domainrepository.save();
+        	
+        	Domain domain = null;
+    		try {
+    			domain = new Domain(domainName);
+    		} catch (Exception e1) {
+    			e1.printStackTrace();
+    		}
+    		UtilitySpace space = null;
+			try {
+				space = new UtilitySpace(domain, "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    		space.toXML().saveToFile(path);
+    		negoView.showRepositoryItemInTab(newPref, newNode);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}      
 	}
 
 	private void addDomain() {		
