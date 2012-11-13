@@ -235,32 +235,31 @@ Start \Genius~by following the instructions in the previous section. After start
 \end{figure}
 
 \subsection{Creating a Domain}
-By right clicking on the list of available scenarios in the Components Window a popup menu with the option to create a new domain is shown. After clicking this option it is requested where the domain should be saved. As a domain is accompanied by a set of preference profiles, it is recommended to save the file in a new directory in the templates folder. After saving the domain a window similar to Figure~\ref{Fig:newdomain} is shown. Initially, a domain contains zero issues. We can simply add an issue by pressing the ``Add issue'' button. This results in the opening of a dialog similar to Figure~\ref{fig:createIssueD}.
+By right clicking on the list of available scenarios in the Components Window a popup menu with the option to create a new domain is shown. After clicking this option it is requested how the domain should be called. Next the domain is automatically created and a a window similar to Figure~\ref{Fig:newdomain} is shown. Initially, a domain contains zero issues. We can simply add an issue by pressing the ``Add issue'' button. This results in the opening of a dialog similar to Figure~\ref{fig:createIssueD}.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.7\textwidth]{media/image7.png}
+	\includegraphics[width=0.9\textwidth]{media/image7.png}
 \caption{The negosimulator after loading the laptop domain.}\label{Fig:newdomain}
 \end{figure}
 
 The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty evaluation values window, later on when creating a preference profile we will use this tab to specify the preference of each value.
 
-Instead of a discrete issue, we can also add an integer issue as shown in Figure~\ref{fig:createIssueI}. For an integer issue we first need to specify the lowest possible value and the highest value, for example the price you want to pay for a second hand car may be in the range $[700, 900]$. Next, when creating a preference profile we need to specify the utility of the lowest possible value (700) and the highest value (900). During the negotiation we can offer any value for the issue within the specified range.
+Instead of a discrete issue, we can also add an integer issue as shown in Figure~\ref{fig:createIssueI}. For an integer issue we first need to specify the lowest possible value and the highest value, for example the price range for a second hand car may be $[700, 900]$. Next, when creating a preference profile we need to specify the utility of the lowest possible value (700) and the highest value (900). During the negotiation we can offer any value for the issue within the specified range.
 
 The next step is to press ``Ok'' to add the issue. Generally, a domain consists of multiple issues. We can simply add the other issues by repeating the process above. If you are satisfied with the domain, you can save it by pressing  ``Save changes''.
 
 Finally, note that the issues of a domain can only be edited if the scenario does not (yet) specify preference profiles. This is to avoid inconsistencies between the preference profiles and the domains. 
 
 \begin{figure}[ht]
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-	\includegraphics[width=0.8\textwidth]{media/image7a.png}
+\center
+\begin{minipage}[b]{0.35\linewidth}
+	\includegraphics[width=0.95\textwidth]{media/image7a.png}
 \caption{Creating a discrete issue.}
 \label{fig:createIssueD}
 \end{minipage}
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-	\includegraphics[width=0.8\textwidth]{media/image7b.png}
+\begin{minipage}[b]{0.55\linewidth}
+	\includegraphics[width=1.0\textwidth]{media/image7b.png}
 \caption{Creating an integer issue.}\label{fig:createIssueI}
 \end{minipage}
 \end{figure}
@@ -282,7 +281,7 @@ For a discrete issue we need to specify the evaluation value of each discrete va
 
 Specifying the preference of a integer issue is even easier. In this case we simply need to specify the utility of the lowest possible value and the highest possible value. The utility of a value in this range is calculated during the negotiation by using linear interpolation of the utilities of both given utilities.
 
-The final step is to set the reservation value and discount of a preference profile. If you are satisfied with the profile you can save it by pressing ``Save changes''. 
+The final step is to set the reservation value and discount of a preference profile. If you are satisfied with the profile you can save it by pressing ``Save changes''. Finally, you can create additional preference profiles for the domain and run a negotiation.
 
 \section{Running Negotiations}
 This section discusses how to run a negotiation. There are three main modes to run a negotiation:
