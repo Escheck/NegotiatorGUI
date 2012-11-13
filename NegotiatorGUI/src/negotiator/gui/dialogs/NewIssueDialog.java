@@ -179,30 +179,26 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	private JPanel constructIntegerPanel() {
 		JPanel panel = new JPanel();
 		
-		GridLayout layout = new GridLayout(5,5);
+		GridLayout layout = new GridLayout(6,4);
 		
+		panel.setLayout(layout);
 		// SPACING
-		for (int i = 0; i < layout.getColumns(); i++) {
+		for (int i = 0; i < 4; i++) {
 			panel.add(new JLabel());
 		}
 		
-		panel.setLayout(layout);
 		panel.add(new JLabel("Minimum value: "));
 		panel.add(integerMinField);
-
-		panel.add(new JLabel());
 		
 		panel.add(new JLabel("Evaluation of minimum value: "));
 		panel.add(integerUtilityLowestValue);	
 
-		for (int i = 0; i < layout.getColumns(); i++) {
+		for (int i = 0; i < 4; i++) {
 			panel.add(new JLabel());
 		}
 		
 		panel.add(new JLabel("Maximum value: "));
 		panel.add(integerMaxField);
-		
-		panel.add(new JLabel());
 		
 		panel.add(new JLabel("Evaluation of maximum value: "));
 		panel.add(integerUtilityHighestValue);
@@ -220,8 +216,8 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			integerMinField.setEnabled(false);
 			integerMaxField.setEnabled(false);
 		}
-		
-		for (int i = 0; i < layout.getColumns(); i++) {
+
+		for (int i = 0; i < 4; i++) {
 			panel.add(new JLabel());
 		}
 		
