@@ -3,6 +3,8 @@ package negotiator.gui.dialogs;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -135,7 +137,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		issuePropertyPanel.setLayout(new BorderLayout());
 		issuePropertyPanel.add(issueType, BorderLayout.PAGE_START);
 		issuePropertyPanel.add(issuePropertyCards, BorderLayout.CENTER);
-
+		
 		return issuePropertyPanel;
 	}
 	
@@ -168,7 +170,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		}
 		discreteTextArea.setEditable(false);
 		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null &&
-				treeFrame.hasNoProfiles()) { // so it's a domain with no profiles
+			treeFrame.hasNoProfiles()) { // so it's a domain with no profiles
 			discreteTextArea.setEditable(true);
 		}
 		return panel;
@@ -176,36 +178,36 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 	
 	private JPanel constructIntegerPanel() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		JLabel label = new JLabel("Give the bounds of the Integer values:");
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel.add(label);
 		
-		JPanel min = new JPanel();
-		min.setAlignmentX(Component.LEFT_ALIGNMENT);
-		min.add(new JLabel("Min: "));
-		min.add(integerMinField);
-		panel.add(min);
-
-		JPanel lin = new JPanel();
-		lin.setAlignmentX(Component.LEFT_ALIGNMENT);
-		lin.add(new JLabel("Util. lowest value: "));
-		lin.add(integerUtilityLowestValue);
-		panel.add(lin);		
-
-		JPanel par = new JPanel();
-		par.setAlignmentX(Component.LEFT_ALIGNMENT);
-		par.add(new JLabel("Util. heighest value: "));
-		par.add(integerUtilityHighestValue);
-		panel.add(par);	
+		GridLayout layout = new GridLayout(5,5);
 		
-		JPanel max = new JPanel();
-		max.setAlignmentX(Component.LEFT_ALIGNMENT);
-		max.add(new JLabel("Max: "));
-		max.add(integerMaxField);
-		panel.add(max);
+		// SPACING
+		for (int i = 0; i < layout.getColumns(); i++) {
+			panel.add(new JLabel());
+		}
+		
+		panel.setLayout(layout);
+		panel.add(new JLabel("Minimum value: "));
+		panel.add(integerMinField);
 
-		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace()==null){
+		panel.add(new JLabel());
+		
+		panel.add(new JLabel("Evaluation of minimum value: "));
+		panel.add(integerUtilityLowestValue);	
+
+		for (int i = 0; i < layout.getColumns(); i++) {
+			panel.add(new JLabel());
+		}
+		
+		panel.add(new JLabel("Maximum value: "));
+		panel.add(integerMaxField);
+		
+		panel.add(new JLabel());
+		
+		panel.add(new JLabel("Evaluation of maximum value: "));
+		panel.add(integerUtilityHighestValue);
+
+		if(((NegotiatorTreeTableModel)treeFrame.getTreeTable().getTree().getModel()).getUtilitySpace() == null) {
 			integerUtilityLowestValue.setEnabled(false);
 			integerUtilityHighestValue.setEnabled(false);
 			if (!treeFrame.hasNoProfiles()) {
@@ -218,6 +220,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 			integerMinField.setEnabled(false);
 			integerMaxField.setEnabled(false);
 		}
+		
+		for (int i = 0; i < layout.getColumns(); i++) {
+			panel.add(new JLabel());
+		}
+		
 		return panel;
 	}
 	
