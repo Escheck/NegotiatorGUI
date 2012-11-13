@@ -1,7 +1,7 @@
 package agents;
 
 import negotiator.Bid;
-import negotiator.MultiMatchAgent;
+import negotiator.MultiSessionsAgent;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 
@@ -13,7 +13,7 @@ import negotiator.actions.Offer;
  * 
  * @author Mark Hendrikx
  */
-public class SimpleMultiRoundAgent extends MultiMatchAgent {
+public class SimpleMultiSessionsAgent extends MultiSessionsAgent {
 
 	private double breakOff;
 	

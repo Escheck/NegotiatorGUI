@@ -13,11 +13,11 @@ package negotiator;
  *
  * @author Mark Hendrikx
  */
-public abstract class MultiMatchAgent extends Agent {
+public abstract class MultiSessionsAgent extends Agent {
 	
 	/**
      * In contrast to a normal agent, can remember information during rounds.
      * @return true
      */
-    public boolean isMultiRoundsCompatible() { return true; }
+    public boolean isMultiSessionsCompatible() { return true; }
 }

@@ -121,12 +121,12 @@ public class AlternatingOffersProtocol extends Protocol {
 	protected void runNegotiationSession()  throws Exception
 	{
 		sessionNr++;
-		if (sessionNr == 0 || !agentA.isMultiRoundsCompatible()) {
+		if (sessionNr == 0 || !agentA.isMultiSessionsCompatible()) {
 			agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
 			agentA.setName(getAgentAname());
 		}
 		
-		if (sessionNr == 0 || !agentB.isMultiRoundsCompatible()) {
+		if (sessionNr == 0 || !agentB.isMultiSessionsCompatible()) {
 			agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 			agentB.setName(getAgentBname());
 		}

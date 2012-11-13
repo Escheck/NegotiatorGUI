@@ -2,7 +2,7 @@
 <repository fileName="agentrepository.xml">
     <items>
         <agentRepItems>
-        	<agentRepItem description="Other - SimpleMultiRoundAgent" classPath="agents.SimpleMultiRoundAgent" agentName = "Other - SimpleMultiRoundAgent"/>
+        	<agentRepItem description="Other - SimpleMultiSessionsAgent" classPath="agents.SimpleMultiRoundAgent" agentName = "Other - SimpleMultiRoundAgent"/>
             <agentRepItem description="ANAC 2010 - AgentFSEGA" classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA" agentName="ANAC 2010 - AgentFSEGA"/>
             <agentRepItem description="ANAC 2010 - AgentK" classPath="agents.anac.y2010.AgentK.Agent_K" agentName="ANAC 2010 - AgentK"/>
             <agentRepItem description="ANAC 2010 - IAMhaggler" classPath="agents.anac.y2010.Southampton.IAMhaggler" agentName="ANAC 2010 - IAMhaggler"/>

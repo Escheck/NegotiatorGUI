@@ -170,7 +170,7 @@ public abstract class Agent
      * A normal agents is simply reset each round. If you do not want this, create a MultiRoundAgent.
      * @return false
      */
-    public boolean isMultiRoundsCompatible() { return false; }
+    public boolean isMultiSessionsCompatible() { return false; }
     
     /**
      * Method called after initializing an agent using init. This method is useful for
