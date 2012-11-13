@@ -70,6 +70,10 @@ public class TreeFrame extends JPanel {
 		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize());
 	}
 	
+	public boolean isDomain() {
+		return model.getUtilitySpace() == null;
+	}
+	
 	private void init(NegotiatorTreeTableModel treeModel, Dimension size) {
 		thisFrame = this;
 		model = treeModel;
@@ -84,7 +88,11 @@ public class TreeFrame extends JPanel {
 	        		Object selected = treeTable.getTree().getLastSelectedPathComponent();
 
 	        		if (selected instanceof Issue) {
-	        			new EditIssueDialog(thisFrame, (Issue) selected);
+	        			if (hasNoProfiles || !isDomain()) {
+	        				new EditIssueDialog(thisFrame, (Issue) selected);
+	        			} else {
+	        				JOptionPane.showMessageDialog(null, "You may only edit the issues when there are no preference profiles.", "Edit error", 0);
+	        			}
 	        		}
 	        	}
 	        }

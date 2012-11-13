@@ -55,6 +55,10 @@ public class EditIssueDialog extends NewIssueDialog {
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());
 		
+		if (!treeFrame.isDomain() || !treeFrame.hasNoProfiles()) {
+			nameField.setEnabled(false);
+		}
+		
 		if (issue instanceof IssueDiscrete) {
 			this.issueType.setSelectedItem(DISCRETE);
 			this.issueType.setEnabled(false);
@@ -93,7 +97,7 @@ public class EditIssueDialog extends NewIssueDialog {
 		else if (issue instanceof IssueInteger) {
 			this.issueType.setSelectedItem(INTEGER);
 			this.issueType.setEnabled(false);
-			this.nameField.setEnabled(false);
+			
 			((CardLayout)issuePropertyCards.getLayout()).show(issuePropertyCards, INTEGER);
 			integerMinField.setText("" + ((IssueInteger)issue).getLowerBound());
 			integerMaxField.setText("" + ((IssueInteger)issue).getUpperBound());
