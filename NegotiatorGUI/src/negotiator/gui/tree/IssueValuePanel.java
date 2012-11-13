@@ -15,13 +15,15 @@ import negotiator.issue.*;
 public abstract class IssueValuePanel extends JPanel {
 	
 	private static final long serialVersionUID = 7098132974856692090L;
-
+	protected NegotiatorTreeTableModel model;
+	
 	//Attributes
 	static final Color BACKGROUND = Color.white;
 	
 	//Constructors
 	public IssueValuePanel(NegotiatorTreeTableModel model, Objective objective) {
 		super();
+		this.model = model;
 		this.setBackground(BACKGROUND);
 		this.setLayout(new FlowLayout());
 	}
