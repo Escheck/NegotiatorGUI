@@ -154,7 +154,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		textPanel.add(new JScrollPane(discreteTextArea));
 		panel.add(textPanel);
 
-		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() != null){
+		if (!treeFrame.isDomain()){
 			JPanel evalPanel = new JPanel();
 			evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
 			JLabel evalLabel = new JLabel("Evaluation values.");
@@ -165,11 +165,11 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		
 		
 		// for a domain, do not show the evaluations
-		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null){
+		if (treeFrame.isDomain()){
 			discreteTextEvaluationArea.setVisible(false);
 		}
 		discreteTextArea.setEditable(false);
-		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null &&
+		if (treeFrame.isDomain() &&
 			treeFrame.hasNoProfiles()) { // so it's a domain with no profiles
 			discreteTextArea.setEditable(true);
 		}
