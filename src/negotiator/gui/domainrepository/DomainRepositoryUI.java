@@ -12,10 +12,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.JTree;
 
+import misc.Pair;
 import negotiator.Domain;
 import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
+import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIView;
+import negotiator.gui.boaframework.ParameterFrame;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
@@ -226,54 +229,27 @@ public class DomainRepositoryUI
         }		        
 	}
 
-	private void addDomain() {
-		// Get the root of Genius
-		String domainRoot = "";
-		String subdirectory = "etc" + File.separator + "templates" + File.separator;
-		try {
-			domainRoot = new java.io.File(".").getCanonicalPath() + File.separator + subdirectory;
-		} catch (IOException e) {
-			e.printStackTrace();
+	private void addDomain() {		
+		
+		String result = new CreateNewDomain(NegoGUIApp.negoGUIView.getFrame()).getResult();
+		if (result != null) {
+			String subdirectory = "etc" + File.separator + "templates" + File.separator;
+			
+			String path = subdirectory + result + ".xml";    
+			DomainRepItem dri = null;
+			try {
+				dri = new DomainRepItem(new URL("file:" + path));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			domainrepository.getItems().add(dri);
+			domainrepository.save();
+			MyTreeNode newNode = new MyTreeNode(dri);
+			scenarioTreeModel.insertNodeInto(newNode, root, root.getChildCount());
+			saveDomainAsFile(path, result);
+			negoView.showRepositoryItemInTab(dri, newNode);
+	        scenarioTree.updateUI();
 		}
-		
-		// Restrict file picker to root and subdirectories.
-		// Ok, you can escape if you put in a path as directory. We catch this later on.
-		FileSystemView fsv = new DirectoryRestrictedFileSystemView(new File(domainRoot));
-		JFileChooser fc = new JFileChooser(fsv.getHomeDirectory(), fsv);
-		
-		// Filter such that only directories and .class files are shown.
-		FileFilter filter = new GenericFileFilter("xml", "Domain XML files (.xml)");
-		fc.setFileFilter(filter);
-		
-		// Open the file picker
-		int returnVal = fc.showSaveDialog(null);
-		
-		// If file selected
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            // Catch people who tried to escape our directory
-            if (!file.getPath().startsWith(domainRoot)) {
-            	JOptionPane.showMessageDialog(null, "Only domains in the root or a subdirectory of the root are allowed.", "Agent import error", 0);
-            } else {
-	            String relativePath = file.getPath().substring(domainRoot.length());
-	            String domainName = file.getName();
-	            	
-	            String path = subdirectory + relativePath + ".xml";
-	    		DomainRepItem dri = null;
-				try {
-					dri = new DomainRepItem(new URL("file:" + path));
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-	    		domainrepository.getItems().add(dri);
-	    		domainrepository.save();
-	    		MyTreeNode newNode = new MyTreeNode(dri);
-	    		scenarioTreeModel.insertNodeInto(newNode, root, root.getChildCount());
-	    		saveDomainAsFile(path, domainName);
-	    		negoView.showRepositoryItemInTab(dri, newNode);
-            }
-        }
-        scenarioTree.updateUI();
 	}
 	
 	private void saveDomainAsFile(String relativePath, String domainName) {
