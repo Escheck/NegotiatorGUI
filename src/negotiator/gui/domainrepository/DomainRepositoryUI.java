@@ -152,7 +152,6 @@ public class DomainRepositoryUI
 		try {
 			domain = new Domain(fullPath);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return domain != null && domain.getIssues().size() > 0;

@@ -144,7 +144,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		
 		JPanel textPanel = new JPanel();
-		JPanel evalPanel = new JPanel();
+		
 		
 		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
 		JLabel textLabel = new JLabel("Edit the discrete values below.");
@@ -152,15 +152,19 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		textPanel.add(new JScrollPane(discreteTextArea));
 		panel.add(textPanel);
 
-		evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
-		JLabel evalLabel = new JLabel("Evaluation values.");
-		evalPanel.add(evalLabel);
-		evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
-		panel.add(evalPanel);
+		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() != null){
+			JPanel evalPanel = new JPanel();
+			evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.PAGE_AXIS));
+			JLabel evalLabel = new JLabel("Evaluation values.");
+			evalPanel.add(evalLabel);
+			evalPanel.add(new JScrollPane(discreteTextEvaluationArea));
+			panel.add(evalPanel);
+		}
 		
-		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace()==null){
-			discreteTextEvaluationArea.setEnabled(false);
-			discreteTextEvaluationArea.setToolTipText("Disabled until there is a Utility Space.");
+		
+		// for a domain, do not show the evaluations
+		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null){
+			discreteTextEvaluationArea.setVisible(false);
 		}
 		discreteTextArea.setEditable(false);
 		if (treeFrame.getNegotiatorTreeTableModel().getUtilitySpace() == null &&
