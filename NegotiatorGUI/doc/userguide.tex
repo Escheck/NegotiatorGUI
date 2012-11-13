@@ -289,7 +289,7 @@ This section discusses how to run a negotiation. There are three main modes to r
 
 \begin{itemize}
 	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users.
-	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the matches are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables.
+	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the matches are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables (cf. Section~\ref{sec:analysisExcel}).
 	\item \textbf{Distributed tournament}. A distributed tournament is a tournament which is stored in a database and can therefore be divided among multiple computers to speed up calculation.
 \end{itemize}
 
@@ -314,8 +314,8 @@ To run a negotiation session select ``Start'' and then ``Negotiation Session''. 
 \end{figure}
 
 
-\subsection{Running a Tournament}
-Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel an using pivot tables. A tournament can be created by first selecting ``Start'' and then ``Tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
+\subsection{Running a Tournament}\label{sec:runningTournament}
+Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel an using pivot tables (cf. Section~\ref{sec:analysisExcel}). A tournament can be created by first selecting ``Start'' and then ``Tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
 
 
 \begin{figure}[htb]
@@ -334,6 +334,7 @@ Besides running a single negotiation session, it is also possible to run a tourn
 \end{itemize}
 
 In contrast to the negotiation session mode, a large set of tournament options can be specified which influence the composition and running of the tournament. There are four categories of options:
+{ \huge Update me }
 \begin{itemize}
 	\item \textsc{Protocol settings}
 	\begin{itemize}
@@ -381,7 +382,152 @@ After specifying the tournament and database parameters we can start the distrib
 
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
 
-\section{Quality Measures in Genius}
+\section{Quality Measures in Genius}\label{sec:qm}
+A large set of quality measures have been incorporated in \Genius~4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options.
+
+In addition, there are now two logs in \Genius: the standard log and the tournament log. This standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents. The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average utility for all matches which resulted in an agreement.
+
+First, Section~\ref{sec:standardLog} discusses the measures incorporated in the standard log. Next, Section~\ref{sec:tournamentLog} details the tournament log. Finally, Section~\ref{sec:analysisExcel} discusses how Excel can be used to analyze logs.
+
+\subsection{Overview of Quality Measures in the Standard Log}\label{sec:standardLog}
+\Genius~4.0 incorporates four types of quality measures: standard measures, detailed measures, opponent model accuracy measures, and competitiveness measures. In the following sections we discuss each of these measure types in detail.
+
+\subsubsection{Standard Measures}
+The standard measures are the measures which are enabled by default in \Genius~and cannot be disabled. Table~\ref{tab:standardmeasures} provides an overview of all default quality measures.
+
+\begin{table}[h!]
+	\small
+	\center
+	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
+		\hline\hline
+		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
+		\hline\hline
+		acceptance\_strategy & The acceptance strategy of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.2ex]\hline
+		agent & The side at which the agent played (A or B). \\[-0.2ex]\hline
+		agentClass & The classpath of the agent. \\[-0.2ex]\hline
+		agentName & The name of the agent. \\[-0.2ex]\hline
+		bestAcceptableBid & Utility of the best bid offered to the agent. Note that the discount is not taken into account. \\[-0.2ex]\hline
+		bestDiscountedAccepableBid & Utility of the best bid offered to the agent, taking the discount into account. \\[-0.2ex]\hline
+		bids & Amount of offers exchanged during the negotiation. \\[-0.2ex]\hline
+		currentTime & Time of storage of the result of the negotiation. \\[-0.2ex]\hline
+		discountedUtility & The discounted utility earned by the agent in the negotiation. \\[-0.3ex]\hline
+		domain & Domain at which the negotiation took place.\\[-0.3ex]\hline
+		errors & Errors encountered during the negotiation. Not reaching an agreement before the deadline is also an error.\\[-0.3ex]\hline
+		finalUtility & The undiscounted utility earned by the agent in the negotiation.\\[-0.3ex]\hline
+		lastAction & Last action made before the negotiation ended.\\[-0.3ex]\hline
+		normalized\_utility & The final utility divided by the maximum possible utility for the agent. In normal domains the result should be equal to the final utility.\\[-0.3ex]\hline
+		offering\_strategy & The offering strategy of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.3ex]\hline
+		opponent-agentClass & The classpath of the opponent.\\[-0.3ex]\hline
+		opponent-agentName & The name of opponent's agent.\\[-0.3ex]\hline
+		opponent\_model & The opponent model of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.3ex]\hline
+		opponent-utilSpace & The opponent's preference profile.\\[-0.3ex]\hline
+		runNumber & How many times the negotiation has been repeated before.\\[-0.3ex]\hline
+		startingAgent & Side which started the negotiation: A or B.\\[-0.3ex]\hline
+		timeOfAgreement & Normalized time at which an agreement was established. 1.0 for no agreement. \\[-0.3ex]\hline
+		utilSpace & The agent's preference profile.\\[-0.3ex]
+		\hline
+		\hline
+	\end{tabular}
+	\caption{Standard quality measures in \Genius~in alphabetic order.}
+	\label{tab:standardmeasures}
+\end{table}
+
+\subsubsection{Detailed Measures}
+Log detailed analysis
+
+\begin{table}[h!]
+	\small
+	\center
+	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
+		\hline\hline
+		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
+		\hline\hline
+		concession\_moves & The percentage of which in which the agent relative to the prev\\[-0.3ex]\hline
+		exploration\_rate & The percentage of bids in the outcome space explored by the agent. Two bids with exactly the same utilities for both parties are treated as a single same bid.\\[-0.3ex]\hline
+		fortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased both its own and its opponents utility.\\[-0.3ex]\hline
+		joint\_exploration\_bids & The percentage of unique bids of the outcome space explored by both agents together. Two bids with exactly the same utilities for both parties are treated as a single same bid. \\[-0.3ex]\hline
+		kalai\_distance & Distance from the undiscounted utilities of the outcome to the Kalai-Smorodinsky solution.\\[-0.3ex]\hline
+		nash\_distance & Distance from the undiscounted utilities of the outcome to the Nash solution. \\[-0.3ex]\hline
+		nice\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased its opponent's utility without significantly changing its own utility.\\[-0.3ex]\hline
+		pareto\_distance & Distance from the undiscounted utilities of the outcome to the nearest bid on the Pareto-optimal frontier.\\[-0.3ex]\hline
+		perc\_pareto\_bids & Percentage of Pareto-optimal bids offered by an agent.\\[-0.3ex]\hline
+		selfish\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased its own utility and decreased its opponent's utility.\\[-0.3ex]\hline
+		silent\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which which was (nearly) equally valued by both agents.\\[-0.3ex]\hline
+		social\_welfare & The sum of the utility for both agents.\\[-0.3ex]
+		unfortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which decreased both its own and its opponent's utility.\\[-0.3ex]
+		\hline
+		\hline
+	\end{tabular}
+	\caption{Detailed quality measures in \Genius~in alphabetic order.}
+	\label{tab:detailedMeasures}
+\end{table}
+
+\subsubsection{Opponent Model Accuracy Measures}
+Log final accuracy
+
+\begin{table}[h!]
+\small
+	\center
+\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
+\hline
+\textbf{Attribute} &\textbf{Description}\\
+\hline\hline
+\textsl{Pearson\_Correlation\_Bids} & Pearson correlation coefficient between real and estimated preference profile.\\
+\hline
+\textsl{Ranking\_Distance\_Bids} & Ranking distance between real and estimated preference profile.\\
+\hline
+\textsl{Average\_Difference\_Bids} & Average difference between the real and estimated utility of each possible bid.\\
+\hline
+\textsl{Ranking\_Distance\_Issue\_Weights} & Ranking distance between real and estimated issue weights.\\
+\hline
+\textsl{Average\_Difference\_Issue\_Weights} & Average difference between the real and estimated issue weights.\\
+\hline
+\textsl{Kalai\_Difference} & Difference between the real and estimated utility of the Kalai-point.\\
+\hline
+\textsl{Nash\_Diference} & Difference between the real and estimated utility of the Nash-point.\\
+\hline
+\textsl{Difference\_Pareto\_Frontier} & The average difference between the real and estimated utility for each Pareto bid.\\
+\hline
+\textsl{Percentage\_Correct\_Pareto\_Bids} & Percentage of real Pareto bids which are also estimated to be a Pareto bid.\\
+\hline
+\textsl{Percentage\_Incorrect\_Pareto\_Bids} & Percentage of estimated Pareto bids which are also real Pareto bids.\\
+\hline
+\textsl{Pareto\_Frontier\_Distance} & First, the position of the estimated Pareto bids is determined in the real space. The value of the measure is the absolute difference in surface under the real Pareto bids and the bids estimated to be Pareto optimal.\\ % absolute, because if a point is missed, then surface of estimate can actually be larger. Note that this case is rare
+\hline
+\end{tabular}
+	\caption{Opponen model accuracy measures in \Genius~in alphabetic order.}
+	\label{tab:omaccuracyMeasures}
+\end{table} 
+
+\subsubsection{Competitiveness Measures}
+Log competitiveness
+
+\begin{table}[h!]
+	\small
+	\center
+	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
+		\hline\hline
+		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
+		\hline\hline
+		AC\_CR & \\[-0.3ex]
+		BS\_CR & \\[-0.3ex]
+		FYU & \\[-0.3ex]
+		minDemandedUtility & \\[-0.3ex]
+		Normalized\_AC\_CR & \\[-0.3ex]
+		Total\_CR & \\[-0.3ex]
+		\hline
+		\hline
+	\end{tabular}
+	\caption{Competitiveness quality measures in \Genius~in alphabetic order.}
+	\label{tab:competitivenessMeasures}
+\end{table}
+
+
+
+
+\subsection{Overview of Quality Measures in the Tournament Log}~\label{sec:tournamentLog}
+
+\subsection{Analyzing the Results using Excel}~\label{sec:analysisExcel}
 
 \section{Creating a Negotiation Agent}
 This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to split these components which can be done by implementing a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
