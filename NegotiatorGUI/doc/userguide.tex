@@ -111,7 +111,7 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-\abstract{\noindent \Genius~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the required environment, work with the provided scenarios and agents, and write, compile, and run an agent yourself.}
+\abstract{\noindent \Genius~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the environment, work with the provided scenarios and negotiation agents, and write, compile, and run an agent yourself.}
 
 \pagebreak
 \tableofcontents
@@ -176,7 +176,7 @@ The \textit{Domain} describes which issues are the subject of the negotiation an
 
 Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a value. A valid bid in the laptop domain is for example a Dell laptop with 80 Gb and a 17' inch monitor.
 
-The \textit{UtilitySpace} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated using the evaluator of each issue. The evaluator of an issue maps the evaluation of a value-- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
+The \textit{UtilitySpace} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated using the evaluator of each issue. The evaluator of an issue maps the evaluation of a value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
 
 In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties. We discuss the optimality of a bid in the next section.
 
@@ -214,7 +214,7 @@ When you run the negosimulator (by double-clicking the application or using open
 \texttt{java -jar negosimulator.jar}.
 This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
 
-Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when running Java, for example \texttt{java -Xmx1536M -Xms1536M -jar negosimulator.jar}.
+Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar negosimulator.jar}.
 
 \section{Scenario Creation}
 A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
@@ -288,7 +288,7 @@ This section discusses how to run a negotiation. There are three main modes to r
 
 \begin{itemize}
 	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users.
-	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the matches are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables (cf. Section~\ref{sec:analysisExcel}).
+	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the sessions are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables (cf. Section~\ref{sec:analysisExcel}).
 	\item \textbf{Distributed tournament}. A distributed tournament is a tournament which is stored in a database and can therefore be divided among multiple computers to speed up calculation.
 \end{itemize}
 
@@ -328,7 +328,7 @@ Besides running a single negotiation session, it is also possible to run a tourn
 	\item \textbf{Protocol}. The set of available protocols.
 	\item \textbf{Preference profiles}. The set of scenarios on which the agents should compete. Each selected scenario should feature at least two preference profiles.
 	\item \textbf{Agent side A/B}. The set of agents in set A competes against all agents in set B.
-	\item \textbf{Number of sessions}. The number of times each match should be repeated.
+	\item \textbf{Number of sessions}. The number of times each session should be repeated.
 	\item \textbf{Tournament options}. Options which specify how to run the tournament (see below).
 	\item \textbf{BOA Agent side A/B}. Type of agents that consist of multiple components (see~Section~\ref{sec:boa}).
 \end{itemize}
@@ -340,26 +340,22 @@ A large set of tournament options can be specified which influence the compositi
 	\begin{itemize}
 		\item \textbf{Protocol mode}. Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
 		\item \textbf{Deadline}. Depending on the protocol mode, this is the maximum amount of time in seconds or amount of rounds. Note that one single round corresponds to one turn of a single agent.
-		\item \textbf{Access partner preferences}.
-		\item \textbf{Allow pausing timeline}.
+		\item \textbf{Access partner preferences}. Allows agents to access the preference profile of the negotiation session, which contains the opponent's preference profile.
+		\item \textbf{Allow pausing timeline}. Allow agents to pause the negotiation by using the timeline.pause() and time.resume() methods.
 	\end{itemize}
 	\item \textsc{Session generation}
 	\begin{itemize}
-		\item \textbf{Play both sides}. When generating the matches, whether each pair of agents should play both sides on a scenario or not.
-		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the matches in which agents negotiate against themselves are removed.
+		\item \textbf{Play both sides}. When generating the sessions, whether each pair of agents should play both sides on a scenario or not.
+		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the sessions in which agents negotiate against themselves are removed.
 	\end{itemize}
 	\item \textsc{Logging}
 	\begin{itemize}
 		\item \textbf{Log detailed analysis}. Enabling this option activates a set of quality measures to capture the quality of the negotiation process. The quality measures are added to the default log. In addition, for the whole tournament an overview log is created. This log is prefixed with ``TM-''.
-
-		\item \textbf{Log final accuracy}.
-		\item \textbf{Log competitiveness}.
-		\item \textbf{Append mode and deadline}.
 	\end{itemize}
 	\item \textsc{Visualization}
 	\begin{itemize}
 		\item \textbf{Show all bids}. When enabled all bids in a scenario are visualized as red points in the negotiation status window. This option has some impact on performance.
-		\item \textbf{Show last bid}. When enabled the last bid is marked with a special symbol to make it clear which move an agent performed. This has a negligible impact on performance.
+		\item \textbf{Show last bid}. When enabled the last bid is marked with a special symbol to make it clear which move an agent performed.
 		\item \textbf{Disable GUI}. When enabled most GUI elements are disabled. This speeds-up the negotiation up to a factor of 200 times. The progress of the tournament is printed to the console.
 	\end{itemize}
 \end{itemize}
@@ -367,7 +363,7 @@ A large set of tournament options can be specified which influence the compositi
 \subsection{Advanced: Running a Distributed Tournament}
 A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Next, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
 
-Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data which we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{database}.
+Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data that we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{doc/database}.
 
 The next step is to specify a tournament to run. Towards this end, select ``Start'' and then ``Distributed tournament''. This opens a GUI similar to Figure~\ref{Fig:tournament}, except for the following four options:
 
@@ -378,7 +374,7 @@ The next step is to specify a tournament to run. Towards this end, select ``Star
 	\item \textbf{Database sessionname}. The identifier of the tournament. The identifier is needed as multiple distributed tournaments can be run at the same time.
 \end{itemize}
 
-After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and protocol and selecting ``Join distributed tournament''. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory. Figure~\ref{fig:dtournament} summarizes the process.
+After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and selecting ``Join distributed tournament''. For these computers we only need to fill in the database parameters as the configuration is loaded from the database. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory. Figure~\ref{fig:dtournament} summarizes the process.
 
 \begin{figure}[htb]
 	\centering
@@ -389,17 +385,17 @@ After specifying the tournament and database parameters we can start the distrib
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
 
 \section{Quality Measures in Genius}\label{sec:qm}
-A large set of quality measures have been incorporated in \Genius~4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options.
+A large set of quality measures have been incorporated in \Genius~4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
-In addition, there are now two logs in \Genius: the standard log and the tournament log. This standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents. The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average utility for all matches which resulted in an agreement.
+There are now two types of logs used in \Genius: the standard log and the tournament log. The standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents. The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average final utility for all sessions which resulted in an agreement.
 
 First, Section~\ref{sec:standardLog} discusses the measures incorporated in the standard log. Next, Section~\ref{sec:tournamentLog} details the tournament log. Finally, Section~\ref{sec:analysisExcel} discusses how Excel can be used to analyze logs.
 
 \subsection{Overview of Quality Measures in the Standard Log}\label{sec:standardLog}
-\Genius~4.0 incorporates four types of quality measures: standard measures, detailed measures, opponent model accuracy measures, and competitiveness measures. In the following sections we discuss each of these measure types in detail.
+\Genius~4.0 incorporates two types of quality measures: standard measures and detailed measures. In addition there are some experimental measure types, such as competitiveness and opponent model accuracy, however these are not discussed here. In the following sections we discuss both measure types in detail.
 
 \subsubsection{Standard Measures}
-The standard measures are the measures which are enabled by default in \Genius~and cannot be disabled. Table~\ref{tab:standardmeasures} provides an overview of all default quality measures.
+The standard measures are the measures which are enabled by default and cannot be disabled. Table~\ref{tab:standardmeasures} provides an overview of all default quality measures.
 
 \begin{table}[h!]
 	\small
@@ -418,10 +414,10 @@ The standard measures are the measures which are enabled by default in \Genius~a
 		currentTime & Time of storage of the result of the negotiation. \\[-0.2ex]\hline
 		discountedUtility & The discounted utility earned by the agent in the negotiation. \\[-0.3ex]\hline
 		domain & Domain at which the negotiation took place.\\[-0.3ex]\hline
-		errors & Errors encountered during the negotiation. Not reaching an agreement before the deadline is also an error.\\[-0.3ex]\hline
+		errors & Errors encountered during the negotiation. Not reaching an agreement before the deadline is also treated as an error.\\[-0.3ex]\hline
 		finalUtility & The undiscounted utility earned by the agent in the negotiation.\\[-0.3ex]\hline
 		lastAction & Last action made before the negotiation ended.\\[-0.3ex]\hline
-		normalized\_utility & The final utility divided by the maximum possible utility for the agent. In normal domains the result should be equal to the final utility.\\[-0.3ex]\hline
+		normalized\_utility & The final utility divided by the maximum possible utility according to the preference profile. In correct domains the result should be equal to the final utility.\\[-0.3ex]\hline
 		offering\_strategy & The offering strategy of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.3ex]\hline
 		opponent-agentClass & The classpath of the opponent.\\[-0.3ex]\hline
 		opponent-agentName & The name of opponent's agent.\\[-0.3ex]\hline
@@ -438,8 +434,8 @@ The standard measures are the measures which are enabled by default in \Genius~a
 	\label{tab:standardmeasures}
 \end{table}
 
-\subsubsection{Detailed Measures}
-Log detailed analysis
+\subsubsection{Detailed Measures}\label{sec:detailedmeasures}
+The detailed quality measures consist of trajectory analysis measures and measures for the fairness and optimality of the outcome. The detailed measures can be enabled by selecting ``Log detailed analysis'' in the tournament options menu. Enabling this option also result in the generation of the tournament log discussed in Section~\ref{sec:tournamentLog}.
 
 \begin{table}[h!]
 	\small
@@ -448,9 +444,9 @@ Log detailed analysis
 		\hline\hline
 		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
 		\hline\hline
-		concession\_moves & The percentage of which in which the agent relative to the prev\\[-0.3ex]\hline
+		concession\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid with decreased its own utility and increased its opponent's utility.\\[-0.3ex]\hline
 		exploration\_rate & The percentage of bids in the outcome space explored by the agent. Two bids with exactly the same utilities for both parties are treated as a single same bid.\\[-0.3ex]\hline
-		fortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased both its own and its opponents utility.\\[-0.3ex]\hline
+		fortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased both its own and its opponent's utility.\\[-0.3ex]\hline
 		joint\_exploration\_bids & The percentage of unique bids of the outcome space explored by both agents together. Two bids with exactly the same utilities for both parties are treated as a single same bid. \\[-0.3ex]\hline
 		kalai\_distance & Distance from the undiscounted utilities of the outcome to the Kalai-Smorodinsky solution.\\[-0.3ex]\hline
 		nash\_distance & Distance from the undiscounted utilities of the outcome to the Nash solution. \\[-0.3ex]\hline
@@ -459,7 +455,7 @@ Log detailed analysis
 		perc\_pareto\_bids & Percentage of Pareto-optimal bids offered by an agent.\\[-0.3ex]\hline
 		selfish\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased its own utility and decreased its opponent's utility.\\[-0.3ex]\hline
 		silent\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which which was (nearly) equally valued by both agents.\\[-0.3ex]\hline
-		social\_welfare & The sum of the utility for both agents.\\[-0.3ex]
+		social\_welfare & A fairness measure being the sum of the utilities for both agents.\\[-0.3ex]\hline
 		unfortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which decreased both its own and its opponent's utility.\\[-0.3ex]
 		\hline
 		\hline
@@ -468,6 +464,7 @@ Log detailed analysis
 	\label{tab:detailedMeasures}
 \end{table}
 
+\begin{comment}
 \subsubsection{Opponent Model Accuracy Measures}
 Log final accuracy
 
@@ -501,48 +498,40 @@ Log final accuracy
 \textsl{Pareto\_Frontier\_Distance} & First, the position of the estimated Pareto bids is determined in the real space. The value of the measure is the absolute difference in surface under the real Pareto bids and the bids estimated to be Pareto optimal.\\ % absolute, because if a point is missed, then surface of estimate can actually be larger. Note that this case is rare
 \hline
 \end{tabular}
-	\caption{Opponen model accuracy measures in \Genius~in alphabetic order.}
+	\caption{Opponent model accuracy measures in \Genius~in alphabetic order.}
 	\label{tab:omaccuracyMeasures}
 \end{table} 
-
-\subsubsection{Competitiveness Measures}
-Log competitiveness
-
-\begin{table}[h!]
-	\small
-	\center
-	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
-		\hline\hline
-		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
-		\hline\hline
-		AC\_CR & \\[-0.3ex]
-		BS\_CR & \\[-0.3ex]
-		FYU & \\[-0.3ex]
-		minDemandedUtility & \\[-0.3ex]
-		Normalized\_AC\_CR & \\[-0.3ex]
-		Total\_CR & \\[-0.3ex]
-		\hline
-		\hline
-	\end{tabular}
-	\caption{Competitiveness quality measures in \Genius~in alphabetic order.}
-	\label{tab:competitivenessMeasures}
-\end{table}
-
-
-
+\end{comment}
 
 \subsection{Overview of Quality Measures in the Tournament Log}~\label{sec:tournamentLog}
+The tournament log is an analysis of the results on the quality measures for each agent, for example the average utility for \textit{Agent K}. Similar to the detailed quality measured the tournament log can be enabled by selecting ``Log detailed analysis'' in the tournament options menu.
 
-\subsection{Analyzing the Results using Excel}~\label{sec:analysisExcel}
+Three types of measures are included in the log:
+\begin{itemize}
+	\item \textbf{Averages of quality measures}. The tournament log includes a large set of averages of the quality measures in the standard log. Examples include the average Nash distance, the average percentage of silent moves, and the average social welfare.
+	\item \textbf{Standard deviations of quality measures}. The tournament log also includes the standard deviation of some measures. Note that this not the normal standard deviation of for example the utility, but the more complicated deviation between runs. To illustrate, if there were ten runs of the tournament, then each run has an average utility and we can calculate the standard deviation of this utility.
+	\item \textbf{Average of functions of quality measures}. The tournament log also includes a large set of measures which are functions of measures included in the standard log. An example is the average utility for an agent only for the matches which resulted in agreement. 
+\end{itemize}
+
+\subsection{Analyzing Logs using Excel}~\label{sec:analysisExcel}
+The logs are in XML format, which entails that we can easily analyze them by using Excel. Note that the following discussion does not apply to the starter edition of Excel, as it does not support Pivot tables.
+
+The XML data of the standard log can be converted to a normal table by importing the data into Excel using the default options. This results in a large table showing the result for both agents A and B for each session. Analyzing these results manually is complicated, therefore we recommend to use pivot tables. Pivot tables allow to summarize a large set of data using statistics and can be created by selecting ``Insert'' and then ``Pivot Table''. To illustrate, by dragging the \textit{agentName} in ``Row Labels'' and the \textit{discountedUtility} in ``Values'' (see Figure~\ref{fig:pivottable}), we can easily see which agent scored best in the tournament. If solely the amount of matches of each agent is displayed, you need to set the ``Value Field Settings'' of \textit{discountedUtility} to average instead of count.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{media/PivotTable.png}
+\caption{Configuration required to summarize the discounted utility of each agent.}\label{fig:pivottable}
+\end{figure}
 
 \section{Creating a Negotiation Agent}
 This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to split these components which can be done by implementing a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
 
-In this section we assume that you are familiar with programming in Java. In case you are not familiar with Java, please use the following link: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
+In this section we assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
 
 The recommended way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the \textit{negotiationsimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes.
 
-\begin{table}
+\begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
 \texttt{UtilitySpace utilitySpace}\\
@@ -572,7 +561,7 @@ Returns the name of the agent. Please override this to give a proper name to you
 \end{table}
 
 \subsection{Receiving the Opponent's Action}
-The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just did \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
+The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performe the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to return an \texttt{Action} to make the next step in the negotiation.
 
 In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
@@ -584,7 +573,7 @@ public void ReceiveMessage(Action opponentAction) {
 \end{lstlisting}
 
 \subsection{Choosing an Action}
-Below show the code of the method \texttt{chooseAction} for SimpleAgent. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error and results in a utility of 0.0).
+The code block below shows the code of the method \texttt{chooseAction} for SimpleAgent. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error and results in a utility of 0.0).
 
 The sample code works as follows. If we are the first to place a bid, we place a random bid with sufficient utility (see the .java file for the details on that). Else, we determine the probability to accept the bid, depending on the utility of the offered bid and the remaining time. Finally, we randomly accept or pose a new random bid.
 
@@ -644,15 +633,15 @@ This section provides an overview of classes which might be useful when implemen
 \item \textbf{BidDetails} is a structure to store a bid and its utility.
 \item \textbf{BidDetailsTime} is a structure to store a bid, its utility, and the time of offering.
 \item \textbf{BidHistory} is a structure to keep track of the bids presented by the agent and the opponent.
-\item \textbf{BidIterator} is a class used to enumerate all possible bids. Also see \textit{SortedOutcomeSpace}.
+\item \textbf{BidIterator} is a class used to enumerate all possible bids. Also refer to \textit{SortedOutcomeSpace}.
 \item \textbf{Pair} is a simple pair of two objects.
 \item \textbf{Range} is a structure used to describe a continuous range.
-\item \textbf{SortedOutcomeSpace} is a structure which stores all possible bids and their utilities. This class implements efficient search algorithms that can be used to efficiently search the space of possible bids for bids satisfying specific properties.
+\item \textbf{SortedOutcomeSpace} is a structure which stores all possible bids and their utilities by using BidIterator. In addition, it implements efficient search algorithms that can be used to search the space of possible bids for bids near a given utility or within a given utility range.
 \item \textbf{UtilitySpace} is a representation of a preference profile. It is recommended to use this class when implementing a model of the opponent's preference profile.
 \end{itemize}
 
 \subsection{Compiling an Agent}
-Compiling an agent can be done in two ways. First, in Eclipse you can simply find the compiled agent in the ``bin'' folder in your workspace. Alternatively, it is possible to compile the agent by placing \texttt{YourAgent.java} in the directory containing the \texttt{negotiator.jar} file, and using the command line: \texttt{javac -cp negosimulator.jar YourAgent.java}.
+Compiling an agent can be done in two ways. First, in Eclipse you can simply find the compiled agent in the ``bin'' folder in your workspace. Alternatively, it is possible to manually compile the agent by placing \texttt{YourAgent.java} in the directory containing the \texttt{negotiator.jar} file, and using the command line: \texttt{javac -cp negosimulator.jar YourAgent.java}.
 
 The next step is to load the agent in \Genius. Towards this end, first we should move the agent to the directory of \Genius. Note that the directory in which the agent should be put depends on your project. If for example you have a project with a package ``agents'' in which the agent is located, then the agent should be moved in a folder ``agents'' in the root of your \Genius~installation. An agent may consist of multiple class files. Now we can add the agent in one of the following two ways:
 
@@ -694,14 +683,14 @@ A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists 
   \item[Bidding strategy] A bidding strategy is a mapping which maps a negotiation trace to a bid. The bidding strategy can interact with the opponent model by consulting with it.%, passing one or multiple bids and see how they compare within the opponent's utility space.
 
   \item[Opponent model] An opponent model is in the BOA framework a learning technique that constructs a model of the opponent's preference profile.% In our approach, the opponent model should be able to estimate the opponent's utility of a given bid.
-  \item[Opponent model strategy] Specifies how the opponent model is used to select a bid for the opponent and the opponent model may be updated in a turn as updating the opponent model the whole negotiation may be computationally expensive.
-  \item[Acceptance strategy] The acceptance strategy determines whether the opponent's bid is acceptable.
+  \item[Opponent model strategy] An opponent model strategy specifies how the opponent model is used to select a bid for the opponent and if the opponent model may be updated in a specific turn.
+  \item[Acceptance strategy] The acceptance strategy determines whether the opponent's bid is acceptable and may even decide to prematurely end the negotiation.
 \end{description}
 The components interact in the following way (the full process is visualized in Figure~\ref{fig:flowchart}). When receiving a bid, the BOA agent first  updates the \textit{bidding history}. Next, the \textit{opponent model strategy} is consulted if the \textit{opponent model} may be updated this turn. If so, the \textit{opponent model} is updated.
 
 Given the opponent's bid, the \textit{bidding strategy} determines the counter offer by first generating a set of bids with a similar preference for the agent. The \textit{bidding strategy} uses the \textit{opponent model strategy} to select a bid from this set taking the opponent's utility into account.
 
-Finally, the \textit{acceptance strategy} decides whether the opponent's action should be accepted. If the opponent's bid is not accepted by the acceptance strategy, then the generated bid is presented instead.
+Finally, the \textit{acceptance strategy} decides whether the opponent's action should be accepted. If the opponent's bid is not accepted by the acceptance strategy, then the generated bid is offered instead.
 
 \begin{figure}[t] 
 	\center
@@ -792,7 +781,7 @@ Returns the estimated utility of the given bid.\\
 Updates the opponent model using the given bid.\\
 \hline
 \texttt{UtilitySpace getOpponentUtilitySpace()}\\
-Returns the opponent's preference profile. Use the \textit{UtilitySpaceAdapter} class when not using the utilityspace class for the opponent's preference profile.\\
+Returns the opponent's preference profile. Use the \textit{UtilitySpaceAdapter} class when not using the UtilitySpace class for the opponent's preference profile.\\
 \hline
 \end{tabular}
 \caption{The main methods of the opponent model component.}
@@ -871,11 +860,11 @@ public class SimpleBOAagent extends BOAagent{
 \end{lstlisting}
 
 \subsection{Advanced: Multi-Acceptance Criteria (MAC)}
-The \textit{BOA framework} allows us to better explore a large space of negotiation strategies. MAC can be used to scale down the negotiation space, and thereby make it more computationally explorable.
+The \textit{BOA framework} allows us to better explore a large space of negotiation strategies. MAC can be used to scale down the negotiation space, and thereby make it better computationally explorable.
 
 As discussed in the introduction of this chapter, the acceptance condition determines solely if a bid should be accepted. This entails that it does not influence the bidding trace, except for when it is stopped. In fact, the only difference between \textit{BOA agents} where only the acceptance condition vary, is the time of agreement (assuming that the computational cost of the acceptance conditions are negligible).
 
-Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
+Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of a simple acceptance condition as for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
 To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. An acceptance can be added to the MAC by appending it to the AClist as sown below.
 
