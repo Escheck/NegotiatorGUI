@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,8 +22,6 @@ import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
 /**
- *
- * 
  * Wouter: the utility space couples all objectives to weights and evaluators.
  * A utilityspace currently is not bound to one agent.
  * I can see some security issues with that...
@@ -36,22 +33,19 @@ import negotiator.xml.SimpleElement;
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
-
 public class UtilitySpace {
 	
 	// Class fields
     protected Domain domain;
+	private String fileName;
+	private double discountFactor = 0;
+	
+	private Double fReservationValue = null;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
     // in the Similarity agent
     private SimpleElement fXMLRoot;
-    private Double fReservationValue = null;
-    
-    private double discountFactor = 0;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
-    private String fileName;
 
-    
-    
     /**
      * Creates an empty utility space.
      */
@@ -140,8 +134,6 @@ public class UtilitySpace {
     	return null;
     }
 
-        
-    
     /**
      * Checks the normalization throughout the tree. Will eventually replace checkNormalization 
      * @return true if the weigths are indeed normalized, false if they aren't. 
@@ -149,6 +141,7 @@ public class UtilitySpace {
     private boolean checkTreeNormalization(){
     	return checkTreeNormalizationRecursive(domain.getObjectivesRoot());
     }
+	
     protected void normalizeWeights(Objective currentRoot) {
     	double lSum = 0;
     	
@@ -167,7 +160,7 @@ public class UtilitySpace {
     	while(children.hasMoreElements()){
     		
     		Objective tmpObj = children.nextElement();
-    		double weight = (1-lSum)*(fEvaluators.get(tmpObj)).getWeight();
+    		double weight = (1-lSum)*(fEvaluators.get(tmpObj)).getWeight();  //RA: It should be (1/lSum)
     		(fEvaluators.get(tmpObj)).setWeight(weight);
     		
     	}
@@ -219,7 +212,9 @@ public class UtilitySpace {
     /**
      * @return XML root of this utilityspace.
      */
-    public SimpleElement getXMLRoot() { return fXMLRoot;}
+    public SimpleElement getXMLRoot() {
+		return fXMLRoot;
+	}
     
     /**
      * @return number of issues.
@@ -380,26 +375,7 @@ public class UtilitySpace {
      */
 	private double discount(double util, double time)
 	{
-		double discount = discountFactor;
-    	if (discountFactor <= 0 || discountFactor >= 1)
-    	{
-    		discount = 1;
-    		if (discountFactor < 0 || discountFactor > 1)
-    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
-    	}
-    	if (time < 0)
-    	{
-			System.err.println("Warning: time = " + time + " < 0, using time = 0 instead.");
-    		time = 0;
-    	}
-    	if (time > 1)
-    	{
-			System.err.println("Warning: time = " + time + " > 1, using time = 1 instead.");
-    		time = 1;
-    	}
-    	
-    	double discountedUtil = util * Math.pow(discount, time);
-		return discountedUtil;
+		return discount(util, time, discountFactor);
 	}
     
     /**
@@ -680,7 +656,6 @@ public class UtilitySpace {
     	}catch(NullPointerException npe){
     		return -1;
     	}
-    	
     }
     
     /**
@@ -954,17 +929,15 @@ public class UtilitySpace {
     				}
     				break;
     			case INTEGER:
-    				Object[] Ranges = issueL.getChildByTagName("range");
-    				SimpleElement thisRange = (SimpleElement)Ranges[0];
     				EvaluatorInteger iev = (EvaluatorInteger) ev;
-    				thisRange.setAttribute("lowerbound", ""+iev.getLowerBound());
-    				thisRange.setAttribute("upperbound", ""+iev.getUpperBound());
+    				issueL.setAttribute("lowerbound", ""+iev.getLowerBound());
+    				issueL.setAttribute("upperbound", ""+iev.getUpperBound());
+
     				SimpleElement thisIntEval = new SimpleElement("evaluator");
 					thisIntEval.setAttribute("ftype", "linear");
 					thisIntEval.setAttribute("slope", ""+iev.getSlope());
 					thisIntEval.setAttribute("offset", ""+iev.getOffset());
     				issueL.addChildElement(thisIntEval);
-    				//TODO hdv We need an new simpleElement here that contains the evaluator and it's ftype. 
     				break;
     			case REAL:
     				EvaluatorReal rev = (EvaluatorReal) ev;

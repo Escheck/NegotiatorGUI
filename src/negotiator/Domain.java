@@ -243,8 +243,8 @@ public class Domain
             case INTEGER:
             	// Collect range bounds for integer-valued issue from xml template
             	xml_item = childIssues.getChildByTagName("range");
-            	minI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
-            	maxI = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
+            	minI = Integer.valueOf(childIssues.getAttribute("lowerbound"));
+            	maxI = Integer.valueOf(childIssues.getAttribute("upperbound"));
             	child = new IssueInteger(name, index, minI, maxI, currentParent);
             	break;
             case REAL:

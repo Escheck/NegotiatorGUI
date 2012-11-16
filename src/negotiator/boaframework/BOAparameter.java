@@ -17,6 +17,7 @@ import misc.Pair;
  */
 public class BOAparameter implements Serializable{
 	
+	private static final long serialVersionUID = 2555736049221913613L;
 	/** Name of the parameter. */
 	private String name;
 	/** Lowerbound of the specified range. */
