@@ -37,6 +37,7 @@ import negotiator.utility.UtilitySpace;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
+	private AgentRepositoryUI agentRep = null;
 	private static final boolean fTournamentEnabled =true;
 	private static final boolean dTournamentEnabled =true;
 	private DomainRepositoryUI domainRep = null;
@@ -45,7 +46,7 @@ public class NegoGUIView extends FrameView {
         initComponents(); 
 
         try{
-        	new AgentRepositoryUI(tableAgents);
+			agentRep = new AgentRepositoryUI(tableAgents);
         	domainRep = new DomainRepositoryUI(treeDomains, this);
         } catch (Exception e) {
         	e.printStackTrace();
@@ -105,7 +106,6 @@ public class NegoGUIView extends FrameView {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         treeDomains = new javax.swing.JTree();
-        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAgents = new javax.swing.JTable();
         closeTabbedPane1 = new negotiator.gui.tab.CloseTabbedPane();
@@ -155,7 +155,6 @@ public class NegoGUIView extends FrameView {
             .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
         );
 
-        jPanel2.setName("jPanel2"); // NOI18N
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         tableAgents.setModel(new javax.swing.table.DefaultTableModel(
@@ -253,8 +252,7 @@ public class NegoGUIView extends FrameView {
                 }
              }
          }
-    
-}//GEN-LAST:event_treeDomainsMouseClicked
+	}
 
     public void showRepositoryItemInTab(RepItem repItem, MyTreeNode node) {
         TreeFrame tf;
@@ -363,7 +361,6 @@ public class NegoGUIView extends FrameView {
     private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;

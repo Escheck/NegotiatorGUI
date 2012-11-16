@@ -109,11 +109,8 @@ public class IssueInteger extends Issue {
 		thisIssue.setAttribute("type", "integer");
 		thisIssue.setAttribute("etype", "integer");
 		thisIssue.setAttribute("vtype", "integer");
-		//TODO set range, upperBound and lowerBound items.
-		SimpleElement thisRange = new SimpleElement("range");
-		thisRange.setAttribute("lowerbound", ""+getLowerBound());
-		thisRange.setAttribute("upperbound", ""+getUpperBound());
-		thisIssue.addChildElement(thisRange);
+		thisIssue.setAttribute("lowerbound", ""+getLowerBound());
+		thisIssue.setAttribute("upperbound", ""+getUpperBound());
 		return thisIssue;
 		
 	}

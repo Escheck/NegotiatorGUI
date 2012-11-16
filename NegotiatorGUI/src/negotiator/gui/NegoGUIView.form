@@ -204,7 +204,8 @@
             </Container>
           </SubComponents>
         </Container>
-
+      </SubComponents>
+    </Container>
      
     <Container class="javax.swing.JMenuBar" name="menuBar">
       <Properties>

@@ -159,9 +159,16 @@ public class EvaluatorInteger implements Evaluator {
 	}
 	
 	public void loadFromXML(SimpleElement pRoot) {
-		Object[] xml_item = ((SimpleElement)pRoot).getChildByTagName("range");
-		this.lowerBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
-		this.upperBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
+		
+		//RA: Change lowerbound and upperbound as attributes
+		this.lowerBound=Integer.valueOf(((SimpleElement)pRoot).getAttribute("lowerbound"));
+		this.upperBound=Integer.valueOf(((SimpleElement)pRoot).getAttribute("upperbound"));
+		
+		//RA begin
+		//Object[] xml_item = ((SimpleElement)pRoot).get.getChildByTagName("range");
+		//this.lowerBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("lowerbound"));
+		//this.upperBound = Integer.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
+		//RA end
 		Object[] xml_items = ((SimpleElement)pRoot).getChildByTagName("evaluator");
 		if(xml_items.length != 0){
 			this.slope = Double.valueOf(((SimpleElement)xml_items[0]).getAttribute("slope"));

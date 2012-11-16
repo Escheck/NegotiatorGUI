@@ -54,7 +54,7 @@ public class About extends javax.swing.JFrame {
         geniusDescriptionScrollPane = new javax.swing.JScrollPane();
         geniusDescription = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         contributorsValueScrollPane.setBackground(new java.awt.Color(255, 255, 255));
@@ -64,7 +64,7 @@ public class About extends javax.swing.JFrame {
         contributorsValueLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         contributorsValueLabel.setLineWrap(true);
         contributorsValueLabel.setRows(5);
-        contributorsValueLabel.setText("T. Baarslag\nA. Dirkzwager\nM. Hendrikx\nK. Hindriks\nW. Pasman\nD. Tykhonov\nand others...");
+        contributorsValueLabel.setText("R. Aydogan\nT. Baarslag\nA. Dirkzwager\nM. Hendrikx\nK. Hindriks\nW. Pasman\nD. Tykhonov\nand others...");
         contributorsValueLabel.setWrapStyleWord(true);
         contributorsValueLabel.setOpaque(false);
         contributorsValueScrollPane.setViewportView(contributorsValueLabel);

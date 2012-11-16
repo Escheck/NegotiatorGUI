@@ -38,9 +38,8 @@ public abstract class Action {
      */
     public abstract String toString();
     
-    /**
-     * Method which returns the bid of the current action if it
-     * is of the type Offer.
+    /** Method which returns the bid of the current action if it
+     * is of the type Offer or else Null.
      * @param currentAction of which we want the offer.
      * @return bid specifies by this action or null if there is none.
      */
