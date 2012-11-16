@@ -1,14 +1,10 @@
 <utility_space> 
 <objective index="0" description="" name="root" type="objective" etype="objective"> 
-<issue index="1" name="price" vtype="integer" type="integer" etype="integer"> 
-<range lowerbound="-5" upperbound="5"> 
-</range> 
-<evaluator slope="0.1" offset="0.0" ftype="linear"> 
+<issue index="1" name="price" lowerbound="-5" upperbound="5" vtype="integer" type="integer" etype="integer"> 
+<evaluator slope="0.08" offset="0.3" ftype="linear"> 
 </evaluator> 
 </issue> 
-<issue index="2" name="otherprice" vtype="integer" type="integer" etype="integer"> 
-<range lowerbound="-5" upperbound="5"> 
-</range> 
+<issue index="2" name="otherprice" lowerbound="-5" upperbound="5" vtype="integer" type="integer" etype="integer"> 
 <evaluator slope="0.1" offset="0.0" ftype="linear"> 
 </evaluator> 
 </issue> 
