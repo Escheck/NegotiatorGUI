@@ -242,9 +242,14 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						// Main.log("Agent " + currentAgent.getName() +
 						// " sent the following offer:");
 						if (showGUI) {
-							fireLogMessage("Nego",
-									"Agent " + currentAgent.getName()
-											+ " sent the following offer:");
+							String report = "Agent " + currentAgent.getName();
+							if (agentA.equals(currentAgent)) {
+								report += " (A)";
+							} else {
+								report += " (B)";
+							}
+							report += " sent the following offer:";
+							fireLogMessage("Nego", report);
 						}
 						lastBid = ((Offer) lastAction).getBid();
 						if (lastBid == null) {
@@ -261,14 +266,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						if (showGUI) {
 							fireLogMessage("Nego", lastAction.toString());
 
-							// Main.log("Utility of " + agentA.getName() +": " +
-							// utilA);
 							fireLogMessage("Nego", "Utility of " + agentA.getName()
-									+ ": " + utilA);
-							// Main.log("Utility of " + agentB.getName() +": " +
-							// utilB);
+									+ "(A): " + utilA);
+
 							fireLogMessage("Nego", "Utility of " + agentB.getName()
-									+ ": " + utilB);
+									+ "(B): " + utilB);
 						}
 							// save last results
 
