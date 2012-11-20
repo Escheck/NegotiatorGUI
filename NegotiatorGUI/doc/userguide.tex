@@ -141,7 +141,7 @@ When it is an agent's turn, it is informed about the opponent's action. Based on
 \begin{itemize}
 	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined for both agents according to their preference profiles. The opponent is informed of acceptance via the \textit{ReceiveMessage} method.
 	\item The action returned by an agent is \textsc{EndNegotiation}. In this case the score of both agents is set to their reservation value.
-	\item Finally, if an agent does not follow the protocol -- for instance by sending an action that is not one of the above or by crashing -- the agent's utility is set to reservation value, whereas the opponent is awarded the utility of the last offer.
+	\item Finally, if an agent does not follow the protocol -- for instance by sending an action that is not one of the above or by crashing -- the agent's utility is set to its reservation value, whereas the opponent is awarded the utility of the last offer.
 \end{itemize}
  
 \subsection{Reservation Value}
@@ -153,7 +153,7 @@ A reservation value is the utility that an agent will obtain if no agreement is 
 \subsection{Time Pressure}
 A negotiation lasts a predefined time in seconds, or alternatively rounds. In \Genius~the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation and $t = 1$ represents the deadline. Notice that manipulation of the remaining time can be a factor influencing the outcome.
 
-There is an important difference between a time-based and rounds-based protocol. In a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as frozen inside a round; therefore computational cost does not play a role.
+There is an important difference between a time-based and rounds-based protocol. In a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as paused within a round; therefore computational cost does not play a role.
 
 Apart from a deadline, a scenario may also feature \emph{discount factors}. Discount factors decrease the utility of the bids under negotiation as time passes. While time is shared between both agents, the discount generally differs per agent. The implementation of discount factors is as follows: let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent; let $t$ in $[0, 1]$ be the current normalized time, as defined by the timeline; we compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
 \begin{eqnarray}
@@ -161,10 +161,10 @@ U_D^t(\omega) = U(\omega) \cdot d^t
 \end{eqnarray}
 If $d = 1$, the utility is not affected by time, and such a scenario is considered to be undiscounted, while if $d$ is very small there is high pressure on the agents to reach an agreement. Note that discount factors are part of the preference profiles and therefore different agents may have a different discount factor.
 
-If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reserve price, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
+If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
 
 \subsection{Negotiation Objects}
-Agent participating in a negotiation interact in a scenario. A scenario specifies the possible bids by using the domain and the preferences for each agent with a utility space for each agent. Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
+Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and two utility spaces (also called preference profiles). Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
 
 \begin{figure}[htb]
 	\centering
@@ -176,7 +176,7 @@ The \textit{Domain} describes which issues are the subject of the negotiation an
 
 Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a value. A valid bid in the laptop domain is for example a Dell laptop with 80 Gb and a 17' inch monitor.
 
-The \textit{UtilitySpace} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated using the evaluator of each issue. The evaluator of an issue maps the evaluation of a value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
+The \textit{Utility Space} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated using the evaluator of each issue. The evaluator of an issue maps the evaluation of a value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0 to simplify calculating the utility of a bid. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
 
 In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties. We discuss the optimality of a bid in the next section.
 
@@ -197,7 +197,7 @@ For a single agent, the optimal bid is of maximum utility for the agent. Often t
 
 There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure~\ref{Fig:utility plot} for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal bids is called the Pareto optimal frontier.
 
-A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preference profile. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids for itself. By default, there are already a few opponent models implemented in \Genius.
+A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. By default, there are already a few opponent models implemented in \Genius.
  
 \section{Running the Environment}
 The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
@@ -277,7 +277,7 @@ Now you are ready to start customizing the preference profile. There are three s
 
 The next and final step is to set the evaluation of the issues. To specify the evaluation of an issue you can double click it to open a new window looking similar to Figure~\ref{fig:createIssueD} or Figure~\ref{fig:createIssueI} depending on the type of the issue.
 
-For a discrete issue we need to specify the evaluation value of each discrete value. A specific value can be assigned any positive non-zero integer as evaluation value. During the negotiation the utility of value is determined by dividing the value by the highest value for that particular issue. To illustrate, if we give 60 Gb evaluation 5, 80 Gb evaluation 8, and 120 Gb evaluation 10; then the utilities of these values are respectively 0.5, 0.8, and 1.0.
+For a discrete issue we need to specify the evaluation value of each discrete value. A specific value can be assigned any positive non-zero integer as evaluation value. During the negotiation the utility of a value is determined by dividing the value by the highest value for that particular issue. To illustrate, if we give 60 Gb evaluation 5, 80 Gb evaluation 8, and 120 Gb evaluation 10; then the utilities of these values are respectively 0.5, 0.8, and 1.0.
 
 Specifying the preference of a integer issue is even easier. In this case we simply need to specify the utility of the lowest possible value and the highest possible value. The utility of a value in this range is calculated during the negotiation by using linear interpolation of the utilities of both given utilities.
 
@@ -435,7 +435,7 @@ The standard measures are the measures which are enabled by default and cannot b
 \end{table}
 
 \subsubsection{Detailed Measures}\label{sec:detailedmeasures}
-The detailed quality measures consist of trajectory analysis measures and measures for the fairness and optimality of the outcome. The detailed measures can be enabled by selecting ``Log detailed analysis'' in the tournament options menu. Enabling this option also result in the generation of the tournament log discussed in Section~\ref{sec:tournamentLog}.
+The detailed quality measures consist of trajectory analysis measures and measures for the fairness and optimality of the outcome. The detailed measures can be enabled by selecting ``Log detailed analysis'' in the tournament options menu. Enabling this option also results in the generation of the tournament log discussed in Section~\ref{sec:tournamentLog}.
 
 \begin{table}[h!]
 	\small
@@ -509,7 +509,7 @@ The tournament log is an analysis of the results on the quality measures for eac
 Three types of measures are included in the log:
 \begin{itemize}
 	\item \textbf{Averages of quality measures}. The tournament log includes a large set of averages of the quality measures in the standard log. Examples include the average Nash distance, the average percentage of silent moves, and the average social welfare.
-	\item \textbf{Standard deviations of quality measures}. The tournament log also includes the standard deviation of some measures. Note that this not the normal standard deviation of for example the utility, but the more complicated deviation between runs. To illustrate, if there were ten runs of the tournament, then each run has an average utility and we can calculate the standard deviation of this utility.
+	\item \textbf{Standard deviations of quality measures}. The tournament log also includes the standard deviation of some measures. Note that this not the normal standard deviation of for example the utility, but the more complicated deviation between runs. To illustrate, if there were ten runs of the tournament, then each run has an average utility and we can calculate the standard deviation of this utility between runs.
 	\item \textbf{Average of functions of quality measures}. The tournament log also includes a large set of measures which are functions of measures included in the standard log. An example is the average utility for an agent only for the matches which resulted in agreement. 
 \end{itemize}
 
@@ -525,17 +525,17 @@ The XML data of the standard log can be converted to a normal table by importing
 \end{figure}
 
 \section{Creating a Negotiation Agent}
-This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to split these components which can be done by implementing a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
+This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to separately implement these components to create a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
 
 In this section we assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
 
-The recommended way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the \textit{negotiationsimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes.
+The recommended way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the \textit{negotiationsimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes as long as one class extends the \textit{negotiator.Agent} class.
 
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
 \texttt{UtilitySpace utilitySpace}\\
-The preference profile of the scenario.\\
+The preference profile of the scenario allocated to the agent.\\
 \hline
 \texttt{Timeline timeline}\\
 Use timeline for every time-related by using \texttt{getTime()}.\\
@@ -561,8 +561,8 @@ Returns the name of the agent. Please override this to give a proper name to you
 \end{table}
 
 \subsection{Receiving the Opponent's Action}
-The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performe the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
-The \texttt{chooseAction()} asks you to return an \texttt{Action} to make the next step in the negotiation.
+The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
+The \texttt{chooseAction()} asks you to specify an \texttt{Action} to send to the opponent.
 
 In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
 
