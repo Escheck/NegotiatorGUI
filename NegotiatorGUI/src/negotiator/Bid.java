@@ -69,6 +69,14 @@ public final class Bid implements XMLable
 		fValues = bidP;
 	}
 
+	/**
+	 * This method clones the given bid.
+	 */
+	public Bid(Bid bid) {
+		
+		fDomain=bid.fDomain;
+		fValues=(HashMap<Integer, Value>) bid.fValues.clone();
+	}
 
 	/**
 	 * @param issueNr number of an issue.
