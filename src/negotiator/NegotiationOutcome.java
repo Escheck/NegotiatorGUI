@@ -14,9 +14,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-
-import sun.management.resources.agent;
-
 import negotiator.actions.Action;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidPointSorterA;
