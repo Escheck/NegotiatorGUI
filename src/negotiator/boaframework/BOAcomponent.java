@@ -128,6 +128,10 @@ public class BOAcomponent implements Serializable {
 		return orgParam;
 	}
 	
+	public void setOriginalParameter(ArrayList<BOAparameter> param) {
+		this.orgParam = param;
+	}
+	
 	public String toString() {
 		String params = "";
 		if (parameters.size() > 0) {

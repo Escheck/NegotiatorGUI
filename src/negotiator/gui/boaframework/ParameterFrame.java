@@ -79,19 +79,24 @@ public class ParameterFrame extends JDialog {
 		for (int i = 0; i < result.size(); i++) {
 			try {
 				BigDecimal lowerBound = new BigDecimal(lowerbounds[i].getText());
-				BigDecimal stepSize = new BigDecimal(stepsizes[i].getText());
-				BigDecimal upperBound = new BigDecimal(upperbounds[i].getText());
 				
-				if (lowerBound.compareTo(upperBound) > 0) {
-					JOptionPane.showMessageDialog(null, "Each upper bound must be higher or equal to the lower bound.", "Parameter error", 0);
-					break;
+				if (!stepsizes[i].getText().equals("") && !upperbounds[i].getText().equals("")) {
+					BigDecimal stepSize = new BigDecimal(stepsizes[i].getText());
+					BigDecimal upperBound = new BigDecimal(upperbounds[i].getText());
+					
+					if (lowerBound.compareTo(upperBound) > 0) {
+						JOptionPane.showMessageDialog(null, "Each upper bound must be higher or equal to the lower bound.", "Parameter error", 0);
+						break;
+					}
+					
+					if (stepSize.compareTo(BigDecimal.ZERO) <= 0) {
+						JOptionPane.showMessageDialog(null, "Each step size must be positive.", "Parameter error", 0);
+						break;
+					}
+					parameters.add(new BOAparameter(result.get(i).getName(), lowerBound, upperBound, stepSize, descriptions[i].getText()));
+				} else {
+					parameters.add(new BOAparameter(result.get(i).getName(), lowerBound, lowerBound, BigDecimal.ONE, descriptions[i].getText()));
 				}
-				
-				if (stepSize.compareTo(BigDecimal.ZERO) <= 0) {
-					JOptionPane.showMessageDialog(null, "Each step size must be positive.", "Parameter error", 0);
-					break;
-				}
-				parameters.add(new BOAparameter(result.get(i).getName(), lowerBound, upperBound, stepSize, descriptions[i].getText()));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "All values should be numeric.", "Parameter error", 0);
 				break;
@@ -140,12 +145,18 @@ public class ParameterFrame extends JDialog {
 	        getContentPane().add(lowerBoundTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(leftSideBorder + nameWidth + descriptionWidth, labelHeight + higherBorder + i * elementHeight, lowerBoundWidth - spacing, -1));
 	        lowerbounds[i] = lowerBoundTF;
 	        
-	        JTextField stepSizeTF = new JTextField(result.get(i).getStep() + "");
+	        JTextField stepSizeTF = new JTextField();
+	        if (!result.get(i).getLow().equals(result.get(i).getHigh())) {
+	        	stepSizeTF.setText(result.get(i).getStep() + "");
+	        }
 	        stepSizeTF.setFont(new java.awt.Font("Tahoma", 1, 13));
 	        getContentPane().add(stepSizeTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(leftSideBorder + nameWidth + descriptionWidth + lowerBoundWidth, labelHeight + higherBorder + i * elementHeight, stepSizeWidth - spacing, -1));
 	        stepsizes[i] = stepSizeTF;
 	        
-	        JTextField upperBoundTF = new JTextField(result.get(i).getHigh() + "");
+	        JTextField upperBoundTF = new JTextField();
+	        if (!result.get(i).getLow().equals(result.get(i).getHigh())) {
+	        	upperBoundTF.setText(result.get(i).getHigh() + "");
+	        }
 	        upperBoundTF.setFont(new java.awt.Font("Tahoma", 1, 13));
 	        getContentPane().add(upperBoundTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(leftSideBorder + nameWidth + descriptionWidth + lowerBoundWidth + stepSizeWidth, labelHeight + higherBorder + i * elementHeight, higherBoundWidth - spacing, -1));
 	        upperbounds[i] = upperBoundTF;

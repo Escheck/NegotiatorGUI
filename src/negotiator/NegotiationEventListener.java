@@ -8,7 +8,7 @@ import negotiator.events.NegotiationSessionEvent;
 
 
 /** 
- * implement this class in order to subscribe with teh NegotiationManager
+ * implement this class in order to subscribe with the NegotiationManager
  * to get callback on handleEvent().
  * 
  * @author wouter
