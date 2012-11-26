@@ -439,10 +439,13 @@ public class BOAagentsFrame extends JDialog {
 			BOAcomponent strat = new BOAcomponent(classname, type, parameters);
 			Iterator<Pair<String, BigDecimal>> paramIterator = set.iterator();
 			// a set of 
+			ArrayList<BOAparameter> param = new ArrayList<BOAparameter>();
 			while (paramIterator.hasNext()) {
 				Pair<String, BigDecimal> pair = (Pair<String, BigDecimal>) paramIterator.next();
 				strat.addParameter(pair.getFirst(), pair.getSecond());
+				param.add(new BOAparameter(pair.getFirst(), pair.getSecond(), pair.getSecond(), BigDecimal.ONE));
 			}
+			strat.setOriginalParameter(param);
 			strat.getFullParameters().remove("null");
 			strategies.add(strat);
 		}

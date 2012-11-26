@@ -2,6 +2,7 @@ package negotiator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -217,8 +218,7 @@ public class CSVLoader
          }
 
          //load agent parameters for side A
-         @SuppressWarnings("unchecked") // Google creating generic array types in Java
-		HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsAp = new HashMap[agentsARI.length];
+         HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsAp = new HashMap[agentsARI.length];
          for(int i = 0; i < agentsARI.length; i++)
          {
              agentParamsAp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
@@ -332,8 +332,7 @@ public class CSVLoader
         System.arraycopy(agentsA, 0, agentsRI, 0, agentsA.length);
         System.arraycopy(agentsB, 0, agentsRI, agentsA.length, agentsB.length);
             
-        @SuppressWarnings("unchecked") // Google creating generic array types in Java
-		HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[totalNumberOfAgents];
+        HashMap<AgentParameterVariable, AgentParamValue>[] agentParamsp = new HashMap[totalNumberOfAgents];
         for(int i = 0; i < agentParamsp.length; i++)
         {
             agentParamsp[i] = new HashMap<AgentParameterVariable, AgentParamValue>();
