@@ -207,9 +207,14 @@ public class DomainRepositoryUI
 		
 		String result = new CreateNewDomain(NegoGUIApp.negoGUIView.getFrame()).getResult();
 		if (result != null) {
-			String subdirectory = "etc" + File.separator + "templates" + File.separator;
+			String dirName = "etc" + File.separator + "templates" + File.separator + result;
 			
-			String path = subdirectory + result + ".xml";    
+			File dir = new File(dirName);
+			if (!dir.exists()) {
+				dir.mkdir();
+			}
+			
+			String path = dirName + File.separator + result + ".xml";    
 			DomainRepItem dri = null;
 			try {
 				dri = new DomainRepItem(new URL("file:" + path));
