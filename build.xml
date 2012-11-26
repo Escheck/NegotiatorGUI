@@ -484,24 +484,29 @@
 		<mkdir dir="${tmp}/log"/>
 		
 		<copy todir="${tmp}/doc">
+			<fileset dir="doc" includes="assignment2012.pdf"/>
+			<globmapper from="assignment2012.pdf" to="assignment.pdf" />
+		</copy>
+		
+		<copy todir="${tmp}/doc">
 			<fileset dir="doc" includes="userguide.pdf"/>
 		</copy>
 
 		<zip destfile="${dist}/negotiator.zip">
-			<zipfileset dir="" includes="boarepository.xml,agentrepository.xml,domainrepository.xml,protocolrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>							
-			<zipfileset dir="${tmp}" includes="doc/" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="log" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>	
-			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="negotiator/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="negotiator/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="negotiator/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="negotiator/BOA Agent Example"/>
-			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator/Agent Example"/>
-			<zipfileset dir="" includes="javadoc/" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/anac/" prefix="negotiator/etc/templates/anac/"/>
-			<zipfileset dir="etc/templates/CarLinear" prefix="negotiator/etc/templates/CarLinear"/>
+			<zipfileset dir="" includes="boarepository.xml,agentrepository.xml,domainrepository.xml,protocolrepository.xml" prefix="genius"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>							
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
+			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="genius"/>
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="genius"/>	
+			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example"/>
+			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example"/>
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example"/>
+			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
+			<zipfileset dir="etc/templates/anac/" prefix="genius/etc/templates/anac/"/>
+			<zipfileset dir="etc/templates/CarLinear" prefix="genius/etc/templates/CarLinear"/>
 		</zip>
 		<ant target="cleanup"/>
 	</target>
