@@ -50,8 +50,7 @@ public class UtilitySpace {
      * Creates an empty utility space.
      */
     public UtilitySpace(){
-    	this.domain = new Domain();
-    	fEvaluators = new HashMap<Objective, Evaluator>();
+    	this(new Domain(), new HashMap<Objective, Evaluator>());
     }
 	
     /**
@@ -59,9 +58,13 @@ public class UtilitySpace {
      * @param domain for which the utilityspace should be specified.
      */
     public UtilitySpace(Domain domain) {
-    	this.domain=domain;
-    	fEvaluators = new HashMap<Objective, Evaluator>();
+    	this(domain, new HashMap<Objective, Evaluator>());
     }
+    
+    public UtilitySpace(Domain domain, Map<Objective, Evaluator> fEvaluators) {
+  		this.domain = domain;
+  		this.fEvaluators = fEvaluators;
+  	}
     
     /**
      * Create new default util space for a given domain.
@@ -110,7 +113,9 @@ public class UtilitySpace {
     	discountFactor = us.discountFactor;
     }
     
-    /**
+  
+
+	/**
      * create a default evaluator for a given Objective.
      * This function is placed here, and not in Objective, because
      * the Objectives should not be loaded with utility space functionality.

@@ -1,5 +1,6 @@
 package negotiator.qualitymeasures;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import negotiator.Bid;
@@ -154,7 +155,6 @@ public class UtilspaceTools {
 					totalDistance++;
 			}
 		}
-		totalDistance += 0.001;
 		return totalDistance / (setA.length * setB.length);
 	}
 	

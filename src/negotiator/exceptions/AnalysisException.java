@@ -1,6 +1,5 @@
-package negotiator.analysis;
+package negotiator.exceptions;
 
-import negotiator.exceptions.NegotiatorException;
 
 /**
  * Exception illustrating that calculating a feature of the bidspace
