@@ -1,0 +1,121 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import negotiator.Domain;
+import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Objective;
+import negotiator.issue.ValueDiscrete;
+import negotiator.repository.DomainRepItem;
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.RepItem;
+import negotiator.repository.Repository;
+import negotiator.utility.Evaluator;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.UtilitySpace;
+
+/**
+ * Class used to validate the domain, preference profile, and the consistency between both.
+ * 
+ * @author Mark Hendrikx
+ */
+public class ScenarioValidator {
+	
+	private static String validateDomain(Domain domain) {
+		String errors = "";
+		ArrayList<Objective> objectives = domain.getObjectives();
+		HashSet<String> names = new HashSet<String>();
+		
+		for (int i = 0; i < objectives.size(); i++) {
+			// Check indices
+			if (objectives.get(i).getNumber() != i) {
+				errors += ("Index of \"" + objectives.get(i).getName() + "\" is " + objectives.get(i).getNumber() + " but should be " + i + "\n");
+			}
+			// Check unique names
+			if (!names.add(objectives.get(i).getName())) {
+				errors += ("There already exists an element with objective name \"" + objectives.get(i).getName() + "\"\n");
+			}
+		}
+		return errors;
+	}
+	
+	private static String validateCorrespondenceDomainAndProfile(Domain domain, UtilitySpace space) {
+		
+		String errors = space.IsComplete();
+		if (errors == null) {
+			errors = "";
+		} else {
+			errors += "\n";
+		}
+		return errors;
+	}
+	
+	private static String validatePreferenceProfile(UtilitySpace space) {
+		String errors = "";
+		double weightSum = 0;
+		for (Entry<Objective, Evaluator> pair : space.getEvaluators()) {
+			Objective obj = pair.getKey();
+			Evaluator eval = pair.getValue();
+			
+			if (obj == null) {
+				errors += "Mismatch in objective indices between domain and preference profile\n";
+				return errors;
+			}
+			
+			if (obj.getType() == ISSUETYPE.DISCRETE) {
+				EvaluatorDiscrete dEval = (EvaluatorDiscrete) eval;
+				boolean allZero = true;
+				for (ValueDiscrete dValue : dEval.getValues()) {
+					try {
+						int evaluation = dEval.getEvaluationNotNormalized(dValue);
+						
+						if (evaluation < 0) {
+							errors += "Value \"" + dValue.getValue() + "\"" + " of objective \"" + obj.getName() + "\" must have a non-negative evaluation\n";
+						} else if (evaluation > 0) {
+							allZero = false;
+						}
+					} catch (Exception e) {
+						errors += e.getMessage() + "\n";
+					}
+				}
+				if (allZero) {
+					errors += "Objective \"" + obj.getName() + "\" does not have a value with a non-zero positive evaluation\n";
+				}
+			}
+			weightSum += eval.getWeight();
+		}
+		if (Math.abs(1.0 - weightSum) > 0.01) {
+			errors += "The sum of the issue weights differs significantly from one\n";
+		}
+		return errors;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			Repository domainrepository = Repository.get_domain_repos();
+			boolean allValid = true;
+			for (RepItem repitem : domainrepository.getItems()) {
+				DomainRepItem dri = (DomainRepItem)repitem;
+				Domain domain = new Domain(dri.getURL().getFile());
+				
+				for (ProfileRepItem pri : dri.getProfiles()) {
+					UtilitySpace space = new UtilitySpace(domain, pri.getURL().getFile());
+					String errors = "";
+					errors += (validateDomain(domain));
+					errors += (validateCorrespondenceDomainAndProfile(domain, space));
+					errors += (validatePreferenceProfile(space));
+
+					if (!errors.trim().equals("")) {
+						System.out.println("DOMAIN: " + dri.getName() + " PROFILE: " + pri.getURL().getFile());
+						System.out.println(errors);
+						allValid = false;
+					}
+				}
+			}
+			if (allValid) {
+				System.out.println("All scenarios are valid.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
