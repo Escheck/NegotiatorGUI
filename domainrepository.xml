@@ -331,10 +331,6 @@
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:etc/templates/CarLinear/carlinear_domain.xml">
-                <profile url="file:etc/templates/CarLinear/carlinear_buyer.xml"/>
-                <profile url="file:etc/templates/CarLinear/carlinear_seller.xml"/>
-            </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
     </items>
