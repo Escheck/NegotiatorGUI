@@ -5,9 +5,9 @@
 	<agent class="agents.UIAgent" name="buyer" utility_space="laptop_buyer_utility.xml">
 	</agent>
 	<utility_space number_of_issues="0">
-		<objective index="1" etype="objective" type="objective"
+		<objective index="0" etype="objective" type="objective"
 			description="" name="LaptopDomain">
-			<issue index="2" etype="discrete" type="discrete" vtype="discrete"
+			<issue index="1" etype="discrete" type="discrete" vtype="discrete"
 				name="Laptop">
 				<item index="1" value="Dell" cost="0" description="cheap laptop">
 				</item>
@@ -17,7 +17,7 @@
 				</item>
 				<similarity_function type="binary" weight="0.333333"/>
 			</issue>
-			<issue index="3" etype="discrete" type="discrete" vtype="discrete"
+			<issue index="2" etype="discrete" type="discrete" vtype="discrete"
 				name="Harddisk">
 				<item index="1" value="60 Gb" cost="0" description="the default internal HD">
 				</item>
@@ -28,7 +28,7 @@
 				</item>
 				<similarity_function type="binary" weight="0.333333"/>
 			</issue>
-			<issue index="4" etype="discrete" type="discrete" vtype="discrete"
+			<issue index="3" etype="discrete" type="discrete" vtype="discrete"
 				name="External Monitor">
 				<item index="1" value="19'' LCD" cost="0" description="nothing special">
 				</item>
