@@ -6,8 +6,8 @@
   
 </agent> 
 <utility_space number_of_issues="0"> 
-<objective index="1" etype="objective" type="objective" description="" name="Employment"> 
-<issue index="2" etype="discrete" vtype="discrete" name="Signing bonus"> 
+<objective index="0" etype="objective" type="objective" description="" name="Employment"> 
+<issue index="1" etype="discrete" vtype="discrete" name="Signing bonus"> 
 <item index="1" value="10%"> 
 </item> 
 <item index="2" value="8%"> 
@@ -19,7 +19,7 @@
 <item index="5" value="2%"> 
 </item> 
 </issue> 
-<issue index="3" etype="discrete" vtype="discrete" name="Job assignment"> 
+<issue index="2" etype="discrete" vtype="discrete" name="Job assignment"> 
 <item index="1" value="Division A"> 
 </item> 
 <item index="2" value="Division B"> 
@@ -31,7 +31,7 @@
 <item index="5" value="Division E"> 
 </item> 
 </issue> 
-<issue index="4" etype="discrete" vtype="discrete" name="Moving expense coverage"> 
+<issue index="3" etype="discrete" vtype="discrete" name="Moving expense coverage"> 
 <item index="1" value="100%"> 
 </item> 
 <item index="2" value="90%"> 
@@ -43,7 +43,7 @@
 <item index="5" value="60%"> 
 </item> 
 </issue> 
-<issue index="5" etype="discrete" vtype="discrete" name="Insurance coverage"> 
+<issue index="4" etype="discrete" vtype="discrete" name="Insurance coverage"> 
 <item index="1" value="100%"> 
 </item> 
 <item index="2" value="80%"> 
@@ -55,7 +55,7 @@
 <item index="5" value="0%"> 
 </item> 
 </issue> 
-<issue index="6" etype="discrete" vtype="discrete" name="Salary"> 
+<issue index="5" etype="discrete" vtype="discrete" name="Salary"> 
 <item index="1" value="$40,000"> 
 </item> 
 <item index="2" value="$38,000"> 

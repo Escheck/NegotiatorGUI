@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <negotiation_template number_of_sessions="3">
   <utility_space number_of_issues="2">
-    <objective index="1" etype="objective" type="objective" description="" name="AirPortSiteSelection">
-      <issue index="2" etype="discrete" type="discrete" name="Cost">
+    <objective index="0" etype="objective" type="objective" description="" name="AirPortSiteSelection">
+      <issue index="1" etype="discrete" type="discrete" name="Cost">
         <item index="1" value="GreaterThanOrEqual5.2bn"/>
         <item index="2" value="5.0bn"/>
         <item index="3" value="4.8bn"/>
@@ -14,7 +14,7 @@
         <item index="9" value="3.6bn"/>
         <item index="10" value="LessThanOrEqual3.4bn"/>
       </issue>
-      <issue index="3" etype="discrete" type="discrete" name="Noise">
+      <issue index="2" etype="discrete" type="discrete" name="Noise">
         <item index="1" value="LessThan10000"/>
         <item index="2" value="10000"/>
         <item index="3" value="20000"/>
@@ -23,7 +23,7 @@
         <item index="6" value="50000"/>
         <item index="7" value="GreaterThan50000"/>
       </issue>
-      <issue index="4" etype="discrete" type="discrete" name="AccidentLevelPerMillionPassengerMiles">
+      <issue index="3" etype="discrete" type="discrete" name="AccidentLevelPerMillionPassengerMiles">
         <item index="1" value="GreaterThanOrEqual0.1"/>
         <item index="2" value="0.08"/>
         <item index="3" value="0.06"/>
