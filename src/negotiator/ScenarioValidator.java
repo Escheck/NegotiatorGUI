@@ -1,7 +1,7 @@
+package negotiator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
-import negotiator.Domain;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
@@ -89,30 +89,39 @@ public class ScenarioValidator {
 		return errors;
 	}
 	
-	public static void main(String[] args) {
+	public static String validateDomainRepository(Repository domainrepository) {
+		String errors = "";
 		try {
-			Repository domainrepository = Repository.get_domain_repos();
-			boolean allValid = true;
 			for (RepItem repitem : domainrepository.getItems()) {
 				DomainRepItem dri = (DomainRepItem)repitem;
 				Domain domain = new Domain(dri.getURL().getFile());
 				
 				for (ProfileRepItem pri : dri.getProfiles()) {
 					UtilitySpace space = new UtilitySpace(domain, pri.getURL().getFile());
-					String errors = "";
-					errors += (validateDomain(domain));
-					errors += (validateCorrespondenceDomainAndProfile(domain, space));
-					errors += (validatePreferenceProfile(space));
+					String newErrors = "";
+					newErrors += (validateDomain(domain));
+					newErrors += (validateCorrespondenceDomainAndProfile(domain, space));
+					newErrors += (validatePreferenceProfile(space));
 
-					if (!errors.trim().equals("")) {
-						System.out.println("DOMAIN: " + dri.getName() + " PROFILE: " + pri.getURL().getFile());
-						System.out.println(errors);
-						allValid = false;
+					if (!newErrors.trim().equals("")) {
+						errors += "DOMAIN: " + dri.getName() + " PROFILE: " + pri.getURL().getFile() + "\n" + newErrors + "\n";
 					}
 				}
 			}
-			if (allValid) {
-				System.out.println("All scenarios are valid.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return errors;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			Repository domainrepository = Repository.get_domain_repos();
+			String result = validateDomainRepository(domainrepository);
+			if (result.trim().equals("")) {
+				System.out.println("All scenarios are OK");
+			} else {
+				System.out.println(result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

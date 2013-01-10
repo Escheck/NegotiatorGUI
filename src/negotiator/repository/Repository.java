@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -16,6 +17,7 @@ import javax.xml.namespace.QName;
 
 import negotiator.Domain;
 import negotiator.Global;
+import negotiator.ScenarioValidator;
 import negotiator.exceptions.Warning;
 import negotiator.utility.UtilitySpace;
 /**
@@ -195,7 +197,11 @@ public class Repository
 		try {
 			repos=new Repository(filename);
 			domainRepos = repos;
-			repos.sourceFolder = sourceFolder;				
+			repos.sourceFolder = sourceFolder;	
+			String result = ScenarioValidator.validateDomainRepository(domainRepos);
+			if (!result.equals("")) {
+				JOptionPane.showMessageDialog(null, "Found the following errors in the loaded scenarios:\n" + result, "Scenario errors", 0);
+			}
 		} catch (Exception e) {
 			repos=new Repository();
 			repos.setFilename(filename);
