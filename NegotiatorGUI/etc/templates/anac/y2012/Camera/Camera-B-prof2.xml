@@ -37,7 +37,7 @@
       <item index="3" value="Memory" cost="0.0" evaluation="20">			</item>
       <item index="4" value="Strap" cost="0.0" evaluation="5">			</item>
     </issue>
-    <weight index="1" value="0.08">		</weight>
+    <weight index="1" value="0.07">		</weight>
     <weight index="2" value="0.09">		</weight>
     <weight index="3" value="0.34">		</weight>
     <weight index="4" value="0.26">		</weight>

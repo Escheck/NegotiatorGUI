@@ -42,7 +42,7 @@
     <weight index="3" value="0.13">		</weight>
     <weight index="4" value="0.09">		</weight>
     <weight index="5" value="0.11">		</weight>
-    <weight index="6" value="0.26">		</weight>
+    <weight index="6" value="0.27">		</weight>
   </objective>
   <discount_factor value="0.50" />
 <reservation value="0.00" />
