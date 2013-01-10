@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <utility_space>
-  <objective index="5" description="" name="outfit" type="objective" etype="objective">
+  <objective index="0" description="" name="outfit" type="objective" etype="objective">
     <issue index="1" name="shirts" vtype="discrete" type="discrete" etype="discrete">
       <item index="1" value="T-shirt" cost="0.0" evaluation="10" />
       <item index="2" value="Blouse" cost="0.0" evaluation="50" />

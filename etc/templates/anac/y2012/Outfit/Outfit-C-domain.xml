@@ -3,7 +3,7 @@
   <agent utility_space="" name="" class=""> </agent>
   <agent utility_space="" name="" class=""> </agent>
   <utility_space number_of_issues="0">
-    <objective index="5" description="" name="outfit" type="objective" etype="objective">
+    <objective index="0" description="" name="outfit" type="objective" etype="objective">
       <issue index="1" name="shirts" vtype="discrete" type="discrete" etype="discrete">
         <item index="1" value="T-shirt" />
         <item index="2" value="Blouse" />

@@ -1,13 +1,13 @@
 <utility_space number_of_issues="6">
-	<objective index="1" etype="objective" type="objective"
+	<objective index="0" etype="objective" type="objective"
 		description="" name="Car">
-		<weight index="2" value="0.36" />
+		<weight index="1" value="0.36" />
+		<weight index="2" value="0.2" />
 		<weight index="3" value="0.2" />
 		<weight index="4" value="0.2" />
-		<weight index="5" value="0.2" />
+		<weight index="5" value="0.02" />
 		<weight index="6" value="0.02" />
-		<weight index="7" value="0.02" />
-		<issue index="2" name="CD player" etype="discrete">
+		<issue index="1" name="CD player" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="85" />
 			<item index="3" value="standard" evaluation="91" />
@@ -24,7 +24,7 @@
 				</criteria_function>
 			</similarity_function>
 		</issue>
-		<issue index="3" name="Extra speakers" etype="discrete">
+		<issue index="2" name="Extra speakers" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="80" />
 			<item index="3" value="standard" evaluation="96" />
@@ -42,7 +42,7 @@
 		</similarity_function>
 
 		</issue>
-		<issue index="4" name="Airconditioning" etype="discrete">
+		<issue index="3" name="Airconditioning" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="80" />
 			<item index="3" value="standard" evaluation="91" />
@@ -60,7 +60,7 @@
 		</similarity_function>
 
 		</issue>
-		<issue index="5" name="Tow hedge" etype="discrete">
+		<issue index="4" name="Tow hedge" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="80" />
 			<item index="3" value="standard" evaluation="90" />
@@ -78,7 +78,7 @@
 		</similarity_function>
 
 		</issue>
-		<issue index="6" name="Tow hedge2" etype="discrete">
+		<issue index="5" name="Tow hedge2" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="80" />
 			<item index="3" value="standard" evaluation="90" />
@@ -97,7 +97,7 @@
 
 		</issue>
 
-		<issue index="7" name="Tow hedge3" etype="discrete">
+		<issue index="6" name="Tow hedge3" etype="discrete">
 			<item index="1" value="good" evaluation="0" />
 			<item index="2" value="fairly good" evaluation="80" />
 			<item index="3" value="standard" evaluation="90" />
