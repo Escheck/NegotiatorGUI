@@ -2,10 +2,15 @@ package negotiator.repository;
 
 import java.util.ArrayList;
 
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.ScrollPane;
 import java.io.File;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -200,7 +205,17 @@ public class Repository
 			repos.sourceFolder = sourceFolder;	
 			String result = ScenarioValidator.validateDomainRepository(domainRepos);
 			if (!result.equals("")) {
-				JOptionPane.showMessageDialog(null, "Found the following errors in the loaded scenarios:\n" + result, "Scenario errors", 0);
+				JTextArea textArea = new JTextArea("Errors were found in the scenario XML files. It is " +
+													"advised to correct them to avoid incompatibilities " +
+													"with some agents.\n\n" + result);  
+		        textArea.setEditable(false);
+				textArea.setLineWrap(true);  
+		        textArea.setWrapStyleWord(true);  
+		        textArea.setMargin(new Insets(5,5,5,5));  
+		        JScrollPane scrollPane = new JScrollPane(textArea);
+		        scrollPane.setPreferredSize(new Dimension(700,500)); 
+		        Object message = scrollPane;  
+				JOptionPane.showMessageDialog(null, message, "Scenario errors", 0);
 			}
 		} catch (Exception e) {
 			repos=new Repository();
