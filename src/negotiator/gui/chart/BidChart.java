@@ -14,10 +14,17 @@ import org.jfree.data.xy.DefaultXYDataset;
 
 public class BidChart {
 	
-	private double [][] possibleBids;
-	private double [][] pareto;
+	private double [][] possibleBids_;
+	private double [][] pareto_;
 	private double [][] bidSeriesA_;
 	private double [][] bidSeriesB_;
+	private double [][] lastBidA_;
+	private double [][] lastBidB_;
+	private double [][] nashPoint_;
+	private double [][] kalaiPoint_;
+	private double [][] rvA_;
+	private double [][] rvB_;
+	private double [][] agreement_;
 	private String agentAName = "Agent A";
 	private String agentBName = "Agent B";
 	private JFreeChart chart;
@@ -56,8 +63,8 @@ public class BidChart {
 	public BidChart(String agentAname, String agentBname, double [][] possibleBids,double[][] pareto){		
 		this.agentAName = agentAname;
 		this.agentBName = agentBname;
-		this.pareto = pareto;
-		this.possibleBids = possibleBids;
+		setPareto(pareto);
+		setPossibleBids(possibleBids);
 		BidChart1();
 	}
 	public void BidChart1(){
@@ -75,23 +82,41 @@ public class BidChart {
 	
 	//set-Methods
 	public void setPareto(double [][] pareto){
-		this.pareto = pareto;
-		paretoData.addSeries("Pareto efficient frontier",pareto);
+		this.pareto_ = pareto;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				paretoData.addSeries("Pareto efficient frontier",pareto_);
+		    }
+		});	
 	}
 	
 	public void setPossibleBids(double [][] possibleBids){
-		this.possibleBids = possibleBids;
-		possibleBidData.addSeries("all possible bids",possibleBids);
+		this.possibleBids_ = possibleBids;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	possibleBidData.addSeries("all possible bids",possibleBids_);
+		    }
+		});	
 	}
 	
 	public void setLastBidAData(double [][] lastBid)
 	{
-		lastBidAData.addSeries("Last bid by A", lastBid);
+		this.lastBidA_ = lastBid;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	lastBidAData.addSeries("Last bid by A", lastBidA_);
+		    }
+		});
 	}
 	
 	public void setLastBidBData(double [][] lastBid)
 	{
-		lastBidBData.addSeries("Last bid by B", lastBid);
+		this.lastBidB_ = lastBid;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	lastBidAData.addSeries("Last bid by B", lastBidB_);
+		    }
+		});
 	}
 	
 	public void setBidSeriesA(double [][] bidSeriesA){
@@ -101,7 +126,6 @@ public class BidChart {
 				bidderAData.addSeries("Agent A's bids",bidSeriesA_);
 		    }
 		});		
-   
 	}
         
 	public void setBidSeriesB(double [][] bidSeriesB) {
@@ -114,31 +138,46 @@ public class BidChart {
 	}
 	
 	public void setBidderAReservationValue(double [][] bidderAReservationValue) {
-		bidderAReservationValueData.addSeries("Agent A's reservation value", bidderAReservationValue);   
+		this.rvA_ = bidderAReservationValue;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				bidderAReservationValueData.addSeries("Agent A's reservation value", rvA_);  
+		    }
+		}); 
 	}
         
 	public void setBidderBReservationValue(double [][] bidderBReservationValue) {
-		bidderBReservationValueData.addSeries("Agent B's reservation value", bidderBReservationValue);   
+		this.rvB_ = bidderBReservationValue;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				bidderBReservationValueData.addSeries("Agent B's reservation value", rvB_);  
+		    }
+		}); 
 	}
 	
-	public void setNash(double[][]nash){
-		nashData.addSeries("Nash Point",nash);
+	public void setNash(double[][] nash){
+		this.nashPoint_ = nash;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				nashData.addSeries("Nash Point",nashPoint_);
+		    }
+		});	
 	}
-	public void setKalai(double[][]kalai){
-		nashData.addSeries("Kalai Point",kalai);
+	public void setKalai(double[][] kalai){
+		this.kalaiPoint_ = kalai;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				nashData.addSeries("Kalai Point",kalaiPoint_);
+		    }
+		});	
 	}
 	public void setAgreementPoint(double[][]agreement){
-		agreementData.addSeries("Agreement",agreement);
-	}
-	
-	public void removeAllPlots(){
-		if(bidderAData.getSeriesCount()!=0)
-			bidderAData.removeSeries("Bids of "+ agentAName);
-		if(bidderBData.getSeriesCount()!=0)
-			bidderBData.removeSeries("Bids of " + agentBName);
-		if(agreementData.getSeriesCount()!=0)
-			agreementData.removeSeries("Agreement");
-		
+		this.agreement_ = agreement;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	agreementData.addSeries("Agreement",agreement_);
+		    }
+		});	
 	}
 			
 	/**
@@ -172,23 +211,10 @@ public class BidChart {
         lastBidBRenderer.setDotHeight(3);
         lastBidBRenderer.setDotWidth(3);
        
-		//create default plot, quick hack so that the graph panel is not empty
-    	if(possibleBids!=null){
-    		possibleBidData.addSeries("all possible bids",possibleBids);
-//    		lastBidData.addSeries("Last bid", )
-    	}
-    	if (pareto!=null){
-        	setPareto(pareto);   
-        }
         // create plot ...
     	plot = new XYPlot(possibleBidData, domainAxis, rangeAxis, dotRenderer);
     	plot.setDataset(2, paretoData);
         plot.setRenderer(2, paretoRenderer);
-        
-    /*    DefaultXYDataset bidderADataSet = new DefaultXYDataset();
-        bidderADataSet.addSeries("Bidder A", bidderAData);
-        DefaultXYDataset bidderAData = new DefaultXYDataset();
-        bidderAData.addSeries("Bidder B", bidderBData.toArray());*/
         		
     	plot.setDataset(3, bidderAData);
 	    plot.setRenderer(3, lineARenderer);

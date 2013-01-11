@@ -324,11 +324,19 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		if (showAllBids)
 			pb = getAllBidsInBidSpace();
 
+		double [][] agreement = new double [2][1];
+		agreement[0][0] = -1;
+		agreement[1][0] = -1;
+		bidChart.setAgreementPoint(agreement);
+		
+		
 		double [][] nash = new double [2][1];
 		double [][] kalai = new double [2][1];
 		try {
-			if(pb!=null)
-				bidChart.setPossibleBids(pb);
+			if (pb == null) {
+				pb = new double [2][1];
+			}
+			bidChart.setPossibleBids(pb);
 			
 			Double resA = session.getAgentAUtilitySpace().getReservationValue();
 			Double resB = session.getAgentBUtilitySpace().getReservationValue();
@@ -339,7 +347,10 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 				bidChart.setBidderAReservationValue(rvA);
 				double[][] rvB = getReservationValueB(resA, resB);
 				bidChart.setBidderBReservationValue(rvB);
-			}	
+			} else {
+				bidChart.setBidderAReservationValue(new double [2][1]);
+				bidChart.setBidderBReservationValue(new double [2][1]);
+			}
 			
 			double [][] paretoB = getPareto();
 			if(paretoB!=null)
@@ -524,8 +535,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		//clear TextArea:
 		//logText.setText("");
 		textOutput.setText("");
-		//clear graph
-		bidChart.removeAllPlots();
 		//clear table
 		progressinfo.reset();
 		
