@@ -2,8 +2,10 @@ package negotiator.protocol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.actions.Action;
@@ -78,9 +80,15 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         fAgentABids = new ArrayList<BidPointTime>();
         fAgentBBids = new ArrayList<BidPointTime>();
 
-        matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
+        Domain domain = spaceA.getDomain();
+		String domainName = "";
+		if (domain == null)
+			System.err.println("Warning: domain null in " + spaceA.getFileName());
+		else
+			domainName = domain.getName();
+		matchDataLogger = new CSVlogger(Global.getOQMOutcomesFileName(),
         								agentA.getName(), spaceA.getFileName(), 
-        								agentB.getName(), spaceB.getFileName(), spaceA.getDomain().getName());
+        								agentB.getName(), spaceB.getFileName(), domainName);
         
         actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }
