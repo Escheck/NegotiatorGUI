@@ -433,6 +433,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			 */
 
 		} catch (Error e) {
+			e.printStackTrace();
 			if (e instanceof ThreadDeath) {
 				System.out.println("Nego was timed out");
 				// Main.logger.add("Negotiation was timed out. Both parties get util=0");

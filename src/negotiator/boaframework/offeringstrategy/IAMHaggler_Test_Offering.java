@@ -2,9 +2,6 @@ package negotiator.boaframework.offeringstrategy;
 
 import java.util.HashMap;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-
 import negotiator.DiscreteTimeline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
@@ -41,7 +38,7 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 		if (parameters.containsKey("r")) {
 			amountOfRegressions = parameters.get("r");
 		} else {
-			amountOfRegressions = 15;
+			amountOfRegressions = 10;
 			System.out.println("Using default " + amountOfRegressions + " for amount of regressions.");
 		}
 		if (parameters.containsKey("s")) {
@@ -81,30 +78,30 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 		variances = concessionModel.getVariance();
 		means = concessionModel.getMeans();
-		System.out.println();
-		System.out.println("Round " + round + (variances == null ? ". Estimates still null" : ""));
-		System.out.println("model has been updated with u = " + myUndiscountedUtil + ", at t = " + time + " (which was offered in round " + (round - 1) + ").");
-		if(variances != null){
-
-			DecimalFormat formatter = new DecimalFormat("#.########");
-			DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-			dfs.setDecimalSeparator('.');
-			formatter.setDecimalFormatSymbols(dfs);
-			
-
-			System.out.println("Current time\tCurrent utility\tPrediction for time\tMean\tVariance\t2 SD\tMean\tMean - 2SD\tMean + 2SD");
-
-			for (int i = 0; i <= amountOfSamples; i++)
-			{
-				double var = variances.get(i, 0);
-				double sd = Math.sqrt(var);
-				double mean = means.get(i, 0);
-				double predForTime = ((double) i / (double) amountOfSamples);
-
-				System.out.println(time + "\t" + myUndiscountedUtil + "\t" + predForTime + "\t" + mean + "\t" + formatter.format(var) + "\t" + (2 * sd) + "\t" 
-						+ mean + "\t" + (mean - 2*sd) + "\t" + (mean + 2*sd));
-			}
-		}
+//		System.out.println();
+//		System.out.println("Round " + round + (variances == null ? ". Estimates still null" : ""));
+//		System.out.println("model has been updated with u = " + myUndiscountedUtil + ", at t = " + time + " (which was offered in round " + (round - 1) + ").");
+//		if(variances != null){
+//
+//			DecimalFormat formatter = new DecimalFormat("#.########");
+//			DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+//			dfs.setDecimalSeparator('.');
+//			formatter.setDecimalFormatSymbols(dfs);
+//			
+//
+//			System.out.println("Current time\tCurrent utility\tPrediction for time\tMean\tVariance\t2 SD\tMean\tMean - 2SD\tMean + 2SD");
+//
+//			for (int i = 0; i <= amountOfSamples; i++)
+//			{
+//				double var = variances.get(i, 0);
+//				double sd = Math.sqrt(var);
+//				double mean = means.get(i, 0);
+//				double predForTime = ((double) i / (double) amountOfSamples);
+//
+//				System.out.println(time + "\t" + myUndiscountedUtil + "\t" + predForTime + "\t" + mean + "\t" + formatter.format(var) + "\t" + (2 * sd) + "\t" 
+//						+ mean + "\t" + (mean - 2*sd) + "\t" + (mean + 2*sd));
+//			}
+//		}
 
 		return MAX_UTILITY_BID;
 	}

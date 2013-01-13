@@ -1,8 +1,8 @@
 <negotiation_template number_of_sessions="1">
 	<utility_space number_of_issues="0">
-		<objective index="1" etype="objective" type="objective"
+		<objective index="0" etype="objective" type="objective"
 			description="" name="PieDomain">
-			<issue index="2" etype="discrete" type="discrete" vtype="discrete"
+			<issue index="1" etype="discrete" type="discrete" vtype="discrete"
 				name="Pie">
 				<item index="1" value="a0" cost="0" description="a0"></item>
 				<item index="2" value="a1" cost="0" description="a1"></item>
