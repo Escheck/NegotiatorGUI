@@ -15,6 +15,8 @@ import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
+
+import negotiator.Agent;
 import negotiator.Global;
 import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
@@ -170,18 +172,39 @@ public class AgentRepositoryUI
 	            // Convert path to agent path as in XML file
 	            relativePath = relativePath.replace(File.separatorChar + "", ".");
 	            
-	            
-	            // Remove if 
-	            int row = table.getSelectedRow();
-	    		if (agentrepository.getItems().get(row).getName().equals(ADD_AN_AGENT)) {
-	    			agentrepository.getItems().remove(row);
+	            boolean succes = false;
+	    		java.lang.ClassLoader loader = AgentRepositoryUI.class.getClassLoader();
+	    		try {
+	    			Object object = loader.loadClass(relativePath).newInstance();
+	    			if (object instanceof Agent) {
+	    				succes = true;
+	    			} else {
+	    				JOptionPane.showMessageDialog(null, "Class does not extend Agent", "Load error", 0);
+	    			}
+	    		} catch (ClassNotFoundException e) {
+	    			JOptionPane.showMessageDialog(null, "No class found at " + relativePath, "Load error", 0);
+	    		} catch (InstantiationException e) { // happens when object instantiated is interface or abstract
+	    			JOptionPane.showMessageDialog(null, "Class cannot be instantiated. Reasons may be that there is no constructor without arguments, " +
+														"or the class is abstract or an interface.", "Load error", 0);
+	    		} catch (IllegalAccessException e) {
+	    			JOptionPane.showMessageDialog(null, "Missing constructor without arguments", "Load error", 0);
+	    		} catch (NoClassDefFoundError e) {
+	    			JOptionPane.showMessageDialog(null, "Errors in loaded class. Most likely it is in the wrong folder relative to its package.", "Load error", 0);
 	    		}
-	    		
-	            // Load the agent and save it in the XML
-	            AgentRepItem rep = new AgentRepItem(file.getName().substring(0, file.getName().length() - 6), relativePath, "");
-	            agentrepository.getItems().add(rep);
-	            agentrepository.save();
-	            dataModel.fireTableDataChanged();
+	            
+	            if (succes) {
+		            // Remove "Add agents" if there were no agents first
+		            int row = table.getSelectedRow();
+		    		if (agentrepository.getItems().get(row).getName().equals(ADD_AN_AGENT)) {
+		    			agentrepository.getItems().remove(row);
+		    		}
+		    		
+		            // Load the agent and save it in the XML
+		            AgentRepItem rep = new AgentRepItem(file.getName().substring(0, file.getName().length() - 6), relativePath, "");
+		            agentrepository.getItems().add(rep);
+		            agentrepository.save();
+		            dataModel.fireTableDataChanged();
+	            }
             }
         }
 	}
