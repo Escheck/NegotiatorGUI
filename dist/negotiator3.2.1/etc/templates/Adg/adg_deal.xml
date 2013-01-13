@@ -42,7 +42,7 @@
 		</similarity_function>
 
 		</issue>
-		<issue index="4" name="Airconditioning" type="discrete"vtype="discrete" etype="discrete">
+		<issue index="4" name="Airconditioning" type="discrete" vtype="discrete" etype="discrete">
 			<item index="1" value="good" evaluation="100" />
 			<item index="2" value="fairly good" evaluation="99" />
 			<item index="3" value="standard" evaluation="96" />
