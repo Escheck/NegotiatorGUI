@@ -3,6 +3,7 @@ package negotiator.boaframework.repository;
 import java.util.ArrayList;
 
 import negotiator.boaframework.BOAparameter;
+import negotiator.boaframework.ComponentsEnum;
 
 /**
  * Class used to represent an item in the BOArepository.
@@ -18,15 +19,13 @@ public class BOArepItem {
 	/** Collection of parameters, their description and their default */
 	private ArrayList<BOAparameter> parameters;
 	
-	public BOArepItem(String classPath, ArrayList<BOAparameter> parameters) {
-		this.classPath = classPath;
-		this.parameters = parameters;
-	}
+	private ComponentsEnum type;
 	
-	public BOArepItem(String name, String classPath) {
+	public BOArepItem(String name, String classPath, ComponentsEnum type) {
 		this.name = name;
 		this.classPath = classPath;
 		this.parameters = new ArrayList<BOAparameter>();
+		this.type = type;
 	}
 	
 	public void addParameter(BOAparameter parameter) {
@@ -54,5 +53,30 @@ public class BOArepItem {
 			output += "PARAMETER: " + parameter.toString() + " ";
 		}
 		return output;
+	}
+	
+	public String toXML() {
+		String result = "\t\t<";
+		String element = "";
+		if (type == ComponentsEnum.OFFERINGSTRATEGY) {
+			element = "biddingstrategy";
+		} else if (type == ComponentsEnum.ACCEPTANCESTRATEGY) {
+			element += "acceptancecondition";
+		} else if (type == ComponentsEnum.OPPONENTMODEL) {
+			element += "opponentmodel";
+		} else {
+			element += "omstrategy";
+		}
+		result += element + " description=\"" + name + "\" classpath=\"" + classPath + "\"";
+		if (parameters.size() == 0) {
+			result += "/>\n";
+		} else {
+			result += ">\n";
+			for (BOAparameter param : parameters) {
+				result += "\t\t\t" + param.toXML() + "\n";
+			}
+			result += "\t\t" + "</" + element + ">\n";
+		}
+		return result;
 	}
 }

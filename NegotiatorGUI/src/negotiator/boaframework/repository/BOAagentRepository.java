@@ -1,8 +1,16 @@
 package negotiator.boaframework.repository;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.sun.org.apache.xml.internal.serializer.ToXMLSAXHandler;
+
 import negotiator.Global;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.OMStrategy;
@@ -43,8 +51,9 @@ public class BOAagentRepository {
 	 * @return Singleton instance of the repository loader.
 	 */
 	public static BOAagentRepository getInstance() {
-	    if (ref == null)
-	        ref = new BOAagentRepository();		
+	    if (ref == null) {
+	        ref = new BOAagentRepository();	
+	    }
 	    return ref;
 	  }
 	
@@ -95,7 +104,6 @@ public class BOAagentRepository {
 	 */
 	public OfferingStrategy getOfferingStrategy(String name) {
 		BOArepItem item = repositoryParser.getBiddingStrategies().get(name);
-		System.out.println(name);
 		ClassLoader loader = Global.class.getClassLoader();
 		OfferingStrategy os = null;
 		try {
@@ -174,5 +182,44 @@ public class BOAagentRepository {
 			e.printStackTrace();
 		}
 		return oms;
+	}
+	
+	public void saveRepository() {
+		BufferedWriter out;
+		try {
+			out = new BufferedWriter(new FileWriter("boarepository.xml", false));
+			out.write(toXML());
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String toXML() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
+		buffer.append("<repository fileName=\"boarepository.xml\">\n");
+		buffer.append("\t<biddingstrategies>\n");
+		for (Entry<String, BOArepItem> entry : repositoryParser.getBiddingStrategies().entrySet()) {
+			buffer.append(entry.getValue().toXML());
+		}
+		buffer.append("\t</biddingstrategies>\n");
+		buffer.append("\t<acceptanceconditions>\n");
+		for (Entry<String, BOArepItem> entry : repositoryParser.getAcceptanceConditions().entrySet()) {
+			buffer.append(entry.getValue().toXML());
+		}
+		buffer.append("\t</acceptanceconditions>\n");
+		buffer.append("\t<opponentmodels>\n");
+		for (Entry<String, BOArepItem> entry : repositoryParser.getOpponentModels().entrySet()) {
+			buffer.append(entry.getValue().toXML());
+		}
+		buffer.append("\t</opponentmodels>\n");
+		buffer.append("\t<omstrategy>\n");
+		for (Entry<String, BOArepItem> entry : repositoryParser.getOMStrategies().entrySet()) {
+			buffer.append(entry.getValue().toXML());
+		}
+		buffer.append("\t</omstrategy>\n");
+		buffer.append("</repository>");
+		return buffer.toString();
 	}
 }

@@ -151,4 +151,8 @@ public class BOAparameter implements Serializable{
 	public String getDescription() {
 		return description;
 	}
+	
+	public String toXML() {
+		return "<parameter name=\"" + name + "\" default=\"" + high + "\" description=\"" + description + "\"/>";
+	}
 }
