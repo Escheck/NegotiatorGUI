@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 import negotiator.boaframework.BOAparameter;
+import negotiator.boaframework.ComponentsEnum;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -36,11 +37,15 @@ class BOArepositoryParser extends DefaultHandler {
 	 * @param attributes of the XML element.
 	 */
 	public void startElement(String nsURI, String strippedName,
-			String tagName, Attributes attributes) throws SAXException {
-
-		if (tagName.equals("biddingstrategy") || tagName.equals("acceptancecondition") ||
-				tagName.equals("opponentmodel") || tagName.equals("omstrategy")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1));
+			String tagName, Attributes attributes) throws SAXException {	
+		if (tagName.equals("biddingstrategy")) {
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OFFERINGSTRATEGY);
+		} else if (tagName.equals("acceptancecondition")) {
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.ACCEPTANCESTRATEGY);
+		} else if (tagName.equals("opponentmodel")) {
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OPPONENTMODEL);
+		} else if (tagName.equals("omstrategy")) {
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OMSTRATEGY);
 		} else {
 			if (tagName.equals("parameter")) {
 				currentItem.addParameter(new BOAparameter(attributes.getValue(0), 
