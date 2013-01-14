@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.TreePath;
 import negotiator.CSVLoader;
 import org.jdesktop.application.Action;
@@ -17,6 +18,7 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.SingleFrameApplication;
 import negotiator.Domain;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
+import negotiator.gui.boaframework.BOARepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
 import negotiator.gui.negosession.NegoSessionUI2;
@@ -37,17 +39,21 @@ import negotiator.utility.UtilitySpace;
  * The application's main frame.
  */
 public class NegoGUIView extends FrameView {
-	private AgentRepositoryUI agentRep = null;
 	private static final boolean fTournamentEnabled =true;
 	private static final boolean dTournamentEnabled =true;
-	private DomainRepositoryUI domainRep = null;
+	
     public NegoGUIView(SingleFrameApplication app) {
         super(app);
         initComponents(); 
 
         try{
-			agentRep = new AgentRepositoryUI(tableAgents);
-        	domainRep = new DomainRepositoryUI(treeDomains, this);
+        	// initialize agents table
+			new AgentRepositoryUI(tableAgents);
+			// initialize domain tree structure
+        	new DomainRepositoryUI(treeDomains, this);
+        	// initialize BOA table
+        	new BOARepositoryUI(tableBOAcomponents);
+        	
         } catch (Exception e) {
         	e.printStackTrace();
 		}
@@ -95,9 +101,6 @@ public class NegoGUIView extends FrameView {
     	closeTabbedPane1.addTab(title, comp);    	
     	closeTabbedPane1.setSelectedComponent(comp);
     }
-    public DomainRepositoryUI getDomainRepositoryUI() {
-    	return domainRep;
-    }
 
     private void initComponents() {
         mainPanel = new javax.swing.JPanel();
@@ -105,9 +108,12 @@ public class NegoGUIView extends FrameView {
         jPanel1 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         treeDomains = new javax.swing.JTree();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         tableAgents = new javax.swing.JTable();
+        tableBOAcomponents = new javax.swing.JTable();
         closeTabbedPane1 = new negotiator.gui.tab.CloseTabbedPane();
 
         menuBar = new javax.swing.JMenuBar();
@@ -155,26 +161,14 @@ public class NegoGUIView extends FrameView {
             .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        tableAgents.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tableAgents.setMinimumSize(new java.awt.Dimension(100, 100));
-        tableAgents.setName("tableAgents"); // NOI18N
         jScrollPane1.setViewportView(tableAgents);
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
         jSplitPane1.setLeftComponent(jPanel1);
 
+        jScrollPane3.setViewportView(tableBOAcomponents);
+        jTabbedPane1.addTab("BOA components", jScrollPane3);
+        
         closeTabbedPane1.setName("closeTabbedPane1"); // NOI18N
         jSplitPane1.setRightComponent(closeTabbedPane1);
 
@@ -363,6 +357,7 @@ public class NegoGUIView extends FrameView {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel mainPanel;
@@ -374,6 +369,7 @@ public class NegoGUIView extends FrameView {
     private javax.swing.JMenuItem classDocumentationMenuItem;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JTable tableAgents;
+    private javax.swing.JTable tableBOAcomponents;
     private javax.swing.JTree treeDomains;
 
     public  CloseTabbedPane getMainTabbedPane() {

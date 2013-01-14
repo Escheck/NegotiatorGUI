@@ -5,17 +5,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
-
 import negotiator.Agent;
 import negotiator.Global;
 import negotiator.gui.DirectoryRestrictedFileSystemView;
@@ -29,13 +26,10 @@ import negotiator.repository.Repository;
  */
 public class AgentRepositoryUI
 {
-	
 	private static final String ADD_AN_AGENT = "Add an agent";
-	JFrame frame;
-	JButton addbutton, removebutton;
-	Repository agentrepository;
-	AbstractTableModel dataModel;
-	final JTable table;
+	private Repository agentrepository;
+	private AbstractTableModel dataModel;
+	private final JTable table;
 	
 	public AgentRepositoryUI(JTable  pTable) {
 		this.table = pTable;

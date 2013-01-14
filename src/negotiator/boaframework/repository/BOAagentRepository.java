@@ -4,13 +4,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
-
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import com.sun.org.apache.xml.internal.serializer.ToXMLSAXHandler;
-
 import negotiator.Global;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.OMStrategy;
@@ -66,10 +63,18 @@ public class BOAagentRepository {
 
 	/**
 	 * Method which returns the list of offering strategies in the BOA repository.
-	 * @return list of offering strategies.
+	 * @return list of offering strategies as a String array.
 	 */
 	public ArrayList<String> getOfferingStrategies() {
 		return new ArrayList<String>(repositoryParser.getBiddingStrategies().keySet());
+	}
+	
+	/**
+	 * Method which returns the list of offering strategies in the BOA repository.
+	 * @return list of offering strategies as a map of BOA items.
+	 */
+	public HashMap<String, BOArepItem> getOfferingStrategiesRepItems() {
+		return repositoryParser.getBiddingStrategies();
 	}
 	
 	/**
@@ -81,6 +86,14 @@ public class BOAagentRepository {
 	}
 	
 	/**
+	 * Method which returns the list of acceptance strategies in the BOA repository.
+	 * @return list of acceptance strategies as a map of BOA items.
+	 */
+	public HashMap<String, BOArepItem> getAcceptanceStrategiesRepItems() {
+		return repositoryParser.getAcceptanceConditions();
+	}
+	
+	/**
 	 * Method which returns the list of opponent models in the BOA repository.
 	 * @return list of opponent models.
 	 */
@@ -89,11 +102,27 @@ public class BOAagentRepository {
 	}
 	
 	/**
+	 * Method which returns the list of opponent models in the BOA repository.
+	 * @return list of opponent models as a map of BOA items.
+	 */
+	public HashMap<String, BOArepItem> getOpponentModelsRepItems() {
+		return repositoryParser.getOpponentModels();
+	}
+	
+	/**
 	 * Method which returns the list of opponent model strategies in the BOA repository.
 	 * @return list of opponent model strategies.
 	 */
 	public ArrayList<String> getOMStrategies() {
 		return new ArrayList<String>(repositoryParser.getOMStrategies().keySet());
+	}
+	
+	/**
+	 * Method which returns the list of opponent model strategies in the BOA repository.
+	 * @return list of opponent model strategies as a map of BOA items.
+	 */
+	public HashMap<String, BOArepItem> getOMStrategiesRepItems() {
+		return repositoryParser.getOMStrategies();
 	}
 	
 	/**
@@ -221,5 +250,10 @@ public class BOAagentRepository {
 		buffer.append("\t</omstrategy>\n");
 		buffer.append("</repository>");
 		return buffer.toString();
+	}
+
+	public int getItemsCount() {
+		return repositoryParser.getBiddingStrategies().size() + repositoryParser.getAcceptanceConditions().size() +
+				repositoryParser.getOMStrategies().size() + repositoryParser.getOpponentModels().size();
 	}
 }

@@ -39,7 +39,7 @@ class BOArepositoryParser extends DefaultHandler {
 	public void startElement(String nsURI, String strippedName,
 			String tagName, Attributes attributes) throws SAXException {	
 		if (tagName.equals("biddingstrategy")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OFFERINGSTRATEGY);
+			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.BIDDINGSTRATEGY);
 		} else if (tagName.equals("acceptancecondition")) {
 			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.ACCEPTANCESTRATEGY);
 		} else if (tagName.equals("opponentmodel")) {
