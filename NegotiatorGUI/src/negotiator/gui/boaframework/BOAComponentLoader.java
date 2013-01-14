@@ -96,6 +96,7 @@ public class BOAComponentLoader extends javax.swing.JFrame {
     			editParameterAction();
     		}
     	});
+        
         openButton = new javax.swing.JButton("Open");
         openButton.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent e) {

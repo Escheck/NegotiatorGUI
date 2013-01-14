@@ -1,3 +1,3 @@
 package negotiator.boaframework;
 
-public enum ComponentsEnum { ACCEPTANCESTRATEGY, OFFERINGSTRATEGY, OPPONENTMODEL, OMSTRATEGY }
+public enum ComponentsEnum { BIDDINGSTRATEGY, ACCEPTANCESTRATEGY, OPPONENTMODEL, OMSTRATEGY }

@@ -11,7 +11,7 @@ import negotiator.boaframework.ComponentsEnum;
  * 
  * @author Mark Hendrikx
  */
-public class BOArepItem {
+public class BOArepItem implements Comparable<BOArepItem> {
 	/** Name of the item */
 	private String name;
 	/** Classpath of the item in the repository */
@@ -58,7 +58,7 @@ public class BOArepItem {
 	public String toXML() {
 		String result = "\t\t<";
 		String element = "";
-		if (type == ComponentsEnum.OFFERINGSTRATEGY) {
+		if (type == ComponentsEnum.BIDDINGSTRATEGY) {
 			element = "biddingstrategy";
 		} else if (type == ComponentsEnum.ACCEPTANCESTRATEGY) {
 			element += "acceptancecondition";
@@ -78,5 +78,23 @@ public class BOArepItem {
 			result += "\t\t" + "</" + element + ">\n";
 		}
 		return result;
+	}
+
+	public String getType() {
+		return type.toString();
+	}
+
+	@Override
+	public int compareTo(BOArepItem rep2) {
+		if (this.type.ordinal() < rep2.type.ordinal()) {
+			return -1; // -1 means that THIS goes before rep2
+		}
+		if (this.type.ordinal() > rep2.type.ordinal()) {
+			return 1;
+		}
+		if (this.type.ordinal() == rep2.type.ordinal()) {
+			return String.CASE_INSENSITIVE_ORDER.compare(this.name, rep2.name);
+		}
+		return 0;
 	}
 }
