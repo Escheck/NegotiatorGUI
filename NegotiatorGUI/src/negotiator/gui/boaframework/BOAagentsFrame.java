@@ -31,6 +31,7 @@ import misc.SetTools;
 import negotiator.boaframework.BOAagentInfo;
 import negotiator.boaframework.BOAcomponent;
 import negotiator.boaframework.BOAparameter;
+import negotiator.boaframework.ComponentsEnum;
 import negotiator.boaframework.repository.BOAagentRepository;
 import negotiator.boaframework.repository.BOArepItem;
 import negotiator.gui.ExtendedComboBoxModel;
@@ -121,25 +122,33 @@ public class BOAagentsFrame extends JDialog {
     	Collections.sort(offeringStrategies);
     	biddingStrategyModel.setInitialContent(offeringStrategies);
 		biddingStrategyCB.setModel(biddingStrategyModel);
-		biddingStrategyCB.setSelectedIndex(0);
+		if (offeringStrategies.size() > 0) {
+			biddingStrategyCB.setSelectedIndex(0);
+		}
 		
 		acceptanceStrategyModel = new ExtendedComboBoxModel<String>();
 		Collections.sort(acceptanceConditions);
 		acceptanceStrategyModel.setInitialContent(acceptanceConditions);
 		acceptanceStrategyCB.setModel(acceptanceStrategyModel);
-		acceptanceStrategyCB.setSelectedIndex(0);
+		if (acceptanceConditions.size() > 0) {
+			acceptanceStrategyCB.setSelectedIndex(0);
+		}
 		
 		opponentModelModel = new ExtendedComboBoxModel<String>();
 		Collections.sort(opponentModels);
 		opponentModelModel.setInitialContent(opponentModels);
 		opponentModelCB.setModel(opponentModelModel);
-		opponentModelCB.setSelectedIndex(0);
+		if (opponentModels.size() > 0) {
+			opponentModelCB.setSelectedIndex(0);
+		}
 		
 		omStrategyModel = new ExtendedComboBoxModel<String>();
 		Collections.sort(omStrategies);
 		omStrategyModel.setInitialContent(omStrategies);
 		omStrategyCB.setModel(omStrategyModel);
-		omStrategyCB.setSelectedIndex(0);
+		if (omStrategies.size() > 0) {
+			omStrategyCB.setSelectedIndex(0);
+		}
     }
 
 	private void initFrameUI() {
@@ -388,10 +397,10 @@ public class BOAagentsFrame extends JDialog {
     }
     
     private void generateAgentCombinations() {
-		Set<BOAcomponent> osStrat = generateStrategies((String)biddingStrategyCB.getSelectedItem(), biddingStrategyTF.getBOAparameters(), "bs");
-		Set<BOAcomponent> asStrat = generateStrategies((String)acceptanceStrategyCB.getSelectedItem(), acceptanceStrategyTF.getBOAparameters(), "as");
-		Set<BOAcomponent> omStrat = generateStrategies((String)opponentModelCB.getSelectedItem(), opponentModelTF.getBOAparameters(), "om");
-		Set<BOAcomponent> omsStrat = generateStrategies((String)omStrategyCB.getSelectedItem(), omStrategyTF.getBOAparameters(), "oms");
+		Set<BOAcomponent> osStrat = generateStrategies((String)biddingStrategyCB.getSelectedItem(), biddingStrategyTF.getBOAparameters(), ComponentsEnum.BIDDINGSTRATEGY);
+		Set<BOAcomponent> asStrat = generateStrategies((String)acceptanceStrategyCB.getSelectedItem(), acceptanceStrategyTF.getBOAparameters(), ComponentsEnum.ACCEPTANCESTRATEGY);
+		Set<BOAcomponent> omStrat = generateStrategies((String)opponentModelCB.getSelectedItem(), opponentModelTF.getBOAparameters(), ComponentsEnum.OPPONENTMODEL);
+		Set<BOAcomponent> omsStrat = generateStrategies((String)omStrategyCB.getSelectedItem(), omStrategyTF.getBOAparameters(), ComponentsEnum.OMSTRATEGY);
 		
 		Set<Set<BOAcomponent>> result = SetTools.cartesianProduct(osStrat, asStrat, omStrat, omsStrat);
 		Iterator<Set<BOAcomponent>> strategyIterator = result.iterator();
@@ -401,13 +410,13 @@ public class BOAagentsFrame extends JDialog {
 			BOAcomponent os = null, as = null, om = null, oms = null;
 			while (strat.hasNext()) {
 				BOAcomponent strategy = strat.next();
-				if (strategy.getType().equals("bs")) {
+				if (strategy.getType() == ComponentsEnum.BIDDINGSTRATEGY) {
 					os = strategy;
-				} else if (strategy.getType().equals("as")) {
+				} else if (strategy.getType() == ComponentsEnum.ACCEPTANCESTRATEGY) {
 					as = strategy;
-				} else if (strategy.getType().equals("om")){
+				} else if (strategy.getType() == ComponentsEnum.OPPONENTMODEL){
 					om = strategy;
-				} else if (strategy.getType().equals("oms")) {
+				} else if (strategy.getType() == ComponentsEnum.OMSTRATEGY) {
 					oms = strategy;
 				}
 			}
@@ -417,7 +426,7 @@ public class BOAagentsFrame extends JDialog {
 	}
 	
 	private Set<BOAcomponent> generateStrategies(String classname,
-			ArrayList<BOAparameter> parameters, String type) {
+			ArrayList<BOAparameter> parameters, ComponentsEnum type) {
 
 		if (parameters == null || parameters.size() == 0) {
 			parameters = new ArrayList<BOAparameter>();

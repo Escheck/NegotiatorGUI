@@ -1,13 +1,13 @@
 package negotiator.gui.boaframework;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,29 +20,30 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
-
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-
 import negotiator.Global;
 import negotiator.boaframework.AcceptanceStrategy;
-import negotiator.boaframework.BOAagentInfo;
 import negotiator.boaframework.BOAparameter;
+import negotiator.boaframework.ComponentsEnum;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.repository.BOAagentRepository;
+import negotiator.boaframework.repository.BOArepItem;
 import negotiator.gui.DirectoryRestrictedFileSystemView;
-import negotiator.gui.ExtendedListModel;
 import negotiator.gui.GenericFileFilter;
 
 /**
  *
  * @author Mark Hendrikx
  */
-public class BOAComponentLoader extends javax.swing.JFrame {
+public class BOAComponentLoader extends JDialog {
 
+	private static final long serialVersionUID = -7204112461104285605L;
 	private JButton addParameterButton;
-    private JLabel agentClassLabel;
-    private JTextField agentClassTextField;
+    private JLabel componentNameLabel;
+    private JTextField componentNameTextField;
+    private JLabel componentClassLabel;
+    private JTextField componentClassTextField;
     private JLabel defaultValueLabel;
     private JTextField defaultValueTextField;
     private JLabel descriptionLabel;
@@ -58,19 +59,22 @@ public class BOAComponentLoader extends javax.swing.JFrame {
     private JTextField parameterNameTextField;
     private JButton removeParameterButton;
     private JSeparator upperSeparator;
+    private BOArepItem result = null;
+    private ComponentsEnum type;
     
-    /**
-     * Creates new form Test
-     */
-    public BOAComponentLoader() {
-        initComponents();
-    }
+	public BOAComponentLoader(Frame frame, String title) {
+		super(frame, title, true);
+		this.setLocation(frame.getLocation().x + frame.getWidth() / 2, frame.getLocation().y + frame.getHeight() / 4);
+		this.setSize(frame.getSize().width / 3, frame.getSize().height / 2);
+	}
 
-    private void initComponents() {
-
-        agentClassLabel = new JLabel("Agent class");
-        agentClassTextField = new javax.swing.JTextField();
-        agentClassTextField.setEditable(false);
+	public BOArepItem getResult() {
+		componentNameLabel = new JLabel("Component name");
+		componentNameTextField = new JTextField();
+		
+        componentClassLabel = new JLabel("Component class");
+        componentClassTextField = new javax.swing.JTextField();
+        componentClassTextField.setEditable(false);
         
         parameterNameLabel = new JLabel("Parameter name");
         parameterNameTextField = new javax.swing.JTextField();
@@ -82,6 +86,11 @@ public class BOAComponentLoader extends javax.swing.JFrame {
         defaultValueTextField = new JTextField();
         
         addComponent = new JButton("Add component");
+        addComponent.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			addComponent();
+    		}
+    	});
         
         removeParameterButton = new JButton("Remove parameter");
         removeParameterButton.addActionListener(new ActionListener() {
@@ -133,8 +142,6 @@ public class BOAComponentLoader extends javax.swing.JFrame {
         
         upperSeparator = new javax.swing.JSeparator();
         lowerSeparator = new javax.swing.JSeparator();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         
         parameterListScrollPane.setViewportView(parameterList);
@@ -149,9 +156,13 @@ public class BOAComponentLoader extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(agentClassLabel)
+                		.addComponent(componentNameLabel)
+                        .addGap(14, 14, 14)
+                        .addComponent(componentNameTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(componentClassLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(agentClassTextField)
+                        .addComponent(componentClassTextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(openButton))
                     .addGroup(layout.createSequentialGroup()
@@ -189,8 +200,13 @@ public class BOAComponentLoader extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(agentClassLabel)
-                    .addComponent(agentClassTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                	.addComponent(componentNameLabel)
+                    .addComponent(componentNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                		)                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)   
+              
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            		.addComponent(componentClassLabel)
+                    .addComponent(componentClassTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(openButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(upperSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,8 +233,9 @@ public class BOAComponentLoader extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        this.setTitle("Add BOA component");
         pack();
+        setVisible(true);
+        return result;
     }
 
     private void removeParameterAction() {
@@ -232,12 +249,36 @@ public class BOAComponentLoader extends javax.swing.JFrame {
     	addParameterAction();
     }
     
+    private void addComponent() {
+    	boolean valid = true;
+    	if (componentNameTextField.getText().length() == 0 || componentNameTextField.getText().length() > 35) {
+    		valid = false;
+    		JOptionPane.showMessageDialog(null, "Component name should be non-empty and at most 35 characters.", "Invalid parameter input", 0);
+    	}
+    	if (componentClassTextField.getText().length() == 0) {
+    		valid = false;
+    		JOptionPane.showMessageDialog(null, "Please specify a class.", "Invalid parameter input", 0);
+    	}
+    	if (valid) {
+    		String name = componentNameTextField.getText();
+    		String classPath = componentClassTextField.getText();
+    		BOArepItem newComponent = new BOArepItem(name, classPath, type);
+    		for (int i = 0; i < parameterListModel.getSize(); i++) {
+                BOAparameter item = (BOAparameter) parameterListModel.getElementAt(i);
+                newComponent.addParameter(item);		
+            }
+    		BOAagentRepository.getInstance().addComponent(newComponent);
+    		result = newComponent;
+    		dispose();
+    	}
+    }
+    
     private void addParameterAction() {
     	boolean valid = true;
     	String paramName = parameterNameTextField.getText();
     	if (paramName.length() == 0 || paramName.length() > 12) {
     		valid = false;
-    		JOptionPane.showMessageDialog(null, "Parameter name length should be non-empty and at most 12 characters.", "Invalid parameter input", 0);
+    		JOptionPane.showMessageDialog(null, "Parameter name should be non-empty and at most 12 characters.", "Invalid parameter input", 0);
     	}
     	BigDecimal defaultValue = null;
     	try {
@@ -280,25 +321,48 @@ public class BOAComponentLoader extends javax.swing.JFrame {
             if (!file.getPath().startsWith(root)) {
             	JOptionPane.showMessageDialog(null, "Only components in the root or a subdirectory of the root are allowed.", "Component import error", 0);
             } else {
-            	// Get the relative path of the agent class file
+            	// Get the relative path of the component class file
 	            String relativePath = file.getPath().substring(root.length(), file.getPath().length() - 6);
 	            
 	            // Convert path to agent path as in XML file
 	            relativePath = relativePath.replace(File.separatorChar + "", ".");
-	            agentClassTextField.setText(relativePath);
+	            
+	            boolean succes = true;
+	            
+	    		java.lang.ClassLoader loader = BOAComponentLoader.class.getClassLoader();
+	    		try {
+	    			Object object = loader.loadClass(relativePath).newInstance();
+	    			if (object instanceof OfferingStrategy) {
+	    				type = ComponentsEnum.BIDDINGSTRATEGY;
+	    			} else if (object instanceof AcceptanceStrategy) {
+	    				type = ComponentsEnum.ACCEPTANCESTRATEGY;
+	    			} else if (object instanceof OpponentModel) {
+	    				type = ComponentsEnum.OPPONENTMODEL;
+	    			} else if (object instanceof OMStrategy) {
+	    				type = ComponentsEnum.OMSTRATEGY;
+	    			} else {
+	    				succes = false;
+	    				JOptionPane.showMessageDialog(null, "Class does not extend OfferingStrategy, AcceptanceStrategy, \n" +
+	    													"OpponentModel, or OMStrategy.", "Load error", 0);
+	    			}
+	    		} catch (ClassNotFoundException e) {
+	    			succes = false;
+	    			JOptionPane.showMessageDialog(null, "No class found at " + relativePath, "Load error", 0);
+	    		} catch (InstantiationException e) { // happens when object instantiated is interface or abstract
+	    			succes = false;
+	    			JOptionPane.showMessageDialog(null, "Class cannot be instantiated. Reasons may be that there is no constructor without arguments, " +								"or the class is abstract or an interface.", "Load error", 0);
+	    		} catch (IllegalAccessException e) {
+	    			succes = false;
+	    			JOptionPane.showMessageDialog(null, "Missing constructor without arguments", "Load error", 0);
+	    		} catch (NoClassDefFoundError e) {
+	    			succes = false;
+	    			JOptionPane.showMessageDialog(null, "Errors in loaded class. Most likely it is in the wrong folder relative to its package.", "Load error", 0);
+	    		}
+	    		
+	    		if (succes) {
+	    			componentClassTextField.setText(relativePath);
+	    		}
             }
         }
 	}
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BOAComponentLoader().setVisible(true);
-            }
-        });
-    }
 }

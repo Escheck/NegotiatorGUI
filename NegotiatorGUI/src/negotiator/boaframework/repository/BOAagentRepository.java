@@ -10,6 +10,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 import negotiator.Global;
 import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.ComponentsEnum;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
@@ -255,5 +256,45 @@ public class BOAagentRepository {
 	public int getItemsCount() {
 		return repositoryParser.getBiddingStrategies().size() + repositoryParser.getAcceptanceConditions().size() +
 				repositoryParser.getOMStrategies().size() + repositoryParser.getOpponentModels().size();
+	}
+
+	public void removeComponent(BOArepItem removed) {
+		switch (removed.getType()) {
+		case BIDDINGSTRATEGY:
+			repositoryParser.getBiddingStrategies().remove(removed.getName());
+		break;
+		case OPPONENTMODEL:
+			repositoryParser.getOpponentModels().remove(removed.getName());
+		break;
+		case ACCEPTANCESTRATEGY:
+			repositoryParser.getAcceptanceConditions().remove(removed.getName());
+		break;
+		case OMSTRATEGY:
+			repositoryParser.getOMStrategies().remove(removed.getName());
+		break;
+		default:
+			break;
+		}
+		saveRepository();
+	}
+
+	public void addComponent(BOArepItem newComponent) {
+		switch (newComponent.getType()) {
+		case BIDDINGSTRATEGY:
+			repositoryParser.getBiddingStrategies().put(newComponent.getName(), newComponent);
+		break;
+		case OPPONENTMODEL:
+			repositoryParser.getOpponentModels().put(newComponent.getName(), newComponent);
+		break;
+		case ACCEPTANCESTRATEGY:
+			repositoryParser.getAcceptanceConditions().put(newComponent.getName(), newComponent);
+		break;
+		case OMSTRATEGY:
+			repositoryParser.getOMStrategies().put(newComponent.getName(), newComponent);
+		break;
+		default:
+			break;
+		}
+		saveRepository();
 	}
 }
