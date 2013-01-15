@@ -224,7 +224,7 @@ Start \Genius~by following the instructions in the previous section. After start
 
 \begin{itemize}
 	\item The \textbf{Menubar} allows us to start a new negotiation.
-	\item The \textbf{Components Window} shows all available scenarios and agents.
+	\item The \textbf{Components Window} shows all available scenarios, agents, and BOA components.
 	\item The \textbf{Status Window} shows the negotiation status or selected domain/preference profile.
 \end{itemize}
 
@@ -617,7 +617,7 @@ The method \textit{isAcceptable} implements the probabilistic acceptance functio
 where $u$ is the utility of the bid made by the opponent (as measured in our utility space), and $t$ is the current time as a fraction of the total available time. Figure~\ref{Fig:Paccept} shows how this function behaves depending on the utility and remaining time. Note that this function only decides if a bid is acceptable or not. More advanced acceptance strategies also use the \texttt{EndNegotiation} action.
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.3\textwidth]{media/image21.pdf}
+	\includegraphics[width=0.3\textwidth]{media/image21.png}
 	\caption{$P_\text{accept}$ value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
 \end{figure}
 %\subsection{Init}
@@ -809,32 +809,23 @@ Determines if the opponent model may be updated this turn.\\
 \end{table}
 
 \subsection{Adding a Component to the BOA Repository}
-In the previous section we discussed how to create each type of BOA component. To use the components, we still need to add them to the \textit{BOA repository}. The \textit{BOA repository} is located in the main directory of \Genius ~and its structure is similar to the small repository shown below. There are four main categories corresponding to the component types. Each element in a category has to specify a description and a classpath. Optionally, one or multiple parameters may be specified.
+In the previous section we discussed how to create each type of BOA component. To use the components, we still need to add them to the \textit{BOA repository}. To do so, simply open the BOA components tab in the components window as shown in Figure~\ref{fig:boacomponents} and select ``Add new component''.
 
-\begin{lstlisting}
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<repository fileName="boarepository.xml">
-  <biddingstrategies>
-    <biddingstrategy description="2010 - IAMcrazyHaggler"
-		classPath="negotiator.boaframework.offeringstrategy.
-		anac2010.IAMCrazyHaggler_Offering">
-		<parameter name="b" default="0.9" description="Minimum utility"/>
-    </biddingstrategy>
-  </biddingstrategies>
-  <acceptanceconditions>
-    <acceptancecondition description="Other - False"
-		classPath="negotiator.boaframework.acceptanceconditions.other.AC_False"/>
-  </acceptanceconditions>
-  <opponentmodels>
-    <opponentmodel description="AgentX Frequency Model"
-		classPath="negotiator.boaframework.opponentmodel.AgentXFrequencyModel"/>
-  </opponentmodels>
-  <omstrategies>
-    <omstrategy description="Best bid"
-		classPath="negotiator.boaframework.omstrategy.BestBid"/>
-  </omstrategies>
-</repository>
-\end{lstlisting}
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=5cm]{media/AddBOA.png}
+	\caption{The BOA components window.}
+	\label{fig:boacomponents}
+\end{figure}
+
+Selecting ``Add new component'' results in the opening of the window shown in Figure~\ref{fig:loadBOA}. In this window the user should specify the name of the component, for example ``ANAC2012 - AgentLG'', specify the path to the class by selecting ``Open''; and optionally add parameters. Finally, clicking ``Add component'' in this window adds the component to the repository.
+
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=9cm]{media/LoadBOA.png}
+	\caption{Loading a BOA agent.}
+	\label{fig:loadBOA}
+\end{figure}
 
 \subsection{Advanced: Converting a BOA Agent to an Agent}
 To convert a BOA agent to a normal agent you have to create a class that extends \textit{BOA agent} and override the \textit{agentSetup} method. Below is an example of a BOA agent wrapped as a normal agent.
