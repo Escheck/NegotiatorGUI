@@ -24,7 +24,7 @@ public class BOAcomponent implements Serializable {
 	/** Classname of the component */
 	private String classname;
 	/** Type of the component, for example "as" for acceptance condition */
-	private String type;
+	private ComponentsEnum type;
 	/** Parameters which should be used to initialize the component upon creation */
 	private HashMap<String, BigDecimal> parameters;
 	
@@ -38,7 +38,7 @@ public class BOAcomponent implements Serializable {
 	 * @param type of the component (for example bidding strategy).
 	 * @param strategyParam parameters of the component.
 	 */
-	public BOAcomponent(String classname, String type, HashMap<String, BigDecimal> strategyParam) {
+	public BOAcomponent(String classname, ComponentsEnum type, HashMap<String, BigDecimal> strategyParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = strategyParam;
@@ -51,7 +51,7 @@ public class BOAcomponent implements Serializable {
 	 * @param classname of the component.
 	 * @param type of the component (for example bidding strategy).
 	 */
-	public BOAcomponent(String classname, String type) {
+	public BOAcomponent(String classname, ComponentsEnum type) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = new HashMap<String, BigDecimal>();
@@ -66,7 +66,7 @@ public class BOAcomponent implements Serializable {
 	 * @param type of the component (for example bidding strategy).
 	 * @param orgParam backup of original parameters
 	 */
-	public BOAcomponent(String classname, String type, ArrayList<BOAparameter> orgParam) {
+	public BOAcomponent(String classname, ComponentsEnum type, ArrayList<BOAparameter> orgParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = new HashMap<String, BigDecimal>();
@@ -93,7 +93,7 @@ public class BOAcomponent implements Serializable {
 	/**
 	 * @return type of the component.
 	 */
-	public String getType() {
+	public ComponentsEnum getType() {
 		return type;
 	}
 	
@@ -146,6 +146,22 @@ public class BOAcomponent implements Serializable {
 			}
 			params += "}";
 		}
-		return type + ": " + classname + " " + params;
+		String shortType = "unknown";
+		switch (type) {
+			case BIDDINGSTRATEGY:  
+				shortType = "bs";
+				break;
+			case ACCEPTANCESTRATEGY:  
+				shortType = "ac";
+				break;
+			case OPPONENTMODEL:  
+				shortType = "om";
+				break;
+			case OMSTRATEGY:  
+				shortType = "oms";
+				break;
+		}
+		
+		return shortType + ": " + classname + " " + params;
 	}
 }

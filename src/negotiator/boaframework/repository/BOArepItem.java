@@ -80,8 +80,30 @@ public class BOArepItem implements Comparable<BOArepItem> {
 		return result;
 	}
 
-	public String getType() {
-		return type.toString();
+	public ComponentsEnum getType() {
+		return type;
+	}
+	
+	public String getTypeString() {
+		String result;
+		switch (type) {
+		case BIDDINGSTRATEGY:
+			result = "Bidding strategy";
+		break;
+		case OPPONENTMODEL:
+			result = "Opponent model";
+		break;
+		case ACCEPTANCESTRATEGY:
+			result = "Acceptance strategy";
+		break;
+		case OMSTRATEGY:
+			result = "Opponent model strategy";
+		break;
+		default:
+			result = "Unknown type";
+			break;
+		}
+		return result;
 	}
 
 	@Override
