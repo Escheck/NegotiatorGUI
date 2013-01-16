@@ -1,7 +1,7 @@
 <utility_space>
-	<objective index="1" description="" name="Party" type="objective"
+	<objective index="0" description="" name="Party" type="objective"
 		etype="objective">
-		<issue index="2" name="Food" vtype="discrete" type="discrete"
+		<issue index="1" name="Food" vtype="discrete" type="discrete"
 			etype="discrete">
 			<item index="1"
 				description="Buy bags of chips and party nuts for all guests."
@@ -22,7 +22,7 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>
 		</issue>
-		<issue index="3" name="Drinks" vtype="discrete" type="discrete"
+		<issue index="2" name="Drinks" vtype="discrete" type="discrete"
 			etype="discrete">
 			<item index="1" description="Soda's, ice water, etc."
 				value="Non-Alcoholic" cost="75.0" evaluation="1">
@@ -41,7 +41,7 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>						
 		</issue>
-		<issue index="4" name="Location" vtype="discrete"
+		<issue index="3" name="Location" vtype="discrete"
 			type="discrete" etype="discrete">
 			<item index="1"
 				description="A tent on some field somewhere. Roomy, but outdoors."
@@ -61,7 +61,7 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>
 		</issue>
-		<issue index="5" name="Invitations" vtype="discrete"
+		<issue index="4" name="Invitations" vtype="discrete"
 			type="discrete" etype="discrete">
 			<item index="1"
 				description="Write the address on pieces of paper and hand those out."
@@ -81,7 +81,7 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>
 		</issue>
-		<issue index="6" name="Music" vtype="discrete" type="discrete"
+		<issue index="5" name="Music" vtype="discrete" type="discrete"
 			etype="discrete">
 			<item index="1"
 				description="Plug some boxes into your computer and run off your MP3 collection. More work, the wiring costs money."
@@ -97,7 +97,7 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>			
 		</issue>
-		<issue index="7" name="Cleanup" vtype="discrete" type="discrete"
+		<issue index="6" name="Cleanup" vtype="discrete" type="discrete"
 			etype="discrete">
 			<item index="1"
 				description="This will take a lot of scrubbing. It is cheap, but by far the most work."
@@ -117,11 +117,11 @@ highest cost."
 			</item>
 			<similarity_function type="binary" weight="0.1666666"/>			
 		</issue>
-		<weight index="2" value="0.23178051377027062"></weight>
-		<weight index="3" value="0.24514014257702527"></weight>
-		<weight index="4" value="0.13238199382374172"></weight>
-		<weight index="5" value="0.13130684347160723"></weight>
-		<weight index="6" value="0.1302322866864694"></weight>
-		<weight index="7" value="0.12915821967088573"></weight>
+		<weight index="1" value="0.23178051377027062"></weight>
+		<weight index="2" value="0.24514014257702527"></weight>
+		<weight index="3" value="0.13238199382374172"></weight>
+		<weight index="4" value="0.13130684347160723"></weight>
+		<weight index="5" value="0.1302322866864694"></weight>
+		<weight index="6" value="0.12915821967088573"></weight>
 	</objective>
 </utility_space>

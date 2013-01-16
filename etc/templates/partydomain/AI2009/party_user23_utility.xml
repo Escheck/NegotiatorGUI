@@ -1,6 +1,6 @@
 <utility_space> 
-<objective index="1" description="" name="Party" type="objective" etype="objective"> 
-<issue index="2" name="Food" vtype="discrete" type="discrete" etype="discrete"> 
+<objective index="0" description="" name="Party" type="objective" etype="objective"> 
+<issue index="1" name="Food" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="Buy bags of chips and party nuts for all guests." value="Chips and Nuts" cost="100.0" evaluation="57"> 
 </item> 
 <item index="2" description="Diced cheese, sliced sausage, deep fried stuff. More tasty than chips and nuts, but more expensive." value="Finger-Food" cost="170.0" evaluation="23"> 
@@ -11,7 +11,7 @@
 highest cost." value="Catering" cost="250.0" evaluation="13"> 
 </item> 
 </issue> 
-<issue index="3" name="Drinks" vtype="discrete" type="discrete" etype="discrete"> 
+<issue index="2" name="Drinks" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="Soda’s, ice water, etc." value="Non-Alcoholic" cost="75.0" evaluation="20"> 
 </item> 
 <item index="2" description="More than enough beers for everybody. It has alcohol, but is more expensive." value="Beer Only" cost="300.0" evaluation="79"> 
@@ -21,7 +21,7 @@ highest cost." value="Catering" cost="250.0" evaluation="13">
 <item index="4" description="Let some company do the drinks. Least work, highest cost." value="Catering" cost="450.0" evaluation="0"> 
 </item> 
 </issue> 
-<issue index="4" name="Location" vtype="discrete" type="discrete" etype="discrete"> 
+<issue index="3" name="Location" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="A tent on some field somewhere. Roomy, but outdoors." value="Party Tent" cost="200.0" evaluation="8"> 
 </item> 
 <item index="2" description="Give the party in your dormitory. It’s home, but there is less room." value="Your Dorm" cost="100.0" evaluation="72"> 
@@ -31,7 +31,7 @@ highest cost." value="Catering" cost="250.0" evaluation="13">
 <item index="4" description="The fanciest option. A beautifully decorated ballroom with everything you need." value="Ballroom" cost="600.0" evaluation="0"> 
 </item> 
 </issue> 
-<issue index="5" name="Invitations" vtype="discrete" type="discrete" etype="discrete"> 
+<issue index="4" name="Invitations" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="Write the address on pieces of paper and hand those out." value="Plain" cost="25.0" evaluation="50"> 
 </item> 
 <item index="2" description="Take a nice picture of something, or buy one in the store, and write on the back of that. More expensive, but prettier." value="Photo" cost="75.0" evaluation="18"> 
@@ -41,7 +41,7 @@ highest cost." value="Catering" cost="250.0" evaluation="13">
 <item index="4" description="Design the card, then let somebody else print it. You pay a lot, but do the least." value="Custom, Printed" cost="150.0" evaluation="0"> 
 </item> 
 </issue> 
-<issue index="6" name="Music" vtype="discrete" type="discrete" etype="discrete"> 
+<issue index="5" name="Music" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="Plug some boxes into your computer and run off your MP3 collection. More work, the wiring costs money." value="MP3" cost="100.0" evaluation="19"> 
 </item> 
 <item index="2" description="Hire a DJ to play off his MP3 collection. No work for you during the party, but more expensive." value="DJ" cost="250.0" evaluation="0"> 
@@ -49,7 +49,7 @@ highest cost." value="Catering" cost="250.0" evaluation="13">
 <item index="3" description="Hire a party band for live music. The most expensive, but it is live music." value="Band" cost="350.0" evaluation="97"> 
 </item> 
 </issue> 
-<issue index="7" name="Cleanup" vtype="discrete" type="discrete" etype="discrete"> 
+<issue index="6" name="Cleanup" vtype="discrete" type="discrete" etype="discrete"> 
 <item index="1" description="This will take a lot of scrubbing. It is cheap, but by far the most work." value="Water and Soap" cost="20.0" evaluation="92"> 
 </item> 
 <item index="2" description="Specialized materials will help cleaning a lot, but it is more expensive." value="Specialized Materials" cost="60.0" evaluation="30"> 
@@ -59,17 +59,17 @@ highest cost." value="Catering" cost="250.0" evaluation="13">
 <item index="4" description="Hire somebody else to do your dirty work. No work,but pricey." value="Hired Help" cost="200.0" evaluation="0"> 
 </item> 
 </issue> 
-<weight index="2" value="0.17"> 
+<weight index="1" value="0.17"> 
 </weight> 
-<weight index="3" value="0.31"> 
+<weight index="2" value="0.31"> 
 </weight> 
-<weight index="4" value="0.23"> 
+<weight index="3" value="0.23"> 
 </weight> 
-<weight index="5" value="0.05"> 
+<weight index="4" value="0.05"> 
 </weight> 
-<weight index="6" value="0.2"> 
+<weight index="5" value="0.2"> 
 </weight> 
-<weight index="7" value="0.03"> 
+<weight index="6" value="0.04"> 
 </weight> 
 </objective> 
 </utility_space> 
