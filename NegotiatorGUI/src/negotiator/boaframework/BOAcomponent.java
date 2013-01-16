@@ -152,7 +152,7 @@ public class BOAcomponent implements Serializable {
 				shortType = "bs";
 				break;
 			case ACCEPTANCESTRATEGY:  
-				shortType = "ac";
+				shortType = "as";
 				break;
 			case OPPONENTMODEL:  
 				shortType = "om";
