@@ -1,5 +1,7 @@
 package negotiator.utility;
 
+import java.text.DecimalFormat;
+
 import negotiator.Bid;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueInteger;
@@ -23,6 +25,7 @@ public class EvaluatorInteger implements Evaluator {
 	EVALFUNCTYPE type;
 	private double slope = 0.0;
 	private double offset = 0.0;
+	private DecimalFormat f = new DecimalFormat("0.0000");
 	
 	/**
 	 * Creates a new integer evaluator with weight 0 and
@@ -254,6 +257,9 @@ public class EvaluatorInteger implements Evaluator {
 		setOffset(offset);
 	}
 
+	public String toString() {
+		return "{Integer: offset=" + f.format(offset) + " slope=" + f.format(slope) + " range=[" + lowerBound + ":" + upperBound + "]}";
+	}
 	public EvaluatorInteger clone()
 	{
 		EvaluatorInteger ed=new EvaluatorInteger();

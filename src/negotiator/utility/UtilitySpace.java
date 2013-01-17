@@ -1064,6 +1064,15 @@ public class UtilitySpace {
     	return fileName;
     }
 
+    public String toString() {
+    	String result = "";
+    	for (Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
+    		result += ("Issue weight " + entry.getValue().getWeight() + "\n");
+    		result += ("Values " + entry.getKey().getName() + ": " + entry.getValue().toString() + "\n");
+    	}
+    	return result;
+    }
+    
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof UtilitySpace)) return false;
