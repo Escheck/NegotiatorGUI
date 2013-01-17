@@ -157,15 +157,15 @@
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy">
-			<parameter name="t" default="1.0" description="Time after which the OM should not be updated"/>	
+			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
 		<omstrategy description="Best bid" classPath="negotiator.boaframework.omstrategy.BestBid">
-			<parameter name="t" default="1.0" description="Time after which the OM should not be updated"/>	
+			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
 		<omstrategy description="NTFT" classPath="negotiator.boaframework.omstrategy.NTFTstrategy"/>
 		<omstrategy description="Offer best n" classPath="negotiator.boaframework.omstrategy.OfferBestN">
 			<parameter name="n" default="3.0" description="A random bid is selected from the best n bids"/>
-			<parameter name="t" default="1.0" description="Time after which the OM should not be updated"/>	
+			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
 		<omstrategy description="TheNegotiator Reloaded" classPath="negotiator.boaframework.omstrategy.NullStrategy">
 			<parameter name="t" default="0.35" description="Time after which the OM should not be updated"/>	
