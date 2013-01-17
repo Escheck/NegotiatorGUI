@@ -35,10 +35,6 @@
                 <profile url="file:etc/templates/anac/y2011/Laptop/laptop_buyer_utility.xml"/>
                 <profile url="file:etc/templates/anac/y2011/Laptop/laptop_seller_utility.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:etc/templates/CarLinear/carlinear_domain.xml">
-                <profile url="file:etc/templates/CarLinear/carlinear_buyer.xml"/>
-                <profile url="file:etc/templates/CarLinear/carlinear_seller.xml"/>
-            </domainRepItem>
             <domainRepItem url="file:etc/templates/partydomain/party_domain.xml">
                 <profile url="file:etc/templates/partydomain/party_utility_kh.xml"/>
                 <profile url="file:etc/templates/partydomain/party_utility_cath.xml"/>
