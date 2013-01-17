@@ -162,6 +162,7 @@ public class BOARepositoryUI {
 		if (item != null) {
 			items.add(item);
 			Collections.sort(items);
+			table.updateUI();
 		}
 	}
 	
