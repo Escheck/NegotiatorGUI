@@ -78,8 +78,8 @@ public class BRAMAgent2 extends Agent {
 			previousOfferedBid = bestBid;
 			
 			random100 = new Random(100);
-		      random200 = new Random(200);
-		      random300 = new Random(300);
+			random200 = new Random(200);
+			random300 = new Random(300);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
