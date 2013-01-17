@@ -1,5 +1,6 @@
 package negotiator.utility;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,6 +32,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	private boolean fweightLock; 
 	private HashMap<ValueDiscrete, Integer> fEval;
 	private Integer evalMax= null;
+	private DecimalFormat f = new DecimalFormat("0.00");
 
 	/**
 	 * Creates a new discrete evaluator with weight 0 and
@@ -196,7 +198,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		int nrOfValues = xml_items.length;
 		ValueDiscrete value;
 				
-		for(int j=0;j<nrOfValues;j++) {
+		for (int j=0;j<nrOfValues;j++) {
             value = new ValueDiscrete(((SimpleElement)xml_items[j]).getAttribute("value"));
             String evaluationStr = ((SimpleElement)xml_items[j]).getAttribute("evaluation");
             if(evaluationStr != null && !evaluationStr.equals("null")){
@@ -344,5 +346,22 @@ public class EvaluatorDiscrete implements Evaluator {
 		if (fweightLock != other.fweightLock)
 			return false;
 		return true;
+	}
+	
+	public String toString() {
+		Object values[] = fEval.keySet().toArray();
+		String result = "{";
+		for (int i = 0; i < values.length; i++) {
+			try {
+				result += ((ValueDiscrete) values[i] + "=" + f.format(getEvaluation((ValueDiscrete) values[i])));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (i != values.length - 1) {
+				result += ", ";
+			}
+		}
+		result += "}";
+		return result;
 	}
 }
