@@ -474,7 +474,6 @@
 			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
 			<zipfileset dir="etc/templates/anac/y2011" prefix="genius/etc/templates/anac/y2011"/>
 			<zipfileset dir="etc/templates/partydomain" prefix="genius/etc/templates/partydomain"/>
-			<zipfileset dir="etc/templates/CarLinear" prefix="genius/etc/templates/CarLinear"/>
 		</zip>
 		<ant target="cleanup"/>
 	</target>
@@ -492,7 +491,7 @@
 			<fileset dir="doc" includes="userguide.pdf"/>
 		</copy>
 
-		<zip destfile="${dist}/negotiator.zip">
+		<zip destfile="${dist}/genius4.0.zip">
 			<zipfileset dir="" includes="boarepository.xml,agentrepository.xml,domainrepository.xml,protocolrepository.xml" prefix="genius"/>
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>							
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
@@ -506,7 +505,6 @@
 			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example"/>
 			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
 			<zipfileset dir="etc/templates/anac/" prefix="genius/etc/templates/anac/"/>
-			<zipfileset dir="etc/templates/CarLinear" prefix="genius/etc/templates/CarLinear"/>
 		</zip>
 		<ant target="cleanup"/>
 	</target>
