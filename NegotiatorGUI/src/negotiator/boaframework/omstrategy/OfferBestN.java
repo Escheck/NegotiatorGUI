@@ -30,7 +30,7 @@ public class OfferBestN extends OMStrategy {
 	/**  used to sort the opponent's bid with regard to utility */
 	private BidDetailsSorterUtility comp = new BidDetailsSorterUtility();
 	/**  when to stop updating */
-	double updateThreshold = 1.0;
+	double updateThreshold = 1.1;
 	
 	/**
 	 * Empty constructor used for reflexion. Note this constructor assumes that init
@@ -72,7 +72,7 @@ public class OfferBestN extends OMStrategy {
 		if (parameters.get("t") != null) {
 			updateThreshold = parameters.get("t").doubleValue();
 		} else {
-			System.out.println("OMStrategy assumed t = 1.0");
+			System.out.println("OMStrategy assumed t = 1.1");
 		}
 	}
 	

@@ -31,6 +31,7 @@ public class OpponentBids {
 			//updates statistics
 			for (Issue issue : statistic.keySet()) {
 				Value v= bid.getValue(issue.getNumber());
+				
 				statistic.get(issue).add(v);
 			}
 			
@@ -95,7 +96,6 @@ public class OpponentBids {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(ret / domain.getIssues().size());
 		return ret;
 	}
 }

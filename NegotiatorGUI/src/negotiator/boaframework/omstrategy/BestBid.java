@@ -51,7 +51,7 @@ public class BestBid extends OMStrategy {
 		if (parameters.get("t") != null) {
 			updateThreshold = parameters.get("t").doubleValue();
 		} else {
-			System.out.println("OMStrategy assumed t = 1.0");
+			System.out.println("OMStrategy assumed t = 1.1");
 		}
 	}
 	

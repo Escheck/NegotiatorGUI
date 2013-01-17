@@ -57,17 +57,17 @@ public class OpponentModelMeasures {
 	 * and calculating the real Kalai bid.
 	 * 
 	 * @param ownSpace utilityspace of self
-	 * @param opponentModelUS utilityspace of opponent
+	 * @param opponentUS utilityspace of opponent
 	 */
-	public OpponentModelMeasures(UtilitySpace ownSpace, UtilitySpace opponentModelUS) {
+	public OpponentModelMeasures(UtilitySpace ownSpace, UtilitySpace opponentUS) {
 		this.ownUS = ownSpace;
-		this.opponentUS = opponentModelUS;
+		this.opponentUS = opponentUS;
 		try {
 			// we can't use the cache as we want to have the bids, not only the bidpoints.
 			BidSpace realBS = new BidSpace(ownUS, opponentUS, false, true);
 			realKalai = realBS.getKalaiSmorodinsky();
 			realNash = realBS.getNash();
-			realIssueWeights = UtilspaceTools.getIssueWeights(opponentModelUS);
+			realIssueWeights = UtilspaceTools.getIssueWeights(opponentUS);
 			realParetoBids = new ArrayList<Bid>(realBS.getParetoFrontierBids());
 			ArrayList<BidPoint> realParetoBidPoints = new ArrayList<BidPoint>(realBS.getParetoFrontier());
 			paretoSurface = calculateParetoSurface(realParetoBidPoints);
