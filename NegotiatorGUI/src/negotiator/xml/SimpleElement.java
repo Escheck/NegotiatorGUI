@@ -13,12 +13,17 @@ import java.util.Vector;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * <code>SimpleElement</code> is the only node type for
  * simplified DOM model.
  */
-public class SimpleElement {
+public class SimpleElement implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -575978416803618689L;
 	protected String tagName;
 	protected String text;
 	protected HashMap<String, String> attributes;

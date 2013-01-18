@@ -1,11 +1,18 @@
 package negotiator.issue;
 
+import java.io.Serializable;
+
 /**
  * Specifies a generic value of an issue. This superclass needs to
  * be extended by a subclass.
  */
-public class Value {
+public class Value implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1212374174018193000L;
+
 	/**
 	 * Empty constructor used to create a new Value.
 	 */

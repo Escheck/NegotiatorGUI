@@ -1,5 +1,6 @@
 package negotiator.issue;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -16,9 +17,13 @@ import javax.swing.tree.TreePath;
 * 
 * @author Richard Noorlandt, W. Pasman
 */
-public class Objective implements MutableTreeNode 
+public class Objective implements MutableTreeNode, Serializable 
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2929020937103860315L;
 	//Attributes
 	private int number;
 	private String name;

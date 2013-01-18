@@ -11,6 +11,11 @@ import negotiator.xml.SimpleElement;
 public abstract class Issue extends Objective {
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7635200438240075796L;
+
+	/**
      * Creates a new issue give its name and number.
      * @param name of the issue.
      * @param issueNumber unique ID of the issue.

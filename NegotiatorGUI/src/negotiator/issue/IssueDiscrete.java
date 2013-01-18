@@ -13,6 +13,11 @@ import negotiator.xml.SimpleElement;
  */
 public class IssueDiscrete extends Issue {
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6220939483738304249L;
+
 	/** List of possible values the issue can have */
 	private List<ValueDiscrete> values; 
 	

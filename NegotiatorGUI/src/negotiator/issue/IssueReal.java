@@ -9,6 +9,10 @@ import negotiator.xml.SimpleElement;
 
 public class IssueReal extends Issue {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7974044551620253633L;
 	// Assumption 1: real-valued issues have a fixed range, with a lower and upper bound.
 	// Assumption 2: value ranges for issue are shared between agents.
 	private Range range;

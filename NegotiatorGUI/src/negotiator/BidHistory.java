@@ -1,5 +1,6 @@
 package negotiator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,8 +17,12 @@ import negotiator.utility.UtilitySpace;
  * 
  * @author Alex Dirkzwager, Mark Hendrikx, Tim Baarslag
  */
-public class BidHistory {
+public class BidHistory implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1663962498632353562L;
 	// list used to store the bids in the order in which they are received
 	private List<BidDetails> bidList;
 	/** Set this boolean to true if you want to verify that two agents are exactly equal */

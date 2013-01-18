@@ -10,6 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ValueDiscrete  extends Value {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7357447303601851761L;
 	/** Name of the value, for example "red". */
 	@XmlAttribute
 	public String value;

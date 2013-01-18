@@ -1,11 +1,14 @@
 package negotiator;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import negotiator.actions.Action;
+import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.DataObjects;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -43,6 +46,16 @@ public abstract class Agent
     /** Parameters given to the agent which may be specified in the agent repository. */
 	protected StrategyParameters strategyParameters;
     
+
+	
+/**
+	 * A static instance (shared by all UtilitySpace instances)
+	 * which handles saving and loading data for the agents.
+	 * We set "DataObjects" to be the source folder that saves the data.
+	 */
+	private static DataObjects dataObjects = new DataObjects("DataObjects");
+
+	
 	/**
 	 * Empty constructor used to initialize the agent.
 	 * Later on internalInit is called to set all variables.
@@ -64,8 +77,6 @@ public abstract class Agent
     
     /**
      * This method is called by the protocol to initialize the agent with a new session information.
-     * @param match number of the current match.
-     * @param totalMatches how many times the match is repeated in total.
      * @param startTimeP
      * @param totalTimeP
      * @param timeline keeping track of the time in the negotiation.
@@ -243,5 +254,58 @@ public abstract class Agent
 	 */
 	public int getSessionsTotal() {
 		return sessionsTotal;
+	}
+/**
+	 * Saves information (dataToSave) about the current session
+	 * for future loading by the agent, when negotiating again with the specific
+	 * preference profile referred by "filename".
+	 * 
+	 * Important: 1) The dataToSave must implement {@link Serializable} interface. This  
+	 * 			     is to make sure the data can be saved.
+	 * 			  2) If the function is used more than once regarding the same preference
+	 * 			     profile, it will override the data saved from last session with the 
+	 *               new Object "dataToSave".
+	 *            
+	 * @param dataToSave the data regarding the last session that "agent" 
+	 * 		  wants to save.
+	 * @return true if dataToSave is successfully saved,
+	 * 		   false otherwise.
+	 */
+	final protected boolean saveSessionData(Serializable dataToSave){
+		
+		String agentClassName = getClass().getName();
+		try{ // utility may be null
+			String prefProfName = utilitySpace.getFileName(); 
+			return dataObjects.saveData(dataToSave, agentClassName, prefProfName);
+		}
+		catch (Exception e) {
+			new Warning("Exception during saving data for agent " + agentClassName + " : "+ e.getMessage());
+			e.printStackTrace();
+			return false;
+		}	
+	}
+
+	/**
+	 * Loads the {@link Serializable} data for the agent.
+	 * If the function "saveSessionData" wasn't used for this type of agent 
+	 * with the current preference profile of the agent - the data will be null.
+	 * Otherwise, it will load the saved data of the agent for this
+	 * specific preference profile.
+	 * 
+	 * @return the {@link Serializable} data if the load is successful,
+	 * 		   null otherwise.
+	 */
+	final protected Serializable loadSessionData(){
+		
+		String agentClassName = getClass().getName();
+		try{ // utility may be null
+			String prefProfName = utilitySpace.getFileName(); 
+			return dataObjects.loadData(agentClassName, prefProfName);
+		}
+		catch (Exception e) {
+			new Warning("Exception during loading data for agent " + agentClassName + " : " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}	
 	}
 }

@@ -10,6 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ValueInteger extends Value {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8706454849472666446L;
 	@XmlAttribute
 	private int value;
 	

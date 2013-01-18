@@ -15,6 +15,10 @@ import misc.RangeInt;
 */
 public class IssueInteger extends Issue {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8669170842843623597L;
 	private RangeInt range;
 	
 	/**
