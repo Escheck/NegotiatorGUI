@@ -1,5 +1,6 @@
 package negotiator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,9 +28,13 @@ import negotiator.xml.SimpleElement;
  * @author Dmytro Tykhonov & Koen Hindriks
  */
 @XmlRootElement
-public final class Bid implements XMLable
+public final class Bid implements XMLable, Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7723017380013100614L;
 	// Class fields
 	Domain fDomain;
 	@XmlElement(name="values")

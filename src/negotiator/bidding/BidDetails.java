@@ -1,5 +1,7 @@
 package negotiator.bidding;
 
+import java.io.Serializable;
+
 import negotiator.Bid;
 
 /**
@@ -8,8 +10,12 @@ import negotiator.Bid;
  * 
  * @author Tim Baarslag, Alex Dirkzwager, Mark Hendrikx
  */
-public class BidDetails implements Comparable<BidDetails>{
+public class BidDetails implements Comparable<BidDetails>, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6111983303592311613L;
 	/** the bid of an agent */
 	private Bid bid;
 	/** the utility corresponding to the bid */

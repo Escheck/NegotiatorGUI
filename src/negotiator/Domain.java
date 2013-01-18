@@ -7,6 +7,8 @@ import java.util.Random;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.Serializable;
+
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -24,9 +26,13 @@ import negotiator.xml.SimpleElement;
  *
  * @author Dmytro Tykhonov & Koen Hindriks
  */
-public class Domain 
+public class Domain implements Serializable 
 {
-    private Objective fObjectivesRoot;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8729366996052137300L;
+	private Objective fObjectivesRoot;
     private String name;
     private SimpleElement root;
     
