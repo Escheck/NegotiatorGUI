@@ -672,6 +672,12 @@ The next step is to load the agent in \Genius. Towards this end, first we should
 </repository>
 \end{lstlisting}
 
+\subsection{Creating a ANAC2013 Agent}
+The ANAC2013 introduces the concept that an agent can save and load information for each preference profile. This entails that an agent can learn from previous negotiations, against the same opponent or multiple opponents, to improve its competence when having a specific preference profile. It is only possible to retrieve information learned on the current preference profile as to avoid having perfect knowledge about the opponent's preferences.
+
+A single serializable object can be saved per preference profile by using the \textit{saveSessionData} method. If an object was already saved for the preference profile it is replaced. The saved object can be requested by using the \textit{loadSessionData} method. Note that this functionality is also available to BOA agents.
+
+
 \section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, we recommend you create a BOA agent using the \textit{BOA framework}. The BOA negotiation agent architecture allows to reuse existing components from other BOA agents. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction can be made between four different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); one that tries to guess the opponent's preferences (\textit{opponent model}), and finally a component which specifies how the opponent model is used to select a bid for the opponent (\textit{opponent model strategy}). The overall negotiation strategy is a result of the interaction between these components.
 
