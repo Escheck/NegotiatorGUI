@@ -56,19 +56,10 @@ public class SimpleAgentSavingBidHistory extends Agent
 	}
 
 	 public void beginSession() {
-	
-		//---- Code for trying the feature "opponentUs"
-//		if (this.opponentUs != null){
-//			System.out.println("The opponent utility space is: " + opponentUs.getFileName() + " OK?");
-//		}
-//		else{
-//			System.out.println("The opponent utility space is null");
-//		}
-		
 		System.out.println("Starting match num: " + sessionNr);
 		
 		//---- Code for trying save and load functionality
-		// First try to load saved data
+		//     First try to load saved data
 		//---- Loading from agent's function "loadSessionData"
 		Serializable prev = this.loadSessionData();
 		if (!(prev == null)){
@@ -99,13 +90,6 @@ public class SimpleAgentSavingBidHistory extends Agent
 			Bid bid = ((Offer)opponentAction).getBid();
 			// 2. store the opponent's trace
 			try {
-				//---- Code for trying the feature "opponentUs"
-				// Printing opponents calculation of utility for the bid
-				///////////////////////////////////
-//				System.out.println("Utility of opponent's bid, by his utility space is: " +
-//						opponentUs.getUtility(bid));
-				///////////////////////////////////
-				
 				BidDetails opponentBid = new BidDetails(
 						bid, 
 						utilitySpace.getUtility(bid), 
