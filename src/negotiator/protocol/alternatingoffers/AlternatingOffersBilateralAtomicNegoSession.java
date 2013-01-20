@@ -123,17 +123,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// can not damage them.
 			agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceA), agentAparams);
-			if (protocol.getSessionNumber() == 0 || !agentA.isMultiSessionsCompatible()) {
-				agentA.init();
-			}
-			agentA.beginSession();
+			agentA.init();
 			
 			agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(), startTime,
 					totalTime, timeline, new UtilitySpace(spaceB), agentBparams);
-			if (protocol.getSessionNumber() == 0 || !agentB.isMultiSessionsCompatible()) {
-				agentB.init();
-			}
-			agentB.beginSession();
+			agentB.init();
 			
 			
 			stopNegotiation = false;
