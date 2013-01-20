@@ -178,9 +178,7 @@ public abstract class Agent
     
     /**
      * Method which informs an agent about the utility it received.
-     * Note that this method is only useful if the agent is a MultiRoundAgent.
-     * In this case the method can be used to clean up variables which are no longer
-     * needed.
+	 *
      * @param dUtil discounted utility of previous session round.
      */
     public void endSession(double dUtil) { }
