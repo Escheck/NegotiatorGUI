@@ -121,15 +121,11 @@ public class AlternatingOffersProtocol extends Protocol {
 	protected void runNegotiationSession()  throws Exception
 	{
 		sessionNr++;
-		if (sessionNr == 0 || !agentA.isMultiSessionsCompatible()) {
-			agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
-			agentA.setName(getAgentAname());
-		}
+		agentA = Global.loadAgent(getAgentARep().getClassPath(), getAgentARep().getParams());//(Agent)(loaderA.loadClass(getAgentARep().getClassPath()).newInstance());
+		agentA.setName(getAgentAname());
 		
-		if (sessionNr == 0 || !agentB.isMultiSessionsCompatible()) {
-			agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
-			agentB.setName(getAgentBname());
-		}
+		agentB = Global.loadAgent(getAgentBRep().getClassPath(), getAgentBRep().getParams());//(Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
+		agentB.setName(getAgentBname());
 
 		//Passes the Experimental Variables to agent A and B
 		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);

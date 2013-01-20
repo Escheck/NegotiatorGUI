@@ -177,20 +177,6 @@ public abstract class Agent
     public boolean isUIAgent() { return false; }
     
     /**
-     * Determine if this agent can remember information if the same session is repeated.
-     * A normal agents is simply reset each round. If you do not want this, create a MultiRoundAgent.
-     * @return false
-     */
-    public boolean isMultiSessionsCompatible() { return false; }
-    
-    /**
-     * Method called after initializing an agent using init. This method is useful for
-     * MultiRoundAgent which init is only called once. The idea of this method is
-     * that the MultiMatchAgent is able to prepare itself for a new match.
-     */
-    public void beginSession() { }
-    
-    /**
      * Method which informs an agent about the utility it received.
      * Note that this method is only useful if the agent is a MultiRoundAgent.
      * In this case the method can be used to clean up variables which are no longer
