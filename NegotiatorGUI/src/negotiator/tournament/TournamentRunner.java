@@ -91,6 +91,13 @@ public class TournamentRunner implements Runnable
 	 */
 	public void run() {
 		try {
+			/** 
+			 * Deletes all files in directory DataObjects. 
+			 * In order to have a "clean" start for the next tournament,
+			 * all history from all agents is deleted.
+			 */
+			Agent.restartDataObjectsFolder(this);
+			
 			String log = "";
 			if (distributed) {
 				log = runDistributedTournament(0);
@@ -105,13 +112,6 @@ public class TournamentRunner implements Runnable
 				AlternatingOffersProtocol.closeLog(true);
 			}
 			AlternatingOffersProtocol.closeLog(false);
-
-			/** 
-			 * Deletes all files in directory DataObjects. 
-			 * In order to have a "clean" start for the next tournament,
-			 * all history from all agents is deleted.
-			 */
-			Agent.restartDataObjectsFolder(this);
 
 			// DEFAULT: no detailed analysis
 			if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
