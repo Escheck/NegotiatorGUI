@@ -53,9 +53,10 @@ public class SimpleAgentSavingBidHistory extends Agent
 	public void init()
 	{
 		MINIMUM_BID_UTILITY = utilitySpace.getReservationValueUndiscounted();
+		myBeginSession();
 	}
 
-	 public void beginSession() {
+	 public void myBeginSession() {
 		System.out.println("Starting match num: " + sessionNr);
 		
 		//---- Code for trying save and load functionality
