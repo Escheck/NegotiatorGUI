@@ -6,6 +6,7 @@ import java.util.HashMap;
 import negotiator.actions.Action;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.DataObjects;
@@ -19,6 +20,7 @@ import negotiator.utility.UtilitySpace;
  */
 public abstract class Agent 
 {
+
 	/** ID of the agent as assigned by the protocol. */
 	private AgentID 		agentID;
 	/** Name of the name as set by the method setName. */
@@ -45,17 +47,14 @@ public abstract class Agent
     protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues;
     /** Parameters given to the agent which may be specified in the agent repository. */
 	protected StrategyParameters strategyParameters;
-    
-
-	
-/**
+	/**
 	 * A static instance (shared by all UtilitySpace instances)
 	 * which handles saving and loading data for the agents.
 	 * We set "DataObjects" to be the source folder that saves the data.
 	 */
 	private static DataObjects dataObjects = new DataObjects("DataObjects");
 
-	
+
 	/**
 	 * Empty constructor used to initialize the agent.
 	 * Later on internalInit is called to set all variables.
@@ -197,13 +196,10 @@ public abstract class Agent
     	agentID = value;
     }
 
-    /**
-     * @return strategy parameters
-     */
 	public StrategyParameters getStrategyParameters() {
 		return strategyParameters;
 	}
-	
+
 	/**
 	 * Used to parse parameters presented in the agent repository. The particular
 	 * implementation below parses parameters such as time=0.9;e=1.0.
@@ -220,7 +216,6 @@ public abstract class Agent
 					strategyParameters.addVariable(expression[0], expression[1]);
 				} else {
 					throw new Exception(	"Expected variablename and result but got " + expression.length + " elements. " +
-											"Correct in XML or overload the method.");
 				}
 			}
 		}
@@ -239,7 +234,8 @@ public abstract class Agent
 	public int getSessionsTotal() {
 		return sessionsTotal;
 	}
-/**
+	
+	/**
 	 * Saves information (dataToSave) about the current session
 	 * for future loading by the agent, when negotiating again with the specific
 	 * preference profile referred by "filename".
@@ -256,7 +252,6 @@ public abstract class Agent
 	 * 		   false otherwise.
 	 */
 	final protected boolean saveSessionData(Serializable dataToSave){
-		
 		String agentClassName = getClass().getName();
 		try{ // utility may be null
 			String prefProfName = utilitySpace.getFileName(); 
@@ -280,7 +275,7 @@ public abstract class Agent
 	 * 		   null otherwise.
 	 */
 	final protected Serializable loadSessionData(){
-		
+
 		String agentClassName = getClass().getName();
 		try{ // utility may be null
 			String prefProfName = utilitySpace.getFileName(); 
@@ -292,4 +287,19 @@ public abstract class Agent
 			return null;
 		}	
 	}
+
+	/**
+	 * Restarts the folder "DataObjects", meaning it deletes all files in it
+	 * and then creates a new empty folder with the same name.
+	 * @param sender the Object trying to reset DataObjectFolder 
+	 * 		  NOTE: only TournamentRunner is allowed to apply this procedure.
+	 * @return true if succeeded
+	 */
+	public static boolean restartDataObjectsFolder(Object sender){
+		if (sender instanceof TournamentRunner){
+			return dataObjects.restartFolder();
+		}
+		return false;
+	}
+
 }
