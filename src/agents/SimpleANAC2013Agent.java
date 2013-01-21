@@ -33,7 +33,7 @@ public class SimpleANAC2013Agent extends Agent {
 		Serializable prev = this.loadSessionData();
 		if (prev != null) {
 			double previousOutcome = (Double) prev;
-			MINIMUM_BID_UTILITY = Math.max(utilitySpace.getReservationValueUndiscounted(), previousOutcome);
+			MINIMUM_BID_UTILITY = Math.max(Math.max(utilitySpace.getReservationValueUndiscounted(), previousOutcome), 0.5);
 		}
 		else{
 			MINIMUM_BID_UTILITY = utilitySpace.getReservationValueUndiscounted();
