@@ -3,6 +3,8 @@ package negotiator.tournament;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+
+import negotiator.Agent;
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.distributedtournament.DBController;
@@ -25,11 +27,11 @@ public class TournamentRunner implements Runnable
 	private boolean runSingleSession = false; 
 	private List<Protocol> sessions;
 	ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
-	
+
 	// Options related to distributed tournaments
 	private boolean distributed = false;
 	private String sessionname = "";
-	
+
 	private int previousSession = -1;
 	private int currentRunNr = 0;
 
@@ -47,7 +49,7 @@ public class TournamentRunner implements Runnable
 		if (sessions.size() == 1)
 			runSingleSession = true;
 	}
-	
+
 	/** 
 	 * 
 	 * @param t the tournament to be run
@@ -59,13 +61,13 @@ public class TournamentRunner implements Runnable
 		sessions = getSessionsFromTournament(t);
 		negotiationEventListeners.add(ael);
 	}
-	
+
 	public TournamentRunner(NegotiationEventListener ael, boolean distributed, String sessionname) {
 		this.distributed = distributed;
 		this.sessionname = sessionname;
 		negotiationEventListeners.add(ael);
 	}
-	
+
 	/** 
 	 * 
 	 * @param t the tournament to be run
@@ -77,7 +79,7 @@ public class TournamentRunner implements Runnable
 		this(t, ael);
 		this.runSingleSession = runSingleSession;
 	}
-	
+
 	/**
 	 * Warning. You can call run() directly (instead of using Thread.start() )
 	 * but be aware that run() will not return until the tournament
@@ -103,16 +105,23 @@ public class TournamentRunner implements Runnable
 				AlternatingOffersProtocol.closeLog(true);
 			}
 			AlternatingOffersProtocol.closeLog(false);
-			
+
+			/** 
+			 * Deletes all files in directory DataObjects. 
+			 * In order to have a "clean" start for the next tournament,
+			 * all history from all agents is deleted.
+			 */
+			Agent.restartDataObjectsFolder(this);
+
 			// DEFAULT: no detailed analysis
 			if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
 				TournamentMeasures.runTournamentMeasures(log, Global.getTournamentOutcomeFileName());
 			}
-			
+
 			if (distributed) {
 				JOptionPane.showMessageDialog(null, "Finished jobs of session: \"" + sessionname + "\".\nThe log is stored in the log directory.");
 			}
-			
+
 			if (NegoGUIApp.getOptions().quitWhenTournamentDone)
 			{
 				System.out.println("Auto-quitting after the tournament is done.");
@@ -124,11 +133,11 @@ public class TournamentRunner implements Runnable
 
 	private String runTournament() throws InterruptedException {
 		for (int i = 0; i < sessions.size(); i++) {
-			
+
 			if (TournamentConfiguration.getBooleanOption("disableGUI", false)) {
 				System.out.println("TOURNAMENT PROGRESS: starting match " + (i + 1) + " of " + sessions.size());
 			}
-			
+
 
 			previousSession = sessions.get(i).hashCode();
 			Protocol s = sessions.get(i);
@@ -160,7 +169,7 @@ public class TournamentRunner implements Runnable
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		// 2. Check if there are groups of sessions left to be processed
+			// 2. Check if there are groups of sessions left to be processed
 			job = DBController.getInstance().getJob(jobID, sessions);
 			while (job != null) {
 				StringBuilder builder = new StringBuilder();
@@ -172,7 +181,7 @@ public class TournamentRunner implements Runnable
 						s.setTournamentRunner(this);
 						s.startSession();
 						wait();
-						
+
 						// 4. Store outcomes of the job. Should be done here due to the implementation of logging
 						if (s instanceof AlternatingOffersProtocol) {
 							AlternatingOffersProtocol as = (AlternatingOffersProtocol) s;
@@ -189,21 +198,21 @@ public class TournamentRunner implements Runnable
 				DBController.getInstance().storeResult(job.getSessionID(), builder.toString());
 				job = DBController.getInstance().getJob(jobID, sessions);
 			}
-			
+
 			// 6. Check for outstanding sessions. If outstanding sessions are detected, wait
 			int openSessions = DBController.getInstance().getRunningSessions(jobID);
 			if (openSessions > 0) {
 				// as 1 computer can only claim 1 session, we just wait a full Job plus some extra time for DB storage
-				
+
 				int waitMS = DBController.getInstance().getMatchesPerSession(jobID) * 180000 + 5000;
-				
+
 				System.out.println("DT: waiting " + waitMS + " for " + openSessions + " tournaments to complete");
 				Thread.sleep(waitMS);
-	
+
 				// If there are still outstanding jobs, this means that a pc did not complete its task
 				// (or the DB takes a very long time (> 5 seconds) to store a result, but this is very unlikely)
 				int nextOpenSessions = DBController.getInstance().getRunningSessions(jobID);
-				
+
 				// if the number of open sessions is equal to the number before the waiting periode, then
 				// none of the clients acted and we can safely reset the jobs.
 				if (openSessions == nextOpenSessions) {
@@ -238,7 +247,7 @@ public class TournamentRunner implements Runnable
 		}
 		return sessions;
 	}
-	
+
 	public void fireNegotiationSessionEvent(Protocol session ) {
 		for(NegotiationEventListener listener :  negotiationEventListeners) 
 			if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
