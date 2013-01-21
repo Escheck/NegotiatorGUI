@@ -1,7 +1,10 @@
 package negotiator.utility;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+
+import javax.swing.JOptionPane;
 
 import negotiator.Agent;
 import negotiator.SerializeHandling;
@@ -20,13 +23,67 @@ public class DataObjects {
 	//Contains the absolute path of the source folder into which we would like to 
 	//save the data of all the agents.
 	private String absolutePath;
+	
+	//A reference to the folder in the absolutePath
+	private File theFolder;
 
 	public DataObjects(String dataFolderName){
 		absolutePath = new File(".").getAbsolutePath();
 		absolutePath = absolutePath.replace('\\', '/');
 		absolutePath = absolutePath + "/" + dataFolderName;
+		theFolder = new File(absolutePath);		
+		if (!theFolder.exists()){
+			createFolder();
+		}
+		else{
+			restartFolder();
+		}
 	}
 
+	/**
+	 * Restarts the folder "theFolder", meaning it deletes all files in it
+	 * and then creates a new empty folder with the same name.
+	 * @return true if succeeded
+	 */
+	public boolean restartFolder(){
+		boolean ans = this.deleteFolderRecursively(theFolder);
+		ans = ans && this.createFolder();
+		return ans;
+	}
+	
+	/**
+	 * Creates a new empty folder from "theFolder" file.
+	 * @return true if succeeded
+	 */
+	private boolean createFolder() {
+		try {
+			theFolder.mkdir();
+			return true;
+		} catch (SecurityException e) {
+			String msg = "Could not create the folder in " + absolutePath;
+			JOptionPane.showMessageDialog(null, msg, "Error while creating a folder ", 0);
+		}
+		return false;
+	}
+
+	/**
+	 * Deletes all files and directories inside folder, and itself.
+	 * @param folder the folder to be erased recursively
+	 * @return true if succeeded
+	 */
+	private boolean deleteFolderRecursively(File folder) {
+		File[] files = folder.listFiles();
+		if(files!=null) { //some JVMs return null for empty dirs
+			for(File f: files) {
+				if(f.isDirectory()) {
+					deleteFolderRecursively(f);
+				} else {
+					f.delete();
+				}
+			}
+		}
+		return folder.delete();		
+	}
 
 	/**
 	 * Saves dataToSave of the agent with class agentClassName for a preference 
@@ -42,6 +99,9 @@ public class DataObjects {
 	 */
 	public boolean saveData(Serializable dataToSave, String agentClassName,
 			String prefProfName) {
+		if (!theFolder.exists()){
+			createFolder();
+		}
 		String key = agentClassName + "_" + prefProfName;
 		key = key.replace('/', '_');
 		String path = absolutePath + "/" + key; 
