@@ -33,7 +33,7 @@ import negotiator.xml.SimpleElement;
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
-public class UtilitySpace {
+public class UtilitySpace implements Serializable {
 	
 	// Class fields
     protected Domain domain;
