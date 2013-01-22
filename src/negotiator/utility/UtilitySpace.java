@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.Serializable;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
