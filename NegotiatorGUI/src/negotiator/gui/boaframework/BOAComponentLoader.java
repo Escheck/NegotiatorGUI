@@ -33,7 +33,7 @@ import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
 
 /**
- *
+ * GUI to a BOA component to the BOA repository.
  * @author Mark Hendrikx
  */
 public class BOAComponentLoader extends JDialog {
@@ -68,7 +68,7 @@ public class BOAComponentLoader extends JDialog {
 		this.setSize(frame.getSize().width / 3, frame.getSize().height / 2);
 	}
 
-	public BOArepItem getResult() {
+	public BOArepItem getResult(BOArepItem item) {
 		componentNameLabel = new JLabel("Component name");
 		componentNameTextField = new JTextField();
 		
@@ -233,6 +233,16 @@ public class BOAComponentLoader extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+		if (item != null) {
+			componentNameTextField.setText(item.getName());
+			componentClassTextField.setText(item.getClassPath());
+			type = item.getType();
+			for (BOAparameter param : item.getParameters()) {
+				parameterListModel.addElement(param);
+			}
+			addComponent.setText("Edit component");
+		}
+		
         pack();
         setVisible(true);
         return result;
@@ -288,9 +298,9 @@ public class BOAComponentLoader extends JDialog {
     		JOptionPane.showMessageDialog(null, "Invalid default value", "Invalid parameter input", 0);
     	}
     	String description = descriptionTextField.getText();
-    	if (description.length() > 60) {
+    	if (description.length() > 200) {
     		valid = false;
-    		JOptionPane.showMessageDialog(null, "Parameter description length should be atmost 60 characters.", "Invalid parameter input", 0);
+    		JOptionPane.showMessageDialog(null, "Parameter description length should be atmost 200 characters.", "Invalid parameter input", 0);
     	}
     	if (valid) {
     		BOAparameter boaParam = new BOAparameter(paramName, defaultValue, description);
