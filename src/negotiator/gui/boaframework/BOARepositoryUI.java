@@ -47,6 +47,13 @@ public class BOARepositoryUI {
 			}
 		});
 
+		JMenuItem editComponent = new JMenuItem("Edit component");
+		editComponent.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				editAction();
+			}
+		});
+		
 		JMenuItem removeComponent = new JMenuItem("Remove component");
 		removeComponent.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,7 +62,9 @@ public class BOARepositoryUI {
 		});
 
 		popup.add(addComponent);
+		popup.add(editComponent);
 		popup.add(removeComponent);
+		
 		return popup;
 	}
 	
@@ -158,9 +167,20 @@ public class BOARepositoryUI {
 		// shoud return boolean if added an item.
 		// if so, sort items and display again
 		BOAComponentLoader loader = new BOAComponentLoader(NegoGUIApp.negoGUIView.getFrame(), "Add BOA component");
-		BOArepItem item = loader.getResult();
+		BOArepItem item = loader.getResult(null);
 		if (item != null) {
 			items.add(item);
+			Collections.sort(items);
+			table.updateUI();
+		}
+	}
+	public void editAction() {
+		BOArepItem item = items.get(table.getSelectedRow());
+		BOAComponentLoader loader = new BOAComponentLoader(NegoGUIApp.negoGUIView.getFrame(), "Edit BOA component");
+		BOArepItem result = loader.getResult(item);
+		if (result != null) {
+			items.remove(item);
+			items.add(result);
 			Collections.sort(items);
 			table.updateUI();
 		}
