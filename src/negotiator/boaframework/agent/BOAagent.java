@@ -142,7 +142,7 @@ public abstract class BOAagent extends Agent
 			decision = acceptConditions.determineAcceptability();
 		} 
 
-		// check if the agent decided to break toff the negotiation
+		// check if the agent decided to break off the negotiation
 		if (decision.equals(Actions.Break)) {
 			System.out.println("send EndNegotiation");
 			return new EndNegotiation();
