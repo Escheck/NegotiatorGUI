@@ -49,9 +49,16 @@ public class OMACagent extends Agent
 	public boolean debug = false;  //debug mode
 	public boolean detail = false;  //record counter-offer or not
 	private double maxTime = 180.0;
+	private Random randomnr;
+	private final boolean TEST_EQUIVALENCE = true;
 	
 	public void init()
 	{
+		if (TEST_EQUIVALENCE) {
+			randomnr = new Random(100);
+		} else {
+			randomnr = new Random();
+		}
 		if(utilitySpace.getReservationValue() != null){
 			resU = utilitySpace.getReservationValue();  
 			if( MINIMUM_UTILITY  < resU)
@@ -361,7 +368,6 @@ public class OMACagent extends Agent
 	private Bid genRanBid(double min, double max){
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber,chosen value string>
 		ArrayList<Issue> issues=utilitySpace.getDomain().getIssues();
-		Random randomnr= new Random();
 		int counter = 0;
 		int limit = 1000;
 		double fmax = max;

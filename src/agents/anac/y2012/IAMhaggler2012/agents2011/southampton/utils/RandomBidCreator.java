@@ -20,9 +20,16 @@ public class RandomBidCreator implements BidCreator {
 
 	protected Random random;
 	
+	private boolean TEST_EQUIVALENCE = true;
+	
 	public RandomBidCreator() {
-		random = new Random();
+		if (TEST_EQUIVALENCE) {
+			random = new Random(100);
+		} else {
+			random = new Random();
+		}
 	}
+	
 	
 	/**
 	 * Get a random bid.
