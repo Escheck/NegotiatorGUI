@@ -25,6 +25,8 @@ import negotiator.issue.ValueReal;
  */
 public class CUHKAgent extends Agent {
 
+	private final boolean TEST_EQUIVALENCE = true;
+	
     private double totalTime;
     private Action ActionOfOpponent = null;
     private double maximumOfBid;
@@ -47,6 +49,7 @@ public class CUHKAgent extends Agent {
     private double alpha1;//the larger alpha is, the more tough the agent is.
     private Bid bid_maximum_utility;//the bid with the maximum utility over the utility space.
     private double reservationValue;
+    private Random random;
     //@override
 
     public void init() {
@@ -80,6 +83,12 @@ public class CUHKAgent extends Agent {
             if (utilitySpace.getReservationValue() > 0) {
                 this.reservationValue = utilitySpace.getReservationValue();
             }
+            if(TEST_EQUIVALENCE){
+            	random = new Random(100);
+            } else {
+            	random = new Random();
+            }
+
         } catch (Exception e) {
             System.out.println("initialization error" + e.getMessage());
         }
@@ -118,10 +127,13 @@ public class CUHKAgent extends Agent {
                 if (ownBidHistory.numOfBidsProposed() == 0) {
                     //bid = utilitySpace.getMaxUtilityBid();
                     bid = this.bid_maximum_utility;
+                    System.out.println("Original bid1: " + bid);
+
                     action = new Offer(getAgentID(), bid);
                 } else {//other conditions
                     if (estimateRoundLeft(true) > 10) {//still have some rounds left to further negotiate (the major negotiation period)
                         bid = BidToOffer();
+                        //System.out.println("Original bid1: " + bid);
                         Boolean IsAccept = AcceptOpponentOffer(((Offer) ActionOfOpponent).getBid(), bid);
                         Boolean IsTerminate = TerminateCurrentNegotiation(bid);
                         if (IsAccept && !IsTerminate) {
@@ -143,6 +155,8 @@ public class CUHKAgent extends Agent {
                             if (this.concedeToOpponent == true) {
                                 // bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
                                 bid = opponentBidHistory.getBestBidInHistory();
+                                //System.out.println("Original bid2: " + bid);
+
                                 action = new Offer(getAgentID(), bid);
                                 //System.out.println("we offer the best bid in the history and the opponent should accept it");
                                 this.toughAgent = true;
@@ -155,10 +169,12 @@ public class CUHKAgent extends Agent {
                         }
                     } else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
                         //in this case, it corresponds to an opponent whose decision time is short
-
+                    	System.out.println("Original Test: " + (timeline.getTime() > 0.9985 && estimateRoundLeft(true) < 5));
                         if (timeline.getTime() > 0.9985 && estimateRoundLeft(true) < 5) {
                             //bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
                             bid = opponentBidHistory.getBestBidInHistory();
+                            System.out.println("Original bid3: " + bid);
+
                             //this is specially designed to avoid that we got very low utility by searching between an acceptable range (when the domain is small)
                             if (this.utilitySpace.getUtility(bid) < 0.85) {
                                 List<Bid> candidateBids = this.getBidsBetweenUtility(this.MaximumUtility - 0.15, this.MaximumUtility - 0.02);
@@ -207,6 +223,8 @@ public class CUHKAgent extends Agent {
                             // we also have to make the decisin fast to avoid reaching the deadline before the decision is made
                             //bid = ownBidHistory.GetMinBidInHistory();//reduce the computational cost
                             bid = BidToOffer();
+                            System.out.println("Original bid6: " + bid);
+
                             //System.out.println("test----------------------------------------------------------" + timeline.getTime());
                             Boolean IsAccept = AcceptOpponentOffer(((Offer) ActionOfOpponent).getBid(), bid);
                             Boolean IsTerminate = TerminateCurrentNegotiation(bid);
@@ -482,8 +500,7 @@ public class CUHKAgent extends Agent {
 
     private Bid RandomSearchBid() throws Exception {
         HashMap<Integer, Value> values = new HashMap<Integer, Value>();
-        ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
-        Random random = new Random();
+        ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();        
         Bid bid = null;
 
         for (Issue lIssue : issues) {

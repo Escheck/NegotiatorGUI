@@ -23,6 +23,10 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 
 public class BRAMAgent2 extends Agent {
+	
+	private boolean EQUIVELENCE_TEST = true;
+
+	
 	/* FINAL VARIABLES */
 	private final double TIME_TO_CREATE_BIDS_ARRAY = 2.0;//The time that we allocate to creating the bids array
 	private final double FREQUENCY_OF_PROPOSAL = 0.2;//If the frequency of the proposal is larger than this variable than we won't propose it
@@ -77,9 +81,15 @@ public class BRAMAgent2 extends Agent {
 			threshold = maxUtility;
 			previousOfferedBid = bestBid;
 			
-			random100 = new Random(100);
-			random200 = new Random(200);
-			random300 = new Random(300);
+			if(EQUIVELENCE_TEST){
+				random100 = new Random(100);
+			    random200 = new Random(200);
+			    random300 = new Random(300);
+			} else {
+				random100 = new Random();
+			    random200 = new Random();
+			    random300 = new Random();
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -320,8 +330,11 @@ public class BRAMAgent2 extends Agent {
 	
 				}
 				if (bidWithMaxUtility == null){
-					return getBidFromBidsArray();
-	
+					if(EQUIVELENCE_TEST){					
+						return bestBid;
+					} else {
+						return getBidFromBidsArray();
+					}	
 				}
 				else{
 					//System.out.println("****************BRAM opponent modeling");

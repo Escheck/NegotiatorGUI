@@ -57,7 +57,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
     private Timeline timeline;
     
     private Random random;
-	private final boolean TEST_EQUIVALENCE = false;
+	private final boolean TEST_EQUIVALENCE = true;
 
     public CUHKAgent_Offering() { }
 	
@@ -132,17 +132,19 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                 if (ownBidHistory.numOfBidsProposed() == 0) {
                     //bid = utilitySpace.getMaxUtilityBid();
                     bid = this.bid_maximum_utility;
+                    System.out.println("Decoupled bid1: " + bid);
+
                     bidToOffer = bid;
                 } else {//other conditions
                 	//System.out.println("Decoupled Conditions: " + (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateRoundLeft(true) < 5));
                     if (((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) > 10) {//still have some rounds left to further negotiate (the major negotiation period)
                         bid = BidToOffer();
-                       // System.out.println("Decoupled bid1: " + bid);
+                        //System.out.println("Decoupled bid1: " + bid);
                        //we expect that the negotiation is over once we select a bid from the opponent's history.
                         if (((CUHKAgentSAS)helper).isConcedeToOpponent() == true) {
                             // bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
                             bid = opponentBidHistory.getBestBidInHistory();
-                           // System.out.println("Decoupled bid2: " + bid);
+                            //System.out.println("Decoupled bid2: " + bid);
 
                             bidToOffer = bid;
                             //System.out.println("we offer the best bid in the history and the opponent should accept it");
@@ -155,9 +157,13 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                         }
                     } else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
                         //in this case, it corresponds to an opponent whose decision time is short
+                    	System.out.println("Decoupled Test: " + (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) < 5));
+
                         if (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) < 5) {
                             //bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
                             bid = opponentBidHistory.getBestBidInHistory();
+                            System.out.println("Decoupled bid3: " + bid);
+
                             //this is specially designed to avoid that we got very low utility by searching between an acceptable range (when the domain is small)
                             if (this.utilitySpace.getUtility(bid) < 0.85) {
                                 List<Bid> candidateBids = this.getBidsBetweenUtility(((CUHKAgentSAS)helper).getMaximumUtility() - 0.15, (((CUHKAgentSAS)helper).getMaximumUtility()- 0.02));
@@ -171,12 +177,12 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                                     System.out.println("test I " + utilitySpace.getUtility(bid));
                                 } else {
                                     bid = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain(), this.utilitySpace);
-                                    //System.out.println("Decoupled bid4: " + bid);
+                                    System.out.println("Decoupled bid4: " + bid);
 
                                 }
                                 if (bid == null) {
                                     bid = opponentBidHistory.getBestBidInHistory();
-                                    //System.out.println("Decoupled bid5: " + bid);
+                                    System.out.println("Decoupled bid5: " + bid);
 
                                 }
                             }
@@ -193,7 +199,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                             // we also have to make the decisin fast to avoid reaching the deadline before the decision is made
                             //bid = ownBidHistory.GetMinBidInHistory();//reduce the computational cost
                             bid = BidToOffer();
-                            //System.out.println("Decoupled bid6: " + bid);
+                            System.out.println("Decoupled bid6: " + bid);
 
                             //System.out.println("test----------------------------------------------------------" + timeline.getTime());
                             bidToOffer = bid;
