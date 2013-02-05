@@ -432,11 +432,7 @@ public class NegotiationOutcome
 		outcome.setAttribute("domain", domainName);
 		outcome.setAttribute("lastAction", "" + lastAction);
 		outcome.setAttribute("runNumber", runNr + "");
-		if (lastAction == null || !(lastAction.toString().equals("(Accept)"))) {
-			outcome.setAttribute("finalOutcome", "Reservation");
-		} else {
-			outcome.setAttribute("finalOutcome", alternatingOffersBilateralAtomicNegoSession.getLastBid().toString());
-		}
+		outcome.setAttribute("finalOutcome", getAcceptedBid());
 		
 		SimpleElement agentResultsA = resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
@@ -575,5 +571,13 @@ public class NegotiationOutcome
 	public void setNegotiationOutcome(
 			OpponentModelMeasuresResults omMeasuresResults) {
 		this.omMeasuresResults  = omMeasuresResults;
+	}
+
+	public String getAcceptedBid() {
+		String result = "Reservation";
+		if (lastAction != null && lastAction.toString().equals("(Accept)")) {
+			result = alternatingOffersBilateralAtomicNegoSession.getLastBid().toString();
+		}
+		return result;
 	}
 }

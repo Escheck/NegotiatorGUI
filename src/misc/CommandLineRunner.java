@@ -3,6 +3,7 @@ package misc;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import negotiator.Global;
 import negotiator.NegotiationEventListener;
@@ -31,15 +32,21 @@ public class CommandLineRunner {
 	public static void main(String[] args) {
 		CommandLineOptions options = new CommandLineOptions();
 		options.parse(args);
+				
 		try {
-			Global.logPrefix = options.outputFile;
 			start(options.protocol, options.domain, options.profiles, options.agents, options.outputFile);
+			//start("negotiator.protocol.alternatingoffers.AlternatingOffersProtocol", "file:etc/templates/laptopdomain/laptop_domain.xml", profiles,
+				//	agents,"log");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("ends");
 	}
 
+	//make it private later
 	private static void start(String p, String domainFile, List<String> profiles, List<String> agents, String outputFile) throws Exception {
+		
+		Global.logPreset = outputFile;
 		
 		if (profiles.size() != agents.size())
 			throw new IllegalArgumentException("Number of profiles does not match number of agents.");
@@ -66,31 +73,7 @@ public class CommandLineRunner {
 		
 		ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
 		
-		final FileWriter fw = new FileWriter(outputFile+"/log.txt");
-		ns.addNegotiationEventListener(new NegotiationEventListener() {
-			
-			public void handleActionEvent(ActionEvent evt) {
-				try {
-					fw.write(evt.toString());
-					fw.write("\n");
-					fw.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			public void handleLogMessageEvent(LogMessageEvent evt) {
-				// Nothing to be done
-			}
-			
-			public void handleBlateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSessionEvent evt) {
-				// Nothing to be done
-			}
-			
-			public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
-				// Nothing to be done
-			}
-		});
+
 		ns.startSession();
 	}
 }

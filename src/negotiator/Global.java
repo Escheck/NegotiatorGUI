@@ -36,6 +36,8 @@ public class Global {
 
 	public static String logPrefix = "";
 	
+	public static String logPreset = "";
+	
 	private static final Date loadDate = Calendar.getInstance().getTime();
 	
 	public Global() {}
@@ -221,6 +223,9 @@ public class Global {
 	
 	public static String getOutcomesFileName()
 	{
+		if (!logPreset.equals("")) {
+			return logPreset;
+		}
 		if (!logPrefix.equals(""))
 			return logPrefix + "log.xml";
 		
