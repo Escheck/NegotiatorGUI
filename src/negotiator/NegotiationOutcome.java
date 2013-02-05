@@ -87,7 +87,6 @@ public class NegotiationOutcome
 	{
 		this.alternatingOffersBilateralAtomicNegoSession = alternatingOffersBilateralAtomicNegoSession;
 		this.runNr = runNumber;
-	
 		this.lastAction = lastAction;
 		this.agentAutility = outcomeInfo.getAgentAutility();
 		this.agentButility = outcomeInfo.getAgentButility();
@@ -174,9 +173,16 @@ public class NegotiationOutcome
 			
 		}
 		
+		
 		OrderedSimpleElement outcome=new OrderedSimpleElement("resultsOfAgent");
 		outcome.setAttribute("agent", agentX);
 		outcome.setAttribute("agentName", agentName);
+		
+		if (agentX.equals("A")) {
+			outcome.setAttribute("discount", alternatingOffersBilateralAtomicNegoSession.getAgentAUtilitySpace().getDiscountFactor() + "");
+		} else {
+			outcome.setAttribute("discount", alternatingOffersBilateralAtomicNegoSession.getAgentBUtilitySpace().getDiscountFactor() + "");
+		}
 		
 		if(agentName.contains("bs")) {
 
@@ -193,6 +199,8 @@ public class NegotiationOutcome
 		outcome.setAttribute("Opponent-utilspace", oppUtilSpaceName);
 		outcome.setAttribute("finalUtility",""+agentAUtil);
 		outcome.setAttribute("discountedUtility",""+agentAUtilDiscount);
+		
+		
 		
 		
 		double bestAcceptableBid = 0;
@@ -424,6 +432,12 @@ public class NegotiationOutcome
 		outcome.setAttribute("domain", domainName);
 		outcome.setAttribute("lastAction", "" + lastAction);
 		outcome.setAttribute("runNumber", runNr + "");
+		if (lastAction == null || !(lastAction.toString().equals("(Accept)"))) {
+			outcome.setAttribute("finalOutcome", "Reservation");
+		} else {
+			outcome.setAttribute("finalOutcome", alternatingOffersBilateralAtomicNegoSession.getLastBid().toString());
+		}
+		
 		SimpleElement agentResultsA = resultsOfAgent("A",agentAname,agentAclass,agentAutilSpaceName, 
 				agentBname, agentBclass, agentButilSpaceName,
 				agentAutility,agentAutilityDiscount,agentAmaxUtil,AgentABids, addBids);
