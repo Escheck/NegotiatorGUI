@@ -46,7 +46,7 @@ public class DBController {
 	/** how many outcomes may be stored in a single file. The
 	 * problem with tools such as Excel, is that they can only
 	 * import a limited amount of data. */
-	private final int NUMBER_OUTCOMES_PER_LOG = 1000;
+	private final int NUMBER_OUTCOMES_PER_LOG = 5000;
 	
 	private DBController() { }
 	
@@ -487,6 +487,7 @@ public class DBController {
 				//while (outcomes.next()) {		
 					outcomes.next();
 					try {
+						//System.out.println(extractBytes(outcomes.getBytes(1)));
 						out.write(extractBytes(outcomes.getBytes(1)));
 					} catch (Exception e) {
 						e.printStackTrace();

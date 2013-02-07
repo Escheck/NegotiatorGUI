@@ -8,6 +8,7 @@ import org.apache.commons.math.MaxIterationsExceededException;
 import org.apache.commons.math.special.Erf;
 import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 
+import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.RandomBidCreator;
 import agents.anac.y2012.IAMhaggler2012.utility.SouthamptonUtilitySpace;
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
@@ -27,7 +28,6 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 
