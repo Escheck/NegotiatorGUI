@@ -127,7 +127,7 @@ public class IAMhaggler2011 extends SouthamptonAgent {
 
 	@Override
 	public String getName() {
-		return "IAMhaggler2011";
+		return "IAMhaggler2012";
 	}
 
 	/**

@@ -4,16 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import agents.anac.y2012.AgentLG.OpponentBids;
+import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
+import agents.anac.y2012.CUHKAgent.OwnBidHistory;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.Timeline;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent.OpponentBidHistory;
-import negotiator.boaframework.sharedagentstate.anac2012.CUHKAgentSAS;
+import negotiator.boaframework.sharedagentstate.anac2012.AgentLRSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -21,251 +28,255 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
-import agents.anac.y2012.CUHKAgent.OwnBidHistory;
 
 /**
  * This is the decoupled Bidding Strategy of CUHKAgent
  * Note that the Opponent Model was not decoupled and thus
  * is integrated into this strategy
- * 
- * DEFAULT OM: Own
- * 
- * This agent determines a set of candidate bids each. As the agent does not concede
- * significantly, using an OM is not expected to result in a gain.
- * 
- * If OM is none, then a random bid is selected from the set of candidateBids.
- * If OM is default, then the agents own OM is used.
- * If OM is otherwise, the set OM is used.
- * 
- * @author Alex Dirkzwager, Mark Hendrikx
+ * As well due to the strong coupling with the AC there is not AC_CUHKAgent
+ * and thus it is not proven equivalent with the original 
+ * This is the offering and does not simulate the stopping situation of CUHKAgent
+ * @author Alex Dirkzwager
+ *
  */
-public class CUHKAgent_Offering extends OfferingStrategy {
 
-    private BidDetails opponentBid = null;
+public class CUHKAgent_Offering extends OfferingStrategy{
+	
+	private final boolean TEST_EQUIVALENCE = true;
+
+	private double totalTime;
+    private Action ActionOfOpponent = null;
     private double maximumOfBid;
     private OwnBidHistory ownBidHistory;
     private OpponentBidHistory opponentBidHistory;
     private double minimumUtilityThreshold;
+    private double utilitythreshold;
+    private double MaximumUtility;
+    private double timeLeftBefore;
+    private double timeLeftAfter;
+    private double maximumTimeOfOpponent;
+    private double maximumTimeOfOwn;
     private double discountingFactor;
+    private double concedeToDiscountingFactor;
     private double concedeToDiscountingFactor_original;
     private double minConcedeToDiscountingFactor;
     private ArrayList<ArrayList<Bid>> bidsBetweenUtility;
+    private boolean concedeToOpponent;
+    private boolean toughAgent; //if we propose a bid that was proposed by the opponnet, then it should be accepted. 
     private double alpha1;//the larger alpha is, the more tough the agent is.
     private Bid bid_maximum_utility;//the bid with the maximum utility over the utility space.
-    private UtilitySpace utilitySpace;
-    private Timeline timeline;
-    
+    private double reservationValue;
     private Random random;
-	private final boolean TEST_EQUIVALENCE = true;
 
-    public CUHKAgent_Offering() { }
+
+    
+	public CUHKAgent_Offering() { }
 	
 	public CUHKAgent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
 	}
 	
 	/**
-	 * Init required for the BOA Framework.
+	 * Init required for the Decoupled Framework.
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-	    super.init(negoSession, model, oms, parameters);
-		helper = new CUHKAgentSAS(negotiationSession);
+		negotiationSession = negoSession;
+		 maximumOfBid = negoSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
+         ownBidHistory = new OwnBidHistory();
+         opponentBidHistory = new OpponentBidHistory();
+         bidsBetweenUtility = new ArrayList<ArrayList<Bid>>();
+         this.bid_maximum_utility = negoSession.getUtilitySpace().getMaxUtilityBid();
+         this.utilitythreshold = negoSession.getUtilitySpace().getUtility(bid_maximum_utility); //initial utility threshold
+         this.MaximumUtility = this.utilitythreshold;
+         this.timeLeftAfter = 0;
+         this.timeLeftBefore = 0;
+         this.totalTime = negoSession.getTimeline().getTotalTime();
+         this.maximumTimeOfOpponent = 0;
+         this.maximumTimeOfOwn = 0;
+         this.minConcedeToDiscountingFactor = 0.08;//0.1;
+         this.discountingFactor = 1;
+         if (negoSession.getUtilitySpace().getDiscountFactor() <= 1D && negoSession.getUtilitySpace().getDiscountFactor() > 0D) {
+             this.discountingFactor = negoSession.getUtilitySpace().getDiscountFactor();
+         }
+         this.chooseUtilityThreshold();
+         this.calculateBidsBetweenUtility();
+         this.chooseConcedeToDiscountingDegree();
+         this.opponentBidHistory.initializeDataStructures(negoSession.getUtilitySpace().getDomain());
+         this.timeLeftAfter = negoSession.getTimeline().getCurrentTime();
+         this.concedeToOpponent = false;
+         this.toughAgent = false;
+         this.alpha1 = 2;
+         this.reservationValue = 0;
+         if (negoSession.getUtilitySpace().getReservationValue() > 0) {
+             this.reservationValue = negoSession.getUtilitySpace().getReservationValue();
+         }
+         if(TEST_EQUIVALENCE){
+         	random = new Random(100);
+         } else {
+         	random = new Random();
+         }
 		
-	    utilitySpace = negoSession.getUtilitySpace();
-	    timeline = negoSession.getTimeline();
-	    try {
-            maximumOfBid = this.utilitySpace.getDomain().getNumberOfPossibleBids();
-            ownBidHistory = new OwnBidHistory();
-            opponentBidHistory = new OpponentBidHistory(opponentModel, omStrategy);
-            bidsBetweenUtility = new ArrayList<ArrayList<Bid>>();
-            this.bid_maximum_utility = utilitySpace.getMaxUtilityBid();
-            this.minConcedeToDiscountingFactor = 0.08;//0.1;
-            this.discountingFactor = 1;
-      
-            if (utilitySpace.getDiscountFactor() <= 1D && utilitySpace.getDiscountFactor() > 0D) {
-                this.discountingFactor = utilitySpace.getDiscountFactor();
-            }
-            
-            if(TEST_EQUIVALENCE){
-            	random = new Random(100);
-            } else {
-            	random = new Random();
-            }
-            this.chooseUtilityThreshold();
-
-            this.calculateBidsBetweenUtility();
-            this.chooseConcedeToDiscountingDegree();
-            
-            this.opponentBidHistory.initializeDataStructures(utilitySpace.getDomain());
-            ((CUHKAgentSAS) helper).setTimeLeftAfter(negoSession.getTimeline().getCurrentTime());
-            this.alpha1 = 2;  
-        } catch (Exception e) {
-            System.out.println("initialization error" + e.getMessage());
-        }
 	}
-	    
-	    
+	
 	@Override
 	public BidDetails determineOpeningBid() {
-		return determineNextBid();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public BidDetails determineNextBid() {
-        Bid bidToOffer = null;
+		BidDetails action = null;
         try {
             // System.out.println("i propose " + debug + " bid at time " + timeline.getTime());
-            ((CUHKAgentSAS) helper).setTimeLeftBefore(timeline.getCurrentTime());
-            Bid bid = null;
+            this.timeLeftBefore = negotiationSession.getTimeline().getCurrentTime();
+            BidDetails bid = null;
             //we propose first and propose the bid with maximum utility
-            if (negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
-                bid = this.bid_maximum_utility;
-                bidToOffer = bid;
-            } else if (negotiationSession.getOpponentBidHistory().size() >= 1) {//the opponent propose first and we response secondly
-            	opponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
+            if (negotiationSession.getOpponentBidHistory().isEmpty()) {
+                bid = negotiationSession.getMaxBidinDomain();
+                action = bid;
+            } else if (negotiationSession.getOwnBidHistory().isEmpty()) {//the opponent propose first and we response secondly
                 //update opponent model first
-                this.opponentBidHistory.updateOpponentModel(opponentBid.getBid(), utilitySpace.getDomain(), this.utilitySpace);
+                this.opponentBidHistory.updateOpponentModel(negotiationSession.getOpponentBidHistory().getLastBid(), negotiationSession.getUtilitySpace().getDomain(), negotiationSession.getUtilitySpace());
                 this.updateConcedeDegree();
                 //update the estimation
                 if (ownBidHistory.numOfBidsProposed() == 0) {
                     //bid = utilitySpace.getMaxUtilityBid();
-                    bid = this.bid_maximum_utility;
-                    System.out.println("Decoupled bid1: " + bid);
-
-                    bidToOffer = bid;
+                    bid = negotiationSession.getMaxBidinDomain();
+                    action = bid;
                 } else {//other conditions
-                	//System.out.println("Decoupled Conditions: " + (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateRoundLeft(true) < 5));
-                    if (((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) > 10) {//still have some rounds left to further negotiate (the major negotiation period)
+                	
+                	
+                    if (estimateRoundLeft(true) > 10) {//still have some rounds left to further negotiate (the major negotiation period)
                         bid = BidToOffer();
-                        //System.out.println("Decoupled bid1: " + bid);
-                       //we expect that the negotiation is over once we select a bid from the opponent's history.
-                        if (((CUHKAgentSAS)helper).isConcedeToOpponent() == true) {
-                            // bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
-                            bid = opponentBidHistory.getBestBidInHistory();
-                            //System.out.println("Decoupled bid2: " + bid);
-
-                            bidToOffer = bid;
-                            //System.out.println("we offer the best bid in the history and the opponent should accept it");
-                            ((CUHKAgentSAS)helper).setToughAgent(true);
-                            ((CUHKAgentSAS)helper).setConcedeToOpponent(false);
-                        } else {
-                            bidToOffer = bid;
-                            ((CUHKAgentSAS)helper).setToughAgent(false);
-                            //System.out.println("i propose " + debug + " bid at time " + timeline.getTime());
+                        Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(), bid.getBid());
+                        Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
+                        
+                        if(!IsAccept && !IsTerminate){
+                            //we expect that the negotiation is over once we select a bid from the opponent's history.
+                            if (this.concedeToOpponent == true) {
+                                // bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
+                                Bid possibleBid = opponentBidHistory.getBestBidInHistory();
+                                action = new BidDetails(possibleBid, negotiationSession.getUtilitySpace().getUtility(possibleBid));
+                                //System.out.println("we offer the best bid in the history and the opponent should accept it");
+                                this.toughAgent = true;
+                                this.concedeToOpponent = false;
+                            } else {
+                                action = bid;
+                                this.toughAgent = false;
+                                //System.out.println("i propose " + debug + " bid at time " + timeline.getTime());
+                            }
                         }
-                    } else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
+                    } 
+                    else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
                         //in this case, it corresponds to an opponent whose decision time is short
-                    	System.out.println("Decoupled Test: " + (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) < 5));
-
-                        if (timeline.getTime() > 0.9985 && ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) < 5) {
+                        if (negotiationSession.getTimeline().getTime() > 0.9985 && estimateRoundLeft(true) < 5) {
                             //bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
-                            bid = opponentBidHistory.getBestBidInHistory();
-                            System.out.println("Decoupled bid3: " + bid);
+                            Bid bid1 = opponentBidHistory.getBestBidInHistory();
+                            bid = new BidDetails(bid1, negotiationSession.getUtilitySpace().getUtility(bid1));
 
                             //this is specially designed to avoid that we got very low utility by searching between an acceptable range (when the domain is small)
-                            if (this.utilitySpace.getUtility(bid) < 0.85) {
-                                List<Bid> candidateBids = this.getBidsBetweenUtility(((CUHKAgentSAS)helper).getMaximumUtility() - 0.15, (((CUHKAgentSAS)helper).getMaximumUtility()- 0.02));
+                            if (negotiationSession.getUtilitySpace().getUtility(bid.getBid()) < 0.85) {
+                                List<Bid> candidateBids = this.getBidsBetweenUtility(this.MaximumUtility - 0.15, this.MaximumUtility - 0.02);
                                 //if the candidate bids do not exsit and also the deadline is approaching in next round, we concede.
                                 //if (candidateBids.size() == 1 && timeline.getTime()>0.9998) {
                                 //we have no chance to make a new proposal before the deadline
-                                if (((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,true) < 2) {
-                                    bid = opponentBidHistory.getBestBidInHistory();
-                                    //System.out.printlned bid3: " + bid);
-
-                                    System.out.println("test I " + utilitySpace.getUtility(bid));
+                                if (this.estimateRoundLeft(true) < 2) {
+                                    Bid bid2 = opponentBidHistory.getBestBidInHistory();
+                                    bid = new BidDetails(bid2, negotiationSession.getUtilitySpace().getUtility(bid2));
+                                    
+                                    //System.out.println("test I " + utilitySpace.getUtility(bid));
                                 } else {
-                                    bid = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain(), this.utilitySpace);
-                                    System.out.println("Decoupled bid4: " + bid);
-
+                                	Bid possibleBid = opponentBidHistory.ChooseBid(candidateBids, negotiationSession.getUtilitySpace().getDomain());
+                                    bid = new BidDetails(possibleBid, negotiationSession.getUtilitySpace().getUtility(possibleBid));
                                 }
                                 if (bid == null) {
-                                    bid = opponentBidHistory.getBestBidInHistory();
-                                    System.out.println("Decoupled bid5: " + bid);
-
+                                	Bid bid3 = opponentBidHistory.getBestBidInHistory();
+                                    bid = new BidDetails(bid3, negotiationSession.getUtilitySpace().getUtility(bid3));
                                 }
                             }
-
-                            if (((CUHKAgentSAS) helper).isToughAgent() == false) {
-                                bidToOffer = bid;
-                                //this.toughAgent = true;
-                                System.out.println("this is really the last chance" + bid.toString() + " with utility of " + utilitySpace.getUtility(bid));
-                            }
                             
+                            
+                            Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(), bid.getBid());
+                            Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
+                            if(!IsAccept && !IsTerminate){
+                                if (this.toughAgent == false) {
+                                    action = bid;
+                                    //this.toughAgent = true;
+                                    System.out.println("this is really the last chance" + bid.toString() + " with utility of " + negotiationSession.getUtilitySpace().getUtility(bid.getBid()));
+                                }
+                            }
                             //in this case, it corresponds to the situation that we encounter an opponent who needs more computation to make decision each round
                         } else {//we still have some time to negotiate, 
                             //and be tough by sticking with the lowest one in previous offer history.
                             // we also have to make the decisin fast to avoid reaching the deadline before the decision is made
                             //bid = ownBidHistory.GetMinBidInHistory();//reduce the computational cost
                             bid = BidToOffer();
-                            System.out.println("Decoupled bid6: " + bid);
 
                             //System.out.println("test----------------------------------------------------------" + timeline.getTime());
-                            bidToOffer = bid;
-                            //System.out.println("we have to be tough now" + bid.toString() + " with utility of " + utilitySpace.getUtility(bid));
+                            Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(),bid.getBid());
+                            Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
+                            if(!IsAccept && !IsTerminate){
+                                action = bid;
+                                //System.out.println("we have to be tough now" + bid.toString() + " with utility of " + utilitySpace.getUtility(bid));
+                            }
                         }
                     }
                 }
             }
             //System.out.println("i propose " + debug + " bid at time " + timeline.getTime());
-            this.ownBidHistory.addBid(bid, utilitySpace);
-           ((CUHKAgentSAS) helper).setTimeLeftAfter(timeline.getCurrentTime());
-            ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,false);//update the estimation
+            this.ownBidHistory.addBid(bid.getBid(), negotiationSession.getUtilitySpace());
+            this.timeLeftAfter = negotiationSession.getTimeline().getCurrentTime();
+            this.estimateRoundLeft(false);//update the estimation
             //System.out.println(this.utilitythreshold + "-***-----" + this.timeline.getElapsedSeconds());
         } catch (Exception e) {
             System.out.println("Exception in ChooseAction:" + e.getMessage());
-            System.out.println(((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,false));
+            System.out.println(estimateRoundLeft(false));
             //action = new Accept(getAgentID()); // accept if anything goes wrong.
-            //bidToOffer = new EndNegotiation(getAgentID()); //terminate if anything goes wrong.
+            //action = new EndNegotiation(getAgentID()); //terminate if anything goes wrong.
         }
-        
-        try {
-			nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return nextBid;
-    }
+        return action;
+	
+	}
+	
 
     /*
      * principle: randomization over those candidate bids to let the opponent
      * have a better model of my utility profile return the bid to be offered in
      * the next round
      */
-    private Bid BidToOffer() {
+    private BidDetails BidToOffer() {
         Bid bidReturned = null;
-        int test = 0;
         double decreasingAmount_1 = 0.05;
         double decreasingAmount_2 = 0.25;
         try {
 
-            double maximumOfBid = (((CUHKAgentSAS)helper).getMaximumUtility());//utilitySpace.getUtility(utilitySpace.getMaxUtilityBid());
+            double maximumOfBid = this.MaximumUtility;//utilitySpace.getUtility(utilitySpace.getMaxUtilityBid());
             double minimumOfBid;
             //used when the domain is very large.
             //make concession when the domin is large
             if (this.discountingFactor == 1 && this.maximumOfBid > 3000) {
-                minimumOfBid = (((CUHKAgentSAS)helper).getMaximumUtility()) - decreasingAmount_1;
+                minimumOfBid = this.MaximumUtility - decreasingAmount_1;
                 //make further concession when the deadline is approaching and the domain is large
-                if (this.discountingFactor > 1 - decreasingAmount_2 && this.maximumOfBid > 10000 && timeline.getTime() >= 0.98) {
-                    minimumOfBid = (((CUHKAgentSAS)helper).getMaximumUtility()) - decreasingAmount_2;
+                if (this.discountingFactor > 1 - decreasingAmount_2 && this.maximumOfBid > 10000 && negotiationSession.getTimeline().getTime() >= 0.98) {
+                    minimumOfBid = this.MaximumUtility - decreasingAmount_2;
                 }
-                if (((CUHKAgentSAS) helper).getUtilitythreshold() > minimumOfBid) {
-                	((CUHKAgentSAS) helper).setUtilitythreshold(minimumOfBid);
+                if (this.utilitythreshold > minimumOfBid) {
+                    this.utilitythreshold = minimumOfBid;
                 }
             }/*else if (this.discountingFactor > 1 - decreasingAmount_3 && this.maximumOfBid >= 100000 && this.maximumOfBid < 300000) {
             minimumOfBid = this.MaximumUtility - decreasingAmount_3;
             } else if (this.discountingFactor > 1 - decreasingAmount_4 && this.maximumOfBid >= 300000) {
             minimumOfBid = this.MaximumUtility - decreasingAmount_4;
             }*/ else {//the general case
-                if (timeline.getTime() <= ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor()) {
-                    double minThreshold = (maximumOfBid * this.discountingFactor) / Math.pow(this.discountingFactor, ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor());
-                    ((CUHKAgentSAS) helper).setUtilitythreshold(maximumOfBid - (maximumOfBid - minThreshold) * Math.pow((timeline.getTime() / ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor()), alpha1));
+                if (negotiationSession.getTimeline().getTime() <= this.concedeToDiscountingFactor) {
+                    double minThreshold = (maximumOfBid * this.discountingFactor) / Math.pow(this.discountingFactor, this.concedeToDiscountingFactor);
+                    this.utilitythreshold = maximumOfBid - (maximumOfBid - minThreshold) * Math.pow((negotiationSession.getTimeline().getTime() / this.concedeToDiscountingFactor), alpha1);
                 } else {
-                	((CUHKAgentSAS) helper).setUtilitythreshold((maximumOfBid * this.discountingFactor) / Math.pow(this.discountingFactor, timeline.getTime()));
+                    this.utilitythreshold = (maximumOfBid * this.discountingFactor) / Math.pow(this.discountingFactor, negotiationSession.getTimeline().getTime());
                 }
-                minimumOfBid = ((CUHKAgentSAS) helper).getUtilitythreshold();
+                minimumOfBid = this.utilitythreshold;
             }
 
             /*
@@ -279,34 +290,157 @@ public class CUHKAgent_Offering extends OfferingStrategy {
 
             //choose from the opponent bid history first to reduce calculation time            
             Bid bestBidOfferedByOpponent = opponentBidHistory.getBestBidInHistory();
-            if (utilitySpace.getUtility(bestBidOfferedByOpponent) >= ((CUHKAgentSAS) helper).getUtilitythreshold() || utilitySpace.getUtility(bestBidOfferedByOpponent) >= minimumOfBid) {
-                return bestBidOfferedByOpponent;
+            if (negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent) >= this.utilitythreshold || negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent) >= minimumOfBid) {
+                return new BidDetails(bestBidOfferedByOpponent, negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent));
             }
             List<Bid> candidateBids = this.getBidsBetweenUtility(minimumOfBid, maximumOfBid);
-            test = candidateBids.size();
-            bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.utilitySpace.getDomain(), this.utilitySpace);
+
+            bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.negotiationSession.getUtilitySpace().getDomain());
             if (bidReturned == null) {
                 System.out.println("no bid is searched warning");
-                bidReturned = this.utilitySpace.getMaxUtilityBid();
+                bidReturned = this.negotiationSession.getUtilitySpace().getMaxUtilityBid();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + "exception in method BidToOffer");
         }
         // System.out.println("the current threshold is " + this.utilitythreshold + " with the value of alpha1 is  " + alpha1);
-        return bidReturned;
+        
+        try {
+			return new BidDetails(bidReturned, negotiationSession.getUtilitySpace().getUtility(bidReturned));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
     }
 
- 
-    
+    /*
+     * decide whether to accept the current offer or not
+     */
+    private boolean AcceptOpponentOffer(Bid opponentBid, Bid ownBid) {
+        double currentUtility = 0;
+        double nextRoundUtility = 0;
+        double maximumUtility = 0;
+        this.concedeToOpponent = false;
+        try {
+            currentUtility = this.negotiationSession.getUtilitySpace().getUtility(opponentBid);
+            maximumUtility = this.MaximumUtility;//utilitySpace.getUtility(utilitySpace.getMaxUtilityBid());
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Exception in method AcceptOpponentOffer part 1");
+        }
+        try {
+            nextRoundUtility = this.negotiationSession.getUtilitySpace().getUtility(ownBid);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Exception in method AcceptOpponentOffer part 2");
+        }
+        //System.out.println(this.utilitythreshold +"at time "+ timeline.getTime());
+        if (currentUtility >= this.utilitythreshold || currentUtility >= nextRoundUtility) {
+            return true;
+        } else {
+            //if the current utility with discount is larger than the predicted maximum utility with discount
+            //then accept it.
+            double predictMaximumUtility = maximumUtility * this.discountingFactor;
+            //double currentMaximumUtility = this.utilitySpace.getUtilityWithDiscount(opponentBidHistory.chooseBestFromHistory(utilitySpace), timeline);
+            double currentMaximumUtility = this.negotiationSession.getUtilitySpace().getUtilityWithDiscount(opponentBidHistory.getBestBidInHistory(), negotiationSession.getTimeline());
+            if (currentMaximumUtility > predictMaximumUtility && negotiationSession.getTimeline().getTime() > this.concedeToDiscountingFactor) {
+                try {
+                    //if the current offer is approximately as good as the best one in the history, then accept it.
+                    if (negotiationSession.getUtilitySpace().getUtility(opponentBid) >= negotiationSession.getUtilitySpace().getUtility(opponentBidHistory.getBestBidInHistory()) - 0.01) {
+                        System.out.println("he offered me " + currentMaximumUtility + " we predict we can get at most " + predictMaximumUtility + "we concede now to avoid lower payoff due to conflict");
+                        return true;
+                    } else {
+                        this.concedeToOpponent = true;
+                        return false;
+                    }
+                } catch (Exception e) {
+                    System.out.println("exception in Method AcceptOpponentOffer");
+                    return true;
+                }
+                //retrieve the opponent's biding history and utilize it
+            } else if (currentMaximumUtility > this.utilitythreshold * Math.pow(this.discountingFactor, negotiationSession.getTimeline().getTime())) {
+                try {
+                    //if the current offer is approximately as good as the best one in the history, then accept it.
+                    if (negotiationSession.getUtilitySpace().getUtility(opponentBid) >= negotiationSession.getUtilitySpace().getUtility(opponentBidHistory.getBestBidInHistory()) - 0.01) {
+                        return true;
+                    } else {
+                        System.out.println("test" + negotiationSession.getUtilitySpace().getUtility(opponentBid) + this.utilitythreshold);
+                        this.concedeToOpponent = true;
+                        return false;
+                    }
+                } catch (Exception e) {
+                    System.out.println("exception in Method AcceptOpponentOffer");
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /*
+     * decide whether or not to terminate now
+     */
+    private boolean TerminateCurrentNegotiation(Bid ownBid) {
+        double currentUtility = 0;
+        double nextRoundUtility = 0;
+        double maximumUtility = 0;
+        this.concedeToOpponent = false;
+        try {
+            currentUtility = this.reservationValue;
+            nextRoundUtility = this.negotiationSession.getUtilitySpace().getUtility(ownBid);
+            maximumUtility = this.MaximumUtility;
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Exception in method TerminateCurrentNegotiation part 1");
+        }
+
+        if (currentUtility >= this.utilitythreshold || currentUtility >= nextRoundUtility) {
+            return true;
+        } else {
+            //if the current reseravation utility with discount is larger than the predicted maximum utility with discount
+            //then terminate the negotiation.
+            double predictMaximumUtility = maximumUtility * this.discountingFactor;
+            double currentMaximumUtility = this.negotiationSession.getUtilitySpace().getReservationValueWithDiscount(negotiationSession.getTimeline());
+            // System.out.println("the current reserved value is "+ this.reservationValue+" after discounting is "+currentMaximumUtility);
+            if (currentMaximumUtility > predictMaximumUtility && negotiationSession.getTimeline().getTime() > this.concedeToDiscountingFactor) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    /*
+     * estimate the number of rounds left before reaching the deadline @param
+     * opponent @return
+     */
+
+    private int estimateRoundLeft(boolean opponent) {
+        double round;
+        if (opponent == true) {
+            if (this.timeLeftBefore - this.timeLeftAfter > this.maximumTimeOfOpponent) {
+                this.maximumTimeOfOpponent = this.timeLeftBefore - this.timeLeftAfter;
+            }
+        } else {
+            if (this.timeLeftAfter - this.timeLeftBefore > this.maximumTimeOfOwn) {
+                this.maximumTimeOfOwn = this.timeLeftAfter - this.timeLeftBefore;
+            }
+        }
+        if (this.maximumTimeOfOpponent + this.maximumTimeOfOwn == 0) {
+            System.out.println("divided by zero exception");
+        }
+        round = (this.totalTime - negotiationSession.getTimeline().getCurrentTime()) / (this.maximumTimeOfOpponent + this.maximumTimeOfOwn);
+        //System.out.println("current time is " + timeline.getElapsedSeconds() + "---" + round + "----" + this.maximumTimeOfOpponent);
+        return ((int) (round));
+    }
+
     /*
      * pre-processing to save the computational time each round
      */
     private void calculateBidsBetweenUtility() {
-        BidIterator myBidIterator = new BidIterator(this.utilitySpace.getDomain());
+        BidIterator myBidIterator = new BidIterator(this.negotiationSession.getUtilitySpace().getDomain());
 
         try {
             // double maximumUtility = utilitySpace.getUtility(utilitySpace.getMaxUtilityBid());
-            double maximumUtility = (((CUHKAgentSAS)helper).getMaximumUtility());
+            double maximumUtility = this.MaximumUtility;
             double minUtility = this.minimumUtilityThreshold;
             int maximumRounds = (int) ((maximumUtility - minUtility) / 0.01);
             //initalization for each arraylist storing the bids between each range
@@ -323,7 +457,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                 while (myBidIterator.hasNext()) {
                     Bid b = myBidIterator.next();
                     for (int i = 0; i < maximumRounds; i++) {
-                        if (utilitySpace.getUtility(b) <= (i + 1) * 0.01 + minUtility && utilitySpace.getUtility(b) >= i * 0.01 + minUtility) {
+                        if (negotiationSession.getUtilitySpace().getUtility(b) <= (i + 1) * 0.01 + minUtility && negotiationSession.getUtilitySpace().getUtility(b) >= i * 0.01 + minUtility) {
                             this.bidsBetweenUtility.get(i).add(b);
                             break;
                         }
@@ -334,7 +468,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                 while (limits <= 20000) {
                     Bid b = this.RandomSearchBid();
                     for (int i = 0; i < maximumRounds; i++) {
-                        if (utilitySpace.getUtility(b) <= (i + 1) * 0.01 + minUtility && utilitySpace.getUtility(b) >= i * 0.01 + minUtility) {
+                        if (negotiationSession.getUtilitySpace().getUtility(b) <= (i + 1) * 0.01 + minUtility && negotiationSession.getUtilitySpace().getUtility(b) >= i * 0.01 + minUtility) {
                             this.bidsBetweenUtility.get(i).add(b);
                             break;
                         }
@@ -350,13 +484,12 @@ public class CUHKAgent_Offering extends OfferingStrategy {
 
     private Bid RandomSearchBid() throws Exception {
         HashMap<Integer, Value> values = new HashMap<Integer, Value>();
-        ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
+        ArrayList<Issue> issues = negotiationSession.getUtilitySpace().getDomain().getIssues();        
         Bid bid = null;
 
         for (Issue lIssue : issues) {
             switch (lIssue.getType()) {
                 case DISCRETE:
-                	
                     IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
                     int optionIndex = random.nextInt(lIssueDiscrete.getNumberOfValues());
                     values.put(lIssue.getNumber(),
@@ -379,7 +512,7 @@ public class CUHKAgent_Offering extends OfferingStrategy {
                     throw new Exception("issue type " + lIssue.getType() + " not supported");
             }
         }
-        bid = new Bid(utilitySpace.getDomain(), values);
+        bid = new Bid(negotiationSession.getUtilitySpace().getDomain(), values);
         return bid;
     }
 
@@ -442,9 +575,9 @@ public class CUHKAgent_Offering extends OfferingStrategy {
             beta = 1.2;
         }
         alpha = Math.pow(this.discountingFactor, beta);
-        ((CUHKAgentSAS) helper).setConcedeToDiscountingFactor(this.minConcedeToDiscountingFactor + (1 - this.minConcedeToDiscountingFactor) * alpha);
-        this.concedeToDiscountingFactor_original = ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor();
-        System.out.println("concedeToDiscountingFactor is " + ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor() + "current time is " + timeline.getTime());
+        this.concedeToDiscountingFactor = this.minConcedeToDiscountingFactor + (1 - this.minConcedeToDiscountingFactor) * alpha;
+        this.concedeToDiscountingFactor_original = this.concedeToDiscountingFactor;
+        System.out.println("concedeToDiscountingFactor is " + this.concedeToDiscountingFactor + "current time is " + negotiationSession.getTimeline().getTime());
     }
     /*
      * update the concede-to-time degree based on the predicted toughness degree
@@ -456,14 +589,14 @@ public class CUHKAgent_Offering extends OfferingStrategy {
         double weight = 0.1;
         double opponnetToughnessDegree = this.opponentBidHistory.getConcessionDegree();
         //this.concedeToDiscountingFactor = this.concedeToDiscountingFactor_original * (1 + opponnetToughnessDegree);
-        ((CUHKAgentSAS) helper).setConcedeToDiscountingFactor( this.concedeToDiscountingFactor_original + weight * (1 - this.concedeToDiscountingFactor_original) * Math.pow(opponnetToughnessDegree, gama));
-        if ( ((CUHKAgentSAS) helper).getConcedeToDiscountingFactor() >= 1) {
-        	((CUHKAgentSAS) helper).setConcedeToDiscountingFactor(1);
+        this.concedeToDiscountingFactor = this.concedeToDiscountingFactor_original + weight * (1 - this.concedeToDiscountingFactor_original) * Math.pow(opponnetToughnessDegree, gama);
+        if (this.concedeToDiscountingFactor >= 1) {
+            this.concedeToDiscountingFactor = 1;
         }
         // System.out.println("concedeToDiscountingFactor is " + this.concedeToDiscountingFactor + "current time is " + timeline.getTime() + "original concedetodiscoutingfactor is " + this.concedeToDiscountingFactor_original);
     }
+
+
+
+	    
 }
-
-
-
-

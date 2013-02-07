@@ -1,11 +1,14 @@
-package agents.anac.y2012.AgentLG;
+package negotiator.boaframework.sharedagentstate.anac2012;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import negotiator.AgentID;
+import agents.anac.y2012.AgentLG.BidsComparator;
+import agents.anac.y2012.AgentLG.OpponentBids;
 import negotiator.Bid;
-import negotiator.actions.Action;
-import negotiator.actions.Offer;
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.SharedAgentState;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
@@ -16,10 +19,9 @@ import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
-/**
- * Class that is used to choose a bid .
- */
-public class BidChooser {
+
+
+public class AgentLRSAS extends SharedAgentState{
 	
 	private UtilitySpace  utilitySpace;
 	private OpponentBids  opponentBids;
@@ -28,18 +30,19 @@ public class BidChooser {
 	private int numPossibleBids=0;
 	private int index=0;
 	private double lastTimeLeft=0;
-	private AgentID agentID;
 	private int minSize = 160000;
 	private Bid myBestBid=null;
-	
-	public BidChooser(UtilitySpace utilitySpace, AgentID agentID,OpponentBids OpponentBids) {
-		this.utilitySpace = utilitySpace;
-		this.agentID = agentID;
-		this.opponentBids = OpponentBids;
-	}
+	private NegotiationSession negotiationSession;
 
+	public AgentLRSAS (NegotiationSession negoSession, OpponentBids OpponentBids) {
+		negotiationSession = negoSession;
+		NAME = "AgentLR";
+		this.utilitySpace = negoSession.getUtilitySpace();
+		this.opponentBids = OpponentBids;
+		this.negotiationSession = negoSession;
+	}
 	
-	private void initBids() {
+private void initBids() {
 		
 		//get all bids
 		allBids = getAllBids();
@@ -57,15 +60,13 @@ public class BidChooser {
 	 * Calculate the next bid for the agent (from 1/4 most optimal bids)
 	 * 
 	 */
-	public Action getNextBid(double time)
+	public BidDetails getNextBid(double time)
 	{
-		Action currentAction = null ;
+		BidDetails currentAction = null ;
 		try
 		{
 			Bid newBid= allBids.get(index);
-			currentAction = new Offer(agentID, newBid);
-			//System.out.println("Original getNextBid: " + newBid);
-
+			currentAction = new BidDetails(newBid, utilitySpace.getUtility(newBid));
 			index++;
 			if (index>numPossibleBids)
 			{
@@ -144,9 +145,6 @@ public class BidChooser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Original Set numPossibleBids: " + numPossibleBids);
-
 		return currentAction;
 	}
 	
@@ -154,18 +152,18 @@ public class BidChooser {
 	 * Calculate the next optimal bid for the agent (from 1/4 most optimal bids)
 	 *
 	 */
-	public Action getNextOptimicalBid(double time)
+	public BidDetails getNextOptimicalBid(double time)
 	{
-		Action currentAction = null;
+		BidDetails currentAction = null;
 		Bid newBid=null;
 		try
 		{
 			if (allBids == null)
 				initBids();
 			newBid= allBids.get(index);
-			//System.out.println("Original getNextOptimicalBid: " + newBid);
+		//	System.out.println("Decoupled getNextOptimal: " + newBid);
 
-			currentAction = new Offer(agentID, newBid);
+			currentAction = new BidDetails(newBid, utilitySpace.getUtility(newBid));
 			index++;
 			double myBestUtility = utilitySpace.getUtilityWithDiscount(myBestBid,time);
 			double oppBestUtility = utilitySpace.getUtilityWithDiscount(opponentBids.getOpponentsBids().get(0),time);
@@ -186,6 +184,7 @@ public class BidChooser {
 				e.printStackTrace();
 			}
 		maxLastOpponentBid=opponentBids.getMaxUtilityBidForMe();
+
 		return currentAction;
 	
 	}
@@ -342,9 +341,6 @@ public class BidChooser {
 	{
 		if (allBids == null)
 			initBids();
-		
-		System.out.println("Original numPossibleBids: " + numPossibleBids);
-
 		return  utilitySpace.getUtilityWithDiscount(allBids.get(numPossibleBids),time);
 	}
 	
