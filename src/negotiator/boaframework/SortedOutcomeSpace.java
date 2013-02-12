@@ -1,5 +1,6 @@
 package negotiator.boaframework;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import misc.Range;
@@ -40,15 +41,23 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 		int lowerboundIndex = searchIndexWith(r.getLowerbound());
 		
 		//test upperbound index element is under upperbound
-		if(!(allBids.get(upperboundIndex).getMyUndiscountedUtil()<=r.getUpperbound())){
-			upperboundIndex++;
+		if(allBids.get(upperboundIndex).getMyUndiscountedUtil()<=r.getUpperbound()&&upperboundIndex > 0 ){
+			upperboundIndex--;
 		}
 		//test lowerbound index element is under lowerbound
-		if(!(allBids.get(lowerboundIndex).getMyUndiscountedUtil()>=r.getLowerbound())){
+		if(allBids.get(lowerboundIndex).getMyUndiscountedUtil()>=r.getLowerbound() && lowerboundIndex < allBids.size()){
 			lowerboundIndex++;
 		}
+		
+		//Sublist return empty list if upper and lower bounds are equal, thus this side case
+		if(lowerboundIndex == upperboundIndex){
+			ArrayList<BidDetails> list = new ArrayList<BidDetails>();
+			list.add(allBids.get(lowerboundIndex));
+			return list;
+		}
+		
 
-		return allBids.subList(upperboundIndex, lowerboundIndex+1);
+		return allBids.subList(upperboundIndex, lowerboundIndex);
 
 	}
 	
