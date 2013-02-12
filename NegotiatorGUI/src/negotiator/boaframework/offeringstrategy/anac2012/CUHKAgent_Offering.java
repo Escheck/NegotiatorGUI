@@ -20,7 +20,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.sharedagentstate.anac2012.AgentLRSAS;
+import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;

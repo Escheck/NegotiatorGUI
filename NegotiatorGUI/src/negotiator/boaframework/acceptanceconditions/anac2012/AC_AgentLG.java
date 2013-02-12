@@ -1,16 +1,19 @@
 package negotiator.boaframework.acceptanceconditions.anac2012;
 
 import java.util.HashMap;
+
+import agents.anac.y2012.AgentLG.OpponentBids;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
-import negotiator.boaframework.sharedagentstate.anac2012.AgentLRSAS;
+import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 
 public class AC_AgentLG extends AcceptanceStrategy{
 	
 	private boolean activeHelper = false;
+	private OpponentBids opponentsBid;
 
 	
 public AC_AgentLG() { }
@@ -26,16 +29,21 @@ public AC_AgentLG() { }
 
 		//checking if offeringStrategy SAS is a AgentLGSAS
 				if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentLR"))) {
-					helper = new BRAMAgentSAS(negotiationSession);
+					opponentsBid = new OpponentBids(negoSession.getUtilitySpace());
+					helper = new AgentLGSAS(negotiationSession, opponentsBid);
 					activeHelper = true;
 				} else {	
-					helper = (AgentLRSAS) offeringStrategy.getHelper();
+					helper = (AgentLGSAS) offeringStrategy.getHelper();
 				} 
 	}
 
 
 	@Override
 	public Actions determineAcceptability() {
+		
+		if(activeHelper){
+			opponentsBid.addBid(negotiationSession.getOpponentBidHistory().getLastBid());
+		}
 
 		double time = negotiationSession.getTime();
 		if(negotiationSession.getOwnBidHistory().isEmpty()){
@@ -65,7 +73,7 @@ public AC_AgentLG() { }
 		
 		//accept if opponent offer is good enough or there is no time and the offer is 'good'
 		if(opponentUtility >= myUtility*0.99 ||( time>0.999 && opponentUtility >= myUtility*0.9)
-				|| ((AgentLRSAS) helper).getMyBidsMinUtility(time)<= opponentUtility)
+				|| ((AgentLGSAS) helper).getMyBidsMinUtility(time)<= opponentUtility)
 		{
 			return Actions.Accept;
 
