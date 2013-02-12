@@ -39,7 +39,9 @@ public class AC_IAMHaggler2012 extends AcceptanceStrategy{
 		}
 		
 		public void initializeAgent(NegotiationSession negotiationSession, OfferingStrategy os) throws Exception {
+			this.negotiationSession = negotiationSession;
 			utilitySpace = negotiationSession.getUtilitySpace();
+			this.offeringStrategy = os;
 
 		}	
 	@Override
@@ -57,7 +59,6 @@ public class AC_IAMHaggler2012 extends AcceptanceStrategy{
 			} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= MAXIMUM_ASPIRATION) {
 				// Accept opponent's bid based on my previous bid.
 				return Actions.Accept;
-	
 			}
 			
 			if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= offeringStrategy.getNextBid().getMyUndiscountedUtil()){

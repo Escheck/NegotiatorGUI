@@ -13,7 +13,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.sharedagentstate.anac2012.AgentLRSAS;
+import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 
 public class AgentLG_Offering extends OfferingStrategy{
 	
@@ -34,7 +34,7 @@ public class AgentLG_Offering extends OfferingStrategy{
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		oppenentsBid = new OpponentBids(negoSession.getUtilitySpace());
 		negotiationSession = negoSession;
-	    helper = new AgentLRSAS(negotiationSession, oppenentsBid);
+	    helper = new AgentLGSAS(negotiationSession, oppenentsBid);
 		
 	}
 
@@ -68,7 +68,7 @@ public class AgentLG_Offering extends OfferingStrategy{
 				if(time<0.6)
 				{
 					if(!negotiationSession.getOpponentBidHistory().isEmpty())
-						currentAction = ((AgentLRSAS) helper).getNextOptimicalBid(time);
+						currentAction = ((AgentLGSAS) helper).getNextOptimicalBid(time);
 						myLastBid = negotiationSession.getOwnBidHistory().getLastBid();
 				} 
 				else 
@@ -78,13 +78,13 @@ public class AgentLG_Offering extends OfferingStrategy{
 					{
 						myLastBid = negotiationSession.getOpponentBidHistory().getBestBidDetails().getBid();
 						if (negotiationSession.getUtilitySpace().getUtilityWithDiscount(myLastBid, time) <negotiationSession.getUtilitySpace().getReservationValueWithDiscount(time))
-								myLastBid = ((AgentLRSAS) helper).getMyminBidfromBids();
+								myLastBid = ((AgentLGSAS) helper).getMyminBidfromBids();
 						currentAction = new BidDetails(myLastBid, negotiationSession.getUtilitySpace().getUtility(myLastBid));
 					}
 					else
 					{	
 						//Comprise and chose better bid for the opponents that still good for me 
-						currentAction = ((AgentLRSAS) helper).getNextBid(time);
+						currentAction = ((AgentLGSAS) helper).getNextBid(time);
 					}
 				}				
 		/*
