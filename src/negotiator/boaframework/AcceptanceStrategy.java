@@ -20,6 +20,8 @@ public abstract class  AcceptanceStrategy {
 	/** Reference to the helper-object, which is used when there is overlap between
 	  * the acceptance condition and offering strategy. */
 	protected SharedAgentState helper;
+	/** Reference to opponnent model of agent. */
+	protected OpponentModel opponentModel;
 	
 	/**
 	 * Standard initialize method to be called after using the empty constructor.
@@ -32,9 +34,10 @@ public abstract class  AcceptanceStrategy {
 	 * @throws Exception thrown when initializing the acceptance strategy fails.
 	 */
 	public void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy,
-						HashMap<String, Double> parameters) throws Exception {
+					OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.offeringStrategy = offeringStrategy;
+		this.opponentModel = opponentModel;
 	}
 	
 	/**

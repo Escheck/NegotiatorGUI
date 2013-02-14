@@ -45,7 +45,7 @@ public class TheBOAagent extends BOAagent {
 			opponentModel.setOpponentUtilitySpace(fNegotiation);
 			omStrategy.init(negotiationSession, opponentModel, dagent.getOMStrategy().getParameters());
 			offeringStrategy.init(negotiationSession, opponentModel, omStrategy, dagent.getOfferingStrategy().getParameters());
-			acceptConditions.init(negotiationSession, offeringStrategy, dagent.getAcceptanceStrategy().getParameters());
+			acceptConditions.init(negotiationSession, offeringStrategy, opponentModel, dagent.getAcceptanceStrategy().getParameters());
 			acceptConditions.setOpponentUtilitySpace(fNegotiation);
 		} catch (Exception e) {
 			e.printStackTrace();

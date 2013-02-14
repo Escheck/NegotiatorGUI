@@ -5,6 +5,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 
 /**
  * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
@@ -37,7 +38,7 @@ public class AC_Combi extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		if (parameters.get("c") != null  && parameters.get("t")!=null) {
 			a = parameters.get("a");

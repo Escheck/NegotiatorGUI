@@ -7,6 +7,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeTuple;
 import negotiator.Bid;
 
@@ -37,7 +38,7 @@ public class Multi_AcceptanceCondition extends AcceptanceStrategy {
 	public Multi_AcceptanceCondition() { }
 
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		//this.negotiationSession = negoSession;
 		outcomes = new ArrayList<OutcomeTuple> ();
 		ACList = new ArrayList<AcceptanceStrategy>();

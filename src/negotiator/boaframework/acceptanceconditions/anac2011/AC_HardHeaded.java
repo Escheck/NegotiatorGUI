@@ -7,6 +7,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2011.HardHeadedSAS;
 
 /**
@@ -30,11 +31,12 @@ public class AC_HardHeaded extends AcceptanceStrategy {
 	public AC_HardHeaded() { }
 	
 	public AC_HardHeaded(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
-		init(negoSession, strat, null);
+		init(negoSession, strat, null, null);
 
 	}
 	
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	@Override
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		

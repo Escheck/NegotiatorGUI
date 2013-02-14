@@ -6,6 +6,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2011.GahboninhoSAS;
 
 /**
@@ -34,7 +35,7 @@ public class AC_Gahboninho extends AcceptanceStrategy {
 	}
 	
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		initializeAgent(negotiationSession,offeringStrategy);
 		
 	}

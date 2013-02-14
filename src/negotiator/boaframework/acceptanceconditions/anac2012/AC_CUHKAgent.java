@@ -11,6 +11,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2012.CUHKAgentSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -57,7 +58,8 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 		initializeAgent(negoSession, strat);
 	}
 	
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	@Override
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		initializeAgent(negoSession, strat);
 	}
 	

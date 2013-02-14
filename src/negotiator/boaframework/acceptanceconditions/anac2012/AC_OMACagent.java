@@ -6,6 +6,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -28,10 +29,11 @@ public class AC_OMACagent extends AcceptanceStrategy{
 public AC_OMACagent() { }
 	
 	public AC_OMACagent(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
-		init(negoSession, strat, null);
+		init(negoSession, strat, null, null);
 	}
 
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	@Override
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		offeringStrategy = strat;
 		utilitySpace = negoSession.getUtilitySpace();

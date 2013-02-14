@@ -6,6 +6,7 @@ import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -74,7 +75,9 @@ public class SimpleAgent extends Agent
 					action = new Accept(getAgentID());
 				
 			}
-			sleep(0.005); // just for fun
+			if (timeline.getType().equals(Timeline.Type.Time)) {
+				sleep(0.005); // just for fun
+			}
 		} catch (Exception e) { 
 			System.out.println("Exception in ChooseAction:"+e.getMessage());
 			action=new Accept(getAgentID()); // best guess if things go wrong. 

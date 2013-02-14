@@ -5,6 +5,7 @@ import java.util.HashMap;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeTuple;
 
 /**
@@ -26,7 +27,7 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 	public AC_MAC() { }
 
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		outcomes = new ArrayList<OutcomeTuple> ();

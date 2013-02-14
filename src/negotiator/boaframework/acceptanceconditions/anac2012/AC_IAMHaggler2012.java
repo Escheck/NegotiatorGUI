@@ -7,6 +7,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -33,8 +34,8 @@ public class AC_IAMHaggler2012 extends AcceptanceStrategy{
 		}
 		
 		@Override
-		public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
-			super.init(negoSession, strat, parameters);
+		public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
+			super.init(negoSession, strat, opponentModel, parameters);
 			initializeAgent(negoSession, strat);
 		}
 		

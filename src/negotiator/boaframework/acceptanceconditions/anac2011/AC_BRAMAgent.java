@@ -8,6 +8,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
 
 /**
@@ -32,11 +33,11 @@ public class AC_BRAMAgent extends AcceptanceStrategy {
 	public AC_BRAMAgent() { }
 	
 	public AC_BRAMAgent(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
-		init(negoSession, strat, null);
+		init(negoSession, strat, null, null);
 	}
 
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		bestBid = negoSession.getMaxBidinDomain();
