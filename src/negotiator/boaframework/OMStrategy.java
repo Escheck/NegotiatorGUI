@@ -91,9 +91,15 @@ public abstract class OMStrategy {
 	
 	/**
 	 * Use this method in case no range is specified, but only a target utility.
+	 * 
+	 * This method has two steps:
+	 * First a set of bids is generated using the following procedure.
 	 * The method looks at the bids in the range [targetUtility,
 	 * targetUtility + INITIAL_WINDOW_RANGE]. If there are less than EXPECTED_BIDS_IN_WINDOW
 	 * in the window, then the upperbound is increased by RANGE_INCREMENT.
+	 * 
+	 * Second a bid for the opponent is selected by calling getBid(List<BidDetails> bidsInRange)
+	 * with the generated set.
 	 * 
 	 * @param space of all possible outcomes
 	 * @param targetUtility minimum utility to 
