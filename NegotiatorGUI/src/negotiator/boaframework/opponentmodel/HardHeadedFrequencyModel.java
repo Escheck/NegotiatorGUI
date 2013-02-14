@@ -139,6 +139,8 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 		// Then for each issue value that has been offered last time, a constant value is added to its corresponding ValueDiscrete.
 		try{
 			for(Entry<Objective, Evaluator> e: opponentUtilitySpace.getEvaluators()){
+				// cast issue to discrete and retrieve value. Next, add constant learnValueAddition to the current preference of the value to make
+				// it more important
 				( (EvaluatorDiscrete)e.getValue() ).setEvaluation(oppBid.getBid().getValue(((IssueDiscrete)e.getKey()).getNumber()), 
 					( learnValueAddition + 
 						((EvaluatorDiscrete)e.getValue()).getEvaluationNotNormalized( 
