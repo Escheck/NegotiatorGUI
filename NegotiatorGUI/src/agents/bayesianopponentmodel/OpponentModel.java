@@ -9,10 +9,10 @@ import negotiator.Domain;
 public class OpponentModel {
 	
 	private boolean isCrashed = false;
-	
+
 	protected Domain fDomain;
 	public ArrayList<Bid> fBiddingHistory;
-	
+
 	public Domain getDomain() { return fDomain; }
 	Double minUtility=null,maxUtility=null;
 	public double getExpectedUtility(Bid pBid) throws Exception {return -1;}

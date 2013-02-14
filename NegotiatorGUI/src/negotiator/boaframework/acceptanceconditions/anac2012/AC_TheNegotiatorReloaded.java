@@ -6,6 +6,7 @@ import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 
 /**
  * Uses an extended implementation of AC_next_discounted as discussed in 
@@ -67,7 +68,7 @@ public class AC_TheNegotiatorReloaded extends AcceptanceStrategy{
 	 * Uses the parameters given by the decoupled framework to initialize the agent.
 	 */
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("a") != null  || parameters.get("b")!=null || parameters.get("ad")!=null ||
 				parameters.get("bd")!=null ||  parameters.get("c")!=null || parameters.get("t")!=null){
 			aNext = parameters.get("a");

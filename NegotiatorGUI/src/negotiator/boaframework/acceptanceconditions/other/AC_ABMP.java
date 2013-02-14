@@ -27,7 +27,7 @@ public class AC_ABMP extends AcceptanceStrategy {
 	public AC_ABMP() { }
 
 	public AC_ABMP(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
-		init(negoSession, strat, null);
+		init(negoSession, strat, null, null);
 	}
 	
 	@Override
