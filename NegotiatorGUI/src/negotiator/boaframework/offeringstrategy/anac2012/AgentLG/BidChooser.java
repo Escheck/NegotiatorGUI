@@ -1,4 +1,4 @@
-package negotiator.boaframework.offeringstrategy.anac2012.AgentLR;
+package negotiator.boaframework.offeringstrategy.anac2012.AgentLG;
 
 import java.util.ArrayList;
 import java.util.Collections;
