@@ -113,7 +113,7 @@
 			<parameter name="l" default="0.2" description="The learning coefficient determines how quickly the issue weights are learned"/>
 		</opponentmodel>
 	</opponentmodels>
-	<omstrategy>
+	<omstrategies>
 		<omstrategy description="Best bid" classpath="negotiator.boaframework.omstrategy.BestBid">
 			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>
 		</omstrategy>
@@ -121,5 +121,5 @@
 			<parameter name="n" default="3.0" description="A random bid is selected from the best n bids"/>
 			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>
 		</omstrategy>
-	</omstrategy>
+	</omstrategies>
 </repository>
