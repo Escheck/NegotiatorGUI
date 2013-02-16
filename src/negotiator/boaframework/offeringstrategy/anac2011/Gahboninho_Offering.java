@@ -33,9 +33,12 @@ public class Gahboninho_Offering extends OfferingStrategy {
 
 	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy omStrategy, HashMap<String, Double> parameters)
 			throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
 		super.init(domainKnow, model, omStrategy, parameters);
 		helper = new GahboninhoSAS(negotiationSession, model, omStrategy);
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 	}
@@ -126,7 +129,7 @@ public class Gahboninho_Offering extends OfferingStrategy {
 			// always execute this one, even when an OM has been set as this method has side-effects.
 			myBid = ((GahboninhoSAS) helper).getIssueManager().GenerateBidWithAtleastUtilityOf(((GahboninhoSAS) helper).getIssueManager().GetNextRecommendedOfferUtility());
 
-			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			if (!(opponentModel instanceof NoModel)) {
 				myBid = omStrategy.getBid(outcomespace, threshold).getBid();
 			} else {
 				if (((GahboninhoSAS) helper).getIssueManager().getInFrenzy() == true)

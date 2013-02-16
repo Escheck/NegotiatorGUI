@@ -75,11 +75,14 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 
 	@Override
 	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
+		if (opponentModel instanceof DefaultModel) {
+			opponentModel = new NoModel();
+		}
 		this.negotiationSession = negotiationSession;
 		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
 
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 		opponentBids = new ArrayList<Bid>();
@@ -179,7 +182,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 		// Now get a random bid in the range targetUtility ± 0.025
-		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+		if (opponentModel instanceof NoModel) {
 			return bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtility - 0.025,
 				targetUtility + 0.025);
 		} else {

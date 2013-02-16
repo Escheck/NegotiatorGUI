@@ -8,7 +8,6 @@ import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OMStrategy;
-import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -230,10 +229,7 @@ public class OpponentBidHistory {
 
     public Bid ChooseBid(List<Bid> candidateBids, Domain domain, UtilitySpace space) {
     	
-    	if (model instanceof NoModel) {
-    		Random r = new Random();
-    		return candidateBids.get(r.nextInt(candidateBids.size()));
-    	} else if (!(model instanceof DefaultModel)) {
+    	if (!(model instanceof NoModel)) {
     		ArrayList<BidDetails> list = new ArrayList<BidDetails>();
     		for (Bid bid : candidateBids) {
     			try {

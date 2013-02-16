@@ -87,7 +87,10 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		super.init(negoSession, model, oms, parameters);
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
 		}
 		utilitySpace = negoSession.getUtilitySpace();
@@ -160,7 +163,7 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 		        		updateStatistics(opponentBid, false);
 		        		//Calculate the bid that the agent will offer
 		        		// bidToOffer is null if we want to end the negotiation
-		        		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+		        		if (opponentModel instanceof NoModel) {
 		        			bidToOffer = getBidToOffer();
 		        		} else {
 		        			threshold = ((BRAMAgentSAS) helper).getNewThreshold(ourBidsArray.get(ourBidsArray.size()-1), getBidToOffer());//Update the threshold according to the discount factor

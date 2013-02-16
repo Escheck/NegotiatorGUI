@@ -86,8 +86,11 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
 		super.init(negoSession, model, oms, parameters);	
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 
@@ -214,7 +217,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		previousTargetUtility = targetUtility;
 
 		Bid b = null;
-		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+		if (opponentModel instanceof NoModel) {
 			// Now get a random bid in the range targetUtility ± 0.025
 			b = bidCreator.getBid(utilitySpace, targetUtility - 0.025,
 					targetUtility + 0.025);

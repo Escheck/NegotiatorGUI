@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import agents.anac.y2012.AgentLG.OpponentBids;
 import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
 import agents.anac.y2012.CUHKAgent.OwnBidHistory;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -45,7 +38,6 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 	private final boolean TEST_EQUIVALENCE = true;
 
 	private double totalTime;
-    private Action ActionOfOpponent = null;
     private double maximumOfBid;
     private OwnBidHistory ownBidHistory;
     private OpponentBidHistory opponentBidHistory;
