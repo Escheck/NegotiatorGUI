@@ -65,7 +65,11 @@ public class BidDetails implements Comparable<BidDetails>, Serializable{
 	}
 	
 	/**
-	 * Returns the undiscounted utility of the bid.
+	 * Returns the undiscounted utility of the bid as supplied in the
+	 * constructor. Depending on the usage this can also be the utility
+	 * of the opponent if the BidDetails object was constructed by
+	 * the opponent model.
+	 * 
 	 * @return undiscounted utility of bid.
 	 */
 	public double getMyUndiscountedUtil() {

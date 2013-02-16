@@ -71,7 +71,10 @@ public class OMACagent_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-		if (!(model instanceof DefaultModel || model instanceof NoModel)) {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
+		if (!(model instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
 		}
 		super.init(negoSession, model, oms, parameters);
@@ -191,7 +194,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 				}
 				
 				dval = val*Math.pow(discount, cTime);
-				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+				if (opponentModel instanceof NoModel) {
 					bid = genRanBid(val*lower, val*upper);
 				} else {
 					Range range = new Range(val*lower, val*upper);
@@ -214,7 +217,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 				dval = val*Math.pow(discount, cTime);
 				
 				
-				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+				if (opponentModel instanceof NoModel) {
 					bid = genRanBid(val*(1.0-0.02), val*(1.0+0.02));
 				} else {
 					Range range = new Range(val*(1.0-0.02), val*(1.0+0.02));
@@ -243,7 +246,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 		if( cTime * maxTime - laTime > 1.5 || cTime > 0.995  ){		
 			dval = val*Math.pow(discount, cTime);
 			
-			if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+			if (opponentModel instanceof NoModel) {
 				bid = genRanBid(dval*lower, dval*upper);
 			} else {
 				Range range = new Range(dval*lower, dval*upper);
@@ -258,7 +261,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 				//System.out.println("Decoupled return maxBid3");
 			}else{				
 				dval = adp*val*Math.pow(discount, cTime);
-				if (opponentModel instanceof DefaultModel || opponentModel instanceof NoModel) {
+				if (opponentModel instanceof NoModel) {
 					bid = genRanBid(dval*lower, dval*upper);
 				} else {
 					Range range = new Range(dval*lower, dval*upper);

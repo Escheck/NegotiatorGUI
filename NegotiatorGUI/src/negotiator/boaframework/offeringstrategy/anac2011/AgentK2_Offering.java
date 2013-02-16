@@ -53,6 +53,9 @@ public class AgentK2_Offering extends OfferingStrategy {
 	@Override
 	public void init(NegotiationSession domainKnow, OpponentModel model, OMStrategy omStrategy, HashMap<String, Double> parameters)
 					throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
 		super.init(domainKnow, model, omStrategy, parameters);
 		helper = new AgentK2SAS(negotiationSession);
 		
@@ -64,7 +67,7 @@ public class AgentK2_Offering extends OfferingStrategy {
 			random300 = new Random();
 		}
 		
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
 	}
@@ -86,7 +89,7 @@ public class AgentK2_Offering extends OfferingStrategy {
         int size = bidTemp.size();
        
         if (size > 0) {
-        	if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+        	if (opponentModel instanceof NoModel) {
         		int sindex = (int) Math.floor(random200.nextDouble() * size);
         		nextBid = bidTemp.get(sindex);
         	} else {
@@ -94,7 +97,7 @@ public class AgentK2_Offering extends OfferingStrategy {
         	}
         } else {
             double searchUtil = 0.0;
-            if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+            if (opponentModel instanceof NoModel) {
 	            try {
 	                int loop = 0;
 	                while (searchUtil < ((AgentK2SAS)helper).getBidTarget()) {

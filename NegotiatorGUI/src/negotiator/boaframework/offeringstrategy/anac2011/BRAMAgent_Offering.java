@@ -75,7 +75,10 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	
 	@Override
 	public void init(NegotiationSession domainKnow, OpponentModel om, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
-		if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+		if (om instanceof DefaultModel) {
+			om = new NoModel();
+		}
+		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(domainKnow.getUtilitySpace());
 		}
 		initializeAgent(domainKnow, om, oms);
@@ -145,7 +148,7 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	        		//Add the new bid of the opponent and update the statistics
 	        		opponentBidsArray.add(opponentBid.getBid());
 	        		updateStatistics(opponentBid.getBid(), false);
-	        		if (opponentModel instanceof NoModel || opponentModel instanceof DefaultModel) {
+	        		if (opponentModel instanceof NoModel) {
 	        			bidToOffer = getBidToOffer();
 	        		} else {
 	        			threshold = ((BRAMAgentSAS) helper).getNewThreshold(ourBidsArray.get(ourBidsArray.size()-1), getBidToOffer());//Update the threshold according to the discount factor

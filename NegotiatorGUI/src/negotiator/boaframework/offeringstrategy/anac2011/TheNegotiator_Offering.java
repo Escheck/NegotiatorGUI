@@ -43,6 +43,9 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
 		this.negotiationSession = negoSession;
 		this.opponentModel = model;
 		this.omStrategy = oms;
@@ -181,7 +184,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 			}
 
 			// in this case we ignore the upperbound, as it doesn't matter if we take the opponent in to account
-			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			if (!(opponentModel instanceof NoModel)) {
 				ArrayList<BidDetails> temp = ((TheNegotiatorSAS)helper).getPossibleBids();
 				temp = new ArrayList<BidDetails>(temp.subList(uB, lB + 1));
 				BidDetails bid2 = omStrategy.getBid(temp);
@@ -226,7 +229,7 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 		}
 
 		if (count > 0) {
-			if (!(opponentModel instanceof NoModel || opponentModel instanceof DefaultModel)) {
+			if (!(opponentModel instanceof NoModel)) {
 				bid = omStrategy.getBid(temp).getBid();
 			} else {
 				bid = temp.get(random200.nextInt(count)).getBid();
