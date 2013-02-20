@@ -56,8 +56,8 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 			return list;
 		}
 		
-
-		return allBids.subList(upperboundIndex, lowerboundIndex);
+		ArrayList<BidDetails> subList = new ArrayList<BidDetails>(allBids.subList(upperboundIndex, lowerboundIndex));
+		return subList;
 
 	}
 	
