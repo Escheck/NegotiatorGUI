@@ -6,9 +6,12 @@ import java.util.HashMap;
 import agents.anac.y2012.AgentLG.BidsComparator;
 import agents.anac.y2012.AgentLG.OpponentBids;
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SharedAgentState;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
@@ -32,14 +35,13 @@ public class AgentLGSAS extends SharedAgentState{
 	private double lastTimeLeft=0;
 	private int minSize = 160000;
 	private Bid myBestBid=null;
-	private NegotiationSession negotiationSession;
+	private OpponentModel opponentModel;
 
-	public AgentLGSAS (NegotiationSession negoSession, OpponentBids OpponentBids) {
-		negotiationSession = negoSession;
+	public AgentLGSAS (NegotiationSession negoSession, OpponentBids opponentBids, OpponentModel opponentModel) {
 		NAME = "AgentLR";
 		this.utilitySpace = negoSession.getUtilitySpace();
-		this.opponentBids = OpponentBids;
-		this.negotiationSession = negoSession;
+		this.opponentBids = opponentBids;
+		this.opponentModel = opponentModel;
 	}
 	
 private void initBids() {
@@ -87,10 +89,11 @@ private void initBids() {
 								index--;
 								double maxUtilty = 0;
 								int maxBidIndex = numPossibleBids;
+
 								for (int i = numPossibleBids; i <= index; i++) 
 								{
 									//finds the next better bid for the opponent
-									double utiliy =opponentBids.getOpponentBidUtility(utilitySpace.getDomain(), allBids.get(i));
+									double utiliy = getUtilityOfOpponentsBid(utilitySpace.getDomain(), allBids.get(i));
 									if (utiliy> maxUtilty)
 									{
 										maxUtilty = utiliy;
@@ -120,7 +123,7 @@ private void initBids() {
 							double maxUtilty = 0;
 							for (int i = 0; i <= numPossibleBids; i++) 
 							{
-								double utiliy =opponentBids.getOpponentBidUtility(utilitySpace.getDomain(), allBids.get(i));
+								double utiliy = getUtilityOfOpponentsBid(utilitySpace.getDomain(), allBids.get(i));
 								//System.out.println("UTILITY: " + utiliy);
 								if (utiliy> maxUtilty)
 									maxUtilty = utiliy;
@@ -128,7 +131,7 @@ private void initBids() {
 							
 							for (int i =numPossibleBids+1; i < allBids.size(); i++) 
 							{
-								double utiliy =opponentBids.getOpponentBidUtility(utilitySpace.getDomain(), allBids.get(i));
+								double utiliy = getUtilityOfOpponentsBid(utilitySpace.getDomain(), allBids.get(i));
 								if (utiliy>= maxUtilty)
 								{
 									numPossibleBids = i;
@@ -364,5 +367,15 @@ private void initBids() {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public double getUtilityOfOpponentsBid(Domain domain, Bid bid) {
+		double utility;
+		if (opponentModel instanceof NoModel) {
+			utility = opponentBids.getOpponentBidUtility(utilitySpace.getDomain(), bid);
+		} else {
+			utility = opponentModel.getBidEvaluation(bid);
+		}
+		return utility;
 	}
 }

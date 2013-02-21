@@ -32,7 +32,7 @@ public AC_AgentLG() { }
 		//checking if offeringStrategy SAS is a AgentLGSAS
 				if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentLR"))) {
 					opponentsBid = new OpponentBids(negoSession.getUtilitySpace());
-					helper = new AgentLGSAS(negotiationSession, opponentsBid);
+					helper = new AgentLGSAS(negotiationSession, opponentsBid, opponentModel);
 					activeHelper = true;
 				} else {	
 					helper = (AgentLGSAS) offeringStrategy.getHelper();
