@@ -11,6 +11,10 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.OutcomeSpace;
+import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2012.AgentMRSAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -41,6 +45,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 	private int lastBidNumber = 1;
 	private UtilitySpace utilitySpace;
 	private boolean alreadyDone = false;
+	private SortedOutcomeSpace outcomeSpace;
 
 	public AgentMR_Offering() { }
 
@@ -54,6 +59,15 @@ public class AgentMR_Offering extends OfferingStrategy{
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		super.init(negoSession, model, omStrategy, parameters);
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
+		if (!(model instanceof NoModel)) {
+			outcomeSpace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
+		}
+		this.opponentModel = model;
+		this.omStrategy = oms;
+		
 		helper = new AgentMRSAS(negotiationSession);
 		firstOffer = true;
 		try {
@@ -215,7 +229,13 @@ public class AgentMR_Offering extends OfferingStrategy{
 			e.printStackTrace();
 		}
 
-
+		if (!(opponentModel instanceof NoModel)) {
+			try {
+				nextBid = omStrategy.getBid(outcomeSpace, utilitySpace.getUtility(nextBid.getBid()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return nextBid;
 
 	}

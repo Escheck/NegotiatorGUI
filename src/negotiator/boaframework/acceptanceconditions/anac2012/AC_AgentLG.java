@@ -8,6 +8,7 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
 import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 
@@ -32,7 +33,7 @@ public AC_AgentLG() { }
 		//checking if offeringStrategy SAS is a AgentLGSAS
 				if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentLR"))) {
 					opponentsBid = new OpponentBids(negoSession.getUtilitySpace());
-					helper = new AgentLGSAS(negotiationSession, opponentsBid, opponentModel);
+					helper = new AgentLGSAS(negotiationSession, opponentsBid, new NoModel(), null);
 					activeHelper = true;
 				} else {	
 					helper = (AgentLGSAS) offeringStrategy.getHelper();

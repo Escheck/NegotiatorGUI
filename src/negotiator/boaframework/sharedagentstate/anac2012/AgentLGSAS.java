@@ -9,8 +9,10 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SharedAgentState;
+import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
@@ -36,12 +38,18 @@ public class AgentLGSAS extends SharedAgentState{
 	private int minSize = 160000;
 	private Bid myBestBid=null;
 	private OpponentModel opponentModel;
+	private SortedOutcomeSpace outcomeSpace;
+	private OMStrategy oms;
 
-	public AgentLGSAS (NegotiationSession negoSession, OpponentBids opponentBids, OpponentModel opponentModel) {
+	public AgentLGSAS (NegotiationSession negoSession, OpponentBids opponentBids, OpponentModel opponentModel, OMStrategy oms) {
 		NAME = "AgentLR";
+		this.oms = oms;
 		this.utilitySpace = negoSession.getUtilitySpace();
 		this.opponentBids = opponentBids;
 		this.opponentModel = opponentModel;
+		if (!(opponentModel instanceof NoModel)) {
+			outcomeSpace = new SortedOutcomeSpace(utilitySpace);
+		}
 	}
 	
 private void initBids() {
@@ -148,6 +156,14 @@ private void initBids() {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		if (!(opponentModel instanceof NoModel)) {
+			try {
+				currentAction = oms.getBid(outcomeSpace, utilitySpace.getUtility(currentAction.getBid()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return currentAction;
 	}
 	
@@ -188,6 +204,13 @@ private void initBids() {
 			}
 		maxLastOpponentBid=opponentBids.getMaxUtilityBidForMe();
 
+		if (!(opponentModel instanceof NoModel)) {
+			try {
+				currentAction = oms.getBid(outcomeSpace, utilitySpace.getUtility(currentAction.getBid()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return currentAction;
 	
 	}
