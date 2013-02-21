@@ -110,7 +110,7 @@ public class TreeFrame extends JPanel {
 		saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
         		if (model.getUtilitySpace() != null) {
-        			double newDiscount = 0.0;
+        			double newDiscount = 1.0;
         			try {
         				newDiscount = Double.parseDouble(discount.getText());
         				if (newDiscount < 0 || newDiscount > 1) {
@@ -121,7 +121,7 @@ public class TreeFrame extends JPanel {
         				JOptionPane.showMessageDialog(null, "The discount value is not valid.");
         				return;
         			}
-        			double newRV = 0.0;
+        			double newRV = 1.0;
         			try {
         				newRV = Double.parseDouble(reservationValue.getText());
         				if (newRV < 0 || newRV > 1) {
