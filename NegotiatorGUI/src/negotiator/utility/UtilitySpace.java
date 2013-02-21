@@ -40,7 +40,7 @@ public class UtilitySpace implements Serializable {
 	// Class fields
     protected Domain domain;
 	private String fileName;
-	private double discountFactor = 0;
+	private double discountFactor = 1;
 	
 	private Double fReservationValue = null;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
@@ -276,27 +276,6 @@ public class UtilitySpace implements Serializable {
     }
     
     /**
-     * Deprecated: uses old timing protocol.
-     * @param bid
-     * @param timeAfterStart
-     * @param deadline
-     * @return discounted utility.
-     * @throws Exception
-     */
-    @Deprecated
-    public double getUtilityWithDiscount(Bid bid, long timeAfterStart, long deadline) throws Exception
-    {
-    	double timeAfteStartNormalized = 0L; 
-    	if(timeAfterStart>deadline) {
-    		timeAfteStartNormalized =  1L;
-    	} else {
-    		timeAfteStartNormalized = (double)timeAfterStart/(double)deadline;
-    	}
-    	double utility = getUtility(bid) * Math.exp(- discountFactor * timeAfteStartNormalized);
-    	return utility;
-    }
-    
-    /**
      * Let d in (0, 1) be the discount factor. (If d <= 0 or d >= 1, we assume that d = 1.)
      * Let t in [0, 1] be the current time, as defined by the {@link Timeline}.
      * We compute the <i>discounted</i> utility discountedUtility as follows:
@@ -352,19 +331,11 @@ public class UtilitySpace implements Serializable {
 	public static double discount(double util, double time, double discountFactor)
 	{
 		double discount = discountFactor;
-    	if (discountFactor <= 0 || discountFactor >= 1)
-    	{
-    		discount = 1;
-    		if (discountFactor < 0 || discountFactor > 1)
-    			System.err.println("Warning: discount factor = " + discountFactor + " was discarded.");
-    	}
-    	if (time < 0)
-    	{
+    	if (time < 0) {
 			System.err.println("Warning: time = " + time + " < 0, using time = 0 instead.");
     		time = 0;
     	}
-    	if (time > 1)
-    	{
+    	if (time > 1) {
 			System.err.println("Warning: time = " + time + " > 1, using time = 1 instead.");
     		time = 1;
     	}
@@ -485,7 +456,8 @@ public class UtilitySpace implements Serializable {
 		try {
 			if((currentRoot.getChildByTagName("discount_factor")!=null)&&(currentRoot.getChildByTagName("discount_factor").length>0)){
 				SimpleElement xml_reservation = (SimpleElement)(currentRoot.getChildByTagName("discount_factor")[0]);
-				discountFactor = Double.valueOf(xml_reservation.getAttribute("value"));
+				double df = Double.valueOf(xml_reservation.getAttribute("value"));
+				discountFactor = validateDiscount(df);
 			}
 		} catch (Exception e) {
 			System.out.println("Utility space has no discount factor;");
@@ -600,6 +572,17 @@ public class UtilitySpace implements Serializable {
         return returnval;
 	}
 	
+
+	private double validateDiscount(double df) {
+		if (df < 0 || df > 1) {
+			System.err.println("Warning: discount factor = " + df + " was discarded.");
+		}
+		
+		if (df <= 0 || df > 1) {
+			df = 1;
+		}
+		return df;
+	}
 
 	/**
 	 * 
@@ -1005,7 +988,7 @@ public class UtilitySpace implements Serializable {
      * @param newDiscount new discount factor.
      */
     public void setDiscount(double newDiscount) {
-    	discountFactor = newDiscount;
+    	discountFactor = validateDiscount(newDiscount);
     }
     
     /**
@@ -1064,6 +1047,13 @@ public class UtilitySpace implements Serializable {
      */
     public String getFileName() {
     	return fileName;
+    }
+    
+    /**
+     * @return true if the domain features discounts.
+     */
+    public boolean utilityIsDiscounted() {
+    	return discountFactor < 1.0;
     }
 
     public String toString() {
