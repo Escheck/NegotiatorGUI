@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
 import agents.anac.y2012.CUHKAgent.OwnBidHistory;
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -13,6 +12,9 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent.OpponentBidHistory;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -28,8 +30,10 @@ import negotiator.issue.ValueReal;
  * As well due to the strong coupling with the AC there is not AC_CUHKAgent
  * and thus it is not proven equivalent with the original 
  * This is the offering and does not simulate the stopping situation of CUHKAgent
+ * 
+ * The AC and reservation value code was removed
+ * 
  * @author Alex Dirkzwager
- *
  */
 
 public class CUHKAgent_Offering extends OfferingStrategy{
@@ -70,12 +74,16 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		if (model instanceof DefaultModel) {
+			model = new NoModel();
+		}
+		this.opponentModel = model;
 		negotiationSession = negoSession;
 		maximumOfBid = negoSession.getUtilitySpace().getDomain().getNumberOfPossibleBids();
 		ownBidHistory = new OwnBidHistory();
-		opponentBidHistory = new OpponentBidHistory();
+		opponentBidHistory = new OpponentBidHistory(opponentModel, oms, negotiationSession.getUtilitySpace());
 		bidsBetweenUtility = new ArrayList<ArrayList<Bid>>();
-		this.opponentModel = model;
+		
 		this.bid_maximum_utility = negoSession.getUtilitySpace().getMaxUtilityBid();
 		this.utilitythreshold = negoSession.getUtilitySpace().getUtility(bid_maximum_utility); //initial utility threshold
 		this.MaximumUtility = this.utilitythreshold;
@@ -132,22 +140,23 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 				} else {//other conditions	
 					if (estimateRoundLeft(true) > 10) {//still have some rounds left to further negotiate (the major negotiation period)
 						bid = BidToOffer();
-						Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(), bid.getBid());
-						Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
+						/** REMOVED AC */
+						//Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(), bid.getBid());
+						//Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
 
-						if(!IsAccept && !IsTerminate){
-							//we expect that the negotiation is over once we select a bid from the opponent's history.
-							if (this.concedeToOpponent == true) {
-								// bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
-								Bid possibleBid = opponentBidHistory.getBestBidInHistory();
-								action = new BidDetails(possibleBid, negotiationSession.getUtilitySpace().getUtility(possibleBid));
-								this.toughAgent = true;
-								this.concedeToOpponent = false;
-							} else {
-								action = bid;
-								this.toughAgent = false;
-							}
+						//if(!IsAccept && !IsTerminate){
+						//we expect that the negotiation is over once we select a bid from the opponent's history.
+						if (this.concedeToOpponent == true) {
+							// bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
+							Bid possibleBid = opponentBidHistory.getBestBidInHistory();
+							action = new BidDetails(possibleBid, negotiationSession.getUtilitySpace().getUtility(possibleBid));
+							this.toughAgent = true;
+							this.concedeToOpponent = false;
+						} else {
+							action = bid;
+							this.toughAgent = false;
 						}
+						//}
 					} 
 					else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
 						//in this case, it corresponds to an opponent whose decision time is short
@@ -171,7 +180,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 								}
 							}
 
-
+							/** REMOVED AC
 							Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(), bid.getBid());
 							Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
 							if(!IsAccept && !IsTerminate){
@@ -180,6 +189,8 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 									//this.toughAgent = true;
 								}
 							}
+							*/
+							action = bid;
 							//in this case, it corresponds to the situation that we encounter an opponent who needs more computation to make decision each round
 						} else {//we still have some time to negotiate, 
 							//and be tough by sticking with the lowest one in previous offer history.
@@ -187,11 +198,12 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 							//bid = ownBidHistory.GetMinBidInHistory();//reduce the computational cost
 							bid = BidToOffer();
 
-							Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(),bid.getBid());
-							Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
-							if(!IsAccept && !IsTerminate){
-								action = bid;
-							}
+							/** REMOVED AC */
+							//Boolean IsAccept = AcceptOpponentOffer(negotiationSession.getOpponentBidHistory().getLastBid(),bid.getBid());
+							//Boolean IsTerminate = TerminateCurrentNegotiation(bid.getBid());
+							//if(!IsAccept && !IsTerminate){
+							action = bid;
+							//}
 						}
 					}
 				}
@@ -204,6 +216,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 			System.out.println(estimateRoundLeft(false));
 		}
+		
 		return action;
 	}
 
@@ -217,8 +230,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 		Bid bidReturned = null;
 		double decreasingAmount_1 = 0.05;
 		double decreasingAmount_2 = 0.25;
-		try {
-
+		try {		
 			double maximumOfBid = this.MaximumUtility;//utilitySpace.getUtility(utilitySpace.getMaxUtilityBid());
 			double minimumOfBid;
 			//used when the domain is very large.
@@ -254,14 +266,13 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 			 * opponent type once here System.out.println("we guess the opponent
 			 * type is "+this.opponentType); }
 			 */
-
 			//choose from the opponent bid history first to reduce calculation time            
 			Bid bestBidOfferedByOpponent = opponentBidHistory.getBestBidInHistory();
 			if (negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent) >= this.utilitythreshold || negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent) >= minimumOfBid) {
 				return new BidDetails(bestBidOfferedByOpponent, negotiationSession.getUtilitySpace().getUtility(bestBidOfferedByOpponent));
 			}
+			
 			List<Bid> candidateBids = this.getBidsBetweenUtility(minimumOfBid, maximumOfBid);
-
 			bidReturned = opponentBidHistory.ChooseBid(candidateBids, this.negotiationSession.getUtilitySpace().getDomain());
 			if (bidReturned == null) {
 				System.out.println("no bid is searched warning");
@@ -278,9 +289,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 		return null;
 	}
 
-	/*
-	 * decide whether to accept the current offer or not
-	 */
+	/** REMOVED AC
 	private boolean AcceptOpponentOffer(Bid opponentBid, Bid ownBid) {
 		double currentUtility = 0;
 		double nextRoundUtility = 0;
@@ -340,10 +349,9 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 			}
 		}
 	}
+	*/
 
-	/*
-	 * decide whether or not to terminate now
-	 */
+	/** REMOVED AC
 	private boolean TerminateCurrentNegotiation(Bid ownBid) {
 		double currentUtility = 0;
 		double nextRoundUtility = 0;
@@ -372,6 +380,8 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 			}
 		}
 	}
+	*/
+	
 	/*
 	 * estimate the number of rounds left before reaching the deadline @param
 	 * opponent @return
