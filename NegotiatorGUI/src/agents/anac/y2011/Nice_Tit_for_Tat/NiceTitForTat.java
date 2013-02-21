@@ -152,9 +152,6 @@ public class NiceTitForTat extends BilateralAgent
 	private double getBonus()
 	{
 		double discountFactor = utilitySpace.getDiscountFactor();
-    	if (discountFactor <= 0 || discountFactor >= 1)
-    		discountFactor = 1;
-    	
 		double discountBonus = 0.5 - 0.4 * discountFactor;
 		if (discountFactor < 1)
 			log("Discount = " + discountFactor + ", so we set discount bonus to " + percentage(discountBonus) + "%.");

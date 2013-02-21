@@ -45,6 +45,10 @@ public class TimeManager {
 		this.timeline = timeline;
 		this.bidsCollection = bidsCollection;
 		this.discount = discount;
+		
+		if (this.discount >= 1.0) {
+			this.discount = 0.0; // compatibility with old discount method
+		}
 
 		// no discounts
 		calculateEndPhaseThresholds();
