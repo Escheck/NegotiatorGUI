@@ -34,7 +34,7 @@ public class AgentLG_Offering extends OfferingStrategy{
 		}
 		oppenentsBid = new OpponentBids(negoSession.getUtilitySpace());
 		negotiationSession = negoSession;
-		helper = new AgentLGSAS(negotiationSession, oppenentsBid, model);
+		helper = new AgentLGSAS(negotiationSession, oppenentsBid, model, oms);
 	}
 
 	@Override
