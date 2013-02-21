@@ -244,11 +244,11 @@ public class BOAagentRepository {
 			buffer.append(entry.getValue().toXML());
 		}
 		buffer.append("\t</opponentmodels>\n");
-		buffer.append("\t<omstrategy>\n");
+		buffer.append("\t<omstrategies>\n");
 		for (Entry<String, BOArepItem> entry : repositoryParser.getOMStrategies().entrySet()) {
 			buffer.append(entry.getValue().toXML());
 		}
-		buffer.append("\t</omstrategy>\n");
+		buffer.append("\t</omstrategies>\n");
 		buffer.append("</repository>");
 		return buffer.toString();
 	}
