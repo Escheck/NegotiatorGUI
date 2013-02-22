@@ -181,7 +181,7 @@ public abstract class Agent
 	 *
 	 * @param dUtil discounted utility of previous session round.
 	 */
-	public void endSession(double dUtil) { }
+	public void endSession(NegotiationResult dUtil) { }
 
 	/**
 	 * @return ID of the agent as assigned by the protocol.

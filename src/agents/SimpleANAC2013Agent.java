@@ -3,6 +3,7 @@ package agents;
 import java.io.Serializable;
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.NegotiationResult;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -53,10 +54,11 @@ public class SimpleANAC2013Agent extends Agent {
 	 * If the received utility is higher than the current target, save the
 	 * received utility as the new target utility.
 	 */
-	public void endSession(double result) {
-		if (result > MINIMUM_BID_UTILITY) {
-			saveSessionData(new Double(result));
+	public void endSession(NegotiationResult result) {
+		if (result.getMyDiscountedUtility() > MINIMUM_BID_UTILITY) {
+			saveSessionData(new Double(result.getMyDiscountedUtility()));
 		}
+		System.out.println(result);
 	}
 
 	/**
