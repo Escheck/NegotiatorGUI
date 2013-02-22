@@ -125,7 +125,7 @@ private void initBids() {
 					{
 						//compromise only if the opponent is compromising 
 						if (utilitySpace.getUtility(opponentBids.getMaxUtilityBidForMe())>utilitySpace.getUtility(maxLastOpponentBid)
-							 || (discount>0 && time-lastTimeLeft>0.1))
+								 || (discount < 1 && time-lastTimeLeft>0.1))
 						{
 							//finds the next better bid for the opponent
 							double maxUtilty = 0;

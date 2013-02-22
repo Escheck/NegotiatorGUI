@@ -326,9 +326,9 @@ public class NegotiationOutcome
 		if(!bids.isEmpty()){
 			for(BidPointTime bidPointTime : bids){
 				double discountedBidPoint;
-				if(agentX.equals("A")){
+				if (agentX.equals("A")){
 					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityA(), bidPointTime.getTime(), discountFactorA);
-				}else {
+				} else {
 					discountedBidPoint = UtilitySpace.discount(bidPointTime.getUtilityB(), bidPointTime.getTime(), discountFactorB);
 				}
 				

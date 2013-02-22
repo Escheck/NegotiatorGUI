@@ -85,7 +85,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 				MINIMUM_UTILITY = resU * 1.06;
 		}
 		
-		if(utilitySpace.getDiscountFactor() <= 1D && utilitySpace.getDiscountFactor() > 0D )
+		if (utilitySpace.getDiscountFactor() <= 1D && utilitySpace.getDiscountFactor() > 0D )
 			discount = utilitySpace.getDiscountFactor();
 		
 		try{

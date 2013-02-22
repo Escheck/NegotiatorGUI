@@ -47,7 +47,7 @@ public class TimeManager {
 		this.discount = discount;
 		
 		if (this.discount >= 1.0) {
-			this.discount = 0.0; // compatibility with old discount method
+			this.discount = 0; // compatibility with old discount method
 		}
 
 		// no discounts
