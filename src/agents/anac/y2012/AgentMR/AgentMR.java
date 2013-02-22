@@ -241,7 +241,7 @@ public class AgentMR extends Agent {
 	}
 
 	private void getDiscountFactor() {
-		discountFactor = utilitySpace.utilityIsDiscounted();
+		discountFactor = utilitySpace.isDiscounted();
 	}
 
 	// forecasting

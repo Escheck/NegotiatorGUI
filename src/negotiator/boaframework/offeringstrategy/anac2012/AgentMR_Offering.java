@@ -246,7 +246,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 	}
 
 	private void getDiscountFactor() {
-		discountFactor = utilitySpace.utilityIsDiscounted();
+		discountFactor = utilitySpace.isDiscounted();
 	}
 
 	private void newupdateSigmoidFunction() {
