@@ -276,10 +276,7 @@ public class AC_AgentMR extends AcceptanceStrategy{
 	}
 
 	private void getDiscountFactor() {
-		if (utilitySpace.getDiscountFactor() > 0.0) {
-			discountFactor = true; // å‰²å¼•çŽ‡æœ‰ã‚Š
-		} else
-			discountFactor = false; // å‰²å¼•çŽ‡ç„¡ã�—
+		discountFactor = utilitySpace.utilityIsDiscounted();
 	}
 
 	/**

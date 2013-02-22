@@ -127,7 +127,6 @@ public class AgentMR_Offering extends OfferingStrategy{
 				offeredutil = getUtility(partnerBid.getBid())
 						* (1 / Math.pow(negotiationSession.getUtilitySpace().getDiscountFactor(),
 								time));
-				//System.out.println("Decoupled discount factor: ");
 
 			} else {
 				offeredutil = getUtility(partnerBid.getBid());
@@ -247,7 +246,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 	}
 
 	private void getDiscountFactor() {
-		discountFactor = utilitySpace.getDiscountFactor() > 0.0;
+		discountFactor = utilitySpace.utilityIsDiscounted();
 	}
 
 	private void newupdateSigmoidFunction() {
