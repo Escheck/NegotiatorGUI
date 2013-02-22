@@ -26,6 +26,9 @@ public class OpponentModeler {
 		utilitySpace = space;
 		lastTime = timeline.getTime() * timeline.getTotalTime() * 1000;
 		discount = utilitySpace.getDiscountFactor();
+		if (discount >= 1) {
+			discount = 0; // compatiblity with old discount mode
+		}
 		this.timeline = timeline;
 		delta = 1.0 / (timeline.getTotalTime() * 1000);
 		vmodel = vmodeler;
