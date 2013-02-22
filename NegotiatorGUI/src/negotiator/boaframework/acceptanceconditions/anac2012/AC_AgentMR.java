@@ -276,7 +276,7 @@ public class AC_AgentMR extends AcceptanceStrategy{
 	}
 
 	private void getDiscountFactor() {
-		discountFactor = utilitySpace.utilityIsDiscounted();
+		discountFactor = utilitySpace.isDiscounted();
 	}
 
 	/**

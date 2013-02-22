@@ -287,7 +287,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 				
 				// otherwise we try to stretch it out
 				if (opponentUtil > lowestApproved * 0.99
-						&& !negotiationSession.getUtilitySpace().utilityIsDiscounted()) {
+						&& !negotiationSession.getUtilitySpace().isDiscounted()) {
 					lowestApproved += 0.01;
 					setApprovedThreshold(lowestApproved, true);
 					retreatMode = true;
@@ -487,7 +487,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		boolean weMoved = ourMinUtilities[tind - 2] - ourMinUtilities[tind - 1] > 0;
 		double returnVal = defaultVal;
 		
-		if (!negotiationSession.getUtilitySpace().utilityIsDiscounted()) {
+		if (!negotiationSession.getUtilitySpace().isDiscounted()) {
 			// first 10% is reserved for 0.98...
 			if (tind > 2) {
 				// if we havn't compromised in the last session

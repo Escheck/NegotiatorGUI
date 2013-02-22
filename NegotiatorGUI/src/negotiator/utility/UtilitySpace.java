@@ -1052,7 +1052,7 @@ public class UtilitySpace implements Serializable {
     /**
      * @return true if the domain features discounts.
      */
-    public boolean utilityIsDiscounted() {
+    public boolean isDiscounted() {
     	return discountFactor < 1.0;
     }
 

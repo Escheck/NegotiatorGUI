@@ -282,13 +282,13 @@ public class ValueModelAgent extends Agent {
 				// if(opponent.expectedDiscountRatioToConvergence()*opponentUtil
 				// > lowestApproved){
 				if ((opponentUtil > lowestApproved)// || opponentUtil>0.98)
-						&& (utilitySpace.utilityIsDiscounted() || opponentUtil > 0.975)) {
+						&& (utilitySpace.isDiscounted() || opponentUtil > 0.975)) {
 					return new Accept(getAgentID());
 				}
 
 				// otherwise we try to stretch it out
 				if (opponentUtil > lowestApproved * 0.99
-						&& !utilitySpace.utilityIsDiscounted()) {
+						&& !utilitySpace.isDiscounted()) {
 					lowestApproved += 0.01;
 					setApprovedThreshold(lowestApproved, true);
 					retreatMode = true;
@@ -453,7 +453,7 @@ public class ValueModelAgent extends Agent {
 		boolean weMoved = ourMinUtilities[tind - 2] - ourMinUtilities[tind - 1] > 0;
 		double returnVal = defaultVal;
 		
-		if (!utilitySpace.utilityIsDiscounted()) {
+		if (!utilitySpace.isDiscounted()) {
 			// first 10% is reserved for 0.98...
 			if (tind > 2) {
 				// if we havn't compromised in the last session

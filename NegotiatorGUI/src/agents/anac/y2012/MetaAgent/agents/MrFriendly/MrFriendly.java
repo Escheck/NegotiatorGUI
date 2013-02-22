@@ -68,7 +68,7 @@ public class MrFriendly extends Agent{
 			alwaysAcceptUtility = 1;
 		}
 		discountFactor = this.utilitySpace.getDiscountFactor();
-		discountedDomain = utilitySpace.utilityIsDiscounted();
+		discountedDomain = utilitySpace.isDiscounted();
 		opponentModel = new OpponentModel(this.utilitySpace.getDomain().getIssues(), discountFactor, timeline);
 		bidTable = new BidTable(this, utilitySpace, minimumBidUtility, opponentModel);
 	}
