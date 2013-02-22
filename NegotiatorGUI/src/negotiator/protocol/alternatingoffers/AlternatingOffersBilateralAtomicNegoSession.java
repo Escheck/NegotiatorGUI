@@ -8,6 +8,7 @@ import negotiator.Bid;
 import negotiator.ContinuousTimeline;
 import negotiator.DiscreteTimeline;
 import negotiator.NegotiationOutcome;
+import negotiator.NegotiationResult;
 import negotiator.PausableContinuousTimeline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
@@ -602,9 +603,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double utilADiscount, double utilBDiscount, String message,
 			double time, double distanceToNash, String acceptedBy)
 			throws Exception {
-		
-			agentA.endSession(utilADiscount);
-			agentB.endSession(utilBDiscount);
+			
+			NegotiationResult resultA = new NegotiationResult(utilADiscount, lastAction, lastBid);
+			agentA.endSession(resultA);
+			NegotiationResult resultB = new NegotiationResult(utilBDiscount, lastAction, lastBid);
+			agentB.endSession(resultB);
 			
 			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
 					agentA.getClass().getCanonicalName(), 
