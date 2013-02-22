@@ -36,7 +36,12 @@ public class AC_ValueModelAgent extends AcceptanceStrategy {
 	public void initializeAgent(NegotiationSession negotiationSession, OfferingStrategy os) throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.offeringStrategy = os;
-		helper = os.getHelper();
+
+		if (os.getHelper() instanceof ValueModelAgentSAS) {
+			helper = os.getHelper();
+		} else {
+			helper = new ValueModelAgentSAS();
+		}
 	}
 	
 	@Override
