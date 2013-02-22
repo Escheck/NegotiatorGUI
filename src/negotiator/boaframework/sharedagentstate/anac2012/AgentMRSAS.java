@@ -71,7 +71,7 @@ public class AgentMRSAS extends SharedAgentState {
 	}
 	
 	public void calculateFirstOffereUtility(){
-		if (negotiationSession.getDiscountFactor() != 0) {
+		if (negotiationSession.getUtilitySpace().utilityIsDiscounted()) {
 			firstOffereUtility = negotiationSession.getOpponentBidHistory().getFirstBidDetails().getMyUndiscountedUtil()
 					* (1 / Math.pow(negotiationSession.getUtilitySpace().getDiscountFactor(),
 							negotiationSession.getOpponentBidHistory().getFirstBidDetails().getTime()));

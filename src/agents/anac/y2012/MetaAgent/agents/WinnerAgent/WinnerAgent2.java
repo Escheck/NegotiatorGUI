@@ -69,7 +69,7 @@ public class WinnerAgent2 extends Agent
 		
 		// computing the number of phases according to the discount factor
 		_discountFactor = utilitySpace.getDiscountFactor();
-		if (_discountFactor == 0)
+		if (_discountFactor == 0 || _discountFactor == 1)
 		{
 			_numOfPhases = _initialNumOfPhases;
 			_discountFactor = 1; // equivalent to 0, easier to use for calculations
