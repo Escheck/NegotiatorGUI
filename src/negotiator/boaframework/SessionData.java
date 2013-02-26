@@ -12,10 +12,13 @@ public class SessionData implements Serializable {
 	
 	private Serializable acceptanceStrategyData;
 	
+	private boolean changed;
+	
 	public SessionData() {
 		biddingStrategyData = null;
 		opponentModelData = null;
 		acceptanceStrategyData = null;
+		changed = false;
 	}
 	
 	public Serializable getData(ComponentsEnum type) {
@@ -38,9 +41,18 @@ public class SessionData implements Serializable {
 		} else if (component == ComponentsEnum.ACCEPTANCESTRATEGY) {
 			acceptanceStrategyData = data;
 		}
+		changed = true;
 	}
 
 	public boolean isEmpty() {
 		return biddingStrategyData == null && opponentModelData == null && acceptanceStrategyData == null;
+	}
+
+	public boolean isChanged() {
+		return changed;
+	}
+
+	public void changesCommitted() {
+		changed = false;
 	}
 }

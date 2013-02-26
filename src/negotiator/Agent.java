@@ -254,7 +254,7 @@ public abstract class Agent
 	 * 		   false otherwise.
 	 */
 	final protected boolean saveSessionData(Serializable dataToSave){
-		String agentClassName = getClass().getName();
+		String agentClassName = getUniqueIdentifier();
 		try{ // utility may be null
 			String prefProfName = utilitySpace.getFileName(); 
 			return dataObjects.saveData(dataToSave, agentClassName, prefProfName);
@@ -264,6 +264,10 @@ public abstract class Agent
 			e.printStackTrace();
 			return false;
 		}	
+	}
+
+	protected String getUniqueIdentifier() {
+		return getClass().getName();
 	}
 
 	/**
@@ -278,7 +282,7 @@ public abstract class Agent
 	 */
 	final protected Serializable loadSessionData(){
 
-		String agentClassName = getClass().getName();
+		String agentClassName = getUniqueIdentifier();
 		try{ // utility may be null
 			String prefProfName = utilitySpace.getFileName(); 
 			return dataObjects.loadData(agentClassName, prefProfName);
