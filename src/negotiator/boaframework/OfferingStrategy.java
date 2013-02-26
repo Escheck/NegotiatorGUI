@@ -1,7 +1,9 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
+import negotiator.NegotiationResult;
 import negotiator.bidding.BidDetails;
 
 /**
@@ -91,4 +93,14 @@ public abstract class OfferingStrategy {
 	public boolean isEndNegotiation() {
 		return endNegotiation;
 	}
+
+	public final void storeData(Serializable object) {
+		negotiationSession.setData(ComponentsEnum.BIDDINGSTRATEGY, object);
+	}
+	
+	public final Serializable loadData() {
+		return negotiationSession.getData(ComponentsEnum.BIDDINGSTRATEGY);
+	}
+	
+	public void endSession(NegotiationResult result) { }
 }

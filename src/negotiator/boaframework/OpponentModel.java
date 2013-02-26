@@ -1,7 +1,9 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import negotiator.Bid;
+import negotiator.NegotiationResult;
 import negotiator.issue.Issue;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
@@ -141,4 +143,14 @@ public abstract class OpponentModel {
 	public String getName() {
 		return "Default";
 	}
+
+	public final void storeData(Serializable object) {
+		negotiationSession.setData(ComponentsEnum.OPPONENTMODEL, object);
+	}
+	
+	public final Serializable loadData() {
+		return negotiationSession.getData(ComponentsEnum.OPPONENTMODEL);
+	}
+	
+	public void endSession(NegotiationResult result) { }
 }

@@ -1,5 +1,6 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import negotiator.Bid;
 import negotiator.BidHistory;
@@ -29,7 +30,9 @@ public class NegotiationSession {
 	protected UtilitySpace utilitySpace;
 	/** Reference to the timeline. */
 	protected Timeline timeline;
-
+	
+	private SessionData sessionData;
+	
 	/**
 	 * Special constructor used by the NegotiationSessionWrapper.
 	 * Do not use this constructor for other purposes.
@@ -42,12 +45,8 @@ public class NegotiationSession {
 	 * @param utilitySpace of the agent.
 	 * @param timeline of the current negotiation.
 	 */
-	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline){
-		this.utilitySpace = utilitySpace;
-		this.timeline = timeline;
-		this.domain = utilitySpace.getDomain();
-		this.opponentBidHistory = new BidHistory();
-		this.ownBidHistory = new BidHistory();
+	public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline){		
+		this(sessionData, utilitySpace, timeline, null);
 	}
 	
 	/**
@@ -57,13 +56,15 @@ public class NegotiationSession {
 	 * @param timeline of the current negotiation.
 	 * @param outcomeSpace representation of the possible outcomes.
 	 */
-	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace){
+	public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace){
+		this.sessionData = sessionData;
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
 		this.domain = utilitySpace.getDomain();
 		this.opponentBidHistory = new BidHistory();
 		this.ownBidHistory = new BidHistory();
 		this.outcomeSpace = outcomeSpace;
+		sessionData = new SessionData();
 	}
 	
 	/**
@@ -192,6 +193,14 @@ public class NegotiationSession {
 		}
 		return minBid;
 	}	
+
+	public void setData(ComponentsEnum component, Serializable obj) {
+		sessionData.setData(component, obj);
+	}
+	
+	public Serializable getData(ComponentsEnum component) {
+		return sessionData.getData(component);
+	}
 	
 	/**
 	 * Returns the discounted utility of a bid given the bid and the
@@ -203,5 +212,9 @@ public class NegotiationSession {
 	 */
 	public double getDiscountedUtility(Bid bid, double time){
 		return utilitySpace.getUtilityWithDiscount(bid, time);
+	}
+
+	public SessionData getSessionData() {
+		return sessionData;
 	}
 }
