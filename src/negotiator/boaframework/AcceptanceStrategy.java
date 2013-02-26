@@ -64,14 +64,30 @@ public abstract class  AcceptanceStrategy {
 	 */
 	public abstract Actions determineAcceptability();
 	
+	/**
+	 * Method used to store data that should be accessible in the next negotiation session
+	 * on the same scenario. This method can be called during the negotiation, but
+	 * it makes more sense to call it in the endSession method.
+	 * @param object to be saved by this component.
+	 */
 	public final void storeData(Serializable object) {
 		negotiationSession.setData(ComponentsEnum.ACCEPTANCESTRATEGY, object);
 	}
 	
+	/**
+	 * Method used to load the saved object, possibly created in a previous negotiation session.
+	 * The method returns null when such an object does not exist yet.
+	 * @return saved object or null when not available.
+	 */
 	public final Serializable loadData() {
 		return negotiationSession.getData(ComponentsEnum.ACCEPTANCESTRATEGY);
 	}
 	
+	/**
+	 * Method called at the end of the negotiation. Ideal location to call the
+	 * storeData method to update the data to be saved.
+	 * @param result of the negotiation.
+	 */
 	public void endSession(NegotiationResult result) { }
 	
 	/**

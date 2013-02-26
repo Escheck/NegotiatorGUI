@@ -194,10 +194,26 @@ public class NegotiationSession {
 		return minBid;
 	}	
 
-	public void setData(ComponentsEnum component, Serializable obj) {
-		sessionData.setData(component, obj);
+	/**
+	 * Method used o store the data of a component.
+	 * For agent programming please use the storeData() method of the BOA
+	 * component.
+	 * 
+	 * @param component from which the data is stored.
+	 * @param data to be stored.
+	 */
+	public void setData(ComponentsEnum component, Serializable data) {
+		sessionData.setData(component, data);
 	}
 	
+	/**
+	 * Method used to load the data saved by a component.
+	 * For agent programming please use the loadData() method of the BOA
+	 * component.
+	 * 
+	 * @param component from which the data is requested.
+	 * @return data saved by the component.
+	 */
 	public Serializable getData(ComponentsEnum component) {
 		return sessionData.getData(component);
 	}
