@@ -82,6 +82,10 @@ public abstract class BOAagent extends Agent
 		omStrategy = oms;
 	}
 	
+	protected String getUniqueIdentifier() {
+		return getName().hashCode() + "";
+	}
+	
 	public static String getVersion() { return "1.0"; }
 	
 	public abstract String getName();
@@ -195,7 +199,8 @@ public abstract class BOAagent extends Agent
 		acceptConditions.endSession(result);
 		opponentModel.endSession(result);
 		SessionData savedData = negotiationSession.getSessionData();
-		if (!savedData.isEmpty()) {
+		if (!savedData.isEmpty() && savedData.isChanged()) {
+			savedData.changesCommitted();
 			saveSessionData(savedData);
 		}
 	}

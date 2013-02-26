@@ -1,5 +1,6 @@
 package negotiator;
 
+import negotiator.actions.Accept;
 import negotiator.actions.Action;
 
 public class NegotiationResult {
@@ -15,6 +16,13 @@ public class NegotiationResult {
 		this.myDiscountedUtility = myDiscountedUtility;
 		this.lastAction = lastAction;
 		this.lastBid = lastBid;
+	}
+	
+	/**
+	 * @return true when the match ended in acceptance.
+	 */
+	public boolean isAccept() {
+		return lastAction instanceof Accept;
 	}
 	
 	/**
