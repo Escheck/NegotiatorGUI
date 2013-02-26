@@ -266,6 +266,9 @@ public abstract class Agent
 		}	
 	}
 
+	/**
+	 * @return unique identifier of the Agent object.
+	 */
 	protected String getUniqueIdentifier() {
 		return getClass().getName();
 	}

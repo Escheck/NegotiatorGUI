@@ -21,7 +21,7 @@ public class NegotiationResult {
 	/**
 	 * @return true when the match ended in acceptance.
 	 */
-	public boolean isAccept() {
+	public boolean isAgreement() {
 		return lastAction instanceof Accept;
 	}
 	

@@ -82,6 +82,10 @@ public abstract class BOAagent extends Agent
 		omStrategy = oms;
 	}
 	
+	/**
+	 * Unique identifier for the BOA agent. The default method in agent does not suffice
+	 * as all BOA agents have the same classpath.
+	 */
 	protected String getUniqueIdentifier() {
 		return getName().hashCode() + "";
 	}
@@ -194,6 +198,11 @@ public abstract class BOAagent extends Agent
 		return acceptConditions;
 	}
 	
+	/**
+	 * Method that first calls the endSession method of each component
+	 * to update the session data and then stores the session data if it
+	 * is not empty and is changed.
+	 */
 	public void endSession(NegotiationResult result) {
 		offeringStrategy.endSession(result);
 		acceptConditions.endSession(result);
