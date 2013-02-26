@@ -673,11 +673,10 @@ The next step is to load the agent in \Genius. Towards this end, first we should
 </repository>
 \end{lstlisting}
 
-\subsection{Creating a ANAC2013 Agent}
+\subsection{Creating a ANAC2013 Agent}\label{sec:anac2013agent}
 The ANAC2013 introduces the concept that an agent can save and load information for each preference profile. This entails that an agent can learn from previous negotiations, against the same opponent or multiple opponents, to improve its competence when having a specific preference profile. It is only possible to retrieve information learned on the current preference profile as to avoid having perfect knowledge about the opponent's preferences.
 
-A single serializable object can be saved per preference profile by using the \textit{saveSessionData} method. If an object was already saved for the preference profile it is replaced. We recommend to store objects in the \textit{endSession} method, which is called when a negotiation is finished. The saved object can be requested by using the \textit{loadSessionData} method. A good place to do so is in in the \textit{init} method. Note that this functionality is also available to BOA agents.
-
+A single serializable object can be saved per preference profile by using the \textit{saveSessionData} method. If an object was already saved for the preference profile it is replaced. We recommend to store objects in the \textit{endSession} method, which is called when a negotiation is finished. The saved object can be requested by using the \textit{loadSessionData} method. A good place to do so is in in the \textit{init} method. Note that this functionality is also available to BOA agents (cf.\ Section~\ref{sec:anac2013agentBOA}).
 
 \section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, we recommend you create a BOA agent using the \textit{BOA framework}. The BOA negotiation agent architecture allows to reuse existing components from other BOA agents. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction can be made between four different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); one that tries to guess the opponent's preferences (\textit{opponent model}), and finally a component which specifies how the opponent model is used to select a bid for the opponent (\textit{opponent model strategy}). The overall negotiation strategy is a result of the interaction between these components.
@@ -833,6 +832,12 @@ Selecting ``Add new component'' results in the opening of the window shown in Fi
 	\caption{Loading a BOA agent.}
 	\label{fig:loadBOA}
 \end{figure}
+
+
+\subsection{Creating a ANAC2013 BOA Agent}\label{sec:anac2013agentBOA}
+In Section~\ref{sec:anac2013agent} we discussed how to create an agent for the ANAC2013. Using a similar procedure it is also possible to create BOA agents compatible with ANAC2013. An example to do so is included in this distribution of \Genius.
+
+As only a single object can be saved and loaded, the BOA framework stores an object \textit{SessionData} that includes the data saved by all three components. This object is loaded and saved automatically by the BOA framework. A component can easily access the data it saved by using the \textit{loadData} method. A component can at each moment during the negotiation update the saved information by using the \textit{storeData} method, although we recommend updating the information at the end of the negotiation by using the the \textit{endSession} method. The \textit{endSession} method of each method is automatically called at the end of the negotiation to inform the component of the result obtained and should be used to update the \textit{SessionData} object before it is automatically stored.
 
 \subsection{Advanced: Converting a BOA Agent to an Agent}
 To convert a BOA agent to a normal agent you have to create a class that extends \textit{BOA agent} and override the \textit{agentSetup} method. Below is an example of a BOA agent wrapped as a normal agent.
