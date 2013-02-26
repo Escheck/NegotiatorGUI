@@ -1,6 +1,9 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.util.HashMap;
+
+import negotiator.NegotiationResult;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 
 /**
@@ -60,6 +63,16 @@ public abstract class  AcceptanceStrategy {
 	 * @return one of three possible actions: Actions.Accept, Actions.Reject, Actions.Break.
 	 */
 	public abstract Actions determineAcceptability();
+	
+	public final void storeData(Serializable object) {
+		negotiationSession.setData(ComponentsEnum.ACCEPTANCESTRATEGY, object);
+	}
+	
+	public final Serializable loadData() {
+		return negotiationSession.getData(ComponentsEnum.ACCEPTANCESTRATEGY);
+	}
+	
+	public void endSession(NegotiationResult result) { }
 	
 	/**
 	 * Method which states if the current acceptance strategy is the

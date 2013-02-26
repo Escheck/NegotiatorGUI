@@ -1,9 +1,11 @@
 package negotiator.boaframework.agent;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import misc.Pair;
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.NegotiationResult;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -16,6 +18,7 @@ import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeSpace;
+import negotiator.boaframework.SessionData;
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
@@ -47,7 +50,14 @@ public abstract class BOAagent extends Agent
     @Override
 	public void init() {
 		super.init();
-		negotiationSession = new NegotiationSession(utilitySpace, timeline);
+		Serializable storedData = this.loadSessionData();
+		SessionData sessionData;
+		if (storedData == null) {
+			sessionData = new SessionData();
+		} else {
+			sessionData = (SessionData) storedData;
+		}
+		negotiationSession = new NegotiationSession(sessionData, utilitySpace, timeline);
 		agentSetup();
 	}
 	
@@ -155,7 +165,7 @@ public abstract class BOAagent extends Agent
 			return new Accept();
 		}
 	}
-	
+
 	/**
 	 * Returns the offering strategy of the agent.
 	 * @return offeringstrategy of the agent.
@@ -178,6 +188,16 @@ public abstract class BOAagent extends Agent
 	 */
 	public AcceptanceStrategy getAcceptanceStrategy() {
 		return acceptConditions;
+	}
+	
+	public void endSession(NegotiationResult result) {
+		offeringStrategy.endSession(result);
+		acceptConditions.endSession(result);
+		opponentModel.endSession(result);
+		SessionData savedData = negotiationSession.getSessionData();
+		if (!savedData.isEmpty()) {
+			saveSessionData(savedData);
+		}
 	}
 
 	/**
