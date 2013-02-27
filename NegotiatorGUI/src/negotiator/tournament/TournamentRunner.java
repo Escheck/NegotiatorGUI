@@ -1,6 +1,7 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -132,6 +133,8 @@ public class TournamentRunner implements Runnable
 	}
 
 	private String runTournament() throws InterruptedException {
+		Collections.shuffle(sessions);
+		
 		for (int i = 0; i < sessions.size(); i++) {
 
 			if (TournamentConfiguration.getBooleanOption("disableGUI", false)) {
