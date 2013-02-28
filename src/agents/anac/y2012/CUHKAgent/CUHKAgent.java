@@ -52,6 +52,7 @@ public class CUHKAgent extends Agent {
 
     public void init() {
         try {
+            random = new Random();
             maximumOfBid = this.utilitySpace.getDomain().getNumberOfPossibleBids();
             ownBidHistory = new OwnBidHistory();
             opponentBidHistory = new OpponentBidHistory();
@@ -81,7 +82,6 @@ public class CUHKAgent extends Agent {
             if (utilitySpace.getReservationValue() > 0) {
                 this.reservationValue = utilitySpace.getReservationValue();
             }
-            random = new Random();
 
         } catch (Exception e) {
             System.out.println("initialization error" + e.getMessage());
@@ -475,6 +475,7 @@ public class CUHKAgent extends Agent {
                 case DISCRETE:
                     IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
                     int optionIndex = random.nextInt(lIssueDiscrete.getNumberOfValues());
+                    
                     values.put(lIssue.getNumber(),
                             lIssueDiscrete.getValue(optionIndex));
                     break;

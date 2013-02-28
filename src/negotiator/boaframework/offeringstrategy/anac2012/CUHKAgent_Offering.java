@@ -74,6 +74,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 	 */
 	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+		random = new Random();
 		if (model instanceof DefaultModel) {
 			model = new NoModel();
 		}
@@ -109,7 +110,6 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 		if (negoSession.getUtilitySpace().getReservationValue() > 0) {
 			this.reservationValue = negoSession.getUtilitySpace().getReservationValue();
 		}
-		random = new Random();
 	}
 
 	@Override
