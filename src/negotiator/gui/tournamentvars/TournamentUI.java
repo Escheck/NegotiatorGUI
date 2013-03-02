@@ -678,6 +678,7 @@ public class TournamentUI extends javax.swing.JPanel
     			
     			// 4. Generate jobs and store them in the DB if a tournament was started
     			int response = 0;
+    			int randomTest = 0;
     			if (storeJobs) {
     				// 5. Check that the user does not accidentally start a new session when he actually wanted to join
     				if (DBController.getInstance().existsSessionName(sessionname)) {
@@ -688,12 +689,21 @@ public class TournamentUI extends javax.swing.JPanel
 																		JOptionPane.YES_NO_OPTION);
     				}
     				if (response == 0) { // yes
-    					TournamentConfiguration.setConfiguration(tournament.getOptions());
-    					DBController.getInstance().createJob(sessionname, tournament);
+    					if (tournament.getOptions().get("generationMode") == 1) {
+    						randomTest = JOptionPane.showConfirmDialog(null, "The session order has been randomized by using generation mode: \"random\".\n" +
+    															"In the distributed setting the run numbers are no longer usable.\n" +
+    															"Do you want to continue?", "Input",
+																JOptionPane.YES_NO_OPTION);
+    					
+    					}
+    					if (randomTest == 0) {
+	    					TournamentConfiguration.setConfiguration(tournament.getOptions());
+	    					DBController.getInstance().createJob(sessionname, tournament);
+    					}
     				}
     			}
     			// the user STARTED and ACCEPTED or the user JOINED
-    			if (response == 0) {
+    			if (response == 0 && randomTest == 0) {
     				start(true, sessionname);
     			}
 			} catch (Exception e) {

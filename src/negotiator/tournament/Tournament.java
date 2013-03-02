@@ -1,7 +1,9 @@
 package negotiator.tournament;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import misc.Serializer;
@@ -96,8 +98,14 @@ public class Tournament implements Serializable
     	};
 		Method mthdGetTournamentSessions = protocol.getMethod("getTournamentSessions", paramTypes);
 		sessions = (ArrayList<Protocol>)(mthdGetTournamentSessions.invoke(null,this));
-		return sessions;
 		
+		int mode = TournamentConfiguration.getIntegerOption("generationMode", 0);
+		if (mode == 1) {
+			int seed = TournamentConfiguration.getIntegerOption("randomSeed", 0);
+			Collections.shuffle(sessions, new Random(seed));
+		}
+		
+		return sessions;
 	}
 	
 	/**

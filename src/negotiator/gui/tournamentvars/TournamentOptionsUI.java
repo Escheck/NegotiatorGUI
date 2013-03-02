@@ -2,8 +2,6 @@ package negotiator.gui.tournamentvars;
 
 import java.awt.Frame;
 import java.util.HashMap;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -13,10 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
- * A tournament 
+ * The options specifying how to run a tournament.
  *
  * @author Mark Hendrikx
  */
@@ -49,6 +46,10 @@ public class TournamentOptionsUI extends JDialog {
     private JLabel playAgainstSelfLabel;
     private JCheckBox playBothSidesCheck;
     private JLabel playBothSidesLabel;
+    private JLabel generationModeLabel;
+    private JComboBox generationModeSelector;
+    private JLabel randomSeedLabel;
+    private JTextField randomSeedField;
     private JComboBox protocolModeSelector;
     private JLabel protocolModeLabel;
     private JPanel protocolSettingsTab;
@@ -190,6 +191,20 @@ public class TournamentOptionsUI extends JDialog {
     	playAgainstSelfLabel = new JLabel("Play against self");
     	playAgainstSelfCheck = new JCheckBox();
     	
+    	generationModeLabel = new JLabel("Generation mode");
+    	String[] options = {"Standard", "Random"};
+        generationModeSelector = new JComboBox(options);
+        generationModeSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	randomSeedField.setEnabled(generationModeSelector.getSelectedIndex() == 1);
+            }
+        });
+    	
+        randomSeedLabel = new JLabel("Random seed");
+        randomSeedField = new JTextField();
+        randomSeedField.setText("0");
+        randomSeedField.setEnabled(false);
+    	
         javax.swing.GroupLayout sessionGenerationTabLayout = new javax.swing.GroupLayout(sessionGenerationTab);
         sessionGenerationTab.setLayout(sessionGenerationTabLayout);
         sessionGenerationTabLayout.setHorizontalGroup(
@@ -204,7 +219,16 @@ public class TournamentOptionsUI extends JDialog {
                     .addGroup(sessionGenerationTabLayout.createSequentialGroup()
                         .addComponent(playAgainstSelfLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
-                        .addComponent(playAgainstSelfCheck)))
+                        .addComponent(playAgainstSelfCheck))
+	                   .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+	                        .addComponent(generationModeLabel)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+	                        .addComponent(generationModeSelector)
+                    ).addGroup(sessionGenerationTabLayout.createSequentialGroup()
+	                        .addComponent(randomSeedLabel)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+	                        .addComponent(randomSeedField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    ))
                 .addContainerGap())
         );
         sessionGenerationTabLayout.setVerticalGroup(
@@ -218,6 +242,14 @@ public class TournamentOptionsUI extends JDialog {
                 .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(playAgainstSelfLabel)
                     .addComponent(playAgainstSelfCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(generationModeLabel)
+                    .addComponent(generationModeSelector))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(randomSeedLabel)
+                    .addComponent(randomSeedField))
                 .addContainerGap(164, Short.MAX_VALUE))
         );
 
@@ -402,6 +434,15 @@ public class TournamentOptionsUI extends JDialog {
             		JOptionPane.showMessageDialog(null, "Please input a valid deadline.");
             	}
             	
+            	try {
+            		int randomSeed = Integer.parseInt(randomSeedField.getText());
+        			config.put("randomSeed", randomSeed);
+            	} catch (NumberFormatException e) {
+            		allValid = false;
+            		JOptionPane.showMessageDialog(null, "The random seed should be an integer.");
+            	}
+            	
+            	config.put("generationMode", generationModeSelector.getSelectedIndex());
             	config.put("accessPartnerPreferences", accessPartnerPreferencesCheck.isSelected() ? 1 : 0);
             	config.put("protocolMode", protocolModeSelector.getSelectedIndex());
             	config.put("allowPausingTimeline", allowPausingTimelineCheck.isSelected() ? 1 : 0);
@@ -432,23 +473,7 @@ public class TournamentOptionsUI extends JDialog {
         resetToDefaultButton = new JButton("Reset to default");
         resetToDefaultButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                protocolModeSelector.setSelectedIndex(0);
-                deadlineField.setText("180");
-                accessPartnerPreferencesCheck.setSelected(false);
-                allowPausingTimelineCheck.setEnabled(true);
-                allowPausingTimelineCheck.setSelected(false);
-                playBothSidesCheck.setSelected(true);
-                playAgainstSelfCheck.setSelected(false);
-                logDetailedAnalysisCheck.setSelected(false);
-                logNegotiationTraceCheck.setSelected(false);
-                logFinalAccuracyCheck.setSelected(false);
-                logCompetitivenessCheck.setSelected(false);
-                appendModeAndDeadlineCheck.setSelected(false);
-                showAllBidsCheck.setSelected(true);
-                showAllBidsCheck.setEnabled(true);
-                showLastBidCheck.setSelected(true);
-                showLastBidCheck.setEnabled(true);
-                disableGUICheck.setSelected(false);
+                resetToDefaults();
             }
         });
         
@@ -484,6 +509,14 @@ public class TournamentOptionsUI extends JDialog {
 			if (prevConfig.containsKey("protocolMode")) {
 				protocolModeSelector.setSelectedIndex(prevConfig.get("protocolMode"));
 			}
+			if (prevConfig.containsKey("generationMode")) {
+				generationModeSelector.setSelectedIndex(prevConfig.get("generationMode"));
+			}
+			
+			if (prevConfig.containsKey("randomSeed")) {
+				randomSeedField.setText(prevConfig.get("randomSeed") + "");
+			}
+			
 			if (prevConfig.containsKey("deadline")) {
 				deadlineField.setText(prevConfig.get("deadline") + "");
 			}
@@ -504,7 +537,32 @@ public class TournamentOptionsUI extends JDialog {
 				showAllBidsCheck.setEnabled(false);
 				showLastBidCheck.setEnabled(false);
 			}
+		} else {
+			resetToDefaults();
 		}
 		
+	}
+	
+	public void resetToDefaults() {
+		protocolModeSelector.setSelectedIndex(0);
+        deadlineField.setText("180");
+        accessPartnerPreferencesCheck.setSelected(false);
+        allowPausingTimelineCheck.setEnabled(true);
+        allowPausingTimelineCheck.setSelected(false);
+        playBothSidesCheck.setSelected(true);
+        playAgainstSelfCheck.setSelected(false);
+        logDetailedAnalysisCheck.setSelected(false);
+        logNegotiationTraceCheck.setSelected(false);
+        logFinalAccuracyCheck.setSelected(false);
+        logCompetitivenessCheck.setSelected(false);
+        appendModeAndDeadlineCheck.setSelected(false);
+        showAllBidsCheck.setSelected(true);
+        showAllBidsCheck.setEnabled(true);
+        showLastBidCheck.setSelected(true);
+        showLastBidCheck.setEnabled(true);
+        disableGUICheck.setSelected(false);
+        generationModeSelector.setSelectedIndex(0);
+        randomSeedField.setText("0");
+        randomSeedField.setEnabled(false);
 	}
 }
