@@ -3,6 +3,8 @@ package negotiator.tournament;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
 import javax.swing.JOptionPane;
 
 import negotiator.Agent;
@@ -133,7 +135,6 @@ public class TournamentRunner implements Runnable
 	}
 
 	private String runTournament() throws InterruptedException {
-		Collections.shuffle(sessions);
 		
 		for (int i = 0; i < sessions.size(); i++) {
 
@@ -248,6 +249,7 @@ public class TournamentRunner implements Runnable
 		else {
 			sessions=t.getSessions();
 		}
+		
 		return sessions;
 	}
 
