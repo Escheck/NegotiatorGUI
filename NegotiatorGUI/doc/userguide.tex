@@ -759,8 +759,8 @@ This section discusses how to create an acceptance strategy class by extending t
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
-\texttt{void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy
-						HashMap<String, Double> parameters)}\\
+\texttt{void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy,
+						OpponentModel opponentModel, HashMap<String, Double> parameters)}\\
 Method directly called after creating the agent which should be used to initialize the component.\\
 \hline
 \texttt{Actions determineAcceptability()}\\
@@ -869,13 +869,14 @@ As discussed in the introduction of this chapter, the acceptance condition deter
 
 Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of a simple acceptance condition as for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
-To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. An acceptance can be added to the MAC by appending it to the AClist as sown below.
+To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. Furthermore, the method \textit{isMac} should be overwritten to return \textit{true} and the name of the components in the repository should be \textit{Multi Acceptance Criteria}. An acceptance can be added to the MAC by appending it to the AClist as sown below. 
 
 \begin{lstlisting}
 public class AC_MAC extends Multi_AcceptanceCondition {
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, 
-			HashMap<String, Double> parameters) throws Exception {
+			OpponentModel opponentModel, HashMap<String, Double> parameters)
+			throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		outcomes = new ArrayList<OutcomeTuple> ();
