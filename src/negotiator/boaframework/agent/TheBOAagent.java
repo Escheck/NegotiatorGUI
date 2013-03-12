@@ -1,6 +1,7 @@
 package negotiator.boaframework.agent;
 
 import misc.Serializer;
+
 import negotiator.boaframework.BOAagentInfo;
 import negotiator.boaframework.repository.BOAagentRepository;
 
@@ -8,16 +9,21 @@ import negotiator.boaframework.repository.BOAagentRepository;
  * This class is used to convert a BOA agent created using the GUI to
  * a real agent. The parseStrategyParameters loads the information object,
  * the agentSetup uses the information object to load the agent using
- * reflexion.
+ * reflection.
  * 
- * @author Alex Dirkzwager, Mark Hendrikx
- * @version 19/12/11
+ * For more information, see:
+ * Baarslag T., Hindriks K.V., Hendrikx M., Dirkzwager A., Jonker C.M.  
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies. 
+ * Proceedings of The Fifth International Workshop on Agent-based Complex Automated Negotiations (ACAN 2012), 2012.
+ * http://mmi.tudelft.nl/sites/default/files/boa.pdf
+ * 
+ * @author Tim Baarslag, Alex Dirkzwager, Mark Hendrikx
  */
 public class TheBOAagent extends BOAagent {
 
-	/** name of the agent */
+	/** Name of the agent */
 	private String name = "";
-	/** information object which stores the decoupled agent */
+	/** Information object that stores the decoupled agent description */
 	private BOAagentInfo dagent;
 	
 	/**
@@ -78,8 +84,8 @@ public class TheBOAagent extends BOAagent {
 	
 	/**
 	 * Loads the BOA agent information object created by using the GUI.
-	 * The agentSetup method uses this information to load the necessary
-	 * components by using reflexion.
+	 * The {@link #agentSetup()} method uses this information to load the necessary
+	 * components by using reflection.
 	 */
 	@Override
 	public void parseStrategyParameters(String variables) throws Exception {
