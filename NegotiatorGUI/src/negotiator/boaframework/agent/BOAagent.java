@@ -1,8 +1,11 @@
 package negotiator.boaframework.agent;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+
+import java.io.Serializable;
+
 import misc.Pair;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationResult;
@@ -19,29 +22,36 @@ import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.OutcomeSpace;
 import negotiator.boaframework.SessionData;
+import negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition;
 import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
  * This class describes a basic decoupled agent. The TheBOAagent class extends
  * this class and sets the required parameters.
  * 
- * @author Alex Dirkzwager, Mark Hendrikx
+ * For more information, see:
+ * Baarslag T., Hindriks K.V., Hendrikx M., Dirkzwager A., Jonker C.M.  
+ * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies. 
+ * Proceedings of The Fifth International Workshop on Agent-based Complex Automated Negotiations (ACAN 2012), 2012.
+ * http://mmi.tudelft.nl/sites/default/files/boa.pdf
+ * 
+ * @author Tim Baarslag, Alex Dirkzwager, Mark Hendrikx
  */
 public abstract class BOAagent extends Agent 
 {
-	/** when to accept */
+	/** Decides when to accept */
 	protected AcceptanceStrategy acceptConditions;
-	/** what to offer */
+	/** Decides what to offer */
 	protected OfferingStrategy offeringStrategy;
-	/** used to determine the utility of a bid for the opponent */
+	/** Approximates the utility of a bid for the opponent */
 	protected OpponentModel opponentModel;
-	/** link to domain */
+	/** Links to the negotiation domain */
 	protected NegotiationSession negotiationSession;
-	/** which bid to select using an opponent model */
+	/** Selects which bid to send when using an opponent model */
 	protected OMStrategy omStrategy;
-	/** used to store MAC outcomes */
+	/** Store {@link Multi_AcceptanceCondition} outcomes */
     public ArrayList<Pair<Bid, String>> savedOutcomes;
-    /** space of possible bids */
+    /** Contains the space of possible bids */
     protected OutcomeSpace outcomeSpace;
     
     /**
@@ -68,7 +78,7 @@ public abstract class BOAagent extends Agent
 	public abstract void agentSetup();
 	
 	/**
-	 * Set the components of the decoupled agent.
+	 * Sets the components of the decoupled agent.
 	 * 
 	 * @param ac the acceptance strategy
 	 * @param os the offering strategy
@@ -95,8 +105,8 @@ public abstract class BOAagent extends Agent
 	public abstract String getName();
 	
 	/**
-	 * Store the actions made by a partner.
-	 * First store the bid in the history, then update the opponent model.
+	 * Stores the actions made by a partner.
+	 * First, it stores the bid in the history, then updates the opponent model.
 	 * 
 	 * @param opponentAction by opponent in current turn
 	 */
@@ -126,7 +136,7 @@ public abstract class BOAagent extends Agent
 
 	
 	/**
-	 * Choose an action to perform.
+	 * Chooses an action to perform.
 	 * 
 	 * @return Action the agent performs
 	 */
@@ -215,7 +225,7 @@ public abstract class BOAagent extends Agent
 	}
 
 	/**
-	 * Clear the agent's variables.
+	 * Clears the agent's variables.
 	 */
 	public void cleanUp() {
 		offeringStrategy = null;
