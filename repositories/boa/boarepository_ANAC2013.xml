@@ -16,10 +16,6 @@
 			<parameter name="b" default="0.9" description="Minimum utility"/>
 		</biddingstrategy>
 		<biddingstrategy description="2011 - HardHeaded" classpath="negotiator.boaframework.offeringstrategy.anac2011.HardHeaded_Offering"/>
-		<biddingstrategy description="Other - IAH predictor" classpath="negotiator.boaframework.offeringstrategy.IAMHaggler_Test_Offering">
-			<parameter name="r" default="36.0" description="Amount of regressions"/>
-			<parameter name="s" default="100.0" description="Amount of time samples"/>
-		</biddingstrategy>
 		<biddingstrategy description="2010 - Nozomi" classpath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
 		<biddingstrategy description="2011 - Agent K2" classpath="negotiator.boaframework.offeringstrategy.anac2011.AgentK2_Offering"/>
 		<biddingstrategy description="Other - Random walker" classpath="negotiator.boaframework.offeringstrategy.other.Random_Offering"/>

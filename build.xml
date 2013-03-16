@@ -14,7 +14,7 @@
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
 --> 	
-<project name="Negotiator" default="makeGenius4.1" basedir=".">
+<project name="Negotiator" default="makeGenius4.1.1" basedir=".">
 	<property name="dist" location="dist"/> 
 	<property name="build" location="bin"/>
 	<property name="javadoc" location="javadoc"/>
@@ -478,7 +478,7 @@
 		<ant target="cleanup"/>
 	</target>
 	
-	<target name ="makeGenius4.1" depends="makeNegoSimulatorWithAllAgentJar">
+	<target name ="makeGenius4.1.1" depends="makeNegoSimulatorWithAllAgentJar">
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrep_ANAC2013.xml"/>
 			<globmapper from="domainrep_ANAC2013.xml" to="domainrepository.xml" />
@@ -504,12 +504,13 @@
 			<fileset dir="doc" includes="userguide.pdf"/>
 		</copy>
 		
-		<zip destfile="${dist}/Genius 4.1.zip">
+		<zip destfile="${dist}/Genius 4.1.1.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>							
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="genius"/>
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example"/>
 			<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example"/>
 			<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example"/>
 			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example"/>
