@@ -41,12 +41,9 @@ public class TestingAgent extends Agent
 		Domain domain = utilitySpace.getDomain();
 		System.out.println("NumberOfPossibleBids: " + domain.getNumberOfPossibleBids());
 		Bid randomBid = domain.getRandomBid();
-		try
-		{
+		try {
 			System.out.println("Utitility of bid " + randomBid + " = " + utilitySpace.getUtility(randomBid));
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

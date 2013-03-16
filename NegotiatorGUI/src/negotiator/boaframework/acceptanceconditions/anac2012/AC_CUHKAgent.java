@@ -247,7 +247,6 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 					     return Actions.Break;
 					 }
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
              }
@@ -279,7 +278,6 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 						    return Actions.Break;
 						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 } else {
@@ -307,7 +305,6 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 							return Actions.Break;
 						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 }

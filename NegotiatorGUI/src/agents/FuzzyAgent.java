@@ -65,7 +65,6 @@ public class FuzzyAgent extends Agent {
 	
 	@Override
 	public Action chooseAction() {
-		// TODO Auto-generated method stub
 		double lNextBidValue = 0;
 		Action lAction = null;
 
@@ -90,7 +89,6 @@ public class FuzzyAgent extends Agent {
 				Bid lBid = new Bid(utilitySpace.getDomain(),lValues);
 				lAction = new Offer(getAgentID(), lBid);
 			} catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 			

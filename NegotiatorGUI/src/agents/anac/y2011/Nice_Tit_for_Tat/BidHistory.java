@@ -46,7 +46,6 @@ public class BidHistory implements Iterable<BidDetails>
 				utility = u.getUtility(b);
 			} catch (Exception e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			BidDetails bidDetails = new BidDetails(b, utility, 0);

@@ -324,7 +324,6 @@ public class EnterBidDialogExtended extends JDialog {
 		        	oppBidSeries[1][i] = utilOpp;
 		        	
 	        	} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	        }
