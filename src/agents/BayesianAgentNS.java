@@ -6,7 +6,6 @@ public class BayesianAgentNS extends BayesianAgent {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return "Bayesian Scalable";
 	}
 

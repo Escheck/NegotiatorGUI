@@ -70,7 +70,6 @@ public AC_OMACagent() { }
 			if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time, partnerBid))
 				return Actions.Accept;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

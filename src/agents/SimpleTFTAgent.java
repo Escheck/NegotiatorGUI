@@ -69,7 +69,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -108,7 +107,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			firstBid = new Bid(domain, myOfferedPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(getName() + " previously got " + previousOpponentOffer + " and now gets offer " + opponentOffer + " and counter-offers " + myOffer);
@@ -127,7 +125,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			return ((ValueReal) bid.getValue(pieForOne.getNumber())).getValue();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return -1;
@@ -156,7 +153,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			firstBid = new Bid(domain, myOfferedPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -173,7 +169,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			firstBid = new Bid(domain, myOfferedPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -191,7 +186,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			firstBid = new Bid(domain, myOfferedPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -208,7 +202,6 @@ public class SimpleTFTAgent extends Agent
 		try {
 			firstBid = new Bid(domain, myOfferedPackage);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

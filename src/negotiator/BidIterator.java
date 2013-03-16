@@ -126,9 +126,6 @@ public class BidIterator implements Iterator<Bid> {
 		return lBid;
 	}
 
-	public void remove() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void remove() { }
 
 }

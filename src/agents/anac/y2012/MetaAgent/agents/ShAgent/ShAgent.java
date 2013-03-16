@@ -47,10 +47,7 @@ public class ShAgent extends Agent {
 		try 
 		{
 			maxUtilityBid = utilitySpace.getMaxUtilityBid();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
+		} catch (Exception e) { }
 		
 		utilAnalyzer = new UtilityAnalyzer(utilitySpace, maxUtilityBid);
 	}
@@ -235,11 +232,7 @@ public class ShAgent extends Agent {
 			{
 				BuildValuePreferences();
 			} 
-			catch (Exception e) 
-			{
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}
+			catch (Exception e) { }
 		}
 		
 		private void BuildValuePreferences() throws Exception

@@ -143,7 +143,6 @@ public class QOAgent extends Agent {
 					Bid lBid = new Bid(utilitySpace.getDomain(),lValues);
 					lAction = new Offer(this, lBid);
 				} catch (Exception e) {
-					// TODO: handle exception
 					e.printStackTrace();
 				}
 			}

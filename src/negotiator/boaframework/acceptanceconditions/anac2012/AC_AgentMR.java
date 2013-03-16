@@ -256,7 +256,6 @@ public class AC_AgentMR extends AcceptanceStrategy{
 			return Actions.Accept;
 		}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

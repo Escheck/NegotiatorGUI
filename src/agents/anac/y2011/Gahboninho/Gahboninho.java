@@ -33,7 +33,6 @@ public class Gahboninho extends Agent
 	@Override
 	public void init() 
 	{
-		// TODO Auto-generated method stub
 		super.init();
 		OM = new OpponnentModel(utilitySpace, timeline);
 		IM = new IssueManager(utilitySpace, timeline, OM);
@@ -118,7 +117,6 @@ public class Gahboninho extends Agent
 		}
 		catch (Exception e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 			
@@ -155,7 +153,6 @@ public class Gahboninho extends Agent
 
 	@Override
 	public AgentID getAgentID() {
-		// TODO Auto-generated method stub
 		return new AgentID("Gahboninho");
 	}
 

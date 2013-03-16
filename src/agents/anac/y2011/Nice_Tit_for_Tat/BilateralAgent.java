@@ -51,7 +51,6 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 			myUndiscountedUtility = utilitySpace.getUtility(bid);
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return myUndiscountedUtility;

@@ -6,7 +6,6 @@ public class RealValuedecreaseProxy extends ValueDecrease {
 	private ValueDecrease worstScale;
 	RealValuedecreaseProxy(ValueDecrease worstScale,double portion) {
 		super(0, 0, 0);
-		// TODO Auto-generated constructor stub
 		this.portion =portion;
 		this.worstScale=worstScale;
 	}

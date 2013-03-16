@@ -227,7 +227,6 @@ public class NiceTitForTat extends BilateralAgent
 			opponentModel.updateBeliefs(opponentLastBid);
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -274,7 +273,6 @@ public class NiceTitForTat extends BilateralAgent
 			return utilitySpace.getMaxUtilityBid();
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return utilitySpace.getDomain().getRandomBid(random100);
 		}
@@ -403,7 +401,6 @@ public class NiceTitForTat extends BilateralAgent
 			return utilitySpace.getUtility(b);
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}
