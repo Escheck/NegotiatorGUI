@@ -462,7 +462,6 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			double concessionLeft) {
 		theirMaxUtilities[0] = opponentStartbidUtil;
 		ourMinUtilities[0] = 1;
-		// TODO Auto-generated method stub
 		double t = negotiationSession.getTime();
 		int tind = (int) (negotiationSession.getTime() * 20) + 1;
 		double segPortion = (t - (tind - 1) * 0.05) / 0.05;

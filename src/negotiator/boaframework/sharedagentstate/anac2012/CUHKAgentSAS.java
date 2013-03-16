@@ -32,7 +32,6 @@ public class CUHKAgentSAS extends SharedAgentState{
         try {
 			this.utilitythreshold = negoSession.getMaxBidinDomain().getMyUndiscountedUtil();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}//initial utility threshold
         this.MaximumUtility = this.utilitythreshold;

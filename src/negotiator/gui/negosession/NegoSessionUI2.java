@@ -114,7 +114,6 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 		try {
 			ns = Global.createProtocolInstance(protocol, agents, agentProfiles, null);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			throw new Exception("Cannot create protocol.");
 		}
@@ -380,7 +379,6 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
     	try {
     		start();
     	} catch (Exception e) {
-			// TODO: handle exception
     		e.printStackTrace();
 		}
     }

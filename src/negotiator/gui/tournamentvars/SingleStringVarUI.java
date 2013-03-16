@@ -29,7 +29,6 @@ public class SingleStringVarUI extends DefaultOKCancelDialog
 
 	@Override
 	public Object ok() {
-		// TODO Auto-generated method stub
 		return textField.getText();
 	}
 

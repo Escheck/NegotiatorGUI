@@ -145,7 +145,6 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 			b = handleOffer(opponentBid);
 			nextBid = new BidDetails(b, negotiationSession.getUtilitySpace().getUtility(b));			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

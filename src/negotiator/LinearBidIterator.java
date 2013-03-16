@@ -25,12 +25,10 @@ public class LinearBidIterator extends BidIterator {
 	
 	@Override
 	public boolean hasNext() {
-		// TODO Auto-generated method stub
 		return super.hasNext();
 	}
 	@Override
 	public Bid next() {
-		// TODO Auto-generated method stub
 		return super.next();
 	}
 	

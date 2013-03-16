@@ -232,7 +232,6 @@ public class HardHeaded_Offering extends OfferingStrategy {
 				try {
 					((HardHeadedSAS) helper).setLowestYetUtility(negotiationSession.getUtilitySpace().getUtility(offer.getBid()));
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -139,7 +139,6 @@ public class OMACagent_Offering extends OfferingStrategy{
 		try {
 			nextBid = new BidDetails(bidToOffer, negotiationSession.getUtilitySpace().getUtility(bidToOffer));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return nextBid;

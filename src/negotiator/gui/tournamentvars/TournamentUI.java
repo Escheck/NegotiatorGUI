@@ -81,7 +81,6 @@ public class TournamentUI extends javax.swing.JPanel
 			domainrepository=Repository.get_domain_repos();
 			agentrepository=Repository.get_agent_repository();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -632,7 +631,6 @@ public class TournamentUI extends javax.swing.JPanel
     	try {
     		start(false, "");
     	}catch (Exception e) {
-			// TODO: handle exception
     		e.printStackTrace();
     		
 		}

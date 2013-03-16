@@ -136,7 +136,6 @@ public class NiceTitForTat_Offering extends OfferingStrategy {
 			nextBid = new BidDetails(myBid, negotiationSession.getUtilitySpace().getUtility(myBid), negotiationSession.getTime());
 			return nextBid;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

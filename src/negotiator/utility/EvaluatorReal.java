@@ -27,7 +27,6 @@ public class EvaluatorReal implements Evaluator {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		if (!(obj instanceof EvaluatorReal )) return false;
 		EvaluatorReal eval2 = (EvaluatorReal)obj;
 		if(eval2.type!=type) return false;
@@ -41,7 +40,6 @@ public class EvaluatorReal implements Evaluator {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
 

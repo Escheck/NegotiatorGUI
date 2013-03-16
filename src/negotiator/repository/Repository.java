@@ -151,7 +151,6 @@ public class Repository
 			else 
 				domain = new Domain(file);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return domain;
@@ -172,7 +171,6 @@ public class Repository
 			else 
 				us = new UtilitySpace(domain, file);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" +file);
 			e.printStackTrace();
 		}
@@ -186,7 +184,6 @@ public class Repository
 			else file = new File(profile.getURL().getFile());
 			return file.exists();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" +profile.getURL().getFile());
 			e.printStackTrace();
 		}
