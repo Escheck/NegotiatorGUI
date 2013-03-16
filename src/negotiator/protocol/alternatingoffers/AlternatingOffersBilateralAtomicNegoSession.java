@@ -605,10 +605,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			throws Exception {
 			
 			NegotiationResult resultA = new NegotiationResult(utilADiscount, lastAction, lastBid);
-			agentA.endSession(resultA);
+			try {
+				agentA.endSession(resultA);
+			} catch (Exception e) {
+				System.err.println(agentA.getName() + " crashed in endSession. This may influence the agent's future behavior.");
+			}
 			NegotiationResult resultB = new NegotiationResult(utilBDiscount, lastAction, lastBid);
-			agentB.endSession(resultB);
-			
+			try {
+				agentB.endSession(resultB);
+			} catch (Exception e) {
+				System.err.println(agentB.getName() + " crashed in endSession. This may influence the agent's future behavior.");
+			}
 			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
 					agentA.getClass().getCanonicalName(), 
 					agentB.getClass().getCanonicalName(), 
