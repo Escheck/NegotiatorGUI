@@ -232,9 +232,7 @@ public class NegoGUIView extends FrameView {
         //mainPanel.hide();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeDomainsMouseClicked
-    	// TODO add your handling code here:
-		 
+    private void treeDomainsMouseClicked(java.awt.event.MouseEvent evt) {
          int selRow = treeDomains.getRowForLocation(evt.getX(), evt.getY());
          TreePath selPath = treeDomains.getPathForLocation(evt.getX(), evt.getY());
          if(selRow != -1) {
@@ -284,7 +282,6 @@ public class NegoGUIView extends FrameView {
     		NegoSessionUI2 sessionUI = new NegoSessionUI2();    		
     		addTab("Sess. Editor", sessionUI);
     	} catch (Exception e) {
-			// TODO: handle exception
     		e.printStackTrace();
 		} 
     }

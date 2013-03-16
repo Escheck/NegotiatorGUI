@@ -19,7 +19,6 @@ public class AuctionBilateralAtomicNegoSession extends AlternatingOffersBilatera
 			String startingAgent, int totalTime) throws Exception {
 		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
 				agentAparams, agentBparams, startingAgent);
-		// TODO Auto-generated constructor stub
 	}
 
 }

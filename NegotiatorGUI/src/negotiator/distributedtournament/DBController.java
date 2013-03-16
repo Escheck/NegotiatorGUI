@@ -460,7 +460,6 @@ public class DBController {
 			System.out.println("Number of Logs: " + rowCount);// We want next() to go to first row  
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		

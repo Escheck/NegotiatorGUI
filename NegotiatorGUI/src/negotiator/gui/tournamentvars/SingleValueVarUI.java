@@ -28,7 +28,6 @@ public class SingleValueVarUI extends DefaultOKCancelDialog {
 
 	@Override
 	public Object ok() {
-		// TODO Auto-generated method stub
 		return new TotalSessionNumberValue(Integer.valueOf(textField.getText()));
 	}
 

@@ -297,7 +297,6 @@ public class NegotiationOutcome
 			paretoFrontier = bidSpace.getParetoFrontier();
 		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		BidPoint bestOutcomeForA = paretoFrontier.get(paretoFrontier.size() - 1);

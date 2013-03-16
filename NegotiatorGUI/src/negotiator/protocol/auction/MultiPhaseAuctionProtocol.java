@@ -28,7 +28,6 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			int cSR, int tSR)
 	throws Exception {
 		super(agentRepItems, profileRepItems, agentParams, tSR);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -309,7 +308,6 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 			//allSessions.add(createSession(center3, seller5, seller2));
 			//allSessions.add(createSession(center7, seller2, seller4));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return allSessions;

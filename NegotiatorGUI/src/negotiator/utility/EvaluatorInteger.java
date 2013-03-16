@@ -72,7 +72,6 @@ public class EvaluatorInteger implements Evaluator {
 		try {
 			lTmp = ((ValueInteger)bid.getValue(index)).getValue();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return getEvaluation(lTmp);

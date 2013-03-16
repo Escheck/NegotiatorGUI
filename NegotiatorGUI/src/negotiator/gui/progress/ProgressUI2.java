@@ -369,7 +369,6 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 			if(kalai!=null)
 				bidChart.setKalai(kalai);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
@@ -545,14 +544,10 @@ public class ProgressUI2 extends javax.swing.JPanel implements NegotiationEventL
 		addLoggingText(evt.getMessage());	
 	}
 
-	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) { }
 
 	public void handleBlateralAtomicNegotiationSessionEvent(
 			BilateralAtomicNegotiationSessionEvent evt) {
-		// TODO Auto-generated method stub
 		setNegotiationSession(evt.getSession());
 	}
 }
