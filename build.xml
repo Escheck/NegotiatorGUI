@@ -54,6 +54,9 @@
 	<target name="unpackJTreeTable" depends="makeTempDir">		
 		<unzip src="${dep}/jtreetable.jar" dest="${tmp}"/>
 	</target>
+	<target name="unpackMySQL" depends="makeTempDir">		
+		<unzip src="${dep}/mysql-connector-java-5.1.18-bin.jar" dest="${tmp}"/>
+	</target>
 	<target name="unpackJAXB" depends="makeTempDir">		
 		<unzip src="${dep}/jaxb-api.jar" dest="${tmp}"/>
 		<unzip src="${dep}/jaxb1-impl.jar" dest="${tmp}"/>
@@ -134,7 +137,7 @@
     </target>
 
 	<target name ="makeNegoSimulatorWithAllAgentJar" description="Create a jar for the Negotiation Simulator including all agents" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons, unpackIAMhaggler">
+		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackMySQL, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons, unpackIAMhaggler">
    		<delete file="${dist}/negosimulator.jar" quiet="true"/>
          <jar destfile="${dist}/negosimulator.jar">
          	<fileset dir="${build}" includes="negotiator/**, agents/**, misc/**"/>
@@ -509,7 +512,7 @@
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="genius"/>
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
 			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example"/>
 			<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example"/>
 			<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example"/>
