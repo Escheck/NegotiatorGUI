@@ -367,8 +367,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 									currentAgent,
 									agentAUtility,
 									agentBUtility,
-									spaceA.discount(agentAUtility, time, spaceA.getDiscountFactor()),
-									spaceB.discount(agentBUtility, time, spaceB.getDiscountFactor()),
+									UtilitySpace.discount(agentAUtility, time, spaceA.getDiscountFactor()),
+									UtilitySpace.discount(agentBUtility, time, spaceB.getDiscountFactor()),
 									"Caught exception. Agent ["
 											+ currentAgent.getName()
 											+ "] sent " + lastAction
