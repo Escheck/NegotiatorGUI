@@ -328,7 +328,7 @@ public class UtilitySpace implements Serializable {
      * @param discountFactor of the preference profile.
      * @return discounted version of the given utility at the given time.
      */
-	public double discount(double util, double time, double discountFactor)
+	public static double discount(double util, double time, double discountFactor)
 	{
 		double discount = discountFactor;
     	if (time < 0) {

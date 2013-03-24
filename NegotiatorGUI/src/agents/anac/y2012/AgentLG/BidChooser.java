@@ -144,8 +144,6 @@ public class BidChooser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("Original Set numPossibleBids: " + numPossibleBids);
 
 		return currentAction;
 	}
@@ -163,7 +161,6 @@ public class BidChooser {
 			if (allBids == null)
 				initBids();
 			newBid= allBids.get(index);
-			//System.out.println("Original getNextOptimicalBid: " + newBid);
 
 			currentAction = new Offer(agentID, newBid);
 			index++;
@@ -343,7 +340,6 @@ public class BidChooser {
 		if (allBids == null)
 			initBids();
 		
-		System.out.println("Original numPossibleBids: " + numPossibleBids);
 
 		return  utilitySpace.getUtilityWithDiscount(allBids.get(numPossibleBids),time);
 	}
