@@ -25,8 +25,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "F:/Log.xml";
-			String out = "F:/Result.xml";
+			String in = "c:/results/2013-03-16 12.58.20_time_6.xml";
+			String out = "c:/results/test.xml";
 			
 			
 			ResultsParser resultsParser = NegotiationLogParser.parseLog(in);
@@ -297,16 +297,15 @@ public class TournamentMeasures {
 		double utility = 0;
 
 		for (OutcomeInfoDerived outcome : outcomes) {
-			boolean found = false;
-			if (outcome.getAgentAname().equals(agentName)) {
-				utility += outcome.getAgentAutility();
-				found = true;
-			} else if (outcome.getAgentBname().equals(agentName)) {
-				utility += outcome.getAgentButility();
-				found = true;
-			}
-			if (found && (outcome.isAgreement() || !onlyAgreements)) {
-				totalSessions++;
+			// if outcome is an agreement, or we do not care about it
+			if ((outcome.isAgreement() || !onlyAgreements)) {
+				if (outcome.getAgentAname().equals(agentName)) {
+					utility += outcome.getAgentAutility();
+					totalSessions++;
+				} else if (outcome.getAgentBname().equals(agentName)) {
+					utility += outcome.getAgentButility();
+					totalSessions++;
+				}
 			}
 		}
 		return utility / (double)totalSessions;
@@ -327,16 +326,15 @@ public class TournamentMeasures {
 		double utility = 0;
 
 		for (OutcomeInfoDerived outcome : outcomes) {
-			boolean found = false;
-			if (outcome.getAgentAname().equals(agentName)) {
-				utility += outcome.getAgentAutilityDiscount();
-				found = true;
-			} else if (outcome.getAgentBname().equals(agentName)) {
-				utility += outcome.getAgentButilityDiscount();
-				found = true;
-			}
-			if (found && (outcome.isAgreement() || !onlyAgreements)) {
-				totalSessions++;
+			// if outcome is an agreement, or we do not care about it
+			if (outcome.isAgreement() || !onlyAgreements) {
+				if (outcome.getAgentAname().equals(agentName)) {
+					utility += outcome.getAgentAutilityDiscount();
+					totalSessions++;
+				} else if (outcome.getAgentBname().equals(agentName)) {
+					utility += outcome.getAgentButilityDiscount();
+					totalSessions++;
+				}
 			}
 		}
 		return utility / (double) totalSessions;
