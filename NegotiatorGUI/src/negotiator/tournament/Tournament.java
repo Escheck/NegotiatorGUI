@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
+
 import misc.Serializer;
 import negotiator.Global;
 import negotiator.boaframework.BOAagentInfo;
@@ -114,7 +116,7 @@ public class Tournament implements Serializable
 	public void resetTournament() {
 		sessions = null;
 	}
-	
+
 	/**
 	 * @return the available AgentVariables in the tournament.
 	 */
