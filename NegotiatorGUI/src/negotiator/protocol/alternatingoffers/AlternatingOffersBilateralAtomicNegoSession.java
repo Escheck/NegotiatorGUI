@@ -153,15 +153,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			
 			while (!stopNegotiation) {
 				// timeline.printTime();
-				double time = timeline.getTime();
+				double time = 0;
 
 				try {
 					// inform agent about last action of his opponent
 					currentAgent.ReceiveMessage(lastAction);
 					String deadlineReachedMsg = "Deadline reached while waiting for ["
 							+ currentAgent + "]";
-
+					
 					if (timeline.isDeadlineReached()) {
+						time = 1.0;
+
 						// if there is a MAC being used
 						if (hasMAC()) {
 							if (agentAWithMultiAC) {
@@ -185,7 +187,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						return;
 					// get next action of the agent that has its turn now
 					lastAction = currentAgent.chooseAction();
+					time = timeline.getTime();
+
 					if (timeline.isDeadlineReached()) {
+						time = 1.0;
+
 						if (hasMAC()) {
 							if (agentAWithMultiAC) {
 								AcceptanceStrategy AC = ((BOAagent) agentA)
