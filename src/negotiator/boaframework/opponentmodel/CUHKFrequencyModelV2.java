@@ -45,6 +45,32 @@ public class CUHKFrequencyModelV2 extends OpponentModel {
     /** Boolean which indicates if the utilityspaced is arleady cached */
 	private boolean cached = false;
     
+	@Override
+	public void init(NegotiationSession negotiationSession){
+		System.out.println("init");
+		this.bidHistory = new ArrayList<Bid>();
+        opponentBidsStatisticsDiscrete = new ArrayList<HashMap<Value, Integer>>();
+        maxPreferencePerIssue = new HashMap<Integer, Integer>();
+        this.negotiationSession = negotiationSession;
+        try {
+            issues = negotiationSession.getUtilitySpace().getDomain().getIssues();
+
+            for (int i = 0; i < issues.size(); i++) {
+                IssueDiscrete lIssueDiscrete = (IssueDiscrete) issues.get(i);
+                HashMap<Value, Integer> discreteIssueValuesMap = new HashMap<Value, Integer>();
+                for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
+                    Value v = lIssueDiscrete.getValue(j);
+                    discreteIssueValuesMap.put(v, 0);
+                }
+                maxPreferencePerIssue.put(i, 0);
+                opponentBidsStatisticsDiscrete.add(discreteIssueValuesMap);
+            }
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+		
+	}
+	
     /**
      * initialization of the model in which the issues are cached and the score keeper for each issue is created.
      */
