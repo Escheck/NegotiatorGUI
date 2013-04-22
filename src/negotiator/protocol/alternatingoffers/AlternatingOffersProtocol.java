@@ -3,9 +3,11 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.Global;
@@ -15,6 +17,7 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
+import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.TrajectoryMeasures;
 import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
@@ -192,7 +195,8 @@ public class AlternatingOffersProtocol extends Protocol {
 	 */
 	public void createExtraLogData() {
 		// DEFAULT: no detailed analysis
-		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
+		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) 
+		{
 			// Calculate the opponent model quality measures and log them
 			UtilitySpace[] spaces = { getAgentAUtilitySpace(), getAgentBUtilitySpace() };
 			UtilityMeasures disCalc = new UtilityMeasures(BidSpaceCache.getBidSpace(spaces));
