@@ -31,18 +31,22 @@ public class AC_Gahboninho extends AcceptanceStrategy {
 	
 	public AC_Gahboninho(NegotiationSession negotiationSession,
 			OfferingStrategy offeringStrategy) {
-		initializeAgent(negotiationSession,offeringStrategy);
+		initializeAgent(negotiationSession, offeringStrategy);
 	}
 	
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
-		initializeAgent(negotiationSession,offeringStrategy);
+		System.out.println("offering: " + strat);
+
+		initializeAgent(negoSession, strat);
 		
 	}
 	
 
 	public void initializeAgent(NegotiationSession negoSession, OfferingStrategy strat) {
 		this.negotiationSession = negoSession;
+		System.out.println("negotiationSession: " + negotiationSession);
+
 		this.offeringStrategy = strat;
 		if (offeringStrategy.getHelper() != null && offeringStrategy.getHelper().getName().equals("Gahboninho")) {
 			helper = offeringStrategy.getHelper();

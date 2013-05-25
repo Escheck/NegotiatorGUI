@@ -54,7 +54,8 @@ public class NullStrategy extends OMStrategy {
 	 */
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
-		return allBids.get(rand.nextInt(allBids.size()));
+		return allBids.get(0);
+		//return allBids.get(rand.nextInt(allBids.size()));
 	}
 
 	/**

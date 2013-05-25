@@ -1,5 +1,7 @@
 package negotiator.boaframework.offeringstrategy;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 
 import negotiator.DiscreteTimeline;
@@ -78,6 +80,45 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 		variances = concessionModel.getVariance();
 		means = concessionModel.getMeans();
+		if(negotiationSession.getTime() > 0.5){
+		
+			StringWriter variancesWriter = new StringWriter();
+			PrintWriter variancesPrintWriter = new PrintWriter(variancesWriter);
+			variances.print(variancesPrintWriter, 10, 4);
+			System.out.println("variances: " + variancesWriter.getBuffer().toString());
+	
+			
+			StringWriter meanWriter = new StringWriter();
+			PrintWriter meanPrintWriter = new PrintWriter(meanWriter);
+			means.print(meanPrintWriter, 10, 4);
+			System.out.println("means: " + meanWriter.getBuffer().toString());
+		}
+		
+		
+		//System.out.println("opponentBidUtil: " + opponentUtility);
+
+		
+		
+		//System.out.println("Prediction: " + prediction.toString());
+
+		//System.out.println("Prediction Mean Col: " + means.getColumnDimension());
+		//System.out.println("Prediction Mean Row: " + means.getRowDimension());
+
+		
+		//System.out.println("Prediction variances Col: " + variances.getColumnDimension());
+		//System.out.println("Prediction variances Row: " + variances.getRowDimension());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 //		System.out.println();
 //		System.out.println("Round " + round + (variances == null ? ". Estimates still null" : ""));
 //		System.out.println("model has been updated with u = " + myUndiscountedUtil + ", at t = " + time + " (which was offered in round " + (round - 1) + ").");
