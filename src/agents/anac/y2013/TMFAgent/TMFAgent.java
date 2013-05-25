@@ -297,8 +297,6 @@ public class TMFAgent extends Agent
 			
 		}
 		
-		//System.out.println(timeline.getTime() + ", " + alpha + " : " + best + "," + cb.utility);
-		
 		try {
 			if (lastBid != null && utilitySpace.getUtility(lastBid) > cb.utility ) //if the opponent offered better offer (to us) than what we decided to offer, we accept this offer.  
 				a = new Accept(); 
@@ -425,7 +423,6 @@ public class TMFAgent extends Agent
 		if (!wantToMakeTwoProposals && 1 - timeline.getTime() > EstimatedRTT + devRTT){
 			return true;
 		}
-		System.out.println("Have two proposals? " + wantToMakeTwoProposals + ": " + (1-timeline.getTime()) + ", ERTT = " + EstimatedRTT + ", devRTT = " + devRTT);
 		return false;
 	}
 	

@@ -107,7 +107,7 @@ public class MetaAgent extends Agent {
 						s.add(val);
 						sumU += val;
 					} catch (Exception e1) {
-						//System.out.println("META-Agent IO exception: " + e1.toString());
+						e1.printStackTrace();
 					}
 				}
 				int currSize = s.size();
@@ -188,27 +188,21 @@ public class MetaAgent extends Agent {
 			{
 				agentsResults[k] = 0;
 			}
-			//System.out.println("** " + reg[k][0] + "'s regression is: " + regressionResult + ", Exp is: " + agentsResults[k]);
 			sumExp += agentsResults[k];			
 			
 		}
 		double rand = Math.random(), totalValue = 0;
-		//System.out.println("Random is: "+ rand);
 		for (int i = 0; i < agentsResults.length; i++) {
 			//calculate QRE value, part 2
 			agentsResults[i] = agentsResults[i] / sumExp;
 			totalValue += agentsResults[i];
-			//System.out.print("Agent: " + agents.get(i) + ", agent result is " + agentsResults[i] + ", sum is "+totalValue);
 			if (rand < totalValue){ //at the end, total value will be 1 (it's a probability value)
 				bestIndex = i;
-				//System.out.println(" --> Agent selected!");
 				break;
 			}
-			//System.out.println();
 		}		
 		
 		ans = agents.get(bestIndex);
-		//System.out.println("---->MetaAgent will now play as " + ans);
 		myAgentName = ans;
 		return ans;
 		
@@ -245,15 +239,12 @@ public class MetaAgent extends Agent {
 				if (actionOfPartner == null) //first bid, and Meta-Agent is the first bidder (still not initialized any agent)
 				{ 
 					first = true;
-					//System.out.println("actionOfPartner == null.");
 					return new Offer(this, utilitySpace.getMaxUtilityBid());
 				}	
 				else //second bid, or first bid as responder (and not initiator)
 				{
-					//System.out.println("actionOfPartner not null.");
 					agentInit = true;
 					if (actionOfPartner instanceof Offer){
-						//System.out.println("actionOfPartner is Offer.");
 						opponentFirstBid = utilitySpace.getUtility(((Offer)actionOfPartner).getBid());
 					}
 					
@@ -272,7 +263,6 @@ public class MetaAgent extends Agent {
 				return new Offer(this, utilitySpace.getMaxUtilityBid());
 			}
 			else{ //handle reservation value, because all agent are from Genius version 3.1 (and don't know what is reservation value)
-				//System.out.println("Action a is not null.");
 				double time = timeline.getTime();
 				if (a instanceof Offer && this.utilitySpace.getReservationValueWithDiscount(time) >= utilitySpace.getUtilityWithDiscount(((Offer)a).getBid(),time)){
 					a = new EndNegotiation();
@@ -283,7 +273,6 @@ public class MetaAgent extends Agent {
 			
 		}
 		catch (Exception e) {
-			//System.out.println("META-AGENT error in ChooseAction: " + e.toString());
 			return null;
 		}
 	}
