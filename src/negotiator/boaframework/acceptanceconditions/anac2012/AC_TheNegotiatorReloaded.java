@@ -81,6 +81,7 @@ public class AC_TheNegotiatorReloaded extends AcceptanceStrategy{
 			throw new Exception("Parameters were not correctly set");
 		}
 		initializeAgent(negoSession, strat);
+		System.out.println("Domain size: " + negoSession.getDomain().getNumberOfPossibleBids());
 	}
 	
 	/**
