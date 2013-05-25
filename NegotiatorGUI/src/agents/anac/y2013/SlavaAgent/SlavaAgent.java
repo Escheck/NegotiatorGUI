@@ -273,7 +273,7 @@ public class SlavaAgent extends Agent
 				}	
 			}
 		} catch (Exception e) { 
-			System.out.println("Exception in ChooseAction:" + e.getMessage());
+			e.printStackTrace();
 			this.maxBid = this.calculateNextBid();
 			action = new Offer(this.maxBid);
 		}
@@ -297,13 +297,6 @@ public class SlavaAgent extends Agent
 			
 			// Save it.
 			this.saveSessionData(this.bestOffer);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("Reuslt = " + result);
-		System.out.println("bestOffer = " + this.bestOffer);
-		try {
-			System.out.println("bestOffer utility = " + this.utilitySpace.getUtility(this.bestOffer));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -126,8 +126,6 @@ public class AgentI extends Agent
 					}
 				}
 								
-
-				//System.out.println("---------------------minimum="+MINIMUM_BID_UTILITY);
 				range.setLowerbound(MINIMUM_BID_UTILITY);
 
 				action = chooseRandomBidAction(time);
@@ -137,12 +135,11 @@ public class AgentI extends Agent
 				
 				
 				if (isAcceptable(offerundiscoutFromOpponent, myOfferedUtil, time,partnerBid)){
-					//System.out.println("accepted");
 					action = new Accept(getAgentID());
 				}
 			}
 		} catch (Exception e) { 
-			System.out.println("Exception in ChooseAction:"+e.getMessage());
+			e.printStackTrace();
 			action=new Accept(getAgentID()); // best guess if things go wrong. 
 		}
 		return action;
@@ -158,7 +155,6 @@ public class AgentI extends Agent
 		}
 		
 		if (offeredUtilFromOpponent > MINIMUM_BID_UTILITY){
-			//System.out.println("minimu="+MINIMUM_BID_UTILITY);
 			return true;
 		}
 		
@@ -169,7 +165,6 @@ public class AgentI extends Agent
 			}
 		}
 		
-		//System.out.println("refuse"+offeredUtilFromOpponent);
 		if (time>0.9988){
 			Bid nextBid;
 			List<BidDetails> bdd = opponetBidHistory.getNBestBids(5);
@@ -209,7 +204,7 @@ public class AgentI extends Agent
 		 		nextBid = getRandomBid();
 			}
 		}
-		catch (Exception e) { System.out.println("Problem with received bid:"+e.getMessage()+". cancelling bidding"); }
+		catch (Exception e) { e.printStackTrace(); }
 		if (nextBid == null) return (new Accept(getAgentID()));                
 		return (new Offer(getAgentID(), nextBid));
 	}

@@ -45,7 +45,6 @@ public class AgentKF extends Agent {
 
 
 	public void init() {
-		// System.out.println("debug : ----- Initialize -----");
 
 		offeredBidMap = new HashMap<Bid, Double>();
 		target = 1.0;
@@ -66,7 +65,6 @@ public class AgentKF extends Agent {
 	}
 
 	public void myBeginSession() {
-		//System.out.println("Starting match num: " + sessionNr);
 
 		//---- Code for trying save and load functionality
 		//     First try to load saved data
@@ -74,15 +72,12 @@ public class AgentKF extends Agent {
 		Serializable prev = this.loadSessionData();
 		if (prev != null){
 			prevSessOppBidHistory = (BidHistory)prev;
-			//.println("---------/////////// NEW  NEW  NEW /////////////----------");
-			//System.out.println("The size of the previous BidHistory is: " + prevSessOppBidHistory.size());
 			currSessOppBidHistory = prevSessOppBidHistory;
 			PrevMean = prevSessOppBidHistory.getAverageDiscountedUtility(utilitySpace);
 		}
 		else{
 			// If didn't succeed, it means there is no data for this preference profile
 			// in this domain.
-			//System.out.println("There is no history yet.");
 		}
 	}
 
@@ -98,7 +93,6 @@ public class AgentKF extends Agent {
 
 
 	public void ReceiveMessage(Action opponentAction) {
-		// System.out.println("debug : ----- ReceiveMessage -----");
 		partner = opponentAction;
 		if(opponentAction instanceof Offer) {
 			Bid bid = ((Offer)opponentAction).getBid();
@@ -129,7 +123,6 @@ public class AgentKF extends Agent {
 				
 				if(rounds % 500 == 0){
 					tremor += adjustTremor(timeline.getCurrentTime());
-					//System.out.println(tremor);
 				}
 				
 				
@@ -142,33 +135,27 @@ public class AgentKF extends Agent {
 				}
 
 				if (p > Math.random()) {
-					//System.out.println("debug : Choose Action => Accept - " + p);
 					action = new Accept(getAgentID());
 				} else {
-					// System.out.println("debug : Choose Action => Select Bid");
 					action = selectBid();
 				}
 				//---- Code for trying save and load functionality
 				///////////////////////////////////
 				state = "Opponet Send the Bid ";
 				tryToSaveAndPrintState();
-				//System.out.println("Save " + state);
 				///////////////////////////////////
 			}
 			if(partner instanceof EndNegotiation){
 				//---- Code for trying save and load functionality///////////////////////////////////
 				state = "Got EndNegotiation from opponent. ";
 				tryToSaveAndPrintState();
-				//System.out.println(state);
 				///////////////////////////////////
 			}
 		} catch (Exception e) {
-			//System.out.println("Exception in ChooseAction:" + e.getMessage());
 			//---- Code for trying save and load functionality
 			///////////////////////////////////
 			state = "Got Exception. ";
 			tryToSaveAndPrintState();
-			//System.out.println(state);
 			///////////////////////////////////
 			action = new Accept(getAgentID());
 		}
@@ -181,13 +168,11 @@ public class AgentKF extends Agent {
 		//---- Saving from agent's function "saveSessionData"
 		if (currSessOppBidHistory.size() < Math.pow(10, 5)){
 			this.saveSessionData(currSessOppBidHistory);
-			//System.out.println(state + "The size of the BidHistory I'm saving is: " + currSessOppBidHistory.size());
 		}
 	}
 
 
 	private Action selectBid() {
-		// System.out.println("debug : ----- Select Bid -----");
 		Bid nextBid = null;
 		double time = timeline.getTime();
 
@@ -201,13 +186,10 @@ public class AgentKF extends Agent {
 
 		int size = bidTemp.size();
 		if (size > 0) {
-			// System.out.println("debug : hit effective bid = " + size);
 			int sindex = (int) Math.floor(Math.random() * size);
-			// System.out.println("debug : select index " + sindex);
 			nextBid = bidTemp.get(sindex);
 		} else {
 			double searchUtil = 0.0;
-			// System.out.println("debug : no hit ");
 			try {
 				int loop = 0;
 				boolean NotFind = true;
@@ -216,7 +198,6 @@ public class AgentKF extends Agent {
 						if (loop == MaxLoopNum-1 & NotFind) {
 							bidTarget -= bidReduction;
 							loop = 0;
-							// System.out.println("debug : challenge fail, targetUtility reset = " + targetUtility);
 						}
 						Bid altNextBid = searchBid();
 						searchUtil = utilitySpace.getUtilityWithDiscount(altNextBid,time);
@@ -244,13 +225,10 @@ public class AgentKF extends Agent {
 					nextBid = minBid;
 				}
 			} catch (Exception e) {
-				// System.out.println("Problem with received bid:" +
-				// e.getMessage() + ". cancelling bidding");
 			}
 		}
 
 		if (nextBid == null) {
-			// System.out.println("debug : emergency accept");
 			return (new Accept(getAgentID()));
 		}
 		return (new Offer(getAgentID(), nextBid));
@@ -440,7 +418,6 @@ public class AgentKF extends Agent {
             target *= discount_ratio;
             bidTarget *= discount_ratio;
         }
-        //System.out.printf("%f, %f, %f, %f, %f, %f %n", time, estimateMax, target, offeredUtility, discount_utility, discount_ratio);
 		}
 		// test code for Discount Factor
 
@@ -451,18 +428,6 @@ public class AgentKF extends Agent {
 		if (p < 0.1) {
 			p = 0.0;
 		}
-		// System.out.println("debug : n = " + n);
-		// System.out.println("debug : Mean = " + mean);
-		// System.out.println("debug : Variance = " + variance);
-		// System.out.println("debug : Deviation = " + deviation);
-		// System.out.println("debug : Time = " + time);
-		// System.out.println("debug : Estimate Max = " + estimateMax);
-		// System.out.println("debug : Bid Target = " + bidTarget);
-		// System.out.println("debug : Eval Target = " + target);
-		// System.out.println("debug : Offered Utility = " + offeredUtility);
-		// System.out.println("debug : Accept Probability= " + p);
-		// System.out.println("debug : Utility Evaluation = " + utilityEvaluation);
-		// System.out.println("debug : Ssatisfy = " + satisfy);
 
 		return p;
 	}

@@ -45,13 +45,7 @@ public class AgentLG extends Agent {
 			else
 			{	
 				double opponentUtility = this.utilitySpace.getUtilityWithDiscount(oponnetLastBid,time);
-				double myUtility = this.utilitySpace.getUtilityWithDiscount(myLastBid,time);
-				
-				//System.out.println("Original Condition 1: " + (opponentUtility >= myUtility*0.99));
-				//System.out.println("Original Condition 2: " + ( time>0.999 && opponentUtility >= myUtility*0.9));
-				//System.out.println("Original Condition 3: " + (bidChooser.getMyBidsMinUtility(time)<= opponentUtility));
-				
-				
+				double myUtility = this.utilitySpace.getUtilityWithDiscount(myLastBid,time);	
 				
 				//accept if opponent offer is good enough or there is no time and the offer is 'good'
 				if(opponentUtility >= myUtility*0.99 ||( time>0.999 && opponentUtility >= myUtility*0.9)
@@ -62,7 +56,6 @@ public class AgentLG extends Agent {
 				else
 					if (bidLast)
 					{
-						//System.out.println("Original Last Bid");
 						currentAction = new Offer(getAgentID(),myLastBid);	
 					}
 					//there is lot of time ->learn the opponent and bid the 1/4 most optimal bids
@@ -91,11 +84,6 @@ public class AgentLG extends Agent {
 			}	
 			if (currentAction instanceof Offer) {
 				myLastBid = ((Offer)currentAction).getBid();
-				/*(
-				System.out.println("Original opponentBids: " + oppenentsBid.getOpponentsBids().size());
-				System.out.println("original opponentBids: " + (oppenentsBid.getOpponentsBids().contains(myLastBid)));
-				System.out.println("Original LastBid: " + myLastBid);
-				*/
 				if (oppenentsBid.getOpponentsBids().contains(myLastBid)){
 					bidLast= true;
 				}
@@ -104,7 +92,6 @@ public class AgentLG extends Agent {
 		}
 		catch(Exception e)
 		{
-		//	System.out.println("Error: " + e);
 			currentAction = new Accept(getAgentID());	
 		}
 

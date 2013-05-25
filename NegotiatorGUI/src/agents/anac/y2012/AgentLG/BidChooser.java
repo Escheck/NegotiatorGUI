@@ -47,9 +47,7 @@ public class BidChooser {
 		BidsComparator bidsComparator = new BidsComparator(utilitySpace);
 		
 		// sort the bids in order of highest utility
-		//System.out.println("before size " + allBids.size() +" time " + System.currentTimeMillis());
 		Collections.sort(allBids, bidsComparator);
-		//System.out.println("after time " + System.currentTimeMillis());
 		
 	}
 
@@ -64,7 +62,6 @@ public class BidChooser {
 		{
 			Bid newBid= allBids.get(index);
 			currentAction = new Offer(agentID, newBid);
-			//System.out.println("Original getNextBid: " + newBid);
 
 			index++;
 			if (index>numPossibleBids)
@@ -120,7 +117,6 @@ public class BidChooser {
 							for (int i = 0; i <= numPossibleBids; i++) 
 							{
 								double utiliy =opponentBids.getOpponentBidUtility(utilitySpace.getDomain(), allBids.get(i));
-								//System.out.println("UTILITY: " + utiliy);
 								if (utiliy> maxUtilty)
 									maxUtilty = utiliy;
 							}
@@ -275,7 +271,6 @@ public class BidChooser {
 			}   
        	}
        	
-       	//System.out.println("need to remove " + bids.size() +" removed" + bidstoRemove.size() + "time " );
        	if(filteredBids.size() < minSize){
        		return filteredBids;
        	} 
