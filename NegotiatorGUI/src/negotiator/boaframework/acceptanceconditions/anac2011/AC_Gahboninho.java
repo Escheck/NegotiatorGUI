@@ -52,7 +52,7 @@ public class AC_Gahboninho extends AcceptanceStrategy {
 			helper = offeringStrategy.getHelper();
 			
 		} else {
-			helper = new GahboninhoSAS(negotiationSession, null, null);
+			helper = new GahboninhoSAS(negotiationSession);
 			activeHelper = true;
 		}
 	}

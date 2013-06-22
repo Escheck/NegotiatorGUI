@@ -37,7 +37,7 @@ public class Gahboninho_Offering extends OfferingStrategy {
 			model = new NoModel();
 		}
 		super.init(domainKnow, model, omStrategy, parameters);
-		helper = new GahboninhoSAS(negotiationSession, model, omStrategy);
+		helper = new GahboninhoSAS(negotiationSession);
 		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		}
@@ -128,23 +128,21 @@ public class Gahboninho_Offering extends OfferingStrategy {
 		} else {
 			// always execute this one, even when an OM has been set as this method has side-effects.
 			myBid = ((GahboninhoSAS) helper).getIssueManager().GenerateBidWithAtleastUtilityOf(((GahboninhoSAS) helper).getIssueManager().GetNextRecommendedOfferUtility());
-
-			if (!(opponentModel instanceof NoModel)) {
-				myBid = omStrategy.getBid(outcomespace, threshold).getBid();
-			} else {
-				if (((GahboninhoSAS) helper).getIssueManager().getInFrenzy() == true)
-					myBid = ((GahboninhoSAS) helper).getIssueManager().getBestEverOpponentBid();
-			}
+			if (((GahboninhoSAS) helper).getIssueManager().getInFrenzy() == true)
+				myBid = ((GahboninhoSAS) helper).getIssueManager().getBestEverOpponentBid();
+			
 		}
 
-		try {
-			((GahboninhoSAS) helper).getIssueManager().AddMyBidToStatistics(myBid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		try {
-			return new BidDetails(myBid, negotiationSession.getUtilitySpace().getUtility(myBid), negotiationSession.getTime());
+			double utility = negotiationSession.getUtilitySpace().getUtility(myBid);
+			if (!(opponentModel instanceof NoModel)) {
+				BidDetails selectedBid = omStrategy.getBid(outcomespace, utility);
+				((GahboninhoSAS) helper).getIssueManager().AddMyBidToStatistics(selectedBid.getBid());
+				return selectedBid;
+			}
+			((GahboninhoSAS) helper).getIssueManager().AddMyBidToStatistics(myBid);
+			return new BidDetails(myBid, utility, negotiationSession.getTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
