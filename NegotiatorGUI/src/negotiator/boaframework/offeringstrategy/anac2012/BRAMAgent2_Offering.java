@@ -37,7 +37,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class BRAMAgent2_Offering extends OfferingStrategy {
 	
-	private boolean EQUIVELENCE_TEST = true;
+	private boolean EQUIVELENCE_TEST = false;
 
 	
 	/* FINAL VARIABLES */
@@ -88,7 +88,7 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
 		super.init(negoSession, model, oms, parameters);
 		if (model instanceof DefaultModel) {
-			model = new NoModel();
+			opponentModel = new NoModel();
 		}
 		if (!(opponentModel instanceof NoModel)) {
 			outcomespace = new SortedOutcomeSpace(negoSession.getUtilitySpace());
