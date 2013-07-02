@@ -50,6 +50,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 * killing, the agent will still immediately return.
 	 */
 	public boolean stopNegotiation = false;
+
+
 	public NegotiationOutcome no;
 	private boolean agentAtookAction = false;
 	private boolean agentBtookAction = false;
@@ -540,6 +542,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		double distanceToNash = lastbidPoint.getDistance(nash);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
+		
+		this.protocol.threadFinished = true;
 	}
 
 	/**
@@ -868,6 +872,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					agentAUtilityDisc, agentBUtilityDisc, null, time,
 					distanceToNash, acceptedBy);
 		}
+		
+		this.protocol.threadFinished = true;
+
 
 	}
 
