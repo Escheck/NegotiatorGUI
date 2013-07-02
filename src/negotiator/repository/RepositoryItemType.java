@@ -9,39 +9,60 @@ public class RepositoryItemType {
     
     // produce a wrapper XML element around this collection
     @XmlElementWrapper(name = "agentRepItems")
-    // maps each member of this list to an XML element named appointment
     @XmlElement(name = "agentRepItem")
-    //private List<Appointment> appointments;
     private ArrayList<AgentRepItem> agentRepItem;
+    
+    
+    // produce a wrapper XML element around this collection
+    @XmlElementWrapper(name = "partyRepItems")
+    @XmlElement(name = "partyRepItem")
+    private ArrayList<PartyRepItem> partyRepItem;
+    
     // produce a wrapper XML element around this collection
     @XmlElementWrapper(name = "domainRepItem")
-    // maps each member of this list to an XML element named birthday
     @XmlElement(name = "domainRepItem")
-    //private List<Birthday> birthdays;
     private ArrayList<DomainRepItem> domainRepItem;
+    
+    
     // produce a wrapper XML element around this collection
     @XmlElementWrapper(name = "protocolRepItem")
-    // maps each member of this list to an XML element named birthday
     @XmlElement(name = "protocolRepItem")
-    //private List<Birthday> birthdays;
     private ArrayList<ProtocolRepItem> protocolRepItem;
+    
+ // produce a wrapper XML element around this collection
+    @XmlElementWrapper(name = "multiPartyProtocolRepItem")
+    @XmlElement(name = "multiPartyProtocolRepItem")
+    private ArrayList<MultiPartyProtocolRepItem> multiPartyProtocolRepItem;
+    
     
     public RepositoryItemType() {}
     
-    public RepositoryItemType(ArrayList<AgentRepItem> agentRepItem, ArrayList<DomainRepItem> domainRepItem, ArrayList<ProtocolRepItem> protocolRepItem) {
+    public RepositoryItemType(ArrayList<AgentRepItem> agentRepItem,ArrayList<PartyRepItem> partyRepItem, ArrayList<DomainRepItem> domainRepItem, ArrayList<ProtocolRepItem> protocolRepItem, ArrayList<MultiPartyProtocolRepItem> multiPartyProtocolRepItem) {
         this.agentRepItem = agentRepItem;
+        this.partyRepItem=partyRepItem;
         this.domainRepItem = domainRepItem;
         this.protocolRepItem = protocolRepItem;
+        this.multiPartyProtocolRepItem=multiPartyProtocolRepItem;
     }
 
     public ArrayList<AgentRepItem> getAgentRepItem() {
         return agentRepItem;
     }
+    
+    public ArrayList<PartyRepItem> getPartyRepItem() {
+        return partyRepItem;
+    }
+    
     public ArrayList<DomainRepItem> getDomainRepItem() {
         return domainRepItem;
     }
+    
     public ArrayList<ProtocolRepItem> getProtocolRepItem() {
     	return protocolRepItem;
+    }
+    
+    public ArrayList<MultiPartyProtocolRepItem> getMultiPartyProtocolRepItem() {
+    	return multiPartyProtocolRepItem;
     }
 }
 

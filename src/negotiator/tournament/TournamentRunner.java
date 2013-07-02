@@ -111,6 +111,8 @@ public class TournamentRunner implements Runnable
 
 
 			// DEFAULT: extensive log disabled
+			//AlternatingOffersProtocol.closeLog(true);
+
 			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 				AlternatingOffersProtocol.closeLog(true);
 			}

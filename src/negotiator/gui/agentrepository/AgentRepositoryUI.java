@@ -19,6 +19,7 @@ import negotiator.gui.DirectoryRestrictedFileSystemView;
 import negotiator.gui.GenericFileFilter;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.Repository;
+import negotiator.repository.Repository;
 
 /**
  * A user interface to the agent repository 

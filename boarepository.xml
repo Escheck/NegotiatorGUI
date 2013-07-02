@@ -45,6 +45,11 @@
 		<biddingstrategy description="2012 - OMACagent" classPath="negotiator.boaframework.offeringstrategy.anac2012.OMACagent_Offering"/>
 		<biddingstrategy description="2012 - TheNegotiator Reloaded" classPath="negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded_Offering"/>
 		
+		<biddingstrategy description="2013 - TheFawkes" classPath="negotiator.boaframework.offeringstrategy.anac2013.Fawkes_Offering"/>
+		<biddingstrategy description="2013 - IonxAgent" classPath="negotiator.boaframework.offeringstrategy.anac2013.InoxAgent_Offering"/>
+		<biddingstrategy description="2013 - IonxAgent_OneIssue" classPath="negotiator.boaframework.offeringstrategy.anac2013.InoxAgent_Offering_OneIssue"/>
+						
+		
 
 	</biddingstrategies>
 	<acceptanceconditions>
@@ -90,6 +95,13 @@
 			<parameter name="d" default="0.0" description="Constant discount"/>
 			<parameter name="e" default="0.8" description="Threshold discount"/>
 		</acceptancecondition>		
+		<acceptancecondition description="Optimal_GPR_BOA" classPath="acceptance.AC_Optimal_GPR_BOA">
+		    <parameter name="r" default="10" description="Amount of Regressions"/>
+			<parameter name="s" default="1000" description="Amount of Samples"/>
+			<parameter name="a" default="1.0" description="Accept when the opponent's utility * a + b is greater than the utility of our current bid"/>
+			<parameter name="b" default="0.0" description="Accept when the opponent's utility * a + b is greater than the utility of our current bid"/>
+		</acceptancecondition>		
+		
 		<acceptancecondition description="2010 - Agent FSEGA" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentFSEGA"/>
 		<acceptancecondition description="2010 - Agent Smith" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentSmith"/>
 		<acceptancecondition description="2010 - Nozomi" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Nozomi"/>
@@ -121,6 +133,11 @@
 			<parameter name="t" default="0.99" description="Time after which AC_max is used"/>
 		</acceptancecondition>
 	
+		<acceptancecondition description="2013 - TheFawkes" classPath="negotiator.boaframework.acceptanceconditions.anac2013.AC_TheFawkes"/>
+		<acceptancecondition description="2013 - InoxAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2013.AC_InoxAgent"/>
+		<acceptancecondition description="2013 - InoxAgent_OneIssue" classPath="negotiator.boaframework.acceptanceconditions.anac2013.AC_InoxAgent_OneIssue"/>
+								
+		
 		<acceptancecondition description="Multi Acceptance Criteria" classPath="negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition"/>
 	</acceptanceconditions>
 	<opponentmodels>
@@ -154,6 +171,10 @@
 		<opponentmodel description="Perfect Scalable Bay. Model" classPath="negotiator.boaframework.opponentmodel.PerfectScalableBayesianModel"/>
 		<opponentmodel description="AgentLG Model" classPath="negotiator.boaframework.opponentmodel.AgentLGModel"/>
 		<opponentmodel description="CUHKFrequencyModelV2" classPath="negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2"/>
+		<opponentmodel description="InoxAgent_OM" classPath="negotiator.boaframework.opponentmodel.InoxAgent_OM"/>
+		<opponentmodel description="TheFawkes_OM" classPath="negotiator.boaframework.opponentmodel.TheFawkes_OM"/>
+				
+		
 	</opponentmodels>
 	<omstrategies>
 		<omstrategy description="Random" classPath="negotiator.boaframework.omstrategy.NullStrategy">
@@ -170,5 +191,7 @@
 		<omstrategy description="TheNegotiator Reloaded" classPath="negotiator.boaframework.omstrategy.NullStrategy">
 			<parameter name="t" default="0.35" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
+		<omstrategy description="TheFawkes" classPath="negotiator.boaframework.omstrategy.TheFawkes_OMS"/>
+		
 	</omstrategies>
 </repository>

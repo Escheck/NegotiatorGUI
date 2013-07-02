@@ -150,11 +150,20 @@ public final class Bid implements XMLable, Serializable
 	
 	/**
 	 * Helper function to enable the comparison between two Bids.
+	 * Wouter: changed to public for convenience.
 	 * 
-	 * @return hashmap which specifies the selected value for each issue.
+	 * @return
 	 */
-	protected HashMap<Integer, Value> getValues() {
+	
+	// Reyhan: Changed public (it was "protected") 
+	public HashMap<Integer, Value> getValues() {
+		 // create a clone, to avoid changing of the values.
 		return fValues;
+	}
+	
+	//Reyhan: add this method
+	public ArrayList<Issue> getIssues() {
+		return fDomain.getIssues();
 	}
 
 	public SimpleElement toXML() {

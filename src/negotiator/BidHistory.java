@@ -349,4 +349,12 @@ public class BidHistory implements Serializable {
 	public boolean isEmpty(){
 		return bidList.isEmpty();
 	}
+	
+	public BidDetails getMedianUtilityBid(){
+		BidHistory sortedHistory = this.sortToUtility();
+		
+		BidDetails medianBid = sortedHistory.getHistory().get(sortedHistory.getHistory().size()/2);
+		
+		return medianBid;
+	}
 }

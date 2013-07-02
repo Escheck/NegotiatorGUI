@@ -2,15 +2,9 @@ package negotiator.repository;
 
 import java.util.ArrayList;
 
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.ScrollPane;
 import java.io.File;
 import java.net.URL;
 
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -21,9 +15,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 import negotiator.Domain;
-import negotiator.Global;
-import negotiator.ScenarioValidator;
 import negotiator.exceptions.Warning;
+import negotiator.utility.NonlinearUtilitySpace;
+import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
 /**
  * Repository contains a set of known files
@@ -62,9 +56,10 @@ public class Repository
 		items=rep.getItems();
 	}
 
+	/** @author Dmytro */
 	public Repository load(String fileName) throws Exception {
 		Repository rep = null;
-		JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class,ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class);		
+		JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class,PartyRepItem.class,ProfileRepItem.class,MultiPartyProtocolRepItem.class, DomainRepItem.class,AgentRepItem.class);		
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		unmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
 		rep = (Repository)( unmarshaller.unmarshal(new File(fileName)));
@@ -73,15 +68,16 @@ public class Repository
 		return rep;
 	}
 
+	/** @author Dmytro */
 	public void save() {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class, ProtocolRepItem.class);		
+			JAXBContext jaxbContext = JAXBContext.newInstance(Repository.class, ProfileRepItem.class,DomainRepItem.class,AgentRepItem.class, PartyRepItem.class, ProtocolRepItem.class, MultiPartyProtocolRepItem.class);		
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					new Boolean(true));
+
 			marshaller.marshal(new JAXBElement(new QName("repository"),Repository.class, this),new File(fileName));
 		} catch (Exception e) {
-			e.printStackTrace();
 			new Warning("xml save failed: "+e); //e.printStackTrace();
 		}
 
@@ -95,6 +91,17 @@ public class Repository
 			if (it instanceof AgentRepItem)
 				if (((AgentRepItem)it).classPath.equals(className))
 					return (AgentRepItem) it;
+		}
+		return null;
+	}
+	
+	/** @returns AgentRepItem of given className, or null if none exists */
+	public PartyRepItem getPartyOfClass(String className)
+	{
+		for (RepItem it: items) {
+			if (it instanceof PartyRepItem)
+				if (((PartyRepItem)it).classPath.equals(className))
+					return (PartyRepItem) it;
 		}
 		return null;
 	}
@@ -151,6 +158,7 @@ public class Repository
 			else 
 				domain = new Domain(file);
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return domain;
@@ -166,16 +174,26 @@ public class Repository
 	{
 		UtilitySpace us = null;			
 		try {
-			if((sourceFolder!=null)&&(!sourceFolder.equals(""))) 
-				us = new UtilitySpace(domain, sourceFolder+"/"+ file);
-			else 
-				us = new UtilitySpace(domain, file);
-		} catch (Exception e) {
+			if((sourceFolder!=null)&&(!sourceFolder.equals(""))) {
+			
+				if(UTILITYSPACETYPE.getUtilitySpaceType(file)==UTILITYSPACETYPE.NONLINEAR) // RA
+					us = new NonlinearUtilitySpace(domain,sourceFolder+"/"+ file); //RA
+				else 
+					us = new UtilitySpace(domain, sourceFolder+"/"+ file);
+			}else {
+				if(UTILITYSPACETYPE.getUtilitySpaceType(file)==UTILITYSPACETYPE.NONLINEAR) //RA
+					us = new NonlinearUtilitySpace(domain, file);
+				else
+					us = new UtilitySpace(domain, file);
+			}
+			} catch (Exception e) {
+			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" +file);
 			e.printStackTrace();
 		}
 		return us;
 	}
+	
 	public boolean existUtilitySpace(Domain domain, ProfileRepItem profile) {
 		UtilitySpace us = null;			
 		try {
@@ -184,36 +202,20 @@ public class Repository
 			else file = new File(profile.getURL().getFile());
 			return file.exists();
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" +profile.getURL().getFile());
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	/**
-	 * Uses Jax to load the {@link Repository}.
-	 */
 	public static Repository get_domain_repos(String filename, String sourceFolder) throws Exception {
 		if(domainRepos!=null ) return domainRepos;
 		Repository repos;
 		try {
 			repos=new Repository(filename);
 			domainRepos = repos;
-			repos.sourceFolder = sourceFolder;	
-			String result = ScenarioValidator.validateDomainRepository(domainRepos);
-			if (!result.equals("")) {
-				JTextArea textArea = new JTextArea("Errors were found in the scenario XML files. It is " +
-													"advised to correct them to avoid incompatibilities " +
-													"with some agents.\n\n" + result);  
-		        textArea.setEditable(false);
-				textArea.setLineWrap(true);  
-		        textArea.setWrapStyleWord(true);  
-		        textArea.setMargin(new Insets(5,5,5,5));  
-		        JScrollPane scrollPane = new JScrollPane(textArea);
-		        scrollPane.setPreferredSize(new Dimension(700,500)); 
-		        Object message = scrollPane;  
-				JOptionPane.showMessageDialog(null, message, "Scenario errors", 0);
-			}
+			repos.sourceFolder = sourceFolder;				
 		} catch (Exception e) {
 			repos=new Repository();
 			repos.setFilename(filename);
@@ -226,7 +228,7 @@ public class Repository
 	/****************** code that creates repos if none exists ********************/
 	public static Repository get_domain_repos() throws Exception
 	{
-		final String FILENAME= Global.DOMAIN_REPOSITORY; // ASSUMPTION  there is only one domain repository
+		final String FILENAME="domainrepository.xml"; // ASSUMPTION  there is only one domain repository
 		return get_domain_repos(FILENAME,"");
 
 	}
@@ -265,15 +267,29 @@ public class Repository
 		items.add(new 	AgentRepItem("UI agent", "agents.UIAgent", "basic UI agent"));
 		return items;
 	}
+	
+	static ArrayList<RepItem> init_temp_repository2()
+	{
+		ArrayList<RepItem> items=new ArrayList<RepItem>();
+		items.add(new PartyRepItem("Simple Party", "parties.SimpleParty", "Simple Negotiator", null));
+		return items;
+	}
+	
 	static ArrayList<RepItem> init_temp_prot_repository() {
 		ArrayList<RepItem> items=new ArrayList<RepItem>();
 		items.add(new 	ProtocolRepItem("Alternating Offers", "negotiator.protocol.AlternatingOffersMetaProtocol", "Alternating Offers"));
 		items.add(new 	ProtocolRepItem("Auction", "negotiator.protocol.AuctionMetaProtocol", "Auction"));
 		return items;
-
 	}
+	
+	static ArrayList<RepItem> init_temp_multiprot_repository() {
+		ArrayList<RepItem> items=new ArrayList<RepItem>();
+		items.add(new  MultiPartyProtocolRepItem("Simple Mediated Multiparty Protocol", "negotiator.multiPartyProtocol.SimpleMediatedMultipartyProtocol", "Simple Mediated Multiparty Protocol", null, null));
+		return items;
+	}
+	
 	public static Repository getProtocolRepository() {
-		final String FILENAME = Global.PROTOCOL_REPOSITORY;
+		final String FILENAME="protocolrepository.xml";
 		Repository repos;
 
 		try {
@@ -288,6 +304,24 @@ public class Repository
 
 		return repos;		
 	}
+	
+	public static Repository getMultiPartyProtocolRepository() {
+		final String FILENAME="multipartyprotocolrepository.xml";
+		Repository repos;
+
+		try {
+			repos=new Repository(FILENAME);
+		} catch (Exception e) {
+			System.out.println("load of saved repository failed:"+e);
+			repos=new Repository();
+			repos.setFilename(FILENAME);
+			repos.getItems().addAll(init_temp_multiprot_repository());
+			repos.save();
+		}
+
+		return repos;		
+	}
+	
 	public static Repository getProtocolRepository(String filename, String sourceFolder) throws Exception {
 
 		Repository repos;
@@ -304,7 +338,7 @@ public class Repository
 	}
 
 	public static Repository get_agent_repository() {
-		final String FILENAME=Global.AGENT_REPOSITORY; // ASSUMPTION: there is only one agent repository
+		final String FILENAME="agentrepository.xml"; // ASSUMPTION: there is only one agent reposityro
 		Repository repos;
 
 		try {
@@ -319,6 +353,27 @@ public class Repository
 
 		return repos;
 	}
+	
+	public static Repository get_party_repository() {
+		final String FILENAME="partyrepository.xml"; // ASSUMPTION: there is only one agent reposityro
+		Repository repos;
+
+		try {
+			repos=new Repository(FILENAME);
+		} catch (Exception e) {
+			System.out.println("load of saved repository failed:"+e);
+			repos=new Repository();
+			repos.setFilename(FILENAME);
+			repos.getItems().addAll(init_temp_repository2());
+			repos.save();
+		}
+
+		return repos;
+	}
+	
+	
+	
+	
 	public static Repository get_agent_repos(String filename, String sourceFolder) throws Exception {
 
 		Repository repos;

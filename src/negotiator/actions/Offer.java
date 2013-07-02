@@ -12,7 +12,7 @@ import negotiator.Bid;
 public class Offer extends Action {
 
 	/** Bid to be offered to the opponent. */
-    private Bid bid;
+    protected Bid bid;
     
     /**
      * Creates an action symbolizing an offer for the opponent.

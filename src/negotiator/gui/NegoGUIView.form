@@ -232,6 +232,14 @@
                 <Property name="name" type="java.lang.String" value="newMenu" noResource="true"/>
               </Properties>
               <SubComponents>
+			   <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+	              <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+	                  <action class="negotiator.gui.NegoGUIView" id="newMultilateral" methodName="newMultilateral"/>
+	              </Property>
+	              <Property name="name" type="java.lang.String" value="newMultilateralSession" noResource="true"/>
+                </MenuItem>
+			  
+			  
                 <MenuItem class="javax.swing.JMenuItem" name="newSessionMenuItem">
                   <Properties>
                     <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
