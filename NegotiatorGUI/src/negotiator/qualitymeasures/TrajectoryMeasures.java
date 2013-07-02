@@ -43,6 +43,11 @@ public class TrajectoryMeasures {
 	double percParetoBidsB;
 	double jointExplorationRate;
 	private BidSpace bidSpace;
+	double agentABehaviorSensitivity;
+	double agentBBehaviorSensitivity;
+	private double agentATimeSensitivity;
+	private double agentBTimeSensitivity;
+
 	
 
 	public TrajectoryMeasures(ArrayListXML<BidPointTime> arrayListXML,
@@ -265,6 +270,14 @@ public class TrajectoryMeasures {
 		agentA.setAttribute("perc_pareto_bids", percParetoBidsA + "");
 		agentB.setAttribute("perc_pareto_bids", percParetoBidsB + "");
 		
+		calculateBehaviorSensitvity();
+		agentA.setAttribute("behavior_sensitivity", agentABehaviorSensitivity+ "");
+		agentB.setAttribute("behavior_sensitivity", agentBBehaviorSensitivity+ "");
+		
+		calculateTimeSensitvity();
+		agentA.setAttribute("time_sensitivity", agentATimeSensitivity+ "");
+		agentB.setAttribute("time_sensitivity", agentBTimeSensitivity+ "");
+		
 		return tjQualityMeasures;
 	}
 	
@@ -282,5 +295,109 @@ public class TrajectoryMeasures {
 	    });
 	    s.addAll(list);
 	    return new ArrayList<BidPoint>(s);
+	}
+	
+	public void calculateBehaviorSensitvity(){
+		int total = 0;
+		if(agentABids.size() < agentBBids.size()){
+			total = agentABids.size();
+		} else {
+			total = agentBBids.size();
+		}
+		
+		for(int i = 0; i < total -1; i++ ){
+			//Concession of A
+			double concessionA = agentABids.get(i).getUtilityA() - agentABids.get(i + 1).getUtilityA();
+			
+			//Concession of B
+			double concessionB = agentBBids.get(i).getUtilityB() - agentBBids.get(i + 1).getUtilityB();
+			
+			agentABehaviorSensitivity += (concessionA/concessionB);
+			
+			agentBBehaviorSensitivity += (concessionB/concessionA);
+		}
+
+		//System.out.println("agentABehaviorSensitivityNormalized: " + agentABehaviorSensitivity/total);
+		//System.out.println("agentBBehaviorSensitivityNormalized: " + agentBBehaviorSensitivity/total);
+
+		agentABehaviorSensitivity = agentABehaviorSensitivity/total;
+		agentBBehaviorSensitivity = agentBBehaviorSensitivity/total;
+
+	}
+	
+	public void calculateTimeSensitvity(){
+		ArrayList<Double> orderDifferenceA = new ArrayList<Double>();
+		ArrayList<Double> orderDifferenceB = new ArrayList<Double>();
+		int total = 0;
+
+		if(agentABids.size() < agentBBids.size()){
+			total = agentABids.size();
+		} else {
+			total = agentBBids.size();
+		}
+		
+		for(int i = 0; i < total -1; i++ ){
+			//Concession of A
+			double concessionA = agentABids.get(i + 1).getUtilityA() - agentABids.get(i).getUtilityA();
+			orderDifferenceA.add(concessionA);
+
+			
+			//Concession of B
+			double concessionB = agentBBids.get(i + 1).getUtilityB() - agentBBids.get(i).getUtilityB();
+			orderDifferenceB.add(concessionB);
+
+		}
+		
+		int amountPositiveOrder = 0;
+		int amountNegativeOrder = 0;
+		double totalPositiveOrder = 0;
+		double totalNegativeOrder = 0;
+		
+		for(Double difference : orderDifferenceA){
+			if(difference < 0){
+				totalNegativeOrder += difference;
+				amountNegativeOrder++;
+			} else {
+				totalPositiveOrder += difference;
+				amountPositiveOrder++;
+				
+			}
+		}
+		
+		agentATimeSensitivity = ((totalPositiveOrder/amountPositiveOrder) + (totalNegativeOrder/amountNegativeOrder))/
+				Math.max(Math.abs((totalNegativeOrder/amountNegativeOrder)), Math.abs((totalPositiveOrder/amountPositiveOrder)));
+	
+		//System.out.println("agentATimeSensitivity: " + agentBTimeSensitivity);
+
+		
+		amountPositiveOrder = 0;
+		amountNegativeOrder = 0;
+		totalPositiveOrder = 0;
+		totalNegativeOrder = 0;
+		for(Double difference : orderDifferenceB){		
+			if(difference < 0){
+				totalNegativeOrder += difference;
+				amountNegativeOrder++;
+			} else {
+				totalPositiveOrder += difference;
+				amountPositiveOrder++;
+				
+			}
+		}
+	
+	//System.out.println("positive: " + amountPositiveOrder);
+	//System.out.println("negative: " + amountNegativeOrder);
+
+	//System.out.println("positiveRatio: " + (totalPositiveOrder/amountPositiveOrder));
+	//System.out.println("negativeRatio: " + (totalNegativeOrder/amountNegativeOrder));
+	//System.out.println("addedRatio: " + ((totalPositiveOrder/amountPositiveOrder) + (totalNegativeOrder/amountNegativeOrder)));
+	//System.out.println("divide by: " + (Math.max(Math.abs((totalNegativeOrder/amountNegativeOrder)), Math.abs((totalPositiveOrder/amountPositiveOrder)))));
+
+
+	agentBTimeSensitivity = ((totalPositiveOrder/amountPositiveOrder) + (totalNegativeOrder/amountNegativeOrder))/
+			Math.max(Math.abs((totalNegativeOrder/amountNegativeOrder)), Math.abs((totalPositiveOrder/amountPositiveOrder)));
+	
+	//System.out.println("agentBTimeSensitivity: " + agentBTimeSensitivity);
+	
 	}
 }

@@ -221,6 +221,8 @@ public class AlternatingOffersProtocol extends Protocol {
 			
 		}
 			writeOutcomeToLog(false);
+			//writeOutcomeToLog(true);
+
 			// DEFAULT: extensive log disabled
 			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
 				writeOutcomeToLog(true);

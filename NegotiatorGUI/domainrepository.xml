@@ -2,6 +2,7 @@
 <repository fileName="domainrepository.xml">
     <items>
         <agentRepItems/>
+        <partyRepItems/>
         <domainRepItem>
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
@@ -331,8 +332,86 @@
                 <profile url="file:etc/templates/thompson/thompson_employer_utilityspace.xml"/>
                 <profile url="file:etc/templates/thompson/thompson_employee_utilityspace.xml"/>
             </domainRepItem>
+            
+            
+            <domainRepItem url="file:etc/templates/anac/y2013/Acquisition/Acquisition-A-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Acquisition/Acquisition-A-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Acquisition/Acquisition-A-prof2.xml"/>
+            </domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2013/Animal/Animal.xml">
+                <profile url="file:etc/templates/anac/y2013/Animal/Animal_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Animal/Animal_util2.xml"/>
+            </domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2013/cameradomain/Camera-A-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/cameradomain/Camera-A-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/cameradomain/Camera-A-prof2.xml"/>
+            </domainRepItem> 
+            <domainRepItem url="file:etc/templates/anac/y2013/Coffee/Coffee.xml">
+                <profile url="file:etc/templates/anac/y2013/Coffee/Coffee_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Coffee/Coffee_util2.xml"/>
+            </domainRepItem>           
+			<domainRepItem url="file:etc/templates/anac/y2013/DefensiveCharms/DefensiveCharms.xml">
+                <profile url="file:etc/templates/anac/y2013/DefensiveCharms/DefensiveCharms_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/DefensiveCharms/DefensiveCharms_util2.xml"/>
+            </domainRepItem>            
+			<domainRepItem url="file:etc/templates/anac/y2013/DogChoosing/DogChoosing.xml">
+                <profile url="file:etc/templates/anac/y2013/DogChoosing/DogChoosing_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/DogChoosing/DogChoosing_util2.xml"/>
+            </domainRepItem>                        
+			<domainRepItem url="file:etc/templates/anac/y2013/Fifty2013/FiftyFifty2013_domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Fifty2013/FiftyFifty2013_prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Fifty2013/FiftyFifty2013_prof2.xml"/>
+            </domainRepItem>             
+			<domainRepItem url="file:etc/templates/anac/y2013/HouseKeeping/HouseKeeping-C-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/HouseKeeping/HouseKeeping-C-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/HouseKeeping/HouseKeeping-C-prof2.xml"/>
+            </domainRepItem>             
+			<domainRepItem url="file:etc/templates/anac/y2013/Icecream/Icecream.xml">
+                <profile url="file:etc/templates/anac/y2013/Icecream/Icecream_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Icecream/Icecream_util2.xml"/>
+            </domainRepItem>                        			
+			<domainRepItem url="file:etc/templates/anac/y2013/Kitchen/Kitchen-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Kitchen/Kitchen-husband.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Kitchen/Kitchen-wife.xml"/>
+            </domainRepItem>                        			
+			<domainRepItem url="file:etc/templates/anac/y2013/Laptop/Laptop-C-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Laptop/Laptop-C-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Laptop/Laptop-C-prof2.xml"/>
+            </domainRepItem>             						
+			<domainRepItem url="file:etc/templates/anac/y2013/Lunch/Lunch.xml">
+                <profile url="file:etc/templates/anac/y2013/Lunch/Lunch_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Lunch/Lunch_util2.xml"/>
+            </domainRepItem>                        			            
+			<domainRepItem url="file:etc/templates/anac/y2013/NiceOrDie/NiceOrDie-B-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/NiceOrDie/NiceOrDie-B-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/NiceOrDie/NiceOrDie-B-prof2.xml"/>
+            </domainRepItem>   
+			<domainRepItem url="file:etc/templates/anac/y2013/Outfit/Outfit-B-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Outfit/Outfit-B-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Outfit/Outfit-B-prof2.xml"/>
+            </domainRepItem>                      			
+			<domainRepItem url="file:etc/templates/anac/y2013/planes/planes_domain.xml">
+                <profile url="file:etc/templates/anac/y2013/planes/plane_buyer_utility.xml"/>
+                <profile url="file:etc/templates/anac/y2013/planes/plane_seller_utility.xml"/>
+            </domainRepItem>                      			
+			<domainRepItem url="file:etc/templates/anac/y2013/SmartPhone/SmartPhone.xml">
+                <profile url="file:etc/templates/anac/y2013/SmartPhone/SmartPhone_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/SmartPhone/SmartPhone_util2.xml"/>
+            </domainRepItem>                    						
+			<domainRepItem url="file:etc/templates/anac/y2013/Ultimatum/Ultimatum.xml">
+                <profile url="file:etc/templates/anac/y2013/Ultimatum/Ultimatum_util1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Ultimatum/Ultimatum_util2.xml"/>
+            </domainRepItem>			
+			<domainRepItem url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-domain.xml">
+                <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof2.xml"/>
+            </domainRepItem>                      			 
+            
+            
+            
         </domainRepItem>
         <protocolRepItem/>
+        <multiPartyProtocolRepItem/>
     </items>
     <filename>domainrepository.xml</filename>
 </repository>

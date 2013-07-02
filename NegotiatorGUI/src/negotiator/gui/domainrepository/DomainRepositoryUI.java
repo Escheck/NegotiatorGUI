@@ -15,6 +15,7 @@ import negotiator.gui.NegoGUIApp;
 import negotiator.gui.NegoGUIView;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.Repository;
+import negotiator.repository.Repository;
 import negotiator.repository.RepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.utility.UtilitySpace;

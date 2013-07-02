@@ -39,13 +39,14 @@ public class UtilitySpace implements Serializable {
 	
 	// Class fields
     protected Domain domain;
-	private String fileName;
+	protected String fileName;
+	protected UTILITYSPACETYPE spaceType;
 	private double discountFactor = 1;
 	
 	private Double fReservationValue = null;
     //Added by Dmytro: I need the XMLRoot for the utility space to load the Similarity functions
     // in the Similarity agent
-    private SimpleElement fXMLRoot;
+    protected SimpleElement fXMLRoot;
     private Map<Objective, Evaluator> fEvaluators; //changed to use Objective. TODO check casts.
 
     /**
@@ -113,6 +114,12 @@ public class UtilitySpace implements Serializable {
     	}
     	fXMLRoot = us.getXMLRoot();
     	discountFactor = us.discountFactor;
+    }
+    
+    // RA: This method returns the type of utility space: either linear or nonlinear
+    public UTILITYSPACETYPE getSpaceType() {
+    	
+    	return this.spaceType;
     }
     
   

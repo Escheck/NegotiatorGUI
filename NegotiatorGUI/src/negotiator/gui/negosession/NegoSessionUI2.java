@@ -18,6 +18,7 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
+import negotiator.repository.Repository;
 import negotiator.tournament.TournamentConfiguration;
 import org.jdesktop.application.Action;
 

@@ -1,5 +1,6 @@
 package negotiator;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,8 +11,11 @@ import java.lang.reflect.Constructor;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import negotiator.gui.NegoGUIApp;
+import negotiator.multipartyprotocol.MultiPartyProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
+import negotiator.repository.MultiPartyProtocolRepItem;
+import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.tournament.TournamentConfiguration;
@@ -158,6 +162,40 @@ public class Global {
 		ns = (Protocol) (theObject);
 		return ns;
 
+	}
+	
+	//RA: createMultiPartyPRotocolInstance
+		public static MultiPartyProtocol createMultiPartyProtocolInstance(MultiPartyProtocolRepItem protRepItem,
+				ArrayList<PartyRepItem> partyRepItems, ArrayList<AgentID> partyIDList, ArrayList<ProfileRepItem> profileRepItems,
+				ArrayList<HashMap<AgentParameterVariable, AgentParamValue>> partyParams, DeadlineType deadlineType, int totalRoundOrTime)
+				throws Exception {
+			MultiPartyProtocol ns;
+
+			java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
+			Class klass = loader.loadClass(protRepItem.getClassPath());
+
+			Class[] paramTypes = { ArrayList.class, ArrayList.class, ArrayList.class, ArrayList.class, DeadlineType.class,int.class};
+							
+			Constructor cons = klass.getConstructor(paramTypes);
+
+			//System.out.println("Found the constructor: " + cons);
+
+			Object[] args = { partyRepItems, partyIDList, profileRepItems, partyParams, deadlineType, totalRoundOrTime};
+					
+			Object theObject = cons.newInstance(args);
+			ns = (MultiPartyProtocol) (theObject);
+			
+			return ns;
+
+		}
+	
+	//RA: load party
+	public static Party loadParty(String partyClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		java.lang.ClassLoader loaderA = Global.class.getClassLoader();
+		Party party = (Party)(loaderA.loadClass(partyClassName).newInstance());
+		return party;		
+		
 	}
 
 	public static Agent loadAgent(String agentClassName) throws InstantiationException, IllegalAccessException, ClassNotFoundException {

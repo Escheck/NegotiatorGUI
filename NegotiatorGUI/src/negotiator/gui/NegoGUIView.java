@@ -21,6 +21,7 @@ import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.gui.boaframework.BOARepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
+import negotiator.gui.negosession.MultiNegoSessionUI;
 import negotiator.gui.negosession.NegoSessionUI2;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
@@ -96,7 +97,7 @@ public class NegoGUIView extends FrameView {
     public void replaceTab(String title, Component oldComp, Component newComp) {
     	closeTabbedPane1.remove(oldComp);
     	addTab(title, newComp);
-    }
+    } 	
     public void addTab(String title, Component comp) {
     	closeTabbedPane1.addTab(title, comp);    	
     	closeTabbedPane1.setSelectedComponent(comp);
@@ -118,6 +119,7 @@ public class NegoGUIView extends FrameView {
 
         menuBar = new javax.swing.JMenuBar();
         JMenu startMenu = new javax.swing.JMenu();
+        newMultilateralMenuItem = new javax.swing.JMenuItem();
         newSessionMenuItem = new javax.swing.JMenuItem();
         newTournamentMenuItem = new javax.swing.JMenuItem();
     	newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
@@ -207,6 +209,10 @@ public class NegoGUIView extends FrameView {
     	newDistributedTournamentMenuItem.setAction(actionMap.get("newDistributedTournamentAction")); // NOI18N
     	newDistributedTournamentMenuItem.setName("newDistributedTournamentMenuItem"); // NOI18N
     	startMenu.add(newDistributedTournamentMenuItem);
+    	
+        newMultilateralMenuItem.setAction(actionMap.get("newMultiNegoSession")); // NOI18N
+        newMultilateralMenuItem.setName("newMultilateralMenuItem"); // NOI18N
+        startMenu.add(newMultilateralMenuItem);
 
         jMenuItem1.setAction(actionMap.get("runCSVFile")); // NOI18N
         jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
@@ -274,7 +280,18 @@ public class NegoGUIView extends FrameView {
             }                        
         }
 	}
-
+    @Action
+    public void newMultiNegoSession() {
+    	//JFrame frame = new JFrame();
+    	try {  
+    		MultiNegoSessionUI sessionUI = new MultiNegoSessionUI();    		
+    		addTab("Sess. Editor", sessionUI);
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		} 
+    }
+	
 	@Action
     public void newNegoSession() {
     	//JFrame frame = new JFrame();
@@ -351,6 +368,7 @@ public class NegoGUIView extends FrameView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
     private javax.swing.JMenuItem jMenuItem1;
+	private javax.swing.JMenuItem newMultilateralMenuItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
