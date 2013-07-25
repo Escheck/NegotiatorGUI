@@ -1,7 +1,7 @@
 package negotiator.utility;
 
-public enum AGGREGATIONTYPE { 
-	
+public enum AGGREGATIONTYPE 
+{ 
 	SUM, MIN, MAX;
 	
 	public static AGGREGATIONTYPE getAggregationType(String type)
