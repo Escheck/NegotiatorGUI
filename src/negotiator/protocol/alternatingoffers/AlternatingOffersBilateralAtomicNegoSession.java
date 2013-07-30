@@ -33,6 +33,8 @@ import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.NonlinearUtilitySpace;
+import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -124,13 +126,22 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent
 			// can not damage them.
-			agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(), startTime,
-					totalTime, timeline, new UtilitySpace(spaceA), agentAparams);
-			agentA.init();
 			
-			agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(), startTime,
-					totalTime, timeline, new UtilitySpace(spaceB), agentBparams);
-			agentB.init();
+			if (spaceA.getSpaceType()==UTILITYSPACETYPE.NONLINEAR)
+                agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+                        new NonlinearUtilitySpace(spaceA),agentAparams);
+                else //linear
+                agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+                        new UtilitySpace(spaceA),agentAparams);
+            agentA.init();
+            
+            if (spaceB.getSpaceType()==UTILITYSPACETYPE.NONLINEAR)
+                agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+                        new NonlinearUtilitySpace(spaceB),agentBparams);
+            else //linear
+                agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+                    new UtilitySpace(spaceB),agentBparams);
+            agentB.init();
 			
 			
 			stopNegotiation = false;
