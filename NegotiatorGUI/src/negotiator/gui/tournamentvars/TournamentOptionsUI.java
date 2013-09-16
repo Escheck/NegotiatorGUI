@@ -25,6 +25,8 @@ public class TournamentOptionsUI extends JDialog {
 
     private JCheckBox accessPartnerPreferencesCheck;
     private JLabel accessPartnerPreferencesLabel;
+    private JCheckBox oneSidedBiddingCheck;
+    private JLabel oneSidedBiddingLabel;
     private JCheckBox allowPausingTimelineCheck;
     private JLabel allowPausingTimelineLabel;
     private JCheckBox appendModeAndDeadlineCheck;
@@ -124,6 +126,9 @@ public class TournamentOptionsUI extends JDialog {
         accessPartnerPreferencesLabel = new JLabel("Access partner preferences");
         accessPartnerPreferencesCheck = new JCheckBox();
         
+        oneSidedBiddingLabel = new JLabel("One-sided bidding");
+        oneSidedBiddingCheck = new JCheckBox();
+        
         allowPausingTimelineLabel = new JLabel("Allow pausing timeline");
         allowPausingTimelineCheck = new JCheckBox();
         allowPausingTimelineCheck.addActionListener(new java.awt.event.ActionListener() {
@@ -152,6 +157,10 @@ public class TournamentOptionsUI extends JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
                         .addComponent(accessPartnerPreferencesCheck))
                     .addGroup(protocolSettingsTabLayout.createSequentialGroup()
+                        .addComponent(oneSidedBiddingLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                        .addComponent(oneSidedBiddingCheck))
+                    .addGroup(protocolSettingsTabLayout.createSequentialGroup()
                         .addComponent(deadlineLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -177,7 +186,11 @@ public class TournamentOptionsUI extends JDialog {
                 .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(accessPartnerPreferencesLabel)
                     .addComponent(accessPartnerPreferencesCheck))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+               		.addComponent(oneSidedBiddingLabel)
+               		.addComponent(oneSidedBiddingCheck))
+               		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(protocolSettingsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(allowPausingTimelineLabel)
                     .addComponent(allowPausingTimelineCheck))
@@ -461,6 +474,7 @@ public class TournamentOptionsUI extends JDialog {
             	config.put("startingAgent", startingAgentSelector.getSelectedIndex());
             	config.put("generationMode", generationModeSelector.getSelectedIndex());
             	config.put("accessPartnerPreferences", accessPartnerPreferencesCheck.isSelected() ? 1 : 0);
+            	config.put("oneSidedBidding", oneSidedBiddingCheck.isSelected() ? 1 : 0);
             	config.put("protocolMode", protocolModeSelector.getSelectedIndex());
             	config.put("allowPausingTimeline", allowPausingTimelineCheck.isSelected() ? 1 : 0);
                 config.put("playBothSides", playBothSidesCheck.isSelected() ? 1 : 0);
@@ -542,6 +556,7 @@ public class TournamentOptionsUI extends JDialog {
 				deadlineField.setText(prevConfig.get("deadline") + "");
 			}
 			allowPausingTimelineCheck.setSelected(prevConfig.containsKey("allowPausingTimeline") && prevConfig.get("allowPausingTimeline") != 0);
+			oneSidedBiddingCheck.setSelected(prevConfig.containsKey("oneSidedBidding") && prevConfig.get("oneSidedBidding") != 0);
 			accessPartnerPreferencesCheck.setSelected(prevConfig.containsKey("accessPartnerPreferences") && prevConfig.get("accessPartnerPreferences") != 0);
 			playBothSidesCheck.setSelected(prevConfig.containsKey("playBothSides") && prevConfig.get("playBothSides") != 0);
 			playAgainstSelfCheck.setSelected(prevConfig.containsKey("playAgainstSelf") && prevConfig.get("playAgainstSelf") != 0);
@@ -567,6 +582,7 @@ public class TournamentOptionsUI extends JDialog {
 	public void resetToDefaults() {
 		protocolModeSelector.setSelectedIndex(0);
         deadlineField.setText("180");
+        oneSidedBiddingCheck.setSelected(false);
         accessPartnerPreferencesCheck.setSelected(false);
         allowPausingTimelineCheck.setEnabled(true);
         allowPausingTimelineCheck.setSelected(false);
