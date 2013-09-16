@@ -1,7 +1,9 @@
 package negotiator.gui.tournamentvars;
 
-import java.awt.Frame;
 import java.util.HashMap;
+
+import java.awt.Frame;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -48,6 +50,8 @@ public class TournamentOptionsUI extends JDialog {
     private JLabel playBothSidesLabel;
     private JLabel generationModeLabel;
     private JComboBox generationModeSelector;
+    private JLabel startingAgentLabel;
+    private JComboBox startingAgentSelector;
     private JLabel randomSeedLabel;
     private JTextField randomSeedField;
     private JComboBox protocolModeSelector;
@@ -199,6 +203,10 @@ public class TournamentOptionsUI extends JDialog {
             	randomSeedField.setEnabled(generationModeSelector.getSelectedIndex() == 1);
             }
         });
+        
+        startingAgentLabel = new JLabel("Starting agent");
+    	String[] startingAgentOptions = {"A", "B", "Random"};
+        startingAgentSelector = new JComboBox(startingAgentOptions);
     	
         randomSeedLabel = new JLabel("Random seed");
         randomSeedField = new JTextField();
@@ -220,11 +228,15 @@ public class TournamentOptionsUI extends JDialog {
                         .addComponent(playAgainstSelfLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                         .addComponent(playAgainstSelfCheck))
-	                   .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+                    .addGroup(sessionGenerationTabLayout.createSequentialGroup()
 	                        .addComponent(generationModeLabel)
 	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
-	                        .addComponent(generationModeSelector)
-                    ).addGroup(sessionGenerationTabLayout.createSequentialGroup()
+	                        .addComponent(generationModeSelector))
+	                .addGroup(sessionGenerationTabLayout.createSequentialGroup()
+	                        .addComponent(startingAgentLabel)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+	                        .addComponent(startingAgentSelector))
+	                .addGroup(sessionGenerationTabLayout.createSequentialGroup()
 	                        .addComponent(randomSeedLabel)
 	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
 	                        .addComponent(randomSeedField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,6 +254,10 @@ public class TournamentOptionsUI extends JDialog {
                 .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(playAgainstSelfLabel)
                     .addComponent(playAgainstSelfCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(startingAgentLabel)
+                    .addComponent(startingAgentSelector))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(sessionGenerationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(generationModeLabel)
@@ -442,6 +458,7 @@ public class TournamentOptionsUI extends JDialog {
             		JOptionPane.showMessageDialog(null, "The random seed should be an integer.");
             	}
             	
+            	config.put("startingAgent", startingAgentSelector.getSelectedIndex());
             	config.put("generationMode", generationModeSelector.getSelectedIndex());
             	config.put("accessPartnerPreferences", accessPartnerPreferencesCheck.isSelected() ? 1 : 0);
             	config.put("protocolMode", protocolModeSelector.getSelectedIndex());
@@ -505,9 +522,13 @@ public class TournamentOptionsUI extends JDialog {
     }
     
 	private void restoreOptions(HashMap<String, Integer> prevConfig) {
-		if (prevConfig != null && prevConfig.size() > 0) {
+		if (prevConfig != null && prevConfig.size() > 0) 
+		{
 			if (prevConfig.containsKey("protocolMode")) {
 				protocolModeSelector.setSelectedIndex(prevConfig.get("protocolMode"));
+			}
+			if (prevConfig.containsKey("startingAgent")) {
+				startingAgentSelector.setSelectedIndex(prevConfig.get("startingAgent"));
 			}
 			if (prevConfig.containsKey("generationMode")) {
 				generationModeSelector.setSelectedIndex(prevConfig.get("generationMode"));
@@ -561,6 +582,7 @@ public class TournamentOptionsUI extends JDialog {
         showLastBidCheck.setSelected(true);
         showLastBidCheck.setEnabled(true);
         disableGUICheck.setSelected(false);
+        startingAgentSelector.setSelectedIndex(0);
         generationModeSelector.setSelectedIndex(0);
         randomSeedField.setText("0");
         randomSeedField.setEnabled(false);
