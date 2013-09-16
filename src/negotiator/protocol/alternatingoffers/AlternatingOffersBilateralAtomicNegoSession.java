@@ -201,7 +201,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					// get next action of the agent that has its turn now
 					lastAction = currentAgent.chooseAction();
 					// we may want to intercept the action of the agent, and change it into something else, depending on the protocol.
-//					lastAction = intercept(lastAction);
+					lastAction = intercept(lastAction);
 					
 					time = timeline.getTime();
 
@@ -461,13 +461,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 	}
 
-	private Action intercept(Action lastAction) throws Exception
+	/**
+	 * Does not intercept anything, but can be overridden to do so by other protocols.
+	 */
+	protected Action intercept(Action lastAction) throws Exception
 	{
-		if (currentAgent == agentA)
-		{
-			Bid maxUtilityBid = spaceA.getMaxUtilityBid();
-			return new Offer(currentAgent, maxUtilityBid);
-		}
 		return lastAction;
 	}
 

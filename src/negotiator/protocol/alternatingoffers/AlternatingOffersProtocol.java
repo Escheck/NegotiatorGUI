@@ -185,6 +185,10 @@ public class AlternatingOffersProtocol extends Protocol {
 			}
 		}
 	}
+	
+	/**
+	 * Decides who starts the negotiation according to the selected startingAgent option in the settings. 
+	 */
 	private void decideStartingAgent()
 	{
 		int mode = TournamentConfiguration.getIntegerOption("startingAgent", 0);
@@ -199,6 +203,11 @@ public class AlternatingOffersProtocol extends Protocol {
 				startingAgent = getAgentBname();
 			else
 				startingAgent = getAgentAname();
+		else
+		{
+			System.err.println("Misformed starting agent " + startingAgent + ". Defaulting to A.");
+			startingAgent = getAgentAname();
+		}
 		
 		startingWithA = startingAgent.equals(getAgentAname());
 	}
