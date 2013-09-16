@@ -47,7 +47,7 @@ public class AlternatingOffersProtocol extends Protocol {
 	private static final long serialVersionUID = 7472004245336770247L;
 	public static final int ALTERNATING_OFFERS_AGENT_A_INDEX = 0;
 	public static final int ALTERNATING_OFFERS_AGENT_B_INDEX = 1;
-	boolean startingWithA = true;
+	boolean startingWithA;
 	ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();
 	protected String startingAgent; // agentAname or agnetBname
 
@@ -133,10 +133,7 @@ public class AlternatingOffersProtocol extends Protocol {
 		if(tournamentRunner!= null) tournamentRunner.fireNegotiationSessionEvent(this);
 		//NegotiationSession nego = new NegotiationSession(agentA, agentB, nt, sessionNumber, sessionTotalNumber,agentAStarts,actionEventListener,this);
 		//SessionRunner sessionrunner=new SessionRunner(this);
-		startingAgent=getAgentAname();
-		if ( (!startingWithA) && new Random().nextInt(2)==1) { 
-			startingAgent=getAgentBname();
-		}
+		decideStartingAgent();
 		sessionrunner = newAlternatingOffersBilateralAtomicNegoSession();
 		totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
 		sessionrunner.setTotalTime(totalTime);
@@ -187,6 +184,23 @@ public class AlternatingOffersProtocol extends Protocol {
 				createExtraLogData();
 			}
 		}
+	}
+	private void decideStartingAgent()
+	{
+		int mode = TournamentConfiguration.getIntegerOption("startingAgent", 0);
+		
+		// A, B, or Random
+		if (mode == 0)
+			startingAgent = getAgentAname();
+		else if (mode == 1)
+			startingAgent = getAgentBname();
+		else if (mode == 2)
+			if (new Random().nextInt(2)==1)  
+				startingAgent = getAgentBname();
+			else
+				startingAgent = getAgentAname();
+		
+		startingWithA = startingAgent.equals(getAgentAname());
 	}
 	
 	/**

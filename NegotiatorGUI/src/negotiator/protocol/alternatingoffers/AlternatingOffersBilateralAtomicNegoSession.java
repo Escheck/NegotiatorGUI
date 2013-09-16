@@ -3,6 +3,7 @@ package negotiator.protocol.alternatingoffers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.ContinuousTimeline;
@@ -124,8 +125,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			}
 
 			// note, we clone the utility spaces for security reasons, so that
-			// the agent
-			// can not damage them.
+			// the agent cannot damage them.
 			
 			if (spaceA.getSpaceType()==UTILITYSPACETYPE.NONLINEAR)
                 agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
@@ -200,6 +200,9 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						return;
 					// get next action of the agent that has its turn now
 					lastAction = currentAgent.chooseAction();
+					// we may want to intercept the action of the agent, and change it into something else, depending on the protocol.
+//					lastAction = intercept(lastAction);
+					
 					time = timeline.getTime();
 
 					if (timeline.isDeadlineReached()) {
@@ -456,6 +459,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 		}
 
+	}
+
+	private Action intercept(Action lastAction) throws Exception
+	{
+		if (currentAgent == agentA)
+		{
+			Bid maxUtilityBid = spaceA.getMaxUtilityBid();
+			return new Offer(currentAgent, maxUtilityBid);
+		}
+		return lastAction;
 	}
 
 	/**
