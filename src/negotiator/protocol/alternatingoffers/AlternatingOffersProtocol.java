@@ -97,7 +97,6 @@ public class AlternatingOffersProtocol extends Protocol {
 			startNegotiation();
 			// only sleep if batch mode????
 			Thread.sleep(1000); // 1 second delay before next nego starts. Used to be 5, is it needed anyway?
-			// Wouter: huh?? removed this           System.exit(0);
 		} catch (Exception e) { new Warning("Problem starting negotiation:"+e); e.printStackTrace();}
 	}
 
