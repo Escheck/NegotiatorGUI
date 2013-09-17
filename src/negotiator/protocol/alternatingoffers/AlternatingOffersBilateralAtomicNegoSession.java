@@ -462,10 +462,24 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	}
 
 	/**
-	 * Does not intercept anything, but can be overridden to do so by other protocols.
+	 * Does not usually intercept anything, but when "oneSidedBidding" is enabled in the settings,
+	 * then agent A's bids are ignored, and replaced by max. 
 	 */
 	protected Action intercept(Action lastAction) throws Exception
 	{
+		if (TournamentConfiguration.getBooleanOption("oneSidedBidding", false))
+		{
+			if (currentAgent == agentA)
+			{
+				// We let accepts pass through
+				if (lastAction instanceof Accept)
+					return lastAction;
+				
+				// But bids are replaced by maxbid
+				Bid maxUtilityBid = spaceA.getMaxUtilityBid();
+				return new Offer(currentAgent, maxUtilityBid);
+			}
+		}
 		return lastAction;
 	}
 
