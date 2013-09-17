@@ -4,7 +4,7 @@
         <agentRepItems/>
         <partyRepItems/>
         <domainRepItem>
-        	<domainRepItem url="file:etc/templates/pie_1/pie_domain.xml">
+        	<domainRepItem url="file:etc/templates/pie_1/pie_1_domain.xml">
                 <profile url="file:etc/templates/pie_1/pie_A.xml"/>
                 <profile url="file:etc/templates/pie_1/pie_B.xml"/>
             </domainRepItem>
