@@ -1,0 +1,8 @@
+<a>
+<NegotiationOutcome currentTime="2013-09-13 18:54:43" timeOfAgreement="1.0" bids="180" domain="etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml" lastAction="(Offer: Bid[Size of Fund: $10 billion, Impact on Other Aid: Reduction equal to half of fund size, Zimbabwe Trade Policy: Zimbabwe will increase tariffs on imports, England Trade Policy: England will increase imports, Forum on Other Health Issues: Creation of fund, ])" runNumber="0" finalOutcome="Reservation" errors="Deadline reached while waiting for [agents.anac.y2013.GAgent.AgentI@15e0a283]" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="GAgent" discount="1.0" agentClass="agents.anac.y2013.GAgent.AgentI" utilspace="etc/templates/anac/y2010/EnglandZimbabwe/England.xml" Opponent-agentName="Nozomi" Opponent-agentClass="agents.anac.y2010.Nozomi.Nozomi" Opponent-utilspace="etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml" finalUtility="0.0" discountedUtility="0.0" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.0" AcceptedBy=""> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Nozomi" discount="1.0" agentClass="agents.anac.y2010.Nozomi.Nozomi" utilspace="etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml" Opponent-agentName="GAgent" Opponent-agentClass="agents.anac.y2013.GAgent.AgentI" Opponent-utilspace="etc/templates/anac/y2010/EnglandZimbabwe/England.xml" finalUtility="0.0" discountedUtility="0.0" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.0" AcceptedBy=""> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
+</a>
