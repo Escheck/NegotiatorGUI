@@ -84,10 +84,6 @@ public class TAgent extends Agent
 			two_osr_subsets = false;
 			unused = false;
 			
-			stack_h = stack_aux = stack_hc =  null;
-			max_values = null;
-			
-	
 			stack_h    = new Stack<HashMap<Value, Double>>();
 			stack_aux  = new Stack<HashMap<Value, Double>>();
 			stack_hc   = new Stack<HashMap<Value, Double>>();
@@ -137,7 +133,6 @@ public class TAgent extends Agent
 					{
 						HashMap<Value, Double> h = new HashMap<Value, Double>();
 						h.put( discrete_pie.getValue(i), new Double( n * bids(i)    ));	// using scaling
-
 						stack_h.push(h);
 					}				
 					
@@ -157,8 +152,6 @@ public class TAgent extends Agent
 					
 					for ( i = 0 ; i < stack_aux.size() ; i++ ) 
 							System.out.println("######     " + i + "  =>  " +   stack_aux.get(i)  );
-					
-					
 					break;			
 				}//case
 			default: throw new Exception("Type " + pie.getType() + " not supported by TAgent.");
@@ -167,9 +160,7 @@ public class TAgent extends Agent
 		catch (Exception e) 
 		{   
 			e.printStackTrace(); 
-		}
-	
-		
+		}	
 	}
 /********************************************************************************************************************/
     private int estimated_rounds_left(boolean opponent)
