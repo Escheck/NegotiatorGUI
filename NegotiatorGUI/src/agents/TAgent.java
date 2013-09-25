@@ -68,32 +68,33 @@ public class TAgent extends Agent
 /***************************************************************************************************************************/  	
 	public void init() 
 	{
-		totalTime		      = timeline.getTotalTime();
-		timeLeftAfterAction   = timeline.getCurrentTime();
-		timeLeftBeforeAction  = OpponentMaxDuration  = OwnMaxDuration = 0;
-        counter = index = idx = 0;
-        rvB = 0.0;
-        m   = 5;
-		d   = -1;
-		n   = 1000;
-
-		flag = true;
-		all_osr_cuttofs = true;
-		two_osr_subsets = false;
-		unused = false;
-		
-		stack_h = stack_aux = stack_hc =  null;
-		max_values = null;
-		
-		stack_h    = new Stack<HashMap<Value, Double>>();
-		stack_aux  = new Stack<HashMap<Value, Double>>();
-		stack_hc   = new Stack<HashMap<Value, Double>>();
-   	    max_values = new ArrayList<ValueDiscrete>();
-
-		int i, number_of_values = -1;
-		
 		try 
 		{
+			totalTime		      = timeline.getTotalTime();
+			timeLeftAfterAction   = timeline.getCurrentTime();
+			timeLeftBeforeAction  = OpponentMaxDuration  = OwnMaxDuration = 0;
+	        counter = index = idx = 0;
+	        rvB = 0.0;
+	        m   = 5;
+			d   = -1;
+			n   = 1000;
+	
+			flag = true;
+			all_osr_cuttofs = true;
+			two_osr_subsets = false;
+			unused = false;
+			
+			stack_h = stack_aux = stack_hc =  null;
+			max_values = null;
+			
+	
+			stack_h    = new Stack<HashMap<Value, Double>>();
+			stack_aux  = new Stack<HashMap<Value, Double>>();
+			stack_hc   = new Stack<HashMap<Value, Double>>();
+	   	    max_values = new ArrayList<ValueDiscrete>();
+	
+			int i, number_of_values = -1;
+		
 			Issue pie = utilitySpace.getDomain().getIssues().get(0);	// pie is the issue
 			System.out.println("######   issue name = " + pie + "\n" + "######   issue type = " + pie.getType());
 			HashMap<Integer, Value> values = new HashMap<Integer, Value>(); // pairs <issuenumber, chosen value string>
