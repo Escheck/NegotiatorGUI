@@ -7,8 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import negotiator.exceptions.Warning;
-
 /**
  * This is a utility class to handle writing and 
  * reading {@link Serializable} objects into/from a file.
@@ -32,7 +30,7 @@ public class SerializeHandling{
 			ObjectOutputStream oos = new ObjectOutputStream(fout);   
 			oos.writeObject(data);
 			oos.close();
-			System.out.println("Done writing.");
+//			System.out.println("Done writing.");
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -54,7 +52,7 @@ public class SerializeHandling{
 			ObjectInputStream ois = new ObjectInputStream(fin);
 			data = (Serializable) ois.readObject();
 			ois.close();
-			System.out.println("Done reading.");
+//			System.out.println("Done reading.");
 			return data;
 
 		}catch(FileNotFoundException e){
