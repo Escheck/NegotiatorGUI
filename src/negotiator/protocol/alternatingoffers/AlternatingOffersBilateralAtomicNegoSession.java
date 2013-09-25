@@ -393,7 +393,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 									UtilitySpace.discount(agentBUtility, time, spaceB.getDiscountFactor()),
 									"Caught exception. Agent ["
 											+ currentAgent.getName()
-											+ "] sent " + lastAction
+											+ "] crashed. Last known action = " + lastAction
+											+ ". Emergency outcome: " + agentAUtility + ", " + agentBUtility
 											+ ". Details: " + e.toString(),
 									time, distanceToNash, "");
 						} else {
@@ -418,13 +419,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 								}
 						}
 
-						System.err.println("Emergency outcome: "
+						System.err.println(currentAgent.getName() + " threw an exception. Emergency outcome: "
 								+ agentAUtility + ", " + agentBUtility);
 					} catch (Exception err) {
 						err.printStackTrace();
-						new Warning(
-								"exception raised during exception handling: "
-										+ err);
+						new Warning("Exception raised during exception handling: " + err);
 					}
 					// don't compute the max utility, we're in exception which
 					// is already bad enough.
