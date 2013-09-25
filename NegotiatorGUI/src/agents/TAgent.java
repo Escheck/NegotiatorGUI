@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import com.sun.tools.javac.util.List;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Timeline;
@@ -24,12 +22,8 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
-import negotiator.issue.IssueInteger;
-import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.issue.ValueInteger;
-import negotiator.issue.ValueReal;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 
