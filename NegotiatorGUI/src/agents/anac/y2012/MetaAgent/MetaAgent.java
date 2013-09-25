@@ -5,19 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import negotiator.Agent;
-import negotiator.Domain;
-import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
-import negotiator.issue.Issue;
-import negotiator.issue.Objective;
-import negotiator.issue.ValueDiscrete;
-import negotiator.utility.EVALUATORTYPE;
-import negotiator.utility.Evaluator;
-import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.EvaluatorInteger;
-import negotiator.utility.EvaluatorReal;
 import agents.anac.y2010.AgentSmith.AgentSmith;
 import agents.anac.y2011.AgentK2.Agent_K2;
 import agents.anac.y2011.BramAgent.BRAMAgent;
@@ -33,6 +20,20 @@ import agents.anac.y2012.MetaAgent.agents.MrFriendly.MrFriendly;
 import agents.anac.y2012.MetaAgent.agents.ShAgent.ShAgent;
 import agents.anac.y2012.MetaAgent.agents.SimpleAgentNew.SimpleAgentNew;
 import agents.anac.y2012.MetaAgent.agents.WinnerAgent.WinnerAgent2;
+
+import negotiator.Agent;
+import negotiator.Domain;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+import negotiator.issue.Issue;
+import negotiator.issue.Objective;
+import negotiator.issue.ValueDiscrete;
+import negotiator.utility.EVALUATORTYPE;
+import negotiator.utility.Evaluator;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.EvaluatorInteger;
+import negotiator.utility.EvaluatorReal;
 
 
 public class MetaAgent extends Agent {
@@ -285,8 +286,8 @@ public class MetaAgent extends Agent {
 	
 	public String getName(){
 		if (myAgentName == null || myAgentName=="")
-			return "Meta-Agent";
-		else return "Meta-Agent: " + myAgentName;
+			return "Meta-Agent 2012";
+		else return "Meta-Agent 2012: " + myAgentName;
 	}
 	
 	public static String getVersion(){
