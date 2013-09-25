@@ -3,7 +3,7 @@
 	    		   Estimates rounds based on own/opponent actions.	
 	    		   Uses all the cutoffs (all_osr_cuttofs=true)
 	          
-	    TODO tournament pb, 
+	    TODO tournament pb, Java heap space..
 	
 		@author rafik hadfi <rafik@itolab.nitech.ac.jp>
 * ***********************************************************************************************************************************/
