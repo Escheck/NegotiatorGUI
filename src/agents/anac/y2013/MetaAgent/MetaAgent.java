@@ -1,10 +1,18 @@
 package agents.anac.y2013.MetaAgent;
 
-import negotiator.NegotiationResult;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import java.io.Serializable;
 
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.Domain;
+import negotiator.NegotiationResult;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
@@ -23,14 +31,6 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 
 public class MetaAgent extends Agent {
@@ -268,7 +268,7 @@ public class MetaAgent extends Agent {
 	}
 	
 	public String getName(){
-		return "Meta-Agent";
+		return "Meta-Agent 2013";
 	}
 	
 	public static String getVersion(){
