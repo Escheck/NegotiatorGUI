@@ -17,7 +17,7 @@ public class Parser {
 	public static double getMean(AgentData agent,HashMap<String, Double> values){
 		TreeParser p=new TreeParser(agent);
 		Node n=p.Parse();
-		System.out.println(n);
+//		System.out.println(n);
 		Node ans=n.getBestNode(values);
 		return ans.get_mean();
 	}
