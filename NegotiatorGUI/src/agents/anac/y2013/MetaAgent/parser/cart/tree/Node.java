@@ -116,11 +116,11 @@ protected Node navigate(HashMap<String, Double> values) {
 		PrimarySplit.Direction dir=this._Surrogate_splits.get(0).getDirection(values);
 		switch (dir) {
 		case LEFT:{
-			System.out.println(this.get_id() +" choose left" );
+//			System.out.println(this.get_id() +" choose left" );
 			return this._left.getBestNode(values);
 		}
 		case RIGHT:{
-			System.out.println(this.get_id() +" choose right"); 
+//			System.out.println(this.get_id() +" choose right"); 
 			return this._right.getBestNode(values);
 		}
 		default:

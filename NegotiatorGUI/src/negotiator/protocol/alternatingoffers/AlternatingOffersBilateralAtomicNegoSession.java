@@ -352,81 +352,34 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				} catch (Exception e) {
 					new Warning("Caught exception:", e, true, 2);
 					stopNegotiation = true;
-					new Warning("Protocol error by Agent"
-							+ currentAgent.getName(), e, true, 3);
-					// Global.log("Protocol error by Agent " +
-					// currentAgent.getName() +":"+e.getMessage());
-					if (lastBid == null)
-						agentAUtility = agentBUtility = 1.;
-					else {
-						agentAUtility = agentBUtility = 0.;
-						// handle both getUtility calls apart, if one crashes
-						// the other should not be affected.
-						try {
-							agentAUtility = spaceA.getUtility(lastBid);
-						} catch (Exception e1) {
-						}
-						try {
-							agentBUtility = spaceB.getUtility(lastBid);
-						} catch (Exception e1) {
-						}
-					}
-					if (currentAgent == agentA)
-						agentAUtility = 0.;
-					else
-						agentBUtility = 0.;
+					new Warning("Protocol error by Agent" + currentAgent.getName(), e, true, 3);
+					String exceptionMsg = "Caught exception. Agent ["
+						+ currentAgent.getName()
+						+ "] crashed. Last known action = " + lastAction
+						+ ". Emergency outcome: (rvA, rvB)."
+						+ ". Details: " + e.toString();
 					try {
-						BidPoint lastbidPoint = new BidPoint(lastBid,
-								agentAUtility, agentBUtility);
-						UtilitySpace[] spaces = { spaceA, spaceB };
-						bidSpace = BidSpaceCache.getBidSpace(spaces);
-						BidPoint nash = bidSpace.getNash();
-						double distanceToNash = lastbidPoint.getDistance(nash);
-
 						// checkForMAC();
 						if (!hasMAC()) {
-							newOutcome(
-									currentAgent,
-									agentAUtility,
-									agentBUtility,
-									UtilitySpace.discount(agentAUtility, time, spaceA.getDiscountFactor()),
-									UtilitySpace.discount(agentBUtility, time, spaceB.getDiscountFactor()),
-									"Caught exception. Agent ["
-											+ currentAgent.getName()
-											+ "] crashed. Last known action = " + lastAction
-											+ ". Emergency outcome: " + agentAUtility + ", " + agentBUtility
-											+ ". Details: " + e.toString(),
-									time, distanceToNash, "");
+							System.err.println(exceptionMsg);
+							badOutcome(time, exceptionMsg);
 						} else {
-							System.out.println("Error thrown: with MAC agent");
+							System.out.println("Error thrown: with MAC agent: " + exceptionMsg);
 							for (ArrayList<OutcomeTuple> outcomeTupleList : completeList)
 								for (OutcomeTuple outcomeTuple : outcomeTupleList) {
-									newOutcome(
-											currentAgent,
-											agentAUtility,
-											agentBUtility,
-											spaceA.discount(agentAUtility, time, spaceA.getDiscountFactor()),
-											spaceB.discount(agentBUtility, time, spaceB.getDiscountFactor()),
-											"Caught exception. Agent ["
-													+ currentAgent.getName()
-													+ "] sent " + lastAction
-													+ ". Details: "
-													+ e.toString(), time,
-											distanceToNash, "");
+									badOutcome(time, exceptionMsg);
 									changeNameofAC(agentAWithMultiAC,
 											agentBWithMultiAC, outcomeTuple);
 									MACoutcomes.add(no);
 								}
 						}
 
-						System.err.println(currentAgent.getName() + " threw an exception. Emergency outcome: "
-								+ agentAUtility + ", " + agentBUtility);
 					} catch (Exception err) {
 						err.printStackTrace();
 						new Warning("Exception raised during exception handling: " + err);
 					}
 					// don't compute the max utility, we're in exception which
-					// is already bad enough.
+					// is already bad enough. 
 				}
 				// swap to other agent
 				if (currentAgent.equals(agentA))
@@ -572,9 +525,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		double rvA = spaceA.getReservationValueUndiscounted();
 		double rvB = spaceB.getReservationValueUndiscounted();
 
-		BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
+		BidPoint rvPoint = new BidPoint(lastBid, rvA, rvB);		// the bid is unimportant
 		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
-		double distanceToNash = lastbidPoint.getDistance(nash);
+		double distanceToNash = rvPoint.getDistance(nash);
+		System.err.println("Producing emergency outcome of utility " + rvA + ", " + rvB);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
 		
