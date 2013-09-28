@@ -23,9 +23,6 @@
  * @author rafik hadfi 
  **************************************************************************************************************/
 
-
-
-
 package misc;
 
 import java.io.BufferedWriter;
@@ -242,13 +239,4 @@ public class Simulator
 	
 	} // end main
 	
-	public static AgentRepItem[] RemoveAgentRepItem(AgentRepItem[] input, AgentRepItem toremove)
-	{
-	    List<AgentRepItem> result = new LinkedList<AgentRepItem>();
-	    for(AgentRepItem item : input) 
-	    		if(!toremove.equals(item))
-	            result.add(item);
-	    return  (AgentRepItem[]) result.toArray();
-	}
-
 } // end ScenarioLauncher
