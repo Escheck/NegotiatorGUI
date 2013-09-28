@@ -5,30 +5,6 @@
         <partyRepItems/>
         <domainRepItem>
 
-        	<domainRepItem url="file:etc/templates/pie_1/pie_1_domain.xml">
-                <profile url="file:etc/templates/pie_1/pie_B_100.0.xml"/>
-                <profile url="file:etc/templates/pie_1/pie_A_640.0.xml"/>
-            </domainRepItem>
-
-        	<domainRepItem url="file:etc/templates/pie_1/pie_1_domain.xml">
-                <profile url="file:etc/templates/pie_1/pie_B_400.0.xml"/>
-                <profile url="file:etc/templates/pie_1/pie_A_640.0.xml"/>
-            </domainRepItem>
-
-        	<domainRepItem url="file:etc/templates/pie_1/pie_1_domain.xml">
-                <profile url="file:etc/templates/pie_1/pie_B_400.0.xml"/>
-                <profile url="file:etc/templates/pie_1/pie_A_640.0.xml"/>
-            </domainRepItem>
-
-        	<domainRepItem url="file:etc/templates/pie_1/pie_1_domain.xml">
-                <profile url="file:etc/templates/pie_1/pie_B_280.0.xml"/>
-                <profile url="file:etc/templates/pie_1/pie_A_640.0.xml"/>
-            </domainRepItem>
-        
-            <domainRepItem url="file:etc/templates/pie/pie_domain.xml">
-                <profile url="file:etc/templates/pie/pie_A.xml"/>
-                <profile url="file:etc/templates/pie/pie_B.xml"/>
-            </domainRepItem>
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>
