@@ -1,5 +1,5 @@
 <utility_space>
- <objective index="0" etype="objective" type="objective" description="B" name="PieDomain">
+ <objective index="0" etype="objective" type="objective" description="agent : B" name="PieDomain">
  <issue index="1" etype="discrete" type="discrete" vtype="discrete" name="Pie">
 
 	 <item index="0" value="a0"  cost="0"  evaluation="0" description="a0"></item>
