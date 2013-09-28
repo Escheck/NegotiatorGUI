@@ -24,24 +24,7 @@
  **************************************************************************************************************/
 
 
-/***
 
-Make it in such a way that you specify the agents/domains/etc in separate files (launchagentrepository.xml, launchdomainrepository.xml, etc.?)
-I guess it is better to make all combinations possible, and to specify the profiles for both A and B. We could make it most easily I think by:
-1) Generate all combinations of all agents / profiles
-2) Then filter out the combinations we do not want, e.g.: filterSelfPlay(), or filterNonEmptyAgreementZone().
-About your remarks:
-- I think the number of rounds should be also set in the TournamentConfiguration, no? The type of "protocolMode" should be discrete, 
-and the rounds ("deadline") is another property.
-- oneSidedBidding should be on for our experiments. The testing is almost finished, but I think it should work in most cases now.
-
-______________________________________________________________________________________________________________________________
-profiles generation : the loop (j=i+increment) method ? does it embed filterNonEmptyAgreementZone()
-agents combinations : define the filterSelfPlay() or jut embed it with the loops ?
-
-	here, or in sgg !?
-
- ****/
 
 package misc;
 
