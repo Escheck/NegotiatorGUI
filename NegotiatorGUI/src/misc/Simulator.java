@@ -168,8 +168,6 @@ public class Simulator
 						for(int j = 0; j<agents.size(); j++)
 							agentsrep[j] = new AgentRepItem(agents.get(j), agents.get(j), agents.get(j));
 		
-		//				Protocol ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
-		
 						TournamentConfiguration.addOption( "deadline",     			     180);
 						TournamentConfiguration.addOption( "startingAgent",                0); 
 						TournamentConfiguration.addOption( "accessPartnerPreferences",     0); 
@@ -186,38 +184,40 @@ public class Simulator
 						TournamentConfiguration.addOption( "oneSidedBidding",              1);	//
 						TournamentConfiguration.addOption( "protocolMode",                 1);	//
 		
-				        // Constructing ns , and setting the nsessions
-				        // {{
-								java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
-								Class klass = loader.loadClass(protocol.getClassPath());
-								Class[] paramTypes = { AgentRepItem[].class, ProfileRepItem[].class, HashMap[].class, int.class};
-								Constructor constructor = klass.getConstructor(paramTypes);
-								System.out.println(" \t   constructor : " + constructor);
-								Object[] ns_args = {agentsrep,  agentProfiles, null, nsessions};
-								Object object = constructor.newInstance(ns_args);
-								System.out.println(" \t   object = " + object + "\n_________");
-								ns = (Protocol) object;
-						// }}
-		
-						System.out.println(" \t   ns.getName()          = " + ns.getName()  );
-						System.out.println(" \t   ns.getSessionNumber() = " + ns.getSessionNumber() );
-						System.out.println(" \t   ns.getTotalSessions() = " + ns.getTotalSessions() );
-				        
-		
-		//                Class<Protocol> protocol_ = Global.getProtocolClass(protocol);
-		//                Class[] paramTypes = {  Tournament.class	 };
-		//                Method mthdGetTournamentSessions = protocol_.getMethod("getTournamentSessions", paramTypes);
-		//		        ArrayList<Protocol> sessions = (ArrayList<Protocol>)(mthdGetTournamentSessions.invoke(null, ns ));
-		//		        System.out.println(" sessions = " + sessions )	;		
-		//                System.out.println(" > " + TournamentConfiguration.getOptions())	;		
+						if (true) // metho 1
+						{
+								ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
+						}
+						else
+						{
+						        // Constructing ns , and setting the nsessions
+						        // {{
+										java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
+										Class klass = loader.loadClass(protocol.getClassPath());
+										Class[] paramTypes = { AgentRepItem[].class, ProfileRepItem[].class, HashMap[].class, int.class};
+										Constructor constructor = klass.getConstructor(paramTypes);
+										System.out.println(" \t   constructor : " + constructor);
+										Object[] ns_args = {agentsrep,  agentProfiles, null, nsessions};
+										Object object = constructor.newInstance(ns_args);
+										System.out.println(" \t   object = " + object + "\n_________");
+										ns = (Protocol) object;
+								// }}
+				
+				//                Class<Protocol> protocol_ = Global.getProtocolClass(protocol);
+				//                Class[] paramTypes = {  Tournament.class	 };
+				//                Method mthdGetTournamentSessions = protocol_.getMethod("getTournamentSessions", paramTypes);
+				//		        ArrayList<Protocol> sessions = (ArrayList<Protocol>)(mthdGetTournamentSessions.invoke(null, ns ));
+				//		        System.out.println(" sessions = " + sessions )	;		
+				//                System.out.println(" > " + TournamentConfiguration.getOptions())	;		
+								
+								System.out.println("======== Tournament " + i + "/" + ntournaments + " started ========{");
+								// Set the tournament.
+								//~~~~~ threads[i-1] = new Thread(ns);
+								//~~~~~ threads[i-1].start();
+								//~~~~~ threads[i-1].join(); // wait until the tournament finishes.
+								//~~~~~ System.out.println("Thread " + i + " finished.");
+						}
 						
-						System.out.println("======== Tournament " + i + "/" + ntournaments + " started ========{");
-						// Set the tournament.
-						//~~~~~ threads[i-1] = new Thread(ns);
-						//~~~~~ threads[i-1].start();
-						//~~~~~ threads[i-1].join(); // wait until the tournament finishes.
-						//~~~~~ System.out.println("Thread " + i + " finished.");
-		
 						ns.startSession();
 							
 						System.out.println(" \t   ns.getName()          = " + ns.getName()  );
@@ -236,7 +236,6 @@ public class Simulator
 			e.printStackTrace();
 		}
 		
-	
 	} // end main
 	
-} // end ScenarioLauncher
+} // end Simulator
