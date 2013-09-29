@@ -1,5 +1,5 @@
 /**
- * Simulator for the optimal bidding simulations.
+ * Simulator for the optimal bidding experiments.
  * 
  * 	Features:
  *	 	- Runs "ntournaments" tournaments. Each tournament has X sessions.
@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import negotiator.Global;
@@ -61,7 +60,14 @@ public class Simulator
 			String outputFile =  "log/_" + Global.getOutcomesFileName();
 			int ntournaments  =  1;  // number of tournaments
 			int nsessions     =  6;  // number of sessions.
-			boolean trace 	  =  false;
+			boolean trace 	  =  false, first = true;
+	     
+			// tournaments variables
+	        Protocol ns = null;
+			Set<Set<RepItem>> AgentsCombinations = null;
+			Iterator<Set<RepItem>> combination = null;
+			List<String> profiles = null;
+	        Thread[] threads = new Thread[ntournaments];
 
 			// Loading the agents (classes) from repository
 
@@ -84,25 +90,21 @@ public class Simulator
 	        // Loading the preferences' profiles from repository
 	       
 	        Repository domainrepository        =  Repository.get_domain_repos();
-	        ArrayList<RepItem> profiles_names  =  Repository.get_domain_repos().getItems();
+	        ArrayList<RepItem> profiles_names  =  domainrepository.getItems();
 	        DomainRepItem[] DomainsARI         =  new DomainRepItem[profiles_names.size()];
 	        for(int i = 0 ; i < profiles_names.size() ; i++)
 	        {
-	            if((DomainsARI[i] = (DomainRepItem) domainrepository.getItemByName(profiles_names.get(i).getName())) == null)
+	        		if((DomainsARI[i] = (DomainRepItem) domainrepository.getItemByName(profiles_names.get(i).getName())) == null)
 	               throw new Exception("Unable to create domain " + profiles_names.get(i).getName() + "!");
 		        if (trace)
-		           System.out.println(" Domain " + i + " :  " + DomainsARI[i].getName() + "\n \t " + DomainsARI[i].getClass()    + "\n \t " + DomainsARI[i].getFullName() + "\n \t " + DomainsARI[i].getProfiles() + "\n \t " + DomainsARI[i].getURL()); 
+		           System.out.println(" Domain #" + i + "\n \t Domain name     :  " + DomainsARI[i].getName()  
+		        		   								 + "\n \t Domain class    :  " + DomainsARI[i].getClass() 
+		        		   								 + "\n \t Domain fullname :  " + DomainsARI[i].getFullName() 
+		        		   								 + "\n \t Domain profiles :  " + DomainsARI[i].getProfiles() 
+		        		   								 + "\n \t Domain URL      :  " + DomainsARI[i].getURL()); 
 	    		}
-
-	        // Init tournaments
 	        
-	        Protocol ns = null;
-			Set<Set<RepItem>> AgentsCombinations = null;
-			Iterator<Set<RepItem>> combination = null;
-			List<String> profiles = null;
-	        Thread[] threads = new Thread[ntournaments];
-			
-			//  We can either pick two different agents randomly or try all the combinations
+	        //  We can either pick two different agents randomly or try all the combinations
 			// {{
 	 	    	Set<RepItem> NamesSet = new HashSet<RepItem>();
 		    	Iterator<RepItem> iter = agents_names.iterator();
@@ -115,11 +117,15 @@ public class Simulator
             {
                Iterator<Set<RepItem>> i = AgentsCombinations.iterator();
 		       while (i.hasNext())  System.out.println(" > " + i.next() );
-		       System.out.println(" Total combinations : " + AgentsCombinations.size()); 
             }
-            // }}
 
-			int stopping = 0;
+            System.out.println(" Total [Agents] combinations  : " + AgentsCombinations.size() + 
+            					  "\n Total [Preferences] profiles : " + profiles_names.size()); 
+            // }}
+            
+ //####### tournament(s) ################################################
+            
+            int domcounter = 1;
 			for ( int i = 1 ; i <= ntournaments ; i++ )
 			{
 				for ( DomainRepItem domain : DomainsARI  )
@@ -128,16 +134,22 @@ public class Simulator
 							
 					while (combination.hasNext()) 
 					{
-						stopping++;
-						if (stopping==2) System.exit(0);
-
+						
+						if ( domcounter == 1000 ) break;
+						
 						String domainFile = path + domain.getURL().toString().replaceAll("file:", ""); 
 						System.out.println(" domainFile: " + domainFile );
+
 						profiles = Arrays.asList( path + domain.getProfiles().toArray()[0], path + domain.getProfiles().toArray()[1]);  
 						System.out.println(" profiles:  profile 1 : " + profiles.get(0) + "\n\tprofile 2 : " + profiles.get(1));
 						List<String> agents = Arrays.asList( combination.next().toArray()[0].toString(), combination.next().toArray()[1].toString()); 
 						System.out.println(" agents:    agent 1 : " + agents.get(0) + "\n\tagent 2 : " + agents.get(1));
-						outputFile = outputFile.replaceAll((i==1) ? ".xml" : "__(\\d+).xml", "__" + i + ".xml");						
+
+						if (first) {
+							   outputFile = outputFile.replaceAll(".xml",   "__" + i + ".xml"); 
+							   first = false;
+						} else outputFile = outputFile.replaceAll("__(\\d+).xml", "__" + i + ".xml");
+
 						File outcomesFile = new File(outputFile);
 						BufferedWriter out = new BufferedWriter(new FileWriter(outcomesFile, true));
 						if (!outcomesFile.exists())
@@ -217,6 +229,10 @@ public class Simulator
 								//~~~~~ threads[i-1].join(); // wait until the tournament finishes.
 								//~~~~~ System.out.println("Thread " + i + " finished.");
 						}
+						System.out.println("==============================================================================  " + domcounter + "  ================ " + AgentsCombinations.size() * profiles_names.size()); 
+
+						domcounter++;
+						if (1+3+3+4+4>0) continue;
 						
 						ns.startSession();
 							
