@@ -4,7 +4,8 @@ package negotiator;
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).
  */
-public abstract class Timeline {
+public abstract class Timeline 
+{
     protected boolean hasDeadline;
     protected boolean paused = false;
     /** In a time-based protocol, time passes within a round. In contrast,
