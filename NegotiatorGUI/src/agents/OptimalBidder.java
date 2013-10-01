@@ -7,7 +7,6 @@
  * @author rafik		
  ************************************************************************************************************************************/
 
-// no need for the bids array? just compute it dynamically based on the left rounds... since we know the total number of rounds
 
 package agents;
 
@@ -204,11 +203,11 @@ public class OptimalBidder extends Agent
 			   vals.put(pie.getNumber(), v);
 
 			   	if (false)
-		        print_("key = " + key + 
-		        		"   " + bid(rleft) +
-		        		"   " + ((double) key/n) + 
-		        		"   " +  getSessionNumber() + "/" + getSessionsTotal() + 
-		        		"\t utility( Value = " + v + " ) = " + getUtility(new Bid(utilitySpace.getDomain(), vals)) );
+					        print_("key = " + key + 
+					        		"   " + bid(rleft) +
+					        		"   " + ((double) key/n) + 
+					        		"   " +  getSessionNumber() + "/" + getSessionsTotal() + 
+					        		"\t utility( Value = " + v + " ) = " + getUtility(new Bid(utilitySpace.getDomain(), vals)) );
 			
 		        if ( Math.abs( bid(rleft) - (double) key/n ) < min )
 		        {
