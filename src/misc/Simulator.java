@@ -212,7 +212,7 @@ public class Simulator
 					TournamentConfiguration.addOption(  "oneSidedBidding",              1  );	//
 					TournamentConfiguration.addOption(  "protocolMode",                 1  );	//
 	
-					if (false) // metho 1
+					if (false) // method 1
 					{
 							ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
 							System.out.print("Negotiation session built: " + ns + "\n");
