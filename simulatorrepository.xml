@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<simulator root  =  "file:/Users/rafik/Documents/workspace/NegotiatorGUI voor AAMAS competitie/" 
+		protocol =  "negotiator.protocol.alternatingoffers.AlternatingOffersProtocol"
+		trials   =  "10" 
+		sessions =  "6" 
+		log      =  "log/_log/" 
+		trace    =  "false"
+		all      =  "true">
+
+<rounds>	
+			<round>1</round>
+			<round>10</round>
+			<round>100</round>		
+</rounds>
+
+<agents>   
+		   <agent>ANAC 2011 - ValueModelAgent</agent>
+           <agent>ANAC 2011 - Gahboninho</agent>
+           <agent>ANAC 2011 - BRAMAgent</agent>
+           <agent>ANAC 2011 - HardHeaded</agent>
+           <agent>ANAC 2011 - Nice Tit fo Tat</agent>
+           <agent>ANAC 2011 - IAMhaggler2011</agent>
+           <agent>ANAC 2011 - AgentK2</agent>
+           <agent>ANAC 2012 - AgentLG</agent>
+           <agent>ANAC 2012 - AgentMR</agent>
+           <agent>ANAC 2012 - BRAMAgent2</agent>
+           <agent>ANAC 2012 - CUHKAgent</agent>
+           <agent>ANAC 2012 - IAMhaggler2012</agent>
+           <agent>ANAC 2012 - MetaAgent</agent>
+           <agent>ANAC 2012 - OMACAgent</agent>
+           <agent>SimpleAgt2</agent>
+           <agent>SimpleAgentSavingBidHistory</agent>
+           <agent>Trade-Off agent</agent>
+           <agent>FuzzyAgent</agent>
+           <agent>Boulware</agent>
+           <agent>Conceder</agent>
+           <agent>Hardliner</agent>
+           <agent>Conceder Linear</agent>
+   <!--    <agent>TAgent</agent>
+           <agent>OptimalBidder</agent>   -->		
+</agents>
+
+</simulator>
