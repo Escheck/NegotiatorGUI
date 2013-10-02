@@ -1,7 +1,8 @@
-/***
- * Loads the configuration parameters for Simulator from <simulatorrepository.xml>
+/****
+ * Singleton <SimulatorConfiguration>
+ * Loads the configuration parameters for <Simulator> from "simulatorrepository.xml"
  * @author rafik
- ***/
+ *******************************************************************************************************/
 package misc;
 
 import java.io.File;
@@ -29,8 +30,7 @@ public class SimulatorConfiguration
 	{
 		try 
 		{
-			file = confile; // sconf.xml
-			
+			file = confile;
 			DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance(); 
 			domFactory.setIgnoringComments(true);
 			DocumentBuilder builder = domFactory.newDocumentBuilder(); 
@@ -65,7 +65,7 @@ public class SimulatorConfiguration
 		
 		catch (SAXParseException err) 
 		{
-			System.out.println ("** Parsing error" + ", line " + err.getLineNumber () + ", uri " + err.getSystemId ());
+			System.out.println("Parsing error" + ", line " + err.getLineNumber () + ", uri " + err.getSystemId ());
 			System.out.println(" " + err.getMessage ());
 		}
 		catch (SAXException e) 
@@ -88,8 +88,8 @@ public class SimulatorConfiguration
 	}
 	public ArrayList<?> get(String option)
 	{
-		if (option.equals("agents"))			return agents;
-		else if (option.equals("rounds"))	return rounds;
+		if (option.equals(tags[2]))			return agents;
+		else if (option.equals(tags[1]))	    return rounds;
 		System.out.println("Wrong configuration parameter!");
 		return null;
 	}
@@ -101,8 +101,7 @@ public class SimulatorConfiguration
 
     public static void main (String argv [])
     {
-    		String f = "/Users/rafik/Documents/workspace/SGG/src/sggpack/simulatorrepository.xml";
-    		SimulatorConfiguration conf =  SimulatorConfiguration.getInstance(f); 
+    		SimulatorConfiguration conf =  SimulatorConfiguration.getInstance("/Users/rafik/Documents/workspace/SGG/src/sggpack/simulatorrepository.xml"); 
 
     		  for (String key : conf.getConf().keySet())
     		      System.out.println( key + " : " + conf.getConf().get(key));
@@ -113,6 +112,6 @@ public class SimulatorConfiguration
     		  for (Object i : conf.get("agents"))
     		      System.out.println( "agent : " + i );
 
-    	}//end of main
+    	} // main
 
 }
