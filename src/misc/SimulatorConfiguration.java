@@ -41,7 +41,7 @@ public class SimulatorConfiguration
 			
 			config = new HashMap<String, String>();
 
-			for (int i=0 ; i < nodes.item(0).getAttributes().getLength() ; i++)
+			for (int i = 0 ; i < nodes.item(0).getAttributes().getLength() ; i++)
 				config.put(nodes.item(0).getAttributes().item(i).getNodeName(), nodes.item(0).getAttributes().item(i).getNodeValue());
 
 			for (int i = 0 ; i < nodes.item(0).getChildNodes().getLength() ; i++)
@@ -63,11 +63,13 @@ public class SimulatorConfiguration
 									agents.add(node.getChildNodes().item(j).getTextContent());
 						}}}}
 		
-		catch (SAXParseException err) {
+		catch (SAXParseException err) 
+		{
 			System.out.println ("** Parsing error" + ", line " + err.getLineNumber () + ", uri " + err.getSystemId ());
 			System.out.println(" " + err.getMessage ());
 		}
-		catch (SAXException e) {
+		catch (SAXException e) 
+		{
 			Exception x = e.getException ();
 			((x == null) ? e : x).printStackTrace ();
 		}
