@@ -37,6 +37,8 @@ public class Global {
 	public static final String AGENT_REPOSITORY = "agentrepository.xml";
 	/** Path to protocol repository */
 	public static final String PROTOCOL_REPOSITORY = "protocolrepository.xml";
+	/** Path to simulator repository */
+	public static final String SIMULATOR_REPOSITORY = "simulatorrepository.xml";
 
 	public static String logPrefix = "";
 	
