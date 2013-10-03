@@ -20,9 +20,9 @@ public class SimulatorConfiguration
 {
 	private static SimulatorConfiguration sSimConfInstance = null;
 
-	static String[] tags = {"simulator", "rounds", "agents"};
+	static String[] tags = {"simulator", "rounds", "agents", "tournament"};
 	static String file;
-	HashMap<String, String> config;
+	HashMap<String, String> config, tournament;
 	ArrayList<String>       agents;
 	ArrayList<Integer>     rounds;
 
@@ -48,21 +48,34 @@ public class SimulatorConfiguration
 			{
 				Node node = nodes.item(0).getChildNodes().item(i);
 			
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
-						if (node.getNodeName().equals(tags[1]))	{
+				if (node.getNodeType() == Node.ELEMENT_NODE)
+				{
+						if (node.getNodeName().equals(tags[1]))
+						{
 							rounds = new ArrayList<Integer>();
 							for (int j=0 ; j < node.getChildNodes().getLength() ; j++)
 								if (node.getChildNodes().item(j).getNodeType() == Node.ELEMENT_NODE)
 									rounds.add(Integer.parseInt(node.getChildNodes().item(j).getTextContent()));
 						}
 						
-						if (node.getNodeName().equals(tags[2]))	{
+						if (node.getNodeName().equals(tags[2]))
+						{
 							agents = new ArrayList<String>();
 							for (int j=0 ; j < node.getChildNodes().getLength() ; j++)
 								if (node.getChildNodes().item(j).getNodeType() == Node.ELEMENT_NODE)
 									agents.add(node.getChildNodes().item(j).getTextContent());
-						}}}}
-		
+						}
+						if (node.getNodeName().equals(tags[3])) // tournament
+						{
+							tournament = new HashMap<String, String>();
+							for (int j=0 ; j < node.getChildNodes().getLength() ; j++)
+								if (node.getChildNodes().item(j).getNodeType() == Node.ELEMENT_NODE)
+									tournament.put(node.getChildNodes().item(j).getAttributes().item(0).getNodeValue(),
+												  node.getChildNodes().item(j).getTextContent());
+						}
+				}
+			}
+		}
 		catch (SAXParseException err) 
 		{
 			System.out.println("Parsing error" + ", line " + err.getLineNumber () + ", uri " + err.getSystemId ());
@@ -98,19 +111,26 @@ public class SimulatorConfiguration
 	{
 		return config;
 	}
+	public HashMap<String, String> getTournamentOptions()
+	{
+		return tournament;
+	}
 
     public static void main (String argv [])
     {
-    		SimulatorConfiguration conf =  SimulatorConfiguration.getInstance("/Users/rafik/Documents/workspace/SGG/src/sggpack/simulatorrepository.xml"); 
+    		SimulatorConfiguration conf =  SimulatorConfiguration.getInstance("/Users/rafik/Documents/workspace/NegotiatorGUI voor AAMAS competitie/simulatorrepository.xml"); 
 
-    		  for (String key : conf.getConf().keySet())
-    		      System.out.println( key + " : " + conf.getConf().get(key));
+    		  for (String key : conf.getTournamentOptions().keySet())
+    			  System.out.println( key + " : " + conf.getTournamentOptions().get(key));
+    		
+    		//  for (String key : conf.getConf().keySet())
+    		//      System.out.println( key + " : " + conf.getConf().get(key));
     		  
-    		  for (Object i : conf.get("rounds"))
-    		      System.out.println( "round = " + i );
+    		//  for (Object i : conf.get("rounds"))
+    		//      System.out.println( "round = " + i );
 
-    		  for (Object i : conf.get("agents"))
-    		      System.out.println( "agent : " + i );
+    		//  for (Object i : conf.get("agents"))
+    		//      System.out.println( "agent : " + i );
 
     	} // main
 
