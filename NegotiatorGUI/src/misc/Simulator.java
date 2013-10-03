@@ -55,8 +55,7 @@ public class Simulator
 				   outputFile =  conf.getConf().get("log") + Global.getOutcomesFileName().replaceAll("log/", "");
 			boolean  trace    =  conf.getConf().get("trace").equals("false") ? false : true, 
 					 all      =  conf.getConf().get("all").equals("false") ? false : true; // if == true, totaltrials==number of all possible combinations
-			int nsessions     =   Integer.parseInt(conf.getConf().get("sessions")),   // number of sessions.
-            		totaltrials   =  Integer.parseInt(conf.getConf().get("trials")); 
+			int totaltrials   =  Integer.parseInt(conf.getConf().get("trials")); 
 
 
 			// Trials' variables
@@ -74,7 +73,6 @@ public class Simulator
 			// Loading the agents (classes) from repository
 
 	        Repository repAgent              =   Repository.get_agent_repository();
-			ArrayList<RepItem> agents_names  =   repAgent.get_agent_repository().getItems();
 	        ArrayList<String> agentsList     = (ArrayList<String>) conf.get("agents");
 	        AgentRepItem[] agentsARI         =   new AgentRepItem[agentsList.size()];
 	        
@@ -108,24 +106,24 @@ public class Simulator
 			          throw new Exception("Unable to create domain " + profiles_names.get(i).getName() + "!");
 				 
 	      		if (d_.toString().substring(0, 3) .equals(conf.getConf().get("domain")))
-	        			Domains__.add(d_);
-		       
-	        	}
+	      			Domains__.add(((DomainRepItem) domainrepository.getItems().get(i)));
+	      	}
 	        
 	        DomainRepItem[] DomainsARI =  new DomainRepItem[Domains__.size()];
 	        for ( int j = 0 ; j < Domains__.size() ; j++)
 	        {
 	        		DomainsARI[j] = Domains__.get(j);
-	        	     System.out.println(" Domain #" + j + "\n \t Domain name     :  " + DomainsARI[j].getName()  
+	        		if (true)
+	        		System.out.println("\n Domain #" + (j+1) + "/" + Domains__.size() + "  Domain name     :  " + DomainsARI[j].getName()  
 								 + "\n \t Domain class    :  " + DomainsARI[j].getClass() 
 								 + "\n \t Domain fullname :  " + DomainsARI[j].getFullName() 
 								 + "\n \t Domain profiles :  " + DomainsARI[j].getProfiles() 
 								 + "\n \t Domain URL      :  " + DomainsARI[j].getURL()); 
-
 	        }
 	      
-	        //  We can either pick two different agents randomly or try all the combinations
-			// {{
+
+	        
+	        //  All the combinations
 
 	     //~~~   Set<RepItem> NamesSet = new HashSet<RepItem>();
 	      //~~~	Iterator<RepItem> iter = agents_names.iterator();
@@ -136,9 +134,9 @@ public class Simulator
 		    		NamesSet.add(iter.next());
 		    	
 		    	AgentsCombinations = SetTools.cartesianProduct(NamesSet, NamesSet); 
-       
-            System.out.println("\n Total [Agents] combinations  : " + AgentsCombinations.size() + 
-            					  "\n Total [Preferences] profiles : " + profiles_names.size()); 
+
+		    	System.out.println("\n Total [Agents] combinations  : " + AgentsCombinations.size() + 
+            					   "\n Total [Preferences] profiles : " + DomainsARI.length); 
             
                     // }}
             
@@ -147,15 +145,13 @@ public class Simulator
  //####### trials ################################################
             
             if (all) // all combinations
-        			totaltrials = AgentsCombinations.size() * profiles_names.size();
+        			totaltrials = AgentsCombinations.size() * DomainsARI.length;
 
           //T> combination = AgentsCombinations.iterator();
           //T> while (combination.hasNext()) 
           //T>	 System.out.println("\t  >  "+ combination.next());
           //T> System.out.println("\t  totaltrials = "+ totaltrials );
             
-            Thread[] threads = new Thread[totaltrials];
-
 			for ( DomainRepItem domain : DomainsARI  )
 			{
 				combination = AgentsCombinations.iterator();
@@ -226,44 +222,39 @@ public class Simulator
 						agentsrep[j] = new AgentRepItem(agents.get(j), agents.get(j), agents.get(j));
 	
 					System.out.print("\n Loading options...\n");
+					for (String option : conf.getTournamentOptions().keySet())
+						TournamentConfiguration.addOption(option, Integer.parseInt(conf.getTournamentOptions().get(option))  );	
+
+
+					// negotiation instance
 					
-		    		  for (String key : conf.getTournamentOptions().keySet())
-		    			TournamentConfiguration.addOption(key,  Integer.parseInt(conf.getTournamentOptions().get(key))  );	
+					ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
+					System.out.print("Negotiation session built: " + ns + "\n");
+					ns.startSession();
 
-					if (true) // method 1
-					{
-							ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
-							System.out.print("Negotiation session built: " + ns + "\n");
-							ns.startSession();
+					System.out.print("...\n");
+					 Thread.sleep(500); 
 
-							System.out.println(" \t   ns.getName()          = " + ns.getName()  );
-							System.out.println(" \t   ns.getSessionNumber() = " + ns.getSessionNumber() );
-							System.out.println(" \t   ns.getTotalSessions() = " + ns.getTotalSessions() );
-					}
-					else
-					{
-							// Set the tournament.
-							threads[trial-1] = new Thread(ns);
-							threads[trial-1].start();
-							System.out.println("Thread " + trial + " started");
-							threads[trial-1].join(); // wait until the tournament finishes
-							System.out.println("Thread " + trial + " finished");
-					}
+							
+					System.out.println(" \t   ns.getName()          = " + ns.getName()  );
+					System.out.println(" \t   ns.getSessionNumber() = " + ns.getSessionNumber() );
+					System.out.println(" \t   ns.getTotalSessions() = " + ns.getTotalSessions() );
+
 
 					System.out.println("======== Trial " + trial + "/" + totaltrials + " finished ========} \n");
-				
-					trial++;
-					
+
 					if (trial == totaltrials && all==false) 
 					{
 						System.out.println("\n" + trial + "/" + totaltrials + " trials finished.");
 						System.exit(0);
 					}
-					
+
+					trial++;
+
 				} // combination
 			} // domain	
 
-			System.out.println("\n" + trial + " trials finished from " + AgentsCombinations.size() * profiles_names.size() + " combinations");
+			System.out.println("\n" + (trial-1) + " trials finished from " + totaltrials + " combinations");
 
 		}
 		catch (Exception e) 
