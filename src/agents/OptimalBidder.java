@@ -1,11 +1,7 @@
 /** 
- * 	OptimalBidder: using the optimal stopping rule (cutoffs) for bidding. 
- *  Estimates rounds based on own/opponent actions.	
- *  
- *  TODO define as an optimal bidding agent template
- * 
- * @author rafik		
- ************************************************************************************************************************************/
+ * 	OptimalBidder: using the optimal stopping rule (cutoffs) for bidding
+ *  @author rafik		
+ **/
 
 
 package agents;
@@ -15,107 +11,73 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.actions.Accept;
+import negotiator.DiscreteTimeline;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
-import negotiator.utility.Evaluator;
-import negotiator.utility.EvaluatorDiscrete;
 
-public class OptimalBidder extends Agent 
+public abstract class OptimalBidder extends Agent 
 {	
-		private static double rvB; 
-		private static int n, totalSessions;
-		private static HashMap<Integer, Value> values;
-		private static Issue pie;
+		private static double rv = -1.0; 
+		protected static int partitions;
+		private static int OwntotalSessions;
+		protected static HashMap<Integer, Value> values;
+		private static ArrayList<Double> Bids;
+		protected static Issue pie;
 		private Action actionOfPartner = null;
-		
-/**************************************************************************************************************
-  TODO Define as public abstract double bid(); 
- */
- public double bid(int j)
- {
-		return 0.5 * (   (j==1) ? rvB : sq(bid(j-1))   ) + 0.5;  
- }
-		 
-/********************************************************************************************************************************
- * init is called when a next session starts with the same opponent.
- */
- public void init()
-{
 
+/**
+ * computation of the bib for round j
+ * @param round j
+ * @return bid value
+ **/
+public abstract double bid(int j); 
+
+/**
+ * depending on the agent's utility space, the reservation 
+ * value will have to be acquired in a specific manner 
+ * @param double arg
+ * @return double rv
+ * @throws Exception 
+ **/
+public abstract double GetReservationValue(double arg) throws Exception;
+
+/**
+ * Init is called when a next session starts with the same opponent.
+ **/
+public void init()
+{
 			try 
 			{
-				totalSessions =  getSessionsTotal();
-				print_("=====================================================================");
-			
-			// {{
-			
-				boolean flag = true;
-		        int i, nvalues = -1;
-		        
-		        rvB  =  0.0;
-		        n    =  1000;
-				pie  =  utilitySpace.getDomain().getIssues().get(0);	// pie is the issue
+				OwntotalSessions = (GetTotalRounds() - 1)/2;
+		        pie  =  utilitySpace.getDomain().getIssues().get(0);	 // unique issue
 				
+				print_("=====================================================================");
+				print_("   OwntotalSessions = " + OwntotalSessions);
 				print_("   issue name = " + pie);
 				print_("   issue type = " + pie.getType());
 				
-				switch ( pie.getType() ) //  get/set rvB...
-				{
-					case DISCRETE:
-					{
-						IssueDiscrete discrete_pie = (IssueDiscrete) pie;
-						nvalues = discrete_pie.getNumberOfValues();
-						print_("   nvalues = " + nvalues);	
-						
-						values = new HashMap<Integer, Value>(nvalues);
-
-						for ( i = 0 ; i < nvalues ; i++ )
-						{
-							ValueDiscrete value = discrete_pie.getValue(i);
-							// evaluation 
-						    Evaluator eval = utilitySpace.getEvaluator(pie.getNumber());
-				            Integer evaluation = ((EvaluatorDiscrete)eval).getValue((ValueDiscrete)value);
-
-							values.put(i, value);
-				            
-				            if ( evaluation != 0 && flag ) // reaching rvB
-							{
-								rvB =  (double) i/n; // rvB normalized
-								utilitySpace.setReservationValue(rvB);
-								flag = false;
-							}
-				        }
-						break;			
-					}//case
-				default: throw new Exception("Type " + pie.getType() + " not supported by TAgent.");
-				} //switch
-
-				print_("   rvB = " + rvB );
+				rv = GetReservationValue(rv); // sets rvB
 				
-				ArrayList<Double> Bids = new ArrayList<Double>(totalSessions);
+				Bids = new ArrayList<Double>(OwntotalSessions);
 
-				for ( i = 1 ; i <= totalSessions ; i++ )
-					Bids.add(bid(i));
-				
-				print__("############     bids : \n");
-				for ( i = 0 ; i < totalSessions ; i++ )
+				for (int i = 0 ; i < OwntotalSessions ; i++ )
+					Bids.add(bid(i+1));
+
+				print_(" OwntotalSessions = " + OwntotalSessions);
+
+				for (int i = 0 ; i < OwntotalSessions ; i++ )
 					print_( " \t B[" + i + "] = " + Bids.get(i));
 					
-				print__("\n");
-
-			// }}
+				print_("\n=====================================================================");
 			}
 			catch (Exception e) 
 			{   
 				e.printStackTrace(); 
 			}	
 		}
-/********************************************************************************************************************************/
+
 		public static String getVersion() 
 		{
 			return "2.0 (Genius 4.2)"; 
@@ -126,28 +88,24 @@ public class OptimalBidder extends Agent
 		{
 			return "OptimalBidder";
 		}
-/********************************************************************************************************************************/
+
 		public void ReceiveMessage(Action opponentAction) 
 		{
 			actionOfPartner = opponentAction;
 		}
 		
-/*********************************************************************************************************************************/
+
 		public Action chooseAction()
 		{
 			Action action = null;
 			try 
 			{ 
-				print_(" Session : " + getSessionNumber() + " / " + getSessionsTotal());
-				
 				if ( actionOfPartner == null )
 				{
 					action = chooseOptimalBidAction();
 				}
 				if ( actionOfPartner instanceof Offer )
 				{
-					System.out.println(" Him");
-
 					action = chooseOptimalBidAction();
 				}
 			} 
@@ -158,10 +116,10 @@ public class OptimalBidder extends Agent
 			return action;
 		}
 
-/******************************************************************************************************************
- * Wrapper for getOptimalBid, for convenience.
+/**
+ * Wrapper for getOptimalBid, for convenience
  * @return new Bid()
- */
+ **/
 		private Action chooseOptimalBidAction() 
 		{
 			Bid nextBid = null ;
@@ -173,66 +131,48 @@ public class OptimalBidder extends Agent
 			{ 
 				print_("Problem with received bid:"+e.getMessage()+". cancelling bidding");
 			}
-			if (nextBid == null) 
-				return (new Accept(getAgentID()));          
-			
 			return (new Offer(getAgentID(), nextBid));
 		}
-
-/*******************************************************************************************************************/
-		private Bid getOptimalBid() throws Exception
-		{
-
-			print_(" Session : " + getSessionNumber() + " / " + getSessionsTotal() );
-	        
-// {{
-			TreeMap<Integer, Value> entries = new TreeMap<Integer, Value>(values);
-		    HashMap<Integer, Value> vals = null;
-
-		    int rleft =  getSessionsTotal() - getSessionNumber(); 
-			print_("  rleft = " + rleft );
-
-		    
-		    double min = 1.0;
-			Value v_opt = null;
-			for (Integer key : entries.keySet())
-			{ 
-			   Value v = values.get(key);
-	            
-	           vals = new HashMap<Integer, Value>();
-			   vals.put(pie.getNumber(), v);
-
-			   	if (false)
-					        print_("key = " + key + 
-					        		"   " + bid(rleft) +
-					        		"   " + ((double) key/n) + 
-					        		"   " +  getSessionNumber() + "/" + getSessionsTotal() + 
-					        		"\t utility( Value = " + v + " ) = " + getUtility(new Bid(utilitySpace.getDomain(), vals)) );
-			
-		        if ( Math.abs( bid(rleft) - (double) key/n ) < min )
-		        {
-		        		min = Math.abs( bid(rleft) - (double) key/n );
-		        		v_opt = values.get(key);
-		        }
-			}
-			
-		    HashMap<Integer, Value> opt_vals = new  HashMap<Integer, Value>();
-
-		    opt_vals.put(pie.getNumber(), v_opt);
-			
-		    Bid opt_bid = new Bid(utilitySpace.getDomain(), opt_vals);
-		    
-	        print_(" Bidding opt_bid = " + opt_bid); 
-
-			return opt_bid;
-
-		}
-
-		double sq(double x) { return x*x; }
-		void print_(String s) {System.out.println("############  " + s);}
-		void print__(String s) {System.out.print(s);}
-		void exit_() {System.out.println("\nexit.\n"); System.exit(0);}
 		
+// discrete rounds' methods
+public int GetRound()          {     return ((DiscreteTimeline) timeline).getRound();           }
+public int GetRoundsLeft()     {     return ((DiscreteTimeline) timeline).getRoundsLeft();      }
+public int GetOwnRoundsLeft()  {     return ((DiscreteTimeline) timeline).getOwnRoundsLeft();   }
+public int GetTotalRounds()    {     return ((DiscreteTimeline) timeline).getTotalRounds();     }
+public double GetTotalTime()   {   	 return ((DiscreteTimeline) timeline).getTotalTime();       }
+// trace 
+void print_(String s) {System.out.println("############  " + s);}
+
+/**
+ * 
+ **/
+	private Bid getOptimalBid() throws Exception
+	{
+		print_("############   B's  ####################################");
+		print_(" Round         = " + GetRound() );
+		print_(" RoundsLeft    = " + GetRoundsLeft() );
+		print_(" OwnRoundsLeft = " + GetOwnRoundsLeft() );
+		print_(" TotalRounds   = " + GetTotalRounds() );
+		print_(" TotalTime     = " + GetTotalTime() );
+
+	    double min = 1.0;
+		Value OptValue = null;
+		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
+		{ 
+		    if ( Math.abs( Bids.get(GetOwnRoundsLeft()) - (double) key/partitions ) < min )
+	        {
+	        		min = Math.abs( Bids.get(GetOwnRoundsLeft()) - (double) key/partitions );
+	        		OptValue = values.get(key);
+	        }
+		}
+		
+	    HashMap<Integer, Value> OptVals = new HashMap<Integer, Value>();
+	    OptVals.put(pie.getNumber(), OptValue);
+	    return new Bid(utilitySpace.getDomain(), OptVals); // optimal bid
+
 	}
+
+		
+}
 
 // End 
