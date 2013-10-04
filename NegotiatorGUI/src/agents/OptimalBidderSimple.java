@@ -1,9 +1,9 @@
 /** 
  * 	OptimalBidder: using the optimal stopping rule (cutoffs) for bidding. 
+ * 	B_{j+1} = 1/2 + 1/2 B_j^2
  * 
  * @author rafik		
  ************************************************************************************************************************************/
-
 
 package agents;
 
