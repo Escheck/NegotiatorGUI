@@ -4,7 +4,6 @@
 		protocol =  "negotiator.protocol.alternatingoffers.AlternatingOffersProtocol"
 		trials   =  "20"   
 		sessions =  "5" 
-		rounds   =  "10" 
 		log      =  "log/_log/" 
 		domain   = "Pie"
 		trace    =  "false"
