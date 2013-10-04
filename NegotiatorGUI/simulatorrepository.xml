@@ -35,7 +35,7 @@
 </tournament>
 
 <agents>   
-<!--
+
 		   <agent>ANAC 2011 - ValueModelAgent</agent>
            <agent>ANAC 2011 - Gahboninho</agent>
            <agent>ANAC 2011 - BRAMAgent</agent>
@@ -54,13 +54,12 @@
            <agent>SimpleAgentSavingBidHistory</agent>
            <agent>Trade-Off agent</agent>
            <agent>FuzzyAgent</agent>  		 
-		<agent>Boulware</agent>
+		   <agent>Boulware</agent>
            <agent>Conceder</agent>
            <agent>Conceder Linear</agent> 
-           -->
-
-           <agent>OptimalBidder</agent>
            <agent>Hardliner</agent>
+           <agent>OptimalBidderSimple</agent>		<!-- the agent -->
+
 </agents>
 
 </simulator>
