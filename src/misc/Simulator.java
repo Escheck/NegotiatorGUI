@@ -18,11 +18,9 @@ package misc;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -47,16 +45,13 @@ public class Simulator
 			
 		  SimulatorConfiguration conf =  SimulatorConfiguration.getInstance(Global.SIMULATOR_REPOSITORY); 
 			
-    		  for (Object i : conf.get("rounds"))
-    		      System.out.println( "round = " + i );
 	    	
 			String path 		  =  conf.getConf().get("root"),
 				   ProtoName  =  conf.getConf().get("protocol"),
 				   outputFile =  conf.getConf().get("log") + Global.getOutcomesFileName().replaceAll("log/", "");
 			boolean  trace    =  conf.getConf().get("trace").equals("false") ? false : true, 
 					 all      =  conf.getConf().get("all").equals("false") ? false : true; // if == true, totaltrials==number of all possible combinations
-			int totaltrials   =  Integer.parseInt(conf.getConf().get("trials")); 
-
+			int totaltrials   =  Integer.parseInt(conf.getConf().get("trials"));
 
 			// Trials' variables
 
