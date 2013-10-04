@@ -157,19 +157,21 @@ public abstract class OptimalBidder extends Agent
 		print(" TotalTime     = " + getTotalTime() );
 
 		double min = 1.0;
-		Value OptValue = null;
+		Value optValue = null;
 		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
 		{ 
-			if ( Math.abs( bids.get(getOwnRoundsLeft()) - (double) key/partitions ) < min )
+			Double targetUtility = bids.get(getOwnRoundsLeft());
+			double piePartition = (double) key/partitions;
+			if ( Math.abs( targetUtility - piePartition ) < min )
 			{
-				min = Math.abs( bids.get(getOwnRoundsLeft()) - (double) key/partitions );
-				OptValue = values.get(key);
+				min = Math.abs( targetUtility - piePartition );
+				optValue = values.get(key);
 			}
 		}
 
-		HashMap<Integer, Value> OptVals = new HashMap<Integer, Value>();
-		OptVals.put(pie.getNumber(), OptValue);
-		return new Bid(utilitySpace.getDomain(), OptVals); // optimal bid
+		HashMap<Integer, Value> optVals = new HashMap<Integer, Value>();
+		optVals.put(pie.getNumber(), optValue);
+		return new Bid(utilitySpace.getDomain(), optVals); // optimal bid
 
 	}
 
