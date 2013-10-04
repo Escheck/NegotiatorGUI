@@ -4,12 +4,14 @@
 		protocol =  "negotiator.protocol.alternatingoffers.AlternatingOffersProtocol"
 		trials   =  "20"   
 		sessions =  "5" 
+		rounds   =  "10" 
 		log      =  "log/_log/" 
 		domain   = "Pie"
 		trace    =  "false"
 		all      =  "true">   <!-- use trials when all==flase, -->
 		
-<rounds>		<round>1</round>
+<rounds>		
+				<round>1</round>
 				<round>10</round>
 				<round>50</round>
 				<round>100</round>		
@@ -35,9 +37,6 @@
 
 <agents>   
 <!--
-		   <agent>TAgent</agent>
-           <agent>OptimalBidder</agent>
-           
 		   <agent>ANAC 2011 - ValueModelAgent</agent>
            <agent>ANAC 2011 - Gahboninho</agent>
            <agent>ANAC 2011 - BRAMAgent</agent>
@@ -58,10 +57,11 @@
            <agent>FuzzyAgent</agent>  		 
 		<agent>Boulware</agent>
            <agent>Conceder</agent>
+           <agent>Conceder Linear</agent> 
            -->
 
+           <agent>OptimalBidder</agent>
            <agent>Hardliner</agent>
-           <agent>Conceder Linear</agent> 
 </agents>
 
 </simulator>
