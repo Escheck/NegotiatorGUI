@@ -25,6 +25,11 @@ public class OptimalBidderSimpleU extends OptimalBidderU
 		super.init();
 	}
 
+	@Override
+	public String getName()
+	{
+		return "OptimalBidderSimpleU";
+	}
 	/**
 	 *  computation of the bid for round j as in prop 4.3
 	 *  @param round j
