@@ -49,7 +49,7 @@ public class Global {
 	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Temporary flag for use in AAMAS 2014 experiments */
-	public static final boolean MANUAL_FILTER_OF_PROFILES = !false;
+	public static final boolean MANUAL_FILTER_OF_PROFILES = false;
 	
 	public Global() {}
 
