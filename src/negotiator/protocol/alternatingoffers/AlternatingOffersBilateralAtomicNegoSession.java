@@ -528,7 +528,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		BidPoint rvPoint = new BidPoint(lastBid, rvA, rvB);		// the bid is unimportant
 		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
 		double distanceToNash = rvPoint.getDistance(nash);
-		System.err.println("Producing emergency outcome of utility " + rvA + ", " + rvB);
+		System.err.println("Producing reservation outcome of utility " + rvA + ", " + rvB + ". Reason: " + logMsg);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
 		

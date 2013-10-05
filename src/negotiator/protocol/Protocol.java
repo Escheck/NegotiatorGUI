@@ -3,7 +3,9 @@ package negotiator.protocol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import java.io.Serializable;
+
 import negotiator.Agent;
 import negotiator.Domain;
 import negotiator.NegotiationEventListener;

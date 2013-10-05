@@ -33,8 +33,8 @@
             
             <agentRepItem description="Simple UI agent" classPath="agents.UIAgent" agentName="UIAgent"/>
             <agentRepItem description="UI agent with advanced GUI (by Alina)" classPath="agents.UIAgentExtended" agentName="UIAgent Extended"/>
-            <agentRepItem description="The Random Walker" classPath="agents.SimpleAgent" agentName="SimpleAgt"/>
-            <agentRepItem description="Improved Random Walker" classPath="agents.SimpleAgt2" agentName="SimpleAgt2"/>
+            <agentRepItem description="The Random Walker" classPath="agents.SimpleAgent" agentName="The Random Walker"/>
+            <agentRepItem description="Improved Random Walker" classPath="agents.SimpleAgt2" agentName="Improved Random Walker"/>
             <agentRepItem description="Saving History Agent" classPath="agents.SimpleAgentSavingBidHistory" agentName="SimpleAgentSavingBidHistory"/>
             <agentRepItem description="Trade-Off agent designed by P. Faratin, C. Sierra and N. R. Jennings" classPath="agents.SimilarityAgent" agentName="Trade-Off agent"/>
             <agentRepItem description="Fuzzy agent designed by Zaynab Raeesy and Ryszard Kowalczyk" classPath="agents.FuzzyAgent" agentName="FuzzyAgent"/>
