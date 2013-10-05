@@ -91,7 +91,7 @@ public abstract class OptimalBidderU extends Agent
 	@Override
 	public String getName()
 	{
-		return "OptimalBidder";
+		return "OptimalBidderU";
 	}
 
 	public void ReceiveMessage(Action opponentAction) 
@@ -163,17 +163,18 @@ public abstract class OptimalBidderU extends Agent
 
 		double min = 1.0;
 		Value optValue = null;
+
+		Double targetUtility = utilities.get(getOwnRoundsLeft()); // cutoff utility : U[roundsleft]
+		double targetBid = targetUtility + rv;     // Finding the x for which u_B(x) = targetUtility
+		print(" targetBidToBid  = " + targetBid );
+
 		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
 		{ 
-			Double targetUtility = utilities.get(getOwnRoundsLeft()); // cutoff utility: U[roundsleft]
-			double targetBidToBid = targetUtility + rv;     // Finding the x for which u(x) = targetUtility
-			print(" targetBidToBid  = " + targetBidToBid );
-			
 			// find the closest bid to targetBidToBid
 			double piePartition = (double) key/partitions;
-			if ( Math.abs( targetBidToBid - piePartition ) < min )
+			if ( Math.abs( targetBid - piePartition ) < min )
 			{
-				min = Math.abs( targetBidToBid - piePartition );
+				min = Math.abs( targetBid - piePartition );
 				optValue = values.get(key);
 			}
 		}

@@ -21,8 +21,13 @@ public class OptimalBidderSimple extends OptimalBidder
 
 	public void init()
 	{
-		super.init();
 		partitions = 1000;
+		super.init();
+	}
+	@Override
+	public String getName()
+	{
+		return "OptimalBidderSimple";
 	}
 
 	/**
@@ -38,7 +43,6 @@ public class OptimalBidderSimple extends OptimalBidder
 		else
 			return 0.5 + 0.5 *  Math.pow(bid(j-1), 2) ;
 	} 
-
 	/**
 	 *  reservation value: if the reservation value is already set (<> -1.0) simply return it, 
 	 *  otherwise get it from the utility space 
@@ -52,7 +56,7 @@ public class OptimalBidderSimple extends OptimalBidder
 		boolean flag = true;
 		double rv = 0.0;
 
-		if (arg == -1.0 ) // first time
+		if (arg == -1.0 ) // first time  // TODO rmeove the -1, rv, etc.
 		{
 			if ( pie.getType().equals( ISSUETYPE.DISCRETE) ) //  get/set rvB...
 			{
@@ -71,7 +75,7 @@ public class OptimalBidderSimple extends OptimalBidder
 					if ( evaluation != 0 && flag ) // reaching rvB
 					{
 						rv = (double) i/partitions; // rvB normalized
-						utilitySpace.setReservationValue(rv);
+						utilitySpace.setReservationValue(rv); // TODO no need for this, remove it.
 						flag = false;
 						print("   rvB = " + rv );
 					}

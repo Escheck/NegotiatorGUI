@@ -146,7 +146,8 @@ public abstract class OptimalBidder extends Agent
 
 	/**
 	 * 
-	 **/
+	 *
+	 */
 	private Bid getOptimalBid() throws Exception
 	{
 		print("############   B's  ####################################");
@@ -162,6 +163,7 @@ public abstract class OptimalBidder extends Agent
 		{ 
 			Double targetUtility = bids.get(getOwnRoundsLeft());
 			double piePartition = (double) key/partitions;
+			
 			if ( Math.abs( targetUtility - piePartition ) < min )
 			{
 				min = Math.abs( targetUtility - piePartition );
@@ -174,8 +176,6 @@ public abstract class OptimalBidder extends Agent
 		return new Bid(utilitySpace.getDomain(), optVals); // optimal bid
 
 	}
-
-
 }
 
 // End 
