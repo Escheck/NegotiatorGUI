@@ -5,11 +5,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
+
 import negotiator.gui.NegoGUIApp;
 import negotiator.multipartyprotocol.MultiPartyProtocol;
 import negotiator.protocol.Protocol;
@@ -45,6 +47,9 @@ public class Global {
 	public static String logPreset = "";
 	
 	private static final Date loadDate = Calendar.getInstance().getTime();
+
+	/** Temporary flag for use in AAMAS 2014 experiments */
+	public static final boolean MANUAL_FILTER_OF_PROFILES = !false;
 	
 	public Global() {}
 
