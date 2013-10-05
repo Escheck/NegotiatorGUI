@@ -624,7 +624,7 @@ public class AlternatingOffersProtocol extends Protocol
 								// matching profiles first...
 				if (profileA.equals(profileB))
 					continue;
-				if (Global.MANUAL_FILTER_OF_PROFILES && shouldSkipProfiles(profileA, profileB))
+				if (Global.AAMAS_2014_EXPERIMENTS && shouldSkipProfiles(profileA, profileB))
 				{
 					System.out.println("Skipping [A:" + profileA.getName() + "] vs. [B:" + profileB.getName() + "]");
 					continue;

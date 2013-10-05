@@ -49,6 +49,10 @@ public class DiscreteTimeline extends Timeline
 	@Override
 	public double getTime()
 	{
+		if (Global.AAMAS_2014_EXPERIMENTS && totalRounds == 3)
+		{
+			return 0.99;
+		}
 		double t = (double)cRound / (double)totalRounds;
 		if (t > 1)
 			t = 1;
