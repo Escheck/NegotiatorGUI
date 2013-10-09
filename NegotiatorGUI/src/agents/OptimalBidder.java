@@ -130,8 +130,13 @@ public abstract class OptimalBidder extends Agent
 		}
 		catch (Exception e) 
 		{ 
-			print("Problem with received bid:"+e.getMessage()+". cancelling bidding");
+			print("Problem with received bid: <" + e.getMessage() + ">. Cancelling bidding");
 		}
+
+		System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+		System.out.println(" >> " + nextBid);
+		System.out.println(" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
+		
 		return (new Offer(getAgentID(), nextBid));
 	}
 
@@ -159,21 +164,30 @@ public abstract class OptimalBidder extends Agent
 
 		double min = 1.0;
 		Value optValue = null;
+
+
+		
 		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
 		{ 
-			Double targetUtility = bids.get(getOwnRoundsLeft());
+
+			Double targetBid = bids.get(getOwnRoundsLeft() - 1);
 			double piePartition = (double) key/partitions;
-			
-			if ( Math.abs( targetUtility - piePartition ) < min )
+
+			if ( Math.abs( targetBid - piePartition ) < min )
 			{
-				min = Math.abs( targetUtility - piePartition );
+				min = Math.abs( targetBid - piePartition );
 				optValue = values.get(key);
 			}
 		}
-
+		
 		HashMap<Integer, Value> optVals = new HashMap<Integer, Value>();
 		optVals.put(pie.getNumber(), optValue);
-		return new Bid(utilitySpace.getDomain(), optVals); // optimal bid
+		Bid ToBid = new Bid(utilitySpace.getDomain(), optVals);
+
+		print(" ToBid = " + ToBid );
+		
+
+		return ToBid; // optimal bid
 
 	}
 }
