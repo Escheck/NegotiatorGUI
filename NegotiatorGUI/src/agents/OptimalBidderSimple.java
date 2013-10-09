@@ -1,6 +1,9 @@
 /** 
  * 	OptimalBidder: using the optimal stopping rule (cutoffs) for bidding. 
  * 	B_{j+1} = 1/2 + 1/2 B_j^2
+ * 
+ * 
+ * 
  * @author rafik		
  ************************************************************************************************************************************/
 
@@ -58,6 +61,7 @@ public class OptimalBidderSimple extends OptimalBidder
 
 		if (arg == -1.0 ) // first time  // TODO rmeove the -1, rv, etc.
 		{
+			
 			if ( pie.getType().equals( ISSUETYPE.DISCRETE) ) //  get/set rvB...
 			{
 				IssueDiscrete discrete_pie = (IssueDiscrete) pie;
@@ -81,6 +85,8 @@ public class OptimalBidderSimple extends OptimalBidder
 					}
 				}
 				return rv;
+			
+			
 			}
 			else 
 			{

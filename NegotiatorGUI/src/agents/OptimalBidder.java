@@ -17,6 +17,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
+import negotiator.utility.UtilitySpace;
 
 public abstract class OptimalBidder extends Agent 
 {	
@@ -59,8 +60,10 @@ public abstract class OptimalBidder extends Agent
 			print("   issue name       = " + pie);
 			print("   issue type       = " + pie.getType());
 
-			rv = getReservationValue(rv); // sets rvB
+			//rv = getReservationValue(rv); // sets rvB
 
+			rv = utilitySpace.getReservationValue();
+			
 			bids = new ArrayList<Double>(ownTotalRounds);
 
 			for (int i = 0 ; i < ownTotalRounds ; i++ )
