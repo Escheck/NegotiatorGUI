@@ -37,8 +37,8 @@ public abstract class OptimalBidder extends Agent
 
 	/**
 	 * Getting the values
-	 * @param double arg
-	 * @return double rv
+	 * @param void
+	 * @return void
 	 * @throws Exception 
 	 **/
 	public abstract void getValues() throws Exception;
