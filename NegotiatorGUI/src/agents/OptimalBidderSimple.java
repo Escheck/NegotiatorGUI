@@ -20,8 +20,6 @@ import negotiator.utility.EvaluatorDiscrete;
 
 public class OptimalBidderSimple extends OptimalBidder 
 {	
-	private static double rvB; 
-
 	public void init()
 	{
 		partitions = 1000;
@@ -42,7 +40,7 @@ public class OptimalBidderSimple extends OptimalBidder
 	public double bid(int j)
 	{
 		if ( j == 1 )
-			return 0.5 + 0.5 * rvB ;
+			return 0.5 + 0.5 * rv ;
 		else
 			return 0.5 + 0.5 *  Math.pow(bid(j-1), 2) ;
 	} 
