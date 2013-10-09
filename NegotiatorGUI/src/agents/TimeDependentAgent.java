@@ -2,10 +2,11 @@ package agents;
 
 import java.util.List;
 
+import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
-import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
@@ -51,14 +52,20 @@ public abstract class TimeDependentAgent extends BilateralAgent
 		return "1.1";
 	}	
 	
+	/**
+	 * Sets Pmax to the highest obtainable utility, en Pmin to the lowest obtainable utility above the reservation value.
+	 */
 	@Override
 	public void init()
 	{
 		super.init();
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
 		List<BidDetails> allOutcomes = outcomeSpace.getAllOutcomes();
-		Pmax = allOutcomes.get(0).getMyUndiscountedUtil();
-		Pmin = allOutcomes.get(allOutcomes.size() - 1).getMyUndiscountedUtil();
+		double maximumUtilityInScenario = allOutcomes.get(0).getMyUndiscountedUtil();
+		double mininimumUtilityInScenario = allOutcomes.get(allOutcomes.size() - 1).getMyUndiscountedUtil();
+		double rv = utilitySpace.getReservationValueUndiscounted();
+		Pmax = maximumUtilityInScenario;
+		Pmin = Math.max(mininimumUtilityInScenario, rv);
 		log("Pmin = " + Pmin);
 		log("Pmax = " + Pmax);
 	}

@@ -100,10 +100,8 @@ public class AlternatingOffersProtocol extends Protocol
 		try
 		{
 			startNegotiation();
-			// only sleep if batch mode????
-			Thread.sleep(1000); // 1 second delay before next nego starts. Used
-								// to be 5, is it needed anyway?
-		} catch (Exception e)
+		} 
+		catch (Exception e)
 		{
 			new Warning("Problem starting negotiation:" + e);
 			e.printStackTrace();
@@ -167,7 +165,7 @@ public class AlternatingOffersProtocol extends Protocol
 		} else
 		{
 			negoThread = new Thread(sessionrunner);
-			System.out.println("nego start. " + System.currentTimeMillis() / 1000);
+			System.out.println("Real-time negotiation start. " + System.currentTimeMillis() / 1000);
 			negoThread.start();
 			try
 			{
