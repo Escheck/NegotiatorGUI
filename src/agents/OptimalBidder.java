@@ -131,10 +131,8 @@ public abstract class OptimalBidder extends Agent
 		catch (Exception e) 
 		{ 
 			print("Problem with received bid: <" + e.getMessage() + ">. Cancelling bidding");
-			
 			System.out.println("\t\t\t\tErrrrr!   => " + nextBid);			
 			System.exit(0);
-			
 		}
 
 		System.out.println("\t\t\t\t>>>>>>>>>>>>>>>>>>> ");
