@@ -656,8 +656,10 @@ public class AlternatingOffersProtocol extends Protocol
 		Pattern r = Pattern.compile(regex);
 		Matcher mA = r.matcher(nameA);
 		Matcher mB = r.matcher(nameB);
-		mA.find();
-		mB.find();
+		if (!mA.find())
+			return false;
+		if (!mB.find())
+			return false;
 		String agentNameInProfileA = mA.group(1);
 		String agentNameInProfileB = mB.group(1);
 		String rvAString = mA.group(2);
