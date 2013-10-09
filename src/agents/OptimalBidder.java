@@ -37,13 +37,12 @@ public abstract class OptimalBidder extends Agent
 	public abstract double bid(int j); 
 
 	/**
-	 * depending on the agent's utility space, the reservation 
-	 * value will have to be acquired in a specific manner 
+	 * Getting the values
 	 * @param double arg
 	 * @return double rv
 	 * @throws Exception 
 	 **/
-	public abstract double getReservationValue(double arg) throws Exception;
+	public abstract void getValues() throws Exception;
 
 	/**
 	 * Init is called when a next session starts with the same opponent.
@@ -60,7 +59,7 @@ public abstract class OptimalBidder extends Agent
 			print("   issue name       = " + pie);
 			print("   issue type       = " + pie.getType());
 
-			//rv = getReservationValue(rv); // sets rvB
+			getValues(); // setting all the values
 
 			rv = utilitySpace.getReservationValue();
 			
@@ -174,7 +173,12 @@ public abstract class OptimalBidder extends Agent
 		print(" bids.size = " + bids.size() );
 		print(" getOwnRoundsLeft = " + getOwnRoundsLeft() );
 
-		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
+
+		TreeMap<Integer, Value> T = new TreeMap<Integer, Value>(values);
+		
+		print(" T.size = " + T.size() );
+		
+		for (Integer key : T.keySet())
 		{ 
 			roundsleft = getOwnRoundsLeft();
 			
@@ -187,14 +191,13 @@ public abstract class OptimalBidder extends Agent
 				optValue = values.get(key);
 			}
 		}
-		
+
 		HashMap<Integer, Value> optVals = new HashMap<Integer, Value>();
 		optVals.put(pie.getNumber(), optValue);
 		Bid ToBid = new Bid(utilitySpace.getDomain(), optVals);
 
 		print(" ToBid = " + ToBid );
 		
-
 		return ToBid; // optimal bid
 
 	}
