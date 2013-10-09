@@ -20,7 +20,7 @@ import negotiator.issue.Value;
 
 public abstract class OptimalBidder extends Agent 
 {	
-	protected static double rv = -1.0; 
+	protected double rv = -1.0; 
 	protected static int partitions;
 	private static int ownTotalRounds;
 	protected static HashMap<Integer, Value> values;
@@ -61,6 +61,8 @@ public abstract class OptimalBidder extends Agent
 			getValues(); // setting all the values
 
 			rv = utilitySpace.getReservationValue();
+			
+			print("   RV: " + rv);
 			
 			bids = new ArrayList<Double>(ownTotalRounds);
 
