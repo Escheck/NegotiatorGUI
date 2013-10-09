@@ -9,7 +9,6 @@ package agents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
-
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.DiscreteTimeline;
@@ -62,7 +61,7 @@ public abstract class OptimalBidder extends Agent
 
 			rv = utilitySpace.getReservationValue();
 			
-			print("   RV: " + rv);
+			print("   Reservation value = " + rv);
 			
 			bids = new ArrayList<Double>(ownTotalRounds);
 
