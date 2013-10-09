@@ -54,9 +54,9 @@ public abstract class OptimalBidder extends Agent
 			pie  =  utilitySpace.getDomain().getIssues().get(0);	 // unique issue
 
 			print("=====================================================================");
-			print("   ownTotalRounds = " + ownTotalRounds);
-			print("   issue name       = " + pie);
-			print("   issue type       = " + pie.getType());
+			print("   ownTotalRounds  = " + ownTotalRounds);
+			print("   issue name      = " + pie);
+			print("   issue type      = " + pie.getType());
 
 			getValues(); // setting all the values
 
@@ -135,10 +135,6 @@ public abstract class OptimalBidder extends Agent
 			System.out.println("\t\t\t\tErrrrr!   => " + nextBid);			
 			System.exit(0);
 		}
-
-		System.out.println("\t\t\t\t>>>>>>>>>>>>>>>>>>> ");
-		System.out.println("\t\t\t\t> " + nextBid);
-		System.out.println("\t\t\t\t>>>>>>>>>>>>>>>>>>> \n");
 		
 		return (new Offer(getAgentID(), nextBid));
 	}

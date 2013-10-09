@@ -40,9 +40,9 @@ public class OptimalBidderSimple extends OptimalBidder
 	public double bid(int j)
 	{
 		if ( j == 1 )
-			return 0.5 + 0.5 * rv ;
+			return 0.5 + 0.5 * utilitySpace.getReservationValue() ;
 		else
-			return 0.5 + 0.5 *  Math.pow(bid(j-1), 2) ;
+			return 0.5 + 0.5 *  Math.pow(bid(j-1), 2);
 	} 
 	/**
 	 *  Getting the issue's values
@@ -63,7 +63,7 @@ public class OptimalBidderSimple extends OptimalBidder
 				{
 					ValueDiscrete value = discrete_pie.getValue(i);
 					values.put(i, value);
-					print( "  values[" + i + "]  = " + value);	
+					//print( "  values[" + i + "]  = " + value);	
 				}
 			}
 			else 
