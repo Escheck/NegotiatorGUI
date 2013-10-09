@@ -654,7 +654,7 @@ public class AlternatingOffersProtocol extends Protocol
 	{
 		String nameA = profileA.getName();
 		String nameB = profileB.getName();
-		String regex = "pie_(\\w)_(\\d*)";
+		String regex = "pie_(\\w)_rv=0.(\\d)";
 		Pattern r = Pattern.compile(regex);
 		Matcher mA = r.matcher(nameA);
 		Matcher mB = r.matcher(nameB);
@@ -664,20 +664,20 @@ public class AlternatingOffersProtocol extends Protocol
 		String agentNameInProfileB = mB.group(1);
 		String rvAString = mA.group(2);
 		String rvBString = mB.group(2);
-		int rvA = Integer.parseInt(rvAString);
-		int rvB = Integer.parseInt(rvBString);
-//		System.out.println("Matching in " + nameA);
-//		System.out.println("Found value for preference profile A: " + agentNameInProfileA );
-//		System.out.println("Found value for preference profile A: " + rvAString );
-//      System.out.println("Matching in " + nameB);
-//		System.out.println("Found value for preference profile B: " + agentNameInProfileB );
-//		System.out.println("Found value for preference profile B: " + rvBString );
+		double rvA = Integer.parseInt(rvAString) / 10.0;
+		double rvB = Integer.parseInt(rvBString) / 10.0;
+		System.out.println("Matching in " + nameA);
+		System.out.println("Found value for preference profile A: " + agentNameInProfileA );
+		System.out.println("Found value for preference profile A: " + rvAString );
+		System.out.println("Matching in " + nameB);
+		System.out.println("Found value for preference profile B: " + agentNameInProfileB );
+		System.out.println("Found value for preference profile B: " + rvBString );
 		
 		if ("B".equals(agentNameInProfileA))
 			return true;
 		if ("A".equals(agentNameInProfileB))
 			return true;
-		if (rvA <= rvB)
+		if (rvA + rvB >= 0.99)
 			return true;
 		
 		return false;
