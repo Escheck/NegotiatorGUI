@@ -626,7 +626,7 @@ public class AlternatingOffersProtocol extends Protocol
 					continue;
 				if (Global.AAMAS_2014_EXPERIMENTS && shouldSkipProfiles(profileA, profileB))
 				{
-					System.out.println("Skipping [A:" + profileA.getName() + "] vs. [B:" + profileB.getName() + "]");
+					System.out.println("Skipping session: [A:" + profileA.getName() + "] vs. [B:" + profileB.getName() + "]");
 					continue;
 				}
 				for (TournamentValue agentAval : agentAvalues)
@@ -666,12 +666,12 @@ public class AlternatingOffersProtocol extends Protocol
 		String rvBString = mB.group(2);
 		double rvA = Integer.parseInt(rvAString) / 10.0;
 		double rvB = Integer.parseInt(rvBString) / 10.0;
-		System.out.println("Matching in " + nameA);
-		System.out.println("Found value for preference profile A: " + agentNameInProfileA );
-		System.out.println("Found value for preference profile A: " + rvAString );
-		System.out.println("Matching in " + nameB);
-		System.out.println("Found value for preference profile B: " + agentNameInProfileB );
-		System.out.println("Found value for preference profile B: " + rvBString );
+//		System.out.println("Matching in " + nameA);
+//		System.out.println("Found value for preference profile A: " + agentNameInProfileA );
+//		System.out.println("Found value for preference profile A: " + rvAString );
+//		System.out.println("Matching in " + nameB);
+//		System.out.println("Found value for preference profile B: " + agentNameInProfileB );
+//		System.out.println("Found value for preference profile B: " + rvBString );
 		
 		if ("B".equals(agentNameInProfileA))
 			return true;
