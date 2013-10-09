@@ -56,8 +56,8 @@ public abstract class OptimalBidder extends Agent
 
 			print("=====================================================================");
 			print("   OwntotalSessions = " + ownTotalSessions);
-			print("   issue name = " + pie);
-			print("   issue type = " + pie.getType());
+			print("   issue name       = " + pie);
+			print("   issue type       = " + pie.getType());
 
 			rv = getReservationValue(rv); // sets rvB
 
@@ -66,10 +66,10 @@ public abstract class OptimalBidder extends Agent
 			for (int i = 0 ; i < ownTotalSessions ; i++ )
 				bids.add(bid(i+1));
 
-			print(" OwntotalSessions = " + ownTotalSessions);
+			print("   Bids : ");
 
 			for (int i = 0 ; i < ownTotalSessions ; i++ )
-				print( " \t B[" + i + "] = " + bids.get(i));
+				print( "\tB[" + i + "] = " + bids.get(i));
 
 			print("\n=====================================================================");
 		}
@@ -133,9 +133,9 @@ public abstract class OptimalBidder extends Agent
 			print("Problem with received bid: <" + e.getMessage() + ">. Cancelling bidding");
 		}
 
-		System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
-		System.out.println(" >> " + nextBid);
-		System.out.println(" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
+		System.out.println("\t\t >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+		System.out.println("\t\t >> " + nextBid);
+		System.out.println("\t\t <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
 		
 		return (new Offer(getAgentID(), nextBid));
 	}
@@ -163,14 +163,22 @@ public abstract class OptimalBidder extends Agent
 		print(" TotalTime     = " + getTotalTime() );
 
 		double min = 1.0;
+		int roundsleft = 0;
 		Value optValue = null;
 
+		print(" bids.size = " + bids.size() );
+		print(" getOwnRoundsLeft = " + getOwnRoundsLeft() );
 
-		
 		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
 		{ 
-
-			Double targetBid = bids.get(getOwnRoundsLeft() - 1);
+			roundsleft = getOwnRoundsLeft() - 1;
+			
+			//if (getOwnRoundsLeft() >= 1) // at least one round left
+			//	roundsleft = getOwnRoundsLeft() - 1;
+			//else // 0 rounds left
+			//	roundsleft = 0; // 
+			
+			Double targetBid = bids.get(roundsleft);
 			double piePartition = (double) key/partitions;
 
 			if ( Math.abs( targetBid - piePartition ) < min )
