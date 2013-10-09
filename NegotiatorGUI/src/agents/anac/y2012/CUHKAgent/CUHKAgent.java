@@ -2,15 +2,17 @@ package agents.anac.y2012.CUHKAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
+
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.Global;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.actions.Offer;
-import negotiator.BidIterator;
 import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -154,7 +156,7 @@ public class CUHKAgent extends Agent {
                         }
                     } else {//this is the last chance and we concede by providing the opponent the best offer he ever proposed to us
                         //in this case, it corresponds to an opponent whose decision time is short
-                    	if (timeline.getTime() > 0.9985 && estimateRoundLeft(true) < 5) {
+                    	if ((Global.AAMAS_2014_EXPERIMENTS ? true : timeline.getTime() > 0.9985) && estimateRoundLeft(true) < 5) {
                             //bid = opponentBidHistory.chooseBestFromHistory(this.utilitySpace);
                             bid = opponentBidHistory.getBestBidInHistory();
 
