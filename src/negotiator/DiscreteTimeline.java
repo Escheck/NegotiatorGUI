@@ -51,7 +51,12 @@ public class DiscreteTimeline extends Timeline
 	{
 		if (Global.AAMAS_2014_EXPERIMENTS && totalRounds == 3)
 		{
-			return 0.99;
+			if (cRound == 1 || cRound == 2)
+				return 0.99;
+			else if (cRound == 3)	// deadline
+				return 1;
+			else
+				new IllegalStateException("Illegal time " + cRound);
 		}
 		double t = (double)cRound / (double)totalRounds;
 		if (t > 1)
