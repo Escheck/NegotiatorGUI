@@ -133,9 +133,9 @@ public abstract class OptimalBidder extends Agent
 			print("Problem with received bid: <" + e.getMessage() + ">. Cancelling bidding");
 		}
 
-		System.out.println("\t\t >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
-		System.out.println("\t\t >> " + nextBid);
-		System.out.println("\t\t <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
+		System.out.println("\t\t\t >>>>>>>>>>>>>>>>>>>>>>>>>> ");
+		System.out.println("\t\t\t >> " + nextBid);
+		System.out.println("\t\t\t >>>>>>>>>>>>>>>>>>>>>>>>>> \n");
 		
 		return (new Offer(getAgentID(), nextBid));
 	}
@@ -173,10 +173,8 @@ public abstract class OptimalBidder extends Agent
 		{ 
 			roundsleft = getOwnRoundsLeft() - 1;
 			
-			//if (getOwnRoundsLeft() >= 1) // at least one round left
-			//	roundsleft = getOwnRoundsLeft() - 1;
-			//else // 0 rounds left
-			//	roundsleft = 0; // 
+			if (getOwnRoundsLeft() < 1) // at least one round left
+				roundsleft = 0;  
 			
 			Double targetBid = bids.get(roundsleft);
 			double piePartition = (double) key/partitions;
