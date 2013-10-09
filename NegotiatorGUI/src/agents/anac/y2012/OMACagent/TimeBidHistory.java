@@ -2,6 +2,7 @@ package agents.anac.y2012.OMACagent;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.utility.UtilitySpace;
@@ -18,7 +19,7 @@ public class TimeBidHistory {
 	protected UtilitySpace fUtilitySpace;
 	public double est_t =0;
 	public double est_u =0;	
-	public double maxU = 0.0;
+	public double maxU = -1;
 	public int pMaxIndex = 0;
 	public Bid bestOppBid=null;
 	public double [] maxBlock; // record max
