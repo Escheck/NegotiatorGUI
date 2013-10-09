@@ -45,9 +45,9 @@ public class OptimalBidderSimple extends OptimalBidder
 			return 0.5 + 0.5 *  Math.pow(bid(j-1), 2) ;
 	} 
 	/**
-	 *  Getting the values
-	 *  @param double
-	 *  @return double
+	 *  Getting the issue's values
+	 *  @param void
+	 *  @return void
 	 *  @throws Exception 
 	 **/
 	@Override
