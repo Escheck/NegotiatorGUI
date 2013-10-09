@@ -638,8 +638,8 @@ public class AlternatingOffersProtocol extends Protocol
 							continue;
 						AgentRepItem agentB = ((AgentValue) agentBval).getValue();
 						sessions.addAll(allParameterCombis(tournament, agentA, agentB, profileA, profileB));
-						System.out.println(agentA + ": " + profileA + " " + profileA.getName() + " vs. ");
-						System.out.println(agentB + ", " + profileB + " " + profileA.getName());
+						System.out.println("Adding session: [" + agentA + ": " + profileA.getName() + "] vs. ["
+						+ agentB + ": " + profileB.getName() + "]");
 					}
 				}
 
