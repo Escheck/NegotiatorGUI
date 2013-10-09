@@ -10,7 +10,6 @@
 package agents;
 
 import java.util.HashMap;
-
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
@@ -21,6 +20,7 @@ public class OptimalBidderSimple extends OptimalBidder
 	public void init()
 	{
 		partitions = 1000;
+		rv = utilitySpace.getReservationValue();
 		super.init();
 	}
 	@Override
