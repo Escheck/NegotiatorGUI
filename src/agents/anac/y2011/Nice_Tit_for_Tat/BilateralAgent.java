@@ -175,6 +175,7 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 	
 	protected static void log(String s)
 	{
+//		System.out.println(s);
 	}
 	
 	/** 

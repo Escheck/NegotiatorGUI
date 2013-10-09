@@ -15,8 +15,6 @@ import negotiator.issue.ISSUETYPE;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.Evaluator;
-import negotiator.utility.EvaluatorDiscrete;
 
 public class OptimalBidderSimple extends OptimalBidder 
 {	
@@ -28,7 +26,7 @@ public class OptimalBidderSimple extends OptimalBidder
 	@Override
 	public String getName()
 	{
-		return "OptimalBidderSimple";
+		return "Optimal Bidder Simple";
 	}
 
 	/**
