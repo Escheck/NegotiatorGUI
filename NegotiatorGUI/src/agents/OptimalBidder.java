@@ -22,7 +22,7 @@ public abstract class OptimalBidder extends Agent
 {	
 	private static double rv = -1.0; 
 	protected static int partitions;
-	private static int ownTotalSessions;
+	private static int ownTotalRounds;
 	protected static HashMap<Integer, Value> values;
 	private static ArrayList<Double> bids;
 	protected static Issue pie;
@@ -51,24 +51,24 @@ public abstract class OptimalBidder extends Agent
 	{
 		try 
 		{
-			ownTotalSessions = (getTotalRounds() - 1)/2;
+			ownTotalRounds = (getTotalRounds() - 1)/2;
 			pie  =  utilitySpace.getDomain().getIssues().get(0);	 // unique issue
 
 			print("=====================================================================");
-			print("   OwntotalSessions = " + ownTotalSessions);
+			print("   ownTotalRounds = " + ownTotalRounds);
 			print("   issue name       = " + pie);
 			print("   issue type       = " + pie.getType());
 
 			rv = getReservationValue(rv); // sets rvB
 
-			bids = new ArrayList<Double>(ownTotalSessions);
+			bids = new ArrayList<Double>(ownTotalRounds);
 
-			for (int i = 0 ; i < ownTotalSessions ; i++ )
+			for (int i = 0 ; i < ownTotalRounds ; i++ )
 				bids.add(bid(i+1));
 
 			print("   Bids : ");
 
-			for (int i = 0 ; i < ownTotalSessions ; i++ )
+			for (int i = 0 ; i < ownTotalRounds ; i++ )
 				print( "\tB[" + i + "] = " + bids.get(i));
 
 			print("\n=====================================================================");
@@ -171,10 +171,7 @@ public abstract class OptimalBidder extends Agent
 
 		for (Integer key : new TreeMap<Integer, Value>(values).keySet())
 		{ 
-			roundsleft = getOwnRoundsLeft() - 1;
-			
-			if (getOwnRoundsLeft() < 1) // at least one round left
-				roundsleft = 0;  
+			roundsleft = getOwnRoundsLeft();
 			
 			Double targetBid = bids.get(roundsleft);
 			double piePartition = (double) key/partitions;
