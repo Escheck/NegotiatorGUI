@@ -17,11 +17,10 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
 
 public abstract class OptimalBidder extends Agent 
 {	
-	private static double rv = -1.0; 
+	protected static double rv = -1.0; 
 	protected static int partitions;
 	private static int ownTotalRounds;
 	protected static HashMap<Integer, Value> values;
