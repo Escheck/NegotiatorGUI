@@ -6,8 +6,7 @@ import negotiator.Bid;
 import negotiator.DiscreteTimeline;
 
 /**
- * This agent does not concede, but will accept anything equal to or above the reservation value.
- * For undiscounted domain only.
+ * uses the cutoffs to accept 
  */
 public class FunctionalAcceptor extends TimeDependentAgent
 {
@@ -50,11 +49,6 @@ public class FunctionalAcceptor extends TimeDependentAgent
 	
 	public double functionalReservationValue()
 	{
-		//int ownTotalRounds = (getTotalRounds() - 1)/2;
-		//System.out.println(" rv   = " + rv );
-		//System.out.println(" ownTotalRounds   = " + ownTotalRounds );
-		//System.out.println(" b("+ getOwnRoundsLeft() +") = " + cutoffs.get(getOwnRoundsLeft()) );
-
 		boolean immediate = false;
 		
 		if (!immediate)
