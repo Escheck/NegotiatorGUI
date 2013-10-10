@@ -21,7 +21,7 @@ public abstract class OptimalBidder extends Agent
 {	
 	protected double rv = -1.0; 
 	protected static int partitions;
-	private static int ownTotalRounds;
+	protected static int ownTotalRounds;
 	protected static HashMap<Integer, Value> values;
 	private static ArrayList<Double> bids;
 	protected static Issue pie;
