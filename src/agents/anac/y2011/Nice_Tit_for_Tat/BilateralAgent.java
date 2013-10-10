@@ -76,7 +76,11 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 		else if (getMyLastBid() == null)
 		{
 			Bid firstCounterBid = chooseFirstCounterBid();
-			myAction = new Offer(getAgentID(), firstCounterBid);
+			// Check to see if we want to accept the first offer
+			if (isAcceptable(firstCounterBid))
+				myAction = makeAcceptAction();
+			else
+				myAction = new Offer(getAgentID(), firstCounterBid);
 		}
 
 		// We make a normal counter-offer
@@ -175,7 +179,7 @@ public abstract class BilateralAgent extends Agent implements BidHistoryKeeper
 	
 	protected static void log(String s)
 	{
-//		System.out.println(s);
+		System.out.println(s);
 	}
 	
 	/** 
