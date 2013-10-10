@@ -410,26 +410,16 @@
 
 
 <domainRepItem url="file:etc/templates/pie_1/Pie_domain.xml">
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.0.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.1.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.2.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.3.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.4.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.5.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.6.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.7.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.8.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_A_rv=0.9.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.0.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.1.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.2.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.3.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.4.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.5.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.6.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.7.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.8.xml"/>
-	<profile url="file:etc/templates/pie_2/pie_B_rv=0.9.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_A_rv=0.0.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_A_rv=0.2.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_A_rv=0.4.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_A_rv=0.6.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_A_rv=0.8.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_B_rv=0.0.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_B_rv=0.2.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_B_rv=0.4.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_B_rv=0.6.xml"/>
+	<profile url="file:etc/templates/pie_3/pie_B_rv=0.8.xml"/>
 </domainRepItem>
 
 
