@@ -42,6 +42,7 @@
             <agentRepItem description="Conceder" classPath="agents.TimeDependentAgentConceder" agentName="Conceder"/>
             <agentRepItem description="Hardliner" classPath="agents.TimeDependentAgentHardliner" agentName="Hardliner"/>
             <agentRepItem description="Conceder Linear" classPath="agents.TimeDependentAgentLinear" agentName="Conceder Linear"/> 
+            <agentRepItem description="Immediate Acceptor" classPath="agents.ImmediateAcceptor" agentName="Immediate Acceptor"/> 
 
             <agentRepItem description="Implementation of optimal bidder." classPath="agents.OptimalBidderSimple" agentName="OptimalBidderSimple"/>
 
