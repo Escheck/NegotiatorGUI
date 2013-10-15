@@ -2,13 +2,11 @@ package agents.anac.y2012.IAMhaggler2012.agents2011;
 
 import java.util.ArrayList;
 
+import negotiator.Bid;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
 import org.apache.commons.math.special.Erf;
-
-import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.BidCreator;
-import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.Pair;
-import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.RandomBidCreator;
 
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
@@ -19,8 +17,9 @@ import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
 import Jama.Matrix;
-
-import negotiator.Bid;
+import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.BidCreator;
+import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.Pair;
+import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.RandomBidCreator;
 
 /**
  * @author Colin Williams
@@ -309,8 +308,9 @@ public class IAMhaggler2011 extends SouthamptonAgent {
 				x = opponentTimes.get(opponentTimes.size() - 1);
 				y = opponentUtilities.get(opponentUtilities.size() - 1);
 				} catch(Exception ex) {
-					System.out.println("Error getting x or y");
-					throw new Error(ex);
+					System.err.println("Error getting x or y. Aiming for previous target utility of " + previousTargetUtility);
+					return previousTargetUtility;
+//					throw new Error(ex);
 				}
 			
 				predictor = regression.updateRegression(
