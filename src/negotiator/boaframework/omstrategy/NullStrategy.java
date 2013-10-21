@@ -16,7 +16,6 @@ import negotiator.boaframework.OpponentModel;
  */
 public class NullStrategy extends OMStrategy {
 
-	private Random rand;
 	/**  when to stop updating the opponentmodel. Note that this value
 	 * 	 is not exactly one as a match sometimes lasts slightly longer. */
 	private double updateThreshold = 1.1;
@@ -27,18 +26,21 @@ public class NullStrategy extends OMStrategy {
 	 */
 	public NullStrategy() {}
 	
+	public NullStrategy(NegotiationSession negotiationSession, double time) {
+		this.negotiationSession = negotiationSession;
+		updateThreshold = time;
+	}
+	
 	/**
 	 * Normal constructor used to initialize the NullStrategy opponent model strategy.
 	 * @param negotiationSession symbolizing the negotiation state.
 	 */
 	public NullStrategy(NegotiationSession negotiationSession) {
 		this.negotiationSession = negotiationSession;
-		rand = new Random();
 	}
 	
 	public void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession, model);
-		rand = new Random();
 		this.negotiationSession = negotiationSession;
 		if (parameters.containsKey("t")) {
 			updateThreshold = parameters.get("t");
@@ -55,7 +57,6 @@ public class NullStrategy extends OMStrategy {
 	@Override
 	public BidDetails getBid(List<BidDetails> allBids) {
 		return allBids.get(0);
-		//return allBids.get(rand.nextInt(allBids.size()));
 	}
 
 	/**

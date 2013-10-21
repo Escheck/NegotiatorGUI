@@ -41,6 +41,10 @@ public class TheNegotiatorReloaded_Offering extends OfferingStrategy{
 	 */
 	public TheNegotiatorReloaded_Offering() { }
 	
+	public TheNegotiatorReloaded_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
+		init(negoSession, model, oms, null);
+	}
+	
 	/**
 	 * Init required for the Decoupled Framework.
 	 */
