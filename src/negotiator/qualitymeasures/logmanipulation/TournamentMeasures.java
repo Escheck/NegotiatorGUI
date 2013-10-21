@@ -25,8 +25,8 @@ public class TournamentMeasures {
 	 */
 	public static void main(String[] args) {
 		try {
-			String in = "c:/results/2013-03-16 12.58.20_time_6.xml";
-			String out = "c:/results/test.xml";
+			String in = "c:/Users/Mark/workspace/Alex branch/Genius/BOA2013 experiment/Agents/SD/CUHKAgent.xml";
+			String out = "c:/Users/Mark/workspace/Alex branch/Genius/BOA2013 experiment/Agents/SD/CUHKAgent STD.xml";
 			
 			
 			ResultsParser resultsParser = NegotiationLogParser.parseLog(in);
@@ -59,7 +59,6 @@ public class TournamentMeasures {
 		OrderedSimpleElement tournamentQualityMeasures = new OrderedSimpleElement("tournament_quality_measures");
 		for (Iterator<String> agentsIter = agents.iterator(); agentsIter.hasNext(); ) {
 			String agentName = agentsIter.next();
-			System.out.println("Loop for: " + agentName);
 			OrderedSimpleElement agentElement = new OrderedSimpleElement("NegotiationOutcome");
 			agentElement.setAttribute("Agent", agentName);
 		

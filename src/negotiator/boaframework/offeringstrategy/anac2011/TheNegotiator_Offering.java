@@ -187,11 +187,8 @@ public class TheNegotiator_Offering extends OfferingStrategy{
 			if (!(opponentModel instanceof NoModel)) {
 				ArrayList<BidDetails> temp = ((TheNegotiatorSAS)helper).getPossibleBids();
 				temp = new ArrayList<BidDetails>(temp.subList(uB, lB + 1));
-				BidDetails bid2 = omStrategy.getBid(temp);
-				if (bid2 == null) {
-					System.out.println("huh?");
-				}
-				bid = omStrategy.getBid(temp).getBid();
+				BidDetails bidToOffer = omStrategy.getBid(temp);
+				bid = bidToOffer.getBid();
 			} else {
 				// calculate a random bid index
 				int result = uB + (int) ( random200.nextDouble() * (lB - uB) + 0.5);
