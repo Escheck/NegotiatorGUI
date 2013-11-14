@@ -2,10 +2,12 @@
 <repository fileName="protocolrepository.xml">
     <items>
         <agentRepItems/>
+        <partyRepItems/>
         <domainRepItem/>
         <protocolRepItem>
             <protocolRepItem description="Alternating Offers" classPath="negotiator.protocol.alternatingoffers.AlternatingOffersProtocol" protocolName="Alternating Offers"/>
         </protocolRepItem>
+        <multiPartyProtocolRepItem/>
     </items>
     <filename>protocolrepository.xml</filename>
 </repository>
