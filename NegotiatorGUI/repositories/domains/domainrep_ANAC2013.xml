@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <repository fileName="domainrepository.xml">
     <items>
         <agentRepItems/>
+        <partyRepItems/>
         <domainRepItem>
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
@@ -395,9 +396,11 @@
 			<domainRepItem url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-domain.xml">
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof2.xml"/>
-            </domainRepItem>                      			            
-        </domainRepItem>
+</domainRepItem>
+
+</domainRepItem>
         <protocolRepItem/>
+        <multiPartyProtocolRepItem/>
     </items>
     <filename>domainrepository.xml</filename>
 </repository>
