@@ -168,6 +168,18 @@
                 <profile url="file:etc/templates/anac/y2012/EnglandvsZimbabwe/EnglandvsZimbabwe-C-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2012/EnglandvsZimbabwe/EnglandvsZimbabwe-C-prof2.xml"/>
             </domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2012/Fitness/Fitness-A-domain.xml">
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-A-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-A-prof2.xml"/>
+            </domainRepItem>
+			<domainRepItem url="file:etc/templates/anac/y2012/Fitness/Fitness-B-domain.xml">
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-B-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-B-prof2.xml"/>
+            </domainRepItem>
+						<domainRepItem url="file:etc/templates/anac/y2012/Fitness/Fitness-C-domain.xml">
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-C-prof1.xml"/>
+                <profile url="file:etc/templates/anac/y2012/Fitness/Fitness-C-prof2.xml"/>
+            </domainRepItem>
             <domainRepItem url="file:etc/templates/anac/y2012/FiftyFifty/FiftyFifty-A-domain.xml">
                 <profile url="file:etc/templates/anac/y2012/FiftyFifty/FiftyFifty-A-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2012/FiftyFifty/FiftyFifty-A-prof2.xml"/>
