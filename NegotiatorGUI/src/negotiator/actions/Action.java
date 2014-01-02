@@ -44,9 +44,13 @@ public abstract class Action {
      * @return bid specifies by this action or null if there is none.
      */
     public static Bid getBidFromAction(Action currentAction) {
-    	Bid currentBid=null;
- 		if (currentAction instanceof Offer)
+     		
+ 		Bid currentBid=null; 
+ 		if (currentAction instanceof EndNegotiationWithAnOffer) //RA 
+ 			currentBid= ((EndNegotiationWithAnOffer) currentAction).getBid();
+ 		else if (currentAction instanceof Offer)
  			currentBid= ((Offer) currentAction).getBid();
+ 		
  		return currentBid;
     }
 }
