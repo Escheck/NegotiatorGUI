@@ -1,0 +1,11 @@
+Experimental Setup: 
+Mediator:Mediator	Zero Intelligence Mediator
+Party 1	Hill Climber Party	England
+Party 2	Hill Climber Party	Zimbabwe
+Deadline type:ROUND Max Round/Time:180
+Round 	Utility of Party 1	Utility of Party 2	
+180.0	0.76771374683414	0.8273494639122994	
+180.0	0.8595940526630517	0.715079739813446	
+180.0	0.8680729608040598	0.6959205330132238	
+180.0	0.8596020804842492	0.7024606932495067	
+180.0	0.8222863965160295	0.7865697962902025	
