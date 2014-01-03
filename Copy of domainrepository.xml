@@ -4,27 +4,11 @@
         <agentRepItems/>
         <partyRepItems/>
         <domainRepItem>
-        
-        	<domainRepItem url="file:etc/templates/nonlinear/simple/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/simple/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/simple/agent-2.xml"/>
-        	</domainRepItem>
-                
         	<domainRepItem url="file:etc/templates/nonlinear/S-1N9GWEO-2/domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-2/agent-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-2/agent-2.xml"/>
         	</domainRepItem>
         
-      		<domainRepItem url="file:etc/templates/nonlinear/S-1N9GWEO-122/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-122/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-122/agent-2.xml"/>
-        	</domainRepItem>
-        
-      		<domainRepItem url="file:etc/templates/nonlinear/S-1N9GWEO-242/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-242/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/S-1N9GWEO-242/agent-2.xml"/>
-        	</domainRepItem>
-        	
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>

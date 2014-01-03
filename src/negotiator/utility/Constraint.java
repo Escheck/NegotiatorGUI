@@ -6,7 +6,7 @@ public class Constraint {
 
 	protected double weight=1.0;
 	
-	//These two methods will be overridden by the classes extends Constraint
+	//The following method will be overridden by super classes (classes extending "Constraint" e.g. InclusiveHyperRectangle)
 	
 	public double getUtility(Bid bid) throws Exception {
 		return 0.0;

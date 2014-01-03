@@ -1,5 +1,9 @@
 package negotiator.analysis;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import negotiator.Bid;
@@ -106,6 +110,46 @@ public class BidSpace {
 		}
 	}
 	
+	//RA: This method checks whether or not the Pareto file exists 
+	private boolean checkParetoFileExist(String filePathStr) {
+		
+		File f = new File(filePathStr);
+		if (f.exists())
+			return true;
+		else return false;
+	}
+	
+	private void readParetoFromFile(String fileName){
+		
+		this.paretoFrontier=new ArrayList<BidPoint>();
+		this.bidPoints=new ArrayList<BidPoint>();
+		try{
+			FileReader input = new FileReader(fileName);
+			BufferedReader bufRead = new BufferedReader(input);
+			String line;
+			Double[] utility= new Double[2];
+			do{
+				line=bufRead.readLine();
+				if (line!=null) {
+					int index=line.indexOf(",");
+					if (index>0){
+					    utility[0]=Double.parseDouble(line.substring(0, line.indexOf(",")));
+						utility[1]=Double.parseDouble(line.substring(line.indexOf(",")+1));		
+						BidPoint bidpt=new BidPoint(null, utility);
+						this.paretoFrontier.add(bidpt);
+					}					
+				}
+				
+			}while (line!=null);
+			
+		  }catch (IOException e){
+			  // If another exception is generated, print a stack trace
+			  e.printStackTrace();
+		 }	
+		
+		System.out.println(this.paretoFrontier);
+	}
+	
 	/**
 	 * Create the space with all bid points from all the {@link UtilitySpace}s.
 	 * @param excludeBids if true do not store the real bids.
@@ -113,6 +157,14 @@ public class BidSpace {
 	 */
 	private void buildSpace(boolean excludeBids) throws Exception
 	{
+		//RA: 
+		String fileName=utilspaces[0].getFileName().replaceAll("agent-1.xml","pareto.xml");
+		 if (checkParetoFileExist(fileName)){
+			 readParetoFromFile(fileName);
+			 return;
+		 }
+			
+		
 		bidPoints=new ArrayList<BidPoint>();
 		BidIterator lBidIter = new BidIterator(domain);
 		
