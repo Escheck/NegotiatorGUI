@@ -8,24 +8,18 @@
    <issue etype="integer" index="3"  name="c1-i3" type="integer" vtype="integer" lowerbound="0" upperbound="9"/>
   
 
-   <utility maxutility="125">
+   <utility maxutility="80">
       <ufun type="PlainUfun" weight="1" aggregation="sum">
          <hyperRectangle utility="30">
-            <EXCLUDES index="1" min="5" max="9"/>
-         </hyperRectangle>
-         <hyperRectangle utility="25">
-            <EXCLUDES index="3" min="3" max="7"/>
-         </hyperRectangle>
-         <hyperRectangle utility="30">
-            <INCLUDES index="2" min="5" max="7"/>
+            <INCLUDES index="2" min="1" max="3"/>
          </hyperRectangle>
          <hyperRectangle utility="40">
-            <INCLUDES index="2" min="3" max="5"/>
+            <INCLUDES index="2" min="4" max="6"/>
             <INCLUDES index="3" min="4" max="9"/>
          </hyperRectangle>
          <hyperRectangle utility="40">
             <INCLUDES index="1" min="3" max="5"/>
-            <INCLUDES index="3" min="1" max="3"/>
+            <INCLUDES index="3" min="5" max="7"/>
          </hyperRectangle>
        
       </ufun>
