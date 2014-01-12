@@ -167,7 +167,7 @@ public class NonlinearUtilitySpace extends UtilitySpace{
 		return maxUtilityValue;
 	}
 
-	public void setMaxUtilityValue(double maxUtilityValue) {
+	private void setMaxUtilityValue(double maxUtilityValue) {
 		this.maxUtilityValue = maxUtilityValue;
 	}
 
@@ -210,7 +210,8 @@ public class NonlinearUtilitySpace extends UtilitySpace{
 		return 0.0;	
 	}
 
-	public UtilityFunction getNonlinearFunction() {
+	//RA We make it private for ANAC competition
+	private UtilityFunction getNonlinearFunction() { 
 		return nonlinearFunction;
 	}
 
