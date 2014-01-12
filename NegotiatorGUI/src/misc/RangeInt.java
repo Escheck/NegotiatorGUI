@@ -1,9 +1,11 @@
 package misc;
 
+import java.io.Serializable;
+
 /**
  * This is a tuple class which is used to pass on an integer range.
  */
-public class RangeInt {
+public class RangeInt implements Serializable{
 	
 	/** The lowerbound of the specified range. */
 	int lowerbound;
