@@ -1,0 +1,14 @@
+<a>
+<NegotiationOutcome currentTime="2014-01-13 01:12:09" timeOfAgreement="0.020415326055555554" bids="3545" domain="etc/templates/nonlinear/simple/domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i1: 4, c1-i2: 5, c1-i3: 6, ]" errors="" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Conceder" discount="1.0" agentClass="agents.TimeDependentAgentConceder" utilspace="etc/templates/nonlinear/simple/agent-1.xml" Opponent-agentName="Conceder" Opponent-agentClass="agents.TimeDependentAgentConceder" Opponent-utilspace="etc/templates/nonlinear/simple/agent-2.xml" finalUtility="0.8571428571428571" discountedUtility="0.8571428571428571" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.8571428571428571" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Conceder" discount="1.0" agentClass="agents.TimeDependentAgentConceder" utilspace="etc/templates/nonlinear/simple/agent-2.xml" Opponent-agentName="Conceder" Opponent-agentClass="agents.TimeDependentAgentConceder" Opponent-utilspace="etc/templates/nonlinear/simple/agent-1.xml" finalUtility="1.0" discountedUtility="1.0" bestAcceptableBid="1.0" bestDiscountedAccepableBid="0.020408789494444444" maxUtility="1.0" normalizedUtility="1.0" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2014-01-13 01:13:10" timeOfAgreement="0.13725574726666664" bids="26" domain="etc/templates/nonlinear/simple/domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i1: 3, c1-i2: 5, c1-i3: 3, ]" errors="" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Simple Agent Saving Bid History" discount="1.0" agentClass="agents.SimpleAgentSavingBidHistory" utilspace="etc/templates/nonlinear/simple/agent-1.xml" Opponent-agentName="Simple Agent Saving Bid History" Opponent-agentClass="agents.SimpleAgentSavingBidHistory" Opponent-utilspace="etc/templates/nonlinear/simple/agent-2.xml" finalUtility="0.8214285714285714" discountedUtility="0.8214285714285714" bestAcceptableBid="0.8214285714285714" bestDiscountedAccepableBid="0.1320658504611111" maxUtility="1.0" normalizedUtility="0.8214285714285714" AcceptedBy="agentA"> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Simple Agent Saving Bid History" discount="1.0" agentClass="agents.SimpleAgentSavingBidHistory" utilspace="etc/templates/nonlinear/simple/agent-2.xml" Opponent-agentName="Simple Agent Saving Bid History" Opponent-agentClass="agents.SimpleAgentSavingBidHistory" Opponent-utilspace="etc/templates/nonlinear/simple/agent-1.xml" finalUtility="0.0" discountedUtility="0.0" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.0" AcceptedBy="agentA"> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
+</a>
