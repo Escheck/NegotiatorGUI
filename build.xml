@@ -533,21 +533,32 @@
 	
 	<target name ="makeGenius5.1" depends="makeNegoSimulatorWithAllAgentJar">
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/domains/domainrep_ANAC2014.xml"/>
-				<globmapper from="domainrep_ANAC2014.xml" to="domainrepository.xml" />
+				<fileset file="${repositories}/domains/domainrepository.xml"/>
+				<globmapper from="domainrepository.xml" to="domainrepository.xml" />
 			</copy>
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/boa/boarepository_ANAC2014.xml"/>
-				<globmapper from="boarepository_ANAC2014.xml" to="boarepository.xml" />
+				<fileset file="${repositories}/boa/boarepository.xml"/>
+				<globmapper from="boarepository.xml" to="boarepository.xml" />
 			</copy>
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/agents/agentrep_ANAC2014.xml"/>
-				<globmapper from="agentrep_ANAC2014.xml" to="agentrepository.xml" />
+				<fileset file="${repositories}/agents/agentrepository.xml"/>
+				<globmapper from="agentrepository.xml" to="agentrepository.xml" />
 			</copy>	
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/protocols/protocolrep_ANAC2013.xml"/>
-				<globmapper from="protocolrep_ANAC2014.xml" to="protocolrepository.xml" />
+				<fileset file="${repositories}/protocols/protocolrepository.xml"/>
+				<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />
 			</copy>	
+		
+			<copy todir="${tmp}">
+				<fileset file="${repositories}/multipartyprotocols/multipartyprotocolrepository.xml"/>
+				<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />
+			</copy>	
+	        
+			<copy todir="${tmp}">
+				<fileset file="${repositories}/parties/partyrepository.xml"/>
+				<globmapper from="partyrepository.xml" to="partyrepository.xml" />
+			</copy>	
+						
 
 			<mkdir dir="${tmp}/doc"/>
 			<mkdir dir="${tmp}/log"/>
@@ -575,6 +586,8 @@
 				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>			
 				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
+				<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius"/>
+				<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius"/>			
 				<zipfileset dir="" includes="javadoc/" prefix="genius"/>
 				<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
 				<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear"/>
