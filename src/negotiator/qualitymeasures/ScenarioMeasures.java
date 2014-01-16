@@ -2,14 +2,17 @@ package negotiator.qualitymeasures;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -55,7 +58,7 @@ public class ScenarioMeasures {
 				} else if (scenario.getPrefProfB() == null){
 					scenario.setPrefProfB(attributes.getValue("url").substring(5));
 				} else {
-					System.out.println("WARNING: Violation of two preference profiles per scenario assumption for " + strippedName);
+					System.out.println("WARNING: Violation of two preference profiles per scenario assumption for " + scenario.getDomain());
 				}
 			}
 
@@ -110,8 +113,9 @@ public class ScenarioMeasures {
 			prefResults.addChildElement(results);
 			System.out.println("Processed domain: " + domain.getName() + " \t [" + utilitySpaceA.getFileName() + " , " + utilitySpaceB.getFileName() + "]");
 		}
-		writeXMLtoFile(prefResults, dir + "scenario_info.xml");
-		System.out.println("Finished processing domains");
+		String file = dir + "scenario_info.xml";
+		writeXMLtoFile(prefResults, file);
+		System.out.println("Finished processing domains. Written to " + file);
 	}
 	
 	/**

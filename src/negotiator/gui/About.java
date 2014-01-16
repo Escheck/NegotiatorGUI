@@ -18,7 +18,8 @@ import javax.swing.ImageIcon;
  */
 public class About extends javax.swing.JFrame {
 
-    private javax.swing.JLabel contributorsLabel;
+    public static final String VERSION = "5.1";
+	private javax.swing.JLabel contributorsLabel;
     private javax.swing.JTextArea contributorsValueLabel;
     private javax.swing.JScrollPane contributorsValueScrollPane;
     private javax.swing.JTextArea geniusDescription;
@@ -82,7 +83,7 @@ public class About extends javax.swing.JFrame {
         contributorsLabel.setText("Contributors:");
 
         productVersionValueLable.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        productVersionValueLable.setText("4.0");
+        productVersionValueLable.setText(VERSION);
 
         websiteValueLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         websiteValueLabel.setText("<html><a href=\"\">" + GENIUSLINK + "</a></html>");
