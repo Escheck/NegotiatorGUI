@@ -90,24 +90,28 @@ public class UtilityFunction {
 		this.aggregationType = aggreationType;
 	}
 	
-	public double getUtility(Bid bid) throws Exception {
+	public double getUtility(Bid bid) throws Exception 
+	{
 		
 		double finalUtility=0.0;
 		double currentUtility=0.0;
 		
 		if (aggregationType==AGGREGATIONTYPE.MIN)
-			finalUtility=999999999;
+			finalUtility=Integer.MAX_VALUE;
 		else if  (aggregationType==AGGREGATIONTYPE.MAX)
-			finalUtility=-999999999;
-
+			finalUtility=-Integer.MAX_VALUE;
+		
 		// Utility from Constraints
-		for (Constraint constraint:constraints) {
+		for (Constraint constraint:constraints) 
+		{
 			
 			currentUtility=constraint.getUtility(bid);
 			
 			switch(aggregationType){
 			
-			case SUM : finalUtility+= currentUtility; break;
+			case SUM : 
+				finalUtility += currentUtility; 
+				break;
 			case MAX: 
 				if (finalUtility<currentUtility) 
 					finalUtility=currentUtility; 
