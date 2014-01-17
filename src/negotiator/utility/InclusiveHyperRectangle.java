@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import negotiator.Bid;
 import negotiator.issue.ValueInteger;
 
-
-public class InclusiveHyperRectangle extends HyperRectangle{
-
+/**
+ * An {@link InclusiveHyperRectangle} has a utility value when all of its bounds are satisfied, and zero otherwise.
+ */
+public class InclusiveHyperRectangle extends HyperRectangle
+{
 	private ArrayList<Bound> boundlist;
 	private double utilityValue;
 	private boolean isAllBidsAcceptable;
@@ -17,26 +19,28 @@ public class InclusiveHyperRectangle extends HyperRectangle{
 	}
 	
 	public InclusiveHyperRectangle(boolean isAllOkay) {
-		this.isAllBidsAcceptable=true;
+		this.isAllBidsAcceptable=isAllOkay;
 	}
 	
 	public ArrayList<Bound> getBoundlist() {
 		return boundlist;
 	}
-	public void setBoundlist(ArrayList<Bound> boundlist) {
+	
+	protected void setBoundlist(ArrayList<Bound> boundlist) {
 		this.boundlist = boundlist;
 	}
+	
 	public double getUtilityValue() {
 		return utilityValue;
 	}
-	public void setUtilityValue(double utilityValue) {
+	protected void setUtilityValue(double utilityValue) {
 		this.utilityValue = utilityValue;
 	}
 	
 	@Override
 	public double getUtility(Bid bid) throws Exception {
 	
-		if (this.isAllBidsAcceptable==true) //if there is no constraint at all
+		if (this.isAllBidsAcceptable) //if there is no constraint at all
 			return (utilityValue*weight);
 		
 		int issueValue;
@@ -48,13 +52,4 @@ public class InclusiveHyperRectangle extends HyperRectangle{
 		
 		return utilityValue*weight;
 	}
-
-	public boolean isAllBidsOkay() {
-		return isAllBidsAcceptable;
-	}
-
-	public void setAllBidsOkay(boolean isAllBidsOkay) {
-		this.isAllBidsAcceptable = isAllBidsOkay;
-	}
-	
 }

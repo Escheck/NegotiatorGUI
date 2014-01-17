@@ -2,6 +2,9 @@ package negotiator.utility;
 
 import negotiator.Bid;
 
+/**
+ * Specifies an area that has a utility. 
+ */
 public class Constraint {
 
 	protected double weight=1.0;
@@ -12,11 +15,11 @@ public class Constraint {
 		return 0.0;
 	}
 	
-	public double getWeight() {
+	protected double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(double weight) {
+	protected void setWeight(double weight) {
 		this.weight = weight;
 	}
 }

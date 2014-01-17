@@ -1,21 +1,22 @@
 package negotiator.utility;
 
+import java.util.ArrayList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
-import negotiator.utility.AGGREGATIONTYPE;
 
 
 
-public class NonlinearUtilitySpace extends UtilitySpace{
-	
+public class NonlinearUtilitySpace extends UtilitySpace
+{
 	private double maxUtilityValue;
 	private UtilityFunction nonlinearFunction;
 	private ArrayList<Constraint> allinclusiveConstraints; // we keep all constraints for negotiating agent's strategy
@@ -136,7 +137,6 @@ public class NonlinearUtilitySpace extends UtilitySpace{
     	UtilityFunction currentFunction=new UtilityFunction();
     	// set the aggregation type 	    
 	    currentFunction.setAggregationType(AGGREGATIONTYPE.getAggregationType(utility.getAttribute("aggregation")));
-	    
 	    //set the weight if it is specified
 	    
 	    if (utility.getAttribute("weight")!=null)
