@@ -73,7 +73,7 @@
 \usepackage{graphicx}
 \fi
 \title{Negotiation User Guide}
-\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx}
+\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx, D. Feirstein}
 
 \date{\today}
 
@@ -109,7 +109,7 @@
 
 \newcommand\Genius{{\sc Genius}}
 
-\abstract{\noindent \Genius~\cite{Genius}~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the environment, work with the provided scenarios and negotiation agents, and write, compile, and run an agent yourself.}
+\abstract{\noindent \Genius \cite{Genius}~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the environment, work with the provided scenarios and negotiation agents, and write, compile, and run an agent yourself.}
 
 \pagebreak
 \tableofcontents
@@ -117,6 +117,51 @@
 \pagebreak
 \section{Theory Crash Course}
 This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
+
+\subsection{Negotiation Objects}
+Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and two utility spaces (also called preference profiles). Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{media/datastructures.png}
+	\caption{Overview of the data structures and relations.}\label{Fig:overviewStructures}
+\end{figure}
+
+The \textit{Domain} describes which issues are the subject of the negotiation and which values an issue can attain. A domain contains $n$ issues: $D=(I_1,\ldots,I_n)$. Each issue $i$ consists of $k$ values: $I_i=(v^i_1,\ldots,v^i_k)$.  Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a chosen value (denoted by $c$), $b=(v^i_{c},\ldots,v^n_{c})$. 
+
+To give an example, in the laptop domain the issues are ``laptop'', ``harddisk'' and ``monitor''. In this domain the issues can only attain discrete values, e.g. the ``harddisk'' issue can only have the values ``60 Gb'', ``80 Gb'' and ``120 Gb''. These issues are all instance of \textit{IssueDiscrete}. A valid bid in the laptop domain is a Dell laptop with 80 Gb and a 17' inch monitor.
+
+The \textit{Utility Space} specifies the preferences of the bids for an agent using an evaluator. The evaluator of an issue maps the evaluation of an issue value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0 to simplify calculating the utility of a bid. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
+
+In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties. We discuss the optimality of a bid in the next section.
+
+\subsection{Optimality of a Bid}
+%Before discussing the optimality of a bid, we first need to formalize the concept of a bid. 
+%A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the scaled evaluation values.
+%A bid is a set of values, one chosen for each issue $n$ in the domain. (the subscript $c$ denotes the chosen value for issue $i$).
+Each value of a bid is assigned an evaluation value $\text{eval}(v^n_{c})$ in the utility space. The utility is the weighted sum of the scaled evaluation values.
+
+\begin{equation}
+	U(v^i_{c},\ldots,v^n_{c}) = \sum_{i=1}^{n} w_i \dfrac{\text{eval}(v^i_{c})}{\text{max}(\text{eval}(I_i))}
+	\label{eqn:Utility}
+\end{equation}
+
+%\begin{equation}
+%	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
+%	\label{eqn:Utility}
+%\end{equation}
+\pagebreak
+
+For a single agent, the optimal bid is of maximum utility for the agent. Often this bid has a low utility for the opponent, and therefore the chance of agreement is low. A more general notion of optimality of a negotiation involves the utility of both agents.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.37\textwidth]{media/image5.png}
+\caption{A point indicates the utility for both agents of a bid. The red line is the Pareto optimal frontier.}\label{Fig:utility plot}
+\end{figure}
+
+There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure~\ref{Fig:utility plot} for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal bids is called the Pareto optimal frontier.
+
+A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. By default, there are already a few opponent models implemented in \Genius.
 
 \subsection{Negotiation Protocol}
 The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, as deviations from the protocol are caught and penalized. This section discusses the details of the bilateral alternating offers protocol used in \Genius.
@@ -135,7 +180,7 @@ In the bilateral alternating offers protocol two parties -- agent $A$ and agent 
 \end{tabular}
 \end{center}
 
-When it is an agent's turn, it is informed about the opponent's action. Based on the opponent's action the agent comes up with a action, which it presents to the opponent. Sequentially, the opponent presents a counter action. This process goes on until the negotiation finishes in one of the following ways:
+When it is an agent's turn, it is informed about the opponent's action. Based on the opponent's action the agent comes up with an action, which it presents to the opponent. Sequentially, the opponent presents a counter action. This process goes on until the negotiation finishes in one of the following ways:
 \begin{itemize}
 	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined for both agents according to their preference profiles. The opponent is informed of acceptance via the \textit{ReceiveMessage} method.
 	\item The action returned by an agent is \textsc{EndNegotiation}. In this case the score of both agents is set to their reservation value.
@@ -160,50 +205,14 @@ U_D^t(\omega) = U(\omega) \cdot d^t
 If $d = 1$, the utility is not affected by time, and such a scenario is considered to be undiscounted, while if $d$ is very small there is high pressure on the agents to reach an agreement. Note that discount factors are part of the preference profiles and therefore different agents may have a different discount factor.
 
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
-
-\subsection{Negotiation Objects}
-Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and two utility spaces (also called preference profiles). Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.5\textwidth]{media/datastructures.png}
-	\caption{Overview of the data structures and relations.}\label{Fig:overviewStructures}
-\end{figure}
-
-The \textit{Domain} describes which issues are the subject of the negotiation and which values an issue can attain. To give a concrete example of a domain: in the laptop domain the issues are ``laptop'', ``harddisk'' and ``monitor''. In the laptop domain the issues can only attain discrete values, e.g. the ``harddisk'' issue can only have the values ``60 Gb'', ``80 Gb'' and ``120 Gb''. These issues are all instance of \textit{IssueDiscrete}.
-
-Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a value. A valid bid in the laptop domain is for example a Dell laptop with 80 Gb and a 17' inch monitor.
-
-The \textit{Utility Space} specifies the preferences of the bids for an agent. Using a utility space the utility of a bid can be calculated using the evaluator of each issue. The evaluator of an issue maps the evaluation of a value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0 to simplify calculating the utility of a bid. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
-
-In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties. We discuss the optimality of a bid in the next section.
-
-\subsection{Optimality of a Bid}
-Before discussing the optimality of a bid, we first need to formalize the concept of a bid. A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the normalized evaluation values.
-
-\begin{equation}
-	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
-	\label{eqn:Utility}
-\end{equation}
-
-For a single agent, the optimal bid is of maximum utility for the agent. Often this bid has a low utility for the opponent, and therefore the chance of agreement is low. A more general notion of optimality of a negotiation involves the utility of both agents.
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.37\textwidth]{media/image5.png}
-\caption{A point indicates the utility for both agents of a bid. The red line is the Pareto optimal frontier.}\label{Fig:utility plot}
-\end{figure}
-
-There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure~\ref{Fig:utility plot} for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal bids is called the Pareto optimal frontier.
-
-A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. By default, there are already a few opponent models implemented in \Genius.
  
 \section{Running the Environment}
-The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{ai@mmi.tudelft.nl}.
+The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
-To install the environment, the file \texttt{negotiator.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package containing the following files:
+To install the environment, the file \texttt{Genius\_release.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package called ``genius" which contains the following files:
 
 \begin{itemize}
-	\item \texttt{userguide.pdf}, this document;
+	\item \texttt{userguide.pdf}, this document (located in the ``doc" folder);
 	\item \texttt{negosimulator.jar}, the negotiation simulator;
 	\item a \texttt{templates} folder, containing various scenarios.
 \end{itemize}
@@ -243,7 +252,7 @@ By right clicking on the list of available scenarios in the Components Window a 
 
 The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty evaluation values window, later on when creating a preference profile we will use this tab to specify the preference of each value.
 
-Instead of a discrete issue, we can also add an integer issue as shown in Figure~\ref{fig:createIssueI}. For an integer issue we first need to specify the lowest possible value and the highest value, for example the price range for a second hand car may be $[700, 900]$. Next, when creating a preference profile we need to specify the utility of the lowest possible value (700) and the highest value (900). During the negotiation we can offer any value for the issue within the specified range.
+Instead of a discrete issue, we can also add an integer issue as shown in Figure~\ref{fig:createIssueI}. For an integer issue we first need to specify the lowest possible value and the highest value, for example the price range for a second hand car may be $[500, 700]$. Next, when creating a preference profile we need to specify the utility of the lowest possible value (500) and the highest value (700). During the negotiation we can offer any value for the issue within the specified range.
 
 The next step is to press ``Ok'' to add the issue. Generally, a domain consists of multiple issues. We can simply add the other issues by repeating the process above. If you are satisfied with the domain, you can save it by pressing  ``Save changes''.
 
@@ -383,14 +392,14 @@ After specifying the tournament and database parameters we can start the distrib
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
 
 \section{Quality Measures in Genius}\label{sec:qm}
-A large set of quality measures have been incorporated in \Genius{} since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
+A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
 There are now two types of logs used in \Genius: the standard log and the tournament log. The standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents. The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average final utility for all sessions which resulted in an agreement.
 
 First, Section~\ref{sec:standardLog} discusses the measures incorporated in the standard log. Next, Section~\ref{sec:tournamentLog} details the tournament log. Finally, Section~\ref{sec:analysisExcel} discusses how Excel can be used to analyze logs.
 
 \subsection{Overview of Quality Measures in the Standard Log}\label{sec:standardLog}
-Since version 4.0, \Genius{} incorporates two types of quality measures: standard measures and detailed measures. In addition there are some experimental measure types, such as competitiveness and opponent model accuracy, however these are not discussed here. In the following sections we discuss both measure types in detail.
+Since version 4.0, \Genius~ incorporates two types of quality measures: standard measures and detailed measures. In addition there are some experimental measure types, such as competitiveness and opponent model accuracy, however these are not discussed here. In the following sections we discuss both measure types in detail.
 
 \subsubsection{Standard Measures}
 The standard measures are the measures which are enabled by default and cannot be disabled. Table~\ref{tab:standardmeasures} provides an overview of all default quality measures.
@@ -525,9 +534,9 @@ The XML data of the standard log can be converted to a normal table by importing
 \section{Creating a Negotiation Agent}
 This section discusses how to create a basic negotiation agent. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to separately implement these components to create a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
 
-In this section we assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: \url{http://docs.oracle.com/javase/tutorial/index.html}. The Java API definitions can be found on \url{http://docs.oracle.com/javase/7/docs/api/index.html}.
+In this section we assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: http://www.oracle.com/technetwork/java/javase/documentation/index.html. The Java API definitions can be found here as well.
 
-The recommended way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the \textit{negotiationsimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes as long as one class extends the \textit{negotiator.Agent} class.
+The recommended way to create an agent is to create a new project in for example Eclipse or Netbeans. Next, add the \textit{negosimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{receiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes as long as one class extends the \textit{negotiator.Agent} class.
 
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
@@ -889,9 +898,9 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 \end{lstlisting}
 
 \section{Conclusion}
-This concludes the manual of \Genius. If you experience problems or have suggestions on how to improve \Genius, please send them to \url{ai@mmi.tudelft.nl}. 
+This concludes the manual of \Genius. If you experience problems or have suggestions on how to improve \Genius, please send them to \url{negotiation@ii.tudelft.nl}. 
 
-\Genius\ is actively used in academic research. If you want to cite \Genius\ in your paper, please refer to~\cite{Genius}.
+\Genius\ is actively used in academic research. If you want to cite \Genius\ in your paper, please refer to \cite{Genius}.
 
 
 \bibliographystyle{plain}
