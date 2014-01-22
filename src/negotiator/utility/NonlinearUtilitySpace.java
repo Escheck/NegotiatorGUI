@@ -19,8 +19,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
 {
 	private double maxUtilityValue;
 	private UtilityFunction nonlinearFunction;
-	private ArrayList<Constraint> allinclusiveConstraints; // we keep all constraints for negotiating agent's strategy
-	private ArrayList<Constraint> allexclusiveConstraints; // we keep all constraints for negotiating agent's strategy
+	private ArrayList<InclusiveHyperRectangle> allinclusiveConstraints; // we keep all constraints for negotiating agent's strategy
+	private ArrayList<ExclusiveHyperRectangle> allexclusiveConstraints; // we keep all constraints for negotiating agent's strategy
 	
 	// add some parameters for discount factor
 	/**
@@ -29,8 +29,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
     public NonlinearUtilitySpace(){
     	this.domain = new Domain();
     	this.nonlinearFunction=new UtilityFunction();
-    	this.allinclusiveConstraints=new ArrayList<Constraint>();
-    	this.allexclusiveConstraints=new ArrayList<Constraint>();
+    	this.allinclusiveConstraints=new ArrayList<InclusiveHyperRectangle>();
+    	this.allexclusiveConstraints=new ArrayList<ExclusiveHyperRectangle>();
     	spaceType=UTILITYSPACETYPE.NONLINEAR;
     	
     }
@@ -38,8 +38,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
     public NonlinearUtilitySpace(Domain domain) {
     	this.domain=domain;
     	this.nonlinearFunction=new UtilityFunction();
-    	this.allinclusiveConstraints=new ArrayList<Constraint>();
-    	this.allexclusiveConstraints=new ArrayList<Constraint>();
+    	this.allinclusiveConstraints=new ArrayList<InclusiveHyperRectangle>();
+    	this.allexclusiveConstraints=new ArrayList<ExclusiveHyperRectangle>();
     	spaceType=UTILITYSPACETYPE.NONLINEAR;
     }
 
@@ -47,8 +47,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
     	 this.domain = domain;
     	 this.nonlinearFunction=new UtilityFunction();
     	 this.fileName = fileName;
-    	 this.allinclusiveConstraints=new ArrayList<Constraint>();
-     	 this.allexclusiveConstraints=new ArrayList<Constraint>();
+    	 this.allinclusiveConstraints=new ArrayList<InclusiveHyperRectangle>();
+     	 this.allexclusiveConstraints=new ArrayList<ExclusiveHyperRectangle>();
          spaceType=UTILITYSPACETYPE.NONLINEAR;         
          
          if(!fileName.equals("")) {
@@ -62,11 +62,11 @@ public class NonlinearUtilitySpace extends UtilitySpace
     }
     
   
-    public ArrayList<Constraint> getAllInclusiveConstraint(){
+    public ArrayList<InclusiveHyperRectangle> getAllInclusiveConstraints(){
     	return this.allinclusiveConstraints;
     }
   
-    public ArrayList<Constraint> getAllExclusiveConstraint(){
+    public ArrayList<ExclusiveHyperRectangle> getAllExclusiveConstraints(){
     	return this.allexclusiveConstraints;
     }
     
@@ -79,8 +79,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
     	fXMLRoot = us.getXMLRoot();
     	maxUtilityValue = ((NonlinearUtilitySpace)us).getMaxUtilityValue();
     	nonlinearFunction=((NonlinearUtilitySpace)us).getNonlinearFunction();     	
-    	allinclusiveConstraints=((NonlinearUtilitySpace)us).getAllInclusiveConstraint();
-    	allexclusiveConstraints=((NonlinearUtilitySpace)us).getAllExclusiveConstraint();
+    	allinclusiveConstraints=((NonlinearUtilitySpace)us).getAllInclusiveConstraints();
+    	allexclusiveConstraints=((NonlinearUtilitySpace)us).getAllExclusiveConstraints();
     }
     
     
@@ -100,13 +100,13 @@ public class NonlinearUtilitySpace extends UtilitySpace
     		
     		if (((SimpleElement)rectangeElements[j]).getChildByTagName("INCLUDES").length!=0){   
     			rectangle= new InclusiveHyperRectangle();
-    			allinclusiveConstraints.add(rectangle);
+    			allinclusiveConstraints.add((InclusiveHyperRectangle)rectangle);
     			bounds=((SimpleElement)rectangeElements[j]).getChildByTagName("INCLUDES");
     		}
     		
     		if (((SimpleElement)rectangeElements[j]).getChildByTagName("EXCLUDES").length!=0) {
     			rectangle= new ExclusiveHyperRectangle();	
-    			allexclusiveConstraints.add(rectangle);
+    			allexclusiveConstraints.add((ExclusiveHyperRectangle)rectangle);
     		    bounds=((SimpleElement)rectangeElements[j]).getChildByTagName("EXCLUDES");
     		}
 			
@@ -118,7 +118,7 @@ public class NonlinearUtilitySpace extends UtilitySpace
 					    Bound b= new Bound(((SimpleElement)bounds[k]).getAttribute("index"), ((SimpleElement)bounds[k]).getAttribute("min"),((SimpleElement) bounds[k]).getAttribute("max"));
 					    boundlist.add(b);	
 					}  			
-				   	rectangle.setBoundlist(boundlist);	
+				   	rectangle.setBoundList(boundlist);	
     		}
 	   		
 	   	rectangle.setUtilityValue(Double.parseDouble(((SimpleElement)rectangeElements[j]).getAttribute("utility")));

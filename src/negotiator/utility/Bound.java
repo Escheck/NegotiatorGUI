@@ -30,6 +30,7 @@ public class Bound
 	private void setIssueIndex(int issueIndex) {
 		this.issueIndex = issueIndex;
 	}
+	
 	public int getMin() {
 		return min;
 	}	

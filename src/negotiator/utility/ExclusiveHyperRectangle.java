@@ -16,10 +16,10 @@ public class ExclusiveHyperRectangle extends HyperRectangle{
 		
 	}
 	
-	public ArrayList<Bound> getBoundlist() {
+	public ArrayList<Bound> getBoundList() {
 		return boundlist;
 	}
-	public void setBoundlist(ArrayList<Bound> boundlist) {
+	public void setBoundList(ArrayList<Bound> boundlist) {
 		this.boundlist = boundlist;
 	}
 	public double getUtilityValue() {

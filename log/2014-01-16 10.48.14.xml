@@ -1,0 +1,7 @@
+<a>
+<NegotiationOutcome currentTime="2014-01-16 10:48:23" timeOfAgreement="0.050578064722222225" bids="9" domain="etc/templates/nonlinear/simple/domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i1: 4, c1-i2: 6, c1-i3: 7, ]" errors="" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Simple Agent Saving Bid History" discount="1.0" agentClass="agents.SimpleAgentSavingBidHistory" utilspace="etc/templates/nonlinear/simple/agent-1.xml" Opponent-agentName="Simple Agent Saving Bid History" Opponent-agentClass="agents.SimpleAgentSavingBidHistory" Opponent-utilspace="etc/templates/nonlinear/simple/agent-2.xml" finalUtility="0.7857142857142857" discountedUtility="0.7857142857142857" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.7857142857142857" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Simple Agent Saving Bid History" discount="1.0" agentClass="agents.SimpleAgentSavingBidHistory" utilspace="etc/templates/nonlinear/simple/agent-2.xml" Opponent-agentName="Simple Agent Saving Bid History" Opponent-agentClass="agents.SimpleAgentSavingBidHistory" Opponent-utilspace="etc/templates/nonlinear/simple/agent-1.xml" finalUtility="1.0" discountedUtility="1.0" bestAcceptableBid="1.0" bestDiscountedAccepableBid="0.045355711522222224" maxUtility="1.0" normalizedUtility="1.0" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
