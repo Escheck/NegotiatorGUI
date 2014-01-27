@@ -358,7 +358,7 @@ public class UtilitySpace implements Serializable {
      * 
      * Checks for bounds on the discount factor and time.
      */
-	private double discount(double util, double time)
+	protected double discount(double util, double time)
 	{
 		return discount(util, time, discountFactor);
 	}
@@ -580,7 +580,7 @@ public class UtilitySpace implements Serializable {
 	}
 	
 
-	private double validateDiscount(double df) {
+	protected double validateDiscount(double df) {
 		if (df < 0 || df > 1) {
 			System.err.println("Warning: discount factor = " + df + " was discarded.");
 		}
