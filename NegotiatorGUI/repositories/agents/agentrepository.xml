@@ -2,6 +2,7 @@
 <repository fileName="agentrepository.xml">
     <items>
         <agentRepItems>
+       		<agentRepItem description="ANAC 2014 Simple Agent" classPath="agents.SimpleANAC2014Agent" agentName="ANAC 2014 - Simple Agent"/>
             <agentRepItem description="ANAC 2010 - AgentFSEGA" classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA" agentName="ANAC 2010 - AgentFSEGA"/>
             <agentRepItem description="ANAC 2010 - AgentK" classPath="agents.anac.y2010.AgentK.Agent_K" agentName="ANAC 2010 - AgentK"/>
             <agentRepItem description="ANAC 2010 - IAMhaggler" classPath="agents.anac.y2010.Southampton.IAMhaggler" agentName="ANAC 2010 - IAMhaggler"/>
