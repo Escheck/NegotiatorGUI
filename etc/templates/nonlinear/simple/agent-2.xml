@@ -25,4 +25,6 @@
       </ufun>
    </utility>
 </objective>
+<discount_factor value="0.95">  </discount_factor> 
+<reservation value="0.20"> </reservation> 
 </utility_space>

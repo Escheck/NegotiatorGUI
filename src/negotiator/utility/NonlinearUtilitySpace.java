@@ -66,7 +66,7 @@ public class NonlinearUtilitySpace extends UtilitySpace
     	return this.allinclusiveConstraints;
     }
   
-    public ArrayList<ExclusiveHyperRectangle> getAllExclusiveConstraints(){
+    private ArrayList<ExclusiveHyperRectangle> getAllExclusiveConstraints(){
     	return this.allexclusiveConstraints;
     }
     
@@ -81,6 +81,8 @@ public class NonlinearUtilitySpace extends UtilitySpace
     	nonlinearFunction=((NonlinearUtilitySpace)us).getNonlinearFunction();     	
     	allinclusiveConstraints=((NonlinearUtilitySpace)us).getAllInclusiveConstraints();
     	allexclusiveConstraints=((NonlinearUtilitySpace)us).getAllExclusiveConstraints();
+    	this.setDiscount(((NonlinearUtilitySpace)us).getDiscountFactor());
+    	this.setReservationValue(((NonlinearUtilitySpace)us).getReservationValue());
     }
     
     
@@ -155,10 +157,33 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	    return currentFunction;
     }
     
+	
     private void loadNonlinearSpace(SimpleElement root) {		
     	 	
+    	//load reservation value
+    			try {
+    				if((root.getChildByTagName("reservation")!=null)&&(root.getChildByTagName("reservation").length>0)){
+    					SimpleElement xml_reservation = (SimpleElement)(root.getChildByTagName("reservation")[0]);
+    					this.setReservationValue(Double.valueOf(xml_reservation.getAttribute("value")));
+    					System.out.println("Reservation value: "+this.getReservationValue());
+    				}
+    			} catch (Exception e) {
+    				System.out.println("Utility space has no reservation value");
+    			}
+         //load discount factor
+    			try {
+    				if((root.getChildByTagName("discount_factor")!=null)&&(root.getChildByTagName("discount_factor").length>0)){
+    					SimpleElement xml_reservation = (SimpleElement)(root.getChildByTagName("discount_factor")[0]);
+    					double df = Double.valueOf(xml_reservation.getAttribute("value"));
+    					this.setDiscount(validateDiscount(df));
+    					System.out.println("Discount value: "+this.getDiscountFactor());
+    				}
+    			} catch (Exception e) {
+    				System.out.println("Utility space has no discount factor;");
+    			}
+    			
     	//load utility 
-		Object utility= ((SimpleElement)root.getChildElements()[0]).getChildByTagName("utility")[0];
+    	Object utility= ((SimpleElement)root.getChildElements()[0]).getChildByTagName("utility")[0];
 		this.setMaxUtilityValue(Double.parseDouble(((SimpleElement)utility).getAttribute("maxutility")));
 	    this.nonlinearFunction=loadUtilityFunction((SimpleElement)((SimpleElement)utility).getChildByTagName("ufun")[0]);	
 	}
@@ -175,7 +200,6 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	
 	@Override
 	 public double getUtility(Bid bid) throws Exception {
-	//	System.out.println("utility:"+nonlinearFunction.getUtility(bid));
 		 return (double)nonlinearFunction.getUtility(bid)/this.maxUtilityValue;
 	 }
 	  
@@ -185,38 +209,11 @@ public class NonlinearUtilitySpace extends UtilitySpace
     {
              
     }
-	
-	@Override
-	public double getUtilityWithDiscount(Bid bid, Timeline timeline) {
-		//This parts need to be implemented. For now, we will use utility without discount
-		try {
-			return getUtility(bid);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0.0;		
-	}
-    
-	@Override
-	public double getUtilityWithDiscount(Bid bid, double time) {
-		//This parts need to be implemented. For now, we will use utility without discount
-		try {
-			return getUtility(bid);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0.0;	
-	}
 
+	
 	//RA We make it private for ANAC competition
 	private UtilityFunction getNonlinearFunction() { 
 		return nonlinearFunction;
 	}
 
-	private void setNonlinearFunction(UtilityFunction nonlinearFunction) {
-		this.nonlinearFunction = nonlinearFunction;
-	}
-	
 }
