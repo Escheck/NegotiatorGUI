@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import negotiator.Bid;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
@@ -68,6 +67,10 @@ public class NonlinearUtilitySpace extends UtilitySpace
   
     private ArrayList<ExclusiveHyperRectangle> getAllExclusiveConstraints(){
     	return this.allexclusiveConstraints;
+    }
+    
+    public final Evaluator getEvaluator(int index) 
+    {
     }
     
     
@@ -207,7 +210,6 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	@Override 
 	public void checkReadyForNegotiation(Domain dom) throws Exception
     {
-             
     }
 
 	

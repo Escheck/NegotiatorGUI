@@ -1,10 +1,13 @@
 package misc;
 
 import java.util.Map.Entry;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+
 import javax.swing.JOptionPane;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
@@ -138,7 +141,7 @@ public class DomainGenerator {
 			utilitySpace.normalizeChildren(utilitySpace.getDomain().getIssues().get(0).getParent());
 		} else {
 			for(Issue i : utilitySpace.getDomain().getIssues()){
-				utilitySpace.setWeightSimple(i, Math.random());
+				setWeightSimple(utilitySpace, i, Math.random());
 			}
 			utilitySpace.normalizeChildren(utilitySpace.getDomain().getIssues().get(0).getParent());
 		}
@@ -150,6 +153,25 @@ public class DomainGenerator {
 			}
 		} catch(Exception ex){
 			ex.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Method which sets the weight of an issue without checking
+	 * normalization. This is faster than setWeightSimple if normalization
+	 * is ensured.
+	 * 
+	 * @param objective of which the weights must be set.
+	 * @param weight to which the weight of the objective must be set.
+	 */
+	public static void setWeightSimple(UtilitySpace uspace, Issue i, double weight)
+	{
+		try
+		{
+			Evaluator ev =uspace.getEvaluator(i.getNumber());
+			ev.setWeight(weight); //set weight
+		}catch(NullPointerException e){
+			e.printStackTrace();
 		}
 	}
 
