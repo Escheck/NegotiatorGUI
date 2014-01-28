@@ -17,7 +17,6 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.Timeline;
-import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
@@ -606,7 +605,6 @@ public class UtilitySpace implements Serializable {
 	public double getWeight(int issueID) 
 	{
 		checkForLinearSpaceType();
-        //return weights[issuesIndex]; //old
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issueID);
 		if(ob != null){
@@ -624,29 +622,31 @@ public class UtilitySpace implements Serializable {
 	
    
     /**
-     * Method used to set the weight of the given objective.
+     * Method used to set the weight of the given objective. Only works with linear utility spaces.
      * @param objective of which the weights must be set.
      * @param weight to which the weight of the objective must be set.
      * @return the new weight of the issue after normalization.
      */
-    public double setWeight(Objective objective, double weight){
-    	try{
-    		Evaluator ev = fEvaluators.get(objective);
-    		double oldWt = ev.getWeight();
-    		if(!ev.weightLocked()){
-    			ev.setWeight(weight); //set weight
-    		}
-    		this.normalizeChildren(objective.getParent());
-    		if(this.checkTreeNormalization()){
-    			return fEvaluators.get(objective).getWeight();
-    		}else{
-    			ev.setWeight(oldWt); //set the old weight back.
-    			return fEvaluators.get(objective).getWeight();
-    		}
-    	}catch(NullPointerException npe){
-    		return -1;
-    	}
-    }
+	public double setWeight(Objective objective, double weight)
+	{
+		checkForLinearSpaceType();
+		try{
+			Evaluator ev = fEvaluators.get(objective);
+			double oldWt = ev.getWeight();
+			if(!ev.weightLocked()){
+				ev.setWeight(weight); //set weight
+			}
+			this.normalizeChildren(objective.getParent());
+			if(this.checkTreeNormalization()){
+				return fEvaluators.get(objective).getWeight();
+			}else{
+				ev.setWeight(oldWt); //set the old weight back.
+				return fEvaluators.get(objective).getWeight();
+			}
+		}catch(NullPointerException npe){
+			return -1;
+		}
+	}
     
     /**
      * @deprecated Use getObjective
@@ -654,17 +654,9 @@ public class UtilitySpace implements Serializable {
      * @param index The index of the issue to 
      * @return the indexed objective or issue
      */
-    public final Objective getIssue(int index) {
+    public final Objective getIssue(int index) 
+    {
         return domain.getIssue(index);
-    }
-    
-    /**
-     * Returns the Objective or Issue at that index
-     * @param index The index of the Objective or Issue.
-     * @return An Objective or Issue.
-     */
-    public final Objective getObjective(int index){
-    	return domain.getObjective(index);
     }
     
     /**
@@ -675,55 +667,36 @@ public class UtilitySpace implements Serializable {
     }
     
     /**
-     * Adds an evaluator to an objective or issue
-     * @param obj The Objective or Issue to attach an Evaluator to.
-     * @return The new Evaluator.
-     */
-    public final Evaluator addEvaluator(Objective obj){
-    	Evaluator ev = null;
-    	ISSUETYPE etype = obj.getType();
-    	switch(etype){
-    	case INTEGER:
-    		ev = new EvaluatorInteger();
-    		break;
-    	case REAL:
-    		ev = new EvaluatorReal();
-    		break;
-    	case DISCRETE:
-    		ev = new EvaluatorDiscrete();
-    		break;
-    	case OBJECTIVE:
-    		ev = new EvaluatorObjective();
-    		break;	
-    	}
-    	fEvaluators.put(obj, ev);
-    	return ev;
-    }
-    
-    /**
-     * Sets an <Objective, evaluator> pair. Replaces old evaluator for objective
+     * Sets an <Objective, evaluator> pair. Replaces old evaluator for objective.
+     * Only works with linear utility spaces.
      * @param obj The Objective to attach an Evaluator to.
      * @param ev The Evaluator to attach.
      * @return The given evaluator.
      */
-    public final Evaluator addEvaluator(Objective obj, Evaluator ev){
+    public final Evaluator addEvaluator(Objective obj, Evaluator ev)
+    {
+    	checkForLinearSpaceType();
     	fEvaluators.put(obj, ev); // replaces old value for that object-key if key already existed.
     	return ev;
     }
     
     /**
-     * @return The set with all pairs of evaluators and objectives in this utilityspace.
+     * @return The set with all pairs of evaluators and objectives in this utilityspace. Only works with linear utility spaces.
      */
-    public final Set<Map.Entry<Objective, Evaluator> >getEvaluators(){
+    public final Set<Map.Entry<Objective, Evaluator>> getEvaluators()
+    {
+    	checkForLinearSpaceType();
     	return fEvaluators.entrySet(); 
     }
     
     /**
-     * Place a lock on the weight of an objective or issue.
+     * Place a lock on the weight of an objective or issue. Only works with linear utility spaces.
      * @param obj The objective or issue that is about to have it's weight locked.
-     * @return <code>true</code> if succesfull, <code>false</code> If the objective doesn't have an evaluator yet.
+     * @return <code>true</code> if successful, <code>false</code> If the objective doesn't have an evaluator yet.
      */
-    public final boolean lock(Objective obj){
+    public final boolean lock(Objective obj)
+    {
+    	checkForLinearSpaceType();
     	try{
     		fEvaluators.get(obj).lockWeight();
     	}catch(Exception e){
@@ -732,12 +705,15 @@ public class UtilitySpace implements Serializable {
     	}
     	return true;
     }
+    
     /**
-     * Clear a lock on the weight of an objective or issue.
+     * Clear a lock on the weight of an objective or issue. Only works with linear utility spaces.
      * @param obj The objective or issue that is having it's lock cleared.
      * @return <code>true</code> If the lock is cleared, <code>false</code> if the objective or issue doesn't have an evaluator yet.
      */
-    public final boolean unlock(Objective obj){
+    public final boolean unlock(Objective obj)
+    {
+    	checkForLinearSpaceType();
     	try{
     		fEvaluators.get(obj).unlockWeight();
     	}catch(Exception e){
@@ -749,12 +725,14 @@ public class UtilitySpace implements Serializable {
     
     /**
      * Normalizes the weights of objectives of the given objective
-     * so that they sum up to one.
+     * so that they sum up to one. Only works with linear utility spaces.
      * 
      * @param obj of which the weights must be normalized.
      * @return all evaluators using getEvaluators().
      */
-    public final Set<Map.Entry<Objective,Evaluator>> normalizeChildren(Objective obj){
+    public final Set<Map.Entry<Objective,Evaluator>> normalizeChildren(Objective obj)
+    {
+    	checkForLinearSpaceType();
     	Enumeration<Objective> childs = obj.children();
     	double RENORMALCORR=0.05; // we add this to all weight sliders to solve the slider-stuck-at-0 problem.
     	double weightSum = 0;
@@ -816,26 +794,12 @@ public class UtilitySpace implements Serializable {
     	return getEvaluators();
     }
 
-     /**
-      * Removes an evaluator.
-      * @param obj to be removed.
-      * @return true is successfully removed.
-      */
-     public boolean removeEvaluator(Objective obj){
-    	 try{
-    		 fEvaluators.remove(obj);
-    		 
-    	 }catch(Exception e){
-    		 return false;
-    	 }
-    	 return true;
-     }
-     
     /**
      * Creates an xml representation (in the form of a SimpleElements) of the utilityspace.
      * @return A representation of this utilityspace or <code>null</code> when there was an error.
      */ 
-    public SimpleElement toXML(){
+    public SimpleElement toXML()
+    {
     	SimpleElement root = (domain.getObjectivesRoot()).toXML(); // convert the domain. 
     	root = toXMLrecurse(root);
     	SimpleElement rootWrapper = new SimpleElement("utility_space");
@@ -979,14 +943,16 @@ public class UtilitySpace implements Serializable {
     /**
      * @param newRV new reservation value.
      */
-    public void setReservationValue(double newRV) {
+    public void setReservationValue(double newRV) 
+    {
     	fReservationValue = newRV;
     }
     
     /**
      * @param newDiscount new discount factor.
      */
-    public void setDiscount(double newDiscount) {
+    public void setDiscount(double newDiscount) 
+    {
     	discountFactor = validateDiscount(newDiscount);
     }
     
@@ -1044,18 +1010,21 @@ public class UtilitySpace implements Serializable {
     /**
      * @return filename of this preference profile.
      */
-    public String getFileName() {
+    public String getFileName() 
+    {
     	return fileName;
     }
     
     /**
      * @return true if the domain features discounts.
      */
-    public boolean isDiscounted() {
+    public boolean isDiscounted() 
+    {
     	return discountFactor < 1.0;
     }
 
-    public String toString() {
+    public String toString() 
+    {
     	String result = "";
     	for (Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
     		result += ("Issue weight " + entry.getValue().getWeight() + "\n");
@@ -1065,11 +1034,14 @@ public class UtilitySpace implements Serializable {
     }
     
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof UtilitySpace)) return false;
+	public boolean equals(Object obj) 
+	{
+		if (!(obj instanceof UtilitySpace)) 
+			return false;
 		UtilitySpace obj2 = (UtilitySpace)obj;
-		//cehck domains
-		if(!domain.equals(obj2.getDomain())) return false;
+		//check domains
+		if(!domain.equals(obj2.getDomain())) 
+			return false;
 		//check evaluators
 		for(Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
 			Evaluator eval2 = obj2.getEvaluator(entry.getKey().getNumber());
@@ -1081,9 +1053,10 @@ public class UtilitySpace implements Serializable {
 	}
 
 	/**
-	 * @return discount factor of this preference profile.
+	 * @return Discount factor of this preference profile.
 	 */
-	public final double getDiscountFactor() {
+	public final double getDiscountFactor() 
+	{
 		return discountFactor;
 	}
 }
