@@ -132,8 +132,8 @@ public class DomainGenerator {
 	 * @param utilitySpace profile to be randomized.
 	 * @param bias towards domains with a high opposition.
 	 */
-	private static void randomizeUtilSpace(UtilitySpace utilitySpace, boolean bias) {
-		
+	private static void randomizeUtilSpace(UtilitySpace utilitySpace, boolean bias) 
+	{
 		if (bias) {
 			for(Issue i : utilitySpace.getDomain().getIssues()){
 				utilitySpace.setWeight(i, Math.random());

@@ -69,11 +69,6 @@ public class NonlinearUtilitySpace extends UtilitySpace
     	return this.allexclusiveConstraints;
     }
     
-    public final Evaluator getEvaluator(int index) 
-    {
-    }
-    
-    
     /** @return a clone of another utility space */
     public NonlinearUtilitySpace(UtilitySpace us)    {
     	domain=us.getDomain();

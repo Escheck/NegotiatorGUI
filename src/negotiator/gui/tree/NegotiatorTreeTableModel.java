@@ -1,12 +1,24 @@
 package negotiator.gui.tree;
 
-import jtreetable.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import negotiator.*;
-import negotiator.issue.*;
-import negotiator.utility.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.tree.TreePath;
+
+import jtreetable.AbstractTreeTableModel;
+import jtreetable.TreeTableModel;
+
+import negotiator.Domain;
+import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
+import negotiator.issue.IssueReal;
+import negotiator.issue.Objective;
+import negotiator.utility.UtilitySpace;
 /**
 *
 * @author Richard Noorlandt
@@ -253,19 +265,6 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements 
 			Objective obj = objectives.nextElement();
 			double updatedWeight = utilitySpace.getWeight(obj.getNumber());
 			getWeightSlider(obj).setWeight(updatedWeight);
-		}
-	}
-	
-	public void removeObjective(Objective obj) {
-		obj.removeFromParent();
-		names.remove(obj);
-		types.remove(obj);
-		numbers.remove(obj);
-		
-		//In case we're editing a UtilitySpace
-		if (containsUtilitySpace) {
-			getUtilitySpace().removeEvaluator(obj);
-			sliders.remove(obj);
 		}
 	}
 	
