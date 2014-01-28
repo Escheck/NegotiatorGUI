@@ -2,7 +2,9 @@ package negotiator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
+
 import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
 import negotiator.repository.DomainRepItem;
@@ -40,7 +42,7 @@ public class ScenarioValidator {
 	
 	private static String validateCorrespondenceDomainAndProfile(Domain domain, UtilitySpace space) {
 		
-		String errors = space.IsComplete();
+		String errors = isComplete(space);
 		if (errors == null) {
 			errors = "";
 		} else {
@@ -48,6 +50,25 @@ public class ScenarioValidator {
 		}
 		return errors;
 	}
+	
+    private static String isComplete(UtilitySpace space) 
+	// Oh damn, problem, we don't have the domain template here anymore.
+    // so how can we check domain compativility?
+    // only we can check that all fields are filled.........
+    { 
+    	Domain domain = space.getDomain();
+    	ArrayList<Issue> issues=domain.getIssues();
+    	if (issues==null) return "Utility space is not complete, in fact it is empty!";
+    	String mess;
+    	for (Issue issue:issues) 
+    	{
+    		Evaluator ev=space.getEvaluator(issue.getNumber());
+    		if (ev==null) return "issue "+issue.getName()+" has no evaluator";
+    		mess= (ev.isComplete(issue));
+    		if (mess!=null) return mess;
+    	}
+    	return null;
+    }
 	
 	private static String validatePreferenceProfile(UtilitySpace space) {
 		String errors = "";

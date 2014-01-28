@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,15 +25,8 @@ import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
 /**
- * Wouter: the utility space couples all objectives to weights and evaluators.
+ * The utility space couples all objectives to weights and evaluators.
  * A utilityspace currently is not bound to one agent.
- * I can see some security issues with that...
- * 
- * Wouter: this class is final to prevent users (students) to override the getUtility function
- * with their own version of UtilitySpace
- * 
- * Wouter 15nov: un-done the final, students may hack what they want, but they work with a copy anyway.
- * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
 public class UtilitySpace implements Serializable {
@@ -87,7 +81,7 @@ public class UtilitySpace implements Serializable {
         { // add evaluator to all objectives
         	ArrayList<Objective> objectives=domain.getObjectives();        	
         	for (Objective obj:objectives) {
-        		Evaluator eval =  DefaultEvaluator(obj);
+        		Evaluator eval =  defaultEvaluator(obj);
         		fEvaluators.put(obj, eval);
         	}
         	
@@ -96,7 +90,7 @@ public class UtilitySpace implements Serializable {
     
     /**
      * Copies the data from another UtilitySpace.
-     * @param us utilityspace to be cloned.
+     * @param us utility space to be cloned.
      */
     public UtilitySpace(UtilitySpace us)
     {
@@ -116,13 +110,13 @@ public class UtilitySpace implements Serializable {
     	discountFactor = us.discountFactor;
     }
     
-    // RA: This method returns the type of utility space: either linear or nonlinear
-    public UTILITYSPACETYPE getSpaceType() {
+    /**
+     * This method returns the type of utility space: either linear or nonlinear.
+     */
+    public UTILITYSPACETYPE getType() {
     	
     	return this.spaceType;
     }
-    
-  
 
 	/**
      * create a default evaluator for a given Objective.
@@ -133,7 +127,7 @@ public class UtilitySpace implements Serializable {
      * @param obj the objective to create an evaluator for
      * @return the default evaluator
      */
-    public Evaluator DefaultEvaluator(Objective obj)
+    private Evaluator defaultEvaluator(Objective obj)
     {
     	if (obj.isObjective()) return new EvaluatorObjective();
     	//if not an objective then it must be an issue.
@@ -156,7 +150,8 @@ public class UtilitySpace implements Serializable {
     	return checkTreeNormalizationRecursive(domain.getObjectivesRoot());
     }
 	
-    protected void normalizeWeights(Objective currentRoot) {
+    protected void normalizeWeights(Objective currentRoot) 
+    {
     	double lSum = 0;
     	
     	Enumeration<Objective> children = currentRoot.children();
@@ -202,7 +197,7 @@ public class UtilitySpace implements Serializable {
     }
     
     /**
-     * check if this utility space is ready for negotiation.
+     * Check if this utility space is ready for negotiation.
      * @param dom is the domain in which nego is taking place
      * @throws Exception if utility space is incomplete (@see isComplete());
      */
@@ -212,48 +207,53 @@ public class UtilitySpace implements Serializable {
         // following checks normally succeed, as the domain of the domain space is enforced in the loader.
         if (!(dom.equals(domain)))
         	throw new Exception("domain does not match the negotiation domain");
-        String err=IsComplete();
+        String err=isComplete();
         if (err!=null) throw new Exception("utility space '"+ fileName +"' is incomplete\n"+err);
-        
-//        TODO 
-//         if (!checkTreeNormalization()) 
-//         {
-        	 //throw new Exception("utility space of agent "+agentName+" is not normalized \n(the issue weights do not sum to 1)");
-//         }
-         
     }
     
     /**
      * @return XML root of this utilityspace.
      */
-    public SimpleElement getXMLRoot() {
+    protected SimpleElement getXMLRoot() {
 		return fXMLRoot;
 	}
     
     /**
-     * @return number of issues.
+     * @return number of issues. This can only be used for linear utility functions.
      */
-    public final int getNrOfEvaluators() {
+    public final int getNrOfEvaluators() 
+    {
+    	checkForLinearSpaceType();
     	return fEvaluators.size();
     }
     
     /**
+     * Returns the evaluator of an issue for the given index. This can only be used for linear utility functions.
      * @param index The IDnumber of the Objective or Issue
      * @return An Evaluator for the Objective or Issue.
      */
-    public final Evaluator getEvaluator(int index) {
- /*   	Issue issue = domain.getIssue(index);
-    	return fEvaluators.get(issue);
- */   	
+    public final Evaluator getEvaluator(int index) 
+    {
+    	checkForLinearSpaceType();
     	Objective obj = domain.getObjective(index); //Used to be Issue in stead of Objective
     	if(obj != null){
     		return fEvaluators.get(obj);
     	}else return null;
     }
+
+    /**
+     * Throws an exception is the the space type is not linear. This method is necessary because some parts of this class assume
+     * we work with weights and evaluators.
+     */
+	private void checkForLinearSpaceType()
+	{
+		if (getType() != UTILITYSPACETYPE.LINEAR)
+    		throw new IllegalStateException("This method is to be used for linear utility spaces only. This space is " + getType());
+	}
     
     /**
      * @param bid of which we are interested in its utility.
-     * @return undiscounted utility of the given bid.
+     * @return Undiscounted utility of the given bid. Works for any utility space.
      * @throws Exception when bid is incomplete or invalid.
      */
     public double getUtility(Bid bid) throws Exception
@@ -290,7 +290,7 @@ public class UtilitySpace implements Serializable {
      * discountedUtility = originalUtility * d^t.
      * 
      * For t = 0 the utility remains unchanged, and for t = 1 the original utility is multiplied by the discount factor. 
-     * The effect is almost linear in between.
+     * The effect is almost linear in between. Works with any utility space.
      * @param bid of which we are interested in its utility.
      * @param timeline indicating the time passed in the negotiation.
      * @return discounted utility.
@@ -366,13 +366,16 @@ public class UtilitySpace implements Serializable {
     /**
      * Returns the utility of one issue in the bid. Note that this value
      * is in the range [0,1] as it is not normalized by the issue weight.
+     * Only works with linear utility spaces.
      * 
      * @param pIssueIndex of the issue.
      * @param bid
      * @return evaluation of the value of the issue of the given bid.
      * @throws Exception if the bid or value is null.
      */
-    public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception {
+    public final double getEvaluation(int pIssueIndex, Bid bid) throws Exception 
+    {
+    	checkForLinearSpaceType();
     
     	Object lObj = getDomain().getObjective(pIssueIndex);
     	Evaluator lEvaluator = fEvaluators.get(lObj);
@@ -381,12 +384,14 @@ public class UtilitySpace implements Serializable {
     }
 
     /**
+     * Returns the maximum bid in the utility space. This is only supported for linear utility spaces.
      * Totally revised, brute-force search now.
      * @return a bid with the maximum utility value attainable in this util space
      * @throws Exception if there is no bid at all in this util space.
      */
 	public final Bid getMaxUtilityBid() throws Exception
 	{
+		checkForLinearSpaceType();
 		Bid maxBid=null; double maxutil=0.;
 		BidIterator bidit=new BidIterator(domain);
 
@@ -400,11 +405,13 @@ public class UtilitySpace implements Serializable {
 		return maxBid;
 	}
 	/**
-	 * Returns the the worst bid.
+	 * Returns the worst bid in the utility space. This is only supported for linear utility spaces.
 	 * @return a bid with the lowest possible utility
 	 * @throws Exception if there is no bid at all in the util space
 	 */
-	public Bid getMinUtilityBid() throws Exception {
+	public Bid getMinUtilityBid() throws Exception 
+	{
+		checkForLinearSpaceType();
 		Bid minBid = null;
 		double minUtil = 1.2;
 		BidIterator bidit = new BidIterator(domain);
@@ -594,9 +601,11 @@ public class UtilitySpace implements Serializable {
 	/**
 	 * 
 	 * @param issueID The Issue or Objective to get the weight from
-	 * @return The weight, or -1 if the objective doesn't exist.
+	 * @return The weight, or -1 if the objective doesn't exist. Only works with linear utility spaces.
 	 */
-	public double getWeight(int issueID) {
+	public double getWeight(int issueID) 
+	{
+		checkForLinearSpaceType();
         //return weights[issuesIndex]; //old
     	//TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issueID);
@@ -613,23 +622,7 @@ public class UtilitySpace implements Serializable {
 		return 0.0; //fallthrough.
     }
 	
-	/**
-	 * Method which sets the weight of an issue without checking
-	 * normalization. This is faster than setWeightSimple if normalization
-	 * is ensured.
-	 * 
-     * @param objective of which the weights must be set.
-     * @param weight to which the weight of the objective must be set.
-	 */
-    public void setWeightSimple(Objective objective, double weight){
-    	try{
-    		Evaluator ev = fEvaluators.get(objective);
-   			ev.setWeight(weight); //set weight
-    	}catch(NullPointerException e){
-    		e.printStackTrace();
-    	}
-    }
-    
+   
     /**
      * Method used to set the weight of the given objective.
      * @param objective of which the weights must be set.
@@ -711,7 +704,7 @@ public class UtilitySpace implements Serializable {
      * Sets an <Objective, evaluator> pair. Replaces old evaluator for objective
      * @param obj The Objective to attach an Evaluator to.
      * @param ev The Evaluator to attach.
-     * @return the given evaluator Wouter: what's the use of the return value???
+     * @return The given evaluator.
      */
     public final Evaluator addEvaluator(Objective obj, Evaluator ev){
     	fEvaluators.put(obj, ev); // replaces old value for that object-key if key already existed.
@@ -966,11 +959,10 @@ public class UtilitySpace implements Serializable {
       * However currently we only check that all the leaf nodes are complete,
       * @return null if util space is complete, else returns string containging explanation why not.
      */
-    public String IsComplete() 
-	// Oh damn, problem, we don't have the domain template here anymore.
-    // so how can we check domain compativility?
-    // only we can check that all fields are filled.........
-    { 
+    private String isComplete() 
+    {
+    	// We don't have the domain template here anymore.
+        // so we can only check that all fields are filled.
     	ArrayList<Issue> issues=domain.getIssues();
     	if (issues==null) return "Utility space is not complete, in fact it is empty!";
     	String mess;

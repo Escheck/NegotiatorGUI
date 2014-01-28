@@ -7,9 +7,9 @@ import java.io.FileReader;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public enum UTILITYSPACETYPE {
-
-		NONE,LINEAR,NONLINEAR;
+public enum UTILITYSPACETYPE 
+{
+		LINEAR,NONLINEAR;
 	
 	public static UTILITYSPACETYPE getUtilitySpaceType(String filename){
 		
@@ -21,8 +21,7 @@ public enum UTILITYSPACETYPE {
 	        	return NONLINEAR;
 	        else return LINEAR;
 		} catch(Exception e) {
-			return NONE;
+			return null;
 		}
 	}
-
 }

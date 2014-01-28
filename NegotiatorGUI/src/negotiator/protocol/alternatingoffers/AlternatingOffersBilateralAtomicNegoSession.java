@@ -127,21 +127,21 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent cannot damage them.
 			
-			if (spaceA.getSpaceType()==UTILITYSPACETYPE.NONLINEAR)
-                agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-                        new NonlinearUtilitySpace(spaceA),agentAparams);
-                else //linear
-                agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-                        new UtilitySpace(spaceA),agentAparams);
-            agentA.init();
-            
-            if (spaceB.getSpaceType()==UTILITYSPACETYPE.NONLINEAR)
-                agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-                        new NonlinearUtilitySpace(spaceB),agentBparams);
-            else //linear
-                agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-                    new UtilitySpace(spaceB),agentBparams);
-            agentB.init();
+			if (spaceA.getType()==UTILITYSPACETYPE.NONLINEAR)
+				agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+						new NonlinearUtilitySpace(spaceA),agentAparams);
+			else //linear
+			agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+					new UtilitySpace(spaceA),agentAparams);
+			agentA.init();
+
+			if (spaceB.getType()==UTILITYSPACETYPE.NONLINEAR)
+				agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+						new NonlinearUtilitySpace(spaceB),agentBparams);
+			else //linear
+			agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
+					new UtilitySpace(spaceB),agentBparams);
+			agentB.init();
 			
 			
 			stopNegotiation = false;
