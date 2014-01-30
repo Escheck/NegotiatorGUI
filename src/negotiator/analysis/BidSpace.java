@@ -165,6 +165,14 @@ public class BidSpace {
 					return;
 				}
 		}
+		else if (utilspaces[0].getFileName().contains("agent-2.xml")) {
+			String fileName=utilspaces[0].getFileName().replaceAll("agent-2.xml","pareto.xml");
+				if (checkParetoFileExist(fileName)){
+					readParetoFromFile(fileName);
+					return;
+				}
+		}
+		
 		
 		
 		bidPoints=new ArrayList<BidPoint>();
