@@ -47,6 +47,8 @@
             <agentRepItem description="Immediate Acceptor" classPath="agents.ImmediateAcceptor" agentName="Immediate Acceptor"/>
             <agentRepItem description="Implementation of optimal bidder." classPath="agents.OptimalBidderSimple" agentName="OptimalBidderSimple"/>
             <agentRepItem description="Implementation of FunctionalAcceptor." classPath="agents.FunctionalAcceptor" agentName="FunctionalAcceptor"/>
+            <agentRepItem description="" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
+            <agentRepItem description="" classPath="agents.ABMPAgent2" agentName="ABMPAgent2"/>
         </agentRepItems>
         <partyRepItems/>
         <domainRepItem/>
