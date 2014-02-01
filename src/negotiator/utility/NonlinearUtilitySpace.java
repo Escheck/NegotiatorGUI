@@ -1,6 +1,7 @@
 package negotiator.utility;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.IOException;
 
 import negotiator.Bid;
 import negotiator.Domain;
+import negotiator.issue.Objective;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
@@ -201,7 +203,11 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	@Override
 	public double getUtility(Bid bid) throws Exception 
 	{
-		return (double)nonlinearFunction.getUtility(bid)/this.maxUtilityValue;
+		double result= (double)nonlinearFunction.getUtility(bid)/this.maxUtilityValue;
+		
+		 if (result > 1)
+	        	return 1;
+		 else return result;
 	}
 
 
@@ -223,4 +229,108 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	private UtilityFunction getNonlinearFunction() { 
 		return nonlinearFunction;
 	}
+	
+	
+	//RA: this method needs to be checked  - I didn't check whether it works properly
+	@Override
+	 public String toString() 
+	 {
+	
+		String result = "";
+    	for (InclusiveHyperRectangle rec:this.getAllInclusiveConstraints()) {
+    		ArrayList<Bound> boundList=rec.getBoundList();
+    			result +=("Rectangle: \n"); 
+    		for (Bound bound:boundList){
+    			result +=("Issue with index "+bound.getIssueIndex() + " min:"+bound.getMin()+" max:"+bound.getMax()+" \n");
+    		}
+    
+    	}
+    	return result;
+	 }
+	
+	//The following methods belongs to Katsuhide
+	
+	
+	/**
+	 *
+	 * @param InclusiveHyperRectangle:
+	 * @return ArrauList<Bound>
+	 */
+	public ArrayList<Bound> getIntersectionOfHyperRectangles(ArrayList<InclusiveHyperRectangle> hyperRects) {
+	    ArrayList<Bound> hyperRectBoundlist = hyperRects.get(0).getBoundList();
+	    for(int index=1; index < hyperRects.size(); ++index) {
+	        hyperRectBoundlist = getIntersection(hyperRects.get(index).getBoundList(), hyperRectBoundlist);
+	    }
+	    return hyperRectBoundlist;
+	}
+
+
+	/**
+	 * Finding the overlap area of HyperRectangle
+	 * @param ArrayList<Bound>
+	 * @return ArrauList<Bound>
+	 */
+	private ArrayList<Bound> getIntersection( ArrayList<Bound> bl1, ArrayList<Bound> bl2) {
+	    ArrayList<Bound> retBoundList = new ArrayList<Bound>();
+
+
+	    int index1 = 0;
+	    int index2 = 0;
+
+
+	    // When they have the same issue infromation
+	    do {
+	        Bound b1 = bl1.get(index1);
+	        Bound b2 = bl2.get(index2);
+
+
+	        if(b1.getIssueIndex() == b2.getIssueIndex()) {
+	                        Bound intersectionBound = getIntersection(b1,b2);
+	            retBoundList.add(intersectionBound);
+	            ++index1;
+	            ++index2;
+	        } else if(b1.getIssueIndex() < b2.getIssueIndex()) {
+	                        retBoundList.add(b1);
+	                        ++index1;
+	        } else {
+	                        retBoundList.add(b2);
+	                        ++index2;
+	        }
+	    } while(!(bl1.size() == index1 || bl2.size() == index2));
+
+
+	    // Adding the remaining bounds
+	    if(bl1.size() > index1) {
+	        for(int i=index1; i < bl1.size(); ++i) {
+	                        retBoundList.add(bl1.get(i));
+	        }
+	    }
+	    if(bl2.size() > index2) {
+	        for(int i=index2; i < bl2.size(); ++i) {
+	                        retBoundList.add(bl2.get(i));
+	        }
+	    }
+
+
+	    return retBoundList;
+	}
+
+
+	/**
+	 * Getting the overlap area of the bounds
+	 */
+	private Bound getIntersection(Bound b1, Bound b2) {
+	    int max = b1.getMax();
+	    int min = b1.getMin();
+	    if(b2.getMax() < max) {
+	        max = b2.getMax();
+	    }
+	    if(min < b2.getMin()) {
+	        min = b2.getMin();
+	    }
+	    return new Bound(b2.getIssueIndex(), min, max);
+	}
+	
+	
+	
 }
