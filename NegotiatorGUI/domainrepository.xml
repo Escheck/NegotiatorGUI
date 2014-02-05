@@ -439,7 +439,8 @@
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof2.xml"/>
             </domainRepItem>                      			 
-    
+
+<!-- Split the Pie scenarios
 <domainRepItem url="file:etc/templates/pie_5/Pie_domain.xml">
 <profile url="file:etc/templates/pie_5/pie_A_rv=0.00.xml"/>
 <profile url="file:etc/templates/pie_5/pie_A_rv=0.01.xml"/>
@@ -642,7 +643,7 @@
 <profile url="file:etc/templates/pie_5/pie_B_rv=0.98.xml"/>
 <profile url="file:etc/templates/pie_5/pie_B_rv=0.99.xml"/>
 <profile url="file:etc/templates/pie_5/pie_B_rv=1.00.xml"/>
-
+-->
 </domainRepItem>
 </domainRepItem>
         <protocolRepItem/>
