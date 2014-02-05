@@ -286,10 +286,10 @@ public class Global {
 	 * @throws NoClassDefFoundError
 	 *             if the agent fails to load (eg, package name is not empty).
 	 */
-	public static Agent loadAgentNew(String classname, File packagedir)
+	public static Agent loadAgentClassfile(String classname, File packagedir)
 			throws MalformedURLException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException, ClassCastException,
-			IllegalArgumentException {
+			IllegalArgumentException, ClassFormatError {
 		try {
 			java.lang.ClassLoader loader = AgentRepositoryUI.class
 					.getClassLoader();
@@ -303,6 +303,8 @@ public class Global {
 			throw new ClassNotFoundException("agent " + classname
 					+ " is not available in directory '" + packagedir + "'", e);
 		}
+		// don't catch NoClassDefFoundError here, because we need the message
+		// in loaodAgentWithPackage
 	}
 
 	/**
@@ -338,7 +340,7 @@ public class Global {
 		}
 
 		try {
-			return loadAgentNew(className, packageDir);
+			return loadAgentClassfile(className, packageDir);
 		} catch (NoClassDefFoundError e) {
 			/**
 			 * Hack: we try to get the correct name from the error message. Err
@@ -360,27 +362,19 @@ public class Global {
 			String expectedPath = File.separator
 					+ correctName.replaceAll("\\.", File.separator) + ".class";
 			if (!(file.getAbsolutePath().endsWith(expectedPath))) {
-				throw new NoClassDefFoundError(
-						"file "
-								+ file
-								+ " is not in correct directory structure, as its class is "
-								+ correctName);
+				throw new NoClassDefFoundError("file " + file
+						+ "\nis not in the correct directory structure, "
+						+ "\nas its class is " + correctName + "."
+						+ "\nEnsure the file is in ..." + expectedPath);
 			}
 
 			// number of dots is number of times we need to go to parent
 			// directory.
 			for (int up = 0; up < correctName.split(".").length; up++) {
+				// since we checked the path already, parents must exist.
 				packageDir = packageDir.getParentFile();
-				if (packageDir == null) {
-					throw new NoClassDefFoundError(
-							"file "
-									+ file
-									+ " has full name "
-									+ className
-									+ " which does not match the actual directory hierarchy");
-				}
 			}
-			return loadAgentNew(correctName, packageDir);
+			return loadAgentClassfile(correctName, packageDir);
 		}
 	}
 
