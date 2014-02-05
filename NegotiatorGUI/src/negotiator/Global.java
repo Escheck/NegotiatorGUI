@@ -369,8 +369,8 @@ public class Global {
 			}
 
 			// number of dots is number of times we need to go to parent
-			// directory.
-			for (int up = 0; up < correctName.split(".").length; up++) {
+			// directory. We are already in the directory of the agent, so -1.
+			for (int up = 0; up < correctName.split("\\.").length - 1; up++) {
 				// since we checked the path already, parents must exist.
 				packageDir = packageDir.getParentFile();
 			}
