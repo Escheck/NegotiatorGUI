@@ -14,7 +14,7 @@
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
 --> 	
-<project name="Negotiator" default="makeGenius4.2" basedir=".">
+<project name="Negotiator" default="makeGenius5.1" basedir=".">
 	<property name="dist" location="dist"/> 
 	<property name="build" location="bin"/>
 	<property name="javadoc" location="javadoc"/>
@@ -25,7 +25,8 @@
 	<property name="anac2010" location="/ANAC2010"/>
 	<property name="anacResources" location="/ANAC/All ANAC 2010 and ANAC 2011 resources"/>
 	<property name="anac2011" location="${anacResources}/bin/anac/y2011"/>
-	
+	<property name="tutorials" location="tutorials/"/>
+
 	<target name="cleanup">
 		<delete file="${dist}/negosimulator.jar"/>
 		<delete dir="${dist}/log"/>	
@@ -581,7 +582,7 @@
 				<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example"/>
 				<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example"/>
 				<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example"/>
-				<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example"/>
+				<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>			
 				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
