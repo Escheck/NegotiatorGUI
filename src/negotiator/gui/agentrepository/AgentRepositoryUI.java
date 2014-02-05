@@ -187,6 +187,8 @@ public class AgentRepositoryUI {
 				showLoadError("The given file can not be used.", e);
 			} catch (IOException e) {
 				showLoadError("The file can not be read.", e);
+			} catch (Error e) {
+				showLoadError("Something went wrong loading the file", e);
 			}
 		}
 

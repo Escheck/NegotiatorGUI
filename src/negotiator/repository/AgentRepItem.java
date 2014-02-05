@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import negotiator.Agent;
 import negotiator.Global;
 import negotiator.exceptions.Warning;
 
@@ -76,8 +77,10 @@ public class AgentRepItem implements RepItem {
 
 	/**
 	 * construct the item given the file. We check that the file actually loads
-	 * in and throw if we can't load it. name will be set to the name of the
-	 * file. description will be "".
+	 * in and throw if we can't load it. name will be set to
+	 * {@link Agent#getName()} of the file. description will be constructed
+	 * using name and {@link Agent#getVersion()}.
+	 * 
 	 * 
 	 * @param classFile
 	 * @throws ClassNotFoundException
@@ -90,12 +93,18 @@ public class AgentRepItem implements RepItem {
 	public AgentRepItem(File classFile) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, ClassCastException,
 			IllegalArgumentException, IOException {
-		description = "";
-		agentName = classFile.getName();
+		Agent agent = Global.loadAgentWithPackage(classFile);
+		String version = agent.getVersion();
+		agentName = agent.getName();
+		if (agentName == null) {
+			agentName = classFile.getName();
+		}
 		classPath = classFile.getCanonicalPath();
 
-		// check that the agent can be loaded
-		Global.loadAgentWithPackage(classFile);
+		description = agentName
+				+ (version == null || version.equals("unknown")
+						|| version.isEmpty() ? "" : " (" + version + ")");
+
 	}
 
 	public String getName() {
