@@ -66,8 +66,8 @@ public abstract class TimeDependentAgent extends BilateralAgent
 		double rv = utilitySpace.getReservationValueUndiscounted();
 		Pmax = maximumUtilityInScenario;
 		Pmin = Math.max(mininimumUtilityInScenario, rv);
-		log("Pmin = " + Pmin);
-		log("Pmax = " + Pmax);
+//		log("Pmin = " + Pmin);
+//		log("Pmax = " + Pmax);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public abstract class TimeDependentAgent extends BilateralAgent
 		if (getE() == 0)
 			return k;
 		double ft = k + (1 - k) * Math.pow(t, 1 / getE());
-		log("f(t) = " + ft);
+//		log("f(t) = " + ft);
 		return ft;
 	}
 
@@ -110,7 +110,8 @@ public abstract class TimeDependentAgent extends BilateralAgent
 		double time = timeline.getTime();
 		double utilityGoal = p(time);
 		Bid b = pickBidOfUtility(utilityGoal);
-//		log("[e=" + getE() + "] t = " + round2(time) + ". Aiming for " + round2(utilityGoal));
+//		double foundUtility = getUtility(b);
+//		log("[e=" + getE() + "] t = " + round2(time) + ". Aiming for " + round2(utilityGoal) + ". Found bid of utility " + round2(foundUtility));
 		return b;
 	}
 
