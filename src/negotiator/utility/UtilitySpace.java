@@ -1,16 +1,17 @@
 package negotiator.utility;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
+import java.util.Map.Entry;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Serializable;
 
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -275,14 +276,15 @@ public class UtilitySpace implements Serializable {
 	 * necessary because some parts of this class assume we work with weights
 	 * and evaluators.
 	 */
-	private void checkForLinearSpaceType() {
+	private void checkForLinearSpaceType() 
+	{
 		if (getType() == null)
 			return;
 
 		if (getType() != UTILITYSPACETYPE.LINEAR)
 			throw new IllegalStateException(
 					"This method is to be used for linear utility spaces only. This space is "
-							+ getType());
+						+ getType());
 	}
 
 	/**
@@ -707,7 +709,8 @@ public class UtilitySpace implements Serializable {
 	 * @return The weight, or -1 if the objective doesn't exist. Only works with
 	 *         linear utility spaces.
 	 */
-	public double getWeight(int issueID) {
+	public double getWeight(int issueID) 
+	{
 		checkForLinearSpaceType();
 		// TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = domain.getObjective(issueID);

@@ -10,6 +10,7 @@
 package agents;
 
 import java.util.HashMap;
+
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
@@ -69,6 +70,8 @@ public class OptimalBidderSimple extends OptimalBidder
 				throw new Exception("Type " + pie.getType() + " not supported by " + getName() );
 			}
 	}
+	
+	public static String getVersion() {return "v1.0";}
 
 
 } // end 

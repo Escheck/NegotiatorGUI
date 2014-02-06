@@ -1,8 +1,10 @@
 package negotiator;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+
+import java.io.Serializable;
+
 import negotiator.actions.Action;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
@@ -199,6 +201,15 @@ public abstract class Agent
 
 	public StrategyParameters getStrategyParameters() {
 		return strategyParameters;
+	}
+	
+	/**
+	 * Indicates what negotiation settings are supported by an agent, such as linear or non-linear utility spaces.
+	 * The default is non-restrictive, but can be overriden if the agent can only be used in certain settings.
+	 */
+	public SupportedNegotiationSetting getSupportedNegotiationSetting()
+	{
+		return SupportedNegotiationSetting.getDefault();
 	}
 
 	/**
