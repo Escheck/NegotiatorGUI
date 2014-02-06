@@ -1,5 +1,6 @@
 package agents.anac.y2013.TheFawkes;
 
+import negotiator.SupportedNegotiationSetting;
 import negotiator.boaframework.acceptanceconditions.anac2013.AC_TheFawkes;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2013.Fawkes_Offering;
@@ -16,8 +17,10 @@ public class TheFawkes extends BOAagent {
 		offeringStrategy = new Fawkes_Offering();
 		acceptConditions = new AC_TheFawkes();
 		try {
-			offeringStrategy.init(negotiationSession, opponentModel, omStrategy, null);
-			acceptConditions.init(negotiationSession, offeringStrategy, opponentModel, null);
+			offeringStrategy.init(negotiationSession, opponentModel,
+					omStrategy, null);
+			acceptConditions.init(negotiationSession, offeringStrategy,
+					opponentModel, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -26,5 +29,10 @@ public class TheFawkes extends BOAagent {
 	@Override
 	public String getName() {
 		return "TheFawkes";
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }

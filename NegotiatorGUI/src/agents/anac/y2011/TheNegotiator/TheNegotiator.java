@@ -1,9 +1,8 @@
 package agents.anac.y2011.TheNegotiator;
 
-
 import negotiator.Agent;
+import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Action;
-
 
 /**
  * The TheNegotiator class specifies a negotiation agent in the GENIUS domain.
@@ -12,7 +11,8 @@ import negotiator.actions.Action;
  */
 public class TheNegotiator extends Agent {
 
-	// reference to the decider (governs which action should be performed each turn)
+	// reference to the decider (governs which action should be performed each
+	// turn)
 	private Decider decider;
 
 	/**
@@ -22,17 +22,20 @@ public class TheNegotiator extends Agent {
 		decider = new Decider(this);
 	}
 
-	public static String getVersion() { return "3.0"; }
+	public static String getVersion() {
+		return "3.0";
+	}
 
 	@Override
 	public String getName() {
 		return "The Negotiator";
 	}
-	
+
 	/**
 	 * Store the actions made by a partner.
 	 * 
-	 * @param action by partner in current turn
+	 * @param action
+	 *            by partner in current turn
 	 */
 	public void ReceiveMessage(Action partnerAction) {
 		decider.setPartnerMove(partnerAction);
@@ -43,5 +46,10 @@ public class TheNegotiator extends Agent {
 	 */
 	public Action chooseAction() {
 		return decider.makeDecision();
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }
