@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <repository fileName="domainrepository.xml">
     <items>
-        <agentRepItems/>
+        <profileRepItems/>
         <partyRepItems/>
         <domainRepItem>
         
-        	<domainRepItem url="file:etc/templates/nonlinear/simple/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/simple/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/simple/agent-2.xml"/>
+        	<domainRepItem url="file:etc/templates/nonlinear/simple/simple-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/simple/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/simple/profile-2.xml"/>
         	</domainRepItem>
                 
-        	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/agent-2.xml"/>
+        	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
         	</domainRepItem>
         
-      		<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-2/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-2/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-2/agent-2.xml"/>
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-2/S-1NIKFRT-2-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-2/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-2/profile-2.xml"/>
         	</domainRepItem>
         
-      		<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-3/domain.xml">
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/agent-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/agent-2.xml"/>
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-3/S-1NIKFRT-3-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/profile-2.xml"/>
         	</domainRepItem>
         	
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
