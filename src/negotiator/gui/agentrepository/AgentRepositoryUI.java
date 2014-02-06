@@ -1,5 +1,6 @@
 package negotiator.gui.agentrepository;
 
+import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -11,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.AbstractTableModel;
@@ -30,13 +32,33 @@ public class AgentRepositoryUI {
 	private AbstractTableModel dataModel;
 	private final JTable table;
 
-	public AgentRepositoryUI(JTable pTable) {
-		this.table = pTable;
+	/**
+	 * appends the UI to the given scrollpane. Kind of hack, NegoGUIView has
+	 * already created the scrollpane. #858 we need the scrollpane because we
+	 * want to attach mouse listener to the scrollpane
+	 * 
+	 * @param jScrollPane1
+	 */
+	public AgentRepositoryUI(JScrollPane jScrollPane1) {
+		this.table = new JTable();
+		jScrollPane1.setViewportView(table);
+
 		agentrepository = Repository.get_agent_repository();
 
 		initTable();
+		addPopupMenu(jScrollPane1);
+		addPopupMenu(table);
+
 	}
 
+	/**
+	 * User clicked in our panel. Show popup menu
+	 * 
+	 * if there is a row selected in the table, we also enable the Remove
+	 * option.
+	 * 
+	 * @return popupmenu
+	 */
 	private JPopupMenu createPopupMenu() {
 		JPopupMenu popup = new JPopupMenu();
 
@@ -46,17 +68,61 @@ public class AgentRepositoryUI {
 				addAction();
 			}
 		});
+		popup.add(addAgent);
 
-		JMenuItem removeAgent = new JMenuItem("Remove agent");
-		removeAgent.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				removeAction();
+		if (table.getSelectedRow() > 0) {
+
+			JMenuItem removeAgent = new JMenuItem("Remove agent");
+			removeAgent.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					removeAction();
+				}
+			});
+			popup.add(removeAgent);
+		}
+
+		return popup;
+	}
+
+	/**
+	 * Add a popup menu to a component. We need to attach this to multiple
+	 * components: the scrollpane and the table. This is because we want the
+	 * menu also to appear if users click outside the table #858
+	 * 
+	 * @param component
+	 *            the component to add the menu to.
+	 * 
+	 */
+	private void addPopupMenu(Component component) {
+		component.addMouseListener(new MouseAdapter() {
+
+			// if Windows
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				mouseCode(e);
+			}
+
+			// if Linux
+			public void mousePressed(MouseEvent e) {
+				mouseCode(e);
+			}
+
+			private void mouseCode(MouseEvent e) {
+				int r = table.rowAtPoint(e.getPoint());
+				if (r >= 0 && r < table.getRowCount()) {
+					table.setRowSelectionInterval(r, r);
+				} else {
+					table.clearSelection();
+				}
+
+				if (e.isPopupTrigger()) {// && e.getComponent() instanceof
+											// JTable) {
+					// if rowindex>0, we actually selected a row.
+					JPopupMenu popup = createPopupMenu();
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
 			}
 		});
-
-		popup.add(addAgent);
-		popup.add(removeAgent);
-		return popup;
 	}
 
 	private void initTable() {
@@ -101,36 +167,36 @@ public class AgentRepositoryUI {
 
 		table.setModel(dataModel);
 		table.setShowVerticalLines(false);
-		table.addMouseListener(new MouseAdapter() {
-
-			// if Windows
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				mouseCode(e);
-			}
-
-			// if Linux
-			public void mousePressed(MouseEvent e) {
-				mouseCode(e);
-			}
-
-			private void mouseCode(MouseEvent e) {
-				int r = table.rowAtPoint(e.getPoint());
-				if (r >= 0 && r < table.getRowCount()) {
-					table.setRowSelectionInterval(r, r);
-				} else {
-					table.clearSelection();
-				}
-
-				int rowindex = table.getSelectedRow();
-				if (rowindex < 0)
-					return;
-				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
-					JPopupMenu popup = createPopupMenu();
-					popup.show(e.getComponent(), e.getX(), e.getY());
-				}
-			}
-		});
+		// table.addMouseListener(new MouseAdapter() {
+		//
+		// // if Windows
+		// @Override
+		// public void mouseReleased(MouseEvent e) {
+		// mouseCode(e);
+		// }
+		//
+		// // if Linux
+		// public void mousePressed(MouseEvent e) {
+		// mouseCode(e);
+		// }
+		//
+		// private void mouseCode(MouseEvent e) {
+		// int r = table.rowAtPoint(e.getPoint());
+		// if (r >= 0 && r < table.getRowCount()) {
+		// table.setRowSelectionInterval(r, r);
+		// } else {
+		// table.clearSelection();
+		// }
+		//
+		// int rowindex = table.getSelectedRow();
+		// if (rowindex < 0)
+		// return;
+		// if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+		// JPopupMenu popup = createPopupMenu();
+		// popup.show(e.getComponent(), e.getX(), e.getY());
+		// }
+		// }
+		// });
 
 		table.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent ke) {
