@@ -1,16 +1,20 @@
 package agents;
 
-public class TimeDependentAgentHardliner extends TimeDependentAgent
-{
+import negotiator.SupportedNegotiationSetting;
+
+public class TimeDependentAgentHardliner extends TimeDependentAgent {
 	@Override
-	public double getE()
-	{
+	public double getE() {
 		return 0;
 	}
-	
+
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "Hardliner";
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }
