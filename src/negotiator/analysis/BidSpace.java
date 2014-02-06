@@ -158,15 +158,15 @@ public class BidSpace {
 	private void buildSpace(boolean excludeBids) throws Exception
 	{
 		//RA: 
-		if (utilspaces[0].getFileName().contains("agent-1.xml")) {
-			String fileName=utilspaces[0].getFileName().replaceAll("agent-1.xml","pareto.xml");
+		if (utilspaces[0].getFileName().contains("profile-1.xml")) {
+			String fileName=utilspaces[0].getFileName().replaceAll("profile-1.xml","pareto.xml");
 				if (checkParetoFileExist(fileName)){
 					readParetoFromFile(fileName);
 					return;
 				}
 		}
-		else if (utilspaces[0].getFileName().contains("agent-2.xml")) {
-			String fileName=utilspaces[0].getFileName().replaceAll("agent-2.xml","pareto.xml");
+		else if (utilspaces[0].getFileName().contains("profile-2.xml")) {
+			String fileName=utilspaces[0].getFileName().replaceAll("profile-2.xml","pareto.xml");
 				if (checkParetoFileExist(fileName)){
 					readParetoFromFile(fileName);
 					return;
