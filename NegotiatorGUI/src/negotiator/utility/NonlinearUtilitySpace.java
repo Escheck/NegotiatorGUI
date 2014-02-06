@@ -65,7 +65,7 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	}
 
 
-	public ArrayList<InclusiveHyperRectangle> getAllInclusiveConstraints(){
+	private ArrayList<InclusiveHyperRectangle> getAllInclusiveConstraints(){
 		return this.allinclusiveConstraints;
 	}
 
@@ -190,7 +190,7 @@ public class NonlinearUtilitySpace extends UtilitySpace
 		this.nonlinearFunction=loadUtilityFunction((SimpleElement)((SimpleElement)utility).getChildByTagName("ufun")[0]);	
 	}
 
-	public double getMaxUtilityValue() {
+	private double getMaxUtilityValue() {
 		return maxUtilityValue;
 	}
 
@@ -256,7 +256,7 @@ public class NonlinearUtilitySpace extends UtilitySpace
 	 * @param InclusiveHyperRectangle:
 	 * @return ArrauList<Bound>
 	 */
-	public ArrayList<Bound> getIntersectionOfHyperRectangles(ArrayList<InclusiveHyperRectangle> hyperRects) {
+	private ArrayList<Bound> getIntersectionOfHyperRectangles(ArrayList<InclusiveHyperRectangle> hyperRects) {
 	    ArrayList<Bound> hyperRectBoundlist = hyperRects.get(0).getBoundList();
 	    for(int index=1; index < hyperRects.size(); ++index) {
 	        hyperRectBoundlist = getIntersection(hyperRects.get(index).getBoundList(), hyperRectBoundlist);
