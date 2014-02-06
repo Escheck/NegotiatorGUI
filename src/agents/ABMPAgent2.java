@@ -2,10 +2,22 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import negotiator.*;
-import negotiator.actions.*;
-import negotiator.issue.*;
-import negotiator.utility.*;
+
+import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.SupportedNegotiationSetting;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+import negotiator.issue.ISSUETYPE;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueReal;
+import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.EvaluatorReal;
 
 /**
  * 
@@ -15,20 +27,35 @@ import negotiator.utility.*;
 public class ABMPAgent2 extends Agent {
 
 	private Action messageOpponent;
-	//private int nrOfIssues;
+	// private int nrOfIssues;
 	private Bid myLastBid = null;
 	private Action myLastAction = null;
-	//private double[] fIssueWeight;
-	private enum ACTIONTYPE { START, OFFER, ACCEPT, BREAKOFF };
-	private double fOldTargetUtility; 
+
+	// private double[] fIssueWeight;
+	private enum ACTIONTYPE {
+		START, OFFER, ACCEPT, BREAKOFF
+	};
+
+	private double fOldTargetUtility;
 	// Paraters used in ABMP strategy
-	// TODO: Include these parameters as agent parameters in agent's utility template.
-	// QUESTION: How to do that nicely, since these parameters are strategy specific?
-	private static final double NEGOTIATIONSPEED = 0.1; // TODO: Probably still somewhere a bug. When you set this too low (e.g. 0.05), no deal is reached and no concession is done!
+	// TODO: Include these parameters as agent parameters in agent's utility
+	// template.
+	// QUESTION: How to do that nicely, since these parameters are strategy
+	// specific?
+	private static final double NEGOTIATIONSPEED = 0.1; // TODO: Probably still
+														// somewhere a bug. When
+														// you set this too low
+														// (e.g. 0.05), no deal
+														// is reached and no
+														// concession is done!
 	private static final double CONCESSIONFACTOR = 1;
 	private static final double CONFTOLERANCE = 0;
-	private static final double UTIlITYGAPSIZE = 0.02; // Accept when utility gap is <= UTILITYGAPSIZE.
-	// CHECK: Utility gap size needed since concession steps get VERY small when opponent's last bid utility is
+	private static final double UTIlITYGAPSIZE = 0.02; // Accept when utility
+														// gap is <=
+														// UTILITYGAPSIZE.
+
+	// CHECK: Utility gap size needed since concession steps get VERY small when
+	// opponent's last bid utility is
 	// close to own last bid utility.
 
 	// Code is independent from AMPO vs CITY case, but some specifics about
@@ -36,27 +63,36 @@ public class ABMPAgent2 extends Agent {
 	// ****************************************************************************************************
 	// AMPO VS CITY: Outcome space has size of about 7 milion.
 	// ****************************************************************************************************
-	// ******************************************************** *******************************************
-	// CHECK: ABMP gets stuck on the Car Example with a negotiation speed of less than 0.05!!
-	// ABMP "gets stuck" on AMPO vs CITY. The search through the space is not effective in discrete outcome
-	// spaces. Even with very high negotiation speed parameters (near 1) no bid can be found with the target utility
-	// at a certain point. In a discrete space, the evaluation distance between two different values on an
-	// issue need to be taken into account, which may differ from value to value... In such spaces one strategy
-	// would be to consider which combination of concessions on a set of issues would provide 
-	// ******************************************************** *******************************************
+	// ********************************************************
+	// *******************************************
+	// CHECK: ABMP gets stuck on the Car Example with a negotiation speed of
+	// less than 0.05!!
+	// ABMP "gets stuck" on AMPO vs CITY. The search through the space is not
+	// effective in discrete outcome
+	// spaces. Even with very high negotiation speed parameters (near 1) no bid
+	// can be found with the target utility
+	// at a certain point. In a discrete space, the evaluation distance between
+	// two different values on an
+	// issue need to be taken into account, which may differ from value to
+	// value... In such spaces one strategy
+	// would be to consider which combination of concessions on a set of issues
+	// would provide
+	// ********************************************************
+	// *******************************************
 
 	/** Creates a new instance of MyAgent */
 
 	public ABMPAgent2() {
 		super();
 	}
+
 	@Override
 	public void init() {
 		super.init();
 		messageOpponent = null;
 		myLastBid = null;
 		myLastAction = null;
-		fOldTargetUtility=1;		
+		fOldTargetUtility = 1;
 
 	}
 
@@ -64,21 +100,23 @@ public class ABMPAgent2 extends Agent {
 		messageOpponent = opponentAction;
 	}
 
-	private Action proposeInitialBid() throws Exception{
+	private Action proposeInitialBid() throws Exception {
 		Bid lBid;
-		
+
 		// Return (one of the) possible bid(s) with maximal utility.
 		lBid = utilitySpace.getMaxUtilityBid();
-		lBid = getBidRandomWalk(utilitySpace.getUtility(lBid)*0.95, utilitySpace.getUtility(lBid));
+		lBid = getBidRandomWalk(utilitySpace.getUtility(lBid) * 0.95,
+				utilitySpace.getUtility(lBid));
 		myLastBid = lBid;
-		return new Offer(this.getAgentID(),lBid);
+		return new Offer(this.getAgentID(), lBid);
 	}
 
 	private Action proposeNextBid(Bid lOppntBid) {
 		Bid lBid = null;
-		double lMyUtility, lOppntUtility=1, lTargetUtility;
-		// Both parties have made an initial bid. Compute associated utilities from my point of view.
-		lMyUtility = fOldTargetUtility;//utilitySpace.getUtility(myLastBid);
+		double lMyUtility, lOppntUtility = 1, lTargetUtility;
+		// Both parties have made an initial bid. Compute associated utilities
+		// from my point of view.
+		lMyUtility = fOldTargetUtility;// utilitySpace.getUtility(myLastBid);
 		try {
 			lOppntUtility = utilitySpace.getUtility(lOppntBid);
 		} catch (Exception e) {
@@ -104,28 +142,35 @@ public class ABMPAgent2 extends Agent {
 		switch (lActionType) {
 		case OFFER: // Offer received from opponent
 			try {
-			lOppntBid = ((Offer) messageOpponent).getBid();
-			if (myLastAction == null)
-				// Other agent started, lets propose my initial bid.
-				lAction = proposeInitialBid();
-			//DT Accept if utility gap is smaller than my target utility (instead of actual utility of my previous bid) 
-			else if (utilitySpace.getUtility(lOppntBid) >=/* (utilitySpace.getUtility(myLastBid))*/ fOldTargetUtility-UTIlITYGAPSIZE)
-				// Opponent bids equally, or outbids my previous bid, so lets accept.
-				lAction = new Accept(getAgentID());
-			else
-				// Propose counteroffer. Get next bid.
-				lAction = proposeNextBid(lOppntBid);
-			} catch(Exception e) {
+				lOppntBid = ((Offer) messageOpponent).getBid();
+				if (myLastAction == null)
+					// Other agent started, lets propose my initial bid.
+					lAction = proposeInitialBid();
+				// DT Accept if utility gap is smaller than my target utility
+				// (instead of actual utility of my previous bid)
+				else if (utilitySpace.getUtility(lOppntBid) >= /*
+																 * (utilitySpace.
+																 * getUtility
+																 * (myLastBid))
+																 */fOldTargetUtility
+						- UTIlITYGAPSIZE)
+					// Opponent bids equally, or outbids my previous bid, so
+					// lets accept.
+					lAction = new Accept(getAgentID());
+				else
+					// Propose counteroffer. Get next bid.
+					lAction = proposeNextBid(lOppntBid);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
-		case ACCEPT: // Presumably, opponent accepted last bid, but let's check...
-/*			lOppntBid = ((Accept) messageOpponent).getBid();
-			if (lOppntBid.equals(myLastBid))
-				lAction = new Accept(this, myLastBid);
-			else
-				lAction = new Offer(this, myLastBid);
-			break;*/
+		case ACCEPT: // Presumably, opponent accepted last bid, but let's
+						// check...
+			/*
+			 * lOppntBid = ((Accept) messageOpponent).getBid(); if
+			 * (lOppntBid.equals(myLastBid)) lAction = new Accept(this,
+			 * myLastBid); else lAction = new Offer(this, myLastBid); break;
+			 */
 		case BREAKOFF:
 			// nothing left to do. Negotiation ended, which should be checked by
 			// Negotiator...
@@ -161,25 +206,24 @@ public class ABMPAgent2 extends Agent {
 		return lActionType;
 	}
 
-/*	public void loadUtilitySpace(String fileName) {
-		
-		utilitySpace = new SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
-	
-		nrOfIssues = getNegotiationTemplate().getDomain().getNumberOfIssues();
-		fIssueWeight = new double[nrOfIssues];
-		for (int i=0; i<nrOfIssues; i++) {
-			fIssueWeight[i] = this.utilitySpace.getWeight(i);
-		}
-	}
-*/
+	/*
+	 * public void loadUtilitySpace(String fileName) {
+	 * 
+	 * utilitySpace = new
+	 * SimpleUtilitySpace(getNegotiationTemplate().getDomain(), fileName);
+	 * 
+	 * nrOfIssues = getNegotiationTemplate().getDomain().getNumberOfIssues();
+	 * fIssueWeight = new double[nrOfIssues]; for (int i=0; i<nrOfIssues; i++) {
+	 * fIssueWeight[i] = this.utilitySpace.getWeight(i); } }
+	 */
 	// ABMP Specific Code
 
-	private Bid getBidABMPsimple(double targetUtility) throws Exception{
+	private Bid getBidABMPsimple(double targetUtility) throws Exception {
 		int nrOfIssues = utilitySpace.getDomain().getIssues().size();
 		double[] lIssueWeight = new double[nrOfIssues];
-		int i=0;
-		for(Issue lIssue : utilitySpace.getDomain().getIssues()) {
-			lIssueWeight[i]= utilitySpace.getWeight(lIssue.getNumber());
+		int i = 0;
+		for (Issue lIssue : utilitySpace.getDomain().getIssues()) {
+			lIssueWeight[i] = utilitySpace.getWeight(lIssue.getNumber());
 			i++;
 		}
 		ArrayList<Issue> lIssues = utilitySpace.getDomain().getIssues();
@@ -190,76 +234,99 @@ public class ABMPAgent2 extends Agent {
 		double[] lTE = new double[nrOfIssues];
 		double lUtility = 0, lNF = 0, lAlpha, lUtilityGap, lTotalConcession = 0;
 
-		// ASSUMPTION: Method computes a second bid. Method proposeInitialBid is used to compute first bid.
+		// ASSUMPTION: Method computes a second bid. Method proposeInitialBid is
+		// used to compute first bid.
 		lUtilityGap = targetUtility - utilitySpace.getUtility(myLastBid);
 		for (i = 0; i < nrOfIssues; i++) {
-			lBE[i] = (Double)(utilitySpace.getEvaluator(lIssues.get(i).getNumber()).getEvaluation(utilitySpace, myLastBid, lIssues.get(i).getNumber()));
+			lBE[i] = (Double) (utilitySpace.getEvaluator(lIssues.get(i)
+					.getNumber()).getEvaluation(utilitySpace, myLastBid,
+					lIssues.get(i).getNumber()));
 		}
 
-		// STEP 1: Retrieve issue value for last bid and compute concession on each issue.
+		// STEP 1: Retrieve issue value for last bid and compute concession on
+		// each issue.
 		for (i = 0; i < nrOfIssues; i++) {
-			lAlpha = (1 - lIssueWeight[i]) * lBE[i]; // CHECK: (1 - lBE[i]); This factor is not right??
+			lAlpha = (1 - lIssueWeight[i]) * lBE[i]; // CHECK: (1 - lBE[i]);
+														// This factor is not
+														// right??
 			lNF = lNF + lIssueWeight[i] * lAlpha;
 			lIssueAlpha[i] = lAlpha;
 		}
 
 		// Compute basic target evaluations per issue
-		for ( i = 0; i < nrOfIssues; i++) {
+		for (i = 0; i < nrOfIssues; i++) {
 			lBTE[i] = lBE[i] + (lIssueAlpha[i] / lNF) * lUtilityGap;
 		}
 
 		// STEP 2: Add configuration tolerance for opponent's bid
-		for ( i = 0; i < nrOfIssues; i++) {
-			lUtility =(Double)(utilitySpace.getEvaluator(lIssues.get(i).getNumber()).getEvaluation(utilitySpace,((Offer) messageOpponent).getBid(), lIssues.get(i).getNumber()));
+		for (i = 0; i < nrOfIssues; i++) {
+			lUtility = (Double) (utilitySpace.getEvaluator(lIssues.get(i)
+					.getNumber()).getEvaluation(utilitySpace,
+					((Offer) messageOpponent).getBid(), lIssues.get(i)
+							.getNumber()));
 			lTE[i] = (1 - CONFTOLERANCE) * lBTE[i] + CONFTOLERANCE * lUtility;
 		}
 
-		// STEP 3: Find bid in outcome space with issue target utilities corresponding with those computed above.
-		// ASSUMPTION: There is always a UNIQUE issue value with utility closest to the target evaluation.
+		// STEP 3: Find bid in outcome space with issue target utilities
+		// corresponding with those computed above.
+		// ASSUMPTION: There is always a UNIQUE issue value with utility closest
+		// to the target evaluation.
 		// First determine new values for discrete-valued issues.
 		double lEvalValue;
 		int lNrOfRealIssues = 0;
 		for (i = 0; i < nrOfIssues; i++) {
 			lUtility = 1; // ASSUMPTION: Max utility = 1.
-			Issue lIssue = lIssues.get(i);//getNegotiationTemplate().getDomain().getIssue(i);
-			if(lIssue.getType() == ISSUETYPE.DISCRETE) {
-				IssueDiscrete lIssueDiscrete =(IssueDiscrete)lIssue;
+			Issue lIssue = lIssues.get(i);// getNegotiationTemplate().getDomain().getIssue(i);
+			if (lIssue.getType() == ISSUETYPE.DISCRETE) {
+				IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
-					lEvalValue = ((EvaluatorDiscrete) utilitySpace.getEvaluator(lIssues.get(i).getNumber())).getEvaluation(lIssueDiscrete.getValue(j));
+					lEvalValue = ((EvaluatorDiscrete) utilitySpace
+							.getEvaluator(lIssues.get(i).getNumber()))
+							.getEvaluation(lIssueDiscrete.getValue(j));
 					if (Math.abs(lTE[i] - lEvalValue) < lUtility) {
 						lIssueIndex[i] = lIssueDiscrete.getValue(j);
-						lUtility = Math.abs(lTE[i]- lEvalValue);
-					}//if
-				}//for
-			lTotalConcession += lIssueWeight[i]*(lBE[i] - ((EvaluatorDiscrete) utilitySpace.getEvaluator(lIssues.get(i).getNumber())).getEvaluation((ValueDiscrete)lIssueIndex[i]));
+						lUtility = Math.abs(lTE[i] - lEvalValue);
+					}// if
+				}// for
+				lTotalConcession += lIssueWeight[i]
+						* (lBE[i] - ((EvaluatorDiscrete) utilitySpace
+								.getEvaluator(lIssues.get(i).getNumber()))
+								.getEvaluation((ValueDiscrete) lIssueIndex[i]));
 			} else if (lIssue.getType() == ISSUETYPE.REAL)
 				lNrOfRealIssues += 1;
 		}
-		
-		// TODO: Still need to integrate integer-valued issues somewhere here. Low priority.
-		
+
+		// TODO: Still need to integrate integer-valued issues somewhere here.
+		// Low priority.
+
 		// STEP 4: RECOMPUTE size of remaining concession step
-		// Reason: Issue value may not provide exact match with basic target evaluation value.
-		// NOTE: This recomputation also includes any concession due to configuration tolerance parameter...
-		// First compute difference between actual concession on issue and target evaluation.
-		// TODO: Think about how to (re)distribute remaining concession over MULTIPLE real issues. In car example
+		// Reason: Issue value may not provide exact match with basic target
+		// evaluation value.
+		// NOTE: This recomputation also includes any concession due to
+		// configuration tolerance parameter...
+		// First compute difference between actual concession on issue and
+		// target evaluation.
+		// TODO: Think about how to (re)distribute remaining concession over
+		// MULTIPLE real issues. In car example
 		// not important. Low priority.
 		double lRestUtitility = lUtilityGap + lTotalConcession;
-		// Distribute remaining utility of real issues. Integers still to be done. See above.
+		// Distribute remaining utility of real issues. Integers still to be
+		// done. See above.
 		for (i = 0; i < nrOfIssues; i++) {
-			Issue lIssue = lIssues.get(i);//getNegotiationTemplate().getDomain().getIssue(i);
-			if(lIssue.getType() == ISSUETYPE.REAL) {
-				lTE[i] += lRestUtitility/lNrOfRealIssues;
-				EvaluatorReal lRealEvaluator=(EvaluatorReal) (utilitySpace.getEvaluator(lIssues.get(i).getNumber()));
+			Issue lIssue = lIssues.get(i);// getNegotiationTemplate().getDomain().getIssue(i);
+			if (lIssue.getType() == ISSUETYPE.REAL) {
+				lTE[i] += lRestUtitility / lNrOfRealIssues;
+				EvaluatorReal lRealEvaluator = (EvaluatorReal) (utilitySpace
+						.getEvaluator(lIssues.get(i).getNumber()));
 				double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
 				lIssueIndex[i] = new ValueReal(r);
 			}
 		}
 		HashMap<Integer, Value> lValues = new HashMap<Integer, Value>();
-		for(i=0;i<nrOfIssues;i++) {
+		for (i = 0; i < nrOfIssues; i++) {
 			lValues.put(lIssues.get(i).getNumber(), lIssueIndex[i]);
 		}
-		return new Bid(utilitySpace.getDomain(),lValues);
+		return new Bid(utilitySpace.getDomain(), lValues);
 	}
 
 	private double getTargetUtility(double myUtility, double oppntUtility) {
@@ -282,28 +349,33 @@ public class ABMPAgent2 extends Agent {
 		// Compute concession step
 		lMinUtility = 1 - getConcessionFactor();
 		lUtilityGap = (oppntUtility - myUtility);
-		lConcessionStep = getNegotiationSpeed() * (1 - lMinUtility / myUtility) * lUtilityGap;
+		lConcessionStep = getNegotiationSpeed() * (1 - lMinUtility / myUtility)
+				* lUtilityGap;
 		System.out.println(lConcessionStep);
 		return lConcessionStep;
 	}
 
-	private Bid getBidRandomWalk(double lowerBound, double upperBoud)  throws Exception{
+	private Bid getBidRandomWalk(double lowerBound, double upperBoud)
+			throws Exception {
 		Bid lBid = null, lBestBid = null;
 
 		// Return bid that gets closest to target utility in a "random walk"
 		// search.
 		lBestBid = utilitySpace.getDomain().getRandomBid();
-		while(true) {
+		while (true) {
 			lBid = utilitySpace.getDomain().getRandomBid();
-			if ((utilitySpace.getUtility(lBid) > lowerBound)&&
-					(utilitySpace.getUtility(lBestBid) < upperBoud)) {
+			if ((utilitySpace.getUtility(lBid) > lowerBound)
+					&& (utilitySpace.getUtility(lBestBid) < upperBoud)) {
 				lBestBid = lBid;
 				break;
 			}
-				
+
 		}
 		return lBestBid;
 	}
 
-	
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
+	}
 }

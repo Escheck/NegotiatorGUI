@@ -1,5 +1,6 @@
 package agents.anac.y2013.InoxAgent;
 
+import negotiator.SupportedNegotiationSetting;
 import negotiator.boaframework.acceptanceconditions.anac2013.AC_InoxAgent;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2013.InoxAgent_Offering;
@@ -13,12 +14,19 @@ public class InoxAgent extends BOAagent {
 		opponentModel = new InoxAgent_OM(negotiationSession);
 		opponentModel.init(negotiationSession);
 		omStrategy = new BestBid(negotiationSession, opponentModel);
-		offeringStrategy = new InoxAgent_Offering(negotiationSession, opponentModel, omStrategy);
-		acceptConditions = new AC_InoxAgent(negotiationSession, offeringStrategy, opponentModel);
+		offeringStrategy = new InoxAgent_Offering(negotiationSession,
+				opponentModel, omStrategy);
+		acceptConditions = new AC_InoxAgent(negotiationSession,
+				offeringStrategy, opponentModel);
 	}
 
 	@Override
 	public String getName() {
 		return "InoxAgent";
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }

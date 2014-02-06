@@ -1,9 +1,19 @@
 package agents.anac.y2011.IAMhaggler2011;
 
 import java.util.ArrayList;
+
+import negotiator.Agent;
+import negotiator.Bid;
+import negotiator.SupportedNegotiationSetting;
+import negotiator.actions.Accept;
+import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
 import org.apache.commons.math.special.Erf;
+
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixturePrediction;
@@ -13,12 +23,6 @@ import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
 import Jama.Matrix;
-import negotiator.Agent;
-import negotiator.Bid;
-import negotiator.actions.Accept;
-import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
 
 /**
  * @author Colin Williams
@@ -28,7 +32,7 @@ import negotiator.actions.Offer;
  * 
  */
 public class IAMhaggler2011 extends Agent {
-	
+
 	protected double RISK_PARAMETER = 3.0;
 	private Matrix utilitySamples;
 	private Matrix timeSamples;
@@ -41,22 +45,25 @@ public class IAMhaggler2011 extends Agent {
 	private double maxUtilityInTimeSlot;
 	private int lastTimeSlot = -1;
 	private Matrix means;
-	private Matrix variances;	
+	private Matrix variances;
 	private double maxUtility;
 	private Bid bestReceivedBid;
 	private double previousTargetUtility;
 	protected BidCreator bidCreator;
+
 	private static enum ActionType {
 		ACCEPT, BREAKOFF, OFFER, START;
 	}
+
 	protected double MAXIMUM_ASPIRATION = 0.9;
 	private Action messageOpponent;
 	protected Action myLastAction = null;
 	protected Bid myLastBid = null;
 	protected double acceptMultiplier = 1.02;
 	private ArrayList<Bid> opponentBids;
-	
-	public IAMhaggler2011() { }
+
+	public IAMhaggler2011() {
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -71,35 +78,32 @@ public class IAMhaggler2011 extends Agent {
 		opponentBids = new ArrayList<Bid>();
 
 		double discountingFactor = 0.5;
-		try
-		{
+		try {
 			discountingFactor = utilitySpace.getDiscountFactor();
-		}
-		catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if(discountingFactor == 0)
+		if (discountingFactor == 0)
 			discountingFactor = 1;
 		makeUtilitySamples(100);
 		makeTimeSamples(100);
 		Matrix discounting = generateDiscountingFunction(discountingFactor);
 		Matrix risk = generateRiskFunction(RISK_PARAMETER);
 		utility = risk.arrayTimes(discounting);
-		
+
 		BasicPrior[] bps = { new BasicPrior(11, 0.252, 0.5),
 				new BasicPrior(11, 0.166, 0.5), new BasicPrior(1, .01, 1.0) };
 		CovarianceFunction cf = new SumCovarianceFunction(
 				Matern3CovarianceFunction.getInstance(),
 				NoiseCovarianceFunction.getInstance());
-		
+
 		regression = new GaussianProcessRegressionBMC();
 		regression.setCovarianceFunction(cf);
 		regression.setPriors(bps);
-		
+
 		maxUtility = 0;
 		previousTargetUtility = 1;
-		
+
 		bidCreator = new RandomBidCreator();
 	}
 
@@ -118,7 +122,8 @@ public class IAMhaggler2011 extends Agent {
 		double[] utilitySamplesArray = new double[m];
 		{
 			for (int i = 0; i < utilitySamplesArray.length; i++) {
-				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5) / ((double) m + 1.0);
+				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5)
+						/ ((double) m + 1.0);
 			}
 		}
 		utilitySamples = new Matrix(utilitySamplesArray,
@@ -157,16 +162,15 @@ public class IAMhaggler2011 extends Agent {
 	 */
 	protected Bid proposeNextBid(Bid opponentBid) throws Exception {
 		double opponentUtility = utilitySpace.getUtility(opponentBid);
-		
-		if(opponentUtility > maxUtility)
-		{
+
+		if (opponentUtility > maxUtility) {
 			bestReceivedBid = opponentBid;
 			maxUtility = opponentUtility;
 		}
-		
+
 		double targetUtility = getTarget(opponentUtility, timeline.getTime());
-		
-		if(targetUtility <= maxUtility && previousTargetUtility > maxUtility)
+
+		if (targetUtility <= maxUtility && previousTargetUtility > maxUtility)
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 		// Now get a random bid in the range targetUtility ± 0.025
@@ -218,7 +222,8 @@ public class IAMhaggler2011 extends Agent {
 			double[] x = new double[opponentTimes.size()];
 			double[] xAdjust = new double[opponentTimes.size()];
 			double[] y = new double[opponentUtilities.size()];
-			double[] timeSamplesAdjust = new double[timeSamples.getColumnDimension()];
+			double[] timeSamplesAdjust = new double[timeSamples
+					.getColumnDimension()];
 
 			int i;
 			i = 0;
@@ -243,10 +248,11 @@ public class IAMhaggler2011 extends Agent {
 			Matrix matrixX = new Matrix(x, x.length);
 			Matrix matrixXAdjust = new Matrix(xAdjust, xAdjust.length);
 			Matrix matrixY = new Matrix(y, y.length);
-			Matrix matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust, timeSamplesAdjust.length);
+			Matrix matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust,
+					timeSamplesAdjust.length);
 
 			matrixY.minusEquals(matrixXAdjust);
-			
+
 			GaussianProcessMixture predictor = regression.calculateRegression(
 					matrixX, matrixY);
 
@@ -258,12 +264,13 @@ public class IAMhaggler2011 extends Agent {
 			variances = prediction.getVariance();
 		}
 
-		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means, variances,
-				time);
+		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means,
+				variances, time);
 		Matrix probabilityAccept = acceptMatrices.fst;
 		Matrix cumulativeAccept = acceptMatrices.snd;
 
-		Matrix probabilityExpectedUtility = probabilityAccept.arrayTimes(utility);
+		Matrix probabilityExpectedUtility = probabilityAccept
+				.arrayTimes(utility);
 		Matrix cumulativeExpectedUtility = cumulativeAccept.arrayTimes(utility);
 
 		Pair<Double, Double> bestAgreement = getExpectedBestAgreement(
@@ -274,7 +281,7 @@ public class IAMhaggler2011 extends Agent {
 		double targetUtility = lastRegressionUtility
 				+ ((time - lastRegressionTime)
 						* (bestUtility - lastRegressionUtility) / (bestTime - lastRegressionTime));
-	
+
 		// Store the target utility and time
 		lastRegressionUtility = targetUtility;
 		lastRegressionTime = time;
@@ -305,9 +312,9 @@ public class IAMhaggler2011 extends Agent {
 	}
 
 	/**
-	 * Generate an (n-1)-by-m matrix representing the probability of acceptance for
-	 * a given utility-time combination. The combinations are given by the time
-	 * and utility samples stored in timeSamples and utilitySamples
+	 * Generate an (n-1)-by-m matrix representing the probability of acceptance
+	 * for a given utility-time combination. The combinations are given by the
+	 * time and utility samples stored in timeSamples and utilitySamples
 	 * respectively.
 	 * 
 	 * @param mean
@@ -318,8 +325,8 @@ public class IAMhaggler2011 extends Agent {
 	 *            The current time, in the range [0, 1].
 	 * @return An (n-1)-by-m matrix representing the probability of acceptance.
 	 */
-	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean, Matrix variance,
-			double time) {
+	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean,
+			Matrix variance, double time) {
 		int i = 0;
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			if (timeSamples.get(0, i) > time)
@@ -329,29 +336,30 @@ public class IAMhaggler2011 extends Agent {
 				timeSamples.getColumnDimension(), 0);
 		Matrix probabilityAccept = new Matrix(utilitySamples.getRowDimension(),
 				timeSamples.getColumnDimension(), 0);
-		
-		double interval = 1.0/utilitySamples.getRowDimension();
+
+		double interval = 1.0 / utilitySamples.getRowDimension();
 
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			double s = Math.sqrt(2 * variance.get(i, 0));
 			double m = mean.get(i, 0);
-			
-			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0) + (interval/2.0) - m)
+
+			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0)
+					+ (interval / 2.0) - m)
 					/ s))));
-			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(utilitySamples.getRowDimension()-1, 0) - (interval/2.0) - m)
+			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(
+					utilitySamples.getRowDimension() - 1, 0) - (interval / 2.0) - m)
 					/ s))));
-			
+
 			for (int j = 0; j < utilitySamples.getRowDimension(); j++) {
 				double utility = utilitySamples.get(j, 0);
-				double p = (1.0 - (0.5 * (1 + erf((utility - m)
+				double p = (1.0 - (0.5 * (1 + erf((utility - m) / s))));
+				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval / 2.0) - m)
 						/ s))));
-				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval/2.0) - m)
+				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval / 2.0) - m)
 						/ s))));
-				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval/2.0) - m)
-						/ s))));
-								
-				cumulativeAccept.set(j, i, (p-minp)/(maxp-minp));
-				probabilityAccept.set(j, i, (p1-p2)/(maxp-minp));
+
+				cumulativeAccept.set(j, i, (p - minp) / (maxp - minp));
+				probabilityAccept.set(j, i, (p1 - p2) / (maxp - minp));
 			}
 		}
 		return new Pair<Matrix, Matrix>(probabilityAccept, cumulativeAccept);
@@ -445,20 +453,25 @@ public class IAMhaggler2011 extends Agent {
 	 *         best agreement.
 	 */
 	private Pair<Double, Double> getExpectedBestAgreement(
-			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues, double time) {
-		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(probabilityExpectedValues, time);
-		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(cumulativeExpectedValues, time);
+			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues,
+			double time) {
+		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(
+				probabilityExpectedValues, time);
+		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(
+				cumulativeExpectedValues, time);
 
-		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues.getArray();
-		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues.getArray();
+		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues
+				.getArray();
+		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues
+				.getArray();
 
 		Double bestX = null;
 		Double bestY = null;
-		
+
 		double[] colSums = new double[probabilityFutureExpectedValuesArray[0].length];
 		double bestColSum = 0;
 		int bestCol = 0;
-		
+
 		for (int x = 0; x < probabilityFutureExpectedValuesArray[0].length; x++) {
 			colSums[x] = 0;
 			for (int y = 0; y < probabilityFutureExpectedValuesArray.length; y++) {
@@ -473,18 +486,18 @@ public class IAMhaggler2011 extends Agent {
 
 		int bestRow = 0;
 		double bestRowValue = 0;
-		
+
 		for (int y = 0; y < cumulativeFutureExpectedValuesArray.length; y++) {
 			double expectedValue = cumulativeFutureExpectedValuesArray[y][bestCol];
-			if(expectedValue > bestRowValue) {
+			if (expectedValue > bestRowValue) {
 				bestRowValue = expectedValue;
 				bestRow = y;
 			}
 		}
 
-		bestX = timeSamples.get(0, bestCol
-				+ probabilityExpectedValues.getColumnDimension()
-				- probabilityFutureExpectedValues.getColumnDimension());
+		bestX = timeSamples.get(0,
+				bestCol + probabilityExpectedValues.getColumnDimension()
+						- probabilityFutureExpectedValues.getColumnDimension());
 		bestY = utilitySamples.get(bestRow, 0);
 
 		return new Pair<Double, Double>(bestX, bestY);
@@ -509,10 +522,10 @@ public class IAMhaggler2011 extends Agent {
 				break;
 		}
 		return expectedValues.getMatrix(0,
-				expectedValues.getRowDimension() - 1, i, expectedValues
-						.getColumnDimension() - 1);
+				expectedValues.getRowDimension() - 1, i,
+				expectedValues.getColumnDimension() - 1);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -540,7 +553,8 @@ public class IAMhaggler2011 extends Agent {
 			Bid b = proposeInitialBid();
 			myLastBid = b;
 			chosenAction = new Offer(this.getAgentID(), b);
-		} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace.getUtility(myLastBid)) {
+		} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace
+				.getUtility(myLastBid)) {
 			// Accept opponent's bid based on my previous bid.
 			chosenAction = new Accept(this.getAgentID());
 			opponentBids.add(opponentBid);
@@ -552,7 +566,8 @@ public class IAMhaggler2011 extends Agent {
 			Bid plannedBid = proposeNextBid(opponentBid);
 			chosenAction = new Offer(this, plannedBid);
 
-			if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace.getUtility(plannedBid)) {
+			if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace
+					.getUtility(plannedBid)) {
 				// Accept opponent's bid based on my planned bid.
 				chosenAction = new Accept(this.getAgentID());
 			}
@@ -570,7 +585,7 @@ public class IAMhaggler2011 extends Agent {
 	public static String getVersion() {
 		return "2.0";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -627,5 +642,10 @@ public class IAMhaggler2011 extends Agent {
 		else if (action instanceof EndNegotiation)
 			actionType = ActionType.BREAKOFF;
 		return actionType;
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }

@@ -1,9 +1,11 @@
 package agents.anac.y2011.ValueModelAgent;
 
 import java.util.Random;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
+import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -165,7 +167,7 @@ public class ValueModelAgent extends Agent {
 		lAction = null;
 		try {
 			// our first bid, initializing
-			
+
 			if (allBids == null) {
 				allBids = new BidList();
 				approvedBids = new BidList();
@@ -189,7 +191,7 @@ public class ValueModelAgent extends Agent {
 					}
 				} // while
 				allBids.sortByOurUtil();
-				
+
 				setApprovedThreshold(0.98, false);
 
 				iteratedBids.bids.add(allBids.bids.get(0));
@@ -199,7 +201,7 @@ public class ValueModelAgent extends Agent {
 				lAction = new Offer(getAgentID(), allBids.bids.get(0).bid);
 				bidSelected(allBids.bids.get(0));
 			}
-			
+
 			// treat opponent's offer
 			if (actionOfPartner instanceof Offer) {
 				opponentBid = ((Offer) actionOfPartner).getBid();
@@ -222,7 +224,7 @@ public class ValueModelAgent extends Agent {
 						opponentUtilModel.assumeBidWorth(opponentBid,
 								1 - opponentExpectedBidValue, 0.02);
 					}
-					
+
 				}
 				// it seems like I should try to accept
 				// his best bid (assuming its still on the table)
@@ -262,8 +264,7 @@ public class ValueModelAgent extends Agent {
 						// if their offer is close enough accept
 						if (opponentUtil >= opponentMaxBidUtil * 0.99) {
 							return new Accept(getAgentID());
-						}
-						else
+						} else
 							return new Offer(getAgentID(), opponentMaxBid);
 					}
 					bestScan();
@@ -276,7 +277,7 @@ public class ValueModelAgent extends Agent {
 					bidCount++;
 					return lAction;
 				}
-				
+
 				// if our opponent settled enough for us we accept, and there is
 				// a discount factor we accept
 				// if(opponent.expectedDiscountRatioToConvergence()*opponentUtil
@@ -294,7 +295,7 @@ public class ValueModelAgent extends Agent {
 					retreatMode = true;
 				}
 				if (bidCount > 0 && bidCount < 4) {
-					
+
 					lAction = new Offer(getAgentID(), allBids.bids.get(0).bid);
 					bidSelected(allBids.bids.get(bidCount));
 				}
@@ -313,10 +314,7 @@ public class ValueModelAgent extends Agent {
 							: concession2;
 					minConcession = minConcessionMaker(minConcession,
 							1 - opponentMaxBidUtil);
-					
-					
-					
-					
+
 					if (minConcession > (1 - lowestApproved)) {
 						if (lowestAcceptable > (1 - minConcession)) {
 							lowestApproved = lowestAcceptable;
@@ -325,12 +323,12 @@ public class ValueModelAgent extends Agent {
 						}
 						if (lowestApproved < opponentMaxBidUtil)
 							lowestApproved = opponentMaxBidUtil + 0.001;
-						
+
 						if (setApprovedThreshold(lowestApproved, false)) {
 							approvedBids.sortByOpponentUtil(opponentUtilModel);
 						}
 					}
-					
+
 					if (bidCount % 5 == 0) {
 						exploreScan();
 					} else
@@ -338,14 +336,15 @@ public class ValueModelAgent extends Agent {
 				}
 
 			}
-			
+
 			if (lAction == null) {
 				lAction = myLastAction;
 			}
 		} catch (Exception e) {
 			if (myLastBid == null) {
 				try {
-					return new Offer(getAgentID(), utilitySpace.getMaxUtilityBid());
+					return new Offer(getAgentID(),
+							utilitySpace.getMaxUtilityBid());
 				} catch (Exception e2) {
 					return new Accept(getAgentID());
 				}
@@ -451,7 +450,7 @@ public class ValueModelAgent extends Agent {
 				- theirMaxUtilities[tind - 2] > 0.01;
 		boolean weMoved = ourMinUtilities[tind - 2] - ourMinUtilities[tind - 1] > 0;
 		double returnVal = defaultVal;
-		
+
 		if (!utilitySpace.isDiscounted()) {
 			// first 10% is reserved for 0.98...
 			if (tind > 2) {
@@ -478,7 +477,7 @@ public class ValueModelAgent extends Agent {
 						+ defaultVal;
 				if (returnVal > minConcession + 0.05)
 					returnVal = minConcession + 0.05;
-				
+
 			}
 			// return defaultVal;
 
@@ -508,5 +507,10 @@ public class ValueModelAgent extends Agent {
 	@Override
 	public String getName() {
 		return "Value Model Agent";
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }

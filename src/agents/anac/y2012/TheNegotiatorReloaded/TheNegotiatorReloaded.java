@@ -1,5 +1,6 @@
 package agents.anac.y2012.TheNegotiatorReloaded;
 
+import negotiator.SupportedNegotiationSetting;
 import negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded;
 import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded_Offering;
@@ -10,24 +11,27 @@ import negotiator.boaframework.opponentmodel.NoModel;
 public class TheNegotiatorReloaded extends BOAagent {
 
 	/**
-	 * Initializes the agent by setting the opponent model, the opponent model strategy,
-	 * bidding strategy, and acceptance conditions.
+	 * Initializes the agent by setting the opponent model, the opponent model
+	 * strategy, bidding strategy, and acceptance conditions.
 	 */
 	@Override
 	public void agentSetup() {
 		try {
-			if (negotiationSession.getUtilitySpace().getDomain().getNumberOfPossibleBids() < 200000) {
+			if (negotiationSession.getUtilitySpace().getDomain()
+					.getNumberOfPossibleBids() < 200000) {
 				opponentModel = new IAMhagglerBayesianModel();
-			}  else {
+			} else {
 				opponentModel = new NoModel();
 			}
 			opponentModel.init(negotiationSession, null);
 			omStrategy = new NullStrategy(negotiationSession, 0.35);
-			offeringStrategy = new TheNegotiatorReloaded_Offering(negotiationSession, opponentModel, omStrategy);
+			offeringStrategy = new TheNegotiatorReloaded_Offering(
+					negotiationSession, opponentModel, omStrategy);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		acceptConditions = new AC_TheNegotiatorReloaded(negotiationSession, offeringStrategy, 1, 0, 1.05, 0, 0.98, 0.99);
+		acceptConditions = new AC_TheNegotiatorReloaded(negotiationSession,
+				offeringStrategy, 1, 0, 1.05, 0, 0.98, 0.99);
 	}
 
 	/**
@@ -36,5 +40,10 @@ public class TheNegotiatorReloaded extends BOAagent {
 	@Override
 	public String getName() {
 		return "TheNegotiator Reloaded";
+	}
+
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
 }
