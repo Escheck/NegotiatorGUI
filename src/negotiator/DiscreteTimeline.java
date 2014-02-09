@@ -3,7 +3,7 @@ package negotiator;
 /**
  * Implementation of the timeline in which time is divided in rounds.
  * Time does not pass within a round. Note that requesting the total
- * time is in this case weird.
+ * time is in this case undefined.
  */
 public class DiscreteTimeline extends Timeline
 {
@@ -107,6 +107,15 @@ public class DiscreteTimeline extends Timeline
 	public int getTotalRounds()
 	{
 		return totalRounds;
+	}
+	
+	/**
+	 * The total number of rounds for ourself.
+	 * Be careful, this is not equal to the initializing value!
+	 */
+	public int getOwnTotalRounds()
+	{
+		return (int) Math.floor(getTotalRounds() / 2);
 	}
 
 	/**
