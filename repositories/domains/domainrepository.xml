@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <repository fileName="domainrepository.xml">
     <items>
-        <profileRepItems/>
+        <agentRepItems/>
         <partyRepItems/>
         <domainRepItem>
         
-        	<domainRepItem url="file:etc/templates/nonlinear/simple/simple-domain.xml">
-        		<profile url="file:etc/templates/nonlinear/simple/profile-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/simple/profile-2.xml"/>
+ <!-- 
+  			<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-114/S-1NAGUNL-114-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-114/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-114/profile-2.xml"/>
         	</domainRepItem>
-                
-        	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
+        
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-128/S-1NAGUNL-128-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-128/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-128/profile-2.xml"/>
+        	</domainRepItem>
+        
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-255/S-1NAGUNL-255-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-2.xml"/>
+        	</domainRepItem>
+        -->            
+       	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
         	</domainRepItem>
@@ -25,6 +36,7 @@
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/profile-2.xml"/>
         	</domainRepItem>
         	
+    	
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>
@@ -439,7 +451,8 @@
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof1.xml"/>
                 <profile url="file:etc/templates/anac/y2013/Wholesaler/Wholesaler-prof2.xml"/>
             </domainRepItem>                      			 
-    
+
+<!-- Split the Pie scenarios
 <domainRepItem url="file:etc/templates/pie_5/Pie_domain.xml">
 <profile url="file:etc/templates/pie_5/pie_A_rv=0.00.xml"/>
 <profile url="file:etc/templates/pie_5/pie_A_rv=0.01.xml"/>
@@ -644,6 +657,7 @@
 <profile url="file:etc/templates/pie_5/pie_B_rv=1.00.xml"/>
 
 </domainRepItem>
+-->
 </domainRepItem>
         <protocolRepItem/>
         <multiPartyProtocolRepItem/>

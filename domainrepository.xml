@@ -5,12 +5,23 @@
         <partyRepItems/>
         <domainRepItem>
         
-        	<domainRepItem url="file:etc/templates/nonlinear/simple/simple-domain.xml">
-        		<profile url="file:etc/templates/nonlinear/simple/profile-1.xml"/>
-        		<profile url="file:etc/templates/nonlinear/simple/profile-2.xml"/>
+ <!-- 
+  			<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-114/S-1NAGUNL-114-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-114/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-114/profile-2.xml"/>
         	</domainRepItem>
-                
-        	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
+        
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-128/S-1NAGUNL-128-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-128/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-128/profile-2.xml"/>
+        	</domainRepItem>
+        
+      		<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-255/S-1NAGUNL-255-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-2.xml"/>
+        	</domainRepItem>
+        -->            
+       	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
         	</domainRepItem>
@@ -25,6 +36,7 @@
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/profile-2.xml"/>
         	</domainRepItem>
         	
+    	
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>
