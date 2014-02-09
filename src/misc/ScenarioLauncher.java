@@ -25,14 +25,16 @@
 
 package misc;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.net.URL;
+
 import negotiator.Global;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
@@ -168,7 +170,7 @@ public class ScenarioLauncher
 				ns = Global.createProtocolInstance(protocol, agentsrep, agentProfiles, null);
 							
 				TournamentConfiguration.addOption("deadline", 60);
-				TournamentConfiguration.addOption("oneSidedBidding", 0); // check with Tim whether it has to be true or false, in AlternatingOffersBilateralAtomicNegoSession.java
+				TournamentConfiguration.addOption("oneSidedBidding", 0);
 				TournamentConfiguration.addOption("startingAgent", 0); 
 				TournamentConfiguration.addOption("accessPartnerPreferences", 0); 
 				TournamentConfiguration.addOption("appendModeAndDeadline", 0); 
