@@ -2,11 +2,12 @@ package agents;
 
 import java.util.List;
 
-import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
-
 import negotiator.Bid;
+import negotiator.DiscreteTimeline;
+import negotiator.Global;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
+import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1].
@@ -108,10 +109,22 @@ public abstract class TimeDependentAgent extends BilateralAgent
 	public Bid makeBid()
 	{
 		double time = timeline.getTime();
+		if (Global.AAMAS_2014_EXPERIMENTS)
+		{
+			DiscreteTimeline discreteTimeline = (DiscreteTimeline) timeline;
+			int ownRoundsLeft = discreteTimeline.getOwnRoundsLeft();
+			int j = ownRoundsLeft + 1;		// the last bid is made at j = 1.
+			int totalRounds = discreteTimeline.getOwnTotalRounds();
+			if (getE() != 0)
+				log(ownRoundsLeft + " / " + totalRounds);
+			time = 1 - (j - 1) / (double) (totalRounds - 1);
+		}
 		double utilityGoal = p(time);
 		Bid b = pickBidOfUtility(utilityGoal);
+
 //		double foundUtility = getUtility(b);
-//		log("[e=" + getE() + "] t = " + round2(time) + ". Aiming for " + round2(utilityGoal) + ". Found bid of utility " + round2(foundUtility));
+//		if (getE() != 0)
+//			log("[e=" + getE() + "] t = " + round2(time) + ". Aiming for " + round2(utilityGoal) + ". Found bid of utility " + round2(foundUtility));
 		return b;
 	}
 
