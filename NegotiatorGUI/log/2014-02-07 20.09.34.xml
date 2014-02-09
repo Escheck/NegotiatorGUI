@@ -1,0 +1,13 @@
+<a>
+<NegotiationOutcome currentTime="2014-02-07 20:09:35" timeOfAgreement="0.0" bids="1" domain="etc/templates/nonlinear/simple/simple-domain.xml" lastAction="(Offer: Bid[c1-i1: 4, c1-i2: 5, c1-i3: 7, ])" runNumber="0" finalOutcome="Reservation" errors="Caught exception. Agent [Agent B] crashed. Last known action = (Offer: Bid[c1-i1: 4, c1-i2: 5, c1-i3: 7, ]). Emergency outcome: (rvA, rvB).. Details: java.lang.NullPointerException" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Agent_K" discount="1.0" agentClass="agents.anac.y2010.AgentK.Agent_K" utilspace="etc/templates/nonlinear/simple/profile-1.xml" Opponent-agentName="Agent B" Opponent-agentClass="agents.UIAgent" Opponent-utilspace="etc/templates/nonlinear/simple/profile-2.xml" finalUtility="0.25" discountedUtility="0.25" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.25" AcceptedBy=""> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Agent B" discount="0.95" agentClass="agents.UIAgent" utilspace="etc/templates/nonlinear/simple/profile-2.xml" Opponent-agentName="Agent_K" Opponent-agentClass="agents.anac.y2010.AgentK.Agent_K" Opponent-utilspace="etc/templates/nonlinear/simple/profile-1.xml" finalUtility="0.2" discountedUtility="0.2" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.2" AcceptedBy=""> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
+<NegotiationOutcome currentTime="2014-02-07 20:09:55" timeOfAgreement="0.0" bids="0" domain="etc/templates/nonlinear/simple/simple-domain.xml" lastAction="null" runNumber="0" finalOutcome="Reservation" errors="Caught exception. Agent [Agent A] crashed. Last known action = null. Emergency outcome: (rvA, rvB).. Details: java.lang.NullPointerException" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Agent A" discount="1.0" agentClass="agents.UIAgent" utilspace="etc/templates/nonlinear/simple/profile-1.xml" Opponent-agentName="Agent_K" Opponent-agentClass="agents.anac.y2010.AgentK.Agent_K" Opponent-utilspace="etc/templates/nonlinear/simple/profile-2.xml" finalUtility="0.25" discountedUtility="0.25" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.25" AcceptedBy=""> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Agent_K" discount="0.95" agentClass="agents.anac.y2010.AgentK.Agent_K" utilspace="etc/templates/nonlinear/simple/profile-2.xml" Opponent-agentName="Agent A" Opponent-agentClass="agents.UIAgent" Opponent-utilspace="etc/templates/nonlinear/simple/profile-1.xml" finalUtility="0.2" discountedUtility="0.2" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.2" AcceptedBy=""> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
