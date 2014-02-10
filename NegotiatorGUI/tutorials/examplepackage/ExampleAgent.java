@@ -39,7 +39,8 @@ public class ExampleAgent extends Agent
 		MINIMUM_BID_UTILITY = utilitySpace.getReservationValueUndiscounted();
 	}
 
-	public static String getVersion() { return "3.1"; }
+	@Override
+	public String getVersion() { return "3.1"; }
 	
 	@Override
 	public String getName()
