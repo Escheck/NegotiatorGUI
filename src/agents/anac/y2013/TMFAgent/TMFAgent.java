@@ -144,7 +144,8 @@ public class TMFAgent extends Agent {
 		saveSessionData(opponentUtilityEstimator);
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.2";
 	}
 

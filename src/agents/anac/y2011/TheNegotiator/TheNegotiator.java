@@ -22,7 +22,8 @@ public class TheNegotiator extends Agent {
 		decider = new Decider(this);
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "3.0";
 	}
 

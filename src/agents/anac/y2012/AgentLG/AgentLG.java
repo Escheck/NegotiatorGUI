@@ -119,7 +119,8 @@ public class AgentLG extends Agent {
 
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.1";
 	}
 

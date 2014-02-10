@@ -298,7 +298,8 @@ public class MetaAgent extends Agent {
 		return "Meta-Agent 2013";
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "2.0";
 	}
 

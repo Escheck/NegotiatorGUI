@@ -1,17 +1,17 @@
 package agents.anac.y2013.AgentKF;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import java.io.Serializable;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.actions.Offer;
 import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -28,21 +28,20 @@ public class AgentKF extends Agent {
 	private Action partner;
 	private HashMap<Bid, Double> offeredBidMap;
 	private double target;
-	private double bidTarget; 
-	private double bidReduction; 
+	private double bidTarget;
+	private double bidReduction;
 	private double sum;
-	private double sum2; 
+	private double sum2;
 	private int rounds;
-	private double tremor; 
-	private int MaxLoopNum; 
-	
+	private double tremor;
+	private int MaxLoopNum;
+
 	private BidHistory currSessOppBidHistory = new BidHistory();
 	private BidHistory prevSessOppBidHistory = new BidHistory();
-	private double MINIMUM_BID_UTILITY; 
+	private double MINIMUM_BID_UTILITY;
 	private double MinAutoAcceptUtil;
 	private boolean FinalPhase;
 	private double PrevMean;
-
 
 	public void init() {
 
@@ -66,39 +65,40 @@ public class AgentKF extends Agent {
 
 	public void myBeginSession() {
 
-		//---- Code for trying save and load functionality
-		//     First try to load saved data
-		//---- Loading from agent's function "loadSessionData"
+		// ---- Code for trying save and load functionality
+		// First try to load saved data
+		// ---- Loading from agent's function "loadSessionData"
 		Serializable prev = this.loadSessionData();
-		if (prev != null){
-			prevSessOppBidHistory = (BidHistory)prev;
+		if (prev != null) {
+			prevSessOppBidHistory = (BidHistory) prev;
 			currSessOppBidHistory = prevSessOppBidHistory;
-			PrevMean = prevSessOppBidHistory.getAverageDiscountedUtility(utilitySpace);
-		}
-		else{
-			// If didn't succeed, it means there is no data for this preference profile
+			PrevMean = prevSessOppBidHistory
+					.getAverageDiscountedUtility(utilitySpace);
+		} else {
+			// If didn't succeed, it means there is no data for this preference
+			// profile
 			// in this domain.
 		}
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.1";
 	}
-	
+
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "AgentKF";
 	}
 
-
 	public void ReceiveMessage(Action opponentAction) {
 		partner = opponentAction;
-		if(opponentAction instanceof Offer) {
-			Bid bid = ((Offer)opponentAction).getBid();
+		if (opponentAction instanceof Offer) {
+			Bid bid = ((Offer) opponentAction).getBid();
 			// 2. store the opponent's trace
 			try {
-				BidDetails opponentBid = new BidDetails(bid, utilitySpace.getUtility(bid), timeline.getTime());
+				BidDetails opponentBid = new BidDetails(bid,
+						utilitySpace.getUtility(bid), timeline.getTime());
 				currSessOppBidHistory.add(opponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -117,19 +117,19 @@ public class AgentKF extends Agent {
 
 				double p = acceptProbability(offeredBid);
 
-				if(utilitySpace.getUtility(offeredBid) > MinAutoAcceptUtil){
+				if (utilitySpace.getUtility(offeredBid) > MinAutoAcceptUtil) {
 					p = 1.0;
 				}
-				
-				if(rounds % 500 == 0){
+
+				if (rounds % 500 == 0) {
 					tremor += adjustTremor(timeline.getCurrentTime());
 				}
-				
-				
-				if(timeline.getCurrentTime() > 0.85){
-					BidHistory FinalBidHistory = currSessOppBidHistory.filterBetweenTime(timeline.getCurrentTime(), 1.0);
+
+				if (timeline.getCurrentTime() > 0.85) {
+					BidHistory FinalBidHistory = currSessOppBidHistory
+							.filterBetweenTime(timeline.getCurrentTime(), 1.0);
 					double FinalAvg = FinalBidHistory.getAverageUtility();
-					if(FinalAvg < sum/rounds) {
+					if (FinalAvg < sum / rounds) {
 						FinalPhase = true;
 					}
 				}
@@ -139,38 +139,38 @@ public class AgentKF extends Agent {
 				} else {
 					action = selectBid();
 				}
-				//---- Code for trying save and load functionality
-				///////////////////////////////////
+				// ---- Code for trying save and load functionality
+				// /////////////////////////////////
 				state = "Opponet Send the Bid ";
 				tryToSaveAndPrintState();
-				///////////////////////////////////
+				// /////////////////////////////////
 			}
-			if(partner instanceof EndNegotiation){
-				//---- Code for trying save and load functionality///////////////////////////////////
+			if (partner instanceof EndNegotiation) {
+				// ---- Code for trying save and load
+				// functionality///////////////////////////////////
 				state = "Got EndNegotiation from opponent. ";
 				tryToSaveAndPrintState();
-				///////////////////////////////////
+				// /////////////////////////////////
 			}
 		} catch (Exception e) {
-			//---- Code for trying save and load functionality
-			///////////////////////////////////
+			// ---- Code for trying save and load functionality
+			// /////////////////////////////////
 			state = "Got Exception. ";
 			tryToSaveAndPrintState();
-			///////////////////////////////////
+			// /////////////////////////////////
 			action = new Accept(getAgentID());
 		}
 		return action;
 	}
 
-	//---- Code for trying save and load functionality
+	// ---- Code for trying save and load functionality
 	private void tryToSaveAndPrintState() {
 
-		//---- Saving from agent's function "saveSessionData"
-		if (currSessOppBidHistory.size() < Math.pow(10, 5)){
+		// ---- Saving from agent's function "saveSessionData"
+		if (currSessOppBidHistory.size() < Math.pow(10, 5)) {
 			this.saveSessionData(currSessOppBidHistory);
 		}
 	}
-
 
 	private Action selectBid() {
 		Bid nextBid = null;
@@ -194,34 +194,38 @@ public class AgentKF extends Agent {
 				int loop = 0;
 				boolean NotFind = true;
 				ArrayList<Bid> AltNextBid = new ArrayList<Bid>();
-					while (loop < MaxLoopNum) {/*searchUtil < bidTarget*/
-						if (loop == MaxLoopNum-1 & NotFind) {
-							bidTarget -= bidReduction;
-							loop = 0;
-						}
-						Bid altNextBid = searchBid();
-						searchUtil = utilitySpace.getUtilityWithDiscount(altNextBid,time);
-						if (searchUtil >= bidTarget){
-							NotFind = false;
-							AltNextBid.add(altNextBid);
-						}
-						loop++;
+				while (loop < MaxLoopNum) {/* searchUtil < bidTarget */
+					if (loop == MaxLoopNum - 1 & NotFind) {
+						bidTarget -= bidReduction;
+						loop = 0;
 					}
-					
-					double minUtil = Double.MAX_VALUE;
-					Bid minBid = null;
-					for (int i=0; i<AltNextBid.size();i++){
-						Bid bufBid = AltNextBid.get(i);
-						Double bufUtil = utilitySpace.getUtilityWithDiscount(bufBid, time);
-						if (minUtil > bufUtil){
-							minUtil = bufUtil;
+					Bid altNextBid = searchBid();
+					searchUtil = utilitySpace.getUtilityWithDiscount(
+							altNextBid, time);
+					if (searchUtil >= bidTarget) {
+						NotFind = false;
+						AltNextBid.add(altNextBid);
+					}
+					loop++;
+				}
+
+				double minUtil = Double.MAX_VALUE;
+				Bid minBid = null;
+				for (int i = 0; i < AltNextBid.size(); i++) {
+					Bid bufBid = AltNextBid.get(i);
+					Double bufUtil = utilitySpace.getUtilityWithDiscount(
+							bufBid, time);
+					if (minUtil > bufUtil) {
+						minUtil = bufUtil;
+						minBid = bufBid;
+					} else if (minUtil == bufUtil) {
+						BidHistory simHistory = currSessOppBidHistory
+								.filterBetweenUtility(MINIMUM_BID_UTILITY, 1.0);
+						if (this.similarBid(simHistory, bufBid) < this
+								.similarBid(simHistory, minBid)) {
 							minBid = bufBid;
-						}else if (minUtil == bufUtil){
-							BidHistory simHistory = currSessOppBidHistory.filterBetweenUtility(MINIMUM_BID_UTILITY, 1.0);
-							if(this.similarBid(simHistory, bufBid) < this.similarBid(simHistory, minBid)){
-								minBid = bufBid;
-							}
 						}
+					}
 					nextBid = minBid;
 				}
 			} catch (Exception e) {
@@ -234,31 +238,38 @@ public class AgentKF extends Agent {
 		return (new Offer(getAgentID(), nextBid));
 	}
 
-	private int similarBid(BidHistory theHistory, Bid theBid) throws Exception{
+	private int similarBid(BidHistory theHistory, Bid theBid) throws Exception {
 		int Value = Integer.MAX_VALUE;
-		ArrayList<BidDetails> AltList = (ArrayList<BidDetails>) theHistory.getNBestBids(theHistory.size()-1);
-		for(int i=0; i<AltList.size(); i++){
+		ArrayList<BidDetails> AltList = (ArrayList<BidDetails>) theHistory
+				.getNBestBids(theHistory.size() - 1);
+		for (int i = 0; i < AltList.size(); i++) {
 			Bid targetBid = AltList.get(i).getBid();
 			ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 			for (Issue lIssue : issues) {
 				switch (lIssue.getType()) {
 				case DISCRETE:
 					IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
-					double weight_d = utilitySpace.getWeight(lIssueDiscrete.getNumber());
-					if (theBid.getValue(lIssueDiscrete.getNumber()) == targetBid.getValue(lIssueDiscrete.getNumber()))
-						Value += 1.0*weight_d;
+					double weight_d = utilitySpace.getWeight(lIssueDiscrete
+							.getNumber());
+					if (theBid.getValue(lIssueDiscrete.getNumber()) == targetBid
+							.getValue(lIssueDiscrete.getNumber()))
+						Value += 1.0 * weight_d;
 					break;
 				case REAL:
 					IssueReal lIssueReal = (IssueReal) lIssue;
-					double weight_r = utilitySpace.getWeight(lIssueReal.getNumber());
-					if (theBid.getValue(lIssueReal.getNumber()) == targetBid.getValue(lIssueReal.getNumber()))
-						Value += 1.0*weight_r;
+					double weight_r = utilitySpace.getWeight(lIssueReal
+							.getNumber());
+					if (theBid.getValue(lIssueReal.getNumber()) == targetBid
+							.getValue(lIssueReal.getNumber()))
+						Value += 1.0 * weight_r;
 					break;
 				case INTEGER:
 					IssueInteger lIssueInteger = (IssueInteger) lIssue;
-					double weight_i = utilitySpace.getWeight(lIssueInteger.getNumber());
-					if (theBid.getValue(lIssueInteger.getNumber()) == targetBid.getValue(lIssueInteger.getNumber()))
-						Value += 1.0*weight_i;
+					double weight_i = utilitySpace.getWeight(lIssueInteger
+							.getNumber());
+					if (theBid.getValue(lIssueInteger.getNumber()) == targetBid
+							.getValue(lIssueInteger.getNumber()))
+						Value += 1.0 * weight_i;
 					break;
 				default:
 					throw new Exception("issue type " + lIssue.getType()
@@ -295,9 +306,9 @@ public class AgentKF extends Agent {
 						new ValueReal(lIssueReal.getLowerBound()
 								+ (lIssueReal.getUpperBound() - lIssueReal
 										.getLowerBound())
-										* (double) (optionInd)
-										/ (double) (lIssueReal
-												.getNumberOfDiscretizationSteps())));
+								* (double) (optionInd)
+								/ (double) (lIssueReal
+										.getNumberOfDiscretizationSteps())));
 				break;
 			case INTEGER:
 				IssueInteger lIssueInteger = (IssueInteger) lIssue;
@@ -315,26 +326,28 @@ public class AgentKF extends Agent {
 		bid = new Bid(utilitySpace.getDomain(), values);
 		return bid;
 	}
-	
-	private double adjustTremor(double time){
-		if (currSessOppBidHistory.isEmpty()){
+
+	private double adjustTremor(double time) {
+		if (currSessOppBidHistory.isEmpty()) {
 			return 0.0;
-		}else{
-			double avg = sum/rounds;
-			//double histry_avg = currSessOppBidHistory.getAverageDiscountedUtility(utilitySpace);
-			double histry_avg = currSessOppBidHistory.filterBetweenTime(0.0,timeline.getCurrentTime()).getAverageUtility();
-			if (avg > histry_avg){
+		} else {
+			double avg = sum / rounds;
+			// double histry_avg =
+			// currSessOppBidHistory.getAverageDiscountedUtility(utilitySpace);
+			double histry_avg = currSessOppBidHistory.filterBetweenTime(0.0,
+					timeline.getCurrentTime()).getAverageUtility();
+			if (avg > histry_avg) {
 				return 0.3;
-			}else{
+			} else {
 				return -0.3;
 			}
 		}
 	}
 
-
 	double acceptProbability(Bid offeredBid) throws Exception {
 		double time = timeline.getTime();
-		double offeredUtility = utilitySpace.getUtilityWithDiscount(offeredBid,time);
+		double offeredUtility = utilitySpace.getUtilityWithDiscount(offeredBid,
+				time);
 		offeredBidMap.put(offeredBid, offeredUtility);
 
 		sum += offeredUtility;
@@ -342,8 +355,8 @@ public class AgentKF extends Agent {
 		rounds++;
 
 		double mean = sum / rounds;
-		mean = 0.7*mean + 0.3*PrevMean;
-		
+		mean = 0.7 * mean + 0.3 * PrevMean;
+
 		double variance = (sum2 / rounds) - (mean * mean);
 
 		double deviation = Math.sqrt(variance * 12);
@@ -410,14 +423,14 @@ public class AgentKF extends Agent {
 		}
 
 		// test code for Discount Factor
-		if (FinalPhase){
-		double discount_utility = utilitySpace.getUtilityWithDiscount(
-                offeredBid, time);
-        double discount_ratio = discount_utility / offeredUtility;
-        if (!Double.isNaN(discount_utility)) {
-            target *= discount_ratio;
-            bidTarget *= discount_ratio;
-        }
+		if (FinalPhase) {
+			double discount_utility = utilitySpace.getUtilityWithDiscount(
+					offeredBid, time);
+			double discount_ratio = discount_utility / offeredUtility;
+			if (!Double.isNaN(discount_utility)) {
+				target *= discount_ratio;
+				bidTarget *= discount_ratio;
+			}
 		}
 		// test code for Discount Factor
 

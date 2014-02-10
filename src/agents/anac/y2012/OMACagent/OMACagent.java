@@ -83,7 +83,8 @@ public class OMACagent extends Agent {
 		mBidHistory = new TimeBidHistory(this.utilitySpace, discount);
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.06";
 	}
 

@@ -47,7 +47,8 @@ public class NiceTitForTat extends BilateralAgent {
 		return "Nice Tit for Tat Agent";
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "3.14";
 	}
 

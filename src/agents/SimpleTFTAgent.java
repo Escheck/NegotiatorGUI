@@ -13,37 +13,33 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueReal;
 
-
 /**
  * 
- * @author TB
- * Always bids the highest for himself
+ * @author TB Always bids the highest for himself
  * 
  */
-public class SimpleTFTAgent extends Agent
-{
+public class SimpleTFTAgent extends Agent {
 	private static int round = 0;
 	private Bid myLastBid = null;
 	private Action opponentAction = null;
 	private List<Bid> opponentPreviousBids;
 
-	public void init()
-	{ 
+	public void init() {
 		opponentPreviousBids = new ArrayList<Bid>();
 	}
 
-	public static String getVersion() { return "1.0"; }
+	@Override
+	public String getVersion() {
+		return "1.0";
+	}
 
-	public void ReceiveMessage(Action opponentAction) 
-	{
+	public void ReceiveMessage(Action opponentAction) {
 		this.opponentAction = opponentAction;
-	}    
+	}
 
-	public Action chooseAction()
-	{
+	public Action chooseAction() {
 		Action myAction = null;
-		
-		
+
 		if (round == 0)
 			myAction = chooseOpeningAction();
 		else if (round == 1)
@@ -52,19 +48,16 @@ public class SimpleTFTAgent extends Agent
 			myAction = chooseOffer3();
 		else if (round == 3)
 			myAction = chooseOffer4();
-		else if (opponentAction instanceof Offer)
-		{
+		else if (opponentAction instanceof Offer) {
 			myAction = chooseCounterOffer();
 		}
-		
+
 		// We start
-//		if (opponentAction == null)
-//			myAction = chooseOpeningAction();
+		// if (opponentAction == null)
+		// myAction = chooseOpeningAction();
 		// Opponent started, now it is our turn
-//		else if (myLastBid == null)
-//			myAction = chooseOffer2();
-
-
+		// else if (myLastBid == null)
+		// myAction = chooseOffer2();
 
 		try {
 			Thread.sleep(1000);
@@ -78,24 +71,27 @@ public class SimpleTFTAgent extends Agent
 		if (opponentAction instanceof Offer)
 			opponentPreviousBids.add(((Offer) opponentAction).getBid());
 
-		System.out.println("Round " + round + ", " +  getName() + " offers " + myAction);
+		System.out.println("Round " + round + ", " + getName() + " offers "
+				+ myAction);
 		round++;
-		
+
 		return myAction;
 	}
 
-	private Action chooseCounterOffer() 
-	{
+	private Action chooseCounterOffer() {
 		Bid opponentBid = ((Offer) opponentAction).getBid();
 		double opponentOffer = toOffer(opponentBid);
-		Bid opponentPreviousBid = opponentPreviousBids.get(opponentPreviousBids.size() - 1);
+		Bid opponentPreviousBid = opponentPreviousBids.get(opponentPreviousBids
+				.size() - 1);
 		double previousOpponentOffer = toOffer(opponentPreviousBid);
-		
+
 		double myPreviousOffer = toOffer(myLastBid);
 
-//		double myOffer = (previousOpponentOffer / opponentOffer) * myPreviousOffer;
-		double myOffer = (previousOpponentOffer - opponentOffer) + myPreviousOffer;
-		
+		// double myOffer = (previousOpponentOffer / opponentOffer) *
+		// myPreviousOffer;
+		double myOffer = (previousOpponentOffer - opponentOffer)
+				+ myPreviousOffer;
+
 		if (getName().equals("Agent B"))
 			myOffer = 0.3 - (5.0 / round) * 0.1;
 		Domain domain = utilitySpace.getDomain();
@@ -109,17 +105,17 @@ public class SimpleTFTAgent extends Agent
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(getName() + " previously got " + previousOpponentOffer + " and now gets offer " + opponentOffer + " and counter-offers " + myOffer);
+		System.out.println(getName() + " previously got "
+				+ previousOpponentOffer + " and now gets offer "
+				+ opponentOffer + " and counter-offers " + myOffer);
 
-
-		//		if (offeredutil > 0.5)
-		//			return new Accept(getAgentID());
+		// if (offeredutil > 0.5)
+		// return new Accept(getAgentID());
 
 		return new Offer(getAgentID(), firstBid);
 	}
 
-	private double toOffer(Bid bid) 
-	{
+	private double toOffer(Bid bid) {
 		Domain domain = utilitySpace.getDomain();
 		Issue pieForOne = domain.getIssues().get(0);
 		try {
@@ -131,10 +127,9 @@ public class SimpleTFTAgent extends Agent
 	}
 
 	/**
-	 * pie voor mij -> pie voor agent A 
+	 * pie voor mij -> pie voor agent A
 	 */
-	private ValueReal personalValue2IssueValue(double personalValue) 
-	{
+	private ValueReal personalValue2IssueValue(double personalValue) {
 		ValueReal value;
 		if (getName().equals("Agent A"))
 			value = new ValueReal(personalValue);
@@ -143,8 +138,7 @@ public class SimpleTFTAgent extends Agent
 		return value;
 	}
 
-	private Action chooseOpeningAction() 
-	{
+	private Action chooseOpeningAction() {
 		Domain domain = utilitySpace.getDomain();
 		Issue pie = domain.getIssues().get(0);
 		HashMap<Integer, Value> myOfferedPackage = new HashMap<Integer, Value>();
@@ -158,9 +152,8 @@ public class SimpleTFTAgent extends Agent
 
 		return new Offer(getAgentID(), firstBid);
 	}
-	
-	private Action chooseOffer2() 
-	{
+
+	private Action chooseOffer2() {
 		Domain domain = utilitySpace.getDomain();
 		Issue pie = domain.getIssues().get(0);
 		HashMap<Integer, Value> myOfferedPackage = new HashMap<Integer, Value>();
@@ -171,13 +164,11 @@ public class SimpleTFTAgent extends Agent
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
 		return new Offer(getAgentID(), firstBid);
 	}
-	
-	private Action chooseOffer3()
-	{
+
+	private Action chooseOffer3() {
 		Domain domain = utilitySpace.getDomain();
 		Issue pie = domain.getIssues().get(0);
 		HashMap<Integer, Value> myOfferedPackage = new HashMap<Integer, Value>();
@@ -191,9 +182,8 @@ public class SimpleTFTAgent extends Agent
 
 		return new Offer(getAgentID(), firstBid);
 	}
-	
-	private Action chooseOffer4()
-	{
+
+	private Action chooseOffer4() {
 		Domain domain = utilitySpace.getDomain();
 		Issue pie = domain.getIssues().get(0);
 		HashMap<Integer, Value> myOfferedPackage = new HashMap<Integer, Value>();

@@ -62,7 +62,8 @@ public class AgentI extends Agent {
 				+ lowerLimit;
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "3.1";
 	}
 

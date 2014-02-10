@@ -20,8 +20,8 @@ public class UIAgent extends Agent {
 	private Bid myPreviousBid = null;
 
 	/** Creates a new instance of UIAgent */
-
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.0";
 	}
 

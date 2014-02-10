@@ -70,7 +70,8 @@ public class SimilarityAgent extends Agent {
 		messageOpponent = opponentAction;
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.0";
 	};
 

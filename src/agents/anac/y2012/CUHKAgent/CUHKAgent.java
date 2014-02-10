@@ -104,7 +104,8 @@ public class CUHKAgent extends Agent {
 		this.ActionOfOpponent = opponentAction;
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "CUHKAgent_version_2";
 	}
 

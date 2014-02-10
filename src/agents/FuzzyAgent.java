@@ -101,7 +101,8 @@ public class FuzzyAgent extends Agent {
 		return lAction;
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.0";
 	}
 

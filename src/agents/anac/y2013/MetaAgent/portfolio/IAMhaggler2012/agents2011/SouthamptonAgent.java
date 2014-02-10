@@ -3,17 +3,14 @@ package agents.anac.y2013.MetaAgent.portfolio.IAMhaggler2012.agents2011;
 import java.util.ArrayList;
 import java.util.Random;
 
-import agents.anac.y2013.MetaAgent.portfolio.IAMhaggler2012.agents2011.southampton.utils.ActionCreator;
-
-
-import Jama.Matrix;
-
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import Jama.Matrix;
+import agents.anac.y2013.MetaAgent.portfolio.IAMhaggler2012.agents2011.southampton.utils.ActionCreator;
 
 /**
  * @author Colin Williams
@@ -35,7 +32,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 	 * 
 	 * @return the version number.
 	 */
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "2.0";
 	}
 
@@ -101,7 +99,7 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 			default:
 				if (this.myLastAction == null) {
 					Bid b = proposeInitialBid();
-					if(b == null)
+					if (b == null)
 						chosenAction = new EndNegotiation();
 					else
 						chosenAction = new Offer(getAgentID(), b);
@@ -178,7 +176,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 	 * @return all of the bids in a utility range.
 	 * @throws Exception
 	 */
-	private ArrayList<Bid> getBidsInRange(double lowerBound, double upperBound) throws Exception {
+	private ArrayList<Bid> getBidsInRange(double lowerBound, double upperBound)
+			throws Exception {
 		ArrayList<Bid> bidsInRange = new ArrayList<Bid>();
 		BidIterator iter = new BidIterator(utilitySpace.getDomain());
 		while (iter.hasNext()) {
@@ -206,7 +205,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 	 * @return a random bid in a given utility range.
 	 * @throws Exception
 	 */
-	protected Bid getRandomBidInRange(double lowerBound, double upperBound) throws Exception {
+	protected Bid getRandomBidInRange(double lowerBound, double upperBound)
+			throws Exception {
 		ArrayList<Bid> bidsInRange = getBidsInRange(lowerBound, upperBound);
 
 		int index = (new Random()).nextInt(bidsInRange.size() - 1);
@@ -235,7 +235,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 				myLastBid = b;
 				chosenAction = ActionCreator.createOffer(this, b);
 			}
-		} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace.getUtility(myLastBid)) {
+		} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace
+				.getUtility(myLastBid)) {
 			// Accept opponent's bid based on my previous bid.
 			chosenAction = ActionCreator.createAccept(this);
 			log("Opponent's bid is good enough compared to my last bid, ACCEPTED.");
@@ -244,7 +245,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 		} else if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= MAXIMUM_ASPIRATION) {
 			// Accept opponent's bid based on my previous bid.
 			chosenAction = ActionCreator.createAccept(this);
-			log("Utility of opponent bid: " + utilitySpace.getUtility(opponentBid));
+			log("Utility of opponent bid: "
+					+ utilitySpace.getUtility(opponentBid));
 			log("acceptMultiplier: " + acceptMultiplier);
 			log("MAXIMUM_ASPIRATION: " + MAXIMUM_ASPIRATION);
 			log("Opponent's bid is good enough compared to my maximum aspiration, ACCEPTED.");
@@ -252,7 +254,7 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 			opponentPreviousBid = opponentBid;
 		} else {
 			Bid plannedBid = proposeNextBid(opponentBid);
-			if(plannedBid == null)
+			if (plannedBid == null)
 				chosenAction = ActionCreator.createEndNegotiation(this);
 			else
 				chosenAction = ActionCreator.createOffer(this, plannedBid);
@@ -262,7 +264,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 			if (plannedBid == null)
 				logError("plannedBid is null");
 
-			if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace.getUtility(plannedBid)) {
+			if (utilitySpace.getUtility(opponentBid) * acceptMultiplier >= utilitySpace
+					.getUtility(plannedBid)) {
 				// Accept opponent's bid based on my planned bid.
 				chosenAction = ActionCreator.createAccept(this);
 				log("Opponent's bid is good enough compared to my planned bid, ACCEPTED");
@@ -353,7 +356,8 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 	 */
 	protected abstract Bid proposeNextBid(Bid opponentBid) throws Exception;
 
-	public final void ReceiveMessage(Action opponentAction, long ourTime, long opponentTime) {
+	public final void ReceiveMessage(Action opponentAction, long ourTime,
+			long opponentTime) {
 		setOurTime(ourTime);
 		setOpponentTime(opponentTime);
 		ReceiveMessage(opponentAction, true);
@@ -379,11 +383,19 @@ public abstract class SouthamptonAgent extends VersionIndependentAgent {
 			if (opponentAction instanceof Offer) {
 				OfferReceived((Offer) opponentAction);
 				try {
-					log("It has a utility of " + utilitySpace.getUtility(((Offer) opponentAction).getBid()));
+					log("It has a utility of "
+							+ utilitySpace.getUtility(((Offer) opponentAction)
+									.getBid()));
 
-					if (opponentIsHardHead && opponentBids.size() > 0
-							&& Math.abs(utilitySpace.getUtility(opponentBids.get(0)) - utilitySpace.getUtility(((Offer) opponentAction).getBid())) > 0.02) {
-						log("Opponent of " + getName() + " no longer considered to be hardheaded");
+					if (opponentIsHardHead
+							&& opponentBids.size() > 0
+							&& Math.abs(utilitySpace.getUtility(opponentBids
+									.get(0))
+									- utilitySpace
+											.getUtility(((Offer) opponentAction)
+													.getBid())) > 0.02) {
+						log("Opponent of " + getName()
+								+ " no longer considered to be hardheaded");
 						opponentIsHardHead = false;
 					}
 

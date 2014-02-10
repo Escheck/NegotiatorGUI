@@ -57,7 +57,8 @@ public class BayesianAgent extends Agent {
 		super();
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "2.1";
 	}
 
