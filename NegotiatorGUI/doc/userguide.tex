@@ -663,7 +663,7 @@ The next step is to load the agent in \Genius. Towards this end, first we should
 	\label{fig:addAgent}
 \end{figure}
 
-\item \textbf{Loading the agent using XML}. A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. The code below visualizes a repository with a single agent. An agent element consists of several subelements; the first element is the \textit{description} of the agent which is visualized in the GUI; the second element is the \textit{classPath} specifying were the compiled agent class is located; the third element specifies the \textit{agentName}; finally the optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
+\item \textbf{Loading the agent using XML}. A compiled agent can also be loaded by directly adding the agent to the repository using the \textit{agentrepository.xml} file. The code below visualizes a repository with a single agent. An agent element consists of several subelements. the first element is the \textit{description} of the agent which is visualized in the GUI. The second element is the \textit{classPath} specifying were the compiled agent class is located. For built-in agents this is the class name but for user-defined agents this is the full filename of the main class of the agent (the one implementing the Agent interface). The third element specifies the \textit{agentName}. The optional element \textit{params} specifies the parameters and their values available to the agent. In this case, a parameter ``e'' with value 2 and a parameter ``time'' with value 0.95 is specified. Variables can be accessed during the negotiation by using the \textit{getStrategyParameters} method.
 \end{itemize}
 
 \begin{lstlisting}
@@ -671,14 +671,18 @@ The next step is to load the agent in \Genius. Towards this end, first we should
 <repository fileName="agentrepository.xml">
   <items>
    <agentRepItems>
-     <agentRepItem description="Other agents - SimpleAgent"
-			classPath="agents.SimpleAgent"
-			agentName="SimpleAgent" params="e=2;time=0.95"/>
+               <agentRepItem description="Simple Agent" 
+               classPath="/Users/wouter/Desktop/genius/examplepackage/ExampleAgent.class"
+               agentName="Simple Agent"/>
+               params="e=2;time=0.95"/>
      </agentRepItems>
   </items>
 <filename>agentrepository.xml</filename>
 </repository>
 \end{lstlisting}
+
+
+
 
 \subsection{Creating a ANAC2013 Agent}\label{sec:anac2013agent}
 The ANAC2013 introduces the concept that an agent can save and load information for each preference profile. This entails that an agent can learn from previous negotiations, against the same opponent or multiple opponents, to improve its competence when having a specific preference profile. It is only possible to retrieve information learned on the current preference profile as to avoid having perfect knowledge about the opponent's preferences.
