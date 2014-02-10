@@ -49,9 +49,6 @@ public class AgentRepItem implements RepItem {
 	@XmlAttribute
 	String params;
 
-	public AgentRepItem() {
-	}
-
 	/**
 	 * @return true if agentName and classPath equal. Note that agentName alone
 	 *         is sufficient to be equal as keys are unique.
@@ -61,6 +58,13 @@ public class AgentRepItem implements RepItem {
 			return false;
 		return agentName.equals(((AgentRepItem) o).agentName)
 				&& classPath.equals(((AgentRepItem) o).classPath);
+	}
+
+	/**
+	 * Empty constructor. Do not use. Only here and public because the XML
+	 * serializer needs it.
+	 */
+	public AgentRepItem() {
 	}
 
 	public AgentRepItem(String aName, String cPath, String desc) {
