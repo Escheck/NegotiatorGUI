@@ -578,11 +578,8 @@
 				<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example"/>
 				<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example"/>
 				<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example"/>
-				<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example"/>
-				<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example"/>
-				<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example"/>
-				<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example"/>
 				<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
+				<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
 				<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
 				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>			
