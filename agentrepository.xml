@@ -48,6 +48,11 @@
             <agentRepItem description="Implementation of FunctionalAcceptor." classPath="agents.FunctionalAcceptor" agentName="FunctionalAcceptor"/>
             <agentRepItem description="" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
             <agentRepItem description="" classPath="agents.ABMPAgent2" agentName="ABMPAgent2"/>
+            <agentRepItem description="ABMPAgent.class (compatible with non-linear utility spaces)" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/ABMPAgent.class" agentName="ABMPAgent.class (compatible with non-linear utility spaces)"/>
+            <agentRepItem description="Bayesian Agent" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/BayesianAgent.class" agentName="Bayesian Agent"/>
+            <agentRepItem description="Bayesian Agent" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/BayesianAgent.class" agentName="Bayesian Agent"/>
+            <agentRepItem description="ABMPAgent.class (compatible with non-linear utility spaces)" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/ABMPAgent.class" agentName="ABMPAgent.class (compatible with non-linear utility spaces)"/>
+            <agentRepItem description="AgentFSEGA (1.0)" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/anac/y2010/AgentFSEGA/AgentFSEGA.class" agentName="AgentFSEGA"/>
         </agentRepItems>
         <partyRepItems/>
         <domainRepItem/>
