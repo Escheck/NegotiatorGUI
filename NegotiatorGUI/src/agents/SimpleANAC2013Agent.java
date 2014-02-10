@@ -1,6 +1,7 @@
 package agents;
 
 import java.io.Serializable;
+
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationResult;
@@ -23,32 +24,38 @@ public class SimpleANAC2013Agent extends Agent {
 	/** Bid with the highest possible utility. */
 	private Bid maxBid;
 
-	public SimpleANAC2013Agent() { }
+	public SimpleANAC2013Agent() {
+	}
 
 	/**
-	 * Initialize the target utility to MAX(rv, max). Where rv is the reservation value
-	 * of the preference profile and max is the highest utility received on the current
-	 * preference profile. 
+	 * Initialize the target utility to MAX(rv, max). Where rv is the
+	 * reservation value of the preference profile and max is the highest
+	 * utility received on the current preference profile.
 	 */
 	public void init() {
 		Serializable prev = this.loadSessionData();
 		if (prev != null) {
 			double previousOutcome = (Double) prev;
-			MINIMUM_BID_UTILITY = Math.max(Math.max(utilitySpace.getReservationValueUndiscounted(), previousOutcome), 0.5);
-		}
-		else{
-			MINIMUM_BID_UTILITY = utilitySpace.getReservationValueUndiscounted();
+			MINIMUM_BID_UTILITY = Math.max(Math.max(
+					utilitySpace.getReservationValueUndiscounted(),
+					previousOutcome), 0.5);
+		} else {
+			MINIMUM_BID_UTILITY = utilitySpace
+					.getReservationValueUndiscounted();
 		}
 		System.out.println("Minimum bid utility: " + MINIMUM_BID_UTILITY);
 	}
 
-	public static String getVersion() { return "1.0"; }
+	@Override
+	public String getVersion() {
+		return "1.0";
+	}
 
 	@Override
 	public String getName() {
 		return "Simple ANAC2013 Agent";
 	}
-	
+
 	/**
 	 * Set the target utility for the next match on the same preference profile.
 	 * If the received utility is higher than the current target, save the
@@ -69,20 +76,21 @@ public class SimpleANAC2013Agent extends Agent {
 	}
 
 	/**
-	 * Accept if the utility of the opponent's is higher than the target utility;
-	 * else return a random bid with a utility at least equal to the target utility.
+	 * Accept if the utility of the opponent's is higher than the target
+	 * utility; else return a random bid with a utility at least equal to the
+	 * target utility.
 	 */
 	public Action chooseAction() {
-		if (opponentLastBid != null && getUtility(opponentLastBid) >= MINIMUM_BID_UTILITY) {
+		if (opponentLastBid != null
+				&& getUtility(opponentLastBid) >= MINIMUM_BID_UTILITY) {
 			return new Accept();
 		}
 		return getRandomBid(MINIMUM_BID_UTILITY);
 	}
 
 	/**
-	 * Return a bid with a utility at least equal to the target utility,
-	 * or the bid with the highest utility possible if it takes too long
-	 * to find.
+	 * Return a bid with a utility at least equal to the target utility, or the
+	 * bid with the highest utility possible if it takes too long to find.
 	 * 
 	 * @param target
 	 * @return found bid.
@@ -97,7 +105,8 @@ public class SimpleANAC2013Agent extends Agent {
 			} while (loops < 100000 && utilitySpace.getUtility(bid) < target);
 			if (bid == null) {
 				if (maxBid == null) {
-					// this is a computationally expensive operation, therefore cache result
+					// this is a computationally expensive operation, therefore
+					// cache result
 					maxBid = utilitySpace.getMaxUtilityBid();
 				}
 				bid = maxBid;

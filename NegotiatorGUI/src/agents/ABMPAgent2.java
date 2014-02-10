@@ -378,4 +378,9 @@ public class ABMPAgent2 extends Agent {
 	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
 		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
 	}
+
+	@Override
+	public String getVersion() {
+		return "1.0";
+	}
 }

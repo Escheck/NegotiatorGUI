@@ -69,7 +69,8 @@ public class OptimalBidderSimple extends OptimalBidder {
 		}
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "v1.0";
 	}
 

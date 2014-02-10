@@ -582,7 +582,8 @@ public class IAMhaggler2011 extends Agent {
 	 * 
 	 * @return the version number.
 	 */
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "2.0";
 	}
 

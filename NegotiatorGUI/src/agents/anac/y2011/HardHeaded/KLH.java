@@ -127,7 +127,8 @@ public class KLH extends Agent {
 			MINIMUM_BID_UTILITY = utilitySpace.getReservationValue();
 	}
 
-	public static String getVersion() {
+	@Override
+	public String getVersion() {
 		return "1.2";
 	}
 

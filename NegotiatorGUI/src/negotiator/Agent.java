@@ -82,7 +82,7 @@ public abstract class Agent {
 	/**
 	 * @return version of the agent.
 	 */
-	public static String getVersion() {
+	public String getVersion() {
 		return "unknown";
 	};
 
