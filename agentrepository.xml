@@ -2,7 +2,6 @@
 <repository fileName="agentrepository.xml">
     <items>
         <agentRepItems>
-           
             <agentRepItem description="ANAC 2010 - AgentFSEGA" classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA" agentName="ANAC 2010 - AgentFSEGA"/>
             <agentRepItem description="ANAC 2010 - AgentK" classPath="agents.anac.y2010.AgentK.Agent_K" agentName="ANAC 2010 - AgentK (compatible with non-linear utility spaces)"/>
             <agentRepItem description="ANAC 2010 - IAMhaggler" classPath="agents.anac.y2010.Southampton.IAMhaggler" agentName="ANAC 2010 - IAMhaggler"/>
@@ -49,6 +48,10 @@
             <agentRepItem description="Implementation of FunctionalAcceptor." classPath="agents.FunctionalAcceptor" agentName="FunctionalAcceptor"/>
             <agentRepItem description="" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
             <agentRepItem description="" classPath="agents.ABMPAgent2" agentName="ABMPAgent2"/>
+            <agentRepItem description="ABMPAgent.class" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/ABMPAgent.class" agentName="ABMPAgent.class"/>
+            <agentRepItem description="Agent_K2 (compatible with non-linear utility spaces)" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/anac/y2011/AgentK2/Agent_K2.class" agentName="Agent_K2 (compatible with non-linear utility spaces)"/>
+            <agentRepItem description="ABMPAgent2.class" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/ABMPAgent2.class" agentName="ABMPAgent2.class"/>
+            <agentRepItem description="Gahboninho V3 (compatible with non-linear utility spaces)" classPath="/Volumes/documents/NegoWorkspace3/NegotiatorGUI/bin/agents/anac/y2011/Gahboninho/Gahboninho.class" agentName="Gahboninho V3 (compatible with non-linear utility spaces)"/>
         </agentRepItems>
         <partyRepItems/>
         <domainRepItem/>

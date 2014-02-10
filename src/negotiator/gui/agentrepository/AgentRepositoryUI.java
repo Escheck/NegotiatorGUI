@@ -278,9 +278,8 @@ public class AgentRepositoryUI {
 	 */
 	private void addToRepo(AgentRepItem agentref) {
 		// Remove "Add agents" if there were no agents first
-		int row = table.getSelectedRow();
-		if (agentrepository.getItems().get(row).getName().equals(ADD_AN_AGENT)) {
-			agentrepository.getItems().remove(row);
+		if (agentrepository.getItems().get(0).getName().equals(ADD_AN_AGENT)) {
+			agentrepository.getItems().remove(0);
 		}
 
 		agentrepository.getItems().add(agentref);

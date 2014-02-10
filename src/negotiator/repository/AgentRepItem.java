@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import negotiator.Agent;
 import negotiator.Global;
 import negotiator.exceptions.Warning;
+import negotiator.utility.UTILITYSPACETYPE;
 
 /**
  * This repository item contains all info about an agent that can be loaded.
@@ -103,6 +104,9 @@ public class AgentRepItem implements RepItem {
 		agentName = agent.getName();
 		if (agentName == null) {
 			agentName = classFile.getName();
+		}
+		if (agent.getSupportedNegotiationSetting().getUtilityspaceType() == UTILITYSPACETYPE.NONLINEAR) {
+			agentName += " (compatible with non-linear utility spaces)";
 		}
 		classPath = classFile.getCanonicalPath();
 
