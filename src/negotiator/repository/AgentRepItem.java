@@ -2,6 +2,7 @@ package negotiator.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -123,7 +124,7 @@ public class AgentRepItem implements RepItem {
 	public String getVersion() {
 
 		try {
-			return Global.loadAgent(classPath).getVersion();
+			return getInstance().getVersion();
 
 			// we don't really need the static call, instantiating shouldn't be
 			// expensive.
@@ -166,5 +167,23 @@ public class AgentRepItem implements RepItem {
 
 	public String toString() {
 		return agentName;
+	}
+
+	/**
+	 * Try to load the agent that this reference points to.
+	 * 
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws ClassCastException
+	 * @throws IllegalArgumentException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	public Agent getInstance() throws MalformedURLException,
+			ClassCastException, IllegalArgumentException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
+		return Global.loadAgent(classPath);
 	}
 }
