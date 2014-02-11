@@ -214,118 +214,61 @@ public class Global {
 	}
 
 	/**
-	 * Load an agent using the given classname/filename. DOES NOT call
-	 * {@link Agent#parseStrategyParameters(String)}
+	 * Load an object from a given path. If it's a .class file, figure out the
+	 * correct class path and use that. If it's not a .class file, we assume
+	 * it's already in the existing classpath and load it with the standard
+	 * class loader.
 	 * 
-	 * @param classname
+	 * 
+	 * <p>
+	 * we can't properly typecheck here. Generics fail as we have type erasure,
+	 * and casting to the given type does NOTHING. So we leave this a general
+	 * object and leave it to the caller to do the type checking.
+	 * 
+	 * @param path
 	 *            This can be either a class name or filename.<br>
 	 *            <ul>
-	 *            <li>
-	 *            class name like"agents.anac.y2010.AgentFSEGA.AgentFSEGA". In
-	 *            this case the agent must be already on the JVM's classpath
-	 *            otherwise the agent will not be found.
+	 *            <li> class name like"agents.anac.y2010.AgentFSEGA.AgentFSEGA".
+	 *            In this case the agent must be already on the JVM's classpath
+	 *            otherwise the agent will not be found. <br>
 	 *            <li>a full path, eg
 	 *            "/Volumes/documents/NegoWorkspace3/NegotiatorGUI/src/agents/anac/y2010/AgentFSEGA/AgentFSEGA.java"
 	 *            . In this case, we can figure out the class path ourselves,
 	 *            but the ref is system dependent (backslashes on windows) and
 	 *            might be absolute path.
 	 *            </ul>
-	 * @param variables
-	 *            the variables to pass to the agent.
-	 * @return instantiated agent ready to use.
-	 * @throws ClassNotFoundException
-	 * @throws IllegalAccessException
+	 * 
+	 * @return
 	 * @throws InstantiationException
-	 * @throws IllegalArgumentException
-	 * @throws ClassCastException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
 	 * @throws MalformedURLException
 	 */
-	public static Agent loadAgent(String path) throws InstantiationException,
+	public static Object loadObject(String path) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException,
-			MalformedURLException, ClassCastException, IllegalArgumentException {
+			MalformedURLException {
 		if (path.endsWith(".class")) {
-			return Global.loadAgentWithPackage(new File(path));
+			return loadClassFromFile(new File(path));
 		} else {
 			java.lang.ClassLoader loaderA = Global.class.getClassLoader();
-			return (Agent) (loaderA.loadClass(path).newInstance());
+			return (loaderA.loadClass(path).newInstance());
 		}
-
-	}
-
-	public static Agent loadAgent(String agentClassName, String variables)
-			throws InstantiationException, IllegalAccessException,
-			ClassNotFoundException, MalformedURLException, ClassCastException,
-			IllegalArgumentException {
-		Agent agent = loadAgent(agentClassName);
-
-		// CHECK why do we catch failures in parseStrategyParameters?
-		try {
-			agent.parseStrategyParameters(variables);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return agent;
 
 	}
 
 	/**
-	 * Load an Agent from a given .class file.
-	 * 
-	 * @param classname
-	 *            a .class file.
-	 * @param packagedir
-	 *            the directory of the package
-	 * @return the {@link Agent} object loaded from the class file.
-	 * @throws MalformedURLException
-	 * @throws ClassNotFoundException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws ClassCastException
-	 *             if File does not contain an {@link Agent}
-	 * @throws {@link IllegalArgumentException} if File is not a class file.
-	 * @throws NoClassDefFoundError
-	 *             if the agent fails to load (eg, package name is not empty).
-	 */
-	public static Agent loadAgentClassfile(String classname, File packagedir)
-			throws MalformedURLException, InstantiationException,
-			IllegalAccessException, ClassNotFoundException, ClassCastException,
-			IllegalArgumentException, ClassFormatError {
-		try {
-			java.lang.ClassLoader loader = AgentRepositoryUI.class
-					.getClassLoader();
-			URLClassLoader urlLoader = new URLClassLoader(
-					new URL[] { packagedir.toURI().toURL() }, loader);
-			Class<?> theclass;
-			theclass = urlLoader.loadClass(classname);
-			return (Agent) theclass.newInstance();
-		} catch (ClassNotFoundException e) {
-			// improve on the standard error message...
-			throw new ClassNotFoundException("agent " + classname
-					+ " is not available in directory '" + packagedir + "'", e);
-		}
-		// don't catch NoClassDefFoundError here, because we need the message
-		// in loaodAgentWithPackage
-	}
-
-	/**
-	 * Try to find an agent that has a package name defined. We just get the
-	 * pointer to the filename, we need to discover which package it actually
-	 * is. The file specified must be in the proper directory hierarchy in order
-	 * to be loaded. If returns without throwing, the file is ok.
+	 * Load a file as a class.
 	 * 
 	 * @param file
-	 *            the class file to be found and checked. Should be full path to
-	 *            the file, so that we can check the directory structure.
+	 *            the object to be loaded. Filename should end with ".class".
+	 * @return the object contained in the file.
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
-	 * @throws IllegalArgumentException
-	 * @throws ClassCastException
 	 * @throws MalformedURLException
 	 */
-	public static Agent loadAgentWithPackage(File file)
-			throws MalformedURLException, ClassCastException,
-			IllegalArgumentException, InstantiationException,
+	public static Object loadClassFromFile(File file)
+			throws MalformedURLException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		String className = file.getName();
 		if (!className.endsWith(".class")) {
@@ -340,7 +283,7 @@ public class Global {
 		}
 
 		try {
-			return loadAgentClassfile(className, packageDir);
+			return loadClassfile(className, packageDir);
 		} catch (NoClassDefFoundError e) {
 			/**
 			 * Hack: we try to get the correct name from the error message. Err
@@ -374,9 +317,218 @@ public class Global {
 				// since we checked the path already, parents must exist.
 				packageDir = packageDir.getParentFile();
 			}
-			return loadAgentClassfile(correctName, packageDir);
+			return loadClassfile(correctName, packageDir);
 		}
 	}
+
+	/**
+	 * Try to load an object with given classnamem from a given packagedir
+	 * 
+	 * @param classname
+	 *            the exact class name, eg "examplepackage.example"
+	 * @param packagedir
+	 *            the root directory of the classes to be loaded. If you add the
+	 *            given classname to it, you should end up at the correct
+	 *            location for the class file. Eg,
+	 *            "/Volumes/Users/wouter/Desktop/genius/".
+	 * @return the loaded class object.
+	 * @throws MalformedURLException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	private static Object loadClassfile(String classname, File packagedir)
+			throws MalformedURLException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
+		try {
+			java.lang.ClassLoader loader = AgentRepositoryUI.class
+					.getClassLoader();
+			URLClassLoader urlLoader = new URLClassLoader(
+					new URL[] { packagedir.toURI().toURL() }, loader);
+			Class<?> theclass;
+			theclass = urlLoader.loadClass(classname);
+			return (Object) theclass.newInstance();
+		} catch (ClassNotFoundException e) {
+			// improve on the standard error message...
+			throw new ClassNotFoundException("agent " + classname
+					+ " is not available in directory '" + packagedir + "'", e);
+		}
+
+	}
+
+	/**
+	 * Load an agent using the given classname/filename. DOES NOT call
+	 * {@link Agent#parseStrategyParameters(String)}
+	 * 
+	 * @param classname
+	 *            This can be either a class name or filename.<br>
+	 *            <ul>
+	 *            <li>
+	 *            class name like"agents.anac.y2010.AgentFSEGA.AgentFSEGA". In
+	 *            this case the agent must be already on the JVM's classpath
+	 *            otherwise the agent will not be found.
+	 *            <li>a full path, eg
+	 *            "/Volumes/documents/NegoWorkspace3/NegotiatorGUI/src/agents/anac/y2010/AgentFSEGA/AgentFSEGA.java"
+	 *            . In this case, we can figure out the class path ourselves,
+	 *            but the ref is system dependent (backslashes on windows) and
+	 *            might be absolute path.
+	 *            </ul>
+	 * @param variables
+	 *            the variables to pass to the agent.
+	 * @return instantiated agent ready to use.
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws IllegalArgumentException
+	 * @throws ClassCastException
+	 * @throws MalformedURLException
+	 */
+	public static Agent loadAgent(String path) throws InstantiationException,
+			IllegalAccessException, ClassNotFoundException,
+			MalformedURLException, ClassCastException, IllegalArgumentException {
+		return (Agent) loadObject(path);
+	}
+
+	/**
+	 * load agent and then set the parameters. See {@link #loadAgent(String)}
+	 * 
+	 * @param agentClassName
+	 * @param variables
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws MalformedURLException
+	 * @throws ClassCastException
+	 * @throws IllegalArgumentException
+	 */
+	public static Agent loadAgent(String agentClassName, String variables)
+			throws InstantiationException, IllegalAccessException,
+			ClassNotFoundException, MalformedURLException, ClassCastException,
+			IllegalArgumentException {
+
+		Agent agent = loadAgent(agentClassName);
+
+		// CHECK why do we catch failures in parseStrategyParameters?
+		try {
+			agent.parseStrategyParameters(variables);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return agent;
+
+	}
+
+	/**
+	 * Load an Agent from a given .class file.
+	 * 
+	 * @param classname
+	 *            a .class file.
+	 * @param packagedir
+	 *            the directory of the package
+	 * @return the {@link Agent} object loaded from the class file.
+	 * @throws MalformedURLException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassCastException
+	 *             if File does not contain an {@link Agent}
+	 * @throws {@link IllegalArgumentException} if File is not a class file.
+	 * @throws NoClassDefFoundError
+	 *             if the agent fails to load (eg, package name is not empty).
+	 */
+	// private static Agent loadAgentClassfile(String classname, File
+	// packagedir)
+	// throws MalformedURLException, InstantiationException,
+	// IllegalAccessException, ClassNotFoundException, ClassCastException,
+	// IllegalArgumentException, ClassFormatError {
+	// try {
+	// java.lang.ClassLoader loader = AgentRepositoryUI.class
+	// .getClassLoader();
+	// URLClassLoader urlLoader = new URLClassLoader(
+	// new URL[] { packagedir.toURI().toURL() }, loader);
+	// Class<?> theclass;
+	// theclass = urlLoader.loadClass(classname);
+	// return (Agent) theclass.newInstance();
+	// } catch (ClassNotFoundException e) {
+	// // improve on the standard error message...
+	// throw new ClassNotFoundException("agent " + classname
+	// + " is not available in directory '" + packagedir + "'", e);
+	// }
+	// // don't catch NoClassDefFoundError here, because we need the message
+	// // in loaodAgentWithPackage
+	// }
+
+	/**
+	 * Try to find an agent that has a package name defined. We just get the
+	 * pointer to the filename, we need to discover which package it actually
+	 * is. The file specified must be in the proper directory hierarchy in order
+	 * to be loaded. If returns without throwing, the file is ok.
+	 * 
+	 * @param file
+	 *            the class file to be found and checked. Should be full path to
+	 *            the file, so that we can check the directory structure.
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws IllegalArgumentException
+	 * @throws ClassCastException
+	 * @throws MalformedURLException
+	 */
+	// private static Agent loadAgentWithPackage(File file)
+	// throws MalformedURLException, ClassCastException,
+	// IllegalArgumentException, InstantiationException,
+	// IllegalAccessException, ClassNotFoundException {
+	// String className = file.getName();
+	// if (!className.endsWith(".class")) {
+	// throw new IllegalArgumentException("file " + file
+	// + " is not a .class file");
+	// }
+	// // strip the trailing '.class' from the string.
+	// className = className.substring(0, className.length() - 6);
+	// File packageDir = file.getParentFile();
+	// if (packageDir == null) {
+	// packageDir = new File(".");
+	// }
+	//
+	// try {
+	// return loadAgentClassfile(className, packageDir);
+	// } catch (NoClassDefFoundError e) {
+	// /**
+	// * Hack: we try to get the correct name from the error message. Err
+	// * msg ~ "SimpleAgent (wrong name: agents/SimpleAgent)"
+	// */
+	// String errormsg = e.getMessage();
+	// // this is what we expect.
+	// String wrongname = "wrong name: ";
+	// int i = errormsg.indexOf(wrongname);
+	// if (i == -1) {
+	// throw e; // unknown error. We can't handle...
+	// }
+	// // remove leading and trailing stuff. We now have
+	// // 'agents.SimpleAgent'
+	// String correctName = errormsg.substring(i + wrongname.length(),
+	// errormsg.length() - 1).replaceAll("/", ".");
+	//
+	// // Check that file is in correct directory path
+	// String expectedPath = File.separator
+	// + correctName.replaceAll("\\.", File.separator) + ".class";
+	// if (!(file.getAbsolutePath().endsWith(expectedPath))) {
+	// throw new NoClassDefFoundError("file " + file
+	// + "\nis not in the correct directory structure, "
+	// + "\nas its class is " + correctName + "."
+	// + "\nEnsure the file is in ..." + expectedPath);
+	// }
+	//
+	// // number of dots is number of times we need to go to parent
+	// // directory. We are already in the directory of the agent, so -1.
+	// for (int up = 0; up < correctName.split("\\.").length - 1; up++) {
+	// // since we checked the path already, parents must exist.
+	// packageDir = packageDir.getParentFile();
+	// }
+	// return loadAgentClassfile(correctName, packageDir);
+	// }
+	// }
 
 	/**
 	 * Gives a useful agent name.
