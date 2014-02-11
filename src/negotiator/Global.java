@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import javax.swing.JOptionPane;
+
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.multipartyprotocol.MultiPartyProtocol;
@@ -542,6 +544,52 @@ public class Global {
 			agentDescription = agent.getClass().getSimpleName();
 
 		return agentDescription;
+	}
+
+	/**
+	 * Show a dialog to the user, explaining the exception that was raised while
+	 * loading file fc. Typically this is used in combination with
+	 * {@link #loadObject(String)} and associates
+	 * 
+	 * @param fc
+	 *            file that was attempted to be loaded
+	 * @param e
+	 *            the exception that was raised
+	 */
+	public static void showLoadError(File fc, Throwable e) {
+		if (e instanceof ClassNotFoundException) {
+			showLoadError("No class found at " + fc, e);
+		} else if (e instanceof InstantiationException) {
+			// happens when object instantiated is interface or abstract
+			showLoadError(
+					"Class cannot be instantiated. Reasons may be that there is no constructor without arguments, "
+							+ "or the class is abstract or an interface.", e);
+		} else if (e instanceof IllegalAccessException) {
+			showLoadError("Missing constructor without arguments", e);
+		} else if (e instanceof NoClassDefFoundError) {
+			showLoadError("Errors in loaded class.", e);
+		} else if (e instanceof ClassCastException) {
+			showLoadError("The loaded class seems to be of the wrong type. ", e);
+		} else if (e instanceof IllegalArgumentException) {
+			showLoadError("The given file can not be used.", e);
+		} else if (e instanceof IOException) {
+			showLoadError("The file can not be read.", e);
+		} else {
+			showLoadError("Something went wrong loading the file", e);
+		}
+	}
+
+	/*
+	 * show error while loading agent file. Also show the detail message.
+	 */
+	private static void showLoadError(String text, Throwable e) {
+		String message = e.getMessage();
+		if (message == null) {
+			message = "";
+		}
+
+		JOptionPane.showMessageDialog(null, text + "\n" + message,
+				"Load error", 0);
 	}
 
 	/**

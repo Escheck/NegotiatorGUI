@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Creates a BOA component consisting of the classname of the component,
- * the type of the component, and all parameters.
+ * Creates a BOA component consisting of the classname of the component, the
+ * type of the component, and all parameters.
  * 
  * Please report bugs to author.
  * 
@@ -19,54 +19,70 @@ import java.util.Map.Entry;
  * @version 16-01-12
  */
 public class BOAcomponent implements Serializable {
-	
+
 	private static final long serialVersionUID = 9055936213274664445L;
 	/** Classname of the component */
 	private String classname;
 	/** Type of the component, for example "as" for acceptance condition */
 	private ComponentsEnum type;
-	/** Parameters which should be used to initialize the component upon creation */
+	/**
+	 * Parameters which should be used to initialize the component upon creation
+	 */
 	private HashMap<String, BigDecimal> parameters;
-	
+
 	private ArrayList<BOAparameter> orgParam;
 
 	/**
-	 * Creates a BOA component consisting of the classname of the components, the type,
-	 * and the parameters with which the component should be loaded.
+	 * Creates a BOA component consisting of the classname of the components,
+	 * the type, and the parameters with which the component should be loaded.
 	 * 
-	 * @param classname of the component.
-	 * @param type of the component (for example bidding strategy).
-	 * @param strategyParam parameters of the component.
+	 * @param classname
+	 *            of the component. Note, this is not checked at all. We now
+	 *            also accept absolute file path to a .class file.
+	 * @param type
+	 *            of the component (for example bidding strategy).
+	 * @param strategyParam
+	 *            parameters of the component.
 	 */
-	public BOAcomponent(String classname, ComponentsEnum type, HashMap<String, BigDecimal> strategyParam) {
+	public BOAcomponent(String classname, ComponentsEnum type,
+			HashMap<String, BigDecimal> strategyParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = strategyParam;
 	}
-	
+
 	/**
-	 * Variant of the main constructor in which it is assumed that the component has no
-	 * parameters.
+	 * Variant of the main constructor in which it is assumed that the component
+	 * has no parameters.
 	 * 
-	 * @param classname of the component.
-	 * @param type of the component (for example bidding strategy).
+	 * @param classname
+	 *            of the component. Note, this is not checked at all. We now
+	 *            also accept absolute file path to a .class file.
+	 * @param type
+	 *            of the component (for example bidding strategy).
 	 */
 	public BOAcomponent(String classname, ComponentsEnum type) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = new HashMap<String, BigDecimal>();
 	}
-	
+
 	/**
-	 * Variant of the main constructor in which it is assumed that the component has no
-	 * parameters. In addition a backup is made of the original BigDecimal specification of the
-	 * parameters. This is used to avoid rounding errors in the GUI.
+	 * Variant of the main constructor in which it is assumed that the component
+	 * has no parameters. In addition a backup is made of the original
+	 * BigDecimal specification of the parameters. This is used to avoid
+	 * rounding errors in the GUI.
 	 * 
-	 * @param classname of the component.
-	 * @param type of the component (for example bidding strategy).
-	 * @param orgParam backup of original parameters
+	 * @param classname
+	 *            of the component. Note, this is not checked at all. We now
+	 *            also accept absolute file path to a .class file.
+	 * @param type
+	 *            of the component (for example bidding strategy).
+	 * @param orgParam
+	 *            backup of original parameters
 	 */
-	public BOAcomponent(String classname, ComponentsEnum type, ArrayList<BOAparameter> orgParam) {
+	public BOAcomponent(String classname, ComponentsEnum type,
+			ArrayList<BOAparameter> orgParam) {
 		this.classname = classname;
 		this.type = type;
 		this.parameters = new HashMap<String, BigDecimal>();
@@ -76,8 +92,10 @@ public class BOAcomponent implements Serializable {
 	/**
 	 * Add a parameter to the set of parameters of this component.
 	 * 
-	 * @param name of the parameter.
-	 * @param value of the parameter.
+	 * @param name
+	 *            of the parameter.
+	 * @param value
+	 *            of the parameter.
 	 */
 	public void addParameter(String name, BigDecimal value) {
 		parameters.put(name, value);
@@ -96,29 +114,32 @@ public class BOAcomponent implements Serializable {
 	public ComponentsEnum getType() {
 		return type;
 	}
-	
+
 	/**
 	 * @return parameters of the component.
 	 */
 	public HashMap<String, Double> getParameters() {
 		return decreaseAccuracy(parameters);
 	}
-	
+
 	/**
 	 * @return original parameters as specified in the GUI.
 	 */
 	public HashMap<String, BigDecimal> getFullParameters() {
 		return parameters;
 	}
-	
-	private HashMap<String, Double> decreaseAccuracy(HashMap<String, BigDecimal> parameters) {
-		Iterator<Entry<String, BigDecimal>> it = parameters.entrySet().iterator();
+
+	private HashMap<String, Double> decreaseAccuracy(
+			HashMap<String, BigDecimal> parameters) {
+		Iterator<Entry<String, BigDecimal>> it = parameters.entrySet()
+				.iterator();
 		HashMap<String, Double> map = new HashMap<String, Double>();
-	    while (it.hasNext()) {
-	        Map.Entry<String, BigDecimal> pairs = (Entry<String, BigDecimal>)it.next();
-	        map.put(pairs.getKey(), pairs.getValue().doubleValue());
-	    }
-	    return map;
+		while (it.hasNext()) {
+			Map.Entry<String, BigDecimal> pairs = (Entry<String, BigDecimal>) it
+					.next();
+			map.put(pairs.getKey(), pairs.getValue().doubleValue());
+		}
+		return map;
 	}
 
 	/**
@@ -127,11 +148,11 @@ public class BOAcomponent implements Serializable {
 	public ArrayList<BOAparameter> getOriginalParameters() {
 		return orgParam;
 	}
-	
+
 	public void setOriginalParameter(ArrayList<BOAparameter> param) {
 		this.orgParam = param;
 	}
-	
+
 	public String toString() {
 		String params = "";
 		if (parameters.size() > 0) {
@@ -148,20 +169,20 @@ public class BOAcomponent implements Serializable {
 		}
 		String shortType = "unknown";
 		switch (type) {
-			case BIDDINGSTRATEGY:  
-				shortType = "bs";
-				break;
-			case ACCEPTANCESTRATEGY:  
-				shortType = "as";
-				break;
-			case OPPONENTMODEL:  
-				shortType = "om";
-				break;
-			case OMSTRATEGY:  
-				shortType = "oms";
-				break;
+		case BIDDINGSTRATEGY:
+			shortType = "bs";
+			break;
+		case ACCEPTANCESTRATEGY:
+			shortType = "as";
+			break;
+		case OPPONENTMODEL:
+			shortType = "om";
+			break;
+		case OMSTRATEGY:
+			shortType = "oms";
+			break;
 		}
-		
+
 		return shortType + ": " + classname + " " + params;
 	}
 }

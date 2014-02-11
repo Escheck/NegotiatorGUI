@@ -6,17 +6,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.AbstractTableModel;
 
+import negotiator.Global;
 import negotiator.gui.GenericFileFilter;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.Repository;
@@ -204,43 +203,10 @@ public class AgentRepositoryUI {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				addToRepo(new AgentRepItem(fc.getSelectedFile()));
-			} catch (ClassNotFoundException e) {
-				showLoadError("No class found at " + fc, e);
-			} catch (InstantiationException e) {
-				// happens when object instantiated is interface or abstract
-				showLoadError(
-						"Class cannot be instantiated. Reasons may be that there is no constructor without arguments, "
-								+ "or the class is abstract or an interface.",
-						e);
-			} catch (IllegalAccessException e) {
-				showLoadError("Missing constructor without arguments", e);
-			} catch (NoClassDefFoundError e) {
-				showLoadError("Errors in loaded class.", e);
-			} catch (ClassCastException e) {
-				showLoadError(
-						"The loaded class seems to be of the wrong type. ", e);
-			} catch (IllegalArgumentException e) {
-				showLoadError("The given file can not be used.", e);
-			} catch (IOException e) {
-				showLoadError("The file can not be read.", e);
-			} catch (Error e) {
-				showLoadError("Something went wrong loading the file", e);
+			} catch (Throwable e) {
+				Global.showLoadError(fc.getSelectedFile(), e);
 			}
 		}
-
-	}
-
-	/*
-	 * show error while loading agent file. Also show the detail message.
-	 */
-	private void showLoadError(String text, Throwable e) {
-		String message = e.getMessage();
-		if (message == null) {
-			message = "";
-		}
-
-		JOptionPane.showMessageDialog(null, text + "\n" + message,
-				"Load error", 0);
 
 	}
 
