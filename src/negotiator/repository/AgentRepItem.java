@@ -99,7 +99,7 @@ public class AgentRepItem implements RepItem {
 	public AgentRepItem(File classFile) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, ClassCastException,
 			IllegalArgumentException, IOException {
-		Agent agent = Global.loadAgentWithPackage(classFile);
+		Agent agent = (Agent) Global.loadClassFromFile(classFile);
 		String version = agent.getVersion();
 		agentName = agent.getName();
 		if (agentName == null) {
