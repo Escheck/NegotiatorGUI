@@ -340,26 +340,44 @@ Besides running a single negotiation session, it is also possible to run a tourn
 	\item \textbf{BOA Agent side A/B}. Type of agents that consist of multiple components (see~Section~\ref{sec:boa}).
 \end{itemize}
 
+\subsubsection{Tournament Options}
 A large set of tournament options can be specified which influence the composition and running of the tournament. There are four categories of options:
 
 \begin{itemize}
-	\item \textsc{Protocol settings}
+	\item \textsc{Protocol settings} (Figure~\ref{fig:TourOptions1})
 	\begin{itemize}
-		\item \textbf{Protocol mode}. Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
+		\item \textbf{Protocol mode} . Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
 		\item \textbf{Deadline}. Depending on the protocol mode, this is the maximum amount of time in seconds or amount of rounds. Note that one single round corresponds to one turn of a single agent.
 		\item \textbf{Access partner preferences}. Allows agents to access the preference profile of the negotiation session, which contains the opponent's preference profile.
 		\item \textbf{Allow pausing timeline}. Allow agents to pause the negotiation by using the timeline.pause() and time.resume() methods.
 	\end{itemize}
-	\item \textsc{Session generation}
+	\item \textsc{Session generation}(Figure~\ref{fig:TourOptions2})
 	\begin{itemize}
 		\item \textbf{Play both sides}. When generating the sessions, whether each pair of agents should play both sides on a scenario or not.
 		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the sessions in which agents negotiate against themselves are removed.
 	\end{itemize}
-	\item \textsc{Logging}
+
+
+
+		\begin{figure}[ht]
+		\center
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/TourOptions1.png}
+		\caption{Protocol Settings.}
+		\label{fig:TourOptions1}
+		\end{minipage}
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/TourOptions2.png}
+		\caption{Session Generation options.}\label{fig:TourOptions2}
+		\end{minipage}
+		\end{figure}
+
+
+	\item \textsc{Logging}(Figure~\ref{fig:TourOptions3})
 	\begin{itemize}
 		\item \textbf{Log detailed analysis}. Enabling this option activates a set of quality measures to capture the quality of the negotiation process. The quality measures are added to the default log. In addition, for the whole tournament an overview log is created. This log is prefixed with ``TM-''.
 	\end{itemize}
-	\item \textsc{Visualization}
+	\item \textsc{Visualization}(Figure~\ref{fig:TourOptions4})
 	\begin{itemize}
 		\item \textbf{Show all bids}. When enabled all bids in a scenario are visualized as red points in the negotiation status window. This option has some impact on performance.
 		\item \textbf{Show last bid}. When enabled the last bid is marked with a special symbol to make it clear which move an agent performed.
@@ -367,6 +385,22 @@ A large set of tournament options can be specified which influence the compositi
 	\end{itemize}
 \end{itemize}
 
+
+
+		\begin{figure}[ht]
+		\center
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/TourOptions3.png}
+		\caption{Protocol Settings.}
+		\label{fig:TourOptions3}
+		\end{minipage}
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/TourOptions4.png}
+		\caption{Session Generation options.}\label{fig:TourOptions4}
+		\end{minipage}
+		\end{figure}
+		
+		
 \subsection{Advanced: Running a Distributed Tournament}
 A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Next, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
 
