@@ -673,6 +673,21 @@ where $u$ is the utility of the bid made by the opponent (as measured in our uti
  
 Automatic agents have to negotiate on their own, and are not allowed to communicate with a human user. Therefore, do not override the \texttt{isUIAgent()} function in automatic negotiation agents.
 
+\subsection{General properties}
+Some agents have restrictions and can not be used in certain situations. 
+The agent indicates its capabilities through the function getSupportedNegotiationSetting().
+By default, the agent has no restrictions. If your agent has restrictions, you must override
+this function and return the appropriate supported settings.
+
+For example, if your agent can only handle linear utility spaces, you should override like this
+
+\begin{lstlisting}
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
+	}
+\end{lstlisting}
+
 \subsection{Overview of Classes}
 This section provides an overview of classes which might be useful when implementing an agent. For the documentation of the data structures that are presented, please refer to the Javadoc that can be found in your download of \Genius. 
 
