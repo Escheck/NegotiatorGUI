@@ -6,11 +6,12 @@ import negotiator.utility.UTILITYSPACETYPE;
  * Indicates what negotiation settings are supported by an agent.
  */
 public class SupportedNegotiationSetting {
+	private final static UTILITYSPACETYPE defaultSpace = UTILITYSPACETYPE.NONLINEAR;
 	/**
 	 * LINEAR means: only supports linear domains, NONLINEAR means it supports
 	 * any utility space (both linear and non-linear)
 	 */
-	private UTILITYSPACETYPE utilityspaceType = UTILITYSPACETYPE.NONLINEAR;
+	private UTILITYSPACETYPE utilityspaceType = defaultSpace;
 
 	public SupportedNegotiationSetting() {
 	}
@@ -35,6 +36,17 @@ public class SupportedNegotiationSetting {
 
 	public void setUtilityspaceType(UTILITYSPACETYPE utilityspaceType) {
 		this.utilityspaceType = utilityspaceType;
+	}
+
+	/**
+	 * returns human readible version. Bit hacky, I suspect this will change
+	 * when we get more nonlinear agents.
+	 */
+	public String toExplainingString() {
+		if (utilityspaceType == UTILITYSPACETYPE.NONLINEAR) {
+			return "compatible with non-linear utility spaces";
+		}
+		return "";
 	}
 
 }
