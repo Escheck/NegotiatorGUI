@@ -167,7 +167,8 @@ public class TournamentUI extends javax.swing.JPanel {
 				newtvs.add(new ProfileValue(profitem));
 			v.setValues(newtvs);
 		} else if (v instanceof ProtocolVariable) {
-			if (Repository.getProtocolRepository().getItems().size() != 1) {
+			if (Repository.getProtocolRepository().getItems().size() > 0) {
+				// #881 always show GUI
 				ArrayList<ProtocolRepItem> newv = (ArrayList<ProtocolRepItem>) new ProtocolVarUI(
 						NegoGUIApp.negoGUIView.getFrame()).getResult();
 				System.out.println("result new vars=" + newv);
@@ -463,10 +464,9 @@ public class TournamentUI extends javax.swing.JPanel {
 	 */
 	private void correct_tournament(Tournament t) {
 		ArrayList<TournamentVariable> vars = t.getVariables();
-		fillposition(vars, Tournament.VARIABLE_PROTOCOL, new ProtocolVariable());
-		fillposition(vars, Tournament.VARIABLE_PROFILE, new ProfileVariable());
+
+		ProtocolVariable protocol = new ProtocolVariable();
 		if (Repository.getProtocolRepository().getItems().size() == 1) {
-			ProtocolVariable protocol = new ProtocolVariable();
 			try {
 				protocol.addValue(new ProtocolValue(
 						(ProtocolRepItem) Repository.getProtocolRepository()
@@ -476,14 +476,20 @@ public class TournamentUI extends javax.swing.JPanel {
 			}
 			vars.set(Tournament.VARIABLE_PROTOCOL, protocol);
 		}
+		fillposition(vars, Tournament.VARIABLE_PROTOCOL, protocol);
+		fillposition(vars, Tournament.VARIABLE_PROFILE, new ProfileVariable());
+
 		AgentVariable agentVar = new AgentVariable();
 		agentVar.setSide("A");
 		fillposition(vars, Tournament.VARIABLE_AGENT_A, agentVar);
 		agentVar = new AgentVariable();
 		agentVar.setSide("B");
 		fillposition(vars, Tournament.VARIABLE_AGENT_B, agentVar);
-		fillposition(vars, Tournament.VARIABLE_NUMBER_OF_RUNS,
-				new TotalSessionNumberVariable());
+		TotalSessionNumberVariable nrsessions = new TotalSessionNumberVariable();
+		ArrayList<TournamentValue> newvals = new ArrayList<TournamentValue>();
+		newvals.add(new TotalSessionNumberValue());
+		nrsessions.setValues(newvals);
+		fillposition(vars, Tournament.VARIABLE_NUMBER_OF_RUNS, nrsessions);
 		fillposition(vars, Tournament.VARIABLE_TOURNAMENT_OPTIONS,
 				new TournamentOptionsVariable());
 
