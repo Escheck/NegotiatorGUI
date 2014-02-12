@@ -649,8 +649,14 @@ This section provides an overview of classes which might be useful when implemen
 \end{itemize}
 
 \subsection{Compiling an Agent}
-Compiling an agent can be done in two ways. First, in Eclipse you can simply find the compiled agent in the ``bin'' folder in your workspace. Alternatively, it is possible to manually compile the agent by placing \texttt{YourAgent.java} in the directory containing the \texttt{negotiator.jar} file, and using the command line: \texttt{javac -cp negosimulator.jar examplepackage/ExampleAgent.java}.
+Compiling an agent can be done as follows (here we compile the examplepackage; modify as appropriate for your agent):
+\begin{itemize}
+\item Open a terminal
+\item Switch to the directory containing the examplepackage directory
+\item execute thecommand \texttt{javac -cp negosimulator.jar examplepackage/ExampleAgent.java}
+\end{itemize}
 
+\subsection{Loading an Agent}
 The next step is to load the agent in \Genius. Towards this end, first we should move the agent to the directory of \Genius. Note that the directory in which the agent should be put depends on your project. If for example you have a project with a package ``agents'' in which the agent is located, then the agent should be moved in a folder ``agents'' in the root of your \Genius~installation. An agent may consist of multiple class files. Now we can add the agent in one of the following two ways:
 
 \begin{itemize}	
