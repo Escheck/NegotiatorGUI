@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
@@ -73,7 +74,7 @@ public class BOAagentsFrame extends JDialog {
 	}
 
 	private void initFrameUI() {
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		// allow deeper dialogs to appear on top of this dialog.
 		setModalityType(Dialog.ModalityType.DOCUMENT_MODAL);
 		setMaximumSize(new Dimension(1010, 440));
@@ -210,4 +211,19 @@ public class BOAagentsFrame extends JDialog {
 		}
 	}
 
+	@Override
+	public void processWindowEvent(WindowEvent evt) {
+		System.out.println("quit");
+		// Why is the getNewState not working as expected?
+		if (evt.paramString().contains("CLOSING")) {
+
+			int n = JOptionPane.showConfirmDialog(this,
+					"Discard your changes?", "Confirm discard",
+					JOptionPane.YES_NO_OPTION);
+			if (n == JOptionPane.YES_OPTION) {
+				dispose();
+			}
+		}
+
+	}
 }
