@@ -45,6 +45,7 @@ public class BOAagentsFrame extends JDialog {
 	// BUTTONS
 	private JButton addAgentButton;
 	private JButton editAgentButton;
+	private JButton deleteAgentButton;
 	private JButton saveButton;
 
 	private ArrayList<BOAagentInfo> result;
@@ -121,6 +122,11 @@ public class BOAagentsFrame extends JDialog {
 		getContentPane().add(editAgentButton,
 				new AbsoluteConstraints(120, 10, 107, -1));
 
+		deleteAgentButton = new JButton();
+		deleteAgentButton.setText("Delete agent");
+		getContentPane().add(deleteAgentButton,
+				new AbsoluteConstraints(230, 10, 107, -1));
+
 		saveButton = new JButton();
 		saveButton.setText("Save agents");
 		getContentPane().add(saveButton,
@@ -162,6 +168,19 @@ public class BOAagentsFrame extends JDialog {
 						insertNewAgents(res);
 					}
 
+				}
+			}
+		});
+
+		deleteAgentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BOAagentInfo s = (BOAagentInfo) agentsList.getSelectedValue();
+				if (s == null) {
+					JOptionPane.showMessageDialog(null,
+							"Please select an agent to delete.",
+							"Edit notification", 1);
+				} else {
+					agentsModel.removeElement(s);
 				}
 			}
 		});
