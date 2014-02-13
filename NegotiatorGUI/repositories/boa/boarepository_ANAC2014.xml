@@ -43,7 +43,7 @@
 		<biddingstrategy description="2012 - CUHKAgent" classPath="negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent_Offering"/>
 		<biddingstrategy description="2012 - IAMHaggler2012" classPath="negotiator.boaframework.offeringstrategy.anac2012.IAMHaggler2012_Offering"/>
 		<biddingstrategy description="2012 - OMACagent" classPath="negotiator.boaframework.offeringstrategy.anac2012.OMACagent_Offering"/>
-		<biddingstrategy description="2012 - TheNegotiator Reloaded" classPath="negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded_Offering"/>
+		<biddingstrategy description="2012 - The Negotiator Reloaded" classPath="negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded_Offering"/>
 		
 		<biddingstrategy description="2013 - TheFawkes" classPath="negotiator.boaframework.offeringstrategy.anac2013.Fawkes_Offering"/>
 		<biddingstrategy description="2013 - InoxAgent" classPath="negotiator.boaframework.offeringstrategy.anac2013.InoxAgent_Offering"/>
@@ -95,6 +95,13 @@
 			<parameter name="d" default="0.0" description="Constant discount"/>
 			<parameter name="e" default="0.8" description="Threshold discount"/>
 		</acceptancecondition>		
+		<acceptancecondition description="Optimal_GPR_BOA" classPath="acceptance.AC_Optimal_GPR_BOA">
+		    <parameter name="r" default="10" description="Amount of Regressions"/>
+			<parameter name="s" default="1000" description="Amount of Samples"/>
+			<parameter name="a" default="1.0" description="Accept when the opponent's utility * a + b is greater than the utility of our current bid"/>
+			<parameter name="b" default="0.0" description="Accept when the opponent's utility * a + b is greater than the utility of our current bid"/>
+		</acceptancecondition>		
+		
 		<acceptancecondition description="2010 - Agent FSEGA" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentFSEGA"/>
 		<acceptancecondition description="2010 - Agent Smith" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_AgentSmith"/>
 		<acceptancecondition description="2010 - Nozomi" classPath="negotiator.boaframework.acceptanceconditions.anac2010.AC_Nozomi"/>
@@ -117,7 +124,7 @@
 		<acceptancecondition description="2012 - CUHKAgent" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_CUHKAgent"/>
 		<acceptancecondition description="2012 - IAMHaggler2012" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_IAMHaggler2012"/>
 		<acceptancecondition description="2012 - OMACagent" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_OMACagent"/>
-		<acceptancecondition description="2012 - TheNegotiator Reloaded" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded">
+		<acceptancecondition description="2012 - The Negotiator Reloaded" classPath="negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded">
 			<parameter name="a" default="1.0" description="Scaling factor for AC_next when no discount"/>
 			<parameter name="b" default="0.0" description="Constant factor for AC_next when no discount"/>
 			<parameter name="ad" default="1.05" description="Scaling factor for AC_next when discount"/>
@@ -147,7 +154,7 @@
 			<parameter name="u" default="0.0" description="Use all bids (instead of only unique) if u > 0.0"/>
 			<parameter name="b" default="1.0" description="Concession speed e of assumed opponent TDT function"/>
 		</opponentmodel>
-		<opponentmodel description="TheNegotiator Reloaded Model" classPath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel">
+		<opponentmodel description="The Negotiator Reloaded Model" classPath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel">
 			<parameter name="u" default="1.0" description="Use all bids (instead of only unique) if u > 0.0"/>
 			<parameter name="b" default="0.3" description="Concession speed e of assumed opponent TDT function"/>
 		</opponentmodel>
@@ -181,7 +188,7 @@
 			<parameter name="n" default="3.0" description="A random bid is selected from the best n bids"/>
 			<parameter name="t" default="1.1" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
-		<omstrategy description="TheNegotiator Reloaded" classPath="negotiator.boaframework.omstrategy.NullStrategy">
+		<omstrategy description="The Negotiator Reloaded" classPath="negotiator.boaframework.omstrategy.NullStrategy">
 			<parameter name="t" default="0.35" description="Time after which the OM should not be updated"/>	
 		</omstrategy>
 		<omstrategy description="TheFawkes" classPath="negotiator.boaframework.omstrategy.TheFawkes_OMS"/>

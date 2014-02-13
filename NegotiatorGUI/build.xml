@@ -534,30 +534,30 @@
 	
 	<target name ="makeGenius5.1" depends="makeNegoSimulatorWithAllAgentJar">
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/domains/domainrepository.xml"/>
-				<globmapper from="domainrepository.xml" to="domainrepository.xml" />
+				<fileset file="${repositories}/domains/domainrepository_ANAC2014.xml"/>
+				<globmapper from="domainrepository_ANAC2014.xml" to="domainrepository.xml" />
 			</copy>
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/boa/boarepository.xml"/>
-				<globmapper from="boarepository.xml" to="boarepository.xml" />
+				<fileset file="${repositories}/boa/boarepository_ANAC2014.xml"/>
+				<globmapper from="boarepository_ANAC2014.xml" to="boarepository.xml" />
 			</copy>
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/agents/agentrepository.xml"/>
-				<globmapper from="agentrepository.xml" to="agentrepository.xml" />
+				<fileset file="${repositories}/agents/agentrepository_ANAC2014.xml"/>
+				<globmapper from="agentrepository_ANAC2014.xml" to="agentrepository.xml" />
 			</copy>	
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/protocols/protocolrepository.xml"/>
-				<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />
+				<fileset file="${repositories}/protocols/protocolrepository_ANAC2014.xml"/>
+				<globmapper from="protocolrepository_ANAC2014.xml" to="protocolrepository.xml" />
 			</copy>	
 		
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/multipartyprotocols/multipartyprotocolrepository.xml"/>
-				<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />
+				<fileset file="${repositories}/multipartyprotocols/multipartyprotocolrepository_ANAC2014.xml"/>
+				<globmapper from="multipartyprotocolrepository_ANAC2014.xml" to="multipartyprotocolrepository.xml" />
 			</copy>	
 	        
 			<copy todir="${tmp}">
-				<fileset file="${repositories}/parties/partyrepository.xml"/>
-				<globmapper from="partyrepository.xml" to="partyrepository.xml" />
+				<fileset file="${repositories}/parties/partyrepository_ANAC2014.xml.xml"/>
+				<globmapper from="partyrepository_ANAC2014.xml" to="partyrepository.xml" />
 			</copy>	
 						
 
