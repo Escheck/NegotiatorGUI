@@ -1,5 +1,11 @@
 package negotiator;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TimeZone;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -8,11 +14,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
 
 import javax.swing.JOptionPane;
 
@@ -52,7 +53,7 @@ public class Global {
 	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Temporary flag for use in AAMAS 2014 experiments */
-	public static final boolean AAMAS_2014_EXPERIMENTS = !false;
+	public static final boolean AAMAS_2014_EXPERIMENTS = false;
 
 	public Global() {
 	}
