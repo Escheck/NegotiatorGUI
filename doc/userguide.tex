@@ -790,9 +790,20 @@ In this section we create a \textit{BOA agent} by selecting its components from 
 	\label{fig:decoupledGUI}
 \end{figure}
 
-Our goal in this section is to specify three BOA agents which are equal except for a single parameter $a$ of their acceptance strategy. First, we select the bidding strategy \textit{Other - Time Dependent} under the heading \textit{Bidding Strategy}. Note that when we select this strategy, the default parameters of the component appear in the textbox below. Next, we select the other three components shown in Figure~\ref{fig:decoupledGUI}.
+Our goal in this section is to specify three BOA agents which are equal except for a single parameter $a$ of their acceptance strategy. 
 
-The next step is to specify three variants of the acceptance strategy differing in the parameter $a$. To be more precise, we want $a$ to be 1.0, 1.1, and 1.2. To achieve this, select ``Change'' to open a window similar to Figure~\ref{fig:boaparam}. Next, fill in the fields as shown in Figure~\ref{fig:boaparam}. Finally, we select ``Add agent(s)'' to create the three agents. Note that in this example we only varied a single parameter of a single component. If we vary more parameters possibly of different components, then all possible combinations are generated.
+To add the agents, click on the "Add agent(s)" button. A dialog pops up to enter the BOA agent details (Figure~\ref{fig:boadetails}).
+
+\begin{figure}[h!]
+	\center
+	\includegraphics[width=15cm]{media/BOAdetails.png}
+	\caption{The BOA agent components and parameters dialog.}
+	\label{fig:boadetails}
+\end{figure}
+
+We select the bidding strategy \textit{Other - Time Dependent} under the heading \textit{Bidding Strategy}. Note that when we select this strategy, the default parameters of the component appear in the textbox below. Next, we select the other three components shown in Figure~\ref{fig:boadetails}.
+
+The next step is to specify three variants of the acceptance strategy differing in the parameter $a$. To be more precise, we want $a$ to be 1.0, 1.1, and 1.2. To achieve this, press the ``Change'' button under  \textit{Acceptance Strategy}  to open a window similar to Figure~\ref{fig:boaparam}. Next, fill in the fields as shown in Figure~\ref{fig:boaparam}. Finally, we select ``Add agent(s)'' to create the three agents. Press "Save agents" to save the new BOA agents for the tournament. Note that in this example we only varied a single parameter of a single component. If we vary more parameters possibly of different components, then all possible combinations are generated.
 
 \begin{figure}[h!] 
 	\center
