@@ -474,7 +474,6 @@ public class TournamentUI extends javax.swing.JPanel {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			vars.set(Tournament.VARIABLE_PROTOCOL, protocol);
 		}
 		fillposition(vars, Tournament.VARIABLE_PROTOCOL, protocol);
 		fillposition(vars, Tournament.VARIABLE_PROFILE, new ProfileVariable());
