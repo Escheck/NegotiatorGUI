@@ -213,7 +213,6 @@ public class BOAagentsFrame extends JDialog {
 
 	@Override
 	public void processWindowEvent(WindowEvent evt) {
-		System.out.println("quit");
 		// Why is the getNewState not working as expected?
 		if (evt.paramString().contains("CLOSING")) {
 
