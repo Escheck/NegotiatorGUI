@@ -180,8 +180,9 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 		if (fShowProgressUI) {
 			NegoGUIApp.negoGUIView.replaceTab("Sess. Prog.", this,
 					graphlistener);
-			ns.addNegotiationEventListener(graphlistener);
+			// ns.addNegotiationEventListener(graphlistener);
 			// graphlistener.setNegotiationSession(ns);
+			graphlistener.setProtocol(ns);
 		}
 
 		ns.startSession();
