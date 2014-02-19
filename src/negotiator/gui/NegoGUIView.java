@@ -62,6 +62,10 @@ public class NegoGUIView extends FrameView {
 		}
 		CloseListener cl = new CloseListener() {
 			public void closeOperation(MouseEvent e, int overTabIndex) {
+				Component closedcomp = closeTabbedPane1.getSelectedComponent();
+				if (closedcomp instanceof ProgressUI2) {
+					((ProgressUI2) closedcomp).close();
+				}
 				closeTabbedPane1.remove(overTabIndex);
 			}
 		};
