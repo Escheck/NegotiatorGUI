@@ -120,7 +120,7 @@ public class UtilitySpace implements Serializable {
 
 	/**
 	 * This method returns the type of utility space: either linear or
-	 * nonlinear.
+	 * nonlinear. May also return null, this means linear FAIK.
 	 */
 	public UTILITYSPACETYPE getType() {
 
