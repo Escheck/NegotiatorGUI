@@ -32,6 +32,8 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.tournament.TournamentRunner;
+import negotiator.utility.NonlinearUtilitySpace;
+import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
 
 import org.jdesktop.application.Action;
@@ -65,6 +67,8 @@ public class NegoGUIView extends FrameView {
 				Component closedcomp = closeTabbedPane1.getSelectedComponent();
 				if (closedcomp instanceof ProgressUI2) {
 					((ProgressUI2) closedcomp).close();
+				} else if (closedcomp instanceof TournamentProgressUI2) {
+					((TournamentProgressUI2) closedcomp).close();
 				}
 				closeTabbedPane1.remove(overTabIndex);
 			}
@@ -295,8 +299,14 @@ public class NegoGUIView extends FrameView {
 				Domain domain = new Domain(
 						((DomainRepItem) (parentNode.getRepositoryItem()))
 								.getURL().getFile());
-				UtilitySpace utilitySpace = new UtilitySpace(domain, filename);
 
+				// FIXME copy of code from Repository.
+				UtilitySpace utilitySpace;
+				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.NONLINEAR) {
+					utilitySpace = new NonlinearUtilitySpace(domain, filename);
+				} else {
+					utilitySpace = new UtilitySpace(domain, filename);
+				}
 				tf = new TreeFrame(domain, utilitySpace);
 				addTab(StripExtension(GetPlainFileName(filename)), tf);
 			} catch (Exception e) {
