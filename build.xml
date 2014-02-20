@@ -14,7 +14,7 @@
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
 --> 	
-<project name="Negotiator" default="makeGenius5.1" basedir=".">
+<project name="Negotiator" default="makeGenius5.2" basedir=".">
 	<property name="dist" location="dist"/> 
 	<property name="build" location="bin"/>
 	<property name="javadoc" location="javadoc"/>
@@ -532,7 +532,7 @@
 		<ant target="cleanup"/>
 	</target>
 	
-	<target name ="makeGenius5.1" depends="makeNegoSimulatorWithAllAgentJar">
+	<target name ="makeGenius5.2" depends="makeNegoSimulatorWithAllAgentJar">
 			<copy todir="${tmp}">
 				<fileset file="${repositories}/domains/domainrepository_ANAC2014.xml"/>
 				<globmapper from="domainrepository_ANAC2014.xml" to="domainrepository.xml" />
@@ -569,7 +569,7 @@
 				<fileset dir="doc" includes="userguide.pdf"/>
 			</copy>
 			
-			<zip destfile="${dist}/Genius 5.1.zip">
+			<zip destfile="${dist}/Genius 5.2.zip">
 				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>							
 				<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
