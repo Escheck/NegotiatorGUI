@@ -201,7 +201,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 		else if (getColumnName(column) == VALUE)
 			return getIssueValuePanel(objective);
 		else if (getColumnName(column) == WEIGHT)
-			if (utilitySpace.getType() == UTILITYSPACETYPE.LINEAR) {
+			if (utilitySpace.getType() != UTILITYSPACETYPE.NONLINEAR) {
 				return getWeightSlider(objective);
 			} else {
 				return null;
@@ -377,7 +377,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 
 	public IssueValuePanel getIssueValuePanel(Objective node) {
 		if (utilitySpace != null
-				&& utilitySpace.getType() != UTILITYSPACETYPE.LINEAR)
+				&& utilitySpace.getType() == UTILITYSPACETYPE.NONLINEAR)
 			return null;
 		IssueValuePanel value = issueValues.get(node);
 		if (value == null) {
