@@ -127,7 +127,6 @@ public abstract class OptimalBidder extends Agent {
 		return (new Offer(getAgentID(), nextBid));
 	}
 
-	// discrete rounds' methods
 	public int getRound() {
 		return ((DiscreteTimeline) timeline).getRound();
 	}

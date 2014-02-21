@@ -113,9 +113,11 @@ public abstract class TimeDependentAgent extends BilateralAgent {
 			int ownRoundsLeft = discreteTimeline.getOwnRoundsLeft();
 			int j = ownRoundsLeft + 1; // the last bid is made at j = 1.
 			int totalRounds = discreteTimeline.getOwnTotalRounds();
-			if (getE() != 0)
-				log(ownRoundsLeft + " / " + totalRounds);
+//			if (getE() != 0)
+//				log(ownRoundsLeft + " / " + totalRounds);
 			time = 1 - (j - 1) / (double) (totalRounds - 1);
+			if (totalRounds == 1)
+				time = 1;
 		}
 		double utilityGoal = p(time);
 		Bid b = pickBidOfUtility(utilityGoal);
