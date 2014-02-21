@@ -35,8 +35,8 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
  * 
  * @author dmytro
  */
-public class Global {
-
+public class Global 
+{
 	/** Path to domain repository */
 	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
 	/** Path to agent repository */
