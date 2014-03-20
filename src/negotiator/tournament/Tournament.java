@@ -91,7 +91,9 @@ public class Tournament implements Serializable {
 	}
 
 	/**
-	 * Get all combinations of agents, domains, etc. via reflection
+	 * Get all combinations of agents, domains, etc. via reflection. If
+	 * generationMode is set to 1 (index 1 in the list, currently this is
+	 * "Random"), the generated sessions are shuffled in order.
 	 */
 	public ArrayList<Protocol> getSessions() throws Exception {
 		ProtocolRepItem protRepItem = getProtocol();

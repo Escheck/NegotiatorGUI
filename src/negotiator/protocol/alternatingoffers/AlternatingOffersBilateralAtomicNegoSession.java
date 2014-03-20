@@ -54,7 +54,6 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 */
 	public boolean stopNegotiation = false;
 
-
 	public NegotiationOutcome no;
 	private boolean agentAtookAction = false;
 	private boolean agentBtookAction = false;
@@ -94,9 +93,11 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				agentAparams, agentBparams);
 		this.protocol = protocol;
 		this.startingAgent = startingAgent;
-		
-		showGUI = !TournamentConfiguration.getBooleanOption("disableGUI", false);
-		traceLoggingEnabled = TournamentConfiguration.getBooleanOption("logNegotiationTrace", false);
+
+		showGUI = !TournamentConfiguration
+				.getBooleanOption("disableGUI", false);
+		traceLoggingEnabled = TournamentConfiguration.getBooleanOption(
+				"logNegotiationTrace", false);
 	}
 
 	/**
@@ -114,10 +115,14 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 			// DEFAULT: time-based protocol
 			if (TournamentConfiguration.getBooleanOption("protocolMode", false)) {
-				timeline = new DiscreteTimeline(TournamentConfiguration.getIntegerOption("deadline", 180));
+				timeline = new DiscreteTimeline(
+						TournamentConfiguration.getIntegerOption("deadline",
+								180));
 			} else {
-				totalTime = TournamentConfiguration.getIntegerOption("deadline", 180);
-				if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
+				totalTime = TournamentConfiguration.getIntegerOption(
+						"deadline", 180);
+				if (TournamentConfiguration.getBooleanOption(
+						"allowPausingTimeline", false)) {
 					timeline = new PausableContinuousTimeline(totalTime);
 				} else {
 					timeline = new ContinuousTimeline(totalTime);
@@ -126,24 +131,31 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent cannot damage them.
-			
-			if (spaceA.getType()==UTILITYSPACETYPE.NONLINEAR)
-				agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-						new NonlinearUtilitySpace(spaceA),agentAparams);
-			else //linear
-			agentA.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-					new UtilitySpace(spaceA),agentAparams);
+
+			if (spaceA.getType() == UTILITYSPACETYPE.NONLINEAR)
+				agentA.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
+						timeline, new NonlinearUtilitySpace(spaceA),
+						agentAparams);
+			else
+				// linear
+				agentA.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
+						timeline, new UtilitySpace(spaceA), agentAparams);
 			agentA.init();
 
-			if (spaceB.getType()==UTILITYSPACETYPE.NONLINEAR)
-				agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-						new NonlinearUtilitySpace(spaceB),agentBparams);
-			else //linear
-			agentB.internalInit(protocol.getSessionNumber(), protocol.getTotalSessions(),startTime,totalTime,timeline,
-					new UtilitySpace(spaceB),agentBparams);
+			if (spaceB.getType() == UTILITYSPACETYPE.NONLINEAR)
+				agentB.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
+						timeline, new NonlinearUtilitySpace(spaceB),
+						agentBparams);
+			else
+				// linear
+				agentB.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
+						timeline, new UtilitySpace(spaceB), agentBparams);
 			agentB.init();
-			
-			
+
 			stopNegotiation = false;
 			lastAction = null;
 
@@ -152,18 +164,21 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			else
 				currentAgent = agentB;
 
-			System.out.println("Negotiation started. Agent " + currentAgent.getName() + " starts.");
+			System.out.println("Negotiation started. Agent "
+					+ currentAgent.getName() + " starts.");
 			// Main.log("Agent " + currentAgent.getName() + " begins");
 			if (showGUI) {
 				fireLogMessage("Nego", "Agent " + currentAgent.getName()
 						+ " begins");
 			}
 			// DEFAULT: disable trace logging
-			if (traceLoggingEnabled || TournamentConfiguration.getBooleanOption("logFinalAccuracy", false)) {
+			if (traceLoggingEnabled
+					|| TournamentConfiguration.getBooleanOption(
+							"logFinalAccuracy", false)) {
 				omMeasures = new OpponentModelMeasures(spaceA, spaceB);
 			}
 			checkForMAC();
-			
+
 			while (!stopNegotiation) {
 				// timeline.printTime();
 				double time = 0;
@@ -173,7 +188,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					currentAgent.ReceiveMessage(lastAction);
 					String deadlineReachedMsg = "Deadline reached while waiting for ["
 							+ currentAgent + "]";
-					
+
 					if (timeline.isDeadlineReached()) {
 						time = 1.0;
 
@@ -200,9 +215,10 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						return;
 					// get next action of the agent that has its turn now
 					lastAction = currentAgent.chooseAction();
-					// we may want to intercept the action of the agent, and change it into something else, depending on the protocol.
+					// we may want to intercept the action of the agent, and
+					// change it into something else, depending on the protocol.
 					lastAction = intercept(lastAction);
-					
+
 					time = timeline.getTime();
 
 					if (timeline.isDeadlineReached()) {
@@ -283,13 +299,15 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						if (showGUI) {
 							fireLogMessage("Nego", lastAction.toString());
 
-							fireLogMessage("Nego", "Utility of " + agentA.getName()
-									+ "(A): " + utilA);
+							fireLogMessage("Nego",
+									"Utility of " + agentA.getName() + "(A): "
+											+ utilA);
 
-							fireLogMessage("Nego", "Utility of " + agentB.getName()
-									+ "(B): " + utilB);
+							fireLogMessage("Nego",
+									"Utility of " + agentB.getName() + "(B): "
+											+ utilB);
 						}
-							// save last results
+						// save last results
 
 						BidPointTime p = null;
 						p = new BidPointTime(lastBid,
@@ -312,11 +330,13 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 								.getUtilityWithDiscount(lastBid, time);
 
 						if (showGUI) {
-							fireNegotiationActionEvent(currentAgent, lastAction,
-									finalRound, System.currentTimeMillis()
-											- startTimeMillies, time, utilA, utilB,
-									agentAUtilityDisc, agentBUtilityDisc, "bid by "
-											+ currentAgent.getName(), false);
+							fireNegotiationActionEvent(currentAgent,
+									lastAction, finalRound,
+									System.currentTimeMillis()
+											- startTimeMillies, time, utilA,
+									utilB, agentAUtilityDisc,
+									agentBUtilityDisc,
+									"bid by " + currentAgent.getName(), false);
 						}
 						// System.out.println(sessionNumber);
 						checkAgentActivity(currentAgent);
@@ -352,19 +372,21 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				} catch (Exception e) {
 					new Warning("Caught exception:", e, true, 2);
 					stopNegotiation = true;
-					new Warning("Protocol error by Agent" + currentAgent.getName(), e, true, 3);
+					new Warning("Protocol error by Agent"
+							+ currentAgent.getName(), e, true, 3);
 					String exceptionMsg = "Caught exception. Agent ["
-						+ currentAgent.getName()
-						+ "] crashed. Last known action = " + lastAction
-						+ ". Emergency outcome: (rvA, rvB)."
-						+ ". Details: " + e.toString();
+							+ currentAgent.getName()
+							+ "] crashed. Last known action = " + lastAction
+							+ ". Emergency outcome: (rvA, rvB)."
+							+ ". Details: " + e.toString();
 					try {
 						// checkForMAC();
 						if (!hasMAC()) {
 							System.err.println(exceptionMsg);
 							badOutcome(time, exceptionMsg);
 						} else {
-							System.out.println("Error thrown: with MAC agent: " + exceptionMsg);
+							System.out.println("Error thrown: with MAC agent: "
+									+ exceptionMsg);
 							for (ArrayList<OutcomeTuple> outcomeTupleList : completeList)
 								for (OutcomeTuple outcomeTuple : outcomeTupleList) {
 									badOutcome(time, exceptionMsg);
@@ -376,10 +398,12 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 					} catch (Exception err) {
 						err.printStackTrace();
-						new Warning("Exception raised during exception handling: " + err);
+						new Warning(
+								"Exception raised during exception handling: "
+										+ err);
 					}
 					// don't compute the max utility, we're in exception which
-					// is already bad enough. 
+					// is already bad enough.
 				}
 				// swap to other agent
 				if (currentAgent.equals(agentA))
@@ -414,19 +438,17 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	}
 
 	/**
-	 * Does not usually intercept anything, but when "oneSidedBidding" is enabled in the settings,
-	 * then agent A's bids are ignored, and replaced by max. 
+	 * Does not usually intercept anything, but when "oneSidedBidding" is
+	 * enabled in the settings, then agent A's bids are ignored, and replaced by
+	 * the bid that has max utility for A.
 	 */
-	protected Action intercept(Action lastAction) throws Exception
-	{
-		if (TournamentConfiguration.getBooleanOption("oneSidedBidding", false))
-		{
-			if (currentAgent == agentA)
-			{
+	protected Action intercept(Action lastAction) throws Exception {
+		if (TournamentConfiguration.getBooleanOption("oneSidedBidding", false)) {
+			if (currentAgent == agentA) {
 				// We let accepts pass through
 				if (lastAction instanceof Accept)
 					return lastAction;
-				
+
 				// But bids are replaced by maxbid
 				Bid maxUtilityBid = spaceA.getMaxUtilityBid();
 				return new Offer(currentAgent, maxUtilityBid);
@@ -443,7 +465,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	private void processOnlineData() {
 		// DEFAULT: disable trace logging
 		if (traceLoggingEnabled) {
-			if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
+			if (TournamentConfiguration.getBooleanOption(
+					"allowPausingTimeline", false)) {
 				try {
 					timeline.pause();
 				} catch (Exception e) {
@@ -451,14 +474,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				}
 			}
 			if (fAgentBBids.size() > 0) {
-				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1).getBid();
+				Bid lastOpponentBid = fAgentBBids.get(fAgentBBids.size() - 1)
+						.getBid();
 				if (lastOpponentBid != null) {
 					omMeasuresResults.addTimePoint(timeline.getTime());
 					omMeasuresResults.addBidIndex(omMeasures
 							.getOpponentBidIndex(lastOpponentBid));
 				}
 			}
-			if (TournamentConfiguration.getBooleanOption("allowPausingTimeline", false)) {
+			if (TournamentConfiguration.getBooleanOption(
+					"allowPausingTimeline", false)) {
 				try {
 					timeline.resume();
 				} catch (Exception e) {
@@ -525,13 +550,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		double rvA = spaceA.getReservationValueUndiscounted();
 		double rvB = spaceB.getReservationValueUndiscounted();
 
-		BidPoint rvPoint = new BidPoint(lastBid, rvA, rvB);		// the bid is unimportant
-		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
+		BidPoint rvPoint = new BidPoint(lastBid, rvA, rvB); // the bid is
+															// unimportant
+		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(),
+				getAgentBUtilitySpace()).getNash();
 		double distanceToNash = rvPoint.getDistance(nash);
-		System.err.println("Producing reservation outcome of utility " + rvA + ", " + rvB + ". Reason: " + logMsg);
+		System.err.println("Producing reservation outcome of utility " + rvA
+				+ ", " + rvB + ". Reason: " + logMsg);
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
-		
+
 		this.protocol.threadFinished = true;
 	}
 
@@ -602,36 +630,41 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double utilADiscount, double utilBDiscount, String message,
 			double time, double distanceToNash, String acceptedBy)
 			throws Exception {
-			
-			NegotiationResult resultA = new NegotiationResult(utilADiscount, lastAction, lastBid);
-			try {
-				agentA.endSession(resultA);
-			} catch (Exception e) {
-				System.err.println(agentA.getName() + " crashed in endSession. This may influence the agent's future behavior.");
-			}
-			NegotiationResult resultB = new NegotiationResult(utilBDiscount, lastAction, lastBid);
-			try {
-				agentB.endSession(resultB);
-			} catch (Exception e) {
-				System.err.println(agentB.getName() + " crashed in endSession. This may influence the agent's future behavior.");
-			}
-			OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
-					agentA.getClass().getCanonicalName(), 
-					agentB.getClass().getCanonicalName(), 
-					utilA, utilB, utilADiscount, utilBDiscount, 
-					message, 1.0, 1.0,
-					spaceA.getDomain().getName(),
-					spaceA.getFileName(), spaceB.getFileName(),
-					time, acceptedBy
-			);
-			
-			
-		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(), lastAction, fAgentABids, fAgentBBids,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+
+		NegotiationResult resultA = new NegotiationResult(utilADiscount,
+				lastAction, lastBid);
+		try {
+			agentA.endSession(resultA);
+		} catch (Exception e) {
+			System.err
+					.println(agentA.getName()
+							+ " crashed in endSession. This may influence the agent's future behavior.");
+		}
+		NegotiationResult resultB = new NegotiationResult(utilBDiscount,
+				lastAction, lastBid);
+		try {
+			agentB.endSession(resultB);
+		} catch (Exception e) {
+			System.err
+					.println(agentB.getName()
+							+ " crashed in endSession. This may influence the agent's future behavior.");
+		}
+		OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(),
+				agentB.getName(), agentA.getClass().getCanonicalName(), agentB
+						.getClass().getCanonicalName(), utilA, utilB,
+				utilADiscount, utilBDiscount, message, 1.0, 1.0, spaceA
+						.getDomain().getName(), spaceA.getFileName(),
+				spaceB.getFileName(), time, acceptedBy);
+
+		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
+				lastAction, fAgentABids, fAgentBBids, startingWithA,
+				additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
 		if (showGUI) {
-			fireNegotiationActionEvent(currentAgent, lastAction, fAgentABids.size() + fAgentBBids.size(),
+			fireNegotiationActionEvent(currentAgent, lastAction,
+					fAgentABids.size() + fAgentBBids.size(),
 					System.currentTimeMillis() - startTimeMillies, time, utilA,
 					utilB, utilADiscount, utilBDiscount, message, true);
 		}
@@ -647,23 +680,23 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			ArrayList<BidPointTime> agentASize,
 			ArrayList<BidPointTime> agentBSize, double time,
 			double distanceToNash, String acceptedBy) throws Exception {
-		OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(), agentB.getName(), 
-				agentA.getClass().getCanonicalName(), 
-				agentB.getClass().getCanonicalName(), 
-				utilA, utilB, utilADiscount, utilBDiscount, 
-				message, 1.0, 1.0,
-				spaceA.getDomain().getName(),
-				spaceA.getFileName(), spaceB.getFileName(),
-				time, acceptedBy
-		);
-		
-		
-		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(), lastAction, (ArrayList<BidPointTime>) agentASize, 	(ArrayList<BidPointTime>) agentBSize,startingWithA,  additionalLog, distanceToNash, outcomeInfo);
+		OutcomeInfo outcomeInfo = new OutcomeInfo(agentA.getName(),
+				agentB.getName(), agentA.getClass().getCanonicalName(), agentB
+						.getClass().getCanonicalName(), utilA, utilB,
+				utilADiscount, utilBDiscount, message, 1.0, 1.0, spaceA
+						.getDomain().getName(), spaceA.getFileName(),
+				spaceB.getFileName(), time, acceptedBy);
+
+		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
+				lastAction, (ArrayList<BidPointTime>) agentASize,
+				(ArrayList<BidPointTime>) agentBSize, startingWithA,
+				additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
 		boolean agreement = (lastAction instanceof Accept);
 		processDataForLogging(time, agreement);
 		if (showGUI) {
-			fireNegotiationActionEvent(currentAgent, lastAction, fAgentABids.size() + fAgentBBids.size(),
+			fireNegotiationActionEvent(currentAgent, lastAction,
+					fAgentABids.size() + fAgentBBids.size(),
 					System.currentTimeMillis() - startTimeMillies, time, utilA,
 					utilB, utilADiscount, utilBDiscount, message, true);
 		}
@@ -726,7 +759,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 	private void processDataForLogging(double time, boolean agreement) {
 		// DEFAULT: disable trace logging
-		if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
+		if (TournamentConfiguration.getBooleanOption("logNegotiationTrace",
+				false)) {
 			matchDataLogger.addMeasure("time",
 					omMeasuresResults.getTimePointList());
 			matchDataLogger.addMeasure("bidindices",
@@ -754,25 +788,32 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			double rvB = spaceB.getReservationValueUndiscounted();
 
 			BidPoint lastbidPoint = new BidPoint(lastBid, rvA, rvB);
-			BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
+			BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(),
+					getAgentBUtilitySpace()).getNash();
 			double distanceToNash = lastbidPoint.getDistance(nash);
 			if (!hasMAC()) {
-				newOutcome(currentAgent, rvA, rvB, rvADiscounted,
+				newOutcome(
+						currentAgent,
+						rvA,
+						rvB,
+						rvADiscounted,
 						rvBDiscounted,
-						"JudgeTimeout: negotiation was timed out because agent is in loop or failed compiling", time,
-						distanceToNash, "");
+						"JudgeTimeout: negotiation was timed out because agent is in loop or failed compiling",
+						time, distanceToNash, "");
 			} else {
 				System.out.println("JudgeTimeout: with MAC agent");
 
 				if (agentAWithMultiAC) {
 					AcceptanceStrategy AC = ((BOAagent) agentA)
 							.getAcceptanceStrategy();
-					((Multi_AcceptanceCondition) AC).remainingAC("Judge Timeout");
+					((Multi_AcceptanceCondition) AC)
+							.remainingAC("Judge Timeout");
 				}
 				if (agentBWithMultiAC) {
 					AcceptanceStrategy AC = ((BOAagent) agentB)
 							.getAcceptanceStrategy();
-					((Multi_AcceptanceCondition) AC).remainingAC("Judge Timeout");
+					((Multi_AcceptanceCondition) AC)
+							.remainingAC("Judge Timeout");
 				}
 				updateOutcomeTupleList();
 				for (ArrayList<OutcomeTuple> outcomeTupleList : completeList)
@@ -820,7 +861,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 		BidPoint lastbidPoint = new BidPoint(lastBid, agentAUtility,
 				agentBUtility);
-		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(), getAgentBUtilitySpace()).getNash();
+		BidPoint nash = BidSpaceCache.getBidSpace(getAgentAUtilitySpace(),
+				getAgentBUtilitySpace()).getNash();
 		distanceToNash = lastbidPoint.getDistance(nash);
 
 		if (isMac) {
@@ -852,7 +894,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						agentBUtilityDisc, null, subAgentABids, subAgentBBids,
 						outcomeTuple.getTime(), distanceToNash,
 						outcomeTuple.getAcceptedBy());
-				changeNameofAC(agentAWithMultiAC, agentBWithMultiAC, outcomeTuple);
+				changeNameofAC(agentAWithMultiAC, agentBWithMultiAC,
+						outcomeTuple);
 				MACoutcomes.add(no);
 			}
 
@@ -861,9 +904,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					agentAUtilityDisc, agentBUtilityDisc, null, time,
 					distanceToNash, acceptedBy);
 		}
-		
-		this.protocol.threadFinished = true;
 
+		this.protocol.threadFinished = true;
 
 	}
 
