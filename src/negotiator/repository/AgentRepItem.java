@@ -128,19 +128,20 @@ public class AgentRepItem implements RepItem {
 	/**
 	 * Get the version of this agent.
 	 * 
-	 * @return version of this agent.
+	 * @return version of this agent. Returns ERR if something goes wrong.
+	 *         Returns "" if version is null.
 	 */
 	public String getVersion() {
 
 		try {
-			return getInstance().getVersion();
-
-			// we don't really need the static call, instantiating shouldn't be
-			// expensive.
-			// return "" + callStaticAgentFunction("getVersion", new Object[0]);
-
+			String ver = getInstance().getVersion();
+			if (ver != null) {
+				return ver;
+			}
+			return "";
 		} catch (Exception e) {
-			new Warning("can't get version for " + agentName + " :", e); // e.printStackTrace();
+			new Warning("can't get version for " + agentName + " :", e);
+			e.printStackTrace();
 		}
 		return "ERR";
 	}

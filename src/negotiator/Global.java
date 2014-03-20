@@ -1,11 +1,5 @@
 package negotiator;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -14,6 +8,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
 
 import javax.swing.JOptionPane;
 
@@ -35,8 +35,7 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
  * 
  * @author dmytro
  */
-public class Global 
-{
+public class Global {
 	/** Path to domain repository */
 	public static final String DOMAIN_REPOSITORY = "domainrepository.xml";
 	/** Path to agent repository */
@@ -288,6 +287,8 @@ public class Global
 		try {
 			return loadClassfile(className, packageDir);
 		} catch (NoClassDefFoundError e) {
+			// System.out.println("trying to recover correct path from " +
+			// e.getMessage());//debug
 			/**
 			 * Hack: we try to get the correct name from the error message. Err
 			 * msg ~ "SimpleAgent (wrong name: agents/SimpleAgent)"
@@ -305,8 +306,12 @@ public class Global
 					errormsg.length() - 1).replaceAll("/", ".");
 
 			// Check that file is in correct directory path
+			// we need quoteReplacement because on Windows "\" will be treated
+			// in special way by replaceAll. #906
 			String expectedPath = File.separator
-					+ correctName.replaceAll("\\.", File.separator) + ".class";
+					+ correctName.replaceAll("\\.",
+							Matcher.quoteReplacement(File.separator))
+					+ ".class";
 			if (!(file.getAbsolutePath().endsWith(expectedPath))) {
 				throw new NoClassDefFoundError("file " + file
 						+ "\nis not in the correct directory structure, "
@@ -550,7 +555,8 @@ public class Global
 	/**
 	 * Show a dialog to the user, explaining the exception that was raised while
 	 * loading file fc. Typically this is used in combination with
-	 * {@link #loadObject(String)} and associates
+	 * {@link #loadObject(String)} and associates. Also dumps a copy of the full
+	 * stacktrace to the console, to help us debugging #906
 	 * 
 	 * @param fc
 	 *            file that was attempted to be loaded
@@ -558,6 +564,7 @@ public class Global
 	 *            the exception that was raised
 	 */
 	public static void showLoadError(File fc, Throwable e) {
+		e.printStackTrace();
 		if (e instanceof ClassNotFoundException) {
 			showLoadError("No class found at " + fc, e);
 		} else if (e instanceof InstantiationException) {
