@@ -352,12 +352,16 @@ A large set of tournament options can be specified which influence the compositi
 		\item \textbf{Protocol mode} . Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
 		\item \textbf{Deadline}. Depending on the protocol mode, this is the maximum amount of time in seconds or amount of rounds. Note that one single round corresponds to one turn of a single agent.
 		\item \textbf{Access partner preferences}. Allows agents to access the preference profile of the negotiation session, which contains the opponent's preference profile.
+		\item \textbf{One-sided bidding} If enabled then agent A's bids are ignored, and replaced by the bid that has max utility for A. agent A's accepts are passed through.
 		\item \textbf{Allow pausing timeline}. Allow agents to pause the negotiation by using the timeline.pause() and time.resume() methods.
 	\end{itemize}
 	\item \textsc{Session generation}(Figure~\ref{fig:TourOptions2})
 	\begin{itemize}
 		\item \textbf{Play both sides}. When generating the sessions, whether each pair of agents should play both sides on a scenario or not.
 		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the sessions in which agents negotiate against themselves are removed.
+		\item \textbf{Starting agent}. This agent has to place the first bid.
+		\item \textbf{Generation mode}. Standard or Random. If set to random, the generated sessions are shuffled into a random order, using the random seed
+		\item \textbf{Random seed}. Random seed used for shuffling sessions.
 	\end{itemize}
 
 
@@ -379,6 +383,31 @@ A large set of tournament options can be specified which influence the compositi
 	\item \textsc{Logging}(Figure~\ref{fig:TourOptions3})
 	\begin{itemize}
 		\item \textbf{Log detailed analysis}. Enabling this option activates a set of quality measures to capture the quality of the negotiation process. The quality measures are added to the default log. In addition, for the whole tournament an overview log is created. This log is prefixed with ``TM-''.
+		\item \textbf{Log negotiation trace}. If enabled, a more extensive log is written including the bid history, to a file having the name {\tt "extensive\_log.xml"}. 
+		\item \textbf{Log final accuracy} Logs the accuracy of the final opponent model of BOA agents on side A. This is done by comparing the opponent model of side A with the actual utility space of side B. Calculated are:
+		\begin{itemize}
+		\item the Pearson correlation coefficient by comparing the utility of each bid estimated by the real and estimated opponent's utility space. Higher is better.
+		\item the ranking distance by comparing the utility of each bid estimated by the real and estimated opponent's utility space. Lower is better.
+		\item the ranking distance by comparing the utility of each weight estimated by the real and estimated opponent's utility space. Lower is better.
+		\item average difference between the real and estimated utility.
+		\item average difference between the real and estimated issue weights.
+		\item the absolute difference between the estimated Kalai point and the real Kalai point. Note that we are only interested in the value for the opponent.
+		\item the absolute difference between the estimated Nash point and the real Nash point. Note that we are only interested in the value for the opponent.
+		\item the average difference between the real estimated pareto bids and their estimated utility for the opponent.
+		\item the amount of real Pareto bids which have been found by the opponent model. Note that the estimated utility space may have more or less Pareto bids than there really are.
+		\item the percentage of bids in the estimated Pareto bids which is really Pareto optimal.
+		\item  the Pareto frontier distance using the following steps: 1. Map the estimated Pareto-bids to the real space. 2. Calculate the surface beneath the real Pareto bids and estimated Pareto bids. 3. Subtract the surfaces and return the absolute difference. Note that the Pareto frontier difference can be positive and negative. In general, the mapped estimate of the Pareto frontier will have less surface; however, it can happen that less Pareto-points were estimated. In this case a Pareto-point is missed, and it can happen that the surface is therefore larger.
+
+		\end{itemize}
+		\item \textbf{Log competitiveness} this computes the amount of discrepancy between the two utility spaces. If X is the bid with maximum utility for side B, then {\em full yield of A} is the utility of X for side A.  The competitiveness ratio is defined as CR(util)=1-(max(fullyield, util) - fullyield) / (1 - fullyield). If this option is enabled, the following info is logged  for side A and side B
+		\begin{itemize}
+		\item full yield utility of side A.
+		\item BSCR = CR(minUtil) where minUtil is the minimum utility that an agent asked for (in one of its bids). 
+		\item total CR. which equals to CR(util) where util is the final utility for this agent
+		\item ACCR =  total CR - BSCR.
+		\item normalized ACCR = ACCR / (1 - BSCR)
+		\end{itemize}
+		\item \textbf{Append mode and deadline} appends the protocol mode and deadline (time or rounds) to the filename
 	\end{itemize}
 	\item \textsc{Visualization}(Figure~\ref{fig:TourOptions4})
 	\begin{itemize}
