@@ -37,7 +37,10 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * 
  * Show a UI for modifying the BOA parameters of a {@link BOAagentInfo} object
  * 
- * @author W.Pasman original code refactored from BOAagentsFrame
+ * @author Mark Hendrikx
+ * @author W.Pasman mar'14 original code refactored from {@link BOAagentsFrame}.
+ *         Code still could use improvement, there's a lot of code duplication
+ *         here.
  * 
  */
 public class BOAAgentUI extends JDialog {

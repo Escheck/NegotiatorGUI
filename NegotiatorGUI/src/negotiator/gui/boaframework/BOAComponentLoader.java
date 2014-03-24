@@ -350,7 +350,7 @@ public class BOAComponentLoader extends JDialog {
 			for (BOAparameter param : item.getParameters()) {
 				parameterListModel.addElement(param);
 			}
-			addComponent.setText("Edit component");
+			addComponent.setText("Save");
 		}
 
 		pack();
