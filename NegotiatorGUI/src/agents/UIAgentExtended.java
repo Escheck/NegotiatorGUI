@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import negotiator.Agent;
 import negotiator.Bid;
+import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -111,6 +112,10 @@ public class UIAgentExtended extends Agent {
 		return oppPreviousBid;
 	}
 
+	@Override
+	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
+		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
+	}
 }
 
 class NegoRoundData {
