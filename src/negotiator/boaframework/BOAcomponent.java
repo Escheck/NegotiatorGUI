@@ -28,7 +28,7 @@ public class BOAcomponent implements Serializable {
 	/**
 	 * Parameters which should be used to initialize the component upon creation
 	 */
-	private HashMap<String, BigDecimal> parameters;
+	private HashMap<String, BigDecimal> parametervalues;
 
 	private ArrayList<BOAparameter> orgParam;
 
@@ -48,7 +48,7 @@ public class BOAcomponent implements Serializable {
 			HashMap<String, BigDecimal> strategyParam) {
 		this.classname = classname;
 		this.type = type;
-		this.parameters = strategyParam;
+		this.parametervalues = strategyParam;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class BOAcomponent implements Serializable {
 	public BOAcomponent(String classname, ComponentsEnum type) {
 		this.classname = classname;
 		this.type = type;
-		this.parameters = new HashMap<String, BigDecimal>();
+		this.parametervalues = new HashMap<String, BigDecimal>();
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class BOAcomponent implements Serializable {
 			ArrayList<BOAparameter> orgParam) {
 		this.classname = classname;
 		this.type = type;
-		this.parameters = new HashMap<String, BigDecimal>();
+		this.parametervalues = new HashMap<String, BigDecimal>();
 		this.orgParam = orgParam;
 	}
 
@@ -98,7 +98,7 @@ public class BOAcomponent implements Serializable {
 	 *            of the parameter.
 	 */
 	public void addParameter(String name, BigDecimal value) {
-		parameters.put(name, value);
+		parametervalues.put(name, value);
 	}
 
 	/**
@@ -119,14 +119,14 @@ public class BOAcomponent implements Serializable {
 	 * @return parameters of the component.
 	 */
 	public HashMap<String, Double> getParameters() {
-		return decreaseAccuracy(parameters);
+		return decreaseAccuracy(parametervalues);
 	}
 
 	/**
 	 * @return original parameters as specified in the GUI.
 	 */
 	public HashMap<String, BigDecimal> getFullParameters() {
-		return parameters;
+		return parametervalues;
 	}
 
 	private HashMap<String, Double> decreaseAccuracy(
@@ -155,12 +155,12 @@ public class BOAcomponent implements Serializable {
 
 	public String toString() {
 		String params = "";
-		if (parameters.size() > 0) {
-			ArrayList<String> keys = new ArrayList<String>(parameters.keySet());
+		if (parametervalues.size() > 0) {
+			ArrayList<String> keys = new ArrayList<String>(parametervalues.keySet());
 			Collections.sort(keys);
 			params = "{";
 			for (int i = 0; i < keys.size(); i++) {
-				params += keys.get(i) + "=" + parameters.get(keys.get(i));
+				params += keys.get(i) + "=" + parametervalues.get(keys.get(i));
 				if (i < keys.size() - 1) {
 					params += ", ";
 				}
