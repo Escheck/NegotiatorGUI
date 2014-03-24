@@ -575,9 +575,7 @@
 				<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
 				<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
-				<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example"/>
-				<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example"/>
-				<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example"/>
+				<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius"/>
 				<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
 				<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
 				<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
