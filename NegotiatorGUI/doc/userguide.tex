@@ -399,11 +399,11 @@ A large set of tournament options can be specified which influence the compositi
 		\item  the Pareto frontier distance using the following steps: 1. Map the estimated Pareto-bids to the real space. 2. Calculate the surface beneath the real Pareto bids and estimated Pareto bids. 3. Subtract the surfaces and return the absolute difference. Note that the Pareto frontier difference can be positive and negative. In general, the mapped estimate of the Pareto frontier will have less surface; however, it can happen that less Pareto-points were estimated. In this case a Pareto-point is missed, and it can happen that the surface is therefore larger.
 
 		\end{itemize}
-		\item \textbf{Log competitiveness} this computes the amount of discrepancy between the two utility spaces. If X is the bid with maximum utility for side B, then {\em full yield of A} is the utility of X for side A.  The competitiveness ratio is defined as CR(util)=1-(max(fullyield, util) - fullyield) / (1 - fullyield). If this option is enabled, the following info is logged  for side A and side B
+		\item \textbf{Log competitiveness} this computes the amount of discrepancy between the two utility spaces. If X is the bid with maximum utility for side B, then {\em full yield of A} is the utility of X for side A.  The competitiveness ratio is defined as $CR(util)=1 - \frac{max(fullyield, util) - fullyield}{1 - fullyield}$. If this option is enabled, the following info is logged  for side A and side B
 		\begin{itemize}
-		\item full yield utility of side A.
+		\item full yield utility.
 		\item BSCR = CR(minUtil) where minUtil is the minimum utility that an agent asked for (in one of its bids). 
-		\item total CR. which equals to CR(util) where util is the final utility for this agent
+		\item total CR. which equals to CR(final utility for this agent)
 		\item ACCR =  total CR - BSCR.
 		\item normalized ACCR = ACCR / (1 - BSCR)
 		\end{itemize}
