@@ -166,7 +166,7 @@ public class BOARepositoryUI {
 	public void addAction() {
 		// shoud return boolean if added an item.
 		// if so, sort items and display again
-		BOAComponentLoader loader = new BOAComponentLoader(NegoGUIApp.negoGUIView.getFrame(), "Add BOA component");
+		BOAComponentEditor loader = new BOAComponentEditor(NegoGUIApp.negoGUIView.getFrame(), "Add BOA component");
 		BOArepItem item = loader.getResult(null);
 		if (item != null) {
 			items.add(item);
@@ -176,7 +176,7 @@ public class BOARepositoryUI {
 	}
 	public void editAction() {
 		BOArepItem item = items.get(table.getSelectedRow());
-		BOAComponentLoader loader = new BOAComponentLoader(NegoGUIApp.negoGUIView.getFrame(), "Edit BOA component");
+		BOAComponentEditor loader = new BOAComponentEditor(NegoGUIApp.negoGUIView.getFrame(), "Edit BOA component");
 		BOArepItem result = loader.getResult(item);
 		if (result != null) {
 			items.remove(item);
