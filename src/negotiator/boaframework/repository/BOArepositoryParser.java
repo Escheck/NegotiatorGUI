@@ -1,9 +1,7 @@
 package negotiator.boaframework.repository;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
-import negotiator.boaframework.BOAparameter;
 import negotiator.boaframework.ComponentsEnum;
 
 import org.xml.sax.Attributes;
@@ -26,44 +24,57 @@ class BOArepositoryParser extends DefaultHandler {
 	/** List of opponent model strategies in the repository */
 	HashMap<String, BOArepItem> omStrategies = new HashMap<String, BOArepItem>();
 
-	
 	private BOArepItem currentItem;
-	
+
 	/**
 	 * Main method used to parse the repository.
-	 * @param nsURI of the XML element.
-	 * @param strippedName of the XML element.
-	 * @param tagName of the XML element.
-	 * @param attributes of the XML element.
+	 * 
+	 * @param nsURI
+	 *            of the XML element.
+	 * @param strippedName
+	 *            of the XML element.
+	 * @param tagName
+	 *            of the XML element.
+	 * @param attributes
+	 *            of the XML element.
 	 */
-	public void startElement(String nsURI, String strippedName,
-			String tagName, Attributes attributes) throws SAXException {	
+	public void startElement(String nsURI, String strippedName, String tagName,
+			Attributes attributes) throws SAXException {
 		if (tagName.equals("biddingstrategy")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.BIDDINGSTRATEGY);
+			currentItem = new BOArepItem(attributes.getValue(0),
+					attributes.getValue(1), ComponentsEnum.BIDDINGSTRATEGY);
 		} else if (tagName.equals("acceptancecondition")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.ACCEPTANCESTRATEGY);
+			currentItem = new BOArepItem(attributes.getValue(0),
+					attributes.getValue(1), ComponentsEnum.ACCEPTANCESTRATEGY);
 		} else if (tagName.equals("opponentmodel")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OPPONENTMODEL);
+			currentItem = new BOArepItem(attributes.getValue(0),
+					attributes.getValue(1), ComponentsEnum.OPPONENTMODEL);
 		} else if (tagName.equals("omstrategy")) {
-			currentItem = new BOArepItem(attributes.getValue(0), attributes.getValue(1), ComponentsEnum.OMSTRATEGY);
-		} else {
-			if (tagName.equals("parameter")) {
-				currentItem.addParameter(new BOAparameter(attributes.getValue(0), 
-															new BigDecimal(attributes.getValue(1)), 
-															attributes.getValue(2)));
-			}
+			currentItem = new BOArepItem(attributes.getValue(0),
+					attributes.getValue(1), ComponentsEnum.OMSTRATEGY);
 		}
+		// else {
+		// if (tagName.equals("parameter")) {
+		// currentItem.addParameter(new BOAparameter(attributes.getValue(0),
+		// new BigDecimal(attributes.getValue(1)),
+		// attributes.getValue(2)));
+		// }
+		// }
 	}
-	
+
 	/**
 	 * Method which switches the state of the parser if a section has ended.
-	 * @param nsURI of the XML element.
-	 * @param strippedName of the XML element.
-	 * @param tagName of the XML element.
+	 * 
+	 * @param nsURI
+	 *            of the XML element.
+	 * @param strippedName
+	 *            of the XML element.
+	 * @param tagName
+	 *            of the XML element.
 	 */
-	public void endElement(String nsURI, String strippedName,
-			String tagName) throws SAXException {
-		
+	public void endElement(String nsURI, String strippedName, String tagName)
+			throws SAXException {
+
 		if (tagName.equals("biddingstrategy")) {
 			biddingStrategies.put(currentItem.getName(), currentItem);
 		} else if (tagName.equals("acceptancecondition")) {

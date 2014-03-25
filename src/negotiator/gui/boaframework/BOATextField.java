@@ -2,6 +2,7 @@ package negotiator.gui.boaframework;
 
 import java.awt.Frame;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.JTextField;
 
@@ -18,8 +19,8 @@ public class BOATextField extends JTextField {
 		this.setEnabled(false);
 	}
 
-	public void setText(ArrayList<BOAparameter> boaParameters) {
-		this.boaParameters = boaParameters;
+	public void setParams(Set<BOAparameter> boaParameters) {
+		this.boaParameters = new ArrayList<BOAparameter>(boaParameters);
 		setText(boaParameters.toString());
 	}
 

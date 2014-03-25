@@ -1,15 +1,20 @@
 package negotiator.boaframework.acceptanceconditions.other;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
+import negotiator.boaframework.BOAparameter;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 
 /**
- * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on Acceptance Conditions:
- * "Acceptance Conditions in Automated Negotiation"
+ * This is the decoupled Acceptance Conditions Based on Tim Baarslag's paper on
+ * Acceptance Conditions: "Acceptance Conditions in Automated Negotiation"
  * 
  * This Acceptance Conditions is a combination of AC_Time and AC_Next
  * 
@@ -25,13 +30,15 @@ public class AC_CombiV2 extends AcceptanceStrategy {
 	private double c;
 	private double d;
 	private double time;
-	
+
 	/**
 	 * Empty constructor for the BOA framework.
 	 */
-	public AC_CombiV2() { }
-	
-	public AC_CombiV2(NegotiationSession negoSession, OfferingStrategy strat, double a, double b, double t, double c, double d){
+	public AC_CombiV2() {
+	}
+
+	public AC_CombiV2(NegotiationSession negoSession, OfferingStrategy strat,
+			double a, double b, double t, double c, double d) {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		this.a = a;
@@ -40,12 +47,15 @@ public class AC_CombiV2 extends AcceptanceStrategy {
 		this.d = d;
 		this.time = t;
 	}
-	
+
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat,
+			OpponentModel opponentModel, HashMap<String, Double> parameters)
+			throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
-		if (parameters.get("a") != null  || parameters.get("b")!=null || parameters.get("c") != null  && parameters.get("t")!=null){
+		if (parameters.get("a") != null || parameters.get("b") != null
+				|| parameters.get("c") != null && parameters.get("t") != null) {
 			a = parameters.get("a");
 			b = parameters.get("b");
 			c = parameters.get("c");
@@ -55,30 +65,47 @@ public class AC_CombiV2 extends AcceptanceStrategy {
 			throw new Exception("Paramaters were not correctly set");
 		}
 	}
-	
+
 	@Override
 	public String printParameters() {
-		return "[a: " + a + " b: " + b + " t: " + time + " c: " + c + " d: " + d + "]";
+		return "[a: " + a + " b: " + b + " t: " + time + " c: " + c + " d: "
+				+ d + "]";
 	}
-	
+
 	@Override
 	public Actions determineAcceptability() {
-		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
-		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+		double nextMyBidUtil = offeringStrategy.getNextBid()
+				.getMyUndiscountedUtil();
+		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory()
+				.getLastBidDetails().getMyUndiscountedUtil();
 
 		if (lastOpponentBidUtil > d) {
 			return Actions.Accept;
 		}
-		
-		if (negotiationSession.getDiscountFactor() != 0.0 && c < negotiationSession.getDiscountFactor()) {
+
+		if (negotiationSession.getDiscountFactor() != 0.0
+				&& c < negotiationSession.getDiscountFactor()) {
 			if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
 				return Actions.Accept;
 			}
 		} else {
-			if (a * lastOpponentBidUtil + b >= nextMyBidUtil && negotiationSession.getTime() >= time) {
+			if (a * lastOpponentBidUtil + b >= nextMyBidUtil
+					&& negotiationSession.getTime() >= time) {
 				return Actions.Accept;
 			}
 		}
 		return Actions.Reject;
+	}
+
+	@Override
+	public Set<BOAparameter> getParameters() {
+		Set<BOAparameter> set = new HashSet<BOAparameter>();
+		set.add(new BOAparameter("a", new BigDecimal(1.0), "Multiplier"));
+		set.add(new BOAparameter("b", new BigDecimal(0.0), "Constant"));
+		set.add(new BOAparameter("c", new BigDecimal(0.8), "Threshold discount"));
+		set.add(new BOAparameter("d", new BigDecimal(0.95), "Threshold"));
+		set.add(new BOAparameter("t", new BigDecimal(0.99), "Time"));
+
+		return set;
 	}
 }

@@ -222,7 +222,7 @@ public class BOAAgentUI extends JDialog {
 			// all combinations
 			Set<Pair<String, BigDecimal>> set = combinationsIterator.next();
 			parameters.remove(nullParam);
-			BOAcomponent strat = new BOAcomponent(classname, type, parameters);
+			BOAcomponent strat = new BOAcomponent(classname, type);
 			Iterator<Pair<String, BigDecimal>> paramIterator = set.iterator();
 			// a set of
 			ArrayList<BOAparameter> param = new ArrayList<BOAparameter>();
@@ -233,7 +233,6 @@ public class BOAAgentUI extends JDialog {
 				param.add(new BOAparameter(pair.getFirst(), pair.getSecond(),
 						pair.getSecond(), BigDecimal.ONE));
 			}
-			strat.setOriginalParameter(param);
 			strat.getFullParameters().remove("null");
 			strategies.add(strat);
 		}
@@ -241,46 +240,62 @@ public class BOAAgentUI extends JDialog {
 	}
 
 	/**
-	 * load previous info settings to the panels.
+	 * load previous info settings to the panels. Prints stacktraces if problems
+	 * occur creating the panels.
 	 * 
 	 * @param s
 	 */
 	private void loadInfo(BOAagentInfo s) {
+		Set<BOAparameter> params = null;
+
 		biddingStrategyCB.setSelectedItem(s.getOfferingStrategy()
 				.getClassname());
 		biddingStrategyCB.updateUI();
-		if (s.getOfferingStrategy().getOriginalParameters() != null
-				&& s.getOfferingStrategy().getOriginalParameters().size() > 0) {
-			biddingStrategyTF.setText(s.getOfferingStrategy()
-					.getOriginalParameters());
-			biddingStrategyTF.updateUI();
+		try {
+			params = s.getOfferingStrategy().getOriginalParameters();
+			if (params != null && params.size() > 0) {
+				biddingStrategyTF.setParams(params);
+				biddingStrategyTF.updateUI();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		acceptanceStrategyCB.setSelectedItem(s.getAcceptanceStrategy()
 				.getClassname());
 		acceptanceStrategyCB.updateUI();
-		if (s.getAcceptanceStrategy().getOriginalParameters() != null
-				&& s.getAcceptanceStrategy().getOriginalParameters().size() > 0) {
-			acceptanceStrategyTF.setText(s.getAcceptanceStrategy()
-					.getOriginalParameters());
-			acceptanceStrategyTF.updateUI();
+		try {
+			params = s.getAcceptanceStrategy().getOriginalParameters();
+			if (params != null && params.size() > 0) {
+				acceptanceStrategyTF.setParams(params);
+				acceptanceStrategyTF.updateUI();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		opponentModelCB.setSelectedItem(s.getOpponentModel().getClassname());
 		opponentModelCB.updateUI();
-		if (s.getOpponentModel().getOriginalParameters() != null
-				&& s.getOpponentModel().getOriginalParameters().size() > 0) {
-			opponentModelTF.setText(s.getOpponentModel()
-					.getOriginalParameters());
-			opponentModelTF.updateUI();
+		try {
+			params = s.getOpponentModel().getOriginalParameters();
+			if (params != null && params.size() > 0) {
+				opponentModelTF.setParams(params);
+				opponentModelTF.updateUI();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		omStrategyCB.setSelectedItem(s.getOMStrategy().getClassname());
 		omStrategyCB.updateUI();
-		if (s.getOMStrategy().getOriginalParameters() != null
-				&& s.getOMStrategy().getOriginalParameters().size() > 0) {
-			omStrategyTF.setText(s.getOMStrategy().getOriginalParameters());
-			omStrategyTF.updateUI();
+		try {
+			params = s.getOMStrategy().getOriginalParameters();
+			if (params != null && params.size() > 0) {
+				omStrategyTF.setParams(params);
+				omStrategyTF.updateUI();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -348,8 +363,14 @@ public class BOAAgentUI extends JDialog {
 								.getBiddingStrategyRepItem(
 										biddingStrategyCB.getSelectedItem()
 												.toString());
-						biddingStrategyTF.setText(item.getParameters());
-						change.setEnabled(!(item.getParameters().isEmpty()));
+						try {
+							Set<BOAparameter> params = item.getInstance()
+									.getParameters();
+							biddingStrategyTF.setParams(params);
+							change.setEnabled(!(params.isEmpty()));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -361,10 +382,10 @@ public class BOAAgentUI extends JDialog {
 							"This item has no parameters.",
 							"Item notification", 1);
 				} else {
-					ArrayList<BOAparameter> result = new ParameterFrame(
+					Set<BOAparameter> result = new ParameterFrame(
 							NegoGUIApp.negoGUIView.getFrame())
 							.getResult(biddingStrategyTF.getBOAparameters());
-					biddingStrategyTF.setText(result);
+					biddingStrategyTF.setParams(result);
 				}
 			}
 		});
@@ -391,8 +412,14 @@ public class BOAAgentUI extends JDialog {
 				BOArepItem item = BOAagentRepository.getInstance()
 						.getOpponentModelRepItem(
 								opponentModelCB.getSelectedItem().toString());
-				opponentModelTF.setText(item.getParameters());
-				change.setEnabled(!(item.getParameters().isEmpty()));
+				try {
+					Set<BOAparameter> params = item.getInstance()
+							.getParameters();
+					opponentModelTF.setParams(params);
+					change.setEnabled(!(params.isEmpty()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -404,10 +431,10 @@ public class BOAAgentUI extends JDialog {
 							"This item has no parameters.",
 							"Item notification", 1);
 				} else {
-					ArrayList<BOAparameter> result = new ParameterFrame(
+					Set<BOAparameter> result = new ParameterFrame(
 							NegoGUIApp.negoGUIView.getFrame())
 							.getResult(opponentModelTF.getBOAparameters());
-					opponentModelTF.setText(result);
+					opponentModelTF.setParams(result);
 				}
 			}
 		});
@@ -437,8 +464,15 @@ public class BOAAgentUI extends JDialog {
 								.getAcceptanceStrategyRepItem(
 										acceptanceStrategyCB.getSelectedItem()
 												.toString());
-						acceptanceStrategyTF.setText(item.getParameters());
-						change.setEnabled(!(item.getParameters().isEmpty()));
+						try {
+							Set<BOAparameter> params = item.getInstance()
+									.getParameters();
+							acceptanceStrategyTF.setParams(params);
+							change.setEnabled(!(params.isEmpty()));
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -450,10 +484,10 @@ public class BOAAgentUI extends JDialog {
 							"This item has no parameters.",
 							"Item notification", 1);
 				} else {
-					ArrayList<BOAparameter> result = new ParameterFrame(
+					Set<BOAparameter> result = new ParameterFrame(
 							NegoGUIApp.negoGUIView.getFrame())
 							.getResult(acceptanceStrategyTF.getBOAparameters());
-					acceptanceStrategyTF.setText(result);
+					acceptanceStrategyTF.setParams(result);
 				}
 			}
 		});
@@ -480,8 +514,14 @@ public class BOAAgentUI extends JDialog {
 				BOArepItem item = BOAagentRepository.getInstance()
 						.getOpponentModelStrategyRepItem(
 								omStrategyCB.getSelectedItem().toString());
-				omStrategyTF.setText(item.getParameters());
-				change.setEnabled(!(item.getParameters().isEmpty()));
+				try {
+					Set<BOAparameter> params = item.getInstance()
+							.getParameters();
+					omStrategyTF.setParams(params);
+					change.setEnabled(!(params.isEmpty()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -493,10 +533,10 @@ public class BOAAgentUI extends JDialog {
 							"This item has no parameters.",
 							"Item notification", 1);
 				} else {
-					ArrayList<BOAparameter> result = new ParameterFrame(
+					Set<BOAparameter> result = new ParameterFrame(
 							NegoGUIApp.negoGUIView.getFrame())
 							.getResult(omStrategyTF.getBOAparameters());
-					omStrategyTF.setText(result);
+					omStrategyTF.setParams(result);
 				}
 			}
 		});

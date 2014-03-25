@@ -1,13 +1,18 @@
 package negotiator.boaframework.repository;
 
-import java.util.ArrayList;
+import java.net.MalformedURLException;
 
-import negotiator.boaframework.BOAparameter;
+import negotiator.Global;
+import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.BOA;
 import negotiator.boaframework.ComponentsEnum;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
 
 /**
- * Class used to represent an item in the BOArepository.
- * An item in the BOA repository has a classPath and may have a tooltip.
+ * Class used to represent an item in the BOArepository. An item in the BOA
+ * repository has a classPath and may have a tooltip.
  * 
  * @author Mark Hendrikx
  */
@@ -16,22 +21,15 @@ public class BOArepItem implements Comparable<BOArepItem> {
 	private String name;
 	/** Classpath of the item in the repository */
 	private String classPath;
-	/** Collection of parameters, their description and their default */
-	private ArrayList<BOAparameter> parameters;
-	
+
 	private ComponentsEnum type;
-	
+
 	public BOArepItem(String name, String classPath, ComponentsEnum type) {
 		this.name = name;
 		this.classPath = classPath;
-		this.parameters = new ArrayList<BOAparameter>();
 		this.type = type;
 	}
-	
-	public void addParameter(BOAparameter parameter) {
-		parameters.add(parameter);
-	}
-	
+
 	/**
 	 * @return classpath of the BOA component.
 	 */
@@ -39,22 +37,15 @@ public class BOArepItem implements Comparable<BOArepItem> {
 		return classPath;
 	}
 
-	public ArrayList<BOAparameter> getParameters() {
-		return parameters;
-	}
-	
 	public String getName() {
 		return name;
 	}
-	
+
 	public String toString() {
-		String output = name + " " + classPath + " ";
-		for (BOAparameter parameter : parameters) {
-			output += "PARAMETER: " + parameter.toString() + " ";
-		}
+		String output = name + " " + classPath;
 		return output;
 	}
-	
+
 	public String toXML() {
 		String result = "\t\t<";
 		String element = "";
@@ -67,38 +58,31 @@ public class BOArepItem implements Comparable<BOArepItem> {
 		} else {
 			element += "omstrategy";
 		}
-		result += element + " description=\"" + name + "\" classpath=\"" + classPath + "\"";
-		if (parameters.size() == 0) {
-			result += "/>\n";
-		} else {
-			result += ">\n";
-			for (BOAparameter param : parameters) {
-				result += "\t\t\t" + param.toXML() + "\n";
-			}
-			result += "\t\t" + "</" + element + ">\n";
-		}
+		result += element + " description=\"" + name + "\" classpath=\""
+				+ classPath + "\"";
+		result += "/>\n";
 		return result;
 	}
 
 	public ComponentsEnum getType() {
 		return type;
 	}
-	
+
 	public String getTypeString() {
 		String result;
 		switch (type) {
 		case BIDDINGSTRATEGY:
 			result = "Bidding strategy";
-		break;
+			break;
 		case OPPONENTMODEL:
 			result = "Opponent model";
-		break;
+			break;
 		case ACCEPTANCESTRATEGY:
 			result = "Acceptance strategy";
-		break;
+			break;
 		case OMSTRATEGY:
 			result = "Opponent model strategy";
-		break;
+			break;
 		default:
 			result = "Unknown type";
 			break;
@@ -118,5 +102,23 @@ public class BOArepItem implements Comparable<BOArepItem> {
 			return String.CASE_INSENSITIVE_ORDER.compare(this.name, rep2.name);
 		}
 		return 0;
+	}
+
+	/**
+	 * Load the {@link BOA} object. This may return a {@link OfferingStrategy},
+	 * {@link AcceptanceStrategy}, {@link OpponentModel}, or {@link OMStrategy}
+	 * depending on the type.
+	 * 
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	public BOA getInstance() throws MalformedURLException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
+		return (BOA) Global.loadObject(classPath);
+
 	}
 }
