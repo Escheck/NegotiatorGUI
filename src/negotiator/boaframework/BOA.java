@@ -9,6 +9,8 @@ import negotiator.NegotiationResult;
 /**
  * Abstract superclass for BOA components. This should have been called
  * BOAcomponent but that class is already in use .
+ * 
+ * @author W.Pasman 25mar14 #867
  **/
 public abstract class BOA {
 	/**
