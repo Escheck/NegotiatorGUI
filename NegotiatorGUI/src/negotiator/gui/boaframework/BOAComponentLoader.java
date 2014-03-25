@@ -34,9 +34,12 @@ import negotiator.boaframework.repository.BOArepItem;
 import negotiator.gui.GenericFileFilter;
 
 /**
- * GUI to a BOA component to the BOA repository.
+ * GUI to (add or edit?) a BOA component to the BOA repository.
+ * 
+ * FIXME rename to BOAComponentEditor?
  * 
  * @author Mark Hendrikx
+ * @modified W.Pasman 24mar'14 #876
  */
 public class BOAComponentLoader extends JDialog {
 
@@ -347,9 +350,9 @@ public class BOAComponentLoader extends JDialog {
 			componentNameTextField.setText(item.getName());
 			componentClassTextField.setText(item.getClassPath());
 			type = item.getType();
-			for (BOAparameter param : item.getParameters()) {
-				parameterListModel.addElement(param);
-			}
+			// for (BOAparameter param : item.getParameters()) {
+			// parameterListModel.addElement(param);
+			// }
 			addComponent.setText("Save");
 		}
 
@@ -389,11 +392,11 @@ public class BOAComponentLoader extends JDialog {
 			String name = componentNameTextField.getText();
 			String classPath = componentClassTextField.getText();
 			BOArepItem newComponent = new BOArepItem(name, classPath, type);
-			for (int i = 0; i < parameterListModel.getSize(); i++) {
-				BOAparameter item = (BOAparameter) parameterListModel
-						.getElementAt(i);
-				newComponent.addParameter(item);
-			}
+			// for (int i = 0; i < parameterListModel.getSize(); i++) {
+			// BOAparameter item = (BOAparameter) parameterListModel
+			// .getElementAt(i);
+			// newComponent.addParameter(item);
+			// }
 			BOAagentRepository.getInstance().addComponent(newComponent);
 			result = newComponent;
 			dispose();

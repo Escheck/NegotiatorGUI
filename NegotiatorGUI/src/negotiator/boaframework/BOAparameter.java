@@ -158,7 +158,10 @@ public class BOAparameter implements Serializable {
 	public String toString() {
 		if (!name.equals("null")) {
 			if (low.compareTo(high) == 0) {
-				return name + ": " + low;
+				/*
+				 * without doubleValue we get a crazy number of digits
+				 */
+				return name + ": " + low.doubleValue();
 			}
 			return name + ": [" + low + " : " + step + " : " + high + "]";
 		} else {

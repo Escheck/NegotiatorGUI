@@ -2,16 +2,22 @@ package negotiator.boaframework;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import negotiator.boaframework.repository.BOAagentRepository;
+import negotiator.boaframework.repository.BOArepItem;
 
 /**
  * Creates a BOA component consisting of the classname of the component, the
- * type of the component, and all parameters.
+ * type of the component, and all parameters. FIXME this creates nothing. It
+ * seems just to contain info that can be used to create a BOA component.
  * 
  * Please report bugs to author.
  * 
@@ -30,8 +36,6 @@ public class BOAcomponent implements Serializable {
 	 */
 	private HashMap<String, BigDecimal> parametervalues;
 
-	private ArrayList<BOAparameter> orgParam;
-
 	/**
 	 * Creates a BOA component consisting of the classname of the components,
 	 * the type, and the parameters with which the component should be loaded.
@@ -41,14 +45,17 @@ public class BOAcomponent implements Serializable {
 	 *            also accept absolute file path to a .class file.
 	 * @param type
 	 *            of the component (for example bidding strategy).
-	 * @param strategyParam
+	 * @param values
 	 *            parameters of the component.
 	 */
 	public BOAcomponent(String classname, ComponentsEnum type,
-			HashMap<String, BigDecimal> strategyParam) {
+			HashMap<String, BigDecimal> values) {
+		if (values == null) {
+			throw new NullPointerException("values==null");
+		}
 		this.classname = classname;
 		this.type = type;
-		this.parametervalues = strategyParam;
+		this.parametervalues = values;
 	}
 
 	/**
@@ -65,28 +72,6 @@ public class BOAcomponent implements Serializable {
 		this.classname = classname;
 		this.type = type;
 		this.parametervalues = new HashMap<String, BigDecimal>();
-	}
-
-	/**
-	 * Variant of the main constructor in which it is assumed that the component
-	 * has no parameters. In addition a backup is made of the original
-	 * BigDecimal specification of the parameters. This is used to avoid
-	 * rounding errors in the GUI.
-	 * 
-	 * @param classname
-	 *            of the component. Note, this is not checked at all. We now
-	 *            also accept absolute file path to a .class file.
-	 * @param type
-	 *            of the component (for example bidding strategy).
-	 * @param orgParam
-	 *            backup of original parameters
-	 */
-	public BOAcomponent(String classname, ComponentsEnum type,
-			ArrayList<BOAparameter> orgParam) {
-		this.classname = classname;
-		this.type = type;
-		this.parametervalues = new HashMap<String, BigDecimal>();
-		this.orgParam = orgParam;
 	}
 
 	/**
@@ -142,25 +127,17 @@ public class BOAcomponent implements Serializable {
 		return map;
 	}
 
-	/**
-	 * @return the full parameters objects used to specify each parameter.
-	 */
-	public ArrayList<BOAparameter> getOriginalParameters() {
-		return orgParam;
-	}
-
-	public void setOriginalParameter(ArrayList<BOAparameter> param) {
-		this.orgParam = param;
-	}
-
 	public String toString() {
 		String params = "";
 		if (parametervalues.size() > 0) {
-			ArrayList<String> keys = new ArrayList<String>(parametervalues.keySet());
+			ArrayList<String> keys = new ArrayList<String>(
+					parametervalues.keySet());
 			Collections.sort(keys);
 			params = "{";
 			for (int i = 0; i < keys.size(); i++) {
-				params += keys.get(i) + "=" + parametervalues.get(keys.get(i));
+				// use doubleValue to keep #digits in string lower
+				params += keys.get(i) + "="
+						+ parametervalues.get(keys.get(i)).doubleValue();
 				if (i < keys.size() - 1) {
 					params += ", ";
 				}
@@ -184,5 +161,44 @@ public class BOAcomponent implements Serializable {
 		}
 
 		return shortType + ": " + classname + " " + params;
+	}
+
+	/**
+	 * Fetches the original parameters from (a temporary instance of) the actual
+	 * component.
+	 * 
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	public Set<BOAparameter> getOriginalParameters()
+			throws MalformedURLException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
+		return getRepItem().getInstance().getParameters();
+	}
+
+	/**
+	 * Find back this in the repository. CHECK why don't we use the repository
+	 * item all along?
+	 * 
+	 * @return
+	 */
+	private BOArepItem getRepItem() {
+		BOAagentRepository repo = BOAagentRepository.getInstance();
+		switch (type) {
+		case ACCEPTANCESTRATEGY:
+			return repo.getAcceptanceStrategyRepItem(classname);
+		case BIDDINGSTRATEGY:
+			return repo.getBiddingStrategyRepItem(classname);
+		case OMSTRATEGY:
+			return repo.getOpponentModelStrategyRepItem(classname);
+		case OPPONENTMODEL:
+			return repo.getOpponentModelRepItem(classname);
+		default:
+			throw new IllegalStateException(
+					"BOAcomponent with unknown type encountered:" + type);
+		}
 	}
 }

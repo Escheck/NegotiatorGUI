@@ -1,8 +1,13 @@
 package negotiator.boaframework.acceptanceconditions.other;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
+import negotiator.boaframework.BOAparameter;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
@@ -16,33 +21,36 @@ import negotiator.boaframework.OpponentModel;
  * 
  * @author Alex Dirkzwager, Mark Hendrikx
  */
-public class AC_Previous extends AcceptanceStrategy{
-	
+public class AC_Previous extends AcceptanceStrategy {
+
 	private double a;
 	private double b;
 
 	/**
 	 * Empty constructor for the BOA framework.
 	 */
-	public AC_Previous() { }
-	
-	public AC_Previous(NegotiationSession negoSession, double alpha, double beta){
+	public AC_Previous() {
+	}
+
+	public AC_Previous(NegotiationSession negoSession, double alpha, double beta) {
 		this.negotiationSession = negoSession;
-		this.a =  alpha;
+		this.a = alpha;
 		this.b = beta;
 	}
 
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat,
+			OpponentModel opponentModel, HashMap<String, Double> parameters)
+			throws Exception {
 		this.negotiationSession = negoSession;
-		if (parameters.get("a") != null || parameters.get("b") !=null) {
+		if (parameters.get("a") != null || parameters.get("b") != null) {
 			a = parameters.get("a");
 			b = parameters.get("b");
 		} else {
 			throw new Exception("Parameters were not set.");
 		}
 	}
-	
+
 	@Override
 	public String printParameters() {
 		String str = "[a: " + a + " b: " + b + "]";
@@ -51,14 +59,32 @@ public class AC_Previous extends AcceptanceStrategy{
 
 	@Override
 	public Actions determineAcceptability() {
-		if(!negotiationSession.getOwnBidHistory().getHistory().isEmpty()){
-			double opponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil();
-			double ownLastBidUtil = negotiationSession.getOwnBidHistory().getLastBidDetails().getMyUndiscountedUtil();
+		if (!negotiationSession.getOwnBidHistory().getHistory().isEmpty()) {
+			double opponentBidUtil = negotiationSession.getOpponentBidHistory()
+					.getLastBidDetails().getMyUndiscountedUtil();
+			double ownLastBidUtil = negotiationSession.getOwnBidHistory()
+					.getLastBidDetails().getMyUndiscountedUtil();
 			if (a * opponentBidUtil + b >= ownLastBidUtil) {
 				return Actions.Accept;
 			}
 		}
 		return Actions.Reject;
-		
+
+	}
+
+	@Override
+	public Set<BOAparameter> getParameters() {
+
+		Set<BOAparameter> set = new HashSet<BOAparameter>();
+		set.add(new BOAparameter(
+				"a",
+				new BigDecimal(1.0),
+				"Accept when the opponent's utility * a + b is greater than the utility of our previous bid"));
+		set.add(new BOAparameter(
+				"b",
+				new BigDecimal(0.0),
+				"Accept when the opponent's utility * a + b is greater than the utility of our previous bid"));
+
+		return set;
 	}
 }
