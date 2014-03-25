@@ -47,7 +47,6 @@
             <agentRepItem description="Implementation of FunctionalAcceptor." classPath="agents.FunctionalAcceptor" agentName="FunctionalAcceptor"/>
             <agentRepItem description="" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
             <agentRepItem description="" classPath="agents.ABMPAgent2" agentName="ABMPAgent2"/>
-            <agentRepItem description="Simple ANAC2013 Agent(compatible with non-linear utility spaces) (1.0)" classPath="/Users/wouter/Desktop/genius/anac2013example/SimpleANAC2013Agent.class" agentName="Simple ANAC2013 Agent(compatible with non-linear utility spaces)"/>
         </agentRepItems>
         <partyRepItems/>
         <domainRepItem/>
