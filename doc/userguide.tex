@@ -844,6 +844,26 @@ The next step is to specify three variants of the acceptance strategy differing 
 \subsection{Creating New Components}
 This section discusses how create your own components. An example implementation of each component is included in the ``boaexamplepackage'' folder. The next section discusses how these components can be added to the list of available components in the BOA framework GUI.
 
+\subsubsection{Parameters}
+All BOA components have the same mechanism to be tuned with parameters. 
+
+The parameters and their default parameters are indicated by the component by overriding the getParameters() function. This function should return a set of $BAOparameter$ objects, each parameter having a unique name, description and default value.
+
+
+\begin{table}[h]
+\begin{tabular}{m{0.9\textwidth}}
+\hline
+\texttt{public Set<BOAparameter> getParameters() }\\
+ Override this function to add parameters to the module.\\
+\hline
+\end{tabular}
+\caption{The getParameters method. Override if your component has parameters.}
+\label{tab:parameters}
+\end{table}
+
+
+When the component is actually used, the actual values for the parameters (which may differ from the default) are passed to the init function when the component is initialized.
+
 \subsubsection{Creating a Bidding Strategy}
 A bidding strategy can be easily created by extending the \textit{OfferingStrategy} class. Table~\ref{tab:BOAbs} depicts the methods which need to be overridden. The \textit{init} method of the bidding strategy is automatically called by the BOA framework with four parameters: the negotiation session, the opponent model, the opponent model strategy, and the parameters of the component. The negotiation session object keeps track of the negotiation state, which includes all offers made by both agents, the timeline, the preference profile, and the domain. The parameters object specifies the parameters as specified in the GUI. In the previous section we specified the parameter $b$ for the acceptance strategy $Other - Next$ to be 0.0. In this case the agent can retrieve the value of the parameter by calling \textit{parameters.get(``b'')}.
 
@@ -946,7 +966,7 @@ In the previous section we discussed how to create each type of BOA component. T
 
 \begin{figure}[h!] 
 	\center
-	\includegraphics[width=5cm]{media/AddBOA.png}
+	\includegraphics[width=7cm]{media/AddBOA.png}
 	\caption{The BOA components window.}
 	\label{fig:boacomponents}
 \end{figure}
@@ -955,7 +975,7 @@ Click on the "Open" button and select the main class file of your BOA component 
 
 \begin{figure}[h!] 
 	\center
-	\includegraphics[width=9cm]{media/LoadBOA.png}
+	\includegraphics[width=5cm]{media/LoadBOA.png}
 	\caption{Loading a BOA agent.}
 	\label{fig:loadBOA}
 \end{figure}
