@@ -1,5 +1,6 @@
 package negotiator.boaframework;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,10 +19,6 @@ import negotiator.bidding.BidDetails;
  */
 public abstract class OMStrategy extends BOA {
 
-	/**
-	 * Reference to the object which holds all information about the negotiation
-	 */
-	protected NegotiationSession negotiationSession;
 	/** Reference to the opponent model */
 	protected OpponentModel model;
 	/**
@@ -54,7 +51,7 @@ public abstract class OMStrategy extends BOA {
 	public void init(NegotiationSession negotiationSession,
 			OpponentModel model, HashMap<String, Double> parameters)
 			throws Exception {
-		this.negotiationSession = negotiationSession;
+		super.init(negotiationSession);
 		this.model = model;
 	}
 
@@ -152,4 +149,14 @@ public abstract class OMStrategy extends BOA {
 	 * @return if given the negotiation state the opponent model may be updated
 	 */
 	public abstract boolean canUpdateOM();
+
+	@Override
+	public final void storeData(Serializable object) {
+	}
+
+	@Override
+	public final Serializable loadData() {
+		return null;
+	}
+
 }

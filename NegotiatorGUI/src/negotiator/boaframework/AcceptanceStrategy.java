@@ -3,7 +3,6 @@ package negotiator.boaframework;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import negotiator.NegotiationResult;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 
 /**
@@ -17,11 +16,6 @@ import negotiator.protocol.BilateralAtomicNegotiationSession;
  */
 public abstract class AcceptanceStrategy extends BOA {
 
-	/**
-	 * Reference to the object which holds all information about the
-	 * negotiation.
-	 */
-	protected NegotiationSession negotiationSession;
 	/** Reference to the offering strategy. */
 	protected OfferingStrategy offeringStrategy;
 	/**
@@ -49,7 +43,7 @@ public abstract class AcceptanceStrategy extends BOA {
 	public void init(NegotiationSession negotiationSession,
 			OfferingStrategy offeringStrategy, OpponentModel opponentModel,
 			HashMap<String, Double> parameters) throws Exception {
-		this.negotiationSession = negotiationSession;
+		super.init(negotiationSession);
 		this.offeringStrategy = offeringStrategy;
 		this.opponentModel = opponentModel;
 	}
@@ -81,38 +75,14 @@ public abstract class AcceptanceStrategy extends BOA {
 	 */
 	public abstract Actions determineAcceptability();
 
-	/**
-	 * Method used to store data that should be accessible in the next
-	 * negotiation session on the same scenario. This method can be called
-	 * during the negotiation, but it makes more sense to call it in the
-	 * endSession method.
-	 * 
-	 * @param object
-	 *            to be saved by this component.
-	 */
+	@Override
 	public final void storeData(Serializable object) {
 		negotiationSession.setData(ComponentsEnum.ACCEPTANCESTRATEGY, object);
 	}
 
-	/**
-	 * Method used to load the saved object, possibly created in a previous
-	 * negotiation session. The method returns null when such an object does not
-	 * exist yet.
-	 * 
-	 * @return saved object or null when not available.
-	 */
+	@Override
 	public final Serializable loadData() {
 		return negotiationSession.getData(ComponentsEnum.ACCEPTANCESTRATEGY);
-	}
-
-	/**
-	 * Method called at the end of the negotiation. Ideal location to call the
-	 * storeData method to update the data to be saved.
-	 * 
-	 * @param result
-	 *            of the negotiation.
-	 */
-	public void endSession(NegotiationResult result) {
 	}
 
 	/**
