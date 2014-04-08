@@ -5,6 +5,66 @@
         <partyRepItems/>
         <domainRepItem>
         
+            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-1/S-1NMVMAF-1-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-1/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-1/profile-2.xml"/>
+        	</domainRepItem>  
+        	
+        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-2/S-1NMVMAF-2-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-2/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-2/profile-2.xml"/>
+        	</domainRepItem> 
+        	      	
+        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-3/S-1NMVMAF-3-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-3/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-3/profile-2.xml"/>
+        	</domainRepItem> 
+        
+        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-4/S-1NMVMAF-4-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-4/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-4/profile-2.xml"/>
+        	</domainRepItem>     
+        
+       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-5/S-1NMVMAF-5-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-5/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-5/profile-2.xml"/>
+        	</domainRepItem>   
+        	
+        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-6/S-1NMVMAF-6-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-6/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-6/profile-2.xml"/>
+        	</domainRepItem>     
+          
+            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-7/S-1NMVMAF-7-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-7/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-7/profile-2.xml"/>
+        	</domainRepItem>     
+        
+       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-8/S-1NMVMAF-8-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-8/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-8/profile-2.xml"/>
+        	</domainRepItem>    
+        
+            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-1/S-1NMVOLH-1-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-1/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-1/profile-2.xml"/>
+        	</domainRepItem>  
+        
+       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-2/S-1NMVOLH-2-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-2/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-2/profile-2.xml"/>
+        	</domainRepItem>  
+        
+            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-3/S-1NMVOLH-3-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-3/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-3/profile-2.xml"/>
+        	</domainRepItem>  
+        
+         	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-4/S-1NMVOLH-4-domain.xml">
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-4/profile-1.xml"/>
+        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-4/profile-2.xml"/>
+        	</domainRepItem>  
+        
  <!-- 
   			<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-114/S-1NAGUNL-114-domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-114/profile-1.xml"/>
@@ -20,8 +80,8 @@
         		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-2.xml"/>
         	</domainRepItem>
-        -->            
-       	<domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
+        -            
+       	   <domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
         	</domainRepItem>
@@ -36,7 +96,7 @@
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-3/profile-2.xml"/>
         	</domainRepItem>
         	
-    	
+       --> 	
             <domainRepItem url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml"/>
                 <profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/Zimbabwe.xml"/>

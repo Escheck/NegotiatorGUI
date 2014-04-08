@@ -1,0 +1,7 @@
+<a>
+<NegotiationOutcome currentTime="2014-02-20 20:38:03" timeOfAgreement="0.010115312394444445" bids="1" domain="etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i10: 1, c1-i9: 7, c1-i8: 3, c1-i7: 7, c1-i6: 7, c1-i5: 8, c1-i4: 6, c1-i3: 6, c1-i2: 5, c1-i1: 6, ]" errors="" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Simple Agent" discount="0.95" agentClass="agents.SimpleAgent" utilspace="etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml" finalUtility="0.5144787644787645" discountedUtility="0.5142118975945527" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.5144787644787645" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Simple Agent" discount="0.95" agentClass="agents.SimpleAgent" utilspace="etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml" finalUtility="0.6292613636363636" discountedUtility="0.6289349575122184" bestAcceptableBid="0.6292613636363636" bestDiscountedAccepableBid="0.005109465666666666" maxUtility="1.0" normalizedUtility="0.6292613636363636" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
