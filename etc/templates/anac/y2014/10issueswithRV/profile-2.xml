@@ -108,4 +108,5 @@
       </ufun>
    </utility>
 </objective>
+<reservation value="0.50" /> 
 </utility_space>
