@@ -119,7 +119,7 @@ public class BidSpace {
 		else return false;
 	}
 	
-	private void readParetoFromFile(String fileName){
+	private void readParetoFromFile(String fileName, boolean isAgentAHasProfile1){
 		
 		this.paretoFrontier=new ArrayList<BidPoint>();
 		this.bidPoints=new ArrayList<BidPoint>();
@@ -133,8 +133,15 @@ public class BidSpace {
 				if (line!=null) {
 					int index=line.indexOf(",");
 					if (index>0){
-					    utility[0]=Double.parseDouble(line.substring(0, line.indexOf(",")));
-						utility[1]=Double.parseDouble(line.substring(line.indexOf(",")+1));		
+						if (isAgentAHasProfile1){
+							utility[0]=Double.parseDouble(line.substring(0, line.indexOf(",")));
+							utility[1]=Double.parseDouble(line.substring(line.indexOf(",")+1));
+						}else
+						{
+							utility[1]=Double.parseDouble(line.substring(0, line.indexOf(",")));
+							utility[0]=Double.parseDouble(line.substring(line.indexOf(",")+1));
+						}
+							
 						BidPoint bidpt=new BidPoint(null, utility);
 						this.paretoFrontier.add(bidpt);
 					}					
@@ -161,14 +168,14 @@ public class BidSpace {
 		if (utilspaces[0].getFileName().contains("profile-1.xml")) {
 			String fileName=utilspaces[0].getFileName().replaceAll("profile-1.xml","pareto.xml");
 				if (checkParetoFileExist(fileName)){
-					readParetoFromFile(fileName);
+					readParetoFromFile(fileName,true);
 					return;
 				}
 		}
 		else if (utilspaces[0].getFileName().contains("profile-2.xml")) {
 			String fileName=utilspaces[0].getFileName().replaceAll("profile-2.xml","pareto.xml");
 				if (checkParetoFileExist(fileName)){
-					readParetoFromFile(fileName);
+					readParetoFromFile(fileName,false);
 					return;
 				}
 		}
