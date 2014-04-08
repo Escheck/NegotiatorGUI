@@ -1,0 +1,7 @@
+<a>
+<NegotiationOutcome currentTime="2014-04-08 16:59:08" timeOfAgreement="0.040668213777777774" bids="7" domain="etc/templates/anac/y2014/10issuesDiscountedwithRV/10issuesDiscountedwithRV-domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i10: 4, c1-i9: 5, c1-i8: 5, c1-i7: 2, c1-i6: 5, c1-i5: 8, c1-i4: 4, c1-i3: 1, c1-i2: 5, c1-i1: 8, ]" errors="" startingAgent="A"> 
+<resultsOfAgent agent="A" agentName="Simple Agent" discount="0.75" agentClass="agents.SimpleAgent" utilspace="etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-1.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-2.xml" finalUtility="0.6929133858267716" discountedUtility="0.6848538726996468" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.6929133858267716" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+<resultsOfAgent agent="B" agentName="Simple Agent" discount="0.75" agentClass="agents.SimpleAgent" utilspace="etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-2.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-1.xml" finalUtility="0.684" discountedUtility="0.6760441615190105" bestAcceptableBid="0.684" bestDiscountedAccepableBid="0.03561841514444444" maxUtility="1.0" normalizedUtility="0.684" AcceptedBy="agentB"> 
+</resultsOfAgent> 
+</NegotiationOutcome> 
