@@ -5,65 +5,73 @@
         <partyRepItems/>
         <domainRepItem>
         
-            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-1/S-1NMVMAF-1-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-1/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-1/profile-2.xml"/>
+             <domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
+        		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
+        	</domainRepItem>
+        
+        
+            <domainRepItem url="file:etc/templates/anac/y2014/10issues/10issues-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/10issues/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/10issues/profile-2.xml"/>
         	</domainRepItem>  
         	
-        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-2/S-1NMVMAF-2-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-2/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-2/profile-2.xml"/>
+        	<domainRepItem url="file:etc/templates/anac/y2014/10issuesDiscounted/10issuesDiscounted-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/10issuesDiscounted/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/10issuesDiscounted/profile-2.xml"/>
         	</domainRepItem> 
         	      	
-        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-3/S-1NMVMAF-3-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-3/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-3/profile-2.xml"/>
+        	<domainRepItem url="file:etc/templates/anac/y2014/10issueswithRV/10issueswithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/10issueswithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/10issueswithRV/profile-2.xml"/>
         	</domainRepItem> 
         
-        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-4/S-1NMVMAF-4-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-4/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-4/profile-2.xml"/>
+        	<domainRepItem url="file:etc/templates/anac/y2014/10issuesDiscountedwithRV/10issuesDiscountedwithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/10issuesDiscountedwithRV/profile-2.xml"/>
         	</domainRepItem>     
         
-       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-5/S-1NMVMAF-5-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-5/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-5/profile-2.xml"/>
+       		<domainRepItem url="file:etc/templates/anac/y2014/30issues/30issues-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/30issues/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/30issues/profile-2.xml"/>
         	</domainRepItem>   
         	
-        	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-6/S-1NMVMAF-6-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-6/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-6/profile-2.xml"/>
+        	<domainRepItem url="file:etc/templates/anac/y2014/30issuesDiscounted/30issuesDiscounted-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/30issuesDiscounted/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/30issuesDiscounted/profile-2.xml"/>
         	</domainRepItem>     
           
-            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-7/S-1NMVMAF-7-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-7/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-7/profile-2.xml"/>
+            <domainRepItem url="file:etc/templates/anac/y2014/30issueswithRV/30issueswithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/30issueswithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/30issueswithRV/profile-2.xml"/>
+        	</domainRepItem> 
+            
+            <domainRepItem url="file:etc/templates/anac/y2014/30issuesDiscountedwithRV/30issuesDiscountedwithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/30issuesDiscountedwithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/30issuesDiscountedwithRV/profile-2.xml"/>
         	</domainRepItem>     
         
-       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVMAF-8/S-1NMVMAF-8-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-8/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVMAF-8/profile-2.xml"/>
+       		<domainRepItem url="file:etc/templates/anac/y2014/50issues/50issues-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/50issues/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/50issues/profile-2.xml"/>
         	</domainRepItem>    
         
-            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-1/S-1NMVOLH-1-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-1/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-1/profile-2.xml"/>
+            <domainRepItem url="file:etc/templates/anac/y2014/50issuesDiscounted/50issuesDiscounted-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/50issuesDiscounted/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/50issuesDiscounted/profile-2.xml"/>
         	</domainRepItem>  
         
-       		<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-2/S-1NMVOLH-2-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-2/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-2/profile-2.xml"/>
+       	    <domainRepItem url="file:etc/templates/anac/y2014/50issueswithRV/50issueswithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/50issueswithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/50issueswithRV/profile-2.xml"/>
         	</domainRepItem>  
         
-            <domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-3/S-1NMVOLH-3-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-3/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-3/profile-2.xml"/>
+         	<domainRepItem url="file:etc/templates/anac/y2014/50issuesDiscountedwithRV/50issuesDiscountedwithRV-domain.xml">
+        		<profile url="file:etc/templates/anac/y2014/50issuesDiscountedwithRV/profile-1.xml"/>
+        		<profile url="file:etc/templates/anac/y2014/50issuesDiscountedwithRV/profile-2.xml"/>
         	</domainRepItem>  
         
-         	<domainRepItem url="file:etc/templates/ANAC2014/S-1NMVOLH-4/S-1NMVOLH-4-domain.xml">
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-4/profile-1.xml"/>
-        		<profile url="file:etc/templates/ANAC2014/S-1NMVOLH-4/profile-2.xml"/>
-        	</domainRepItem>  
+        
         
  <!-- 
   			<domainRepItem url="file:etc/templates/nonlinear/S-1NAGUNL-114/S-1NAGUNL-114-domain.xml">
@@ -80,7 +88,7 @@
         		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NAGUNL-255/profile-2.xml"/>
         	</domainRepItem>
-        -            
+                    
        	   <domainRepItem url="file:etc/templates/nonlinear/S-1NIKFRT-1/S-1NIKFRT-1-domain.xml">
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-1.xml"/>
         		<profile url="file:etc/templates/nonlinear/S-1NIKFRT-1/profile-2.xml"/>
