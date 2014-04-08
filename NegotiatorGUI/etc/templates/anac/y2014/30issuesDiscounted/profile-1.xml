@@ -314,5 +314,5 @@
       </ufun>
    </utility>
 </objective>
- <discount_factor value="0.75" /> 
+ <discount_factor value="0.50" /> 
 </utility_space>
