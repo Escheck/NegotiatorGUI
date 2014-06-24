@@ -21,6 +21,14 @@ import negotiator.utility.UtilitySpace;
  * @author W.Pasman
  */
 public abstract class Agent {
+	/**
+	 * Technical remarks.
+	 * 
+	 * It would have been much more flexible and cleaner if Agent were an
+	 * interface. Unfortunately this was never done and we are now stuck in a
+	 * historic, de facto 'standard' that we can not easily change. #915.
+	 * 
+	 */
 
 	/** ID of the agent as assigned by the protocol. */
 	private AgentID agentID;
