@@ -1,5 +1,6 @@
 package agents;
 
+import negotiator.DiscreteTimeline;
 import negotiator.PocketNegotiatorAgent;
 import negotiator.actions.Action;
 import negotiator.utility.UtilitySpace;
@@ -12,6 +13,7 @@ public class SimpleAgentPN extends SimpleAgent implements PocketNegotiatorAgent 
 	@Override
 	public void initPN(UtilitySpace mySide, UtilitySpace otherSide) {
 		utilitySpace = mySide;
+		timeline = new DiscreteTimeline(20); // HACK, Should be parameter
 
 	}
 
