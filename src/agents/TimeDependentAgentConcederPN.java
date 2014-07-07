@@ -49,7 +49,8 @@ public class TimeDependentAgentConcederPN extends TimeDependentAgent implements
 
 	@Override
 	public void updateOpponentProfile(UtilitySpace us) {
-		// ignore. we don't have opponent utilityspace.
+		// FIXME do something with it. Right now, conceder is estimating
+		// opponent always.
 	}
 
 }
