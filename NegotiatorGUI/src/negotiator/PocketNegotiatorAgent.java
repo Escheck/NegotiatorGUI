@@ -29,8 +29,12 @@ public interface PocketNegotiatorAgent {
 	 * 
 	 * @param mySide
 	 * @param otherSide
+	 * @param timeline
+	 *            the {@link Timeline} keeping track of where we are in the
+	 *            negotiation. We pass it here because the init may already need
+	 *            it.
 	 */
-	void initPN(UtilitySpace mySide, UtilitySpace otherSide);
+	void initPN(UtilitySpace mySide, UtilitySpace otherSide, Timeline timeline);
 
 	/**
 	 * the agent's opponent did an action. Inform the agent.
