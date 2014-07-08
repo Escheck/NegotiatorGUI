@@ -21,13 +21,10 @@ public class BayesianAgentPN extends BayesianAgent implements
 	}
 
 	@Override
-	public void updateMyProfile(UtilitySpace us) {
-		utilitySpace = us;
-	}
-
-	@Override
-	public void updateOpponentProfile(UtilitySpace us) {
-		// FIXME use the given space to model opponent.
+	public void updateProfiles(UtilitySpace my, UtilitySpace other) {
+		if (my != null) {
+			utilitySpace = my;
+		}
 	}
 
 	@Override

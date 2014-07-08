@@ -51,24 +51,23 @@ public interface PocketNegotiatorAgent {
 	public Action getAction();
 
 	/**
-	 * Change own utility profile to the given one. Additionally, this should
-	 * reset the agent such that its internal state (bid history, opponent
-	 * model, etc) matches this new utility space.
+	 * Change own and other side utility profile to the given one. Additionally,
+	 * this should reset the agent such that its internal state (bid history,
+	 * opponent model, etc) matches this new utility space.
 	 * 
-	 * @param us
-	 *            the new {@link UtilitySpace}.
-	 */
-	void updateMyProfile(UtilitySpace us);
-
-	/**
-	 * Changes the opponent profile of this Agent to the given one. This makes
-	 * only sense if this agent actively tries to model the opponent. This will
-	 * be called only in the case where the user actively models the opponent as
-	 * can be done with the PocketNegotiator.
+	 * <br>
 	 * 
-	 * @param us
-	 *            the new opponent utility space.
+	 * This one call allows to change both profiles. This is to avoid expensive
+	 * useless computations if both spaces need update. If only one needs to be
+	 * updated , you can pass null for the other.
+	 * 
+	 * @param myUtilities
+	 *            the new {@link UtilitySpace} for the bot to use as his own
+	 *            utility space.
+	 * @param opponentUtilities
+	 *            the new {@link UtilitySpace} for the bot to use as his
+	 *            opponent utility space.
 	 */
-	void updateOpponentProfile(UtilitySpace us);
+	void updateProfiles(UtilitySpace myUtilities, UtilitySpace opponentUtilities);
 
 }
