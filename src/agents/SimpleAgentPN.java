@@ -18,13 +18,10 @@ public class SimpleAgentPN extends SimpleAgent implements PocketNegotiatorAgent 
 	}
 
 	@Override
-	public void updateMyProfile(UtilitySpace us) {
-		utilitySpace = us;
-	}
-
-	@Override
-	public void updateOpponentProfile(UtilitySpace us) {
-		// ignore. we don't have opponent utilityspace.
+	public void updateProfiles(UtilitySpace my, UtilitySpace other) {
+		if (my != null) {
+			utilitySpace = my;
+		}
 	}
 
 	@Override
