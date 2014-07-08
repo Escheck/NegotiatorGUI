@@ -61,6 +61,13 @@ public abstract class TimeDependentAgent extends BilateralAgent {
 	@Override
 	public void init() {
 		super.init();
+		initFields();
+	}
+
+	/**
+	 * Initialize our fields.
+	 */
+	protected void initFields() {
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
 		List<BidDetails> allOutcomes = outcomeSpace.getAllOutcomes();
 		double maximumUtilityInScenario = allOutcomes.get(0)
@@ -72,6 +79,7 @@ public abstract class TimeDependentAgent extends BilateralAgent {
 		Pmin = Math.max(mininimumUtilityInScenario, rv);
 		// log("Pmin = " + Pmin);
 		// log("Pmax = " + Pmax);
+
 	}
 
 	/**
@@ -113,8 +121,8 @@ public abstract class TimeDependentAgent extends BilateralAgent {
 			int ownRoundsLeft = discreteTimeline.getOwnRoundsLeft();
 			int j = ownRoundsLeft + 1; // the last bid is made at j = 1.
 			int totalRounds = discreteTimeline.getOwnTotalRounds();
-//			if (getE() != 0)
-//				log(ownRoundsLeft + " / " + totalRounds);
+			// if (getE() != 0)
+			// log(ownRoundsLeft + " / " + totalRounds);
 			time = 1 - (j - 1) / (double) (totalRounds - 1);
 			if (totalRounds == 1)
 				time = 1;
