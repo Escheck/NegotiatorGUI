@@ -46,6 +46,7 @@ public class TimeDependentAgentConcederPN extends TimeDependentAgent implements
 	public void updateProfiles(UtilitySpace my, UtilitySpace other) {
 		if (my != null) {
 			utilitySpace = my;
+			initFields();
 		}
 	}
 
