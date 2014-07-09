@@ -47,6 +47,7 @@
             <agentRepItem description="Implementation of FunctionalAcceptor." classPath="agents.FunctionalAcceptor" agentName="FunctionalAcceptor"/>
             <agentRepItem description="" classPath="agents.BayesianAgent" agentName="BayesianAgent"/>
             <agentRepItem description="" classPath="agents.ABMPAgent2" agentName="ABMPAgent2"/>
+            <agentRepItem description="Simplistic Tit for Tat Agent" classPath="agents.SimpleTitForTatPN" agentName="SimpleTitForTatPN"/>
         </agentRepItems>
         <partyRepItems/>
         <domainRepItem/>
