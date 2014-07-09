@@ -1,7 +1,9 @@
 package agents;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import negotiator.Agent;
 import negotiator.Bid;
@@ -25,14 +27,23 @@ import negotiator.utility.UtilitySpace;
 public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 
 	// initialized when opponent makes first bid, or when we receive it from PN.
-	protected UtilitySpace otherUtilitySpace;
+	protected UtilitySpace otherUtilitySpace = null;
 
-	private Bid lastOpponentBid;
+	private Bid lastBid = null;
+	private Bid lastOpponentBid = null;
 
 	/**
 	 * Here we cache potential bids that we can make. Sorted on utility for us.
 	 */
 	private Map<Double, Bid> goodBids = new HashMap<Double, Bid>();
+
+	/**
+	 * Here we store the bids that have been used. We must store the bids, not
+	 * the utilities because the utilities can change any time
+	 * {@link #updateProfiles(UtilitySpace, UtilitySpace)} is called, and that
+	 * call does not clear usedBids.
+	 */
+	private Set<Bid> usedBids = new HashSet<Bid>();
 
 	/**************** extends Agent *******************/
 	@Override
@@ -44,24 +55,19 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		if (opponentAction instanceof Offer) {
 			Bid bid = ((Offer) opponentAction).getBid();
 			lastOpponentBid = bid;
-
-			if (otherUtilitySpace == null) {
-				// if we get here , we are running inside Genius.
-				// That means we have to fake otherUtilitySpace
-				try {
-					otherUtilitySpace = new OpponentUtilitySpace(utilitySpace,
-							bid);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
 	@Override
 	public Action chooseAction() {
 		try {
-			return chooseAction1();
+			Bid bid = chooseAction1();
+			if (bid == null) {
+				return new Accept();
+			}
+			lastBid = bid;
+			usedBids.add(bid);
+			return new Offer(bid);
 		} catch (Exception e) {
 			// if we get here we're totally screwed. We return accept but that
 			// may be a protocol error...
@@ -71,18 +77,30 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * Throwing variant of chooseAction.
+	 * get next bid. Returns null for accept.
 	 * 
-	 * @return chosen action.
+	 * @return chosen bid, or null to accept last opponent bid.
 	 * @throws Exception
 	 */
-	private Action chooseAction1() throws Exception {
-		if (otherUtilitySpace == null) {
-			// if otherUtilitySpace==null, we are in Genius and other side did
-			// not yet place bid. we can only place our best bid.
-			return new Offer(utilitySpace.getMaxUtilityBid());
+	private Bid chooseAction1() throws Exception {
+		if (lastOpponentBid == null) {
+			// Other side did not yet place bid. we can only place our best bid.
+			return utilitySpace.getMaxUtilityBid();
 		}
 
+		// below this point, other side did make a bid
+		if (otherUtilitySpace == null) {
+			// if we get here , we are running inside Genius.
+			// That means we have to fake otherUtilitySpace
+			try {
+				otherUtilitySpace = new OpponentUtilitySpace(utilitySpace,
+						lastOpponentBid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		// below this point, other side made bid and we have otherUtilitySpace.
 		if (goodBids.isEmpty()) {
 			findGoodBids();
 		}
@@ -91,41 +109,46 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		// an offer that has same util for us.
 		double targetUtil = otherUtilitySpace.getUtility(lastOpponentBid);
 
-		Bid bid = getBidNearUtil(targetUtil);
+		// #924 limit concession target (min. 0.6) and rate (max 0.1 per cycle).
+		targetUtil = Math.max(targetUtil, 0.6);
+		targetUtil = Math.max(targetUtil,
+				utilitySpace.getUtility(lastBid) - 0.1);
 
+		Bid bid = getUnusedBidNearUtil(targetUtil);
+		double util = utilitySpace.getUtility(bid);
 		// is the bid we have worse than what we were offered? We also need to
 		// keep an eye on the deadline
-		double minimumutility = utilitySpace.getUtility(bid) - 0.2
-				* (1. - timeline.getTime());
+		double minimumutility = util - 0.2 * (1. - timeline.getTime());
 		if (utilitySpace.getUtility(lastOpponentBid) >= minimumutility) {
-			return new Accept();
+			return null;// accept
 		}
-
-		return new Offer(bid);
+		return bid;
 	}
 
 	/**
-	 * Find in {@link #goodBids} a bid close to given targetUtil
+	 * Find unused bid in {@link #goodBids} close to given targetUtil
 	 * 
 	 * @param targetUtil
 	 * @return
 	 */
-	private Bid getBidNearUtil(double targetUtil) {
+	private Bid getUnusedBidNearUtil(double targetUtil) {
 
 		Bid good = goodBids.get(roundUtil(targetUtil));
-		if (good != null) { // && not yet placed this bid?
+		if (good != null && !usedBids.contains(good)) {
 			return good;
 		}
 
 		// no. Find something nearby.
-		double nearestUtil = 10.; // impossibly far away. Any bid will be
-									// closer.
+		double nearestUtil = 10.; // impossibly far away.
 		Bid nearestBid = null;
 		for (double util : goodBids.keySet()) {
 			double distance = Math.abs(targetUtil - util);
 			if (distance < nearestUtil) {
+				Bid bid = goodBids.get(util);
+				if (usedBids.contains(bid))
+					continue;
 				nearestUtil = distance;
-				nearestBid = goodBids.get(util);
+				nearestBid = bid;
 			}
 		}
 		return nearestBid;
