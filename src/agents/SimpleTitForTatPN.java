@@ -51,6 +51,11 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	@Override
+	public String getName() {
+		return "Simple Tit for Tat PN";
+	}
+
+	@Override
 	public void ReceiveMessage(Action opponentAction) {
 		if (opponentAction instanceof Offer) {
 			Bid bid = ((Offer) opponentAction).getBid();
