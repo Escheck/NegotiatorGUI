@@ -29,7 +29,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	// initialized when opponent makes first bid, or when we receive it from PN.
 	protected UtilitySpace otherUtilitySpace = null;
 
-	private Bid lastBid = null;
+	private Bid myLastBid = null;
 	private Bid lastOpponentBid = null;
 
 	/**
@@ -70,7 +70,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 			if (bid == null) {
 				return new Accept();
 			}
-			lastBid = bid;
+			myLastBid = bid;
 			usedBids.add(bid);
 			return new Offer(bid);
 		} catch (Exception e) {
@@ -88,8 +88,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	 * @throws Exception
 	 */
 	private Bid chooseAction1() throws Exception {
-		if (lastOpponentBid == null) {
-			// Other side did not yet place bid. we can only place our best bid.
+		if (lastOpponentBid == null || myLastBid == null) {
+			// First round. place our best bid.
 			return utilitySpace.getMaxUtilityBid();
 		}
 
@@ -117,7 +117,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		// #924 limit concession target (min. 0.6) and rate (max 0.1 per cycle).
 		targetUtil = Math.max(targetUtil, 0.6);
 		targetUtil = Math.max(targetUtil,
-				utilitySpace.getUtility(lastBid) - 0.1);
+				utilitySpace.getUtility(myLastBid) - 0.1);
 
 		Bid bid = getUnusedBidNearUtil(targetUtil);
 		double util = utilitySpace.getUtility(bid);
