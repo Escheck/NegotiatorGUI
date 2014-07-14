@@ -82,7 +82,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * get next bid. Returns null for accept.
+	 * get next bid. Returns null for accept. utilitySpace MUST have been set,
+	 * or we throw null pointer exception.
 	 * 
 	 * @return chosen bid, or null to accept last opponent bid.
 	 * @throws Exception
