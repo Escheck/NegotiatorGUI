@@ -12,7 +12,7 @@ public class DiscreteTimeline extends Timeline {
 	 * E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4 is the
 	 * deadline.
 	 */
-	private int cRound;
+	protected int cRound;
 
 	/**
 	 * Creates a timeline with a deadline of {@link #totalRounds} number of
