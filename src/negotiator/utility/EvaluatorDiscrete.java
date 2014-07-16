@@ -164,7 +164,10 @@ public class EvaluatorDiscrete implements Evaluator {
 	 *             if value is null.
 	 */
 	public Double getEvaluation(ValueDiscrete value) throws Exception {
-		return normalize(getValue(value));
+		if (getEvalMax() > 1.0) {
+			return normalize(getValue(value));
+		}
+		return getDoubleValue(value);
 	}
 
 	/**
