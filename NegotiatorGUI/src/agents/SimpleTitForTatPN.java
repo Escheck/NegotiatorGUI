@@ -99,8 +99,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 			// if we get here , we are running inside Genius.
 			// That means we have to fake otherUtilitySpace
 			try {
-				otherUtilitySpace = new OpponentUtilitySpace(utilitySpace,
-						lastOpponentBid);
+				otherUtilitySpace = new SimpleFakeOpponentUtilitySpace(
+						utilitySpace, lastOpponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -266,65 +266,4 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		goodBids.clear(); // we fill it lazily
 	}
 
-}
-
-/**
- * This fakes an opponent utility space. We assume :
- * <ul>
- * <li>his first bid is his best bid
- * <li>relative distances in our own bidspace are indicative of consessions of
- * the opponent.
- * <li>our own util space is varied enough regarding utilities, so that the
- * opponent has a chance to make different utilities in our space by changing
- * his bid
- * </ul>
- * 
- * Tech Note: UtilitySpace should be an interface but it is a class. This makes
- * the code here messy. We are not shielding out any original UtilitySpace code,
- * but it may crash as we don't initialize it.
- * 
- * @author W.Pasman
- * 
- */
-@SuppressWarnings("serial")
-class OpponentUtilitySpace extends UtilitySpace {
-	private final UtilitySpace ownSpace;
-	private final double firstOpponentBidUtility;
-
-	/**
-	 * 
-	 * @param us
-	 *            our OWN utilityspace (not the opponent's)
-	 * @param firstBid
-	 *            first opponent bid.
-	 * @throws Exception
-	 *             if we can't determine utility of firstBid
-	 */
-	public OpponentUtilitySpace(UtilitySpace us, Bid firstBid) throws Exception {
-		if (firstBid == null)
-			throw new NullPointerException("bid=null");
-
-		ownSpace = us;
-		firstOpponentBidUtility = ownSpace.getUtility(firstBid);
-	}
-
-	/**
-	 * Returns utility distance (absolute value) to the first bid.
-	 * 
-	 * @param b
-	 * @return (absolute) distance between given bid and first bid. Number in
-	 *         range [0,1].
-	 * @throws Exception
-	 */
-	private double distanceToFirstBid(Bid b) throws Exception {
-		return Math.abs(ownSpace.getUtility(b) - firstOpponentBidUtility);
-	}
-
-	/**
-	 * estimates utility of bid for the opponent.
-	 */
-
-	public double getUtility(Bid bid) throws Exception {
-		return 1.0 - distanceToFirstBid(bid);
-	}
 }

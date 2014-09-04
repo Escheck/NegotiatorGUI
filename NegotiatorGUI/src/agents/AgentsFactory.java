@@ -31,6 +31,7 @@ public class AgentsFactory {
 		add(SimpleAgentPN.class);
 		add(TimeDependentAgentConcederPN.class);
 		add(BayesianAgentPN.class);
+		add(DenizPN.class);
 
 		add(agents.anac.y2010.AgentFSEGA.AgentFSEGA.class);
 		add(agents.anac.y2010.AgentK.Agent_K.class);
