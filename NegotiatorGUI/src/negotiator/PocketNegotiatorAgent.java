@@ -30,7 +30,10 @@ public interface PocketNegotiatorAgent {
 	/**
 	 * initializes the agent, with suggestions for utility space for mySide and
 	 * otherSide. When this is called, the agent also knows that it is connected
-	 * with PN and not with Genius.
+	 * with PN and not with Genius. <br>
+	 * If used from PN, {@link Agent#init()} and
+	 * {@link Agent#internalInit(int, int, java.util.Date, Integer, Timeline, UtilitySpace, java.util.HashMap)}
+	 * are never called.
 	 * 
 	 * @param mySide
 	 * @param otherSide
