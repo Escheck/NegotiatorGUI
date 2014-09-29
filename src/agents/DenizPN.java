@@ -237,6 +237,13 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		return MyMoves.CONCEDE;
 	}
 
+	/**
+	 * Check if move is selfish
+	 * 
+	 * @param move
+	 *            the {@link MoveType} that was done. Can be null
+	 * @return true if move is selfish. Returns false if move=null.
+	 */
 	private boolean isSelfish(MoveType move) {
 		return move == MoveType.SELFISH || move == MoveType.SILENT;
 	}
@@ -301,12 +308,12 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * @return a bid that has highest similarity with given target bid. May
 	 *         return null if the given bids list is empty.
 	 */
-	private BidPoint getSmallestHamming(Set<BidPoint> bids, Bid lastopponentbid) {
+	private BidPoint getSmallestHamming(Set<BidPoint> bids, Bid targetbid) {
 		BidPoint bestBid = null;
 		double bestsimilarity = -1; // lower than worst similarity
 		for (BidPoint bidpoint : bids) {
 			double similarity = bidpoint.getBid()
-					.getSimilarity(lastopponentbid);
+					.getSimilarity(targetbid);
 			if (similarity > bestsimilarity) {
 				bestBid = bidpoint;
 				bestsimilarity = similarity;
