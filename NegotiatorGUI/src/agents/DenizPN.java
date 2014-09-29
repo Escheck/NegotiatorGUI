@@ -312,8 +312,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		BidPoint bestBid = null;
 		double bestsimilarity = -1; // lower than worst similarity
 		for (BidPoint bidpoint : bids) {
-			double similarity = bidpoint.getBid()
-					.getSimilarity(targetbid);
+			double similarity = bidpoint.getBid().getSimilarity(targetbid);
 			if (similarity > bestsimilarity) {
 				bestBid = bidpoint;
 				bestsimilarity = similarity;
@@ -384,18 +383,20 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	/**
 	 * computation of the bid for round j as in prop 4.3. Basically this
-	 * increases with each round, starting at 0.5 + reservation value.
+	 * increases with each round, starting at 0.5 + reservation value. This
+	 * means that when many rounds are left, we aim at a high utility, and then
+	 * lower our target utility when the number of rounds left decreases.
 	 * 
-	 * @param round
-	 *            j starting at round 1.
-	 * @return bid value is a target utility.
+	 * @param roundsLeft
+	 *            minimum = 1.
+	 * @return target utility for the given round.
 	 **/
 
-	private double bid(int j) {
-		if (j == 1)
+	private double bid(int roundsLeft) {
+		if (roundsLeft == 1)
 			return 0.5 + 0.5 * RESERVATION_VALUE;
 		else
-			return 0.5 + 0.5 * Math.pow(bid(j - 1), 2);
+			return 0.5 + 0.5 * Math.pow(bid(roundsLeft - 1), 2);
 	}
 
 }
