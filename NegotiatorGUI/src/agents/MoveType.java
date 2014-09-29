@@ -14,23 +14,26 @@ enum MoveType {
 	 * differences
 	 * 
 	 * @param deltaSelf
-	 *            the difference ownUtility(bid) - ownutility(previous bid)
+	 *            the change of the bid's utility in your own space the
+	 *            difference ownUtility(bid) - ownutility(previous bid)
 	 * @param deltaOther
-	 *            the difference otherUtility(bid) - otherutility(previous bid)
+	 *            the change of the bid's utility in the estimated other's
+	 *            space. the difference otherUtility(bid) -
+	 *            otherutility(previous bid)
 	 * @return the MoveType for the given set of delta's
 	 */
 	static MoveType getMoveType(double deltaSelf, double deltaOther) {
-		if (deltaSelf == 0 && deltaOther == 0)
+		if (deltaOther == 0 && deltaSelf == 0)
 			return SILENT;
-		if (deltaSelf == 0 && deltaOther > 0)
+		if (deltaOther == 0 && deltaSelf > 0)
 			return NICE;
-		if (deltaSelf <= 0 && deltaOther < 0)
+		if (deltaOther <= 0 && deltaSelf < 0)
 			return UNFORTUNATE;
-		if (deltaSelf < 0 && deltaOther >= 0)
+		if (deltaOther < 0 && deltaSelf >= 0)
 			return CONCESSION;
-		if (deltaSelf > 0 && deltaOther > 0)
+		if (deltaOther > 0 && deltaSelf > 0)
 			return FORTUNATE;
-		if (deltaSelf > 0 && deltaOther <= 0)
+		if (deltaOther > 0 && deltaSelf <= 0)
 			return SELFISH;
 
 		// It should not be possible to get here. All case are mathematically
