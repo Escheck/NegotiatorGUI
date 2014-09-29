@@ -362,7 +362,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	/**
 	 * The optimal bid is a bid on the pareto with a target utility
-	 * {@link #bid(remain)} where remain is the remaining turns for me.
+	 * {@link #targetUtil(remain)} where remain is the remaining turns for me.
 	 *
 	 */
 	private BidPoint getOptimalBid() {
@@ -377,7 +377,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private double getTargetUtility() {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		Double targetUtil = bid(roundsleft + 1);
+		Double targetUtil = targetUtil(roundsleft + 1);
 		return targetUtil;
 	}
 
@@ -392,11 +392,11 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * @return target utility for the given round.
 	 **/
 
-	private double bid(int roundsLeft) {
+	private double targetUtil(int roundsLeft) {
 		if (roundsLeft == 1)
 			return 0.5 + 0.5 * RESERVATION_VALUE;
 		else
-			return 0.5 + 0.5 * Math.pow(bid(roundsLeft - 1), 2);
+			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft - 1), 2);
 	}
 
 }
