@@ -469,7 +469,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (roundsleft < 0) {
 			roundsleft = 0;
 		}
-		return targetUtil(roundsleft + 1);
+		return targetUtil(roundsleft);
 	}
 
 	/**
@@ -479,15 +479,15 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * lower our target utility when the number of rounds left decreases.
 	 * 
 	 * @param roundsLeft
-	 *            minimum = 1.
+	 *            minimum = 0.
 	 * @return target utility for the given round.
 	 **/
 
 	private double targetUtil(int roundsLeft) {
-		if (roundsLeft == 1)
+		if (roundsLeft == 0)
 			return 0.5 + 0.5 * RESERVATION_VALUE;
 		else
-			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft - 1), 2);
+			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft), 2);
 	}
 
 }
