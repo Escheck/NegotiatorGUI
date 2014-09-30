@@ -39,10 +39,20 @@ public class HistorySpace {
 
 	}
 
+	/**
+	 * List of bids made by opponent so far.Last one in list = most recent.
+	 * 
+	 * @return
+	 */
 	public BidList getOpponentBids() {
 		return opponentBids;
 	}
 
+	/**
+	 * List of bids that I made so far. Last one in list = most recent.
+	 * 
+	 * @return
+	 */
 	public BidList getMyBids() {
 		return myBids;
 	}
@@ -94,8 +104,17 @@ public class HistorySpace {
 
 }
 
+/**
+ * Util class, basically just ArrayList<Bid> with some convenience functions for
+ * readability
+ */
 class BidList extends ArrayList<Bid> {
 
+	/**
+	 * Get last bid that was made
+	 * 
+	 * @return last {@link Bid}
+	 */
 	public Bid last() {
 		if (size() == 0) {
 			throw new IllegalStateException("no bids have been made yet");
@@ -104,9 +123,9 @@ class BidList extends ArrayList<Bid> {
 	}
 
 	/**
-	 * get second last bid from the list.
+	 * get second last bid that was made.
 	 * 
-	 * @return
+	 * @return second last {@link Bid}
 	 */
 	public Bid getSecondLast() {
 		return this.get(this.size() - 2);
