@@ -451,9 +451,11 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	/**
 	 * The optimal bid is a bid on the pareto with a target utility
 	 * {@link #targetUtil(remain)} where remain is the remaining turns for me.
+	 * 
+	 * @throws Exception
 	 *
 	 */
-	private BidPoint getOptimalBid() {
+	private BidPoint getOptimalBid() throws Exception {
 		return historySpace.getOutcomeSpace().getPareto()
 				.getBidNearMyUtility(getTargetUtility());
 	}
@@ -463,13 +465,16 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * to the minimum target util.
 	 * 
 	 * @return current targetutility.
+	 * @throws Exception
 	 */
-	private double getTargetUtility() {
+	private double getTargetUtility() throws Exception {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
 		if (roundsleft < 0) {
 			roundsleft = 0;
 		}
-		return targetUtil(roundsleft);
+		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
+		double maxutil = us.getUtility(us.getMaxUtilityBid());
+		return maxutil * targetUtil(roundsleft);
 	}
 
 	/**
