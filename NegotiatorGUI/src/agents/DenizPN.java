@@ -293,10 +293,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		// check opponent previous moves. See the table above.
 		MoveType move0 = historySpace.getMoveType(0);
 		if (isSelfish(move0)) {
-			if (isSelfish(historySpace.getMoveType(1))
-					|| historySpace.getMoveType(1) == MoveType.UNFORTUNATE) {
-				if (isSelfish(historySpace.getMoveType(2))
-						|| historySpace.getMoveType(2) == MoveType.UNFORTUNATE) {
+			if (isSelfishOrUnfortunate(historySpace.getMoveType(1))) {
+				if (isSelfishOrUnfortunate(historySpace.getMoveType(2))) {
 					return MyMoves.SAME;
 				}
 				// last 2 moves selfish, but before that not.
@@ -321,6 +319,18 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private boolean isSelfish(MoveType move) {
 		return move == MoveType.SELFISH || move == MoveType.SILENT;
+	}
+
+	/**
+	 * Check if move is selfish or unfortunate
+	 * 
+	 * @param move
+	 *            the {@link MoveType} that was done. Can be null
+	 * @return true if move is selfish. Returns false if move=null.
+	 */
+	private boolean isSelfishOrUnfortunate(MoveType move) {
+		return move == MoveType.SELFISH || move == MoveType.SILENT
+				|| move == MoveType.UNFORTUNATE;
 	}
 
 	/**
