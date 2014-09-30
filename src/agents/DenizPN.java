@@ -294,7 +294,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		MoveType move0 = historySpace.getMoveType(0);
 		if (isSelfish(move0)) {
 			if (isSelfish(historySpace.getMoveType(1))
-					|| historySpace.getMoveType(2) == MoveType.UNFORTUNATE) {
+					|| historySpace.getMoveType(1) == MoveType.UNFORTUNATE) {
 				if (isSelfish(historySpace.getMoveType(2))
 						|| historySpace.getMoveType(2) == MoveType.UNFORTUNATE) {
 					return MyMoves.SAME;
