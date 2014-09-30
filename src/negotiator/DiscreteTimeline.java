@@ -6,11 +6,16 @@ package negotiator;
  * undefined.
  */
 public class DiscreteTimeline extends Timeline {
-	/** With 3 rounds, this is set to 4. */
+	/**
+	 * Total number of rounds +1. With 3 rounds, this is set to 4. DOC: This is
+	 * HACK: it is because it 'makes more sense to add one, as in this case
+	 * "totalrounds" is still before the deadline as the deadline is on time >=
+	 * 1.0'
+	 */
 	private int totalRounds;
 	/**
-	 * E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4 is the
-	 * deadline.
+	 * Current round. E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4
+	 * is the deadline.
 	 */
 	protected int cRound;
 
@@ -63,6 +68,12 @@ public class DiscreteTimeline extends Timeline {
 		return t;
 	}
 
+	/**
+	 * go to next round. <br>
+	 * <b>WARNING</b> increment does not check against the upper limit
+	 * {@link #totalRounds}. Therefore, it can become more than the total roudns
+	 * available.
+	 */
 	public void increment() {
 		cRound++;
 	}
@@ -91,17 +102,26 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * Starting to count from 1, until the total amount of rounds.
+	 * <b>WARNING</b> this can return numbers > {@link #totalRounds} as well.
 	 */
 	public int getRound() {
 		return cRound;
 	}
 
+	/**
+	 * 
+	 * @return rounds left. Can return value <0 if {@link #cRound} >=
+	 *         {@link #totalRounds}.
+	 */
 	public int getRoundsLeft() {
 		return totalRounds - cRound - 1;
 	}
 
 	/**
-	 * Be careful, this is not equal to the initializing value!
+	 * get total number of rounds +1 Be careful, this is actually the
+	 * totalRounds+1!
+	 *
+	 * @return total rounds +1.
 	 */
 	public int getTotalRounds() {
 		return totalRounds;
