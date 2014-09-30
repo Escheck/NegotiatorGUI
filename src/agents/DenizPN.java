@@ -1,5 +1,6 @@
 package agents;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import negotiator.Agent;
@@ -327,8 +328,9 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * return the one with the highest our-utility
 	 * 
 	 * @return concession, accept or paretoprojected opponent bid.
+	 * @throws Exception
 	 */
-	private BidPoint getConcedeOrPareto() {
+	private BidPoint getConcedeOrPareto() throws Exception {
 		return bestBid(projectOtherBidToPareto(), getConcessionBid());
 	}
 
@@ -358,17 +360,39 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * in the neighbourhood that has a minimal hamming distance with the
 	 * opponent's last bid.
 	 * 
-	 * <h1>Assumes</h1> that opponent did place at least one bid.
+	 * <h1>Assumes</h1>
+	 * <ul>
+	 * <li>both sides places at least one bid.
+	 * </ul>
 	 * 
-	 * @return concession bid according to {@link OptimalBidder}.
+	 * @return concession bid according to {@link OptimalBidder}. Theoretically
+	 *         should not return null. Might return null in theory. if there is
+	 *         no bid near the current targetUtility that has at least the same
+	 *         utility as our previous bid. But that would be weird under the
+	 *         assumption that the pareto is monotonically decreasing (lower
+	 *         utility for us should give higher or equal utility for other).
 	 * @throws Exception
 	 */
-	private BidPoint getConcessionBid() {
+	private BidPoint getConcessionBid() throws Exception {
 		BidPoint optimalbid = getOptimalBid();
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
+
 		Set<BidPoint> nearoptimalbids = historySpace.getOutcomeSpace()
 				.getNearUtility(optimalbid, 0.05);
-		return getSmallestHamming(nearoptimalbids, lastopponentbid);
+
+		Bid myPreviousBid = historySpace.getMyBids().last();
+
+		// #951 concession: keep only bids that have opp util >= previous bid
+		double myPreviousBidOppUtil = historySpace.getOutcomeSpace()
+				.getOpponentUtilitySpace().getUtility(myPreviousBid);
+		Set<BidPoint> nearoptimalconcessions = new HashSet<BidPoint>();
+		for (BidPoint bid : nearoptimalbids) {
+			if (bid.getUtilityB() >= myPreviousBidOppUtil) {
+				nearoptimalconcessions.add(bid);
+			}
+		}
+
+		return getSmallestHamming(nearoptimalconcessions, lastopponentbid);
 	}
 
 	/**
@@ -420,16 +444,6 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private boolean isBetter(BidPoint point1, BidPoint point2) {
 		return point1.getUtilityA() >= point2.getUtilityA();
-	}
-
-	/**
-	 * Create a bid point for a given bid
-	 * 
-	 * @param bid
-	 * @return {@link BidPoint}.
-	 */
-	private BidPoint bidPoint(Bid bid) {
-		return historySpace.getOutcomeSpace().bidPoint(bid);
 	}
 
 	/****************** OptimalBidder code *************/
