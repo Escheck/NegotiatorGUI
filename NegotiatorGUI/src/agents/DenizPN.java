@@ -9,6 +9,7 @@ import negotiator.PocketNegotiatorAgent;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.utility.UtilitySpace;
@@ -39,7 +40,9 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		/** repeat our last bid */
 		SAME,
 		/** a bid with same utils as our last bid, but different */
-		SILENT
+		SILENT,
+		/** stop the negotiation. */
+		STOP
 	};
 
 	HistorySpace historySpace = new HistorySpace();
@@ -67,6 +70,16 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 			UtilitySpace opponentUtilities) {
 		utilitySpace = myUtilities; // keep Agent happy... For Genius
 		historySpace.setUtilities(myUtilities, opponentUtilities);
+
+		/*
+		 * DEBUG: print out the bid space System.out.println("udpate profiles");
+		 * BidIterator it = new BidIterator(myUtilities.getDomain()); try {
+		 * while (it.hasNext()) { Bid bid = it.next(); System.out.println("" +
+		 * bid + " " + myUtilities.getUtility(bid) + " " +
+		 * opponentUtilities.getUtility(bid));
+		 * 
+		 * } } catch (Exception e) { e.printStackTrace(); }
+		 */
 	}
 
 	/**************** extends Agent *******************/
@@ -106,21 +119,17 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	public Action chooseAction() {
 		/**
 		 * default action. Also returned if exception occurs. Notice, that may
-		 * be a protocol error but what else can we do?
+		 * be a protocol error but what else can we do? seems worse than Accept.
 		 */
-
 		Action action = new Accept();
 
 		try {
-			Bid bid = chooseAction1();
-			Bid effectiveBid;
-			if (bid != null) {
-				action = new Offer(bid);
-				effectiveBid = bid;
-			} else {
-				effectiveBid = historySpace.getOpponentBids().last();
+			action = chooseAction1();
+
+			Bid effectiveBid = getEffectiveBid(action);
+			if (effectiveBid != null) {
+				historySpace.getMyBids().add(effectiveBid);
 			}
-			historySpace.getMyBids().add(effectiveBid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -129,73 +138,125 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * get next bid. Returns null for accept. returns max util bid if
-	 * historySpace null (which can happen if running from Genius and opponent
-	 * did not yet place bid) or if we did not yet place initial bid.
+	 * get the 'effective bid' of an action. For an offer, the effective bid is
+	 * the bid contained in the offer. For an accept, it is the opponent's last
+	 * bid. For a endnegotiation, we return null.
 	 * 
-	 * @return chosen bid, or null to accept last opponent bid.
+	 * Throws exception if action is accept and opponent made no bid yet.
+	 * 
+	 * @param action
+	 */
+	private Bid getEffectiveBid(Action action) {
+		if (action instanceof Offer) {
+			return ((Offer) action).getBid();
+		} else if (action instanceof Accept) {
+			return historySpace.getOpponentBids().last();
+		}
+		return null;
+	}
+
+	/**
+	 * get next bid. returns offer with max util bid if historySpace null (which
+	 * can happen if running from Genius and opponent did not yet place bid) or
+	 * if we did not yet place initial bid.
+	 * 
+	 * @return chosen bid, Accept or Stop..
 	 * @throws Exception
 	 *             if fatal problem occurs somewhere in our code.
 	 */
-	private Bid chooseAction1() throws Exception {
-		BidPoint myNextBid = null;
+	private Action chooseAction1() throws Exception {
 
 		if (historySpace.getOpponentBids().isEmpty()
 				|| historySpace.getMyBids().isEmpty()) {
 			// First round. place our best bid
-			return utilitySpace.getMaxUtilityBid();
+			return new Offer(utilitySpace.getMaxUtilityBid());
 		}
 
 		// below this point, both sides did initial bid
-		switch (determineMyMove()) {
+		Action myNextAction;
+		switch (checkDeadlineAndDetermineMyMove()) {
 		case CONCEDE:
-			myNextBid = getConcessionBid();
+			myNextAction = new Offer(getConcessionBid().getBid());
 			break;
 		case CONCEDE_OR_PARETO:
-			myNextBid = getConcedeOrPareto();
+			myNextAction = new Offer(getConcedeOrPareto().getBid());
 			break;
 		case SAME:
-			myNextBid = bidPoint(historySpace.getMyBids().last());
+			myNextAction = new Offer(historySpace.getMyBids().last());
 			break;
 		case SILENT:
-			myNextBid = bidPoint(historySpace.getSilentBid());
+			myNextAction = new Offer(historySpace.getSilentBid());
 			break;
+		case STOP:
+			myNextAction = new EndNegotiation();
+			break;
+		default:
+			throw new IllegalStateException("internal error, unknown move");
 		}
 
-		if (acceptOpponentBid(myNextBid)) {
-			return null;
+		if (isAcceptBetter(myNextAction)) {
+			return new Accept();
 		}
 
-		return myNextBid.getBid();
+		return myNextAction;
 	}
 
 	/**
-	 * Checks if we should accept opponent's last bid.
+	 * Checks if accepting opponent's last bid has higher util than doing
+	 * #mynextaction.
 	 * 
-	 * @param mynextbid
+	 * @param mynextaction
 	 *            the next bid that WE will place, if we do not accept the
 	 *            opponents bid.
 	 * 
-	 * @return true if bid=null, if the opponent's last bid is better than
-	 *         mynextbid, or if the opponent's last bid has utility > current
+	 * @return true if the opponent's last bid is better than mynextaction
+	 *         effectivebid, or if the opponent's last bid has utility > current
 	 *         target utility (see {@link #getTargetUtility()}.
 	 * @throws Exception
+	 *             if opp did not make a bid.
 	 */
-	private boolean acceptOpponentBid(BidPoint mynextbid) throws Exception {
-		if (mynextbid == null) {
-			return true;
-		}
+	private boolean isAcceptBetter(Action mynextaction) throws Exception {
+		// first check if opponent's last bid was good.
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
 		double lastutil = historySpace.getOutcomeSpace().getMyUtilitySpace()
 				.getUtility(lastopponentbid);
-		if (mynextbid.getUtilityA() < lastutil) {
-			return true;
+
+		if (lastutil < RESERVATION_VALUE) {
+			return false;
 		}
-		if (lastutil > getTargetUtility()) {
+
+		if (lastutil >= getTargetUtility()) {
 			return true;
 		}
 
-		return false;
+		// check if accept is better than our next action.
+		Bid mynextbid = getEffectiveBid(mynextaction);
+		if (mynextbid == null) { // we want to stop the nego
+			return false;
+		}
+
+		double mynextbidutility = historySpace.getOutcomeSpace()
+				.getMyUtilitySpace().getUtility(mynextbid);
+
+		// suggest accept if it has higher util than our current action.
+		return mynextbidutility < lastutil;
+	}
+
+	/**
+	 * Check the deadline. If across, do {@link MyMoves#SILENT} or
+	 * {@link MyMoves#STOP}. If not, return a move according to the table.
+	 * 
+	 * @return next planned move.
+	 */
+	private MyMoves checkDeadlineAndDetermineMyMove() {
+		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+		if (roundsleft < 0) {
+			if (roundsleft < -3) {
+				return MyMoves.STOP;
+			}
+			return MyMoves.SILENT;
+		}
+		return determineMyMove();
 	}
 
 	/**
@@ -203,7 +264,9 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * the opponent's moves. Actually we are using a reversed version of the
 	 * table (columns are the opponent moves: his current, one back and two
 	 * back) and after the arrow it's the move that we decide to do: {self means
-	 * selfish or silent; nonself means any other}
+	 * selfish or silent; nonself means any other}.
+	 * 
+	 * 
 	 * <ol>
 	 * <li>self , self , self -> SAME
 	 * <li>self, self, nonself -> CONCEDE_OR_ACCEPT
@@ -211,8 +274,17 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * <li>nice/concession/fortunate -> CONCEDE_OR_ACCEPT
 	 * <li>unfortunate -> PARETO_OR_CONCEDE_OR_ACCEPT
 	 * </ol>
-	 * Assumes that we did one offer and the other side did already 2 offers at
-	 * least.
+	 * 
+	 * <br>
+	 * This code does not check against the possibility to accept. This is
+	 * because this code does not compute the effective offer, it only suggests
+	 * to do eg a concession.
+	 * 
+	 * Assumptions:
+	 * <ul>
+	 * <li>we did one offer and the other side did already 2 offers at least.
+	 * <li>we are still before the deadline.
+	 * </ul>
 	 * 
 	 * @return
 	 */
@@ -220,8 +292,10 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		// check opponent previous moves. See the table above.
 		MoveType move0 = historySpace.getMoveType(0);
 		if (isSelfish(move0)) {
-			if (isSelfish(historySpace.getMoveType(1))) {
-				if (isSelfish(historySpace.getMoveType(2))) {
+			if (isSelfish(historySpace.getMoveType(1))
+					|| historySpace.getMoveType(2) == MoveType.UNFORTUNATE) {
+				if (isSelfish(historySpace.getMoveType(2))
+						|| historySpace.getMoveType(2) == MoveType.UNFORTUNATE) {
 					return MyMoves.SAME;
 				}
 				// last 2 moves selfish, but before that not.
@@ -371,14 +445,17 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * Target utility that we want right now.
+	 * Target utility that we want right now. if we are past deadline, we stick
+	 * to the minimum target util.
 	 * 
 	 * @return current targetutility.
 	 */
 	private double getTargetUtility() {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		Double targetUtil = targetUtil(roundsleft + 1);
-		return targetUtil;
+		if (roundsleft < 0) {
+			roundsleft = 0;
+		}
+		return targetUtil(roundsleft + 1);
 	}
 
 	/**
