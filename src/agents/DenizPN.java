@@ -487,7 +487,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (roundsLeft == 0)
 			return 0.5 + 0.5 * RESERVATION_VALUE;
 		else
-			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft), 2);
+			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft - 1), 2);
 	}
 
 }
