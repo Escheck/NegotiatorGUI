@@ -110,8 +110,10 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * 
-	 * @return rounds left. Can return value <0 if {@link #cRound} >=
-	 *         {@link #totalRounds}.
+	 * @return rounds left (after the current round). For example, if we are in
+	 *         first round (round 1) and there is 2 rounds in total, this
+	 *         returns 1. If we are in round 2 it then returns 0. Can return
+	 *         value <0 if {@link #cRound} >= {@link #totalRounds}.
 	 */
 	public int getRoundsLeft() {
 		return totalRounds - cRound - 1;
@@ -136,7 +138,9 @@ public class DiscreteTimeline extends Timeline {
 	}
 
 	/**
-	 * The number of rounds left for ourself.
+	 * The number of rounds left for ourself. This is half of the total number
+	 * of rounds left. <b>WARNING</b>: may return negative values if we pass
+	 * beyond the total number of planned rounds.
 	 */
 	public int getOwnRoundsLeft() {
 		return (int) Math.floor(getRoundsLeft() / 2);
