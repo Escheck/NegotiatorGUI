@@ -89,10 +89,6 @@ public class SimpleBidSpace {
 	 * it. SortedOutcomeSpace does not help here because it sorts only in 1
 	 * dimension and can not return a 2-D closest point.
 	 * 
-	 * 
-	 * FIXME use maximum distance 0.05 use getNearUtility and take random one
-	 * from that set different from previous bid.
-	 * 
 	 * @param last
 	 * @return bid similar to given bid but not equal, unless there is no nearby
 	 *         other point. This bid may not lie on the pareto.
@@ -106,7 +102,8 @@ public class SimpleBidSpace {
 		}
 		// pick random
 		ArrayList<BidPoint> nearbylist = new ArrayList<BidPoint>(nearby);
-		return nearbylist.get((int) Math.random() * nearbylist.size()).getBid();
+		return nearbylist.get((int) (Math.random() * nearbylist.size()))
+				.getBid();
 	}
 
 	/**
