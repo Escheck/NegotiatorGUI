@@ -134,7 +134,9 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * The total number of rounds for ourself. Be careful, this is not equal to
-	 * the initializing value!
+	 * the initializing value! <b>WARNING</b>:: gives incorrect value if odd
+	 * number of rounds remaining.
+	 * 
 	 */
 	public int getOwnTotalRounds() {
 		return (int) Math.floor(getTotalRounds() / 2);
@@ -143,7 +145,8 @@ public class DiscreteTimeline extends Timeline {
 	/**
 	 * The number of rounds left for ourself. This is half of the total number
 	 * of rounds left. <b>WARNING</b>: may return negative values if we pass
-	 * beyond the total number of planned rounds.
+	 * beyond the total number of planned rounds. <b>WARNING</b>: gives
+	 * incorrect value if odd number of rounds remaining.
 	 */
 	public int getOwnRoundsLeft() {
 		return (int) Math.floor(getRoundsLeft() / 2);
