@@ -1,6 +1,9 @@
 package negotiator;
 
+import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
+import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -54,7 +57,10 @@ public interface PocketNegotiatorAgent {
 	/**
 	 * ask the agent for its next action.
 	 * 
-	 * @return next Action
+	 * @return next {@link Action}. Currently PocketNegotiator does only support
+	 *         a subset of Genius agents: {@link Offer}, {@link Accept} and
+	 *         {@link EndNegotiation}. Returning another action will cause an
+	 *         exception in the PocketNegotiator core.
 	 */
 	public Action getAction();
 
