@@ -113,10 +113,9 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * 
-	 * @return rounds left. decreases with every turn. If down to 1, it means
-	 *         that this is the last round (turn). If 0 or smaller, it means
-	 *         that the deadline has been passed already (if {@link #cRound} >=
-	 *         {@link #totalRounds}).
+	 * @return rounds left. Decreases with every turn. If down to 0, it means
+	 *         that this is the last round (turn). If < 0, it means that the
+	 *         deadline has been passed already.
 	 */
 	public int getRoundsLeft() {
 		return totalRounds - cRound - 1;
@@ -144,9 +143,8 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * The number of rounds left for ourself. This is half of the total number
-	 * of rounds left. <b>WARNING</b>: may return negative values if we pass
-	 * beyond the total number of planned rounds. <b>WARNING</b>: gives
-	 * incorrect value if odd number of rounds remaining.
+	 * of rounds left. In the last round, this is 0. <b>WARNING</b>: may return
+	 * negative values if we pass beyond the total number of planned rounds.
 	 */
 	public int getOwnRoundsLeft() {
 		return (int) Math.floor(getRoundsLeft() / 2);
