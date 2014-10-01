@@ -251,8 +251,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private MyMoves checkDeadlineAndDetermineMyMove() {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		if (roundsleft <= 0) { // pass the deadline?
-			if (roundsleft <= -3) { // pass the extra-time?
+		if (roundsleft < 0) { // pass the deadline?
+			if (roundsleft < -3) { // pass the extra-time?
 				return MyMoves.STOP;
 			}
 			return MyMoves.SILENT;
@@ -478,31 +478,37 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * @throws Exception
 	 */
 	private double getTargetUtility() throws Exception {
-		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		if (roundsleft <= 1) {
-			roundsleft = 1;
+		int turnsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+		if (turnsleft < 0) {
+			turnsleft = 0;
 		}
 		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
-		return maxutil * targetUtil(roundsleft - 1);
+		return maxutil * targetUtil(turnsleft);
 	}
 
 	/**
 	 * computation of the bid for round j as in prop 4.3. Basically this
-	 * increases with each round, starting at 0.5 + reservation value. This
+	 * increases with each round, starting at 0.5 + 0.5*reservation value. This
 	 * means that when many rounds are left, we aim at a high utility, and then
-	 * lower our target utility when the number of rounds left decreases.
+	 * lower our target utility when the number of rounds left decreases. <br>
+	 * Discussed with Tim why the target utility is not
+	 * {@link #RESERVATION_VALUE} when turnsLeft=0. This is because you never
+	 * want to go all the way down to your reservation value when bidding and is
+	 * intended this way. This targetUtil function is used to make concessions,
+	 * not for acceptance strategy. For accepting, we may still accept at the
+	 * {@link #RESERVATION_VALUE}.
 	 * 
-	 * @param roundsLeft
+	 * @param turnsLeft
 	 *            minimum = 0.
 	 * @return target utility for the given round.
 	 **/
 
-	private double targetUtil(int roundsLeft) {
-		if (roundsLeft == 0)
+	private double targetUtil(int turnsLeft) {
+		if (turnsLeft == 0)
 			return 0.5 + 0.5 * RESERVATION_VALUE;
 		else
-			return 0.5 + 0.5 * Math.pow(targetUtil(roundsLeft - 1), 2);
+			return 0.5 + 0.5 * Math.pow(targetUtil(turnsLeft - 1), 2);
 	}
 
 }
