@@ -251,8 +251,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private MyMoves checkDeadlineAndDetermineMyMove() {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		if (roundsleft < 0) {
-			if (roundsleft < -3) {
+		if (roundsleft <= 0) { // pass the deadline?
+			if (roundsleft <= -3) { // pass the extra-time?
 				return MyMoves.STOP;
 			}
 			return MyMoves.SILENT;
@@ -479,12 +479,12 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private double getTargetUtility() throws Exception {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
-		if (roundsleft < 0) {
-			roundsleft = 0;
+		if (roundsleft <= 1) {
+			roundsleft = 1;
 		}
 		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
-		return maxutil * targetUtil(roundsleft);
+		return maxutil * targetUtil(roundsleft - 1);
 	}
 
 	/**

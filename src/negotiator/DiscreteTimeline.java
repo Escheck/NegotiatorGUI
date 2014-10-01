@@ -113,10 +113,10 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * 
-	 * @return rounds left (after the current round). For example, if we are in
-	 *         first round (round 1) and there is 2 rounds in total, this
-	 *         returns 1. If we are in round 2 it then returns 0. Can return
-	 *         value <0 if {@link #cRound} >= {@link #totalRounds}.
+	 * @return rounds left. decreases with every turn. If down to 1, it means
+	 *         that this is the last round (turn). If 0 or smaller, it means
+	 *         that the deadline has been passed already (if {@link #cRound} >=
+	 *         {@link #totalRounds}).
 	 */
 	public int getRoundsLeft() {
 		return totalRounds - cRound - 1;
