@@ -12,7 +12,7 @@ import negotiator.utility.UtilitySpace;
  * Agents in PocketNegotiator run on the server, in parallel with other threads
  * that may run the same agent. To be compatible, agents need to be
  * <ul>
- * <li>thread safe
+ * <li>thread safe (maybe not, I'm not exactly sure how TomCat handles this)
  * <li>run efficient in multi-threading situations.
  * <li>should not attempt to do actions that violate security restrictions in a
  * Tomcat HttpServlet. eg, read or write files
