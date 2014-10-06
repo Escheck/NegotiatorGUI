@@ -374,23 +374,26 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * Tries to concede. The starting point is a bid from the optimalbidding
-	 * strategy. But instead of using that right away, we search around to find
-	 * some other bidpoints close to that optimal bidpoint. We pick the bid that
-	 * in the neighbourhood that has a minimal hamming distance with the
-	 * opponent's last bid.
+	 * Tries to find a concession bid. A concession is a bid that has higher
+	 * opponent utility than our previous bid. The starting point is a bid from
+	 * the optimalbidding strategy. But instead of using that right away, we
+	 * search around to find some other bidpoints close to that optimal
+	 * bidpoint. We pick the bid that in the neighbourhood that has a minimal
+	 * hamming distance with the opponent's last bid. <br>
+	 * If there are no nearby concessions at all, this function may return the
+	 * previous bid. Although the pareto is monotonically decreasing (increasing
+	 * own utility gives lower other utility), it may be <b>stable</b> around
+	 * some own-utility. If this happens, this function may not be able to find
+	 * a strict concession. #959. If this happens, this function returns the bid
+	 * with the same utility as the last bid.
+	 * 
 	 * 
 	 * <h1>Assumes</h1>
 	 * <ul>
-	 * <li>both sides places at least one bid.
+	 * <li>both sides placed at least one bid.
 	 * </ul>
 	 * 
-	 * @return concession bid according to {@link OptimalBidder}. Theoretically
-	 *         should not return null. Might return null in theory. if there is
-	 *         no bid near the current targetUtility that has at least the same
-	 *         utility as our previous bid. But that would be weird under the
-	 *         assumption that the pareto is monotonically decreasing (lower
-	 *         utility for us should give higher or equal utility for other).
+	 * @return concession bid according to {@link OptimalBidder}.
 	 * @throws Exception
 	 */
 	private BidPoint getConcessionBid() throws Exception {
@@ -402,14 +405,21 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 		Bid myPreviousBid = historySpace.getMyBids().last();
 
-		// #951 concession: keep only bids that have opp util >= previous bid
 		double myPreviousBidOppUtil = historySpace.getOutcomeSpace()
 				.getOpponentUtilitySpace().getUtility(myPreviousBid);
 		Set<BidPoint> nearoptimalconcessions = new HashSet<BidPoint>();
+
+		// #951 concession: keep only bids that have opp util > previous bid
 		for (BidPoint bid : nearoptimalbids) {
 			if (bid.getUtilityB() > myPreviousBidOppUtil) {
 				nearoptimalconcessions.add(bid);
 			}
+		}
+
+		if (nearoptimalconcessions.isEmpty()) {
+			// if there are no concessions at all, this may be a flat piece on
+			// the pareto. As a workaround return the last bid #959
+			return new BidPoint(myPreviousBid);
 		}
 
 		return getSmallestHamming(nearoptimalconcessions, lastopponentbid);
