@@ -16,8 +16,10 @@ import negotiator.analysis.BidPoint;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Agent proposed by Reynan #944. Notice, this agent only works with a
- * {@link DiscreteTimeline} just like the {@link OptimalBidder}.
+ * Agent proposed by Reyhan Aydogan #944 , conform the 'optimal bidder' agent by
+ * Tim Baarslag but fitted to the needs of PocketNegotiator. Designed for use
+ * both as opponent agent and as suggest-a-bid-agent. Notice, this agent only
+ * works with a {@link DiscreteTimeline} just like the {@link OptimalBidder}.
  * 
  * @author W.Pasman 2sep2014
  * 
@@ -106,6 +108,14 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		}
 	}
 
+	/**
+	 * Save the bid in the history. If this is the first bid and we are running
+	 * in Genius, we use this bid to estimate the opponent's utility space in a
+	 * simplistic way.
+	 * 
+	 * @param bid
+	 * @throws Exception
+	 */
 	private void receiveMessage1(Bid bid) throws Exception {
 		historySpace.getOpponentBids().add(bid);
 
@@ -489,10 +499,14 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	/**
 	 * computation of the bid for round j as in prop 4.3. Basically this
-	 * increases with each round, starting at 0.5 + 0.5*reservation value. This
-	 * means that when many rounds are left, we aim at a high utility, and then
-	 * lower our target utility when the number of rounds left decreases. <br>
-	 * Discussed with Tim why the target utility is not
+	 * increases with increasing number of remaining rounds. When many rounds
+	 * are left, target utility=1. When no rounds are left, this decreases to
+	 * 0.5 + 0.5*reservation value. <br>
+	 * <b>WARNING</b>this is the unscaled utility. If the utility range is not
+	 * entirely [0,1], a scaling function applies #957, see also
+	 * {@link #getTargetUtility()}.
+	 * 
+	 * <h1>Discussion</h1> Tim explained why the target utility is not
 	 * {@link #RESERVATION_VALUE} when turnsLeft=0. This is because you never
 	 * want to go all the way down to your reservation value when bidding and is
 	 * intended this way. This targetUtil function is used to make concessions,
