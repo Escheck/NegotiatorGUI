@@ -407,7 +407,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 				.getOpponentUtilitySpace().getUtility(myPreviousBid);
 		Set<BidPoint> nearoptimalconcessions = new HashSet<BidPoint>();
 		for (BidPoint bid : nearoptimalbids) {
-			if (bid.getUtilityB() >= myPreviousBidOppUtil) {
+			if (bid.getUtilityB() > myPreviousBidOppUtil) {
 				nearoptimalconcessions.add(bid);
 			}
 		}
