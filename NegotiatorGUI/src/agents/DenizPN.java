@@ -419,7 +419,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (nearoptimalconcessions.isEmpty()) {
 			// if there are no concessions at all, this may be a flat piece on
 			// the pareto. As a workaround return the last bid #959
-			return new BidPoint(myPreviousBid);
+			return historySpace.getOutcomeSpace().bidPoint(myPreviousBid);
 		}
 
 		return getSmallestHamming(nearoptimalconcessions, lastopponentbid);
