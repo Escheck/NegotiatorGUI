@@ -402,7 +402,12 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 		Set<BidPoint> concessions = historySpace.getOutcomeSpace()
 				.getBetweenUtility(targetUtility, prevBidUtility,
-						prevBidOppUtility);
+						prevBidOppUtility, false);
+		if (concessions.isEmpty()) {
+			// note, this may give multiple bids still.
+			concessions = historySpace.getOutcomeSpace().getBetweenUtility(
+					targetUtility, prevBidUtility, prevBidOppUtility, true);
+		}
 
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
 
