@@ -156,13 +156,16 @@ public class SimpleBidSpace {
 	 *            the max utility for us
 	 * @param minopputil
 	 *            the min opponent utility
+	 * @param includeMax
+	 *            set this true to include the maxutil to the search. If set to
+	 *            false, we search for strictly smaller than maxutil.
 	 * 
 	 * @return set of {@link BidPoint}s that are inside the given boundaries. If
 	 *         the limits are set using known bids, this set should never be
 	 *         empty.
 	 */
 	public Set<BidPoint> getBetweenUtility(double minutil, double maxutil,
-			double minopputil) {
+			double minopputil, boolean includeMax) {
 		if (minutil > maxutil) {
 			throw new IllegalArgumentException("min > max");
 		}
@@ -174,7 +177,8 @@ public class SimpleBidSpace {
 
 			if (bidpoint.getUtilityB() >= minopputil
 					&& bidpoint.getUtilityA() >= minutil
-					&& bidpoint.getUtilityA() <= maxutil) {
+					&& (includeMax ? bidpoint.getUtilityA() <= maxutil
+							: bidpoint.getUtilityA() < maxutil)) {
 				filtered.add(bidpoint);
 			}
 		}
