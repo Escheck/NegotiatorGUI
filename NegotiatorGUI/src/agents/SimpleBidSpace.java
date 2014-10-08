@@ -145,4 +145,37 @@ public class SimpleBidSpace {
 
 		return similarbids;
 	}
+
+	/**
+	 * Get all bids with opponent utility >= minopputil, and with a utility for
+	 * us in the range [minutil, maxutil].
+	 * 
+	 * @param minutil
+	 *            the min utility for us
+	 * @param maxutil
+	 *            the max utility for us
+	 * @param minopputil
+	 *            the min opponent utility
+	 * 
+	 * @return set of {@link BidPoint}s that are inside the given boundaries. If
+	 *         the limits are set using known bids, this set should never be
+	 *         empty.
+	 */
+	public Set<BidPoint> getBetweenUtility(double minutil, double maxutil,
+			double minopputil) {
+		HashSet<BidPoint> filtered = new BidPointSpace();
+		BidIterator bids = new BidIterator(mySpace.getDomain());
+
+		while (bids.hasNext()) {
+			BidPoint bidpoint = bidPoint(bids.next());
+
+			if (bidpoint.getUtilityB() >= minopputil
+					&& bidpoint.getUtilityA() >= minutil
+					&& bidpoint.getUtilityA() <= maxutil) {
+				filtered.add(bidpoint);
+			}
+		}
+
+		return filtered;
+	}
 }
