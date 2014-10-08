@@ -1,6 +1,5 @@
 package agents;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import negotiator.Agent;
@@ -21,7 +20,8 @@ import negotiator.utility.UtilitySpace;
  * both as opponent agent and as suggest-a-bid-agent. Notice, this agent only
  * works with a {@link DiscreteTimeline} just like the {@link OptimalBidder}.
  * 
- * @author W.Pasman 2sep2014
+ * @author W.Pasman 2sep2014.
+ * @modified W.Pasman 8oct2014 new concession procedure see Deniz documentation
  * 
  */
 public class DenizPN extends Agent implements PocketNegotiatorAgent {
@@ -374,55 +374,39 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
-	 * Tries to find a concession bid. A concession is a bid that has higher
-	 * opponent utility than our previous bid. The starting point is a bid from
-	 * the optimalbidding strategy. But instead of using that right away, we
-	 * search around to find some other bidpoints close to that optimal
-	 * bidpoint. We pick the bid that in the neighbourhood that has a minimal
-	 * hamming distance with the opponent's last bid. <br>
-	 * If there are no nearby concessions at all, this function may return the
-	 * previous bid. Although the pareto is monotonically decreasing (increasing
-	 * own utility gives lower other utility), it may be <b>stable</b> around
-	 * some own-utility. If this happens, this function may not be able to find
-	 * a strict concession. #959. If this happens, this function returns the bid
-	 * with the same utility as the last bid.
-	 * 
+	 * Tries to find a concession bid. A concession is a bid that has higher or
+	 * equal opponent utility than our previous bid. The starting point is a bid
+	 * from the optimalbidding strategy (see {@link OptimalBidder}). But instead
+	 * of using that right away, we pick the bid that in the neighbourhood that
+	 * has a minimal hamming distance with the opponent's last bid. <br>
+	 * The 'neighbourhood' is all the concessions with a utility for ourself
+	 * between our current optimal bid and our previous bid. <br>
+	 * If there are no concessions at all in this neighbourhood, this function
+	 * may return the previous bid.
 	 * 
 	 * <h1>Assumes</h1>
 	 * <ul>
 	 * <li>both sides placed at least one bid.
 	 * </ul>
 	 * 
-	 * @return concession bid according to {@link OptimalBidder}.
+	 * @return concession bid
 	 * @throws Exception
 	 */
 	private BidPoint getConcessionBid() throws Exception {
-		BidPoint optimalbid = getOptimalBid();
+		double targetUtility = getTargetUtility();
+		Bid prevBid = historySpace.getMyBids().last();
+		double prevBidUtility = historySpace.getOutcomeSpace()
+				.getMyUtilitySpace().getUtility(prevBid);
+		double prevBidOppUtility = historySpace.getOutcomeSpace()
+				.getOpponentUtilitySpace().getUtility(prevBid);
+
+		Set<BidPoint> concessions = historySpace.getOutcomeSpace()
+				.getBetweenUtility(prevBidUtility, targetUtility,
+						prevBidOppUtility);
+
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
 
-		Set<BidPoint> nearoptimalbids = historySpace.getOutcomeSpace()
-				.getNearUtility(optimalbid, 0.05);
-
-		Bid myPreviousBid = historySpace.getMyBids().last();
-
-		double myPreviousBidOppUtil = historySpace.getOutcomeSpace()
-				.getOpponentUtilitySpace().getUtility(myPreviousBid);
-		Set<BidPoint> nearoptimalconcessions = new HashSet<BidPoint>();
-
-		// #951 concession: keep only bids that have opp util > previous bid
-		for (BidPoint bid : nearoptimalbids) {
-			if (bid.getUtilityB() > myPreviousBidOppUtil) {
-				nearoptimalconcessions.add(bid);
-			}
-		}
-
-		if (nearoptimalconcessions.isEmpty()) {
-			// if there are no concessions at all, this may be a flat piece on
-			// the pareto. As a workaround return the last bid #959
-			return historySpace.getOutcomeSpace().bidPoint(myPreviousBid);
-		}
-
-		return getSmallestHamming(nearoptimalconcessions, lastopponentbid);
+		return getSmallestHamming(concessions, lastopponentbid);
 	}
 
 	/**
