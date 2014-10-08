@@ -461,22 +461,16 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/****************** OptimalBidder code *************/
-
 	/**
-	 * The optimal bid is a bid on the pareto with a target utility
-	 * {@link #targetUtil(remain)} where remain is the remaining turns for me.
-	 * 
-	 * @throws Exception
-	 *
+	 * Optimal bidder basically means that we try to reach a target utility
+	 * depending on the time left.
 	 */
-	private BidPoint getOptimalBid() throws Exception {
-		return historySpace.getOutcomeSpace().getPareto()
-				.getBidNearMyUtility(getTargetUtility());
-	}
 
 	/**
-	 * Target utility that we want right now. if we are past deadline, we stick
-	 * to the minimum target util.
+	 * Target utility that we want right now. This is the normalized value,
+	 * considering the current maximum utility. if we are past deadline, we
+	 * stick to the minimum target util. This is conform the discussion with Tim
+	 * in #957 (oct2014).
 	 * 
 	 * @return current targetutility.
 	 * @throws Exception
@@ -488,14 +482,15 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		}
 		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
-		return maxutil * targetUtil(turnsleft);
+		return RESERVATION_VALUE + targetUtilNormalized(turnsleft)
+				* (maxutil - RESERVATION_VALUE);
 	}
 
 	/**
-	 * computation of the bid for round j as in prop 4.3. Basically this
-	 * increases with increasing number of remaining rounds. When many rounds
-	 * are left, target utility=1. When no rounds are left, this decreases to
-	 * 0.5 + 0.5*reservation value. <br>
+	 * Get a normalized target utility ranging from 0.5 to 1. Computation of the
+	 * bid for round j as in prop 4.3. Basically this increases with increasing
+	 * number of remaining rounds. When many rounds are left, target utility=1.
+	 * When no rounds are left, this decreases to 0.5 + 0.5*reservation value. <br>
 	 * <b>WARNING</b>this is the unscaled utility. If the utility range is not
 	 * entirely [0,1], a scaling function applies #957, see also
 	 * {@link #getTargetUtility()}.
@@ -505,18 +500,20 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * want to go all the way down to your reservation value when bidding and is
 	 * intended this way. This targetUtil function is used to make concessions,
 	 * not for acceptance strategy. For accepting, we may still accept at the
-	 * {@link #RESERVATION_VALUE}.
+	 * {@link #RESERVATION_VALUE}. <br>
+	 * After more discussion, Tim proposed this version. See #957.
 	 * 
 	 * @param turnsLeft
-	 *            minimum = 0.
-	 * @return target utility for the given round.
-	 **/
+	 *            minimum=0 when we are in the last round
+	 * @return normalized ( range <0.5-1] ) target utility.
+	 */
+	private double targetUtilNormalized(int turnsLeft) {
+		if (turnsLeft == 0) {
 
-	private double targetUtil(int turnsLeft) {
-		if (turnsLeft == 0)
-			return 0.5 + 0.5 * RESERVATION_VALUE;
-		else
-			return 0.5 + 0.5 * Math.pow(targetUtil(turnsLeft - 1), 2);
+			return 0.5;
+		} else {
+			return 0.5 + 0.5 * Math.pow(targetUtilNormalized(turnsLeft - 1), 2);
+		}
 	}
 
 }
