@@ -163,6 +163,9 @@ public class SimpleBidSpace {
 	 */
 	public Set<BidPoint> getBetweenUtility(double minutil, double maxutil,
 			double minopputil) {
+		if (minutil > maxutil) {
+			throw new IllegalArgumentException("min > max");
+		}
 		HashSet<BidPoint> filtered = new BidPointSpace();
 		BidIterator bids = new BidIterator(mySpace.getDomain());
 
