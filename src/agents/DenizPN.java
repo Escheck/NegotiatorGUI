@@ -401,7 +401,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 				.getOpponentUtilitySpace().getUtility(prevBid);
 
 		Set<BidPoint> concessions = historySpace.getOutcomeSpace()
-				.getBetweenUtility(prevBidUtility, targetUtility,
+				.getBetweenUtility(targetUtility, prevBidUtility,
 						prevBidOppUtility);
 
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
@@ -473,15 +473,23 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * in #957 (oct2014).
 	 * 
 	 * @return current targetutility.
-	 * @throws Exception
+	 * @throws IllegalStateException
+	 *             if the {@link #RESERVATION_VALUE} is bigger than the maximum
+	 *             utility bid.
 	 */
 	private double getTargetUtility() throws Exception {
 		int turnsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+
 		if (turnsleft < 0) {
 			turnsleft = 0;
 		}
 		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
+		if (RESERVATION_VALUE > maxutil) {
+			throw new IllegalStateException(
+					"reservation value is larger than the max utility bid.");
+		}
+
 		return RESERVATION_VALUE + targetUtilNormalized(turnsleft)
 				* (maxutil - RESERVATION_VALUE);
 	}
