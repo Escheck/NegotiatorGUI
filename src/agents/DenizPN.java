@@ -129,10 +129,13 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	@Override
 	public Action chooseAction() {
 		/**
-		 * default action. Also returned if exception occurs. Notice, that may
-		 * be a protocol error but what else can we do? seems worse than Accept.
+		 * default action. Also returned if exception occurs. Notice, may be
+		 * better to Accept but Reyhan thinks Genius gives us the
+		 * #RESERVATION_VALUE anyway if we walk away. Also if Deniz is used from
+		 * PN as a we do not want to give the user a wrong Accept suggestion if
+		 * the agent crashes. #972
 		 */
-		Action action = new Accept();
+		Action action = new EndNegotiation();
 
 		try {
 			action = chooseAction1();
