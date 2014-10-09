@@ -7,7 +7,9 @@ import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
 
 /**
- * #915 Agents of this type are compatible with the PocketNegotiator.
+ * 
+ * This is a pure interface definition, not a specific agent. Agents of this
+ * type are compatible with the PocketNegotiator.
  * 
  * Agents in PocketNegotiator run on the server, in parallel with other threads
  * that may run the same agent. To be compatible, agents need to be
@@ -60,7 +62,10 @@ public interface PocketNegotiatorAgent {
 	 * @return next {@link Action}. Currently PocketNegotiator does only support
 	 *         a subset of Genius agents: {@link Offer}, {@link Accept} and
 	 *         {@link EndNegotiation}. Returning another action will cause an
-	 *         exception in the PocketNegotiator core.
+	 *         exception in the PocketNegotiator core. <br>
+	 *         An agent can return null action. This tells PocketNegotiotor 'I
+	 *         have no more suggestions'. This probably is a protocol error in
+	 *         Genius, cancelling the negotiation.
 	 */
 	public Action getAction();
 
