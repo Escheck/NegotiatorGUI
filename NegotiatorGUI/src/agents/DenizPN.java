@@ -545,14 +545,19 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * {@link #RESERVATION_VALUE}. <br>
 	 * After more discussion, Tim proposed this version. See #957.
 	 * 
+	 * Wouter: After more discussion and #975, we decided to change this
+	 * behaviour. In the last turn, we want to have 0 so that we can scale this
+	 * to RESERVATION_VALUE in the scaled function. This is a straightforward
+	 * modification from the previous version (which returned 0.5 when
+	 * turnsleft=0) because we are shifting back exactly 1 turn.
+	 * 
 	 * @param myTurnsLeft
 	 *            minimum=0 when we are in the last round
 	 * @return normalized ( range <0.5-1] ) target utility.
 	 */
 	private double targetUtilNormalized(int myTurnsLeft) {
 		if (myTurnsLeft == 0) {
-
-			return 0.5;
+			return 0;
 		} else {
 			return 0.5 + 0.5 * Math.pow(targetUtilNormalized(myTurnsLeft - 1),
 					2);
