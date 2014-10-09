@@ -180,8 +180,10 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 *             if fatal problem occurs somewhere in our code.
 	 */
 	private Action chooseAction1() throws Exception {
+		// 1+.. because the current round does not count.
 		if (historySpace.getOpponentBids().isEmpty()
-				|| historySpace.getMyBids().isEmpty()) {
+				|| ((DiscreteTimeline) timeline).getOwnTotalRounds() == 1 + ((DiscreteTimeline) timeline)
+						.getOwnRoundsLeft()) {
 			// First round. place our best bid
 			return new Offer(utilitySpace.getMaxUtilityBid());
 		}
