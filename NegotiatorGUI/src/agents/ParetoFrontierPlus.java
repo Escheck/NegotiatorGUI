@@ -103,4 +103,28 @@ public class ParetoFrontierPlus {
 		return nearest;
 
 	}
+
+	/**
+	 * get the bid on the pareto that has at least the given utility for me (as
+	 * close as possible to the target)
+	 * 
+	 * @param utility
+	 *            target utility for me.
+	 * @return bid that is nearest bid above or at target utility for me. May
+	 *         return null if no such bid.
+	 */
+
+	public BidPoint getBidWithMinimumUtility(double utility) {
+		BidPoint nearest = null;
+		double dist = 10; // larger than any real distance in utilspace.
+		double newdist;
+		for (BidPoint bidpoint : pareto.getFrontier()) {
+			newdist = bidpoint.getUtilityA() - utility;
+			if (newdist > 0 && newdist < dist) {
+				nearest = bidpoint;
+				dist = newdist;
+			}
+		}
+		return nearest;
+	}
 }

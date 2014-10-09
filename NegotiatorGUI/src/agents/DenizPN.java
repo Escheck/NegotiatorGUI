@@ -16,9 +16,10 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * Agent proposed by Reyhan Aydogan #944 , conform the 'optimal bidder' agent by
- * Tim Baarslag but fitted to the needs of PocketNegotiator. Designed for use
- * both as opponent agent and as suggest-a-bid-agent. Notice, this agent only
- * works with a {@link DiscreteTimeline} just like the {@link OptimalBidder}.
+ * Tim Baarslag but fitted to the needs of PocketNegotiator. It was modified
+ * according to the design document in NegotiatorGUI/doc. Designed for use both
+ * as opponent agent and as suggest-a-bid-agent. Notice, this agent only works
+ * with a {@link DiscreteTimeline} just like the {@link OptimalBidder}.
  * 
  * @author W.Pasman 2sep2014.
  * @modified W.Pasman 8oct2014 new concession procedure see Deniz documentation
@@ -179,7 +180,6 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 *             if fatal problem occurs somewhere in our code.
 	 */
 	private Action chooseAction1() throws Exception {
-
 		if (historySpace.getOpponentBids().isEmpty()
 				|| historySpace.getMyBids().isEmpty()) {
 			// First round. place our best bid
@@ -239,7 +239,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 			return false;
 		}
 
-		if (lastutil >= getTargetUtility()) {
+		if (lastutil >= getTargetUtility(((DiscreteTimeline) timeline)
+				.getOwnRoundsLeft())) {
 			return true;
 		}
 
@@ -377,11 +378,33 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	/**
+	 * Get a plausible bid for the previous round. May be different from the
+	 * actual bid placed then.
+	 * 
+	 * The previous bid may not be the bid that we intended to make. For example
+	 * Deniz may not have been asked at all next round (user did not ask for a
+	 * bid suggestion), or the user may have placed a bid different from the bid
+	 * that Deniz would have liked to place. Basically we can't trust the
+	 * history for our next bid.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	private BidPoint getPlausiblePreviousBid() throws Exception {
+		double prevBidUtility = getTargetUtility(((DiscreteTimeline) timeline)
+				.getOwnRoundsLeft() + 1);
+		return historySpace.getOutcomeSpace().getPareto()
+				.getBidWithMinimumUtility(prevBidUtility);
+
+	}
+
+	/**
 	 * Tries to find a concession bid. A concession is a bid that has higher or
-	 * equal opponent utility than our previous bid. The starting point is a bid
-	 * from the optimalbidding strategy (see {@link OptimalBidder}). But instead
-	 * of using that right away, we pick the bid that in the neighbourhood that
-	 * has a minimal hamming distance with the opponent's last bid. <br>
+	 * equal opponent utility than our hypothetical previous bid. The starting
+	 * point is a bid from the optimalbidding strategy (see
+	 * {@link OptimalBidder}). But instead of using that right away, we pick the
+	 * bid that in the neighbourhood that has a minimal hamming distance with
+	 * the opponent's last bid. <br>
 	 * The 'neighbourhood' is all the concessions with a utility for ourself
 	 * between our current optimal bid and our previous bid. <br>
 	 * If there are no concessions at all in this neighbourhood, this function
@@ -396,20 +419,19 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * @throws Exception
 	 */
 	private BidPoint getConcessionBid() throws Exception {
-		double targetUtility = getTargetUtility();
-		Bid prevBid = historySpace.getMyBids().last();
-		double prevBidUtility = historySpace.getOutcomeSpace()
-				.getMyUtilitySpace().getUtility(prevBid);
-		double prevBidOppUtility = historySpace.getOutcomeSpace()
-				.getOpponentUtilitySpace().getUtility(prevBid);
+		int turnsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+		double targetUtility = getTargetUtility(turnsleft);
+		BidPoint plausiblePrevBid = getPlausiblePreviousBid();
 
 		Set<BidPoint> concessions = historySpace.getOutcomeSpace()
-				.getBetweenUtility(targetUtility, prevBidUtility,
-						prevBidOppUtility, false);
+				.getBetweenUtility(targetUtility,
+						plausiblePrevBid.getUtilityA(),
+						plausiblePrevBid.getUtilityB(), false);
 		if (concessions.isEmpty()) {
-			// note, this may give multiple bids still.
+			// note, this may give multiple bids.
 			concessions = historySpace.getOutcomeSpace().getBetweenUtility(
-					targetUtility, prevBidUtility, prevBidOppUtility, true);
+					targetUtility, plausiblePrevBid.getUtilityA(),
+					plausiblePrevBid.getUtilityB(), true);
 		}
 
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
@@ -475,21 +497,25 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 
 	/**
-	 * Target utility that we want right now. This is the normalized value,
-	 * considering the current maximum utility. if we are past deadline, we
-	 * stick to the minimum target util. This is conform the discussion with Tim
-	 * in #957 (oct2014).
+	 * Target utility that we want given a number of turns left. This is the
+	 * normalized value, considering the current maximum utility. When we are
+	 * past deadline, we stick to the minimum target util. This is conform the
+	 * discussion with Tim in #957 (oct2014).
+	 * 
+	 * @param myTurnsLeft
+	 *            the number of turns left. Typically you use something like<br>
+	 * 
+	 *            <code>((DiscreteTimeline) timeline).getOwnRoundsLeft()</code>
 	 * 
 	 * @return current targetutility.
 	 * @throws IllegalStateException
 	 *             if the {@link #RESERVATION_VALUE} is bigger than the maximum
 	 *             utility bid.
 	 */
-	private double getTargetUtility() throws Exception {
-		int turnsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+	private double getTargetUtility(int myTurnsLeft) throws Exception {
 
-		if (turnsleft < 0) {
-			turnsleft = 0;
+		if (myTurnsLeft < 0) {
+			myTurnsLeft = 0;
 		}
 		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
@@ -498,7 +524,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 					"reservation value is larger than the max utility bid.");
 		}
 
-		return RESERVATION_VALUE + targetUtilNormalized(turnsleft)
+		return RESERVATION_VALUE + targetUtilNormalized(myTurnsLeft)
 				* (maxutil - RESERVATION_VALUE);
 	}
 
@@ -519,16 +545,17 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * {@link #RESERVATION_VALUE}. <br>
 	 * After more discussion, Tim proposed this version. See #957.
 	 * 
-	 * @param turnsLeft
+	 * @param myTurnsLeft
 	 *            minimum=0 when we are in the last round
 	 * @return normalized ( range <0.5-1] ) target utility.
 	 */
-	private double targetUtilNormalized(int turnsLeft) {
-		if (turnsLeft == 0) {
+	private double targetUtilNormalized(int myTurnsLeft) {
+		if (myTurnsLeft == 0) {
 
 			return 0.5;
 		} else {
-			return 0.5 + 0.5 * Math.pow(targetUtilNormalized(turnsLeft - 1), 2);
+			return 0.5 + 0.5 * Math.pow(targetUtilNormalized(myTurnsLeft - 1),
+					2);
 		}
 	}
 
