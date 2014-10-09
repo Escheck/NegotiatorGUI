@@ -85,20 +85,23 @@ public class SimpleBidSpace {
 	}
 
 	/**
-	 * Find a bit that has utilities similar to given bid but is not equal to
-	 * it. SortedOutcomeSpace does not help here because it sorts only in 1
-	 * dimension and can not return a 2-D closest point.
+	 * Find a bit that has utilities (mySide AND otherSide) identical to given
+	 * last bid, but not equal to it. If no such bid exists, return the given
+	 * last
+	 * 
 	 * 
 	 * @param last
+	 *            the bid that we want something similar for
 	 * @return bid similar to given bid but not equal, unless there is no nearby
 	 *         other point. This bid may not lie on the pareto.
 	 */
-	public Bid getSilentBid(Bid bid) {
-		BidPoint bidpt = bidPoint(bid);
-		Set<BidPoint> nearby = getNearUtility(bidpt, 0.05);
+	public Bid getSilentBid(Bid last) {
+		BidPoint bidpt = bidPoint(last);
+		Set<BidPoint> nearby = getBetweenUtility(bidpt.getUtilityA(),
+				bidpt.getUtilityA(), bidpt.getUtilityB(), true);
 		nearby.remove(bidpt);
 		if (nearby.isEmpty()) {
-			return bid;
+			return last;
 		}
 		// pick random
 		ArrayList<BidPoint> nearbylist = new ArrayList<BidPoint>(nearby);
