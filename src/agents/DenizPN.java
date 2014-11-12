@@ -1,5 +1,6 @@
 package agents;
 
+import java.util.Date;
 import java.util.Set;
 
 import negotiator.Agent;
@@ -32,6 +33,13 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * utilitySpace.getReservationValue()
 	 */
 	private final double RESERVATION_VALUE = 0.5;
+
+	/**
+	 * Deniz agent walks away after 15 minutes #999. This time starts running
+	 * the moment this bot instance is created, which happens the moment the
+	 * user has placed his first bid.
+	 */
+	private Date startTime = new Date();;
 
 	/**
 	 * The move that our agent determines to make.
@@ -267,6 +275,14 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private MyMoves checkDeadlineAndDetermineMyMove() {
 		int roundsleft = ((DiscreteTimeline) timeline).getOwnRoundsLeft();
+		Date now = new Date();
+		long diff_ms = now.getTime() - startTime.getTime();
+		double minutesSinceStart = diff_ms / 60000;
+
+		if (minutesSinceStart > 15) {
+			return MyMoves.STOP;
+		}
+
 		if (roundsleft < 0) { // pass the deadline?
 			if (roundsleft < -3) { // pass the extra-time?
 				return MyMoves.STOP;
