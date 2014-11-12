@@ -10,7 +10,7 @@ import negotiator.utility.UtilitySpace;
  * 
  * This is a pure interface definition, not a specific agent. Agents of this
  * type are compatible with the PocketNegotiator.
- * 
+ * <p>
  * Agents in PocketNegotiator run on the server, in parallel with other threads
  * that may run the same agent. To be compatible, agents need to be
  * <ul>
@@ -18,8 +18,6 @@ import negotiator.utility.UtilitySpace;
  * <li>run efficient in multi-threading situations.
  * <li>should not attempt to do actions that violate security restrictions in a
  * Tomcat HttpServlet. eg, read or write files
- * <li>should return different bids each time. Repeating bids may lead to PN
- * showing the message "I do not have further suggestions".
  * </ul>
  * <br>
  * A PocketNegotiatorAgent adds new updateProfile functions to the agent. These
