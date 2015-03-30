@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository fileName="partyrepository.xml">
+    <items>
+        <agentRepItems/>
+        <partyRepItems>
+            <!--<partyRepItem-->
+                    <!--description="Agent accepting any offer"-->
+                    <!--classPath="negotiator.parties.AcceptingNegotiationParty"-->
+                    <!--partyName="AcceptingParty"-->
+                    <!--protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>-->
+            <partyRepItem
+                    description="Deadline-based boulware agent"
+                    classPath="negotiator.parties.BoulwareNegotiationParty"
+                    partyName="Boulware"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem
+                    description="Deadline-based conceder agent"
+                    classPath="negotiator.parties.ConcederNegotiationParty"
+                    partyName="Conceder"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem
+                    description="Agent that does random offers and accepts 50/50"
+                    classPath="negotiator.parties.RandomFiftyFiftyNegotiationParty"
+                    partyName="RandomFiftyFiftyParty"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferConsensusProtocol"/>
+            <partyRepItem
+                    description="Agent that does random offers and accepts 50/50"
+                    classPath="negotiator.parties.RandomFiftyFiftyNegotiationParty"
+                    partyName="RandomFiftyFiftyParty"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol"/>
+            <partyRepItem
+                    description="Mediator for simple mediator based protocol"
+                    classPath="negotiator.parties.RandomFlippingMediator"
+                    partyName="RandomFlippingMediator"
+                    protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+                <properties>
+                    <property>isMediator</property>
+                </properties>
+            </partyRepItem>
+            <partyRepItem
+                    description="Hill Climber for simple mediator based protocol"
+                    classPath="negotiator.parties.HillClimber"
+                    partyName="Hill Climber"
+                    protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Simulated annealer for simple mediator based protocol"
+                    classPath="negotiator.parties.Annealer"
+                    partyName="Annealer"
+                    protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Mediator using feedback for new offers"
+                    classPath="negotiator.parties.FeedbackMediator"
+                    partyName="Feedback Mediator"
+                    protocolClassPath="negotiator.protocol.MediatorFeedbackProtocol">
+                <properties>
+                    <property>isMediator</property>
+                </properties>
+            </partyRepItem>
+            <!--<partyRepItem-->
+            <!--description="Party for feedback mediator protocol"-->
+            <!--classPath="negotiator.parties.FeedbackHillClimber"-->
+            <!--partyName="Feedback Hill Climber"-->
+            <!--protocolClassPath="negotiator.protocol.MediatorFeedbackProtocol">-->
+            <!--</partyRepItem>-->
+            <partyRepItem
+                    description="Simple UI party"
+                    classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
+                    partyName="UI Party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Human party"
+                    classPath="negotiator.parties.ConsensusVotingHumanAgent"
+                    partyName="Human party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferConsensusProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Human party"
+                    classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
+                    partyName="Human party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Human party"
+                    classPath="negotiator.parties.MediatorHumanNegotiationParty"
+                    partyName="Human party"
+                    protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+            </partyRepItem>
+            <partyRepItem
+                    description="Random party"
+                    classPath="negotiator.parties.RandomCounterOfferNegotiationParty"
+                    partyName="Random party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+            </partyRepItem>
+        </partyRepItems>
+        <domainRepItem/>
+        <protocolRepItem/>
+        <multiPartyProtocolRepItem/>
+    </items>
+    <filename>partyrepository.xml</filename>
+</repository>
