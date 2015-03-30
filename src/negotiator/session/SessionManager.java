@@ -115,14 +115,14 @@ public class SessionManager
             // add round to session
             session.startNewRound(round);
 
-            if (checkDeadline()) break;
+            if (checkDeadlineReached()) break;
             sessionLogger.logMessage("Round %d", session.getRoundNumber());
             int turnNumber = 0;
 
             // Let each party do an action
             for (Turn turn : round.getTurns())
             {
-                if (checkDeadline()) break;
+                if (checkDeadlineReached()) break;
                 // for each party, set the round-based timeline again (to avoid tempering)
                 if (session.getTimeline() instanceof DiscreteTimeline) {
                     ((DiscreteTimeline) session.getTimeline()).setcRound(session.getRoundNumber());
@@ -169,12 +169,12 @@ public class SessionManager
                     break;
                 }
             }
-            if (checkDeadline()) break;
+            if (checkDeadlineReached()) break;
 
 
         }
         // run main loop while protocol does not say it is finished
-        while (!protocol.isFinished(session, parties));
+        while (!protocol.isFinished(session, parties) && !checkDeadlineReached());
 
         // stop timers if running
         if (session.isTimerRunning()) session.stopTimer();
@@ -212,14 +212,13 @@ public class SessionManager
         }
     }
 
-    private boolean checkDeadline() {
+    private boolean checkDeadlineReached() {
         // look at the time, if this is over time, remove last round and count previous round
         // as most recent round
         if (session.isDeadlineReached())
         {
             System.out.println("Deadline reached. " + session.getDeadlines());
             session.getRounds().remove(session.getRounds().size()-1);
-            session.stopTimer();
             if (session.getDeadlines().containsKey(DeadlineType.TIME))
             {
                 double runTimeInSeconds = (Integer) session.getDeadlines().get(DeadlineType.TIME);
