@@ -55,7 +55,7 @@ public class RandomCounterOfferNegotiationParty extends AbstractNegotiationParty
         }
 
         // else do 10/90: random offer, accept
-        return timeline.getTime() >= 0.9999999
+        return timeline.getTime() >= 0.9
                 ? new Accept(getPartyId())
                 : new Offer(getPartyId(), generateRandomNonZeroBid());
     }

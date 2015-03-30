@@ -18,7 +18,7 @@ import javax.swing.ImageIcon;
  */
 public class About extends javax.swing.JFrame {
 
-    public static final String VERSION = "5.2.5";
+    public static final String VERSION = "5.2.6";
 	private javax.swing.JLabel contributorsLabel;
     private javax.swing.JTextArea contributorsValueLabel;
     private javax.swing.JScrollPane contributorsValueScrollPane;

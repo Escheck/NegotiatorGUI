@@ -3,7 +3,10 @@
     <items>
         <agentRepItems/>
         <partyRepItems>
-            <partyRepItem description="Conceder" classPath="negotiator.parties.ConcederNegotiationParty" partyName="Conceder" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem description="Deadline-based boulware agent" classPath="negotiator.parties.BoulwareNegotiationParty" partyName="Boulware" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem description="Deadline-based conceder agent" classPath="negotiator.parties.ConcederNegotiationParty" partyName="Conceder" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem description="Random party" classPath="negotiator.parties.RandomCounterOfferNegotiationParty" partyName="Random party" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem description="Simple UI party" classPath="negotiator.parties.CounterOfferHumanNegotiationParty" partyName="UI Party" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
             <partyRepItem description="Agent for group 1" classPath="negotiator.group1.Group1" partyName="Group 1" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
             <partyRepItem description="Agent for group 2" classPath="negotiator.group2.Group2" partyName="Group 2" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
             <partyRepItem description="Agent for group 3" classPath="negotiator.group3.Group3" partyName="Group 3" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
