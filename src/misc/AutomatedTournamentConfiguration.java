@@ -17,12 +17,12 @@ public class AutomatedTournamentConfiguration extends Configuration {
     /**
      * Number of agents in each test run (make sure that this is reflected in partyrepository.xml
      */
-    public static final int     AGENTS_PER_RUN = 3;
+    public static final int AGENTS_PER_RUN = 2;
 
     /**
      * Number of profiles in each test run (make sure that this is reflected in domainrepository.xml
      */
-    public static final int     PROFILES_PER_RUN = 3;
+    public static final int PROFILES_PER_RUN = 2;
 
     /**
      * If set to true, agents also play against themselves
@@ -32,7 +32,17 @@ public class AutomatedTournamentConfiguration extends Configuration {
     /**
      * Number of times to run this setting. (use more than 1 for statistically significant results).
      */
-    public static final int     NUMBER_OF_RUNS = 1;
+    public static final int NUMBER_OF_RUNS = 1;
+
+    /**
+     * Deadline for each negotiation round
+     */
+    public static final int DEADLINE = 3;
+
+    /**
+     * Type of deadline for each negotiation round
+     */
+    public static final DeadlineType DEADLINE_TYPE = DeadlineType.TIME;
 
     public int runNumber = 0;
     private Session session = null;
@@ -56,7 +66,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
     @Override
     public HashMap<DeadlineType, Object> getDeadlines() {
         HashMap<DeadlineType, Object> deadlines = new HashMap<DeadlineType, Object>();
-        deadlines.put(DeadlineType.TIME, AutomatedTournamentRunner.TIME_DEADLINE);
+        deadlines.put(DEADLINE_TYPE, DEADLINE);
         return deadlines;
     }
 
@@ -79,7 +89,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 
     @Override
     public List<ProfileRepItem> getPartyProfileItems() {
-        return getAllPartyProfileItems().subList(runNumber * 3, runNumber * 3 + 3);
+        return getAllPartyProfileItems().subList(runNumber * PROFILES_PER_RUN, (runNumber+1) * PROFILES_PER_RUN);
     }
 
 

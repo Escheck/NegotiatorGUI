@@ -347,7 +347,11 @@ public class SessionManager
     private Action chooseActionWithTimeOut(final NegotiationParty party, final ArrayList<Class> validActions)
             throws InterruptedException, ExecutionException, NegotiationPartyTimeoutException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        int timeOut = protocol.getTimeOutInSeconds(session);
+        int timeLeft = Integer.MAX_VALUE;
+        if (session.getDeadlines().containsKey(DeadlineType.TIME)) {
+            timeLeft = (int)((int)session.getDeadlines().get(DeadlineType.TIME) * ( 1 - session.getTimeline().getTime()) + 1);
+        }
+        int timeOut = Math.min(protocol.getTimeOutInSeconds(session), timeLeft);
         if (session.getDeadlines().containsKey(DeadlineType.TIME)) {
             timeOut = Math.min(timeOut, (int)session.getDeadlines().get(DeadlineType.TIME)+1);
         }

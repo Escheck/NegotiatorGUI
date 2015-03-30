@@ -1,7 +1,6 @@
 package negotiator.session;
 
 import misc.Pair;
-import misc.StudentConfiguration;
 import negotiator.ContinuousTimeline;
 import negotiator.DeadlineType;
 import negotiator.DiscreteTimeline;
@@ -116,10 +115,10 @@ public class TournamentManager extends Thread {
                 }
 
                 System.out.println(String.format(
-                    "Running tournament %d/%d, session %d ",
-                    tournamentNumber + 1,
-                    configuration.getNumTournaments(),
-                    ++sessionNumber)
+                                "Running tournament %d/%d, session %d ",
+                                tournamentNumber + 1,
+                                configuration.getNumTournaments(),
+                                ++sessionNumber)
                 );
                 logger.log(sessionNumber);
                 boolean sessionOk = runSingleSession(partyList);
@@ -158,9 +157,9 @@ public class TournamentManager extends Thread {
             Timeline timeline = parties.get(0).getTimeLine();
             session.setTimeline(timeline);
             SessionManager sessionManager = new SessionManager(parties, protocol, session);
-            useConsoleOut(false);
+//            useConsoleOut(false);
             sessionManager.run();
-            useConsoleOut(true);
+//            useConsoleOut(true);
 
             try {
                 double runTime = session.getRuntimeInSeconds();
@@ -198,14 +197,14 @@ public class TournamentManager extends Thread {
     /**
      * Silences or restores the console output. This can be useful to
      * suppress output of foreign code, like submitted agents
+     *
      * @param enable Enables console output if set to true or disables it when set to false
      */
     private void useConsoleOut(boolean enable) {
         if (enable) {
             System.setErr(orgErr);
             System.setOut(orgOut);
-        }
-        else {
+        } else {
             System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException { /* no-op */ }

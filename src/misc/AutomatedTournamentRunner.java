@@ -4,8 +4,6 @@ import negotiator.session.TournamentManager;
 
 public class AutomatedTournamentRunner {
 
-    public static final int TIME_DEADLINE = 30;
-
     public static void main(String[] args) {
 
         int amountOfScenarios = AutomatedTournamentConfiguration.getAllPartyProfileItems().size() / AutomatedTournamentConfiguration.PROFILES_PER_RUN;
