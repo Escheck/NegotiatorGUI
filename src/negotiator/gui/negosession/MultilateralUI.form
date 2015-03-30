@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="negotiator.gui.negosession.MultilateralUI">
+  <grid id="27dc6" binding="pnlRoot" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="760" height="640"/>
+    </constraints>
+    <properties>
+      <inheritsPopupMenu value="false"/>
+      <maximumSize width="1280" height="2147483647"/>
+      <minimumSize width="760" height="320"/>
+      <preferredSize width="760" height="640"/>
+    </properties>
+    <border type="none" title="Multilateral Negotiation Tournament Setup"/>
+    <children>
+      <grid id="6af61" binding="pnlMediator" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none" title="Mediator"/>
+        <children>
+          <component id="dd4fe" class="javax.swing.JLabel" binding="lblMediator">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Mediator Strategy"/>
+            </properties>
+          </component>
+          <component id="cf288" class="javax.swing.JComboBox" binding="cmbMediator">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="item 1"/>
+                <item value="item 2"/>
+                <item value="item 3"/>
+                <item value="item 4"/>
+              </model>
+            </properties>
+          </component>
+          <component id="3fb20" class="javax.swing.JLabel" binding="lblMediatorProfile">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Mediator Profile"/>
+            </properties>
+          </component>
+          <component id="68019" class="javax.swing.JComboBox" binding="cmbMediatorProfile">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="item 1"/>
+                <item value="item 2"/>
+                <item value="item 3"/>
+                <item value="item 4"/>
+              </model>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="27f16" binding="pnlEnvironment" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none" title="Environment"/>
+        <children>
+          <component id="46112" class="javax.swing.JLabel" binding="lblProtocol">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="16"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Protocol"/>
+            </properties>
+          </component>
+          <component id="d226f" class="javax.swing.JLabel" binding="lblDeadlines">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="16"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Deadline"/>
+            </properties>
+          </component>
+          <component id="add30" class="javax.swing.JLabel" binding="lblNumberOfTournaments">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="16"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Number of Tournaments"/>
+            </properties>
+          </component>
+          <component id="d675b" class="javax.swing.JSpinner" binding="txtNumberOfTournaments">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="60" height="24"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <grid id="b70ad" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="227" height="36"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="ac8bd" class="javax.swing.JLabel" binding="lblDeadlinesValue">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="180" height="16"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="[Time: 300] OR [Rounds: 50]"/>
+                </properties>
+              </component>
+              <component id="b3bc3" class="javax.swing.JButton" binding="btnDeadlines">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="24" height="24"/>
+                    <preferred-size width="24" height="24"/>
+                    <maximum-size width="24" height="24"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="…"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="4cb7d" class="javax.swing.JComboBox" binding="cmbProtocol">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="227" height="26"/>
+              </grid>
+            </constraints>
+            <properties>
+              <model>
+                <item value="item 1"/>
+                <item value="item 2"/>
+                <item value="item 3"/>
+                <item value="item 4"/>
+              </model>
+            </properties>
+          </component>
+          <component id="128f4" class="javax.swing.JLabel" binding="lblAgentsPerSession">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="16"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Agents per Session"/>
+            </properties>
+          </component>
+          <component id="e97f7" class="javax.swing.JSpinner" binding="txtAgentsPerSession">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="60" height="24"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="daac" class="javax.swing.JLabel" binding="lblDuplicateAgents">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="16"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="Agent Repetition Allowed"/>
+            </properties>
+          </component>
+          <component id="22bdb" class="javax.swing.JCheckBox" binding="chkDuplicateAgents">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="72e18" binding="pnlAgentsProfiles" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none" title=""/>
+        <children>
+          <grid id="b6b96" binding="pnlAgentButtons" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="6b252" class="javax.swing.JButton" binding="btnAddAgents">
+                <constraints/>
+                <properties>
+                  <text value="Add"/>
+                </properties>
+              </component>
+              <component id="b1a08" class="javax.swing.JButton" binding="btnRemoveAgents">
+                <constraints/>
+                <properties>
+                  <text value="Remove"/>
+                </properties>
+              </component>
+              <component id="84d6a" class="javax.swing.JButton" binding="btnClearAgents">
+                <constraints/>
+                <properties>
+                  <text value="Clear"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="40954" binding="pnlProfileButtons" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="88d8e" class="javax.swing.JButton" binding="btnAddProfiles">
+                <constraints/>
+                <properties>
+                  <text value="Add"/>
+                </properties>
+              </component>
+              <component id="79275" class="javax.swing.JButton" binding="btnRemoveProfiles">
+                <constraints/>
+                <properties>
+                  <text value="Remove"/>
+                </properties>
+              </component>
+              <component id="6dc64" class="javax.swing.JButton" binding="btnClearProfiles">
+                <constraints/>
+                <properties>
+                  <text value="Clear"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="6dd7" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Profiles"/>
+            </properties>
+          </component>
+          <component id="2138e" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Agents"/>
+            </properties>
+          </component>
+          <scrollpane id="a7b4">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="-1" height="120"/>
+                <preferred-size width="-1" height="120"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="2527b" class="javax.swing.JList" binding="lstAgents">
+                <constraints/>
+                <properties>
+                  <model>
+                    <item value="Agent 1"/>
+                    <item value="Agent 2"/>
+                    <item value="Agent 3"/>
+                    <item value="Agent 4"/>
+                    <item value="Agent 5"/>
+                    <item value="Agent 6"/>
+                    <item value="Agent 7"/>
+                    <item value="Agent 8"/>
+                    <item value="Agent 9"/>
+                    <item value="Agent 10"/>
+                    <item value="Agent 11"/>
+                    <item value="Agent 12"/>
+                    <item value="Agent 13"/>
+                    <item value="Agent 14"/>
+                  </model>
+                  <selectionMode value="2"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <scrollpane id="d221b">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="-1" height="120"/>
+                <preferred-size width="-1" height="120"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="de047" class="javax.swing.JList" binding="lstProfiles">
+                <constraints/>
+                <properties>
+                  <model>
+                    <item value="Profile 1"/>
+                    <item value="Profile 2"/>
+                    <item value="Profile 3"/>
+                    <item value="Profile 4"/>
+                    <item value="Profile 5"/>
+                    <item value="Profile 6"/>
+                    <item value="Profile 7"/>
+                    <item value="Profile 8"/>
+                    <item value="Profile 9"/>
+                    <item value="Profile 10"/>
+                    <item value="Profile 11"/>
+                    <item value="Profile 12"/>
+                    <item value="Profile 13"/>
+                    <item value="Profile 14"/>
+                  </model>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+      <grid id="c9d2b" binding="pnlStartTournament" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="100" bottom="0" right="0"/>
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="f549f" class="javax.swing.JButton" binding="btnStartTournament" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Start Tournament"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

@@ -14,7 +14,7 @@ import negotiator.Global;
 import negotiator.NegotiationOutcome;
 import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -29,7 +29,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import agents.BayesianAgentForAuction;
 
-public class AuctionProtocol extends Protocol {
+public class AuctionProtocol extends OldProtocol {
 
 	private static final long serialVersionUID = -5739935989755679374L;
 	final protected double ALLOWED_UTILITY_DEVIATION = 0.015; 
@@ -195,7 +195,7 @@ public class AuctionProtocol extends Protocol {
 	}
 
 
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament) throws Exception {
 		return generateAllSessions(tournament);
 	}
 
@@ -238,10 +238,10 @@ public class AuctionProtocol extends Protocol {
 		return session;
 
 	}
-	private static ArrayList<Protocol> generateAllSessions(Tournament tournament) {
-		ArrayList<Protocol> allSessions = null;
+	private static ArrayList<OldProtocol> generateAllSessions(Tournament tournament) {
+		ArrayList<OldProtocol> allSessions = null;
 		try {
-			allSessions = new ArrayList<Protocol>();
+			allSessions = new ArrayList<OldProtocol>();
 			//sessionIndex = 0;
 			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
 			//center profiles
@@ -337,7 +337,7 @@ public class AuctionProtocol extends Protocol {
 	/** do test run of negotiation session.
 	 * There may be multiple test runs of a single session, for isntance to take the average score.
 	 * returns the result in the global field "outcome"
-	 * @param nr is the sessionTestNumber
+//	 * @param nr is the sessionTestNumber
 	 * @throws Exception
 	 * 
 	 */
@@ -380,7 +380,7 @@ public class AuctionProtocol extends Protocol {
 					"Buyer",
 					3600);
 		fireBilateralAtomicNegotiationSessionEvent(sessionrunner,  profileRepItemA, profileRepItemB, agentARepItem, agentBRepItem, "", "");
-		if(TournamentConfiguration.getBooleanOption("protocolMode", false)) {
+		if(TournamentConfiguration.getBooleanOption("OldProtocolMode", false)) {
 			sessionrunner.run();
 		} else {
 			int totalTime;
