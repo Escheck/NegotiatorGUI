@@ -10,10 +10,7 @@ import negotiator.protocol.Protocol;
 import negotiator.session.Session;
 import negotiator.utility.UtilitySpace;
 
-import java.io.Closeable;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -45,9 +42,11 @@ public class CsvLogger implements Closeable
      * @param fileName The name of the file to log to (including the .csv extension)
      * @throws FileNotFoundException Thrown by the PrintStream if the location is not writable.
      */
-    public CsvLogger(String fileName) throws FileNotFoundException
+    public CsvLogger(String fileName) throws IOException
     {
-        ps = new PrintStream(fileName);
+        File file = new File(fileName);
+        file.getParentFile().mkdirs();
+        ps = new PrintStream(file);
         buffer = new ArrayList<Object>();
 
         // Used to tell excel to handle file correctly.

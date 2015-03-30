@@ -69,7 +69,7 @@ public class TournamentManager extends Thread {
     public void run() {
         try {
             this.runTournament();
-            System.out.println("Tournament completed successfully");
+            System.out.println("Tournament completed");
             System.out.println("------------------");
             System.out.println("");
         } catch (Exception e) {
@@ -87,14 +87,7 @@ public class TournamentManager extends Thread {
      */
     public void runTournament() throws Exception {
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-
-        /** DEBUG CODE */
-        String domain = "";
-        if (configuration instanceof GuiConfiguration) domain = "-"+((GuiConfiguration) configuration).getPartyProfileItems().get(0).getDomain().getName();
-        logger = new CsvLogger(String.format("tests/30-sec/Log-Tournament-%s%s.csv", dateFormat.format(new Date()), domain));
-        /** ORIGNAL CODE */
-        //logger = new CsvLogger(String.format("Log-Tournament-%s.csv", dateFormat.format(new Date())));
-        /** END */
+        logger = new CsvLogger(String.format("logs/Log-Tournament-%s.csv", dateFormat.format(new Date())));
 
         // Initialize this session to zero (used for logging only)
         boolean printedHeader = false;
