@@ -20,6 +20,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.protocol.OldProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.TrajectoryMeasures;
 import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
@@ -44,7 +45,7 @@ import negotiator.xml.SimpleElement;
  * domain, etc. Signals the start/stop of negotiations by calling
  * {@link BilateralAtomicNegotiationSession}. Manages time-outs.
  */
-public class AlternatingOffersProtocol extends Protocol
+public class AlternatingOffersProtocol extends OldProtocol
 {
 
 	private static final long serialVersionUID = 7472004245336770247L;
@@ -127,7 +128,7 @@ public class AlternatingOffersProtocol extends Protocol
 	 * session, for instance to take the average score. returns the result in
 	 * the global field "outcome"
 	 * 
-	 * @param nr
+//	 * @param nr
 	 *            is the sessionTestNumber
 	 * @throws Exception
 	 */
@@ -574,16 +575,16 @@ public class AlternatingOffersProtocol extends Protocol
 	 * Tournament vars The procedure skips sessions where both sides use the
 	 * same preference profiles.
 	 * 
-	 * @throws exception
+	 * @throws Exception
 	 *             if something wrong with the variables, eg not set.
 	 */
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception
+	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament) throws Exception
 	{
 		return getTournamentSessions(tournament, TournamentConfiguration.getBooleanOption("playAgainstSelf", false),
 				TournamentConfiguration.getBooleanOption("playBothSides", true));
 	}
 
-	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides)
+	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides)
 			throws Exception
 	{
 		session_number = 1;
@@ -609,7 +610,7 @@ public class AlternatingOffersProtocol extends Protocol
 		// we iterate explicitly over the profile and agents, because we need to
 		// permutate
 		// only the parameters for the selected agents.
-		ArrayList<Protocol> sessions = new ArrayList<Protocol>();
+		ArrayList<OldProtocol> sessions = new ArrayList<OldProtocol>();
 		ArrayList<ProfileRepItem> skipProfiles = new ArrayList<ProfileRepItem>();
 		for (ProfileRepItem profileA : profiles)
 		{
@@ -691,11 +692,11 @@ public class AlternatingOffersProtocol extends Protocol
 	 * we need to filter Not all permutations of the vars are acceptable, for
 	 * instance domains have to be idnetical. One optimization:
 	 * 
-	 * @param sessions
+//	 * @param sessions
 	 *            is the final result: all valid permutations of variables.
-	 * @param varnr
+//	 * @param varnr
 	 *            is the index of the variable in the variables array.
-	 * @throws exception
+	 * @throws Exception
 	 *             if one of the variables contains no values (which would
 	 *             prevent any running sessions to be created with that
 	 *             variable.
