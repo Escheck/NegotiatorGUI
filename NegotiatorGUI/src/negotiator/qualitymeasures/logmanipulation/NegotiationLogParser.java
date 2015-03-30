@@ -318,7 +318,7 @@ public class NegotiationLogParser {
 					}
 				}
 
-				// if the outcome was already found in every run, create a new
+				// if the outcome was already found in every run, createFrom a new
 				// run
 				if (!added) {
 					ArrayList<OutcomeInfoDerived> newList = new ArrayList<OutcomeInfoDerived>();

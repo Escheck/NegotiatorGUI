@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="dep/absolutelayout.jar"/>
 	<classpathentry kind="lib" path="dep/jtreetable.jar"/>
 	<classpathentry kind="lib" path="dep/jaxb-api.jar"/>
@@ -14,6 +14,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI voor AAMAS competitie/dep/jopt-simple-3.2-rc1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="dep/jfxrt.jar"/>
 	<classpathentry excluding="negotiator/analysis/Analysis.java|negotiator/analysis/BiddingHistoryAnalysis.java|negotiator/protocol/auction/FreeAuctionProtocol.java|agents/ABMPExactAgent.java|agents/RandomWalkABMPAgent.java|agents/SlowUIAgent.java" kind="src" path="src"/>
 	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>
 	<classpathentry kind="lib" path="dep/swing-worker-1.1.jar"/>
@@ -23,5 +24,11 @@
 	<classpathentry kind="lib" path="dep/jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="dep/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="dep/IAMhaggler2011packages.jar"/>
+	<classpathentry kind="lib" path="dep/forms_rt-7.0.3.jar"/>
+	<classpathentry kind="lib" path="dep/combinatoricslib-2.0.jar" sourcepath="dep/combinatoricslib-2.0_src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI%20voor%20AAMAS%20competitie/dep/combinatoricslib-2.0_doc.zip!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

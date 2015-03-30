@@ -129,10 +129,10 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 				bid = negotiationSession.getMaxBidinDomain();
 				action = bid;
 			} else {
-				//update opponent model first
+				//receiveMessage opponent model first
 				this.opponentBidHistory.updateOpponentModel(negotiationSession.getOpponentBidHistory().getLastBid(), negotiationSession.getUtilitySpace().getDomain(), negotiationSession.getUtilitySpace());
 				this.updateConcedeDegree();
-				//update the estimation
+				//receiveMessage the estimation
 				if (negotiationSession.getOwnBidHistory().size() == 0) {
 					//bid = utilitySpace.getMaxUtilityBid();
 					bid = negotiationSession.getMaxBidinDomain();
@@ -211,7 +211,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 
 			this.ownBidHistory.addBid(bid.getBid(), negotiationSession.getUtilitySpace());
 			this.timeLeftAfter = negotiationSession.getTimeline().getCurrentTime();
-			this.estimateRoundLeft(false);//update the estimation
+			this.estimateRoundLeft(false);//receiveMessage the estimation
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 			System.out.println(estimateRoundLeft(false));
@@ -554,7 +554,7 @@ public class CUHKAgent_Offering extends OfferingStrategy{
 		System.out.println("concedeToDiscountingFactor is " + this.concedeToDiscountingFactor + "current time is " + negotiationSession.getTimeline().getTime());
 	}
 	/*
-	 * update the concede-to-time degree based on the predicted toughness degree
+	 * receiveMessage the concede-to-time degree based on the predicted toughness degree
 	 * of the opponent
 	 */
 

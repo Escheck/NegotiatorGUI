@@ -12,6 +12,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.parties.NegotiationParty;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.UtilitySpace;
@@ -20,6 +21,8 @@ import negotiator.utility.UtilitySpace;
 *
 * @author Reyhan Aydogan
 * Based on Agent Class written by Dmytro and Wouter
+ *
+ * @deprecated Use negotiator.parties.NegotiationParty instead
 */
 public abstract class Party {
 
@@ -27,7 +30,7 @@ public abstract class Party {
 	protected UtilitySpace utilitySpace; 
 	protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues; // not used now
 	protected ArrayList<Integer> partyListenerIndices;
-	
+
 	protected Random randomnr;
 	private DeadlineType deadlineType;
 	private int totalRoundOrTime;

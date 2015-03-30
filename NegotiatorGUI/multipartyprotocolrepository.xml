@@ -6,10 +6,13 @@
         <domainRepItem/>
         <protocolRepItem/>
         <multiPartyProtocolRepItem>
-            <multiPartyProtocolRepItem description="Simple Mediated Multiparty Protocol" classPath="negotiator.multipartyprotocol.SimpleMediatorBasedProtocol" protocolName="Simple Mediator Based Protocol" hasMediator="true" hasMediatorProfile="false"/>
-            <multiPartyProtocolRepItem description="Mediator Feedback Based Multiparty Protocol" classPath="negotiator.multipartyprotocol.MediatorFeedbackBasedProtocol" protocolName="Mediator Feedback Based Protocol" hasMediator="true" hasMediatorProfile="false"/>
+            <multiPartyProtocolRepItem
+                    description="Each agents makes offer, counter-offer, or accepts"
+                    classPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"
+                    protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)"
+                    hasMediator="false"
+                    hasMediatorProfile="false" />
         </multiPartyProtocolRepItem>
     </items>
     <filename>multipartyprotocolrepository.xml</filename>
 </repository>
- 

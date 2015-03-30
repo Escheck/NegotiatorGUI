@@ -140,12 +140,12 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	        		bidToOffer = bestBid;
 	        	}
 	        	else {
-	        		//Remove the oldest bid and update the statistics
+	        		//Remove the oldest bid and receiveMessage the statistics
 	        		bidToRemove = opponentBidsArray.get(0);
         			updateStatistics(bidToRemove, true);
 
 	        		opponentBidsArray.remove(0);
-	        		//Add the new bid of the opponent and update the statistics
+	        		//Add the new bid of the opponent and receiveMessage the statistics
 	        		opponentBidsArray.add(opponentBid.getBid());
 	        		updateStatistics(opponentBid.getBid(), false);
 	        		if (opponentModel instanceof NoModel) {
@@ -173,7 +173,7 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 	
 	/**
 	 * This function updates the statistics of the bids that were received from the opponent
-	 * @param bidToUpdate - the bid that we want to update its statistics
+	 * @param bidToUpdate - the bid that we want to receiveMessage its statistics
 	 * @param toRemove - flag that indicates if we removing (or adding) a bid to (or from) the statistics
 	 */
 	private void updateStatistics(Bid bidToUpdate, boolean toRemove)
@@ -229,7 +229,7 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 							first = last;
 							last = last + lOneStep;
 						}
-						//If no matching value was found, update the last cell
+						//If no matching value was found, receiveMessage the last cell
 						if(found==false){
 							int i = opponentBidsStatisticsForReal.get(realIndex).size()-1;
 							int countPerValue = opponentBidsStatisticsForReal.get(realIndex).get(i);
@@ -630,9 +630,9 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 		int arraySize = ourBidsArray.size();
 		int newIndex = 0;
 
-		if (lastPositionInBidArray + rndNum < 0 )//If the index is smaller than the lower bound of the array update it to the first cell
+		if (lastPositionInBidArray + rndNum < 0 )//If the index is smaller than the lower bound of the array receiveMessage it to the first cell
 			newIndex = 0;
-		else if (lastPositionInBidArray + rndNum > (arraySize - 1))//If the index is larger than the upper bound of the array update it to the last cell
+		else if (lastPositionInBidArray + rndNum > (arraySize - 1))//If the index is larger than the upper bound of the array receiveMessage it to the last cell
 			newIndex = arraySize - 1;
 		else
 			newIndex = lastPositionInBidArray + rndNum;
@@ -643,12 +643,12 @@ public class BRAMAgent_Offering extends OfferingStrategy {
 		//ADDED *********************************//
 		if (this.negotiationSession.getUtilitySpace().getUtilityWithDiscount(toSend, negotiationSession.getTimeline())<threshold){
 			toSend = previousOfferedBid;
-			bidsCountProposalArray[lastPositionInBidArray]++;//update the number of times that this bid was offered
+			bidsCountProposalArray[lastPositionInBidArray]++;//receiveMessage the number of times that this bid was offered
 		}
 		else{								
 			previousOfferedBid = toSend;
-			lastPositionInBidArray = newIndex;//update the last position - this is an indication to the last bid that was offered
-			bidsCountProposalArray[newIndex]++;//update the number of times that this bid was offered
+			lastPositionInBidArray = newIndex;//receiveMessage the last position - this is an indication to the last bid that was offered
+			bidsCountProposalArray[newIndex]++;//receiveMessage the number of times that this bid was offered
 		}
 		
 		return toSend;

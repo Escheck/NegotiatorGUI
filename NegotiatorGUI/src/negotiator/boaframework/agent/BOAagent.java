@@ -130,7 +130,7 @@ public abstract class BOAagent extends Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// 3. if there is an opponent model, update it using the opponent's
+			// 3. if there is an opponent model, receiveMessage it using the opponent's
 			// bid
 			if (opponentModel != null && !(opponentModel instanceof NoModel)) {
 				if (omStrategy.canUpdateOM()) {
@@ -221,7 +221,7 @@ public abstract class BOAagent extends Agent {
 	}
 
 	/**
-	 * Method that first calls the endSession method of each component to update
+	 * Method that first calls the endSession method of each component to receiveMessage
 	 * the session data and then stores the session data if it is not empty and
 	 * is changed.
 	 */

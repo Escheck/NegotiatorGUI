@@ -53,14 +53,14 @@ public class opponentOffers {
 		_issueWeights = new Hashtable<Issue, Double>(); 
 		_valuesUtil = new Hashtable<Issue, Hashtable<Key,Double>>();
 		intializeOpponentOffersSets();
-		// create the data structure with opponent offers indexed by issues and values
+		// createFrom the data structure with opponent offers indexed by issues and values
 		try
 		{
 			// for each issue
 			for(Issue lIssue : _issues) 
 			{
 				_sortedValuesKeys.put(lIssue, new ArrayList<Key>());
-				// create a hash table of the issue's values (those are the keys) 
+				// createFrom a hash table of the issue's values (those are the keys)
 				// and for each value we save the number of times it was offered
 				Hashtable<Key, Integer> h = new Hashtable<Key, Integer>();
 				// taking care of the issue possible values
@@ -141,7 +141,7 @@ public class opponentOffers {
 	 * invoked when a new bid is proposed by the opponent.
 	 * for each issue, the count for the proposed value in this bid is updated.
 	 * in addition, the sorted values list for this issue is updated if required
-	 * @param b update the bidding statistics using bid b.
+	 * @param b receiveMessage the bidding statistics using bid b.
 	 * @return 
 	 * @throws Exception 
 	 */
@@ -486,7 +486,7 @@ public class opponentOffers {
 	private void intializeOpponentOffersSets()
 	{
 		_oppoentOffersByUtility=new ArrayList<Set<Bid>>();
-		//create 11 bins (from 0.5 and on in 0.05 differences)
+		//createFrom 11 bins (from 0.5 and on in 0.05 differences)
 		for (int i=0;i<11;i++)
 		{
 			_oppoentOffersByUtility.add(i, new HashSet<Bid>());

@@ -181,7 +181,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 		if(targetUtility <= maxUtility && previousTargetUtility > maxUtility)
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
-		// Now get a random bid in the range targetUtility ± 0.025
+		// Now get a random bid in the range targetUtility ï¿½ 0.025
 		if (opponentModel instanceof NoModel) {
 			return bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtility - 0.025,
 				targetUtility + 0.025);
@@ -214,7 +214,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 				// Store the data from the time slot
 				opponentTimes.add((lastTimeSlot + 0.5) / 36.0);
 				opponentUtilities.add(maxUtilityInTimeSlot);
-				// Flag regression update required
+				// Flag regression receiveMessage required
 				regressionUpdateRequired = true;
 			}
 			// Update the time slot

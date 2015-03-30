@@ -75,7 +75,7 @@ public class NiceTitForTat extends BilateralAgent {
 		double time = timeline.getTime();
 		log("---------- t = " + time + "----------\n");
 
-		// If we have time, we update the opponent model
+		// If we have time, we receiveMessage the opponent model
 		if (canUpdateBeliefs(time)) {
 			updateBeliefs(opponentLastBid);
 			updateMyNashUtility();
@@ -134,7 +134,7 @@ public class NiceTitForTat extends BilateralAgent {
 	}
 
 	/**
-	 * Decides if we have enough time to update opponent model and nash point.
+	 * Decides if we have enough time to receiveMessage opponent model and nash point.
 	 * On large domains, this may take 3 seconds.
 	 * 
 	 * @param time

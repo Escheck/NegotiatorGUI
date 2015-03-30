@@ -28,12 +28,13 @@ import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.qualitymeasures.OpponentModelMeasures;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
@@ -48,7 +49,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	 * stopNegotiation indicates that the session has now ended. it is checked
 	 * after every call to the agent, and if it happens to be true, session is
 	 * immediately returned without any updates to the results list. This is
-	 * because killing the thread in many cases will return Agent.getAction()
+	 * because killing the thread in many cases will return Agent.getActions()
 	 * but with a stale action. By setting stopNegotiation to true before
 	 * killing, the agent will still immediately return.
 	 */
@@ -64,7 +65,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	protected long startTimeMillies; // idem.
 	/** Default setting is 3min. This is the number of ms. */
 	protected Integer totalTime = 1000 * 180;
-	protected Protocol protocol;
+	protected OldProtocol oldProtocol;
 	private boolean traceLoggingEnabled;
 
 	public Agent currentAgent = null; // agent currently bidding.
@@ -82,16 +83,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	private OpponentModelMeasures omMeasures;
 
 	/** load the runtime objects to start negotiation */
-	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
+	public AlternatingOffersBilateralAtomicNegoSession(OldProtocol oldProtocol,
 			Agent agentA, Agent agentB, String agentAname, String agentBname,
 			UtilitySpace spaceA, UtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent) throws Exception {
 
-		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
+		super(oldProtocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
 				agentAparams, agentBparams);
-		this.protocol = protocol;
+		this.oldProtocol = oldProtocol;
 		this.startingAgent = startingAgent;
 
 		showGUI = !TournamentConfiguration
@@ -133,26 +134,36 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// the agent cannot damage them.
 
 			if (spaceA.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentA.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
+				agentA.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
 						timeline, new NonlinearUtilitySpace(spaceA),
+						agentAparams);
+			else if (spaceA.getType() == UTILITYSPACETYPE.CONSTRAINT)
+				agentA.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
+						timeline, new ConstraintUtilitySpace(spaceA),
 						agentAparams);
 			else
 				// linear
-				agentA.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
+				agentA.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
 						timeline, new UtilitySpace(spaceA), agentAparams);
 			agentA.init();
 
 			if (spaceB.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentB.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
+				agentB.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
 						timeline, new NonlinearUtilitySpace(spaceB),
+						agentBparams);
+			else if (spaceB.getType() == UTILITYSPACETYPE.CONSTRAINT)
+				agentB.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
+						timeline, new ConstraintUtilitySpace(spaceB),
 						agentBparams);
 			else
 				// linear
-				agentB.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
+				agentB.internalInit(oldProtocol.getSessionNumber(),
+						oldProtocol.getTotalSessions(), startTime, totalTime,
 						timeline, new UtilitySpace(spaceB), agentBparams);
 			agentB.init();
 
@@ -414,8 +425,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 			// nego finished by Accept or illegal lastAction.
 			// notify parent that we're ready.
-			synchronized (protocol) {
-				protocol.notify();
+			synchronized (oldProtocol) {
+				oldProtocol.notify();
 			}
 
 			/*
@@ -560,7 +571,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
 
-		this.protocol.threadFinished = true;
+		this.oldProtocol.threadFinished = true;
 	}
 
 	/**
@@ -622,7 +633,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	}
 
 	/**
-	 * Make a new outcome and update table
+	 * Make a new outcome and receiveMessage table
 	 * 
 	 * @param distanceToNash
 	 */
@@ -656,7 +667,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getDomain().getName(), spaceA.getFileName(),
 				spaceB.getFileName(), time, acceptedBy);
 
-		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
+		no = new NegotiationOutcome(this, this.oldProtocol.getSessionNumber(),
 				lastAction, fAgentABids, fAgentBBids, startingWithA,
 				additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
@@ -687,7 +698,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getDomain().getName(), spaceA.getFileName(),
 				spaceB.getFileName(), time, acceptedBy);
 
-		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
+		no = new NegotiationOutcome(this, this.oldProtocol.getSessionNumber(),
 				lastAction, (ArrayList<BidPointTime>) agentASize,
 				(ArrayList<BidPointTime>) agentBSize, startingWithA,
 				additionalLog, distanceToNash, outcomeInfo);
@@ -766,7 +777,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			matchDataLogger.addMeasure("bidindices",
 					omMeasuresResults.getBidIndices());
 			matchDataLogger.writeToFileCompact(time, agreement,
-					protocol.getSessionNumber());
+					oldProtocol.getSessionNumber());
 		}
 	}
 
@@ -905,7 +916,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					distanceToNash, acceptedBy);
 		}
 
-		this.protocol.threadFinished = true;
+		this.oldProtocol.threadFinished = true;
 
 	}
 

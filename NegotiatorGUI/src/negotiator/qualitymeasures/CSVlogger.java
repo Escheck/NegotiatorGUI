@@ -72,7 +72,7 @@ public class CSVlogger {
 		// quality measure has the same amount of values
 		if (dataToLog.size() > 0 && dataToLog.get(0).getSecond().size() > 0) {
 			try {
-				// 2. create a writer
+				// 2. createFrom a writer
 				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
 				
 				// 3. store general information to distinguish a particular match
@@ -123,7 +123,7 @@ public class CSVlogger {
 		// quality measure has the same amount of values
 		if (dataToLog.size() > 0 && dataToLog.get(0).getSecond().size() > 0) {
 			try {
-				// 2. create a writer
+				// 2. createFrom a writer
 				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
 				
 				// 3. store general information to distinguish a particular match

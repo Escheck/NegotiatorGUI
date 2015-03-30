@@ -91,7 +91,7 @@ public class IssueEvaluationDiscrete extends AIssueEvaluation
 	
 	/**
 	 * This method updates the IssueEvaluationDiscrete, based on the value that has been offered to us
-	 * in a new bid. We will first update the valueFrequencyMap based on the newly chosen value, and then update 
+	 * in a new bid. We will first receiveMessage the valueFrequencyMap based on the newly chosen value, and then receiveMessage
 	 * the normalizedValueWeightMap based on the new frequencies.
 	 * @param chosenValue The value of the issue we are evaluating that has just been chosen. May not be null.
 	 */
@@ -113,7 +113,7 @@ public class IssueEvaluationDiscrete extends AIssueEvaluation
 	protected void updateValueFrequencyMap(Value chosenValue) 
 	{
 		if(!(chosenValue instanceof ValueDiscrete))
-			throw new IllegalArgumentException("The IssueEvaluationDiscrete update method requires a ValueDiscrete value. It is now a: " + chosenValue.getClass().getSimpleName());
+			throw new IllegalArgumentException("The IssueEvaluationDiscrete receiveMessage method requires a ValueDiscrete value. It is now a: " + chosenValue.getClass().getSimpleName());
 	
 		ValueDiscrete valueD = (ValueDiscrete)chosenValue;
 		

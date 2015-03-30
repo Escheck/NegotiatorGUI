@@ -88,7 +88,7 @@ public class NiceTitForTat_Offering extends OfferingStrategy {
 		Bid opponentLastBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
 		
 		if (!(opponentModel instanceof NoModel)) {
-			// If we have time, we update the opponent model
+			// If we have time, we receiveMessage the opponent model
 			if (omStrategy.canUpdateOM()) {
 				// opponentModel.updateModel(opponentLastBid.getBid());
 				updateMyNashUtility();

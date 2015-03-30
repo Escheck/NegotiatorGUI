@@ -314,7 +314,7 @@ public class CloseTabPaneUI extends BasicTabbedPaneUI {
 	}
 
 	/**
-	 * Invoked by <code>installUI</code> to create a layout manager object to
+	 * Invoked by <code>installUI</code> to createFrom a layout manager object to
 	 * manage the <code>JTabbedPane</code>.
 	 * 
 	 * @return a layout manager object
@@ -665,13 +665,13 @@ public class CloseTabPaneUI extends BasicTabbedPaneUI {
 	}
 
 	/*
-	 * This method will create and return a polygon shape for the given tab
+	 * This method will createFrom and return a polygon shape for the given tab
 	 * rectangle which has been cropped at the specified cropline with a torn
 	 * edge visual. e.g. A "File" tab which has cropped been cropped just after
 	 * the "i": ------------- | ..... | | . | | ... . | | . . | | . . | | . . |
 	 * --------------
 	 * 
-	 * The x, y arrays below define the pattern used to create a "torn" edge
+	 * The x, y arrays below define the pattern used to createFrom a "torn" edge
 	 * segment which is repeated to fill the edge of the tab. For tabs placed on
 	 * TOP and BOTTOM, this righthand torn edge is created by line segments
 	 * which are defined by coordinates obtained by subtracting xCropLen[i] from

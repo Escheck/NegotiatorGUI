@@ -22,7 +22,7 @@ public class TournamentConfiguration {
 		if (configuration != null && configuration.containsKey(option)) {
 			result = configuration.get(option) != 0;
 		} else {
-			System.err.println("Configuration for " + option + " not set. Using default: " + defaultSetting + ".");
+//			System.err.println("NegotiationConfiguration for " + option + " not set. Using default: " + defaultSetting + ".");
 		}
 		return result;
 	}
@@ -32,7 +32,7 @@ public class TournamentConfiguration {
 		if (configuration != null && configuration.containsKey(option)) {
 			result = configuration.get(option);
 		} else {
-			System.err.println("Configuration for " + option + " not set. Using default: " + defaultSetting + ".");
+			System.err.println("NegotiationConfiguration for " + option + " not set. Using default: " + defaultSetting + ".");
 		}
 		return result;
 	}

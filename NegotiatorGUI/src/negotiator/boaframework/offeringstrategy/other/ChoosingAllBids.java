@@ -29,7 +29,7 @@ public class ChoosingAllBids extends OfferingStrategy {
 	public ChoosingAllBids() { }
 	
 	/**
-	 * Constructor which can be used to create the agent without the GUI.
+	 * Constructor which can be used to createFrom the agent without the GUI.
 	 * 
 	 * @param negoSession reference to the negotiationsession object
 	 * @param model reference to the opponent model

@@ -1,12 +1,12 @@
 package negotiator.boaframework;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.utility.UtilitySpace;
+
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Describes an opponent model of an agent of the BOA framework.
@@ -56,7 +56,7 @@ public abstract class OpponentModel extends BOA {
 	}
 
 	/**
-	 * Method used to update the opponent model.
+	 * Method used to receiveMessage the opponent model.
 	 * 
 	 * @param opponentBid
 	 */
@@ -65,10 +65,10 @@ public abstract class OpponentModel extends BOA {
 	}
 
 	/**
-	 * Method used to update the opponent model.
+	 * Method used to receiveMessage the opponent model.
 	 * 
 	 * @param bid
-	 *            to update the model with.
+	 *            to receiveMessage the model with.
 	 * @param time
 	 *            at which the bid was offered.
 	 */

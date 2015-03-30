@@ -128,13 +128,13 @@ public class UtilitySpace implements Serializable {
 	}
 
 	/**
-	 * create a default evaluator for a given Objective. This function is placed
+	 * createFrom a default evaluator for a given Objective. This function is placed
 	 * here, and not in Objective, because the Objectives should not be loaded
 	 * with utility space functionality. The price we pay for that is that we
 	 * now have an ugly switch inside the code, losing some modularity.
 	 * 
 	 * @param obj
-	 *            the objective to create an evaluator for
+	 *            the objective to createFrom an evaluator for
 	 * @return the default evaluator
 	 */
 	private Evaluator defaultEvaluator(Objective obj) {
@@ -262,7 +262,7 @@ public class UtilitySpace implements Serializable {
 	 * @return An Evaluator for the Objective or Issue.
 	 */
 	public final Evaluator getEvaluator(int index) {
-		checkForLinearSpaceType();
+//		checkForLinearSpaceType();
 		Objective obj = domain.getObjective(index); // Used to be Issue in stead
 													// of Objective
 		if (obj != null) {
@@ -280,7 +280,7 @@ public class UtilitySpace implements Serializable {
 		if (getType() == null)
 			return;
 
-		if (getType() != UTILITYSPACETYPE.LINEAR)
+		if (getType() != UTILITYSPACETYPE.LINEAR && getType() != UTILITYSPACETYPE.CONSTRAINT)
 			throw new IllegalStateException(
 					"This method is to be used for linear utility spaces only. This space is "
 							+ getType());
@@ -963,7 +963,7 @@ public class UtilitySpace implements Serializable {
 	private SimpleElement toXMLrecurse(SimpleElement currentLevel) {
 		// go through all tags.
 
-		// update the objective fields.
+		// receiveMessage the objective fields.
 		Object[] Objectives = currentLevel.getChildByTagName("objective");
 		// Object[] childWeights = currentLevel.getChildByTagName("weight");
 		// Wou;ter: again, domain has no weights.
@@ -987,7 +987,7 @@ public class UtilitySpace implements Serializable {
 			currentChild = toXMLrecurse(currentChild);
 		}
 
-		// update the issue fields.
+		// receiveMessage the issue fields.
 		Object[] Issues = currentLevel.getChildByTagName("issue");
 		// Object[] IssueWeights = currentLevel.getChildByTagName("weight");
 		// Wouter: huh, domain has no weights!!!
@@ -1107,8 +1107,8 @@ public class UtilitySpace implements Serializable {
 
 	/**
 	 * The reservation value is the least favourable point at which one will
-	 * accept a negotiated agreement. Also sometimes referred to as the ‘walk
-	 * away’ point.
+	 * accept a negotiated agreement. Also sometimes referred to as the ï¿½walk
+	 * awayï¿½ point.
 	 * 
 	 * This is value remains constant during the negotiation. However, by
 	 * default, the reservation value descreases with time. To obtain the

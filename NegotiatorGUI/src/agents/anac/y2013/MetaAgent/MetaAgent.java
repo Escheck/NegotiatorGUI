@@ -326,7 +326,7 @@ public class MetaAgent extends Agent {
 
 		for (Issue issue : utilitySpace.getDomain().getIssues()) { // for every
 																	// issue
-			ArrayList<Bid> tempBids = new ArrayList<Bid>(); // create a list of
+			ArrayList<Bid> tempBids = new ArrayList<Bid>(); // createFrom a list of
 															// bids
 			ArrayList<Value> issueValues = new ArrayList<Value>();
 			if (issue.getType() == ISSUETYPE.DISCRETE) {

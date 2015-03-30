@@ -177,7 +177,7 @@ public class SlavaAgent extends Agent {
 	/**
 	 * Method saves the opponent's action. If it's an offer, it calculates its
 	 * utility. If the utility is higher than all previous bids we have seen so
-	 * far from this opponent, we are update the variables's value.
+	 * far from this opponent, we are receiveMessage the variables's value.
 	 * 
 	 * If it's the first time: If we played against this agent, we have a value
 	 * on the variable "bestOffer" and we initialize the parameter
@@ -231,7 +231,7 @@ public class SlavaAgent extends Agent {
 	 * immediately.
 	 * 
 	 * Otherwise, split to 2: Exploration and exploitation. In exploration part,
-	 * update the maximal bid for us (if found) and with probability of 0.5,
+	 * receiveMessage the maximal bid for us (if found) and with probability of 0.5,
 	 * offer it to the opponent and with probability of 0.5, offer to him a bid
 	 * that is good enough for us randomly (one that has utility more than
 	 * UTILITY_THRESHOLD). In exploitation part, offer always the best bid for

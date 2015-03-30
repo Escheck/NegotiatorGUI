@@ -1,23 +1,20 @@
 package negotiator;
 
-import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
-import negotiator.actions.Offer;
 import negotiator.utility.UtilitySpace;
 
 /**
+ * #915 Agents of this type are compatible with the PocketNegotiator.
  * 
- * This is a pure interface definition, not a specific agent. Agents of this
- * type are compatible with the PocketNegotiator.
- * <p>
  * Agents in PocketNegotiator run on the server, in parallel with other threads
  * that may run the same agent. To be compatible, agents need to be
  * <ul>
- * <li>thread safe (maybe not, I'm not exactly sure how TomCat handles this)
+ * <li>thread safe
  * <li>run efficient in multi-threading situations.
  * <li>should not attempt to do actions that violate security restrictions in a
  * Tomcat HttpServlet. eg, read or write files
+ * <li>should return different bids each time. Repeating bids may lead to PN
+ * showing the message "I do not have further suggestions".
  * </ul>
  * <br>
  * A PocketNegotiatorAgent adds new updateProfile functions to the agent. These
@@ -33,10 +30,7 @@ public interface PocketNegotiatorAgent {
 	/**
 	 * initializes the agent, with suggestions for utility space for mySide and
 	 * otherSide. When this is called, the agent also knows that it is connected
-	 * with PN and not with Genius. <br>
-	 * If used from PN, {@link Agent#init()} and
-	 * {@link Agent#internalInit(int, int, java.util.Date, Integer, Timeline, UtilitySpace, java.util.HashMap)}
-	 * are never called.
+	 * with PN and not with Genius.
 	 * 
 	 * @param mySide
 	 * @param otherSide
@@ -57,13 +51,7 @@ public interface PocketNegotiatorAgent {
 	/**
 	 * ask the agent for its next action.
 	 * 
-	 * @return next {@link Action}. Currently PocketNegotiator does only support
-	 *         a subset of Genius agents: {@link Offer}, {@link Accept} and
-	 *         {@link EndNegotiation}. Returning another action will cause an
-	 *         exception in the PocketNegotiator core. <br>
-	 *         An agent can return null action. This tells PocketNegotiotor 'I
-	 *         have no more suggestions'. This probably is a protocol error in
-	 *         Genius, cancelling the negotiation.
+	 * @return next Action
 	 */
 	public Action getAction();
 
@@ -75,7 +63,7 @@ public interface PocketNegotiatorAgent {
 	 * <br>
 	 * 
 	 * This one call allows to change both profiles. This is to avoid expensive
-	 * useless computations if both spaces need update. If only one needs to be
+	 * useless computations if both spaces need receiveMessage. If only one needs to be
 	 * updated , you can pass null for the other.
 	 * 
 	 * @param myUtilities

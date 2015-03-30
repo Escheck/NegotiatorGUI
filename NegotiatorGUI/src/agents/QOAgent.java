@@ -123,7 +123,7 @@ public class QOAgent extends Agent {
 		case QMessages.OFFER:
 		case QMessages.COUNTER_OFFER: {
 			/*
-			 * sFormattedMsg = "type offer" + " source " + m_agent.getAgentId()
+			 * sFormattedMsg = "type offer" + " source " + m_agent.getPartyId()
 			 * + " target " + m_agent.getOpponentAgentId() + " tag " +
 			 * m_agent.getMsgId() + " issueSet ";
 			 * 

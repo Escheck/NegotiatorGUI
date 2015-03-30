@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
  */
 public class QMessages 
 {
-	// constants for probability update
+	// constants for probability receiveMessage
 	public final static int MESSAGE_RECEIVED = 0;
 	public final static int MESSAGE_REJECTED = 1;
 	
@@ -347,7 +347,7 @@ public class QMessages
 					sSavedMsg = sMyIssueSet + sYourIssueSet;
 				}
 				
-				// update opponent's probability
+				// receiveMessage opponent's probability
 				int CurrentAgreementIdx[] = new int[QAgentType.MAX_ISSUES];
 				CurrentAgreementIdx = m_agent.getAgreementIndices(sSavedMsg);
 				

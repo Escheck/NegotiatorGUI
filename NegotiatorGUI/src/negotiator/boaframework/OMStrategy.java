@@ -44,7 +44,7 @@ public abstract class OMStrategy extends BOA {
 	 *            opponent model to which the opponent model strategy applies.
 	 * @param parameters
 	 *            for the opponent model strategy, for example the maximum
-	 *            update time.
+	 *            receiveMessage time.
 	 * @throws Exception
 	 *             thrown when initializing the opponent model strategy fails.
 	 */

@@ -337,7 +337,7 @@ public class QAgentsCore {
 					//25-09-05
 					// take into account only agreements that worth more than the status quo
 					if (agreementUtilityValue <= m_CurrentAgentNextTurnType.getSQValue()) {
-//					  update issue values indices
+//					  receiveMessage issue values indices
 						boolean bFinishUpdate = false;
 						for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 						{
@@ -360,7 +360,7 @@ public class QAgentsCore {
 					// take into account only agreements that are less than the X best agreements
 					// (as time passes, the chances of them being accepted are lower)
 					/*if (agreementUtilityValue > m_CurrentAgentNextTurnType.getMaxValue()) {
-//						  update issue values indices
+//						  receiveMessage issue values indices
 							boolean bFinishUpdate = false;
 							for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 							{
@@ -391,7 +391,7 @@ public class QAgentsCore {
 					//25-09-05
 					if (agreementUtilityValue <= m_CurrentAgentType.getSQValue()) {
 					    
-//					  update issue values indices
+//					  receiveMessage issue values indices
 						boolean bFinishUpdate = false;
 						for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 						{
@@ -411,7 +411,7 @@ public class QAgentsCore {
 					// take into account only agreements that are less than the X best agreements
 					// (as time passes, the chances of them being accepted are lower)
 					/*if (agreementUtilityValue > m_CurrentAgentType.getMaxValue()) {
-//						  update issue values indices
+//						  receiveMessage issue values indices
 							boolean bFinishUpdate = false;
 							for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 							{
@@ -447,7 +447,7 @@ public class QAgentsCore {
 				
 					//25-09-05
 					if (agreementUtilityValue <= agentOpponentCompromise.getSQValue()) {
-//					  update issue values indices
+//					  receiveMessage issue values indices
 						boolean bFinishUpdate = false;
 						for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 						{
@@ -561,7 +561,7 @@ public class QAgentsCore {
 
 					//25-09-05
 					if (agreementUtilityValue <= agentOpponentLongTerm.getSQValue()) {
-//					  update issue values indices
+//					  receiveMessage issue values indices
 						boolean bFinishUpdate = false;
 						for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 						{
@@ -674,7 +674,7 @@ public class QAgentsCore {
 					
 					//25-09-05
 					if (agreementUtilityValue <= agentOpponentShortTerm.getSQValue()) {
-//					  update issue values indices
+//					  receiveMessage issue values indices
 						boolean bFinishUpdate = false;
 						for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 						{
@@ -778,7 +778,7 @@ public class QAgentsCore {
 					}
 				}
 
-				// update issue values indices
+				// receiveMessage issue values indices
 				boolean bFinishUpdate = false;
 				for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 				{
@@ -1431,7 +1431,7 @@ public class QAgentsCore {
 						ca.m_sAgreement = first.getAgreementStr(CurrentAgreementIdx);	
 					}							
 				}
-				// update issue values indices
+				// receiveMessage issue values indices
 				boolean bFinishUpdate = false;
 				for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 				{
@@ -1468,7 +1468,7 @@ public class QAgentsCore {
 					}							
 				}
 
-				// update issue values indices
+				// receiveMessage issue values indices
 				boolean bFinishUpdate = false;
 				for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 				{
@@ -1484,7 +1484,7 @@ public class QAgentsCore {
 				}
 			}
 			
-			// update values
+			// receiveMessage values
 			if (dFirstUtilityFromSecondBest > QAgentType.VERY_SMALL_NUMBER)
 				agreements[0] = 0.5 * (agreements[0] + dFirstUtilityFromSecondBest);
 			if (dSecondUtilityFromFirstBest > dFirstUtilityFromSecondBest)
@@ -1535,7 +1535,7 @@ public class QAgentsCore {
 					}							
 				}
 
-				// update issue values indices
+				// receiveMessage issue values indices
 				boolean bFinishUpdate = false;
 				for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 				{
@@ -2101,7 +2101,7 @@ public class QAgentsCore {
 				dOfferSum += (dPrevOfferProbability * dPrevTypeProbability);
 			}
 
-			// calculate P(type | Ht) and update P(type)
+			// calculate P(type | Ht) and receiveMessage P(type)
 			for (int i = 0; i < AGENT_TYPES_NUM; ++i)
 			{
 				agentType = (QAgentType)m_EnglandAgentTypesList.get(i);
@@ -2149,7 +2149,7 @@ public class QAgentsCore {
 				dOfferSum += (dPrevOfferProbability * dPrevTypeProbability);
 			}
 
-			// calculate P(type | Ht) and update P(type)
+			// calculate P(type | Ht) and receiveMessage P(type)
 			for (int i = 0; i < AGENT_TYPES_NUM; ++i)
 			{
 				agentType = (QAgentType)m_ZimbabweAgentTypesList.get(i);
@@ -2208,7 +2208,7 @@ public class QAgentsCore {
 				dOfferSum += agentType.calcRejectionProbabilities(sRejectedMsg, nCurrentTurn);
 			}
 
-			// calculate P(type | Ht) and update P(type)
+			// calculate P(type | Ht) and receiveMessage P(type)
 			for (int i = 0; i < AGENT_TYPES_NUM; ++i)
 			{
 				agentType = (QAgentType)m_EnglandAgentTypesList.get(i);
@@ -2254,7 +2254,7 @@ public class QAgentsCore {
 				dOfferSum += (dPrevOfferProbability * dPrevTypeProbability);
 			}
 
-			// calculate P(type | Ht) and update P(type)
+			// calculate P(type | Ht) and receiveMessage P(type)
 			for (int i = 0; i < AGENT_TYPES_NUM; ++i)
 			{
 				agentType = (QAgentType)m_ZimbabweAgentTypesList.get(i);

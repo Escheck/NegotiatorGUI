@@ -45,7 +45,7 @@ public class FSEGAOpponentModel extends OpponentModel
 		//generate weight hypothesis ==> <count of issues>! hypothesis
 		WeightHypothesis[] weightHypothesis = new WeightHypothesis[factorial(numberOfIssues)];
 		
-		//create all permutations
+		//createFrom all permutations
 		double[] P = new double[numberOfIssues];
 		
 		//normalize weights
@@ -275,7 +275,7 @@ public class FSEGAOpponentModel extends OpponentModel
 		
 		double mostProbHypSum = 0;
 		
-		//update the weights hyps and evaluators hyps
+		//receiveMessage the weights hyps and evaluators hyps
 		for(int i = 0; i < uUSHypothesis.size(); i++)
 		{
 			UtilitySpaceHypothesis hyp = uUSHypothesis.get(i);

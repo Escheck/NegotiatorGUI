@@ -505,7 +505,7 @@ public class ShAgent extends Agent {
 		}
 
 		/**
-		 * update this class with the last bid from the opponent
+		 * receiveMessage this class with the last bid from the opponent
 		 * 
 		 * @param bid
 		 */

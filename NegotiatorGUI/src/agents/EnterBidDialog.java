@@ -58,11 +58,11 @@ public class EnterBidDialog extends JDialog {
         //setSize(new java.awt.Dimension(600, 400));
         //setBounds(0,0,640,480);
 
-    // create north field: the message field
+    // createFrom north field: the message field
        pane.add(negotiationMessages,"North");
         
         
-     // create center panel: the bid table
+     // createFrom center panel: the bid table
         BidTable = new  JTable(negoinfo);
         //BidTable.setModel(negoinfo); // need a model for column size etc...
        	 // Why doesn't this work???
@@ -72,7 +72,7 @@ public class EnterBidDialog extends JDialog {
         tablepane.add(BidTable,"Center");
         pane.add(tablepane,"Center");
         BidTable.setRowHeight(35);
-        	// create south panel: the buttons:
+        	// createFrom south panel: the buttons:
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(buttonEnd); 
         buttonPanel.add(buttonAccept);
@@ -153,20 +153,20 @@ public class EnterBidDialog extends JDialog {
     			public negotiator.actions.Action 
     askUserForAction(negotiator.actions.Action opponentAction, Bid myPreviousBid) 
     {
-        negoinfo.opponentOldBid=null;
+        negoinfo.lastAccepted =null;
         if(opponentAction==null) {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
         	negotiationMessages.setText("Opponent accepted your last bid!");
-        	negoinfo.opponentOldBid = myPreviousBid;
+        	negoinfo.lastAccepted = myPreviousBid;
         }
         if(opponentAction instanceof EndNegotiation) {
         	negotiationMessages.setText("Opponent cancels the negotiation.");
         }
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
-        	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
+        	negoinfo.lastAccepted = ((Offer)opponentAction).getBid();
         }
         try { negoinfo.setOurBid(myPreviousBid); }
         catch (Exception e) { new Warning("error in askUserForAction:",e,true,2); }

@@ -286,7 +286,7 @@ public class QAgentType {
 				AgreementRankings[i].dAgreementValue = dAgreementValue;
 			}
 			
-			// update issue values indices - for next loop of new indices
+			// receiveMessage issue values indices - for next loop of new indices
 			boolean bFinishUpdate = false;
 			for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 			{
@@ -349,7 +349,7 @@ public class QAgentType {
 				dOffersSum += (dOfferProbability * dPrevTypeProbability);
 			}
 			
-			// update issue values indices - for next loop of new indices
+			// receiveMessage issue values indices - for next loop of new indices
 			boolean bFinishUpdate = false;
 			for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 			{
@@ -399,7 +399,7 @@ public class QAgentType {
 			
 			out.println(nRanking + "\t" + dRankingProb + "\t" + sAgreement);
 		
-			// update issue values indices - for next loop of new indices
+			// receiveMessage issue values indices - for next loop of new indices
 			boolean bFinishUpdate = false;
 			for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 			{
@@ -768,7 +768,7 @@ public class QAgentType {
 
 			pw.println(dAgreementValue);
 			
-			// update issue values indices - for next loop of new indices
+			// receiveMessage issue values indices - for next loop of new indices
 			boolean bFinishUpdate = false;
 			for (int k = nIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
 			{

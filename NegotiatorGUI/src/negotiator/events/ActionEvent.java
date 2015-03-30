@@ -29,7 +29,7 @@ public class ActionEvent extends NegotiationEvent
 	double utilADiscount;
 	double utilBDsicount;
 	String errorRemarks;		// errors
-	/** Indicates whether it was the last actionevent of the negotiation session, so then we update 
+	/** Indicates whether it was the last actionevent of the negotiation session, so then we receiveMessage
 	 * the table through {@link TournamentProgressUI2} */
 	boolean finalActionEvent;
 	

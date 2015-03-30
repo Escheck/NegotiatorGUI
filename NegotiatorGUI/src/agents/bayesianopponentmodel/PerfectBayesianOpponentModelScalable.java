@@ -239,7 +239,7 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 						lN += fWeightHyps.get(j).get(i).getProbability();
 					}*/
 				}	
-				//2. update probabilities
+				//2. receiveMessage probabilities
 				for(int i=0;i<fWeightHyps.get(j).size();i++) {
 //					if(!lBid.getValue(j).equals(lPreviousBid.getValue(j))) {				
 						lUtility = fWeightHyps.get(j).get(i).getWeight()*getExpectedEvaluationValue(lBid, j) + getPartialUtility(lBid, j);
@@ -278,7 +278,7 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 				EvaluatorHypothesis lHyp =fEvaluatorHyps.get(i).get(j); 
 				lN += lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(lHyp.getEvaluator().getEvaluation(fUS, lBid, issues.get(i).getNumber())), opponentUtility);					
 			}
-			//2. update probabilities				
+			//2. receiveMessage probabilities
 			for(int j=0;j<fEvaluatorHyps.get(i).size();j++) {
 				EvaluatorHypothesis lHyp =fEvaluatorHyps.get(i).get(j); 
 				lEvaluatorHyps.get(i).get(j).setProbability(lHyp.getProbability()*conditionalDistribution(getPartialUtility(lBid, i)+getExpectedWeight(i)*(lHyp.getEvaluator().getEvaluation(fUS, lBid, issues.get(i).getNumber())), opponentUtility)/lN);					
@@ -296,16 +296,16 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 		if(haveSeenBefore(pBid)) return;
 		fBiddingHistory.add(pBid);
 		double opponentUtility = opponentSpace.getUtility(pBid);
-		//do not update the bids if it is the first bid		
+		//do not receiveMessage the bids if it is the first bid
 		if(fBiddingHistory.size()>1) {
 			
-			//update the weights
+			//receiveMessage the weights
 			updateWeights(opponentUtility);
-			//update evaluation functions
+			//receiveMessage evaluation functions
 			updateEvaluationFns(opponentUtility);
 		} else {
-			//do not update the weights
-			//update evaluation functions
+			//do not receiveMessage the weights
+			//receiveMessage evaluation functions
 			updateEvaluationFns(opponentUtility);
 		} //if
 		

@@ -81,7 +81,7 @@ public class SimpleDOMParser {
 					currentTag = currentTag.substring(index+1);
 				}
 
-				// create new element
+				// createFrom new element
 				SimpleElement element = new SimpleElement(tagName);
 
 				// parse the attributes

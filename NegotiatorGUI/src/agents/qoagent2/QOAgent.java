@@ -223,7 +223,7 @@ public class QOAgent {
 			System.exit(1);
 		}
 		
-		// create instance of class
+		// createFrom instance of class
 		// includes first connection to server
 		String sSideName = args[0];
 		String sPortNum = args[1];
@@ -542,7 +542,7 @@ public class QOAgent {
 		
 		if (m_bSendOffer)
 		{
-			// create thread to send delayed message
+			// createFrom thread to send delayed message
 /* DT:			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
 			delayedMessageThread.start();
 */			
@@ -578,7 +578,7 @@ public class QOAgent {
 		
 		if (m_bSendOffer)
 		{
-			// create thread to send delayed message
+			// createFrom thread to send delayed message
 /* DT:			QDelayedMessageThread delayedMessageThread = new QDelayedMessageThread(this, sOffer, m_nCurrentTurn);
 			delayedMessageThread.start();
 */			

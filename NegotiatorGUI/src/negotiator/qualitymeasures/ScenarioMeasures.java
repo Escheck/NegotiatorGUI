@@ -25,7 +25,7 @@ import negotiator.xml.OrderedSimpleElement;
 
 /**
  * This class is an improved version of the SpaceDistance class by D. Tykhonov.
- * Edit and run the main to automatically create a XML-sheet with the scenario characteristics
+ * Edit and run the main to automatically createFrom a XML-sheet with the scenario characteristics
  * of all scenarios in the domain file.
  * 
  * Note that the current implementation assumes that all domains only have two

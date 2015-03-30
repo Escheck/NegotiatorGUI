@@ -38,7 +38,7 @@ public class TheBOAagent extends BOAagent {
 		String om = dagent.getOpponentModel().getClassname();
 		String oms = dagent.getOMStrategy().getClassname();
 
-		// create the actual objects using reflexion
+		// createFrom the actual objects using reflexion
 
 		offeringStrategy = BOAagentRepository.getInstance().getOfferingStrategy(os);
 		acceptConditions = BOAagentRepository.getInstance().getAcceptanceStrategy(as);

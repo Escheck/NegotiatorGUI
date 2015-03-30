@@ -6,7 +6,7 @@ import negotiator.xml.SimpleElement;
 
 /**
  * Evaulator for an objective. In the current implementation it makes no sense to
- * create this type of object.
+ * createFrom this type of object.
  */
 public class EvaluatorObjective implements Evaluator {
 	

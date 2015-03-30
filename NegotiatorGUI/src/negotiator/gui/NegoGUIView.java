@@ -20,6 +20,7 @@ import negotiator.gui.boaframework.BOARepositoryUI;
 import negotiator.gui.domainrepository.DomainRepositoryUI;
 import negotiator.gui.domainrepository.MyTreeNode;
 import negotiator.gui.negosession.MultiNegoSessionUI;
+import negotiator.gui.negosession.MultilateralUI;
 import negotiator.gui.negosession.NegoSessionUI2;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
@@ -27,11 +28,12 @@ import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.tournament.TournamentRunner;
+import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
@@ -132,6 +134,7 @@ public class NegoGUIView extends FrameView {
 		menuBar = new javax.swing.JMenuBar();
 		JMenu startMenu = new javax.swing.JMenu();
 		newMultilateralMenuItem = new javax.swing.JMenuItem();
+		newMultilateralTournamentMenuItem = new javax.swing.JMenuItem();
 		newSessionMenuItem = new javax.swing.JMenuItem();
 		newTournamentMenuItem = new javax.swing.JMenuItem();
 		newDistributedTournamentMenuItem = new javax.swing.JMenuItem();
@@ -234,6 +237,11 @@ public class NegoGUIView extends FrameView {
 				.setName("newDistributedTournamentMenuItem"); // NOI18N
 		startMenu.add(newDistributedTournamentMenuItem);
 
+		// Add a new menu item for multi-agent negotiation tournament
+		newMultilateralTournamentMenuItem.setAction(actionMap.get("newMultiAgentTournamentTab")); // NOI18N
+		newMultilateralTournamentMenuItem.setName("newMultilateralMenuItem"); // NOI18N
+		startMenu.add(newMultilateralTournamentMenuItem);
+		
 		newMultilateralMenuItem.setAction(actionMap.get("newMultiNegoSession")); // NOI18N
 		newMultilateralMenuItem.setName("newMultilateralMenuItem"); // NOI18N
 		startMenu.add(newMultilateralMenuItem);
@@ -304,15 +312,31 @@ public class NegoGUIView extends FrameView {
 				UtilitySpace utilitySpace;
 				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.NONLINEAR) {
 					utilitySpace = new NonlinearUtilitySpace(domain, filename);
-				} else {
+				} if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.CONSTRAINT) {
+					utilitySpace = new ConstraintUtilitySpace(domain, filename);
+				}else {
 					utilitySpace = new UtilitySpace(domain, filename);
 				}
+
 				tf = new TreeFrame(domain, utilitySpace);
 				addTab(StripExtension(GetPlainFileName(filename)), tf);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 			}
+		}
+	}
+	
+	/**
+	 * Adds a tab to the GUI's start-menu for opening a multi-agent negotiation tab. 
+	 * @author David Festen
+	 */
+	@Action
+	public void newMultiAgentTournamentTab() {
+		try {
+			addTab("Tournament Editor", new MultilateralUI());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -414,6 +438,7 @@ public class NegoGUIView extends FrameView {
 	private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
 	private javax.swing.JMenuItem jMenuItem1;
 	private javax.swing.JMenuItem newMultilateralMenuItem;
+	private javax.swing.JMenuItem newMultilateralTournamentMenuItem;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane2;
@@ -461,7 +486,7 @@ public class NegoGUIView extends FrameView {
 		try {
 			CSVLoader csvLoader = new CSVLoader(csvFileChooser
 					.getSelectedFile().getPath());
-			List<Protocol> sessions = csvLoader.getSessions();
+			List<OldProtocol> sessions = csvLoader.getSessions();
 
 			ProgressUI2 progressUI = new ProgressUI2(true, true);
 			TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(

@@ -18,7 +18,7 @@ import javax.swing.ImageIcon;
  */
 public class About extends javax.swing.JFrame {
 
-    public static final String VERSION = "5.1.1";
+    public static final String VERSION = "5.2.5";
 	private javax.swing.JLabel contributorsLabel;
     private javax.swing.JTextArea contributorsValueLabel;
     private javax.swing.JScrollPane contributorsValueScrollPane;
@@ -65,7 +65,7 @@ public class About extends javax.swing.JFrame {
         contributorsValueLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         contributorsValueLabel.setLineWrap(true);
         contributorsValueLabel.setRows(5);
-        contributorsValueLabel.setText("R. Aydogan\nT. Baarslag\nA. Dirkzwager\nM. Hendrikx\nK. Hindriks\nW. Pasman\nD. Tykhonov\nand others...");
+        contributorsValueLabel.setText("R. Aydogan\nT. Baarslag\nA. Dirkzwager\nM. Hendrikx\nK. Hindriks\nW. Pasman\nD. Tykhonov\nD. Festen\nand others...");
         contributorsValueLabel.setWrapStyleWord(true);
         contributorsValueLabel.setOpaque(false);
         contributorsValueScrollPane.setViewportView(contributorsValueLabel);

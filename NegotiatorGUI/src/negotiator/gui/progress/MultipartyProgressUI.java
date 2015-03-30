@@ -15,85 +15,53 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+
+import negotiator.Bid;
+import negotiator.BidIterator;
+import negotiator.parties.NegotiationParty;
+import negotiator.session.Session;
+import negotiator.session.SessionManager;
+import negotiator.protocol.MediatorProtocol;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 
-import negotiator.DeadlineType;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 
-import negotiator.gui.chart.BidChart;
 import negotiator.gui.chart.MultipartyBidChart;
-import negotiator.multipartyprotocol.MultiPartyNegotiationSession;
 import negotiator.utility.UtilitySpace;
 
 
 public class MultipartyProgressUI extends javax.swing.JPanel implements MultipartyNegotiationEventListener{
-	
+
+    public static final int MAX_TEXT_OUTPUT = 100000; // 100K
+    protected int round = 0;
 	/** the table model at the bottom */
 	private String[] progressTableInfo;
-	protected int round = 0;
 	private MultipartyBidChart bidChart;
 	private TextArea logText;
 	private JPanel chart;
-	
-	
-	//about negotiation session 
-	private MultiPartyNegotiationSession session;
 
-	
-	
-    /** Creates new form ProgressUI2 */
-    public MultipartyProgressUI(ArrayList<String> partyInfo) {
-    	
-    	progressTableInfo= new String[partyInfo.size()+1];
-    	progressTableInfo[0]="Round";
-    	for (int i=0; i<partyInfo.size(); i++)
-    		progressTableInfo[i+1]=partyInfo.get(i);
-    	    	
-        initComponents();
-		bidChart = new MultipartyBidChart(partyInfo); //maximum round will be given		
-		biddingTable.setGridColor(Color.lightGray);
-		initializeProgressGUI("initialized...",bidChart,biddingTable);
-    }
-    
-   
-	private void initializeProgressGUI (String logging,MultipartyBidChart bidChart, JTable bidTable){
-		
-		Container pane = jPanelNegoChart;
-		pane.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-		
-		//the chart panel 
-		c.gridx = 1;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
-        JFreeChart plot = bidChart.getChart();
-        chart = new ChartPanel(plot);
-        chart.setMinimumSize(new Dimension(350, 350)); 
-        chart.setBorder(loweredetched);
-        c.insets = new Insets(10, 0, 0, 10);
-        c.ipadx = 10;
-		c.ipady = 10;
-        pane.add(chart,c);
 
-        jPanelNegoChart.add(chart);
-		logText = new TextArea();
-		logText.setText("");
-		
-	}
-    
-    
+	//about negotiation session
+	private Session session;
+
+	//about negotiation session mgr
+    private SessionManager manager;
+
+    private List<NegotiationParty> parties;
+
 	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable biddingTable;
     private javax.swing.JPanel jPanelNegoChart;
@@ -106,8 +74,50 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements Multipar
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
     private javax.swing.JTextArea textOutput;
+    /** Creates new form ProgressUI2 */
+    public MultipartyProgressUI(ArrayList<String> partyInfo, SessionManager mgr, List<NegotiationParty> parties) {
+
+        this.manager = mgr;
+        this.parties = parties;
+
+    	progressTableInfo= new String[partyInfo.size()+1];
+    	progressTableInfo[0]="Round";
+    	for (int i=0; i<partyInfo.size(); i++)
+    		progressTableInfo[i+1]=partyInfo.get(i);
+
+        initComponents();
+		bidChart = new MultipartyBidChart(partyInfo); //maximum round will be given
+		biddingTable.setGridColor(Color.lightGray);
+		initializeProgressGUI("initialized...",bidChart,biddingTable);
+    }
+
+	private void initializeProgressGUI (String logging,MultipartyBidChart bidChart, JTable bidTable){
+
+		Container pane = jPanelNegoChart;
+		pane.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+
+		//the chart panel
+		c.gridx = 1;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
+        JFreeChart plot = bidChart.getChart();
+        chart = new ChartPanel(plot);
+        chart.setMinimumSize(new Dimension(350, 350));
+        chart.setBorder(loweredetched);
+        c.insets = new Insets(10, 0, 0, 10);
+        c.ipadx = 10;
+		c.ipady = 10;
+        pane.add(chart,c);
+
+        jPanelNegoChart.add(chart);
+		logText = new TextArea();
+		logText.setText("");
+
+	}
     // End of variables declaration//GEN-END:variables
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -169,19 +179,19 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements Multipar
         jScrollPaneNegoTable.setName("jScrollPaneNegoTable"); // NOI18N
 
         biddingTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {               
+            new Object [][] {
             },
             progressTableInfo
         ) {
         	 boolean[] canEdit = new boolean [progressTableInfo.length];
-        	
+
         	   public boolean isCellEditable(int rowIndex, int columnIndex) {
                      return canEdit [columnIndex];
                }
         });
-              
-        
-        
+
+
+
         biddingTable.setName("biddingTable"); // NOI18N
         jScrollPaneNegoTable.setViewportView(biddingTable);
 
@@ -237,58 +247,142 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements Multipar
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addRowBiddingTable(int round, ArrayList<Double> partyUtilities) {
-   	 
+    private void addRowBiddingTable(int round, int turn, ArrayList<Double> partyUtilities) {
+
 		 DefaultTableModel partyModel=(DefaultTableModel) biddingTable.getModel();
 	     Object[] currentBiddingObject= new Object[partyUtilities.size()+1];
-	     
-	     currentBiddingObject[0]=round;
+
+	     currentBiddingObject[0] = round + turn / 10d;
 	     for (int i=0; i<partyUtilities.size(); i++) {
 	    	 currentBiddingObject[i+1]=partyUtilities.get(i);
 	     }
-	     	             
+
 	     partyModel.addRow(currentBiddingObject);
+         if (partyModel.getRowCount() > MAX_TEXT_OUTPUT) {
+             partyModel.removeRow(0);
+         }
+
 	     biddingTable.setModel(partyModel);
 	}
-    
+
 	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-		
+
 		//time will be used later
-		addRowBiddingTable(evt.getRound(), evt.getPartyUtilities());
-		bidChart.setBidSeries(session.getPartyBidSeries());
-		if (evt.getAgreementFound()) {
-			bidChart.setMaxRound(session.getCurrentRoundNo()+1);
-			bidChart.setAgreementPoints(session.getAcceptanceSeries());
-		}
-			
+		addRowBiddingTable(evt.getRound(), evt.getTurn(), evt.getPartyUtilities());
 	}
 
 
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		textOutput.append(evt.getMessage()+"\n");
+		textOutput.append(evt.getMessage() + "\n");
+        if (textOutput.getLineCount() > MAX_TEXT_OUTPUT) {
+            try {
+                int end = textOutput.getLineEndOffset(0);
+                textOutput.replaceRange("", 0, end);
+            } catch (BadLocationException e) {
+                e.printStackTrace();
+            }
+        }
 		// writing log to session --> session.setLog(textOutput.getText());
 	}
 
+	public void handleMultipartyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
+		session = evt.getSession();
+		bidChart.setMaxRound(session.getRoundNumber() + 1);
+		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
+        bidChart.setBidSeries(getPartyBidSeries());
 
-	private void setNegotiationSession(MultiPartyNegotiationSession negoSession) {
-		
-		session=negoSession;
-		session.addNegotiationEventListener(this);
-		ArrayList<UtilitySpace> utilitySpaces=negoSession.getUtilitySpaces();
-		
-		// This utility spaces will be used to estimate the pareto optimal - nash product for analysis !		
-		
+        if (evt.getAgreement() != null)
+            bidChart.setAgreementPoints(manager.getAgreementUtilities());
 	}
-	
-	public void handleMultipartyNegotiationEvent(
-			MultipartyNegotiationSessionEvent evt) {
-		setNegotiationSession(evt.getSession());
-		if (session.getDeadlineType()==DeadlineType.ROUND)
-			bidChart.setMaxRound(session.getTotalRoundOrTime()+1);
-		bidChart.setNashSeries(session.getNashProduct(session.getTotalRoundOrTime()+1));
-		// else need to think what happens when the deadline type is time 
-	}
-	
+
+    private ArrayList<double[][]> getPartyBidSeries(){
+
+        List<List<Double[]>> partyUtilityHistoryList = manager.getAgentUtils();
+
+        ArrayList<double[][]> bidSeries=new ArrayList<double[][]>();
+        double[][] product= new double [2][partyUtilityHistoryList.get(0).size()];
+        try{
+            for (int i=0; i<partyUtilityHistoryList.size(); i++) {
+
+                double[][] xPartyUtilities= new double[2][partyUtilityHistoryList.get(i).size()];
+                int index=0;
+
+                for(Double[] utilityHistory:partyUtilityHistoryList.get(i)){
+
+                    xPartyUtilities[0][index]=utilityHistory[0];
+                    xPartyUtilities[1][index]=utilityHistory[1];
+
+                    product[0][index]=utilityHistory[0];
+                    if (i==0) // for the first agent
+                        product[1][index]=utilityHistory[1];
+                    else product[1][index]*=utilityHistory[1];
+                    index++;
+                }
+
+                bidSeries.add(xPartyUtilities);
+            }
+            bidSeries.add(product);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return bidSeries;
+    }
+
+    private List<UtilitySpace> getUtilitySpaces()
+    {
+        List<UtilitySpace> spaces = new ArrayList<UtilitySpace>();
+        for(NegotiationParty party : MediatorProtocol.getNonMediators(parties))
+            spaces.add(party.getUtilitySpace());
+        return spaces;
+    }
+
+    private void calculateNashProduct() throws Exception {
+
+
+        double tempProduct=1.0;
+        Bid currentBid, nashBid=null;
+        BidIterator lBidIter = new BidIterator(getUtilitySpaces().get(0).getDomain());
+        int i=0;
+
+    while(lBidIter.hasNext()) {
+            i++;
+            tempProduct=1.0;
+
+            currentBid=lBidIter.next();
+
+
+        for (UtilitySpace utilitySpace : getUtilitySpaces())
+            tempProduct *= utilitySpace.getUtility(currentBid);
+
+            if (tempProduct>nashProduct) {
+                nashProduct=tempProduct;
+            }
+        }
+    }
+
+    private double nashProduct = -1d;
+
+    public double[][] getNashProduct(double roundRange) {
+        try
+        {
+            if (nashProduct == -1d) calculateNashProduct();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        double[][] nashDataSeries= new double[2][2];
+        nashDataSeries[0][0]=-1;
+        nashDataSeries[1][0]=nashProduct;
+        nashDataSeries[0][1]=roundRange + 2;
+        nashDataSeries[1][1]=nashProduct;
+
+        return nashDataSeries;
+    }
 }
 
 

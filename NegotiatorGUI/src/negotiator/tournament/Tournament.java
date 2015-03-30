@@ -10,7 +10,7 @@ import java.util.Random;
 import misc.Serializer;
 import negotiator.Global;
 import negotiator.boaframework.BOAagentInfo;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
@@ -33,8 +33,8 @@ import negotiator.tournament.VariablesAndValues.TournamentVariable;
 
 /**
  * This class stores all tournament info (protocol, list of profiles, list of
- * agents, etc.) This is then converted into a list of {@link Protocol}s using
- * {@link #getSessions()}. These {@link Protocol}s (which are actually just
+ * agents, etc.) This is then converted into a list of {@link negotiator.protocol.OldProtocol}s using
+ * {@link #getSessions()}. These {@link negotiator.protocol.OldProtocol}s (which are actually just
  * negotiation sessions) are then run by {@link TournamentRunner}, one by one,
  * in {@link TournamentRunner}.run().
  * 
@@ -80,7 +80,7 @@ public class Tournament implements Serializable {
 	public static final int VARIABLE_DB_PASSWORD = 10;
 	public static final int VARIABLE_DB_SESSIONNAME = 11;
 
-	ArrayList<Protocol> sessions = null;
+	ArrayList<OldProtocol> sessions = null;
 
 	/** creates empty tournament with the next TournamenNumber */
 	static int next_number = 1;
@@ -95,13 +95,13 @@ public class Tournament implements Serializable {
 	 * generationMode is set to 1 (index 1 in the list, currently this is
 	 * "Random"), the generated sessions are shuffled in order.
 	 */
-	public ArrayList<Protocol> getSessions() throws Exception {
+	public ArrayList<OldProtocol> getSessions() throws Exception {
 		ProtocolRepItem protRepItem = getProtocol();
-		Class<Protocol> protocol = Global.getProtocolClass(protRepItem);
+		Class<OldProtocol> protocol = Global.getProtocolClass(protRepItem);
 		Class[] paramTypes = { Tournament.class };
 		Method mthdGetTournamentSessions = protocol.getMethod(
 				"getTournamentSessions", paramTypes);
-		sessions = (ArrayList<Protocol>) (mthdGetTournamentSessions.invoke(
+		sessions = (ArrayList<OldProtocol>) (mthdGetTournamentSessions.invoke(
 				null, this));
 
 		int mode = TournamentConfiguration

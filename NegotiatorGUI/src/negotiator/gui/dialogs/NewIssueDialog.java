@@ -36,7 +36,7 @@ import negotiator.utility.UtilitySpace;
 
 
 /**
- * A dialog window of Genius GUI used to create a new issue and/or evaluator for a issue.
+ * A dialog window of Genius GUI used to createFrom a new issue and/or evaluator for a issue.
  * 
  * 
  * @author Dmytro Tykhonov
@@ -385,7 +385,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		boolean newIssue = (issue == null); //Defines if a new Issue is added, or if an existing Issue is being edited.
 	
 		// Wouter: added: they threw away the old evaluator... bad because you loose the weight settings of the evaluator.
-		// Wouter; code is ugly. They create a NEW evaluator anyway. 
+		// Wouter; code is ugly. They createFrom a NEW evaluator anyway.
 		// And at  the end they check whethere there is a util space
 		// anyway, and if not they throw away the new evaluator.....
 		// Also we are paying here for the mix between domain and utility space editor-in-one

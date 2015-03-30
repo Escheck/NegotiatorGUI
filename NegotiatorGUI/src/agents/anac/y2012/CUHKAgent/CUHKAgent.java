@@ -130,12 +130,12 @@ public class CUHKAgent extends Agent {
 															// propose first and
 															// we response
 															// secondly
-				// update opponent model first
+				// receiveMessage opponent model first
 				this.opponentBidHistory.updateOpponentModel(
 						((Offer) ActionOfOpponent).getBid(),
 						utilitySpace.getDomain(), this.utilitySpace);
 				this.updateConcedeDegree();
-				// update the estimation
+				// receiveMessage the estimation
 				if (ownBidHistory.numOfBidsProposed() == 0) {
 					// bid = utilitySpace.getMaxUtilityBid();
 					bid = this.bid_maximum_utility;
@@ -283,7 +283,7 @@ public class CUHKAgent extends Agent {
 			// timeline.getTime());
 			this.ownBidHistory.addBid(bid, utilitySpace);
 			this.timeLeftAfter = timeline.getCurrentTime();
-			this.estimateRoundLeft(false);// update the estimation
+			this.estimateRoundLeft(false);// receiveMessage the estimation
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 			System.out.println(estimateRoundLeft(false));
@@ -707,7 +707,7 @@ public class CUHKAgent extends Agent {
 	}
 
 	/*
-	 * update the concede-to-time degree based on the predicted toughness degree
+	 * receiveMessage the concede-to-time degree based on the predicted toughness degree
 	 * of the opponent
 	 */
 

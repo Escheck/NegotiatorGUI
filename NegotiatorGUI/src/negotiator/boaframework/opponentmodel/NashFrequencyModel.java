@@ -98,13 +98,13 @@ public class NashFrequencyModel extends OpponentModel
 	// **************************************
 	
 	/**
-	 * This will update the negotiatormodel based on a new bid that has just been offered by the negotiator.
+	 * This will receiveMessage the negotiatormodel based on a new bid that has just been offered by the negotiator.
 	 * @param bid The bid that has just been offered.
 	 */
 	public void updateModel(Bid bid, double time)
 	{
 		if (bid != null) {
-			//We update each issueEvaluation with the value that has been offered in the bid.
+			//We receiveMessage each issueEvaluation with the value that has been offered in the bid.
 			ArrayList<Issue> issues = negotiationSession.getUtilitySpace().getDomain().getIssues();
 			for(Issue issue : issues)
 			{

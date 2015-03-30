@@ -60,7 +60,7 @@ public class DataObjects {
 			theFolder.mkdir();
 			return true;
 		} catch (SecurityException e) {
-			String msg = "Could not create the folder in " + absolutePath;
+			String msg = "Could not createFrom the folder in " + absolutePath;
 			JOptionPane.showMessageDialog(null, msg, "Error while creating a folder ", 0);
 		}
 		return false;

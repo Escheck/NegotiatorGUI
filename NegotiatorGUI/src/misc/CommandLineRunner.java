@@ -1,17 +1,9 @@
 package misc;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import negotiator.Global;
-import negotiator.NegotiationEventListener;
-import negotiator.events.ActionEvent;
-import negotiator.events.BilateralAtomicNegotiationSessionEvent;
-import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationSessionEvent;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -51,7 +43,7 @@ public class CommandLineRunner {
 		if (profiles.size() != agents.size())
 			throw new IllegalArgumentException("Number of profiles does not match number of agents.");
 		
-		Protocol ns = null;
+		OldProtocol ns = null;
 
 		ProtocolRepItem protocol = new ProtocolRepItem(p, p, p);
 		

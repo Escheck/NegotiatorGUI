@@ -167,7 +167,7 @@ class GameTimeServer extends JPanel implements Runnable
  * Goal: Stop the stop-watch. If the stop watch is of type end-turn - 
  * we send an endTurn message to the client program. If the stop watch 
  * is of type end-negotiation - we send an endNegotiation message to the 
- * client program, create the log file and remove the client from the 
+ * client program, createFrom the log file and remove the client from the
  * clients vector at the server.
  * Input: None.
  * Output: None.

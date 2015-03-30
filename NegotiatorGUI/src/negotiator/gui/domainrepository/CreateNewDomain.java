@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
- * GUI used to create a new domain.
+ * GUI used to createFrom a new domain.
  *
  * @author Mark Hendrikx
  */

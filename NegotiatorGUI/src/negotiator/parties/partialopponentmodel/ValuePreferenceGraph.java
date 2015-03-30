@@ -150,7 +150,7 @@ public class ValuePreferenceGraph {
 		    }//for
 	 }
 	
-	//update each node's depth except the given value and value list
+	//receiveMessage each node's depth except the given value and value list
 	private void increasePreferredValueNodeDepths (Value lessPreferredValue, Value morePreferredValue,int difference)   {
 
 		ArrayList<Value> forbiddenList=getAllLessPreferredValues(lessPreferredValue);
@@ -186,8 +186,8 @@ public class ValuePreferenceGraph {
 				 
 				  if (feedback==Feedback.BETTER) {
 					  
-					  // update the depth of all nodes except first node and all less preferred nodes than it
-					   if (firstValueNode.getDepth()>=secondValueNode.getDepth()) { //update depth
+					  // receiveMessage the depth of all nodes except first node and all less preferred nodes than it
+					   if (firstValueNode.getDepth()>=secondValueNode.getDepth()) { //receiveMessage depth
 						   increasePreferredValueNodeDepths(firstValue, secondValue, firstValueNode.getDepth()-secondValueNode.getDepth()+1);				  
 					   }
 					   
@@ -197,7 +197,7 @@ public class ValuePreferenceGraph {
 						partialGraph.put(secondValue, secondValueNode);
 					   
 				  } else if (feedback==Feedback.WORSE) {
-					  if (firstValueNode.getDepth()<=secondValueNode.getDepth()) {//update depth
+					  if (firstValueNode.getDepth()<=secondValueNode.getDepth()) {//receiveMessage depth
 						  increasePreferredValueNodeDepths(secondValue, firstValue,secondValueNode.getDepth()-firstValueNode.getDepth()+1);				
 					  }
 					  //common part
@@ -252,14 +252,14 @@ public class ValuePreferenceGraph {
 					newValueNode.setDepth(firstValueNode.getDepth()+1);				
 					newValueNode.addLessPreferredValue(firstValue);
 					firstValueNode.addMorePreferredValue(newValue);
-					if (newValueNode.getDepth()>highestDepth) // update the highest depth
+					if (newValueNode.getDepth()>highestDepth) // receiveMessage the highest depth
 						highestDepth=newValueNode.getDepth();					
 					
 				} else { // WORSE
 					newValueNode.setDepth(firstValueNode.getDepth()-1);
 					newValueNode.addMorePreferredValue(firstValue);
 					firstValueNode.addLessPreferredValue(newValue);
-					if (newValueNode.getDepth()<lowestDepth) //update the lowest depth
+					if (newValueNode.getDepth()<lowestDepth) //receiveMessage the lowest depth
 						lowestDepth=newValueNode.getDepth();
 				}
 				
