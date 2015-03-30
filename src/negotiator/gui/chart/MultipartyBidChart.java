@@ -45,8 +45,8 @@ public class MultipartyBidChart {
 		this.maxRound=maxRound;		
 		this.partyNames=partyNames;
 		chart=createOverlaidChart(partyNames);
-		plot.getDomainAxis().setRange(0, maxRound);
-		plot.getRangeAxis().setRange(0.1, 1.1);
+		plot.getDomainAxis().setRange(0, maxRound+1);
+		plot.getRangeAxis().setRange(0.0, 1.1);
 		
 	}
 
@@ -54,8 +54,8 @@ public class MultipartyBidChart {
 	public MultipartyBidChart(ArrayList<String> partyNames) {
 		this.partyNames=partyNames;
 		chart=createOverlaidChart(partyNames);
-		plot.getDomainAxis().setRange(0, maxRound);
-		plot.getRangeAxis().setRange(0.1, 1.1);	
+		plot.getDomainAxis().setRange(0, maxRound+1);
+		plot.getRangeAxis().setRange(0.0, 1.1);
 	}
 	
 		
@@ -75,7 +75,7 @@ public class MultipartyBidChart {
 		    	for (int i=0; i<bidSeries.size()-1; i++) {
 		    		partyDataList.get(i).addSeries(partyNames.get(i), bidSeries.get(i));	    		
 		    	}				
-		    	partyDataList.get(bidSeries.size()-1).addSeries("Product", bidSeries.get(bidSeries.size()-1));	
+		    	partyDataList.get(bidSeries.size()-1).addSeries("Product", bidSeries.get(bidSeries.size()-1));
 		    }
 		});		
 		
@@ -86,9 +86,8 @@ public class MultipartyBidChart {
 		nashData.addSeries("Nash", nashSeries);
 	}
 	
-	public void setAgreementPoints(final double[][] agreementSeries) {
-		
-		agreementDataList.addSeries("Agreements",agreementSeries);	
+	public void setAgreementPoints(double[][] agreementSeries) {
+		agreementDataList.addSeries("Agreements",agreementSeries);
 	}
 	
 	
@@ -114,7 +113,7 @@ public class MultipartyBidChart {
 		
 		dotRenderer.setDotHeight(2);
 		dotRenderer.setDotWidth(2);
-		// create plot
+		// createFrom plot
 		plot=new XYPlot(possibleBidData,roundAxis,utilityAxis,dotRenderer);
 		
 		

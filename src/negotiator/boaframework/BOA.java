@@ -43,7 +43,7 @@ public abstract class BOA {
 
 	/**
 	 * Method called at the end of the negotiation. Ideal location to call the
-	 * storeData method to update the data to be saved.
+	 * storeData method to receiveMessage the data to be saved.
 	 * 
 	 * @param result
 	 *            of the negotiation.

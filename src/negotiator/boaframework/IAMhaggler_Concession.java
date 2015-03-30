@@ -113,7 +113,7 @@ public class IAMhaggler_Concession {
 					matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust, timeSamplesAdjust.length);
 				}
 				opponentUtilities.add(maxUtilityInTimeSlot);
-				// Flag regression update required
+				// Flag regression receiveMessage required
 				regressionUpdateRequired = true;
 			}
 			// Update the time slot

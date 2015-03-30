@@ -35,7 +35,7 @@ public class OpponentBids {
 				statistic.get(issue).add(v);
 			}
 			
-			//update the max bid for the agent from the opponent bids
+			//receiveMessage the max bid for the agent from the opponent bids
  			if (oppBids.size()==1)
 				maxUtilityBidForMe = bid;
 			else  if (utilitySpace.getUtility(maxUtilityBidForMe)<utilitySpace.getUtility(bid))

@@ -29,7 +29,7 @@ public class AbstractAutomatedAgent {
 	 */
 	public void initialize(AutomatedAgentType agentType, String sOpponentType) {
         /* Negotiation is about to start
-         * You can add logic if needed to update your agent
+         * You can add logic if needed to receiveMessage your agent
          * @@EXAMPLE@@
          * For example: calculate the first offer the 
          * automated agent offers the opponent and send it
@@ -106,7 +106,7 @@ public class AbstractAutomatedAgent {
 
             /* @@ You accepted opponent's message
              * The automated agent accepts a messsage here
-             * You can add logic if needed to update your agent
+             * You can add logic if needed to receiveMessage your agent
              * Note: The accepted message is saved in the 
              * appropriate structure. No need to add logic for this 
              */
@@ -121,7 +121,7 @@ public class AbstractAutomatedAgent {
             
             /* @@ You accepted opponent's message
              * The automated agent accepts a messsage here
-             * You can add logic if needed to update your agent
+             * You can add logic if needed to receiveMessage your agent
              * Note: The accepted message is saved in the 
              * appropriate structure. No need to add logic for this 
              */
@@ -134,28 +134,28 @@ public class AbstractAutomatedAgent {
     /***********************************************
      * @@ Logic for receiving messages
      * Below are messages the opponent sends to the automated agent
-     * You can add logic if needed to update your agent per message type
+     * You can add logic if needed to receiveMessage your agent per message type
      ***********************************************/
     
     /**
 	 * called whenever we get a comment from the opponent
-     * You can add logic to update your agent
+     * You can add logic to receiveMessage your agent
      * @param sComment -the received comment
 	 */
 	public void commentReceived(String sComment) {
         /* @@ Received a comment from the opponent
-         * You can add logic if needed to update your agent 
+         * You can add logic if needed to receiveMessage your agent
          */
     }
 
 	/**
 	 * called whenever we get a threat from the opponent
-     * You can add logic to update your agent
+     * You can add logic to receiveMessage your agent
      * @param sThreat - the received threat
 	 */
 	public void threatReceived(String sThreat) {
         /* @@ Received a threat from the opponent
-         * You can add logic if needed to update your agent 
+         * You can add logic if needed to receiveMessage your agent
          */
     }
 	
@@ -169,7 +169,7 @@ public class AbstractAutomatedAgent {
 	 */
 	public void opponentAgreed(int nMessageType, int CurrentAgreementIdx[], String sOriginalMessage) {
         /* @@ Received a message: opponent accepted the offer/promise/query/counter offer.
-        * You can add logic if needed to update your agent
+        * You can add logic if needed to receiveMessage your agent
         * For example, if the message was a promise, you can now try and offer it as
         * a formal offer...
         */
@@ -184,7 +184,7 @@ public class AbstractAutomatedAgent {
 	 */
 	public void opponentRejected(int nMessageType, int CurrentAgreementIdx[], String sOriginalMessage) {
         /* @@ Received a message: opponent rejected the offer/promise/query/counter offer.
-         * You can add logic if needed to update your agent
+         * You can add logic if needed to receiveMessage your agent
          */
     }
     

@@ -548,7 +548,7 @@ public class IssueManager
 
 	double NoiseDecreaseRate = 0.01;
 	final int CountdownLength = 20;
-	// update noise here
+	// receiveMessage noise here
 	public void 	ProcessOpponentBid (Bid IncomingBid) throws Exception
 	{
 		if (CountdownToStatisticsRefreshing > 0)

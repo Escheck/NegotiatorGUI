@@ -111,7 +111,7 @@ public class OpponentModel {
 		//hashmap to map value-names to the times they have been offered
 		HashMap<String, Integer> hm;
 		
-		//update the frequencies and relative frequencies of values per issue
+		//receiveMessage the frequencies and relative frequencies of values per issue
 		for(Issue issue : issueList){
 			//get all value-frequency tuples for this issue
 			hm = valuesOffered.get(issue);

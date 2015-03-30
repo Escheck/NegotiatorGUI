@@ -69,7 +69,7 @@ public abstract class BOAagent extends Agent {
 
 	/**
 	 * Store the actions made by a partner. First store the bid in the history,
-	 * then update the opponent model.
+	 * then receiveMessage the opponent model.
 	 * 
 	 * @param Action
 	 *            by opponent in current turn

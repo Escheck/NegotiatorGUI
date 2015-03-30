@@ -206,7 +206,7 @@ public class InoxAgent_OM extends OpponentModel {
 			// model without implementing our scaling
 			if (smallHistory.size() > 0.2*negotiationSession.getOpponentBidHistory().size()) {
 				result = opponentUtilitySpace.getUtility(bid);
-			// Else update with scaling
+			// Else receiveMessage with scaling
 			} else {
 				Objective root = opponentUtilitySpace.getDomain().getObjectivesRoot();
 				Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();

@@ -10,7 +10,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 
 /**
- * This agent is an example of how to create an ANAC2013 agent which learns
+ * This agent is an example of how to createFrom an ANAC2013 agent which learns
  * during the tournament. This agent is a variant of the random agent.
  * 
  * @author M. Hendrikx

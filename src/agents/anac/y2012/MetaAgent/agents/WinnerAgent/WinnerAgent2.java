@@ -95,7 +95,7 @@ public class WinnerAgent2 extends Agent {
 		Set<Bid> bids = new HashSet<Bid>();
 		try {
 
-			// create the list of all discrete\discretisized values possible in
+			// createFrom the list of all discrete\discretisized values possible in
 			// this domain
 			ArrayList<Vector<? extends Value>> issuesVec = createIssueVec();
 			ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
@@ -414,7 +414,7 @@ public class WinnerAgent2 extends Agent {
 				ourWeight = Math.max(_ourMinWeight, 1 - (0.05 * _nextPhase));
 				_minimumJointUtility = _minimumJointUtility - 0.05;
 
-				// update minimal acceptance utility based on discount factor
+				// receiveMessage minimal acceptance utility based on discount factor
 				// and opponents concession rate and best offer
 				double assumedBestOfferWeGetNext = _opponentOffers
 						.getOurMaxUtilFromOppOffers()
@@ -429,7 +429,7 @@ public class WinnerAgent2 extends Agent {
 						_minimumAcceptenceUtility); // make sure we don't go
 													// under 0.65 unless it's
 													// zero-sum game
-				// update our knowledge about the opponent from what we've
+				// receiveMessage our knowledge about the opponent from what we've
 				// learned so far
 				_opponentOffers.updateWeightsAndUtils();
 				if (_opponentOffers.getOurAvgUtilFromOppOffers() <= _zeroSumUtil) {
@@ -439,7 +439,7 @@ public class WinnerAgent2 extends Agent {
 				}
 				updateBids(ourWeight);
 
-				// update to the next phase
+				// receiveMessage to the next phase
 				_nextPhase++;
 			}
 
@@ -452,7 +452,7 @@ public class WinnerAgent2 extends Agent {
 			// above the acceptance threshold.
 			// If so- accept, else- offer an offer to the opponent.
 			else if (actionOfPartner instanceof Offer) {
-				// update opponentOffers with the new bid
+				// receiveMessage opponentOffers with the new bid
 				Offer proposed = (Offer) actionOfPartner;
 				if (_opponentOffers.updateBid(proposed.getBid())) {
 					if (_notZeroSumFlag == false)

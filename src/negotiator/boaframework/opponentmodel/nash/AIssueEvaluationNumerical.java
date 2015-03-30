@@ -58,7 +58,7 @@ public abstract class AIssueEvaluationNumerical extends AIssueEvaluation
 
 	/**
 	 * This updates the numerical issueEvaluation with a newly offered value. 
-	 * We first save the new value in our history, and then update the max utility point and left and right zero utility points.
+	 * We first save the new value in our history, and then receiveMessage the max utility point and left and right zero utility points.
 	 */
 	@Override
 	public void updateIssueEvaluation(Value chosenValue)

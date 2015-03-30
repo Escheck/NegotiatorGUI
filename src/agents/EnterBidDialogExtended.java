@@ -125,7 +125,7 @@ public class EnterBidDialogExtended extends JDialog {
         c.gridwidth = 2;  
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 10, 0, 10);
-        //create panel for history of bids
+        //createFrom panel for history of bids
         BidHistoryTable = new  JTable(historyinfo);
         BidHistoryTable.setGridColor(Color.lightGray);
         // setting the columns that contain numbers to a small width:
@@ -165,7 +165,7 @@ public class EnterBidDialogExtended extends JDialog {
         negotiationMessages.setEditable(false);
         userInputPanel.add(negotiationMessages);
         
-        // create center panel: the bid table
+        // createFrom center panel: the bid table
         BidTable = new  JTable(negoinfo);
         //BidTable.setModel(negoinfo); // need a model for column size etc...
        	// Why doesn't this work???
@@ -176,7 +176,7 @@ public class EnterBidDialogExtended extends JDialog {
         tablepane.add(BidTable,"Center");
         userInputPanel.add(tablepane);
         
-        // create the buttons:
+        // createFrom the buttons:
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(buttonEnd);
         buttonPanel.add(buttonAccept);
@@ -266,14 +266,14 @@ public class EnterBidDialogExtended extends JDialog {
     askUserForAction(negotiator.actions.Action opponentAction, Bid myPreviousBid) 
     {
     	historyinfo.nrOfBids=agent.historyOfBids.size();
-        negoinfo.opponentOldBid=null;
+        negoinfo.lastAccepted =null;
         
         if(opponentAction==null) {
         	negotiationMessages.setText("Opponent did not send any action.");            
         }
         if(opponentAction instanceof Accept) {
         	negotiationMessages.setText("Opponent accepted your last bid!");
-        	negoinfo.opponentOldBid = myPreviousBid;
+        	negoinfo.lastAccepted = myPreviousBid;
         	
         }
         if(opponentAction instanceof EndNegotiation) {
@@ -281,7 +281,7 @@ public class EnterBidDialogExtended extends JDialog {
         }
         if(opponentAction instanceof Offer) {
         	negotiationMessages.setText("Opponent proposes the following bid:");
-        	negoinfo.opponentOldBid = ((Offer)opponentAction).getBid();
+        	negoinfo.lastAccepted = ((Offer)opponentAction).getBid();
         }
         try { negoinfo.setOurBid(myPreviousBid); }
         catch (Exception e) { System.out.println("error in askUserForAction:"+e.getMessage()); e.printStackTrace(); }
@@ -296,7 +296,7 @@ public class EnterBidDialogExtended extends JDialog {
         int round = agent.bidCounter; 
         System.out.println("round# "+round+"/"+agent.historyOfBids.size());
         
-        // create a new plot of the bid utilities for each round
+        // createFrom a new plot of the bid utilities for each round
         double [][] myBidSeries = new double [2][round];
         double [][] oppBidSeries = new double [2][round];
 		
@@ -440,7 +440,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 {
 	public Bid ourOldBid;			// Bid is hashmap <issueID,Value>. Our current bid is only in the comboboxes,
 									// use getBid().
-	public Bid opponentOldBid;
+	public Bid lastAccepted;
 	public UtilitySpace utilitySpace;	// WARNING: this may be null
 	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
 	// the issues, in row order as in the GUI. Init to empty, to enable 
@@ -448,10 +448,11 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
-	NegoInfo(Bid our,Bid opponent, UtilitySpace us) throws Exception
+	NegoInfo(Bid our,Bid lastAccepted, UtilitySpace us) throws Exception
 	{
-		//Wouter: just discovered that assert does nothing........... 
-		ourOldBid=our; opponentOldBid=opponent;
+		//Wouter: just discovered that assert does nothing...........
+        //David@Wouter: Assert only works when assert compile flag is set to true
+		ourOldBid=our; this.lastAccepted =lastAccepted;
 		utilitySpace=us;
 		issues=utilitySpace.getDomain().getIssues();
 		IDs=new ArrayList<Integer>();
@@ -467,7 +468,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public boolean isCellEditable(int row, int col)
 	{		return (col==2 && row<issues.size());	}
 
-   	private String[] colNames={"Issue","Last Bid of Opponent","Your bid"};
+   	private String[] colNames={"Issue","Last Accepted Bid","Your bid"};
    	public String getColumnName(int col) { return colNames[col]; }
 	
 
@@ -554,7 +555,7 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 			if (col==0) return new JLabel("Utility:");
 			if (utilitySpace==null) return new JLabel("No UtilSpace");
 			Bid bid;
-			if (col==1) bid=opponentOldBid; 
+			if (col==1) bid= lastAccepted;
 			else  try {bid=getBid(); } 
 			catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
 			JProgressBar bar=new JProgressBar(0,100); bar.setStringPainted(true);
@@ -575,14 +576,14 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 		{
 		case 0:
 			return new JTextArea(issues.get(row).getName());
-		case 1:
+        case 1:
 			Value value=null;
-			try {  value= getCurrentEval(opponentOldBid,row); }
+			try {  value= getCurrentEval(lastAccepted,row); }
 			catch (Exception e) {System.out.println("Err EnterBidDialog2.getValueAt: "+e.getMessage());}
 			if (value==null) return new JTextArea("-");
 			return new JTextArea(value.toString());
-		case 2:
-			return comboBoxes.get(row);
+        case 2:
+            return comboBoxes.get(row);
 		}
 		return null;
 	}
@@ -600,15 +601,172 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 
 	public void actionPerformed(ActionEvent e) {
 		//System.out.println("event d!"+e);
-		// update the cost and utility of our own bid.
+		// receiveMessage the cost and utility of our own bid.
 		fireTableCellUpdated(issues.size(),2);
 		fireTableCellUpdated(issues.size()+1,2);
 	}
 
 }
 
+class NegoShowOffer extends NegoInfo
+{
+    private Bid topic;
+
+    public NegoShowOffer(Bid our, Bid opponent, UtilitySpace us, Bid topic) throws Exception
+    {
+        super(our, opponent, us);
+        this.topic = topic;
+    }
+
+    private String[] colNames={"Issue", "Current offer"};
+
+    @Override
+    public int getColumnCount() 	{		return 2;	}
+
+    @Override
+    public String getColumnName(int col) { return colNames[col]; }
+
+    @Override
+    public Component getValueAt(int row, int col)
+    {
+        if (row==issues.size())
+        {
+            if (col==0) return new JLabel("Utility:");
+            if (utilitySpace==null) return new JLabel("No UtilSpace");
+            Bid bid;
+            if (col==1) bid= lastAccepted;
+            else  try {bid=getBid(); }
+            catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
+            JProgressBar bar=new JProgressBar(0,100); bar.setStringPainted(true);
+            try	{
+                bar.setValue((int)(0.5+100.0*utilitySpace.getUtility(bid)));
+                bar.setIndeterminate(false);
+            }
+            catch (Exception e) {
+                new Warning("Exception during cost calculation:"+e.getMessage(),false,1);
+                bar.setIndeterminate(true); }
+
+            return bar;
+        }
+        if (row==issues.size() + 1) {
+            return null;
+        }
+        switch (col)
+        {
+            case 0:
+                return new JTextArea(issues.get(row).getName());
+            case 1:
+                Value value=null;
+                try {  value= getCurrentEval(topic,row); }
+                catch (Exception e) {System.out.println("Err EnterBidDialog2.getValueAt: "+e.getMessage());}
+                if (value==null) return new JTextArea("-");
+                return new JTextArea(value.toString());
+
+        }
+        return null;
+    }
+}
+
+class NegoProposeOffer extends NegoInfo
+{
+    NegoProposeOffer(Bid our,Bid opponent, UtilitySpace us) throws Exception
+    {
+        super(our, opponent, us);
+    }
 
 
+    private String[] colNames={"Issue","Offer"};
+
+    public Component getValueAt(int row, int col)
+    {
+        switch (col) {
+            case 0: return super.getValueAt(row, col);
+            case 1: return super.getValueAt(row, 2);
+            default: return null;
+        }
+    }
+
+    @Override
+    public String getColumnName(int col) { return colNames[col]; }
+
+    public boolean isCellEditable(int row, int col)
+    {
+        return (col==1 && row<issues.size());
+    }
+
+    @Override
+    public int getColumnCount()
+    {
+        return 2;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //System.out.println("event d!"+e);
+        // receiveMessage the cost and utility of our own bid.
+        fireTableCellUpdated(issues.size(), 1);
+        fireTableCellUpdated(issues.size()+1, 1);
+    }
+}
+
+class NegoOffer extends NegoInfo
+{
+    NegoOffer(Bid our,Bid opponent, UtilitySpace us) throws Exception
+    {
+        super(our, opponent, us);
+    }
+
+
+    private String[] colNames={"Issue","Most recently accepted","Current offer"};
+
+    public Component getValueAt(int row, int col)
+    {
+        if (row==issues.size())
+        {
+            if (col==0) return new JLabel("Utility:");
+            if (utilitySpace==null) return new JLabel("No UtilSpace");
+            Bid bid;
+            if (col==1) bid= lastAccepted;
+            else  try {bid=getBid(); }
+            catch(Exception e) {bid=null; System.out.println("Internal err with getBid:"+e.getMessage()); };
+            JProgressBar bar=new JProgressBar(0,100); bar.setStringPainted(true);
+            try	{
+                bar.setValue((int)(0.5+100.0*utilitySpace.getUtility(bid)));
+                bar.setIndeterminate(false);
+            }
+            catch (Exception e) {
+                new Warning("Exception during cost calculation:"+e.getMessage(),false,1);
+                bar.setIndeterminate(true); }
+
+            return bar;
+        }
+        if (row==issues.size() + 1) {
+            return null;
+        }
+        switch (col)
+        {
+            case 0:
+                return new JTextArea(issues.get(row).getName());
+            case 1:
+                Value value=null;
+                try {  value= getCurrentEval(lastAccepted,row); }
+                catch (Exception e) {System.out.println("Err EnterBidDialog2.getValueAt: "+e.getMessage());}
+                if (value==null) return new JTextArea("-");
+                return new JTextArea(value.toString());
+            case 2:
+                value=null;
+                try {  value= getCurrentEval(ourOldBid,row); }
+                catch (Exception e) {System.out.println("Err EnterBidDialog2.getValueAt: "+e.getMessage());}
+                if (value==null) return new JTextArea("-");
+                return new JTextArea(value.toString());
+
+        }
+        return null;
+    }
+
+    @Override
+    public String getColumnName(int col) { return colNames[col]; }
+}
 
 
 /********************************************************************/

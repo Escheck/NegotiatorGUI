@@ -253,7 +253,7 @@ public class TAgent extends Agent {
 				sleep(0.005); // just for fun
 
 			timeLeftAfterAction = timeline.getCurrentTime();
-			estimated_rounds_left(false); // update the estimation for own
+			estimated_rounds_left(false); // receiveMessage the estimation for own
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 			action = new Accept(getAgentID()); // best guess if things go wrong.

@@ -63,7 +63,7 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 	
 	/**
 	 * Method called at the end of a negotiation. This is the ideal point in time
-	 * to update the target for the next negotiation.
+	 * to receiveMessage the target for the next negotiation.
 	 */
 	public void endSession(NegotiationResult result) {
 		// if there was an agreement

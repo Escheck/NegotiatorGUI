@@ -36,7 +36,7 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import negotiator.Global;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -69,7 +69,7 @@ public class ScenarioLauncher
 	        for(int i = 0 ; i < agents_names.size() ; i++)
 	        {
 	            if((agentsARI[i] = (AgentRepItem) repAgent.getItemByName(agents_names.get(i).getName())) == null)
-	                throw new Exception("Unable to create agent " + agents_names.get(i).getName() + "!");
+	                throw new Exception("Unable to createFrom agent " + agents_names.get(i).getName() + "!");
 			    
 	            if (trace)
 		            System.out.println(" Agent " + i + " :  " + agentsARI[i].getName()  
@@ -88,7 +88,7 @@ public class ScenarioLauncher
 	        for(int i = 0 ; i < profiles_names.size() ; i++)
 	        {
 	            if((DomainsARI[i] = (DomainRepItem) domainrepository.getItemByName(profiles_names.get(i).getName())) == null)
-	                throw new Exception("Unable to create domain " + profiles_names.get(i).getName() + "!");
+	                throw new Exception("Unable to createFrom domain " + profiles_names.get(i).getName() + "!");
 	        
 		        if (trace)
 		            System.out.println(" Domain " + i + " :  " + DomainsARI[i].getName()  
@@ -100,7 +100,7 @@ public class ScenarioLauncher
 		        
 			// Init tournaments
 
-			Protocol ns;
+			OldProtocol ns;
 			Thread[] threads = new Thread[ntournaments];
 			
 			for ( int i = 1 ; i <= ntournaments ; i++ )

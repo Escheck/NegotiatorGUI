@@ -10,16 +10,18 @@ import negotiator.actions.Action;
 
 public class MultipartyNegotiationOfferEvent extends NegotiationEvent
 {
-	private int round;				
+	private int round;
+	private int turn;
 	private double timeline; // [0, 1] using Timeline
 	private Action action;   // action also keeps the party id 
 	private ArrayList<Double> partyUtilities;
 	private boolean agreementFound;
 	
-	public MultipartyNegotiationOfferEvent(Object source, int round, double time, Action action,	ArrayList<Double> partyUtilities, boolean agreementFound)
+	public MultipartyNegotiationOfferEvent(Object source, int round, int turn, double time, Action action,	ArrayList<Double> partyUtilities, boolean agreementFound)
 	{
 		super(source);
 		this.round=round;
+		this.turn=turn;
 		this.timeline=time;
 		this.action=action;
 		this.partyUtilities=partyUtilities;
@@ -28,6 +30,11 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent
 	
 	public int getRound() {
 		return round;
+	}
+
+	public int getTurn()
+	{
+		return turn;
 	}
 	
 	public double getTimeline() {

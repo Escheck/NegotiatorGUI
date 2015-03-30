@@ -15,6 +15,7 @@ import javax.xml.namespace.QName;
 
 import negotiator.Domain;
 import negotiator.exceptions.Warning;
+import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
@@ -193,14 +194,20 @@ public class Repository {
 				if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.NONLINEAR) // RA
 					us = new NonlinearUtilitySpace(domain, sourceFolder + "/"
 							+ file); // RA
-				else
+				else if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.CONSTRAINT) // RA
+						us = new ConstraintUtilitySpace(domain, sourceFolder + "/"
+								+ file); // RA
+					else
 					us = new UtilitySpace(domain, sourceFolder + "/" + file);
 			} else {
 				if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.NONLINEAR) // RA
 					us = new NonlinearUtilitySpace(domain, file);
+				else if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.CONSTRAINT) // RA
+					us = new ConstraintUtilitySpace(domain, file);
 				else
 					us = new UtilitySpace(domain, file);
-			}
+			}					
+				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" + file);

@@ -19,7 +19,7 @@ public class NegoGUIApp extends SingleFrameApplication
 	private static CommandLineOptions options = new CommandLineOptions();
 	
     /**
-     * At startup create and show the main frame of the application.
+     * At startup createFrom and show the main frame of the application.
      */
     @Override protected void startup() {
     	negoGUIView = new NegoGUIView(this);

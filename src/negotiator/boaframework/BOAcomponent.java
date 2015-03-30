@@ -17,7 +17,7 @@ import negotiator.boaframework.repository.BOArepItem;
 /**
  * Creates a BOA component consisting of the classname of the component, the
  * type of the component, and all parameters. FIXME this creates nothing. It
- * seems just to contain info that can be used to create a BOA component.
+ * seems just to contain info that can be used to createFrom a BOA component.
  * 
  * Please report bugs to author.
  * 

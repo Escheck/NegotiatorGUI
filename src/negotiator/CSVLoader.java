@@ -2,18 +2,16 @@ package negotiator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.repository.RepItem;
-import negotiator.repository.Repository;
 import negotiator.repository.Repository;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
@@ -33,7 +31,7 @@ import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
  */
 public class CSVLoader
 {
-    ArrayList<Protocol> sessions = new ArrayList<Protocol>();
+    ArrayList<OldProtocol> sessions = new ArrayList<OldProtocol>();
     String filePath = "";
     
     public CSVLoader(String csvFilePath) throws Exception
@@ -146,7 +144,7 @@ public class CSVLoader
         }
     }
     
-    public ArrayList<Protocol> getSessions()
+    public ArrayList<OldProtocol> getSessions()
     {
         return sessions;
     }
@@ -165,7 +163,7 @@ public class CSVLoader
 
         if(protocolRI == null)
         {
-            throw new Exception("Unable to create protocol: " + protocol);
+            throw new Exception("Unable to createFrom protocol: " + protocol);
         }
 
         //load domain
@@ -186,7 +184,7 @@ public class CSVLoader
             agentsARI[i] = (AgentRepItem) repAgent.getItemByName(agentsA[i]);
             if(agentsARI[i] == null)
             {
-                throw new Exception("Unable to create agent " + agentsA[i] + "!");
+                throw new Exception("Unable to createFrom agent " + agentsA[i] + "!");
             }
         }
 
@@ -197,7 +195,7 @@ public class CSVLoader
             agentsBRI[i] = (AgentRepItem) repAgent.getItemByName(agentsB[i]);
             if(agentsBRI[i] == null)
             {
-                throw new Exception("Unable to create agent " + agentsB[i] + "!");
+                throw new Exception("Unable to createFrom agent " + agentsB[i] + "!");
             }
         }
 
@@ -214,7 +212,7 @@ public class CSVLoader
 
             if(profilesRI[i] == null)
             {
-                throw new Exception("Unable to create profile: " + profiles[i]);
+                throw new Exception("Unable to createFrom profile: " + profiles[i]);
             }
          }
 
@@ -240,7 +238,7 @@ public class CSVLoader
     {
         //get tournament related arguments
         String[] tournamentParams = parameters.get("tournament").split(",");
-        //remove tournament parameter when create protocol
+        //remove tournament parameter when createFrom protocol
         parameters.remove("tournament");
             
         //parse tournament arguments list and extract options
@@ -286,7 +284,7 @@ public class CSVLoader
         }
         //end parsing tournament parameters
         
-        //create tournament object
+        //createFrom tournament object
         Tournament t = new Tournament();
         ProtocolVariable protocolVariable = new ProtocolVariable();
         protocolVariable.addValue(new ProtocolValue(protocol));
@@ -327,7 +325,7 @@ public class CSVLoader
     
     private void loadOneSession(ProtocolRepItem protocol, AgentRepItem agentsA[], AgentRepItem agentsB[], ProfileRepItem profiles[], ArrayList<HashMap<String, String>> agentParamsA, ArrayList<HashMap<String, String>> agentParamsB, HashMap<String, String> parameters) throws Exception
     {
-        //create the new list of agents - concatenate agentsA and agentsB lists
+        //createFrom the new list of agents - concatenate agentsA and agentsB lists
         int totalNumberOfAgents = agentsA.length + agentsB.length;
         AgentRepItem[] agentsRI = new AgentRepItem[totalNumberOfAgents];
         System.arraycopy(agentsA, 0, agentsRI, 0, agentsA.length);
@@ -344,15 +342,15 @@ public class CSVLoader
             throw new Exception("Invalid file - non-equal number of profiles and agents");
         }
 
-        // Try create the protocol instance
+        // Try createFrom the protocol instance
         try
         {
-            Protocol ns = Global.createProtocolInstance(protocol, agentsRI, profiles, agentParamsp);
+            OldProtocol ns = Global.createProtocolInstance(protocol, agentsRI, profiles, agentParamsp);
             sessions.add(ns);
         }
         catch(Exception e)
         {
-            throw new Exception("Cannot create protocol!");
+            throw new Exception("Cannot createFrom protocol!");
         }
     }
 }

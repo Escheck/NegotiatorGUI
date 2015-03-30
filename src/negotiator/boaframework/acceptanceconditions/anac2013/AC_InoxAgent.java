@@ -112,7 +112,7 @@ public class AC_InoxAgent extends AcceptanceStrategy {
 			medianDecided = true;
 		}
 		
-		// Read time and update round estimation
+		// Read time and receiveMessage round estimation
 		double time = negotiationSession.getTime();
 		updateRoundsLeft(time);
 		

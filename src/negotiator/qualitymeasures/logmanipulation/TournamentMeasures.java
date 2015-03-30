@@ -20,7 +20,7 @@ public class TournamentMeasures {
 
 
 	/**
-	 * Can be optionally used to create a tournament results log afterwards.
+	 * Can be optionally used to createFrom a tournament results log afterwards.
 	 * @param args
 	 */
 	public static void main(String[] args) {

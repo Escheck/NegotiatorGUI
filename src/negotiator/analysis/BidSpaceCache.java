@@ -31,7 +31,7 @@ public class BidSpaceCache {
 			ident[i] = spaces[i].getFileName();
 		}
 		
-		// check if the space is already cached. If not, create bidspace.
+		// check if the space is already cached. If not, createFrom bidspace.
 		if (!Arrays.equals(ident, identifier)) {
 			try {
 				cachedBidSpace = new BidSpace(spaces);

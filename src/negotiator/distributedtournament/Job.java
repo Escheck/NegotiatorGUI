@@ -1,7 +1,7 @@
 package negotiator.distributedtournament;
 
 import java.util.List;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 
 /**
  * Describes a job: a partial tournament.
@@ -16,7 +16,7 @@ public class Job {
 	/** ID of the low-level job in the DB. A job consists of multiple sessions. */
 	private int sessionID;
 	/** Sessions to be ran for this Job */
-	private List<Protocol> sessions;
+	private List<OldProtocol> sessions;
 
 	/**
 	 * Store the information 
@@ -24,7 +24,7 @@ public class Job {
 	 * @param sessionID ID of the particular set of sessions of this job.
 	 * @param sessions sessions to be processed as part of this sessionID.
 	 */
-	public Job(int jobID, int sessionID, List<Protocol> sessions) {
+	public Job(int jobID, int sessionID, List<OldProtocol> sessions) {
 		this.jobID = jobID;
 		this.sessionID = sessionID;
 		this.sessions = sessions;
@@ -47,7 +47,7 @@ public class Job {
 	/**
 	 * @return sessions which are part of the session.
 	 */
-	public List<Protocol> getSessions() {
+	public List<OldProtocol> getSessions() {
 		return sessions;
 	}
 }

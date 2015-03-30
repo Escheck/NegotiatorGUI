@@ -6,23 +6,29 @@
 package negotiator.gui.negosession;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.JOptionPane;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import negotiator.AgentID;
 import negotiator.DeadlineType;
-import negotiator.Global;
+import negotiator.MultipartyNegotiationEventListener;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultipartyProgressUI;
-import negotiator.multipartyprotocol.MultiPartyProtocol;
+import negotiator.logging.CsvLogger;
+import negotiator.logging.FileLogger;
+import negotiator.parties.NegotiationParty;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
-import negotiator.repository.Repository;
+import negotiator.session.Session;
+import negotiator.session.SessionManager;
+import negotiator.protocol.Protocol;
+import negotiator.tournament.TournamentGenerator;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import org.jdesktop.application.Action;
@@ -34,18 +40,50 @@ import org.jdesktop.application.Action;
 
 public class MultiNegoSessionUI extends javax.swing.JPanel {
 
-	private static final boolean fShowProgressUI = true; 
-
+	private static final boolean fShowProgressUI = true;
+	public static int PROTOCOL_NO=0;
 	private MultiPartyProtocolRepItem selectedMultiPartyProtocolRepItem;
 	private ArrayList<PartyRepItem> selectedPartyRepItems;
 	private ArrayList<AgentID> selectedPartyIDList;
 	private ArrayList<ProfileRepItem> selectedProfileRepItems;
 	private ArrayList<HashMap<AgentParameterVariable,AgentParamValue>> selectedPartyParams;
-	public static int PROTOCOL_NO=0;
-	
-	
+    // Variables declaration - do not modify
+    private javax.swing.JButton btnAddMediator;
+    private javax.swing.JButton btnAddParty;
+    private javax.swing.JButton btnParamsEachParty;
+    private javax.swing.JButton btnParamsMediator;
+    private javax.swing.JButton btnRemoveParty;
+    private javax.swing.JButton btnstartMultiSession;
+    private javax.swing.JComboBox cmbMediatorPref;
+    private javax.swing.JComboBox cmbMediatorStr;
+    private javax.swing.JComboBox cmbPartyStr;
+    private javax.swing.JComboBox cmbPrefParty;
+    private javax.swing.JComboBox cmbProtocol;
+    private javax.swing.JLabel jLabelMedID;
+    private javax.swing.JLabel jLabelMedParam;
+    private javax.swing.JLabel jLabelMedPref;
+    private javax.swing.JLabel jLabelMedStr;
+    private javax.swing.JLabel jLabelPartyId;
+    private javax.swing.JLabel jLabelPartyParam;
+    private javax.swing.JLabel jLabelPartyPref;
+    private javax.swing.JLabel jLabelPartyStr;
+    private javax.swing.JLabel jLabelProtocol;
+    private javax.swing.JLabel jLabelMaxTimeOrRound;
+    private javax.swing.JLabel jLabelDeadlineType;
+    private javax.swing.JPanel jPanelMain;
+    private javax.swing.JPanel jPanelMediator;
+    private javax.swing.JPanel jPanelParticipant;
+    private javax.swing.JPanel jPanelTimeOut;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableParty;
+    private javax.swing.JTextField txtMaxTimeOrRound;
+    private javax.swing.JTextField txtMediatorID;
+    private javax.swing.JTextField txtMedParams;
+    private javax.swing.JTextField txtDeadlineType;
+    private javax.swing.JTextField txtPartyID;
+    private javax.swing.JTextField txtPartyParams;
 	/** Creates new form MultiNegoSessionUI */
-    public MultiNegoSessionUI() { 
+    public MultiNegoSessionUI() {
     	PROTOCOL_NO++;
         initComponents();
         try {
@@ -57,203 +95,283 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
     }
 
     private void initSelectedVariables() {
-    	
+
     	selectedPartyIDList=new ArrayList<AgentID>();
     	selectedPartyParams=new ArrayList<HashMap<AgentParameterVariable,AgentParamValue>>();
     	selectedPartyRepItems=new ArrayList<PartyRepItem>();
     	selectedProfileRepItems=new ArrayList<ProfileRepItem>();
     	DefaultTableModel tbm=(DefaultTableModel) jTableParty.getModel();
     	int count=jTableParty.getRowCount();
-    	
+
     		for (int i=0; i<count; i++)
     			tbm.removeRow(0);
-    		
+
         jTableParty.setModel(tbm);
     }
-    
-    
+
     private void initValues() throws Exception {
-    	   	
-    	
+
+
     	initSelectedVariables();
-    	
+
     	// Parameter part will be active later; for now we hide the component related to the parameters.
     	jLabelMedParam.setVisible(false);
     	txtMedParams.setVisible(false);
-    	btnParamsMediator.setVisible(false);;
-    	
+    	btnParamsMediator.setVisible(false);
+
     	jLabelPartyParam.setVisible(false);
     	txtPartyParams.setVisible(false);
     	btnParamsEachParty.setVisible(false);
+
+        btnAddMediator.setVisible(false);
+        txtPartyID.setText("Party 1");
     	/* ************************************* */
-     	
-    	
-    	Repository protocolRep = Repository.getMultiPartyProtocolRepository();    	
+
+
+    	Repository protocolRep = Repository.getMultiPartyProtocolRepository();
     	cmbProtocol.removeAllItems();
-    	for (RepItem protocol: protocolRep.getItems()) {			
+    	for (RepItem protocol: protocolRep.getItems()) {
 			cmbProtocol.addItem(new MultiPartyProtocolComboBoxItem((MultiPartyProtocolRepItem)protocol));
 		}
 
     	cmbMediatorStr.removeAllItems();
     	cmbPartyStr.removeAllItems();
-    	
+
     	Repository party_rep=Repository.get_party_repository();
-		
-		for (RepItem prt: party_rep.getItems()) {
-			
+
+        selectedMultiPartyProtocolRepItem=((MultiPartyProtocolComboBoxItem)cmbProtocol.getSelectedItem()).multiPartyProtocol;
+
+		for (RepItem prt: party_rep.getItems())
+        {
+            String partyPath = ((PartyRepItem)prt).getProtocolClassPath();
+            String protocolPath = selectedMultiPartyProtocolRepItem.getClassPath();
+            if (!partyPath.equals(protocolPath)) continue;
+
+
 			if (((PartyRepItem)prt).getIsMediator())
 				cmbMediatorStr.addItem(new PartyComboBoxItem((PartyRepItem)prt));
-			else 
+			else
 				cmbPartyStr.addItem(new PartyComboBoxItem((PartyRepItem)prt));
 		}
-		
+
 		cmbMediatorPref.removeAllItems();
 		cmbPrefParty.removeAllItems();
-		
+
 		for (RepItem prof: getProfiles()) {
 		    cmbMediatorPref.addItem(new ProfileComboBoxItem((ProfileRepItem)prof));
 			cmbPrefParty.addItem(new ProfileComboBoxItem((ProfileRepItem)prof));
 		}
-		
-		selectedMultiPartyProtocolRepItem=((MultiPartyProtocolComboBoxItem)cmbProtocol.getSelectedItem()).multiPartyProtocol;
+
 		if (!selectedMultiPartyProtocolRepItem.getHasMediatorProfile())
 		{
 			cmbMediatorPref.setVisible(false);
 			jLabelMedPref.setVisible(false);
 		}
-				
+
 		if (selectedMultiPartyProtocolRepItem.getHasMediator()==false)
     		jPanelMediator.setVisible(false);
-		
-		
-		
+
+
+
 		cmbProtocol.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				
+
 				System.out.println("Protocol is selected");
-        		
+
 				selectedMultiPartyProtocolRepItem=((MultiPartyProtocolComboBoxItem)cmbProtocol.getSelectedItem()).multiPartyProtocol;
-				
+
 				if (selectedMultiPartyProtocolRepItem.getHasMediator()==false)
             		jPanelMediator.setVisible(false);
-        		else 
+        		else
         			jPanelMediator.setVisible(true);
-							
+
 				if (!selectedMultiPartyProtocolRepItem.getHasMediatorProfile()) {
-					
+
 					cmbMediatorPref.setVisible(false);
 					jLabelMedPref.setVisible(false);
 				} else {
 					cmbMediatorPref.setVisible(true);
 					jLabelMedPref.setVisible(true);
 				}
-				
+
 				if (!btnAddMediator.isEnabled()) {
 				    txtMediatorID.setEnabled(true);
 				    cmbMediatorStr.setEnabled(true);
 				    cmbMediatorPref.setEnabled(true);
-					btnAddMediator.setEnabled(true);
+//					btnAddMediator.setEnabled(true);
 				}
-				
+
 				initSelectedVariables();
-				
+
+                cmbPartyStr.removeAllItems();
+                cmbMediatorStr.removeAllItems();
+                txtPartyID.setText("Party 1");
+                cmbPrefParty.setSelectedIndex(0);
+                Repository party_rep=Repository.get_party_repository();
+
+                for (RepItem prt: party_rep.getItems())
+                {
+                    String partyPath = ((PartyRepItem)prt).getProtocolClassPath();
+                    String protocolPath = selectedMultiPartyProtocolRepItem.getClassPath();
+                    if (!partyPath.equals(protocolPath)) continue;
+
+
+                    if (((PartyRepItem)prt).getIsMediator())
+                        cmbMediatorStr.addItem(new PartyComboBoxItem((PartyRepItem)prt));
+                    else
+                        cmbPartyStr.addItem(new PartyComboBoxItem((PartyRepItem)prt));
+                }
+
 			}
 		});
-		
-			
+
     }
-    
-	
+    private List<NegotiationParty> parties;
+    /**
+     * This is a proxy class to bridge this UI to the new SessionManager structure. It fetches all
+     * the data in this class and then generates a new session manager out of it.
+     *
+     * @return The session manager that can run the tournament
+     * @author David Festen
+     */
+    private SessionManager generateSessionManager() throws Exception
+    {
+        /*
+         * We need a list of agents, a protocol and a session to start. We'll generate them in that
+         * order, so list of agents (parties), protocol, session. Any exception we'll throw so that
+         * the calling class can show them on the screen
+         */
+
+        // we need to pre-generate the deadline map instance (we need it multiple times)
+        Map<DeadlineType, Object> deadlines = new HashMap<DeadlineType, Object>(1 /* only 1 type */);
+        if (txtDeadlineType.getText().toUpperCase().contains("ROUND")) {
+            int deadline = Integer.parseInt(txtMaxTimeOrRound.getText());
+            deadlines.put(DeadlineType.ROUND, deadline);
+        }
+        else if (txtDeadlineType.getText().toUpperCase().contains("TIME")) {
+            int deadline = Integer.parseInt(txtMaxTimeOrRound.getText());
+            deadlines.put(DeadlineType.TIME, deadline);
+        }
+
+        // First we generate the session instance
+        Session session = new Session(deadlines);
+
+        // Second the list of agent
+        if (selectedPartyRepItems.get(0).getIsMediator())
+        {
+            PartyRepItem mediator = selectedPartyRepItems.get(0);
+            List<PartyRepItem> agents = selectedPartyRepItems.subList(1, selectedPartyRepItems.size());
+
+            ProfileRepItem mediatorProfile = null;
+            List<ProfileRepItem> agentProfiles = selectedProfileRepItems;
+
+            if (selectedProfileRepItems.get(0).getDomain() != null)
+                mediatorProfile = selectedProfileRepItems.get(0);
+            agentProfiles = selectedProfileRepItems.subList(1, selectedPartyRepItems.size());
+
+            parties = TournamentGenerator.generateSessionParties(agents, agentProfiles, selectedPartyIDList, 0, mediator,
+                    mediatorProfile, session);
+        }
+        else
+        {
+            parties = TournamentGenerator.generateSessionParties(
+                    selectedPartyRepItems,
+                    selectedProfileRepItems,
+                    selectedPartyIDList,
+                    0,
+                    null,
+                    null,
+                    session);
+        }
+
+        // Finally we generate the protocol instance
+        Protocol protocol = TournamentGenerator.createFrom(selectedMultiPartyProtocolRepItem);
+
+
+        // Now that we have them all, we can generate and return the SessionManager instance.
+        return new SessionManager(parties, protocol, session);
+    }
+
     /** TODO use the parameters. */
 	public void start() throws Exception {
-		
-		
+
+
 	   if (jTableParty.getRowCount()<2) {
 		  JOptionPane.showMessageDialog(null, "There should be at least two negotiating agent !", "Warning", JOptionPane.WARNING_MESSAGE);
-     	  return;   
+     	  return;
 	   }
 
 	   if ((!txtDeadlineType.getText().trim().equals("Time")) && (!txtDeadlineType.getText().trim().equals("Round"))) {
 		   JOptionPane.showMessageDialog(null, "Deadline type can be either Time or Round !", "Warning", JOptionPane.WARNING_MESSAGE);
-	       return; 
+	       return;
 	   }
-	   
+
 	   int maxRoundOrTime;
-	   
+
 	   try {
 	     maxRoundOrTime=Integer.parseInt(txtMaxTimeOrRound.getText().trim());
 	   } catch (Exception e) {
 		   JOptionPane.showMessageDialog(null, "Max duration should be an integer !", "Warning", JOptionPane.WARNING_MESSAGE);
-	       return;		   
+	       return;
 	   }
-	  
-	      
+
+
 	   for (int i=0; i<jTableParty.getRowCount(); i++) {
-		
+
 		   selectedPartyIDList.add((AgentID) jTableParty.getValueAt(i, 0));
 		   selectedPartyRepItems.add((PartyRepItem) jTableParty.getValueAt(i, 1));
 		   selectedProfileRepItems.add((ProfileRepItem) jTableParty.getValueAt(i,2));
-		   selectedPartyParams.add(new HashMap<AgentParameterVariable, AgentParamValue>());		   
+		   selectedPartyParams.add(new HashMap<AgentParameterVariable, AgentParamValue>());
 	   }
-	   
-	   DeadlineType deadlineType;
-       if (txtDeadlineType.getText().trim().equals("Time")) 
-    	   deadlineType=DeadlineType.TIME;
-       else 
-    	   deadlineType=DeadlineType.ROUND;
-       
-       
-       
+
        // Preparing the table column names for progress GUI
        ArrayList<String> progressInfoList=new ArrayList<String>();
- 
+
        if (!selectedMultiPartyProtocolRepItem.getHasMediator())
     	   progressInfoList.add(selectedPartyIDList.get(0).toString());
- 	   
-       for (int i=1; i<this.selectedPartyIDList.size(); i++) {   	   
+
+       for (int i=1; i<this.selectedPartyIDList.size(); i++) {
     	   progressInfoList.add(this.selectedPartyIDList.get(i).toString());
        }
-           
-      
-       MultipartyProgressUI graphlistener=null;
-		if(fShowProgressUI) graphlistener=new MultipartyProgressUI(progressInfoList);
-       
-       MultiPartyProtocol protocol;
-       try {
-    	   protocol = Global.createMultiPartyProtocolInstance(selectedMultiPartyProtocolRepItem, selectedPartyRepItems, selectedPartyIDList, 
-    			   selectedProfileRepItems, selectedPartyParams, deadlineType,maxRoundOrTime); 
-       }catch (Exception e) {
-			e.printStackTrace();
-		throw new Exception("Cannot create protocol.");
-	   }
-       
-       System.out.println("Negotiation session has started.");
-      
-       if(fShowProgressUI) {
-			NegoGUIApp.negoGUIView.replaceTab("Progress-"+PROTOCOL_NO, this, graphlistener);		
-			protocol.addNegotiationEventListener(graphlistener);			
-		}	
-       protocol.startNegotiation();
-		
-       
-       
-       /*		
+
+
+       SessionManager sessionManager = generateSessionManager();
+
+        MultipartyProgressUI graphlistener = null;
+        if (fShowProgressUI)
+        {
+            graphlistener = new MultipartyProgressUI(progressInfoList, sessionManager, parties);
+            NegoGUIApp.negoGUIView.replaceTab("Progress-" + PROTOCOL_NO, this, graphlistener);
+            sessionManager.addLoggingListener(graphlistener);
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        String fileName = String.format("Log-Session_%s.csv", dateFormat.format(new Date()));
+        FileLogger fileLogger = new FileLogger(fileName);
+        sessionManager.addLoggingListener(fileLogger);
+
+
+        System.out.println("Negotiation session has started.");
+        sessionManager.run();
+
+
+       /*
         *  // determine the domain
 		DomainRepItem domain=agentProfiles[0].getDomain();
 		if (domain!=agentProfiles[1].getDomain())
 			throw new IllegalArgumentException("profiles for agent A and B do not have the same domain. Please correct your profiles");
-		
-        Check domaýns are the same !
-      		
+
+        Check domaï¿½ns are the same !
+
 		if(fShowProgressUI) {
-			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);		
-			protocol.addNegotiationEventListener(graphlistener);			
-		}	
-		
+			NegoGUIApp.negoGUIView.replaceTab("Sess."+ns.getSessionNumber()+" Prog.", this, graphlistener);
+			protocol.addNegotiationEventListener(graphlistener);
+		}
+
 		*/
 	}
-    
+
 	public ArrayList<ProfileRepItem> getProfiles() throws Exception
 	{
 		Repository domainrep=Repository.get_domain_repos();
@@ -419,8 +537,8 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 
         cmbProtocol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Multi Party Protocol" }));
         cmbProtocol.setName("cmbProtocol"); // NOI18N
-        
-               
+
+
         btnstartMultiSession.setAction(actionMap.get("startMultiSession")); // NOI18N
         btnstartMultiSession.setFont(resourceMap.getFont("btnstartMultiSession.font")); // NOI18N
         btnstartMultiSession.setText(resourceMap.getString("btnstartMultiSession.text")); // NOI18N
@@ -483,7 +601,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
         });
         jTableParty.setName("jTableParty"); // NOI18N
         jScrollPane1.setViewportView(jTableParty);
-      
+
 
         btnRemoveParty.setAction(actionMap.get("removeParty")); // NOI18N
         btnRemoveParty.setText(resourceMap.getString("btnRemoveParty.text")); // NOI18N
@@ -655,59 +773,57 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
         );
     }// </editor-fold>
 
-   
-
-     
     @Action
     public void popupMediatorParams() {
     	try {
           System.out.println("Enter mediator parameters");
     	} catch (Exception e) {
           e.printStackTrace();
-	
+
         }
      }
-      
+
     @Action
     public void addMediator() {
-    	try {
+        if (cmbMediatorStr.getItemCount() == 0) return;
+        try {
            System.out.println("The mediator ID is checked");
-           
+
            String mediatorID=txtMediatorID.getText().trim();
-           
+
            if (mediatorID.length()==0)  {// empty mediator id
         	  JOptionPane.showMessageDialog(null, "The mediator id cannot be empty !", "Warning", JOptionPane.WARNING_MESSAGE);
         	  return;
            }
-        	   
-           for (int i=0; i<jTableParty.getRowCount(); i++) { // check the mediator id is unique 
+
+           for (int i=0; i<jTableParty.getRowCount(); i++) { // check the mediator id is unique
         	   if (mediatorID.equals(((AgentID)jTableParty.getValueAt(i,0)).toString())) {
         		  JOptionPane.showMessageDialog(null, "The mediator id should be unique !", "Warning", JOptionPane.WARNING_MESSAGE);
              	  return;
-        	   }      
+        	   }
            }
-           
+
            selectedPartyIDList.add(new AgentID(mediatorID));
            selectedPartyRepItems.add(((PartyComboBoxItem)cmbMediatorStr.getSelectedItem()).party);
-            
+
            if (((MultiPartyProtocolComboBoxItem)cmbProtocol.getSelectedItem()).multiPartyProtocol.getHasMediatorProfile())
         	    selectedProfileRepItems.add(((ProfileComboBoxItem)cmbMediatorPref.getSelectedItem()).profile);
            else selectedProfileRepItems.add(new ProfileRepItem());
-    	
+
            selectedPartyParams.add(new HashMap<AgentParameterVariable, AgentParamValue>());
-           
+
            System.out.println("The mediator is added");
            txtMediatorID.setEnabled(false);
 		   cmbMediatorStr.setEnabled(false);
 		   cmbMediatorPref.setEnabled(false);
            btnAddMediator.setEnabled(false);
-                   
+
     	} catch (Exception e) {
 		       e.printStackTrace();
-	
+
         }
      }
-        
+
     @Action
     public void popupPartyParams() {
     	try {
@@ -716,48 +832,48 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		       e.printStackTrace();
 	    }
      }
+
      @Action
     public void addParty() {
     	try {
-    		
-    		
-    	   System.out.println ("The party id is checked.");
+
+
     	   String partyID=txtPartyID.getText().trim();
-    	   
+
     	   if ( (partyID.length()==0) || ( (selectedPartyIDList.size()>0) && (((AgentID)selectedPartyIDList.get(0)).toString().equals(partyID)))) {// empty party id or equal to mediator id
          	  	JOptionPane.showMessageDialog(null, "The mediator id cannot be empty or equal to mediator id!", "Warning", JOptionPane.WARNING_MESSAGE);
          	  	return;
             }
-    	   
-    	   // check the party id is unique 
-    	   
+
+    	   // check the party id is unique
+
     	   for (int i=0; i<jTableParty.getRowCount(); i++) {
         	   if (partyID.equals(((AgentID)jTableParty.getValueAt(i,0)).toString())) {
         		  JOptionPane.showMessageDialog(null, "The party id should be unique !", "Warning", JOptionPane.WARNING_MESSAGE);
              	  return;
-        	   }      
+        	   }
            }
-          
+
            DefaultTableModel partyModel=(DefaultTableModel) jTableParty.getModel();
            Object[] currentPartyObject= new Object[3];
-           
+
            currentPartyObject[0]=new AgentID(partyID);
            currentPartyObject[1]=((PartyComboBoxItem)cmbPartyStr.getSelectedItem()).party;
-           currentPartyObject[2]=((ProfileComboBoxItem)cmbPrefParty.getSelectedItem()).profile;         
-                   
+           currentPartyObject[2]=((ProfileComboBoxItem)cmbPrefParty.getSelectedItem()).profile;
+
            partyModel.addRow(currentPartyObject);
-         
+
            jTableParty.setModel(partyModel);
-         
-           System.out.println("Party "+ "is added properly.");
-         
-    	} catch (Exception e) {     
-         
+           txtPartyID.setText("Party " + (jTableParty.getRowCount() + 1));
+           cmbPrefParty.setSelectedIndex(cmbPrefParty.getSelectedIndex()+1);
+
+    	} catch (Exception e) {
+
           e.printStackTrace();
-	
+
         }
      }
-     
+
     @Action
     public void removeParty() {
     	try {
@@ -767,20 +883,21 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
             DefaultTableModel tbm=(DefaultTableModel) jTableParty.getModel();
             tbm.removeRow(i_selected_index);
             jTableParty.setModel(tbm);
-        
+
             System.out.println("The selected party is removed.");
     	} catch (Exception e) {
 			// TODO: handle exception
-        
-         
+
+
           e.printStackTrace();
-	
+
         }
      }
-      
+
     @Action
     public void startMultiSession() {
     	try {
+            addMediator();
     		start();
     	} catch (Exception e) {
 			// TODO: handle exception
@@ -788,54 +905,17 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		}
     }
 
-  
-    // Variables declaration - do not modify
-    private javax.swing.JButton btnAddMediator;
-    private javax.swing.JButton btnAddParty;
-    private javax.swing.JButton btnParamsEachParty;
-    private javax.swing.JButton btnParamsMediator;
-    private javax.swing.JButton btnRemoveParty;
-    private javax.swing.JButton btnstartMultiSession;
-    private javax.swing.JComboBox cmbMediatorPref;
-    private javax.swing.JComboBox cmbMediatorStr;
-    private javax.swing.JComboBox cmbPartyStr;
-    private javax.swing.JComboBox cmbPrefParty;
-    private javax.swing.JComboBox cmbProtocol;
-    private javax.swing.JLabel jLabelMedID;
-    private javax.swing.JLabel jLabelMedParam;
-    private javax.swing.JLabel jLabelMedPref;
-    private javax.swing.JLabel jLabelMedStr;
-    private javax.swing.JLabel jLabelPartyId;
-    private javax.swing.JLabel jLabelPartyParam;
-    private javax.swing.JLabel jLabelPartyPref;
-    private javax.swing.JLabel jLabelPartyStr;
-    private javax.swing.JLabel jLabelProtocol;
-    private javax.swing.JLabel jLabelMaxTimeOrRound;
-    private javax.swing.JLabel jLabelDeadlineType;
-    private javax.swing.JPanel jPanelMain;
-    private javax.swing.JPanel jPanelMediator;
-    private javax.swing.JPanel jPanelParticipant;
-    private javax.swing.JPanel jPanelTimeOut;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableParty;
-    private javax.swing.JTextField txtMaxTimeOrRound;
-    private javax.swing.JTextField txtMediatorID;
-    private javax.swing.JTextField txtMedParams;
-    private javax.swing.JTextField txtDeadlineType;
-    private javax.swing.JTextField txtPartyID;
-    private javax.swing.JTextField txtPartyParams;
-
 	/** this is to override the toString of a PartyRepItem, to show only the short name. */
 	class PartyComboBoxItem {
 		public PartyRepItem party;
-		public PartyComboBoxItem(PartyRepItem p) {party=p; } 
+		public PartyComboBoxItem(PartyRepItem p) {party=p; }
 		public String toString() { return party.getName(); }
 	}
-	
+
 	/** this is to override the toString of a MultiPartyProtocolRepItem, to show only the short name. */
 	class MultiPartyProtocolComboBoxItem {
 		public MultiPartyProtocolRepItem multiPartyProtocol;
-		public MultiPartyProtocolComboBoxItem(MultiPartyProtocolRepItem mp) {multiPartyProtocol=mp; } 
+		public MultiPartyProtocolComboBoxItem(MultiPartyProtocolRepItem mp) {multiPartyProtocol=mp; }
 		public String toString() { return multiPartyProtocol.getName(); }
 	}
 }

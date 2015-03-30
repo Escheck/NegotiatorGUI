@@ -148,7 +148,7 @@ public class InoxAgent_Offering extends OfferingStrategy {
 	 */
 	@Override
 	public BidDetails determineNextBid() {
-		// Read time and update roundsLeft estimate
+		// Read time and receiveMessage roundsLeft estimate
 		double time = negotiationSession.getTime();
 		updateRoundsLeft(time);
 		

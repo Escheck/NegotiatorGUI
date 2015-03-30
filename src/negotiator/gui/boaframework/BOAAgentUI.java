@@ -156,7 +156,7 @@ public class BOAAgentUI extends JDialog {
 	/**
 	 * Generate all {@link BOAcomponent}s as set by the parameter ranges. The
 	 * user can set for each parameter minimum, max and step size. For each
-	 * possible parameter value we create another BOA component.
+	 * possible parameter value we createFrom another BOA component.
 	 * 
 	 * @return a Set of Set of {@link BOAcomponent}s. Each of the elements in
 	 *         the outer set will be quadruple: a set of four BOAcomponents,

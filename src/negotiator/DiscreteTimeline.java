@@ -4,21 +4,13 @@ package negotiator;
  * Implementation of the timeline in which time is divided in rounds. Time does
  * not pass within a round. Note that requesting the total time is in this case
  * undefined.
- * 
- * NOTICE: DiscreteTimeline assumes each action of a player a 'round'. Normally
- * this would be called a 'turn' I think.
  */
 public class DiscreteTimeline extends Timeline {
-	/**
-	 * Total number of rounds +1. With 3 rounds, this is set to 4. DOC: This is
-	 * HACK: it is because it 'makes more sense to add one, as in this case
-	 * "totalrounds" is still before the deadline as the deadline is on time >=
-	 * 1.0'
-	 */
+	/** With 3 rounds, this is set to 4. */
 	private int totalRounds;
 	/**
-	 * Current round. E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4
-	 * is the deadline.
+	 * E.g. with 3 rounds, it takes the values 1, 2, 3, and on 4 is the
+	 * deadline.
 	 */
 	protected int cRound;
 
@@ -71,14 +63,12 @@ public class DiscreteTimeline extends Timeline {
 		return t;
 	}
 
-	/**
-	 * go to next round. <br>
-	 * <b>WARNING</b> increment does not check against the upper limit
-	 * {@link #totalRounds}. Therefore, it can become more than the total roudns
-	 * available.
-	 */
 	public void increment() {
 		cRound++;
+	}
+
+	public void setcRound(int cRound) {
+		this.cRound = cRound;
 	}
 
 	/**
@@ -105,27 +95,17 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * Starting to count from 1, until the total amount of rounds.
-	 * <b>WARNING</b> this can return numbers > {@link #totalRounds} as well.
 	 */
 	public int getRound() {
 		return cRound;
 	}
 
-	/**
-	 * 
-	 * @return rounds left. Decreases with every turn. If down to 0, it means
-	 *         that this is the last round (turn). If < 0, it means that the
-	 *         deadline has been passed already.
-	 */
 	public int getRoundsLeft() {
 		return totalRounds - cRound - 1;
 	}
 
 	/**
-	 * get total number of rounds +1 Be careful, this is actually the
-	 * totalRounds+1!
-	 *
-	 * @return total rounds +1.
+	 * Be careful, this is not equal to the initializing value!
 	 */
 	public int getTotalRounds() {
 		return totalRounds;
@@ -133,18 +113,14 @@ public class DiscreteTimeline extends Timeline {
 
 	/**
 	 * The total number of rounds for ourself. Be careful, this is not equal to
-	 * the initializing value! <b>WARNING</b>:: gives incorrect value if odd
-	 * number of rounds remaining.
-	 * 
+	 * the initializing value!
 	 */
 	public int getOwnTotalRounds() {
 		return (int) Math.floor(getTotalRounds() / 2);
 	}
 
 	/**
-	 * The number of rounds left for ourself. This is half of the total number
-	 * of rounds left. In the last round, this is 0. <b>WARNING</b>: may return
-	 * negative values if we pass beyond the total number of planned rounds.
+	 * The number of rounds left for ourself.
 	 */
 	public int getOwnRoundsLeft() {
 		return (int) Math.floor(getRoundsLeft() / 2);

@@ -211,7 +211,7 @@ public class BidChart {
         lastBidBRenderer.setDotHeight(3);
         lastBidBRenderer.setDotWidth(3);
        
-        // create plot ...
+        // createFrom plot ...
     	plot = new XYPlot(possibleBidData, domainAxis, rangeAxis, dotRenderer);
     	plot.setDataset(2, paretoData);
         plot.setRenderer(2, paretoRenderer);

@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import negotiator.Global;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -57,7 +57,7 @@ public class Simulator
 
 			boolean first    =  true;
 			int trial = 1;   // number of trials ~ tournaments
-            Protocol ns = null;
+            OldProtocol ns = null;
           //~~~Set<Set<RepItem>> AgentsCombinations = null;
             Set<Set<String>> AgentsCombinations = null;
           //~~~ Iterator<Set<RepItem>> combination = null;
@@ -78,7 +78,7 @@ public class Simulator
 	        			agentsARI[i] = (AgentRepItem) repAgent.getItemByName(agentsList.get(i));
 	        			
 	        			if( agentsARI[i] == null )
-	        				throw new Exception("Unable to create agent " + agentsList.get(i) + "!");
+	        				throw new Exception("Unable to createFrom agent " + agentsList.get(i) + "!");
 	        			if (trace)
 	        				System.out.println(" Agent #" + (i+1) + "/" + agentsList.size() + "\n \t agent name     :  " + agentsARI[i].getName()  
 														 + "\n \t descr class    :  " + agentsARI[i].getDescription()
@@ -98,7 +98,7 @@ public class Simulator
 	        {
 	        		DomainRepItem d_ = (DomainRepItem) domainrepository.getItemByName(profiles_names.get(i).getName());
 	         	if( d_ == null)
-			          throw new Exception("Unable to create domain " + profiles_names.get(i).getName() + "!");
+			          throw new Exception("Unable to createFrom domain " + profiles_names.get(i).getName() + "!");
 				 
 	      		if (d_.toString().substring(0, 3) .equals(conf.getConf().get("domain")))
 	      			Domains__.add(((DomainRepItem) domainrepository.getItems().get(i)));

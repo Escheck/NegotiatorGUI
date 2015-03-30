@@ -8,7 +8,7 @@ package negotiator;
 public class ContinuousTimeline extends Timeline
 {
 	private final int totalSeconds;
-	protected final long startTime;
+	protected long startTime;
 
     /**
      * Creates a timeline with a deadline of {@link #totalSeconds} number of seconds.
@@ -18,7 +18,6 @@ public class ContinuousTimeline extends Timeline
 		totalSeconds = totalSecs;
     	startTime = System.nanoTime();
     	hasDeadline = true;
-    	System.out.println("Started time line of " + totalSecs + " seconds.");
 	}
 	
 	/** 
@@ -96,6 +95,8 @@ public class ContinuousTimeline extends Timeline
 	public double getCurrentTime() {
 		return getElapsedSeconds();
 	}
-	
-	
+
+	public void reset() {
+		startTime = System.nanoTime();
+	}
 }

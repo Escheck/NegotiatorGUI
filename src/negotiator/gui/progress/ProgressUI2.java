@@ -34,7 +34,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.tournament.TournamentConfiguration;
 
 import org.jfree.chart.ChartPanel;
@@ -60,7 +60,7 @@ public class ProgressUI2 extends javax.swing.JPanel implements
 
 	// used from NegoSessionUI2 in combination with close
 	// not clear how this relates to BilateralAtomicNegotiationSession
-	private Protocol protocol = null;
+	private OldProtocol oldProtocol = null;
 
 	/**
 	 * Creates new form ProgressUI2
@@ -400,9 +400,9 @@ public class ProgressUI2 extends javax.swing.JPanel implements
 	 *            the protocol being used. Needed to terminate this session if
 	 *            user closes the panel.
 	 */
-	public void setProtocol(Protocol proto) {
+	public void setOldProtocol(OldProtocol proto) {
 		proto.addNegotiationEventListener(this);
-		protocol = proto;
+		oldProtocol = proto;
 	}
 
 	private double[][] getReservationValueA(double resA, double resB) {
@@ -587,8 +587,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements
 	 * terminate the running session.
 	 */
 	public void close() {
-		if (protocol != null) {
-			protocol.stopNegotiation();
+		if (oldProtocol != null) {
+			oldProtocol.stopNegotiation();
 		}
 	}
 }

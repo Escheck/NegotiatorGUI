@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import negotiator.Global;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI2;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -169,20 +169,20 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 		ProgressUI2 graphlistener = null;
 		if (fShowProgressUI)
 			graphlistener = new ProgressUI2(false, true);
-		Protocol ns;
+		OldProtocol ns;
 		try {
 			ns = Global.createProtocolInstance(protocol, agents, agentProfiles,
 					null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Cannot create protocol.");
+			throw new Exception("Cannot createFrom protocol.");
 		}
 		if (fShowProgressUI) {
 			NegoGUIApp.negoGUIView.replaceTab("Sess. Prog.", this,
 					graphlistener);
 			// ns.addNegotiationEventListener(graphlistener);
 			// graphlistener.setNegotiationSession(ns);
-			graphlistener.setProtocol(ns);
+			graphlistener.setOldProtocol(ns);
 		}
 
 		ns.startSession();

@@ -99,7 +99,7 @@ public class SimpleAgt2 extends Agent {
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 		Random randomnr = new Random();
 
-		// create a random bid with utility>MINIMUM_BID_UTIL.
+		// createFrom a random bid with utility>MINIMUM_BID_UTIL.
 		// note that this may never succeed if you set MINIMUM too high!!!
 		// in that case we will search for a bid till the time is up (2 minutes)
 		// but this is just a simple agent.

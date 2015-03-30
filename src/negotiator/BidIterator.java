@@ -93,7 +93,7 @@ public class BidIterator implements Iterator<Bid> {
 		else
 			fValuesIndexes = lNextIndexes;
 		
-		// build Hashmap and create the next bid.
+		// build Hashmap and createFrom the next bid.
 		try {
 			HashMap<Integer,Value> lValues = new HashMap<Integer,Value>(/*16,(float)0.75*/);
 			ArrayList<Issue> lIssues = fDomain.getIssues();

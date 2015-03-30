@@ -175,7 +175,7 @@ public class BayesianOpponentModel extends OpponentModel{
 		// an hypothesis about the space, is therefore a choice for uphill, downhill, or triangular for each issue.
 		// For example; if there are 6 issues, then there are 3^6 possible combinations for the issues alone!
 		buildEvaluationHyps();
-		// create all hypothesis, all combinations of weights hypothesis and evaluations.
+		// createFrom all hypothesis, all combinations of weights hypothesis and evaluations.
 		// For example, if there are 6 issues, then there are 6! possible weight orderings, which
 		// with all 3^6 evaluation hypothesis leads to 6! * 3^6 combinations.
 		buildUniformHyps();
@@ -252,7 +252,7 @@ public class BayesianOpponentModel extends OpponentModel{
 			hyp.setProbability(condDistrib);
 		}
 		if(fUseMostProbableHypsOnly )  fMostProbableUSHyps = new ArrayList<UtilitySpaceHypothesis>();
-		//update the weights hyps and evaluators hyps
+		//receiveMessage the weights hyps and evaluators hyps
 		double lMostProbableHypFullProb = 0;
 		for(int i=0;i<fUSHyps.size();i++) {			
 			UtilitySpaceHypothesis hyp = fUSHyps.get(i);

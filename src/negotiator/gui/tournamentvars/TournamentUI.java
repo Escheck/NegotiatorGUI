@@ -45,6 +45,7 @@ import negotiator.tournament.VariablesAndValues.DBSessionValue;
 import negotiator.tournament.VariablesAndValues.DBSessionVariable;
 import negotiator.tournament.VariablesAndValues.DBUserValue;
 import negotiator.tournament.VariablesAndValues.DBUserVariable;
+import negotiator.tournament.VariablesAndValues.MultipleAgentsVariable;
 import negotiator.tournament.VariablesAndValues.ProfileValue;
 import negotiator.tournament.VariablesAndValues.ProfileVariable;
 import negotiator.tournament.VariablesAndValues.ProtocolValue;
@@ -331,6 +332,27 @@ public class TournamentUI extends javax.swing.JPanel {
 					new Warning("your numbers are not accepted: " + err);
 				}
 			} while (error_occured);
+		} else if (v instanceof MultipleAgentsVariable) {
+			ArrayList<AgentRepItem> items = getAgentRepItems();
+			ArrayList<AgentRepItem> prevSelected = new ArrayList<AgentRepItem>();
+
+			for (TournamentValue wrappedAgent : v.getValues()) {
+				AgentValue agentValue = ((AgentValue) wrappedAgent);
+				prevSelected.add(agentValue.getValue());
+			}
+
+			ArrayList<AgentRepItem> newv = (ArrayList<AgentRepItem>) new RepItemVarUI<AgentRepItem>(
+					NegoGUIApp.negoGUIView.getFrame(), "Select agents")
+					.getResult(items, prevSelected);
+			if (newv == null)
+				return; // cancel pressed.
+			ArrayList<TournamentValue> newtvs = new ArrayList<TournamentValue>();
+
+			for (AgentRepItem profitem : newv) {
+				newtvs.add(new AgentValue(profitem));
+			}
+			v.setValues(newtvs);
+			
 		} else
 			throw new IllegalArgumentException("Unknown tournament variable "
 					+ v);
@@ -502,7 +524,7 @@ public class TournamentUI extends javax.swing.JPanel {
 		decoupledAgentVarB.setSide("B");
 		fillposition(vars, Tournament.VARIABLE_DECOUPLED_B, decoupledAgentVarB);
 
-		// create fields for connecting to a database
+		// createFrom fields for connecting to a database
 		if (distributed) {
 			fillposition(vars, Tournament.VARIABLE_DB_LOCATION,
 					new DBLocationVariable());
@@ -514,13 +536,19 @@ public class TournamentUI extends javax.swing.JPanel {
 					new DBSessionVariable());
 		}
 
+		//---------------DEBUG CODE-------------------//
+			
+		fillposition(vars, 8, new MultipleAgentsVariable());
+		
+		//---------------END OF DEBUG CODE----------------//
+		
 		// vars.add(new AgentParameterVariable(new
 		// AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
 
 	/**
 	 * Check that variable of type given in stub is at expected position. Or
-	 * create new instance of that type if there is none.
+	 * createFrom new instance of that type if there is none.
 	 * 
 	 * @param vars
 	 *            is array of TournamentVariables.

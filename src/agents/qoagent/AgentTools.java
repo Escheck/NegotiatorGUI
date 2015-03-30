@@ -33,7 +33,7 @@ public class AgentTools {
 	public void acceptMessage(String sOriginalMessage) {
         String sAcceptMsg = agent.formatMessage(AutomatedAgentMessages.ACCEPT, sOriginalMessage);
         
-        //create a thread to send delayed message
+        //createFrom a thread to send delayed message
         // You can choose how much time the agent should wait before accepting the opponent's offer.
         // The delay time is defined the AutomatedAgentDelayedMessageThread class.
          AutomatedAgentDelayedMessageThread delayedMessageThread = new AutomatedAgentDelayedMessageThread(agent, sAcceptMsg);
@@ -47,7 +47,7 @@ public class AgentTools {
     public void rejectMessage(String sOriginalMessage) {
         String sRejectMsg = agent.formatMessage(AutomatedAgentMessages.REJECT, sOriginalMessage);
         
-        //create a thread to send delayed message
+        //createFrom a thread to send delayed message
         // You can choose how much time the agent should wait before sending the rejection to the opponent.
         // The delay time is defined the AutomatedAgentDelayedMessageThread class.
         AutomatedAgentDelayedMessageThread delayedMessageThread = new AutomatedAgentDelayedMessageThread(agent, sRejectMsg);
@@ -62,7 +62,7 @@ public class AgentTools {
         String sMessage = getMessageByIndices(currentAgreementIdx);
         sMessage = agent.formatMessage(nMessageType, sMessage);
  
-        //create a thread to send delayed message
+        //createFrom a thread to send delayed message
         // You can choose how much time the agent should wait before sending the message to the opponent.
         // The delay time is defined the AutomatedAgentDelayedMessageThread class.
         AutomatedAgentDelayedMessageThread delayedMessageThread = new AutomatedAgentDelayedMessageThread(agent, sMessage, agent.getCurrentTurn());
@@ -81,7 +81,7 @@ public class AgentTools {
    public void sendMessage(int nMessageType, String sMessage) {
         sMessage = agent.formatMessage(nMessageType, sMessage);
         
-        //create a thread to send delayed message
+        //createFrom a thread to send delayed message
         // You can choose how much time the agent should wait before sending the message to the opponent.
         // The delay time is defined the AutomatedAgentDelayedMessageThread class.
         AutomatedAgentDelayedMessageThread delayedMessageThread = new AutomatedAgentDelayedMessageThread(agent, sMessage, agent.getCurrentTurn());
@@ -397,7 +397,7 @@ public class AgentTools {
      */
     public void getNextAgreement(int totalIssuesNum, int[] currentAgreementIdx, int[] maxIssueValues) {
         //TODO:DEBUG THIS
-        // update issue values indices for evaluating the next agreement
+        // receiveMessage issue values indices for evaluating the next agreement
         boolean bFinishUpdate = false;
         for (int k = totalIssuesNum-1; k >= 0 && !bFinishUpdate; --k)
         {

@@ -181,7 +181,7 @@ public class OpponentBidHistory {
                             first = last;
                             last = last + lOneStep;
                         }
-                        //If no matching value was found, update the last cell
+                        //If no matching value was found, receiveMessage the last cell
                         if (found == false) {
                             int i = opponentBidsStatisticsForReal.get(realIndex).size() - 1;
                             int countPerValue = opponentBidsStatisticsForReal.get(realIndex).get(i);

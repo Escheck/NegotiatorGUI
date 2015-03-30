@@ -125,7 +125,7 @@ public class AgentManager implements Serializable{
 				(selectedInfo.getValue().getKey(),
 						(selectedInfo.getValue().getValue()*selectedInfo.getKey() + util - averageUtility)/(selectedInfo.getKey() + 1)));
 			agents.put(selectedAgent, selectedInfo);
-			//averageUtility = (averageUtility * playsCount + util) / (playsCount + 1);  //update the average utility measure
+			//averageUtility = (averageUtility * playsCount + util) / (playsCount + 1);  //receiveMessage the average utility measure
 			playsCount ++;
 		}
 		else

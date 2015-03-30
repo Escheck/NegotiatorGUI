@@ -135,10 +135,10 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 	            ((CUHKAgentSAS) helper).setTimeLeftBefore(negotiationSession.getTimeline().getCurrentTime());
 	            if (negotiationSession.getOpponentBidHistory().size() >= 1) {//the opponent propose first and we response secondly
 	            	opponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
-	                //update opponent model first
+	                //receiveMessage opponent model first
 	                this.opponentBidHistory.updateOpponentModel(opponentBid.getBid(), utilitySpace.getDomain(), this.utilitySpace);
 	                this.updateConcedeDegree();
-	                //update the estimation
+	                //receiveMessage the estimation
 	                if (negotiationSession.getOwnBidHistory().isEmpty()) {
 	                    //bid = utilitySpace.getMaxUtilityBid();
 	                } else {//other conditions
@@ -189,7 +189,7 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 	            }
 	            //System.out.println("i propose " + debug + " bid at time " + timeline.getTime());
 	           ((CUHKAgentSAS) helper).setTimeLeftAfter(negotiationSession.getTimeline().getCurrentTime());
-	            ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,false);//update the estimation
+	            ((CUHKAgentSAS) helper).estimateTheRoundsLeft(false,false);//receiveMessage the estimation
 	            //System.out.println(this.utilitythreshold + "-***-----" + this.timeline.getElapsedSeconds());
 	        } catch (Exception e) {
 	            System.out.println("Exception in ChooseAction:" + e.getMessage());

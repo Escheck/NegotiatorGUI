@@ -199,7 +199,7 @@ public class IAMhaggler2011 extends SouthamptonAgent {
 		
 		flushLog();
 
-		// Now get a random bid in the range targetUtility ± 0.025
+		// Now get a random bid in the range targetUtility ï¿½ 0.025
 		return bidCreator.getBid(utilitySpace, targetUtility - 0.025,
 				targetUtility + 0.025);
 	}
@@ -246,7 +246,7 @@ public class IAMhaggler2011 extends SouthamptonAgent {
 					matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust, timeSamplesAdjust.length);
 				}
 				opponentUtilities.add(maxUtilityInTimeSlot);
-				// Flag regression update required
+				// Flag regression receiveMessage required
 				regressionUpdateRequired = true;
 			}
 			// Update the time slot

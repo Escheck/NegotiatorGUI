@@ -260,7 +260,7 @@ public class Domain implements Serializable
             	maxR = Double.valueOf(((SimpleElement)xml_item[0]).getAttribute("upperbound"));
             	child = new IssueReal(name, index, minR, maxR);
             	break;
-            default: // By default, create discrete-valued issue
+            default: // By default, createFrom discrete-valued issue
             	// Collect discrete values for discrete-valued issue from xml template
             	xml_items = childIssues.getChildByTagName("item");
                 nrOfItems = xml_items.length;

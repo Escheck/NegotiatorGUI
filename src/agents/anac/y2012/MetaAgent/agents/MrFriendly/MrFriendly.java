@@ -173,7 +173,7 @@ public class MrFriendly extends Agent {
 
 			// Update the always accept utility
 			alwaysAcceptUtility = Math
-					.max(alwaysAcceptUtility, getUtility(bid)); // update
+					.max(alwaysAcceptUtility, getUtility(bid)); // receiveMessage
 																// always_accept
 			if (alwaysAcceptUtility < bidTable.getMinimumBidUtility()) { // Check
 																			// if

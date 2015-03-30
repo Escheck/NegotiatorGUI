@@ -9,7 +9,7 @@ import negotiator.xml.SimpleElement;
 
 public enum UTILITYSPACETYPE 
 {
-		LINEAR,NONLINEAR;
+		LINEAR,NONLINEAR,CONSTRAINT;
 	
 	public static UTILITYSPACETYPE getUtilitySpaceType(String filename){
 		
@@ -19,7 +19,9 @@ public enum UTILITYSPACETYPE
 	        SimpleElement root = parser.parse(file);
 	        if (root.getAttribute("type").equals("nonlinear"))
 	        	return NONLINEAR;
-	        else return LINEAR;
+	        if (root.getAttribute("type").equals("constraint")) {
+	        	return CONSTRAINT;
+		}else return LINEAR;
 		} catch(Exception e) {
 			return null;
 		}

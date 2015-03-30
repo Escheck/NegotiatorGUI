@@ -174,7 +174,7 @@ public class AutomatedAgent {
 			System.exit(1);
 		}
 		
-		// create instance of class
+		// createFrom instance of class
 		// includes first connection to server
 		String sSideName = args[0];
 		String sPortNum = args[1];
@@ -384,7 +384,7 @@ public class AutomatedAgent {
 	public void incrementCurrentTurn()
 	{
         m_nCurrentTurn++;
-		updateAgreementsValues(); // update values for the new turn
+		updateAgreementsValues(); // receiveMessage values for the new turn
 
         calculateAgreement();
     }
@@ -487,7 +487,7 @@ public class AutomatedAgent {
     
    /**
      * Decide regarding a received message
-     * For example, decide whether to accept or reject it, or update other agent's data
+     * For example, decide whether to accept or reject it, or receiveMessage other agent's data
      * 
      * @param nMessageType - message type
      * @param CurrentAgreementIdx - array of agreement indices

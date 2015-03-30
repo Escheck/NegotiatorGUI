@@ -14,7 +14,7 @@ public class Value implements Serializable {
 	private static final long serialVersionUID = -1212374174018193000L;
 
 	/**
-	 * Empty constructor used to create a new Value.
+	 * Empty constructor used to createFrom a new Value.
 	 */
 	public Value() { }
 	

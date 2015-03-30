@@ -59,7 +59,7 @@ public class IssueEvaluationList
 	// ********************************************
 	
 	/**
-	 * This method will update a single issueEvaluation.
+	 * This method will receiveMessage a single issueEvaluation.
 	 * @param issueID The issueID of the issueEvaluation that should be updated.
 	 * @param offeredValue The offered value for that issue.
 	 */
@@ -70,7 +70,7 @@ public class IssueEvaluationList
 	}
 	
 	/**
-	 * This method will update the issueWeightMap. It will first calculate the total unnormalized weight of the issues,
+	 * This method will receiveMessage the issueWeightMap. It will first calculate the total unnormalized weight of the issues,
 	 * and then normalize it by calculating the percentage that each issue has of the total weight.
 	 * Note that if the total weight is zero, we have a special case in which all issues receive equal weights.
 	 */

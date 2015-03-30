@@ -1,23 +1,29 @@
 package negotiator.events;
 
 
-import negotiator.multipartyprotocol.MultiPartyNegotiationSession;
+import negotiator.Bid;
+import negotiator.session.Session;
 
+public class MultipartyNegotiationSessionEvent extends NegotiationEvent
+{
+    private Session session;
+    private Bid agreement;
 
-public class MultipartyNegotiationSessionEvent extends NegotiationEvent {
+    public MultipartyNegotiationSessionEvent(Object source, Session session, Bid agreement)
+    {
 
-	private MultiPartyNegotiationSession session;
-	 
-	public MultipartyNegotiationSessionEvent(Object source, MultiPartyNegotiationSession session) {
-	
-		super(source);
-		this.session=session;
-	}
+        super(source);
+        this.session = session;
+        this.agreement = agreement;
+    }
 
-	public MultiPartyNegotiationSession getSession() {
-		return session;
-	}
-	
-	
-	
+    public Session getSession()
+    {
+        return session;
+    }
+
+    public Bid getAgreement()
+    {
+        return agreement;
+    }
 }

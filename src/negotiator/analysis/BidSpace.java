@@ -19,8 +19,6 @@ import negotiator.utility.UtilitySpace;
  * agents. We refer to this space as a BidSpace. This class allows to calculate
  * the properties of this space.
  * 
- * Not thread safe.
- * 
  * @author Dmytro Tykhonov, Tim Baarslag, Wouter Pasman
  */
 public class BidSpace {
@@ -38,11 +36,6 @@ public class BidSpace {
 	BidPoint kalaiSmorodinsky = null; // null if not yet computed
 	/** Cached Nash solution. The solution is assumed to be unique. */
 	BidPoint nash = null; // null if not yet computed
-	/**
-	 * Cached maxSocialWelfare. There can be multiple but we keep only the first
-	 * that has max utility.
-	 */
-	private BidPoint maxSocialWelfare = null; // null if not yet computed
 
 	/**
 	 * Default constructor used to construct a multidimensional bidding space.
@@ -58,7 +51,7 @@ public class BidSpace {
 	}
 
 	/**
-	 * Constructor to create a BidSpace given exactly two utility spaces. The
+	 * Constructor to createFrom a BidSpace given exactly two utility spaces. The
 	 * main difference is that if excludeBids is true, then only the bid points
 	 * are saved. This has is a good way to save memory.
 	 * 
@@ -386,34 +379,6 @@ public class BidSpace {
 			}
 		}
 		return nash;
-	}
-
-	/**
-	 * Calculates SocialWelfare optimal outcome. The maximum social welfare
-	 * point is the bidpoint that has the maximum sum of utilities.
-	 * 
-	 * @return the maximum social welfare BidPoint.
-	 * @throws Exception
-	 *             when the Pareto frontier is invalid.
-	 */
-	public BidPoint getMaxSocialWelfare() throws Exception {
-		if (maxSocialWelfare != null)
-			return maxSocialWelfare;
-		if (getParetoFrontier().size() < 1)
-			throw new AnalysisException("Pareto frontier is unavailable.");
-
-		double max = -1;
-		for (BidPoint p : paretoFrontier) {
-			double utilofp = 0;
-			for (int i = 0; i < utilspaces.length; i++) {
-				utilofp = utilofp + p.getUtility(i);
-			}
-			if (utilofp > max) {
-				max = utilofp;
-				maxSocialWelfare = p;
-			}
-		}
-		return maxSocialWelfare;
 	}
 
 	/**

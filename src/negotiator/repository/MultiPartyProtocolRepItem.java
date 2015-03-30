@@ -22,7 +22,6 @@ public class MultiPartyProtocolRepItem implements RepItem {
 	
 	@XmlAttribute // If there is a mediator, does it have any preference profile?
 	Boolean hasMediatorProfile;
-	
 
 	public MultiPartyProtocolRepItem() {
 	

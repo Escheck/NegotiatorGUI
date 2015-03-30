@@ -3,22 +3,28 @@
     <items>
         <agentRepItems/>
         <partyRepItems>
-    		
-            <!--  <partyRepItem description="Smart Mediator with only Feedback wrt last accepted bid" classPath="negotiator.parties.SmartMediatorOnlyFeedbackWrtLastAcceptedBid" partyName="Smart Mediator with only Feedback wrt Last Accepted Bid" isMediator="true"/>-->    	          
-            
-            <partyRepItem description="Zero Intelligence Mediator" classPath="negotiator.parties.ZeroIntelligenceMediator" partyName="Zero Intelligence Mediator"  isMediator="true"/>
-            <partyRepItem description="Pure Random Flippling Mediator" classPath="negotiator.parties.PureRandomFlipplingMediator" partyName="Pure Random Flipping Mediator" isMediator="true"/>
-            <partyRepItem description="Random Flippling Mediator" classPath="negotiator.parties.RandomFlipplingMediator" partyName="Random Flipping Mediator" isMediator="true"/>
-          	<partyRepItem description="Smart Mediator with only Feedback" classPath="negotiator.parties.SmartMediatorOnlyFeedback" partyName="Smart Mediator with only Feedback" isMediator="true"/>
-            <partyRepItem description="Smart Mediator with Feedback and Vote" classPath="negotiator.parties.SmartMediatorBothFeedbackVote" partyName="Smart Mediator with Feedback and Vote" isMediator="true"/>
-                         
-           <partyRepItem description="Hill Climber Negotiator" classPath="negotiator.parties.HillClimberParty" partyName="Hill Climber Party" isMediator="false"/>	
-    	   <partyRepItem description="Annealer Negotiator" classPath="negotiator.parties.AnnealerParty" partyName="Annealer Party" isMediator="false"/> 
-           <partyRepItem description="Feedback Negotiator" classPath="negotiator.parties.FeedbackParty" partyName="Feedback Party" isMediator="false"/>  
-            
-            <!-- <partyRepItem description="Feedback Negotiator wrt. last accepted bid" classPath="negotiator.parties.FeedbackPartyWrtLastAcceptedBid" partyName="Feedback Party wrt Last Accepted Bid" isMediator="false"/>  -->
-                     
-            
+            <partyRepItem
+                    description="Deadline-based boulware agent"
+                    classPath="negotiator.parties.BoulwareNegotiationParty"
+                    partyName="Boulware"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem
+                    description="Deadline-based conceder agent"
+                    classPath="negotiator.parties.ConcederNegotiationParty"
+                    partyName="Conceder"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"/>
+            <partyRepItem
+                    description="Random party"
+                    classPath="negotiator.parties.RandomCounterOfferNegotiationParty"
+                    partyName="Random party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+            <partyRepItem
+                    description="Simple UI party"
+                    classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
+                    partyName="UI Party"
+                    protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+            </partyRepItem>
+            </partyRepItem>
         </partyRepItems>
         <domainRepItem/>
         <protocolRepItem/>

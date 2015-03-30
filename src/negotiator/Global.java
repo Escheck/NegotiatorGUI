@@ -8,11 +8,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Matcher;
 
 import javax.swing.JOptionPane;
@@ -20,7 +16,7 @@ import javax.swing.JOptionPane;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.multipartyprotocol.MultiPartyProtocol;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.OldProtocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
@@ -107,27 +103,27 @@ public class Global {
 		return "";
 	}
 
-	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem)
+	public static Class<OldProtocol> getProtocolClass(ProtocolRepItem protRepItem)
 			throws Exception {
 		java.lang.ClassLoader loader = Global.class.getClassLoader();// ClassLoader.getSystemClassLoader();
-		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
+		Class<OldProtocol> klass = (Class<OldProtocol>) loader.loadClass(protRepItem
 				.getClassPath());
 		return klass;
 	}
 
-	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem,
+	public static Class<OldProtocol> getProtocolClass(ProtocolRepItem protRepItem,
 			ClassLoader loader) throws Exception {
 
-		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
+		Class<OldProtocol> klass = (Class<OldProtocol>) loader.loadClass(protRepItem
 				.getClassPath());
 		return klass;
 	}
 
-	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
+	public static OldProtocol createProtocolInstance(ProtocolRepItem protRepItem,
 			AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 			throws Exception {
-		Protocol ns;
+		OldProtocol ns;
 
 		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
 
@@ -143,15 +139,15 @@ public class Global {
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
-		ns = (Protocol) (theObject);
+		ns = (OldProtocol) (theObject);
 		return ns;
 	}
 
-	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
+	public static OldProtocol createProtocolInstance(ProtocolRepItem protRepItem,
 			AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
 			ClassLoader classLoader) throws Exception {
-		Protocol ns;
+		OldProtocol ns;
 
 		// java.lang.ClassLoader loader =
 		// ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new
@@ -169,7 +165,7 @@ public class Global {
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
-		ns = (Protocol) (theObject);
+		ns = (OldProtocol) (theObject);
 		return ns;
 
 	}
@@ -604,10 +600,10 @@ public class Global {
 	 * @return the agentsLoader
 	 */
 	private static String getLoadDate() {
-		// (2) create our "formatter" (our custom format)
+		// (2) createFrom our "formatter" (our custom format)
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
 
-		// (3) create a new String in the format we want
+		// (3) createFrom a new String in the format we want
 		String name = formatter.format(loadDate);
 
 		return name;
