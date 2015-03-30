@@ -2,8 +2,6 @@ package misc;
 
 import negotiator.DeadlineType;
 import negotiator.config.Configuration;
-import negotiator.config.MultilateralTournamentConfiguration;
-import negotiator.parties.NegotiationParty;
 import negotiator.protocol.Protocol;
 import negotiator.repository.*;
 import negotiator.session.Session;
@@ -14,19 +12,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by dfesten on 2/19/2015.
- */
-public class StudentConfiguration extends Configuration {
+public class AutomatedTournamentConfiguration extends Configuration {
 
-    public static final int AGENTS_PER_RUN = 3;
-    public static final int PROFILES_PER_RUN = 3;
+    /**
+     * Number of agents in each test run (make sure that this is reflected in partyrepository.xml
+     */
+    public static final int     AGENTS_PER_RUN = 3;
+
+    /**
+     * Number of profiles in each test run (make sure that this is reflected in domainrepository.xml
+     */
+    public static final int     PROFILES_PER_RUN = 3;
+
+    /**
+     * If set to true, agents also play against themselves
+     */
     public static final boolean REPETITION_ALLOWED = false;
-    public static final int NUMBER_OF_RUNS = 1;
+
+    /**
+     * Number of times to run this setting. (use more than 1 for statistically significant results).
+     */
+    public static final int     NUMBER_OF_RUNS = 1;
+
     public int runNumber = 0;
     private Session session = null;
 
-    public StudentConfiguration(int runNumber) {
+    public AutomatedTournamentConfiguration(int runNumber) {
         this.runNumber = runNumber;
     }
 
@@ -45,7 +56,7 @@ public class StudentConfiguration extends Configuration {
     @Override
     public HashMap<DeadlineType, Object> getDeadlines() {
         HashMap<DeadlineType, Object> deadlines = new HashMap<DeadlineType, Object>();
-        deadlines.put(DeadlineType.TIME, StudentTestRunner.TIME_DEADLINE);
+        deadlines.put(DeadlineType.TIME, AutomatedTournamentRunner.TIME_DEADLINE);
         return deadlines;
     }
 
