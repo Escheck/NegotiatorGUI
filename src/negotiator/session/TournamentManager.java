@@ -7,16 +7,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import negotiator.Timeline;
 import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
+import negotiator.exceptions.NegotiatorException;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.Protocol;
+import negotiator.tournament.TournamentGenerator;
 
 /**
  * Manages the tournament and makes sure that the
@@ -98,54 +102,98 @@ public class TournamentManager extends Thread {
 
 			// Generator for parties (don't generate them up-front as these can
 			// be many)
-			Iterable<List<NegotiationParty>> generator = configuration
-					.getPartiesGenerator();
+			TournamentGenerator generator = configuration.getPartiesGenerator();
 
-			useConsoleOut(false);
-			// enumerate all parties
-			for (List<NegotiationParty> partyList : generator) {
-
-				useConsoleOut(true);
-
-				// if could not create parties. skip this session
-				if (partyList == null) {
-					System.out
-							.println("Error on initializing one or more of the agent");
-					continue;
-				}
-
-				List<NegotiationParty> agentList = MediatorProtocol
-						.getNonMediators(partyList);
-
-				if (!printedHeader) {
-					logger.logLine(CsvLogger.getDefaultHeader(agentList));
-					printedHeader = true;
-				}
-
-				System.out.println(String.format(
-						"Running tournament %d/%d, session %d ",
-						tournamentNumber + 1,
-						configuration.getNumTournaments(), ++sessionNumber));
-				logger.log(sessionNumber);
-				boolean sessionOk = runSingleSession(partyList);
-				if (!sessionOk) {
-					logger.log("ERROR");
-					for (int i = 0; i < 11; i++)
-						logger.log("");
-					for (NegotiationParty agent : agentList)
-						logger.log(agent.getPartyId().toString());
-					logger.logLine();
-				}
-				System.out.println(sessionOk ? "Session done."
-						: "Session exited.");
-				System.out.println("");
-
-				useConsoleOut(false);
-			}
-			useConsoleOut(true);
+			runSessions(printedHeader, tournamentNumber, sessionNumber,
+					generator);
 
 		}
 		System.out.println("All tournament sessions are done");
+	}
+
+	/**
+	 * Run all sessions in the given generator.
+	 * 
+	 * @param printedHeader
+	 * @param tournamentNumber
+	 * @param sessionNumber
+	 * @param generator
+	 * @throws Exception
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 */
+	private void runSessions(boolean printedHeader, int tournamentNumber,
+			int sessionNumber, final TournamentGenerator generator) {
+		while (generator.hasNext()) {
+
+			ExecutorWithTimeout executor = new ExecutorWithTimeout(
+					1000 * configuration.getSession().getDeadlines()
+							.getTimeOrDefaultTimeout());
+
+			List<NegotiationParty> partyList = null;
+			try {
+				partyList = executor
+						.execute(new Callable<List<NegotiationParty>>() {
+
+							@Override
+							public List<NegotiationParty> call()
+									throws RepositoryException,
+									NegotiatorException {
+								return generator.next();
+							}
+						});
+			} catch (InterruptedException e) {
+				System.out.println("failed to construct agent due to timeout"
+						+ e.getMessage());
+				e.printStackTrace();
+				continue;
+			} catch (ExecutionException e) {
+				// Here we receive the RepositoryException, NegotiatorException
+				System.err
+						.println("fatal: something wrong with the repository");
+				e.printStackTrace();
+				System.exit(1);
+			} catch (TimeoutException e) {
+				System.out.println("failed to construct agent due to timeout"
+						+ e.getMessage());
+				e.printStackTrace();
+				continue;
+			}
+
+			// if could not create parties. skip this session
+			if (partyList == null) {
+				System.out
+						.println("Error on initializing one or more of the agent");
+				continue;
+			}
+
+			List<NegotiationParty> agentList = MediatorProtocol
+					.getNonMediators(partyList);
+
+			if (!printedHeader) {
+				logger.logLine(CsvLogger.getDefaultHeader(agentList));
+				printedHeader = true;
+			}
+
+			System.out.println(String.format(
+					"Running tournament %d/%d, session %d ",
+					tournamentNumber + 1, configuration.getNumTournaments(),
+					++sessionNumber));
+			logger.log(sessionNumber);
+			boolean sessionOk = runSingleSession(partyList, executor);
+			if (!sessionOk) {
+				logger.log("ERROR");
+				for (int i = 0; i < 11; i++)
+					logger.log("");
+				for (NegotiationParty agent : agentList)
+					logger.log(agent.getPartyId().toString());
+				logger.logLine();
+			}
+			System.out.println(sessionOk ? "Session done." : "Session exited.");
+			System.out.println("");
+
+		}
 	}
 
 	@Override
@@ -162,14 +210,12 @@ public class TournamentManager extends Thread {
 	 * @throws Exception
 	 *             if some of the required data could not be extracted
 	 */
-	public boolean runSingleSession(List<NegotiationParty> parties)
-			throws Exception {
+	public boolean runSingleSession(List<NegotiationParty> parties,
+			ExecutorWithTimeout executor) {
 		try {
 
 			Protocol protocol = configuration.getProtocol();
 			Session session = configuration.getSession().copy();
-			ExecutorWithTimeout executor = new ExecutorWithTimeout(
-					1000 * session.getDeadlines().getTimeOrDefaultTimeout());
 
 			// TODO: ** hackery ** we should make sure that session gives
 			// timeline to agents, not the other way around.

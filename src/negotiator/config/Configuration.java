@@ -503,7 +503,7 @@ public class Configuration implements GuiConfiguration,
 	 *             throws an exception.
 	 */
 	@Override
-	public TournamentGenerator getPartiesGenerator() throws Exception {
+	public TournamentGenerator getPartiesGenerator() {
 		List<Integer> indices = new ArrayList<Integer>(getPartyItems().size());
 		for (int i = 0; i < getPartyItems().size(); i++)
 			indices.add(i);

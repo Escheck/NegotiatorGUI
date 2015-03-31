@@ -117,7 +117,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	}
 
 	@Override
-	public TournamentGenerator getPartiesGenerator() throws Exception {
+	public TournamentGenerator getPartiesGenerator() {
 
 		List<Integer> indices = new ArrayList<Integer>(getPartyItems().size());
 		for (int i = 0; i < getPartyItems().size(); i++)

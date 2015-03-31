@@ -1,6 +1,7 @@
 package negotiator.repository;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import javax.xml.namespace.QName;
 
 import negotiator.Domain;
 import negotiator.exceptions.Warning;
+import negotiator.session.RepositoryException;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
@@ -44,9 +46,13 @@ public class Repository {
 		items = new ArrayList<RepItem>();
 	}
 
-	public Repository(String fn) throws Exception {
+	public Repository(String fn) throws RepositoryException {
 		setFilename(fn);
-		copyFrom(load(fileName));
+		try {
+			copyFrom(load(fileName));
+		} catch (Exception e) {
+			throw new RepositoryException("Failed to load repository " + fn, e);
+		}
 	}
 
 	public void setFilename(String fn) {
@@ -195,9 +201,9 @@ public class Repository {
 					us = new NonlinearUtilitySpace(domain, sourceFolder + "/"
 							+ file); // RA
 				else if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.CONSTRAINT) // RA
-						us = new ConstraintUtilitySpace(domain, sourceFolder + "/"
-								+ file); // RA
-					else
+					us = new ConstraintUtilitySpace(domain, sourceFolder + "/"
+							+ file); // RA
+				else
 					us = new UtilitySpace(domain, sourceFolder + "/" + file);
 			} else {
 				if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.NONLINEAR) // RA
@@ -206,8 +212,8 @@ public class Repository {
 					us = new ConstraintUtilitySpace(domain, file);
 				else
 					us = new UtilitySpace(domain, file);
-			}					
-				
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("Failed to load space:" + file);
@@ -235,7 +241,7 @@ public class Repository {
 	}
 
 	public static Repository get_domain_repos(String filename,
-			String sourceFolder) throws Exception {
+			String sourceFolder) throws RepositoryException {
 		if (domainRepos != null)
 			return domainRepos;
 		Repository repos;
@@ -243,17 +249,23 @@ public class Repository {
 			repos = new Repository(filename);
 			domainRepos = repos;
 			repos.sourceFolder = sourceFolder;
-		} catch (Exception e) {
+		} catch (RepositoryException e) {
 			repos = new Repository();
 			repos.setFilename(filename);
-			repos.getItems().addAll(makedemorepository());
+			try {
+				repos.getItems().addAll(makedemorepository());
+			} catch (MalformedURLException e1) {
+				throw new RepositoryException(
+						"Failed to load normal repository and also failed to create the backup repository",
+						e1);
+			}
 			repos.save();
 		}
 		return repos;
 	}
 
 	/****************** code that creates repos if none exists ********************/
-	public static Repository get_domain_repos() throws Exception {
+	public static Repository get_domain_repos() throws RepositoryException {
 		final String FILENAME = "domainrepository.xml"; // ASSUMPTION there is
 														// only one domain
 														// repository
@@ -261,7 +273,7 @@ public class Repository {
 
 	}
 
-	static ArrayList<RepItem> makedemorepository() throws Exception {
+	static ArrayList<RepItem> makedemorepository() throws MalformedURLException {
 		ArrayList<RepItem> its = new ArrayList<RepItem>();
 
 		// DomainRepItem dri=new DomainRepItem(new
