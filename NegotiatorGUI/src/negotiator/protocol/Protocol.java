@@ -111,13 +111,6 @@ public interface Protocol {
      */
     public int getNumberOfAgreeingParties(Session session, List<NegotiationParty> parties);
 
-    /**
-     * Get the maximum number of seconds a NegotiationParty can use for it's action.
-     * To give an unlimited amount of time, this method should return zero or a negative value.
-     *
-     * @return Time out for negotiation or zero/negative if no time out.
-     */
-    public int getTimeOutInSeconds(Session session);
 
     /**
      * Overwrites the rest of the protocol and sets the protocol state to finish
