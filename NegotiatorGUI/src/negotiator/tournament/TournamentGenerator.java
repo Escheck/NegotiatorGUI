@@ -2,7 +2,9 @@ package negotiator.tournament;
 
 import static negotiator.utility.UTILITYSPACETYPE.getUtilitySpaceType;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,12 +14,14 @@ import negotiator.Deadline;
 import negotiator.Domain;
 import negotiator.Timeline;
 import negotiator.config.Configuration;
+import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.Protocol;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
+import negotiator.session.RepositoryException;
 import negotiator.session.Session;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
@@ -34,7 +38,7 @@ import negotiator.utility.UtilitySpace;
  *
  * @author Festen
  */
-public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
+public class TournamentGenerator {
 	/**
 	 * Holds the configuration used by this tournament generator
 	 */
@@ -67,6 +71,7 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 * @param profileRepItem
 	 *            Profile Repository item to createFrom party from
 	 * @return new Party
+	 * @throws RepositoryException
 	 * @throws java.lang.NoSuchMethodException
 	 *             If requested Party does not have a constructor accepting only
 	 *             preference profiles
@@ -78,21 +83,48 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 *             throws an exception.
 	 */
 	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
-			ProfileRepItem profileRepItem, Session session) throws Exception {
-		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class party = loader.loadClass(partyRepItem.getClassPath());
-
-		Class[] paramTypes = { UtilitySpace.class, Deadline.class,
-				Timeline.class, long.class };
-
-		@SuppressWarnings("unchecked")
-		Constructor partyConstructor = party.getConstructor(paramTypes);
-
-		long randomSeed = System.currentTimeMillis();
-
+			ProfileRepItem profileRepItem, Session session)
+			throws RepositoryException, NegotiatorException {
 		UtilitySpace utilitySpace = createFrom(profileRepItem);
-		return (NegotiationParty) partyConstructor.newInstance(utilitySpace,
-				session.getDeadlines(), session.getTimeline(), randomSeed);
+
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		Class party;
+		try {
+			party = loader.loadClass(partyRepItem.getClassPath());
+
+			Class[] paramTypes = { UtilitySpace.class, Deadline.class,
+					Timeline.class, long.class };
+
+			@SuppressWarnings("unchecked")
+			Constructor partyConstructor = party.getConstructor(paramTypes);
+
+			long randomSeed = System.currentTimeMillis();
+
+			return (NegotiationParty) partyConstructor.newInstance(
+					utilitySpace, session.getDeadlines(),
+					session.getTimeline(), randomSeed);
+		} catch (ClassNotFoundException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (NoSuchMethodException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (SecurityException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (InstantiationException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (IllegalAccessException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (IllegalArgumentException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		} catch (InvocationTargetException e) {
+			throw new NegotiatorException("Problem creating agent "
+					+ partyRepItem + " using profile " + profileRepItem, e);
+		}
 	}
 
 	/**
@@ -126,15 +158,23 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 * @param item
 	 *            the item to create a UtilitySpace out of.
 	 * @return the UtilitySpace corresponding to the item.
+	 * @throws FileNotFoundException
+	 * @throws RepositoryException
 	 * @throws java.lang.Exception
 	 *             If
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static UtilitySpace createFrom(ProfileRepItem item) throws Exception {
-		Domain domain = Repository.get_domain_repos().getDomain(
-				item.getDomain());
-		return Repository.get_domain_repos().getUtilitySpace(domain, item);
+	public static UtilitySpace createFrom(ProfileRepItem item)
+			throws RepositoryException {
+		Domain domain;
+		try {
+			domain = Repository.get_domain_repos().getDomain(item.getDomain());
+
+			return Repository.get_domain_repos().getUtilitySpace(domain, item);
+		} catch (Exception e) {
+			throw new RepositoryException("File not found for " + item, e);
+		}
 	}
 
 	/**
@@ -207,12 +247,17 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 * @param session
 	 *            The session used fot this session
 	 * @return The list of parties for this session
+	 * @throws NegotiatorException
+	 *             if agent can not be created
+	 * @throws RepositoryException
+	 *             if repository describing agent can not be loaded
 	 */
 	public static List<NegotiationParty> generateSessionParties(
 			List<PartyRepItem> partyRepItems,
 			List<ProfileRepItem> profileRepItems, List<AgentID> partyIds,
 			int mediatorIndex, PartyRepItem mediatorRepItem,
-			ProfileRepItem mediatorProfileRepItem, Session session) {
+			ProfileRepItem mediatorProfileRepItem, Session session)
+			throws RepositoryException, NegotiatorException {
 
 		return generateSessionParties(
 				generateIntegerList(partyRepItems.size()), partyRepItems,
@@ -239,40 +284,40 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 * @param session
 	 *            The session used fot this session
 	 * @return The list of parties for this session
+	 * @throws NegotiatorException
+	 *             if agent can not be created
+	 * @throws RepositoryException
+	 *             if repository describing agent can not be loaded
 	 */
 	public static List<NegotiationParty> generateSessionParties(
 			List<Integer> partyIndices, List<PartyRepItem> partyRepItems,
 			List<ProfileRepItem> profileRepItems, List<AgentID> partyIds,
 			int mediatorIndex, PartyRepItem mediatorRepItem,
-			ProfileRepItem mediatorProfileRepItem, Session session) {
-		try {
+			ProfileRepItem mediatorProfileRepItem, Session session)
+			throws RepositoryException, NegotiatorException {
 
-			List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
 
-			for (int i = 0; i < profileRepItems.size(); i++) {
-				if (partyIndices.get(i) != null && partyIndices.get(i) >= 0) {
-					PartyRepItem partyRepItem = partyRepItems.get(partyIndices
-							.get(i));
-					ProfileRepItem profileRepItem = profileRepItems.get(i);
-					NegotiationParty party = createFrom(partyRepItem,
-							profileRepItem, session);
-					parties.add(party);
-				}
+		for (int i = 0; i < profileRepItems.size(); i++) {
+			if (partyIndices.get(i) != null && partyIndices.get(i) >= 0) {
+				PartyRepItem partyRepItem = partyRepItems.get(partyIndices
+						.get(i));
+				ProfileRepItem profileRepItem = profileRepItems.get(i);
+				NegotiationParty party = createFrom(partyRepItem,
+						profileRepItem, session);
+				parties.add(party);
 			}
-			NegotiationParty mediator = generateMediator(mediatorRepItem,
-					mediatorProfileRepItem, profileRepItems.get(0), session);
-			if (mediator != null)
-				parties.add(mediatorIndex, mediator);
-
-			if (partyIds != null)
-				for (int i = 0; i < parties.size(); i++)
-					parties.get(i).setPartyId(partyIds.get(i));
-
-			return parties;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
 		}
+		NegotiationParty mediator = generateMediator(mediatorRepItem,
+				mediatorProfileRepItem, profileRepItems.get(0), session);
+		if (mediator != null)
+			parties.add(mediatorIndex, mediator);
+
+		if (partyIds != null)
+			for (int i = 0; i < parties.size(); i++)
+				parties.get(i).setPartyId(partyIds.get(i));
+
+		return parties;
 	}
 
 	/**
@@ -351,63 +396,36 @@ public class TournamentGenerator implements Iterable<List<NegotiationParty>> {
 	 * @param indices
 	 *            The indices of the parties to include
 	 * @return The list of parties at the given instances
+	 * @throws NegotiatorException
+	 *             if agent can not be created
+	 * @throws RepositoryException
+	 *             if repository describing agent can not be loaded
 	 */
-	List<NegotiationParty> generateSessionParties(List<Integer> indices) {
+	List<NegotiationParty> generateSessionParties(List<Integer> indices)
+			throws RepositoryException, NegotiatorException {
 		return generateSessionParties(indices, config.getPartyItems(),
 				config.getPartyProfileItems(), null, config.getMediatorIndex(),
 				config.getMediatorItem(), config.getMediatorProfile(),
 				config.getSession());
 	}
 
-	// /**
-	// * Generate a single party from the given party index and profile index
-	// *
-	// * @param partyIndex The index of the party in the configuration to
-	// generate
-	// * @param profileIndex The index of the profile in the configuration to
-	// use for this party
-	// * @return The generated party instance
-	// */
-	// protected Party generateParty(Integer partyIndex, int profileIndex)
-	// {
-	// try
-	// {
-	// if (partyIndex == null) return null;
-	// return createFrom(
-	// config.getPartyItems().get(partyIndex),
-	// config.getPartyProfileItems().get(profileIndex),
-	// config.getDeadlines());
-	// }
-	// catch (Exception e)
-	// {
-	// e.printStackTrace();
-	// return null;
-	// }
-	// }
-
 	/**
-	 * Returns an iterator over a set of elements of type T.
+	 * returns next list of negotiating parties for the next session.
 	 *
 	 * @return an Iterator.
+	 * @throws NegotiatorException
+	 *             if agent can not be created
+	 * @throws RepositoryException
+	 *             if repository describing agent can not be loaded
 	 */
-	@Override
-	public Iterator<List<NegotiationParty>> iterator() {
-		return new Iterator<List<NegotiationParty>>() {
-			@Override
-			public boolean hasNext() {
-				return indicesIterator.hasNext();
-			}
-
-			@Override
-			public List<NegotiationParty> next() {
-				List<Integer> indices = indicesIterator.next();
-				return generateSessionParties(indices);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+	public List<NegotiationParty> next() throws RepositoryException,
+			NegotiatorException {
+		List<Integer> indices = indicesIterator.next();
+		return generateSessionParties(indices);
 	}
+
+	public boolean hasNext() {
+		return indicesIterator.hasNext();
+	}
+
 }
