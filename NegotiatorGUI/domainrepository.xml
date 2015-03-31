@@ -590,6 +590,44 @@
                 <profile url="file:etc/templates/Jobs/Jobs_util1.xml"/>
                 <profile url="file:etc/templates/Jobs/Jobs_util2.xml"/>
             </domainRepItem>
+            <domainRepItem url="file:etc/templates/Domain1/Domain1.xml">
+                <profile url="file:etc/templates/Domain1/Domain1_util1.xml"/>
+                <profile url="file:etc/templates/Domain1/Domain1_util2.xml"/>
+                <profile url="file:etc/templates/Domain1/Domain1_util3.xml"/>
+                <profile url="file:etc/templates/Domain1/Domain1_util4.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/Domain2/Domain2.xml">
+                <profile url="file:etc/templates/Domain2/Domain2_util1.xml"/>
+                <profile url="file:etc/templates/Domain2/Domain2_util2.xml"/>
+                <profile url="file:etc/templates/Domain2/Domain2_util3.xml"/>
+                <profile url="file:etc/templates/Domain2/Domain2_util4.xml"/>
+                <profile url="file:etc/templates/Domain2/Domain2_util5.xml"/>
+                <profile url="file:etc/templates/Domain2/Domain2_util6.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/Domain4/Domain4.xml">
+                <profile url="file:etc/templates/Domain4/Domain4_util1.xml"/>
+                <profile url="file:etc/templates/Domain4/Domain4_util2.xml"/>
+                <profile url="file:etc/templates/Domain4/Domain4_util3.xml"/>
+                <profile url="file:etc/templates/Domain4/Domain4_util4.xml"/>
+                <profile url="file:etc/templates/Domain4/Domain4_util5.xml"/>
+                <profile url="file:etc/templates/Domain4/Domain4_util6.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/Domain8/Domain8.xml">
+                <profile url="file:etc/templates/Domain8/Domain8_util1.xml"/>
+                <profile url="file:etc/templates/Domain8/Domain8_util2.xml"/>
+                <profile url="file:etc/templates/Domain8/Domain8_util3.xml"/>
+                <profile url="file:etc/templates/Domain8/Domain8_util4.xml"/>
+                <profile url="file:etc/templates/Domain8/Domain8_util5.xml"/>
+                <profile url="file:etc/templates/Domain8/Domain8_util6.xml"/>
+            </domainRepItem>
+            <domainRepItem url="file:etc/templates/Domain16/Domain16.xml">
+                <profile url="file:etc/templates/Domain16/Domain16_util1.xml"/>
+                <profile url="file:etc/templates/Domain16/Domain16_util2.xml"/>
+                <profile url="file:etc/templates/Domain16/Domain16_util3.xml"/>
+                <profile url="file:etc/templates/Domain16/Domain16_util4.xml"/>
+                <profile url="file:etc/templates/Domain16/Domain16_util5.xml"/>
+                <profile url="file:etc/templates/Domain16/Domain16_util6.xml"/>
+            </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
         <multiPartyProtocolRepItem/>
