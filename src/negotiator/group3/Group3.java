@@ -2,12 +2,11 @@ package negotiator.group3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 //import negotiator.NegoRound;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
@@ -49,9 +48,8 @@ public class Group3 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group3(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public Group3(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
 
@@ -193,7 +191,7 @@ public class Group3 extends AbstractNegotiationParty {
 	}
 
 	public int roundDeadline() {
-		return (Integer) deadlines.get(DeadlineType.ROUND);
+		return (Integer) deadlines.getTotalRounds();
 	}
 
 	public int getRoundN() {

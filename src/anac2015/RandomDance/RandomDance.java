@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import negotiator.Bid;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -44,9 +44,8 @@ public class RandomDance extends AbstractNegotiationParty {
 	 * パレート最適最速アタックを目指す(ひとまず)
 	 */
 
-	public RandomDance(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public RandomDance(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
 	}

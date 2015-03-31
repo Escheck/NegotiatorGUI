@@ -3,11 +3,10 @@ package negotiator.group1;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -50,9 +49,8 @@ public class Group1 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group1(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public Group1(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls its parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
 
@@ -71,7 +69,7 @@ public class Group1 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public Action chooseAction(List<Class> validActions) {
-		totalRounds = (Integer) deadlines.get(DeadlineType.ROUND);
+		totalRounds = deadlines.getTotalRounds();
 		// System.out.println("totalRounds: " + totalRounds);
 		currentRound++;
 		// System.out.println("agentID: " + getPartyId().toString() +

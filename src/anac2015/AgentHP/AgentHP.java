@@ -2,10 +2,9 @@ package anac2015.AgentHP;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import negotiator.Bid;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -108,9 +107,8 @@ public class AgentHP extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            乱数用シード
 	 */
-	public AgentHP(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public AgentHP(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 
 		// 親クラスコンストラクタ
 		super(utilitySpace, deadlines, timeline, randomSeed);
