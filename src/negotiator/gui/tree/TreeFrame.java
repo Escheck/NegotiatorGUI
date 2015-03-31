@@ -229,7 +229,7 @@ public class TreeFrame extends JPanel {
 
 	private void initTable(NegotiatorTreeTableModel model) {
 		treeTable = new JTreeTable(model);
-		treeTable.setPreferredSize(new Dimension(1024, 600));
+		treeTable.setPreferredSize(new Dimension(1024, 800));
 		treeTable.setPreferredScrollableViewportSize(new Dimension(1024, 300));
 		treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		treeTable.setRowSelectionAllowed(true);
