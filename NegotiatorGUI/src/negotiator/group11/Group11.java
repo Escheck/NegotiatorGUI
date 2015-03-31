@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -13,7 +12,7 @@ import misc.Range;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -55,9 +54,8 @@ public class Group11 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group11(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public Group11(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		super(utilitySpace, deadlines, timeline, randomSeed);
 
 		this.round = 0;
@@ -312,7 +310,7 @@ public class Group11 extends AbstractNegotiationParty {
 	 */
 	private double getTime() {
 		if (this.deadlines != null) {
-			Integer d = (Integer) this.deadlines.get(DeadlineType.ROUND);
+			Integer d = (Integer) this.deadlines.getTotalRounds();
 
 			if (d != null && d != 0) {
 				return (double) this.round / (int) d;

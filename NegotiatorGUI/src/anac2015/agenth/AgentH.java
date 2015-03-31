@@ -2,10 +2,9 @@ package anac2015.agenth;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import negotiator.Bid;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -42,9 +41,8 @@ public class AgentH extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 * @throws Exception
 	 */
-	public AgentH(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) throws Exception {
+	public AgentH(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) throws Exception {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
 

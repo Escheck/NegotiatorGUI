@@ -3,11 +3,10 @@ package negotiator.group4;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.DeadlineType;
+import negotiator.Deadline;
 import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -55,9 +54,8 @@ public class Group4 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomisation, use this seed for it.
 	 */
-	public Group4(UtilitySpace utilitySpace,
-			Map<DeadlineType, Object> deadlines, Timeline timeline,
-			long randomSeed) {
+	public Group4(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
 
@@ -68,11 +66,11 @@ public class Group4 extends AbstractNegotiationParty {
 
 		// creates the generator
 		generatePossibleBids(0, null);
-		turns = (Integer) deadlines.get(DeadlineType.ROUND); // -1 helps with
-																// very low
-																// deadline,
-																// doesn't hurt
-																// large.
+		turns = deadlines.getTotalRounds(); // -1 helps with
+											// very low
+											// deadline,
+											// doesn't hurt
+											// large.
 		bidGenerator = new BidGenerator(this, possibleBids, turns);
 
 		RESERVATION_VALUE = utilitySpace.getReservationValue();

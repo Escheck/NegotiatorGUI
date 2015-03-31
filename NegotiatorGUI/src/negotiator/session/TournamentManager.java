@@ -61,6 +61,7 @@ public class TournamentManager extends Thread {
 	 */
 	@Override
 	public void run() {
+		long start = System.nanoTime();
 		try {
 			this.runTournament();
 			System.out.println("Tournament completed");
@@ -72,6 +73,9 @@ public class TournamentManager extends Thread {
 			System.out.println("------------------");
 			System.out.println("");
 		}
+		long end = System.nanoTime();
+		System.out.println("run took time  " + (end - start) / 1000000000.
+				+ "s");
 	}
 
 	/**
@@ -97,8 +101,11 @@ public class TournamentManager extends Thread {
 			Iterable<List<NegotiationParty>> generator = configuration
 					.getPartiesGenerator();
 
+			useConsoleOut(false);
 			// enumerate all parties
 			for (List<NegotiationParty> partyList : generator) {
+
+				useConsoleOut(true);
 
 				// if could not create parties. skip this session
 				if (partyList == null) {
@@ -132,7 +139,10 @@ public class TournamentManager extends Thread {
 				System.out.println(sessionOk ? "Session done."
 						: "Session exited.");
 				System.out.println("");
+
+				useConsoleOut(false);
 			}
+			useConsoleOut(true);
 
 		}
 		System.out.println("All tournament sessions are done");
@@ -155,15 +165,18 @@ public class TournamentManager extends Thread {
 	public boolean runSingleSession(List<NegotiationParty> parties)
 			throws Exception {
 		try {
+
 			Protocol protocol = configuration.getProtocol();
 			Session session = configuration.getSession().copy();
+			ExecutorWithTimeout executor = new ExecutorWithTimeout(
+					1000 * session.getDeadlines().getTimeOrDefaultTimeout());
 
 			// TODO: ** hackery ** we should make sure that session gives
 			// timeline to agents, not the other way around.
 			Timeline timeline = parties.get(0).getTimeLine();
 			session.setTimeline(timeline);
 			SessionManager sessionManager = new SessionManager(parties,
-					protocol, session);
+					protocol, session, executor);
 			useConsoleOut(false);
 			sessionManager.run();
 			useConsoleOut(true);

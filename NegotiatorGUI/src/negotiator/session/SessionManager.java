@@ -9,14 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.Bid;
-import negotiator.DeadlineType;
 import negotiator.DiscreteTimeline;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.actions.Action;
@@ -76,6 +71,8 @@ public class SessionManager {
 	private PrintStream orgOut = System.out;
 	private PrintStream orgErr = System.err;
 
+	private ExecutorWithTimeout executor;
+
 	/**
 	 * Initializes a new instance of the {@see SessionManager} object. After
 	 * initialization this {@see SessionManager} can be {@see #run()}.
@@ -90,13 +87,14 @@ public class SessionManager {
 	 *            new instance)
 	 */
 	public SessionManager(List<NegotiationParty> parties, Protocol protocol,
-			Session session) {
+			Session session, ExecutorWithTimeout exec) {
 		this.session = session;
 		this.protocol = protocol;
 		this.parties = parties;
 		this.listeners = protocol.getActionListeners(parties);
 		this.sessionLogger = new SessionLogger(this);
 		this.agentUtils = new ArrayList<List<Double[]>>();
+		executor = exec;
 
 		// needed for reference (for indexing the parties)
 		agents = MediatorProtocol.getNonMediators(parties);
@@ -251,9 +249,9 @@ public class SessionManager {
 		if (session.isDeadlineReached()) {
 			System.out.println("Deadline reached. " + session.getDeadlines());
 			session.getRounds().remove(session.getRounds().size() - 1);
-			if (session.getDeadlines().containsKey(DeadlineType.TIME)) {
-				double runTimeInSeconds = (Integer) session.getDeadlines().get(
-						DeadlineType.TIME);
+			if (session.getDeadlines().isTime()) {
+				double runTimeInSeconds = (Integer) session.getDeadlines()
+						.getTotalTime();
 				session.setRuntimeInSeconds(runTimeInSeconds);
 			}
 			sessionLogger.logMessage("Deadline reached: %s",
@@ -274,16 +272,32 @@ public class SessionManager {
 	 * @param validActions
 	 *            the actions the party can choose
 	 * @return the chosen action-
+	 * @throws TimeoutException
 	 */
 	private Action requestAction(final NegotiationParty party,
 			final ArrayList<Class> validActions) throws InvalidActionError,
 			InterruptedException, ExecutionException,
 			NegotiationPartyTimeoutException {
 
+		Action action;
+		try {
+			action = executor.execute(new Callable<Action>() {
+				@Override
+				public Action call() throws Exception {
+					return party.chooseAction(validActions);
+				}
+			});
+		} catch (TimeoutException e) {
+			String msg = String.format("Negotiating party %s timed out.",
+					party.getPartyId());
+			sessionLogger.logMessage(msg);
+			throw new NegotiationPartyTimeoutException(party, e);
+		}
+
 		// choose action
-		Action action = protocol.getTimeOutInSeconds(session) <= 0 ? party
-				.chooseAction(validActions) : chooseActionWithTimeOut(party,
-				validActions);
+		// Action action = protocol.getTimeOutInSeconds(session) <= 0 ? party
+		// .chooseAction(validActions) : chooseActionWithTimeOut(party,
+		// validActions);
 
 		// Check if action is valid for this protocol
 		boolean isValid = validActions.contains(action.getClass());
@@ -372,42 +386,6 @@ public class SessionManager {
 			}
 		}
 		return Double.NaN;
-	}
-
-	private Action chooseActionWithTimeOut(final NegotiationParty party,
-			final ArrayList<Class> validActions) throws InterruptedException,
-			ExecutionException, NegotiationPartyTimeoutException {
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		int timeLeft = Integer.MAX_VALUE;
-		if (session.getDeadlines().containsKey(DeadlineType.TIME)) {
-			timeLeft = (int) (((Integer) session.getDeadlines().get(
-					DeadlineType.TIME)
-					* (1 - session.getTimeline().getTime()) + 1));
-		}
-
-		int timeOut = Math.min(protocol.getTimeOutInSeconds(session), timeLeft);
-		if (session.getDeadlines().containsKey(DeadlineType.TIME)) {
-			timeOut = Math
-					.min(timeOut,
-							(Integer) session.getDeadlines().get(
-									DeadlineType.TIME) + 1);
-		}
-		Future<Action> future = executor.submit(new Callable<Action>() {
-			public Action call() throws Exception {
-				return party.chooseAction(validActions);
-			}
-		});
-		try {
-			return future.get(timeOut, TimeUnit.SECONDS);
-		} catch (TimeoutException e) {
-			String msg = String.format(
-					"Negotiating party %s timed out. {TIMEOUT=%ds}",
-					party.getPartyId(), timeOut);
-			sessionLogger.logMessage(msg);
-			throw new NegotiationPartyTimeoutException(party, e);
-		} finally {
-			executor.shutdownNow();
-		}
 	}
 
 	/**
