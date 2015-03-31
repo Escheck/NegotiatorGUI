@@ -10,7 +10,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import misc.Range;
-import negotiator.*;
+import negotiator.AgentID;
+import negotiator.Bid;
+import negotiator.BidHistory;
+import negotiator.DeadlineType;
+import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -232,7 +236,7 @@ public class Group11 extends AbstractNegotiationParty {
 	 * @return
 	 */
 	private Action getActionForTactic(Tactics t) {
-		//System.out.println("Round " + round + " | Tactic: " + t);
+		// System.out.println("Round " + round + " | Tactic: " + t);
 		switch (t) {
 		case RANDOM:
 			// We don't want to bid under our reservation value
@@ -308,9 +312,9 @@ public class Group11 extends AbstractNegotiationParty {
 	 */
 	private double getTime() {
 		if (this.deadlines != null) {
-			Object d = this.deadlines.get(DeadlineType.ROUND);
+			Integer d = (Integer) this.deadlines.get(DeadlineType.ROUND);
 
-			if (d != null && (int) d != 0) {
+			if (d != null && d != 0) {
 				return (double) this.round / (int) d;
 			}
 		}
@@ -371,7 +375,9 @@ public class Group11 extends AbstractNegotiationParty {
 				System.out.println("WARNING :: UNKNOWN ACTION :: "
 						+ action.getClass().getCanonicalName());
 			}
-		} catch (InvalidDomainException | InvalidBidException e) {
+		} catch (InvalidDomainException e) {
+			e.printStackTrace();
+		} catch (InvalidBidException e) {
 			e.printStackTrace();
 		}
 	}
@@ -437,13 +443,10 @@ public class Group11 extends AbstractNegotiationParty {
 		return res;
 	}
 
+	protected AgentID partyId = new AgentID("Group 11");
 
-
-
-    protected AgentID partyId = new AgentID("Group 11");
-
-    @Override
-    public AgentID getPartyId() {
-        return partyId;
-    }
+	@Override
+	public AgentID getPartyId() {
+		return partyId;
+	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -20,18 +19,17 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.utility.UtilitySpace;
 
-
-
 /**
  * This is your negotiation party.
  */
 public class Group4 extends AbstractNegotiationParty {
-	
+
 	private Double currentUtility = 0.0;
 	private Double threshold;
 	private final Double RESERVATION_VALUE;
 	private final Double STARTING_THRESHOLD = 0.9;
-	private final Double COMPROMISE_RATE = 4.0; //1 is linear, higher is slower to compromise
+	private final Double COMPROMISE_RATE = 4.0; // 1 is linear, higher is slower
+												// to compromise
 	private int turns;
 	private int round = 0;
 
@@ -39,90 +37,97 @@ public class Group4 extends AbstractNegotiationParty {
 	private Bid lastGivenBid;
 	private Bid lastReceivedBid;
 	private HashMap<String, Party> parties = new HashMap<String, Party>();
-	private ArrayList<List<ValueDiscrete>> values = new ArrayList<List<ValueDiscrete>>(); 
+	private ArrayList<List<ValueDiscrete>> values = new ArrayList<List<ValueDiscrete>>();
 	private BidGenerator bidGenerator;
-	
+
 	private HashMap<Bid, Double> possibleBids = new HashMap<Bid, Double>();
 	private UtilitySpace utilitySpace;
-	
 
-	
 	/**
 	 * Please keep this constructor. This is called by genius.
 	 *
-	 * @param utilitySpace Your utility space.
-	 * @param deadlines The deadlines set for this negotiation.
-	 * @param timeline Value counting from 0 (start) to 1 (end).
-	 * @param randomSeed If you use any randomisation, use this seed for it.
+	 * @param utilitySpace
+	 *            Your utility space.
+	 * @param deadlines
+	 *            The deadlines set for this negotiation.
+	 * @param timeline
+	 *            Value counting from 0 (start) to 1 (end).
+	 * @param randomSeed
+	 *            If you use any randomisation, use this seed for it.
 	 */
 	public Group4(UtilitySpace utilitySpace,
-				  Map<DeadlineType, Object> deadlines,
-				  Timeline timeline,
-				  long randomSeed) {
+			Map<DeadlineType, Object> deadlines, Timeline timeline,
+			long randomSeed) {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
-		
+
 		this.utilitySpace = utilitySpace;
 		for (Issue issue : utilitySpace.getDomain().getIssues()) {
-			values.add(((IssueDiscrete) issue).getValues());	
+			values.add(((IssueDiscrete) issue).getValues());
 		}
-		
-		//creates the generator
+
+		// creates the generator
 		generatePossibleBids(0, null);
-		turns = (int)deadlines.get(DeadlineType.ROUND); //-1 helps with very low deadline, doesn't hurt large.
+		turns = (Integer) deadlines.get(DeadlineType.ROUND); // -1 helps with
+																// very low
+																// deadline,
+																// doesn't hurt
+																// large.
 		bidGenerator = new BidGenerator(this, possibleBids, turns);
-		
+
 		RESERVATION_VALUE = utilitySpace.getReservationValue();
 	}
 
-	private void generatePossibleBids(int n, HashMap<Integer, Value> bidValues){
-        if(n >= values.size()){
-        	Bid b = null;
-        	
+	private void generatePossibleBids(int n, HashMap<Integer, Value> bidValues) {
+		if (n >= values.size()) {
+			Bid b = null;
+
 			try {
 				b = new Bid(utilitySpace.getDomain(), bidValues);
 				possibleBids.put(b, getUtility(b));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-            return;
-        }
-        for(Value v : values.get(n)){      	
-        	HashMap<Integer, Value> currentBid;
-        	
-        	if (n == 0) {
-        		currentBid = new HashMap<Integer, Value>();
-        	}
-        	else {
-        		currentBid = (HashMap<Integer, Value>) bidValues.clone();
-        	}
-        	 	
-        	currentBid.put(n+1, v);
-            generatePossibleBids(n+1, currentBid);
-        }
-    }
-	
+			return;
+		}
+		for (Value v : values.get(n)) {
+			HashMap<Integer, Value> currentBid;
+
+			if (n == 0) {
+				currentBid = new HashMap<Integer, Value>();
+			} else {
+				currentBid = (HashMap<Integer, Value>) bidValues.clone();
+			}
+
+			currentBid.put(n + 1, v);
+			generatePossibleBids(n + 1, currentBid);
+		}
+	}
 
 	/**
-	 * Each round this method gets called and ask you to accept or offer. The first party in
-	 * the first round is a bit different, it can only propose an offer.
+	 * Each round this method gets called and ask you to accept or offer. The
+	 * first party in the first round is a bit different, it can only propose an
+	 * offer.
 	 *
-	 * @param validActions Either a list containing both accept and offer or only offer.
+	 * @param validActions
+	 *            Either a list containing both accept and offer or only offer.
 	 * @return The chosen action.
 	 */
 	@Override
 	public Action chooseAction(List<Class> validActions) {
 		round++;
-		threshold = STARTING_THRESHOLD-(STARTING_THRESHOLD-RESERVATION_VALUE)*Math.pow((double)round/(double)turns,COMPROMISE_RATE);
-		
-		/*if(round >= turns){
-			return new Accept();
-		}*/
-		
-		if (!validActions.contains(Accept.class) || currentUtility<threshold) {
+		threshold = STARTING_THRESHOLD
+				- (STARTING_THRESHOLD - RESERVATION_VALUE)
+				* Math.pow((double) round / (double) turns, COMPROMISE_RATE);
+
+		/*
+		 * if(round >= turns){ return new Accept(); }
+		 */
+
+		if (!validActions.contains(Accept.class) || currentUtility < threshold) {
 			Bid b = null;
-			//if it's first turn, get out with best possible bid
-			if(lastGivenBid==null){
+			// if it's first turn, get out with best possible bid
+			if (lastGivenBid == null) {
 				try {
 					b = utilitySpace.getMaxUtilityBid();
 				} catch (Exception e) {
@@ -130,72 +135,69 @@ public class Group4 extends AbstractNegotiationParty {
 					e.printStackTrace();
 				}
 			}
-			
-			//do something to get the bid as answer
-			else{
-				//it generates the best not used bid
+
+			// do something to get the bid as answer
+			else {
+				// it generates the best not used bid
 				int index = 0;
-				do {				
+				do {
 					b = bidGenerator.generateBestBid();
-					
+
 					index++;
 					if (index > 100) {
 						index = 0;
-						threshold = threshold - 0.01; //safety measure
+						threshold = threshold - 0.01; // safety measure
 					}
 				} while (getUtility(b) < threshold);
-					
+
 			}
 			setLastGivenBid(b);
 			return new Offer(b);
-		
-		}
-		else {
+
+		} else {
 			return new Accept();
 		}
 	}
 
-
-
 	/**
 	 * All offers proposed by the other parties will be received as a message.
-	 * You can use this information to your advantage, for example to predict their utility.
+	 * You can use this information to your advantage, for example to predict
+	 * their utility.
 	 *
-	 * @param sender The party that did the action.
-	 * @param action The action that party did.
+	 * @param sender
+	 *            The party that did the action.
+	 * @param action
+	 *            The action that party did.
 	 */
 	@Override
 	public void receiveMessage(Object sender, Action action) {
 		super.receiveMessage(sender, action);
-				
-		if (!parties.containsKey(sender.toString())){
+
+		if (!parties.containsKey(sender.toString())) {
 			Party party = new Party(sender.toString(), utilitySpace.getDomain());
 			parties.put(sender.toString(), party);
 		}
-		
-		if (lastReceivedBid!=null){
-		parties.get(sender.toString()).updateWithBid(lastReceivedBid,action);
+
+		if (lastReceivedBid != null) {
+			parties.get(sender.toString()).updateWithBid(lastReceivedBid,
+					action);
 		}
-		
-		if(action instanceof Offer){
+
+		if (action instanceof Offer) {
 			lastReceivedBid = Action.getBidFromAction(action);
 			currentUtility = getUtility(lastReceivedBid);
 			updateHighestBid(lastReceivedBid);
+		} else if (action instanceof Accept) {
 		}
-		else if (action instanceof Accept) {
-		}
-		
-		
+
 	}
 
-	private void updateHighestBid(Bid b){
-		//TODO it check if it is the highest and in case update it
+	private void updateHighestBid(Bid b) {
+		// TODO it check if it is the highest and in case update it
 	}
-	
-	
-	
-	//*******GETTER AND SETTER********
-	
+
+	// *******GETTER AND SETTER********
+
 	public Double getCurrentUtility() {
 		return currentUtility;
 	}
@@ -211,7 +213,7 @@ public class Group4 extends AbstractNegotiationParty {
 	public void setThreshold(Double threshold) {
 		this.threshold = threshold;
 	}
-	
+
 	public Bid getHighestBid() {
 		return highestBid;
 	}
@@ -240,12 +242,10 @@ public class Group4 extends AbstractNegotiationParty {
 		return turns;
 	}
 
+	protected AgentID partyId = new AgentID("Group 4");
 
-
-    protected AgentID partyId = new AgentID("Group 4");
-
-    @Override
-    public AgentID getPartyId() {
-        return partyId;
-    }
+	@Override
+	public AgentID getPartyId() {
+		return partyId;
+	}
 }

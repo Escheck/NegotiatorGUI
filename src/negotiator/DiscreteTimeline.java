@@ -4,6 +4,10 @@ package negotiator;
  * Implementation of the timeline in which time is divided in rounds. Time does
  * not pass within a round. Note that requesting the total time is in this case
  * undefined.
+ * 
+ * NOTICE: DiscreteTimeline assumes each action of a player a 'round'. In
+ * PocketNegotiator this would be called a 'turn'. Check also
+ * {@link #getOwnRoundsLeft()}
  */
 public class DiscreteTimeline extends Timeline {
 	/** With 3 rounds, this is set to 4. */
