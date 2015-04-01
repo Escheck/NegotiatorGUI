@@ -5,10 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import negotiator.Bid;
 import negotiator.actions.Action;
+import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.parties.NegotiationParty;
+import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Round;
 import negotiator.session.Session;
 
@@ -21,6 +24,7 @@ import negotiator.session.Session;
 public abstract class ProtocolAdapter implements Protocol {
 
 	protected boolean isAborted = false;
+	private ExecutorWithTimeout executor;
 
 	/**
 	 * Get the structure of the current round. Each round, this method receives
@@ -51,7 +55,7 @@ public abstract class ProtocolAdapter implements Protocol {
 	 *            The parties that will participate in the session
 	 */
 	@Override
-	public void beforeSession(Session session, List<NegotiationParty> parties) {
+	public void beforeSession(Session session, List<NegotiationParty> parties) throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException {
 
 	}
 
@@ -244,5 +248,22 @@ public abstract class ProtocolAdapter implements Protocol {
 	public void endNegotiation(String reason) {
 		System.out.println("Negotiation aborted: " + reason);
 		isAborted = true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ExecutorWithTimeout getExecutor() {
+		return this.executor;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @param executor
+	 */
+	@Override
+	public void setExecutor(ExecutorWithTimeout executor) {
+		this.executor = executor;
 	}
 }
