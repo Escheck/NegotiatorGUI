@@ -70,7 +70,9 @@ public class ExecutorWithTimeout {
 		}
 
 		/**
-		 * Wait for thread to terminate or terminate after timeout millis
+		 * Execute this thread and wait for thread to terminate or terminate
+		 * after timeout millis. Blocking call. After return, the Callable has
+		 * been executed, OR we have thrown.
 		 * 
 		 * @param timeout
 		 *            timeout in millis.
@@ -85,12 +87,11 @@ public class ExecutorWithTimeout {
 			// wait for the thread to finish, but at most timeout ms.
 			try {
 				if (ready.poll(timeout, TimeUnit.MILLISECONDS) == null) {
-					// not finished. terminate and throw.
-					System.out.println("agent passed deadline. killing.");
 					/*
-					 * This is only way to force thread to die. interrupt() is
-					 * too weak. executorService only supports interrupt(), not
-					 * stop().
+					 * not finished. terminate and throw. stop() is only way to
+					 * force thread to die. interrupt() is too weak.
+					 * executorService only supports interrupt(), not stop().
+					 * Therefore we use plain Threads here.
 					 */
 					stop();
 					throw new TimeoutException(
@@ -98,9 +99,9 @@ public class ExecutorWithTimeout {
 				}
 			} catch (InterruptedException e) {
 				/*
-				 * we should not get here. It means that poll() was interrupted,
-				 * so someone kills the thread we are running IN (not the thread
-				 * we are running).
+				 * we should not get here. If we get here, that means that
+				 * poll() was interrupted, so someone interrupted the thread we
+				 * are running IN (instead of the thread we are running).
 				 */
 				e.printStackTrace();
 				System.exit(1);
@@ -113,6 +114,21 @@ public class ExecutorWithTimeout {
 		}
 	}
 
+	/**
+	 * Execute the command within the remaining time of this executor. Blocking
+	 * call. Used time will be subtracted from the quotum of this Executor. This
+	 * function is synchronized and can execute only 1 Callable at any time.
+	 * 
+	 * @param command
+	 *            the {@link Callable} to execute
+	 * @return the result V
+	 * @throws ExecutionException
+	 *             if the {@link Callable} threw an exception. The
+	 *             {@link ExecutionException} will contain the exception from
+	 *             the {@link Callable}.
+	 * @throws TimeoutException
+	 *             if the {@link Callable} did not finish in time.
+	 */
 	public synchronized <V> V execute(final Callable<V> command)
 			throws ExecutionException, TimeoutException {
 
