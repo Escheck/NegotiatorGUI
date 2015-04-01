@@ -140,10 +140,13 @@ public class TournamentManager extends Thread {
 							public List<NegotiationParty> call()
 									throws RepositoryException,
 									NegotiatorException {
-								useConsoleOut(false);
-								final List<NegotiationParty> next = generator.next();
-								useConsoleOut(true);
-								return next;
+								try {
+									useConsoleOut(false);
+									return generator.next();
+								}
+								finally {
+									useConsoleOut(true);
+								}
 							}
 						});
 
