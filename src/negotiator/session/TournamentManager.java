@@ -140,9 +140,13 @@ public class TournamentManager extends Thread {
 							public List<NegotiationParty> call()
 									throws RepositoryException,
 									NegotiatorException {
-								return generator.next();
+								useConsoleOut(false);
+								final List<NegotiationParty> next = generator.next();
+								useConsoleOut(true);
+								return next;
 							}
 						});
+
 			} catch (InterruptedException e) {
 				System.out.println("failed to construct agent due to timeout"
 						+ e.getMessage());
