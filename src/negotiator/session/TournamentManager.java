@@ -93,8 +93,8 @@ public class TournamentManager extends Thread {
 		logger = new CsvLogger(String.format("logs/Log-Tournament-%s.csv",
 				dateFormat.format(new Date())));
 
-		// Initialize this session to zero (used for logging only)
-		boolean printedHeader = false;
+		logger.logLine(CsvLogger.getDefaultHeader(configuration
+				.getNumAgentsPerSession()));
 
 		for (int tournamentNumber = 0; tournamentNumber < configuration
 				.getNumTournaments(); tournamentNumber++) {
@@ -103,7 +103,7 @@ public class TournamentManager extends Thread {
 			// be many)
 			TournamentGenerator generator = configuration.getPartiesGenerator();
 
-			runSessions(printedHeader, tournamentNumber, generator);
+			runSessions(tournamentNumber, generator);
 
 		}
 		System.out.println("All tournament sessions are done");
@@ -112,16 +112,10 @@ public class TournamentManager extends Thread {
 	/**
 	 * Run all sessions in the given generator.
 	 * 
-	 * @param printedHeader
 	 * @param tournamentNumber
-	 * @param sessionNumber
 	 * @param generator
-	 * @throws Exception
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 * @throws TimeoutException
 	 */
-	private void runSessions(boolean printedHeader, int tournamentNumber,
+	private void runSessions(int tournamentNumber,
 			final TournamentGenerator generator) {
 		int sessionNumber = 0;
 		while (generator.hasNext()) {
@@ -132,6 +126,7 @@ public class TournamentManager extends Thread {
 
 			sessionNumber++;
 			System.out.println("Starting session " + sessionNumber);
+
 			logger.log(sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getSession().getDeadlines()
@@ -151,11 +146,6 @@ public class TournamentManager extends Thread {
 			} else {
 
 				agentList = MediatorProtocol.getNonMediators(partyList);
-
-				if (!printedHeader) {
-					logger.logLine(CsvLogger.getDefaultHeader(agentList));
-					printedHeader = true;
-				}
 
 				System.out.println(String.format(
 						"Running tournament %d/%d, session %d ",
