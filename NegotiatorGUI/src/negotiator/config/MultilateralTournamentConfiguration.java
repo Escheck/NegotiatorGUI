@@ -43,4 +43,9 @@ public interface MultilateralTournamentConfiguration {
 	 * @return the number of sessions
 	 */
 	int getNumTournaments();
+
+	/**
+	 * Get the number of agents in each session.
+	 */
+	int getNumAgentsPerSession();
 }

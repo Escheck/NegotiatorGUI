@@ -116,9 +116,10 @@ public class CsvLogger implements Closeable {
 	 *            list of parties to print in the header
 	 * @return The header string
 	 */
-	public static String getDefaultHeader(List<NegotiationParty> partyList) {
-		List<NegotiationParty> agentList = MediatorProtocol
-				.getNonMediators(partyList);
+	public static String getDefaultHeader(int numAgentsPerSession) {
+		// TODO get non-mediators.
+		// List<NegotiationParty> agentList =
+		// MediatorProtocol.getNonMediators(numAgentsPerSession);
 
 		List<String> values = new ArrayList<String>();
 		values.add("Session");
@@ -135,10 +136,10 @@ public class CsvLogger implements Closeable {
 		values.add("Distance to Nash");
 		values.add("Social welfare");
 
-		for (int i = 1; i <= agentList.size(); i++)
+		for (int i = 1; i <= numAgentsPerSession; i++)
 			values.add("Agent name " + i);
 
-		for (int i = 1; i <= agentList.size(); i++)
+		for (int i = 1; i <= numAgentsPerSession; i++)
 			values.add("Agent utility " + i);
 
 		return join(values, DELIMITER);
