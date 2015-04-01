@@ -245,10 +245,7 @@ public class TournamentManager extends Thread {
 			return false;
 		} catch (NegotiationPartyTimeoutException e) {
 			useConsoleOut(true);
-			String msg = String.format(
-					"Agent %s timed out, skipping current session.", e
-							.getInstigator().getPartyId());
-			System.err.println(msg);
+			System.err.println(e.getMessage());
 			return false;
 		} catch (InterruptedException e) {
 			useConsoleOut(true);
