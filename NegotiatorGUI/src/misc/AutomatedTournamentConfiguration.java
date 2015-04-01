@@ -23,13 +23,13 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	 * Number of agents in each test run (make sure that this is reflected in
 	 * partyrepository.xml
 	 */
-	public static final int AGENTS_PER_RUN = 2;
+	public static final int AGENTS_PER_RUN = 3;
 
 	/**
 	 * Number of profiles in each test run (make sure that this is reflected in
 	 * domainrepository.xml
 	 */
-	public static final int PROFILES_PER_RUN = 2;
+	public static final int PROFILES_PER_RUN = 3;
 
 	/**
 	 * If set to true, agents also play against themselves
@@ -45,7 +45,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	/**
 	 * Deadline for each negotiation round
 	 */
-	public static final int DEADLINE_TIME = 3;
+	public static final int DEADLINE_TIME = 180;
 	public static final int DEADLINE_ROUNDS = 0;
 
 	/**
