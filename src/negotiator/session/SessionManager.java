@@ -288,10 +288,10 @@ public class SessionManager {
 				}
 			});
 		} catch (TimeoutException e) {
-			String msg = String.format("Negotiating party %s timed out.",
+			String msg = String.format("Negotiating party %s timed out in chooseAction() method.",
 					party.getPartyId());
 			sessionLogger.logMessage(msg);
-			throw new NegotiationPartyTimeoutException(party, e);
+			throw new NegotiationPartyTimeoutException(party, msg, e);
 		}
 
 		// choose action
@@ -321,15 +321,29 @@ public class SessionManager {
 	 * @param action
 	 *            The action it did.
 	 */
-	private void updateListeners(NegotiationParty actionOwner, Action action) {
+	private void updateListeners(final NegotiationParty actionOwner, final Action action)
+			throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException {
 		// Sadly not even the listener object was created, so don't bother
 		if (listeners == null)
 			return;
 
 		// if anyone is listening, notify any and all observers
 		if (listeners.get(actionOwner) != null)
-			for (NegotiationParty observers : listeners.get(actionOwner))
-				observers.receiveMessage(actionOwner, action);
+			for (final NegotiationParty observer : listeners.get(actionOwner)) {
+				try {
+					executor.execute(new Callable<Object>() {
+						@Override
+						public Object call() throws Exception {
+							observer.receiveMessage(actionOwner, action);
+							return null;
+						}
+					});
+				} catch (TimeoutException e) {
+					String msg = String.format("Negotiating party %s timed out in receiveMessage() method.", observer.getPartyId());
+					sessionLogger.logMessage(msg);
+					throw new NegotiationPartyTimeoutException(observer, msg, e);
+				}
+			}
 	}
 
 	/**
