@@ -1,7 +1,5 @@
 package negotiator.session;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -126,13 +124,14 @@ public class TournamentManager extends Thread {
 	private void runSessions(boolean printedHeader, int tournamentNumber,
 			int sessionNumber, final TournamentGenerator generator) {
 		while (generator.hasNext()) {
-
+			System.out.println("Starting session " + sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getSession().getDeadlines()
 							.getTimeOrDefaultTimeout());
 
 			List<NegotiationParty> partyList = null;
 			try {
+				useConsoleOut(false);
 				partyList = executor
 						.execute(new Callable<List<NegotiationParty>>() {
 
@@ -140,32 +139,29 @@ public class TournamentManager extends Thread {
 							public List<NegotiationParty> call()
 									throws RepositoryException,
 									NegotiatorException {
-								try {
-									useConsoleOut(false);
-									return generator.next();
-								}
-								finally {
-									useConsoleOut(true);
-								}
+								return generator.next();
 							}
 						});
-
-			} catch (InterruptedException e) {
-				System.out.println("failed to construct agent due to timeout"
-						+ e.getMessage());
-				e.printStackTrace();
-				continue;
 			} catch (ExecutionException e) {
+				useConsoleOut(true);
+				Throwable inner = e.getCause();
+				System.err.println(inner.getMessage());
+				if (inner instanceof RepositoryException) {
+					System.err
+							.println("fatal: something wrong with the repository");
+					e.printStackTrace();
+					System.exit(1);
+				}
+
 				// Here we receive the RepositoryException, NegotiatorException
-				System.err
-						.println("fatal: something wrong with the repository");
-				e.printStackTrace();
-				System.exit(1);
+
 			} catch (TimeoutException e) {
-				System.out.println("failed to construct agent due to timeout"
+				useConsoleOut(true);
+				System.err.println("failed to construct agent due to timeout:"
 						+ e.getMessage());
-				e.printStackTrace();
 				continue;
+			} finally {
+				useConsoleOut(true);
 			}
 
 			// if could not create parties. skip this session
@@ -281,20 +277,25 @@ public class TournamentManager extends Thread {
 	 *            to false
 	 */
 	private void useConsoleOut(boolean enable) {
-		if (enable) {
-			System.setErr(orgErr);
-			System.setOut(orgOut);
-		} else {
-			System.setOut(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-		}
+		System.setErr(orgErr);
+		System.setOut(orgOut);
+		System.out.println("console output -> " + enable);
+		return;
+
+		// if (enable) {
+		// System.setErr(orgErr);
+		// System.setOut(orgOut);
+		// } else {
+		// System.setOut(new PrintStream(new OutputStream() {
+		// @Override
+		// public void write(int b) throws IOException { /* no-op */
+		// }
+		// }));
+		// System.setErr(new PrintStream(new OutputStream() {
+		// @Override
+		// public void write(int b) throws IOException { /* no-op */
+		// }
+		// }));
+		// }
 	}
 }
