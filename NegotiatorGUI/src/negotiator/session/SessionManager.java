@@ -94,7 +94,9 @@ public class SessionManager {
 		this.listeners = protocol.getActionListeners(parties);
 		this.sessionLogger = new SessionLogger(this);
 		this.agentUtils = new ArrayList<List<Double[]>>();
-		executor = exec;
+		this.executor = exec;
+
+		protocol.setExecutor(exec);
 
 		// needed for reference (for indexing the parties)
 		agents = MediatorProtocol.getNonMediators(parties);
@@ -333,7 +335,7 @@ public class SessionManager {
 				try {
 					executor.execute(new Callable<Object>() {
 						@Override
-						public Object call() throws Exception {
+						public Object call() {
 							observer.receiveMessage(actionOwner, action);
 							return null;
 						}

@@ -2,6 +2,7 @@ package negotiator.protocol;
 
 import negotiator.Bid;
 import negotiator.actions.*;
+import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.parties.NegotiationParty;
 import negotiator.session.Round;
 import negotiator.session.Session;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Implementation of an alternating offer protocol using offer/counter-offer.
@@ -114,8 +118,7 @@ public class AlternatingOfferCounterOfferProtocol extends ProtocolAdapter {
             List<NegotiationParty> parties) {
 
         // create a new map of parties
-        Map<NegotiationParty, List<NegotiationParty>> map = new HashMap<NegotiationParty,
-                List<NegotiationParty>>();
+        Map<NegotiationParty, List<NegotiationParty>> map = new HashMap<NegotiationParty, List<NegotiationParty>>();
 
         // for each party add each other party
         for (NegotiationParty listener : parties) {
@@ -132,10 +135,22 @@ public class AlternatingOfferCounterOfferProtocol extends ProtocolAdapter {
     }
 
     @Override
-    public void beforeSession(Session session, List<NegotiationParty> parties) {
+    public void beforeSession(Session session, final List<NegotiationParty> parties) throws InterruptedException, ExecutionException, NegotiationPartyTimeoutException {
         super.beforeSession(session, parties);
-        for (NegotiationParty party : parties) {
-            party.receiveMessage("Protocol", new Inform("NumberOfAgents", parties.size()));
+        for (final NegotiationParty party : parties) {
+            try {
+                getExecutor().execute(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        party.receiveMessage("Protocol", new Inform("NumberOfAgents", parties.size()));
+
+                        return null;
+                    }
+                });
+            } catch (TimeoutException e) {
+                String msg = String.format("Negotiating party %s timed out in receiveMessage() method.", party.getPartyId());
+                throw new NegotiationPartyTimeoutException(party, msg, e);
+            }
         }
     }
 }

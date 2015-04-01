@@ -2,12 +2,15 @@ package negotiator.protocol;
 
 import negotiator.Bid;
 import negotiator.actions.Action;
+import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.parties.NegotiationParty;
+import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Round;
 import negotiator.session.Session;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This interface defines a protocol that should be executed by the
@@ -37,7 +40,7 @@ public interface Protocol {
      * @param session The complete session history
      * @return A list of possible actions
      */
-    public Round getRoundStructure(List<NegotiationParty> parties, Session session);
+    Round getRoundStructure(List<NegotiationParty> parties, Session session);
 
     /**
      * This will get called just before the session starts. If some initialization needs to be
@@ -46,7 +49,7 @@ public interface Protocol {
      * @param session The session instance that will be used for the session
      * @param parties The parties that will participate in the session
      */
-    public void beforeSession(Session session, List<NegotiationParty> parties);
+    void beforeSession(Session session, List<NegotiationParty> parties) throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException;
 
     /**
      * This will get called just after ending the session. If the protocol needs to do some post
@@ -55,7 +58,7 @@ public interface Protocol {
      * @param session The session instance that was used for the session
      * @param parties The parties that participated in the session
      */
-    public void afterSession(Session session, List<NegotiationParty> parties);
+    void afterSession(Session session, List<NegotiationParty> parties);
 
     /**
      * Apply the action according to the protocol. All actions done by all agents come through this
@@ -64,7 +67,7 @@ public interface Protocol {
      * @param action  action to apply
      * @param session the current state of this session
      */
-    public void applyAction(Action action, Session session);
+    void applyAction(Action action, Session session);
 
     /**
      * Check if the protocol is done or still busy. If this method returns true, the
@@ -75,7 +78,7 @@ public interface Protocol {
      * @param session the current state of this session
      * @return true if the protocol is finished
      */
-    public boolean isFinished(Session session, List<NegotiationParty> parties);
+    boolean isFinished(Session session, List<NegotiationParty> parties);
 
     /**
      * Get a map of parties that are listening to each other's response
@@ -85,7 +88,7 @@ public interface Protocol {
      * {@link NegotiationParty#chooseAction(List)} event, and the value is a list of
      * {@link NegotiationParty}s that are listening to that key party's response.
      */
-    public Map<NegotiationParty, List<NegotiationParty>> getActionListeners(List<NegotiationParty> parties);
+    Map<NegotiationParty, List<NegotiationParty>> getActionListeners(List<NegotiationParty> parties);
 
     /**
      * This method should return the current agreement.
@@ -98,7 +101,7 @@ public interface Protocol {
      * @param parties The parties involved in the current negotiation
      * @return The agreed upon bid or null if no agreement
      */
-    public Bid getCurrentAgreement(Session session, List<NegotiationParty> parties);
+    Bid getCurrentAgreement(Session session, List<NegotiationParty> parties);
 
     /**
      * Gets the number of parties that currently agree to the offer. For protocols that either have
@@ -109,18 +112,30 @@ public interface Protocol {
      * @param parties The parties currently participating
      * @return the number of parties agreeing to the current agreement
      */
-    public int getNumberOfAgreeingParties(Session session, List<NegotiationParty> parties);
+    int getNumberOfAgreeingParties(Session session, List<NegotiationParty> parties);
 
 
     /**
      * Overwrites the rest of the protocol and sets the protocol state to finish
      */
-    public void endNegotiation();
+    void endNegotiation();
 
     /**
      * Overwrites the rest of the protocol and sets the protocol state to finish
      *
      * @param reason Optionally give a reason why the protocol is finished.
      */
-    public void endNegotiation(String reason);
+    void endNegotiation(String reason);
+
+    /**
+     * Gets the executor used to box actions that agents can influence.
+     * This counts the action towards agent's time and prevents it from stalling.
+     */
+    ExecutorWithTimeout getExecutor();
+
+    /**
+     * Sets the executor used to box actions that agents can influence.
+     * This counts the action towards agent's time and prevents it from stalling.
+     */
+    void setExecutor(ExecutorWithTimeout executor);
 }
