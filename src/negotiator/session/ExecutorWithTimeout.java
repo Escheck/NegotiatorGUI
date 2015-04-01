@@ -1,56 +1,122 @@
 package negotiator.session;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * execute commands within the set timout limits. Compute remaining time for
- * further calls
+ * execute commands within the set timout limits. Compute and keeps remaining
+ * time for further calls. This executor can be called multiple times with
+ * different {@link Callable}s so that the total accumulated time will stay
+ * within the total timeoutms that is given in the constructor.
  * 
- * @author W.Pasman, David Festen
+ * This executor will run a separate timer and kill the {@link Callable} with
+ * thread.stop() to make a pretty hard kill attempt if the time runs out.
+ * 
+ * @author W.Pasman, David Festen 1apr15
  *
  */
 public class ExecutorWithTimeout {
 
 	private long remainingTimeMs;
 
+	/**
+	 * Construct an executor with a total available amount of time.
+	 * 
+	 * @param timeoutms
+	 *            the total available time that this executor can spend.
+	 */
 	public ExecutorWithTimeout(long timeoutms) {
 		remainingTimeMs = timeoutms;
 	}
 
 	/**
-	 * Execute command, within remaining time.
+	 * Inner thread class, this is the thread where the Callable will be run.
 	 * 
-	 * @param command
-	 * @return result of execute of command
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 * @throws TimeoutException
+	 * @author W.Pasman 1apr15
+	 *
+	 * @param <V>
+	 *            the return type of the callable.
 	 */
-	public synchronized <V> V execute(Callable<V> command)
-			throws InterruptedException, ExecutionException, TimeoutException {
+	class myThread<V> extends Thread {
+		// flag indicating that the thread is done.
+		BlockingQueue<Boolean> ready = new ArrayBlockingQueue<Boolean>(1);
 
-		long start = System.nanoTime();
-		V result;
+		private V result = null;
+		private Throwable resultError = null;
 
-		ScheduledExecutorService executorService = Executors
-				.newSingleThreadScheduledExecutor();
-		try {
-			result = executorService.submit(command).get(remainingTimeMs,
-					TimeUnit.MILLISECONDS);
-		} finally {
-			executorService.shutdownNow();
+		Callable<V> callable;
+
+		public myThread(Callable<V> c) {
+			callable = c;
 		}
-		long end = System.nanoTime();
-		long usedMs = (end - start) / 1000000; // used time in millis
 
-		remainingTimeMs = Math.max(remainingTimeMs - usedMs, 0);
+		@Override
+		public void run() {
+			try {
+				result = callable.call();
+			} catch (Throwable e) {
+				resultError = e;
+			}
+			try {
+				ready.put(true);
+			} catch (InterruptedException e) {
+				// at this point, either result or resultError has been set
+				// already.
+			}
+		}
 
-		return result;
+		/**
+		 * Wait for thread to terminate or terminate after timeout millis
+		 * 
+		 * @param timeout
+		 *            timeout in millis.
+		 * @throws TimeoutException
+		 *             if the callable did not complete within the available
+		 *             time.
+		 */
+		public V executeWithTimeout(long timeout) throws ExecutionException,
+				TimeoutException {
+			start();
+
+			// wait for the thread to finish, but at most timeout ms.
+			try {
+				if (ready.poll(timeout, TimeUnit.MILLISECONDS) == null) {
+					// not finished. terminate and throw.
+					System.out.println("agent passed deadline. killing.");
+					/*
+					 * This is only way to force thread to die. interrupt() is
+					 * too weak. executorService only supports interrupt(), not
+					 * stop().
+					 */
+					stop();
+					throw new TimeoutException(
+							"agent passed deadline and was killed");
+				}
+			} catch (InterruptedException e) {
+				/*
+				 * we should not get here. It means that poll() was interrupted,
+				 * so someone kills the thread we are running IN (not the thread
+				 * we are running).
+				 */
+				e.printStackTrace();
+				System.exit(1);
+			}
+			// if we get here, thread ended and result or resultError was set.
+			if (resultError != null) {
+				throw new ExecutionException(resultError);
+			}
+			return result;
+		}
+	}
+
+	public synchronized <V> V execute(final Callable<V> command)
+			throws ExecutionException, TimeoutException {
+
+		return new myThread<V>(command).executeWithTimeout(remainingTimeMs);
 	}
 
 	/**
