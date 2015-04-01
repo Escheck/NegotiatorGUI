@@ -1,5 +1,7 @@
 package negotiator.session;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -96,14 +98,12 @@ public class TournamentManager extends Thread {
 
 		for (int tournamentNumber = 0; tournamentNumber < configuration
 				.getNumTournaments(); tournamentNumber++) {
-			int sessionNumber = 0;
 
 			// Generator for parties (don't generate them up-front as these can
 			// be many)
 			TournamentGenerator generator = configuration.getPartiesGenerator();
 
-			runSessions(printedHeader, tournamentNumber, sessionNumber,
-					generator);
+			runSessions(printedHeader, tournamentNumber, generator);
 
 		}
 		System.out.println("All tournament sessions are done");
@@ -122,81 +122,111 @@ public class TournamentManager extends Thread {
 	 * @throws TimeoutException
 	 */
 	private void runSessions(boolean printedHeader, int tournamentNumber,
-			int sessionNumber, final TournamentGenerator generator) {
+			final TournamentGenerator generator) {
+		int sessionNumber = 0;
 		while (generator.hasNext()) {
+
+			String errormessage = null; // null=all OK.
+			List<NegotiationParty> partyList = null;
+			List<NegotiationParty> agentList = null; // null=bad
+
+			sessionNumber++;
 			System.out.println("Starting session " + sessionNumber);
+			logger.log(sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getSession().getDeadlines()
 							.getTimeOrDefaultTimeout());
 
-			List<NegotiationParty> partyList = null;
 			try {
-				useConsoleOut(false);
-				partyList = executor
-						.execute(new Callable<List<NegotiationParty>>() {
-
-							@Override
-							public List<NegotiationParty> call()
-									throws RepositoryException,
-									NegotiatorException {
-								return generator.next();
-							}
-						});
-			} catch (ExecutionException e) {
-				useConsoleOut(true);
-				Throwable inner = e.getCause();
-				System.err.println(inner.getMessage());
-				if (inner instanceof RepositoryException) {
-					System.err
-							.println("fatal: something wrong with the repository");
-					e.printStackTrace();
-					System.exit(1);
-				}
-
-				// Here we receive the RepositoryException, NegotiatorException
-
+				partyList = getPartyList(executor, generator);
 			} catch (TimeoutException e) {
-				useConsoleOut(true);
 				System.err.println("failed to construct agent due to timeout:"
 						+ e.getMessage());
-				continue;
-			} finally {
-				useConsoleOut(true);
 			}
 
-			// if could not create parties. skip this session
 			if (partyList == null) {
+				errormessage = "ERR in init";
 				System.out
 						.println("Error on initializing one or more of the agent");
-				continue;
+			} else {
+
+				agentList = MediatorProtocol.getNonMediators(partyList);
+
+				if (!printedHeader) {
+					logger.logLine(CsvLogger.getDefaultHeader(agentList));
+					printedHeader = true;
+				}
+
+				System.out.println(String.format(
+						"Running tournament %d/%d, session %d ",
+						tournamentNumber + 1,
+						configuration.getNumTournaments(), sessionNumber));
+				if (!runSingleSession(partyList, executor)) {
+					errormessage = "ERR in session";
+				}
 			}
 
-			List<NegotiationParty> agentList = MediatorProtocol
-					.getNonMediators(partyList);
-
-			if (!printedHeader) {
-				logger.logLine(CsvLogger.getDefaultHeader(agentList));
-				printedHeader = true;
-			}
-
-			System.out.println(String.format(
-					"Running tournament %d/%d, session %d ",
-					tournamentNumber + 1, configuration.getNumTournaments(),
-					++sessionNumber));
-			logger.log(sessionNumber);
-			boolean sessionOk = runSingleSession(partyList, executor);
-			if (!sessionOk) {
-				logger.log("ERROR");
+			// we need to log anyway, even if there is no agentList.
+			if (errormessage != null) {
+				logger.log(errormessage);
 				for (int i = 0; i < 11; i++)
 					logger.log("");
-				for (NegotiationParty agent : agentList)
-					logger.log(agent.getPartyId().toString());
+				if (agentList != null) {
+					for (NegotiationParty agent : agentList)
+						logger.log(agent.getPartyId().toString());
+				}
 				logger.logLine();
 			}
-			System.out.println(sessionOk ? "Session done." : "Session exited.");
+			System.out.println(errormessage != null ? "Session done."
+					: "Session exited.");
 			System.out.println("");
 
 		}
+	}
+
+	/**
+	 * Generate the parties involved in the next round of the tournament
+	 * generator. Assumes generator.hasNext(). <br>
+	 * Checks various error cases and reports accordingly. If repository fails
+	 * completely, we call System.exit(). useConsoleOut is called to disable
+	 * console output while running agent code. <br>
+	 * 
+	 * @param executor
+	 * @param generator
+	 * @return list of parties for next round. May return null if one or more
+	 *         agents could not be created.
+	 * @throws TimeoutException
+	 *             if we run out of time during the construction.
+	 */
+	private List<NegotiationParty> getPartyList(ExecutorWithTimeout executor,
+			final TournamentGenerator generator) throws TimeoutException {
+		List<NegotiationParty> partyList = null;
+		useConsoleOut(false);
+		try {
+			partyList = executor
+					.execute(new Callable<List<NegotiationParty>>() {
+
+						@Override
+						public List<NegotiationParty> call()
+								throws RepositoryException, NegotiatorException {
+							return generator.next();
+						}
+					});
+		} catch (ExecutionException e) {
+			useConsoleOut(true);
+			Throwable inner = e.getCause();
+			System.err.println(inner.getMessage());
+			if (inner instanceof RepositoryException) {
+				System.err
+						.println("fatal: something wrong with the repository");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			// otherwise, we fall out and partyList may remain null.
+		} finally {
+			useConsoleOut(true);
+		}
+		return partyList;
 	}
 
 	@Override
@@ -271,31 +301,29 @@ public class TournamentManager extends Thread {
 	/**
 	 * Silences or restores the console output. This can be useful to suppress
 	 * output of foreign code, like submitted agents
+	 * 
+	 * FIXME redundant code, copy of SessionManager#useConsoleOut.
 	 *
 	 * @param enable
 	 *            Enables console output if set to true or disables it when set
 	 *            to false
 	 */
 	private void useConsoleOut(boolean enable) {
-		System.setErr(orgErr);
-		System.setOut(orgOut);
-		System.out.println("console output -> " + enable);
-		return;
 
-		// if (enable) {
-		// System.setErr(orgErr);
-		// System.setOut(orgOut);
-		// } else {
-		// System.setOut(new PrintStream(new OutputStream() {
-		// @Override
-		// public void write(int b) throws IOException { /* no-op */
-		// }
-		// }));
-		// System.setErr(new PrintStream(new OutputStream() {
-		// @Override
-		// public void write(int b) throws IOException { /* no-op */
-		// }
-		// }));
-		// }
+		if (enable) {
+			System.setErr(orgErr);
+			System.setOut(orgOut);
+		} else {
+			System.setOut(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException { /* no-op */
+				}
+			}));
+			System.setErr(new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException { /* no-op */
+				}
+			}));
+		}
 	}
 }
