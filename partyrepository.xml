@@ -27,9 +27,6 @@
 			<partyRepItem description="2. CUHK"
 				classPath="anac2015.cuhkagent2015.CUHKAgent2015" partyName="ANAC2015-2-CUHK"
 				protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol" />
-			<partyRepItem description="3. ParsAgent OLD" classPath="anac2015.ui.ParsAgent"
-				partyName="ANAC2015-3-ParsAgent-OLD" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol" />
-
 			<partyRepItem description="3. ParsAgent" classPath="anac2015.ParsAgent.ParsAgent"
 				partyName="ANAC2015-3-ParsAgent" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol" />
 			<partyRepItem description="4. Ares" classPath="anac2015.AresParty.AresParty"
