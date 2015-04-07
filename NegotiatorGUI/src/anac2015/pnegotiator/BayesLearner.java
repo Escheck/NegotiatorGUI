@@ -16,7 +16,7 @@ import negotiator.utility.UtilitySpace;
 /**
  * This is your negotiation party.
  */
-public class PNegotiator extends AbstractNegotiationParty {
+public class BayesLearner extends AbstractNegotiationParty {
 
 	// State of the agent (am I being a hardliner or am I conceding?)
 	public enum AgentState {
@@ -53,7 +53,7 @@ public class PNegotiator extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public PNegotiator(UtilitySpace utilitySpace, Deadline deadlines,
+	public BayesLearner(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
 		super(utilitySpace, deadlines, timeline, randomSeed);
