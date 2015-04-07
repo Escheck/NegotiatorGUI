@@ -4,69 +4,77 @@
 package anac2015.AresParty;
 
 import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.utility.UtilitySpace;
 
 /**
  *
- * @author Justin
+ * @author
  */
 public class OwnBidHistory {
 
-    private ArrayList<Bid> BidHistory;
-    private Bid minBidInHistory;
+	private ArrayList<Bid> BidHistory;
+	private Bid minBidInHistory;
 
-    public OwnBidHistory() {
-        BidHistory = new ArrayList<Bid>();
-    }
+	public OwnBidHistory() {
+		BidHistory = new ArrayList<Bid>();
+	}
 
-    public void addBid(Bid bid, UtilitySpace utilitySpace) {
-        if (BidHistory.indexOf(bid) == -1) {
-            BidHistory.add(bid);
-        }
-        try {
-            if (BidHistory.size() == 1) {
-                this.minBidInHistory = BidHistory.get(0);
-            } else {
-                if (utilitySpace.getUtility(bid) < utilitySpace.getUtility(this.minBidInHistory)) {
-                    this.minBidInHistory = bid;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("error in add Bid method of OwnBidHistory class" + e.getMessage());
-        }
-    }
+	public void addBid(Bid bid, UtilitySpace utilitySpace) {
+		if (bid == null) {
+			System.out.println("it didn't send a new bid.");
+			return;
+		}
 
-    protected Bid GetMinBidInHistory() {
+		if (BidHistory.indexOf(bid) == -1) {
+			BidHistory.add(bid);
+		}
+		try {
+			if (BidHistory.size() == 1) {
+				this.minBidInHistory = BidHistory.get(0);
+			} else {
+				if (utilitySpace.getUtility(bid) < utilitySpace
+						.getUtility(this.minBidInHistory)) {
+					this.minBidInHistory = bid;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("error in addBid method of OwnBidHistory class"
+					+ e.getMessage());
+		}
+	}
 
-        return this.minBidInHistory;
-    }
+	protected Bid GetMinBidInHistory() {
 
-    protected Bid getLastBid() {
-        if (BidHistory.size() >= 1) {
-            return BidHistory.get(BidHistory.size() - 1);
-        } else {
-            return null;
-        }
-    }
+		return this.minBidInHistory;
+	}
 
-    public int numOfBidsProposed() {
-        return BidHistory.size();
-    }
+	protected Bid getLastBid() {
+		if (BidHistory.size() >= 1) {
+			return BidHistory.get(BidHistory.size() - 1);
+		} else {
+			return null;
+		}
+	}
 
-    protected Bid chooseLowestBidInHistory(UtilitySpace utilitySpace) {
-        double minUtility = 100;
-        Bid minBid = null;
-        try {
-            for (Bid bid : BidHistory) {
-                if (utilitySpace.getUtility(bid) < minUtility) {
-                    minUtility = utilitySpace.getUtility(bid);
-                    minBid = bid;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Exception in chooseLowestBidInHistory");
-        }
-        return minBid;
-    }
+	public int numOfBidsProposed() {
+		return BidHistory.size();
+	}
+
+	protected Bid chooseLowestBidInHistory(UtilitySpace utilitySpace) {
+		double minUtility = 100;
+		Bid minBid = null;
+		try {
+			for (Bid bid : BidHistory) {
+				if (utilitySpace.getUtility(bid) < minUtility) {
+					minUtility = utilitySpace.getUtility(bid);
+					minBid = bid;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Exception in chooseLowestBidInHistory");
+		}
+		return minBid;
+	}
 }
