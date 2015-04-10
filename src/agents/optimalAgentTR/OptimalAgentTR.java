@@ -18,6 +18,7 @@ public class OptimalAgentTR extends BilateralAgent{
 
 	private EstimatedOutcomeSpace estimatedSpace;
 	private CUHKFrequencyModelV2 opponentModel;
+	private double mylastBidUtilityForOpponent,opponentLastBidUtility;
 	
 	
 	@Override
@@ -40,6 +41,8 @@ public class OptimalAgentTR extends BilateralAgent{
 	
 		opponentModel=new CUHKFrequencyModelV2();
 		opponentModel.init(new NegotiationSession(new SessionData(), utilitySpace, timeline));
+		mylastBidUtilityForOpponent=0.0;
+		opponentLastBidUtility=1.0;
 	}
 	
 
@@ -47,10 +50,7 @@ public class OptimalAgentTR extends BilateralAgent{
 			
 		Colleges myCollegeList=new Colleges ();
 		int index=0;
-		
-		//Update the estimated outcome space
-		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace());
-		
+				
 		//create college list
 		for (BidInfo bid: estimatedSpace.getEstimatedOutcomeSpace())
 		{
@@ -69,16 +69,27 @@ public class OptimalAgentTR extends BilateralAgent{
 			
 			BidInfo bidInfo = this.estimatedSpace.getBidInfo(candidateColleges.get(0).getIndex());
 			System.out.println("Bid:"+bidInfo.getBid()+" my util:"+bidInfo.getMyUtil());
+			try {
+				mylastBidUtilityForOpponent=opponentModel.getOpponentUtilitySpace().getUtility(bidInfo.getBid());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return bidInfo.getBid();	
 		}else
 			return null;
 	}
 
 	@Override
-	public boolean isAcceptable(Bid plannedBid) {
+	public boolean isAcceptable(Bid plannedBid)  {
 		Bid opponentLastBid = getOpponentLastBid();
 		opponentModel.updateModel(opponentLastBid, timeline.getTime()); // update the opponent model after receiving opponent's last bid
-		
+		try {
+			opponentLastBidUtility=opponentModel.getOpponentUtilitySpace().getUtility(opponentLastBid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // update opponent's last bid utility 
 		// is acnext(1, 0);
 		if (getUndiscountedUtility(opponentLastBid) >= getUndiscountedUtility(plannedBid))
 			return true;
@@ -87,6 +98,8 @@ public class OptimalAgentTR extends BilateralAgent{
 	
 	@Override
 	public Bid chooseCounterBid() {
+		//Update the estimated outcome space
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
 		return makeCandidateBidSpace();
 	}
 
@@ -99,6 +112,8 @@ public class OptimalAgentTR extends BilateralAgent{
 
 	@Override
 	public Bid chooseFirstCounterBid() {
+		//Update the estimated outcome space
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
 		return makeCandidateBidSpace();
 	}
 
