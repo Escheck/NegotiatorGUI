@@ -63,7 +63,7 @@ public abstract class Agent {
 	/** Reference to protocol which is set when experimental setup is enabled. */
 	public BilateralAtomicNegotiationSession fNegotiation;// can be accessed
 															// only in the
-															// expermental setup
+															// experimental setup
 	/** Parameters given to the agent which may be specified in the agent. */
 	@Deprecated
 	protected HashMap<AgentParameterVariable, AgentParamValue> parametervalues;
@@ -85,8 +85,8 @@ public abstract class Agent {
 	 */
 	public Agent() {
 		this.strategyParameters = new StrategyParameters();
-	}
-
+	}	
+	
 	/**
 	 * @return version of the agent.
 	 */
