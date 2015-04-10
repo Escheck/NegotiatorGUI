@@ -6,9 +6,14 @@ import negotiator.DiscreteTimeline;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SessionData;
 import negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2;
+import negotiator.boaframework.opponentmodel.OppositeModel;
+import negotiator.boaframework.opponentmodel.PerfectModel;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.UtilitySpace;
+import agents.anac.y2010.AgentFSEGA.OpponentModel;
 import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
+import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
+import agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded.UtilitySpaceAdapter;
 import agents.optimalAgentTR.collegePackage.College;
 import agents.optimalAgentTR.collegePackage.Colleges;
 import agents.optimalAgentTR.collegePackage.SimultaneousSearch;
@@ -17,7 +22,7 @@ import agents.optimalAgentTR.collegePackage.SimultaneousSearch;
 public class OptimalAgentTR extends BilateralAgent{
 
 	private EstimatedOutcomeSpace estimatedSpace;
-	private CUHKFrequencyModelV2 opponentModel;
+	private negotiator.boaframework.OpponentModel opponentModel;
 	private double mylastBidUtilityForOpponent,opponentLastBidUtility;
 	
 	
@@ -29,18 +34,32 @@ public class OptimalAgentTR extends BilateralAgent{
 	
 	private void initSetup(){
 		
-		if (TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) {
-			UtilitySpace opponentUtilitySpace = this.fNegotiation.getAgentAUtilitySpace();
-			if (this.utilitySpace.getFileName().equals(opponentUtilitySpace.getFileName())) {
-				opponentUtilitySpace = this.fNegotiation.getAgentBUtilitySpace();
-			}
-			
-			estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentUtilitySpace);
-		} else  //If we do not have access the oppponent's preferences
-			estimatedSpace=new EstimatedOutcomeSpace(utilitySpace);	
+		
+		
+		if (TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) 
+			opponentModel=new PerfectModel();
+		else 
+			opponentModel=new OppositeModel();
+		
+		try {
+			opponentModel.init(new NegotiationSession(new SessionData(), utilitySpace, timeline), null);
+			opponentModel.setOpponentUtilitySpace(fNegotiation);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace,opponentModel.getOpponentUtilitySpace());
+		
+		Bid randomBid = utilitySpace.getDomain().getRandomBid();
+		try {
+			System.out.println(utilitySpace.getUtility(randomBid));
+			System.out.println(opponentModel.getOpponentUtilitySpace().getUtility(randomBid));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
-		opponentModel=new CUHKFrequencyModelV2();
-		opponentModel.init(new NegotiationSession(new SessionData(), utilitySpace, timeline));
 		mylastBidUtilityForOpponent=0.0;
 		opponentLastBidUtility=1.0;
 	}

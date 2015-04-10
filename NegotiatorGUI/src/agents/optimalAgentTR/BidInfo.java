@@ -43,5 +43,13 @@ public class BidInfo {
 	public void setOpponentUtil(double opponentUtil) {
 		this.opponentUtil = opponentUtil;
 	}
+
+	@Override
+	public String toString() {
+		return "BidInfo [bid=" + bid + ", myUtil=" + myUtil + ", opponentUtil="
+				+ opponentUtil + "]";
+	}
+	
+	
 	
 }

@@ -48,6 +48,7 @@ public class EstimatedOutcomeSpace {
 			Bid bid = iter.next();
 			try {
 				BidInfo bidInformation = new BidInfo(bid, utilSpace.getUtility(bid), oppUtilSpace.getUtility(bid));
+				System.out.println("Generating " + bidInformation);
 				estimatedOutcomeSpace.add(bidInformation);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -62,12 +63,14 @@ public class EstimatedOutcomeSpace {
 			Bid bid = iter.next();
 			try {
 				BidInfo bidInformation;
-				if (oppUtilSpace.getUtility(bid)>=acceptableUtility)
-					bidInformation = new BidInfo(bid, utilSpace.getUtility(bid), 1.0);
-				else if (oppUtilSpace.getUtility(bid)<=nonAcceptableUtility)
-					bidInformation = new BidInfo(bid, utilSpace.getUtility(bid), 0.0);
+				double oppUtil = oppUtilSpace.getUtility(bid);
+				double myUtil = utilSpace.getUtility(bid);
+				if (oppUtil>=acceptableUtility)
+					bidInformation = new BidInfo(bid, myUtil, 1.0);
+				else if (oppUtil<=nonAcceptableUtility)
+					bidInformation = new BidInfo(bid, myUtil, 0.0);
 				else 	
-					bidInformation = new BidInfo(bid, utilSpace.getUtility(bid), (nonAcceptableUtility+((acceptableUtility-oppUtilSpace.getUtility(bid))/(acceptableUtility-nonAcceptableUtility))));
+					bidInformation = new BidInfo(bid, myUtil, (oppUtil - nonAcceptableUtility) / (acceptableUtility - nonAcceptableUtility));
 				estimatedOutcomeSpace.add(bidInformation);
 			} catch (Exception e) {
 				e.printStackTrace();
