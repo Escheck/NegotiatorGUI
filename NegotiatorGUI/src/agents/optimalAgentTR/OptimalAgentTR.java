@@ -3,6 +3,9 @@ package agents.optimalAgentTR;
 
 import negotiator.Bid;
 import negotiator.DiscreteTimeline;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.SessionData;
+import negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.UtilitySpace;
 import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
@@ -14,7 +17,7 @@ import agents.optimalAgentTR.collegePackage.SimultaneousSearch;
 public class OptimalAgentTR extends BilateralAgent{
 
 	private EstimatedOutcomeSpace estimatedSpace;
-	private Colleges candidateColleges;
+	private CUHKFrequencyModelV2 opponentModel;
 	
 	
 	@Override
@@ -35,14 +38,18 @@ public class OptimalAgentTR extends BilateralAgent{
 		} else  //If we do not have access the oppponent's preferences
 			estimatedSpace=new EstimatedOutcomeSpace(utilitySpace);	
 	
-	
-		
+		opponentModel=new CUHKFrequencyModelV2();
+		opponentModel.init(new NegotiationSession(new SessionData(), utilitySpace, timeline));
 	}
 	
 
 	private Bid makeCandidateBidSpace(){
+			
 		Colleges myCollegeList=new Colleges ();
 		int index=0;
+		
+		//Update the estimated outcome space
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace());
 		
 		//create college list
 		for (BidInfo bid: estimatedSpace.getEstimatedOutcomeSpace())
@@ -51,12 +58,12 @@ public class OptimalAgentTR extends BilateralAgent{
 		}
 		
 		SimultaneousSearch newSearch=new SimultaneousSearch(myCollegeList);
-		System.out.println("Round :"+ (((DiscreteTimeline)this.timeline).getOwnRoundsLeft()+1));
+		//System.out.println("Round :"+ (((DiscreteTimeline)this.timeline).getOwnRoundsLeft()+1));
 		newSearch.setDeadlineCost(((DiscreteTimeline)this.timeline).getOwnRoundsLeft()+1);  
-		candidateColleges=newSearch.computeSigmaStar();
+		Colleges candidateColleges= candidateColleges=newSearch.computeSigmaStar();
 		candidateColleges.sort();		
 		
-		System.out.println("SigmaStar returned " + candidateColleges);
+		//System.out.println("SigmaStar returned " + candidateColleges);
 		
 		if (candidateColleges.get(0)!=null)	{	
 			
@@ -70,6 +77,8 @@ public class OptimalAgentTR extends BilateralAgent{
 	@Override
 	public boolean isAcceptable(Bid plannedBid) {
 		Bid opponentLastBid = getOpponentLastBid();
+		opponentModel.updateModel(opponentLastBid, timeline.getTime()); // update the opponent model after receiving opponent's last bid
+		
 		// is acnext(1, 0);
 		if (getUndiscountedUtility(opponentLastBid) >= getUndiscountedUtility(plannedBid))
 			return true;
