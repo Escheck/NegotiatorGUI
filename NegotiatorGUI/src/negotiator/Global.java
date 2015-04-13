@@ -48,7 +48,7 @@ public class Global {
 	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Temporary flag for use in AAMAS 2014 experiments */
-	public static final boolean AAMAS_2014_EXPERIMENTS = false;
+	public static final boolean AAMAS_2014_EXPERIMENTS =  true; //RA: we should change it as false;
 
 	public Global() {
 	}
