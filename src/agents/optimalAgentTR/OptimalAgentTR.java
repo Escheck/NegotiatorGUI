@@ -3,6 +3,7 @@ package agents.optimalAgentTR;
 
 import negotiator.Bid;
 import negotiator.DiscreteTimeline;
+import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SessionData;
 import negotiator.boaframework.opponentmodel.OppositeModel;
@@ -51,6 +52,15 @@ public class OptimalAgentTR extends BilateralAgent{
 	}
 	
 
+	private boolean isProposedBefore(Bid currentBid) {
+		
+		for (BidDetails oldBid:this.myHistory.getHistory()) {
+			if (oldBid.getBid().equals(currentBid))
+					return true;
+		}
+		return false;
+	}
+	
 	private Bid makeCandidateBidSpace(){
 			
 		Colleges myCollegeList=new Colleges ();
@@ -59,7 +69,9 @@ public class OptimalAgentTR extends BilateralAgent{
 		//create college list
 		for (BidInfo bid: estimatedSpace.getEstimatedOutcomeSpace())
 		{
-			myCollegeList.add(new College(bid.getMyUtil(), bid.getOpponentUtil(), index++));
+			if (!isProposedBefore(bid.getBid()))
+				myCollegeList.add(new College(bid.getMyUtil(), bid.getOpponentUtil(), index));
+			index++;
 		}
 		
 		SimultaneousSearch newSearch=new SimultaneousSearch(myCollegeList);
@@ -104,7 +116,8 @@ public class OptimalAgentTR extends BilateralAgent{
 	@Override
 	public Bid chooseCounterBid() {
 		//Update the estimated outcome space
-		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace());
+		//	estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
 		return makeCandidateBidSpace();
 	}
 
@@ -118,7 +131,8 @@ public class OptimalAgentTR extends BilateralAgent{
 	@Override
 	public Bid chooseFirstCounterBid() {
 		//Update the estimated outcome space
-		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
+		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace());
+		//estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
 		return makeCandidateBidSpace();
 	}
 

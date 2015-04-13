@@ -46,8 +46,8 @@ public class SimultaneousSearch
 //		uniformDomain();
 		ItexCypress();
 		
-		setNoCost();
-//		setDeadlineCost(5);
+//		setNoCost();
+		setDeadlineCost(5);
 //		setSizeCost(0.01);
 	}
 	
@@ -70,7 +70,6 @@ public class SimultaneousSearch
 		c = k -> new BigDecimal(0);
 	}
 	
-	//RA: I have changed it from private to public
 	public void setDeadlineCost(int D)
 	{
 		c = k -> 
