@@ -158,7 +158,8 @@ public class SimultaneousSearch
 	{
 		Colleges portfolio = new Colleges();
 		
-		for (int n=1; n <= N; n++)
+		int n;
+		for (n=1; n <= N; n++)
 		{
 		// Step 1
 		int besti = findBestMarginalImprovement(portfolio);
@@ -172,7 +173,7 @@ public class SimultaneousSearch
 		}
 		
 //		portfolio.sort();
-		System.out.println("Sigma_" + N + " = \n" + portfolio.toMathematica(f));
+		System.out.println("Sigma_" + n + " (out of " + N  + ") = \n" + portfolio.toMathematica(f));
 		
 		return portfolio;		
 	}
