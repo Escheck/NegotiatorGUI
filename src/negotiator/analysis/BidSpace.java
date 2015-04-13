@@ -224,6 +224,8 @@ public class BidSpace {
 				bidPoints.add(new BidPoint(bid, utils));
 			}
 		}
+//		System.out.println("Real outcome space:");
+//		System.out.println(bidPoints);
 	}
 
 	/**

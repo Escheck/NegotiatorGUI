@@ -48,12 +48,12 @@ public class EstimatedOutcomeSpace {
 			Bid bid = iter.next();
 			try {
 				BidInfo bidInformation = new BidInfo(bid, utilSpace.getUtility(bid), oppUtilSpace.getUtility(bid));
-				System.out.println("Generating " + bidInformation);
 				estimatedOutcomeSpace.add(bidInformation);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("Generated estimated outcome space: " + estimatedOutcomeSpace);
 	}
 	
 	public void generateAllBids(UtilitySpace utilSpace, UtilitySpace oppUtilSpace, double nonAcceptableUtility, double acceptableUtility) {
