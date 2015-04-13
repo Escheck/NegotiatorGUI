@@ -9,6 +9,56 @@
             <!--<profile url="file:etc/templates/Railway/NS.xml"/>-->
             <!--<profile url="file:etc/templates/Railway/ProRail.xml"/>-->
             <!--</domainRepItem>-->
+            
+            <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve00.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+            <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve01.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+             <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve02.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+             <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve03.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+            <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve04.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+             <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve05.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+             <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve06.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+            <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve07.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+             <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve08.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
+            <domainRepItem url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_domain.xml">
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_CypressAReserve09.xml"/>
+                <profile url="file:etc/templates/ItexvsCypressDomain/ItexvsCypress_ItexBReserve00.xml"/>
+            </domainRepItem>
+            
             <domainRepItem url="file:etc/templates/partydomain/party_domain.xml">
                 <profile url="file:etc/templates/partydomain/party1_utility.xml"/>
                 <profile url="file:etc/templates/partydomain/party2_utility.xml"/>
