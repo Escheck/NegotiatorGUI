@@ -5,15 +5,10 @@ import negotiator.Bid;
 import negotiator.DiscreteTimeline;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SessionData;
-import negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2;
 import negotiator.boaframework.opponentmodel.OppositeModel;
 import negotiator.boaframework.opponentmodel.PerfectModel;
 import negotiator.tournament.TournamentConfiguration;
-import negotiator.utility.UtilitySpace;
-import agents.anac.y2010.AgentFSEGA.OpponentModel;
 import agents.anac.y2011.Nice_Tit_for_Tat.BilateralAgent;
-import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
-import agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded.UtilitySpaceAdapter;
 import agents.optimalAgentTR.collegePackage.College;
 import agents.optimalAgentTR.collegePackage.Colleges;
 import agents.optimalAgentTR.collegePackage.SimultaneousSearch;
@@ -51,15 +46,6 @@ public class OptimalAgentTR extends BilateralAgent{
 		
 		estimatedSpace=new EstimatedOutcomeSpace(utilitySpace,opponentModel.getOpponentUtilitySpace());
 		
-		Bid randomBid = utilitySpace.getDomain().getRandomBid();
-		try {
-			System.out.println(utilitySpace.getUtility(randomBid));
-			System.out.println(opponentModel.getOpponentUtilitySpace().getUtility(randomBid));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
 		mylastBidUtilityForOpponent=0.0;
 		opponentLastBidUtility=1.0;
 	}
