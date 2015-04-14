@@ -135,5 +135,11 @@ public class OptimalAgentTR extends BilateralAgent{
 		//estimatedSpace=new EstimatedOutcomeSpace(utilitySpace, opponentModel.getOpponentUtilitySpace(),mylastBidUtilityForOpponent,opponentLastBidUtility);
 		return makeCandidateBidSpace();
 	}
+	
+	@Override
+	public String getName()
+	{
+		return "GCA";
+	}
 
 }
