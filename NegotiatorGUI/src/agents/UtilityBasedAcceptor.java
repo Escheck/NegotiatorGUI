@@ -21,9 +21,9 @@ public class UtilityBasedAcceptor extends TimeDependentAgent {
 	@Override
 	public boolean isAcceptable(Bid plannedBid) {
 		Bid opponentLastBid = getOpponentLastBid();
-		if (getUtility(opponentLastBid) <= utilitySpace.getReservationValue()){
+		if (getUtility(opponentLastBid) >= utilitySpace.getReservationValue()){
 		
-			if (Math.random()>= getUtility(opponentLastBid))
+			if (Math.random()<= getUtility(opponentLastBid))
 				return true;
 			else return false;
 		}
