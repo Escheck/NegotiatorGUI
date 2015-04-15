@@ -79,21 +79,19 @@ public class AlternatingOfferCounterOfferProtocol extends ProtocolAdapter {
      */
     @Override
     public Bid getCurrentAgreement(Session session, List<NegotiationParty> parties) {
-        final ArrayList<Action> actions = new ArrayList<Action>();
-        if (session.getRoundNumber() > 1) {
-            actions.addAll(session.getRounds().get(session.getRoundNumber() - 2).getActions());
-        }
-        actions.addAll(session.getRounds().get(session.getRoundNumber() - 1).getActions());
 
-        // see if last n-1 offers were accept (that infers that the offer before that was accepted).
-        for (int i = actions.size() - 1; i > actions.size() - parties.size(); i--) {
-            if (!(actions.get(i) instanceof Accept)) {
-                return null;
+        if (session.getMostRecentAction() instanceof Accept) {
+            int numActionsFinalRound = session.getMostRecentRound().getActions().size();
+            if (numActionsFinalRound > 1) {
+                // return the action before the 'accept'
+                return ((Offer) session.getMostRecentRound().getActions().get(numActionsFinalRound - 2)).getBid();
+            } else {
+                // accepted offer was last offer of previous round
+                return ((Offer) session.getRounds().get(session.getRoundNumber() - 2).getMostRecentAction()).getBid();
             }
+        } else {
+            return null;
         }
-
-        // everyone accepted (otherwise we would have returned earlier)
-        return ((Offer) actions.get(actions.size() - parties.size())).getBid();
     }
 
     /**

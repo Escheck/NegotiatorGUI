@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.Timeline;
+import negotiator.config.Configuration;
 import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
@@ -21,6 +22,8 @@ import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.tournament.TournamentGenerator;
+
+import static java.lang.String.format;
 
 /**
  * Manages the tournament and makes sure that the
@@ -34,7 +37,7 @@ public class TournamentManager extends Thread {
 	/**
 	 * Holds the configuration used by this tournament manager
 	 */
-	private MultilateralTournamentConfiguration configuration;
+	private Configuration configuration;
 
 	/**
 	 * Logger for the results
@@ -48,6 +51,11 @@ public class TournamentManager extends Thread {
 	PrintStream orgErr = System.err;
 
 	/**
+	 * Used for printing time related console output.
+	 */
+	long start = System.nanoTime();
+
+	/**
 	 * Initializes a new instance of the
 	 * {@link negotiator.session.TournamentManager} class. The tournament
 	 * manager uses the provided configuration to find which sessions to run and
@@ -56,7 +64,7 @@ public class TournamentManager extends Thread {
 	 * @param config
 	 *            The configuration to use for this Tournament
 	 */
-	public TournamentManager(MultilateralTournamentConfiguration config) {
+	public TournamentManager(Configuration config) {
 		configuration = config;
 	}
 
@@ -65,7 +73,7 @@ public class TournamentManager extends Thread {
 	 */
 	@Override
 	public void run() {
-		long start = System.nanoTime();
+		start = System.nanoTime();
 		try {
 			this.runTournament();
 			System.out.println("Tournament completed");
@@ -78,8 +86,7 @@ public class TournamentManager extends Thread {
 			System.out.println("");
 		}
 		long end = System.nanoTime();
-		System.out.println("run took time  " + (end - start) / 1000000000.
-				+ "s");
+		System.out.println("Run finished in " + prettyTimeSpan(end-start));
 	}
 
 	/**
@@ -90,8 +97,11 @@ public class TournamentManager extends Thread {
 	 */
 	public void runTournament() throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-		logger = new CsvLogger(String.format("logs/Log-Tournament-%s.csv",
-				dateFormat.format(new Date())));
+
+		logger = new CsvLogger(format("logs/tournament-%s-%s.log.csv",
+				dateFormat.format(new Date()),
+				configuration.getPartyProfileItems().get(0).getDomain().getName()
+		));
 
 		logger.logLine(CsvLogger.getDefaultHeader(configuration
 				.getNumAgentsPerSession()));
@@ -118,6 +128,7 @@ public class TournamentManager extends Thread {
 	private void runSessions(int tournamentNumber,
 			final TournamentGenerator generator) {
 		int sessionNumber = 0;
+		int totalSessions = configuration.numSessionsPerTournament();
 		while (generator.hasNext()) {
 
 			String errormessage = null; // null=all OK.
@@ -125,7 +136,11 @@ public class TournamentManager extends Thread {
 			List<NegotiationParty> agentList = null; // null=bad
 
 			sessionNumber++;
-			System.out.println("Starting session " + sessionNumber);
+			System.out.println(format("Starting tournament %d/%d, session %d/%d",
+					tournamentNumber + 1,
+					configuration.getNumTournaments(),
+					sessionNumber,
+					totalSessions));
 
 			logger.log(sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
@@ -147,10 +162,7 @@ public class TournamentManager extends Thread {
 
 				agentList = MediatorProtocol.getNonMediators(partyList);
 
-				System.out.println(String.format(
-						"Running tournament %d/%d, session %d ",
-						tournamentNumber + 1,
-						configuration.getNumTournaments(), sessionNumber));
+				System.out.println(	"Running session");
 				if (!runSingleSession(partyList, executor)) {
 					errormessage = "ERR in session";
 				}
@@ -167,8 +179,11 @@ public class TournamentManager extends Thread {
 				}
 				logger.logLine();
 			}
-			System.out.println(errormessage != null ? "Session done."
-					: "Session exited.");
+			System.out.println(errormessage != null ? "Session done." : "Session exited.");
+			int nDone = totalSessions * tournamentNumber + sessionNumber;
+			int nRemaining = totalSessions * configuration.getNumTournaments() - nDone;
+			System.out.println(format("approx. %s remaining",
+					prettyTimeSpan(estimatedTimeRemaining(nDone, nRemaining))));
 			System.out.println("");
 
 		}
@@ -254,8 +269,8 @@ public class TournamentManager extends Thread {
 				double runTime = session.getRuntimeInSeconds();
 				List<NegotiationParty> agentList = MediatorProtocol
 						.getNonMediators(parties);
-				logger.logLine(CsvLogger.logDefaultSession(session, protocol,
-						agentList, runTime));
+				logger.logLine(CsvLogger.getDefaultSessionLog(session, protocol,
+						agentList, runTime, configuration));
 				return true;
 			} catch (Error e) {
 				throw new AnalysisException(
@@ -315,5 +330,47 @@ public class TournamentManager extends Thread {
 				}
 			}));
 		}
+	}
+
+	private static final int BILLION = 1000000000;
+	private static final int DAY = 86400;
+	private static final int HOUR = 3600;
+	private static final int MINUTE = 60;
+
+	private String prettyTimeSpan(double nanoTime)
+	{
+		int t = (int) Math.floor(nanoTime / BILLION);
+		double ms = nanoTime / BILLION - t;
+		String prettyTimeSpan = "";
+
+		int days = t / DAY;
+		int hours = t % DAY / HOUR;
+		int minutes = t % DAY % HOUR / MINUTE;
+		int seconds = t % DAY % HOUR % MINUTE;
+
+		if (days == 1) 		prettyTimeSpan += format("%d day, ", days);
+		if (days > 1) 		prettyTimeSpan += format("%d days, ", days);
+		if (hours == 1) 	prettyTimeSpan += format("%d hour, ", hours);
+		if (hours > 1) 		prettyTimeSpan += format("%d hours, ", hours);
+		if (minutes == 1) 	prettyTimeSpan += format("%d minute, ", minutes);
+		if (minutes > 1) 	prettyTimeSpan += format("%d minutes, ", minutes);
+		if (seconds == 1)   prettyTimeSpan += format("%d second", seconds);
+		else				prettyTimeSpan += format("%d seconds", seconds);
+
+		return prettyTimeSpan;
+	}
+
+	/**
+	 * Calculate estimated time remaining using extrapolation
+	 *
+	 * @return estimation of time remaining in nano seconds
+	 */
+	private double estimatedTimeRemaining(int nSessionsDone, int nSessionsRemaining)
+	{
+		long now = System.nanoTime() - start;
+		double res = nSessionsRemaining * now / (double)nSessionsDone;
+		return res;
+
+//		return nSessionsRemaining * (System.nanoTime() / start) / (double)nSessionsDone;
 	}
 }
