@@ -36,7 +36,7 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import negotiator.Global;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -100,7 +100,7 @@ public class ScenarioLauncher
 		        
 			// Init tournaments
 
-			OldProtocol ns;
+			Protocol ns;
 			Thread[] threads = new Thread[ntournaments];
 			
 			for ( int i = 1 ; i <= ntournaments ; i++ )

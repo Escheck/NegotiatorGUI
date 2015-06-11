@@ -14,6 +14,7 @@ import negotiator.actions.OfferForVoting;
 import negotiator.actions.VoteForOfferAcceptance;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -65,7 +66,7 @@ public class RandomFlippingMediator extends Mediator {
 	 * the actions from the possible action list and returns an instance of the
 	 * chosen action. This class is only called if this {@link NegotiationParty}
 	 * is in the
-	 * {@link negotiator.protocol.Protocol#getRoundStructure(java.util.List, negotiator.session.Session)}
+	 * {@link MultilateralProtocol#getRoundStructure(java.util.List, negotiator.session.Session)}
 	 * .
 	 *
 	 * @param possibleActions
@@ -103,7 +104,7 @@ public class RandomFlippingMediator extends Mediator {
 	/**
 	 * This method is called when an observable action is performed. Observable
 	 * actions are defined in
-	 * {@link negotiator.protocol.Protocol#getActionListeners(java.util.List)}
+	 * {@link MultilateralProtocol#getActionListeners(java.util.List)}
 	 *
 	 * @param sender
 	 *            The initiator of the action

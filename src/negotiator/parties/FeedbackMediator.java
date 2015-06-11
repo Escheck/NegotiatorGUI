@@ -17,6 +17,7 @@ import negotiator.actions.OfferForFeedback;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.parties.partialopponentmodel.PartialPreferenceModels;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -162,7 +163,7 @@ public class FeedbackMediator extends Mediator {
 	/**
 	 * This method is called when an observable action is performed. Observable
 	 * actions are defined in
-	 * {@link negotiator.protocol.Protocol#getActionListeners(java.util.List)}
+	 * {@link MultilateralProtocol#getActionListeners(java.util.List)}
 	 *
 	 * @param sender
 	 *            The initiator of the action

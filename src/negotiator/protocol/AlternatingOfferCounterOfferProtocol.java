@@ -31,7 +31,7 @@ import java.util.concurrent.TimeoutException;
  * @author David Festen
  * @author Reyhan
  */
-public class AlternatingOfferCounterOfferProtocol extends ProtocolAdapter {
+public class AlternatingOfferCounterOfferProtocol extends MultilateralProtocolAdapter {
 
     /**
      * Get all possible actions for given party in a given session.
@@ -80,18 +80,72 @@ public class AlternatingOfferCounterOfferProtocol extends ProtocolAdapter {
     @Override
     public Bid getCurrentAgreement(Session session, List<NegotiationParty> parties) {
 
-        if (session.getMostRecentAction() instanceof Accept) {
-            int numActionsFinalRound = session.getMostRecentRound().getActions().size();
-            if (numActionsFinalRound > 1) {
-                // return the action before the 'accept'
-                return ((Offer) session.getMostRecentRound().getActions().get(numActionsFinalRound - 2)).getBid();
+        // if not all parties agree, we did not find an agreement
+        if (getNumberOfAgreeingParties(session, parties) < parties.size()) return null;
+
+        // all parties agreed, return most recent offer
+        return getMostRecentBid(session);
+    }
+
+    @Override
+    public int getNumberOfAgreeingParties(Session session, List<NegotiationParty> parties) {
+        int nAccepts = 0;
+        ArrayList<Action> actions = getMostRecentTwoRounds(session);
+        for (int i = actions.size() - 1; i >= 0; i--) {
+            if (actions.get(i) instanceof Accept) {
+                nAccepts++;
             } else {
-                // accepted offer was last offer of previous round
-                return ((Offer) session.getRounds().get(session.getRoundNumber() - 2).getMostRecentAction()).getBid();
+                if (actions.get(i) instanceof Offer) {
+                    // voting party also counts towards agreeing parties
+                    nAccepts++;
+                }
+                // we found at least one not accepting party (offering/ending negotiation) so stop counting
+                break;
             }
-        } else {
-            return null;
         }
+        return nAccepts;
+    }
+
+    /**
+     * Get a list of all actions of the most recent two rounds
+     * @param session Session to extract the most recent two rounds out of
+     * @return A list of actions done in the most recent two rounds.
+     */
+    private ArrayList<Action> getMostRecentTwoRounds(Session session) {
+
+        // holds actions
+        ArrayList<Action> actions = new ArrayList<Action>();
+
+        // add previous round if exists
+        if (session.getRoundNumber() >= 2 ) {
+            Round round = session.getRounds().get(session.getRoundNumber() - 2);
+            for (Action action : round.getActions()) actions.add(action);
+        }
+
+        // add current round if exists (does not exists before any offer is made)
+        if (session.getRoundNumber() >= 1 ) {
+            Round round = session.getRounds().get(session.getRoundNumber() - 1);
+            for (Action action : round.getActions()) actions.add(action);
+        }
+
+        // return aggregated actions
+        return actions;
+    }
+
+    private Bid getMostRecentBid(Session session) {
+
+        // reverse rounds/actions until offer is found or return null
+        for(int roundIndex = session.getRoundNumber() - 1; roundIndex >= 0; roundIndex--) {
+            for (int actionIndex = session.getRounds().get(roundIndex).getActions().size() - 1; actionIndex >= 0; actionIndex--) {
+                Action action = session.getRounds().get(roundIndex).getActions().get(actionIndex);
+                if (action instanceof Offer) return ((Offer) action).getBid();
+            }
+        }
+
+        // No offer found, so return null (no most recent bid exists)
+        // since this is only possible when first party quits negotiation, it is probably a bug when this happens
+        System.err.println("Possible bug: No Offer was placed during negotiation");
+        return null;
     }
 
     /**

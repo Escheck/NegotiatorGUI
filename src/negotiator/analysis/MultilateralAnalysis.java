@@ -7,7 +7,7 @@ import negotiator.Timeline;
 import negotiator.exceptions.AnalysisException;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
 import negotiator.utility.UtilitySpace;
 
@@ -46,7 +46,7 @@ public class MultilateralAnalysis
 
     private final Session session;
     private final List<NegotiationParty> parties;
-    private final Protocol protocol;
+    private final MultilateralProtocol protocol;
     private Timeline timeline;
 
     /**
@@ -60,7 +60,7 @@ public class MultilateralAnalysis
      */
     private Domain domain;
 
-    public MultilateralAnalysis(Session session, List<NegotiationParty> parties, Protocol protocol) throws Exception
+    public MultilateralAnalysis(Session session, List<NegotiationParty> parties, MultilateralProtocol protocol) throws Exception
     {
 //        System.out.print("Generating analysis... ");
 

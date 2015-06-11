@@ -22,7 +22,7 @@ import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultipartyProgressUI;
 import negotiator.logging.FileLogger;
 import negotiator.parties.NegotiationParty;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
@@ -295,7 +295,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		}
 
 		// Finally we generate the protocol instance
-		Protocol protocol = TournamentGenerator
+		MultilateralProtocol protocol = TournamentGenerator
 				.createFrom(selectedMultiPartyProtocolRepItem);
 
 		// Now that we have them all, we can generate and return the

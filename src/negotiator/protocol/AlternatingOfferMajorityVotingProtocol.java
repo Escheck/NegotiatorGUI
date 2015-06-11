@@ -32,7 +32,7 @@ import java.util.List;
  * @author David Festen
  * @author Reyhan
  */
-public class AlternatingOfferMajorityVotingProtocol extends ProtocolAdapter {
+public class AlternatingOfferMajorityVotingProtocol extends MultilateralProtocolAdapter {
 
     /**
      * Holds the most recently accepted offer. i.e. The offer with the most support

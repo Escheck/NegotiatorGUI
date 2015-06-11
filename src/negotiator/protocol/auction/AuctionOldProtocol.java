@@ -13,7 +13,7 @@ import negotiator.BidIterator;
 import negotiator.NegotiationOutcome;
 import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -28,7 +28,7 @@ import negotiator.utility.UtilitySpace;
 import negotiator.xml.SimpleElement;
 import agents.BayesianAgentForAuction;
 
-public class AuctionOldProtocol extends OldProtocol
+public class AuctionOldProtocol extends Protocol
 {
 
 	private static final long serialVersionUID = -5739935989755679374L;
@@ -195,7 +195,7 @@ public class AuctionOldProtocol extends OldProtocol
 	}
 
 
-	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		return generateAllSessions(tournament);
 	}
 
@@ -238,10 +238,10 @@ public class AuctionOldProtocol extends OldProtocol
 		return session;
 
 	}
-	private static ArrayList<OldProtocol> generateAllSessions(Tournament tournament) {
-		ArrayList<OldProtocol> allSessions = null;
+	private static ArrayList<Protocol> generateAllSessions(Tournament tournament) {
+		ArrayList<Protocol> allSessions = null;
 		try {
-			allSessions = new ArrayList<OldProtocol>();
+			allSessions = new ArrayList<Protocol>();
 			//sessionIndex = 0;
 			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
 			//center profiles

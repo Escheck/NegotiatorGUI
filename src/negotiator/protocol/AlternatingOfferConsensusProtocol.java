@@ -31,7 +31,7 @@ import java.util.Map;
  * @author David Festen
  * @author Reyhan
  */
-public class AlternatingOfferConsensusProtocol extends ProtocolAdapter {
+public class AlternatingOfferConsensusProtocol extends MultilateralProtocolAdapter {
     private int maxNumberOfVotes = 0;
 
     /**

@@ -21,7 +21,7 @@ import negotiator.session.Session;
  *
  * @author David Festen
  */
-public abstract class ProtocolAdapter implements Protocol {
+public abstract class MultilateralProtocolAdapter implements MultilateralProtocol {
 
 	protected boolean isAborted = false;
 	private ExecutorWithTimeout executor;

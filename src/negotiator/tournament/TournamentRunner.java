@@ -13,8 +13,8 @@ import negotiator.distributedtournament.Job;
 import negotiator.events.NegotiationSessionEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
-import negotiator.protocol.OldProtocol;
-import negotiator.protocol.alternatingoffers.AlternatingOffersOldProtocol;
+import negotiator.protocol.Protocol;
+import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
 import negotiator.qualitymeasures.logmanipulation.TournamentMeasures;
 
 /**
@@ -26,7 +26,7 @@ import negotiator.qualitymeasures.logmanipulation.TournamentMeasures;
 public class TournamentRunner implements Runnable 
 {
 	private boolean runSingleSession = false; 
-	private List<OldProtocol> sessions;
+	private List<Protocol> sessions;
 	ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
 
 	// Options related to distributed tournaments
@@ -43,7 +43,7 @@ public class TournamentRunner implements Runnable
 	 * 	session will be overridden with this listener.
 	 * @throws Exception
 	 */
-	public TournamentRunner(List<OldProtocol> sessions, NegotiationEventListener ael) throws Exception {
+	public TournamentRunner(List<Protocol> sessions, NegotiationEventListener ael) throws Exception {
 		this.sessions = sessions;
 		negotiationEventListeners.add(ael);
 
@@ -112,9 +112,9 @@ public class TournamentRunner implements Runnable
 			//AlternatingOffersProtocol.closeLog(true);
 
 			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
-				AlternatingOffersOldProtocol.closeLog(true);
+				AlternatingOffersProtocol.closeLog(true);
 			}
-			AlternatingOffersOldProtocol.closeLog(false);
+			AlternatingOffersProtocol.closeLog(false);
 
 			// DEFAULT: no detailed analysis
 			if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
@@ -144,7 +144,7 @@ public class TournamentRunner implements Runnable
 
 
 			previousSession = sessions.get(i).hashCode();
-			OldProtocol s = sessions.get(i);
+			Protocol s = sessions.get(i);
 
 			synchronized(this) { 
 				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
@@ -167,7 +167,7 @@ public class TournamentRunner implements Runnable
 
 		// 1. If there is a job existing with the given sessionname (always after START, should be after JOIN)
 		if (jobID > 0) {
-			ArrayList<OldProtocol> sessions = new ArrayList<OldProtocol>();
+			ArrayList<Protocol> sessions = new ArrayList<Protocol>();
 			try {
 				sessions = DBController.getInstance().getTournament(jobID).getSessions();
 			} catch (Exception e) {
@@ -178,7 +178,7 @@ public class TournamentRunner implements Runnable
 			while (job != null) {
 				StringBuilder builder = new StringBuilder();
 				// 3. Run the matches and store the outcomes
-				for (OldProtocol s: job.getSessions()) {
+				for (Protocol s: job.getSessions()) {
 					previousSession = s.hashCode();
 					synchronized(this) { 
 						for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);	
@@ -187,8 +187,8 @@ public class TournamentRunner implements Runnable
 						wait();
 
 						// 4. Store outcomes of the job. Should be done here due to the implementation of logging
-						if (s instanceof AlternatingOffersOldProtocol) {
-							AlternatingOffersOldProtocol as = (AlternatingOffersOldProtocol) s;
+						if (s instanceof AlternatingOffersProtocol) {
+							AlternatingOffersProtocol as = (AlternatingOffersProtocol) s;
 							builder.append(as.getOutcome());
 						}
 
@@ -239,11 +239,11 @@ public class TournamentRunner implements Runnable
 		return Global.getDistributedOutcomesFileName();
 	}
 
-	private List<OldProtocol> getSessionsFromTournament(Tournament t) throws Exception
+	private List<Protocol> getSessionsFromTournament(Tournament t) throws Exception
 	{
-		ArrayList<OldProtocol> sessions;
+		ArrayList<Protocol> sessions;
 		if(runSingleSession) {
-			sessions = new ArrayList<OldProtocol>();
+			sessions = new ArrayList<Protocol>();
 			sessions.add(t.getSessions().get(0));
 		}
 		else {
@@ -253,7 +253,7 @@ public class TournamentRunner implements Runnable
 		return sessions;
 	}
 
-	public void fireNegotiationSessionEvent(OldProtocol session ) {
+	public void fireNegotiationSessionEvent(Protocol session ) {
 		for(NegotiationEventListener listener :  negotiationEventListeners) 
 			if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
 	}

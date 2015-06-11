@@ -9,6 +9,7 @@ import negotiator.Deadline;
 import negotiator.DiscreteTimeline;
 import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.protocol.MultilateralProtocol;
 
 /**
  * Represents a negotiation session. A {@link Session} consists of {@link Round}
@@ -138,7 +139,7 @@ public class Session {
 	 * Add a round to this session. Make sure it contains all the turns
 	 * necessary to execute the rounds. Normally the new round will be created
 	 * by using
-	 * {@link negotiator.protocol.Protocol#getRoundStructure(java.util.List, Session)}
+	 * {@link MultilateralProtocol#getRoundStructure(java.util.List, Session)}
 	 *
 	 *
 	 * @param round

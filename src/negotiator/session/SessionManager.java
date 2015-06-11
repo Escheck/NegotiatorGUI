@@ -21,11 +21,11 @@ import negotiator.logging.CsvLogger;
 import negotiator.logging.SessionLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 
 /**
  * The {@link SessionManager} is responsible for enforcing the
- * {@link negotiator.protocol.Protocol} during the {@link Session}. This is the
+ * {@link MultilateralProtocol} during the {@link Session}. This is the
  * entry point for the negotiation algorithm. The protocol and session
  * parameters are passed on from the GUI.
  *
@@ -40,7 +40,7 @@ public class SessionManager {
 	private final Session session;
 
 	// Holds the protocol instance
-	private final Protocol protocol;
+	private final MultilateralProtocol protocol;
 
 	// Holds a list of participating parties
 	private final List<NegotiationParty> parties;
@@ -86,7 +86,7 @@ public class SessionManager {
 	 *            A session object containing preset information (can also be a
 	 *            new instance)
 	 */
-	public SessionManager(List<NegotiationParty> parties, Protocol protocol,
+	public SessionManager(List<NegotiationParty> parties, MultilateralProtocol protocol,
 			Session session, ExecutorWithTimeout exec) {
 		this.session = session;
 		this.protocol = protocol;
@@ -267,7 +267,7 @@ public class SessionManager {
 	 * Request an {@link Action} from the
 	 * {@link negotiator.parties.NegotiationParty} given a list of valid actions
 	 * and apply it according to
-	 * {@link negotiator.protocol.Protocol#applyAction(Action, Session)}
+	 * {@link MultilateralProtocol#applyAction(Action, Session)}
 	 *
 	 * @param party
 	 *            The party to request an action of

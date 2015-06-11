@@ -28,7 +28,7 @@ import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.OpponentModelMeasures;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
@@ -65,7 +65,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	protected long startTimeMillies; // idem.
 	/** Default setting is 3min. This is the number of ms. */
 	protected Integer totalTime = 1000 * 180;
-	protected OldProtocol oldProtocol;
+	protected Protocol protocol;
 	private boolean traceLoggingEnabled;
 
 	public Agent currentAgent = null; // agent currently bidding.
@@ -83,16 +83,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	private OpponentModelMeasures omMeasures;
 
 	/** load the runtime objects to start negotiation */
-	public AlternatingOffersBilateralAtomicNegoSession(OldProtocol oldProtocol,
+	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
 			Agent agentA, Agent agentB, String agentAname, String agentBname,
 			UtilitySpace spaceA, UtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent) throws Exception {
 
-		super(oldProtocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
+		super(protocol, agentA, agentB, agentAname, agentBname, spaceA, spaceB,
 				agentAparams, agentBparams);
-		this.oldProtocol = oldProtocol;
+		this.protocol = protocol;
 		this.startingAgent = startingAgent;
 
 		showGUI = !TournamentConfiguration
@@ -134,36 +134,36 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// the agent cannot damage them.
 
 			if (spaceA.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentA.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentA.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new NonlinearUtilitySpace(spaceA),
 						agentAparams);
 			else if (spaceA.getType() == UTILITYSPACETYPE.CONSTRAINT)
-				agentA.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentA.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new ConstraintUtilitySpace(spaceA),
 						agentAparams);
 			else
 				// linear
-				agentA.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentA.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new UtilitySpace(spaceA), agentAparams);
 			agentA.init();
 
 			if (spaceB.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentB.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentB.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new NonlinearUtilitySpace(spaceB),
 						agentBparams);
 			else if (spaceB.getType() == UTILITYSPACETYPE.CONSTRAINT)
-				agentB.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentB.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new ConstraintUtilitySpace(spaceB),
 						agentBparams);
 			else
 				// linear
-				agentB.internalInit(oldProtocol.getSessionNumber(),
-						oldProtocol.getTotalSessions(), startTime, totalTime,
+				agentB.internalInit(protocol.getSessionNumber(),
+						protocol.getTotalSessions(), startTime, totalTime,
 						timeline, new UtilitySpace(spaceB), agentBparams);
 			agentB.init();
 
@@ -425,8 +425,8 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 
 			// nego finished by Accept or illegal lastAction.
 			// notify parent that we're ready.
-			synchronized (oldProtocol) {
-				oldProtocol.notify();
+			synchronized (protocol) {
+				protocol.notify();
 			}
 
 			/*
@@ -571,7 +571,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 		newOutcome(currentAgent, rvA, rvB, rvADiscounted, rvBDiscounted,
 				logMsg, time, distanceToNash, "");
 
-		this.oldProtocol.threadFinished = true;
+		this.protocol.threadFinished = true;
 	}
 
 	/**
@@ -667,7 +667,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getDomain().getName(), spaceA.getFileName(),
 				spaceB.getFileName(), time, acceptedBy);
 
-		no = new NegotiationOutcome(this, this.oldProtocol.getSessionNumber(),
+		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
 				lastAction, fAgentABids, fAgentBBids, startingWithA,
 				additionalLog, distanceToNash, outcomeInfo);
 		calculateFinalAccuracy(no);
@@ -698,7 +698,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getDomain().getName(), spaceA.getFileName(),
 				spaceB.getFileName(), time, acceptedBy);
 
-		no = new NegotiationOutcome(this, this.oldProtocol.getSessionNumber(),
+		no = new NegotiationOutcome(this, this.protocol.getSessionNumber(),
 				lastAction, (ArrayList<BidPointTime>) agentASize,
 				(ArrayList<BidPointTime>) agentBSize, startingWithA,
 				additionalLog, distanceToNash, outcomeInfo);
@@ -777,7 +777,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			matchDataLogger.addMeasure("bidindices",
 					omMeasuresResults.getBidIndices());
 			matchDataLogger.writeToFileCompact(time, agreement,
-					oldProtocol.getSessionNumber());
+					protocol.getSessionNumber());
 		}
 	}
 
@@ -916,7 +916,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 					distanceToNash, acceptedBy);
 		}
 
-		this.oldProtocol.threadFinished = true;
+		this.protocol.threadFinished = true;
 
 	}
 

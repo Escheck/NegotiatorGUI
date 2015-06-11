@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
 import negotiator.multipartyprotocol.MultiPartyProtocol;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
@@ -103,27 +103,27 @@ public class Global {
 		return "";
 	}
 
-	public static Class<OldProtocol> getProtocolClass(ProtocolRepItem protRepItem)
+	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem)
 			throws Exception {
 		java.lang.ClassLoader loader = Global.class.getClassLoader();// ClassLoader.getSystemClassLoader();
-		Class<OldProtocol> klass = (Class<OldProtocol>) loader.loadClass(protRepItem
+		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
 				.getClassPath());
 		return klass;
 	}
 
-	public static Class<OldProtocol> getProtocolClass(ProtocolRepItem protRepItem,
+	public static Class<Protocol> getProtocolClass(ProtocolRepItem protRepItem,
 			ClassLoader loader) throws Exception {
 
-		Class<OldProtocol> klass = (Class<OldProtocol>) loader.loadClass(protRepItem
+		Class<Protocol> klass = (Class<Protocol>) loader.loadClass(protRepItem
 				.getClassPath());
 		return klass;
 	}
 
-	public static OldProtocol createProtocolInstance(ProtocolRepItem protRepItem,
+	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
 			AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams)
 			throws Exception {
-		OldProtocol ns;
+		Protocol ns;
 
 		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
 
@@ -139,15 +139,15 @@ public class Global {
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
-		ns = (OldProtocol) (theObject);
+		ns = (Protocol) (theObject);
 		return ns;
 	}
 
-	public static OldProtocol createProtocolInstance(ProtocolRepItem protRepItem,
+	public static Protocol createProtocolInstance(ProtocolRepItem protRepItem,
 			AgentRepItem[] agentRepItems, ProfileRepItem[] profileRepItems,
 			HashMap<AgentParameterVariable, AgentParamValue>[] agentParams,
 			ClassLoader classLoader) throws Exception {
-		OldProtocol ns;
+		Protocol ns;
 
 		// java.lang.ClassLoader loader =
 		// ClassLoader.getSystemClassLoader()/*new java.net.URLClassLoader(new
@@ -165,7 +165,7 @@ public class Global {
 
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
-		ns = (OldProtocol) (theObject);
+		ns = (Protocol) (theObject);
 		return ns;
 
 	}

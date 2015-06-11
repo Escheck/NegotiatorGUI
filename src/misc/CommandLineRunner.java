@@ -3,7 +3,7 @@ package misc;
 import java.net.URL;
 import java.util.List;
 import negotiator.Global;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -43,7 +43,7 @@ public class CommandLineRunner {
 		if (profiles.size() != agents.size())
 			throw new IllegalArgumentException("Number of profiles does not match number of agents.");
 		
-		OldProtocol ns = null;
+		Protocol ns = null;
 
 		ProtocolRepItem protocol = new ProtocolRepItem(p, p, p);
 		

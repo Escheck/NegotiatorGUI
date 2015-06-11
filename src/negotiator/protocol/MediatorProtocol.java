@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author David Festen
  */
-public abstract class MediatorProtocol extends ProtocolAdapter {
+public abstract class MediatorProtocol extends MultilateralProtocolAdapter {
 
     /**
      * Returns the first mediator from a list of parties

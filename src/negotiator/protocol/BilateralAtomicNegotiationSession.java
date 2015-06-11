@@ -32,7 +32,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     protected	String 			agentBname;
     protected 	Bid 			lastBid    = null;				// the last bid that has been done
     protected 	Action 			lastAction = null;				// the last action that has been done (also included Accept, etc.)
-    protected OldProtocol oldProtocol;
+    protected Protocol protocol;
     protected 	int				finalRound; // 0 during whole negotiation accept at agreement, in which case it is equal to rounds
     protected 	ArrayList<BidPointTime> 	fAgentABids;
     protected 	ArrayList<BidPointTime> 	fAgentBBids;
@@ -50,7 +50,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     public SimpleElement additionalLog = new SimpleElement("additional_log");
 
     
-    public BilateralAtomicNegotiationSession(OldProtocol oldProtocol,
+    public BilateralAtomicNegotiationSession(Protocol protocol,
     		Agent agentA, 
     		Agent agentB, 
     		String agentAname,
@@ -59,7 +59,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     		UtilitySpace spaceB,
     		HashMap<AgentParameterVariable, AgentParamValue> agentAparams, 
     		HashMap<AgentParameterVariable, AgentParamValue> agentBparams) throws Exception {
-    	this.oldProtocol = oldProtocol;
+    	this.protocol = protocol;
         this.agentA = agentA;
     	this.agentB = agentB;
     	this.agentAname = agentAname;
@@ -90,7 +90,7 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
         								agentA.getName(), spaceA.getFileName(), 
         								agentB.getName(), spaceB.getFileName(), domainName);
         
-        actionEventListener.addAll(oldProtocol.getNegotiationEventListeners());
+        actionEventListener.addAll(protocol.getNegotiationEventListeners());
     }
 
     public void addNegotiationEventListener(NegotiationEventListener listener) {
