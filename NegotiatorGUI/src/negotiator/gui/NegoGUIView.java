@@ -28,7 +28,7 @@ import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
 import negotiator.gui.tree.TreeFrame;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
@@ -486,7 +486,7 @@ public class NegoGUIView extends FrameView {
 		try {
 			CSVLoader csvLoader = new CSVLoader(csvFileChooser
 					.getSelectedFile().getPath());
-			List<OldProtocol> sessions = csvLoader.getSessions();
+			List<Protocol> sessions = csvLoader.getSessions();
 
 			ProgressUI2 progressUI = new ProgressUI2(true, true);
 			TournamentProgressUI2 tournamentProgressUI = new TournamentProgressUI2(

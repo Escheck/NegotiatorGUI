@@ -16,7 +16,7 @@ import negotiator.Timeline;
 import negotiator.config.Configuration;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -139,7 +139,7 @@ public class TournamentGenerator {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static Protocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
+	public static MultilateralProtocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
 			throws Exception {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
@@ -147,7 +147,7 @@ public class TournamentGenerator {
 		@SuppressWarnings("unchecked")
 		Constructor protocolConstructor = protocolClass.getConstructor();
 
-		return (Protocol) protocolConstructor.newInstance();
+		return (MultilateralProtocol) protocolConstructor.newInstance();
 	}
 
 	/**

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -31,7 +31,7 @@ import negotiator.tournament.VariablesAndValues.TotalSessionNumberVariable;
  */
 public class CSVLoader
 {
-    ArrayList<OldProtocol> sessions = new ArrayList<OldProtocol>();
+    ArrayList<Protocol> sessions = new ArrayList<Protocol>();
     String filePath = "";
     
     public CSVLoader(String csvFilePath) throws Exception
@@ -144,7 +144,7 @@ public class CSVLoader
         }
     }
     
-    public ArrayList<OldProtocol> getSessions()
+    public ArrayList<Protocol> getSessions()
     {
         return sessions;
     }
@@ -345,7 +345,7 @@ public class CSVLoader
         // Try createFrom the protocol instance
         try
         {
-            OldProtocol ns = Global.createProtocolInstance(protocol, agentsRI, profiles, agentParamsp);
+            Protocol ns = Global.createProtocolInstance(protocol, agentsRI, profiles, agentParamsp);
             sessions.add(ns);
         }
         catch(Exception e)

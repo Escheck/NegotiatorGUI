@@ -4,6 +4,7 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Represents a Party or Agent used in negotiation. {@link NegotiationParty} will replace
  * {@link negotiator.Agent} as party can be used for bilateral as well as multilateral cases. If
- * you are using a protocol that inherits from {@link negotiator.protocol.Protocol} you
+ * you are using a protocol that inherits from {@link MultilateralProtocol} you
  * should also use {@link NegotiationParty} and not {@link negotiator.Agent}.
  *
  * @author David Festen
@@ -22,7 +23,7 @@ public interface NegotiationParty
      * When this class is called, it is expected that the Party chooses one of the actions from the
      * possible action list and returns an instance of the chosen action. This class is only called
      * if this {@link NegotiationParty} is in the
-     * {@link negotiator.protocol.Protocol#getRoundStructure(List, negotiator.session.Session)}.
+     * {@link MultilateralProtocol#getRoundStructure(List, negotiator.session.Session)}.
      *
      * @param possibleActions List of all actions possible.
      * @return The chosen action
@@ -31,7 +32,7 @@ public interface NegotiationParty
 
     /**
      * This method is called when an observable action is performed. Observable actions are defined
-     * in {@link negotiator.protocol.Protocol#getActionListeners(List)}
+     * in {@link MultilateralProtocol#getActionListeners(List)}
      *
      * @param sender    The initiator of the action
      * @param arguments The action performed

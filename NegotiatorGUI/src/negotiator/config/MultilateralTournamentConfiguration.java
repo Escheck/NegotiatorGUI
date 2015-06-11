@@ -1,6 +1,6 @@
 package negotiator.config;
 
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
 import negotiator.tournament.TournamentGenerator;
 
@@ -21,12 +21,12 @@ public interface MultilateralTournamentConfiguration {
 	Session getSession();
 
 	/**
-	 * Get the {@link negotiator.protocol.Protocol} object from this
+	 * Get the {@link MultilateralProtocol} object from this
 	 * configuration
 	 * 
 	 * @return Session object represented in this configuration
 	 */
-	Protocol getProtocol() throws Exception;
+	MultilateralProtocol getProtocol() throws Exception;
 
 	/**
 	 * Get the list of participating {@link negotiator.parties.NegotiationParty}

@@ -14,6 +14,7 @@ import negotiator.actions.Action;
 import negotiator.actions.InformVotingResult;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.VoteForOfferAcceptance;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -89,7 +90,7 @@ public class Annealer extends AbstractNegotiationParty {
 	/**
 	 * This method is called when an observable action is performed. Observable
 	 * actions are defined in
-	 * {@link negotiator.protocol.Protocol#getActionListeners(java.util.List)}
+	 * {@link MultilateralProtocol#getActionListeners(java.util.List)}
 	 *
 	 * @param sender
 	 *            The initiator of the action

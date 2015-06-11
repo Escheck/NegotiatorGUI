@@ -6,7 +6,7 @@ import java.util.List;
 import negotiator.Deadline;
 import negotiator.DeadlineType;
 import negotiator.config.Configuration;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
@@ -68,7 +68,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	}
 
 	@Override
-	public Protocol getProtocol() throws Exception {
+	public MultilateralProtocol getProtocol() throws Exception {
 		MultiPartyProtocolRepItem protocolRepItem = (MultiPartyProtocolRepItem) Repository
 				.getMultiPartyProtocolRepository().getItems().get(0);
 		return Configuration.createFrom(protocolRepItem);

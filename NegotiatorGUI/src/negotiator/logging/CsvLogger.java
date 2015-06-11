@@ -10,12 +10,9 @@ import java.util.*;
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
 import negotiator.config.Configuration;
-import negotiator.config.GuiConfiguration;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
-import negotiator.protocol.Protocol;
-import negotiator.repository.PartyRepItem;
-import negotiator.repository.ProfileRepItem;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
 
 import static java.lang.String.format;
@@ -147,7 +144,7 @@ public class CsvLogger implements Closeable {
     /**
      * Log default session information
      */
-    public static String getDefaultSessionLog(Session session, Protocol protocol,
+    public static String getDefaultSessionLog(Session session, MultilateralProtocol protocol,
                                               List<NegotiationParty> parties,
                                               double runTime,
                                               Configuration config) throws Exception {
@@ -210,7 +207,7 @@ public class CsvLogger implements Closeable {
         return utils;
     }
 
-    public static String logSingleSession(Session session, Protocol protocol,
+    public static String logSingleSession(Session session, MultilateralProtocol protocol,
                                           List<NegotiationParty> parties, double runTime) throws Exception {
         List<NegotiationParty> agents = MediatorProtocol
                 .getNonMediators(parties);

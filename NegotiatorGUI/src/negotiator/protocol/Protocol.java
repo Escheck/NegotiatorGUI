@@ -1,141 +1,208 @@
 package negotiator.protocol;
 
-import negotiator.Bid;
-import negotiator.actions.Action;
-import negotiator.exceptions.NegotiationPartyTimeoutException;
-import negotiator.parties.NegotiationParty;
-import negotiator.session.ExecutorWithTimeout;
-import negotiator.session.Round;
-import negotiator.session.Session;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.io.Serializable;
+
+import negotiator.Agent;
+import negotiator.Domain;
+import negotiator.NegotiationEventListener;
+import negotiator.NegotiationOutcome;
+import negotiator.actions.Action;
+import negotiator.events.ActionEvent;
+import negotiator.events.BilateralAtomicNegotiationSessionEvent;
+import negotiator.events.LogMessageEvent;
+import negotiator.exceptions.Warning;
+import negotiator.repository.AgentRepItem;
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.Repository;
+import negotiator.tournament.Tournament;
+import negotiator.tournament.TournamentRunner;
+import negotiator.tournament.VariablesAndValues.AgentParamValue;
+import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.UtilitySpace;
+import negotiator.xml.SimpleElement;
 
 /**
- * This interface defines a protocol that should be executed by the
- * {@link negotiator.session.SessionManager}. There also exists an
- * {@link ProtocolAdapter} which implements all the methods
- * in this interface with default values. *
- * <p/>
- * For some examples on Alternating offer protocols, please refer to:
- * {@link negotiator.protocol.AlternatingOfferConsensusProtocol}
- * {@link negotiator.protocol.AlternatingOfferCounterOfferProtocol}
- * {@link negotiator.protocol.AlternatingOfferMajorityVotingProtocol}
- * <p/>
- * For an example on Mediator protocols, please refer to:
- * {@link negotiator.protocol.MediatorProtocol}
- *
- * @author David Festen
+ * Abstract class for the manager of protocols.
+ * Implement start() to define the protocol. 
  */
-public interface Protocol {
-
+public abstract class Protocol implements Runnable, Serializable {
+	private static final long serialVersionUID = -7994042965683386295L;
+	protected Thread negoThread = null;
+    protected TournamentRunner tournamentRunner;
     /**
-     * Get the structure of the current round. Each round, this method receives a list of all the
-     * {@link negotiator.parties.NegotiationParty} and the complete {@link Session} which can be
-     * used to diversify the round
-     * structure at some point during the session.
-     *
-     * @param parties The parties currently participating
-     * @param session The complete session history
-     * @return A list of possible actions
+     * stopNegotiation indicates that the session has now ended.
+     * it is checked after every call to the agent,
+     * and if it happens to be true, session is immediately returned without any updates to the results list.
+     * This is because killing the thread in many cases will return Agent.getActions() but with
+     * a stale action. By setting stopNegotiation to true before killing, the agent will still immediately return.
      */
-    Round getRoundStructure(List<NegotiationParty> parties, Session session);
+    public boolean stopNegotiation=false;
+    public boolean threadFinished = false;
+	private AgentRepItem[] agentRepItems;	
+    private ProfileRepItem[] profileRepItems;    
+    private String[] agentNames;
+    private HashMap<AgentParameterVariable,AgentParamValue>[]  agentParams;
+    
+    /** -- **/
+    protected Domain domain;
+    private UtilitySpace[] agentUtilitySpaces;
+    
+    ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();    
 
-    /**
-     * This will get called just before the session starts. If some initialization needs to be
-     * done by the protocol, it can be done here.
-     *
-     * @param session The session instance that will be used for the session
-     * @param parties The parties that will participate in the session
-     */
-    void beforeSession(Session session, List<NegotiationParty> parties) throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException;
+    private SimpleElement fRoot;  
+	public abstract String getName();	
+	public abstract NegotiationOutcome getNegotiationOutcome();
+	
+	protected int sessionNr = -1;
+	protected int totalSessions;
+	
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
+		throw new Exception("This protocol cannot be used in a tournament");
+	}
 
-    /**
-     * This will get called just after ending the session. If the protocol needs to do some post
-     * session steps, it can be done here.
-     *
-     * @param session The session instance that was used for the session
-     * @param parties The parties that participated in the session
-     */
-    void afterSession(Session session, List<NegotiationParty> parties);
+    public final void startSession() {
+    	Thread protocolThread = new Thread(this);
+    	protocolThread.start();
+    }
+    
+	public Protocol(AgentRepItem[] agentRepItems,
+					ProfileRepItem[] profileRepItems,
+					HashMap<AgentParameterVariable,
+							AgentParamValue>[] agentParams,
+					int totalMatches) throws Exception{
+    	this.agentRepItems = agentRepItems.clone();
+    	this.profileRepItems = profileRepItems.clone();
+    	this.totalSessions = totalMatches;
+    	if (agentParams!=null) {
+    		this.agentParams = agentParams.clone();
+    	} else {
+    		this.agentParams = new HashMap[agentRepItems.length];
+		}
+    	loadAgentsUtilitySpaces();
+    }
+	protected void loadAgentsUtilitySpaces() throws Exception
+	{
+		if(domain==null)
+			//domain = new Domain(profileRepItems[0].getDomain().getURL().getFile());
+			domain = Repository.get_domain_repos().getDomain(profileRepItems[0].getDomain());
+		//TODO: read the agent names
+		agentNames = new String[profileRepItems.length];
+		agentNames[0] = "Agent A";
+		agentNames[1] = "Agent B";
+		
+		//load the utility space		
+		agentUtilitySpaces = new UtilitySpace[profileRepItems.length]; 
+		for(int i=0;i<profileRepItems.length;i++) {
+			ProfileRepItem profile = profileRepItems[i];
+			agentUtilitySpaces[i] =  Repository.get_domain_repos().getUtilitySpace(domain, profile);
+		}
+		return;
 
-    /**
-     * Apply the action according to the protocol. All actions done by all agents come through this
-     * method. If protocol needs to adapt anything according to actions, it can be handled here.
-     *
-     * @param action  action to apply
-     * @param session the current state of this session
-     */
-    void applyAction(Action action, Session session);
+	}
+    
+    public void addNegotiationEventListener(NegotiationEventListener listener) {
+    	if(!actionEventListener.contains(listener))
+    		actionEventListener.add(listener);
+    }
+    public ArrayList<NegotiationEventListener> getNegotiationEventListeners() {
+    	return (ArrayList<NegotiationEventListener>) (actionEventListener.clone());
+    }
 
-    /**
-     * Check if the protocol is done or still busy. If this method returns true, the
-     * {@link negotiator.session.SessionManager} will not start a new {@link Round} after the
-     * current one. It will however finish all the turns described in the
-     * {@link #getRoundStructure(java.util.List, negotiator.session.Session)} method.
-     *
-     * @param session the current state of this session
-     * @return true if the protocol is finished
-     */
-    boolean isFinished(Session session, List<NegotiationParty> parties);
+    public void removeNegotiationEventListener(NegotiationEventListener listener) {
+    	if(!actionEventListener.contains(listener))
+    		actionEventListener.remove(listener);
+    }
+	public synchronized void fireNegotiationActionEvent(Agent actorP,Action actP,int roundP,long elapsed,double time,
+			double utilA,double utilB, double utilADiscount, double utilBDiscount,String remarks, boolean finalActionEvent) {
+		for(NegotiationEventListener listener : actionEventListener) {
+			listener.handleActionEvent(new ActionEvent(this,actorP, actP, roundP, elapsed, time, utilA, utilB, utilADiscount, utilBDiscount, remarks, finalActionEvent ));
+		}
+	}
+	public synchronized void fireBilateralAtomicNegotiationSessionEvent(BilateralAtomicNegotiationSession session,ProfileRepItem profileA,
+			ProfileRepItem profileB,
+			AgentRepItem agentA,
+			AgentRepItem agentB, String agenAName, String agentBName) {
+		for(NegotiationEventListener listener : actionEventListener) {
+			listener.handleBlateralAtomicNegotiationSessionEvent(new BilateralAtomicNegotiationSessionEvent (this, session,profileA,profileB,agentA,agentB, agenAName, agentBName));
+		}
+	}
+	
+    public synchronized void fireLogMessage(String source, String log) { 
+    	for(NegotiationEventListener listener : actionEventListener) { 
+        	listener.handleLogMessageEvent(new LogMessageEvent(this, source, log));
+    	}
+	}
+    public void setTournamentRunner(TournamentRunner runner) {
+    	tournamentRunner = runner; 
+    }
+    public Domain getDomain() {
+    	return domain;
+    }
+	public AgentRepItem getAgentRepItem(int index) {
+		return agentRepItems[index];
+	}
+    public ProfileRepItem getProfileRepItems(int index) {
+    	return profileRepItems[index];
+    }
+    public String getAgentName(int index) {
+    	return agentNames[index];
+    }
+    public HashMap<AgentParameterVariable,AgentParamValue> getAgentParams(int index) {
+    	return agentParams[index];
+    }
+    
+    public  UtilitySpace getAgentUtilitySpaces(int index) {
+    	return agentUtilitySpaces[index];
+    }
+    public int getNumberOfAgents() {
+    	return agentRepItems.length;
+    }
 
-    /**
-     * Get a map of parties that are listening to each other's response
-     *
-     * @param parties The parties involved in the current negotiation
-     * @return A map where the key is a {@link NegotiationParty} that is responding to a
-     * {@link NegotiationParty#chooseAction(List)} event, and the value is a list of
-     * {@link NegotiationParty}s that are listening to that key party's response.
-     */
-    Map<NegotiationParty, List<NegotiationParty>> getActionListeners(List<NegotiationParty> parties);
+    public void stopNegotiation() {
+    	if (negoThread!=null&&negoThread.isAlive()) {
+    		try {
+    			stopNegotiation=true; // see comments in sessionrunner..
+    			negoThread.interrupt();
+    			 // we call cleanup of agent from separate thread, preventing any sabotage on kill.
+    			//Thread cleanup=new Thread() {public void run() { sessionrunner.currentAgent.cleanUp();  } };
+    			//cleanup.start();
+    			//TODO call this from separate thread.
+    			//negoThread.stop(); // kill the stuff
+    			 // Wouter: this will throw a ThreadDeath Error into the nego thread
+    			 // The nego thread will catch this and exit immediately.
+    			 // Maybe it should not even try to catch that.
+    		} catch (Exception e) {	new Warning("problem stopping the nego",e); }
+    	}
+        return;
+    }
+    
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(agentNames);
+		result = prime * result + Arrays.hashCode(agentParams);
+		result = prime * result + Arrays.hashCode(agentRepItems);
+		result = prime * result + Arrays.hashCode(agentUtilitySpaces);
+		result = prime * result + ((domain == null) ? 0 : domain.hashCode());
+		result = prime * result + Arrays.hashCode(profileRepItems);
+		return result;
+	}
 
-    /**
-     * This method should return the current agreement.
-     * <p/>
-     * Some protocols only have an agreement at the negotiation session, make sure that this method
-     * returns null until the end of the session in that case, because this method might be queried
-     * at intermediary steps.
-     *
-     * @param session The complete session history up to this point
-     * @param parties The parties involved in the current negotiation
-     * @return The agreed upon bid or null if no agreement
-     */
-    Bid getCurrentAgreement(Session session, List<NegotiationParty> parties);
+	@Override
+    public String toString() {
+    	return Arrays.toString(agentRepItems) + " on " + Arrays.toString(profileRepItems);
+    }
+    
+	public int getSessionNumber() {
+		return sessionNr;
+	}
 
-    /**
-     * Gets the number of parties that currently agree to the offer. For protocols that either have
-     * an agreement or not, you can set this number to 0 until an agreement is found, and then set
-     * this value to the number of parties.
-     *
-     * @param session the current state of this session
-     * @param parties The parties currently participating
-     * @return the number of parties agreeing to the current agreement
-     */
-    int getNumberOfAgreeingParties(Session session, List<NegotiationParty> parties);
-
-
-    /**
-     * Overwrites the rest of the protocol and sets the protocol state to finish
-     */
-    void endNegotiation();
-
-    /**
-     * Overwrites the rest of the protocol and sets the protocol state to finish
-     *
-     * @param reason Optionally give a reason why the protocol is finished.
-     */
-    void endNegotiation(String reason);
-
-    /**
-     * Gets the executor used to box actions that agents can influence.
-     * This counts the action towards agent's time and prevents it from stalling.
-     */
-    ExecutorWithTimeout getExecutor();
-
-    /**
-     * Sets the executor used to box actions that agents can influence.
-     * This counts the action towards agent's time and prevents it from stalling.
-     */
-    void setExecutor(ExecutorWithTimeout executor);
+	public int getTotalSessions() {
+		return totalSessions;
+	}
 }

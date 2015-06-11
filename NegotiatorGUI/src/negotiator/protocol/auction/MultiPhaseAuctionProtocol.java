@@ -8,7 +8,6 @@ import agents.BayesianAgentForAuction;
 
 import negotiator.*;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.OldProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
@@ -179,7 +178,7 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 		}
 	
 	}
-	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament) throws Exception {
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception {
 		return generateAllSessions(tournament);
 	}
 
@@ -221,10 +220,10 @@ public class MultiPhaseAuctionProtocol extends AuctionProtocol {
 		return session;
 
 	}
-	private static ArrayList<OldProtocol> generateAllSessions(Tournament tournament) {
-		ArrayList<OldProtocol> allSessions = null;
+	private static ArrayList<Protocol> generateAllSessions(Tournament tournament) {
+		ArrayList<Protocol> allSessions = null;
 		try {
-			allSessions = new ArrayList<OldProtocol>();
+			allSessions = new ArrayList<Protocol>();
 			//sessionIndex = 0;
 			DomainRepItem domain = new DomainRepItem(new URL("file:etc/templates/SON/son_domain.xml"));
 			//center profiles

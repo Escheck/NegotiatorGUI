@@ -14,6 +14,7 @@ import negotiator.actions.NoAction;
 import negotiator.actions.Offer;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
 import agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded.SortedOutcomeSpace;
 
@@ -44,7 +45,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	 * the actions from the possible action list and returns an instance of the
 	 * chosen action. This class is only called if this
 	 * {@link negotiator.parties.NegotiationParty} is in the
-	 * {@link negotiator.protocol.Protocol#getRoundStructure(java.util.List, negotiator.session.Session)}
+	 * {@link MultilateralProtocol#getRoundStructure(java.util.List, negotiator.session.Session)}
 	 * .
 	 *
 	 * @param possibleActions
@@ -82,7 +83,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	/**
 	 * This method is called when an observable action is performed. Observable
 	 * actions are defined in
-	 * {@link negotiator.protocol.Protocol#getActionListeners(java.util.List)}
+	 * {@link MultilateralProtocol#getActionListeners(java.util.List)}
 	 *
 	 * @param sender
 	 *            The initiator of the action

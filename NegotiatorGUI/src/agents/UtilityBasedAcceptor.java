@@ -3,7 +3,6 @@ package agents;
 import java.util.ArrayList;
 import java.util.List;
 
-import agents.optimalAgentTR.BidInfo;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.SupportedNegotiationSetting;

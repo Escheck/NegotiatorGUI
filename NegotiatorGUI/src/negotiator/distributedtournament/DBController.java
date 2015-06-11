@@ -17,7 +17,7 @@ import java.util.zip.Inflater;
 import misc.Serializer;
 import negotiator.Global;
 import negotiator.exceptions.Warning;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.tournament.Tournament;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -138,7 +138,7 @@ public class DBController {
 			
 			// 2. get the sessions of the tournament. The order is important,
 			// as the tournament creates many objects which are unserializable
-			ArrayList<OldProtocol> sessions = t.getSessions();
+			ArrayList<Protocol> sessions = t.getSessions();
 
 			// 3. Store the full job
 			int jobID = storeJob(sessionName, serTournament);
@@ -157,7 +157,7 @@ public class DBController {
 	 * @param sessions array of all sessions of the tournament
 	 * @param jobID id of the highlevel job associated with the sessions
 	 */
-	private void storeSessions(ArrayList<OldProtocol> sessions, int jobID, int jobsize) {
+	private void storeSessions(ArrayList<Protocol> sessions, int jobID, int jobsize) {
 		for (int i = 0; i < sessions.size(); i+= jobsize) {
 			int max = i + jobsize - 1;
 			if (max >= sessions.size()) {
@@ -259,7 +259,7 @@ public class DBController {
 	 * @param sessions array of all jobs of the tournament.
 	 * @return subset of the full array of jobs which still needs to be executed.
 	 */
-	public Job getJob(int jobID, ArrayList<OldProtocol> sessions) {
+	public Job getJob(int jobID, ArrayList<Protocol> sessions) {
 		Job job = null;
 		try {
 			// 1. Get the latest job with the given name. From this job,

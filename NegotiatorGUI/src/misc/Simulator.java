@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import negotiator.Global;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -57,7 +57,7 @@ public class Simulator
 
 			boolean first    =  true;
 			int trial = 1;   // number of trials ~ tournaments
-            OldProtocol ns = null;
+            Protocol ns = null;
           //~~~Set<Set<RepItem>> AgentsCombinations = null;
             Set<Set<String>> AgentsCombinations = null;
           //~~~ Iterator<Set<RepItem>> combination = null;

@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import negotiator.Global;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.ProgressUI2;
-import negotiator.protocol.OldProtocol;
+import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -169,7 +169,7 @@ public class NegoSessionUI2 extends javax.swing.JPanel {
 		ProgressUI2 graphlistener = null;
 		if (fShowProgressUI)
 			graphlistener = new ProgressUI2(false, true);
-		OldProtocol ns;
+		Protocol ns;
 		try {
 			ns = Global.createProtocolInstance(protocol, agents, agentProfiles,
 					null);

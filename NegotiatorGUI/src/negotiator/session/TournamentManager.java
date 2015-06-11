@@ -13,14 +13,13 @@ import java.util.concurrent.TimeoutException;
 
 import negotiator.Timeline;
 import negotiator.config.Configuration;
-import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.tournament.TournamentGenerator;
 
 import static java.lang.String.format;
@@ -252,7 +251,7 @@ public class TournamentManager extends Thread {
 			ExecutorWithTimeout executor) {
 		try {
 
-			Protocol protocol = configuration.getProtocol();
+			MultilateralProtocol protocol = configuration.getProtocol();
 			Session session = configuration.getSession().copy();
 
 			// TODO: ** hackery ** we should make sure that session gives

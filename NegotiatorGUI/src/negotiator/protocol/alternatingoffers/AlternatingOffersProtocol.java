@@ -20,7 +20,6 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCache;
 import negotiator.exceptions.Warning;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.protocol.OldProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.qualitymeasures.TrajectoryMeasures;
 import negotiator.qualitymeasures.logmanipulation.UtilityMeasures;
@@ -45,7 +44,7 @@ import negotiator.xml.SimpleElement;
  * domain, etc. Signals the start/stop of negotiations by calling
  * {@link BilateralAtomicNegotiationSession}. Manages time-outs.
  */
-public class AlternatingOffersProtocol extends OldProtocol
+public class AlternatingOffersProtocol extends Protocol
 {
 
 	private static final long serialVersionUID = 7472004245336770247L;
@@ -578,13 +577,13 @@ public class AlternatingOffersProtocol extends OldProtocol
 	 * @throws Exception
 	 *             if something wrong with the variables, eg not set.
 	 */
-	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament) throws Exception
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament) throws Exception
 	{
 		return getTournamentSessions(tournament, TournamentConfiguration.getBooleanOption("playAgainstSelf", false),
 				TournamentConfiguration.getBooleanOption("playBothSides", true));
 	}
 
-	public static ArrayList<OldProtocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides)
+	public static ArrayList<Protocol> getTournamentSessions(Tournament tournament, boolean selfplay, boolean both_sides)
 			throws Exception
 	{
 		session_number = 1;
@@ -610,7 +609,7 @@ public class AlternatingOffersProtocol extends OldProtocol
 		// we iterate explicitly over the profile and agents, because we need to
 		// permutate
 		// only the parameters for the selected agents.
-		ArrayList<OldProtocol> sessions = new ArrayList<OldProtocol>();
+		ArrayList<Protocol> sessions = new ArrayList<Protocol>();
 		ArrayList<ProfileRepItem> skipProfiles = new ArrayList<ProfileRepItem>();
 		for (ProfileRepItem profileA : profiles)
 		{

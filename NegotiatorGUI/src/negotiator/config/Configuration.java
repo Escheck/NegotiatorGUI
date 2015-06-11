@@ -7,7 +7,7 @@ import java.util.List;
 import negotiator.Deadline;
 import negotiator.Domain;
 import negotiator.parties.NegotiationParty;
-import negotiator.protocol.Protocol;
+import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -187,7 +187,7 @@ public class Configuration implements GuiConfiguration,
      *                             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
      *                             throws an exception.
      */
-    public static Protocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
+    public static MultilateralProtocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
             throws Exception {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
@@ -195,7 +195,7 @@ public class Configuration implements GuiConfiguration,
         @SuppressWarnings("unchecked")
         Constructor protocolConstructor = protocolClass.getConstructor();
 
-        return (Protocol) protocolConstructor.newInstance();
+        return (MultilateralProtocol) protocolConstructor.newInstance();
     }
 
     /**
@@ -442,7 +442,7 @@ public class Configuration implements GuiConfiguration,
     }
 
     /**
-     * Get the {@link negotiator.protocol.Protocol} object from this
+     * Get the {@link MultilateralProtocol} object from this
      * configuration
      *
      * @return Session object represented in this configuration
@@ -454,7 +454,7 @@ public class Configuration implements GuiConfiguration,
      *                                          throws an exception.
      */
     @Override
-    public Protocol getProtocol() throws Exception {
+    public MultilateralProtocol getProtocol() throws Exception {
         return createFrom(getProtocolItem());
     }
 
