@@ -1,0 +1,61 @@
+ package agents.anac.y2014.BraveCat.AcceptanceStrategies;
+ 
+ import agents.anac.y2014.BraveCat.OfferingStrategies.OfferingStrategy;
+ import agents.anac.y2014.BraveCat.OpponentModels.OpponentModel;
+ import java.io.Serializable;
+ import java.util.HashMap;
+ import agents.anac.y2014.BraveCat.necessaryClasses.NegotiationSession;
+ import agents.anac.y2014.BraveCat.necessaryClasses.Schedular;
+ import negotiator.NegotiationResult;
+ import negotiator.boaframework.Actions;
+ import negotiator.boaframework.ComponentsEnum;
+ import negotiator.boaframework.SharedAgentState;
+ import negotiator.protocol.BilateralAtomicNegotiationSession;
+ 
+ public abstract class AcceptanceStrategy
+ {
+   protected Schedular schedular;
+   protected NegotiationSession negotiationSession;
+   protected OfferingStrategy offeringStrategy;
+   protected SharedAgentState helper;
+   protected OpponentModel opponentModel;
+ 
+   public void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy, OpponentModel opponentModel, HashMap<String, Double> parameters)
+     throws Exception
+   {
+     this.negotiationSession = negotiationSession;
+     this.offeringStrategy = offeringStrategy;
+     this.opponentModel = opponentModel;
+     this.schedular = new Schedular(negotiationSession);
+   }
+ 
+   public String printParameters()
+   {
+     return "";
+   }
+ 
+   public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession fNegotiation)
+   {
+   }
+ 
+   public abstract Actions determineAcceptability();
+ 
+   public final void storeData(Serializable object)
+   {
+     this.negotiationSession.setData(ComponentsEnum.ACCEPTANCESTRATEGY, object);
+   }
+ 
+   public final Serializable loadData()
+   {
+     return this.negotiationSession.getData(ComponentsEnum.ACCEPTANCESTRATEGY);
+   }
+ 
+   public void endSession(NegotiationResult result)
+   {
+   }
+ 
+   public boolean isMAC()
+   {
+     return false;
+   }
+ }
