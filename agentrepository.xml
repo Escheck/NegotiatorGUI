@@ -2,7 +2,6 @@
 <repository fileName="agentrepository.xml">
     <items>
         <agentRepItems>
-            <agentRepItem agentName="Optimal TR Agent" 	classPath="agents.optimalAgentTR.OptimalAgentTR" description="Optimal College Agent"/>
             <agentRepItem description="Utility Based Acceptor" classPath="agents.UtilityBasedAcceptor" agentName="Utility Based Acceptor"/>
             <agentRepItem description="ANAC 2010 - AgentFSEGA" classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA" agentName="ANAC 2010 - AgentFSEGA"/>
             <agentRepItem description="ANAC 2010 - AgentK" classPath="agents.anac.y2010.AgentK.Agent_K" agentName="ANAC 2010 - AgentK (compatible with non-linear utility spaces)"/>
