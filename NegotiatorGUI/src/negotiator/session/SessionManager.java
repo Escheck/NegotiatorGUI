@@ -25,9 +25,9 @@ import negotiator.protocol.MultilateralProtocol;
 
 /**
  * The {@link SessionManager} is responsible for enforcing the
- * {@link MultilateralProtocol} during the {@link Session}. This is the
- * entry point for the negotiation algorithm. The protocol and session
- * parameters are passed on from the GUI.
+ * {@link MultilateralProtocol} during the {@link Session}. This is the entry
+ * point for the negotiation algorithm. The protocol and session parameters are
+ * passed on from the GUI.
  *
  * @author David Festen
  */
@@ -86,8 +86,9 @@ public class SessionManager {
 	 *            A session object containing preset information (can also be a
 	 *            new instance)
 	 */
-	public SessionManager(List<NegotiationParty> parties, MultilateralProtocol protocol,
-			Session session, ExecutorWithTimeout exec) {
+	public SessionManager(List<NegotiationParty> parties,
+			MultilateralProtocol protocol, Session session,
+			ExecutorWithTimeout exec) {
 		this.session = session;
 		this.protocol = protocol;
 		this.parties = parties;
@@ -277,20 +278,24 @@ public class SessionManager {
 	 * @throws TimeoutException
 	 */
 	private Action requestAction(final NegotiationParty party,
-			final ArrayList<Class> validActions) throws InvalidActionError,
-			InterruptedException, ExecutionException,
-			NegotiationPartyTimeoutException {
+			final ArrayList<Class<? extends Action>> validActions)
+			throws InvalidActionError, InterruptedException,
+			ExecutionException, NegotiationPartyTimeoutException {
 
 		Action action;
 		try {
 			action = executor.execute(new Callable<Action>() {
 				@Override
 				public Action call() throws Exception {
-					return party.chooseAction(validActions);
+					// NegotiationParty still has sloppy type checking.
+					ArrayList<Class> actions = new ArrayList<Class>();
+					actions.addAll(validActions);
+					return party.chooseAction(actions);
 				}
 			});
 		} catch (TimeoutException e) {
-			String msg = String.format("Negotiating party %s timed out in chooseAction() method.",
+			String msg = String.format(
+					"Negotiating party %s timed out in chooseAction() method.",
 					party.getPartyId());
 			sessionLogger.logMessage(msg);
 			throw new NegotiationPartyTimeoutException(party, msg, e);
@@ -323,8 +328,9 @@ public class SessionManager {
 	 * @param action
 	 *            The action it did.
 	 */
-	private void updateListeners(final NegotiationParty actionOwner, final Action action)
-			throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException {
+	private void updateListeners(final NegotiationParty actionOwner,
+			final Action action) throws NegotiationPartyTimeoutException,
+			ExecutionException, InterruptedException {
 		// Sadly not even the listener object was created, so don't bother
 		if (listeners == null)
 			return;
@@ -341,7 +347,9 @@ public class SessionManager {
 						}
 					});
 				} catch (TimeoutException e) {
-					String msg = String.format("Negotiating party %s timed out in receiveMessage() method.", observer.getPartyId());
+					String msg = String
+							.format("Negotiating party %s timed out in receiveMessage() method.",
+									observer.getPartyId());
 					sessionLogger.logMessage(msg);
 					throw new NegotiationPartyTimeoutException(observer, msg, e);
 				}
