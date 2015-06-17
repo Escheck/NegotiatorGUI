@@ -15,12 +15,13 @@ import negotiator.parties.NegotiationParty;
  * have multiple turns in a single round.
  *
  * @author David Festen
+ * @modified W.Pasman #1067
  */
 public class Turn {
 	/**
 	 * Holds a list of action classes which can be executed this turn
 	 */
-	private ArrayList<Class<? extends Action>> validActions;
+	private final ArrayList<Class<? extends Action>> validActions;
 
 	/**
 	 * The party which should execute this turn
@@ -85,22 +86,12 @@ public class Turn {
 	}
 
 	/**
-	 * Remove a valid action from this turn
-	 *
-	 * @param action
-	 *            The {@link Action} class to remove
-	 */
-	public void removeValidAction(Class<? extends Action> action) {
-		validActions.remove(action);
-	}
-
-	/**
-	 * Get all valid actions for this turn
+	 * Get (copy of) all valid actions for this turn.
 	 *
 	 * @return the list of {@link Action} classes valid this turn
 	 */
 	public ArrayList<Class<? extends Action>> getValidActions() {
-		return validActions;
+		return new ArrayList<Class<? extends Action>>(validActions);
 	}
 
 	/**

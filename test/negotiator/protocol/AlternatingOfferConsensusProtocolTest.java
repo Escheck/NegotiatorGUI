@@ -14,6 +14,7 @@ import java.util.List;
 
 import negotiator.Deadline;
 import negotiator.actions.Accept;
+import negotiator.actions.Action;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
 import negotiator.parties.NegotiationParty;
@@ -84,7 +85,8 @@ public class AlternatingOfferConsensusProtocolTest {
 		when(session.getRoundNumber()).thenReturn(OFFER_ROUND);
 
 		// the specs has poor type, that's why we have it here too.
-		Collection<Class> acceptOrReject = new ArrayList<Class>(2);
+		Collection<Class<? extends Action>> acceptOrReject = new ArrayList<Class<? extends Action>>(
+				2);
 		acceptOrReject.add(Accept.class);
 		acceptOrReject.add(Reject.class);
 
