@@ -38,6 +38,39 @@ public class AlternatingOfferConsensusProtocol extends
 	private int maxNumberOfVotes = 0;
 
 	/**
+	 * factory function. To support testing.
+	 * 
+	 * @param votingParty
+	 * @param acceptOrReject
+	 * @return
+	 */
+	public Turn createTurn(NegotiationParty votingParty,
+			Collection<Class> acceptOrReject) {
+		return new Turn(votingParty, acceptOrReject);
+	}
+
+	/**
+	 * factory function. To support testing.
+	 * 
+	 * @param party
+	 * @param class1
+	 * @return
+	 */
+	public Turn createTurn(NegotiationParty party, Class class1) {
+		return new Turn(party, OfferForVoting.class);
+	}
+
+	/**
+	 * factory function. To support testing.
+	 * 
+	 * @return
+	 */
+	public Round createRound() {
+		return new Round();
+	}
+
+	/******************************************/
+	/**
 	 * Get the round structure used by this algorithm.
 	 * <p/>
 	 * Structure:
@@ -78,19 +111,6 @@ public class AlternatingOfferConsensusProtocol extends
 		return round;
 	}
 
-	public Turn createTurn(NegotiationParty votingParty,
-			Collection<Class> acceptOrReject) {
-		return new Turn(votingParty, acceptOrReject);
-	}
-
-	public Turn createTurn(NegotiationParty party, Class class1) {
-		return new Turn(party, OfferForVoting.class);
-	}
-
-	public Round createRound() {
-		return new Round();
-	}
-
 	/**
 	 * Check if the protocol is done or still busy. If this method returns true,
 	 * the {@link negotiator.session.SessionManager} will not start a new
@@ -106,7 +126,7 @@ public class AlternatingOfferConsensusProtocol extends
 	@Override
 	public boolean isFinished(Session session, List<NegotiationParty> parties) {
 		// if we are making new offers, we are never finished
-		if (!isVotingRound(session)) {
+		if (session.getRoundNumber() < 2 || !isVotingRound(session)) {
 			return false;
 		}
 
