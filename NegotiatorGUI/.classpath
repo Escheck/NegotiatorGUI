@@ -15,6 +15,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="dep/jfxrt.jar"/>
 	<classpathentry excluding="negotiator/analysis/Analysis.java|negotiator/analysis/BiddingHistoryAnalysis.java|negotiator/protocol/auction/FreeAuctionProtocol.java|agents/ABMPExactAgent.java|agents/RandomWalkABMPAgent.java|agents/SlowUIAgent.java" kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>
 	<classpathentry kind="lib" path="dep/swing-worker-1.1.jar"/>
 	<classpathentry kind="lib" path="dep/appframework-1.0.3.jar"/>
@@ -30,5 +31,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="dep/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
