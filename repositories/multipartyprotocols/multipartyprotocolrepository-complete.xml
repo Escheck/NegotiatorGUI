@@ -8,7 +8,7 @@
         <multiPartyProtocolRepItem>
             <multiPartyProtocolRepItem
                     description="Each agents makes offer, counter-offer, or accepts"
-                    classPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol"
+                    classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
                     protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)"
                     hasMediator="false"
                     hasMediatorProfile="false" />

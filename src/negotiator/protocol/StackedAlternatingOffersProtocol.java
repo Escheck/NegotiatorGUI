@@ -36,7 +36,7 @@ import negotiator.session.Turn;
  * @author David Festen
  * @author Reyhan
  */
-public class AlternatingOfferCounterOfferProtocol extends
+public class StackedAlternatingOffersProtocol extends
 		MultilateralProtocolAdapter {
 
 	/**

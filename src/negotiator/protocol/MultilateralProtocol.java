@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
  * <p/>
  * For some examples on Alternating offer protocols, please refer to:
  * {@link negotiator.protocol.AlternatingOfferConsensusProtocol}
- * {@link negotiator.protocol.AlternatingOfferCounterOfferProtocol}
+ * {@link negotiator.protocol.StackedAlternatingOffersProtocol}
  * {@link negotiator.protocol.AlternatingOfferMajorityVotingProtocol}
  * <p/>
  * For an example on Mediator protocols, please refer to:
