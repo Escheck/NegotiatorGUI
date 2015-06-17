@@ -45,7 +45,7 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @return
 	 */
 	public Turn createTurn(NegotiationParty votingParty,
-			Collection<Class> acceptOrReject) {
+			Collection<Class<? extends Action>> acceptOrReject) {
 		return new Turn(votingParty, acceptOrReject);
 	}
 
@@ -97,7 +97,8 @@ public class AlternatingOfferConsensusProtocol extends
 				round.addTurn(createTurn(party, OfferForVoting.class));
 			}
 		} else {
-			ArrayList<Class> acceptOrReject = new ArrayList<Class>(2);
+			ArrayList<Class<? extends Action>> acceptOrReject = new ArrayList<Class<? extends Action>>(
+					2);
 			acceptOrReject.add(Accept.class);
 			acceptOrReject.add(Reject.class);
 
