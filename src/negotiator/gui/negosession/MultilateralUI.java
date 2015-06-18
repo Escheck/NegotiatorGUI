@@ -30,6 +30,8 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import negotiator.Deadline;
 import negotiator.config.Configuration;
+import negotiator.gui.NegoGUIApp;
+import negotiator.gui.progress.MultiPartyTournamentProgressUI;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -377,9 +379,15 @@ public class MultilateralUI extends JPanel {
 	 */
 	private void startNegotiation() {
 		try {
+
 			btnStartTournament.setText("Running...");
 			btnStartTournament.setEnabled(false);
 			btnStartTournament.repaint();
+
+			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI();
+			NegoGUIApp.negoGUIView.replaceTab("Multi Tour. Progr.", this,
+					progressUI);
+
 			final TournamentManager manager = new TournamentManager(
 					new Configuration(config));
 			manager.start(); // runs the manager thread async

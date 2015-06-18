@@ -7,14 +7,19 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import negotiator.MultipartyNegotiationEventListener;
 import negotiator.Timeline;
 import negotiator.config.Configuration;
+import negotiator.events.LogMessageEvent;
+import negotiator.events.MultipartyNegotiationOfferEvent;
+import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
@@ -55,6 +60,11 @@ public class TournamentManager extends Thread {
 	long start = System.nanoTime();
 
 	/**
+	 * Listeners to events in the tournament.
+	 */
+	private List<MultipartyNegotiationEventListener> listeners = new ArrayList<MultipartyNegotiationEventListener>();
+
+	/**
 	 * Initializes a new instance of the
 	 * {@link negotiator.session.TournamentManager} class. The tournament
 	 * manager uses the provided configuration to find which sessions to run and
@@ -66,6 +76,47 @@ public class TournamentManager extends Thread {
 	public TournamentManager(Configuration config) {
 		configuration = config;
 	}
+
+	/****************** listener support *******************/
+	public void addEventListener(MultipartyNegotiationEventListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeEventListener(MultipartyNegotiationEventListener listener) {
+		listeners.remove(listener);
+	}
+
+	public void notifyOfferEvent(MultipartyNegotiationOfferEvent evt) {
+		for (MultipartyNegotiationEventListener l : listeners) {
+			try {
+				l.handleOfferActionEvent(evt);
+			} catch (Throwable e) {
+				e.printStackTrace(); // we can't do much here if handler fails.
+			}
+		}
+	}
+
+	public void notifyMessageEvent(LogMessageEvent evt) {
+		for (MultipartyNegotiationEventListener l : listeners) {
+			try {
+				l.handleLogMessageEvent(evt);
+			} catch (Throwable e) {
+				e.printStackTrace(); // we can't do much here if handler fails.
+			}
+		}
+	}
+
+	public void notifyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
+		for (MultipartyNegotiationEventListener l : listeners) {
+			try {
+				l.handleMultipartyNegotiationEvent(evt);
+			} catch (Throwable e) {
+				e.printStackTrace(); // we can't do much here if handler fails.
+			}
+		}
+	}
+
+	/****************** manager *****************************/
 
 	/**
 	 * Runnable implementation for thread
