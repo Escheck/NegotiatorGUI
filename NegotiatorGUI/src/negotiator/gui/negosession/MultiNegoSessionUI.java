@@ -368,7 +368,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		}
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-		String fileName = String.format("Log-Session_%s.csv",
+		String fileName = String.format("log/Log-Session_%s.csv",
 				dateFormat.format(new Date()));
 		FileLogger fileLogger = new FileLogger(fileName);
 		sessionManager.addLoggingListener(fileLogger);

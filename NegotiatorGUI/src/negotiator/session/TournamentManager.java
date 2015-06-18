@@ -1,5 +1,7 @@
 package negotiator.session;
 
+import static java.lang.String.format;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -21,8 +23,6 @@ import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.tournament.TournamentGenerator;
-
-import static java.lang.String.format;
 
 /**
  * Manages the tournament and makes sure that the
@@ -85,7 +85,7 @@ public class TournamentManager extends Thread {
 			System.out.println("");
 		}
 		long end = System.nanoTime();
-		System.out.println("Run finished in " + prettyTimeSpan(end-start));
+		System.out.println("Run finished in " + prettyTimeSpan(end - start));
 	}
 
 	/**
@@ -97,10 +97,9 @@ public class TournamentManager extends Thread {
 	public void runTournament() throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
-		logger = new CsvLogger(format("logs/tournament-%s-%s.log.csv",
-				dateFormat.format(new Date()),
-				configuration.getPartyProfileItems().get(0).getDomain().getName()
-		));
+		logger = new CsvLogger(format("log/tournament-%s-%s.log.csv",
+				dateFormat.format(new Date()), configuration
+						.getPartyProfileItems().get(0).getDomain().getName()));
 
 		logger.logLine(CsvLogger.getDefaultHeader(configuration
 				.getNumAgentsPerSession()));
@@ -135,11 +134,10 @@ public class TournamentManager extends Thread {
 			List<NegotiationParty> agentList = null; // null=bad
 
 			sessionNumber++;
-			System.out.println(format("Starting tournament %d/%d, session %d/%d",
-					tournamentNumber + 1,
-					configuration.getNumTournaments(),
-					sessionNumber,
-					totalSessions));
+			System.out.println(format(
+					"Starting tournament %d/%d, session %d/%d",
+					tournamentNumber + 1, configuration.getNumTournaments(),
+					sessionNumber, totalSessions));
 
 			logger.log(sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
@@ -161,7 +159,7 @@ public class TournamentManager extends Thread {
 
 				agentList = MediatorProtocol.getNonMediators(partyList);
 
-				System.out.println(	"Running session");
+				System.out.println("Running session");
 				if (!runSingleSession(partyList, executor)) {
 					errormessage = "ERR in session";
 				}
@@ -178,9 +176,11 @@ public class TournamentManager extends Thread {
 				}
 				logger.logLine();
 			}
-			System.out.println(errormessage != null ? "Session done." : "Session exited.");
+			System.out.println(errormessage != null ? "Session done."
+					: "Session exited.");
 			int nDone = totalSessions * tournamentNumber + sessionNumber;
-			int nRemaining = totalSessions * configuration.getNumTournaments() - nDone;
+			int nRemaining = totalSessions * configuration.getNumTournaments()
+					- nDone;
 			System.out.println(format("approx. %s remaining",
 					prettyTimeSpan(estimatedTimeRemaining(nDone, nRemaining))));
 			System.out.println("");
@@ -268,8 +268,8 @@ public class TournamentManager extends Thread {
 				double runTime = session.getRuntimeInSeconds();
 				List<NegotiationParty> agentList = MediatorProtocol
 						.getNonMediators(parties);
-				logger.logLine(CsvLogger.getDefaultSessionLog(session, protocol,
-						agentList, runTime, configuration));
+				logger.logLine(CsvLogger.getDefaultSessionLog(session,
+						protocol, agentList, runTime, configuration));
 				return true;
 			} catch (Error e) {
 				throw new AnalysisException(
@@ -336,8 +336,7 @@ public class TournamentManager extends Thread {
 	private static final int HOUR = 3600;
 	private static final int MINUTE = 60;
 
-	private String prettyTimeSpan(double nanoTime)
-	{
+	private String prettyTimeSpan(double nanoTime) {
 		int t = (int) Math.floor(nanoTime / BILLION);
 		double ms = nanoTime / BILLION - t;
 		String prettyTimeSpan = "";
@@ -347,14 +346,22 @@ public class TournamentManager extends Thread {
 		int minutes = t % DAY % HOUR / MINUTE;
 		int seconds = t % DAY % HOUR % MINUTE;
 
-		if (days == 1) 		prettyTimeSpan += format("%d day, ", days);
-		if (days > 1) 		prettyTimeSpan += format("%d days, ", days);
-		if (hours == 1) 	prettyTimeSpan += format("%d hour, ", hours);
-		if (hours > 1) 		prettyTimeSpan += format("%d hours, ", hours);
-		if (minutes == 1) 	prettyTimeSpan += format("%d minute, ", minutes);
-		if (minutes > 1) 	prettyTimeSpan += format("%d minutes, ", minutes);
-		if (seconds == 1)   prettyTimeSpan += format("%d second", seconds);
-		else				prettyTimeSpan += format("%d seconds", seconds);
+		if (days == 1)
+			prettyTimeSpan += format("%d day, ", days);
+		if (days > 1)
+			prettyTimeSpan += format("%d days, ", days);
+		if (hours == 1)
+			prettyTimeSpan += format("%d hour, ", hours);
+		if (hours > 1)
+			prettyTimeSpan += format("%d hours, ", hours);
+		if (minutes == 1)
+			prettyTimeSpan += format("%d minute, ", minutes);
+		if (minutes > 1)
+			prettyTimeSpan += format("%d minutes, ", minutes);
+		if (seconds == 1)
+			prettyTimeSpan += format("%d second", seconds);
+		else
+			prettyTimeSpan += format("%d seconds", seconds);
 
 		return prettyTimeSpan;
 	}
@@ -364,12 +371,13 @@ public class TournamentManager extends Thread {
 	 *
 	 * @return estimation of time remaining in nano seconds
 	 */
-	private double estimatedTimeRemaining(int nSessionsDone, int nSessionsRemaining)
-	{
+	private double estimatedTimeRemaining(int nSessionsDone,
+			int nSessionsRemaining) {
 		long now = System.nanoTime() - start;
-		double res = nSessionsRemaining * now / (double)nSessionsDone;
+		double res = nSessionsRemaining * now / (double) nSessionsDone;
 		return res;
 
-//		return nSessionsRemaining * (System.nanoTime() / start) / (double)nSessionsDone;
+		// return nSessionsRemaining * (System.nanoTime() / start) /
+		// (double)nSessionsDone;
 	}
 }
