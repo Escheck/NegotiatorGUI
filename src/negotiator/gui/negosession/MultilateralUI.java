@@ -390,6 +390,9 @@ public class MultilateralUI extends JPanel {
 
 			final TournamentManager manager = new TournamentManager(
 					new Configuration(config));
+
+			manager.addEventListener(progressUI);
+
 			manager.start(); // runs the manager thread async
 			System.out.println("Negotiation started successfully");
 
