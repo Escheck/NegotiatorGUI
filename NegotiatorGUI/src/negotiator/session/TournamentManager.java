@@ -5,10 +5,7 @@ import static java.lang.String.format;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +20,7 @@ import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
+import negotiator.gui.progress.MultipartyNegoEventLogger;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
@@ -42,11 +40,6 @@ public class TournamentManager extends Thread {
 	 * Holds the configuration used by this tournament manager
 	 */
 	private Configuration configuration;
-
-	/**
-	 * Logger for the results
-	 */
-	private CsvLogger logger;
 
 	/**
 	 * Used to silence and restore console output for agents
@@ -96,6 +89,12 @@ public class TournamentManager extends Thread {
 		}
 	}
 
+	/**
+	 * Notify all listeners of given LogMessageEvent.
+	 * 
+	 * @param evt
+	 *            event to report.
+	 */
 	public void notifyMessageEvent(LogMessageEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
 			try {
@@ -104,6 +103,17 @@ public class TournamentManager extends Thread {
 				e.printStackTrace(); // we can't do much here if handler fails.
 			}
 		}
+	}
+
+	/**
+	 * notify given string message to listeners.
+	 * 
+	 * @param message
+	 *            the message to send.
+	 */
+	public void notifyMessageEvent(String message) {
+		notifyMessageEvent(new LogMessageEvent(this, "TournamentManager",
+				message));
 	}
 
 	public void notifyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
@@ -146,14 +156,15 @@ public class TournamentManager extends Thread {
 	 * @throws Exception
 	 */
 	public void runTournament() throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
-		logger = new CsvLogger(format("log/tournament-%s-%s.log.csv",
-				dateFormat.format(new Date()), configuration
-						.getPartyProfileItems().get(0).getDomain().getName()));
-
-		logger.logLine(CsvLogger.getDefaultHeader(configuration
-				.getNumAgentsPerSession()));
+		/**
+		 * FIXME in all other cases, the logging is done by the GUI. We may have
+		 * to rethink why this is here.
+		 */
+		MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
+				configuration.getPartyProfileItems().get(0).getDomain()
+						.getName(), configuration.getNumAgentsPerSession());
+		addEventListener(myLogger);
 
 		for (int tournamentNumber = 0; tournamentNumber < configuration
 				.getNumTournaments(); tournamentNumber++) {
@@ -190,7 +201,7 @@ public class TournamentManager extends Thread {
 					tournamentNumber + 1, configuration.getNumTournaments(),
 					sessionNumber, totalSessions));
 
-			logger.log(sessionNumber);
+			StringBuilder logline = new StringBuilder("" + sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getSession().getDeadlines()
 							.getTimeOrDefaultTimeout());
@@ -218,14 +229,14 @@ public class TournamentManager extends Thread {
 
 			// we need to log anyway, even if there is no agentList.
 			if (errormessage != null) {
-				logger.log(errormessage);
+				logline.append(errormessage);
 				for (int i = 0; i < 11; i++)
-					logger.log("");
+					logline.append(""); // FIXME what's this doing??
 				if (agentList != null) {
 					for (NegotiationParty agent : agentList)
-						logger.log(agent.getPartyId().toString());
+						logline.append(agent.getPartyId().toString());
 				}
-				logger.logLine();
+				notifyMessageEvent(logline.toString());
 			}
 			System.out.println(errormessage != null ? "Session done."
 					: "Session exited.");
@@ -319,8 +330,9 @@ public class TournamentManager extends Thread {
 				double runTime = session.getRuntimeInSeconds();
 				List<NegotiationParty> agentList = MediatorProtocol
 						.getNonMediators(parties);
-				logger.logLine(CsvLogger.getDefaultSessionLog(session,
+				notifyMessageEvent(CsvLogger.getDefaultSessionLog(session,
 						protocol, agentList, runTime, configuration));
+
 				return true;
 			} catch (Error e) {
 				throw new AnalysisException(
