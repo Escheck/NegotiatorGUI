@@ -15,15 +15,17 @@ import negotiator.events.MultipartyNegotiationSessionEvent;
 public class MultiPartyTournamentProgressUI extends Panel implements
 		MultipartyNegotiationEventListener {
 
-	JTextArea text = new JTextArea();
-	JScrollPane scrollpane = new JScrollPane(text);
+	JTextArea textArea = new JTextArea();
+	StringBuilder text = new StringBuilder(
+			"Multiparty Tournament in progress...");
+	JScrollPane scrollpane = new JScrollPane(textArea);
 
 	public MultiPartyTournamentProgressUI() {
 		setLayout(new BorderLayout());
 
 		// init the table model.
 		// init the progress panel with progress table
-		text.setText("Multiparty Tournament in progress...");
+		textArea.setText(text.toString());
 		add(scrollpane, BorderLayout.CENTER);
 	}
 
@@ -31,21 +33,24 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 
 	@Override
 	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-		// TODO Auto-generated method stub
-
+		// quick hack, needs table-ization.
+		text.append(evt.toString());
+		textArea.setText(text.toString());
 	}
 
 	@Override
 	public void handleLogMessageEvent(LogMessageEvent evt) {
-		// TODO Auto-generated method stub
-
+		// quick hack, needs table-ization.
+		text.append(evt.getMessage());
+		textArea.setText(text.toString());
 	}
 
 	@Override
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
-		// TODO Auto-generated method stub
-
+		// quick hack, needs table-ization.
+		text.append(evt.toString());
+		textArea.setText(text.toString());
 	}
 
 }
