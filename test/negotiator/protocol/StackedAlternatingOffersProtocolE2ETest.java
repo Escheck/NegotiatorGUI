@@ -26,6 +26,9 @@ import org.junit.Test;
 
 public class StackedAlternatingOffersProtocolE2ETest {
 
+	private static final String BID_PATTERN = "( Offer: Bid [a: .., b: .., c: .., d: .., e: .., f: .., g: .., h: .. , ] ) ";
+	private static final String ACCEPT_PATTERN = "( Accept )";
+
 	@Test
 	public void runMultiPartyNego1() throws Exception {
 
@@ -75,23 +78,13 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				listener.getEvents().size() - 1);
 		assertNotNull(lastEvent.getAgreement());
 
-		// (Offer: Bid[a: .., b: .., c: .., d: .., e: .., f: .., g: .., h: ..,
-		// ])
-		// but with proper escape chars, flexibility of spacing etc.
-		// String someOffer =
-		// "\\s*\\(\\s*Offer:\\s*Bid\\[a\\:\\s*..,\\s*b\\:\\s*..,\\s*c\\:\\s*..,\\s*d\\:\\s*..,\\s*e\\:\\s*..\\s*f\\:\\s*..,\\s*g\\:\\s*..,\\s*h\\:\\s*..,\\s*\\]\\s*\\)\\s*";
-
-		String someOffer = "\\s*\\(Offer\\:\\s*Bid\\[a\\:\\s*..,\\s*b\\:\\s*..,\\s*c\\:\\s*..,\\s*d\\:\\s*..,\\s*e\\:\\s*..,\\s*f\\:\\s*..,\\s*g\\:\\s*..,\\s*h\\:\\s*..,\\s*\\]\\)";
 		// check the logs file. It should be of this form
 		// Starting negotiation session.
 		// SOME NUMBER OF THIS {
 		// Round N
-		// Turn 1: Boulware#.* (Offer: Bid[a: .., b: .., c: .., d: .., e: .., f:
-		// .., g: .., h: .., ])
-		// Turn 2: Conceder#.* (Offer: Bid[a: .., b: .., c: .., d: .., e: .., f:
-		// .., g: .., h: .., ])
-		// Turn 3: Random#.* (Offer: Bid[a: .., b: .., c: .., d: .., e: .., f:
-		// .., g: .., h: .., ])
+		// Turn 1: Boulware#.* offerOrAccept
+		// Turn 2: Conceder#.* offerOrAccept
+		// Turn 3: Random#.* offerOrAccept
 		// }
 		// Round .*
 		// Turn 1: .* (Accept)
@@ -100,19 +93,39 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		// .., h: .., ]
 		// Finished negotiation session in .*s
 		// SUMMARY TEXT LINE
-		assertMatch("Starting .* session.*", listener.getLogs().get(0));
+
+		int line = 0;
+
+		assertMatch("Starting .* session.*", listener.getLogs().get(line++));
 
 		int rounds = (listener.getLogs().size() - 7) / 4;
 		for (int n = 0; n < rounds; n++) {
 			System.out.println("check round " + (n + 1));
-			assertMatch("Round " + (n + 1), listener.getLogs().get(4 * n + 1));
-			assertMatch("Turn 1:\\s*Boulware\\S*" + someOffer, listener
-					.getLogs().get(4 * n + 2));
-			assertMatch("Turn 2:\\s*Conceder\\S*" + someOffer, listener
-					.getLogs().get(4 * n + 3));
-			assertMatch("Turn 3:\\s*Random\\S*" + someOffer, listener.getLogs()
-					.get(4 * n + 4));
+			assertMatch("Round " + (n + 1), listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 1: Boulware\\S* ",
+					listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 2: Conceder\\S* ",
+					listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 3: Random\\S* ",
+					listener.getLogs().get(line++));
 		}
+
+	}
+
+	enum BidType {
+		OFFER, ACCEPT
+	};
+
+	private BidType getType(String preamble, String text) {
+		if (match(preamble + BID_PATTERN, text)) {
+			return BidType.OFFER;
+		}
+		if (match(preamble + ACCEPT_PATTERN, text)) {
+			return BidType.ACCEPT;
+		}
+		throw new IllegalArgumentException("text " + text
+				+ " does not contain offer or accept");
+
 	}
 
 	/**
@@ -124,10 +137,49 @@ public class StackedAlternatingOffersProtocolE2ETest {
 	 *            the text to match
 	 */
 	private void assertMatch(String pattern, String text) {
-		if (!Pattern.matches("\\s*" + pattern, text)) {
+		if (!match(pattern, text)) {
 			assertEquals(pattern, text); // generates error text 'expected ...
 											// but found ...'
 		}
+	}
+
+	/**
+	 * check ift the text matches the pattern
+	 * 
+	 * @param pattern
+	 *            the format for the {@link Pattern}. This patter can contain
+	 *            chars like (, [ and ' ' which will be escaped before matching
+	 *            is done. '*' and '.' will not be escaped
+	 * @param text
+	 *            the text to match
+	 * @return true iff match
+	 */
+	private boolean match(String pattern, String text) {
+		return Pattern.matches(escape(pattern), text);
+	}
+
+	private String escape(String text) {
+		text = text.replaceAll(" ", "\\\\s*");
+		text = text.replaceAll("\\,", "\\\\,");
+		// notice, first arg is regexp for '('
+		text = text.replaceAll("\\(", "\\\\(");
+		// notice, first arg is regexp for ')'
+		text = text.replaceAll("\\)", "\\\\)");
+		text = text.replaceAll("\\:", "\\\\:");
+		text = text.replaceAll("\\[", "\\\\[");
+		text = text.replaceAll("\\]", "\\]");
+		return text;
+	}
+
+	/**
+	 * assert that the text is a bid.
+	 * 
+	 * @param preamble
+	 *            the expected pattern before the bid text.
+	 * @param text
+	 */
+	private void assertBidOrAccept(String preamble, String text) {
+		getType(preamble, text); // any type goes.
 	}
 
 	private class myListener implements MultipartyNegotiationEventListener {
