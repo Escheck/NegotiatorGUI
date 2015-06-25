@@ -1,0 +1,117 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1347\cocoasubrtf570
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww12600\viewh14500\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 Notes on classes added to Genius for Multilateral negotiation.\
+In this document, an overview of the system at class level of the systems involved in multilateral-negotiation.\
+\
+
+\b Protocol
+\b0  (
+\f1\fs20 negotiator.protocol
+\fs18  
+\f0\fs24 package)
+\f1\fs18 \
+
+\f0\fs24 All negotiation protocols should extend the 
+\f1\fs20 MultilateralProtocol
+\f0\fs24  interface. There is also an adapter; an abstract class with default values for the interface\'92s methods called 
+\f1\fs20 MultilateralProtocolAdapter
+\f0\fs24 . Extending this adapter makes sure that your implementation is clean.\
+\
+Please have a look at the comments in the interface and the adapter for detailed information about the used methods\
+Some example implementations: 
+\f1\fs20 StackedAlternatingOfferProtocol
+\f0\fs24 , 
+\f1\fs20 AlternatingOfferConsensusProtocol
+\f0\fs24 , 
+\f1\fs20 AlternatingOfferMajorityVotingProtocol
+\f0\fs24 , 
+\f1\fs20 MediatorFeedbackProtocol
+\f0\fs24 .
+\f1\fs18 \
+\
+
+\f0\b\fs24 Party
+\b0  (
+\f1\fs20 negotiator.party
+\fs18  
+\f0\fs24 package)\
+All negotiation parties used in the multilateral environment should extend the 
+\f1\fs20 NegotiationParty
+\f0\fs24  interface. There is also an adapter an abstract class with default values for the interface\'92s methods called 
+\f1\fs20 AbstractNegotiationParty
+\f0\fs24 . Please do not confuse this with the 
+\f1\fs20 Agent
+\f0\fs24  class, which is now only used for the legacy, bilateral negotiation. Mediators should extend the 
+\f1\fs20 Mediator
+\f0\fs24  class, which flags them as a mediator (using simple 
+\f1\fs20 instanceof
+\f0\fs24  operators)\
+\
+Please have a look at the comments in the interface and the adapter for detailed information about the used methods\
+Some example implementations: 
+\f1\fs20 BoulwareNegotiationParty
+\f0\fs24 , 
+\f1\fs20 ConcederNegotiationParty
+\f0\fs24 , 
+\f1\fs20 HillClimber
+\f0\fs24  \
+Example implementation of a mediator: 
+\f1\fs20 RandomFlippingMediator
+\f0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f1\fs18 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs24 \cf0 Session
+\b0  (
+\f1\fs20 negotiator.session
+\fs18  
+\f0\fs24 package)\
+A 
+\f1\fs20 Session
+\f0\fs24  represents a single negotiation session. A session contains the complete history of the negotiation and can be used to process the negotiation into useful data after the negotiation. The 
+\f1\fs20 Session
+\f0\fs24  object should not be made available to the party! Doing so will give the (potentially 3rd party code) access to methods manipulating the negotiation.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f1\fs20 \cf0 Session
+\f0\fs24  keeps a list of 
+\f1\fs20 Rounds
+\f0\fs24 . Each 
+\f1\fs20 Round
+\f0\fs24  object keeps a list of 
+\f1\fs20 Turn
+\f0\fs24  objects. How many turns there are in a single round is defined by the protocol. For example, the 
+\f1\fs20 StackedAlternatingOfferProtocol
+\f0\fs24  has one turn per agent in each round.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b \cf0 SessionManager 
+\b0 (
+\f1\fs20 negotiator.session
+\fs18  
+\f0\fs24 package)\
+The 
+\f1\fs20 SessionManager
+\f0\fs24  has the responsibility to run a single negotiation session. It has knowledge of the Protocol, Parties and Session and had the responsibility to update the state of the Session. It consists of a main loop: 
+\f1\fs20 Run()
+\f0\fs24 , and some helper methods.\
+\
+
+\b TournamentManager 
+\b0 (
+\f1\fs20 negotiator.session
+\fs18  
+\f0\fs24 package)\
+The 
+\f1\fs20 TournamentManager
+\f0\fs24  is only used when running with tournament settings (i.e. not the single negotiation). It has a large for-each loop that spawns a new 
+\f1\fs20 SessionManager
+\f0\fs24  for the given combinations/permutations of agents (given in the configuration file).}
