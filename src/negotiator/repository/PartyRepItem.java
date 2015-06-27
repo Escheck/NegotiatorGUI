@@ -66,6 +66,14 @@ public class PartyRepItem implements RepItem
         properties = prop;
     }
 
+    public PartyRepItem(String classPath, String protocolClassPath) {
+        this.partyName = classPath;
+        this.classPath = classPath;
+        this.description = classPath;
+        this.protocolClassPath = protocolClassPath;
+        this.properties = new ArrayList<String>();
+    }
+
     public String getProtocolClassPath()
     {
         return protocolClassPath;
