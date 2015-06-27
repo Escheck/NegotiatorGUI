@@ -220,7 +220,6 @@ public class TournamentManager extends Thread {
 			} else {
 
 				agentList = MediatorProtocol.getNonMediators(partyList);
-
 				System.out.println("Running session");
 				if (!runSingleSession(partyList, executor)) {
 					errormessage = "ERR in session";
@@ -331,7 +330,7 @@ public class TournamentManager extends Thread {
 				List<NegotiationParty> agentList = MediatorProtocol
 						.getNonMediators(parties);
 				notifyMessageEvent(CsvLogger.getDefaultSessionLog(session,
-						protocol, agentList, runTime, configuration));
+						protocol, agentList, runTime));
 
 				return true;
 			} catch (Error e) {

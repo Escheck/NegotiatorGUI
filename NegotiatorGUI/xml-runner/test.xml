@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<negotiation-runner>
+    <repetitions>100</repetitions>
+    <configuration>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <domain>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery.xml</domain>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util1.xml</profile>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util3.xml</profile>
+        <protocol>negotiator.protocol.StackedAlternatingOffersProtocol</protocol>
+        <deadline-type>time</deadline-type>
+        <deadline-value>3</deadline-value>
+    </configuration>
+    <configuration>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <domain>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery.xml</domain>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util1.xml</profile>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util3.xml</profile>
+        <protocol>negotiator.protocol.StackedAlternatingOffersProtocol</protocol>
+        <deadline-type>time</deadline-type>
+        <deadline-value>10</deadline-value>
+    </configuration>
+    <configuration>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <party>negotiator.parties.ConcederNegotiationParty</party>
+        <domain>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery.xml</domain>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util1.xml</profile>
+        <profile>file:etc/templates/ANAC2015/group3-bank_robbery/Bank_Robbery_util3.xml</profile>
+        <protocol>negotiator.protocol.StackedAlternatingOffersProtocol</protocol>
+        <deadline-type>time</deadline-type>
+        <deadline-value>60</deadline-value>
+    </configuration>
+</negotiation-runner>

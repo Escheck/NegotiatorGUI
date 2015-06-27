@@ -146,8 +146,7 @@ public class CsvLogger implements Closeable {
      */
     public static String getDefaultSessionLog(Session session, MultilateralProtocol protocol,
                                               List<NegotiationParty> parties,
-                                              double runTime,
-                                              Configuration config) throws Exception {
+                                              double runTime) throws Exception {
         List<String> values = new ArrayList<String>();
 
         try {
