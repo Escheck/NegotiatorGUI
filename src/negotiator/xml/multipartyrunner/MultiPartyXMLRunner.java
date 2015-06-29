@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MultiPartyXMLRunner {
 
+    public static final int DOTS_PER_LINE = 45; // percentages will add another 5 columns
     static PrintStream orgErr = System.err;
     static PrintStream orgOut = System.out;
 
@@ -72,41 +73,34 @@ public class MultiPartyXMLRunner {
         csvLogger.logLine(adjustedHeader);
 
         // run sessions in a loop
-        System.out.println("Running negotiations ");
         int runNumber = 0;
+        int totalRuns = xmlObj.getNumberOfRuns();
+        System.out.println(String.format("Running %d negotiations (%d per line)", totalRuns, DOTS_PER_LINE));
         useConsoleOut(false);
-        for (RunConfiguration runConfiguration : xmlObj.getRunConfigurations()) {
-            for (int i = 0; i < xmlObj.getRepetitions(); i++) {
-                try {
-                    String result = runConfiguration.run();
-                    csvLogger.logLine(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        for (RunConfiguration runConfiguration : xmlObj) {
 
-                runNumber++;
-                useConsoleOut(true);
-                System.out.print(".");
-                if (runNumber % 45 == 0) {
-                    int total = xmlObj.getRunConfigurations().size() * xmlObj.getRepetitions();
-                    int perc = (int) Math.round(100 * ((double) runNumber / (double) total));
-                    System.out.println(String.format(" %3d%%", perc));
-                }
-                useConsoleOut(false);
+            try {
+                String result = runConfiguration.run();
+                csvLogger.logLine(result);
+                printProgress(++runNumber, totalRuns);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        useConsoleOut(true);
-        while (runNumber % 45 != 0) {
-            runNumber++;
-            System.out.print(" ");
-        }
-
-        System.out.println(" 100%");
-
+        // console write system exit strings
         try {
+            useConsoleOut(true);
+            int fillerNumber = runNumber;
+            while (fillerNumber % DOTS_PER_LINE != 0) {
+                fillerNumber++;
+                System.out.print(" ");
+            }
+            if (fillerNumber != runNumber) System.out.println(" 100%");
             csvLogger.close();
         } catch (IOException e) {
             System.err.println("Unable to close fileWriter for log file");
+        } finally {
+            useConsoleOut(true);
         }
     }
 
@@ -157,6 +151,15 @@ public class MultiPartyXMLRunner {
         }
     }
 
+    private static void printProgress(int current, int total) {
+        useConsoleOut(true);
+        System.out.print(".");
+        if (current % DOTS_PER_LINE == 0) {
+            int perc = (int) Math.round(100 * ((double) current / (double) total));
+            System.out.println(String.format(" %3d%%", perc));
+        }
+        useConsoleOut(false);
+    }
 
     /**
      * Silences or restores the console output. This can be useful to suppress

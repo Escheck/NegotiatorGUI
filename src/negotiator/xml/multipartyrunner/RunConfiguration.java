@@ -15,6 +15,9 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.session.*;
 import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentGenerator;
+import org.paukov.combinatorics.Factory;
+import org.paukov.combinatorics.Generator;
+import org.paukov.combinatorics.ICombinatoricsVector;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.net.MalformedURLException;
@@ -24,6 +27,18 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 class RunConfiguration {
+
+    public RunConfiguration() {
+    }
+
+    private RunConfiguration(List<String> parties, String domain, List<String> profiles, String protocol, String deadlineType, String deadlineValue) {
+        mParties = new ArrayList<String>(parties);
+        mDomain = domain;
+        mProfiles = new ArrayList<String>(profiles);
+        mProtocol = protocol;
+        mDeadlineType = deadlineType;
+        mDeadlineValue = deadlineValue;
+    }
 
     public String run() {
 
@@ -51,6 +66,21 @@ class RunConfiguration {
         } catch (Exception e) {
             return "ERROR";
         }
+    }
+
+    /**
+     * Generates all permutatations by fixing the agents and swapping the profiles
+     *
+     * @return
+     */
+    public List<RunConfiguration> generatePermutations() {
+        final ICombinatoricsVector<String> vector = Factory.createVector(mProfiles);
+        final Generator<String> generator = Factory.createPermutationGenerator(vector);
+        final List<RunConfiguration> permutations = new ArrayList<RunConfiguration>();
+        for (ICombinatoricsVector<String> permutatedProfile : generator) {
+            permutations.add(this.copy(permutatedProfile.getVector()));
+        }
+        return permutations;
     }
 
     private void checkSizes() {
@@ -130,4 +160,8 @@ class RunConfiguration {
 
     @XmlElement(name = "deadline-value")
     private String mDeadlineValue;
+
+    private RunConfiguration copy(List<String> profiles) {
+        return new RunConfiguration(mParties, mDomain, profiles, mProtocol, mDeadlineType, mDeadlineValue);
+    }
 }
