@@ -398,7 +398,7 @@ public class TournamentManager extends Thread {
 	private static final int HOUR = 3600;
 	private static final int MINUTE = 60;
 
-	private String prettyTimeSpan(double nanoTime) {
+	public static String prettyTimeSpan(double nanoTime) {
 		int t = (int) Math.floor(nanoTime / BILLION);
 		double ms = nanoTime / BILLION - t;
 		String prettyTimeSpan = "";
