@@ -11,6 +11,7 @@ import negotiator.logging.CsvLogger;
 import negotiator.qualitymeasures.CSVlogger;
 import negotiator.session.InvalidActionError;
 import negotiator.session.SessionManager;
+import negotiator.session.TournamentManager;
 import org.jfree.data.io.CSV;
 
 import javax.xml.bind.JAXBContext;
@@ -31,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MultiPartyXMLRunner {
 
-    public static final int DOTS_PER_LINE = 45; // percentages will add another 5 columns
+    public static final int DOTS_PER_LINE = 50; // percentages will add another 5 columns
     static PrintStream orgErr = System.err;
     static PrintStream orgOut = System.out;
 
@@ -74,6 +75,7 @@ public class MultiPartyXMLRunner {
 
         // run sessions in a loop
         int runNumber = 0;
+        long start = System.nanoTime();
         int totalRuns = xmlObj.getNumberOfRuns();
         System.out.println(String.format("Running %d negotiations (%d per line)", totalRuns, DOTS_PER_LINE));
         useConsoleOut(false);
@@ -87,6 +89,8 @@ public class MultiPartyXMLRunner {
                 e.printStackTrace();
             }
         }
+        long stop = System.nanoTime();
+
         // console write system exit strings
         try {
             useConsoleOut(true);
@@ -96,6 +100,7 @@ public class MultiPartyXMLRunner {
                 System.out.print(" ");
             }
             if (fillerNumber != runNumber) System.out.println(" 100%");
+            System.out.println(String.format("Negotiations took %s to complete.", TournamentManager.prettyTimeSpan(stop-start)));
             csvLogger.close();
         } catch (IOException e) {
             System.err.println("Unable to close fileWriter for log file");
