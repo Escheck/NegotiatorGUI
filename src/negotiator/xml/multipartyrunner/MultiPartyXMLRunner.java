@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
+import static java.lang.Math.pow;
+
 
 public class MultiPartyXMLRunner {
 
@@ -40,7 +42,7 @@ public class MultiPartyXMLRunner {
 
         // repl
         System.out.println("MultipartyXMLRunner Commandline tool 1.0");
-        String fileName = null;
+        String fileName;
         if (args.length != 0) {
             fileName = args[0];
             System.out.println("provided filename as argument: " + fileName);
@@ -80,7 +82,7 @@ public class MultiPartyXMLRunner {
         System.out.println(String.format("Running %d negotiations (%d per line)", totalRuns, DOTS_PER_LINE));
         useConsoleOut(false);
         for (RunConfiguration runConfiguration : xmlObj) {
-
+            useConsoleOut(true);
             try {
                 String result = runConfiguration.run();
                 csvLogger.logLine(result);
@@ -133,6 +135,7 @@ public class MultiPartyXMLRunner {
             }
             Scanner sc = new Scanner(System.in);
             filename = "xml-runner/" + sc.nextLine();
+            sc.close();
             f = new File(filename);
         }
         return filename;
