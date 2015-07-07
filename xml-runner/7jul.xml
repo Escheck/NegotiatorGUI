@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<negotiation-runner>
+
+    <!-- General settings -->
+    <repetitions>10</repetitions>
+    <permutations>true</permutations>
+
+    <!-- group 1 domain -->
+    <configuration>
+        <party>negotiator.parties.NonDeterministicConcederNegotiationParty</party>
+        <party>negotiator.parties.NonDeterministicConcederNegotiationParty</party>
+        <party>negotiator.parties.NonDeterministicConcederNegotiationParty</party>
+        <domain>file:etc/templates/ANAC2015/group1-university/University.xml</domain>
+        <profile>file:etc/templates/ANAC2015/group1-university/University_util1.xml</profile>
+        <profile>file:etc/templates/ANAC2015/group1-university/University_util2.xml</profile>
+        <profile>file:etc/templates/ANAC2015/group1-university/University_util3.xml</profile>
+        <protocol>negotiator.protocol.StackedAlternatingOffersProtocol</protocol>
+        <deadline-type>Time</deadline-type>
+        <deadline-value>180</deadline-value>
+    </configuration>
+</negotiation-runner>

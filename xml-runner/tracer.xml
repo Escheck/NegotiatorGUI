@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<negotiation-runner>
+
+    <!-- General settings -->
+    <repetitions>3</repetitions>
+    <permutations>false</permutations>
+
+    <!-- negotiation configuration -->
+    <configuration>
+        <party>negotiator.parties.TracerParty</party>
+        <party>negotiator.parties.NonDeterministicConcederNegotiationParty</party>
+        <party>negotiator.parties.NonDeterministicConcederNegotiationParty</party>
+        <domain>file:etc/templates/partydomain/party_domain.xml</domain>
+        <profile>file:etc/templates/partydomain/party1_utility.xml</profile>
+        <profile>file:etc/templates/partydomain/party2_utility.xml</profile>
+        <profile>file:etc/templates/partydomain/party3_utility.xml</profile>
+        <protocol>negotiator.protocol.StackedAlternatingOffersProtocol</protocol>
+        <deadline-type>Round</deadline-type>
+        <deadline-value>10</deadline-value>
+    </configuration>
+</negotiation-runner>

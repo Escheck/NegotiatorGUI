@@ -19,6 +19,10 @@
 				classPath="negotiator.parties.RandomCounterOfferNegotiationParty"
 				partyName="Random party" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol">
 			</partyRepItem>
+			<partyRepItem description="Non-deterministic conceder"
+				  classPath="negotiator.parties.NonDeterministicConcederNegotiationParty"
+				  partyName="NDConceder" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol">
+			</partyRepItem>
 
 			<!-- ANAC2015 agents -->
 			<partyRepItem description="1. Phoenix"
