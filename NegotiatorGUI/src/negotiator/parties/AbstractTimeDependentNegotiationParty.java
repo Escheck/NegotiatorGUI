@@ -14,9 +14,9 @@ import negotiator.actions.NoAction;
 import negotiator.actions.Offer;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
+import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.utility.UtilitySpace;
-import agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded.SortedOutcomeSpace;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1]. Adapted by Mark
@@ -54,8 +54,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	 */
 	@Override
 	public Action chooseAction(List<Class> possibleActions) {
-		Bid nextBid = outcomeSpace.getBidNearUtility(getTargetUtility())
-				.getBid();
+		Bid nextBid = getNextBid();
 		double lastUtil = lastBid != null ? utilitySpace
 				.getUtilityWithDiscount(lastBid, timeline) : 0;
 		double nextUtil = nextBid != null ? utilitySpace
@@ -78,6 +77,13 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 		// default action
 		else
 			return new NoAction(getPartyId());
+	}
+
+	/**
+	 * Get the next bid we should do
+	 */
+	protected Bid getNextBid() {
+		return outcomeSpace.getBidNearUtility(getTargetUtility()).getBid();
 	}
 
 	/**
