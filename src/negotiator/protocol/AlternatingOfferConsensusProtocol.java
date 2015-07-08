@@ -137,12 +137,7 @@ public class AlternatingOfferConsensusProtocol extends
 		Offer acceptedOffer = acceptedOffer(thisRound, prevRound);
 
 		// if null, we are not finished, otherwise we are
-		if (acceptedOffer == null) {
-			return false;
-		} else {
-			System.out.println("Accepted offer: " + acceptedOffer);
-			return true;
-		}
+		return acceptedOffer != null;
 	}
 
 	/**
