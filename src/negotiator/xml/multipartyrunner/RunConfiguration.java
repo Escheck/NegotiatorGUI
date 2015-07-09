@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static java.lang.Math.pow;
+
 class RunConfiguration {
 
     public RunConfiguration() {
@@ -50,11 +52,12 @@ class RunConfiguration {
         SessionManager sessionManager = new SessionManager(parties, protocol, session, executor);
 
         try {
+            long start = System.nanoTime();
             sessionManager.run();
-            long timeUsedInMs = deadline.getTimeOrDefaultTimeout() * 1000 - executor.getRemainingTimeMs();
+            long stop = System.nanoTime();
             return mProtocol
                     + CsvLogger.DELIMITER
-                    + CsvLogger.getDefaultSessionLog(session, protocol, parties, timeUsedInMs / 1000D);
+                    + CsvLogger.getDefaultSessionLog(session, protocol, parties, (stop - start) / pow(10, 9));
         } catch (InterruptedException e) {
             return "TIMEOUT";
         } catch (ExecutionException e) {
