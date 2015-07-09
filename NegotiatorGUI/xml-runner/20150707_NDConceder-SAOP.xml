@@ -2,8 +2,8 @@
 <negotiation-runner>
 
     <!-- General settings -->
-    <repetitions>1</repetitions>
-    <permutations>false</permutations>
+    <repetitions>10</repetitions>
+    <permutations>true</permutations>
 
     <!-- collaborative domains -->
     <configuration>
