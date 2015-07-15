@@ -38,25 +38,16 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 	}
 
 	@Override
-	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-		// quick hack, needs table-ization.
-		addLine(evt.toString());
-	}
-
-	@Override
-	public void handleMultipartyNegotiationEvent(
-			MultipartyNegotiationSessionEvent evt) {
-		// quick hack, needs table-ization.
-		addLine(evt.toString());
-	}
-
-	@Override
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
 			addLine(((LogMessageEvent) e).getMessage());
+		} else if (e instanceof MultipartyNegotiationOfferEvent) {
+			addLine(((MultipartyNegotiationOfferEvent) e).toString());
 
+		} else if (e instanceof MultipartyNegotiationSessionEvent) {
+			// quick hack, needs table-ization.
+			addLine(((MultipartyNegotiationSessionEvent) e).toString());
 		}
 
 	}
-
 }

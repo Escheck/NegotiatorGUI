@@ -7,8 +7,6 @@ import java.io.PrintStream;
 
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
-import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
 
 /**
@@ -24,17 +22,6 @@ public class FileLogger implements MultipartyNegotiationEventListener,
 	}
 
 	@Override
-	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-		// not used
-	}
-
-	@Override
-	public void handleMultipartyNegotiationEvent(
-			MultipartyNegotiationSessionEvent evt) {
-		// not used
-	}
-
-	@Override
 	public void close() throws IOException {
 		ps.close();
 	}
@@ -44,6 +31,7 @@ public class FileLogger implements MultipartyNegotiationEventListener,
 		if (e instanceof LogMessageEvent) {
 			ps.println(((LogMessageEvent) e).getMessage());
 		}
-
+		// MultipartyNegotiationOfferEvent ignored.
+		// MultipartyNegotiationSessionEvent ignored.
 	}
 }

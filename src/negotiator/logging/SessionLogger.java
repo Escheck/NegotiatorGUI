@@ -113,7 +113,7 @@ public class SessionLogger {
 					owner, round, turn, time, action, utils, agree);
 
 			for (MultipartyNegotiationEventListener listener : listeners)
-				listener.handleOfferActionEvent(event);
+				listener.handleEvent(event);
 		}
 	}
 
@@ -127,8 +127,8 @@ public class SessionLogger {
 	 */
 	public void logSession(Session session, Bid agreement) {
 		for (MultipartyNegotiationEventListener listener : listeners)
-			listener.handleMultipartyNegotiationEvent(new MultipartyNegotiationSessionEvent(
-					owner, session, agreement));
+			listener.handleEvent(new MultipartyNegotiationSessionEvent(owner,
+					session, agreement));
 	}
 
 }
