@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import negotiator.MultipartyNegotiationEventListener;
+import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
 
@@ -30,6 +31,9 @@ public class FileLogger implements MultipartyNegotiationEventListener,
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
 			ps.println(((LogMessageEvent) e).getMessage());
+		}
+		if (e instanceof AgreementEvent) {
+			ps.println(e.toString());
 		}
 		// MultipartyNegotiationOfferEvent ignored.
 		// MultipartyNegotiationSessionEvent ignored.
