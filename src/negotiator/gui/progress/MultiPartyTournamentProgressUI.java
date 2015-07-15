@@ -10,6 +10,7 @@ import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
 
 @SuppressWarnings("serial")
 public class MultiPartyTournamentProgressUI extends Panel implements
@@ -53,6 +54,15 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 			MultipartyNegotiationSessionEvent evt) {
 		// quick hack, needs table-ization.
 		addLine(evt.toString());
+	}
+
+	@Override
+	public void handleEvent(NegotiationEvent e) {
+		if (e instanceof LogMessageEvent) {
+			addLine(((LogMessageEvent) e).getMessage());
+
+		}
+
 	}
 
 }
