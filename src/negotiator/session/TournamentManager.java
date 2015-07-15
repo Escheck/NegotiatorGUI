@@ -98,7 +98,7 @@ public class TournamentManager extends Thread {
 	public void notifyMessageEvent(LogMessageEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
 			try {
-				l.handleLogMessageEvent(evt);
+				l.handleEvent(evt);
 			} catch (Throwable e) {
 				e.printStackTrace(); // we can't do much here if handler fails.
 			}

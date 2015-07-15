@@ -121,12 +121,6 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		}
 
 		@Override
-		public void handleLogMessageEvent(LogMessageEvent evt) {
-			logs.add(evt.getMessage());
-			System.out.println(evt.getMessage());
-		}
-
-		@Override
 		public void handleMultipartyNegotiationEvent(
 				MultipartyNegotiationSessionEvent evt) {
 			events.add(evt);

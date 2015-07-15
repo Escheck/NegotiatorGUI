@@ -295,8 +295,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 				evt.getPartyUtilities());
 	}
 
-	@Override
-	public void handleLogMessageEvent(LogMessageEvent evt) {
+	private void handleLogMessageEvent(LogMessageEvent evt) {
 		textOutput.append(evt.getMessage() + "\n");
 		if (textOutput.getLineCount() > MAX_TEXT_OUTPUT) {
 			try {
