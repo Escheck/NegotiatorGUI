@@ -14,21 +14,25 @@ import java.util.concurrent.TimeoutException;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.Timeline;
 import negotiator.config.Configuration;
+import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
+import negotiator.events.SessionStartedEvent;
+import negotiator.events.TournamentEndedEvent;
+import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.gui.progress.MultipartyNegoEventLogger;
-import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.tournament.TournamentGenerator;
 
 /**
- * Manages the tournament and makes sure that the
+ * Manages a multi-lateral tournament and makes sure that the
  * {@link negotiator.session.SessionManager} are instantiated. It uses the
  * configuration object which is created by the user interface and extracts
  * individual session from configuration object which it wil pass on to the
@@ -90,6 +94,21 @@ public class TournamentManager extends Thread {
 	}
 
 	/**
+	 * Notify all our liteners of a negotiation event that occured.
+	 * 
+	 * @param evt
+	 */
+	private void notifyEvent(NegotiationEvent evt) {
+		for (MultipartyNegotiationEventListener l : listeners) {
+			try {
+				l.handleEvent(evt);
+			} catch (Throwable e) {
+				e.printStackTrace(); // we can't do much here if handler fails.
+			}
+		}
+	}
+
+	/**
 	 * Notify all listeners of given LogMessageEvent.
 	 * 
 	 * @param evt
@@ -111,10 +130,10 @@ public class TournamentManager extends Thread {
 	 * @param message
 	 *            the message to send.
 	 */
-	public void notifyMessageEvent(String message) {
-		notifyMessageEvent(new LogMessageEvent(this, "TournamentManager",
-				message));
-	}
+	// public void notifyMessageEvent(String message) {
+	// notifyMessageEvent(new LogMessageEvent(this, "TournamentManager",
+	// message));
+	// }
 
 	public void notifyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
@@ -189,6 +208,9 @@ public class TournamentManager extends Thread {
 			final TournamentGenerator generator) {
 		int sessionNumber = 0;
 		int totalSessions = configuration.numSessionsPerTournament();
+		notifyEvent(new TournamentStartedEvent(this, tournamentNumber,
+				totalSessions));
+
 		while (generator.hasNext()) {
 
 			String errormessage = null; // null=all OK.
@@ -196,6 +218,9 @@ public class TournamentManager extends Thread {
 			List<NegotiationParty> agentList = null; // null=bad
 
 			sessionNumber++;
+			notifyEvent(new SessionStartedEvent(this, sessionNumber,
+					totalSessions));
+
 			System.out.println(format(
 					"Starting tournament %d/%d, session %d/%d",
 					tournamentNumber + 1, configuration.getNumTournaments(),
@@ -218,7 +243,6 @@ public class TournamentManager extends Thread {
 				System.out
 						.println("Error on initializing one or more of the agent");
 			} else {
-
 				agentList = MediatorProtocol.getNonMediators(partyList);
 				System.out.println("Running session");
 				if (!runSingleSession(partyList, executor)) {
@@ -235,7 +259,10 @@ public class TournamentManager extends Thread {
 					for (NegotiationParty agent : agentList)
 						logline.append(agent.getPartyId().toString());
 				}
-				notifyMessageEvent(logline.toString());
+
+				// FIXME
+				notifyEvent(new LogMessageEvent(this, this.toString(),
+						logline.toString()));
 			}
 			System.out.println(errormessage != null ? "Session done."
 					: "Session exited.");
@@ -247,6 +274,7 @@ public class TournamentManager extends Thread {
 			System.out.println("");
 
 		}
+		notifyEvent(new TournamentEndedEvent(this));
 	}
 
 	/**
@@ -329,8 +357,8 @@ public class TournamentManager extends Thread {
 				double runTime = session.getRuntimeInSeconds();
 				List<NegotiationParty> agentList = MediatorProtocol
 						.getNonMediators(parties);
-				notifyMessageEvent(CsvLogger.getDefaultSessionLog(session,
-						protocol, agentList, runTime));
+				notifyEvent(new AgreementEvent(this, session, protocol,
+						agentList, runTime));
 
 				return true;
 			} catch (Error e) {
