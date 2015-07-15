@@ -19,6 +19,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
+import negotiator.events.SessionFailedEvent;
 import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 import negotiator.events.TournamentStartedEvent;
@@ -221,49 +222,27 @@ public class TournamentManager extends Thread {
 			notifyEvent(new SessionStartedEvent(this, sessionNumber,
 					totalSessions));
 
-			System.out.println(format(
-					"Starting tournament %d/%d, session %d/%d",
-					tournamentNumber + 1, configuration.getNumTournaments(),
-					sessionNumber, totalSessions));
-
 			StringBuilder logline = new StringBuilder("" + sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getSession().getDeadlines()
 							.getTimeOrDefaultTimeout());
-
 			try {
 				partyList = getPartyList(executor, generator);
 			} catch (TimeoutException e) {
 				System.err.println("failed to construct agent due to timeout:"
 						+ e.getMessage());
+				notifyEvent(new SessionFailedEvent(this, e,
+						"failed to construct agent due to timeout"));
+				continue; // do not run any further if we don't have the agents.
 			}
 
-			if (partyList == null) {
-				errormessage = "ERR in init";
-				System.out
-						.println("Error on initializing one or more of the agent");
-			} else {
-				agentList = MediatorProtocol.getNonMediators(partyList);
-				System.out.println("Running session");
-				if (!runSingleSession(partyList, executor)) {
-					errormessage = "ERR in session";
-				}
+			agentList = MediatorProtocol.getNonMediators(partyList);
+			if (!runSingleSession(partyList, executor)) {
+				notifyEvent(new SessionFailedEvent(this, null,
+						"failure while running session"));
+				continue;
 			}
 
-			// we need to log anyway, even if there is no agentList.
-			if (errormessage != null) {
-				logline.append(errormessage);
-				for (int i = 0; i < 11; i++)
-					logline.append(""); // FIXME what's this doing??
-				if (agentList != null) {
-					for (NegotiationParty agent : agentList)
-						logline.append(agent.getPartyId().toString());
-				}
-
-				// FIXME
-				notifyEvent(new LogMessageEvent(this, this.toString(),
-						logline.toString()));
-			}
 			System.out.println(errormessage != null ? "Session done."
 					: "Session exited.");
 			int nDone = totalSessions * tournamentNumber + sessionNumber;

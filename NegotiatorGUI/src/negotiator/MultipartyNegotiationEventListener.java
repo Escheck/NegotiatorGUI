@@ -6,16 +6,10 @@ import negotiator.events.NegotiationEvent;
  * implement this class in order to subscribe with the NegotiationManager to get
  * callback on handleEvent().
  * 
- * @author wouter
+ * @author W.Pasman
  *
  */
 public interface MultipartyNegotiationEventListener {
-	// public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt);
-
-	// public void handleLogMessageEvent(LogMessageEvent evt);
-
-	// public void handleMultipartyNegotiationEvent(
-	// MultipartyNegotiationSessionEvent evt);
 
 	/**
 	 * IMPORTANT: in handleEvent, do not more than just storing the event and

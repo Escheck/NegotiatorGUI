@@ -2,18 +2,21 @@ package negotiator.gui.progress;
 
 import java.awt.BorderLayout;
 import java.awt.Panel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.AgreementEvent;
+import negotiator.events.AgreementEvent.Value;
 import negotiator.events.LogMessageEvent;
-import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
@@ -22,40 +25,53 @@ import negotiator.events.TournamentEndedEvent;
 public class MultiPartyTournamentProgressUI extends Panel implements
 		MultipartyNegotiationEventListener {
 
-	JTextArea textArea = new JTextArea();
-	StringBuilder text = new StringBuilder();
-	JScrollPane scrollpane = new JScrollPane(textArea);
+	// JTextArea textArea = new JTextArea();
+	// StringBuilder text = new StringBuilder();
 	Progress progress = new Progress();
 
-	public MultiPartyTournamentProgressUI() {
-		setLayout(new BorderLayout());
-		addLine("Multiparty Tournament in progress...");
+	SimpleTableModel model;
 
-		// init the table model.
-		// init the progress panel with progress table
-		textArea.setText(text.toString());
+	public MultiPartyTournamentProgressUI() {
+		init();
+
+		setLayout(new BorderLayout());
+		// addLine("Multiparty Tournament in progress...");
+
+		// textArea.setText(text.toString());
 		add(progress, BorderLayout.NORTH);
-		add(scrollpane, BorderLayout.CENTER);
+
+		// table must be inside scrollpane, otherwise the headers do not show.
+		JTable resultsTable = new JTable(model);
+		resultsTable.setShowGrid(true); // no effect?
+		resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		JScrollPane tableScrollPane = new JScrollPane(resultsTable);
+
+		add(tableScrollPane, BorderLayout.CENTER);
+		// JScrollPane textScrollpane = new JScrollPane(textArea);
+		// add(textScrollpane, BorderLayout.SOUTH);
+	}
+
+	private void init() {
+		List<String> headers = new ArrayList<String>();
+		for (Value v : AgreementEvent.Value.values()) {
+			headers.add(v.getName());
+		}
+		model = new SimpleTableModel(headers);
 	}
 
 	/*************** implements MultipartyNegotiationEventListener *********************/
 
-	private void addLine(String msg) {
-		text.append(msg + "\n");
-		textArea.setText(text.toString());
-	}
+	// private void addLine(String msg) {
+	// text.append(msg + "\n");
+	// textArea.setText(text.toString());
+	// }
 
 	@Override
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
-			addLine(((LogMessageEvent) e).getMessage());
-		} else if (e instanceof MultipartyNegotiationOfferEvent) {
-			addLine(((MultipartyNegotiationOfferEvent) e).toString());
-		} else if (e instanceof MultipartyNegotiationSessionEvent) {
-			// quick hack, needs table-ization.
-			addLine(((MultipartyNegotiationSessionEvent) e).toString());
+			System.out.println(((LogMessageEvent) e).getMessage());
 		} else if (e instanceof AgreementEvent) {
-			addLine(((AgreementEvent) e).toString());
+			model.addRow(convert(((AgreementEvent) e).getValues()));
 		} else if (e instanceof TournamentEndedEvent) {
 			progress.finish();
 		} else if (e instanceof SessionStartedEvent) {
@@ -63,6 +79,22 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
 		}
 
+	}
+
+	/**
+	 * Convert a <Value,String> map to a <String,Object> map where the string is
+	 * the human readable string of that value and the Object is just the
+	 * string.
+	 * 
+	 * @param values
+	 * @return <Value,String> map
+	 */
+	private Map<String, Object> convert(Map<Value, String> values) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		for (Value v : values.keySet()) {
+			map.put(v.getName(), values.get(v));
+		}
+		return map;
 	}
 }
 
@@ -103,7 +135,6 @@ class Progress extends JPanel {
 	 */
 	public void finish() {
 		progressbar.setValue(SCALE);
-
 	}
 
 }
