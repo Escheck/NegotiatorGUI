@@ -2,6 +2,7 @@ package negotiator.events;
 
 import static java.lang.String.format;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,7 +132,7 @@ public class AgreementEvent extends NegotiationEvent {
 				"Discounted"), NUM_AGREE("#agreeing"), MINUTIL("min.util."), MAXUTIL(
 				"max.util."), DIST_PARETO("Dist. to Pareto"), DIST_NASH(
 				"Dist. to Nash"), DIST_SOCIAL_WELFARE("Dist. to Social Welfare"), AGENTS(
-				"Agents"), UTILS("Utilities"), FILES("Agent files");
+				"Agents"), UTILS("Utilities"), FILES("Utility files");
 
 		String name;
 
@@ -203,13 +204,14 @@ public class AgreementEvent extends NegotiationEvent {
 			values.put(Value.AGENTS, agentstr);
 			String utilstring = "";
 			for (double util : utils)
-				utilstring += format("%.5f", util);
+				utilstring += format("%.5f ", util);
 			values.put(Value.UTILS, utilstring);
 
 			String files = "";
-			for (NegotiationParty agent : agents)
-				files += CsvLogger.stripPath(agent.getUtilitySpace()
-						.getFileName());
+			for (NegotiationParty agent : agents) {
+				File utilfile = new File(agent.getUtilitySpace().getFileName());
+				files += utilfile.getName() + " ";
+			}
 			values.put(Value.FILES, files);
 
 		} catch (Exception e) {
