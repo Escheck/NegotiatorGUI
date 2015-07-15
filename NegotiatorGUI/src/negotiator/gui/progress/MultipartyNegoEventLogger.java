@@ -11,6 +11,7 @@ import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
 import negotiator.gui.negosession.MultiNegoSessionUI;
 import negotiator.logging.CsvLogger;
 import negotiator.session.MultipartyNegoEventLoggerData;
@@ -55,6 +56,14 @@ public class MultipartyNegoEventLogger implements
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void handleEvent(NegotiationEvent e) {
+		if (e instanceof LogMessageEvent) {
+			data.logger.logLine(((LogMessageEvent) e).getMessage());
+
+		}
 	}
 
 }

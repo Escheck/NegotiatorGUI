@@ -12,6 +12,7 @@ import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
 import negotiator.parties.NegotiationParty;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.PartyRepItem;
@@ -133,6 +134,16 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 		public List<MultipartyNegotiationSessionEvent> getEvents() {
 			return events;
+		}
+
+		@Override
+		public void handleEvent(NegotiationEvent e) {
+			if (e instanceof LogMessageEvent) {
+				logs.add(((LogMessageEvent) e).getMessage());
+				System.out.println(((LogMessageEvent) e).getMessage());
+
+			}
+
 		}
 
 	}
