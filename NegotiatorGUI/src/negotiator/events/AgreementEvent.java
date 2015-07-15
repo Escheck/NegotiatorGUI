@@ -196,7 +196,11 @@ public class AgreementEvent extends NegotiationEvent {
 					format("%.5f", analysis.getSocialWelfare()));
 
 			// enumerate agents names, utils, protocols
-			values.put(Value.AGENTS, agents.toString());
+			String agentstr = "";
+			for (NegotiationParty a : agents) {
+				agentstr += (a.getClass().getSimpleName() + " ");
+			}
+			values.put(Value.AGENTS, agentstr);
 			String utilstring = "";
 			for (double util : utils)
 				utilstring += format("%.5f", util);
