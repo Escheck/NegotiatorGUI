@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import negotiator.MultipartyNegotiationEventListener;
+import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.gui.negosession.MultiNegoSessionUI;
@@ -43,6 +44,9 @@ public class MultipartyNegoEventLogger implements
 		if (e instanceof LogMessageEvent) {
 			data.logger.logLine(((LogMessageEvent) e).getMessage());
 
+		}
+		if (e instanceof AgreementEvent) {
+			data.logger.logLine(e.toString());
 		}
 		// MultipartyNegotiationOfferEvent ignored.
 		// MultipartyNegotiationSessionEvent ignored.

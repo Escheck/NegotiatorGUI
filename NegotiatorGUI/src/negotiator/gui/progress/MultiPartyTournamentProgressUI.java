@@ -66,6 +66,10 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 	}
 }
 
+/**
+ * progress panel, shows progress bar and text n/N
+ *
+ */
 @SuppressWarnings("serial")
 class Progress extends JPanel {
 	private final int SCALE = 1000;
