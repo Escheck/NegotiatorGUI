@@ -18,6 +18,7 @@ import negotiator.events.AgreementEvent;
 import negotiator.events.AgreementEvent.Value;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
+import negotiator.events.SessionFailedEvent;
 import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 
@@ -25,8 +26,6 @@ import negotiator.events.TournamentEndedEvent;
 public class MultiPartyTournamentProgressUI extends Panel implements
 		MultipartyNegotiationEventListener {
 
-	// JTextArea textArea = new JTextArea();
-	// StringBuilder text = new StringBuilder();
 	Progress progress = new Progress();
 
 	SimpleTableModel model;
@@ -35,9 +34,7 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		init();
 
 		setLayout(new BorderLayout());
-		// addLine("Multiparty Tournament in progress...");
 
-		// textArea.setText(text.toString());
 		add(progress, BorderLayout.NORTH);
 
 		// table must be inside scrollpane, otherwise the headers do not show.
@@ -47,8 +44,6 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		JScrollPane tableScrollPane = new JScrollPane(resultsTable);
 
 		add(tableScrollPane, BorderLayout.CENTER);
-		// JScrollPane textScrollpane = new JScrollPane(textArea);
-		// add(textScrollpane, BorderLayout.SOUTH);
 	}
 
 	private void init() {
@@ -61,11 +56,6 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 
 	/*************** implements MultipartyNegotiationEventListener *********************/
 
-	// private void addLine(String msg) {
-	// text.append(msg + "\n");
-	// textArea.setText(text.toString());
-	// }
-
 	@Override
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
@@ -77,6 +67,11 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		} else if (e instanceof SessionStartedEvent) {
 			SessionStartedEvent e1 = (SessionStartedEvent) e;
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
+		} else if (e instanceof SessionFailedEvent) {
+			Map<String, Object> row = new HashMap<String, Object>();
+			row.put(AgreementEvent.Value.EXCEPTION.getName(),
+					((SessionFailedEvent) e).toString());
+			model.addRow(row);
 		}
 
 	}

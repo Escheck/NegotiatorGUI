@@ -108,7 +108,15 @@ public class AgreementEvent extends NegotiationEvent {
 	}
 
 	public String toString() {
-		return getValues().values().toString();
+		String s = "";
+		Map<Value, String> values = getValues();
+		for (Value v : Value.values()) {
+			s += ";";
+			if (values.containsKey(v)) {
+				s += values.get(v);
+			}
+		}
+		return s.substring(1); // remove the extra first delimiter
 	}
 
 	/**
@@ -136,6 +144,12 @@ public class AgreementEvent extends NegotiationEvent {
 		}
 	};
 
+	/**
+	 * Convert the agreement into a hashmap of < {@link Value}, {@link String} >
+	 * pairs.
+	 * 
+	 * @return hashmap of agreement evaluations.
+	 */
 	public Map<Value, String> getValues() {
 		Map<Value, String> values = new HashMap<AgreementEvent.Value, String>();
 
