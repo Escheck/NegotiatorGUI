@@ -287,14 +287,6 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		biddingTable.setModel(partyModel);
 	}
 
-	@Override
-	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-
-		// time will be used later
-		addRowBiddingTable(evt.getRound(), evt.getTurn(),
-				evt.getPartyUtilities());
-	}
-
 	private void handleLogMessageEvent(LogMessageEvent evt) {
 		textOutput.append(evt.getMessage() + "\n");
 		if (textOutput.getLineCount() > MAX_TEXT_OUTPUT) {
@@ -312,11 +304,17 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
 			handleLogMessageEvent((LogMessageEvent) e);
+		} else if (e instanceof MultipartyNegotiationOfferEvent) {
+			MultipartyNegotiationOfferEvent e1 = (MultipartyNegotiationOfferEvent) e;
+			// time will be used later
+			addRowBiddingTable(e1.getRound(), e1.getTurn(),
+					e1.getPartyUtilities());
+		} else if (e instanceof MultipartyNegotiationSessionEvent) {
+			handleMultipartyNegotiationEvent((MultipartyNegotiationSessionEvent) e);
 		}
 	}
 
-	@Override
-	public void handleMultipartyNegotiationEvent(
+	private void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
 		session = evt.getSession();
 		bidChart.setMaxRound(session.getRoundNumber() + 1);

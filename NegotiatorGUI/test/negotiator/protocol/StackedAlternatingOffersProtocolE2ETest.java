@@ -111,19 +111,8 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		private List<String> logs = new ArrayList<String>();
 		private List<MultipartyNegotiationSessionEvent> events = new ArrayList<MultipartyNegotiationSessionEvent>();
 
-		@Override
-		public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt) {
-			offers.add(evt);
-		}
-
 		public List<String> getLogs() {
 			return logs;
-		}
-
-		@Override
-		public void handleMultipartyNegotiationEvent(
-				MultipartyNegotiationSessionEvent evt) {
-			events.add(evt);
 		}
 
 		public List<MultipartyNegotiationSessionEvent> getEvents() {
@@ -135,11 +124,14 @@ public class StackedAlternatingOffersProtocolE2ETest {
 			if (e instanceof LogMessageEvent) {
 				logs.add(((LogMessageEvent) e).getMessage());
 				System.out.println(((LogMessageEvent) e).getMessage());
+			} else if (e instanceof MultipartyNegotiationOfferEvent) {
+				offers.add((MultipartyNegotiationOfferEvent) e);
+			} else if (e instanceof MultipartyNegotiationSessionEvent) {
+				events.add((MultipartyNegotiationSessionEvent) e);
 
 			}
 
 		}
-
 	}
 
 	/************************************************************************************************/

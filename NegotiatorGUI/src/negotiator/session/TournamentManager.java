@@ -82,7 +82,7 @@ public class TournamentManager extends Thread {
 	public void notifyOfferEvent(MultipartyNegotiationOfferEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
 			try {
-				l.handleOfferActionEvent(evt);
+				l.handleEvent(evt);
 			} catch (Throwable e) {
 				e.printStackTrace(); // we can't do much here if handler fails.
 			}
@@ -119,7 +119,7 @@ public class TournamentManager extends Thread {
 	public void notifyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
 			try {
-				l.handleMultipartyNegotiationEvent(evt);
+				l.handleEvent(evt);
 			} catch (Throwable e) {
 				e.printStackTrace(); // we can't do much here if handler fails.
 			}
