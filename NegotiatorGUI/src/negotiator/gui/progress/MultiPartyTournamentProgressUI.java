@@ -44,12 +44,6 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 	}
 
 	@Override
-	public void handleLogMessageEvent(LogMessageEvent evt) {
-		// quick hack, needs table-ization.
-		addLine(evt.getMessage());
-	}
-
-	@Override
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
 		// quick hack, needs table-ization.

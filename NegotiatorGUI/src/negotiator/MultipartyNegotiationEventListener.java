@@ -1,6 +1,5 @@
 package negotiator;
 
-import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
@@ -15,7 +14,7 @@ import negotiator.events.NegotiationEvent;
 public interface MultipartyNegotiationEventListener {
 	public void handleOfferActionEvent(MultipartyNegotiationOfferEvent evt);
 
-	public void handleLogMessageEvent(LogMessageEvent evt);
+	// public void handleLogMessageEvent(LogMessageEvent evt);
 
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt);

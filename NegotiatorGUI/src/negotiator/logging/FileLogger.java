@@ -29,11 +29,6 @@ public class FileLogger implements MultipartyNegotiationEventListener,
 	}
 
 	@Override
-	public void handleLogMessageEvent(LogMessageEvent evt) {
-		ps.println(evt.getMessage());
-	}
-
-	@Override
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
 		// not used

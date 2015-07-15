@@ -47,12 +47,6 @@ public class MultipartyNegoEventLogger implements
 	}
 
 	@Override
-	public void handleLogMessageEvent(LogMessageEvent evt) {
-		data.logger.logLine(evt.getMessage());
-
-	}
-
-	@Override
 	public void handleMultipartyNegotiationEvent(
 			MultipartyNegotiationSessionEvent evt) {
 		// TODO Auto-generated method stub
