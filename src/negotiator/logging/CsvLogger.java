@@ -119,6 +119,7 @@ public class CsvLogger implements Closeable {
 	 *            The number of non-mediator agents in this session, used to
 	 *            print correct amount of headers for the agent.
 	 * @return The header string
+	 * @deprecated see {@link AgreementEvent#getKeys(int).
 	 */
 	public static String getDefaultHeader(int numAgentsPerSession) {
 		// TODO get non-mediators.

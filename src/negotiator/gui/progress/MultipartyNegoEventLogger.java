@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import joptsimple.internal.Strings;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
@@ -36,7 +37,8 @@ public class MultipartyNegoEventLogger implements
 		data.logger = new CsvLogger(format("log/tournament-%s-%s.log.csv",
 				dateFormat.format(new Date()), name));
 
-		data.logger.logLine(CsvLogger.getDefaultHeader(numAgents));
+		data.logger
+				.logLine(Strings.join(AgreementEvent.getKeys(numAgents), ";"));
 	}
 
 	@Override
@@ -46,7 +48,10 @@ public class MultipartyNegoEventLogger implements
 
 		}
 		if (e instanceof AgreementEvent) {
-			data.logger.logLine(e.toString());
+			AgreementEvent e1 = (AgreementEvent) e;
+			data.logger.logLine(Strings.join(e1.getValuesList(e1.getFlatMap()),
+					";"));
+
 		}
 		// MultipartyNegotiationOfferEvent ignored.
 		// MultipartyNegotiationSessionEvent ignored.

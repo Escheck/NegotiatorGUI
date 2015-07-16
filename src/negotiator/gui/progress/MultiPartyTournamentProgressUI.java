@@ -15,7 +15,6 @@ import javax.swing.JTable;
 
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.AgreementEvent;
-import negotiator.events.AgreementEvent.Value;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionFailedEvent;
@@ -30,8 +29,14 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 
 	SimpleTableModel model;
 
-	public MultiPartyTournamentProgressUI() {
-		init();
+	/**
+	 * @param numParties
+	 *            The number of parties in the negotiation. Must be announced in
+	 *            advance because we need to initialize the table showing the
+	 *            results.
+	 */
+	public MultiPartyTournamentProgressUI(int numParties) {
+		init(numParties);
 
 		setLayout(new BorderLayout());
 
@@ -46,12 +51,10 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		add(tableScrollPane, BorderLayout.CENTER);
 	}
 
-	private void init() {
+	private void init(int numParties) {
 		List<String> headers = new ArrayList<String>();
-		for (Value v : AgreementEvent.Value.values()) {
-			headers.add(v.getName());
-		}
-		model = new SimpleTableModel(headers);
+
+		model = new SimpleTableModel(AgreementEvent.getKeys(numParties));
 	}
 
 	/*************** implements MultipartyNegotiationEventListener *********************/
@@ -61,35 +64,20 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		if (e instanceof LogMessageEvent) {
 			System.out.println(((LogMessageEvent) e).getMessage());
 		} else if (e instanceof AgreementEvent) {
-			model.addRow(convert(((AgreementEvent) e).getValues()));
+			AgreementEvent e1 = (AgreementEvent) e;
+			model.addRow(e1.getFlatMap());
 		} else if (e instanceof TournamentEndedEvent) {
 			progress.finish();
 		} else if (e instanceof SessionStartedEvent) {
 			SessionStartedEvent e1 = (SessionStartedEvent) e;
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
 		} else if (e instanceof SessionFailedEvent) {
-			Map<String, Object> row = new HashMap<String, Object>();
-			row.put(AgreementEvent.Value.EXCEPTION.getName(),
+			Map<String, String> row = new HashMap<String, String>();
+			row.put(AgreementEvent.Key.EXCEPTION.getName(),
 					((SessionFailedEvent) e).toString());
 			model.addRow(row);
 		}
 
-	}
-
-	/**
-	 * Convert a <Value,String> map to a <String,Object> map where the string is
-	 * the human readable string of that value and the Object is just the
-	 * string.
-	 * 
-	 * @param values
-	 * @return <Value,String> map
-	 */
-	private Map<String, Object> convert(Map<Value, String> values) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Value v : values.keySet()) {
-			map.put(v.getName(), values.get(v));
-		}
-		return map;
 	}
 }
 

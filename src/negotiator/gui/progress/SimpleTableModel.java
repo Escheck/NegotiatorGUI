@@ -22,6 +22,10 @@ public class SimpleTableModel extends AbstractTableModel {
 	private List<String> colNames = new ArrayList<String>();
 	private List<List<Object>> rows = new ArrayList<List<Object>>();
 
+	/**
+	 * @param headers
+	 *            a list of column names.
+	 */
 	public SimpleTableModel(List<String> headers) {
 		super();
 		this.colNames = headers;
@@ -29,11 +33,12 @@ public class SimpleTableModel extends AbstractTableModel {
 
 	/**
 	 * Adds a row with new values. The values from the <key,value> pairs in the
-	 * map are inserted in the correct columns given the headers
+	 * map are inserted in the correct columns given the headers. You must call
+	 * setHeaders.
 	 * 
 	 * @param map
 	 */
-	public void addRow(Map<String, Object> map) {
+	public void addRow(Map<String, String> map) {
 		List<Object> row = new ArrayList<Object>();
 		for (String key : colNames) {
 			if (map.containsKey(key)) {
