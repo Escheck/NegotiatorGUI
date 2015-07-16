@@ -394,7 +394,7 @@ public class MultilateralUI extends JPanel {
 
 			MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
 					config.getPartyProfileItems().get(0).getDomain().getName(),
-					config.getNumAgentsPerSession());
+					config.getNumAgentsPerSession(), dataModel);
 			dataModel.addTableModelListener(myLogger);
 
 			NegoGUIApp.negoGUIView.replaceTab("Multi Tour. Progr.", this,

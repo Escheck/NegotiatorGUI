@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import joptsimple.internal.Strings;
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
 import negotiator.gui.progress.DataKey;
@@ -66,80 +65,6 @@ public class AgreementEvent extends NegotiationEvent {
 		protocol = pr;
 		parties = pa;
 		runTime = time;
-	}
-
-	/**
-	 * As {@link #getValues()} but returns a flat map with string,string pairs.
-	 * The first string is the key, the second the value. All lists in the map
-	 * (see {@link #getValues()}) are converted to a separate element in the
-	 * list.
-	 * 
-	 */
-
-	public Map<String, String> getFlatMap() {
-		Map<DataKey, Object> values = getValues();
-		Map<String, String> strings = new HashMap<String, String>();
-		for (DataKey v : values.keySet()) {
-			Object data = values.get(v);
-			if (data instanceof List) {
-				int n = 1;
-				for (Object elt : (List) data) {
-					strings.put(v.getName() + " " + n++, elt.toString());
-				}
-			} else {
-				strings.put(v.getName(), data.toString());
-			}
-		}
-		return strings;
-	}
-
-	/**
-	 * Convert the values in the given {@link Map} to a fixed-order list. The
-	 * order is as in {@link #getKeys()}. keys that are in the values map but
-	 * not a know key are ignored. The list does not have to be complete.
-	 * 
-	 * For a single string you can just use {@link Strings#join(List, String)}
-	 * eg <code>Strings.join(strings, ";")</code>
-	 * 
-	 * @param values
-	 * @return
-	 */
-	public List<String> getValuesList(Map<String, String> values) {
-		List<String> string = new ArrayList<String>();
-		for (String k : getKeys(parties.size())) {
-			if (values.containsKey(k)) {
-				string.add(values.get(k).toString());
-			} else {
-				string.add("");
-			}
-		}
-		return string;
-	}
-
-	/**
-	 * returns a list of keys that can appear in the {@link HashMap} that is
-	 * returned from {@link #getValues()}. Note, the {@link DataKey}s in the map
-	 * are expanded, to have "1", "2", "3" etc behind their base key name. This
-	 * can then be used as header above tables in log files and on screen.
-	 * 
-	 * This function is static because it needs to be called before the first
-	 * negotiation happens.
-	 * 
-	 * @param numParties
-	 *            the number of parties (agents) involved in this negotiation.
-	 * @return keys for use in table headers.
-	 */
-	public static List<String> getKeys(int numParties) {
-		List<String> keys = new ArrayList<String>();
-		for (DataKey v : DataKey.values()) {
-			if (v == DataKey.AGENTS || v == DataKey.FILES || v == DataKey.UTILS) {
-				keys.addAll(v.getNames(numParties));
-			} else {
-				keys.add(v.getName());
-			}
-
-		}
-		return keys;
 	}
 
 	/**
