@@ -13,7 +13,6 @@ import joptsimple.internal.Strings;
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
 import negotiator.gui.progress.DataKey;
-import negotiator.gui.progress.SimpleTableModel;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
@@ -119,9 +118,9 @@ public class AgreementEvent extends NegotiationEvent {
 
 	/**
 	 * returns a list of keys that can appear in the {@link HashMap} that is
-	 * returned from {@link #getValues()}. Note, the {@link DataKey}s in the map are
-	 * expanded, to have "1", "2", "3" etc behind their base key name. This can
-	 * then be used as header above tables in log files and on screen.
+	 * returned from {@link #getValues()}. Note, the {@link DataKey}s in the map
+	 * are expanded, to have "1", "2", "3" etc behind their base key name. This
+	 * can then be used as header above tables in log files and on screen.
 	 * 
 	 * This function is static because it needs to be called before the first
 	 * negotiation happens.
@@ -134,9 +133,7 @@ public class AgreementEvent extends NegotiationEvent {
 		List<String> keys = new ArrayList<String>();
 		for (DataKey v : DataKey.values()) {
 			if (v == DataKey.AGENTS || v == DataKey.FILES || v == DataKey.UTILS) {
-				for (int n = 1; n <= numParties; n++) {
-					keys.add(v.getName() + " " + n);
-				}
+				keys.addAll(v.getNames(numParties));
 			} else {
 				keys.add(v.getName());
 			}
@@ -146,8 +143,8 @@ public class AgreementEvent extends NegotiationEvent {
 	}
 
 	/**
-	 * Convert the agreement into a hashmap of < {@link DataKey}, {@link Object} >
-	 * pairs. Object will usually be a {@link String}, {@link Number} or
+	 * Convert the agreement into a hashmap of < {@link DataKey}, {@link Object}
+	 * > pairs. Object will usually be a {@link String}, {@link Number} or
 	 * {@link List}.
 	 * 
 	 * @return hashmap of agreement evaluations.

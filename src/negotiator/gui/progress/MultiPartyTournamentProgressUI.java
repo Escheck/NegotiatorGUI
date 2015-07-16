@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,7 +28,7 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 
 	Progress progress = new Progress();
 
-	SimpleTableModel model;
+	DataKeyTableModel model;
 
 	/**
 	 * @param numParties
@@ -54,7 +55,17 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 	private void init(int numParties) {
 		List<String> headers = new ArrayList<String>();
 
-		model = new SimpleTableModel(AgreementEvent.getKeys(numParties));
+		TreeMap<DataKey, Integer> colspec = new TreeMap<DataKey, Integer>();
+		for (DataKey key : DataKey.values()) {
+			if (key == DataKey.AGENTS || key == DataKey.FILES
+					|| key == DataKey.UTILS) {
+				colspec.put(key, numParties);
+			} else {
+				colspec.put(key, 1);
+			}
+		}
+
+		model = new DataKeyTableModel(colspec);
 	}
 
 	/*************** implements MultipartyNegotiationEventListener *********************/
@@ -65,16 +76,15 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 			System.out.println(((LogMessageEvent) e).getMessage());
 		} else if (e instanceof AgreementEvent) {
 			AgreementEvent e1 = (AgreementEvent) e;
-			model.addRow(e1.getFlatMap());
+			model.addRow(e1.getValues());
 		} else if (e instanceof TournamentEndedEvent) {
 			progress.finish();
 		} else if (e instanceof SessionStartedEvent) {
 			SessionStartedEvent e1 = (SessionStartedEvent) e;
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
 		} else if (e instanceof SessionFailedEvent) {
-			Map<String, String> row = new HashMap<String, String>();
-			row.put(DataKey.EXCEPTION.getName(),
-					((SessionFailedEvent) e).toString());
+			Map<DataKey, Object> row = new HashMap<DataKey, Object>();
+			row.put(DataKey.EXCEPTION, ((SessionFailedEvent) e).toString());
 			model.addRow(row);
 		}
 
