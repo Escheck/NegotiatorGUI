@@ -91,7 +91,9 @@ public class AlternatingOfferConsensusProtocol extends
 			Session session) {
 		Round round = createRound();
 
-		if (isVotingRound(session)) {
+		// NOTE: while roundnumber is normally one-based, in this function it's zero based as you are initializing the
+		// new round right in this function
+		if (session.getRoundNumber()%2==0) {
 			// request an offer from each party
 			for (NegotiationParty party : parties) {
 				round.addTurn(createTurn(party, OfferForVoting.class));
