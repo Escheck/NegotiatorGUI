@@ -29,7 +29,7 @@ public enum DataKey implements Comparable<DataKey> {
 			"Discounted"), NUM_AGREE("#agreeing"), MINUTIL("min.util."), MAXUTIL(
 			"max.util."), DIST_PARETO("Dist. to Pareto"), DIST_NASH(
 			"Dist. to Nash"), DIST_SOCIAL_WELFARE("Dist. to Social Welfare"), AGENTS(
-			"Names"), UTILS("Utility"), FILES("Profiles");
+			"Agent"), UTILS("Utility"), FILES("Profile");
 
 	String name;
 

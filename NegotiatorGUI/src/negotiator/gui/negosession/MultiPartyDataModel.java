@@ -19,6 +19,7 @@ import negotiator.gui.progress.DataKeyTableModel;
  * @author W.Pasman
  *
  */
+@SuppressWarnings("serial")
 public class MultiPartyDataModel extends DataKeyTableModel implements
 		MultipartyNegotiationEventListener {
 
