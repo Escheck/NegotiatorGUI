@@ -384,7 +384,8 @@ public class MultilateralUI extends JPanel {
 			btnStartTournament.setEnabled(false);
 			btnStartTournament.repaint();
 
-			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI();
+			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
+					config.getNumAgentsPerSession());
 			NegoGUIApp.negoGUIView.replaceTab("Multi Tour. Progr.", this,
 					progressUI);
 
