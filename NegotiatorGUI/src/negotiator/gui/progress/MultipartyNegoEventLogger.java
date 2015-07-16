@@ -13,7 +13,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import joptsimple.internal.Strings;
-import negotiator.events.AgreementEvent;
 import negotiator.gui.negosession.MultiNegoSessionUI;
 import negotiator.gui.negosession.MultiPartyDataModel;
 import negotiator.logging.CsvLogger;
@@ -34,15 +33,29 @@ public class MultipartyNegoEventLogger implements TableModelListener {
 
 	private MultipartyNegoEventLoggerData data = new MultipartyNegoEventLoggerData();
 
-	public MultipartyNegoEventLogger(String name, int numAgents)
-			throws IOException {
+	MultiPartyDataModel model;
+
+	public MultipartyNegoEventLogger(String name, int numAgents,
+			MultiPartyDataModel m) throws IOException {
+		model = m;
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
 
 		data.logger = new CsvLogger(format("log/tournament-%s-%s.log.csv",
 				dateFormat.format(new Date()), name));
+		logHeader();
 
-		data.logger
-				.logLine(Strings.join(AgreementEvent.getKeys(numAgents), ";"));
+	}
+
+	/**
+	 * write the header to the log file.
+	 */
+	private void logHeader() {
+		List<String> headers = new ArrayList<String>();
+		for (int col = 0; col < model.getColumnCount(); col++) {
+			headers.add(model.getColumnName(col));
+		}
+		data.logger.logLine(Strings.join(headers, ";"));
+
 	}
 
 	/**
@@ -51,7 +64,6 @@ public class MultipartyNegoEventLogger implements TableModelListener {
 	 */
 	@Override
 	public void tableChanged(TableModelEvent evt) {
-		MultiPartyDataModel model = (MultiPartyDataModel) evt.getSource();
 		if (evt.getType() == TableModelEvent.INSERT) {
 			System.out.println("table changed:" + evt);
 			int row = evt.getFirstRow();

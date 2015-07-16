@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import joptsimple.internal.Strings;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
@@ -34,8 +33,7 @@ public class FileLogger implements MultipartyNegotiationEventListener,
 			ps.println(((LogMessageEvent) e).getMessage());
 		}
 		if (e instanceof AgreementEvent) {
-			AgreementEvent e1 = (AgreementEvent) e;
-			ps.println(Strings.join(e1.getValuesList(e1.getFlatMap()), ";"));
+			ps.println(e.toString());
 		}
 		// MultipartyNegotiationOfferEvent ignored.
 		// MultipartyNegotiationSessionEvent ignored.
