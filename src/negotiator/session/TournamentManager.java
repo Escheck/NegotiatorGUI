@@ -15,9 +15,6 @@ import negotiator.MultipartyNegotiationEventListener;
 import negotiator.Timeline;
 import negotiator.config.Configuration;
 import negotiator.events.AgreementEvent;
-import negotiator.events.LogMessageEvent;
-import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionFailedEvent;
 import negotiator.events.SessionStartedEvent;
@@ -26,7 +23,6 @@ import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
-import negotiator.gui.progress.MultipartyNegoEventLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
@@ -84,59 +80,12 @@ public class TournamentManager extends Thread {
 		listeners.remove(listener);
 	}
 
-	public void notifyOfferEvent(MultipartyNegotiationOfferEvent evt) {
-		for (MultipartyNegotiationEventListener l : listeners) {
-			try {
-				l.handleEvent(evt);
-			} catch (Throwable e) {
-				e.printStackTrace(); // we can't do much here if handler fails.
-			}
-		}
-	}
-
 	/**
 	 * Notify all our liteners of a negotiation event that occured.
 	 * 
 	 * @param evt
 	 */
 	private void notifyEvent(NegotiationEvent evt) {
-		for (MultipartyNegotiationEventListener l : listeners) {
-			try {
-				l.handleEvent(evt);
-			} catch (Throwable e) {
-				e.printStackTrace(); // we can't do much here if handler fails.
-			}
-		}
-	}
-
-	/**
-	 * Notify all listeners of given LogMessageEvent.
-	 * 
-	 * @param evt
-	 *            event to report.
-	 */
-	public void notifyMessageEvent(LogMessageEvent evt) {
-		for (MultipartyNegotiationEventListener l : listeners) {
-			try {
-				l.handleEvent(evt);
-			} catch (Throwable e) {
-				e.printStackTrace(); // we can't do much here if handler fails.
-			}
-		}
-	}
-
-	/**
-	 * notify given string message to listeners.
-	 * 
-	 * @param message
-	 *            the message to send.
-	 */
-	// public void notifyMessageEvent(String message) {
-	// notifyMessageEvent(new LogMessageEvent(this, "TournamentManager",
-	// message));
-	// }
-
-	public void notifyNegotiationEvent(MultipartyNegotiationSessionEvent evt) {
 		for (MultipartyNegotiationEventListener l : listeners) {
 			try {
 				l.handleEvent(evt);
@@ -176,15 +125,6 @@ public class TournamentManager extends Thread {
 	 * @throws Exception
 	 */
 	public void runTournament() throws Exception {
-
-		/**
-		 * FIXME in all other cases, the logging is done by the GUI. We may have
-		 * to rethink why this is here.
-		 */
-		MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
-				configuration.getPartyProfileItems().get(0).getDomain()
-						.getName(), configuration.getNumAgentsPerSession());
-		addEventListener(myLogger);
 
 		for (int tournamentNumber = 0; tournamentNumber < configuration
 				.getNumTournaments(); tournamentNumber++) {
