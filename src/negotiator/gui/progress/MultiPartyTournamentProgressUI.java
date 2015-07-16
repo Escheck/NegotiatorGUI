@@ -73,7 +73,7 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
 		} else if (e instanceof SessionFailedEvent) {
 			Map<String, String> row = new HashMap<String, String>();
-			row.put(AgreementEvent.Key.EXCEPTION.getName(),
+			row.put(DataKey.EXCEPTION.getName(),
 					((SessionFailedEvent) e).toString());
 			model.addRow(row);
 		}
