@@ -12,6 +12,7 @@ import java.util.Map;
 import joptsimple.internal.Strings;
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
+import negotiator.gui.progress.DataKey;
 import negotiator.gui.progress.SimpleTableModel;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
@@ -29,7 +30,7 @@ import negotiator.session.Session;
  * Layout-ing of an AgreementEvent goes in a few steps
  * 
  * (1) {@link #getValues()} delivers a {@link Map} of key-value pairs, one for
- * each {@link Key}. Some Keys may have a {@link List} instead of a single
+ * each {@link DataKey}. Some Keys may have a {@link List} instead of a single
  * value; these are then the values for each of the N agents in the agreement.
  * 
  * (2) The {@link Map} may need conversion, to split the {@link List}s further
@@ -48,38 +49,6 @@ import negotiator.session.Session;
  *
  */
 public class AgreementEvent extends NegotiationEvent {
-
-	/**
-	 * The values in the hash map. This is also providing the basis for the
-	 * column names. the keys UTILS, FILES and AGENTS contain lists. The
-	 * function {@link AgreementEvent#getFlatMap()} and
-	 * {@link AgreementEvent#getValues()} will convert these to strings and
-	 * extend these keys with the agent number, and we then have eg 3 columns
-	 * "Utility 1", "Utility 2" and "Utility 3" in the table. In the map, the
-	 * UTILS field will be an {@link List} with 3 values in that case. see also
-	 * {@link AgreementEvent#getKeys()}.
-	 * 
-	 * @author W.Pasman
-	 *
-	 */
-	public enum Key {
-		RUNTIME("Run time (s)"), ROUND("Round"), EXCEPTION("Exception"), MAX_ROUNDS(
-				"Max.rounds"), MAX_TIME("Max.time"), IS_AGREEMENT("Agreement"), IS_DISCOUNT(
-				"Discounted"), NUM_AGREE("#agreeing"), MINUTIL("min.util."), MAXUTIL(
-				"max.util."), DIST_PARETO("Dist. to Pareto"), DIST_NASH(
-				"Dist. to Nash"), DIST_SOCIAL_WELFARE("Dist. to Social Welfare"), AGENTS(
-				"Names"), UTILS("Utility"), FILES("Profiles");
-
-		String name;
-
-		Key(String n) {
-			name = n;
-		}
-
-		public String getName() {
-			return name;
-		}
-	};
 
 	Session session;
 	MultilateralProtocol protocol;
@@ -109,9 +78,9 @@ public class AgreementEvent extends NegotiationEvent {
 	 */
 
 	public Map<String, String> getFlatMap() {
-		Map<Key, Object> values = getValues();
+		Map<DataKey, Object> values = getValues();
 		Map<String, String> strings = new HashMap<String, String>();
-		for (Key v : values.keySet()) {
+		for (DataKey v : values.keySet()) {
 			Object data = values.get(v);
 			if (data instanceof List) {
 				int n = 1;
@@ -150,7 +119,7 @@ public class AgreementEvent extends NegotiationEvent {
 
 	/**
 	 * returns a list of keys that can appear in the {@link HashMap} that is
-	 * returned from {@link #getValues()}. Note, the {@link Key}s in the map are
+	 * returned from {@link #getValues()}. Note, the {@link DataKey}s in the map are
 	 * expanded, to have "1", "2", "3" etc behind their base key name. This can
 	 * then be used as header above tables in log files and on screen.
 	 * 
@@ -163,8 +132,8 @@ public class AgreementEvent extends NegotiationEvent {
 	 */
 	public static List<String> getKeys(int numParties) {
 		List<String> keys = new ArrayList<String>();
-		for (Key v : Key.values()) {
-			if (v == Key.AGENTS || v == Key.FILES || v == Key.UTILS) {
+		for (DataKey v : DataKey.values()) {
+			if (v == DataKey.AGENTS || v == DataKey.FILES || v == DataKey.UTILS) {
 				for (int n = 1; n <= numParties; n++) {
 					keys.add(v.getName() + " " + n);
 				}
@@ -177,26 +146,26 @@ public class AgreementEvent extends NegotiationEvent {
 	}
 
 	/**
-	 * Convert the agreement into a hashmap of < {@link Key}, {@link Object} >
+	 * Convert the agreement into a hashmap of < {@link DataKey}, {@link Object} >
 	 * pairs. Object will usually be a {@link String}, {@link Number} or
 	 * {@link List}.
 	 * 
 	 * @return hashmap of agreement evaluations.
 	 */
-	public Map<Key, Object> getValues() {
-		Map<Key, Object> values = new HashMap<AgreementEvent.Key, Object>();
+	public Map<DataKey, Object> getValues() {
+		Map<DataKey, Object> values = new HashMap<DataKey, Object>();
 
 		try {
 			Bid agreement = protocol.getCurrentAgreement(session, parties);
-			values.put(Key.RUNTIME, format("%.3f", runTime));
-			values.put(Key.ROUND, "" + (session.getRoundNumber() + 1));
+			values.put(DataKey.RUNTIME, format("%.3f", runTime));
+			values.put(DataKey.ROUND, "" + (session.getRoundNumber() + 1));
 
 			// round / time
 			if (session.getDeadlines().isRounds()) {
-				values.put(Key.MAX_ROUNDS, ""
+				values.put(DataKey.MAX_ROUNDS, ""
 						+ session.getDeadlines().getTotalRounds());
 			} else {
-				values.put(Key.MAX_TIME, ""
+				values.put(DataKey.MAX_TIME, ""
 						+ session.getDeadlines().getTotalTime());
 			}
 
@@ -204,28 +173,28 @@ public class AgreementEvent extends NegotiationEvent {
 			boolean isDiscounted = false;
 			for (NegotiationParty party : parties)
 				isDiscounted |= party.getUtilitySpace().isDiscounted();
-			values.put(Key.IS_AGREEMENT, agreement == null ? "No" : "Yes");
-			values.put(Key.IS_DISCOUNT, isDiscounted ? "Yes" : "No");
+			values.put(DataKey.IS_AGREEMENT, agreement == null ? "No" : "Yes");
+			values.put(DataKey.IS_DISCOUNT, isDiscounted ? "Yes" : "No");
 
 			// number of agreeing parties
 			List<NegotiationParty> agents = MediatorProtocol
 					.getNonMediators(parties);
-			values.put(Key.NUM_AGREE,
+			values.put(DataKey.NUM_AGREE,
 					"" + protocol.getNumberOfAgreeingParties(session, agents));
 
 			// min and max utility
 			List<Double> utils = CsvLogger.getUtils(parties, agreement);
-			values.put(Key.MINUTIL, format("%.5f", Collections.min(utils)));
-			values.put(Key.MAXUTIL, format("%.5f", Collections.max(utils)));
+			values.put(DataKey.MINUTIL, format("%.5f", Collections.min(utils)));
+			values.put(DataKey.MAXUTIL, format("%.5f", Collections.max(utils)));
 
 			// analysis (distances, social welfare, etc)
 			MultilateralAnalysis analysis = new MultilateralAnalysis(session,
 					parties, protocol);
-			values.put(Key.DIST_PARETO,
+			values.put(DataKey.DIST_PARETO,
 					format("%.5f", analysis.getDistanceToPareto()));
-			values.put(Key.DIST_NASH,
+			values.put(DataKey.DIST_NASH,
 					format("%.5f", analysis.getDistanceToNash()));
-			values.put(Key.DIST_SOCIAL_WELFARE,
+			values.put(DataKey.DIST_SOCIAL_WELFARE,
 					format("%.5f", analysis.getSocialWelfare()));
 
 			// enumerate agents names, utils, protocols
@@ -235,19 +204,19 @@ public class AgreementEvent extends NegotiationEvent {
 			for (NegotiationParty a : agents) {
 				agts.add(a.getClass().getSimpleName());
 			}
-			values.put(Key.AGENTS, agts);
+			values.put(DataKey.AGENTS, agts);
 
-			values.put(Key.UTILS, utils);// format("%.5f ", util);
+			values.put(DataKey.UTILS, utils);// format("%.5f ", util);
 
 			List<String> files = new ArrayList<String>();
 			for (NegotiationParty agent : agents) {
 				File utilfile = new File(agent.getUtilitySpace().getFileName());
 				files.add(utilfile.getName());
 			}
-			values.put(Key.FILES, files);
+			values.put(DataKey.FILES, files);
 
 		} catch (Exception e) {
-			values.put(Key.EXCEPTION, e.toString());
+			values.put(DataKey.EXCEPTION, e.toString());
 		}
 		return values;
 
