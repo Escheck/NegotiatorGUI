@@ -32,6 +32,7 @@ import negotiator.Deadline;
 import negotiator.config.Configuration;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultiPartyTournamentProgressUI;
+import negotiator.gui.progress.MultipartyNegoEventLogger;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -384,8 +385,18 @@ public class MultilateralUI extends JPanel {
 			btnStartTournament.setEnabled(false);
 			btnStartTournament.repaint();
 
-			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
+			// init data model, GUI, logger.
+			MultiPartyDataModel dataModel = new MultiPartyDataModel(
 					config.getNumAgentsPerSession());
+
+			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
+					dataModel);
+
+			MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
+					config.getPartyProfileItems().get(0).getDomain().getName(),
+					config.getNumAgentsPerSession());
+			dataModel.addTableModelListener(myLogger);
+
 			NegoGUIApp.negoGUIView.replaceTab("Multi Tour. Progr.", this,
 					progressUI);
 
@@ -393,6 +404,7 @@ public class MultilateralUI extends JPanel {
 					new Configuration(config));
 
 			manager.addEventListener(progressUI);
+			manager.addEventListener(dataModel);
 
 			manager.start(); // runs the manager thread async
 			System.out.println("Negotiation started successfully");
@@ -423,25 +435,6 @@ public class MultilateralUI extends JPanel {
 			System.out.println("System exited with error: " + e.getMessage());
 		}
 	}
-
-	// /**
-	// * Gets the data for the participants table.
-	// *
-	// * @return the data for each row and column
-	// */
-	// private Object[][] getParticipantTableData()
-	// {
-	// List<PartyRepItem> parties = config.getPartyItems();
-	// List<ProfileRepItem> profiles = config.getPartyProfileItems();
-	// Object[][] data = new Object[parties.size()][3];
-	// for (int i = 0; i < parties.size(); i++)
-	// {
-	// data[i][0] = i + 1;
-	// data[i][1] = parties.get(i);
-	// data[i][2] = profiles.get(i);
-	// }
-	// return data;
-	// }
 
 	/**
 	 * Set the number of agents per session text box to the number of profiles

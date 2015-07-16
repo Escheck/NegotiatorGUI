@@ -2,11 +2,6 @@ package negotiator.gui.progress;
 
 import java.awt.BorderLayout;
 import java.awt.Panel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,10 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import negotiator.MultipartyNegotiationEventListener;
-import negotiator.events.AgreementEvent;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
-import negotiator.events.SessionFailedEvent;
 import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 
@@ -31,14 +24,15 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 	DataKeyTableModel model;
 
 	/**
-	 * @param numParties
-	 *            The number of parties in the negotiation. Must be announced in
-	 *            advance because we need to initialize the table showing the
-	 *            results.
+	 * It is assumed that the parent subscribes us as
+	 * {@link MultipartyNegotiationEventListener}.
+	 * 
+	 * @param m
+	 *            the {@link DataKeyTableModel} that holds the table to be
+	 *            logged.
 	 */
-	public MultiPartyTournamentProgressUI(int numParties) {
-		init(numParties);
-
+	public MultiPartyTournamentProgressUI(DataKeyTableModel m) {
+		model = m;
 		setLayout(new BorderLayout());
 
 		add(progress, BorderLayout.NORTH);
@@ -52,42 +46,19 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 		add(tableScrollPane, BorderLayout.CENTER);
 	}
 
-	private void init(int numParties) {
-		List<String> headers = new ArrayList<String>();
-
-		TreeMap<DataKey, Integer> colspec = new TreeMap<DataKey, Integer>();
-		for (DataKey key : DataKey.values()) {
-			if (key == DataKey.AGENTS || key == DataKey.FILES
-					|| key == DataKey.UTILS) {
-				colspec.put(key, numParties);
-			} else {
-				colspec.put(key, 1);
-			}
-		}
-
-		model = new DataKeyTableModel(colspec);
-	}
-
 	/*************** implements MultipartyNegotiationEventListener *********************/
 
+	// we only listen to update the progress bar. The model updates itself.
 	@Override
 	public void handleEvent(NegotiationEvent e) {
 		if (e instanceof LogMessageEvent) {
 			System.out.println(((LogMessageEvent) e).getMessage());
-		} else if (e instanceof AgreementEvent) {
-			AgreementEvent e1 = (AgreementEvent) e;
-			model.addRow(e1.getValues());
 		} else if (e instanceof TournamentEndedEvent) {
 			progress.finish();
 		} else if (e instanceof SessionStartedEvent) {
 			SessionStartedEvent e1 = (SessionStartedEvent) e;
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
-		} else if (e instanceof SessionFailedEvent) {
-			Map<DataKey, Object> row = new HashMap<DataKey, Object>();
-			row.put(DataKey.EXCEPTION, ((SessionFailedEvent) e).toString());
-			model.addRow(row);
 		}
-
 	}
 }
 
