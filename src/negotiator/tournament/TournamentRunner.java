@@ -18,14 +18,14 @@ import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
 import negotiator.qualitymeasures.logmanipulation.TournamentMeasures;
 
 /**
- * TournamentRunner is a class that runs a tournament. It computes all combinations of the sessions from the {@link Tournament}
- * and then runs them sequentially.
- * Use with new Thread(new TournamentRunner(tournament,ael)).start();
- * You can use a null action event listener if you want to.
+ * TournamentRunner is a class that runs a tournament. It computes all
+ * combinations of the sessions from the {@link Tournament} and then runs them
+ * sequentially. Use with new Thread(new
+ * TournamentRunner(tournament,ael)).start(); You can use a null action event
+ * listener if you want to.
  */
-public class TournamentRunner implements Runnable 
-{
-	private boolean runSingleSession = false; 
+public class TournamentRunner implements Runnable {
+	private boolean runSingleSession = false;
 	private List<Protocol> sessions;
 	ArrayList<NegotiationEventListener> negotiationEventListeners = new ArrayList<NegotiationEventListener>();
 
@@ -33,17 +33,18 @@ public class TournamentRunner implements Runnable
 	private boolean distributed = false;
 	private String sessionname = "";
 
-	private int previousSession = -1;
-	private int currentRunNr = 0;
-
-	/** 
+	/**
 	 * 
-	 * @param sessions the sessions to be run
-	 * @param ael the action event listener to use. If not null, the existing listener for each
-	 * 	session will be overridden with this listener.
+	 * @param sessions
+	 *            the sessions to be run
+	 * @param ael
+	 *            the action event listener to use. If not null, the existing
+	 *            listener for each session will be overridden with this
+	 *            listener.
 	 * @throws Exception
 	 */
-	public TournamentRunner(List<Protocol> sessions, NegotiationEventListener ael) throws Exception {
+	public TournamentRunner(List<Protocol> sessions,
+			NegotiationEventListener ael) throws Exception {
 		this.sessions = sessions;
 		negotiationEventListeners.add(ael);
 
@@ -51,54 +52,64 @@ public class TournamentRunner implements Runnable
 			runSingleSession = true;
 	}
 
-	/** 
+	/**
 	 * 
-	 * @param t the tournament to be run
-	 * @param ael the action event listener to use. If not null, the existing listener for each
-	 * 	session will be overridden with this listener.
+	 * @param t
+	 *            the tournament to be run
+	 * @param ael
+	 *            the action event listener to use. If not null, the existing
+	 *            listener for each session will be overridden with this
+	 *            listener.
 	 * @throws Exception
 	 */
-	public TournamentRunner(Tournament t,NegotiationEventListener ael) throws Exception {
+	public TournamentRunner(Tournament t, NegotiationEventListener ael)
+			throws Exception {
 		sessions = getSessionsFromTournament(t);
 		negotiationEventListeners.add(ael);
 	}
 
-	public TournamentRunner(NegotiationEventListener ael, boolean distributed, String sessionname) {
+	public TournamentRunner(NegotiationEventListener ael, boolean distributed,
+			String sessionname) {
 		this.distributed = distributed;
 		this.sessionname = sessionname;
 		negotiationEventListeners.add(ael);
 	}
 
-	/** 
+	/**
 	 * 
-	 * @param t the tournament to be run
-	 * @param ael the action event listener to use. If not null, the existing listener for each
-	 * 	session will be overridden with this listener.
+	 * @param t
+	 *            the tournament to be run
+	 * @param ael
+	 *            the action event listener to use. If not null, the existing
+	 *            listener for each session will be overridden with this
+	 *            listener.
 	 * @throws Exception
 	 */
-	public TournamentRunner(Tournament t,NegotiationEventListener ael, boolean runSingleSession) throws Exception {
+	public TournamentRunner(Tournament t, NegotiationEventListener ael,
+			boolean runSingleSession) throws Exception {
 		this(t, ael);
 		this.runSingleSession = runSingleSession;
 	}
 
 	/**
 	 * Warning. You can call run() directly (instead of using Thread.start() )
-	 * but be aware that run() will not return until the tournament
-	 * has completed. That means that your interface will lock up until the tournament is complete.
-	 * And if any negosession uses modal interfaces, this will lock up swing, because modal
-	 * interfaces will not launch until the other swing interfaces have handled their events.
-	 * (at least this is my current understanding, Wouter, 22aug08).
-	 * See "java dialog deadlock" on the web...
+	 * but be aware that run() will not return until the tournament has
+	 * completed. That means that your interface will lock up until the
+	 * tournament is complete. And if any negosession uses modal interfaces,
+	 * this will lock up swing, because modal interfaces will not launch until
+	 * the other swing interfaces have handled their events. (at least this is
+	 * my current understanding, Wouter, 22aug08). See "java dialog deadlock" on
+	 * the web...
 	 */
 	public void run() {
 		try {
-			/** 
-			 * Deletes all files in directory DataObjects. 
-			 * In order to have a "clean" start for the next tournament,
-			 * all history from all agents is deleted.
+			/**
+			 * Deletes all files in directory DataObjects. In order to have a
+			 * "clean" start for the next tournament, all history from all
+			 * agents is deleted.
 			 */
 			Agent.restartDataObjectsFolder(this);
-			
+
 			String log = "";
 			if (distributed) {
 				log = runDistributedTournament(0);
@@ -107,49 +118,60 @@ public class TournamentRunner implements Runnable
 				log = runTournament();
 			}
 
-
 			// DEFAULT: extensive log disabled
-			//AlternatingOffersProtocol.closeLog(true);
+			// AlternatingOffersProtocol.closeLog(true);
 
-			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace", false)) {
+			if (TournamentConfiguration.getBooleanOption("logNegotiationTrace",
+					false)) {
 				AlternatingOffersProtocol.closeLog(true);
 			}
 			AlternatingOffersProtocol.closeLog(false);
 
 			// DEFAULT: no detailed analysis
-			if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false)) {
-				TournamentMeasures.runTournamentMeasures(log, Global.getTournamentOutcomeFileName());
+			if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis",
+					false)) {
+				TournamentMeasures.runTournamentMeasures(log,
+						Global.getTournamentOutcomeFileName());
 			}
 
 			if (distributed) {
-				JOptionPane.showMessageDialog(null, "Finished jobs of session: \"" + sessionname + "\".\nThe log is stored in the log directory.");
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Finished jobs of session: \""
+										+ sessionname
+										+ "\".\nThe log is stored in the log directory.");
 			}
 
-			if (NegoGUIApp.getOptions().quitWhenTournamentDone)
-			{
-				System.out.println("Auto-quitting after the tournament is done.");
+			if (NegoGUIApp.getOptions().quitWhenTournamentDone) {
+				System.out
+						.println("Auto-quitting after the tournament is done.");
 				System.exit(0);
 			}
-		} 
-		catch (Exception e) { e.printStackTrace(); new Warning("Fatal error cancelled tournament run:"+e); }
+		} catch (Exception e) {
+			e.printStackTrace();
+			new Warning("Fatal error cancelled tournament run:" + e);
+		}
 	}
 
 	private String runTournament() throws InterruptedException {
-		
+
 		for (int i = 0; i < sessions.size(); i++) {
 
 			if (TournamentConfiguration.getBooleanOption("disableGUI", false)) {
-				System.out.println("TOURNAMENT PROGRESS: starting match " + (i + 1) + " of " + sessions.size());
+				System.out.println("TOURNAMENT PROGRESS: starting match "
+						+ (i + 1) + " of " + sessions.size());
 			}
 
-
-			previousSession = sessions.get(i).hashCode();
 			Protocol s = sessions.get(i);
 
-			synchronized(this) { 
-				for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);
+			synchronized (this) {
+				for (NegotiationEventListener list : negotiationEventListeners)
+					s.addNegotiationEventListener(list);
 				s.setTournamentRunner(this);
-				s.startSession(); // note, we can do this because TournamentRunner has no relation with AWT or Swing.
+				s.startSession(); // note, we can do this because
+									// TournamentRunner has no relation with AWT
+									// or Swing.
 				wait();
 			}
 
@@ -161,15 +183,18 @@ public class TournamentRunner implements Runnable
 		return Global.getOutcomesFileName();
 	}
 
-	private String runDistributedTournament(int previousOpenSessions) throws InterruptedException {
+	private String runDistributedTournament(int previousOpenSessions)
+			throws InterruptedException {
 		Job job;
 		int jobID = DBController.getInstance().getJobID(sessionname);
 
-		// 1. If there is a job existing with the given sessionname (always after START, should be after JOIN)
+		// 1. If there is a job existing with the given sessionname (always
+		// after START, should be after JOIN)
 		if (jobID > 0) {
 			ArrayList<Protocol> sessions = new ArrayList<Protocol>();
 			try {
-				sessions = DBController.getInstance().getTournament(jobID).getSessions();
+				sessions = DBController.getInstance().getTournament(jobID)
+						.getSessions();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -178,15 +203,16 @@ public class TournamentRunner implements Runnable
 			while (job != null) {
 				StringBuilder builder = new StringBuilder();
 				// 3. Run the matches and store the outcomes
-				for (Protocol s: job.getSessions()) {
-					previousSession = s.hashCode();
-					synchronized(this) { 
-						for (NegotiationEventListener list: negotiationEventListeners) s.addNegotiationEventListener(list);	
+				for (Protocol s : job.getSessions()) {
+					synchronized (this) {
+						for (NegotiationEventListener list : negotiationEventListeners)
+							s.addNegotiationEventListener(list);
 						s.setTournamentRunner(this);
 						s.startSession();
 						wait();
 
-						// 4. Store outcomes of the job. Should be done here due to the implementation of logging
+						// 4. Store outcomes of the job. Should be done here due
+						// to the implementation of logging
 						if (s instanceof AlternatingOffersProtocol) {
 							AlternatingOffersProtocol as = (AlternatingOffersProtocol) s;
 							builder.append(as.getOutcome());
@@ -199,34 +225,47 @@ public class TournamentRunner implements Runnable
 					}
 				}
 				// 5. Store the outcome of the job and mark it done
-				DBController.getInstance().storeResult(job.getSessionID(), builder.toString());
+				DBController.getInstance().storeResult(job.getSessionID(),
+						builder.toString());
 				job = DBController.getInstance().getJob(jobID, sessions);
 			}
 
-			// 6. Check for outstanding sessions. If outstanding sessions are detected, wait
-			int openSessions = DBController.getInstance().getRunningSessions(jobID);
+			// 6. Check for outstanding sessions. If outstanding sessions are
+			// detected, wait
+			int openSessions = DBController.getInstance().getRunningSessions(
+					jobID);
 			if (openSessions > 0) {
-				// as 1 computer can only claim 1 session, we just wait a full Job plus some extra time for DB storage
+				// as 1 computer can only claim 1 session, we just wait a full
+				// Job plus some extra time for DB storage
 
-				int waitMS = DBController.getInstance().getMatchesPerSession(jobID) * 180000 + 5000;
+				int waitMS = DBController.getInstance().getMatchesPerSession(
+						jobID) * 180000 + 5000;
 
-				System.out.println("DT: waiting " + waitMS + " for " + openSessions + " tournaments to complete");
+				System.out.println("DT: waiting " + waitMS + " for "
+						+ openSessions + " tournaments to complete");
 				Thread.sleep(waitMS);
 
-				// If there are still outstanding jobs, this means that a pc did not complete its task
-				// (or the DB takes a very long time (> 5 seconds) to store a result, but this is very unlikely)
-				int nextOpenSessions = DBController.getInstance().getRunningSessions(jobID);
+				// If there are still outstanding jobs, this means that a pc did
+				// not complete its task
+				// (or the DB takes a very long time (> 5 seconds) to store a
+				// result, but this is very unlikely)
+				int nextOpenSessions = DBController.getInstance()
+						.getRunningSessions(jobID);
 
-				// if the number of open sessions is equal to the number before the waiting periode, then
+				// if the number of open sessions is equal to the number before
+				// the waiting periode, then
 				// none of the clients acted and we can safely reset the jobs.
 				if (openSessions == nextOpenSessions) {
-					System.out.println("DT: Seems a computer crashed while processing a job. Remaining jobs are reset.");
+					System.out
+							.println("DT: Seems a computer crashed while processing a job. Remaining jobs are reset.");
 					DBController.getInstance().resetJobs(jobID);
 					runDistributedTournament(openSessions);
 				} else {
-					// the amount of open sessions changed; meaning that somebody completed a job (very unlikely) or
+					// the amount of open sessions changed; meaning that
+					// somebody completed a job (very unlikely) or
 					// reset the tournament.
-					System.out.println("DT: Another client acted during the waiting period. Resuming distributed tournament.");
+					System.out
+							.println("DT: Another client acted during the waiting period. Resuming distributed tournament.");
 					runDistributedTournament(openSessions);
 				}
 			} else {
@@ -234,27 +273,29 @@ public class TournamentRunner implements Runnable
 				DBController.getInstance().reconstructLog(jobID);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "No job has been scheduled under the given sessionname.");
+			JOptionPane.showMessageDialog(null,
+					"No job has been scheduled under the given sessionname.");
 		}
 		return Global.getDistributedOutcomesFileName();
 	}
 
-	private List<Protocol> getSessionsFromTournament(Tournament t) throws Exception
-	{
+	private List<Protocol> getSessionsFromTournament(Tournament t)
+			throws Exception {
 		ArrayList<Protocol> sessions;
-		if(runSingleSession) {
+		if (runSingleSession) {
 			sessions = new ArrayList<Protocol>();
 			sessions.add(t.getSessions().get(0));
+		} else {
+			sessions = t.getSessions();
 		}
-		else {
-			sessions=t.getSessions();
-		}
-		
+
 		return sessions;
 	}
 
-	public void fireNegotiationSessionEvent(Protocol session ) {
-		for(NegotiationEventListener listener :  negotiationEventListeners) 
-			if(listener!=null)listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(this,session));
+	public void fireNegotiationSessionEvent(Protocol session) {
+		for (NegotiationEventListener listener : negotiationEventListeners)
+			if (listener != null)
+				listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(
+						this, session));
 	}
 }
