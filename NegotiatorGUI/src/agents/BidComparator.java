@@ -15,10 +15,10 @@ import negotiator.utility.UtilitySpace;
  * @author W.Pasman
  *
  */
-class BidComparator implements java.util.Comparator<Bid> {
+public class BidComparator implements java.util.Comparator<Bid> {
 	UtilitySpace utilspace;
 
-	BidComparator(UtilitySpace us) {
+	public BidComparator(UtilitySpace us) {
 		if (us == null)
 			throw new NullPointerException("null utility space");
 		utilspace = us;
