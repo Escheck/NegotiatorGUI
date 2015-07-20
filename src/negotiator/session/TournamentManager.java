@@ -34,6 +34,9 @@ import negotiator.tournament.TournamentGenerator;
  * configuration object which is created by the user interface and extracts
  * individual session from configuration object which it wil pass on to the
  * session manager.
+ * 
+ * <p>
+ * Agents in a tournament must be of class {@link NegotiationParty}.
  */
 public class TournamentManager extends Thread {
 
