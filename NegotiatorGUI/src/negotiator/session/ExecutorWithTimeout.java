@@ -74,14 +74,18 @@ public class ExecutorWithTimeout {
 		 * after timeout millis. Blocking call. After return, the Callable has
 		 * been executed, OR we have thrown.
 		 * 
+		 * @param name
+		 *            the name for the thread (usually, the agent name). Used
+		 *            for reporting errors.
+		 * 
 		 * @param timeout
 		 *            timeout in millis.
 		 * @throws TimeoutException
 		 *             if the callable did not complete within the available
 		 *             time.
 		 */
-		public V executeWithTimeout(long timeout) throws ExecutionException,
-				TimeoutException {
+		public V executeWithTimeout(String name, long timeout)
+				throws ExecutionException, TimeoutException {
 			start();
 
 			// wait for the thread to finish, but at most timeout ms.
@@ -94,21 +98,19 @@ public class ExecutorWithTimeout {
 					 * Therefore we use plain Threads here.
 					 */
 					stop();
-					throw new TimeoutException(
-							"agent passed deadline and was killed");
+					throw new TimeoutException("agent " + name
+							+ " passed deadline and was killed");
 				}
 			} catch (InterruptedException e) {
 				/*
-				 * we should not get here. If we get here, that means that
-				 * poll() was interrupted, so someone interrupted the thread we
-				 * are running IN (instead of the thread we are running).
+				 * we should not get here. Just in case
 				 */
-				e.printStackTrace();
-				System.exit(1);
+				resultError = e;
 			}
 			// if we get here, thread ended and result or resultError was set.
 			if (resultError != null) {
-				throw new ExecutionException(resultError);
+				throw new ExecutionException("Execution failed of " + name+":"+resultError,
+						resultError);
 			}
 			return result;
 		}
@@ -119,6 +121,9 @@ public class ExecutorWithTimeout {
 	 * call. Used time will be subtracted from the quotum of this Executor. This
 	 * function is synchronized and can execute only 1 Callable at any time.
 	 * 
+	 * @param name
+	 *            the name of the thread/process/agent for which we are
+	 *            executing. Used for error reporting.
 	 * @param command
 	 *            the {@link Callable} to execute
 	 * @return the result V
@@ -129,10 +134,11 @@ public class ExecutorWithTimeout {
 	 * @throws TimeoutException
 	 *             if the {@link Callable} did not finish in time.
 	 */
-	public synchronized <V> V execute(final Callable<V> command)
+	public synchronized <V> V execute(String name, final Callable<V> command)
 			throws ExecutionException, TimeoutException {
 
-		return new myThread<V>(command).executeWithTimeout(remainingTimeMs);
+		return new myThread<V>(command).executeWithTimeout(name,
+				remainingTimeMs);
 	}
 
 	/**

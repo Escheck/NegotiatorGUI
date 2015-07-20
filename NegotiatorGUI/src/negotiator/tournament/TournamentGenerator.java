@@ -4,7 +4,6 @@ import static negotiator.utility.UTILITYSPACETYPE.getUtilitySpaceType;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -88,6 +87,9 @@ public class TournamentGenerator {
 	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
 			ProfileRepItem profileRepItem, Session session)
 			throws RepositoryException, NegotiatorException {
+		Exception exception = null;
+		String extraMessage = "";
+
 		UtilitySpace utilitySpace = createFrom(profileRepItem);
 
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
@@ -106,31 +108,17 @@ public class TournamentGenerator {
 			return (NegotiationParty) partyConstructor.newInstance(
 					utilitySpace, session.getDeadlines(),
 					session.getTimeline(), randomSeed);
-		} catch (ClassNotFoundException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
 		} catch (NoSuchMethodException e) {
-			throw new NegotiatorException(
-					"Agent  "
-							+ partyRepItem
-							+ "has no constructor taking parameters (UtilitySpace, Deadline, Timeline, long)",
-					e);
-		} catch (SecurityException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
-		} catch (InstantiationException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
-		} catch (IllegalAccessException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
-		} catch (IllegalArgumentException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
-		} catch (InvocationTargetException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
+			extraMessage = ": no constructor found taking parameters (UtilitySpace, Deadline, Timeline, long)";
+			exception = e;
+		} catch (Exception e) {
+			exception = e;
 		}
+
+		// if we get here there was an exception.
+		throw new NegotiatorException("Problem creating agent "
+				+ partyRepItem.getName() + " using profile " + profileRepItem
+				+ extraMessage, exception);
 	}
 
 	/**
