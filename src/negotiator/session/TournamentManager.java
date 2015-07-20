@@ -174,6 +174,11 @@ public class TournamentManager extends Thread {
 				notifyEvent(new SessionFailedEvent(this, e,
 						"failed to construct agent due to timeout"));
 				continue; // do not run any further if we don't have the agents.
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+				notifyEvent(new SessionFailedEvent(this, e,
+						"failed to construct agent"));
+				continue; // do not run any further if we don't have the agents.
 			}
 
 			agentList = MediatorProtocol.getNonMediators(partyList);
@@ -209,9 +214,12 @@ public class TournamentManager extends Thread {
 	 *         agents could not be created.
 	 * @throws TimeoutException
 	 *             if we run out of time during the construction.
+	 * @throws ExecutionException
+	 *             if one of the agents does not construct properly
 	 */
 	private List<NegotiationParty> getPartyList(ExecutorWithTimeout executor,
-			final TournamentGenerator generator) throws TimeoutException {
+			final TournamentGenerator generator) throws TimeoutException,
+			ExecutionException {
 		List<NegotiationParty> partyList = null;
 		useConsoleOut(false);
 		try {
@@ -224,17 +232,18 @@ public class TournamentManager extends Thread {
 							return generator.next();
 						}
 					});
-		} catch (ExecutionException e) {
-			useConsoleOut(true);
-			Throwable inner = e.getCause();
-			System.err.println(inner.getMessage());
-			if (inner instanceof RepositoryException) {
-				System.err
-						.println("fatal: something wrong with the repository");
-				e.printStackTrace();
-				System.exit(1);
-			}
-			// otherwise, we fall out and partyList may remain null.
+			// } catch (ExecutionException e) {
+			// useConsoleOut(true);
+			// throw e.getCause(); // re-throw
+			// Throwable inner = e.getCause();
+			// System.err.println(inner.getMessage());
+			// if (inner instanceof RepositoryException) {
+			// System.err
+			// .println("fatal: something wrong with the repository");
+			// e.printStackTrace();
+			// System.exit(1);
+			// }
+			// // otherwise, we fall out and partyList may remain null.
 		} finally {
 			useConsoleOut(true);
 		}
