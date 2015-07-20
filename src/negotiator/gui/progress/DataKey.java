@@ -7,8 +7,8 @@ import java.util.List;
 import negotiator.events.AgreementEvent;
 
 /**
- * These keys are used as indicator for the returned data , such as in
- * {@link HashMap}s. See e.g. {@link AgreementEvent#getValues()}.
+ * These keys are datatypes for data , eg in {@link HashMap}s. See e.g.
+ * {@link AgreementEvent#getValues()}.
  * 
  * The keys also have a human-readable text version. This can be used as basis
  * for the column text strings for data display and logging.
@@ -20,7 +20,12 @@ import negotiator.events.AgreementEvent;
  * table. In the map, the UTILS field will be an {@link List} with 3 values in
  * that case. see also {@link AgreementEvent#getKeys()}.
  * 
- * @author W.Pasman
+ * The {@link DataKeyTableModel} can handle such data directly.
+ * 
+ * Note that the order of the enum is irrelevant; the order in which the keys
+ * are provided to the {@link DataKeyTableModel} determines the column order.
+ * 
+ * @author W.Pasman 16jul15
  *
  */
 public enum DataKey implements Comparable<DataKey> {

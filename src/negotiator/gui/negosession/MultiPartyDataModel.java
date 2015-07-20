@@ -1,8 +1,8 @@
 package negotiator.gui.negosession;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.AgreementEvent;
@@ -29,13 +29,14 @@ public class MultiPartyDataModel extends DataKeyTableModel implements
 
 	/**
 	 * create the dataModel. This determines what is logged, the exact order of
-	 * the columns, etc. .
+	 * the columns, etc. Currently it makes a table with ALL known
+	 * {@link DataKey}s.
 	 * 
 	 * @return datamodel that layouts data.
 	 */
-	private static TreeMap<DataKey, Integer> makeDataModel(int numAgents) {
+	private static LinkedHashMap<DataKey, Integer> makeDataModel(int numAgents) {
 
-		TreeMap<DataKey, Integer> colspec = new TreeMap<DataKey, Integer>();
+		LinkedHashMap<DataKey, Integer> colspec = new LinkedHashMap<DataKey, Integer>();
 		for (DataKey key : DataKey.values()) {
 			if (key == DataKey.AGENTS || key == DataKey.FILES
 					|| key == DataKey.UTILS) {
