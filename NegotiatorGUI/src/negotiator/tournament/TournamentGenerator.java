@@ -35,6 +35,9 @@ import negotiator.utility.UtilitySpace;
  * become quite large, which means that at some point, we are unable to
  * enumerate them all. This class will only give the next list parties to
  * overcome that limitation.
+ * 
+ * <p>
+ * Agents in a tournament must be of class {@link NegotiationParty}.
  *
  * @author Festen
  */
@@ -107,8 +110,11 @@ public class TournamentGenerator {
 			throw new NegotiatorException("Problem creating agent "
 					+ partyRepItem + " using profile " + profileRepItem, e);
 		} catch (NoSuchMethodException e) {
-			throw new NegotiatorException("Problem creating agent "
-					+ partyRepItem + " using profile " + profileRepItem, e);
+			throw new NegotiatorException(
+					"Agent  "
+							+ partyRepItem
+							+ "has no constructor taking parameters (UtilitySpace, Deadline, Timeline, long)",
+					e);
 		} catch (SecurityException e) {
 			throw new NegotiatorException("Problem creating agent "
 					+ partyRepItem + " using profile " + profileRepItem, e);
@@ -139,8 +145,8 @@ public class TournamentGenerator {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static MultilateralProtocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
-			throws Exception {
+	public static MultilateralProtocol createFrom(
+			MultiPartyProtocolRepItem protocolRepItem) throws Exception {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
 
