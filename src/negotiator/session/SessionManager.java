@@ -284,15 +284,16 @@ public class SessionManager {
 
 		Action action;
 		try {
-			action = executor.execute(new Callable<Action>() {
-				@Override
-				public Action call() throws Exception {
-					// NegotiationParty still has sloppy type checking.
-					ArrayList<Class> actions = new ArrayList<Class>();
-					actions.addAll(validActions);
-					return party.chooseAction(actions);
-				}
-			});
+			action = executor.execute(party.getPartyId().toString(),
+					new Callable<Action>() {
+						@Override
+						public Action call() throws Exception {
+							// NegotiationParty still has sloppy type checking.
+							ArrayList<Class> actions = new ArrayList<Class>();
+							actions.addAll(validActions);
+							return party.chooseAction(actions);
+						}
+					});
 		} catch (TimeoutException e) {
 			String msg = String.format(
 					"Negotiating party %s timed out in chooseAction() method.",
@@ -301,17 +302,10 @@ public class SessionManager {
 			throw new NegotiationPartyTimeoutException(party, msg, e);
 		}
 
-		// choose action
-		// Action action = protocol.getTimeOutInSeconds(session) <= 0 ? party
-		// .chooseAction(validActions) : chooseActionWithTimeOut(party,
-		// validActions);
-
-		// Check if action is valid for this protocol
-		boolean isValid = validActions.contains(action.getClass());
-
-		// if its not, throw an error
-		if (!isValid)
+		// if its not a valid action, throw an error
+		if (action == null || !validActions.contains(action.getClass())) {
 			throw new InvalidActionError(party);
+		}
 
 		// execute action according to protocol
 		protocol.applyAction(action, session);
@@ -339,13 +333,14 @@ public class SessionManager {
 		if (listeners.get(actionOwner) != null)
 			for (final NegotiationParty observer : listeners.get(actionOwner)) {
 				try {
-					executor.execute(new Callable<Object>() {
-						@Override
-						public Object call() {
-							observer.receiveMessage(actionOwner, action);
-							return null;
-						}
-					});
+					executor.execute(actionOwner.getPartyId().toString(),
+							new Callable<Object>() {
+								@Override
+								public Object call() {
+									observer.receiveMessage(actionOwner, action);
+									return null;
+								}
+							});
 				} catch (TimeoutException e) {
 					String msg = String
 							.format("Negotiating party %s timed out in receiveMessage() method.",

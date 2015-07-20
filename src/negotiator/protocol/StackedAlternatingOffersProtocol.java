@@ -225,15 +225,16 @@ public class StackedAlternatingOffersProtocol extends
 		super.beforeSession(session, parties);
 		for (final NegotiationParty party : parties) {
 			try {
-				getExecutor().execute(new Callable<Object>() {
-					@Override
-					public Object call() throws Exception {
-						party.receiveMessage("Protocol", new Inform(
-								"NumberOfAgents", parties.size()));
+				getExecutor().execute(party.getPartyId().toString(),
+						new Callable<Object>() {
+							@Override
+							public Object call() throws Exception {
+								party.receiveMessage("Protocol", new Inform(
+										"NumberOfAgents", parties.size()));
 
-						return null;
-					}
-				});
+								return null;
+							}
+						});
 			} catch (TimeoutException e) {
 				String msg = String
 						.format("Negotiating party %s timed out in receiveMessage() method.",

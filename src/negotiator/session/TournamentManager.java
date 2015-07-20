@@ -21,7 +21,6 @@ import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
-import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
@@ -185,8 +184,9 @@ public class TournamentManager extends Thread {
 			}
 
 			agentList = MediatorProtocol.getNonMediators(partyList);
-			if (!runSingleSession(partyList, executor)) {
-				notifyEvent(new SessionFailedEvent(this, null,
+			Exception e = runSingleSession(partyList, executor);
+			if (e != null) {
+				notifyEvent(new SessionFailedEvent(this, e,
 						"failure while running session"));
 				continue;
 			}
@@ -226,8 +226,8 @@ public class TournamentManager extends Thread {
 		List<NegotiationParty> partyList = null;
 		useConsoleOut(false);
 		try {
-			partyList = executor
-					.execute(new Callable<List<NegotiationParty>>() {
+			partyList = executor.execute("manager",
+					new Callable<List<NegotiationParty>>() {
 
 						@Override
 						public List<NegotiationParty> call()
@@ -235,18 +235,6 @@ public class TournamentManager extends Thread {
 							return generator.next();
 						}
 					});
-			// } catch (ExecutionException e) {
-			// useConsoleOut(true);
-			// throw e.getCause(); // re-throw
-			// Throwable inner = e.getCause();
-			// System.err.println(inner.getMessage());
-			// if (inner instanceof RepositoryException) {
-			// System.err
-			// .println("fatal: something wrong with the repository");
-			// e.printStackTrace();
-			// System.exit(1);
-			// }
-			// // otherwise, we fall out and partyList may remain null.
 		} finally {
 			useConsoleOut(true);
 		}
@@ -266,11 +254,15 @@ public class TournamentManager extends Thread {
 	 *            the parties to run the tournament for
 	 * @throws Exception
 	 *             if some of the required data could not be extracted
+	 * 
+	 * @return If all goes ok, returns null. Else, Exception that occured during
+	 *         execution.
 	 */
-	public boolean runSingleSession(List<NegotiationParty> parties,
+	public Exception runSingleSession(List<NegotiationParty> parties,
 			ExecutorWithTimeout executor) {
-		try {
+		Exception exception = null;
 
+		try {
 			MultilateralProtocol protocol = configuration.getProtocol();
 			Session session = configuration.getSession().copy();
 
@@ -290,39 +282,20 @@ public class TournamentManager extends Thread {
 						.getNonMediators(parties);
 				notifyEvent(new AgreementEvent(this, session, protocol,
 						agentList, runTime));
-
-				return true;
 			} catch (Error e) {
-				throw new AnalysisException(
-						"Unknown error in analyses or logging");
+				exception = new AnalysisException(
+						"Unknown error in analyses or logging", e);
 			}
-		} catch (InvalidActionError invalidActionError) {
-			useConsoleOut(true);
-			System.err
-					.println("Agent performed invalid action, skipping current session.");
-			return false;
-		} catch (NegotiationPartyTimeoutException e) {
-			useConsoleOut(true);
-			System.err.println(e.getMessage());
-			return false;
-		} catch (InterruptedException e) {
-			useConsoleOut(true);
-			// thrown when trying to cut off long running agents
-			return false;
-		} catch (ExecutionException e) {
-			useConsoleOut(true);
-			System.err
-					.println("Thread or thread execution interrupted, skipping current session.");
-			return false;
 		} catch (Exception e) {
-			useConsoleOut(true);
-			System.err
-					.println("Agent caused an unknown exception, skipping current session.");
-			e.printStackTrace();
-			return false;
+			exception = e;
 		}
-	}
 
+		useConsoleOut(true);
+		if (exception != null) {
+			exception.printStackTrace();
+		}
+		return exception;
+	}
 
 	/**
 	 * Calculate estimated time remaining using extrapolation
