@@ -2,18 +2,20 @@ package negotiator.xml.multipartyrunner;
 
 
 import negotiator.Deadline;
-import negotiator.config.Configuration;
-import negotiator.exceptions.NegotiationPartyTimeoutException;
+import negotiator.events.AgreementEvent;
+import negotiator.events.NegotiationEvent;
+import negotiator.events.SessionFailedEvent;
 import negotiator.exceptions.NegotiatorException;
-import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
-import negotiator.session.*;
-import negotiator.tournament.Tournament;
+import negotiator.session.ExecutorWithTimeout;
+import negotiator.session.RepositoryException;
+import negotiator.session.Session;
+import negotiator.session.SessionManager;
 import negotiator.tournament.TournamentGenerator;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
@@ -24,57 +26,70 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static java.lang.Math.pow;
+import static misc.ConsoleHelper.useConsoleOut;
 
+/**
+ * A single negotatiation configuration which can be run. Should contain all information necessary to run. If anything
+ * changes in the gui, it should be reflected here as well.
+ */
 class RunConfiguration {
 
+    /**
+     * Initalizes a new instance of the RunConfiguration class.
+     * This constructor is used by the JAXB xml reader
+     */
     public RunConfiguration() {
+        // do nothing
     }
 
-    private RunConfiguration(List<String> parties, String domain, List<String> profiles, String protocol, String deadlineType, String deadlineValue) {
-        mParties = new ArrayList<String>(parties);
-        mDomain = domain;
+    /**
+     * Initializes a new instance of the run configuration.
+     * Used to do a deep copy of a previous run confiuration.
+     *
+     * @param config   The RunConfiguration to copy
+     * @param profiles The new profiles for this RunConfiguration
+     */
+    private RunConfiguration(RunConfiguration config, List<String> profiles) {
+        mParties = new ArrayList<String>(config.mParties);
+        mDomain = config.mDomain;
         mProfiles = new ArrayList<String>(profiles);
-        mProtocol = protocol;
-        mDeadlineType = deadlineType;
-        mDeadlineValue = deadlineValue;
+        mProtocol = config.mProtocol;
+        mDeadlineType = config.mDeadlineType;
+        mDeadlineValue = config.mDeadlineValue;
     }
 
-    public String run() {
+    /**
+     * Run this configuration
+     *
+     * @return The NegotiationEvent spawned by running the negotiation
+     */
+    public NegotiationEvent run() {
 
-        MultilateralProtocol protocol = generateProtocol();
-        Deadline deadline = generateDeadline();
+        MultilateralProtocol protocol = generateProtocol(mProtocol);
+        Deadline deadline = generateDeadline(mDeadlineType, mDeadlineValue);
         Session session = new Session(deadline);
-        List<NegotiationParty> parties = generateParties(session);
+        List<NegotiationParty> parties = generateParties(session, mParties, mProfiles, mProtocol, mDomain);
         ExecutorWithTimeout executor = new ExecutorWithTimeout(deadline.getTimeOrDefaultTimeout());
         SessionManager sessionManager = new SessionManager(parties, protocol, session, executor);
 
         try {
             long start = System.nanoTime();
+            useConsoleOut(false);
             sessionManager.run();
+            useConsoleOut(true);
             long stop = System.nanoTime();
-            return mProtocol
-                    + CsvLogger.DELIMITER
-                    + CsvLogger.getDefaultSessionLog(session, protocol, parties, (stop - start) / pow(10, 9));
-        } catch (InterruptedException e) {
-            return "TIMEOUT";
-        } catch (ExecutionException e) {
-            return "TIMEOUT";
-        } catch (NegotiationPartyTimeoutException e) {
-            return "TIMEOUT";
-        } catch (InvalidActionError invalidActionError) {
-            return "INVALID ACTION";
+            return new AgreementEvent(this, session, protocol, parties, (stop - start) / pow(10, 9));
         } catch (Exception e) {
-            return "ERROR";
+            return new SessionFailedEvent(this, e, e.getMessage());
         }
     }
 
     /**
-     * Generates all permutatations by fixing the agents and swapping the profiles
+     * Generates all permutations by fixing the agents and swapping the profiles
      *
-     * @return
+     * @return A list of all permutations of the current RunConfiguration
      */
     public List<RunConfiguration> generatePermutations() {
         final ICombinatoricsVector<String> vector = Factory.createVector(mProfiles);
@@ -86,6 +101,18 @@ class RunConfiguration {
         return permutations;
     }
 
+    /**
+     * Get the number of parties in this RunConfiguration
+     * @return The number of parties.
+     */
+    public int getNumParties() {
+        return mParties.size();
+    }
+
+    /**
+     * Checks if the number of parties and profiles are equal.
+     * Throws an error if this is not the case
+     */
     private void checkSizes() {
         if (mParties.size() != mProfiles.size()) {
             System.err.println("malformed xml: there should be equal number of parties and profiles in each run");
@@ -93,9 +120,15 @@ class RunConfiguration {
         }
     }
 
-    private MultilateralProtocol generateProtocol() {
+    /**
+     * Converts a protocol string to an actual protocol
+     * @param protocol the protocol string to convert
+     * @return Protocol
+     */
+    private MultilateralProtocol generateProtocol(String protocol) {
         try {
-            final MultiPartyProtocolRepItem protocolRepItem = new MultiPartyProtocolRepItem(mProtocol, mProtocol, mProtocol, false, false);
+            final MultiPartyProtocolRepItem protocolRepItem = new MultiPartyProtocolRepItem(protocol, protocol,
+                    protocol, false, false);
             return TournamentGenerator.createFrom(protocolRepItem);
         } catch (Exception e) {
             System.err.println("Error while generating protocol from xml");
@@ -106,28 +139,58 @@ class RunConfiguration {
         }
     }
 
-    private Deadline generateDeadline() {
-        int value = Integer.parseInt(mDeadlineValue);
-        if (mDeadlineType.toLowerCase().equals("time")) {
+    /**
+     * Converts a deadline type and value string to an Deadline object
+     * @param deadlineType Type of deadline (either "round" or "time")
+     * @param deadlineValue Value for deadline (should be integer parseable)
+     * @return The Deadline object
+     */
+    private Deadline generateDeadline(String deadlineType, String deadlineValue) {
+        int value = Integer.parseInt(deadlineValue);
+        if (deadlineType.toLowerCase().equals("time")) {
             return new Deadline(value, -1);
         } else {
             return new Deadline(-1, value);
         }
     }
 
-    private List<NegotiationParty> generateParties(Session session) {
+    /**
+     * Generates a list of negotiation parties
+     * @param session The actual session object
+     * @param parties list of party strings
+     * @param profiles list of profile strings
+     * @return list of parties
+     */
+    private List<NegotiationParty> generateParties(Session session,
+                                                   List<String> parties,
+                                                   List<String> profiles,
+                                                   String protocol,
+                                                   String domain) {
         checkSizes();
-        List<NegotiationParty> parties = new ArrayList<NegotiationParty>(mParties.size());
-        for (int i = 0; i < mParties.size(); i++) {
-            parties.add(generateParty(mParties.get(i), mProfiles.get(i), session));
+        List<NegotiationParty> negotiationParties = new ArrayList<NegotiationParty>(parties.size());
+        for (int i = 0; i < parties.size(); i++) {
+            negotiationParties.add(generateParty(parties.get(i), profiles.get(i), protocol, domain, session));
         }
-        return parties;
+        return negotiationParties;
     }
 
-    private NegotiationParty generateParty(String cpParty, String cpProfile, Session session) {
+    /**
+     * Generates a single negotiation party from a given session and string representations of the other parts.
+     * @param cpParty party string
+     * @param cpProfile profile string
+     * @param cpProtocol protocol string
+     * @param cpDomain domain string
+     * @param session Session object
+     * @return Negotiation party
+     */
+    private NegotiationParty generateParty(String cpParty,
+                                           String cpProfile,
+                                           String cpProtocol,
+                                           String cpDomain,
+                                           Session session) {
         try {
-            PartyRepItem partyRepItem = new PartyRepItem(cpParty, mProtocol);
-            DomainRepItem domainRepItem = new DomainRepItem(new URL(mDomain));
+            PartyRepItem partyRepItem = new PartyRepItem(cpParty, cpProtocol);
+            DomainRepItem domainRepItem = new DomainRepItem(new URL(cpDomain));
             ProfileRepItem profileRepItem = new ProfileRepItem(new URL(cpProfile), domainRepItem);
             return TournamentGenerator.createFrom(partyRepItem, profileRepItem, session);
         } catch (MalformedURLException e) {
@@ -164,7 +227,12 @@ class RunConfiguration {
     @XmlElement(name = "deadline-value")
     private String mDeadlineValue;
 
+    /**
+     * makes a deep copy of this object using different profile ordering.
+     * @param profiles The profile ordering to use
+     * @return A new RunConfiguration with the given profiles
+     */
     private RunConfiguration copy(List<String> profiles) {
-        return new RunConfiguration(mParties, mDomain, profiles, mProtocol, mDeadlineType, mDeadlineValue);
+        return new RunConfiguration(this, profiles);
     }
 }

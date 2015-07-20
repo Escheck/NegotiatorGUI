@@ -38,10 +38,7 @@ public class MultipartyNegoEventLogger implements TableModelListener {
 	public MultipartyNegoEventLogger(String name, int numAgents,
 			MultiPartyDataModel m) throws IOException {
 		model = m;
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-
-		data.logger = new CsvLogger(format("log/tournament-%s-%s.log.csv",
-				dateFormat.format(new Date()), name));
+		data.logger = new CsvLogger(name);
 		logHeader();
 
 	}
@@ -65,7 +62,6 @@ public class MultipartyNegoEventLogger implements TableModelListener {
 	@Override
 	public void tableChanged(TableModelEvent evt) {
 		if (evt.getType() == TableModelEvent.INSERT) {
-			System.out.println("table changed:" + evt);
 			int row = evt.getFirstRow();
 
 			List<String> elements = new ArrayList<String>();
