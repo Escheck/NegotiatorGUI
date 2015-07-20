@@ -1,9 +1,9 @@
 package negotiator.gui.progress;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -27,7 +27,7 @@ public class DataKeyTableModel extends AbstractTableModel {
 	 * columns. Note that the default order of the keys is determined by the
 	 * order of DataKey.
 	 */
-	private final TreeMap<DataKey, Integer> columnSpec;
+	private final LinkedHashMap<DataKey, Integer> columnSpec;
 
 	/**
 	 * name of the rows
@@ -44,8 +44,10 @@ public class DataKeyTableModel extends AbstractTableModel {
 	 *            that has a {@link List} for that {@link DataKey}, then the
 	 *            list is expanded to separate columns. All multiplicities must
 	 *            be >=1.
+	 * 
+	 *            The order of the DataKeys determines the order of the columns.
 	 */
-	public DataKeyTableModel(TreeMap<DataKey, Integer> colspec) {
+	public DataKeyTableModel(LinkedHashMap<DataKey, Integer> colspec) {
 		super();
 		if (colspec.isEmpty()) {
 			throw new IllegalArgumentException("table contains no columns");
@@ -59,8 +61,7 @@ public class DataKeyTableModel extends AbstractTableModel {
 	 * of the {@link #columnSpec}.
 	 */
 	private void initColumns() {
-		DataKey key = columnSpec.firstKey();
-		do {
+		for (DataKey key : columnSpec.keySet()) {
 			int multiplicity = columnSpec.get(key);
 			if (multiplicity < 1) {
 				throw new IllegalArgumentException(
@@ -74,8 +75,7 @@ public class DataKeyTableModel extends AbstractTableModel {
 			} else {
 				columns.add(key.getName());
 			}
-			key = columnSpec.higherKey(key);
-		} while (key != null);
+		}
 	}
 
 	/**
@@ -91,16 +91,12 @@ public class DataKeyTableModel extends AbstractTableModel {
 	public void addRow(Map<DataKey, Object> newValues) {
 		List<Object> row = new ArrayList<Object>();
 
-		DataKey key = columnSpec.firstKey();
-		do {
+		for (DataKey key : columnSpec.keySet()) {
 			int multiplicity = columnSpec.get(key);
 			row.addAll(makeColumns(multiplicity, newValues.get(key)));
-			key = columnSpec.higherKey(key);
-		} while (key != null);
-
+		}
 		rows.add(row);
 
-		// fireTableDataChanged();
 		fireTableRowsInserted(rows.size() - 1, rows.size() - 1);
 	}
 
