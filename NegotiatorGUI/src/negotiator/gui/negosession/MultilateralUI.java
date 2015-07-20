@@ -6,7 +6,10 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -41,6 +44,8 @@ import negotiator.session.TournamentManager;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+
+import static java.lang.String.format;
 
 /**
  * This is the user interface for the multilateral tournament.
@@ -392,8 +397,12 @@ public class MultilateralUI extends JPanel {
 			MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
 					dataModel);
 
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+			String logName = config.getPartyProfileItems().get(0).getDomain().getName();
+			logName = String.format("log/tournament-%s-%s.log.csv", dateFormat.format(new Date()), logName);
+
 			MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
-					config.getPartyProfileItems().get(0).getDomain().getName(),
+					logName,
 					config.getNumAgentsPerSession(), dataModel);
 			dataModel.addTableModelListener(myLogger);
 

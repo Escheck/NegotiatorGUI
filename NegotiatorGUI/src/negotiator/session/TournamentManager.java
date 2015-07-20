@@ -1,9 +1,9 @@
 package negotiator.session;
 
 import static java.lang.String.format;
+import static misc.ConsoleHelper.useConsoleOut;
+import static misc.Time.prettyTimeSpan;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -323,69 +323,6 @@ public class TournamentManager extends Thread {
 		}
 	}
 
-	/**
-	 * Silences or restores the console output. This can be useful to suppress
-	 * output of foreign code, like submitted agents
-	 * 
-	 * FIXME redundant code, copy of SessionManager#useConsoleOut.
-	 *
-	 * @param enable
-	 *            Enables console output if set to true or disables it when set
-	 *            to false
-	 */
-	private void useConsoleOut(boolean enable) {
-
-		if (enable) {
-			System.setErr(orgErr);
-			System.setOut(orgOut);
-		} else {
-			System.setOut(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-		}
-	}
-
-	private static final int BILLION = 1000000000;
-	private static final int DAY = 86400;
-	private static final int HOUR = 3600;
-	private static final int MINUTE = 60;
-
-	public static String prettyTimeSpan(double nanoTime) {
-		int t = (int) Math.floor(nanoTime / BILLION);
-		double ms = nanoTime / BILLION - t;
-		String prettyTimeSpan = "";
-
-		int days = t / DAY;
-		int hours = t % DAY / HOUR;
-		int minutes = t % DAY % HOUR / MINUTE;
-		int seconds = t % DAY % HOUR % MINUTE;
-
-		if (days == 1)
-			prettyTimeSpan += format("%d day, ", days);
-		if (days > 1)
-			prettyTimeSpan += format("%d days, ", days);
-		if (hours == 1)
-			prettyTimeSpan += format("%d hour, ", hours);
-		if (hours > 1)
-			prettyTimeSpan += format("%d hours, ", hours);
-		if (minutes == 1)
-			prettyTimeSpan += format("%d minute, ", minutes);
-		if (minutes > 1)
-			prettyTimeSpan += format("%d minutes, ", minutes);
-		if (seconds == 1)
-			prettyTimeSpan += format("%d second", seconds);
-		else
-			prettyTimeSpan += format("%d seconds", seconds);
-
-		return prettyTimeSpan;
-	}
 
 	/**
 	 * Calculate estimated time remaining using extrapolation

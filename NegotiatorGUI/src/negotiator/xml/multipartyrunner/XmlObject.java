@@ -6,9 +6,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Java object representing an xml runner config file
+ * example config file can be found at xml-runner/example.xml
+ */
 @XmlRootElement(name = "negotiation-runner")
 class XmlObject implements Iterable<RunConfiguration> {
 
+    /**
+     * Gets a list of all runconfigurations
+     * @return
+     */
     public List<RunConfiguration> getRunConfigurations() {
         return runConfigurations;
     }
@@ -45,5 +53,14 @@ class XmlObject implements Iterable<RunConfiguration> {
         } else {
             return getRunConfigurations().size() * getRepetitions();
         }
+    }
+
+    public int getMaxNumAgents() {
+        int max = 0;
+        for (RunConfiguration config : getRunConfigurations()) {
+            int current = config.getNumParties();
+            max = Math.max(max, current);
+        }
+        return max;
     }
 }
