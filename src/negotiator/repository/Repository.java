@@ -327,8 +327,8 @@ public class Repository {
 
 	static ArrayList<RepItem> init_temp_repository2() {
 		ArrayList<RepItem> items = new ArrayList<RepItem>();
-		items.add(new PartyRepItem("Simple Party", "parties.SimpleParty",
-				"Simple Negotiator", null));
+		items.add(new PartyRepItem("negotiator.groupn.Groupn",
+				"negotiator.protocol.StackedAlternatingOffersProtocol"));
 		return items;
 	}
 
