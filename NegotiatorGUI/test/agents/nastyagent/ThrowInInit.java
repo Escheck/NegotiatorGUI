@@ -6,10 +6,11 @@ import negotiator.utility.UtilitySpace;
 
 public class ThrowInInit extends NastyAgent {
 
-	public ThrowInInit(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) throws Throwable {
-		super(utilitySpace, deadlines, timeline, randomSeed);
-		throw new Throwable("blabla");
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		throw new RuntimeException("just throwing in init for fun");
 	}
 
 }

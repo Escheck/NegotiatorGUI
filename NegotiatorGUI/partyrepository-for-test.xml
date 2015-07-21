@@ -33,6 +33,7 @@
 			<partyRepItem description="Nasty Bad Super Init"
 				classPath="agents.nastyagent.BadSuperInit" partyName="Nasty Agent Bad Super Init"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+				
 			<partyRepItem description="Nasty Sleep in Receive"
 				classPath="agents.nastyagent.SleepInReceiveMessage" partyName="Nasty Sleep in Receive"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
@@ -52,6 +53,17 @@
 			<partyRepItem description="Nasty Throw in Choose"
 				classPath="agents.nastyagent.ThrowInChoose" partyName="Nasty Throw in Choose"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+				
+			<partyRepItem description="Nasty Private Constructor"
+				classPath="agents.nastyagent.PrivateConstructor" partyName="Nasty Private Constructor"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="Nasty Sleep in Constructor" 
+				classPath="agents.nastyagent.SleepInConstructor" partyName="Nasty Sleep in Constructor"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="Nasty Throw in Constructor"
+				classPath="agents.nastyagent.ThrowInConstructor" partyName="Nasty Throw in Constructor"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+				
 
 
 			<!-- ANAC2015 agents -->
