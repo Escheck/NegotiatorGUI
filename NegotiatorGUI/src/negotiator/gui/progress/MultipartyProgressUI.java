@@ -32,7 +32,7 @@ import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.gui.chart.MultipartyBidChart;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.session.Session;
 import negotiator.session.SessionManager;
@@ -58,7 +58,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 	// about negotiation session mgr
 	private SessionManager manager;
 
-	private List<NegotiationParty> parties;
+	private List<NegotiationPartyInternal> parties;
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JTable biddingTable;
@@ -75,7 +75,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 
 	/** Creates new form ProgressUI2 */
 	public MultipartyProgressUI(ArrayList<String> partyInfo,
-			SessionManager mgr, List<NegotiationParty> parties) {
+			SessionManager mgr, List<NegotiationPartyInternal> parties) {
 
 		this.manager = mgr;
 		this.parties = parties;
@@ -366,7 +366,8 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 
 	private List<UtilitySpace> getUtilitySpaces() {
 		List<UtilitySpace> spaces = new ArrayList<UtilitySpace>();
-		for (NegotiationParty party : MediatorProtocol.getNonMediators(parties))
+		for (NegotiationPartyInternal party : MediatorProtocol
+				.getNonMediators(parties))
 			spaces.add(party.getUtilitySpace());
 		return spaces;
 	}

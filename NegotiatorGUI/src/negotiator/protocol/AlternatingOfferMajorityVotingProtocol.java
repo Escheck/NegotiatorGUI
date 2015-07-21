@@ -9,7 +9,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.session.Round;
 import negotiator.session.Session;
 import negotiator.session.Turn;
@@ -67,13 +67,13 @@ public class AlternatingOfferMajorityVotingProtocol extends
 	 * @return A list of possible actions
 	 */
 	@Override
-	public Round getRoundStructure(List<NegotiationParty> parties,
+	public Round getRoundStructure(List<NegotiationPartyInternal> parties,
 			Session session) {
 		Round round = new Round();
 
 		if (isVotingRound(session)) {
 			// request an offer from each party
-			for (NegotiationParty party : parties) {
+			for (NegotiationPartyInternal party : parties) {
 				round.addTurn(new Turn(party, OfferForVoting.class));
 			}
 		} else {
@@ -82,8 +82,8 @@ public class AlternatingOfferMajorityVotingProtocol extends
 			acceptOrReject.add(Accept.class);
 			acceptOrReject.add(Reject.class);
 
-			for (NegotiationParty ignored : parties) {
-				for (NegotiationParty votingParty : parties) {
+			for (NegotiationPartyInternal ignored : parties) {
+				for (NegotiationPartyInternal votingParty : parties) {
 					round.addTurn(new Turn(votingParty, acceptOrReject));
 				}
 			}
@@ -105,7 +105,8 @@ public class AlternatingOfferMajorityVotingProtocol extends
 	 * @return true if the protocol is finished
 	 */
 	@Override
-	public boolean isFinished(Session session, List<NegotiationParty> parties) {
+	public boolean isFinished(Session session,
+			List<NegotiationPartyInternal> parties) {
 		if (isVotingRound(session)) {
 			Round votingRound = session.getMostRecentRound();
 			Round offerRound = session.getRounds().get(
@@ -126,7 +127,7 @@ public class AlternatingOfferMajorityVotingProtocol extends
 	 */
 	@Override
 	public Bid getCurrentAgreement(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		int round = session.getRoundNumber();
 
 		// if less then two rounds, no accepted offer
@@ -208,7 +209,7 @@ public class AlternatingOfferMajorityVotingProtocol extends
 	 */
 	@Override
 	public int getNumberOfAgreeingParties(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		return mostRecentlyAcceptedOfferVoteCount;
 	}
 }

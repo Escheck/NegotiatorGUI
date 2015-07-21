@@ -21,7 +21,7 @@ import negotiator.Deadline;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultipartyProgressUI;
 import negotiator.logging.FileLogger;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
@@ -239,7 +239,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 
 	}
 
-	private List<NegotiationParty> parties;
+	private List<NegotiationPartyInternal> parties;
 
 	/**
 	 * This is a proxy class to bridge this UI to the new SessionManager

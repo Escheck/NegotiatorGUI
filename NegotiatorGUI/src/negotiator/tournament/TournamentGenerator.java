@@ -2,7 +2,6 @@ package negotiator.tournament;
 
 import static negotiator.utility.UTILITYSPACETYPE.getUtilitySpaceType;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,11 +13,11 @@ import negotiator.Domain;
 import negotiator.config.Configuration;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
-import negotiator.repository.Repository;
 import negotiator.session.RepositoryException;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
@@ -67,85 +66,6 @@ public class TournamentGenerator {
 	}
 
 	/**
-	 * Creates a new {@link NegotiationParty} from repository items and
-	 * initializes it.
-	 *
-	 * @param partyRepItem
-	 *            Party Repository item to createFrom party from
-	 * @param profileRepItem
-	 *            Profile Repository item to createFrom party from
-	 * @return new Party
-	 * @throws RepositoryException
-	 * @throws java.lang.NoSuchMethodException
-	 *             If requested Party does not have a constructor accepting only
-	 *             preference profiles
-	 * @throws java.lang.ClassNotFoundException
-	 *             If requested Party class can not be found.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
-			ProfileRepItem profileRepItem, Session session)
-			throws RepositoryException, NegotiatorException {
-		NegotiationParty party = createInstance(partyRepItem, profileRepItem,
-				session);
-		UtilitySpace utilitySpace = createFrom(profileRepItem);
-		long randomSeed = System.currentTimeMillis();
-		party.init(utilitySpace, session.getDeadlines(), session.getTimeline(),
-				randomSeed);
-		return party;
-	}
-
-	/**
-	 * Creates a new Party from repository items, but does not yet call init.
-	 *
-	 * @param partyRepItem
-	 *            Party Repository item to createFrom party from
-	 * @param profileRepItem
-	 *            Profile Repository item to createFrom party from
-	 * @return new Party
-	 * @throws RepositoryException
-	 * @throws java.lang.NoSuchMethodException
-	 *             If requested Party does not have a constructor accepting only
-	 *             preference profiles
-	 * @throws java.lang.ClassNotFoundException
-	 *             If requested Party class can not be found.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	@SuppressWarnings("unchecked")
-	private static NegotiationParty createInstance(PartyRepItem partyRepItem,
-			ProfileRepItem profileRepItem, Session session)
-			throws RepositoryException, NegotiatorException {
-		Exception exception = null;
-		String extraMessage = "";
-
-		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class<? extends NegotiationParty> partyClass;
-		try {
-			partyClass = (Class<? extends NegotiationParty>) loader
-					.loadClass(partyRepItem.getClassPath());
-
-			return (NegotiationParty) partyClass.getConstructor().newInstance();
-		} catch (NoSuchMethodException e) {
-			extraMessage = ": no public default constructor was found";
-			exception = e;
-		} catch (Exception e) {
-			exception = e;
-		}
-
-		// if we get here there was an exception.
-		throw new NegotiatorException(
-				"An exception occured while creating agent "
-						+ partyRepItem.getName() + " using profile "
-						+ profileRepItem + extraMessage, exception);
-	}
-
-	/**
 	 * Create a new instance of the Protocol object from a
 	 * {@link negotiator.repository.MultiPartyProtocolRepItem}
 	 *
@@ -169,33 +89,6 @@ public class TournamentGenerator {
 	}
 
 	/**
-	 * Create a new UtilitySpace from a ProfileRepItem. If
-	 * {@link ProfileRepItem#getDomain()} returns new instead of an actual
-	 * domain, this method also returns null.
-	 *
-	 * @param item
-	 *            the item to create a UtilitySpace out of.
-	 * @return the UtilitySpace corresponding to the item.
-	 * @throws FileNotFoundException
-	 * @throws RepositoryException
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	public static UtilitySpace createFrom(ProfileRepItem item)
-			throws RepositoryException {
-		Domain domain;
-		try {
-			domain = Repository.get_domain_repos().getDomain(item.getDomain());
-
-			return Repository.get_domain_repos().getUtilitySpace(domain, item);
-		} catch (Exception e) {
-			throw new RepositoryException("File not found for " + item, e);
-		}
-	}
-
-	/**
 	 * Creates a new Party from repository items
 	 *
 	 * @param partyRepItem
@@ -213,9 +106,9 @@ public class TournamentGenerator {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
-			Domain domain, UTILITYSPACETYPE type, Session session)
-			throws Exception {
+	public static NegotiationPartyInternal createFrom(
+			PartyRepItem partyRepItem, Domain domain, UTILITYSPACETYPE type,
+			Session session) throws Exception {
 		if (type == null) {
 			type = UTILITYSPACETYPE.LINEAR;
 		}
@@ -244,8 +137,9 @@ public class TournamentGenerator {
 		}
 
 		long randomSeed = System.currentTimeMillis();
-		return (NegotiationParty) partyConstructor.newInstance(utilitySpace,
-				session.getDeadlines(), session.getTimeline(), randomSeed);
+		return (NegotiationPartyInternal) partyConstructor.newInstance(
+				utilitySpace, session.getDeadlines(), session.getTimeline(),
+				randomSeed);
 	}
 
 	/**
@@ -270,7 +164,7 @@ public class TournamentGenerator {
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
 	 */
-	public static List<NegotiationParty> generateSessionParties(
+	public static List<NegotiationPartyInternal> generateSessionParties(
 			List<PartyRepItem> partyRepItems,
 			List<ProfileRepItem> profileRepItems, List<AgentID> partyIds,
 			int mediatorIndex, PartyRepItem mediatorRepItem,
@@ -307,26 +201,28 @@ public class TournamentGenerator {
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
 	 */
-	public static List<NegotiationParty> generateSessionParties(
+	public static List<NegotiationPartyInternal> generateSessionParties(
 			List<Integer> partyIndices, List<PartyRepItem> partyRepItems,
 			List<ProfileRepItem> profileRepItems, List<AgentID> partyIds,
 			int mediatorIndex, PartyRepItem mediatorRepItem,
 			ProfileRepItem mediatorProfileRepItem, Session session)
 			throws RepositoryException, NegotiatorException {
 
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 
 		for (int i = 0; i < profileRepItems.size(); i++) {
 			if (partyIndices.get(i) != null && partyIndices.get(i) >= 0) {
 				PartyRepItem partyRepItem = partyRepItems.get(partyIndices
 						.get(i));
 				ProfileRepItem profileRepItem = profileRepItems.get(i);
-				NegotiationParty party = createFrom(partyRepItem,
-						profileRepItem, session);
+				// NegotiationParty party = createFrom(partyRepItem,
+				// profileRepItem, session);
+				NegotiationPartyInternal party = new NegotiationPartyInternal(
+						partyRepItem, profileRepItem, session);
 				parties.add(party);
 			}
 		}
-		NegotiationParty mediator = generateMediator(mediatorRepItem,
+		NegotiationPartyInternal mediator = generateMediator(mediatorRepItem,
 				mediatorProfileRepItem, profileRepItems.get(0), session);
 		if (mediator != null)
 			parties.add(mediatorIndex, mediator);
@@ -368,7 +264,7 @@ public class TournamentGenerator {
 	 *            The session used fot this session
 	 * @return A mediator party instance
 	 */
-	protected static NegotiationParty generateMediator(
+	protected static NegotiationPartyInternal generateMediator(
 			PartyRepItem mediatorRepItem,
 			ProfileRepItem mediatorProfileRepItem,
 			ProfileRepItem alternativeProfileRepItem, Session session) {
@@ -379,8 +275,9 @@ public class TournamentGenerator {
 				// if mediator profile also set, we'll create it add it at the
 				// appropriate index
 				if (mediatorProfileRepItem != null) {
-					return createFrom(mediatorRepItem, mediatorProfileRepItem,
-							session);
+
+					return new NegotiationPartyInternal(mediatorRepItem,
+							mediatorProfileRepItem, session);
 				}
 				// if mediator has no profile, we'll base it on one of the
 				// agents domains, the
@@ -388,8 +285,8 @@ public class TournamentGenerator {
 				// the same domain.
 				else {
 					UTILITYSPACETYPE utilType = extractUtilitySpaceType(alternativeProfileRepItem);
-					Domain someAgentsDomain = createFrom(
-							alternativeProfileRepItem).getDomain();
+					Domain someAgentsDomain = alternativeProfileRepItem
+							.create().getDomain();
 					return createFrom(mediatorRepItem, someAgentsDomain,
 							utilType, session);
 				}
@@ -419,7 +316,7 @@ public class TournamentGenerator {
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
 	 */
-	List<NegotiationParty> generateSessionParties(List<Integer> indices)
+	List<NegotiationPartyInternal> generateSessionParties(List<Integer> indices)
 			throws RepositoryException, NegotiatorException {
 		return generateSessionParties(indices, config.getPartyItems(),
 				config.getPartyProfileItems(), null, config.getMediatorIndex(),
@@ -436,7 +333,7 @@ public class TournamentGenerator {
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
 	 */
-	public List<NegotiationParty> next() throws RepositoryException,
+	public List<NegotiationPartyInternal> next() throws RepositoryException,
 			NegotiatorException {
 		List<Integer> indices = indicesIterator.next();
 		return generateSessionParties(indices);

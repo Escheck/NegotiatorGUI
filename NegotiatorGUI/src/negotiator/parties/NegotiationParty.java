@@ -59,7 +59,7 @@ public interface NegotiationParty {
 	 *            List of all actions possible.
 	 * @return The chosen action
 	 */
-	Action chooseAction(List<Class> possibleActions);
+	public Action chooseAction(List<Class> possibleActions);
 
 	/**
 	 * This method is called when an observable action is performed. Observable
@@ -144,5 +144,5 @@ public interface NegotiationParty {
 	 * @param id
 	 *            The new id for this agent.
 	 */
-	void setPartyId(AgentID id);
+	// void setPartyId(AgentID id);
 }

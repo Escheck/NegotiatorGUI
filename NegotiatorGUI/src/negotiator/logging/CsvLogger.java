@@ -16,7 +16,7 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
@@ -158,8 +158,9 @@ public class CsvLogger implements Closeable {
 	 * was reached.
 	 */
 	public static String getDefaultSessionLog(Session session,
-			MultilateralProtocol protocol, List<NegotiationParty> parties,
-			double runTime) throws Exception {
+			MultilateralProtocol protocol,
+			List<NegotiationPartyInternal> parties, double runTime)
+			throws Exception {
 		List<String> values = new ArrayList<String>();
 
 		try {
@@ -178,13 +179,13 @@ public class CsvLogger implements Closeable {
 
 			// discounted and agreement
 			boolean isDiscounted = false;
-			for (NegotiationParty party : parties)
+			for (NegotiationPartyInternal party : parties)
 				isDiscounted |= party.getUtilitySpace().isDiscounted();
 			values.add(agreement == null ? "No" : "Yes");
 			values.add(isDiscounted ? "Yes" : "No");
 
 			// number of agreeing parties
-			List<NegotiationParty> agents = MediatorProtocol
+			List<NegotiationPartyInternal> agents = MediatorProtocol
 					.getNonMediators(parties);
 			values.add(""
 					+ protocol.getNumberOfAgreeingParties(session, agents));
@@ -202,11 +203,11 @@ public class CsvLogger implements Closeable {
 			values.add(format("%.5f", analysis.getSocialWelfare()));
 
 			// enumerate agents names, utils, protocols
-			for (NegotiationParty agent : agents)
+			for (NegotiationPartyInternal agent : agents)
 				values.add("" + agent);
 			for (double util : utils)
 				values.add(format("%.5f", util));
-			for (NegotiationParty agent : agents)
+			for (NegotiationPartyInternal agent : agents)
 				values.add(stripPath(agent.getUtilitySpace().getFileName()));
 
 		} catch (Exception e) {
@@ -216,10 +217,10 @@ public class CsvLogger implements Closeable {
 		return join(values, DELIMITER);
 	}
 
-	public static List<Double> getUtils(List<NegotiationParty> parties,
+	public static List<Double> getUtils(List<NegotiationPartyInternal> parties,
 			Bid agreement) {
 		List<Double> utils = new ArrayList<Double>();
-		for (NegotiationParty agent : parties) {
+		for (NegotiationPartyInternal agent : parties) {
 			double agreementUtil = agreement == null ? 0 : agent
 					.getUtilityWithDiscount(agreement);
 			double reservationValue = agent.getUtilitySpace()
@@ -230,9 +231,10 @@ public class CsvLogger implements Closeable {
 	}
 
 	public static String logSingleSession(Session session,
-			MultilateralProtocol protocol, List<NegotiationParty> parties,
-			double runTime) throws Exception {
-		List<NegotiationParty> agents = MediatorProtocol
+			MultilateralProtocol protocol,
+			List<NegotiationPartyInternal> parties, double runTime)
+			throws Exception {
+		List<NegotiationPartyInternal> agents = MediatorProtocol
 				.getNonMediators(parties);
 		List<String> values = new ArrayList<String>();
 		Bid agreement = protocol.getCurrentAgreement(session, parties);
@@ -242,7 +244,7 @@ public class CsvLogger implements Closeable {
 		boolean isDiscounted = false;
 		double minUtil = 1;
 		double maxUtil = 0;
-		for (NegotiationParty agent : agents) {
+		for (NegotiationPartyInternal agent : agents) {
 			double util = agent.getUtilityWithDiscount(agreement);
 			double undiscounted = agent.getUtility(agreement);
 			isDiscounted |= util != undiscounted;
@@ -289,7 +291,7 @@ public class CsvLogger implements Closeable {
 						utils.get(i), agents.get(i).getPartyId()));
 			}
 		} else {
-			for (NegotiationParty agent : agents) {
+			for (NegotiationPartyInternal agent : agents) {
 				String msg = String.format("Agent utility [RV]:\t%.5f (%s)\n",
 						agent.getUtilitySpace().getReservationValue(),
 						agent.getPartyId());

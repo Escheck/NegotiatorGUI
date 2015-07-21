@@ -13,7 +13,7 @@ import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
 import negotiator.gui.progress.DataKey;
 import negotiator.logging.CsvLogger;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
@@ -50,7 +50,7 @@ public class AgreementEvent extends NegotiationEvent {
 
 	Session session;
 	MultilateralProtocol protocol;
-	List<NegotiationParty> parties;
+	List<NegotiationPartyInternal> parties;
 	double runTime;
 
 	/**
@@ -59,7 +59,7 @@ public class AgreementEvent extends NegotiationEvent {
 	private static final long serialVersionUID = -6630669386231073769L;
 
 	public AgreementEvent(Object source, Session s, MultilateralProtocol pr,
-			List<NegotiationParty> pa, double time) {
+			List<NegotiationPartyInternal> pa, double time) {
 		super(source);
 		session = s;
 		protocol = pr;
@@ -93,13 +93,13 @@ public class AgreementEvent extends NegotiationEvent {
 
 			// discounted and agreement
 			boolean isDiscounted = false;
-			for (NegotiationParty party : parties)
+			for (NegotiationPartyInternal party : parties)
 				isDiscounted |= party.getUtilitySpace().isDiscounted();
 			values.put(DataKey.IS_AGREEMENT, agreement == null ? "No" : "Yes");
 			values.put(DataKey.IS_DISCOUNT, isDiscounted ? "Yes" : "No");
 
 			// number of agreeing parties
-			List<NegotiationParty> agents = MediatorProtocol
+			List<NegotiationPartyInternal> agents = MediatorProtocol
 					.getNonMediators(parties);
 			values.put(DataKey.NUM_AGREE,
 					"" + protocol.getNumberOfAgreeingParties(session, agents));
@@ -123,15 +123,15 @@ public class AgreementEvent extends NegotiationEvent {
 			List<String> agts = new ArrayList<String>();
 
 			String agentstr = "";
-			for (NegotiationParty a : agents) {
-				agts.add(a.getClass().getSimpleName());
+			for (NegotiationPartyInternal a : agents) {
+				agts.add(a.getPartyId().toString());
 			}
 			values.put(DataKey.AGENTS, agts);
 
 			values.put(DataKey.UTILS, utils);// format("%.5f ", util);
 
 			List<String> files = new ArrayList<String>();
-			for (NegotiationParty agent : agents) {
+			for (NegotiationPartyInternal agent : agents) {
 				File utilfile = new File(agent.getUtilitySpace().getFileName());
 				files.add(utilfile.getName());
 			}

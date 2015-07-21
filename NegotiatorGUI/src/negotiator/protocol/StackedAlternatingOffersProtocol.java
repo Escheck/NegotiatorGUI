@@ -15,7 +15,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.session.Round;
 import negotiator.session.Session;
 import negotiator.session.Turn;
@@ -63,12 +63,12 @@ public class StackedAlternatingOffersProtocol extends
 	 * @return A list of possible actions
 	 */
 	@Override
-	public Round getRoundStructure(List<NegotiationParty> parties,
+	public Round getRoundStructure(List<NegotiationPartyInternal> parties,
 			Session session) {
 		Round round = new Round();
 		boolean isFirstRound = session.getRoundNumber() == 0;
 
-		for (NegotiationParty party : parties) {
+		for (NegotiationPartyInternal party : parties) {
 			if (isFirstRound) {
 				// If this is the first party in the first round, it can not
 				// accept.
@@ -94,7 +94,7 @@ public class StackedAlternatingOffersProtocol extends
 	 */
 	@Override
 	public Bid getCurrentAgreement(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 
 		// if not all parties agree, we did not find an agreement
 		if (getNumberOfAgreeingParties(session, parties) < parties.size())
@@ -106,7 +106,7 @@ public class StackedAlternatingOffersProtocol extends
 
 	@Override
 	public int getNumberOfAgreeingParties(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		int nAccepts = 0;
 		ArrayList<Action> actions = getMostRecentTwoRounds(session);
 		for (int i = actions.size() - 1; i >= 0; i--) {
@@ -187,7 +187,8 @@ public class StackedAlternatingOffersProtocol extends
 	 * @return true if the protocol is finished
 	 */
 	@Override
-	public boolean isFinished(Session session, List<NegotiationParty> parties) {
+	public boolean isFinished(Session session,
+			List<NegotiationPartyInternal> parties) {
 		return getCurrentAgreement(session, parties) != null
 				|| session.getMostRecentAction() instanceof EndNegotiation;
 	}
@@ -198,16 +199,16 @@ public class StackedAlternatingOffersProtocol extends
 	 * @return who is listening to who
 	 */
 	@Override
-	public Map<NegotiationParty, List<NegotiationParty>> getActionListeners(
-			List<NegotiationParty> parties) {
+	public Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> getActionListeners(
+			List<NegotiationPartyInternal> parties) {
 
 		// create a new map of parties
-		Map<NegotiationParty, List<NegotiationParty>> map = new HashMap<NegotiationParty, List<NegotiationParty>>();
+		Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> map = new HashMap<NegotiationPartyInternal, List<NegotiationPartyInternal>>();
 
 		// for each party add each other party
-		for (NegotiationParty listener : parties) {
-			ArrayList<NegotiationParty> talkers = new ArrayList<NegotiationParty>();
-			for (NegotiationParty talker : parties) {
+		for (NegotiationPartyInternal listener : parties) {
+			ArrayList<NegotiationPartyInternal> talkers = new ArrayList<NegotiationPartyInternal>();
+			for (NegotiationPartyInternal talker : parties) {
 				if (talker != listener) {
 					talkers.add(talker);
 				}
@@ -220,17 +221,20 @@ public class StackedAlternatingOffersProtocol extends
 
 	@Override
 	public void beforeSession(Session session,
-			final List<NegotiationParty> parties) throws InterruptedException,
-			ExecutionException, NegotiationPartyTimeoutException {
+			final List<NegotiationPartyInternal> parties)
+			throws InterruptedException, ExecutionException,
+			NegotiationPartyTimeoutException {
 		super.beforeSession(session, parties);
-		for (final NegotiationParty party : parties) {
+		for (final NegotiationPartyInternal party : parties) {
 			try {
 				getExecutor().execute(party.getPartyId().toString(),
 						new Callable<Object>() {
 							@Override
 							public Object call() throws Exception {
-								party.receiveMessage("Protocol", new Inform(
-										"NumberOfAgents", parties.size()));
+								party.getParty().receiveMessage(
+										"Protocol",
+										new Inform("NumberOfAgents", parties
+												.size()));
 
 								return null;
 							}

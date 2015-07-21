@@ -11,6 +11,7 @@ import negotiator.Bid;
 import negotiator.actions.Action;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Round;
 import negotiator.session.Session;
@@ -21,7 +22,8 @@ import negotiator.session.Session;
  *
  * @author David Festen
  */
-public abstract class MultilateralProtocolAdapter implements MultilateralProtocol {
+public abstract class MultilateralProtocolAdapter implements
+		MultilateralProtocol {
 
 	protected boolean isAborted = false;
 	private ExecutorWithTimeout executor;
@@ -39,7 +41,7 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 * @return A list of possible actions
 	 */
 	@Override
-	public Round getRoundStructure(List<NegotiationParty> parties,
+	public Round getRoundStructure(List<NegotiationPartyInternal> parties,
 			Session session) {
 		return new Round();
 	}
@@ -55,7 +57,10 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *            The parties that will participate in the session
 	 */
 	@Override
-	public void beforeSession(Session session, List<NegotiationParty> parties) throws NegotiationPartyTimeoutException, ExecutionException, InterruptedException {
+	public void beforeSession(Session session,
+			List<NegotiationPartyInternal> parties)
+			throws NegotiationPartyTimeoutException, ExecutionException,
+			InterruptedException {
 
 	}
 
@@ -69,7 +74,8 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *            The parties that participated in the session
 	 */
 	@Override
-	public void afterSession(Session session, List<NegotiationParty> parties) {
+	public void afterSession(Session session,
+			List<NegotiationPartyInternal> parties) {
 
 	}
 
@@ -101,7 +107,8 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 * @return true if the protocol is finished
 	 */
 	@Override
-	public boolean isFinished(Session session, List<NegotiationParty> parties) {
+	public boolean isFinished(Session session,
+			List<NegotiationPartyInternal> parties) {
 		return isAborted;
 	}
 
@@ -117,9 +124,10 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *         listening to that key party's response.
 	 */
 	@Override
-	public Map<NegotiationParty, List<NegotiationParty>> getActionListeners(
-			final List<NegotiationParty> parties) {
-		return new HashMap<NegotiationParty, List<NegotiationParty>>(0);
+	public Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> getActionListeners(
+			final List<NegotiationPartyInternal> parties) {
+		return new HashMap<NegotiationPartyInternal, List<NegotiationPartyInternal>>(
+				0);
 	}
 
 	/**
@@ -135,7 +143,7 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 */
 	@Override
 	public Bid getCurrentAgreement(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		return null;
 	}
 
@@ -153,7 +161,7 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 */
 	@Override
 	public int getNumberOfAgreeingParties(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		return getCurrentAgreement(session, parties) == null ? 0 : parties
 				.size();
 	}
@@ -173,13 +181,13 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *            the given type
 	 * @return The filtered list of parties
 	 */
-	private Collection<NegotiationParty> filter(
-			Collection<NegotiationParty> negotiationParties,
+	private Collection<NegotiationPartyInternal> filter(
+			Collection<NegotiationPartyInternal> negotiationParties,
 			Class negotiationPartyClass, boolean inclusionFilter) {
-		Collection<NegotiationParty> filtered = new ArrayList<NegotiationParty>(
+		Collection<NegotiationPartyInternal> filtered = new ArrayList<NegotiationPartyInternal>(
 				negotiationParties.size());
 
-		for (NegotiationParty party : negotiationParties) {
+		for (NegotiationPartyInternal party : negotiationParties) {
 			// if including and class is of the type searching for,
 			// or excluding and class is not of the type searching for.
 			if ((inclusionFilter && party.getClass().equals(
@@ -205,8 +213,8 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *
 	 * @return The filtered list of parties
 	 */
-	public Collection<NegotiationParty> includeOnly(
-			Collection<NegotiationParty> negotiationParties,
+	public Collection<NegotiationPartyInternal> includeOnly(
+			Collection<NegotiationPartyInternal> negotiationParties,
 			Class negotiationPartyClass) {
 		return filter(negotiationParties, negotiationPartyClass, true);
 	}
@@ -223,8 +231,8 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 	 *
 	 * @return The filtered list of parties
 	 */
-	public Collection<NegotiationParty> exclude(
-			Collection<NegotiationParty> negotiationParties,
+	public Collection<NegotiationPartyInternal> exclude(
+			Collection<NegotiationPartyInternal> negotiationParties,
 			Class negotiationPartyClass) {
 		return filter(negotiationParties, negotiationPartyClass, false);
 	}
@@ -260,6 +268,7 @@ public abstract class MultilateralProtocolAdapter implements MultilateralProtoco
 
 	/**
 	 * {@inheritDoc}
+	 * 
 	 * @param executor
 	 */
 	@Override

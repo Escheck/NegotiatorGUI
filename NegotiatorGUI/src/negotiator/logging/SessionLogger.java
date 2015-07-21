@@ -10,7 +10,7 @@ import negotiator.actions.Offer;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.session.Session;
 
@@ -96,7 +96,7 @@ public class SessionLogger {
 	 * @param agree
 	 *            flag indicating whether the offer is an agreement or not
 	 */
-	public void logBid(Session session, List<NegotiationParty> parties,
+	public void logBid(Session session, List<NegotiationPartyInternal> parties,
 			boolean agree) {
 		Action action = session.getMostRecentAction();
 
@@ -106,7 +106,7 @@ public class SessionLogger {
 			int turn = session.getTurnNumber();
 			double time = session.getRuntimeInSeconds();
 			ArrayList<Double> utils = new ArrayList<Double>();
-			for (NegotiationParty party : MediatorProtocol
+			for (NegotiationPartyInternal party : MediatorProtocol
 					.getNonMediators(parties))
 				utils.add(party.getUtility(bid));
 			MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(

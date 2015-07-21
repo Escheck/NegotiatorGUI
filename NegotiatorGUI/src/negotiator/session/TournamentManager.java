@@ -22,6 +22,7 @@ import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.tournament.TournamentGenerator;
@@ -156,8 +157,8 @@ public class TournamentManager extends Thread {
 		while (generator.hasNext()) {
 
 			String errormessage = null; // null=all OK.
-			List<NegotiationParty> partyList = null;
-			List<NegotiationParty> agentList = null; // null=bad
+			List<NegotiationPartyInternal> partyList = null;
+			List<NegotiationPartyInternal> agentList = null; // null=bad
 
 			sessionNumber++;
 			notifyEvent(new SessionStartedEvent(this, sessionNumber,
@@ -219,17 +220,17 @@ public class TournamentManager extends Thread {
 	 * @throws ExecutionException
 	 *             if one of the agents does not construct properly
 	 */
-	private List<NegotiationParty> getPartyList(ExecutorWithTimeout executor,
-			final TournamentGenerator generator) throws TimeoutException,
-			ExecutionException {
-		List<NegotiationParty> partyList = null;
+	private List<NegotiationPartyInternal> getPartyList(
+			ExecutorWithTimeout executor, final TournamentGenerator generator)
+			throws TimeoutException, ExecutionException {
+		List<NegotiationPartyInternal> partyList = null;
 		useConsoleOut(false);
 		try {
 			partyList = executor.execute("manager",
-					new Callable<List<NegotiationParty>>() {
+					new Callable<List<NegotiationPartyInternal>>() {
 
 						@Override
-						public List<NegotiationParty> call()
+						public List<NegotiationPartyInternal> call()
 								throws RepositoryException, NegotiatorException {
 							return generator.next();
 						}
@@ -257,7 +258,7 @@ public class TournamentManager extends Thread {
 	 * @return If all goes ok, returns null. Else, Exception that occured during
 	 *         execution.
 	 */
-	public Exception runSingleSession(List<NegotiationParty> parties,
+	public Exception runSingleSession(List<NegotiationPartyInternal> parties,
 			ExecutorWithTimeout executor) {
 		Exception exception = null;
 
@@ -277,7 +278,7 @@ public class TournamentManager extends Thread {
 
 			try {
 				double runTime = session.getRuntimeInSeconds();
-				List<NegotiationParty> agentList = MediatorProtocol
+				List<NegotiationPartyInternal> agentList = MediatorProtocol
 						.getNonMediators(parties);
 				notifyEvent(new AgreementEvent(this, session, protocol,
 						agentList, runTime));

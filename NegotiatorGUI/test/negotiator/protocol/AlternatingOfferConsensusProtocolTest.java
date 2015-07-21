@@ -17,7 +17,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.session.Round;
 import negotiator.session.Session;
 import negotiator.session.Turn;
@@ -52,10 +52,10 @@ public class AlternatingOfferConsensusProtocolTest {
 	public void testGetRoundStructureVotingRound() {
 		when(session.getRoundNumber()).thenReturn(VOTING_ROUND);
 
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
-		NegotiationParty party1 = mock(NegotiationParty.class);
-		NegotiationParty party2 = mock(NegotiationParty.class);
-		NegotiationParty party3 = mock(NegotiationParty.class);
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
+		NegotiationPartyInternal party1 = mock(NegotiationPartyInternal.class);
+		NegotiationPartyInternal party2 = mock(NegotiationPartyInternal.class);
+		NegotiationPartyInternal party3 = mock(NegotiationPartyInternal.class);
 
 		parties.add(party1);
 		parties.add(party2);
@@ -90,10 +90,10 @@ public class AlternatingOfferConsensusProtocolTest {
 		acceptOrReject.add(Accept.class);
 		acceptOrReject.add(Reject.class);
 
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
-		NegotiationParty party1 = mock(NegotiationParty.class);
-		NegotiationParty party2 = mock(NegotiationParty.class);
-		NegotiationParty party3 = mock(NegotiationParty.class);
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
+		NegotiationPartyInternal party1 = mock(NegotiationPartyInternal.class);
+		NegotiationPartyInternal party2 = mock(NegotiationPartyInternal.class);
+		NegotiationPartyInternal party3 = mock(NegotiationPartyInternal.class);
 
 		parties.add(party1);
 		parties.add(party2);
@@ -129,7 +129,7 @@ public class AlternatingOfferConsensusProtocolTest {
 	 */
 	@Test
 	public void isFinishedTestVoting() {
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 		when(session.getRoundNumber()).thenReturn(VOTING_ROUND);
 		when(session.getRounds()).thenReturn(new ArrayList<Round>());
 		assertFalse(protocol.isFinished(session, parties));
@@ -140,7 +140,7 @@ public class AlternatingOfferConsensusProtocolTest {
 	 */
 	@Test
 	public void isFinishedTestNonVoting() {
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 		when(session.getRoundNumber()).thenReturn(OFFER_ROUND);
 		assertFalse(protocol.isFinished(session, parties));
 	}
@@ -151,7 +151,7 @@ public class AlternatingOfferConsensusProtocolTest {
 	 */
 	@Test
 	public void isFinishedTestVoting2() {
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 		when(session.getRoundNumber()).thenReturn(VOTING_ROUND_2);
 
 		Round round = mock(Round.class);
@@ -174,7 +174,7 @@ public class AlternatingOfferConsensusProtocolTest {
 		Session realsession = new Session(new Deadline(5, 5));
 		Round round = new Round();
 		round.addTurn(new Turn(null));
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 		assertFalse(protocol.isFinished(realsession, parties));
 	}
 }
