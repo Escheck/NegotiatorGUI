@@ -53,16 +53,11 @@ public class PartyRepItem implements RepItem {
 	@XmlAttribute
 	String protocolClassPath;
 
+	/**
+	 * Do not use this: It's only here to support XML de-serialization.
+	 */
 	public PartyRepItem() {
 		properties = new ArrayList<String>();
-	}
-
-	public PartyRepItem(String aName, String cPath, String desc,
-			List<String> prop) {
-		partyName = aName;
-		classPath = cPath;
-		description = desc;
-		properties = prop;
 	}
 
 	public PartyRepItem(String classPath, String protocolClassPath) {
