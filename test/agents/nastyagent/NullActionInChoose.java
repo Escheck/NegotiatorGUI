@@ -3,8 +3,8 @@ package agents.nastyagent;
 import java.util.List;
 
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**
