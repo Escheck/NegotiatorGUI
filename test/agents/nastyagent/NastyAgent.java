@@ -108,10 +108,4 @@ public abstract class NastyAgent implements NegotiationParty {
 				: partyId;
 	}
 
-	@Override
-	public void setPartyId(AgentID id) {
-		this.partyId = id;
-
-	}
-
 }

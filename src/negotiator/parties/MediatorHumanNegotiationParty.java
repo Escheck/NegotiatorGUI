@@ -21,7 +21,8 @@ import agents.EnterBidDialogAcceptance;
  *
  * @author David Festen
  */
-public class MediatorHumanNegotiationParty extends AbstractNegotiationParty {
+public class MediatorHumanNegotiationParty extends AbstractNegotiationParty
+		implements Mediator {
 	private Action opponentAction = null;
 	private EnterBidDialogAcceptance ui = null;
 	private Bid mostRecentAgreement = null;

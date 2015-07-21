@@ -25,7 +25,8 @@ import negotiator.utility.UtilitySpace;
  * (see svn history for details about that class), and adapted to fit into the
  * new framework.
  */
-public class RandomFlippingMediator extends Mediator {
+public class RandomFlippingMediator extends AbstractNegotiationParty implements
+		Mediator {
 
 	/**
 	 * Holds whether the current offer is acceptable by all parties.

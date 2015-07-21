@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import negotiator.actions.Action;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 
 /**
  * Represents a single turn in the negotiation session. {@link Turn} objects are
@@ -26,7 +26,7 @@ public class Turn {
 	/**
 	 * The party which should execute this turn
 	 */
-	private NegotiationParty party;
+	private NegotiationPartyInternal party;
 
 	/**
 	 * After the party executed the turn, this holds the action executed
@@ -40,7 +40,7 @@ public class Turn {
 	 * @param party
 	 *            The party that should execute this turn
 	 */
-	public Turn(NegotiationParty party) {
+	public Turn(NegotiationPartyInternal party) {
 		this.party = party;
 		this.validActions = new ArrayList<Class<? extends Action>>();
 	}
@@ -54,7 +54,8 @@ public class Turn {
 	 * @param validActions
 	 *            Valid {@link Action} classes that can be executed this turn
 	 */
-	public Turn(NegotiationParty party, Class<? extends Action>... validActions) {
+	public Turn(NegotiationPartyInternal party,
+			Class<? extends Action>... validActions) {
 		this.party = party;
 		this.validActions = new ArrayList<Class<? extends Action>>(
 				Arrays.asList(validActions));
@@ -69,7 +70,7 @@ public class Turn {
 	 * @param validActions
 	 *            Valid {@link Action} classes that can be executed this turn
 	 */
-	public Turn(NegotiationParty party,
+	public Turn(NegotiationPartyInternal party,
 			Collection<Class<? extends Action>> validActions) {
 		this.party = party;
 		this.validActions = new ArrayList<Class<? extends Action>>(validActions);
@@ -81,7 +82,7 @@ public class Turn {
 	 * @return the {@link negotiator.parties.NegotiationParty} that should do
 	 *         this turn.
 	 */
-	public NegotiationParty getParty() {
+	public NegotiationPartyInternal getParty() {
 		return party;
 	}
 

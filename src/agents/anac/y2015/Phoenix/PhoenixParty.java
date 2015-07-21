@@ -223,7 +223,7 @@ public class PhoenixParty extends AbstractNegotiationParty {
 			// {Math.log(0.1)}
 			};
 			params0 = new Matrix(logtheta0);
-			setPartyId(getPartyId());
+			// setPartyId(getPartyId());
 			estimatedMean = minBidUtility + (minBidUtility + maxBidUtility)
 					/ 3.0;
 			if (domain.getNumberOfPossibleBids() <= 6400) {

@@ -13,7 +13,7 @@ import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.events.NegotiationEvent;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -21,7 +21,6 @@ import negotiator.repository.Repository;
 import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Session;
 import negotiator.session.SessionManager;
-import negotiator.tournament.TournamentGenerator;
 
 import org.junit.Test;
 
@@ -154,7 +153,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
 		Deadline deadline = new Deadline(0, 60);
 		Session session = new Session(deadline);
-		List<NegotiationParty> parties = new ArrayList<NegotiationParty>();
+		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 
 		// bad to have absolute ref. But there's no better function in
 		// Repository...
@@ -167,9 +166,8 @@ public class StackedAlternatingOffersProtocolE2ETest {
 			PartyRepItem partyRepItem = party_rep
 					.getPartyOfClass(partyclasses[partynr]);
 
-			NegotiationParty negoparty = TournamentGenerator.createFrom(
+			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(
 					partyRepItem, profileRepItem, session);
-
 			parties.add(negoparty);
 		}
 		// maybe we can craete the parties directly, using this?

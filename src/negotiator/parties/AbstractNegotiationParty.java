@@ -230,17 +230,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 				: partyId;
 	}
 
-	/**
-	 * Sets the party id
-	 *
-	 * @param partyId
-	 *            The uniquely identifying party id.
-	 */
-	@Override
-	public void setPartyId(AgentID partyId) {
-		this.partyId = partyId;
-	}
-
 	@Override
 	public void receiveMessage(Object sender, Action arguments) {
 		if (arguments instanceof Inform) {

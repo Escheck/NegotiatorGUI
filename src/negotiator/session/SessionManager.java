@@ -19,7 +19,7 @@ import negotiator.actions.Offer;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.logging.CsvLogger;
 import negotiator.logging.SessionLogger;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 
@@ -43,13 +43,13 @@ public class SessionManager {
 	private final MultilateralProtocol protocol;
 
 	// Holds a list of participating parties
-	private final List<NegotiationParty> parties;
+	private final List<NegotiationPartyInternal> parties;
 
 	// Holds parties that are listening to other parties.
 	// Key represent the even broadcasting parties, value is a list parties that
 	// are listening to
 	// the events that are send.
-	private final Map<NegotiationParty, List<NegotiationParty>> listeners;
+	private final Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> listeners;
 
 	// Command line interface sessionLogger used to log messages to the cli part
 	// of the gui in a single
@@ -65,7 +65,7 @@ public class SessionManager {
 	private double[][] agreementUtilities;
 
 	// needed for reference (for indexing the parties)
-	List<NegotiationParty> agents;
+	List<NegotiationPartyInternal> agents;
 
 	// Used to silence and restore console output for agents
 	private PrintStream orgOut = System.out;
@@ -86,7 +86,7 @@ public class SessionManager {
 	 *            A session object containing preset information (can also be a
 	 *            new instance)
 	 */
-	public SessionManager(List<NegotiationParty> parties,
+	public SessionManager(List<NegotiationPartyInternal> parties,
 			MultilateralProtocol protocol, Session session,
 			ExecutorWithTimeout exec) {
 		this.session = session;
@@ -154,7 +154,7 @@ public class SessionManager {
 				}
 
 				turnNumber++;
-				NegotiationParty party = turn.getParty();
+				NegotiationPartyInternal party = turn.getParty();
 				Action action = requestAction(party, turn.getValidActions());
 				turn.setAction(action);
 				updateListeners(party, action);
@@ -168,7 +168,7 @@ public class SessionManager {
 					Bid currentAgreement = protocol.getCurrentAgreement(
 							session, parties);
 
-					for (NegotiationParty agent : agents) {
+					for (NegotiationPartyInternal agent : agents) {
 						int agentId = agents.indexOf(agent);
 						Double[] entry = {
 								session.getRoundNumber()
@@ -222,7 +222,7 @@ public class SessionManager {
 		else {
 			sessionLogger.logMessage("Found an agreement: %s", agreement);
 			agreementUtilities = new double[2][agents.size()];
-			for (NegotiationParty agent : agents) {
+			for (NegotiationPartyInternal agent : agents) {
 				int agentId = agents.indexOf(agent);
 				double when = findLastIndexOfBid(agreement, session);
 				Double[] entry = {
@@ -277,7 +277,7 @@ public class SessionManager {
 	 * @return the chosen action-
 	 * @throws TimeoutException
 	 */
-	private Action requestAction(final NegotiationParty party,
+	private Action requestAction(final NegotiationPartyInternal party,
 			final ArrayList<Class<? extends Action>> validActions)
 			throws InvalidActionError, InterruptedException,
 			ExecutionException, NegotiationPartyTimeoutException {
@@ -291,7 +291,7 @@ public class SessionManager {
 							// NegotiationParty still has sloppy type checking.
 							ArrayList<Class> actions = new ArrayList<Class>();
 							actions.addAll(validActions);
-							return party.chooseAction(actions);
+							return party.getParty().chooseAction(actions);
 						}
 					});
 		} catch (TimeoutException e) {
@@ -322,7 +322,7 @@ public class SessionManager {
 	 * @param action
 	 *            The action it did.
 	 */
-	private void updateListeners(final NegotiationParty actionOwner,
+	private void updateListeners(final NegotiationPartyInternal actionOwner,
 			final Action action) throws NegotiationPartyTimeoutException,
 			ExecutionException, InterruptedException {
 		// Sadly not even the listener object was created, so don't bother
@@ -331,13 +331,15 @@ public class SessionManager {
 
 		// if anyone is listening, notify any and all observers
 		if (listeners.get(actionOwner) != null)
-			for (final NegotiationParty observer : listeners.get(actionOwner)) {
+			for (final NegotiationPartyInternal observer : listeners
+					.get(actionOwner)) {
 				try {
 					executor.execute(actionOwner.getPartyId().toString(),
 							new Callable<Object>() {
 								@Override
 								public Object call() {
-									observer.receiveMessage(actionOwner, action);
+									observer.getParty().receiveMessage(
+											actionOwner.getParty(), action);
 									return null;
 								}
 							});

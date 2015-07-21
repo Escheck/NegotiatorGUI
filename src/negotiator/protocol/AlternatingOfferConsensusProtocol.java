@@ -12,7 +12,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 import negotiator.session.Round;
 import negotiator.session.Session;
 import negotiator.session.Turn;
@@ -44,7 +44,7 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @param acceptOrReject
 	 * @return
 	 */
-	public Turn createTurn(NegotiationParty votingParty,
+	public Turn createTurn(NegotiationPartyInternal votingParty,
 			Collection<Class<? extends Action>> acceptOrReject) {
 		return new Turn(votingParty, acceptOrReject);
 	}
@@ -56,7 +56,7 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @param class1
 	 * @return
 	 */
-	public Turn createTurn(NegotiationParty party, Class class1) {
+	public Turn createTurn(NegotiationPartyInternal party, Class class1) {
 		return new Turn(party, OfferForVoting.class);
 	}
 
@@ -87,15 +87,16 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @return A list of possible actions
 	 */
 	@Override
-	public Round getRoundStructure(List<NegotiationParty> parties,
+	public Round getRoundStructure(List<NegotiationPartyInternal> parties,
 			Session session) {
 		Round round = createRound();
 
-		// NOTE: while roundnumber is normally one-based, in this function it's zero based as you are initializing the
+		// NOTE: while roundnumber is normally one-based, in this function it's
+		// zero based as you are initializing the
 		// new round right in this function
-		if (session.getRoundNumber()%2==0) {
+		if (session.getRoundNumber() % 2 == 0) {
 			// request an offer from each party
-			for (NegotiationParty party : parties) {
+			for (NegotiationPartyInternal party : parties) {
 				round.addTurn(createTurn(party, OfferForVoting.class));
 			}
 		} else {
@@ -105,8 +106,8 @@ public class AlternatingOfferConsensusProtocol extends
 			acceptOrReject.add(Reject.class);
 
 			// request a reaction on each offer from party
-			for (NegotiationParty ignored : parties) {
-				for (NegotiationParty votingParty : parties) {
+			for (NegotiationPartyInternal ignored : parties) {
+				for (NegotiationPartyInternal votingParty : parties) {
 					round.addTurn(createTurn(votingParty, acceptOrReject));
 				}
 			}
@@ -127,7 +128,8 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @return true if the protocol is finished
 	 */
 	@Override
-	public boolean isFinished(Session session, List<NegotiationParty> parties) {
+	public boolean isFinished(Session session,
+			List<NegotiationPartyInternal> parties) {
 		// if we are making new offers, we are never finished
 		if (session.getRoundNumber() < 2 || !isVotingRound(session)) {
 			return false;
@@ -151,7 +153,7 @@ public class AlternatingOfferConsensusProtocol extends
 	 */
 	@Override
 	public Bid getCurrentAgreement(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		int round = session.getRoundNumber();
 		if (round % 2 == 1 || round < 2) {
 			return null;
@@ -221,7 +223,7 @@ public class AlternatingOfferConsensusProtocol extends
 	 */
 	@Override
 	public int getNumberOfAgreeingParties(Session session,
-			List<NegotiationParty> parties) {
+			List<NegotiationPartyInternal> parties) {
 		return maxNumberOfVotes;
 	}
 
@@ -239,10 +241,10 @@ public class AlternatingOfferConsensusProtocol extends
 	 *         that key party's response.
 	 */
 	@Override
-	public Map<NegotiationParty, List<NegotiationParty>> getActionListeners(
-			List<NegotiationParty> parties) {
-		Map<NegotiationParty, List<NegotiationParty>> listenersMap = new HashMap<NegotiationParty, List<NegotiationParty>>();
-		for (NegotiationParty party : parties) {
+	public Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> getActionListeners(
+			List<NegotiationPartyInternal> parties) {
+		Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> listenersMap = new HashMap<NegotiationPartyInternal, List<NegotiationPartyInternal>>();
+		for (NegotiationPartyInternal party : parties) {
 			listenersMap.put(party, parties);
 		}
 		return listenersMap;

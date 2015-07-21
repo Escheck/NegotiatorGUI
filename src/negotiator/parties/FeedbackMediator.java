@@ -31,7 +31,8 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  * @author Reyhan (Orignal code)
  */
-public class FeedbackMediator extends Mediator {
+public class FeedbackMediator extends AbstractNegotiationParty implements
+		Mediator {
 
 	private ArrayList<Feedback> currentFeedbackList;
 	/**

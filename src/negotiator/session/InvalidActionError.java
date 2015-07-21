@@ -1,6 +1,6 @@
 package negotiator.session;
 
-import negotiator.parties.NegotiationParty;
+import negotiator.parties.NegotiationPartyInternal;
 
 /**
  * Error that will be thrown when an action that is not valid for the given
@@ -13,7 +13,7 @@ public class InvalidActionError extends Exception {
 	/**
 	 * Holds the party that did an invalid action
 	 */
-	private final NegotiationParty instigator;
+	private final NegotiationPartyInternal instigator;
 
 	/**
 	 * Initializes a new instance of the {@link InvalidActionError} class.
@@ -21,7 +21,7 @@ public class InvalidActionError extends Exception {
 	 * @param instigator
 	 *            The party that did an invalid action.
 	 */
-	public InvalidActionError(NegotiationParty instigator) {
+	public InvalidActionError(NegotiationPartyInternal instigator) {
 		this.instigator = instigator;
 	}
 
@@ -32,7 +32,7 @@ public class InvalidActionError extends Exception {
 	 */
 	@SuppressWarnings("UnusedDeclaration")
 	// might be used in future
-	public NegotiationParty getInstigator() {
+	public NegotiationPartyInternal getInstigator() {
 		return instigator;
 	}
 
