@@ -41,14 +41,19 @@ public class AgentH extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 * @throws Exception
 	 */
-	public AgentH(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) throws Exception {
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		mEstimatorMap = new HashMap<Object, BidStrategy>();
 		mBidHistory = new BidHistory(getUtilitySpace());
-		mBidHelper = new BidHelper(this);
+		try {
+			mBidHelper = new BidHelper(this);
+		} catch (Exception e) {
+			throw new RuntimeException("init failed:" + e, e);
+		}
 	}
 
 	/**

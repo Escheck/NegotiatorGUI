@@ -3,12 +3,9 @@ package negotiator.parties;
 import java.util.List;
 
 import negotiator.AgentID;
-import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
-import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
 
 /**
  * Most basic voting agent implementation I could think of: this agent accepts
@@ -20,26 +17,6 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  */
 public class AcceptingNegotiationParty extends AbstractNegotiationParty {
-
-	/**
-	 * Initializes a new instance of the {@link AcceptingNegotiationParty}
-	 * class.
-	 *
-	 * @param utilitySpace
-	 *            The utility space used by this class
-	 * @param deadlines
-	 *            The deadlines for this session
-	 * @param timeline
-	 *            The time line (if time deadline) for this session, can be null
-	 * @param randomSeed
-	 *            The seed that should be used for all randomization (to be
-	 *            reproducible)
-	 */
-	public AcceptingNegotiationParty(final UtilitySpace utilitySpace,
-			final Deadline deadlines, final Timeline timeline,
-			final long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
-	}
 
 	/**
 	 * If offer was proposed: Accept offer, otherwise: Propose random offer

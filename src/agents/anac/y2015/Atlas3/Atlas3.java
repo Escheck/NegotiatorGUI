@@ -45,17 +45,22 @@ public class Atlas3 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 * @throws Exception
 	 */
-	public Atlas3(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) throws Exception {
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		if (isPrinting) {
 			System.out.println("*** Atlas3 v1.0 ***");
 		}
 
 		negotiatingInfo = new negotiatingInfo(utilitySpace);
-		bidSearch = new bidSearch(utilitySpace, negotiatingInfo);
+		try {
+			bidSearch = new bidSearch(utilitySpace, negotiatingInfo);
+		} catch (Exception e) {
+			throw new RuntimeException("init failed:" + e, e);
+		}
 		strategy = new strategy(utilitySpace, negotiatingInfo);
 		rv = utilitySpace.getReservationValue();
 	}

@@ -23,19 +23,19 @@ import negotiator.xml.SimpleElement;
  */
 public class Group5 extends AbstractNegotiationParty {
 	// The bidding strategy
-	private final BiddingStrategy bidding;
+	private BiddingStrategy bidding;
 
 	// Approximate models of each opponent's utility functions
-	private final Map<String, OpponentModel> opponentModels;
+	private Map<String, OpponentModel> opponentModels;
 
 	// Issues (issue index-1 and issue name)
-	private final List<String> issues;
+	private List<String> issues;
 
 	// Values (issue index-1, value names, and value index-1)
-	private final List<Map<String, Integer>> values;
+	private List<Map<String, Integer>> values;
 
 	// Values (issue index-1, value index-1, value names)
-	private final List<Map<Integer, String>> valuesRev;
+	private List<Map<Integer, String>> valuesRev;
 
 	/**
 	 * This constructor is called by genius.
@@ -49,10 +49,11 @@ public class Group5 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group5(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		List<Issue> domainIssues = utilitySpace.getDomain().getIssues();
 

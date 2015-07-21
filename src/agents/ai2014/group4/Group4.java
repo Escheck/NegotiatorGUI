@@ -25,7 +25,7 @@ public class Group4 extends AbstractNegotiationParty {
 
 	private Double currentUtility = 0.0;
 	private Double threshold;
-	private final Double RESERVATION_VALUE;
+	private Double RESERVATION_VALUE;
 	private final Double STARTING_THRESHOLD = 0.9;
 	private final Double COMPROMISE_RATE = 4.0; // 1 is linear, higher is slower
 												// to compromise
@@ -54,10 +54,11 @@ public class Group4 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomisation, use this seed for it.
 	 */
-	public Group4(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		this.utilitySpace = utilitySpace;
 		for (Issue issue : utilitySpace.getDomain().getIssues()) {

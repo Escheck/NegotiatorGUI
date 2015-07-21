@@ -29,9 +29,10 @@ public class CounterOfferHumanNegotiationParty extends AbstractNegotiationParty 
 	 * One agent will be kept alive over multiple sessions. Init will be called
 	 * at the start of each negotiation session.
 	 */
-	public CounterOfferHumanNegotiationParty(UtilitySpace utilitySpace,
-			Deadline deadlines, Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		System.out.println("init UIAgent");
 
 		System.out.println("closing old dialog of ");

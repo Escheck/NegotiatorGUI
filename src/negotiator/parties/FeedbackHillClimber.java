@@ -51,9 +51,10 @@ public class FeedbackHillClimber extends AbstractNegotiationParty {
 	 *            The seed that should be used for all randomization (to be
 	 *            reproducible)
 	 */
-	public FeedbackHillClimber(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		lastBidUtility = 0.0;
 		lastAcceptedUtility = 0.0;
 		currentBidUtility = 0.0;

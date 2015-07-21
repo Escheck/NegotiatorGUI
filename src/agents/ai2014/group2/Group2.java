@@ -35,7 +35,7 @@ public class Group2 extends AbstractNegotiationParty {
 	int partyNumber = 1;
 	int round = 0;
 	static final int MAX_ROUNDS = 180;
-	final double reservationValue;
+	double reservationValue;
 
 	/**
 	 * Please keep this constructor. This is called by genius.
@@ -49,10 +49,11 @@ public class Group2 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group2(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		opponentModels = new HashMap<Object, G2OpponentModel>();
 		ourUtilitySpace = new G2UtilitySpace(utilitySpace);

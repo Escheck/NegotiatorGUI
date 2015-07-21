@@ -17,12 +17,13 @@ import negotiator.utility.UtilitySpace;
  * {@link MultilateralProtocol} you should also use {@link NegotiationParty} and
  * not {@link negotiator.Agent}.
  * <p>
- * <em>IMPORTANT</em> Implementors of this class must implement a constructor
- * taking parameters ( {@link UtilitySpace}, {@link Deadline}, {@link Timeline},
- * {@link Long}).
+ * <em>IMPORTANT</em> Implementors of this class must have a public no-argument
+ * constructor. In fact we recommend not to implement any constructor at all.
+ * Initialization will be done through
+ * {@link #init(UtilitySpace, Deadline, Timeline, long)}.
  * <p>
  * All time that {@link NegotiationParty}s spend in their code, including the
- * time spent in their constructor and init calls, is adding to the total
+ * time spent in their constructor and init calls, is subtracting from the total
  * available time.
  * 
  *
@@ -31,17 +32,20 @@ import negotiator.utility.UtilitySpace;
  */
 public interface NegotiationParty {
 	/**
-	 * Tells the agent which utility space and timeline it is running in. This
-	 * is called one time, before any calls are made to
-	 * {@link #chooseAction(List)} or {@link #receiveMessage(Object, Action)}.
-	 * 
+	 * This is the first call made to a NegotiationParty after its
+	 * instantiation. Tells which utility space and timeline we are running in.
+	 * This is called one time only.
+	 *
 	 * @param utilSpace
 	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
 	 *            used for this session.
 	 * @param timeline
 	 *            The TimeLineIn that governs the current session.
+	 * @throws RuntimeException
+	 *             if init fails.
 	 */
-	// public void init(UtilitySpaceInfo utilSpace, TimeLineInfo timeline);
+	public void init(UtilitySpace utilSpace, Deadline deadline,
+			Timeline timeline, long randomSeed);
 
 	/**
 	 * When this class is called, it is expected that the Party chooses one of

@@ -60,9 +60,10 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 	private SortedOutcomeSpace sortedUtilitySpace;
 	private int numberOfRounds = 0;
 
-	public AgentBuyogMain(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		this.totalHistory = new BidHistory();
 		this.myBidHistory = new BidHistory();
 		this.AandBscommonBids = new BidHistory();

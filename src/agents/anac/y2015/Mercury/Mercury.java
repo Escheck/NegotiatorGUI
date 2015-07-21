@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-
 //import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -70,10 +69,10 @@ public class Mercury extends AbstractNegotiationParty {
 
 	// private double succDis = 0.9;
 
-	// @override
-	public Mercury(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		myparty = getPartyId();
 

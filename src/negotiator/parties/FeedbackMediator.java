@@ -33,7 +33,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class FeedbackMediator extends Mediator {
 
-	private final ArrayList<Feedback> currentFeedbackList;
+	private ArrayList<Feedback> currentFeedbackList;
 	/**
 	 * The current bid
 	 */
@@ -69,9 +69,10 @@ public class FeedbackMediator extends Mediator {
 	 *            The seed that should be used for all randomization (to be
 	 *            reproducible)
 	 */
-	public FeedbackMediator(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		lastAcceptedBid = null;
 		currentBid = null;
 		lastBid = null;
