@@ -8,9 +8,10 @@ import negotiator.utility.UtilitySpace;
 public class ConcederNegotiationParty extends
 		AbstractTimeDependentNegotiationParty {
 
-	public ConcederNegotiationParty(UtilitySpace utilitySpace,
-			Deadline deadlines, Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		partyId = new AgentID(String.format("Conceder#%4s", hashCode()));
 	}
 

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import agents.ai2014.group11.OpponentUtilityModel.InvalidBidException;
-import agents.ai2014.group11.OpponentUtilityModel.InvalidDomainException;
 import misc.Range;
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -25,6 +23,8 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
+import agents.ai2014.group11.OpponentUtilityModel.InvalidBidException;
+import agents.ai2014.group11.OpponentUtilityModel.InvalidDomainException;
 
 /**
  * This is your negotiation party.
@@ -54,9 +54,10 @@ public class Group11 extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            If you use any randomization, use this seed for it.
 	 */
-	public Group11(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		this.round = 0;
 		this.lastUtility = 1;

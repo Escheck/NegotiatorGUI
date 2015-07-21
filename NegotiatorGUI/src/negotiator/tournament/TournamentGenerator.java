@@ -39,6 +39,7 @@ import negotiator.utility.UtilitySpace;
  * Agents in a tournament must be of class {@link NegotiationParty}.
  *
  * @author Festen
+ * @modified W.Pasman 21jul15 using init() instead of constructor.
  */
 public class TournamentGenerator {
 	/**
@@ -66,7 +67,8 @@ public class TournamentGenerator {
 	}
 
 	/**
-	 * Creates a new Party from repository items
+	 * Creates a new {@link NegotiationParty} from repository items and
+	 * initializes it.
 	 *
 	 * @param partyRepItem
 	 *            Party Repository item to createFrom party from
@@ -87,38 +89,60 @@ public class TournamentGenerator {
 	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
 			ProfileRepItem profileRepItem, Session session)
 			throws RepositoryException, NegotiatorException {
+		NegotiationParty party = createInstance(partyRepItem, profileRepItem,
+				session);
+		UtilitySpace utilitySpace = createFrom(profileRepItem);
+		long randomSeed = System.currentTimeMillis();
+		party.init(utilitySpace, session.getDeadlines(), session.getTimeline(),
+				randomSeed);
+		return party;
+	}
+
+	/**
+	 * Creates a new Party from repository items, but does not yet call init.
+	 *
+	 * @param partyRepItem
+	 *            Party Repository item to createFrom party from
+	 * @param profileRepItem
+	 *            Profile Repository item to createFrom party from
+	 * @return new Party
+	 * @throws RepositoryException
+	 * @throws java.lang.NoSuchMethodException
+	 *             If requested Party does not have a constructor accepting only
+	 *             preference profiles
+	 * @throws java.lang.ClassNotFoundException
+	 *             If requested Party class can not be found.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	@SuppressWarnings("unchecked")
+	private static NegotiationParty createInstance(PartyRepItem partyRepItem,
+			ProfileRepItem profileRepItem, Session session)
+			throws RepositoryException, NegotiatorException {
 		Exception exception = null;
 		String extraMessage = "";
 
-		UtilitySpace utilitySpace = createFrom(profileRepItem);
-
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class party;
+		Class<? extends NegotiationParty> partyClass;
 		try {
-			party = loader.loadClass(partyRepItem.getClassPath());
+			partyClass = (Class<? extends NegotiationParty>) loader
+					.loadClass(partyRepItem.getClassPath());
 
-			Class[] paramTypes = { UtilitySpace.class, Deadline.class,
-					Timeline.class, long.class };
-
-			@SuppressWarnings("unchecked")
-			Constructor partyConstructor = party.getConstructor(paramTypes);
-
-			long randomSeed = System.currentTimeMillis();
-
-			return (NegotiationParty) partyConstructor.newInstance(
-					utilitySpace, session.getDeadlines(),
-					session.getTimeline(), randomSeed);
+			return (NegotiationParty) partyClass.getConstructor().newInstance();
 		} catch (NoSuchMethodException e) {
-			extraMessage = ": no constructor found taking parameters (UtilitySpace, Deadline, Timeline, long)";
+			extraMessage = ": no public default constructor was found";
 			exception = e;
 		} catch (Exception e) {
 			exception = e;
 		}
 
 		// if we get here there was an exception.
-		throw new NegotiatorException("Problem creating agent "
-				+ partyRepItem.getName() + " using profile " + profileRepItem
-				+ extraMessage, exception);
+		throw new NegotiatorException(
+				"An exception occured while creating agent "
+						+ partyRepItem.getName() + " using profile "
+						+ profileRepItem + extraMessage, exception);
 	}
 
 	/**

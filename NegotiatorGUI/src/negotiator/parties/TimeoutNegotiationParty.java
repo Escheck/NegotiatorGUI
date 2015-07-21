@@ -34,10 +34,10 @@ public class TimeoutNegotiationParty extends AbstractNegotiationParty {
 	 *            The seed that should be used for all randomization (to be
 	 *            reproducible)
 	 */
-	public TimeoutNegotiationParty(final UtilitySpace utilitySpace,
-			final Deadline deadlines, final Timeline timeline,
-			final long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+	@Override
+	public void init(final UtilitySpace utilitySpace, final Deadline deadlines,
+			final Timeline timeline, final long randomSeed) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 	}
 
 	/**

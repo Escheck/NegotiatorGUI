@@ -30,7 +30,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	/**
 	 * Time line used by the party if time deadline is set.
 	 */
-	protected Timeline timeline;
+	protected Timeline timeline;// should be final after init
 
 	/**
 	 * map of all deadlines set for this party. Deadlines are combined using
@@ -38,17 +38,17 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * the deadline is reached when either time or round will have reached it's
 	 * deadline
 	 */
-	protected final Deadline deadlines;
+	protected Deadline deadlines; // should be final after init
 
 	/**
 	 * Random seed used by this party.
 	 */
-	protected final Random rand;
+	protected Random rand;// should be final after init
 
 	/**
 	 * utility space used by this party (set in constructor).
 	 */
-	protected final UtilitySpace utilitySpace;
+	protected UtilitySpace utilitySpace;// should be final after init
 
 	/**
 	 * The id used to identify this agent (if set to null, a default identifier
@@ -56,25 +56,14 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 */
 	protected AgentID partyId;
 
-	/**
-	 * Initializes a new instance of the {@link NegotiationParty} class.
-	 *
-	 * @param utilitySpace
-	 *            The utility space used by this class
-	 * @param deadlines
-	 *            The deadlines for this session
-	 * @param timeline
-	 *            The time line (if time deadline) for this session, can be null
-	 * @param randomSeed
-	 *            The seed that should be used for all randomization (to be
-	 *            reproducible)
-	 */
-	public AbstractNegotiationParty(UtilitySpace utilitySpace,
-			Deadline deadlines, Timeline timeline, long randomSeed) {
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		this.utilitySpace = utilitySpace;
 		this.rand = new Random(randomSeed);
 		this.timeline = timeline;
 		this.deadlines = deadlines;
+
 	}
 
 	/**

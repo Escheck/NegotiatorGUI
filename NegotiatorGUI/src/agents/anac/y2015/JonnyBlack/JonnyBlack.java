@@ -48,10 +48,11 @@ public class JonnyBlack extends AbstractNegotiationParty {
 	int round = 0;
 	double unwillingness = 1.1;
 
-	public JonnyBlack(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		initializeCounts(utilitySpace);
 	}
 

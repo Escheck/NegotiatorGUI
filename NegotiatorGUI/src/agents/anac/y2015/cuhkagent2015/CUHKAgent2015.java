@@ -180,10 +180,11 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 	PrintStream file, SysOut;
 	String fileName;
 
-	public CUHKAgent2015(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		try {
 			this.NumberOfBid = this.utilitySpace.getDomain()
 					.getNumberOfPossibleBids();

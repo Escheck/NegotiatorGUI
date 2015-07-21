@@ -38,17 +38,22 @@ public class kawaii extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 * @throws Exception
 	 */
-	public kawaii(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) throws Exception {
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		if (isPrinting) {
 			System.out.println("*** SAOPMN_SampleAgent ***");
 		}
 
 		negotiatingInfo = new negotiatingInfo(utilitySpace);
-		bidSearch = new bidSearch(utilitySpace, negotiatingInfo);
+		try {
+			bidSearch = new bidSearch(utilitySpace, negotiatingInfo);
+		} catch (Exception e) {
+			throw new RuntimeException("init failed:" + e, e);
+		}
 		strategy = new strategy(utilitySpace, negotiatingInfo);
 	}
 

@@ -46,11 +46,12 @@ public class Groupn extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 * @throws Exception
 	 */
-	public Groupn(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) throws Exception {
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+			Timeline timeline, long randomSeed) {
 
 		// Make sure that this constructor calls it's parent.
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		bidOptions = new BidOptions();
 		this.bidOptions.initializeDataStructures(utilitySpace.getDomain());
@@ -62,10 +63,15 @@ public class Groupn extends AbstractNegotiationParty {
 			this.discountFactor = utilitySpace.getDiscountFactor();
 		}
 		OwnBids = new OwnBids();
-		this.Maximum_Utility_Bid = utilitySpace.getMaxUtilityBid();
-		this.utilitythreshold = utilitySpace.getUtility(Maximum_Utility_Bid); // initial
-																				// utility
-																				// threshold
+		try {
+			this.Maximum_Utility_Bid = utilitySpace.getMaxUtilityBid();
+			this.utilitythreshold = utilitySpace
+					.getUtility(Maximum_Utility_Bid); // initial
+														// utility
+														// threshold
+		} catch (Exception e) {
+			throw new RuntimeException("init failed:" + e, e);
+		}
 		this.MaxUtility = this.utilitythreshold;
 		this.reservationValue = 0;
 		if (utilitySpace.getReservationValue() > 0) {

@@ -60,10 +60,10 @@ public class AresParty extends AbstractNegotiationParty {
 
 	private int NoOfParty = -1;
 
-	// @override
-	public AresParty(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		myparty = getPartyId();
 
 		try {

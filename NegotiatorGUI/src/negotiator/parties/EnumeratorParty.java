@@ -26,9 +26,10 @@ public class EnumeratorParty extends AbstractNegotiationParty {
 
 	public static int id = 0;
 
-	public EnumeratorParty(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		// vars
 		Domain dom = getUtilitySpace().getDomain();

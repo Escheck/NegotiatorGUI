@@ -61,9 +61,10 @@ public class Annealer extends AbstractNegotiationParty {
 	 *            The seed that should be used for all randomization (to be
 	 *            reproducible)
 	 */
-	public Annealer(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		lastAcceptedBidUtility = 0;
 		lastReceivedBidUtility = 0;
 		currentVote = Vote.REJECT;

@@ -107,11 +107,12 @@ public class AgentHP extends AbstractNegotiationParty {
 	 * @param randomSeed
 	 *            乱数用シード
 	 */
-	public AgentHP(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 
 		// 親クラスコンストラクタ
-		super(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 
 		// 予約値取得
 		reservationValue = utilitySpace.getReservationValueUndiscounted();

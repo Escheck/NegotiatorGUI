@@ -34,9 +34,10 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	SortedOutcomeSpace outcomeSpace;
 	Bid lastBid = null;
 
-	public AbstractTimeDependentNegotiationParty(UtilitySpace utilitySpace,
-			Deadline deadlines, Timeline timeline, long randomSeed) {
-		super(utilitySpace, deadlines, timeline, randomSeed);
+	@Override
+	public void init(UtilitySpace utilSpace, Deadline deadline,
+			Timeline timeline, long randomSeed) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed);
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
 	}
 
