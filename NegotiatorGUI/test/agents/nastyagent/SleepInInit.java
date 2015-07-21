@@ -1,7 +1,7 @@
 package agents.nastyagent;
 
 import negotiator.Deadline;
-import negotiator.Timeline;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class SleepInInit extends NastyAgent {

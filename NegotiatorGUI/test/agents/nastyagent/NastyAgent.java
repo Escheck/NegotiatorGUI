@@ -10,10 +10,10 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.NegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 import agents.BidComparator;
 

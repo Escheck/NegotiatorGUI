@@ -1,8 +1,8 @@
 package agents.nastyagent;
 
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class ThrowInReceiveMessage extends NastyAgent {
