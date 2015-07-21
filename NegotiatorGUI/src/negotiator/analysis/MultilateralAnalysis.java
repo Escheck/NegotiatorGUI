@@ -3,12 +3,12 @@ package negotiator.analysis;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.exceptions.AnalysisException;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 import java.util.ArrayList;

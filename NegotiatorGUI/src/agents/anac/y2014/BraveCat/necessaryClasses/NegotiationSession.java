@@ -1,15 +1,16 @@
  package agents.anac.y2014.BraveCat.necessaryClasses;
 
  import java.io.Serializable;
- import java.util.ArrayList;
- import negotiator.Bid;
- import negotiator.Domain;
- import negotiator.Timeline;
- import negotiator.bidding.BidDetails;
- import negotiator.boaframework.ComponentsEnum;
- import negotiator.boaframework.SessionData;
- import negotiator.issue.Issue;
- import negotiator.utility.UtilitySpace;
+import java.util.ArrayList;
+
+import negotiator.Bid;
+import negotiator.Domain;
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.ComponentsEnum;
+import negotiator.boaframework.SessionData;
+import negotiator.issue.Issue;
+import negotiator.session.Timeline;
+import negotiator.utility.UtilitySpace;
  
  public class NegotiationSession
  {

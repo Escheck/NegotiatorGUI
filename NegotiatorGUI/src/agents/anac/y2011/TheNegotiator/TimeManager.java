@@ -3,8 +3,8 @@ package agents.anac.y2011.TheNegotiator;
 
 import java.util.ArrayList;
 
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
+import negotiator.session.Timeline;
 
 /**
  * The TimeManager class is used for time-related functions.

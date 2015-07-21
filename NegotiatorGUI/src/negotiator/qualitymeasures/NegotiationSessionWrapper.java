@@ -3,9 +3,9 @@ package negotiator.qualitymeasures;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

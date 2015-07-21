@@ -1,4 +1,4 @@
-package negotiator;
+package negotiator.session;
 
 
 /**

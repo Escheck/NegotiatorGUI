@@ -2,8 +2,8 @@ package agents;
 
 import negotiator.PocketNegotiatorAgent;
 import negotiator.SupportedNegotiationSetting;
-import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class TimeDependentAgentConcederPN extends TimeDependentAgent implements

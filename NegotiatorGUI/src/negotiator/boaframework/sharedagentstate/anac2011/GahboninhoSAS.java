@@ -1,10 +1,10 @@
 package negotiator.boaframework.sharedagentstate.anac2011;
 
-import negotiator.Timeline;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.SharedAgentState;
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.GahboninhoOM;
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.IssueManager;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

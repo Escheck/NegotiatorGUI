@@ -4,11 +4,11 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

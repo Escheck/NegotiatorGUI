@@ -5,9 +5,9 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

@@ -8,7 +8,6 @@ import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -21,6 +20,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.session.Timeline;
 /**
  * @author Eden Erez
  * @since 2014-03-21

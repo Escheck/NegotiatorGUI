@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -16,6 +16,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 

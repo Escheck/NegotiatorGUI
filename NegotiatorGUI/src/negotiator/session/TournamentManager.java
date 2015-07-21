@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.MultipartyNegotiationEventListener;
-import negotiator.Timeline;
 import negotiator.config.Configuration;
 import negotiator.events.AgreementEvent;
 import negotiator.events.NegotiationEvent;

@@ -19,7 +19,6 @@ import agents.TestAgent;
 import agents.anac.y2012.CUHKAgent.OpponentBidHistory;
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.NegotiationResult;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -28,6 +27,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.Value;
+import negotiator.session.Timeline;
 
 /**
  * This agent is an example of how to create an ANAC2013 agent which learns

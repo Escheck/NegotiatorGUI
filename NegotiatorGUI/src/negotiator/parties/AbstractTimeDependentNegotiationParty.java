@@ -7,7 +7,6 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.DiscreteTimeline;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.NoAction;
@@ -16,6 +15,7 @@ import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

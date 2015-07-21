@@ -1,5 +1,7 @@
 package negotiator;
 
+import negotiator.session.Timeline;
+
 
 /**
  * A time line, running from t = 0 (start) to t = 1 (deadline).

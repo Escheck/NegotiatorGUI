@@ -1,6 +1,6 @@
  package agents.anac.y2014.BraveCat.necessaryClasses;
 
- import negotiator.Timeline;
+ import negotiator.session.Timeline;
  public class ContinuousTimeline extends Timeline
  {
    protected long pauseTime = 0;

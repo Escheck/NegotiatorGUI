@@ -10,10 +10,10 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.PocketNegotiatorAgent;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

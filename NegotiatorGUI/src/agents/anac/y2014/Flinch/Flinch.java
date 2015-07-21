@@ -4,13 +4,10 @@ import java.util.*;
 import java.io.*;
 
 import negotiator.*;
-import negotiator.Agent;
-import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.actions.*;
 import negotiator.issue.*;
+import negotiator.session.Timeline;
 import negotiator.utility.*;
-
 import negotiator.bidding.BidDetails;
 
 public class Flinch extends Agent

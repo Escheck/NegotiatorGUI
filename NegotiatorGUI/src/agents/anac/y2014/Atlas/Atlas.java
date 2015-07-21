@@ -13,7 +13,6 @@ import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.NegotiationResult;
 import negotiator.SerializeHandling;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -24,6 +23,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.session.Timeline;
 
 //csv�o—Í
 //import java.io.FileWriter;

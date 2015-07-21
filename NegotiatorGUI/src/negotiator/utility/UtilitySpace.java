@@ -16,10 +16,10 @@ import java.util.Vector;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
+import negotiator.session.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 

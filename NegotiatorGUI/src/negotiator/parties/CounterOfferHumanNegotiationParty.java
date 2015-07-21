@@ -8,11 +8,11 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.SupportedNegotiationSetting;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 import agents.EnterBidDialog2;
 

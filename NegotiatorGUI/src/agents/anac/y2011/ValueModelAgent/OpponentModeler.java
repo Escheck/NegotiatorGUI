@@ -1,6 +1,6 @@
 package agents.anac.y2011.ValueModelAgent;
 
-import negotiator.Timeline;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class OpponentModeler {

@@ -1,8 +1,8 @@
 package agents;
 
 import negotiator.PocketNegotiatorAgent;
-import negotiator.Timeline;
 import negotiator.actions.Action;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

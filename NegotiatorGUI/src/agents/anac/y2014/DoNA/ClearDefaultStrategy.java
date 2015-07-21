@@ -6,13 +6,13 @@ import java.util.List;
 import misc.Range;
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 
