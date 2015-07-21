@@ -29,7 +29,7 @@ import negotiator.xml.SimpleElement;
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
-public class UtilitySpace implements Serializable {
+public class UtilitySpace implements Serializable, UtilitySpaceInfo {
 
 	// Class fields
 	protected Domain domain;
@@ -128,10 +128,10 @@ public class UtilitySpace implements Serializable {
 	}
 
 	/**
-	 * createFrom a default evaluator for a given Objective. This function is placed
-	 * here, and not in Objective, because the Objectives should not be loaded
-	 * with utility space functionality. The price we pay for that is that we
-	 * now have an ugly switch inside the code, losing some modularity.
+	 * createFrom a default evaluator for a given Objective. This function is
+	 * placed here, and not in Objective, because the Objectives should not be
+	 * loaded with utility space functionality. The price we pay for that is
+	 * that we now have an ugly switch inside the code, losing some modularity.
 	 * 
 	 * @param obj
 	 *            the objective to createFrom an evaluator for
@@ -262,7 +262,7 @@ public class UtilitySpace implements Serializable {
 	 * @return An Evaluator for the Objective or Issue.
 	 */
 	public final Evaluator getEvaluator(int index) {
-//		checkForLinearSpaceType();
+		// checkForLinearSpaceType();
 		Objective obj = domain.getObjective(index); // Used to be Issue in stead
 													// of Objective
 		if (obj != null) {
@@ -280,7 +280,8 @@ public class UtilitySpace implements Serializable {
 		if (getType() == null)
 			return;
 
-		if (getType() != UTILITYSPACETYPE.LINEAR && getType() != UTILITYSPACETYPE.CONSTRAINT)
+		if (getType() != UTILITYSPACETYPE.LINEAR
+				&& getType() != UTILITYSPACETYPE.CONSTRAINT)
 			throw new IllegalStateException(
 					"This method is to be used for linear utility spaces only. This space is "
 							+ getType());
@@ -408,7 +409,7 @@ public class UtilitySpace implements Serializable {
 	 * 
 	 * Checks for bounds on the discount factor and time.
 	 */
-	protected double discount(double util, double time) {
+	public Double discount(double util, double time) {
 		return discount(util, time, discountFactor);
 	}
 
