@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
+import negotiator.session.Timeline;
 
 
 public class OpponentModel {

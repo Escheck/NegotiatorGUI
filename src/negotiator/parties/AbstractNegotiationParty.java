@@ -6,7 +6,6 @@ import java.util.Random;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.actions.Inform;
 import negotiator.issue.Issue;
@@ -16,6 +15,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

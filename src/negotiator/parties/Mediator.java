@@ -2,7 +2,7 @@ package negotiator.parties;
 
 import negotiator.AgentID;
 import negotiator.Deadline;
-import negotiator.Timeline;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

@@ -1,6 +1,7 @@
 package negotiator;
 
 import negotiator.actions.Action;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

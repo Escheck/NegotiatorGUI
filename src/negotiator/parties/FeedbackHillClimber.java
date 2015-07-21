@@ -6,7 +6,6 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.Feedback;
-import negotiator.Timeline;
 import negotiator.Vote;
 import negotiator.actions.Action;
 import negotiator.actions.GiveFeedback;
@@ -15,6 +14,7 @@ import negotiator.actions.OfferForFeedback;
 import negotiator.actions.OfferForVoting;
 import negotiator.actions.VoteForOfferAcceptance;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

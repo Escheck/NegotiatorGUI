@@ -1,6 +1,6 @@
 package negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent;
 
-import negotiator.Timeline;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class OpponentModeler {

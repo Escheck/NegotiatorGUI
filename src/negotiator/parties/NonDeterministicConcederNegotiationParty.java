@@ -4,8 +4,8 @@ import misc.Range;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 import java.util.List;

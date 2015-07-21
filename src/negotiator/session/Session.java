@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import negotiator.ContinuousTimeline;
 import negotiator.Deadline;
 import negotiator.DiscreteTimeline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
 

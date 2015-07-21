@@ -11,7 +11,6 @@ import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -22,6 +21,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class ShAgent extends Agent {

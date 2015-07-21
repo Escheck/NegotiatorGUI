@@ -10,13 +10,13 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.logging.CsvLogger;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

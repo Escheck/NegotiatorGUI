@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -15,6 +14,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

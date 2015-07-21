@@ -8,7 +8,6 @@ import misc.Range;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -22,6 +21,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 public class Group9 extends AbstractNegotiationParty {

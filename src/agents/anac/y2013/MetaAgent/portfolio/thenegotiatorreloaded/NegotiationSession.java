@@ -1,10 +1,11 @@
 package agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded;
 
 import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.issue.Issue;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

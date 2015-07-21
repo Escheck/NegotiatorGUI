@@ -1,5 +1,7 @@
 package negotiator;
 
+import negotiator.session.Timeline;
+
 /**
  * Implementation of the timeline in which time is divided in rounds. Time does
  * not pass within a round. Note that requesting the total time is in this case

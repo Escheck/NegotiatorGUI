@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import negotiator.Bid;
 import negotiator.BidHistory;
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
@@ -19,6 +19,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
+import negotiator.session.Timeline;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.UtilitySpace;

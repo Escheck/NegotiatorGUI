@@ -6,7 +6,6 @@ import java.util.List;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.Feedback;
-import negotiator.Timeline;
 import negotiator.Vote;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiationWithAnOffer;
@@ -18,6 +17,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.parties.partialopponentmodel.PartialPreferenceModels;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

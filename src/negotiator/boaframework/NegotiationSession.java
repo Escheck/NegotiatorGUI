@@ -2,12 +2,13 @@ package negotiator.boaframework;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Domain;
-import negotiator.Timeline;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

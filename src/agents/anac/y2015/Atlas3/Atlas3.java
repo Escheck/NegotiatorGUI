@@ -5,13 +5,13 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 import agents.anac.y2015.Atlas3.etc.bidSearch;
 import agents.anac.y2015.Atlas3.etc.negotiatingInfo;

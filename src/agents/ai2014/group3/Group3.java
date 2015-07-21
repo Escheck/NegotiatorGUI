@@ -8,12 +8,12 @@ import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Deadline;
 //import negotiator.NegoRound;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

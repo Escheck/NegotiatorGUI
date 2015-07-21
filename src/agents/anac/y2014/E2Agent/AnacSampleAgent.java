@@ -15,7 +15,6 @@ import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.NegotiationResult;
-import negotiator.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -24,6 +23,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
+import negotiator.session.Timeline;
 import negotiator.utility.*;
 import agents.anac.y2014.E2Agent.myUtility.*;
 

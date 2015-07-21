@@ -4,10 +4,10 @@ import java.util.List;
 
 import negotiator.AgentID;
 import negotiator.Deadline;
-import negotiator.Timeline;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**

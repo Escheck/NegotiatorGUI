@@ -1,6 +1,6 @@
 package negotiator.session;
 
-import negotiator.Timeline.Type;
+import negotiator.session.Timeline.Type;
 
 /**
  * read-only access to the actual timeline information. The returned information
