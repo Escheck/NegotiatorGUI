@@ -12,8 +12,8 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * Represents a Party or Agent used in negotiation. {@link NegotiationParty}
- * will replace {@link negotiator.Agent} as party can be used for bilateral as
- * well as multilateral cases. If you are using a protocol that inherits from
+ * replaces {@link negotiator.Agent}. This can be used for bilateral as well as
+ * multilateral negotiations. If you are using a protocol that inherits from
  * {@link MultilateralProtocol} you should also use {@link NegotiationParty} and
  * not {@link negotiator.Agent}.
  * <p>
