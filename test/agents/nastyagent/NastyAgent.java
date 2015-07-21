@@ -40,7 +40,8 @@ public abstract class NastyAgent implements NegotiationParty {
 	private Deadline deadlines;
 	private AgentID partyId;
 
-	public NastyAgent(UtilitySpace utilitySpace, Deadline deadlines,
+	@Override
+	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed) {
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
