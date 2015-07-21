@@ -20,10 +20,29 @@ import negotiator.utility.UtilitySpace;
  * <em>IMPORTANT</em> Implementors of this class must implement a constructor
  * taking parameters ( {@link UtilitySpace}, {@link Deadline}, {@link Timeline},
  * {@link Long}).
+ * <p>
+ * All time that {@link NegotiationParty}s spend in their code, including the
+ * time spent in their constructor and init calls, is adding to the total
+ * available time.
+ * 
  *
  * @author David Festen
+ * @modified W.Pasman 21jul15
  */
 public interface NegotiationParty {
+	/**
+	 * Tells the agent which utility space and timeline it is running in. This
+	 * is called one time, before any calls are made to
+	 * {@link #chooseAction(List)} or {@link #receiveMessage(Object, Action)}.
+	 * 
+	 * @param utilSpace
+	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
+	 *            used for this session.
+	 * @param timeline
+	 *            The TimeLineIn that governs the current session.
+	 */
+	// public void init(UtilitySpaceInfo utilSpace, TimeLineInfo timeline);
+
 	/**
 	 * When this class is called, it is expected that the Party chooses one of
 	 * the actions from the possible action list and returns an instance of the
