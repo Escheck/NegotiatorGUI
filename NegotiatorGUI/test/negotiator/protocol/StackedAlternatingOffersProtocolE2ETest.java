@@ -167,7 +167,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 					.getPartyOfClass(partyclasses[partynr]);
 
 			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(
-					partyRepItem, profileRepItem, session);
+					partyRepItem, profileRepItem, session, null);
 			parties.add(negoparty);
 		}
 		// maybe we can craete the parties directly, using this?

@@ -13,7 +13,7 @@ import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.NegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 import agents.BidComparator;
 
@@ -35,17 +35,10 @@ public abstract class NastyAgent implements NegotiationParty {
 	ArrayList<Bid> bids = new ArrayList<Bid>(); // the bids that we MAY place.
 	Iterator<Bid> bidIterator; // next bid that we can place. Iterator over
 								// bids.
-	private UtilitySpace utilitySpace;
-	private Timeline timeline;
-	private Deadline deadlines;
-	private AgentID partyId;
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		this.utilitySpace = utilitySpace;
-		this.timeline = timeline;
-		this.deadlines = deadlines;
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 
 		BidIterator biter = new BidIterator(utilitySpace.getDomain());
 		while (biter.hasNext())
@@ -65,47 +58,6 @@ public abstract class NastyAgent implements NegotiationParty {
 
 	@Override
 	public void receiveMessage(Object sender, Action arguments) {
-	}
-
-	@Override
-	public double getUtility(Bid bid) {
-		if (bid == null) {
-			// utility is null if no bid
-			return 0;
-		} else if (timeline == null) {
-			// return undiscounted utility if no timeline given
-			return getUtility(bid);
-		} else {
-			// otherwise, return discounted utility
-			return utilitySpace.getUtilityWithDiscount(bid, timeline);
-		}
-	}
-
-	@Override
-	public double getUtilityWithDiscount(Bid bid) {
-		return utilitySpace.getUtilityWithDiscount(bid, timeline);
-	}
-
-	@Override
-	public UtilitySpace getUtilitySpace() {
-		return utilitySpace;
-	}
-
-	@Override
-	public Timeline getTimeLine() {
-		return timeline;
-	}
-
-	@Override
-	public void setTimeLine(Timeline timeline) {
-		this.timeline = timeline;
-
-	}
-
-	@Override
-	public AgentID getPartyId() {
-		return partyId == null ? new AgentID("" + getClass() + "@" + hashCode())
-				: partyId;
 	}
 
 }
