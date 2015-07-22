@@ -20,7 +20,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.UtilitySpace;
 
@@ -52,7 +52,7 @@ public class Group6 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
@@ -113,7 +113,7 @@ public class Group6 extends AbstractNegotiationParty {
 		double minimalAcceptableUtility = calculateMinimalAcceptableUtility(
 				currentTime, this.reservationValue);
 
-		Timeline localTime = this.timeline;
+		TimeLineInfo localTime = this.timeline;
 		switch (localTime.getType()) {
 		case Rounds:
 			if (((DiscreteTimeline) localTime).getOwnRoundsLeft() == 0)

@@ -16,7 +16,7 @@ import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.protocol.MultilateralProtocol;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -37,8 +37,8 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 
 	@Override
 	public void init(UtilitySpace utilSpace, Deadline deadline,
-			Timeline timeline, long randomSeed, AgentID id) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
+		super.init(utilSpace, deadlines, timeline, randomSeed, id);
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
 	}
 

@@ -19,6 +19,7 @@ import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
+import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
@@ -342,7 +343,7 @@ public class UtilitySpace implements Serializable, UtilitySpaceInfo {
 	 *            indicating the time passed in the negotiation.
 	 * @return discounted utility.
 	 */
-	public double getUtilityWithDiscount(Bid bid, Timeline timeline) {
+	public double getUtilityWithDiscount(Bid bid, TimeLineInfo timeline) {
 		double time = timeline.getTime();
 		return getUtilityWithDiscount(bid, time);
 	}
@@ -1160,7 +1161,7 @@ public class UtilitySpace implements Serializable, UtilitySpaceInfo {
 	 *            specifying the current time in the negotiation.
 	 * @return discounted reservation value.
 	 */
-	public double getReservationValueWithDiscount(Timeline timeline) {
+	public double getReservationValueWithDiscount(TimeLineInfo timeline) {
 		return getReservationValueWithDiscount(timeline.getTime());
 	}
 

@@ -12,7 +12,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 import agents.anac.y2010.Yushu.Utility;
 import agents.anac.y2011.IAMhaggler2011.RandomBidCreator;
@@ -51,7 +51,7 @@ public class Group1 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls its parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 

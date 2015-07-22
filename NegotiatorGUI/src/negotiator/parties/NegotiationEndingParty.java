@@ -7,7 +7,7 @@ import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -36,7 +36,7 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(final UtilitySpace utilitySpace, final Deadline deadlines,
-			final Timeline timeline, final long randomSeed, AgentID id) {
+			final TimeLineInfo timeline, final long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 	}
 

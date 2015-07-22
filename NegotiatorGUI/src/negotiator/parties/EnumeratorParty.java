@@ -17,7 +17,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.logging.CsvLogger;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -29,7 +29,7 @@ public class EnumeratorParty extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID agtid) {
+			TimeLineInfo timeline, long randomSeed, AgentID agtid) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, agtid);
 
 		// vars

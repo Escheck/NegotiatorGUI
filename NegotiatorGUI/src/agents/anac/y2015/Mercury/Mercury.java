@@ -24,6 +24,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
@@ -72,7 +73,7 @@ public class Mercury extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		myparty = getPartyId();

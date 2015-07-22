@@ -15,8 +15,10 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
+
+import org.apache.commons.lang.NullArgumentException;
 
 /**
  * A basic implementation of the {@link NegotiationParty} interface. This basic
@@ -30,7 +32,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	/**
 	 * Time line used by the party if time deadline is set.
 	 */
-	protected Timeline timeline;// should be final after init
+	protected TimeLineInfo timeline;// should be final after init
 
 	/**
 	 * map of all deadlines set for this party. Deadlines are combined using
@@ -47,6 +49,9 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 
 	/**
 	 * utility space used by this party (set in constructor).
+	 * 
+	 * NOTICE this is protected and appears to be used directly by lots of
+	 * implementations.
 	 */
 	protected UtilitySpace utilitySpace;// should be final after init
 
@@ -57,12 +62,21 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	private AgentID partyId;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID agentId) {
-		this.utilitySpace = utilitySpace;
+	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+			long randomSeed, AgentID agentId) {
+		if (utilSpace == null) {
+			throw new NullArgumentException("utilSpace");
+		}
+		if (agentId == null) {
+			throw new NullArgumentException("agentId");
+		}
+		if (tl == null) {
+			throw new NullArgumentException("tl");
+		}
+		this.utilitySpace = utilSpace;
 		this.rand = new Random(randomSeed);
-		this.timeline = timeline;
-		this.deadlines = deadlines;
+		this.timeline = tl;
+		this.deadlines = dl;
 		this.partyId = agentId;
 
 	}
@@ -191,18 +205,8 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 *
 	 * @return The time line for this agent
 	 */
-	public Timeline getTimeLine() {
+	public TimeLineInfo getTimeLine() {
 		return timeline;
-	}
-
-	/**
-	 * Sets this agent's time line
-	 *
-	 * @param timeline
-	 *            The timeline to set
-	 */
-	public void setTimeLine(Timeline timeline) {
-		this.timeline = timeline;
 	}
 
 	/**

@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
  * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class NegotiationSession {
-	
+
 	/** Optional outcomespace which should be set manually. */
 	protected OutcomeSpace outcomeSpace;
 	/** History of bids made by the opponent. */
@@ -31,33 +31,44 @@ public class NegotiationSession {
 	protected UtilitySpace utilitySpace;
 	/** Reference to the timeline. */
 	protected Timeline timeline;
-	
+
 	private SessionData sessionData;
-	
+
 	/**
-	 * Special constructor used by the NegotiationSessionWrapper.
-	 * Do not use this constructor for other purposes.
+	 * Special constructor used by the NegotiationSessionWrapper. Do not use
+	 * this constructor for other purposes.
 	 */
-	protected NegotiationSession() { }
-	
+	protected NegotiationSession() {
+	}
+
 	/**
 	 * Create a negotiation session which is used to keep track of the
 	 * negotiation state.
-	 * @param utilitySpace of the agent.
-	 * @param timeline of the current negotiation.
+	 * 
+	 * @param utilitySpace
+	 *            of the agent.
+	 * @param timeline
+	 *            of the current negotiation.
 	 */
-	public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline){		
+	public NegotiationSession(SessionData sessionData,
+			UtilitySpace utilitySpace, Timeline timeline) {
 		this(sessionData, utilitySpace, timeline, null);
 	}
-	
+
 	/**
 	 * Create a negotiation session which is used to keep track of the
 	 * negotiation state.
-	 * @param utilitySpace of the agent.
-	 * @param timeline of the current negotiation.
-	 * @param outcomeSpace representation of the possible outcomes.
+	 * 
+	 * @param utilitySpace
+	 *            of the agent.
+	 * @param timeline
+	 *            of the current negotiation.
+	 * @param outcomeSpace
+	 *            representation of the possible outcomes.
 	 */
-	public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace){
+	public NegotiationSession(SessionData sessionData,
+			UtilitySpace utilitySpace, Timeline timeline,
+			OutcomeSpace outcomeSpace) {
 		this.sessionData = sessionData;
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
@@ -67,55 +78,61 @@ public class NegotiationSession {
 		this.outcomeSpace = outcomeSpace;
 		sessionData = new SessionData();
 	}
-	
+
 	/**
 	 * Returns the bidding history of the opponent.
+	 * 
 	 * @return bidding history of the opponent.
 	 */
-	public BidHistory getOpponentBidHistory(){
+	public BidHistory getOpponentBidHistory() {
 		return opponentBidHistory;
 	}
-	
+
 	/**
 	 * Returns the bidding history of the agent.
+	 * 
 	 * @return bidding history of the agent.
 	 */
-	public BidHistory getOwnBidHistory(){
+	public BidHistory getOwnBidHistory() {
 		return ownBidHistory;
 	}
+
 	/**
-	 * Returns the discount factor of the utilityspace.
-	 * Each utilityspace has a unique discount factor.
+	 * Returns the discount factor of the utilityspace. Each utilityspace has a
+	 * unique discount factor.
+	 * 
 	 * @return discount factor of the utilityspace.
 	 */
 	public double getDiscountFactor() {
 		return utilitySpace.getDiscountFactor();
 	}
-	
+
 	/**
 	 * @return issues of the domain.
 	 */
-	public ArrayList<Issue> getIssues(){
+	public ArrayList<Issue> getIssues() {
 		return domain.getIssues();
 	}
-	
+
 	/**
 	 * @return timeline of the negotiation.
 	 */
-	public Timeline getTimeline(){
+	public Timeline getTimeline() {
 		return timeline;
 	}
-	
+
 	/**
 	 * Returns the normalized time (t = [0,1])
+	 * 
 	 * @return normalized time.
 	 */
 	public double getTime() {
 		return timeline.getTime();
 	}
-	
+
 	/**
 	 * Returns the negotiation domain.
+	 * 
 	 * @return domain of the negotiation.
 	 */
 	public Domain getDomain() {
@@ -124,39 +141,41 @@ public class NegotiationSession {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the utilityspace of the agent.
+	 * 
 	 * @return utilityspace of the agent.
 	 */
-	public UtilitySpace getUtilitySpace(){
+	public UtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
-	
+
 	/**
-	 * Returns the space of possible outcomes in the domain.
-	 * The returned value may be null.
+	 * Returns the space of possible outcomes in the domain. The returned value
+	 * may be null.
 	 * 
 	 * @return outcomespace if available.
 	 */
 	public OutcomeSpace getOutcomeSpace() {
 		return outcomeSpace;
 	}
-	
+
 	/**
-	 * Method used to set the outcomespace. Setting an outcomespace
-	 * makes method such as getMaxBidinDomain much more efficient.
+	 * Method used to set the outcomespace. Setting an outcomespace makes method
+	 * such as getMaxBidinDomain much more efficient.
 	 * 
-	 * @param outcomeSpace to be set.
+	 * @param outcomeSpace
+	 *            to be set.
 	 */
 	public void setOutcomeSpace(OutcomeSpace outcomeSpace) {
 		this.outcomeSpace = outcomeSpace;
 	}
-	
+
 	/**
-	 * Returns the best bid in the domain.
-	 * If the outcomespace is set, it is used in this step.
-	 * Else a highly inefficient method is used.
+	 * Returns the best bid in the domain. If the outcomespace is set, it is
+	 * used in this step. Else a highly inefficient method is used.
+	 * 
 	 * @return bid with lowest highest possible utility.
 	 */
 	public BidDetails getMaxBidinDomain() {
@@ -164,7 +183,8 @@ public class NegotiationSession {
 		if (outcomeSpace == null) {
 			try {
 				Bid maximumBid = utilitySpace.getMaxUtilityBid();
-				maxBid = new BidDetails(maximumBid, utilitySpace.getUtility(maximumBid), -1);
+				maxBid = new BidDetails(maximumBid,
+						utilitySpace.getUtility(maximumBid), -1);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -173,11 +193,11 @@ public class NegotiationSession {
 		}
 		return maxBid;
 	}
-	
+
 	/**
-	 * Returns the worst bid in the domain.
-	 * If the outcomespace is set, it is used in this step.
-	 * Else a highly inefficient method is used.
+	 * Returns the worst bid in the domain. If the outcomespace is set, it is
+	 * used in this step. Else a highly inefficient method is used.
+	 * 
 	 * @return bid with lowest possible utility.
 	 */
 	public BidDetails getMinBidinDomain() {
@@ -185,7 +205,8 @@ public class NegotiationSession {
 		if (outcomeSpace == null) {
 			try {
 				Bid minimumBidBid = utilitySpace.getMinUtilityBid();
-				minBid = new BidDetails(minimumBidBid, utilitySpace.getUtility(minimumBidBid), -1);
+				minBid = new BidDetails(minimumBidBid,
+						utilitySpace.getUtility(minimumBidBid), -1);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -193,41 +214,44 @@ public class NegotiationSession {
 			minBid = outcomeSpace.getMinBidPossible();
 		}
 		return minBid;
-	}	
+	}
 
 	/**
-	 * Method used o store the data of a component.
-	 * For agent programming please use the storeData() method of the BOA
-	 * component.
+	 * Method used o store the data of a component. For agent programming please
+	 * use the storeData() method of the BOA component.
 	 * 
-	 * @param component from which the data is stored.
-	 * @param data to be stored.
+	 * @param component
+	 *            from which the data is stored.
+	 * @param data
+	 *            to be stored.
 	 */
 	public void setData(ComponentsEnum component, Serializable data) {
 		sessionData.setData(component, data);
 	}
-	
+
 	/**
-	 * Method used to load the data saved by a component.
-	 * For agent programming please use the loadData() method of the BOA
-	 * component.
+	 * Method used to load the data saved by a component. For agent programming
+	 * please use the loadData() method of the BOA component.
 	 * 
-	 * @param component from which the data is requested.
+	 * @param component
+	 *            from which the data is requested.
 	 * @return data saved by the component.
 	 */
 	public Serializable getData(ComponentsEnum component) {
 		return sessionData.getData(component);
 	}
-	
+
 	/**
-	 * Returns the discounted utility of a bid given the bid and the
-	 * time at which it was offered.
+	 * Returns the discounted utility of a bid given the bid and the time at
+	 * which it was offered.
 	 * 
-	 * @param bid which discount utility is requested.
-	 * @param time at which the bid was offered.
+	 * @param bid
+	 *            which discount utility is requested.
+	 * @param time
+	 *            at which the bid was offered.
 	 * @return discounted utility of the given bid at the given time.
 	 */
-	public double getDiscountedUtility(Bid bid, double time){
+	public double getDiscountedUtility(Bid bid, double time) {
 		return utilitySpace.getUtilityWithDiscount(bid, time);
 	}
 
