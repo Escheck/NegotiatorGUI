@@ -76,7 +76,7 @@ public class RandomFlippingMediator extends AbstractNegotiationParty implements
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		AgentID mediatorId = new AgentID("Mediator");
 
 		if (possibleActions.contains(OfferForVoting.class)) {

@@ -81,7 +81,7 @@ public class Group10 extends AbstractNegotiationParty {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// with 50% chance, counter offer
 		// if we are the first party, also offer.
 		double time_left = (total_time - current_time - 1);

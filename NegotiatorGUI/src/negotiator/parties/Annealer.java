@@ -84,7 +84,7 @@ public class Annealer extends AbstractNegotiationParty {
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		return new VoteForOfferAcceptance(getPartyId(), currentVote);
 	}
 

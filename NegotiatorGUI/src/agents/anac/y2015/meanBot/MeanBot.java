@@ -48,7 +48,7 @@ public class MeanBot extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		try {
 			if (validActions.contains(Accept.class)
 					&& timeline.getTime() >= .95

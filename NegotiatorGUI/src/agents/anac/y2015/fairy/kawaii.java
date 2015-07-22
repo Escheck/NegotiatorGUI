@@ -70,7 +70,7 @@ public class kawaii extends AbstractNegotiationParty {
 	@SuppressWarnings("rawtypes")
 	@Override
 	// Action�̑I��
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeline.getTime(); // ���݂̌��������擾
 
 		// System.out.println("�s���I��");

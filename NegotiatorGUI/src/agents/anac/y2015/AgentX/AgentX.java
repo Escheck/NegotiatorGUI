@@ -67,7 +67,7 @@ public class AgentX extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeline.getTime(); // 現在の交渉時刻を取得
 		// Accept
 		if (validActions.contains(Accept.class)

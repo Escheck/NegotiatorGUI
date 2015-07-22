@@ -56,7 +56,8 @@ public class AlternatingOfferConsensusProtocol extends
 	 * @param class1
 	 * @return
 	 */
-	public Turn createTurn(NegotiationPartyInternal party, Class class1) {
+	public Turn createTurn(NegotiationPartyInternal party,
+			Class<? extends Action> class1) {
 		return new Turn(party, OfferForVoting.class);
 	}
 

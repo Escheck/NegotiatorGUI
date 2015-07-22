@@ -77,7 +77,7 @@ public class SENGOKU extends AbstractNegotiationParty {
 	@SuppressWarnings("rawtypes")
 	@Override
 	// Actionの選択
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		if (isPrinting) {
 			System.out.println("-----------------MyTern----------------------"
 					+ timeline.getTime() * 180);

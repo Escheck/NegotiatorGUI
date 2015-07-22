@@ -100,8 +100,7 @@ public class Group5 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(
-			@SuppressWarnings("rawtypes") List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		if (bidding.deadline == null) {
 			bidding.deadline = (Integer) deadlines.getTotalRounds();
 		}

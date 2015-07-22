@@ -73,7 +73,7 @@ public class UINegotiationParty extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		Action action = ui.askUserForAction(opponentAction, myPreviousBid,
 				mostRecentBid);
 		if ((action != null) && (action instanceof Offer)) {

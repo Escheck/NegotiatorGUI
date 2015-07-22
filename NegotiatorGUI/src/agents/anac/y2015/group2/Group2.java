@@ -185,7 +185,7 @@ public class Group2 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Initialize the logger with your partynumber once it is known
 		if (!logger.isInitialized() && loggingOn) {
 			logger.init(partyNumber);

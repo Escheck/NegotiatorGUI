@@ -101,7 +101,7 @@ public class BayesLearner extends AbstractNegotiationParty {
 	 *            Either a list containing both accept and offer or only offer.
 	 * @return The chosen action.
 	 */
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// ++totalBids;
 		try {
 			setState();

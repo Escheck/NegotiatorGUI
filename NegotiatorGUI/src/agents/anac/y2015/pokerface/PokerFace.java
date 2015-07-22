@@ -91,7 +91,7 @@ public class PokerFace extends AbstractNegotiationParty {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// with 50% chance, counter offer
 		// if we are the first party, also offer.
 		double time_left, time_after_walker, temp;

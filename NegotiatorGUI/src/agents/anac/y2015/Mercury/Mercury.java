@@ -192,7 +192,7 @@ public class Mercury extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		Action action = null;
 		Bid bid = null;
 		myRounds++;

@@ -186,7 +186,7 @@ public class AgentHP extends AbstractNegotiationParty {
 	 * @return 選んだ行動のクラス(Accept or Offer)
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 
 		if (isEstimated(partyNum)) {
 

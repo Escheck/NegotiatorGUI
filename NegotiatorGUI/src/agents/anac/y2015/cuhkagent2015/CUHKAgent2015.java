@@ -284,7 +284,7 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		Action action = null;
 		this.EachRoundCount = this.countOpp;
 		try {

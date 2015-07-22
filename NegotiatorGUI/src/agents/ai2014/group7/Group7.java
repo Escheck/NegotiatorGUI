@@ -59,7 +59,7 @@ public class Group7 extends AbstractNegotiationParty {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		System.out.println(cosDiscount(
 				scale(timeline.getTime(), declineStart, 1f, 0f, 1f),
 				startUtility, endUtility));

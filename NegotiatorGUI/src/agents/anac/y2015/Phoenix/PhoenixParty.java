@@ -325,7 +325,7 @@ public class PhoenixParty extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 
 		Action currentAction = new NoAction(getPartyId());
 		double currentTime = getTime();

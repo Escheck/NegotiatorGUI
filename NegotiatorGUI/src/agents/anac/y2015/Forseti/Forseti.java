@@ -96,7 +96,7 @@ public class Forseti extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Method is called every time it's this agent's turn.
 		currentAgent = this;
 

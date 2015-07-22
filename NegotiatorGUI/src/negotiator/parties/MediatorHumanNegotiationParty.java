@@ -76,7 +76,7 @@ public class MediatorHumanNegotiationParty extends AbstractNegotiationParty
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		return ui.askUserForAction(opponentAction, mostRecentOffer,
 				mostRecentAgreement);
 	}

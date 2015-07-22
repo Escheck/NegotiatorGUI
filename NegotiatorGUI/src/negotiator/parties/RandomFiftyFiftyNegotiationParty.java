@@ -27,7 +27,7 @@ public class RandomFiftyFiftyNegotiationParty extends AbstractNegotiationParty {
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 
 		// if we are the first party, place offer.
 		if (possibleActions.contains(OfferForVoting.class)) {

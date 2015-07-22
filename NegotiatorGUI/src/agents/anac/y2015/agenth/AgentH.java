@@ -67,7 +67,7 @@ public class AgentH extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// 経過時間 [0,1] を取得
 		final double time = getTimeLine().getTime();
 

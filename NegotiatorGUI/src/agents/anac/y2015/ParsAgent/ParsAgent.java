@@ -39,7 +39,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 
 		try {
 			if (lastBid == null) {

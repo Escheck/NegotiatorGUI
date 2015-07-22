@@ -68,7 +68,7 @@ public interface NegotiationParty {
 	 *            List of all actions possible.
 	 * @return The chosen action
 	 */
-	public Action chooseAction(List<Class> possibleActions);
+	public Action chooseAction(List<Class<? extends Action>> possibleActions);
 
 	/**
 	 * This method is called when an observable action is performed. Observable

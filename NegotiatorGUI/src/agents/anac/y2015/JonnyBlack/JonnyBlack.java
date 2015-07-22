@@ -67,7 +67,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 
 		// with 50% chance, counter offer
 		// if we are the first party, also offer.

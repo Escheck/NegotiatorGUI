@@ -52,7 +52,7 @@ public class RandomCounterOfferNegotiationParty extends
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 
 		// if we can not accept, we need to do random voting
 		if (!possibleActions.contains(Accept.class)) {

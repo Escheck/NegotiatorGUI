@@ -113,7 +113,7 @@ public class Group4 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		round++;
 		threshold = STARTING_THRESHOLD
 				- (STARTING_THRESHOLD - RESERVATION_VALUE)
