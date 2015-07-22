@@ -47,7 +47,7 @@ public interface NegotiationParty {
 	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
 	 *            used for this session.
 	 * @param timeline
-	 *            The TimeLineIn that governs the current session.
+	 *            The {@link TimeLineInfo} about current session.
 	 * @param agentID
 	 *            the agent's ID.
 	 * @throws RuntimeException

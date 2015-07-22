@@ -77,8 +77,8 @@ public class NegotiationPartyInternal {
 		utilitySpace = profileRepItem.create();
 		long randomSeed = System.currentTimeMillis();
 		party = createInstance(partyRepItem, profileRepItem, session);
-		party.init(utilitySpace, session.getDeadlines(), session.getTimeline(),
-				randomSeed, getAgentId());
+		party.init(new UtilitySpace(utilitySpace), session.getDeadlines(),
+				session.getTimeline(), randomSeed, getAgentId());
 		return party;
 	}
 
