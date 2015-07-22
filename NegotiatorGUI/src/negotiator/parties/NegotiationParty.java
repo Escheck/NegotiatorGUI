@@ -10,24 +10,31 @@ import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
 /**
- * Represents a Party or Agent used in negotiation. {@link NegotiationParty}
- * replaces {@link negotiator.Agent}. This can be used for bilateral as well as
- * multilateral negotiations. If you are using a protocol that inherits from
- * {@link MultilateralProtocol} you should also use {@link NegotiationParty} and
- * not {@link negotiator.Agent}.
- * <p>
- * <em>IMPORTANT</em> Implementors of this class must have a public no-argument
- * constructor. In fact we recommend not to implement any constructor at all.
- * Initialization will be done through
- * {@link #init(UtilitySpace, Deadline, Timeline, long)}.
- * <p>
+ * Base interface for Negotiation parties. All parties must minimally implement
+ * this interface. This can be used for bilateral as well as multilateral
+ * negotiations. <br>
  * All time that {@link NegotiationParty}s spend in their code, including the
  * time spent in their constructor and init calls, is subtracting from the total
  * available time.
  * 
+ * <h1>IMPORTANT</h1> Implementors of this class must have a public no-argument
+ * constructor. In fact we recommend not to implement any constructor at all.
+ * Initialization will be done through
+ * {@link #init(UtilitySpace, Deadline, Timeline, long)}.
+ * 
+ * <h1>history</h1> {@link NegotiationParty} replaces {@link negotiator.Agent} .
+ * If you are using a protocol that inherits from {@link MultilateralProtocol}
+ * you should also use {@link NegotiationParty} and not {@link negotiator.Agent}
+ * .
+ * 
+ * 
  *
  * @author David Festen
- * @modified W.Pasman 21jul15
+ * @author W.Pasman 21jul15
+ * 
+ * @modified W.Pasman removed all but essential code. Agents can use
+ *           {@link AbstractNegotiationParty} to get more support from the
+ *           parent class.
  */
 public interface NegotiationParty {
 	/**
@@ -74,72 +81,4 @@ public interface NegotiationParty {
 	 */
 	void receiveMessage(Object sender, Action arguments);
 
-	/**
-	 * Gets the agents utility for a given bid.
-	 *
-	 * @param bid
-	 *            The bid to get the utility of
-	 * @return the utility that the agent has for the given bid
-	 */
-	// double getUtility(Bid bid);
-
-	/**
-	 * Gets the agents utility for a given bid, taking into account a discount
-	 * factor if present.
-	 *
-	 * @param bid
-	 *            The bid to get the utility of
-	 * @return the utility that the agent has for the given bid
-	 */
-	// double getUtilityWithDiscount(Bid bid);
-
-	/**
-	 * Gets the agent's utility space.
-	 *
-	 * @return the agent's utility space
-	 */
-	// UtilitySpace getUtilitySpace();
-
-	/**
-	 * Gets the timeline for this agent.
-	 *
-	 * @return The timeline object or null if no timeline object (no time
-	 *         constraints) set
-	 */
-	// Timeline getTimeLine();
-
-	/**
-	 * Sets the timeline object
-	 *
-	 * @param timeline
-	 *            The timeline to set
-	 */
-	// void setTimeLine(Timeline timeline);
-
-	/**
-	 * Gets the agent's unique id
-	 * <p/>
-	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. Also it may be presented in a human GUI if
-	 * that agent has to ask something from the user.
-	 *
-	 * @return A uniquely identifying agent id
-	 */
-	// AgentID getPartyId();
-
-	/**
-	 * Sets the agent's unique id
-	 * <p/>
-	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. For all default implementations, this has
-	 * either the format "ClassName" if only one such an agent exists (in case
-	 * of mediator for example) or it has the format "ClassName@HashCode" if
-	 * multiple agents of the same type can exists. You could also use the
-	 * random hash used in the agent to identify it (making it easier to
-	 * reproduce results).
-	 *
-	 * @param id
-	 *            The new id for this agent.
-	 */
-	// void setPartyId(AgentID id);
 }
