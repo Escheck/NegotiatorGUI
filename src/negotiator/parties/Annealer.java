@@ -63,8 +63,8 @@ public class Annealer extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		lastAcceptedBidUtility = 0;
 		lastReceivedBidUtility = 0;
 		currentVote = Vote.REJECT;
@@ -155,22 +155,4 @@ public class Annealer extends AbstractNegotiationParty {
 		return timeline == null ? 0d : timeline.getTime();
 	}
 
-	/**
-	 * Gets the agent's unique id
-	 * <p/>
-	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. For all default implementations, this has
-	 * either the format "ClassName" if only one such an agent exists (in case
-	 * of mediator for example) or it has the format "ClassName@HashCode" if
-	 * multiple agents of the same type can exists. You could also use the
-	 * random hash used in the agent to identify it (making it easier to
-	 * reproduce results).
-	 *
-	 * @return A uniquely identifying agent id
-	 */
-	@Override
-	public AgentID getPartyId() {
-		return partyId == null ? new AgentID("Annealer@" + hashCode())
-				: partyId;
-	}
 }

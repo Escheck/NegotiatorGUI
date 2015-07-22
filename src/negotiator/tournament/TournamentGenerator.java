@@ -179,27 +179,35 @@ public class TournamentGenerator {
 
 	/**
 	 * Generate the list of parties in the given session
-	 *
+	 * 
 	 * @param partyIndices
 	 *            The indices used for generating the session
+	 * 
 	 * @param partyRepItems
-	 *            The repository items for parties
+	 *            The repository items for party
 	 * @param profileRepItems
-	 *            The repository items for profiles
+	 *            The repository items for profiles. One party will be created
+	 *            for each item in the list.
+	 * @param partyIds
+	 *            the preferred party IDs for the parties, in the correct order.
+	 *            If null, default IDs are generated (recommended). If a list,
+	 *            the number of elements in this list must match the size of
+	 *            list. profileRepItems.
 	 * @param mediatorIndex
 	 *            The index of the mediator in the returned list (usually this
 	 *            is 0)
 	 * @param mediatorRepItem
 	 *            The mediator repository item (or null)
+	 * 
 	 * @param mediatorProfileRepItem
 	 *            The mediator repository profile (or null)
 	 * @param session
 	 *            The session used fot this session
 	 * @return The list of parties for this session
-	 * @throws NegotiatorException
-	 *             if agent can not be created
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
+	 * @throws NegotiatorException
+	 *             if agent can not be created
 	 */
 	public static List<NegotiationPartyInternal> generateSessionParties(
 			List<Integer> partyIndices, List<PartyRepItem> partyRepItems,
@@ -218,7 +226,8 @@ public class TournamentGenerator {
 				// NegotiationParty party = createFrom(partyRepItem,
 				// profileRepItem, session);
 				NegotiationPartyInternal party = new NegotiationPartyInternal(
-						partyRepItem, profileRepItem, session);
+						partyRepItem, profileRepItem, session,
+						partyIds == null ? null : partyIds.get(i));
 				parties.add(party);
 			}
 		}
@@ -226,10 +235,6 @@ public class TournamentGenerator {
 				mediatorProfileRepItem, profileRepItems.get(0), session);
 		if (mediator != null)
 			parties.add(mediatorIndex, mediator);
-
-		if (partyIds != null)
-			for (int i = 0; i < parties.size(); i++)
-				parties.get(i).setPartyId(partyIds.get(i));
 
 		return parties;
 	}
@@ -275,9 +280,10 @@ public class TournamentGenerator {
 				// if mediator profile also set, we'll create it add it at the
 				// appropriate index
 				if (mediatorProfileRepItem != null) {
-
+					// agent always has id "mediator".
 					return new NegotiationPartyInternal(mediatorRepItem,
-							mediatorProfileRepItem, session);
+							mediatorProfileRepItem, session, new AgentID(
+									"mediator"));
 				}
 				// if mediator has no profile, we'll base it on one of the
 				// agents domains, the

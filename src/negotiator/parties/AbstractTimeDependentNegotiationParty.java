@@ -4,6 +4,7 @@ import static java.lang.Math.pow;
 
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.DiscreteTimeline;
@@ -36,8 +37,8 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 
 	@Override
 	public void init(UtilitySpace utilSpace, Deadline deadline,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);
 	}
 

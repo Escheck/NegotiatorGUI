@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import misc.Range;
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Deadline;
@@ -62,8 +63,8 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		this.totalHistory = new BidHistory();
 		this.myBidHistory = new BidHistory();
 		this.AandBscommonBids = new BidHistory();

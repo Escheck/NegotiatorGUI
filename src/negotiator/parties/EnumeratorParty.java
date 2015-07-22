@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.Domain;
@@ -28,8 +29,8 @@ public class EnumeratorParty extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID agtid) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, agtid);
 
 		// vars
 		Domain dom = getUtilitySpace().getDomain();

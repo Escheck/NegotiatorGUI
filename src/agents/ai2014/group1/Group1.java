@@ -51,9 +51,9 @@ public class Group1 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls its parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		// initialize issueList
 		issueList = this.utilitySpace.getDomain().getIssues();

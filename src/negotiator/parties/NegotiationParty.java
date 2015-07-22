@@ -3,7 +3,6 @@ package negotiator.parties;
 import java.util.List;
 
 import negotiator.AgentID;
-import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
@@ -41,11 +40,13 @@ public interface NegotiationParty {
 	 *            used for this session.
 	 * @param timeline
 	 *            The TimeLineIn that governs the current session.
+	 * @param agentID
+	 *            the agent's ID.
 	 * @throws RuntimeException
 	 *             if init fails.
 	 */
 	public void init(UtilitySpace utilSpace, Deadline deadline,
-			Timeline timeline, long randomSeed);
+			Timeline timeline, long randomSeed, AgentID agentID);
 
 	/**
 	 * When this class is called, it is expected that the Party chooses one of
@@ -80,7 +81,7 @@ public interface NegotiationParty {
 	 *            The bid to get the utility of
 	 * @return the utility that the agent has for the given bid
 	 */
-	double getUtility(Bid bid);
+	// double getUtility(Bid bid);
 
 	/**
 	 * Gets the agents utility for a given bid, taking into account a discount
@@ -90,14 +91,14 @@ public interface NegotiationParty {
 	 *            The bid to get the utility of
 	 * @return the utility that the agent has for the given bid
 	 */
-	double getUtilityWithDiscount(Bid bid);
+	// double getUtilityWithDiscount(Bid bid);
 
 	/**
 	 * Gets the agent's utility space.
 	 *
 	 * @return the agent's utility space
 	 */
-	UtilitySpace getUtilitySpace();
+	// UtilitySpace getUtilitySpace();
 
 	/**
 	 * Gets the timeline for this agent.
@@ -105,7 +106,7 @@ public interface NegotiationParty {
 	 * @return The timeline object or null if no timeline object (no time
 	 *         constraints) set
 	 */
-	Timeline getTimeLine();
+	// Timeline getTimeLine();
 
 	/**
 	 * Sets the timeline object
@@ -113,22 +114,18 @@ public interface NegotiationParty {
 	 * @param timeline
 	 *            The timeline to set
 	 */
-	void setTimeLine(Timeline timeline);
+	// void setTimeLine(Timeline timeline);
 
 	/**
 	 * Gets the agent's unique id
 	 * <p/>
 	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. For all default implementations, this has
-	 * either the format "ClassName" if only one such an agent exists (in case
-	 * of mediator for example) or it has the format "ClassName@HashCode" if
-	 * multiple agents of the same type can exists. You could also use the
-	 * random hash used in the agent to identify it (making it easier to
-	 * reproduce results).
+	 * trace the agent's behavior. Also it may be presented in a human GUI if
+	 * that agent has to ask something from the user.
 	 *
 	 * @return A uniquely identifying agent id
 	 */
-	AgentID getPartyId();
+	// AgentID getPartyId();
 
 	/**
 	 * Sets the agent's unique id

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
@@ -50,9 +51,9 @@ public class Group2 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		opponentModels = new HashMap<Object, G2OpponentModel>();
 		ourUtilitySpace = new G2UtilitySpace(utilitySpace);

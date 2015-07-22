@@ -3,6 +3,7 @@ package agents.anac.y2015.AgentHP;
 import java.util.HashMap;
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
@@ -109,10 +110,10 @@ public class AgentHP extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 
 		// 親クラスコンストラクタ
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		// 予約値取得
 		reservationValue = utilitySpace.getReservationValueUndiscounted();

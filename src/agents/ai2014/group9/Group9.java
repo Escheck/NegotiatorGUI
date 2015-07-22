@@ -49,9 +49,9 @@ public class Group9 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		partyBids = new HashMap<Object, ArrayList<Bid>>();
 		partyIssueWeights = new HashMap<Object, float[]>();
 		partyIssueCounter = new HashMap<Object, HashMap<Integer, int[]>>();
