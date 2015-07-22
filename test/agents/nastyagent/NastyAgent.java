@@ -49,7 +49,7 @@ public abstract class NastyAgent implements NegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		if (bidIterator.hasNext()) {
 			return new Offer(bidIterator.next());
 		}

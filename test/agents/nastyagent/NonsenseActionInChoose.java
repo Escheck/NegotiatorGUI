@@ -12,7 +12,7 @@ import negotiator.actions.Action;
  */
 public class NonsenseActionInChoose extends NastyAgent {
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		return new NonsenseAction();
 	}
 }

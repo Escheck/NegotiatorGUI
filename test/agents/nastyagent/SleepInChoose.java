@@ -7,7 +7,7 @@ import negotiator.actions.Action;
 public class SleepInChoose extends NastyAgent {
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		try {
 			Thread.sleep(2000000);
 		} catch (InterruptedException e) {
