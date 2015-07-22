@@ -5,15 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import negotiator.Bid;
-import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.parties.AbstractTimeDependentNegotiationParty;
-import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
 
 /**
  * This is ParsAgent party.
@@ -31,31 +28,6 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	ArrayList<BidUtility> opponentAB = new ArrayList<BidUtility>();
 	OpponentPreferences oppAPreferences = new OpponentPreferences();
 	OpponentPreferences oppBPreferences = new OpponentPreferences();
-
-	/**
-	 * Please keep this constructor. This is called by genius.
-	 *
-	 * @param utilitySpace
-	 *            Your utility space.
-	 * @param deadlines
-	 *            The deadlines set for this negotiation.
-	 * @param timeline
-	 *            Value counting from 0 (start) to 1 (end).
-	 * @param randomSeed
-	 *            If you use any randomization, use this seed for it.
-	 */
-	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
-		/*
-		 * Comment for Bug Object[] keys = deadlines.keySet().toArray(); for
-		 * (int i = 0; i < keys.length; ++i) { if (keys[i] instanceof
-		 * DeadlineType) { DeadlineType type=(DeadlineType) keys[i]; round =
-		 * Integer.parseInt(deadlines.get(keys[i]).toString()); } }
-		 */
-	}
 
 	/**
 	 * Each round this method gets called and ask you to accept or offer. The

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
@@ -50,9 +51,9 @@ public class JonnyBlack extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		initializeCounts(utilitySpace);
 	}
 
@@ -74,7 +75,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 		if (round % 10 == 0) {
 			this.agreeVal = Functions.calcStopVal(parties, topNofOpp,
 					utilitySpace);
-			System.out.println(partyId);
+			System.out.println(getPartyId());
 			unwillingness *= .995;
 			System.out.println(unwillingness);
 			agreeVal *= this.unwillingness;

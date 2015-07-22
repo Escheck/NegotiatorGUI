@@ -54,15 +54,16 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * The id used to identify this agent (if set to null, a default identifier
 	 * will be used).
 	 */
-	protected AgentID partyId;
+	private AgentID partyId;
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID agentId) {
 		this.utilitySpace = utilitySpace;
 		this.rand = new Random(randomSeed);
 		this.timeline = timeline;
 		this.deadlines = deadlines;
+		this.partyId = agentId;
 
 	}
 
@@ -145,7 +146,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * @return A double value between [0, 1] (inclusive) that represents the
 	 *         bids utility
 	 */
-	@Override
 	public double getUtility(Bid bid) {
 		try {
 			// throws exception if bid incomplete or not in utility space
@@ -164,7 +164,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * @return A double value between [0, 1] (inclusive) that represents the
 	 *         bids utility
 	 */
-	@Override
 	public double getUtilityWithDiscount(Bid bid) {
 		if (bid == null) {
 			// utility is null if no bid
@@ -183,7 +182,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 *
 	 * @return The utility space
 	 */
-	@Override
 	public final UtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
@@ -193,7 +191,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 *
 	 * @return The time line for this agent
 	 */
-	@Override
 	public Timeline getTimeLine() {
 		return timeline;
 	}
@@ -204,7 +201,6 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * @param timeline
 	 *            The timeline to set
 	 */
-	@Override
 	public void setTimeLine(Timeline timeline) {
 		this.timeline = timeline;
 	}
@@ -216,18 +212,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 */
 	@Override
 	public String toString() {
-		return getPartyId().toString();
-	}
-
-	/**
-	 * Gets the party id for this party
-	 *
-	 * @return The uniquely identifying party id.
-	 */
-	@Override
-	public AgentID getPartyId() {
-		return partyId == null ? new AgentID("" + getClass() + "@" + hashCode())
-				: partyId;
+		return partyId.toString();
 	}
 
 	@Override
@@ -246,5 +231,9 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	}
 
 	private int numberOfParties = -1;
+
+	public AgentID getPartyId() {
+		return partyId;
+	}
 
 }

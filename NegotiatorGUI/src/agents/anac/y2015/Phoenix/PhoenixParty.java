@@ -101,8 +101,8 @@ public class PhoenixParty extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		init();
 	}
 

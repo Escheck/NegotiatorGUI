@@ -34,8 +34,8 @@ public class UINegotiationParty extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		System.out.println("init UIAgent");
 
 		System.out.println("closing old dialog of ");
@@ -52,7 +52,6 @@ public class UINegotiationParty extends AbstractNegotiationParty {
 		}
 		System.out.println("finished init of UIAgent2");
 
-		partyId = new AgentID("Party ID");
 	}
 
 	@Override

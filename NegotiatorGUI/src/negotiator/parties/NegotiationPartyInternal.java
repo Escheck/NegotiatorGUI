@@ -19,16 +19,35 @@ import negotiator.utility.UtilitySpace;
 public class NegotiationPartyInternal {
 	private NegotiationParty party;
 	private UtilitySpace utilitySpace;
-	private AgentID agentId = null;
 	private Session session;
+	private AgentID agentId;
 
 	// private final Deadline deadline;
 	//
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param partyRepItem
+	 * @param profileRepItem
+	 * @param session
+	 * @param agentID
+	 *            the agentId to use, or null if auto ID is ok. For all default
+	 *            implementations, this has either the format "ClassName" if
+	 *            only one such an agent exists (in case of mediator for example
+	 *            [mediator always has the name "mediator"]) or it has the
+	 *            format "ClassName@HashCode" if multiple agents of the same
+	 *            type can exists. You could also use the random hash used in
+	 *            the agent to identify it (making it easier to reproduce
+	 *            results).
+	 * @throws RepositoryException
+	 * @throws NegotiatorException
+	 */
 	public NegotiationPartyInternal(PartyRepItem partyRepItem,
-			ProfileRepItem profileRepItem, Session session)
+			ProfileRepItem profileRepItem, Session session, AgentID agentID)
 			throws RepositoryException, NegotiatorException {
 		this.session = session;
+		this.agentId = agentID;
 		init(partyRepItem, profileRepItem, session);
 	}
 
@@ -59,8 +78,24 @@ public class NegotiationPartyInternal {
 		long randomSeed = System.currentTimeMillis();
 		party = createInstance(partyRepItem, profileRepItem, session);
 		party.init(utilitySpace, session.getDeadlines(), session.getTimeline(),
-				randomSeed);
+				randomSeed, getAgentId());
 		return party;
+	}
+
+	/**
+	 * Gets the party id for this party. party must have been set.
+	 *
+	 * @return The uniquely identifying party id.
+	 */
+	public AgentID getAgentId() {
+		if (party == null) {
+			throw new IllegalStateException("party is not initialized.");
+		}
+		if (agentId == null) {
+			agentId = new AgentID(party.getClass().getSimpleName() + "@"
+					+ hashCode());
+		}
+		return agentId;
 	}
 
 	/**
@@ -179,40 +214,16 @@ public class NegotiationPartyInternal {
 		return session.getTimeline();
 	}
 
-	//
-	// /**
-	// * Sets the timeline object
-	// *
-	// * @param timeline
-	// * The timeline to set
-	// */
-	// void setTimeLine(Timeline timeline);
-	//
 	/**
 	 * Gets the agent's unique id
 	 * <p/>
 	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. For all default implementations, this has
-	 * either the format "ClassName" if only one such an agent exists (in case
-	 * of mediator for example) or it has the format "ClassName@HashCode" if
-	 * multiple agents of the same type can exists. You could also use the
-	 * random hash used in the agent to identify it (making it easier to
-	 * reproduce results).
+	 * trace the agent's behavior.
 	 *
 	 * @return A uniquely identifying agent id
 	 */
 	public AgentID getPartyId() {
-		if (agentId == null) {
-			agentId = new AgentID("" + getParty().getClass().getSimpleName()
-					+ "@" + hashCode());
-		}
 		return agentId;
-
-	}
-
-	public void setPartyId(AgentID agentID2) {
-		agentId = agentID2;
-
 	}
 
 }

@@ -19,9 +19,8 @@ public class NonDeterministicConcederNegotiationParty extends
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
-		partyId = new AgentID(String.format("NDConceder#%4s", hashCode()));
+			Timeline timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		random = new Random();
 	}
 

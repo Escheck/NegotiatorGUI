@@ -220,7 +220,7 @@ class RunConfiguration {
 			ProfileRepItem profileRepItem = new ProfileRepItem(new URL(
 					cpProfile), domainRepItem);
 			return new NegotiationPartyInternal(partyRepItem, profileRepItem,
-					session);
+					session, null);
 		} catch (MalformedURLException e) {
 			System.err.println("Malformed url for profile item:");
 			System.err.println(cpProfile);

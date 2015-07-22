@@ -182,9 +182,9 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
+			Timeline timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		try {
 			this.NumberOfBid = this.utilitySpace.getDomain()
 					.getNumberOfPossibleBids();

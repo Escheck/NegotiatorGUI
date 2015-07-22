@@ -36,8 +36,8 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(final UtilitySpace utilitySpace, final Deadline deadlines,
-			final Timeline timeline, final long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			final Timeline timeline, final long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 	}
 
 	/**
@@ -70,22 +70,4 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 		super.receiveMessage(sender, arguments);
 	}
 
-	/**
-	 * Gets the agent's unique id
-	 * <p/>
-	 * Each agent should contain a (unique) id. This id is used in log files to
-	 * trace the agent's behavior. For all default implementations, this has
-	 * either the format "ClassName" if only one such an agent exists (in case
-	 * of mediator for example) or it has the format "ClassName@HashCode" if
-	 * multiple agents of the same type can exists. You could also use the
-	 * random hash used in the agent to identify it (making it easier to
-	 * reproduce results).
-	 *
-	 * @return A uniquely identifying agent id
-	 */
-	@Override
-	public AgentID getPartyId() {
-		return partyId == null ? new AgentID("AcceptingParty@" + hashCode())
-				: partyId;
-	}
 }
