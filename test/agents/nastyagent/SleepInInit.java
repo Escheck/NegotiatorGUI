@@ -1,15 +1,16 @@
 package agents.nastyagent;
 
+import negotiator.AgentID;
 import negotiator.Deadline;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
 public class SleepInInit extends NastyAgent {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed) {
-		super.init(utilitySpace, deadlines, timeline, randomSeed);
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
+		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		try {
 			Thread.sleep(2000000);// sleep 2000 seconds.
 		} catch (InterruptedException e) {
