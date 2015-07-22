@@ -21,7 +21,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -47,7 +47,7 @@ public class RandomDance extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 	}

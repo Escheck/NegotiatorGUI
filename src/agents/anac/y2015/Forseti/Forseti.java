@@ -13,7 +13,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.EVALUATORTYPE;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
@@ -29,11 +29,7 @@ public class Forseti extends AbstractNegotiationParty {
 	private Bid myLastBid = null; // Last bid made by this agent.
 	private AbstractNegotiationParty currentAgent = null; // The agent currently
 															// bidding/accepting
-	private NegotiationModel model = new NegotiationModel(getUtilitySpace()); // Our
-																				// model
-																				// of
-																				// the
-																				// negotiation.
+	private NegotiationModel model; // Our model of the negotiation.
 	private List<AbstractNegotiationParty> opponents = new ArrayList<AbstractNegotiationParty>();
 	private boolean opponentsListFull = false;
 	private List<Bid> goodBids = new ArrayList<Bid>(); // List of bids with
@@ -63,9 +59,11 @@ public class Forseti extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
+		model = new NegotiationModel(getUtilitySpace());
+
 		rng = new Random(randomSeed);
 
 		// If the domain is discounted, the time factor is increased.

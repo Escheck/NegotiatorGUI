@@ -12,7 +12,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 import agents.EnterBidDialog2;
 
@@ -31,7 +31,7 @@ public class CounterOfferHumanNegotiationParty extends AbstractNegotiationParty 
 	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		System.out.println("init UIAgent");
 

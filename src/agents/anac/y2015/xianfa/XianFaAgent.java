@@ -20,7 +20,7 @@ import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.UtilitySpace;
 
@@ -92,7 +92,7 @@ public class XianFaAgent extends AbstractNegotiationParty {
 
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		// if (utilitySpace.getDomain().getNumberOfPossibleBids() > 200000)

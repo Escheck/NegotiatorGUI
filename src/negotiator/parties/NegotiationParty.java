@@ -6,6 +6,7 @@ import negotiator.AgentID;
 import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
@@ -32,7 +33,7 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  * @author W.Pasman 21jul15
  * 
- * @modified W.Pasman removed all but essential code. Agents can use
+ * @modified W.Pasman removed all but essential code. Parties can extend
  *           {@link AbstractNegotiationParty} to get more support from the
  *           parent class.
  */
@@ -53,7 +54,7 @@ public interface NegotiationParty {
 	 *             if init fails.
 	 */
 	public void init(UtilitySpace utilSpace, Deadline deadline,
-			Timeline timeline, long randomSeed, AgentID agentID);
+			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**
 	 * When this class is called, it is expected that the Party chooses one of

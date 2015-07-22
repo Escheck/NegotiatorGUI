@@ -11,7 +11,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.Timeline;
+import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 import agents.anac.y2015.SENGOKU.etc.bidSearch;
 import agents.anac.y2015.SENGOKU.etc.negotiatingInfo;
@@ -46,7 +46,7 @@ public class SENGOKU extends AbstractNegotiationParty {
 	// コンストラクター　初期化
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			Timeline timeline, long randomSeed, AgentID id) {
+			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
