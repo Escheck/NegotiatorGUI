@@ -2,38 +2,15 @@ package agents.anac.y2015.groupn;
 
 import java.util.List;
 
-import negotiator.AgentID;
-import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
 
 /**
  * This is your negotiation party.
  */
 public class Groupn extends AbstractNegotiationParty {
-
-	/**
-	 * Please keep this constructor. This is called by genius.
-	 *
-	 * @param utilitySpace
-	 *            Your utility space.
-	 * @param deadlines
-	 *            The deadlines set for this negotiation.
-	 * @param timeline
-	 *            Value counting from 0 (start) to 1 (end).
-	 * @param randomSeed
-	 *            If you use any randomization, use this seed for it.
-	 */
-	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
-			TimeLineInfo timeline, long randomSeed, AgentID id) {
-		// Make sure that this constructor calls it's parent.
-		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
-	}
 
 	/**
 	 * Each round this method gets called and ask you to accept or offer. The
