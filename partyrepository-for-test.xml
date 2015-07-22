@@ -3,7 +3,7 @@
 	<items>
 		<agentRepItems />
 		<partyRepItems>
-			<partyRepItem description="Agent for group n" classPath="negotiator.groupn.Groupn"
+			<partyRepItem description="Agent for group n" classPath="agents.anac.y2015.groupn.Groupn"
 				partyName="Group n" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
 			<partyRepItem description="Deadline-based boulware agent"
 				classPath="negotiator.parties.BoulwareNegotiationParty" partyName="Boulware"
