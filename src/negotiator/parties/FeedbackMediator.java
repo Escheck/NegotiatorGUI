@@ -99,7 +99,7 @@ public class FeedbackMediator extends AbstractNegotiationParty implements
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		if (possibleActions.contains(OfferForFeedback.class))
 			roundNumber++;
 

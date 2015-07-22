@@ -125,7 +125,7 @@ public class EnumeratorParty extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		return new Offer(generateRandomBid());
 	}
 

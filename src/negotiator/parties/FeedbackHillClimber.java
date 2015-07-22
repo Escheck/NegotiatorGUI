@@ -75,7 +75,7 @@ public class FeedbackHillClimber extends AbstractNegotiationParty {
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		if (voteTime) {
 			return (new VoteForOfferAcceptance(getPartyId(), currentVote));
 		} else {

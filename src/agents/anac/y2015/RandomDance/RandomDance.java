@@ -71,7 +71,7 @@ public class RandomDance extends AbstractNegotiationParty {
 	private double olderTime = 0;
 
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 
 		offerCount++;
 

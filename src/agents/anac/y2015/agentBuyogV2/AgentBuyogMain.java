@@ -73,7 +73,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 
 		if (timeline.getTime() >= 1) {
 			return new EndNegotiation();

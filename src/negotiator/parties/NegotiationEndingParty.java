@@ -48,7 +48,8 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 	 * @return Accept or Offer action
 	 */
 	@Override
-	public Action chooseAction(final List<Class> possibleActions) {
+	public Action chooseAction(
+			final List<Class<? extends Action>> possibleActions) {
 
 		if (possibleActions.contains(EndNegotiation.class)) {
 			return new EndNegotiation();

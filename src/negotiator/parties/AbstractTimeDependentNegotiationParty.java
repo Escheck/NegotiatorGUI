@@ -55,7 +55,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	 * @return The chosen action
 	 */
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		Bid nextBid = getNextBid();
 		double lastUtil = lastBid != null ? utilitySpace
 				.getUtilityWithDiscount(lastBid, timeline) : 0;

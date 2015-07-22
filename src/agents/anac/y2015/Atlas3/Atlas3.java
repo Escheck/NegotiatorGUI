@@ -78,7 +78,7 @@ public class Atlas3 extends AbstractNegotiationParty {
 	@SuppressWarnings("rawtypes")
 	@Override
 	// Actionの選択
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeline.getTime(); // 現在の交渉時刻を取得
 		negotiatingInfo.updateTimeScale(time); // 自身の手番が回ってくる時間間隔を記録
 

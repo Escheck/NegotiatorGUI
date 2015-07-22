@@ -120,7 +120,7 @@ public class XianFaAgent extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		updateSelf();
 		if (debug) {
 			if (rounds % 2 == 0)

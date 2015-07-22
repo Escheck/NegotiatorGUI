@@ -149,7 +149,7 @@ public class AresParty extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		Action action = null;
 		try {
 			// System.out.println("i propose " + debug + " bid at time " +

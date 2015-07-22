@@ -75,7 +75,7 @@ public class ConsensusVotingHumanAgent extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public Action chooseAction(List<Class> possibleActions) {
+	public Action chooseAction(List<Class<? extends Action>> possibleActions) {
 		if (ui != null) {
 			ui.dispose();
 			ui = null;

@@ -73,7 +73,7 @@ public class Group3 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		roundN++; // Update the round number
 		// System.out.println("Round N� "+ roundN);
 		// System.out.println("I am " + this.getPartyId().toString());

@@ -278,7 +278,7 @@ public class SessionManager {
 	 * @throws TimeoutException
 	 */
 	private Action requestAction(final NegotiationPartyInternal party,
-			final ArrayList<Class<? extends Action>> validActions)
+			final List<Class<? extends Action>> validActions)
 			throws InvalidActionError, InterruptedException,
 			ExecutionException, NegotiationPartyTimeoutException {
 
@@ -289,7 +289,7 @@ public class SessionManager {
 						@Override
 						public Action call() throws Exception {
 							// NegotiationParty still has sloppy type checking.
-							ArrayList<Class> actions = new ArrayList<Class>();
+							ArrayList<Class<? extends Action>> actions = new ArrayList<Class<? extends Action>>();
 							actions.addAll(validActions);
 							return party.getParty().chooseAction(actions);
 						}

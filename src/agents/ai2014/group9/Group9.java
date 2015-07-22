@@ -69,7 +69,7 @@ public class Group9 extends AbstractNegotiationParty {
 	 */
 	@Override
 	// Bidding and acceptance strategy
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// If a negotiating party makes an offer with >0.9 utility, we accept
 		// it.
 		if (lastBidUtility > 0.9) {

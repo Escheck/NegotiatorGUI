@@ -65,7 +65,7 @@ public class Group12 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double acceptingValue = oracle.getAcceptingValue(round);
 		double bidValue = 0;
 		if (previousBids.size() != 0) {

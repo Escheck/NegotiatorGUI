@@ -94,7 +94,7 @@ public class Groupn extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		Action action = null;
 		try {
 			Bid bid = null;

@@ -74,7 +74,7 @@ public class Group8 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		this.roundCounter++;
 
 		this.acceptanceValue = 0.99 + 1 - Math.pow(

@@ -73,7 +73,7 @@ public class DrageKnight extends AbstractNegotiationParty {
 	@SuppressWarnings("rawtypes")
 	@Override
 	// Actionの選択
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeline.getTime(); // 現在の交渉時刻を取得
 
 		// Accept

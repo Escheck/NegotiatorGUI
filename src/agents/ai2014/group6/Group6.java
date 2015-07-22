@@ -72,7 +72,7 @@ public class Group6 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		try {
 			// If there is a most recent bid and the agent is allowed to accept
 			if (mostRecentBid != null && validActions.contains(Accept.class)

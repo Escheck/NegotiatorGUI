@@ -69,7 +69,7 @@ public class Group1 extends AbstractNegotiationParty {
 	 * @return The chosen action.
 	 */
 	@Override
-	public Action chooseAction(List<Class> validActions) {
+	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		totalRounds = deadlines.getTotalRounds();
 		// System.out.println("totalRounds: " + totalRounds);
 		currentRound++;
