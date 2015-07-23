@@ -45,8 +45,6 @@ import negotiator.session.TournamentManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
-import static java.lang.String.format;
-
 /**
  * This is the user interface for the multilateral tournament.
  * <p/>
@@ -111,7 +109,7 @@ public class MultilateralUI extends JPanel {
 		config = new Configuration();
 
 		// set config defaults
-		config.setDeadlines(new Deadline(0, 180));
+		config.setDeadlines(new Deadline(180, 0));
 		config.setProtocolItem(ContentProxy.fetchProtocols().get(0));
 		config.setNumSessions(1);
 		config.setNumAgentsPerSession(2);
@@ -398,12 +396,13 @@ public class MultilateralUI extends JPanel {
 					dataModel);
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-			String logName = config.getPartyProfileItems().get(0).getDomain().getName();
-			logName = String.format("log/tournament-%s-%s.log.csv", dateFormat.format(new Date()), logName);
+			String logName = config.getPartyProfileItems().get(0).getDomain()
+					.getName();
+			logName = String.format("log/tournament-%s-%s.log.csv",
+					dateFormat.format(new Date()), logName);
 
 			MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
-					logName,
-					config.getNumAgentsPerSession(), dataModel);
+					logName, config.getNumAgentsPerSession(), dataModel);
 			dataModel.addTableModelListener(myLogger);
 
 			NegoGUIApp.negoGUIView.replaceTab("Multi Tour. Progr.", this,
