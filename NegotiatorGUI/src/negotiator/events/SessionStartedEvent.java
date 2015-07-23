@@ -1,7 +1,7 @@
 package negotiator.events;
 
 /**
- * Indicates that a tournament terminated.
+ * Indicates that a session started.
  * 
  * @author W.Pasman 15jul15
  *

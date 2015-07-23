@@ -1,8 +1,7 @@
 package negotiator.events;
 
 /**
- * Indicates that a tournament failed, typically due to an exception, timeout
- * etc.
+ * Indicates that a session failed, typically due to an exception, timeout etc.
  * 
  * @author W.Pasman 15jul15
  *

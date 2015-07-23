@@ -12,6 +12,7 @@ import java.util.Map;
 import negotiator.Bid;
 import negotiator.analysis.MultilateralAnalysis;
 import negotiator.gui.progress.DataKey;
+import negotiator.gui.progress.DataKeyTableModel;
 import negotiator.logging.CsvLogger;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
@@ -20,28 +21,6 @@ import negotiator.session.Session;
 
 /**
  * Indicates that an agreement was reached.
- * 
- * Note. This code grew much more complex than anticipated. There were too many
- * layout constraints for rendering the results and this reflects in this code
- * (so maybe this class should be refactored or cleaned up).
- * 
- * Layout-ing of an AgreementEvent goes in a few steps
- * 
- * (1) {@link #getValues()} delivers a {@link Map} of key-value pairs, one for
- * each {@link DataKey}. Some Keys may have a {@link List} instead of a single
- * value; these are then the values for each of the N agents in the agreement.
- * 
- * (2) The {@link Map} may need conversion, to split the {@link List}s further
- * in separate fields. see {@link #getFlatMap()}.
- * 
- * 
- * (3) the flat {@link Map} can then be moved into a {@link SimpleTableModel} or
- * into a log file.
- * 
- * (3b) Alternatively, The flat {@link Map} can be converted into a list, see
- * {@link #getValuesList(Map)}, and converted to a string, for logging into a
- * plain text file.
- * 
  * 
  * @author W.Pasman 15jul15
  *
@@ -70,9 +49,10 @@ public class AgreementEvent extends NegotiationEvent {
 	/**
 	 * Convert the agreement into a hashmap of < {@link DataKey}, {@link Object}
 	 * > pairs. Object will usually be a {@link String}, {@link Number} or
-	 * {@link List}.
+	 * {@link List}. This data can be inserted directly into a
+	 * {@link DataKeyTableModel}.
 	 * 
-	 * @return hashmap of agreement evaluations.
+	 * @return {@link Map} of agreement evaluations.
 	 */
 	public Map<DataKey, Object> getValues() {
 		Map<DataKey, Object> values = new HashMap<DataKey, Object>();
