@@ -587,6 +587,7 @@
 			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
 			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
 			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
+			<zipfileset dir="${tutorials}" includes="multipartyexample/**" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>
 			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
