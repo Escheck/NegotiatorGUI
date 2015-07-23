@@ -115,6 +115,9 @@
 \tableofcontents
 
 \pagebreak
+
+
+%=========================================================================================
 \section{Theory Crash Course}
 This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
 
@@ -206,6 +209,8 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
  
+ 
+%=========================================================================================
 \section{Running the Environment}
 The negotiation environment has been tested extensively. It should run on any machine running Java 6 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
@@ -226,6 +231,8 @@ This will start the simulator, and all messages will appear in the console windo
 
 Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar negosimulator.jar}.
 
+
+%=========================================================================================
 \section{Scenario Creation}
 A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
 
@@ -293,6 +300,8 @@ Specifying the preference of a integer issue is even easier. In this case we sim
 
 The final step is to set the reservation value and discount of a preference profile. If you are satisfied with the profile you can save it by pressing ``Save changes''. Finally, you can create additional preference profiles for the domain and run a negotiation.
 
+
+%=========================================================================================
 \section{Running Negotiations}
 This section discusses how to run a negotiation. There are a number of modes to run a negotiation:
 
@@ -506,13 +515,6 @@ showing you the results of the negotiation. The results are also stored in a log
  These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel})
 
 
-
-
-
-
-
-
-
 \subsection{Running a Multi-Party Tournament}
 A multi-party tournament is a set of multi-party sessions. To prepare a multi-party tournament, select  ``Start'' and then ``Multi-Party Tournament''. 
 
@@ -544,6 +546,7 @@ The results of the tournament are shown on screen and also stored in a log file.
 
 
 
+%=========================================================================================
 \section{Quality Measures in Genius}\label{sec:qm}
 A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
@@ -686,6 +689,7 @@ The XML data of the standard log can be converted to a normal table by importing
 
 
 
+%=========================================================================================
 \section{Setting up Java and IDE}
 We assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: 
 
@@ -700,6 +704,7 @@ In the examples we will use manual compilation to avoid the need to discuss IDE 
 
 
 
+%=========================================================================================
 \section{Creating a Bilateral Negotiation Agent}
 This section discusses how to create a basic bilateral negotiation agent in Java. Bilateral means you can only use this agent in a two-party negotation but not in a multi-party negotiation. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to separately implement these components to create a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
 
@@ -734,7 +739,7 @@ Returns the name of the agent. Please override this to give a proper name to you
 \label{tab:agentclass}
 \end{table}
 
-\subsection{Receiving the Opponent's Action}
+\subsection{Receiving the Opponent's Action}\label{sec:receiveAction}
 The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to specify an \texttt{Action} to send to the opponent.
 
@@ -746,7 +751,7 @@ public void ReceiveMessage(Action opponentAction) {
 }
 \end{lstlisting}
 
-\subsection{Choosing an Action}
+\subsection{Choosing an Action}\label{sec:chooseAction}
 The code block below shows the code of the method \texttt{chooseAction} for SimpleAgent. For safety, all code was wrapped in a try-catch block, because if our code would accidentally contain a bug we still want to return a good action (failure to do so is a protocol error and results in a utility of 0.0).
 
 The sample code works as follows. If we are the first to place a bid, we place a random bid with sufficient utility (see the .java file for the details on that). Else, we determine the probability to accept the bid, depending on the utility of the offered bid and the remaining time. Finally, we randomly accept or pose a new random bid.
@@ -879,6 +884,8 @@ The ANAC2013 introduces the concept that an agent can save and load information 
 
 A single serializable object can be saved per preference profile by using the \textit{saveSessionData} method. If an object was already saved for the preference profile it is replaced. We recommend to store objects in the \textit{endSession} method, which is called when a negotiation is finished. The saved object can be requested by using the \textit{loadSessionData} method. A good place to do so is in in the \textit{init} method. Note that this functionality is also available to BOA agents (cf.\ Section~\ref{sec:anac2013agentBOA}).
 
+
+%=========================================================================================
 \section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, we recommend you create a BOA agent using the \textit{BOA framework}. The BOA negotiation agent architecture allows to reuse existing components from other BOA agents. Many of the sophisticated agent strategies that currently exist are comprised of a fixed set of modules. Generally, a distinction can be made between four different modules: one module that decides whether the opponent's bid is acceptable (\textit{acceptance strategy}); one that decides which set of bids could be proposed next (\textit{bidding strategy}); one that tries to guess the opponent's preferences (\textit{opponent model}), and finally a component which specifies how the opponent model is used to select a bid for the opponent (\textit{opponent model strategy}). The overall negotiation strategy is a result of the interaction between these components.
 
@@ -1133,6 +1140,86 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 }
 
 \end{lstlisting}
+
+
+
+
+%=========================================================================================
+
+\section{Creating a Multi Party Negotiation Agent}
+This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament but not in a two-party negotiation or tournament. Notice that you can still do two-party negotiations in the multilateral negotiation and tournament.
+
+To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also this class must have a public default (no-argument) constructor.
+To implement the interface, one needs to implement three functions: 
+
+\begin{lstlisting}
+public interface NegotiationParty {
+	/**
+	 * This is the first call made to a NegotiationParty after its
+	 * instantiation. Tells which utility space and timeline we are running in.
+	 * This is called one time only.
+	 *
+	 * @param utilSpace
+	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
+	 *            used for this session.
+	 * @param timeline
+	 *            The {@link TimeLineInfo} about current session.
+	 * @param agentID
+	 *            the {@link AgentID}.
+	 * @throws RuntimeException
+	 *             if init fails.
+	 */
+	public void init(UtilitySpace utilSpace, Deadline deadline,
+			TimeLineInfo timeline, long randomSeed, AgentID agentID);
+
+	/**
+	 * When this function is called, it is expected that the Party chooses one
+	 * of the actions from the possible action list and returns an instance of
+	 * the chosen action.
+	 *
+	 * @param possibleActions
+	 *            List of all actions possible.
+	 * @return The chosen {@link Action}.
+	 */
+	public Action chooseAction(List<Class<? extends Action>> possibleActions);
+
+	/**
+	 * This method is called when another {@link NegotiationParty} chose an
+	 * {@link Action}.
+	 *
+	 * @param sender
+	 *            The initiator of the action
+	 * @param arguments
+	 *            The action performed
+	 */
+	void receiveMessage(Object sender, Action arguments);
+}
+\end{lstlisting}
+
+We recommend to use the javadoc included with the distribution to check the details of all the involved classes. 
+
+But in practice, it may be more convenient to extend the class \texttt{negotiator.parties.AbstractNegotiationParty} that provides convenient support functions. 
+
+The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. 
+
+
+\subsection{Compiling a NegotiationParty}
+To compile the example agent, go to your genius project folder and use the command line to execute this compile command
+
+\verb|javac -cp negosimulator.jar multipartyexample/Groupn.java|
+
+\subsection{Loading a NegotiationParty}
+In order to use a NegotiationParty agent in \Genius, you need to add the agent to the \verb|partyrepository.xml|.
+
+To do this, open the \verb|partyrepository.xml| file and add a section like this
+
+\begin{lstlisting}
+<partyRepItem description="description for your agent"
+	classPath="class.of.your.agent" partyName="nameForYourAgent"
+	protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
+\end{lstlisting}
+
+After you have done this, you can start \Genius. Your agent should now appear in the combo boxes where you can select the agents to use.
 
 \section{Conclusion}
 This concludes the manual of \Genius. If you experience problems or have suggestions on how to improve \Genius, please send them to \url{negotiation@ii.tudelft.nl}. 
