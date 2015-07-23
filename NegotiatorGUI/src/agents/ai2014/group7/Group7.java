@@ -21,26 +21,14 @@ public class Group7 extends AbstractNegotiationParty {
 	private Bid maxUtilityBid = null;
 	private double declineStart = 0.8;
 	private double startUtility = 0.95;
-	private double endUtility = utilitySpace.getReservationValueUndiscounted();
+	private double endUtility;
 
-	/**
-	 * Please keep this constructor. This is called by genius.
-	 *
-	 * @param utilitySpace
-	 *            Your utility space.
-	 * @param deadlines
-	 *            The deadlines set for this negotiation.
-	 * @param timeline
-	 *            Value counting from 0 (start) to 1 (end).
-	 * @param randomSeed
-	 *            If you use any randomization, use this seed for it.
-	 */
 	@Override
 	public void init(UtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
-		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
+		endUtility = utilitySpace.getReservationValueUndiscounted();
 		try {
 			maxUtilityBid = utilitySpace.getMaxUtilityBid();
 		} catch (Exception e) {
@@ -57,7 +45,6 @@ public class Group7 extends AbstractNegotiationParty {
 	 *            Either a list containing both accept and offer or only offer.
 	 * @return The chosen action.
 	 */
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		System.out.println(cosDiscount(

@@ -64,6 +64,43 @@
 				classPath="agents.nastyagent.ThrowInConstructor" partyName="Nasty Throw in Constructor"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
 				
+			<!-- AI2014 agents -->
+			<partyRepItem description="AI2014 Group 1"
+				classPath="agents.ai2014.group1.Group1" partyName="AI2014 Group 1"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 2"
+				classPath="agents.ai2014.group2.Group2" partyName="AI2014 Group 2"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 3"
+				classPath="agents.ai2014.group3.Group3" partyName="AI2014 Group 3"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 4"
+				classPath="agents.ai2014.group4.Group4" partyName="AI2014 Group 4"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 5"
+				classPath="agents.ai2014.group5.Group5" partyName="AI2014 Group 5"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 6"
+				classPath="agents.ai2014.group6.Group6" partyName="AI2014 Group 6"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 7"
+				classPath="agents.ai2014.group7.Group7" partyName="AI2014 Group 7"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 8"
+				classPath="agents.ai2014.group8.Group8" partyName="AI2014 Group 8"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 9"
+				classPath="agents.ai2014.group9.Group9" partyName="AI2014 Group 9"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 10"
+				classPath="agents.ai2014.group10.Group10" partyName="AI2014 Group 10"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 11"
+				classPath="agents.ai2014.group11.Group11" partyName="AI2014 Group 11"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
+			<partyRepItem description="AI2014 Group 12"
+				classPath="agents.ai2014.group12.Group12" partyName="AI2014 Group 12"
+				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
 
 
 			<!-- ANAC2015 agents -->
