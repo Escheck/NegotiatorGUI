@@ -352,7 +352,7 @@ public class TournamentUI extends javax.swing.JPanel {
 				newtvs.add(new AgentValue(profitem));
 			}
 			v.setValues(newtvs);
-			
+
 		} else
 			throw new IllegalArgumentException("Unknown tournament variable "
 					+ v);
@@ -447,6 +447,12 @@ public class TournamentUI extends javax.swing.JPanel {
 			tournament = DBController.getInstance().getTournament(
 					DBController.getInstance().getJobID(sessionname));
 		}
+		if (tournament.getSessions().isEmpty()) {
+			JOptionPane.showMessageDialog(this,
+					"your settings result in no sessions !", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
 		// it may have already been set if we used START instead of JOIN,
 		// however, the overhead is minimal
 		TournamentConfiguration.setConfiguration(tournament.getOptions());
@@ -536,12 +542,12 @@ public class TournamentUI extends javax.swing.JPanel {
 					new DBSessionVariable());
 		}
 
-		//---------------DEBUG CODE-------------------//
-			
+		// ---------------DEBUG CODE-------------------//
+
 		fillposition(vars, 8, new MultipleAgentsVariable());
-		
-		//---------------END OF DEBUG CODE----------------//
-		
+
+		// ---------------END OF DEBUG CODE----------------//
+
 		// vars.add(new AgentParameterVariable(new
 		// AgentParam(BayesianAgent.class.getName(), "pi", 3.14, 3.15)));
 	}
