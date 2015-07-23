@@ -49,7 +49,7 @@ public interface NegotiationParty {
 	 * @param timeline
 	 *            The {@link TimeLineInfo} about current session.
 	 * @param agentID
-	 *            the agent's ID.
+	 *            the {@link AgentID}.
 	 * @throws RuntimeException
 	 *             if init fails.
 	 */
@@ -57,23 +57,19 @@ public interface NegotiationParty {
 			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**
-	 * When this class is called, it is expected that the Party chooses one of
-	 * the actions from the possible action list and returns an instance of the
-	 * chosen action. This class is only called if this {@link NegotiationParty}
-	 * is in the
-	 * {@link MultilateralProtocol#getRoundStructure(List, negotiator.session.Session)}
-	 * .
+	 * When this function is called, it is expected that the Party chooses one
+	 * of the actions from the possible action list and returns an instance of
+	 * the chosen action.
 	 *
 	 * @param possibleActions
 	 *            List of all actions possible.
-	 * @return The chosen action
+	 * @return The chosen {@link Action}.
 	 */
 	public Action chooseAction(List<Class<? extends Action>> possibleActions);
 
 	/**
-	 * This method is called when an observable action is performed. Observable
-	 * actions are defined in
-	 * {@link MultilateralProtocol#getActionListeners(List)}
+	 * This method is called when another {@link NegotiationParty} chose an
+	 * {@link Action}.
 	 *
 	 * @param sender
 	 *            The initiator of the action
