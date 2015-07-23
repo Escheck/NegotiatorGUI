@@ -18,11 +18,10 @@ import negotiator.protocol.alternatingoffers.AlternatingOffersProtocol;
 import negotiator.qualitymeasures.logmanipulation.TournamentMeasures;
 
 /**
- * TournamentRunner is a class that runs a tournament. It computes all
- * combinations of the sessions from the {@link Tournament} and then runs them
- * sequentially. Use with new Thread(new
- * TournamentRunner(tournament,ael)).start(); You can use a null action event
- * listener if you want to.
+ * This is a class that runs a multi-party tournament. It runs all given
+ * {@link Protocol}s as sessions. Use with new Thread(new
+ * TournamentRunner(tournament,ael)).start(); You can attach a
+ * {@link NegotiationEventListener}s.
  */
 public class TournamentRunner implements Runnable {
 	private boolean runSingleSession = false;

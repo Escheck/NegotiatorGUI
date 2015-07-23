@@ -28,10 +28,10 @@ import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.UtilitySpace;
 
 /**
- * This class will generate the party lists for each negotiation in the
- * tournament. The reason for this generator is that the number of parties can
- * become quite large, which means that at some point, we are unable to
- * enumerate them all. This class will only give the next list parties to
+ * This class will generate the party lists for each negotiation in a
+ * multi-party tournament. The reason for this generator is that the number of
+ * parties can become quite large, which means that at some point, we are unable
+ * to enumerate them all. This class will only give the next list parties to
  * overcome that limitation.
  * 
  * <p>
