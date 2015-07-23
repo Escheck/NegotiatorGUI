@@ -119,7 +119,7 @@
 This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
 
 \subsection{Negotiation Objects}
-Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and two utility spaces (also called preference profiles). Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
+Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and a number of utility spaces (also called preference profiles) -- one for each party/agent in the negotiation. Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
 
 \begin{figure}[htb]
 	\centering
@@ -161,7 +161,7 @@ For a single agent, the optimal bid is of maximum utility for the agent. Often t
 
 There are multiple ways to define a more global ``optimum''. One approach to optimality is that a bid is not optimal for both parties if there is another bid that has the higher utility for one party, and at least equal utility for the other party. Thus, only bids in Figure~\ref{Fig:utility plot} for which there is no other bid at the top right is optimal. This type of optimality is called Pareto optimality and forms an important concept in automated negotiation. The collection of Pareto optimal bids is called the Pareto optimal frontier.
 
-A major challenge in a negotiation using the bilateral alternating offers protocol is that agents hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building a model of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. By default, there are already a few opponent models implemented in \Genius.
+A major challenge in a negotiation is that agents can hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building an \textit{opponent model} of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. \Genius  provides a number of components that can estimate an opponent model.
 
 \subsection{Negotiation Protocol}
 The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, as deviations from the protocol are caught and penalized. This section discusses the details of the bilateral alternating offers protocol used in \Genius.
@@ -207,7 +207,7 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
  
 \section{Running the Environment}
-The negotiation environment has been tested extensively on Microsoft Windows. It should run on any machine running Java 6 or higher, including Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
+The negotiation environment has been tested extensively. It should run on any machine running Java 6 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
 To install the environment, the file \texttt{Genius\_release.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package called ``genius" which contains the following files:
 
@@ -294,12 +294,15 @@ Specifying the preference of a integer issue is even easier. In this case we sim
 The final step is to set the reservation value and discount of a preference profile. If you are satisfied with the profile you can save it by pressing ``Save changes''. Finally, you can create additional preference profiles for the domain and run a negotiation.
 
 \section{Running Negotiations}
-This section discusses how to run a negotiation. There are three main modes to run a negotiation:
+This section discusses how to run a negotiation. There are a number of modes to run a negotiation:
 
 \begin{itemize}
 	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users.
 	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the sessions are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables (cf. Section~\ref{sec:analysisExcel}).
 	\item \textbf{Distributed tournament}. A distributed tournament is a tournament which is stored in a database and can therefore be divided among multiple computers to speed up calculation.
+	\item \textbf{Multi-Party Negotiation}. A single negotiation session in which a number of agents (not necessarily 2) compete. Notice that this is a generalization of the simple Negotiation session above.
+	\item \textbf{Multi-Party Tournament}. A tournament of multiparty sessions. Again, this is a generalization of the tournament above.
+	
 \end{itemize}
 
 Before going into detail on how each of these modes work, we first discuss the two types of agents that can be used: automated agents and non-automated agents. Automated agents are agents that can compete against other agents in a negotiation without relying on input by a user. In general, these agents are able to make a large amount of bids in a limited amount of time.
@@ -456,6 +459,64 @@ After specifying the tournament and database parameters we can start the distrib
 \end{figure}
 
 It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
+
+
+
+
+
+
+
+
+
+
+\subsection{Running a Multi-Party Negotiation}
+To run a negotiation session select ``Start'' and then ``Multi-Party Negotiation''. This opens a window similar to Figure~\ref{Fig:multipartysession}. 
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.65\textwidth]{media/multipartysession.png}
+\caption{A negotiation session.}\label{Fig:multipartysession}
+\end{figure}
+
+
+The following parameters need to be specified to run a negotiation:
+
+\medskip
+\begin{minipage}{.8 \textwidth}
+\begin{itemize}
+	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
+	\item \textbf{A table with participants}. This table shows all currently added participants. 
+	\item \textbf{Deadline Type}. The deadline in use. Can be "Round" or "Time".
+	\item \textbf{Max duration}. The maximum duration of the session. The units are Round or Time as selected above.
+\end{itemize}
+\end{minipage}
+\medskip
+
+To modify the table of participants, you can either remove or add a party. 
+To remove a party, select the party in the list and click the "Remove Party" button. To add a party, select the correct values for the next party:
+
+\medskip
+\begin{minipage}{.8 \textwidth}
+\begin{itemize}
+	\item \textbf{Party ID}. The name of the next party to be added.
+	\item \textbf{Preference profile}. The preference profile to be used by the next party to be added.
+	\item \textbf{Deadline (seconds)}. The length of the negotiation in seconds.
+\end{itemize}
+\end{minipage}
+\medskip
+
+After the correct settings have been set, press the "Add Party" button.
+
+The negotiation is started when you press the start button. The tab contents will switch into  a progress overview panel
+showing you the results of the negotiation.
+
+
+
+
+
+
+
 
 \section{Quality Measures in Genius}\label{sec:qm}
 A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
