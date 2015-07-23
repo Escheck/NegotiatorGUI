@@ -13,678 +13,679 @@
 	
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
---> 	
+-->
 <project name="Negotiator" default="makeGenius5.2.9" basedir=".">
-	<property name="dist" location="dist"/> 
-	<property name="build" location="bin"/>
-	<property name="javadoc" location="javadoc"/>
-	<property name="tmp" location="tmp"/>
-	<property name="dep" location="dep"/>
-	<property name="src" location="src"/>
-	<property name="repositories" location="repositories"/>
-	<property name="anac2010" location="/ANAC2010"/>
-	<property name="anacResources" location="/ANAC/All ANAC 2010 and ANAC 2011 resources"/>
-	<property name="anac2011" location="${anacResources}/bin/anac/y2011"/>
-	<property name="tutorials" location="tutorials/"/>
+	<property name="dist" location="dist" />
+	<property name="build" location="bin" />
+	<property name="javadoc" location="javadoc" />
+	<property name="tmp" location="tmp" />
+	<property name="dep" location="dep" />
+	<property name="src" location="src" />
+	<property name="repositories" location="repositories" />
+	<property name="anac2010" location="/ANAC2010" />
+	<property name="anacResources" location="/ANAC/All ANAC 2010 and ANAC 2011 resources" />
+	<property name="anac2011" location="${anacResources}/bin/anac/y2011" />
+	<property name="tutorials" location="tutorials/" />
 
 	<target name="cleanup">
-		<delete file="${dist}/negosimulator.jar"/>
-		<delete dir="${dist}/log"/>	
-		<delete dir="${tmp}"/>
+		<delete file="${dist}/negosimulator.jar" />
+		<delete dir="${dist}/log" />
+		<delete dir="${tmp}" />
 	</target>
 
 	<target name="makeTempDir">
-		<mkdir dir="${tmp}"/>
-	</target>	
-	
-	<target name="unpackANAC2011Agents" depends="makeTempDir">		
+		<mkdir dir="${tmp}" />
+	</target>
+
+	<target name="javadoc">
+		<javadoc destdir="javadoc" version="true" use="true" windowtitle="Genius GUI Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" >
+			<packageset dir="src" defaultexcludes="yes">
+				<exclude name="agents/**" />
+				<exclude name="flanagan/**" />
+			</packageset>
+		</javadoc>
+	</target>
+
+	<target name="unpackANAC2011Agents" depends="makeTempDir">
 		<copy todir="${tmp}/anac/y2011" verbose="true">
-			<fileset dir="${anac2011}/"/>
+			<fileset dir="${anac2011}/" />
 		</copy>
 		<!-- For some reason IAMHaggler 2011 is still in a jar -->
-		<unzip src="${anacResources}/Southampton_Final_2011_classes.jar" dest="${tmp}"/>
+		<unzip src="${anacResources}/Southampton_Final_2011_classes.jar" dest="${tmp}" />
 	</target>
-	
-	<target name="unpackNegotiatorZIP">		
-			<delete includeemptydirs="true" quiet="true">
-					<fileset dir="${dist}/negotiator"/>
-				</delete>
-			<unzip src="${dist}/negotiator.zip" dest="${dist}"/>
+
+	<target name="unpackNegotiatorZIP">
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${dist}/negotiator" />
+		</delete>
+		<unzip src="${dist}/negotiator.zip" dest="${dist}" />
 	</target>
-	
-	<target name="unpackJTreeTable" depends="makeTempDir">		
-		<unzip src="${dep}/jtreetable.jar" dest="${tmp}"/>
+
+	<target name="unpackJTreeTable" depends="makeTempDir">
+		<unzip src="${dep}/jtreetable.jar" dest="${tmp}" />
 	</target>
-	<target name="unpackMySQL" depends="makeTempDir">		
-		<unzip src="${dep}/mysql-connector-java-5.1.18-bin.jar" dest="${tmp}"/>
+	<target name="unpackMySQL" depends="makeTempDir">
+		<unzip src="${dep}/mysql-connector-java-5.1.18-bin.jar" dest="${tmp}" />
 	</target>
-	<target name="unpackJAXB" depends="makeTempDir">		
-		<unzip src="${dep}/jaxb-api.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jaxb1-impl.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jaxb-impl.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jaxb-xjc.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jsr173_1.0_api.jar" dest="${tmp}"/>
-		<unzip src="${dep}/activation.jar" dest="${tmp}"/>
+	<target name="unpackJAXB" depends="makeTempDir">
+		<unzip src="${dep}/jaxb-api.jar" dest="${tmp}" />
+		<unzip src="${dep}/jaxb1-impl.jar" dest="${tmp}" />
+		<unzip src="${dep}/jaxb-impl.jar" dest="${tmp}" />
+		<unzip src="${dep}/jaxb-xjc.jar" dest="${tmp}" />
+		<unzip src="${dep}/jsr173_1.0_api.jar" dest="${tmp}" />
+		<unzip src="${dep}/activation.jar" dest="${tmp}" />
 	</target>
 	<target name="unpackFormsRT" depends="makeTempDir">
-		<unzip src="${dep}/forms_rt-7.0.3.jar" dest="${tmp}"/>
-		<unzip src="${dep}/forms-1.1-preview.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jfxrt.jar" dest="${tmp}"/>
+		<unzip src="${dep}/forms_rt-7.0.3.jar" dest="${tmp}" />
+		<unzip src="${dep}/forms-1.1-preview.jar" dest="${tmp}" />
+		<unzip src="${dep}/jfxrt.jar" dest="${tmp}" />
 	</target>
 	<target name="unpackCombinatoricsLib" depends="makeTempDir">
-		<unzip src="${dep}/combinatoricslib-2.0.jar" dest="${tmp}"/>
+		<unzip src="${dep}/combinatoricslib-2.0.jar" dest="${tmp}" />
 	</target>
-	<target name="unpackSwingAddons" depends="makeTempDir">		
-		<unzip src="${dep}/swing-layout-1.0.3.jar" dest="${tmp}"/>
-		<unzip src="${dep}/swing-worker-1.1.jar" dest="${tmp}"/>
-		<unzip src="${dep}/appframework-1.0.3.jar" dest="${tmp}"/>
+	<target name="unpackSwingAddons" depends="makeTempDir">
+		<unzip src="${dep}/swing-layout-1.0.3.jar" dest="${tmp}" />
+		<unzip src="${dep}/swing-worker-1.1.jar" dest="${tmp}" />
+		<unzip src="${dep}/appframework-1.0.3.jar" dest="${tmp}" />
 	</target>
-	<target name="unpackJFreeChart" depends="makeTempDir">		
-		<unzip src="${dep}/jcommon-1.0.17.jar" dest="${tmp}"/>
-		<unzip src="${dep}/jfreechart-1.0.14.jar" dest="${tmp}"/>
+	<target name="unpackJFreeChart" depends="makeTempDir">
+		<unzip src="${dep}/jcommon-1.0.17.jar" dest="${tmp}" />
+		<unzip src="${dep}/jfreechart-1.0.14.jar" dest="${tmp}" />
 	</target>
-	<target name="unpackJOpt" depends="makeTempDir">		
-			<unzip src="${dep}/jopt-simple-3.2-rc1.jar" dest="${tmp}"/>
+	<target name="unpackJOpt" depends="makeTempDir">
+		<unzip src="${dep}/jopt-simple-3.2-rc1.jar" dest="${tmp}" />
 	</target>
-	
-	<target name="unpackIAMhaggler" depends="makeTempDir">
-		<unzip src="${dep}/IAMhaggler2011packages.jar" dest="${tmp}"/>
-	</target>
-	
-	<target name="unpackAbsoluteLayout" depends="makeTempDir">
-		<unzip src="${dep}/absolutelayout.jar" dest="${tmp}"/>
-	</target>
-	
-	
-	<target name ="makeXMLCheckerJar" description="Create a utility space checker app for party domain" 
-		depends="cleanup, unpackJTreeTable">
-	     <delete file="${dist}/checker.jar" quiet="true"/>
-         <jar destfile="${dist}/checker.jar"  >
-			<fileset dir="${build}" />
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/CheckPartyUtilityXML"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         
-		<ant target="cleanup"/>
-    </target>
-	
-	<target name ="makeTestAgentJar" description="Create a jar with testagent (used to test GeniusWebSimulator">
-	     <delete file="${dist}/TestAgent.jar" quiet="true"/>
-		<javac srcdir="." includes="${src}/TesteAgent.java" classpath="${build}">
-		</javac>		
-         <jar destfile="${dist}/TestAgent.jar"  >
-			<fileset dir="${build}" includes="agents/TestAgent*.*" />
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         
-    </target>
 
-	
+	<target name="unpackIAMhaggler" depends="makeTempDir">
+		<unzip src="${dep}/IAMhaggler2011packages.jar" dest="${tmp}" />
+	</target>
+
+	<target name="unpackAbsoluteLayout" depends="makeTempDir">
+		<unzip src="${dep}/absolutelayout.jar" dest="${tmp}" />
+	</target>
+
+
+	<target name="makeXMLCheckerJar" description="Create a utility space checker app for party domain" depends="cleanup, unpackJTreeTable">
+		<delete file="${dist}/checker.jar" quiet="true" />
+		<jar destfile="${dist}/checker.jar">
+			<fileset dir="${build}" />
+			<fileset dir="${tmp}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator/CheckPartyUtilityXML" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+		<ant target="cleanup" />
+	</target>
+
+	<target name="makeTestAgentJar" description="Create a jar with testagent (used to test GeniusWebSimulator">
+		<delete file="${dist}/TestAgent.jar" quiet="true" />
+		<javac srcdir="." includes="${src}/TesteAgent.java" classpath="${build}">
+		</javac>
+		<jar destfile="${dist}/TestAgent.jar">
+			<fileset dir="${build}" includes="agents/TestAgent*.*" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+	</target>
+
+
 	<!-- WARNING. Both makeNegoSimulatorJar and makeNegoSimulatorWithBayesJar createFrom a file
 	 named negosimulator.jar. Running them both will not work properly
 	-->
 
-	<target name ="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackFormsRT, unpackCombinatoricsLib, compilesimpleAgent">
-   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
-         <jar destfile="${dist}/negosimulator.jar">
-			<fileset dir="${build}" 
-				excludes="agents/bayesianopponentmodel/, agents/ABMP*, agents/Bayesian*, agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*, negotiator/CheckPartyUtility*" />
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/Main"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         
-		<ant target="cleanup"/>
-    </target>
+	<target name="makeNegoSimulatorJar" description="Create a jar for the Negotiation Simulator" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackFormsRT, unpackCombinatoricsLib, compilesimpleAgent">
+		<delete file="${dist}/negosimulator.jar" quiet="true" />
+		<jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" excludes="agents/bayesianopponentmodel/, agents/ABMP*, agents/Bayesian*, agents/Random*, agents/UIAgentOld*, agents/SimpleAgentOld*, negotiator/CheckPartyUtility*" />
+			<fileset dir="${tmp}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator/Main" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+		<ant target="cleanup" />
+	</target>
 
-	<target name ="makeNegoSimulatorWithAllAgentJar" description="Create a jar for the Negotiation Simulator including all agents" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackMySQL, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackFormsRT, unpackCombinatoricsLib, unpackSwingAddons, unpackIAMhaggler">
-   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
-         <jar destfile="${dist}/negosimulator.jar">
-         	<fileset dir="${build}" includes="negotiator/**, agents/**, misc/**"/>
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         		
-    </target>
-	
-	<target name ="makeNegoSimulatorWithoutBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons">
-   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
-         <jar destfile="${dist}/negosimulator.jar">
-			<fileset dir="${build}" 
-				includes="negotiator/**,agents/SimpleAgent*,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*,  agents/EnterBidDialog*, agents/OpponentModelUtil*, agents/ABMPAgent.*, agents/NegoRoundData*, agents/My*, agents/History*" />
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         		
-    </target>
-	
-	<target name ="makeNegoSimulatorWithBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" 
-		depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons">
-   		<delete file="${dist}/negosimulator.jar" quiet="true"/>
-         <jar destfile="${dist}/negosimulator.jar">
-			<fileset dir="${build}" 
-				includes="negotiator/**,agents/SimpleAgent*,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*,  agents/EnterBidDialog*, agents/OpponentModelUtil*, agents/ABMPAgent.*, agents/NegoRoundData*, agents/My*, agents/History*" />
-			<fileset dir="${tmp}"/>
-	    	<manifest>
-      			<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp"/>
-				<attribute name="Class-Path" value="."/>
-    		</manifest>		
-		</jar>	         		
-    </target>
+	<target name="makeNegoSimulatorWithAllAgentJar" description="Create a jar for the Negotiation Simulator including all agents" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackMySQL, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackFormsRT, unpackCombinatoricsLib, unpackSwingAddons, unpackIAMhaggler">
+		<delete file="${dist}/negosimulator.jar" quiet="true" />
+		<jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" includes="negotiator/**, agents/**, misc/**" />
+			<fileset dir="${tmp}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+	</target>
 
-	
-	
+	<target name="makeNegoSimulatorWithoutBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons">
+		<delete file="${dist}/negosimulator.jar" quiet="true" />
+		<jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" includes="negotiator/**,agents/SimpleAgent*,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*,  agents/EnterBidDialog*, agents/OpponentModelUtil*, agents/ABMPAgent.*, agents/NegoRoundData*, agents/My*, agents/History*" />
+			<fileset dir="${tmp}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+	</target>
 
-	<target name ="compilesimpleAgent">
+	<target name="makeNegoSimulatorWithBayesJar" description="Create a jar for the Negotiation Simulator including Bayesian agt" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackSwingAddons">
+		<delete file="${dist}/negosimulator.jar" quiet="true" />
+		<jar destfile="${dist}/negosimulator.jar">
+			<fileset dir="${build}" includes="negotiator/**,agents/SimpleAgent*,agents/Bayesian*, agents/bayesianopponentmodel/*, agents/UIAgent*, agents/NegoInfo*,agents/MyCell*,  agents/EnterBidDialog*, agents/OpponentModelUtil*, agents/ABMPAgent.*, agents/NegoRoundData*, agents/My*, agents/History*" />
+			<fileset dir="${tmp}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator/gui/NegoGUIApp" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+	</target>
+
+
+
+
+	<target name="compilesimpleAgent">
 		<javac srcdir="." includes="./SimpleAgent.java" classpath="${build}">
 		</javac>
 	</target>
-		
-	<target name ="compilesimpleAgent2">
+
+	<target name="compilesimpleAgent2">
 		<javac srcdir="." includes="SimpleAgt2.java" classpath="${build}">
 		</javac>
 	</target>
-			
-	<target name ="makeGenius" depends="makeNegoSimulatorWithAllAgentJar">
+
+	<target name="makeGenius" depends="makeNegoSimulatorWithAllAgentJar">
 		<copy todir="${tmp}">
-			<fileset dir="." includes="domainrep_all_working.xml"/>
+			<fileset dir="." includes="domainrep_all_working.xml" />
 			<globmapper from="domainrep_all_working.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset dir="." includes="agentrep_all_working.xml"/>
+			<fileset dir="." includes="agentrep_all_working.xml" />
 			<globmapper from="agentrep_all_working.xml" to="agentrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
+			<fileset dir="." includes="protocolrep_AIMA2009.xml" />
 			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
-		</copy>	
+		</copy>
 		<zip destfile="${dist}/negotiator.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
-			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
---> 
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+-->
 			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
-				<exclude name="son_center_*.xml"/>
-				<exclude name="son_seller_*.xml"/>
+				<exclude name="son_center_*.xml" />
+				<exclude name="son_seller_*.xml" />
 			</zipfileset>
-			<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
-			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
+			<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
-	
-	<target name ="makeGeniusANAC2010" depends="makeNegoSimulatorWithAllAgentJar">
-			<copy todir="${tmp}">
-				<fileset dir="." includes="domainrep_ANAC2010.xml"/>
-				<globmapper from="domainrep_ANAC2010.xml" to="domainrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="agentrep_ANAC2010.xml"/>
-				<globmapper from="agentrep_ANAC2010.xml" to="agentrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="protocolrep_ANAC2010.xml"/>
-				<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
-			</copy>	
-			<zip destfile="${dist}/negotiator.zip">
-				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
-				<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-	<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
-	--> 
-				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
-					<exclude name="son_center_*.xml"/>
-					<exclude name="son_seller_*.xml"/>
-				</zipfileset>
-				<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
-				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
-				
-				<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
-				<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
-			</zip>
-			<ant target="cleanup"/>
-		</target>
-	
-	<target name ="makeGeniusANAC2012" depends="unpackANAC2011Agents, makeNegoSimulatorWithAllAgentJar">
-			<copy todir="${tmp}">
-				<fileset dir="." includes="domainrep_ANAC2011.xml"/>
-				<globmapper from="domainrep_ANAC2011.xml" to="domainrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="agentrep_ANAC2011.xml"/>
-				<globmapper from="agentrep_ANAC2011.xml" to="agentrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="protocolrep_ANAC2010.xml"/>
-				<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
-			</copy>	
-			<mkdir dir="${dist}/log"/>
-			<zip destfile="${dist}/negotiator.zip">
-				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain"/>
-				<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-	<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
-	--> 
-				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
-					<exclude name="son_center_*.xml"/>
-					<exclude name="son_seller_*.xml"/>
-				</zipfileset>
-				<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount"/>
-				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
-				
-				<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount_rv" prefix="negotiator//etc/templates/ItexvsCypress_discount_rv"/>
-				<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel"/>
-				
-				<zipfileset dir="${anacResources}/etc/2011/final/" prefix="negotiator//etc/templates/"/>
-			</zip>
-			<ant target="cleanup"/>
-			<antcall target="unpackNegotiatorZIP"/>
-		</target>
-	
-	<target name ="makeGeniusForStudentsAssignment2009" depends="makeNegoSimulatorWithAllAgentJar">
+
+	<target name="makeGeniusANAC2010" depends="makeNegoSimulatorWithAllAgentJar">
 		<copy todir="${tmp}">
-			<fileset dir="." includes="domainrep_AIMA2009.xml"/>
+			<fileset dir="." includes="domainrep_ANAC2010.xml" />
+			<globmapper from="domainrep_ANAC2010.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_ANAC2010.xml" />
+			<globmapper from="agentrep_ANAC2010.xml" to="agentrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_ANAC2010.xml" />
+			<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
+		</copy>
+		<zip destfile="${dist}/negotiator.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+	-->
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
+				<exclude name="son_center_*.xml" />
+				<exclude name="son_seller_*.xml" />
+			</zipfileset>
+			<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
+
+			<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount" />
+			<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel" />
+		</zip>
+		<ant target="cleanup" />
+	</target>
+
+	<target name="makeGeniusANAC2012" depends="unpackANAC2011Agents, makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_ANAC2011.xml" />
+			<globmapper from="domainrep_ANAC2011.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_ANAC2011.xml" />
+			<globmapper from="agentrep_ANAC2011.xml" to="agentrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_ANAC2010.xml" />
+			<globmapper from="protocolrep_ANAC2010.xml" to="protocolrepository.xml" />
+		</copy>
+		<mkdir dir="${dist}/log" />
+		<zip destfile="${dist}/negotiator.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<!--			<zipfileset dir="etc/templates/AMPOvsCity" prefix="negotiator/etc/templates/AMPOvsCity"/>
+	-->
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON">
+				<exclude name="son_center_*.xml" />
+				<exclude name="son_seller_*.xml" />
+			</zipfileset>
+			<zipfileset dir="etc/templates/SON_with_discount" prefix="negotiator/etc/templates/SON_with_discount" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
+
+			<zipfileset dir="${anac2010}/etc/templates/EnglandZimbabwe" prefix="negotiator//etc/templates/EnglandZimbabwe" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator//etc/templates/ItexvsCypress" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator//etc/templates/ItexvsCypress_discount" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount_rv" prefix="negotiator//etc/templates/ItexvsCypress_discount_rv" />
+			<zipfileset dir="${anac2010}/etc/templates/travel" prefix="negotiator//etc/templates/travel" />
+
+			<zipfileset dir="${anacResources}/etc/2011/final/" prefix="negotiator//etc/templates/" />
+		</zip>
+		<ant target="cleanup" />
+		<antcall target="unpackNegotiatorZIP" />
+	</target>
+
+	<target name="makeGeniusForStudentsAssignment2009" depends="makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_AIMA2009.xml" />
 			<globmapper from="domainrep_AIMA2009.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset dir="." includes="agentrep_AIMA2009.xml"/>
+			<fileset dir="." includes="agentrep_AIMA2009.xml" />
 			<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
-		</copy>	
+		</copy>
 		<copy todir="${tmp}">
-			<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
+			<fileset dir="." includes="protocolrep_AIMA2009.xml" />
 			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
-		</copy>	
+		</copy>
 
 		<copy todir="${tmp}">
-			<fileset dir="doc" includes="assignment2009.pdf"/>
+			<fileset dir="doc" includes="assignment2009.pdf" />
 			<globmapper from="assignment2009.pdf" to="assignment.pdf" />
-		</copy>	
-		
+		</copy>
+
 		<zip destfile="${dist}/negotiator.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
-			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain"/>
-			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009"/>
-			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-			<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain"/>
-			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
-			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
 
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
-	
-	<target name ="makeGeniusForStudentsAssignment2010" depends="makeNegoSimulatorWithAllAgentJar">
-		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten"/>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="domainrep_AIMA2009.xml"/>
-				<globmapper from="domainrep_AIMA2009.xml" to="domainrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="agentrep_AIMA2009.xml"/>
-				<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
-			</copy>	
-			<copy todir="${tmp}">
-				<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
-				<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
-			</copy>	
 
-			<copy todir="${tmp}">
-				<fileset dir="doc" includes="assignment2010.pdf"/>
-				<globmapper from="assignment2010.pdf" to="assignment.pdf" />
-			</copy>	
-			
-			<zip destfile="${dist}/negotiator.zip">
-				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-				<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
-				<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain"/>
-				<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009"/>
-				<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-				<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain"/>
-				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
-				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
-			</zip>
-			<ant target="cleanup"/>
-		</target>
-	
-	<target name ="makeGeniusForStudentsAssignment2011" depends="makeNegoSimulatorWithAllAgentJar">
-		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten"/>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="domainrep_AIT2011.xml"/>
-				<globmapper from="domainrep_AIT2011.xml" to="domainrepository.xml" />
-			</copy>
-			<copy todir="${tmp}">
-				<fileset dir="." includes="agentrep_AIMA2009.xml"/>
-				<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
-			</copy>	
-			<copy todir="${tmp}">
-				<fileset dir="." includes="protocolrep_AIMA2009.xml"/>
-				<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
-			</copy>	
-
-			<copy todir="${tmp}">
-				<fileset dir="doc" includes="assignment2011.pdf"/>
-				<globmapper from="assignment2011.pdf" to="assignment.pdf" />
-			</copy>	
-			
-			<zip destfile="${dist}/negotiator.zip">
-				<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator"/>						
-				<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator"/>	
-				<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator"/>
-				<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator"/>			
-				<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator"/>
-				<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain"/>
-				<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009"/>
-				<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain"/>
-				<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain"/>
-				<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car"/>
-				<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON"/>
-				<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator/etc/templates/ItexvsCypress"/>
-				<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator/etc/templates/ItexvsCypress_discount"/>
-			</zip>
-			<ant target="cleanup"/>
-		</target>
-
-	<target name ="makeGeniusForStudentsAssignment2012" depends="makeNegoSimulatorWithAllAgentJar">
+	<target name="makeGeniusForStudentsAssignment2010" depends="makeNegoSimulatorWithAllAgentJar">
+		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten" />
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/domains/domainrep_AIT2012.xml"/>
+			<fileset dir="." includes="domainrep_AIMA2009.xml" />
+			<globmapper from="domainrep_AIMA2009.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_AIMA2009.xml" />
+			<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_AIMA2009.xml" />
+			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
+		</copy>
+
+		<copy todir="${tmp}">
+			<fileset dir="doc" includes="assignment2010.pdf" />
+			<globmapper from="assignment2010.pdf" to="assignment.pdf" />
+		</copy>
+
+		<zip destfile="${dist}/negotiator.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
+		</zip>
+		<ant target="cleanup" />
+	</target>
+
+	<target name="makeGeniusForStudentsAssignment2011" depends="makeNegoSimulatorWithAllAgentJar">
+		<echo message="Denk aan negotiator.utility.UtilitySpace.CHECK_CONSTRAINTS = true te zetten" />
+		<copy todir="${tmp}">
+			<fileset dir="." includes="domainrep_AIT2011.xml" />
+			<globmapper from="domainrep_AIT2011.xml" to="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="agentrep_AIMA2009.xml" />
+			<globmapper from="agentrep_AIMA2009.xml" to="agentrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset dir="." includes="protocolrep_AIMA2009.xml" />
+			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
+		</copy>
+
+		<copy todir="${tmp}">
+			<fileset dir="doc" includes="assignment2011.pdf" />
+			<globmapper from="assignment2011.pdf" to="assignment.pdf" />
+		</copy>
+
+		<zip destfile="${dist}/negotiator.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="negotiator" />
+			<zipfileset dir="doc" includes="userguide.pdf" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="negotiator" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="negotiator" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="negotiator" />
+			<zipfileset dir="etc/templates/partydomain" includes="party_domain.xml,party_utility_kh.xml,party_utility_cath.xml" prefix="negotiator/etc/templates/partydomain" />
+			<zipfileset dir="etc/templates/partydomain/AI2009" prefix="negotiator/etc/templates/partydomain/AI2009" />
+			<zipfileset dir="etc/templates/laptopdomain" prefix="negotiator/etc/templates/laptopdomain" />
+			<zipfileset dir="etc/templates/inheritancedomain" prefix="negotiator/etc/templates/inheritancedomain" />
+			<zipfileset dir="etc/templates/2nd_hand_car" prefix="negotiator/etc/templates/2nd_hand_car" />
+			<zipfileset dir="etc/templates/SON" prefix="negotiator/etc/templates/SON" />
+			<zipfileset dir="etc/templates/thompson" prefix="negotiator/etc/templates/thompson" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress" prefix="negotiator/etc/templates/ItexvsCypress" />
+			<zipfileset dir="${anac2010}/etc/templates/ItexvsCypress_discount" prefix="negotiator/etc/templates/ItexvsCypress_discount" />
+		</zip>
+		<ant target="cleanup" />
+	</target>
+
+	<target name="makeGeniusForStudentsAssignment2012" depends="makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset file="${repositories}/domains/domainrep_AIT2012.xml" />
 			<globmapper from="domainrep_AIT2012.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/boa/boarepository_AIT2012.xml"/>
+			<fileset file="${repositories}/boa/boarepository_AIT2012.xml" />
 			<globmapper from="boarepository_AIT2012.xml" to="boarepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/agents/agentrep_AIT2012.xml"/>
+			<fileset file="${repositories}/agents/agentrep_AIT2012.xml" />
 			<globmapper from="agentrep_AIT2012.xml" to="agentrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/protocols/protocolrep_AIMA2009.xml"/>
+			<fileset file="${repositories}/protocols/protocolrep_AIMA2009.xml" />
 			<globmapper from="protocolrep_AIMA2009.xml" to="protocolrepository.xml" />
 		</copy>
 
-		<mkdir dir="${tmp}/doc"/>
-		<mkdir dir="${tmp}/log"/>
+		<mkdir dir="${tmp}/doc" />
+		<mkdir dir="${tmp}/log" />
 
 		<copy todir="${tmp}/doc">
-			<fileset dir="doc" includes="assignment2012.pdf"/>
+			<fileset dir="doc" includes="assignment2012.pdf" />
 			<globmapper from="assignment2012.pdf" to="assignment.pdf" />
 		</copy>
 
 		<copy todir="${tmp}/doc">
-			<fileset dir="doc" includes="userguide.pdf"/>
+			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
 		<zip destfile="${dist}/Genius 4.0 students.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="genius"/>
-			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example"/>
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
-			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
-			<zipfileset dir="etc/templates/anac/y2011" prefix="genius/etc/templates/anac/y2011"/>
-			<zipfileset dir="etc/templates/partydomain" prefix="genius/etc/templates/partydomain"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="assignment.pdf" prefix="genius" />
+			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
+			<zipfileset dir="" includes="javadoc/" prefix="genius" />
+			<zipfileset dir="etc/templates/anac/y2011" prefix="genius/etc/templates/anac/y2011" />
+			<zipfileset dir="etc/templates/partydomain" prefix="genius/etc/templates/partydomain" />
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
-	
-	<target name ="makeGenius4.2" depends="makeNegoSimulatorWithAllAgentJar">
+
+	<target name="makeGenius4.2" depends="makeNegoSimulatorWithAllAgentJar">
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/domains/domainrep_ANAC2013.xml"/>
+			<fileset file="${repositories}/domains/domainrep_ANAC2013.xml" />
 			<globmapper from="domainrep_ANAC2013.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/boa/boarepository_ANAC2013.xml"/>
+			<fileset file="${repositories}/boa/boarepository_ANAC2013.xml" />
 			<globmapper from="boarepository_ANAC2013.xml" to="boarepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/agents/agentrep_ANAC2013.xml"/>
+			<fileset file="${repositories}/agents/agentrep_ANAC2013.xml" />
 			<globmapper from="agentrep_ANAC2013.xml" to="agentrepository.xml" />
-		</copy>	
-		<copy todir="${tmp}">
-			<fileset file="${repositories}/protocols/protocolrep_ANAC2013.xml"/>
-			<globmapper from="protocolrep_ANAC2013.xml" to="protocolrepository.xml" />
-		</copy>	
-
-		<mkdir dir="${tmp}/doc"/>
-		<mkdir dir="${tmp}/log"/>
-		<mkdir dir="${tmp}/DataObjects"/>
-		
-		<copy todir="${tmp}/doc">
-			<fileset dir="doc" includes="userguide.pdf"/>
 		</copy>
-		
+		<copy todir="${tmp}">
+			<fileset file="${repositories}/protocols/protocolrep_ANAC2013.xml" />
+			<globmapper from="protocolrep_ANAC2013.xml" to="protocolrepository.xml" />
+		</copy>
+
+		<mkdir dir="${tmp}/doc" />
+		<mkdir dir="${tmp}/log" />
+		<mkdir dir="${tmp}/DataObjects" />
+
+		<copy todir="${tmp}/doc">
+			<fileset dir="doc" includes="userguide.pdf" />
+		</copy>
+
 		<zip destfile="${dist}/Genius 4.2.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>							
-			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
-			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example"/>
-			<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example"/>
-			<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example"/>
-			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example"/>
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>			
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
-			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
-			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius" />
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="ANAC2013BOAExample_Offering.java" prefix="genius/ANAC2013 Example" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgentSavingBidHistory.java" prefix="genius/ANAC2013 Example" />
+			<zipfileset dir="${src}/agents" includes="SimpleANAC2013Agent.java" prefix="genius/ANAC2013 Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/acceptanceconditions/other" includes="AC_Next.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/offeringstrategy/other" includes="TimeDependent_Offering.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/omstrategy" includes="BestBid.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/negotiator/boaframework/opponentmodel" includes="HardHeadedFrequencyModel.java" prefix="genius/BOA Agent Example" />
+			<zipfileset dir="${src}/agents" includes="SimpleAgent.java" prefix="genius/Agent Example" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
+			<zipfileset dir="" includes="javadoc/" prefix="genius" />
+			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac" />
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
 
-	<target name ="makeGenius5.2.9" depends="makeNegoSimulatorWithAllAgentJar">
+	<target name="makeGenius5.2.9" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/domains/domainrepository.xml"/>
+			<fileset file="${repositories}/domains/domainrepository.xml" />
 			<globmapper from="domainrepository.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/boa/boarepository.xml"/>
+			<fileset file="${repositories}/boa/boarepository.xml" />
 			<globmapper from="boarepository.xml" to="boarepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/agents/agentrepository.xml"/>
+			<fileset file="${repositories}/agents/agentrepository.xml" />
 			<globmapper from="agentrepository.xml" to="agentrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/protocols/protocolrepository.xml"/>
+			<fileset file="${repositories}/protocols/protocolrepository.xml" />
 			<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/multipartyprotocols/multipartyprotocolrepository.xml"/>
+			<fileset file="${repositories}/multipartyprotocols/multipartyprotocolrepository.xml" />
 			<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/parties/partyrepository.xml"/>
+			<fileset file="${repositories}/parties/partyrepository.xml" />
 			<globmapper from="partyrepository.xml" to="partyrepository.xml" />
 		</copy>
 
 
-		<mkdir dir="${tmp}/doc"/>
-		<mkdir dir="${tmp}/log"/>
-		<mkdir dir="${tmp}/DataObjects"/>
+		<mkdir dir="${tmp}/doc" />
+		<mkdir dir="${tmp}/log" />
+		<mkdir dir="${tmp}/DataObjects" />
 
 		<copy todir="${tmp}/doc">
-			<fileset dir="doc" includes="userguide.pdf"/>
+			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
 		<zip destfile="${dist}/Genius 5.2.9.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
-			<zipfileset dir="${tutorials}" includes="multipartyexample/**" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius"/>
-			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials" />
+			<zipfileset dir="${tutorials}" includes="multipartyexample/**" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
+			<zipfileset dir="" includes="javadoc/" prefix="genius" />
 			<!--
 			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
 			<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear"/>
 			-->
-			<zipfileset dir="etc/templates" prefix="genius/etc/templates/"/>
+			<zipfileset dir="etc/templates" prefix="genius/etc/templates/" />
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
 
-	<target name ="makeGeniusForStudentsAssignment2014" depends="makeNegoSimulatorWithAllAgentJar">
+	<target name="makeGeniusForStudentsAssignment2014" depends="makeNegoSimulatorWithAllAgentJar">
 		<copy todir="${tmp}">
-			<fileset file="domainrepository.xml"/>
+			<fileset file="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="multipartyprotocolrepository.xml"/>
-		</copy>
-
-		<copy todir="${tmp}">
-			<fileset file="partyrepository.xml"/>
+			<fileset file="multipartyprotocolrepository.xml" />
 		</copy>
 
-		<mkdir dir="${tmp}/doc"/>
-		<mkdir dir="${tmp}/log"/>
-		<mkdir dir="${tmp}/DataObjects"/>
+		<copy todir="${tmp}">
+			<fileset file="partyrepository.xml" />
+		</copy>
+
+		<mkdir dir="${tmp}/doc" />
+		<mkdir dir="${tmp}/log" />
+		<mkdir dir="${tmp}/DataObjects" />
 
 		<copy todir="${tmp}/doc">
-			<fileset dir="doc" includes="userguide.pdf"/>
+			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
 		<zip destfile="${dist}/Genius-5.2.9-StudentAssignment2014.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
-			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius"/>
-			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius"/>
-			<zipfileset dir="" includes="javadoc/" prefix="genius"/>
-			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
-			<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear"/>
-			<zipfileset dir="etc/templates/Railway" prefix="genius/etc/templates/Railway"/>
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
+			<zipfileset dir="" includes="javadoc/" prefix="genius" />
+			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac" />
+			<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear" />
+			<zipfileset dir="etc/templates/Railway" prefix="genius/etc/templates/Railway" />
 		</zip>
-		<ant target="cleanup"/>
+		<ant target="cleanup" />
 	</target>
 
-	<target name ="makeGenius5.2.0-BaukeEdition" depends="makeNegoSimulatorWithAllAgentJar">
-	<copy todir="${tmp}">
-		<fileset file="domainrepository.xml"/>
-	</copy>
-	<copy todir="${tmp}">
-		<fileset file="multipartyprotocolrepository.xml"/>
-	</copy>
-	<copy todir="${tmp}">
-		<fileset file="partyrepository.xml"/>
-	</copy>
-	<mkdir dir="${tmp}/doc"/>
-	<mkdir dir="${tmp}/log"/>
-	<mkdir dir="${tmp}/DataObjects"/>
-	<copy todir="${tmp}/doc">
-		<fileset dir="doc" includes="userguide.pdf"/>
-	</copy>
-	<zip destfile="${dist}/Genius 5.2.0-BaukeEdition.zip">
-		<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="doc/" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="log" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius"/>
-		<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius"/>
-		<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius"/>
-		<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius"/>
-		<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials"/>
-		<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius"/>
-		<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius"/>
-		<zipfileset dir="" includes="javadoc/" prefix="genius"/>
-		<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
-		<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear"/>
-		<zipfileset dir="etc/templates/Railway" prefix="genius/etc/templates/Railway"/>
-	</zip>
-	<ant target="cleanup"/>
-</target>
+	<target name="makeGenius5.2.0-BaukeEdition" depends="makeNegoSimulatorWithAllAgentJar">
+		<copy todir="${tmp}">
+			<fileset file="domainrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset file="multipartyprotocolrepository.xml" />
+		</copy>
+		<copy todir="${tmp}">
+			<fileset file="partyrepository.xml" />
+		</copy>
+		<mkdir dir="${tmp}/doc" />
+		<mkdir dir="${tmp}/log" />
+		<mkdir dir="${tmp}/DataObjects" />
+		<copy todir="${tmp}/doc">
+			<fileset dir="doc" includes="userguide.pdf" />
+		</copy>
+		<zip destfile="${dist}/Genius 5.2.0-BaukeEdition.zip">
+			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius" />
+			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials" />
+			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
+			<zipfileset dir="" includes="javadoc/" prefix="genius" />
+			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac" />
+			<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear" />
+			<zipfileset dir="etc/templates/Railway" prefix="genius/etc/templates/Railway" />
+		</zip>
+		<ant target="cleanup" />
+	</target>
 </project>
