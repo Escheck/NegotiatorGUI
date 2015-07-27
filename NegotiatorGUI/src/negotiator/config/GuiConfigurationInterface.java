@@ -8,7 +8,7 @@ import negotiator.protocol.MultilateralProtocol;
  *
  * @author David Festen
  */
-public interface GuiConfiguration {
+public interface GuiConfigurationInterface {
 
 	/**
 	 * Gets the mediator index in the agent list
