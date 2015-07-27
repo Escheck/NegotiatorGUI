@@ -457,7 +457,6 @@ public class Configuration implements GuiConfiguration,
 	 *
 	 * @return Session object represented in this configuration
 	 */
-	@Override
 	public Session getSession() {
 		if (session == null) {
 			session = new Session(deadlines);
@@ -534,5 +533,10 @@ public class Configuration implements GuiConfiguration,
 
 	private int factorial(int n) {
 		return n <= 1 ? 1 : n * factorial(n - 1);
+	}
+
+	@Override
+	public Deadline getDeadline() {
+		return deadlines;
 	}
 }
