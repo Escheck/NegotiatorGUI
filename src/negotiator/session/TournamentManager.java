@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.MultipartyNegotiationEventListener;
-import negotiator.config.Configuration;
+import negotiator.config.GuiConfiguration;
 import negotiator.events.AgreementEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionFailedEvent;
@@ -42,7 +42,7 @@ public class TournamentManager extends Thread {
 	/**
 	 * Holds the configuration used by this tournament manager
 	 */
-	private Configuration configuration;
+	private GuiConfiguration configuration;
 
 	/**
 	 * Used to silence and restore console output for agents
@@ -69,7 +69,7 @@ public class TournamentManager extends Thread {
 	 * @param config
 	 *            The configuration to use for this Tournament
 	 */
-	public TournamentManager(Configuration config) {
+	public TournamentManager(GuiConfiguration config) {
 		configuration = config;
 	}
 

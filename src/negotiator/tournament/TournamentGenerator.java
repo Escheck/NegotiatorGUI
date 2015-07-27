@@ -10,7 +10,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Deadline;
 import negotiator.Domain;
-import negotiator.config.Configuration;
+import negotiator.config.GuiConfiguration;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
 import negotiator.parties.NegotiationPartyInternal;
@@ -44,7 +44,7 @@ public class TournamentGenerator {
 	/**
 	 * Holds the configuration used by this tournament generator
 	 */
-	final Configuration config;
+	final GuiConfiguration config;
 
 	/**
 	 * Holds the indices used by this tournament generator
@@ -59,7 +59,7 @@ public class TournamentGenerator {
 	 * @param indicesGenerator
 	 *            The indices generator used to generate lists of parties
 	 */
-	public TournamentGenerator(Configuration config,
+	public TournamentGenerator(GuiConfiguration config,
 			TournamentIndicesGenerator indicesGenerator) {
 		this.config = config;
 		this.indicesIterator = indicesGenerator.iterator();

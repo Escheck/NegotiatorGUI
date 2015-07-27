@@ -18,7 +18,7 @@ import negotiator.repository.ProfileRepItem;
 
 /**
  * Implementation of MultilateralTournamentConfigurationInterface. Extracted
- * from {@link Configuration}.
+ * from {@link GuiConfiguration}.
  *
  * @author W.Pasman 27jul15
  */
@@ -85,7 +85,7 @@ public class MultilateralTournamentConfiguration implements
 		partyProfileItems = new ArrayList<ProfileRepItem>();
 	}
 
-	public MultilateralTournamentConfiguration(Configuration config) {
+	public MultilateralTournamentConfiguration(GuiConfiguration config) {
 		setDeadline(config.getDeadline());
 		this.mediatorItem = config.getMediatorItem();
 		this.partyItems = new ArrayList<PartyRepItem>(config.getPartyItems());

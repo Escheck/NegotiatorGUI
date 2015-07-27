@@ -5,7 +5,7 @@ import java.util.List;
 
 import negotiator.Deadline;
 import negotiator.DeadlineType;
-import negotiator.config.Configuration;
+import negotiator.config.GuiConfiguration;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.MultiPartyProtocolRepItem;
@@ -17,7 +17,7 @@ import negotiator.session.Session;
 import negotiator.tournament.TournamentGenerator;
 import negotiator.utility.TournamentIndicesGenerator;
 
-public class AutomatedTournamentConfiguration extends Configuration {
+public class AutomatedTournamentConfiguration extends GuiConfiguration {
 
 	/**
 	 * Number of agents in each test run (make sure that this is reflected in
@@ -71,7 +71,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	public MultilateralProtocol getProtocol() throws Exception {
 		MultiPartyProtocolRepItem protocolRepItem = (MultiPartyProtocolRepItem) Repository
 				.getMultiPartyProtocolRepository().getItems().get(0);
-		return Configuration.createFrom(protocolRepItem);
+		return GuiConfiguration.createFrom(protocolRepItem);
 	}
 
 	@Override
