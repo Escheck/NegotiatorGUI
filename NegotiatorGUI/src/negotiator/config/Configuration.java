@@ -26,485 +26,513 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  */
 public class Configuration implements GuiConfiguration,
-        MultilateralTournamentConfiguration {
-    /**
-     * Holds the deadline constraints
-     */
-    private Deadline deadlines = null;
+		MultilateralTournamentConfiguration {
+	/**
+	 * Holds the deadline constraints
+	 */
+	private Deadline deadlines = null;
 
-    /**
-     * Holds the chosen mediator, if any
-     */
-    private PartyRepItem mediatorItem;
+	/**
+	 * Holds the chosen mediator, if any
+	 */
+	private PartyRepItem mediatorItem;
 
-    /**
-     * Holds the list of chosen parties
-     */
-    private List<PartyRepItem> partyItems;
+	/**
+	 * Holds the list of chosen parties
+	 */
+	private List<PartyRepItem> partyItems;
 
-    /**
-     * Holds the list of chosen profiles
-     */
-    private List<ProfileRepItem> partyProfileItems;
+	/**
+	 * Holds the list of chosen profiles
+	 */
+	private List<ProfileRepItem> partyProfileItems;
 
-    /**
-     * Holds the chosen protocol
-     */
-    private MultiPartyProtocolRepItem protocolItem;
+	/**
+	 * Holds the chosen protocol
+	 */
+	private MultiPartyProtocolRepItem protocolItem;
 
-    /**
-     * Holds the number of session that should be run
-     */
-    private int numSessions;
+	/**
+	 * Holds the number of session that should be run
+	 */
+	private int numSessions;
 
-    /**
-     * Holds the type of tournament
-     */
-    private String tournamentType;
+	/**
+	 * Holds the type of tournament
+	 */
+	private String tournamentType;
 
-    /**
-     * Holds the index of the mediator in the party list
-     */
-    private int mediatorIndex;
+	/**
+	 * Holds the index of the mediator in the party list
+	 */
+	private int mediatorIndex;
 
-    /**
-     * Holds the mediator profile if any
-     */
-    private ProfileRepItem mediatorProfile;
+	/**
+	 * Holds the mediator profile if any
+	 */
+	private ProfileRepItem mediatorProfile;
 
-    /**
-     * Holds the number of agents per session
-     */
-    private int numberOfAgentsPerSession;
+	/**
+	 * Holds the number of agents per session
+	 */
+	private int numberOfAgentsPerSession;
 
-    /**
-     * Holds whether repetition is allowed or not;
-     */
-    private boolean repetitionAllowed;
+	/**
+	 * Holds whether repetition is allowed or not;
+	 */
+	private boolean repetitionAllowed;
 
-    /**
-     * Holds the session if generated
-     */
-    private Session session;
+	/**
+	 * Holds the session if generated
+	 */
+	private Session session;
 
-    /**
-     * Initializes a new instance of the configuration class.
-     */
-    public Configuration() {
-        partyItems = new ArrayList<PartyRepItem>();
-        partyProfileItems = new ArrayList<ProfileRepItem>();
-        mediatorIndex = 0; // defaults the mediator to the first item in the
-        // list
-    }
+	/**
+	 * Initializes a new instance of the configuration class.
+	 */
+	public Configuration() {
+		partyItems = new ArrayList<PartyRepItem>();
+		partyProfileItems = new ArrayList<ProfileRepItem>();
+		mediatorIndex = 0; // defaults the mediator to the first item in the
+		// list
+	}
 
-    /**
-     * Initializes a new instance of the configuration class by using existing
-     * config. Creates a shallow copy of all lists and collections in the
-     * configuration.
-     *
-     * @param config the configuration to make a copy of
-     */
-    public Configuration(Configuration config) {
-        this.deadlines = config.getDeadlines();
-        this.mediatorItem = config.getMediatorItem();
-        this.partyItems = new ArrayList<PartyRepItem>(config.getPartyItems());
-        this.partyProfileItems = new ArrayList<ProfileRepItem>(
-                config.getPartyProfileItems());
-        this.protocolItem = config.getProtocolItem();
-        this.numSessions = config.getNumSessions();
-        this.tournamentType = config.getTournamentType();
-        this.mediatorIndex = config.getMediatorIndex();
-        this.mediatorProfile = config.getMediatorProfile();
-        this.numberOfAgentsPerSession = config.getNumAgentsPerSession();
-        this.repetitionAllowed = config.getRepetitionAllowed();
-    }
+	/**
+	 * Initializes a new instance of the configuration class by using existing
+	 * config. Creates a shallow copy of all lists and collections in the
+	 * configuration.
+	 *
+	 * @param config
+	 *            the configuration to make a copy of
+	 */
+	public Configuration(Configuration config) {
+		this.deadlines = config.getDeadlines();
+		this.mediatorItem = config.getMediatorItem();
+		this.partyItems = new ArrayList<PartyRepItem>(config.getPartyItems());
+		this.partyProfileItems = new ArrayList<ProfileRepItem>(
+				config.getPartyProfileItems());
+		this.protocolItem = config.getProtocolItem();
+		this.numSessions = config.getNumSessions();
+		this.tournamentType = config.getTournamentType();
+		this.mediatorIndex = config.getMediatorIndex();
+		this.mediatorProfile = config.getMediatorProfile();
+		this.numberOfAgentsPerSession = config.getNumAgentsPerSession();
+		this.repetitionAllowed = config.getRepetitionAllowed();
+	}
 
-    /**
-     * Creates a new Party from repository items
-     *
-     * @param partyRepItem   Party Repository item to createFrom party from
-     * @param profileRepItem Profile Repository item to createFrom party from
-     * @return new Party
-     * @throws java.lang.NoSuchMethodException  If requested Party does not have a constructor accepting only
-     *                                          preference profiles
-     * @throws java.lang.ClassNotFoundException If requested Party class can not be found.
-     * @throws java.lang.Exception              If
-     *                                          {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                                          throws an exception.
-     */
-    public static NegotiationParty createFrom(PartyRepItem partyRepItem,
-                                              ProfileRepItem profileRepItem) throws Exception {
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
-        Class party = loader.loadClass(partyRepItem.getClassPath());
+	/**
+	 * Creates a new Party from repository items
+	 *
+	 * @param partyRepItem
+	 *            Party Repository item to createFrom party from
+	 * @param profileRepItem
+	 *            Profile Repository item to createFrom party from
+	 * @return new Party
+	 * @throws java.lang.NoSuchMethodException
+	 *             If requested Party does not have a constructor accepting only
+	 *             preference profiles
+	 * @throws java.lang.ClassNotFoundException
+	 *             If requested Party class can not be found.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
+			ProfileRepItem profileRepItem) throws Exception {
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		Class party = loader.loadClass(partyRepItem.getClassPath());
 
-        Class[] paramTypes = {UtilitySpace.class};
+		Class[] paramTypes = { UtilitySpace.class };
 
-        @SuppressWarnings("unchecked")
-        Constructor partyConstructor = party.getConstructor(paramTypes);
+		@SuppressWarnings("unchecked")
+		Constructor partyConstructor = party.getConstructor(paramTypes);
 
-        // System.out.println("Found the constructor: " + cons);
+		// System.out.println("Found the constructor: " + cons);
 
-        UtilitySpace utilSpace = createFrom(profileRepItem);
-        return (NegotiationParty) partyConstructor.newInstance(utilSpace);
-    }
+		UtilitySpace utilSpace = createFrom(profileRepItem);
+		return (NegotiationParty) partyConstructor.newInstance(utilSpace);
+	}
 
-    /**
-     * Creates a new Party from repository items
-     *
-     * @param partyRepItem Party Repository item to createFrom party from
-     * @param domain       Profile Repository item to createFrom party from
-     * @return new Party
-     * @throws java.lang.NoSuchMethodException  If requested Party does not have a constructor accepting only
-     *                                          preference profiles
-     * @throws java.lang.ClassNotFoundException If requested Party class can not be found.
-     * @throws java.lang.Exception              If
-     *                                          {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                                          throws an exception.
-     */
-    public static NegotiationParty createFrom(PartyRepItem partyRepItem,
-                                              Domain domain) throws Exception {
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
-        Class party = loader.loadClass(partyRepItem.getClassPath());
+	/**
+	 * Creates a new Party from repository items
+	 *
+	 * @param partyRepItem
+	 *            Party Repository item to createFrom party from
+	 * @param domain
+	 *            Profile Repository item to createFrom party from
+	 * @return new Party
+	 * @throws java.lang.NoSuchMethodException
+	 *             If requested Party does not have a constructor accepting only
+	 *             preference profiles
+	 * @throws java.lang.ClassNotFoundException
+	 *             If requested Party class can not be found.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	public static NegotiationParty createFrom(PartyRepItem partyRepItem,
+			Domain domain) throws Exception {
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		Class party = loader.loadClass(partyRepItem.getClassPath());
 
-        Class[] paramTypes = {UtilitySpace.class};
+		Class[] paramTypes = { UtilitySpace.class };
 
-        @SuppressWarnings("unchecked")
-        Constructor partyConstructor = party.getConstructor(paramTypes);
+		@SuppressWarnings("unchecked")
+		Constructor partyConstructor = party.getConstructor(paramTypes);
 
-        // System.out.println("Found the constructor: " + cons);
+		// System.out.println("Found the constructor: " + cons);
 
-        UtilitySpace utilSpace = new UtilitySpace(domain);
-        return (NegotiationParty) partyConstructor.newInstance(utilSpace);
-    }
+		UtilitySpace utilSpace = new UtilitySpace(domain);
+		return (NegotiationParty) partyConstructor.newInstance(utilSpace);
+	}
 
-    /**
-     * Create a new instance of the Protocol object from a
-     * {@link MultiPartyProtocolRepItem}
-     *
-     * @param protocolRepItem Item to create Protocol out of
-     * @return the created protocol.
-     * @throws java.lang.Exception If
-     *                             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                             throws an exception.
-     */
-    public static MultilateralProtocol createFrom(MultiPartyProtocolRepItem protocolRepItem)
-            throws Exception {
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
-        Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
+	/**
+	 * Create a new instance of the Protocol object from a
+	 * {@link MultiPartyProtocolRepItem}
+	 *
+	 * @param protocolRepItem
+	 *            Item to create Protocol out of
+	 * @return the created protocol.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	public static MultilateralProtocol createFrom(
+			MultiPartyProtocolRepItem protocolRepItem) throws Exception {
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
 
-        @SuppressWarnings("unchecked")
-        Constructor protocolConstructor = protocolClass.getConstructor();
+		@SuppressWarnings("unchecked")
+		Constructor protocolConstructor = protocolClass.getConstructor();
 
-        return (MultilateralProtocol) protocolConstructor.newInstance();
-    }
+		return (MultilateralProtocol) protocolConstructor.newInstance();
+	}
 
-    /**
-     * Create a new UtilitySpace from a ProfileRepItem. If
-     * {@link ProfileRepItem#getDomain()} returns new instead of an actual
-     * domain, this method also returns null.
-     *
-     * @param item the item to create a UtilitySpace out of.
-     * @return the UtilitySpace corresponding to the item.
-     * @throws java.lang.Exception If
-     *                             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                             throws an exception.
-     */
-    public static UtilitySpace createFrom(ProfileRepItem item) throws Exception {
-        Domain domain = Repository.get_domain_repos().getDomain(
-                item.getDomain());
-        return Repository.get_domain_repos().getUtilitySpace(domain, item);
-    }
+	/**
+	 * Create a new UtilitySpace from a ProfileRepItem. If
+	 * {@link ProfileRepItem#getDomain()} returns new instead of an actual
+	 * domain, this method also returns null.
+	 *
+	 * @param item
+	 *            the item to create a UtilitySpace out of.
+	 * @return the UtilitySpace corresponding to the item.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	public static UtilitySpace createFrom(ProfileRepItem item) throws Exception {
+		Domain domain = Repository.get_domain_repos().getDomain(
+				item.getDomain());
+		return Repository.get_domain_repos().getUtilitySpace(domain, item);
+	}
 
-    /**
-     * Gets the mediator index in the agent list
-     *
-     * @return the index of the mediator
-     */
-    @Override
-    public int getMediatorIndex() {
-        return mediatorIndex;
-    }
+	/**
+	 * Gets the mediator index in the agent list
+	 *
+	 * @return the index of the mediator
+	 */
+	@Override
+	public int getMediatorIndex() {
+		return mediatorIndex;
+	}
 
-    /**
-     * Sets the mediator index in the agent list
-     *
-     * @param index the index to use
-     */
-    @Override
-    public void setMediatorIndex(int index) {
-        mediatorIndex = index;
-    }
+	/**
+	 * Sets the mediator index in the agent list
+	 *
+	 * @param index
+	 *            the index to use
+	 */
+	@Override
+	public void setMediatorIndex(int index) {
+		mediatorIndex = index;
+	}
 
-    /**
-     * Gets the deadline map
-     *
-     * @return Deadline for all sessions in the config
-     */
-    @Override
-    public Deadline getDeadlines() {
-        return deadlines;
-    }
+	/**
+	 * Gets the deadline map
+	 *
+	 * @return Deadline for all sessions in the config
+	 */
+	@Override
+	public Deadline getDeadlines() {
+		return deadlines;
+	}
 
-    /**
-     * Sets the deadline map
-     *
-     * @param deadlines a map of deadline keys and their values
-     */
-    @Override
-    public void setDeadlines(Deadline deadlines) {
-        this.deadlines = deadlines;
-    }
+	/**
+	 * Sets the deadline map
+	 *
+	 * @param deadlines
+	 *            a map of deadline keys and their values
+	 */
+	@Override
+	public void setDeadlines(Deadline deadlines) {
+		this.deadlines = deadlines;
+	}
 
-    /**
-     * Gets the list of party repository items.
-     *
-     * @return a list of all chosen parties
-     */
-    @Override
-    public List<PartyRepItem> getPartyItems() {
-        return partyItems;
-    }
+	/**
+	 * Gets the list of party repository items.
+	 *
+	 * @return a list of all chosen parties
+	 */
+	@Override
+	public List<PartyRepItem> getPartyItems() {
+		return partyItems;
+	}
 
-    /**
-     * Sets the list of chosen parties
-     *
-     * @param agents the list of all chosen parties
-     */
-    @Override
-    public void setPartyItems(List<PartyRepItem> agents) {
-        this.partyItems = agents;
-    }
+	/**
+	 * Sets the list of chosen parties
+	 *
+	 * @param agents
+	 *            the list of all chosen parties
+	 */
+	@Override
+	public void setPartyItems(List<PartyRepItem> agents) {
+		this.partyItems = agents;
+	}
 
-    /**
-     * Gets the mediator
-     *
-     * @return the mediator or party or null if not set
-     */
-    @Override
-    public PartyRepItem getMediatorItem() {
-        return mediatorItem;
-    }
+	/**
+	 * Gets the mediator
+	 *
+	 * @return the mediator or party or null if not set
+	 */
+	@Override
+	public PartyRepItem getMediatorItem() {
+		return mediatorItem;
+	}
 
-    /**
-     * Sets the mediator item
-     *
-     * @param mediatorItem the mediator
-     */
-    @Override
-    public void setMediatorItem(PartyRepItem mediatorItem) {
-        this.mediatorItem = mediatorItem;
-    }
+	/**
+	 * Sets the mediator item
+	 *
+	 * @param mediatorItem
+	 *            the mediator
+	 */
+	@Override
+	public void setMediatorItem(PartyRepItem mediatorItem) {
+		this.mediatorItem = mediatorItem;
+	}
 
-    /**
-     * Gets the number of negotiation sessions to run
-     *
-     * @return the number of sessions
-     */
-    @Override
-    public int getNumSessions() {
-        return numSessions;
-    }
+	/**
+	 * Gets the number of negotiation sessions to run
+	 *
+	 * @return the number of sessions
+	 */
+	@Override
+	public int getNumSessions() {
+		return numSessions;
+	}
 
-    /**
-     * Sets the number of negotiation sessions.
-     *
-     * @param numSessions the number of sessions
-     */
-    @Override
-    public void setNumSessions(int numSessions) {
-        this.numSessions = numSessions;
-    }
+	/**
+	 * Sets the number of negotiation sessions.
+	 *
+	 * @param numSessions
+	 *            the number of sessions
+	 */
+	@Override
+	public void setNumSessions(int numSessions) {
+		this.numSessions = numSessions;
+	}
 
-    /**
-     * Gets the number of negotiation sessions to run
-     *
-     * @return the number of sessions
-     */
-    @Override
-    public int getNumTournaments() {
-        return numSessions;
-    }
+	/**
+	 * Gets the number of negotiation sessions to run
+	 *
+	 * @return the number of sessions
+	 */
+	@Override
+	public int getNumTournaments() {
+		return numSessions;
+	}
 
-    /**
-     * Get the type of tournament
-     *
-     * @return the type of tournament
-     */
-    @Override
-    public String getTournamentType() {
-        return tournamentType;
-    }
+	/**
+	 * Get the type of tournament
+	 *
+	 * @return the type of tournament
+	 */
+	@Override
+	public String getTournamentType() {
+		return tournamentType;
+	}
 
-    /**
-     * Set the type of tournament
-     *
-     * @param type the type of tournament
-     */
-    @Override
-    public void setTournamentType(String type) {
-        tournamentType = type;
-    }
+	/**
+	 * Set the type of tournament
+	 *
+	 * @param type
+	 *            the type of tournament
+	 */
+	@Override
+	public void setTournamentType(String type) {
+		tournamentType = type;
+	}
 
-    /**
-     * Gets the protocol to run
-     *
-     * @return the protocol to run
-     */
-    @Override
-    public MultiPartyProtocolRepItem getProtocolItem() {
-        return protocolItem;
-    }
+	/**
+	 * Gets the protocol to run
+	 *
+	 * @return the protocol to run
+	 */
+	@Override
+	public MultiPartyProtocolRepItem getProtocolItem() {
+		return protocolItem;
+	}
 
-    /**
-     * Sets the protocol to run.
-     *
-     * @param protocolItem the protocol to run
-     */
-    @Override
-    public void setProtocolItem(MultiPartyProtocolRepItem protocolItem) {
-        this.protocolItem = protocolItem;
-    }
+	/**
+	 * Sets the protocol to run.
+	 *
+	 * @param protocolItem
+	 *            the protocol to run
+	 */
+	@Override
+	public void setProtocolItem(MultiPartyProtocolRepItem protocolItem) {
+		this.protocolItem = protocolItem;
+	}
 
-    /**
-     * Gets the list of profiles used by the parties
-     *
-     * @return list of profiles used by the parties
-     */
-    @Override
-    public List<ProfileRepItem> getPartyProfileItems() {
-        return partyProfileItems;
-    }
+	/**
+	 * Gets the list of profiles used by the parties
+	 *
+	 * @return list of profiles used by the parties
+	 */
+	@Override
+	public List<ProfileRepItem> getPartyProfileItems() {
+		return partyProfileItems;
+	}
 
-    /**
-     * Sets the list of profiles used by the parties
-     *
-     * @param partyProfileItems list of profiles used by the parties
-     */
-    @Override
-    public void setPartyProfileItems(List<ProfileRepItem> partyProfileItems) {
-        this.partyProfileItems = partyProfileItems;
-    }
+	/**
+	 * Sets the list of profiles used by the parties
+	 *
+	 * @param partyProfileItems
+	 *            list of profiles used by the parties
+	 */
+	@Override
+	public void setPartyProfileItems(List<ProfileRepItem> partyProfileItems) {
+		this.partyProfileItems = partyProfileItems;
+	}
 
-    /**
-     * Gets the number of agents per session
-     *
-     * @return the number of agents per session
-     */
-    @Override
-    public int getNumAgentsPerSession() {
-        return numberOfAgentsPerSession;
-    }
+	/**
+	 * Gets the number of agents per session
+	 *
+	 * @return the number of agents per session
+	 */
+	@Override
+	public int getNumAgentsPerSession() {
+		return numberOfAgentsPerSession;
+	}
 
-    /**
-     * Sets the number of agents per session
-     *
-     * @param numAgents number of agents
-     */
-    @Override
-    public void setNumAgentsPerSession(int numAgents) {
-        numberOfAgentsPerSession = numAgents;
-    }
+	/**
+	 * Sets the number of agents per session
+	 *
+	 * @param numAgents
+	 *            number of agents
+	 */
+	@Override
+	public void setNumAgentsPerSession(int numAgents) {
+		numberOfAgentsPerSession = numAgents;
+	}
 
-    /**
-     * Gets whether repetition is allowed when generating combinations of
-     * agents.
-     *
-     * @return true if allowed
-     */
-    @Override
-    public boolean getRepetitionAllowed() {
-        return repetitionAllowed;
-    }
+	/**
+	 * Gets whether repetition is allowed when generating combinations of
+	 * agents.
+	 *
+	 * @return true if allowed
+	 */
+	@Override
+	public boolean getRepetitionAllowed() {
+		return repetitionAllowed;
+	}
 
-    /**
-     * Sets whether repetition is allowed for generating sessions for the
-     * current agent
-     *
-     * @param repetitionAllowed true if repetition is allowed
-     */
-    @Override
-    public void setRepetitionAllowed(boolean repetitionAllowed) {
-        this.repetitionAllowed = repetitionAllowed;
-    }
+	/**
+	 * Sets whether repetition is allowed for generating sessions for the
+	 * current agent
+	 *
+	 * @param repetitionAllowed
+	 *            true if repetition is allowed
+	 */
+	@Override
+	public void setRepetitionAllowed(boolean repetitionAllowed) {
+		this.repetitionAllowed = repetitionAllowed;
+	}
 
-    /**
-     * Get the {@link negotiator.session.Session} object from this configuration
-     *
-     * @return Session object represented in this configuration
-     */
-    @Override
-    public Session getSession() {
-        if (session == null) {
-            session = new Session(deadlines);
-        }
+	/**
+	 * Get the {@link negotiator.session.Session} object from this configuration
+	 *
+	 * @return Session object represented in this configuration
+	 */
+	@Override
+	public Session getSession() {
+		if (session == null) {
+			session = new Session(deadlines);
+		}
 
-        return session;
-    }
+		return session;
+	}
 
-    /**
-     * Get the {@link MultilateralProtocol} object from this
-     * configuration
-     *
-     * @return Session object represented in this configuration
-     * @throws java.lang.NoSuchMethodException  If requested Party does not have a constructor accepting only
-     *                                          preference profiles
-     * @throws java.lang.ClassNotFoundException If requested Party class can not be found.
-     * @throws java.lang.Exception              If
-     *                                          {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                                          throws an exception.
-     */
-    @Override
-    public MultilateralProtocol getProtocol() throws Exception {
-        return createFrom(getProtocolItem());
-    }
+	/**
+	 * Get the {@link MultilateralProtocol} object from this configuration
+	 *
+	 * @return Session object represented in this configuration
+	 * @throws java.lang.NoSuchMethodException
+	 *             If requested Party does not have a constructor accepting only
+	 *             preference profiles
+	 * @throws java.lang.ClassNotFoundException
+	 *             If requested Party class can not be found.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	@Override
+	public MultilateralProtocol getProtocol() throws Exception {
+		return createFrom(getProtocolItem());
+	}
 
-    /**
-     * Get the list of participating {@link negotiator.parties.NegotiationParty}
-     * objects from this configuration
-     *
-     * @return list of party objects represented in this configuration or an
-     * empty list if none
-     * @throws java.lang.NoSuchMethodException  If requested Party does not have a constructor accepting only
-     *                                          preference profiles
-     * @throws java.lang.ClassNotFoundException If requested Party class can not be found.
-     * @throws java.lang.Exception              If
-     *                                          {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-     *                                          throws an exception.
-     */
-    @Override
-    public TournamentGenerator getPartiesGenerator() {
-        List<Integer> indices = new ArrayList<Integer>(getPartyItems().size());
-        for (int i = 0; i < getPartyItems().size(); i++)
-            indices.add(i);
+	/**
+	 * Get the list of participating {@link negotiator.parties.NegotiationParty}
+	 * objects from this configuration
+	 *
+	 * @return list of party objects represented in this configuration or an
+	 *         empty list if none
+	 * @throws java.lang.NoSuchMethodException
+	 *             If requested Party does not have a constructor accepting only
+	 *             preference profiles
+	 * @throws java.lang.ClassNotFoundException
+	 *             If requested Party class can not be found.
+	 * @throws java.lang.Exception
+	 *             If
+	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
+	 *             throws an exception.
+	 */
+	@Override
+	public TournamentGenerator getPartiesGenerator() {
 
-        TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
-                getNumAgentsPerSession(), getPartyProfileItems().size(),
-                getRepetitionAllowed(), indices);
-        return new TournamentGenerator(this, indicesGenerator);
-    }
+		TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
+				getNumAgentsPerSession(), getPartyProfileItems().size(),
+				getRepetitionAllowed(), getPartyItems().size());
+		return new TournamentGenerator(this, indicesGenerator);
+	}
 
-    public ProfileRepItem getMediatorProfile() {
-        return mediatorProfile;
-    }
+	public ProfileRepItem getMediatorProfile() {
+		return mediatorProfile;
+	}
 
-    public void setMediatorProfile(ProfileRepItem mediatorProfile) {
-        this.mediatorProfile = mediatorProfile;
-    }
+	public void setMediatorProfile(ProfileRepItem mediatorProfile) {
+		this.mediatorProfile = mediatorProfile;
+	}
 
-    public int numSessionsPerTournament() {
-        int nAgents = getPartyItems().size();
-        int nProfiles = getPartyProfileItems().size();
-        int perSession = getNumAgentsPerSession();
+	public int numSessionsPerTournament() {
+		int nAgents = getPartyItems().size();
+		int nProfiles = getPartyProfileItems().size();
+		int perSession = getNumAgentsPerSession();
 
-        int profileCombos = factorial(nProfiles) / (factorial(perSession) * factorial(nProfiles - perSession));
-        int agentCombos = repetitionAllowed
-                ? (int) Math.pow(nAgents, perSession)
-                : factorial(nAgents) / factorial(nAgents - perSession);
+		int profileCombos = factorial(nProfiles)
+				/ (factorial(perSession) * factorial(nProfiles - perSession));
+		int agentCombos = repetitionAllowed ? (int) Math.pow(nAgents,
+				perSession) : factorial(nAgents)
+				/ factorial(nAgents - perSession);
 
-        return agentCombos * profileCombos;
-    }
+		return agentCombos * profileCombos;
+	}
 
-    private int factorial(int n) {
-        return n <= 1 ? 1 : n * factorial(n - 1);
-    }
+	private int factorial(int n) {
+		return n <= 1 ? 1 : n * factorial(n - 1);
+	}
 }
