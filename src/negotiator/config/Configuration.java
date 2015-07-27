@@ -4,8 +4,8 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import negotiator.Deadline;
 import negotiator.Domain;
+import negotiator.exceptions.InstantiateException;
 import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.MultiPartyProtocolRepItem;
@@ -24,13 +24,10 @@ import negotiator.utility.UtilitySpace;
  * a new tournament.
  *
  * @author David Festen
+ * @modified W.Pasman #1103
  */
-public class Configuration implements GuiConfiguration,
-		MultilateralTournamentConfigurationInterface {
-	/**
-	 * Holds the deadline constraints
-	 */
-	private Deadline deadlines = null;
+public class Configuration extends MultilateralTournamentConfiguration
+		implements GuiConfiguration {
 
 	/**
 	 * Holds the chosen mediator, if any
@@ -104,13 +101,15 @@ public class Configuration implements GuiConfiguration,
 	 *
 	 * @param config
 	 *            the configuration to make a copy of
+	 * @throws InstantiateException
 	 */
-	public Configuration(Configuration config) {
-		this.deadlines = config.getDeadlines();
+	public Configuration(Configuration config) throws InstantiateException {
+		setDeadline(config.getDeadline());
 		this.mediatorItem = config.getMediatorItem();
 		this.partyItems = new ArrayList<PartyRepItem>(config.getPartyItems());
 		this.partyProfileItems = new ArrayList<ProfileRepItem>(
 				config.getPartyProfileItems());
+		setProtocolItem(config.getProtocolItem());
 		this.protocolItem = config.getProtocolItem();
 		this.numSessions = config.getNumSessions();
 		this.tournamentType = config.getTournamentType();
@@ -195,20 +194,26 @@ public class Configuration implements GuiConfiguration,
 	 * @param protocolRepItem
 	 *            Item to create Protocol out of
 	 * @return the created protocol.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
+	 * @throws InstantiateException
+	 *             if failure occurs while constructing the rep item.
 	 */
 	public static MultilateralProtocol createFrom(
-			MultiPartyProtocolRepItem protocolRepItem) throws Exception {
+			MultiPartyProtocolRepItem protocolRepItem)
+			throws InstantiateException {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class protocolClass = loader.loadClass(protocolRepItem.getClassPath());
+		Class protocolClass;
+		try {
+			protocolClass = loader.loadClass(protocolRepItem.getClassPath());
 
-		@SuppressWarnings("unchecked")
-		Constructor protocolConstructor = protocolClass.getConstructor();
+			@SuppressWarnings("unchecked")
+			Constructor protocolConstructor = protocolClass.getConstructor();
 
-		return (MultilateralProtocol) protocolConstructor.newInstance();
+			return (MultilateralProtocol) protocolConstructor.newInstance();
+		} catch (Exception e) {
+			throw new InstantiateException("failed to instantiate "
+					+ protocolRepItem, e);
+		}
+
 	}
 
 	/**
@@ -249,27 +254,6 @@ public class Configuration implements GuiConfiguration,
 	@Override
 	public void setMediatorIndex(int index) {
 		mediatorIndex = index;
-	}
-
-	/**
-	 * Gets the deadline map
-	 *
-	 * @return Deadline for all sessions in the config
-	 */
-	@Override
-	public Deadline getDeadlines() {
-		return deadlines;
-	}
-
-	/**
-	 * Sets the deadline map
-	 *
-	 * @param deadlines
-	 *            a map of deadline keys and their values
-	 */
-	@Override
-	public void setDeadlines(Deadline deadlines) {
-		this.deadlines = deadlines;
 	}
 
 	/**
@@ -345,6 +329,16 @@ public class Configuration implements GuiConfiguration,
 		return numSessions;
 	}
 
+	@Override
+	public void setProtocolItem(MultiPartyProtocolRepItem protocolItem) {
+		try {
+			setProtocol(createFrom(protocolItem));
+			this.protocolItem = protocolItem;
+		} catch (InstantiateException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Get the type of tournament
 	 *
@@ -374,17 +368,6 @@ public class Configuration implements GuiConfiguration,
 	@Override
 	public MultiPartyProtocolRepItem getProtocolItem() {
 		return protocolItem;
-	}
-
-	/**
-	 * Sets the protocol to run.
-	 *
-	 * @param protocolItem
-	 *            the protocol to run
-	 */
-	@Override
-	public void setProtocolItem(MultiPartyProtocolRepItem protocolItem) {
-		this.protocolItem = protocolItem;
 	}
 
 	/**
@@ -458,30 +441,12 @@ public class Configuration implements GuiConfiguration,
 	 * @return Session object represented in this configuration
 	 */
 	public Session getSession() {
+		// HACK move this to caller
 		if (session == null) {
-			session = new Session(deadlines);
+			session = new Session(getDeadline());
 		}
 
 		return session;
-	}
-
-	/**
-	 * Get the {@link MultilateralProtocol} object from this configuration
-	 *
-	 * @return Session object represented in this configuration
-	 * @throws java.lang.NoSuchMethodException
-	 *             If requested Party does not have a constructor accepting only
-	 *             preference profiles
-	 * @throws java.lang.ClassNotFoundException
-	 *             If requested Party class can not be found.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	@Override
-	public MultilateralProtocol getProtocol() throws Exception {
-		return createFrom(getProtocolItem());
 	}
 
 	/**
@@ -534,8 +499,4 @@ public class Configuration implements GuiConfiguration,
 		return n <= 1 ? 1 : n * factorial(n - 1);
 	}
 
-	@Override
-	public Deadline getDeadline() {
-		return deadlines;
-	}
 }

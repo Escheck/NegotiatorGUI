@@ -109,7 +109,7 @@ public class MultilateralUI extends JPanel {
 		config = new Configuration();
 
 		// set config defaults
-		config.setDeadlines(new Deadline(180, 0));
+		config.setDeadline(new Deadline(180, 0));
 		config.setProtocolItem(ContentProxy.fetchProtocols().get(0));
 		config.setNumSessions(1);
 		config.setNumAgentsPerSession(2);
@@ -134,7 +134,7 @@ public class MultilateralUI extends JPanel {
 		lstProfiles.setModel(new DefaultListModel());
 
 		// set text values
-		lblDeadlinesValue.setText(asString(config.getDeadlines()));
+		lblDeadlinesValue.setText(asString(config.getDeadline()));
 		txtNumberOfTournaments.setValue(1);
 		txtAgentsPerSession.setValue(2);
 
@@ -150,12 +150,12 @@ public class MultilateralUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DeadlineDialog dialog = new DeadlineDialog(MultilateralUI.this,
-						config.getDeadlines());
+						config.getDeadline());
 				dialog.pack();
 				dialog.setVisible(true);
 
-				config.setDeadlines(dialog.getDeadlines());
-				lblDeadlinesValue.setText(asString(config.getDeadlines()));
+				config.setDeadline(dialog.getDeadlines());
+				lblDeadlinesValue.setText(asString(config.getDeadline()));
 			}
 		});
 		cmbMediator.addActionListener(new ActionListener() {

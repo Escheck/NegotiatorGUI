@@ -24,6 +24,11 @@ public interface MultilateralTournamentConfigurationInterface {
 	MultilateralProtocol getProtocol() throws Exception;
 
 	/**
+	 * Set the protocol to new value
+	 */
+	void setProtocol(MultilateralProtocol newProtocol);
+
+	/**
 	 * Gets the number of negotiation sessions to run
 	 *
 	 * @return the number of sessions
