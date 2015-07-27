@@ -1,7 +1,7 @@
 package negotiator.config;
 
+import negotiator.Deadline;
 import negotiator.protocol.MultilateralProtocol;
-import negotiator.session.Session;
 import negotiator.tournament.TournamentGenerator;
 
 /**
@@ -13,16 +13,12 @@ import negotiator.tournament.TournamentGenerator;
 public interface MultilateralTournamentConfiguration {
 
 	/**
-	 * Get the {@link negotiator.session.Session} object from this
-	 * configurations
-	 * 
-	 * @return Session object represented in this configuration
+	 * @return Deadline for all sessions.
 	 */
-	Session getSession();
+	Deadline getDeadline();
 
 	/**
-	 * Get the {@link MultilateralProtocol} object from this
-	 * configuration
+	 * Get the {@link MultilateralProtocol} object from this configuration
 	 * 
 	 * @return Session object represented in this configuration
 	 */
