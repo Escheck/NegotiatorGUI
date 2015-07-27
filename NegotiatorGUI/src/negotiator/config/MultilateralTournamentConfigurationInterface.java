@@ -20,6 +20,7 @@ import negotiator.repository.RepItem;
  * @modified W.Pasman
  * 
  */
+// FIXME should we use setters or do everything through the constructor??
 public interface MultilateralTournamentConfigurationInterface {
 
 	/**
@@ -155,4 +156,5 @@ public interface MultilateralTournamentConfigurationInterface {
 	 *            true if repetition is allowed
 	 */
 	void setRepetitionAllowed(boolean repetitionAllowed);
+
 }
