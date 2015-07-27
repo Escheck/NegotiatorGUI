@@ -32,7 +32,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import negotiator.Deadline;
-import negotiator.config.Configuration;
+import negotiator.config.GuiConfiguration;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultiPartyTournamentProgressUI;
 import negotiator.gui.progress.MultipartyNegoEventLogger;
@@ -53,7 +53,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
  * free Community Edition (CE)).
  * <p/>
  * The configuration of this user interface is stored in the
- * {@link negotiator.config.Configuration} variable, which is also used by the
+ * {@link negotiator.config.GuiConfiguration} variable, which is also used by the
  * tournament manager to run the tournaments.
  *
  * @author David Festen
@@ -93,7 +93,7 @@ public class MultilateralUI extends JPanel {
 	private JPanel pnlStartTournament;
 
 	// Holds the configuration for this user interface
-	private final Configuration config;
+	private final GuiConfiguration config;
 
 	/**
 	 * Creates a new instance of the
@@ -106,7 +106,7 @@ public class MultilateralUI extends JPanel {
 		super();
 		add(pnlRoot);
 		setVisible(true);
-		config = new Configuration();
+		config = new GuiConfiguration();
 
 		// set config defaults
 		config.setDeadline(new Deadline(180, 0));
@@ -409,7 +409,7 @@ public class MultilateralUI extends JPanel {
 					progressUI);
 
 			final TournamentManager manager = new TournamentManager(
-					new Configuration(config));
+					new GuiConfiguration(config));
 
 			manager.addEventListener(progressUI);
 			manager.addEventListener(dataModel);
