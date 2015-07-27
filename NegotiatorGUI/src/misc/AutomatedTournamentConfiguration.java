@@ -63,7 +63,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	@Override
 	public Session getSession() {
 		if (session == null)
-			session = new Session(getDeadlines());
+			session = new Session(getDeadline());
 		return session;
 	}
 
@@ -75,7 +75,7 @@ public class AutomatedTournamentConfiguration extends Configuration {
 	}
 
 	@Override
-	public Deadline getDeadlines() {
+	public Deadline getDeadline() {
 		return new Deadline(DEADLINE_TIME, DEADLINE_ROUNDS);
 	}
 

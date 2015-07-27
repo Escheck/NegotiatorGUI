@@ -2,7 +2,6 @@ package negotiator.config;
 
 import java.util.List;
 
-import negotiator.Deadline;
 import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -44,21 +43,6 @@ public interface GuiConfiguration {
 	 *            the index to use
 	 */
 	void setMediatorIndex(int index);
-
-	/**
-	 * Gets the deadline map
-	 *
-	 * @return Deadline for one or multiple sessions in the configuration.
-	 */
-	Deadline getDeadlines();
-
-	/**
-	 * Sets the deadline map
-	 *
-	 * @param deadlines
-	 *            a map of deadline keys and their values
-	 */
-	void setDeadlines(Deadline deadlines);
 
 	/**
 	 * Gets the list of party repository items.
