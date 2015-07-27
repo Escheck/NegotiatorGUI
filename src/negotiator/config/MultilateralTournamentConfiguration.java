@@ -1,9 +1,12 @@
 package negotiator.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,22 +23,23 @@ import negotiator.repository.ProfileRepItem;
  * @author W.Pasman 27jul15
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MultilateralTournamentConfiguration implements
 		MultilateralTournamentConfigurationInterface {
 
-	@XmlAttribute
+	@XmlElement(name = "deadline")
 	private Deadline deadline;
 
 	/**
 	 * Holds the chosen protocol
 	 */
-	@XmlAttribute
+	@XmlElement
 	private MultiPartyProtocolRepItem protocolItem;
 
 	/**
 	 * Holds the chosen mediator, if any
 	 */
-	@XmlAttribute
+	@XmlElement
 	private PartyRepItem mediatorItem;
 
 	/**
@@ -55,25 +59,25 @@ public class MultilateralTournamentConfiguration implements
 	/**
 	 * Holds the number of session that should be run
 	 */
-	@XmlAttribute
+	@XmlElement
 	private int numSessions;
 
 	/**
 	 * Holds the mediator profile if any
 	 */
-	@XmlAttribute
+	@XmlElement
 	private ProfileRepItem mediatorProfile;
 
 	/**
 	 * Holds the number of agents per session
 	 */
-	@XmlAttribute
+	@XmlElement
 	private int numberOfAgentsPerSession;
 
 	/**
 	 * Holds whether repetition is allowed or not;
 	 */
-	@XmlAttribute
+	@XmlElement
 	private boolean repetitionAllowed;
 
 	public MultilateralTournamentConfiguration() {
@@ -265,4 +269,28 @@ public class MultilateralTournamentConfiguration implements
 		this.mediatorProfile = mediatorProfile;
 	}
 
+	/**
+	 * Load a new {@link MultilateralTournamentConfiguration} from file.
+	 * 
+	 * @param file
+	 *            the file to load from
+	 * @return the new {@link MultilateralTournamentConfiguration}.
+	 * @throws JAXBException
+	 */
+	public static MultilateralTournamentConfiguration load(File file)
+			throws JAXBException {
+		return MultilateralTournamentsConfiguration.load(file).getTournaments()
+				.get(0);
+	}
+
+	/**
+	 * Save this to xml file
+	 * 
+	 * @param file
+	 */
+	public void save(File file) {
+		List<MultilateralTournamentConfiguration> tournaments = new ArrayList<MultilateralTournamentConfiguration>();
+		tournaments.add(this);
+		new MultilateralTournamentsConfiguration(tournaments).save(file);
+	}
 }

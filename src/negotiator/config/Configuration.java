@@ -24,6 +24,8 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  * @modified W.Pasman #1103
  */
+// FIXME rename to GuiConfiguration and rename GuiConfiguration to
+// GuiConfigurationInterface
 public class Configuration extends MultilateralTournamentConfiguration
 		implements GuiConfiguration {
 
@@ -53,6 +55,8 @@ public class Configuration extends MultilateralTournamentConfiguration
 	public Configuration(Configuration config) throws InstantiateException {
 		super(config);
 		this.tournamentType = config.getTournamentType();
+		// save(new File("test.xml")); // enable to create an example XML file
+		// for a Configuration.
 	}
 
 	/**

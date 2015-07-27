@@ -1,6 +1,8 @@
 package negotiator;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -12,12 +14,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author W.Pasman
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Deadline {
 
-	@XmlAttribute
+	@XmlElement
 	private final Integer totalTime;
-	@XmlAttribute
+	@XmlElement
 	private final Integer totalRounds;
+
+	public Deadline() {
+		totalTime = 180;
+		totalRounds = 0;
+	}
 
 	public Deadline(Integer time, Integer rounds) {
 		totalTime = time;
