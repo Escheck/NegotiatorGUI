@@ -2,7 +2,6 @@ package negotiator.config;
 
 import negotiator.Deadline;
 import negotiator.protocol.MultilateralProtocol;
-import negotiator.tournament.TournamentGenerator;
 
 /**
  * Stores the configuration variables for the from
@@ -10,7 +9,7 @@ import negotiator.tournament.TournamentGenerator;
  *
  * @author David Festen
  */
-public interface MultilateralTournamentConfiguration {
+public interface MultilateralTournamentConfigurationInterface {
 
 	/**
 	 * @return Deadline for all sessions.
@@ -23,15 +22,6 @@ public interface MultilateralTournamentConfiguration {
 	 * @return Session object represented in this configuration
 	 */
 	MultilateralProtocol getProtocol() throws Exception;
-
-	/**
-	 * Get the list of participating {@link negotiator.parties.NegotiationParty}
-	 * objects from this configuration
-	 * 
-	 * @return list of party objects represented in this configuration or an
-	 *         empty list if none
-	 */
-	TournamentGenerator getPartiesGenerator();
 
 	/**
 	 * Gets the number of negotiation sessions to run

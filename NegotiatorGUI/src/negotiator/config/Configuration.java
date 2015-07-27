@@ -26,7 +26,7 @@ import negotiator.utility.UtilitySpace;
  * @author David Festen
  */
 public class Configuration implements GuiConfiguration,
-		MultilateralTournamentConfiguration {
+		MultilateralTournamentConfigurationInterface {
 	/**
 	 * Holds the deadline constraints
 	 */
@@ -500,7 +500,6 @@ public class Configuration implements GuiConfiguration,
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	@Override
 	public TournamentGenerator getPartiesGenerator() {
 
 		TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
