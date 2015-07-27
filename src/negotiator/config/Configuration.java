@@ -27,7 +27,7 @@ import negotiator.utility.UtilitySpace;
 // FIXME rename to GuiConfiguration and rename GuiConfiguration to
 // GuiConfigurationInterface
 public class Configuration extends MultilateralTournamentConfiguration
-		implements GuiConfiguration {
+		implements GuiConfigurationInterface {
 
 	/**
 	 * Holds the type of tournament
