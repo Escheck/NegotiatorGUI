@@ -43,13 +43,13 @@ public class TournamentIndicesGenerator implements Iterable<List<Integer>> {
 		}
 	}
 
-	public TournamentIndicesGenerator(int numAgentsPerSession, int size,
-			boolean repetitionAllowed2, int size2) {
-		List<Integer> indices = new ArrayList<Integer>(size2);
-		for (int i = 0; i < size2; i++) {
+	public TournamentIndicesGenerator(int numAgentsPerSession, int profilesPerRun,
+			boolean repAllowed, int numPartyRepItems) {
+		List<Integer> indices = new ArrayList<Integer>(numPartyRepItems);
+		for (int i = 0; i < numPartyRepItems; i++) {
 			indices.add(i);
 		}
-		init(numAgentsPerSession, size, repetitionAllowed2, indices);
+		init(numAgentsPerSession, profilesPerRun, repAllowed, indices);
 	}
 
 	private Generator<Integer> createPermutationGenerator(
