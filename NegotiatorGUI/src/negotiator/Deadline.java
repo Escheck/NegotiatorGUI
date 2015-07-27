@@ -1,5 +1,8 @@
 package negotiator;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Contains the deadline which is a combination of time and rounds deadline. If
  * both are set, the deadline is reached when the first deadline (time or
@@ -8,9 +11,12 @@ package negotiator;
  * @author David Festen
  * @author W.Pasman
  */
+@XmlRootElement
 public class Deadline {
 
+	@XmlAttribute
 	private final Integer totalTime;
+	@XmlAttribute
 	private final Integer totalRounds;
 
 	public Deadline(Integer time, Integer rounds) {
