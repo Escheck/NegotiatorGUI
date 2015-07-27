@@ -543,6 +543,45 @@ The parties (Agents) and profiles for each session are determined by created by 
 The results of the tournament are shown on screen and also stored in a log file.  These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel})
 	
 
+\subsection{Running from the command line}
+You can run a multi-party tournament from the command line, as follows.
+
+\begin{enumerate}
+\item Prepare an xml file that describes the settings for the tournament
+\item Run the command runner and give it the prepared file 
+\end{enumerate}
+
+\subsubsection{Prepare the XML settings file}
+Make a copy of the \verb|xmlRunnerExample.xml| file inside your genius directory and edit it (with a plain text editor). 
+
+Inside the negotiation-runner element you will find the following elements that need to be edited according to your plans:
+
+\begin{itemize}
+
+\item General settings. These are used for every session that will be run. The current options are:
+    \begin{itemize}
+    \item \textbf{repetitions}. These are the number of times that each negotiation will be repeated.
+    \item \textbf{permutations}. If false, the configurations are used just once, exactly with the given settings. If set to true, permutations are generated for all given configurations. This means that the N parties are hussled to make N! different orders.
+    \end{itemize}
+
+\item \textbf{configuration} elements.  There can be multiple of these. Each of these defines the settings to use when running a session (or a set of sessions based on permutations of the settings in this configuration, see the permutations variable above). Each session contains:
+    \begin{itemize}
+    \item \textbf{party}. There can be a number of these, the number of them determines the number of parties in the negotiation. Each contains a \verb|full.class.path| of a NegotiationParty. 
+    \item \textbf{profile}. There can be a number of these. The number of these must match the number of parties and they must have the same order. Each of them must be a full URI. Usually these URIs have to point to files and therefore are of the form \verb|file:path/to/file.xml|
+    \item \textbf{domain}. This must be a URI specifying the \verb|file:path/to/domain.xml| 
+    \item \textbf{protocol}. This must be a full class path of the protocol to use. Currently this should be \verb|negotiator.protocol.StackedAlternatingOffersProtocol| as we have no other protocols yet.
+    \item \textbf{deadline-type}. This must be either \verb|Time| or \verb|Round| and determines whether the deadline for this session will be based on a time limit or a limit on the number of rounds.
+    \item \textbf{deadline-value}. This must be a positive integer determining the value for the deadline (seconds or number of rounds).
+    \end{itemize}
+
+\end{itemize}
+
+\subsubsection{run the tournament}
+To run the tournament, open a terminal/console and change the working directory to the genius directory.
+Then enter this command (where yourfile.xml is the name of the file you just edited):
+
+\vspace{0.5cm}
+\verb|java -cp negosimulator.jar negotiator.xml.multipartyrunner.ConsoleApp yourfile.xml|
 
 
 
