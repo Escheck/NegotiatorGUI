@@ -1,204 +1,185 @@
 package negotiator.gui.negosession;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import negotiator.repository.ProfileRepItem;
-import negotiator.repository.RepItem;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AddFromListDialog<T extends RepItem> extends JDialog
-{
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JList lstContent;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 
-    public AddFromListDialog(Component parent, List<T> repItems)
-    {
-        setLocationRelativeTo(parent);
-        setModel(repItems);
+import negotiator.repository.ProfileRepItem;
+import negotiator.repository.RepItem;
 
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-        buttonOK.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                onOK();
-            }
-        });
+/**
+ * Dialog to request a list of items of the type T from the user
+ * 
+ * @author W.Pasman loosely based on a form that was generated from IntelliJ
+ *         that showed unreadable and uneditable.
+ *
+ * @param <T>
+ *            the type of items for in the list.
+ */
+@SuppressWarnings("serial")
+public class AddFromListDialog<T extends RepItem> extends JDialog {
+	private JPanel contentPane;
+	private JButton buttonOK;
+	private JButton buttonCancel;
+	private JList lstContent;
+	private JButton buttonBrowse;
 
-        buttonCancel.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                onCancel();
-            }
-        });
+	public AddFromListDialog(Component parent, List<T> repItems) {
+		init();
+		setLocationRelativeTo(parent);
+		setModel(repItems);
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
-            {
-                onCancel();
-            }
-        });
+		setContentPane(contentPane);
+		setModal(true);
+		getRootPane().setDefaultButton(buttonOK);
+		buttonOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onOK();
+			}
+		});
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
+		buttonCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onCancel();
+			}
+		});
 
-    private void setModel(List<T> lst)
-    {
-        final List<T> modelList = new ArrayList<T>(lst);
-        lstContent.setModel(new AbstractListModel()
-        {
-            @Override
-            public int getSize()
-            {
-                return modelList.size();
-            }
+		// call onCancel() when cross is clicked
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				onCancel();
+			}
+		});
 
-            @Override
-            public Object getElementAt(int index)
-            {
-                return modelList.get(index);
-            }
+		// call onCancel() on ESCAPE
+		contentPane.registerKeyboardAction(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onCancel();
+			}
+		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		buttonBrowse.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onBrowse();
+			}
+		});
+	}
 
+	private void setModel(List<T> lst) {
+		final List<T> modelList = new ArrayList<T>(lst);
+		lstContent.setModel(new AbstractListModel() {
+			@Override
+			public int getSize() {
+				return modelList.size();
+			}
 
-        });
-        lstContent.setCellRenderer(new DefaultListCellRenderer()
-        {
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
-            {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			@Override
+			public Object getElementAt(int index) {
+				return modelList.get(index);
+			}
 
-                if (value instanceof ProfileRepItem)
-                    setText(MultilateralUI.getShortPath((ProfileRepItem) value));
+		});
+		lstContent.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				super.getListCellRendererComponent(list, value, index,
+						isSelected, cellHasFocus);
 
-                else if (value instanceof RepItem)
-                    setText(((RepItem) value).getName());
+				if (value instanceof ProfileRepItem)
+					setText(MultilateralUI.getShortPath((ProfileRepItem) value));
 
-                return this;
-            }
-        });
-    }
+				else if (value instanceof RepItem)
+					setText(((RepItem) value).getName());
 
-    public List<T> getSelected()
-    {
-        List<Object> selectedObjects = Arrays.asList(lstContent.getSelectedValues());
-        List<T> selectedRepItems = new ArrayList<T>(selectedObjects.size());
+				return this;
+			}
+		});
+	}
 
-        for (Object selectedObject : selectedObjects)
-        {
-            // we are certain this cast is correct (Generic type type-cast)
-            @SuppressWarnings("unchecked")
-            boolean add = selectedRepItems.add((T) selectedObject);
-        }
-        return selectedRepItems;
-    }
+	public List<T> getSelected() {
+		List<Object> selectedObjects = Arrays.asList(lstContent
+				.getSelectedValues());
+		List<T> selectedRepItems = new ArrayList<T>(selectedObjects.size());
 
-    private void onOK()
-    {
-// add your code here
-        dispose();
-    }
+		for (Object selectedObject : selectedObjects) {
+			// we are certain this cast is correct (Generic type type-cast)
+			@SuppressWarnings("unchecked")
+			boolean add = selectedRepItems.add((T) selectedObject);
+		}
+		return selectedRepItems;
+	}
 
-    private void onCancel()
-    {
-// add your code here if necessary
-        dispose();
-    }
+	private void onOK() {
+		dispose();
+	}
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+	private void onCancel() {
+		dispose();
+	}
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$()
-    {
-        contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        buttonOK = new JButton();
-        buttonOK.setText("OK");
-        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
-        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JScrollPane scrollPane1 = new JScrollPane();
-        panel3.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        lstContent = new JList();
-        final DefaultListModel defaultListModel1 = new DefaultListModel();
-        defaultListModel1.addElement("Item 1");
-        defaultListModel1.addElement("Item 2");
-        defaultListModel1.addElement("Item 3");
-        defaultListModel1.addElement("Item 4");
-        defaultListModel1.addElement("Item 5");
-        defaultListModel1.addElement("Item 6");
-        defaultListModel1.addElement("Item 7");
-        defaultListModel1.addElement("Item 8");
-        defaultListModel1.addElement("Item 9");
-        defaultListModel1.addElement("Item 10");
-        defaultListModel1.addElement("Item 11");
-        defaultListModel1.addElement("Item 12");
-        defaultListModel1.addElement("Item 13");
-        defaultListModel1.addElement("Item 14");
-        defaultListModel1.addElement("Item 15");
-        defaultListModel1.addElement("Item 16");
-        defaultListModel1.addElement("Item 17");
-        defaultListModel1.addElement("Item 18");
-        defaultListModel1.addElement("Item 19");
-        defaultListModel1.addElement("Item 20");
-        defaultListModel1.addElement("Item 21");
-        defaultListModel1.addElement("Item 22");
-        defaultListModel1.addElement("Item 23");
-        defaultListModel1.addElement("Item 24");
-        lstContent.setModel(defaultListModel1);
-        scrollPane1.setViewportView(lstContent);
-    }
+	private void onBrowse() {
+		JFileChooser fc = new JFileChooser();
+		fc.showOpenDialog(this);
 
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$()
-    {
-        return contentPane;
-    }
+		if (fc.getSelectedFile() != null) {
+
+		}
+	}
+
+	private void init() {
+		contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout());
+
+		final JPanel panel1 = new JPanel();
+		panel1.setLayout(new BorderLayout());
+		contentPane.add(panel1, BorderLayout.SOUTH);
+
+		// The buttons panel
+		final JPanel panel2 = new JPanel();
+		panel2.setLayout(new FlowLayout());
+		panel1.add(panel2, BorderLayout.CENTER);
+		buttonOK = new JButton("OK");
+		panel2.add(buttonOK);
+		buttonBrowse = new JButton("Browse...");
+		panel2.add(buttonBrowse);
+		buttonCancel = new JButton("Cancel");
+		panel2.add(buttonCancel);
+
+		final JPanel panel3 = new JPanel();
+		panel3.setLayout(new BorderLayout());
+
+		contentPane.add(panel3, BorderLayout.CENTER);
+
+		final JScrollPane scrollPane1 = new JScrollPane();
+		panel3.add(scrollPane1, BorderLayout.CENTER);
+		lstContent = new JList();
+		final DefaultListModel defaultListModel1 = new DefaultListModel();
+		lstContent.setModel(defaultListModel1);
+		scrollPane1.setViewportView(lstContent);
+	}
+
 }
