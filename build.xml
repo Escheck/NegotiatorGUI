@@ -14,7 +14,7 @@
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
 -->
-<project name="Negotiator" default="makeGenius5.2.9" basedir=".">
+<project name="Negotiator" default="makeGenius5.2.10" basedir=".">
 	<property name="dist" location="dist" />
 	<property name="build" location="bin" />
 	<property name="javadoc" location="javadoc" />
@@ -541,7 +541,7 @@
 		<ant target="cleanup" />
 	</target>
 
-	<target name="makeGenius5.2.9" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
+	<target name="makeGenius5.2.10" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrepository.xml" />
 			<globmapper from="domainrepository.xml" to="domainrepository.xml" />
@@ -578,7 +578,7 @@
 			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
-		<zip destfile="${dist}/Genius 5.2.9.zip">
+		<zip destfile="${dist}/Genius 5.2.10.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
@@ -589,7 +589,7 @@
 			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius" />
 			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials" />
 			<zipfileset dir="${tutorials}" includes="multipartyexample/**" prefix="genius" />
-			<zipfileset dir="xml-runner" includes="**" prefix="genius" />
+			<zipfileset dir="xml-runner" includes="multilateraltournament.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
