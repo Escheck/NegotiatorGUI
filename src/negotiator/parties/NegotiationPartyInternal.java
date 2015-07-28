@@ -226,4 +226,13 @@ public class NegotiationPartyInternal {
 		return agentId;
 	}
 
+	/**
+	 * Get the session that this party is using.
+	 * 
+	 * @return {@link Session}.
+	 */
+	public Session getSession() {
+		return session;
+	}
+
 }

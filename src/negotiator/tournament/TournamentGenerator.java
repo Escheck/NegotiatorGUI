@@ -10,7 +10,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Deadline;
 import negotiator.Domain;
-import negotiator.config.GuiConfiguration;
+import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
 import negotiator.parties.NegotiationPartyInternal;
@@ -44,7 +44,7 @@ public class TournamentGenerator {
 	/**
 	 * Holds the configuration used by this tournament generator
 	 */
-	final GuiConfiguration config;
+	final MultilateralTournamentConfiguration config;
 
 	/**
 	 * Holds the indices used by this tournament generator
@@ -54,14 +54,15 @@ public class TournamentGenerator {
 	/**
 	 * Creates a new instance of the {@link TournamentGenerator} class.
 	 *
-	 * @param config
+	 * @param configuration
 	 *            The configuration used for the tournaments
 	 * @param indicesGenerator
 	 *            The indices generator used to generate lists of parties
 	 */
-	public TournamentGenerator(GuiConfiguration config,
+	public TournamentGenerator(
+			MultilateralTournamentConfiguration configuration,
 			TournamentIndicesGenerator indicesGenerator) {
-		this.config = config;
+		this.config = configuration;
 		this.indicesIterator = indicesGenerator.iterator();
 	}
 
@@ -312,7 +313,8 @@ public class TournamentGenerator {
 	}
 
 	/**
-	 * Generates a list of parties at the given indices.
+	 * Generates a list of parties at the given indices. The session is created
+	 * as well and linked into the parties.
 	 *
 	 * @param indices
 	 *            The indices of the parties to include
@@ -322,12 +324,17 @@ public class TournamentGenerator {
 	 * @throws RepositoryException
 	 *             if repository describing agent can not be loaded
 	 */
-	List<NegotiationPartyInternal> generateSessionParties(List<Integer> indices)
-			throws RepositoryException, NegotiatorException {
+	private List<NegotiationPartyInternal> generateSessionParties(
+			List<Integer> indices) throws RepositoryException,
+			NegotiatorException {
+		Session session = new Session(config.getDeadline());
 		return generateSessionParties(indices, config.getPartyItems(),
-				config.getPartyProfileItems(), null, config.getMediatorIndex(),
-				config.getMediatorItem(), config.getMediatorProfile(),
-				config.getSession());
+				config.getPartyProfileItems(), null, getMediatorIndex(),
+				config.getMediatorItem(), config.getMediatorProfile(), session);
+	}
+
+	public int getMediatorIndex() {
+		return config.getPartyItems().indexOf(config.getMediatorItem());
 	}
 
 	/**
@@ -347,6 +354,27 @@ public class TournamentGenerator {
 
 	public boolean hasNext() {
 		return indicesIterator.hasNext();
+	}
+
+	/**
+	 * @return number of sessions in this tournament
+	 */
+	public int numSessionsPerTournament() {
+		int nAgents = config.getPartyItems().size();
+		int nProfiles = config.getPartyProfileItems().size();
+		int perSession = config.getNumAgentsPerSession();
+
+		int profileCombos = factorial(nProfiles)
+				/ (factorial(perSession) * factorial(nProfiles - perSession));
+		int agentCombos = config.getRepetitionAllowed() ? (int) Math.pow(
+				nAgents, perSession) : factorial(nAgents)
+				/ factorial(nAgents - perSession);
+
+		return agentCombos * profileCombos;
+	}
+
+	private int factorial(int n) {
+		return n <= 1 ? 1 : n * factorial(n - 1);
 	}
 
 }

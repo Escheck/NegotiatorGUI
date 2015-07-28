@@ -5,6 +5,7 @@ import static misc.ConsoleHelper.useConsoleOut;
 import static misc.Time.prettyTimeSpan;
 
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeoutException;
 
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.config.GuiConfiguration;
+import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.events.AgreementEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionFailedEvent;
@@ -20,12 +22,15 @@ import negotiator.events.SessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
+import negotiator.exceptions.InstantiateException;
 import negotiator.exceptions.NegotiatorException;
 import negotiator.parties.NegotiationParty;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.tournament.TournamentGenerator;
+import negotiator.utility.TournamentIndicesGenerator;
 
 /**
  * Manages a multi-lateral tournament and makes sure that the
@@ -42,7 +47,7 @@ public class TournamentManager extends Thread {
 	/**
 	 * Holds the configuration used by this tournament manager
 	 */
-	private GuiConfiguration configuration;
+	private MultilateralTournamentConfiguration configuration;
 
 	/**
 	 * Used to silence and restore console output for agents
@@ -131,9 +136,13 @@ public class TournamentManager extends Thread {
 		for (int tournamentNumber = 0; tournamentNumber < configuration
 				.getNumTournaments(); tournamentNumber++) {
 
-			// Generator for parties (don't generate them up-front as these can
-			// be many)
-			TournamentGenerator generator = configuration.getPartiesGenerator();
+			TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
+					configuration.getNumAgentsPerSession(), configuration
+							.getPartyProfileItems().size(),
+					configuration.getRepetitionAllowed(), configuration
+							.getPartyItems().size());
+			TournamentGenerator generator = new TournamentGenerator(
+					configuration, indicesGenerator);
 
 			runSessions(tournamentNumber, generator);
 
@@ -150,7 +159,7 @@ public class TournamentManager extends Thread {
 	private void runSessions(int tournamentNumber,
 			final TournamentGenerator generator) {
 		int sessionNumber = 0;
-		int totalSessions = configuration.numSessionsPerTournament();
+		int totalSessions = generator.numSessionsPerTournament();
 		notifyEvent(new TournamentStartedEvent(this, tournamentNumber,
 				totalSessions));
 
@@ -166,7 +175,7 @@ public class TournamentManager extends Thread {
 
 			StringBuilder logline = new StringBuilder("" + sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
-					1000 * configuration.getSession().getDeadlines()
+					1000 * configuration.getDeadline()
 							.getTimeOrDefaultTimeout());
 			try {
 				partyList = getPartyList(executor, generator);
@@ -263,8 +272,8 @@ public class TournamentManager extends Thread {
 		Exception exception = null;
 
 		try {
-			MultilateralProtocol protocol = configuration.getProtocol();
-			Session session = configuration.getSession().copy();
+			MultilateralProtocol protocol = getProtocol();
+			Session session = parties.get(0).getSession();
 
 			// TODO: ** hackery ** we should make sure that session gives
 			// timeline to agents, not the other way around.
@@ -311,4 +320,36 @@ public class TournamentManager extends Thread {
 		// return nSessionsRemaining * (System.nanoTime() / start) /
 		// (double)nSessionsDone;
 	}
+
+	/**
+	 * Create a new instance of the Protocol object from a
+	 * {@link MultiPartyProtocolRepItem}
+	 *
+	 * @param protocolRepItem
+	 *            Item to create Protocol out of
+	 * @return the created protocol.
+	 * @throws InstantiateException
+	 *             if failure occurs while constructing the rep item.
+	 */
+	public MultilateralProtocol getProtocol() throws InstantiateException {
+
+		MultiPartyProtocolRepItem protocolRepItem = configuration
+				.getProtocolItem();
+
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
+		Class protocolClass;
+		try {
+			protocolClass = loader.loadClass(protocolRepItem.getClassPath());
+
+			@SuppressWarnings("unchecked")
+			Constructor protocolConstructor = protocolClass.getConstructor();
+
+			return (MultilateralProtocol) protocolConstructor.newInstance();
+		} catch (Exception e) {
+			throw new InstantiateException("failed to instantiate "
+					+ protocolRepItem, e);
+		}
+
+	}
+
 }
