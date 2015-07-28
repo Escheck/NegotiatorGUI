@@ -12,8 +12,6 @@ import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
 import negotiator.session.Session;
-import negotiator.tournament.TournamentGenerator;
-import negotiator.utility.TournamentIndicesGenerator;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -224,48 +222,6 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration
 	@Override
 	public void setTournamentType(String type) {
 		tournamentType = type;
-	}
-
-	/**
-	 * Get the list of participating {@link negotiator.parties.NegotiationParty}
-	 * objects from this configuration
-	 *
-	 * @return list of party objects represented in this configuration or an
-	 *         empty list if none
-	 * @throws java.lang.NoSuchMethodException
-	 *             If requested Party does not have a constructor accepting only
-	 *             preference profiles
-	 * @throws java.lang.ClassNotFoundException
-	 *             If requested Party class can not be found.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	public TournamentGenerator getPartiesGenerator() {
-
-		TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
-				getNumAgentsPerSession(), getPartyProfileItems().size(),
-				getRepetitionAllowed(), getPartyItems().size());
-		return new TournamentGenerator(this, indicesGenerator);
-	}
-
-	public int numSessionsPerTournament() {
-		int nAgents = getPartyItems().size();
-		int nProfiles = getPartyProfileItems().size();
-		int perSession = getNumAgentsPerSession();
-
-		int profileCombos = factorial(nProfiles)
-				/ (factorial(perSession) * factorial(nProfiles - perSession));
-		int agentCombos = getRepetitionAllowed() ? (int) Math.pow(nAgents,
-				perSession) : factorial(nAgents)
-				/ factorial(nAgents - perSession);
-
-		return agentCombos * profileCombos;
-	}
-
-	private int factorial(int n) {
-		return n <= 1 ? 1 : n * factorial(n - 1);
 	}
 
 }

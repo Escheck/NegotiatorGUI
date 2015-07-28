@@ -14,8 +14,6 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.session.Session;
-import negotiator.tournament.TournamentGenerator;
-import negotiator.utility.TournamentIndicesGenerator;
 
 public class AutomatedTournamentConfiguration extends GuiConfiguration {
 
@@ -116,17 +114,18 @@ public class AutomatedTournamentConfiguration extends GuiConfiguration {
 		return parties;
 	}
 
-	@Override
-	public TournamentGenerator getPartiesGenerator() {
-
-		List<Integer> indices = new ArrayList<Integer>(getPartyItems().size());
-		for (int i = 0; i < getPartyItems().size(); i++)
-			indices.add(i);
-
-		TournamentIndicesGenerator indicesGenerator = new TournamentIndicesGenerator(
-				AGENTS_PER_RUN, PROFILES_PER_RUN, REPETITION_ALLOWED, indices);
-		return new TournamentGenerator(this, indicesGenerator);
-	}
+	// @Override
+	// public TournamentGenerator getPartiesGenerator() {
+	//
+	// List<Integer> indices = new ArrayList<Integer>(getPartyItems().size());
+	// for (int i = 0; i < getPartyItems().size(); i++)
+	// indices.add(i);
+	//
+	// TournamentIndicesGenerator indicesGenerator = new
+	// TournamentIndicesGenerator(
+	// AGENTS_PER_RUN, PROFILES_PER_RUN, REPETITION_ALLOWED, indices);
+	// return new TournamentGenerator(this, indicesGenerator);
+	// }
 
 	@Override
 	public int getNumTournaments() {
