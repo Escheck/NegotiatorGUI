@@ -53,8 +53,8 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
  * free Community Edition (CE)).
  * <p/>
  * The configuration of this user interface is stored in the
- * {@link negotiator.config.GuiConfiguration} variable, which is also used by the
- * tournament manager to run the tournaments.
+ * {@link negotiator.config.GuiConfiguration} variable, which is also used by
+ * the tournament manager to run the tournaments.
  *
  * @author David Festen
  */
@@ -194,10 +194,11 @@ public class MultilateralUI extends JPanel {
 		btnAddAgents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<PartyRepItem> items = ContentProxy
-						.fetchPartiesForProtocol(config.getProtocolItem());
-				AddFromListDialog dialog = new AddFromListDialog<PartyRepItem>(
-						MultilateralUI.this, items);
+				// List<PartyRepItem> items = ContentProxy
+				// .fetchPartiesForProtocol(config.getProtocolItem());
+				AddFromListDialog<PartyRepItem> dialog = new AddFromListDialog<PartyRepItem>(
+						MultilateralUI.this, PartyRepItem.class, config
+								.getProtocolItem());
 				dialog.pack();
 				dialog.setVisible(true);
 
@@ -234,9 +235,8 @@ public class MultilateralUI extends JPanel {
 		btnAddProfiles.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<ProfileRepItem> items = ContentProxy.fetchProfiles();
 				AddFromListDialog dialog = new AddFromListDialog<ProfileRepItem>(
-						MultilateralUI.this, items);
+						MultilateralUI.this, ProfileRepItem.class, null);
 				dialog.pack();
 				dialog.setVisible(true);
 

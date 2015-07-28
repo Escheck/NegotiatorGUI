@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
+import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 
@@ -44,10 +45,11 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 	private JList lstContent;
 	private JButton buttonBrowse;
 
-	public AddFromListDialog(Component parent, List<T> repItems) {
+	public AddFromListDialog(Component parent, Class<T> elementType,
+			MultiPartyProtocolRepItem protocol) {
 		init();
 		setLocationRelativeTo(parent);
-		setModel(repItems);
+		setModel(ContentProxy.fetchList(elementType, protocol));
 
 		setContentPane(contentPane);
 		setModal(true);
