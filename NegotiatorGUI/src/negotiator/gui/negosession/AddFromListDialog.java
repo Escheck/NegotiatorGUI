@@ -31,12 +31,17 @@ import negotiator.repository.RepItem;
 /**
  * Dialog to request a list of items of the type T from the user
  * 
- * @author W.Pasman loosely based on a form that was generated from IntelliJ
- *         that showed unreadable and uneditable.
+ * @author David Festen
+ * @modified W.Pasman loosely based on a form that was generated from IntelliJ
+ *           that showed unreadable and uneditable. Changed interface to allow
+ *           the choosable items to be changed .
  *
  * @param <T>
  *            the type of items for in the list.
  */
+
+// FIXME maybe we should do this differently. Particularly the hard link to
+// ContentProxy is not nice. Let's make an interface providing add and getList.
 @SuppressWarnings("serial")
 public class AddFromListDialog<T extends RepItem> extends JDialog {
 	private JPanel contentPane;
@@ -66,6 +71,13 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 			}
 		});
 
+		buttonBrowse.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onBrowse();
+			}
+		});
+
 		// call onCancel() when cross is clicked
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -81,12 +93,6 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 			}
 		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		buttonBrowse.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				onBrowse();
-			}
-		});
 	}
 
 	private void setModel(List<T> lst) {
@@ -167,7 +173,7 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 		buttonOK = new JButton("OK");
 		panel2.add(buttonOK);
 		buttonBrowse = new JButton("Browse...");
-		panel2.add(buttonBrowse);
+		// panel2.add(buttonBrowse);
 		buttonCancel = new JButton("Cancel");
 		panel2.add(buttonCancel);
 
