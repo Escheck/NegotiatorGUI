@@ -6,9 +6,7 @@ import java.util.List;
 import negotiator.Deadline;
 import negotiator.DeadlineType;
 import negotiator.config.GuiConfiguration;
-import negotiator.protocol.MultilateralProtocol;
 import negotiator.repository.DomainRepItem;
-import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
@@ -56,20 +54,6 @@ public class AutomatedTournamentConfiguration extends GuiConfiguration {
 
 	public AutomatedTournamentConfiguration(int runNumber) {
 		this.runNumber = runNumber;
-	}
-
-	@Override
-	public Session getSession() {
-		if (session == null)
-			session = new Session(getDeadline());
-		return session;
-	}
-
-	@Override
-	public MultilateralProtocol getProtocol() throws Exception {
-		MultiPartyProtocolRepItem protocolRepItem = (MultiPartyProtocolRepItem) Repository
-				.getMultiPartyProtocolRepository().getItems().get(0);
-		return GuiConfiguration.createFrom(protocolRepItem);
 	}
 
 	@Override
@@ -130,11 +114,6 @@ public class AutomatedTournamentConfiguration extends GuiConfiguration {
 	@Override
 	public int getNumTournaments() {
 		return NUMBER_OF_RUNS;
-	}
-
-	@Override
-	public int getMediatorIndex() {
-		return 0;
 	}
 
 	@Override

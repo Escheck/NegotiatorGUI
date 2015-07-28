@@ -1,6 +1,5 @@
 package negotiator.config;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 
 import negotiator.Domain;
@@ -11,7 +10,6 @@ import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
-import negotiator.session.Session;
 import negotiator.utility.UtilitySpace;
 
 /**
@@ -21,20 +19,9 @@ import negotiator.utility.UtilitySpace;
  * a new tournament.
  *
  * @author David Festen
- * @modified W.Pasman #1103
+ * @modified W.Pasman #1103 #1106
  */
-public class GuiConfiguration extends MultilateralTournamentConfiguration
-		implements GuiConfigurationInterface {
-
-	/**
-	 * Holds the type of tournament
-	 */
-	private String tournamentType;
-
-	/**
-	 * Holds the session if generated
-	 */
-	private Session session;
+public class GuiConfiguration extends MultilateralTournamentConfiguration {
 
 	public GuiConfiguration() {
 
@@ -52,8 +39,7 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration
 	public GuiConfiguration(GuiConfiguration config)
 			throws InstantiateException {
 		super(config);
-		this.tournamentType = config.getTournamentType();
-		save(new File("test.xml")); // enable to create an example XML file
+		// save(new File("test.xml")); // enable to create an example XML file
 		// for a Configuration.
 	}
 
@@ -171,57 +157,6 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration
 		Domain domain = Repository.get_domain_repos().getDomain(
 				item.getDomain());
 		return Repository.get_domain_repos().getUtilitySpace(domain, item);
-	}
-
-	@Override
-	public int getMediatorIndex() {
-		return getPartyItems().indexOf(getMediatorItem());
-	}
-
-	@Override
-	public void setMediatorIndex(int index) {
-		setMediatorItem(getPartyItems().get(index));
-
-	}
-
-	@Override
-	public MultilateralProtocol getProtocol() throws Exception {
-		return createFrom(getProtocolItem());
-	}
-
-	/**
-	 * Get the {@link negotiator.session.Session} object from this configuration
-	 *
-	 * @return Session object represented in this configuration
-	 */
-	public Session getSession() {
-		// HACK move this to caller
-		if (session == null) {
-			session = new Session(getDeadline());
-		}
-
-		return session;
-	}
-
-	/**
-	 * Get the type of tournament
-	 *
-	 * @return the type of tournament
-	 */
-	@Override
-	public String getTournamentType() {
-		return tournamentType;
-	}
-
-	/**
-	 * Set the type of tournament
-	 *
-	 * @param type
-	 *            the type of tournament
-	 */
-	@Override
-	public void setTournamentType(String type) {
-		tournamentType = type;
 	}
 
 }
