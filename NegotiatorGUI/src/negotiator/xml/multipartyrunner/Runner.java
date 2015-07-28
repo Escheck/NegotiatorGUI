@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import javax.xml.bind.JAXBException;
 
-import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.config.MultilateralTournamentsConfiguration;
 import negotiator.gui.About;
 
@@ -53,10 +52,11 @@ public class Runner {
 		sc.close();
 
 		// run xml configuration
-		MultilateralTournamentConfiguration config = MultilateralTournamentConfiguration
+		MultilateralTournamentsConfiguration config = MultilateralTournamentsConfiguration
 				.load(new File(input));
 
-		new MultilatTourRunner(config, output).start();
+		// HACK run first tournament only for now.
+		new MultilatTourRunner(config.getTournaments().get(0), output).start();
 
 		// tell user where results are stored
 		String logLocation = System.getProperty("user.dir") + "/" + output;

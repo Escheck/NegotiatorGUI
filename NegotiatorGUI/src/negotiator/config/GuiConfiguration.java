@@ -1,5 +1,6 @@
 package negotiator.config;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 
 import negotiator.Domain;
@@ -54,7 +55,7 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration
 			throws InstantiateException {
 		super(config);
 		this.tournamentType = config.getTournamentType();
-		// save(new File("test.xml")); // enable to create an example XML file
+		save(new File("test.xml")); // enable to create an example XML file
 		// for a Configuration.
 	}
 
