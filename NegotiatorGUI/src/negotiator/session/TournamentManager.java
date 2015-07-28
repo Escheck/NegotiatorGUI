@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.MultipartyNegotiationEventListener;
-import negotiator.config.GuiConfiguration;
 import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.events.AgreementEvent;
 import negotiator.events.NegotiationEvent;
@@ -74,7 +73,7 @@ public class TournamentManager extends Thread {
 	 * @param config
 	 *            The configuration to use for this Tournament
 	 */
-	public TournamentManager(GuiConfiguration config) {
+	public TournamentManager(MultilateralTournamentConfiguration config) {
 		configuration = config;
 	}
 

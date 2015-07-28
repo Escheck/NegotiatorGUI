@@ -1,6 +1,7 @@
 package negotiator.xml.multipartyrunner;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,8 +9,13 @@ import java.util.Scanner;
 
 import javax.xml.bind.JAXBException;
 
+import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.config.MultilateralTournamentsConfiguration;
 import negotiator.gui.About;
+import negotiator.gui.negosession.MultiPartyDataModel;
+import negotiator.gui.progress.MultiPartyTournamentProgressUI;
+import negotiator.gui.progress.MultipartyNegoEventLogger;
+import negotiator.session.TournamentManager;
 
 /**
  * Genius console entry point for running a
@@ -36,8 +42,9 @@ public class Runner {
 	 *            1st argument: input file or empty to be prompted. 2nd
 	 *            argument: output file or empty to be prompted
 	 * @throws JAXBException
+	 * @throws IOException
 	 */
-	public static void main(String[] args) throws JAXBException {
+	public static void main(String[] args) throws JAXBException, IOException {
 
 		// print welcome message
 		System.out
@@ -52,15 +59,37 @@ public class Runner {
 		sc.close();
 
 		// run xml configuration
-		MultilateralTournamentsConfiguration config = MultilateralTournamentsConfiguration
+		MultilateralTournamentsConfiguration multiconfig = MultilateralTournamentsConfiguration
 				.load(new File(input));
 
-		// HACK run first tournament only for now.
-		new MultilatTourRunner(config.getTournaments().get(0), output).start();
+		MultilateralTournamentConfiguration config = multiconfig
+				.getTournaments().get(0);
 
-		// tell user where results are stored
-		String logLocation = System.getProperty("user.dir") + "/" + output;
-		System.out.println("Logfile stored at " + logLocation);
+		// init data model, GUI, logger.
+		MultiPartyDataModel dataModel = new MultiPartyDataModel(
+				config.getNumAgentsPerSession());
+
+		MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
+				dataModel);
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+		String logName = config.getPartyProfileItems().get(0).getDomain()
+				.getName();
+		logName = String.format("log/tournament-%s-%s.log.csv",
+				dateFormat.format(new Date()), logName);
+
+		MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
+				logName, config.getNumAgentsPerSession(), dataModel);
+		dataModel.addTableModelListener(myLogger);
+
+		final TournamentManager manager = new TournamentManager(config);
+
+		manager.addEventListener(progressUI);
+		manager.addEventListener(dataModel);
+
+		manager.start(); // runs the manager thread async
+		System.out.println("Negotiation started successfully");
+
 	}
 
 	/** Requests the input file from System.in (or from args[0] if defined) */
