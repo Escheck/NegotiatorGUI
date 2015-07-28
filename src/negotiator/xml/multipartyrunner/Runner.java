@@ -21,9 +21,9 @@ import negotiator.session.TournamentManager;
  * {@link MultilateralTournamentsConfiguration}.
  * <p>
  * Use this entry point to run genius negotiations from an xml file. Example xml
- * file can be found at xml-runner/example.xml
+ * file can be found at xml-runner/multilateraltournament.xml
  * 
- * @author W.Pasman
+ * @author W.Pasman 28jul15
  */
 public class Runner {
 
