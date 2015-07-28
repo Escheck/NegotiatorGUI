@@ -13,7 +13,6 @@ import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.config.MultilateralTournamentsConfiguration;
 import negotiator.gui.About;
 import negotiator.gui.negosession.MultiPartyDataModel;
-import negotiator.gui.progress.MultiPartyTournamentProgressUI;
 import negotiator.gui.progress.MultipartyNegoEventLogger;
 import negotiator.session.TournamentManager;
 
@@ -62,33 +61,22 @@ public class Runner {
 		MultilateralTournamentsConfiguration multiconfig = MultilateralTournamentsConfiguration
 				.load(new File(input));
 
-		MultilateralTournamentConfiguration config = multiconfig
-				.getTournaments().get(0);
-
 		// init data model, GUI, logger.
-		MultiPartyDataModel dataModel = new MultiPartyDataModel(
-				config.getNumAgentsPerSession());
-
-		MultiPartyTournamentProgressUI progressUI = new MultiPartyTournamentProgressUI(
-				dataModel);
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-		String logName = config.getPartyProfileItems().get(0).getDomain()
-				.getName();
-		logName = String.format("log/tournament-%s-%s.log.csv",
-				dateFormat.format(new Date()), logName);
-
+		Integer numParties = multiconfig.getMaxNumParties();
+		MultiPartyDataModel dataModel = new MultiPartyDataModel(numParties);
 		MultipartyNegoEventLogger myLogger = new MultipartyNegoEventLogger(
-				logName, config.getNumAgentsPerSession(), dataModel);
+				output, numParties, dataModel);
 		dataModel.addTableModelListener(myLogger);
 
-		final TournamentManager manager = new TournamentManager(config);
+		for (MultilateralTournamentConfiguration config : multiconfig
+				.getTournaments()) {
+			System.out.println("Starting tournament " + config);
+			TournamentManager manager = new TournamentManager(config);
+			manager.addEventListener(dataModel);
+			manager.run(); // runs the manager thread in sync
+		}
 
-		manager.addEventListener(progressUI);
-		manager.addEventListener(dataModel);
-
-		manager.start(); // runs the manager thread async
-		System.out.println("Negotiation started successfully");
+		System.out.println("Runner completed succesfully.");
 
 	}
 
