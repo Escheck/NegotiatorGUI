@@ -17,7 +17,9 @@ import negotiator.utility.UtilitySpace;
  * ProfileRepItem is a profile, as an item to put in the registry. The profile
  * is not contained here, it's just a (assumed unique) filename.
  * 
- * @author wouter
+ * @modified W.Pasman added code to unmarshall this if not part of a
+ *           domainrepository.xml file. We then search for this profile in the
+ *           existing domain repository.
  *
  */
 @XmlRootElement
@@ -60,7 +62,36 @@ public class ProfileRepItem implements RepItem {
 	}
 
 	public void afterUnmarshal(Unmarshaller u, Object parent) {
-		this.domain = (DomainRepItem) parent;
+		if (parent instanceof DomainRepItem) {
+			domain = (DomainRepItem) parent;
+		} else {
+			domain = searchDomain();
+		}
+	}
+
+	/**
+	 * Try to find this profile in the domain repository. This is needed if this
+	 * profilerepitem is not part of a domainrepository.xml file.
+	 * 
+	 * @return DomainRepItem. Returns null if this profile is part of an
+	 *         existing domain in the repository
+	 */
+	private DomainRepItem searchDomain() {
+		// this ProfileRepItem is not in a domain repository. Try to resolve
+		// domain using the repository
+		try {
+			for (RepItem item : Repository.get_domain_repos().getItems()) {
+				DomainRepItem repitem = (DomainRepItem) item;
+				if (repitem.getProfiles().contains(this)) {
+					return repitem;
+				}
+			}
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		System.out.println("The profile " + this
+				+ " is not in the domain repository, failed to unmarshall");
+		return null;
 	}
 
 	@Override

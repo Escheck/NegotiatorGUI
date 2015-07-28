@@ -25,9 +25,10 @@ import negotiator.session.SessionManager;
 import negotiator.tournament.TournamentGenerator;
 
 /**
- * Class that can take a {@link MultilateralTournamentConfiguration} and run it.
- * Similar to {@link RunConfiguration} but without the XML serialization stuff
- * for more flexibility.
+ * Class that can take a {@link MultilateralTournamentConfiguration}, generate
+ * the and run it. Similar to {@link RunConfiguration} but without the XML
+ * serialization stuff for more flexibility, only half of the code and better
+ * readability.
  * 
  * @author W.Pasman 27jul15
  *
@@ -46,6 +47,7 @@ public class MultilatConfigurationRunner extends Thread {
 		configuration = config;
 	}
 
+	// FIXME connect to GUI and runners.
 	@Override
 	public void run() {
 		MultilateralProtocol protocol = generateProtocol(configuration
@@ -163,6 +165,7 @@ public class MultilatConfigurationRunner extends Thread {
 		}
 
 		// if any exception hit -> exit
+		// FIXME we should just cancel, not exit the system??
 		System.exit(-1);
 		return null;
 	}

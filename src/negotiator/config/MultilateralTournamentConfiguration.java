@@ -18,7 +18,8 @@ import negotiator.repository.ProfileRepItem;
 
 /**
  * Implementation of MultilateralTournamentConfigurationInterface. Extracted
- * from {@link GuiConfiguration}.
+ * from {@link GuiConfiguration}. This stores all information for a multilateral
+ * tournament. Can be {@link #load(File)} and {@link #save(File)} to XML.
  *
  * @author W.Pasman 27jul15
  */

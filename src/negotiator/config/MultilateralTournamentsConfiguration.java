@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -14,7 +13,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.namespace.QName;
 
 import negotiator.Deadline;
 import negotiator.exceptions.Warning;
@@ -93,9 +91,8 @@ public class MultilateralTournamentsConfiguration {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					new Boolean(true));
 
-			marshaller.marshal(new JAXBElement(new QName(
-					"MultilateralTournamentConfiguration"),
-					MultilateralTournamentsConfiguration.class, this), file);
+			marshaller.marshal(this, file);
+
 		} catch (Exception e) {
 			new Warning("xml save failed: " + e);
 			e.printStackTrace();
