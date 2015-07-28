@@ -99,4 +99,17 @@ public class MultilateralTournamentsConfiguration {
 		}
 	}
 
+	/**
+	 * Find the maximum number of parties in all tournaments.
+	 * 
+	 * @return
+	 */
+	public Integer getMaxNumParties() {
+		int n = 0;
+		for (MultilateralTournamentConfiguration t : tournaments) {
+			n = Math.max(n, t.getNumAgentsPerSession());
+		}
+		return n;
+	}
+
 }
