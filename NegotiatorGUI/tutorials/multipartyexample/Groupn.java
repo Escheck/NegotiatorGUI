@@ -48,5 +48,10 @@ public class Groupn extends AbstractNegotiationParty {
 		super.receiveMessage(sender, action);
 		// Here you hear other parties' messages
 	}
+    
+    @Override
+    public String getDescription() {
+        return "example party group N";
+    }
 
 }
