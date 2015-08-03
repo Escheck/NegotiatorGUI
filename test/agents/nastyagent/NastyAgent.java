@@ -13,6 +13,8 @@ import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.NegotiationParty;
+import negotiator.protocol.MultilateralProtocolAdapter;
+import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 import agents.BidComparator;
@@ -58,6 +60,16 @@ public abstract class NastyAgent implements NegotiationParty {
 
 	@Override
 	public void receiveMessage(Object sender, Action arguments) {
+	}
+
+	@Override
+	public String getDescription() {
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public MultilateralProtocolAdapter getProtocol() {
+		return new StackedAlternatingOffersProtocol();
 	}
 
 }
