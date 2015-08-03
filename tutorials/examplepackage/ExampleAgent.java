@@ -6,7 +6,7 @@ import java.util.Random;
 
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.Timeline;
+import negotiator.session.Timeline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
