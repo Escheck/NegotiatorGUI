@@ -2,6 +2,8 @@ package negotiator.repository;
 
 import static negotiator.repository.Property.IS_MEDIATOR;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import negotiator.Global;
+import negotiator.parties.NegotiationParty;
 
 /**
  * This repository item contains all info about an agent that can be loaded.
@@ -33,12 +38,12 @@ public class PartyRepItem implements RepItem {
 	 * during a negotiation.
 	 */
 	@XmlAttribute
-	String classPath;
+	String classPath = "";
 	/**
 	 * file path including the class name
 	 */
 	@XmlAttribute
-	String description;
+	String description = "";
 	/**
 	 * description of this agent
 	 */
@@ -49,9 +54,9 @@ public class PartyRepItem implements RepItem {
 
 	@XmlElementWrapper(name = "properties")
 	@XmlElement(name = "property")
-	List<String> properties;
+	List<String> properties = new ArrayList<String>();
 	@XmlAttribute
-	String protocolClassPath;
+	String protocolClassPath = "";
 
 	/**
 	 * Do not use this: It's only here to support XML de-serialization.
@@ -66,6 +71,26 @@ public class PartyRepItem implements RepItem {
 		this.description = classPath;
 		this.protocolClassPath = protocolClassPath;
 		this.properties = new ArrayList<String>();
+	}
+
+	/**
+	 * construct the item given the file. We check that the file actually loads
+	 * in and throw if we can't load it.
+	 * 
+	 * @param classFile
+	 *            file to load.
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public PartyRepItem(File classFile) throws InstantiationException,
+			IllegalAccessException, ClassNotFoundException, IOException {
+		NegotiationParty agent = (NegotiationParty) Global
+				.loadClassFromFile(classFile);
+		partyName = agent.getClass().getSimpleName();
+		classPath = classFile.getCanonicalPath();
+		description = partyName;
 	}
 
 	public String getProtocolClassPath() {
