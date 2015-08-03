@@ -68,8 +68,12 @@ class RunConfiguration {
 	 * Run this configuration
 	 *
 	 * @return The NegotiationEvent spawned by running the negotiation
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
-	public NegotiationEvent run() {
+	public NegotiationEvent run() throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException {
 
 		MultilateralProtocol protocol = generateProtocol(mProtocol);
 		Deadline deadline = generateDeadline(mDeadlineType, mDeadlineValue);
@@ -181,10 +185,14 @@ class RunConfiguration {
 	 * @param profiles
 	 *            list of profile strings
 	 * @return list of parties
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	private List<NegotiationPartyInternal> generateParties(Session session,
 			List<String> parties, List<String> profiles, String protocol,
-			String domain) {
+			String domain) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException {
 		checkSizes();
 		List<NegotiationPartyInternal> negotiationParties = new ArrayList<NegotiationPartyInternal>(
 				parties.size());
@@ -210,12 +218,18 @@ class RunConfiguration {
 	 * @param session
 	 *            Session object
 	 * @return Negotiation party
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	private NegotiationPartyInternal generateParty(String cpParty,
 			String cpProfile, String cpProtocol, String cpDomain,
-			Session session) {
+			Session session) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException {
 		try {
-			PartyRepItem partyRepItem = new PartyRepItem(cpParty, cpProtocol);
+			PartyRepItem partyRepItem = null;
+			partyRepItem = new PartyRepItem(cpParty);
+
 			DomainRepItem domainRepItem = new DomainRepItem(new URL(cpDomain));
 			ProfileRepItem profileRepItem = new ProfileRepItem(new URL(
 					cpProfile), domainRepItem);

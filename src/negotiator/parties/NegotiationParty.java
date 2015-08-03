@@ -6,6 +6,8 @@ import negotiator.AgentID;
 import negotiator.Deadline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
+import negotiator.protocol.MultilateralProtocolAdapter;
+import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
@@ -77,5 +79,18 @@ public interface NegotiationParty {
 	 *            The action performed
 	 */
 	void receiveMessage(Object sender, Action arguments);
+
+	/**
+	 * @return a description for this party
+	 */
+	public String getDescription();
+
+	/**
+	 * Get the protocol that this party supports.
+	 * 
+	 * @return the actual supported {@link MultilateralProtocol}, usually
+	 *         {@link StackedAlternatingOffersProtocol}.
+	 */
+	public MultilateralProtocolAdapter getProtocol();
 
 }

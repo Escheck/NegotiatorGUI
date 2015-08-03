@@ -2,8 +2,7 @@ package negotiator.repository;
 
 import static negotiator.repository.Property.IS_MEDIATOR;
 
-import java.io.File;
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,68 +28,91 @@ public class PartyRepItem implements RepItem {
 	 * getVersion is bit involved, need to call the agent getVersion() to get it
 	 */
 	private static final Class[] parameters = new Class[] { URL.class };
+
+	/**************************** PRIVATE FIELDS. DO NOT ACCESS DIRECTLY!!! **********************/
+	// only public to enable XML serialization JAXB.
+	// These fields are all just cached results from the real agent object.
 	@XmlAttribute
-	String partyName;
+	String partyName; // must be short version of class path.
+
 	/**
-	 * the key: short but unique name of the agent as it will be known in the
-	 * nego system. This is an arbitrary but unique label for this TYPE of
-	 * agent. Note that there may still be multiple actual agents of this type
-	 * during a negotiation.
-	 */
+	 * This can be two things:
+	 * <ul>
+	 * <li>a class path, eg "agents.anac.y2010.AgentFSEGA.AgentFSEGA". In this
+	 * case, the agent must be on the class path to load.
+	 * <li>a full path, eg
+	 * "/Volumes/documents/NegoWorkspace3/NegotiatorGUI/src/agents/anac/y2010/AgentFSEGA/AgentFSEGA.java"
+	 * . In this case, we can figure out the class path ourselves and load it.
+	 * </ul>
+	 * */
 	@XmlAttribute
 	String classPath = "";
 	/**
 	 * file path including the class name
 	 */
+
 	@XmlAttribute
 	String description = "";
 	/**
 	 * description of this agent
 	 */
 
-	// @XmlAttribute //RA: For multiparty negotiation, there are two type of
-	// agents: mediator and negotiating party
-	// Boolean isMediator; /** whether the party is a mediator */
+	@XmlAttribute
+	String protocolClassPath = "";
 
+	/**
+	 * Completely unused, we need to figure this out.
+	 */
 	@XmlElementWrapper(name = "properties")
 	@XmlElement(name = "property")
 	List<String> properties = new ArrayList<String>();
-	@XmlAttribute
-	String protocolClassPath = "";
 
 	/**
 	 * Do not use this: It's only here to support XML de-serialization.
 	 */
 	public PartyRepItem() {
-		properties = new ArrayList<String>();
-	}
-
-	public PartyRepItem(String classPath, String protocolClassPath) {
-		this.partyName = classPath;
-		this.classPath = classPath;
-		this.description = classPath;
-		this.protocolClassPath = protocolClassPath;
-		this.properties = new ArrayList<String>();
 	}
 
 	/**
-	 * construct the item given the file. We check that the file actually loads
-	 * in and throw if we can't load it.
 	 * 
-	 * @param classFile
-	 *            file to load.
+	 * @param path
+	 *            full.path.to.class or file name.
+	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 * @throws IOException
+	 * @throws MalformedURLException
 	 */
-	public PartyRepItem(File classFile) throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException, IOException {
-		NegotiationParty agent = (NegotiationParty) Global
-				.loadClassFromFile(classFile);
-		partyName = agent.getClass().getSimpleName();
-		classPath = classFile.getCanonicalPath();
-		description = partyName;
+	public PartyRepItem(String path) throws MalformedURLException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
+		classPath = path;
+		init();
+	}
+
+	public NegotiationParty load() throws MalformedURLException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException {
+		return (NegotiationParty) Global.loadObject(classPath);
+
+	}
+
+	/**
+	 * Init our fields to cache the party information. party must have been set
+	 * before getting here.
+	 * 
+	 * @param party
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws MalformedURLException
+	 */
+	private void init() throws MalformedURLException, InstantiationException,
+			IllegalAccessException, ClassNotFoundException {
+		NegotiationParty party1 = load();
+		partyName = party1.getClass().getSimpleName();
+		description = party1.getDescription();
+		protocolClassPath = party1.getProtocol().getClass().getCanonicalName();
+
 	}
 
 	public String getProtocolClassPath() {
@@ -104,11 +126,13 @@ public class PartyRepItem implements RepItem {
 	public boolean equals(Object o) {
 		if (!(o instanceof PartyRepItem))
 			return false;
-		return partyName.equals(((PartyRepItem) o).partyName)
-				&& classPath.equals(((PartyRepItem) o).classPath);
+		return classPath.equals(((PartyRepItem) o).classPath);
 	}
 
 	public String getName() {
+		if (partyName.isEmpty()) {
+			partyName = classPath;
+		}
 		return partyName;
 	}
 

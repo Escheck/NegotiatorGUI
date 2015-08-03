@@ -76,7 +76,12 @@ public class NegotiationPartyInternal {
 			throws RepositoryException, NegotiatorException {
 		utilitySpace = profileRepItem.create();
 		long randomSeed = System.currentTimeMillis();
-		party = createInstance(partyRepItem, profileRepItem, session);
+		try {
+			party = partyRepItem.load();
+		} catch (Exception e) {
+			throw new RepositoryException("failed to load " + partyRepItem, e);
+		}
+		// createInstance(partyRepItem, profileRepItem, session);
 		party.init(new UtilitySpace(utilitySpace), session.getDeadlines(),
 				session.getTimeline(), randomSeed, getAgentId());
 		return party;
