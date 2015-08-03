@@ -15,6 +15,8 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.protocol.MultilateralProtocolAdapter;
+import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
 
@@ -238,6 +240,14 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 
 	public AgentID getPartyId() {
 		return partyId;
+	}
+
+	public String getDescription() {
+		return this.getClass().getSimpleName();
+	}
+
+	public MultilateralProtocolAdapter getProtocol() {
+		return new StackedAlternatingOffersProtocol();
 	}
 
 }

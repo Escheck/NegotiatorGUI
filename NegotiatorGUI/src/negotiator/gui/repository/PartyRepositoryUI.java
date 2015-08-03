@@ -27,6 +27,7 @@ import negotiator.repository.Repository;
  * 
  * @author Wouter Pasman
  */
+@SuppressWarnings("serial")
 public class PartyRepositoryUI extends JPanel {
 	private partyTableModel dataModel;
 	private final JTable table = new JTable();
@@ -147,7 +148,7 @@ public class PartyRepositoryUI extends JPanel {
 		// If file selected
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
-				dataModel.add(new PartyRepItem(fc.getSelectedFile()));
+				dataModel.add(new PartyRepItem(fc.getSelectedFile().getPath()));
 			} catch (Throwable e) {
 				Global.showLoadError(fc.getSelectedFile(), e);
 			}
@@ -208,12 +209,19 @@ class partyTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		PartyRepItem agt = (PartyRepItem) repository.getItems().get(row);
+		PartyRepItem party = (PartyRepItem) repository.getItems().get(row);
 		switch (col) {
 		case 0:
-			return agt.getName();
+			return party.getName();
 		case 1:
-			return agt.getDescription();
+			return party.getDescription();
+		case 2:
+			try {
+				return Class.forName(party.getProtocolClassPath())
+						.getSimpleName();
+			} catch (ClassNotFoundException e) {
+				return "FAILED TO LOAD";
+			}
 		}
 		return col;
 	}
