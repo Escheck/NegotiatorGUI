@@ -24,6 +24,7 @@ import negotiator.gui.negosession.MultilateralUI;
 import negotiator.gui.negosession.NegoSessionUI2;
 import negotiator.gui.progress.ProgressUI2;
 import negotiator.gui.progress.TournamentProgressUI2;
+import negotiator.gui.repository.PartyRepositoryUI;
 import negotiator.gui.tab.CloseListener;
 import negotiator.gui.tab.CloseTabbedPane;
 import negotiator.gui.tournamentvars.TournamentUI;
@@ -49,6 +50,28 @@ public class NegoGUIView extends FrameView {
 	private static final boolean fTournamentEnabled = true;
 	private static final boolean dTournamentEnabled = true;
 
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
+	private javax.swing.JMenuItem jMenuItem1;
+	private javax.swing.JMenuItem newMultilateralMenuItem;
+	private javax.swing.JMenuItem newMultilateralTournamentMenuItem;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JScrollPane jScrollPane3;
+	private javax.swing.JSplitPane jSplitPane1;
+	private javax.swing.JTabbedPane jTabbedPane1;
+	private javax.swing.JPanel mainPanel;
+	private javax.swing.JMenuBar menuBar;
+	private javax.swing.JMenuItem newSessionMenuItem;
+	private javax.swing.JMenuItem newTournamentMenuItem;
+	private javax.swing.JMenuItem newDistributedTournamentMenuItem;
+	private javax.swing.JMenuItem manualMenuItem;
+	private javax.swing.JMenuItem classDocumentationMenuItem;
+	private javax.swing.JMenuItem aboutMenuItem;
+	private javax.swing.JTable tableBOAcomponents;
+	private javax.swing.JTree treeDomains;
+
 	public NegoGUIView(SingleFrameApplication app) {
 		super(app);
 		initComponents();
@@ -64,6 +87,9 @@ public class NegoGUIView extends FrameView {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		jTabbedPane1.addTab("Parties", new PartyRepositoryUI());
+
 		CloseListener cl = new CloseListener() {
 			public void closeOperation(MouseEvent e, int overTabIndex) {
 				Component closedcomp = closeTabbedPane1.getSelectedComponent();
@@ -238,10 +264,11 @@ public class NegoGUIView extends FrameView {
 		startMenu.add(newDistributedTournamentMenuItem);
 
 		// Add a new menu item for multi-agent negotiation tournament
-		newMultilateralTournamentMenuItem.setAction(actionMap.get("newMultiAgentTournamentTab")); // NOI18N
+		newMultilateralTournamentMenuItem.setAction(actionMap
+				.get("newMultiAgentTournamentTab")); // NOI18N
 		newMultilateralTournamentMenuItem.setName("newMultilateralMenuItem"); // NOI18N
 		startMenu.add(newMultilateralTournamentMenuItem);
-		
+
 		newMultilateralMenuItem.setAction(actionMap.get("newMultiNegoSession")); // NOI18N
 		newMultilateralMenuItem.setName("newMultilateralMenuItem"); // NOI18N
 		startMenu.add(newMultilateralMenuItem);
@@ -312,9 +339,10 @@ public class NegoGUIView extends FrameView {
 				UtilitySpace utilitySpace;
 				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.NONLINEAR) {
 					utilitySpace = new NonlinearUtilitySpace(domain, filename);
-				} if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.CONSTRAINT) {
+				}
+				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.CONSTRAINT) {
 					utilitySpace = new ConstraintUtilitySpace(domain, filename);
-				}else {
+				} else {
 					utilitySpace = new UtilitySpace(domain, filename);
 				}
 
@@ -326,9 +354,11 @@ public class NegoGUIView extends FrameView {
 			}
 		}
 	}
-	
+
 	/**
-	 * Adds a tab to the GUI's start-menu for opening a multi-agent negotiation tab. 
+	 * Adds a tab to the GUI's start-menu for opening a multi-agent negotiation
+	 * tab.
+	 * 
 	 * @author David Festen
 	 */
 	@Action
@@ -433,28 +463,6 @@ public class NegoGUIView extends FrameView {
 							"The tournament functionality is switched off in this version.");
 		}
 	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private negotiator.gui.tab.CloseTabbedPane closeTabbedPane1;
-	private javax.swing.JMenuItem jMenuItem1;
-	private javax.swing.JMenuItem newMultilateralMenuItem;
-	private javax.swing.JMenuItem newMultilateralTournamentMenuItem;
-	private javax.swing.JPanel jPanel1;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JSplitPane jSplitPane1;
-	private javax.swing.JTabbedPane jTabbedPane1;
-	private javax.swing.JPanel mainPanel;
-	private javax.swing.JMenuBar menuBar;
-	private javax.swing.JMenuItem newSessionMenuItem;
-	private javax.swing.JMenuItem newTournamentMenuItem;
-	private javax.swing.JMenuItem newDistributedTournamentMenuItem;
-	private javax.swing.JMenuItem manualMenuItem;
-	private javax.swing.JMenuItem classDocumentationMenuItem;
-	private javax.swing.JMenuItem aboutMenuItem;
-	private javax.swing.JTable tableBOAcomponents;
-	private javax.swing.JTree treeDomains;
 
 	public CloseTabbedPane getMainTabbedPane() {
 		return closeTabbedPane1;
