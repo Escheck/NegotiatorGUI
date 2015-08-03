@@ -888,8 +888,8 @@ This section provides an overview of classes which might be useful when implemen
 Compiling an agent can be done as follows (here we compile the examplepackage; modify as appropriate for your agent):
 \begin{itemize}
 \item Open a terminal
-\item Switch to the directory containing the examplepackage directory
-\item execute thecommand \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6  examplepackage/ExampleAgent.java}
+\item Switch to the root directory of genius
+\item execute the command \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6  examplepackage/ExampleAgent.java}
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
@@ -1107,7 +1107,7 @@ BOA components must be compiled before they can be loaded into Genius.
 To compile a BOA component, do the following steps (in this example we compile the boa example components)
 \begin{itemize}
 \item Open a terminal 
-\item Go to the directory that contains the boaexamplepackage directory
+\item Switch to the root directory of genius
 \item Enter the command \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6 boaexamplepackage/*.java }
 \end{itemize}
 
@@ -1199,7 +1199,7 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament but not in a two-party negotiation or tournament. Notice that you can still do two-party negotiations in the multilateral negotiation and tournament.
 
 To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also this class must have a public default (no-argument) constructor.
-To implement the interface, one needs to implement three functions: 
+To implement the interface, one needs to implement five functions: 
 
 \begin{lstlisting}
 public interface NegotiationParty {
@@ -1242,6 +1242,20 @@ public interface NegotiationParty {
 	 *            The action performed
 	 */
 	void receiveMessage(Object sender, Action arguments);
+
+	/**
+	 * @return a description for this party
+	 */
+	public String getDescription();
+
+	/**
+	 * Get the protocol that this party supports.
+	 * 
+	 * @return the actual supported {@link MultilateralProtocol}, usually
+	 *         {@link StackedAlternatingOffersProtocol}.
+	 */
+	public MultilateralProtocolAdapter getProtocol();
+
 }
 \end{lstlisting}
 
@@ -1249,7 +1263,7 @@ We recommend to use the javadoc included with the distribution to check the deta
 
 But in practice, it may be more convenient to extend the class \texttt{negotiator.parties.AbstractNegotiationParty} that provides convenient support functions. 
 
-The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. 
+The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol usually returns an instance of StackedAlternatingOffersProtocol.
 
 
 \subsection{Compiling a NegotiationParty}
