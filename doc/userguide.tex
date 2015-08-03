@@ -889,7 +889,7 @@ Compiling an agent can be done as follows (here we compile the examplepackage; m
 \begin{itemize}
 \item Open a terminal
 \item Switch to the directory containing the examplepackage directory
-\item execute thecommand \texttt{javac -cp negosimulator.jar examplepackage/ExampleAgent.java}
+\item execute thecommand \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6  examplepackage/ExampleAgent.java}
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
@@ -1108,7 +1108,7 @@ To compile a BOA component, do the following steps (in this example we compile t
 \begin{itemize}
 \item Open a terminal 
 \item Go to the directory that contains the boaexamplepackage directory
-\item Enter the command \texttt{javac -cp negosimulator.jar boaexamplepackage/*.java }
+\item Enter the command \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6 boaexamplepackage/*.java }
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
@@ -1253,14 +1253,29 @@ The functions \verb|receiveMessage| and \verb|chooseAction| are basically the sa
 
 
 \subsection{Compiling a NegotiationParty}
+
+
 To compile the example agent, go to your genius project folder and use the command line to execute this compile command
 
-\verb|javac -cp negosimulator.jar multipartyexample/Groupn.java|
+\verb|javac -cp negosimulator.jar -source 1.6 -target 1.6  multipartyexample/Groupn.java|
 
 \subsection{Loading a NegotiationParty}
-In order to use a NegotiationParty agent in \Genius, you need to add the agent to the \verb|partyrepository.xml|.
 
-To do this, open the \verb|partyrepository.xml| file and add a section like this
+You need to load your custom party into the party repository in order to use it. After adding, your agent will appear in the combo boxes in the multilateral tournament runner and session runner where you can select the party to use.
+
+You can load the new NegotiationParty into the party repository in two ways:
+\subsubsection{loading with the GUI}
+Locate the Parties repository tab in the GUI (Figure \ref{fig:partiesrepo}). Right click in this area and select "Add Party". A browser window pops up. Brows to  your compiled class file that implements the NegotiationParty and select it. Your party will appear at the bottom of the parties repository. The partyrepository.xml file is automatically updated accordingly.
+
+\begin{figure}[h!] 
+	\center
+	\includegraphics[width=10cm]{media/partiesrepo.png}
+	\caption{The parties repository.}
+	\label{fig:partiesrepo}
+\end{figure}
+
+\subsubsection{manual loading}
+To do this manually, quit \Genius , open the \verb|partyrepository.xml| file and add a section like this
 
 \begin{lstlisting}
 <partyRepItem description="description for your agent"
@@ -1268,7 +1283,7 @@ To do this, open the \verb|partyrepository.xml| file and add a section like this
 	protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
 \end{lstlisting}
 
-After you have done this, you can start \Genius. Your agent should now appear in the combo boxes where you can select the agents to use.
+After that you can restart \Genius .
 
 \section{Conclusion}
 This concludes the manual of \Genius. If you experience problems or have suggestions on how to improve \Genius, please send them to \url{negotiation@ii.tudelft.nl}. 
