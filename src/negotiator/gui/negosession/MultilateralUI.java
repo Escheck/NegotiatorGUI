@@ -194,11 +194,10 @@ public class MultilateralUI extends JPanel {
 		btnAddAgents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// List<PartyRepItem> items = ContentProxy
-				// .fetchPartiesForProtocol(config.getProtocolItem());
+				List<PartyRepItem> items = ContentProxy
+						.fetchPartiesForProtocol(config.getProtocolItem());
 				AddFromListDialog<PartyRepItem> dialog = new AddFromListDialog<PartyRepItem>(
-						MultilateralUI.this, PartyRepItem.class, config
-								.getProtocolItem());
+						MultilateralUI.this, items);
 				dialog.pack();
 				dialog.setVisible(true);
 
@@ -235,8 +234,9 @@ public class MultilateralUI extends JPanel {
 		btnAddProfiles.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AddFromListDialog dialog = new AddFromListDialog<ProfileRepItem>(
-						MultilateralUI.this, ProfileRepItem.class, null);
+				List<ProfileRepItem> items = ContentProxy.fetchProfiles();
+				AddFromListDialog<ProfileRepItem> dialog = new AddFromListDialog<ProfileRepItem>(
+						MultilateralUI.this, items);
 				dialog.pack();
 				dialog.setVisible(true);
 

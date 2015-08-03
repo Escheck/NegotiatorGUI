@@ -18,43 +18,34 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
-import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 
 /**
  * Dialog to request a list of items of the type T from the user
  * 
- * @author David Festen
- * @modified W.Pasman loosely based on a form that was generated from IntelliJ
- *           that showed unreadable and uneditable. Changed interface to allow
- *           the choosable items to be changed .
+ * @author W.Pasman loosely based on a form that was generated from IntelliJ
+ *         that showed unreadable and uneditable.
  *
  * @param <T>
- *            the type of items for in the list.
+ *            the type of items (must extend {@link RepItem}) for in the list.
  */
-
-// FIXME maybe we should do this differently. Particularly the hard link to
-// ContentProxy is not nice. Let's make an interface providing add and getList.
 @SuppressWarnings("serial")
 public class AddFromListDialog<T extends RepItem> extends JDialog {
 	private JPanel contentPane;
 	private JButton buttonOK;
 	private JButton buttonCancel;
 	private JList lstContent;
-	private JButton buttonBrowse;
 
-	public AddFromListDialog(Component parent, Class<T> elementType,
-			MultiPartyProtocolRepItem protocol) {
+	public AddFromListDialog(Component parent, List<T> repItems) {
 		init();
 		setLocationRelativeTo(parent);
-		setModel(ContentProxy.fetchList(elementType, protocol));
+		setModel(repItems);
 
 		setContentPane(contentPane);
 		setModal(true);
@@ -68,13 +59,6 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 		buttonCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				onCancel();
-			}
-		});
-
-		buttonBrowse.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				onBrowse();
 			}
 		});
 
@@ -134,7 +118,6 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 		List<T> selectedRepItems = new ArrayList<T>(selectedObjects.size());
 
 		for (Object selectedObject : selectedObjects) {
-			// we are certain this cast is correct (Generic type type-cast)
 			@SuppressWarnings("unchecked")
 			boolean add = selectedRepItems.add((T) selectedObject);
 		}
@@ -147,15 +130,6 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 
 	private void onCancel() {
 		dispose();
-	}
-
-	private void onBrowse() {
-		JFileChooser fc = new JFileChooser();
-		fc.showOpenDialog(this);
-
-		if (fc.getSelectedFile() != null) {
-
-		}
 	}
 
 	private void init() {
@@ -172,8 +146,6 @@ public class AddFromListDialog<T extends RepItem> extends JDialog {
 		panel1.add(panel2, BorderLayout.CENTER);
 		buttonOK = new JButton("OK");
 		panel2.add(buttonOK);
-		buttonBrowse = new JButton("Browse...");
-		// panel2.add(buttonBrowse);
 		buttonCancel = new JButton("Cancel");
 		panel2.add(buttonCancel);
 
