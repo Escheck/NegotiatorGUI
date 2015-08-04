@@ -21,7 +21,7 @@ import negotiator.DeadlineType;
 /**
  * Dialog asking user for deadline (type, value).
  * 
- * @author W.Pasman (replaced ugly class generated with some GUI editor).
+ * @author W.Pasman
  *
  */
 @SuppressWarnings("serial")
@@ -31,8 +31,8 @@ public class DeadlineDialog extends JDialog {
 	private JButton btnOk = new JButton("Ok");
 	private JButton btnCancel = new JButton("Cancel");
 
-	private Deadline previousSettings;
-	private Deadline settings;
+	private Deadline oldDeadline;
+	private Deadline newDeadline;
 
 	private final SpinnerNumberModel valuemodel = new SpinnerNumberModel(180,
 			1, 10000, 10);
@@ -44,17 +44,17 @@ public class DeadlineDialog extends JDialog {
 	 * get new value.
 	 * 
 	 * @param parent
-	 * @param deadlines
+	 * @param oldDeadl
 	 *            existing deadline
 	 */
-	public DeadlineDialog(Component parent, Deadline deadlines) {
+	public DeadlineDialog(Component parent, Deadline oldDeadl) {
 		this(parent);
 
-		previousSettings = deadlines;
-		settings = deadlines;
+		oldDeadline = oldDeadl;
+		newDeadline = oldDeadl;
 
-		valuemodel.setValue(deadlines.getValue());
-		combobox.setSelectedItem(deadlines.getType());
+		valuemodel.setValue(oldDeadl.getValue());
+		combobox.setSelectedItem(oldDeadl.getType());
 	}
 
 	public DeadlineDialog(Component parent) {
@@ -98,8 +98,12 @@ public class DeadlineDialog extends JDialog {
 		});
 	}
 
+	/**
+	 * @return the new deadline as confirmed by the user. Returns old deadline
+	 *         until the user presses OK.
+	 */
 	public Deadline getDeadline() {
-		return settings;
+		return newDeadline;
 	}
 
 	/**
@@ -113,12 +117,12 @@ public class DeadlineDialog extends JDialog {
 	}
 
 	private void onOK() {
-		settings = getGuiSetting();
+		newDeadline = getGuiSetting();
 		dispose();
 	}
 
 	private void onCancel() {
-		settings = previousSettings;
+		newDeadline = oldDeadline;
 		dispose();
 	}
 
