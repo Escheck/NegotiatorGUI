@@ -31,7 +31,8 @@ import negotiator.session.Turn;
  * </pre>
  *
  * @author David Festen
- * @author Reyhan
+ * @author Reyhan Aydogan
+ * @author Catholijn Jonker
  */
 public class AlternatingOfferConsensusProtocol extends
 		MultilateralProtocolAdapter {

@@ -34,7 +34,8 @@ import negotiator.session.Turn;
  * </pre>
  *
  * @author David Festen
- * @author Reyhan
+ * @author Reyhan Aydogan
+ * @author Catholijn Jonker
  */
 public class StackedAlternatingOffersProtocol extends
 		MultilateralProtocolAdapter {
@@ -180,7 +181,7 @@ public class StackedAlternatingOffersProtocol extends
 	}
 
 	/**
-	 * If all agents accept the most recent offer, than this negotiation ends.
+	 * If all agents accept the most recent offer, then this negotiation ends.
 	 * Also, when any agent ends the negotiation (EndNegotiationAction) the
 	 * negotiation ends
 	 *
