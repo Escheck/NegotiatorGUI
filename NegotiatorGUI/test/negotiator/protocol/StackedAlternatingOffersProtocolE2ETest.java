@@ -185,7 +185,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 		manager.addLoggingListener(listener);
 
-		manager.run();
+		manager.runAndWait();
 
 		/*********** and finally check the outcome **************/
 		MultipartyNegotiationSessionEvent lastEvent = listener.getEvents().get(
