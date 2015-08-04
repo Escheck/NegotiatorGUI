@@ -8,6 +8,7 @@ import java.util.List;
 
 import negotiator.AgentID;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.Vote;
 import negotiator.actions.Action;
 import negotiator.actions.InformVotingResult;
@@ -138,8 +139,8 @@ public class Annealer extends AbstractNegotiationParty {
 	 * @return A value between 0.0 and 1.0 or 0.0 if no round deadline given
 	 */
 	private double getNormalizedRoundValue() {
-		if (deadlines.isRounds()) {
-			return ((double) currentRound / (double) deadlines.getTotalRounds());
+		if (deadlines.getType() == DeadlineType.ROUND) {
+			return ((double) currentRound / (double) deadlines.getValue());
 		} else {
 			return 0d;
 		}

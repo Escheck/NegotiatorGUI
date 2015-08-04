@@ -1,59 +1,80 @@
 package negotiator.gui.negosession;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-
+/**
+ * Dialog asking user for deadline (type, value).
+ * 
+ * @author W.Pasman (replaced ugly class generated with some GUI editor).
+ *
+ */
+@SuppressWarnings("serial")
 public class DeadlineDialog extends JDialog {
-	private JPanel contentPane;
-	private JButton btnOk;
-	private JButton btnCancel;
-	private JTextField txtTime;
-	private JTextField txtRounds;
-	private JCheckBox chkTime;
-	private JCheckBox chkRounds;
-	private JLabel lblTime;
-	private JLabel lblRounds;
+
+	private JPanel panel = new JPanel();
+	private JButton btnOk = new JButton("Ok");
+	private JButton btnCancel = new JButton("Cancel");
 
 	private Deadline previousSettings;
 	private Deadline settings;
 
+	private final String TIME = "Time";
+	private final String ROUNDS = "Rounds";
+	private final SpinnerNumberModel valuemodel = new SpinnerNumberModel(180,
+			1, 10000, 10);
+	private JSpinner spinner = new JSpinner(valuemodel);
+	private JComboBox combobox = new JComboBox(new String[] { TIME, ROUNDS });
+
+	/**
+	 * Edit existing deadline. Call {@link #getDeadlines()} after completion to
+	 * get new value.
+	 * 
+	 * @param parent
+	 * @param deadlines
+	 *            existing deadline
+	 */
 	public DeadlineDialog(Component parent, Deadline deadlines) {
 		this(parent);
 
 		previousSettings = deadlines;
 		settings = deadlines;
-		updateTextFields();
 	}
 
 	public DeadlineDialog(Component parent) {
-		setContentPane(contentPane);
+		panel.setLayout(new BorderLayout());
 		setModal(true);
+		setTitle("Enter Deadline");
+
+		panel.add(spinner, BorderLayout.CENTER);
+
+		panel.add(combobox, BorderLayout.EAST);
+
+		setContentPane(panel);
 		getRootPane().setDefaultButton(btnOk);
 		setLocationRelativeTo(parent);
+
+		JPanel buttonpanel = new JPanel();
+		buttonpanel.setLayout(new FlowLayout());
+		buttonpanel.add(btnOk);
+		buttonpanel.add(btnCancel);
+
+		panel.add(buttonpanel, BorderLayout.SOUTH);
 
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -74,248 +95,35 @@ public class DeadlineDialog extends JDialog {
 				onCancel();
 			}
 		});
-
-		// call onCancel() on ESCAPE
-		contentPane.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				onCancel();
-			}
-		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-		chkTime.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				enableTextField(txtTime, chkTime.isSelected());
-			}
-		});
-		chkRounds.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				enableTextField(txtRounds, chkRounds.isSelected());
-			}
-		});
-		txtTime.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if (!txtTime.isEnabled()) {
-					txtTime.setEnabled(true);
-					txtTime.setText("");
-					txtTime.grabFocus();
-					chkTime.setSelected(true);
-				}
-			}
-		});
-		txtRounds.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if (!txtRounds.isEnabled()) {
-					txtRounds.setEnabled(true);
-					txtRounds.setText("");
-					txtRounds.grabFocus();
-					chkRounds.setSelected(true);
-				}
-			}
-		});
 	}
 
-	public Deadline getDeadlines() {
+	public Deadline getDeadline() {
 		return settings;
 	}
 
-	private void updateTextFields() {
-		if (settings.isTime()) {
-			txtTime.setText(settings.getTotalTime().toString());
-			txtTime.setEnabled(true);
-			chkTime.setSelected(true);
-		} else {
-			txtTime.setText("Disabled");
-			txtTime.setEnabled(false);
-			chkTime.setSelected(false);
-		}
-		if (settings.isRounds()) {
-			txtRounds.setText(settings.getTotalRounds().toString());
-			txtRounds.setEnabled(true);
-			chkRounds.setSelected(true);
-		} else {
-			txtRounds.setText("Disabled");
-			txtRounds.setEnabled(false);
-			chkRounds.setSelected(false);
-		}
-	}
-
-	private void updateSettings() {
-		int time = 0;
-		int round = 0;
-
-		if (chkTime.isSelected())
-			time = Integer.parseInt(txtTime.getText());
-		if (chkRounds.isSelected())
-			round = Integer.parseInt(txtRounds.getText());
-		settings = new Deadline(time, round);
-	}
-
-	private void enableTextField(JTextField field, boolean doEnable) {
-		if (doEnable) {
-			field.setText("");
-			field.setEnabled(true);
-		} else {
-			field.setText("Disabled");
-			field.setEnabled(false);
+	/**
+	 * Get the setting as currently in the GUI.
+	 * 
+	 * @return
+	 */
+	private Deadline getGuiSetting() {
+		if (combobox.getSelectedItem().equals(TIME)) {
+			return new Deadline((Integer) valuemodel.getValue(),
+					DeadlineType.TIME);
+		} else { // ROUNDS
+			return new Deadline((Integer) valuemodel.getValue(),
+					DeadlineType.ROUND);
 		}
 	}
 
 	private void onOK() {
-		try {
-			updateSettings();
-			dispose();
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(null, "Invalid number", "",
-					JOptionPane.PLAIN_MESSAGE);
-		}
+		settings = getGuiSetting();
+		dispose();
 	}
 
 	private void onCancel() {
 		settings = previousSettings;
 		dispose();
-	}
-
-	{
-		// GUI initializer generated by IntelliJ IDEA GUI Designer
-		// >>> IMPORTANT!! <<<
-		// DO NOT EDIT OR ADD ANY CODE HERE!
-		$$$setupUI$$$();
-	}
-
-	/**
-	 * Method generated by IntelliJ IDEA GUI Designer >>> IMPORTANT!! <<< DO NOT
-	 * edit this method OR call it in your code!
-	 *
-	 * @noinspection ALL
-	 */
-	private void $$$setupUI$$$() {
-		contentPane = new JPanel();
-		contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10,
-				10, 10), -1, -1));
-		final JPanel panel1 = new JPanel();
-		panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0),
-				-1, -1));
-		contentPane.add(panel1, new GridConstraints(1, 0, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null,
-				null, 0, false));
-		final Spacer spacer1 = new Spacer();
-		panel1.add(spacer1, new GridConstraints(0, 0, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0,
-				false));
-		final JPanel panel2 = new JPanel();
-		panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0),
-				-1, -1, true, false));
-		panel1.add(panel2, new GridConstraints(0, 1, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW, null, null,
-				null, 0, false));
-		btnOk = new JButton();
-		btnOk.setText("OK");
-		panel2.add(btnOk, new GridConstraints(0, 0, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		btnCancel = new JButton();
-		btnCancel.setText("Cancel");
-		panel2.add(btnCancel, new GridConstraints(0, 1, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final JPanel panel3 = new JPanel();
-		panel3.setLayout(new GridLayoutManager(3, 4, new Insets(0, 0, 0, 0),
-				-1, -1));
-		contentPane.add(panel3, new GridConstraints(0, 0, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW, null, null,
-				null, 0, false));
-		lblTime = new JLabel();
-		lblTime.setText("Time (in seconds)");
-		panel3.add(lblTime, new GridConstraints(0, 0, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-				GridConstraints.SIZEPOLICY_FIXED,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final Spacer spacer2 = new Spacer();
-		panel3.add(spacer2, new GridConstraints(0, 3, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0,
-				false));
-		lblRounds = new JLabel();
-		lblRounds.setText("Rounds");
-		panel3.add(lblRounds, new GridConstraints(1, 0, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-				GridConstraints.SIZEPOLICY_FIXED,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final Spacer spacer3 = new Spacer();
-		panel3.add(spacer3, new GridConstraints(2, 0, 1, 1,
-				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-				1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0,
-				false));
-		txtTime = new JTextField();
-		txtTime.setText("300");
-		panel3.add(txtTime, new GridConstraints(0, 1, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_WANT_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, -1),
-				null, 0, false));
-		txtRounds = new JTextField();
-		txtRounds.setEnabled(false);
-		txtRounds.setText("Disabled");
-		txtRounds.putClientProperty("html.disable", Boolean.FALSE);
-		panel3.add(txtRounds, new GridConstraints(1, 1, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
-				GridConstraints.SIZEPOLICY_WANT_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(80, -1),
-				null, 0, false));
-		chkTime = new JCheckBox();
-		chkTime.setSelected(true);
-		chkTime.setText("Enabled");
-		chkTime.putClientProperty("html.disable", Boolean.FALSE);
-		panel3.add(chkTime, new GridConstraints(0, 2, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		chkRounds = new JCheckBox();
-		chkRounds.setSelected(false);
-		chkRounds.setText("Enabled");
-		panel3.add(chkRounds, new GridConstraints(1, 2, 1, 1,
-				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-				GridConstraints.SIZEPOLICY_CAN_SHRINK
-						| GridConstraints.SIZEPOLICY_CAN_GROW,
-				GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-	}
-
-	/**
-	 * @noinspection ALL
-	 */
-	public JComponent $$$getRootComponent$$$() {
-		return contentPane;
-	}
-
-	private class UpdateActionListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			updateTextFields();
-		}
 	}
 
 }

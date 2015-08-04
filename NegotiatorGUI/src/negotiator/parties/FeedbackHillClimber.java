@@ -5,6 +5,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.Feedback;
 import negotiator.Vote;
 import negotiator.actions.Action;
@@ -109,7 +110,7 @@ public class FeedbackHillClimber extends AbstractNegotiationParty {
 			return;
 		}
 
-		if (deadlines.isTime()) {
+		if (deadlines.getType() == DeadlineType.TIME) {
 			currentBidUtility = getUtilityWithDiscount(receivedBid);
 		} else {
 			currentBidUtility = getUtility(receivedBid);

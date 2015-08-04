@@ -7,6 +7,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -67,11 +68,12 @@ public class Group4 extends AbstractNegotiationParty {
 
 		// creates the generator
 		generatePossibleBids(0, null);
-		turns = deadlines.getTotalRounds(); // -1 helps with
-											// very low
-											// deadline,
-											// doesn't hurt
-											// large.
+		turns = deadlines.getType() == DeadlineType.ROUND ? deadlines
+				.getValue() : 0; // -1 helps with
+									// very low
+									// deadline,
+									// doesn't hurt
+									// large.
 		bidGenerator = new BidGenerator(this, possibleBids, turns);
 
 		RESERVATION_VALUE = utilitySpace.getReservationValue();

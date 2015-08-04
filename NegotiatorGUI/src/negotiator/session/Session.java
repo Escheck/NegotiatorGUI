@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import negotiator.ContinuousTimeline;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.DiscreteTimeline;
 import negotiator.actions.Action;
 import negotiator.protocol.MultilateralProtocol;
@@ -61,10 +62,13 @@ public class Session {
 	public Session(Deadline deadlines) {
 		this.rounds = new ArrayList<Round>();
 		this.deadlines = deadlines;
-		if (deadlines.isRounds()) {
-			this.timeline = new DiscreteTimeline(deadlines.getTotalRounds());
-		} else if (deadlines.isTime()) {
-			this.timeline = new ContinuousTimeline(deadlines.getTotalTime());
+		switch (deadlines.getType()) {
+		case ROUND:
+			this.timeline = new DiscreteTimeline(deadlines.getValue());
+			break;
+		case TIME:
+			this.timeline = new ContinuousTimeline(deadlines.getValue());
+			break;
 		}
 	}
 
@@ -192,14 +196,14 @@ public class Session {
 	public boolean isDeadlineReached() {
 		boolean deadlineReached = false;
 
-		if (deadlines.isTime()) {
-			int timeDeadlineInSeconds = deadlines.getTotalTime();
+		if (deadlines.getType() == DeadlineType.TIME) {
+			int timeDeadlineInSeconds = deadlines.getValue();
 			double timeRanInSeconds = getRuntimeInSeconds();
 			deadlineReached |= timeRanInSeconds > timeDeadlineInSeconds;
 		}
 
-		if (deadlines.isRounds()) {
-			int roundsDeadline = (Integer) deadlines.getTotalRounds();
+		if (deadlines.getType() == DeadlineType.ROUND) {
+			int roundsDeadline = (Integer) deadlines.getValue();
 			deadlineReached |= getRoundNumber() > roundsDeadline;
 		}
 

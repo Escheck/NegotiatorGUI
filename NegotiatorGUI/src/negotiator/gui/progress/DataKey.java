@@ -29,12 +29,12 @@ import negotiator.events.AgreementEvent;
  *
  */
 public enum DataKey implements Comparable<DataKey> {
-	RUNTIME("Run time (s)"), ROUND("Round"), EXCEPTION("Exception"), MAX_ROUNDS(
-			"Max.rounds"), MAX_TIME("Max.time"), IS_AGREEMENT("Agreement"), IS_DISCOUNT(
-			"Discounted"), NUM_AGREE("#agreeing"), MINUTIL("min.util."), MAXUTIL(
-			"max.util."), DIST_PARETO("Dist. to Pareto"), DIST_NASH(
-			"Dist. to Nash"), DIST_SOCIAL_WELFARE("Dist. to Social Welfare"), AGENTS(
-			"Agent"), UTILS("Utility"), FILES("Profile");
+	RUNTIME("Run time (s)"), ROUND("Round"), EXCEPTION("Exception"), DEADLINE(
+			"deadline"), IS_AGREEMENT("Agreement"), IS_DISCOUNT("Discounted"), NUM_AGREE(
+			"#agreeing"), MINUTIL("min.util."), MAXUTIL("max.util."), DIST_PARETO(
+			"Dist. to Pareto"), DIST_NASH("Dist. to Nash"), DIST_SOCIAL_WELFARE(
+			"Dist. to Social Welfare"), AGENTS("Agent"), UTILS("Utility"), FILES(
+			"Profile");
 
 	String name;
 

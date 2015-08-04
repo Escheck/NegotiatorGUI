@@ -13,6 +13,7 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
@@ -311,7 +312,8 @@ public class Group11 extends AbstractNegotiationParty {
 	 */
 	private double getTime() {
 		if (this.deadlines != null) {
-			Integer d = (Integer) this.deadlines.getTotalRounds();
+			Integer d = deadlines.getType() == DeadlineType.ROUND ? deadlines
+					.getValue() : 0;
 
 			if (d != null && d != 0) {
 				return (double) this.round / (int) d;

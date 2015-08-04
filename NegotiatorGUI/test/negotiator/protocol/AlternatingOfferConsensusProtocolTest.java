@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.OfferForVoting;
@@ -171,7 +172,7 @@ public class AlternatingOfferConsensusProtocolTest {
 	 */
 	@Test
 	public void isFinishedTestVotingEndEndTest() {
-		Session realsession = new Session(new Deadline(5, 5));
+		Session realsession = new Session(new Deadline(5, DeadlineType.ROUND));
 		Round round = new Round();
 		round.addTurn(new Turn(null));
 		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();

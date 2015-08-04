@@ -6,6 +6,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.Feedback;
 import negotiator.Vote;
 import negotiator.actions.Action;
@@ -219,10 +220,10 @@ public class FeedbackMediator extends AbstractNegotiationParty implements
 
 	// round number between 0..1 or 1 if no round deadline set
 	private double getNormalizedRound() {
-		if (!deadlines.isRounds())
+		if (!(deadlines.getType() == DeadlineType.ROUND))
 			return 0d;
 
-		double totalRounds = deadlines.getTotalRounds();
+		double totalRounds = deadlines.getValue();
 		double currentRound = roundNumber;
 		return (totalRounds - currentRound - 1d) / totalRounds;
 	}

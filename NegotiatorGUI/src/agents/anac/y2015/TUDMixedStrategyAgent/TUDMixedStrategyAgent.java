@@ -7,6 +7,7 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 //import negotiator.NegoRound;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -192,7 +193,8 @@ public class TUDMixedStrategyAgent extends AbstractNegotiationParty {
 	}
 
 	public int roundDeadline() {
-		return (Integer) deadlines.getTotalRounds();
+		return deadlines.getType() == DeadlineType.ROUND ? deadlines.getValue()
+				: 0;
 	}
 
 	public int getRoundN() {
