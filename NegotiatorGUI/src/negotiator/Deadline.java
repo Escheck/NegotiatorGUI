@@ -22,6 +22,11 @@ public class Deadline {
 	private final DeadlineType type;
 
 	/**
+	 * Default timeout in seconds
+	 */
+	private final Integer DEFAULT_TIME_OUT = 180;
+
+	/**
 	 * Create default value.
 	 */
 	public Deadline() {
@@ -65,7 +70,7 @@ public class Deadline {
 	 * @return
 	 */
 	public Integer getDefaultTimeout() {
-		return 3 * 60;
+		return DEFAULT_TIME_OUT;
 	}
 
 	public String toString() {
@@ -84,7 +89,7 @@ public class Deadline {
 	 */
 	public int getTimeOrDefaultTimeout() {
 		if (type == DeadlineType.ROUND) {
-			return 180;
+			return DEFAULT_TIME_OUT;
 		}
 		return value;
 
