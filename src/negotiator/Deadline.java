@@ -77,6 +77,9 @@ public class Deadline {
 		return "Deadline:" + valueString();
 	}
 
+	/**
+	 * @return just the value of this deadline, eg "10s".
+	 */
 	public String valueString() {
 		return value + type.units();
 	}

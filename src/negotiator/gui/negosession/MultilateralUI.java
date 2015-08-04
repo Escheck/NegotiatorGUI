@@ -136,7 +136,7 @@ public class MultilateralUI extends JPanel {
 		lstProfiles.setModel(new DefaultListModel());
 
 		// set text values
-		lblDeadlinesValue.setText(asString(config.getDeadline()));
+		lblDeadlinesValue.setText(config.getDeadline().valueString());
 		txtNumberOfTournaments.setValue(1);
 		txtAgentsPerSession.setValue(2);
 
@@ -157,8 +157,7 @@ public class MultilateralUI extends JPanel {
 				dialog.setVisible(true);
 
 				config.setDeadline(dialog.getDeadline());
-				lblDeadlines.setText(config.getDeadline().toString());
-				lblDeadlinesValue.setText(asString(config.getDeadline()));
+				lblDeadlinesValue.setText(config.getDeadline().valueString());
 			}
 		});
 		cmbMediator.addActionListener(new ActionListener() {
@@ -564,20 +563,20 @@ public class MultilateralUI extends JPanel {
 						| GridConstraints.SIZEPOLICY_CAN_GROW, null,
 				new Dimension(227, 36), null, 0, false));
 		lblDeadlinesValue = new JLabel();
-		lblDeadlinesValue.setText("[Time: 300] OR [Rounds: 50]");
+		lblDeadlinesValue.setText("-");
 		panel1.add(lblDeadlinesValue, new GridConstraints(0, 0, 1, 1,
 				GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
 				GridConstraints.SIZEPOLICY_FIXED,
 				GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(180, 16),
 				null, 0, false));
 		btnDeadlines = new JButton();
-		btnDeadlines.setText("…");
+		btnDeadlines.setText("Change...");
 		panel1.add(btnDeadlines, new GridConstraints(0, 1, 1, 1,
 				GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE,
 				GridConstraints.SIZEPOLICY_CAN_SHRINK
 						| GridConstraints.SIZEPOLICY_CAN_GROW,
 				GridConstraints.SIZEPOLICY_FIXED, new Dimension(24, 24),
-				new Dimension(24, 24), new Dimension(24, 24), 0, false));
+				new Dimension(124, 24), new Dimension(124, 24), 0, false));
 		cmbProtocol = new JComboBox();
 		final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
 		defaultComboBoxModel3.addElement("item 1");
