@@ -6,13 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Contains the deadline which is a combination of time and rounds deadline. If
- * both are set, the deadline is reached when the first deadline (time or
- * rounds) is reached.
+ * Contains the deadline - either rounds based or time based.
  * <p>
- * Deadline is a unmodifyable object.
+ * Deadline is a final object and can be serialized to xml.
  * 
- * @author David Festen
  * @author W.Pasman
  */
 @XmlRootElement
