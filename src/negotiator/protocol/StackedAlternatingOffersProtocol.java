@@ -66,11 +66,11 @@ public class StackedAlternatingOffersProtocol extends
 	public Round getRoundStructure(List<NegotiationPartyInternal> parties,
 			Session session) {
 		Round round = new Round();
-		boolean isFirstRound = session.getRoundNumber() == 0;
-		boolean isFirstParty = true;
+		// we will create the very first action if this is the first round
+		boolean isVeryFirstAction = session.getRoundNumber() == 0;
 
 		for (NegotiationPartyInternal party : parties) {
-			if (isFirstRound && isFirstParty) {
+			if (isVeryFirstAction) {
 				// If this is the first party in the first round, it can not
 				// accept.
 				round.addTurn(new Turn(party, Offer.class, EndNegotiation.class));
@@ -80,7 +80,7 @@ public class StackedAlternatingOffersProtocol extends
 				round.addTurn(new Turn(party, Accept.class, Offer.class,
 						EndNegotiation.class));
 			}
-			isFirstParty = false;
+			isVeryFirstAction = false;
 		}
 
 		// return round structure
