@@ -376,7 +376,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		sessionManager.addLoggingListener(fileLogger);
 
 		System.out.println("Negotiation session has started.");
-		sessionManager.run();
+		new Thread(sessionManager).start();
 
 		/*
 		 * // determine the domain DomainRepItem

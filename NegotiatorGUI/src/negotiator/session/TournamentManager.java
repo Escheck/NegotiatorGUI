@@ -281,7 +281,7 @@ public class TournamentManager extends Thread {
 			SessionManager sessionManager = new SessionManager(parties,
 					protocol, session, executor);
 			useConsoleOut(false);
-			sessionManager.run();
+			sessionManager.runAndWait();
 			useConsoleOut(true);
 
 			try {
