@@ -60,7 +60,7 @@ public class CounterOfferHumanNegotiationParty extends AbstractNegotiationParty 
 
 		if (opponentAction instanceof Accept && sender != this) {
 			JOptionPane.showMessageDialog(null, "" + sender
-					+ " accepted your last offer.");
+					+ " accepted the last offer.");
 		}
 
 		if (opponentAction instanceof EndNegotiation) {
