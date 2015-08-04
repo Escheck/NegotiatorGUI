@@ -34,12 +34,10 @@ public class DeadlineDialog extends JDialog {
 	private Deadline previousSettings;
 	private Deadline settings;
 
-	private final String TIME = "Time";
-	private final String ROUNDS = "Rounds";
 	private final SpinnerNumberModel valuemodel = new SpinnerNumberModel(180,
 			1, 10000, 10);
 	private JSpinner spinner = new JSpinner(valuemodel);
-	private JComboBox combobox = new JComboBox(new String[] { TIME, ROUNDS });
+	private JComboBox combobox = new JComboBox(DeadlineType.values());
 
 	/**
 	 * Edit existing deadline. Call {@link #getDeadlines()} after completion to
@@ -54,6 +52,9 @@ public class DeadlineDialog extends JDialog {
 
 		previousSettings = deadlines;
 		settings = deadlines;
+
+		valuemodel.setValue(deadlines.getValue());
+		combobox.setSelectedItem(deadlines.getType());
 	}
 
 	public DeadlineDialog(Component parent) {
@@ -107,13 +108,8 @@ public class DeadlineDialog extends JDialog {
 	 * @return
 	 */
 	private Deadline getGuiSetting() {
-		if (combobox.getSelectedItem().equals(TIME)) {
-			return new Deadline((Integer) valuemodel.getValue(),
-					DeadlineType.TIME);
-		} else { // ROUNDS
-			return new Deadline((Integer) valuemodel.getValue(),
-					DeadlineType.ROUND);
-		}
+		return new Deadline((Integer) valuemodel.getValue(),
+				(DeadlineType) combobox.getSelectedItem());
 	}
 
 	private void onOK() {
