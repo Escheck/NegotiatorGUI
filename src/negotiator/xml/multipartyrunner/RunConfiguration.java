@@ -86,7 +86,7 @@ class RunConfiguration {
 		try {
 			long start = System.nanoTime();
 			useConsoleOut(false);
-			sessionManager.run();
+			sessionManager.runAndWait();
 			useConsoleOut(true);
 			long stop = System.nanoTime();
 			return new AgreementEvent(this, session, protocol, parties,

@@ -31,8 +31,9 @@ import negotiator.protocol.MultilateralProtocol;
  * passed on from the GUI.
  *
  * @author David Festen
+ * 
  */
-public class SessionManager {
+public class SessionManager implements Runnable {
 	// maximum utility history to keep for each session (absolute maximum is
 	// int.max)
 	public static final int MAX_UTIL_HISTORY = 100000; // 100K
@@ -111,10 +112,23 @@ public class SessionManager {
 	}
 
 	/**
-	 * Start the negotiation session TODO David: This method has become huge,
-	 * needs to be refactored.
+	 * Run and wait for completion. Can be used from a thread. Throws from the
+	 * underlying call are redirected into a {@link RuntimeException}.
 	 */
-	public void run() throws InvalidActionError, InterruptedException,
+	public void run() {
+		try {
+			runAndWait();
+		} catch (Exception e) {
+			throw new RuntimeException("Run failed:" + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Runs the negotiation session and wait for it to complete.
+	 * 
+	 * TODO David: This method has become huge, needs to be refactored.
+	 */
+	public void runAndWait() throws InvalidActionError, InterruptedException,
 			ExecutionException, NegotiationPartyTimeoutException {
 		// pre session protocol call
 		protocol.beforeSession(session, parties);
