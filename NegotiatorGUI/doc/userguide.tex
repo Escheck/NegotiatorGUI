@@ -559,8 +559,8 @@ The contents of each \verb|<tournament>| element is as follows
 \begin{itemize}
     \item \textbf{deadline}. The deadline element contains two values:
       \begin{itemize}
-        \item \textbf{totalTime}. This is the maximum time in seconds for each session. Ignored if \textless 1
-        \item \textbf{totalRounds.} This is the maximum number of rounds for each session. Ignored if \textless 1.
+        \item \textbf{value}. This is the maximum value determining the deadline. Must be an integer $\ge 1$.
+        \item \textbf{type.} Can be either $ROUND$ or $TIME$. If $ROUND$, the value is the number of rounds. If $TIME$, value is a time in seconds.
       \end{itemize}
       
     \item \textbf{numSessions}. The number of times each session will be run in the tournament. 
