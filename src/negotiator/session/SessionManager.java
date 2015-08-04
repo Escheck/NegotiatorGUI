@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import negotiator.Bid;
+import negotiator.DeadlineType;
 import negotiator.DiscreteTimeline;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.actions.Action;
@@ -252,9 +253,9 @@ public class SessionManager {
 		if (session.isDeadlineReached()) {
 			System.out.println("Deadline reached. " + session.getDeadlines());
 			session.getRounds().remove(session.getRounds().size() - 1);
-			if (session.getDeadlines().isTime()) {
+			if (session.getDeadlines().getType() == DeadlineType.TIME) {
 				double runTimeInSeconds = (Integer) session.getDeadlines()
-						.getTotalTime();
+						.getValue();
 				session.setRuntimeInSeconds(runTimeInSeconds);
 			}
 			sessionLogger.logMessage("Deadline reached: %s",

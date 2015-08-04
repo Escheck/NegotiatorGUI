@@ -2,10 +2,10 @@
 <multilateralTournamentsConfiguration>
 	<tournaments>
 		<tournament>
-			<deadline>
-				<totalTime>0</totalTime>
-				<totalRounds>111</totalRounds>
-			</deadline>
+            <deadline>
+                <value>12</value>
+                <type>TIME</type>
+            </deadline>
 			<protocolItem hasMediatorProfile="false" hasMediator="false"
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
@@ -39,10 +39,10 @@
 		</tournament>
 
 		<tournament>
-			<deadline>
-				<totalTime>10</totalTime>
-				<totalRounds>0</totalRounds>
-			</deadline>
+            <deadline>
+                <value>10</value>
+                <type>ROUND</type>
+            </deadline>
 			<protocolItem hasMediatorProfile="false" hasMediator="false"
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"

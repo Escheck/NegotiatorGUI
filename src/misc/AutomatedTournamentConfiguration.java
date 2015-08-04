@@ -58,7 +58,7 @@ public class AutomatedTournamentConfiguration extends GuiConfiguration {
 
 	@Override
 	public Deadline getDeadline() {
-		return new Deadline(DEADLINE_TIME, DEADLINE_ROUNDS);
+		return new Deadline(DEADLINE_TIME, DEADLINE_TYPE);
 	}
 
 	public static List<ProfileRepItem> getAllPartyProfileItems() {

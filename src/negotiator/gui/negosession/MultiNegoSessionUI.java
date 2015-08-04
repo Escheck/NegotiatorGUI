@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import negotiator.AgentID;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultipartyProgressUI;
 import negotiator.logging.FileLogger;
@@ -259,14 +260,15 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 
 		// we need to pre-generate the deadline map instance (we need it
 		// multiple times)
-		int rounds = 0, time = 0;
+		Deadline deadline;
 		if (txtDeadlineType.getText().toUpperCase().contains("ROUND")) {
-			rounds = Integer.parseInt(txtMaxTimeOrRound.getText());
-		} else if (txtDeadlineType.getText().toUpperCase().contains("TIME")) {
-			time = Integer.parseInt(txtMaxTimeOrRound.getText());
+			deadline = new Deadline(Integer.parseInt(txtMaxTimeOrRound
+					.getText()), DeadlineType.ROUND);
+		} else {
+			// we just assert it's TIME if it's not ROUND.
+			deadline = new Deadline(Integer.parseInt(txtMaxTimeOrRound
+					.getText()), DeadlineType.TIME);
 		}
-
-		Deadline deadline = new Deadline(time, rounds);
 
 		// First we generate the session instance
 		Session session = new Session(deadline);

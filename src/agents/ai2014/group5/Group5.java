@@ -9,6 +9,7 @@ import java.util.Map;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -102,7 +103,8 @@ public class Group5 extends AbstractNegotiationParty {
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		if (bidding.deadline == null) {
-			bidding.deadline = (Integer) deadlines.getTotalRounds();
+			bidding.deadline = deadlines.getType() == DeadlineType.ROUND ? deadlines
+					.getValue() : 0;
 		}
 		// Consult the bidding strategy!
 		Bid ourBid = bidding.generateBid();
@@ -185,7 +187,8 @@ public class Group5 extends AbstractNegotiationParty {
 
 		Integer deadline = bidding.deadline;
 		if (deadline == null) {
-			bidding.setDeadline(deadlines.getTotalRounds());
+			bidding.setDeadline(deadlines.getType() == DeadlineType.ROUND ? deadlines
+					.getValue() : 0);
 			deadline = bidding.deadline;
 		}
 		// int roundsLeft = Integer.MAX_VALUE;

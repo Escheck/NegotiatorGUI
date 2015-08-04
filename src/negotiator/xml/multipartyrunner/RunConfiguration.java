@@ -60,8 +60,7 @@ class RunConfiguration {
 		mDomain = config.mDomain;
 		mProfiles = new ArrayList<String>(profiles);
 		mProtocol = config.mProtocol;
-		mDeadlineType = config.mDeadlineType;
-		mDeadlineValue = config.mDeadlineValue;
+		deadline = config.deadline;
 	}
 
 	/**
@@ -76,15 +75,14 @@ class RunConfiguration {
 			InstantiationException, IllegalAccessException {
 
 		MultilateralProtocol protocol = generateProtocol(mProtocol);
-		Deadline deadline = generateDeadline(mDeadlineType, mDeadlineValue);
 		Session session = new Session(deadline);
 		List<NegotiationPartyInternal> parties = generateParties(session,
 				mParties, mProfiles, mProtocol, mDomain);
+
 		ExecutorWithTimeout executor = new ExecutorWithTimeout(
-				deadline.getTimeOrDefaultTimeout());
+				deadline.getDefaultTimeout());
 		SessionManager sessionManager = new SessionManager(parties, protocol,
 				session, executor);
-
 		try {
 			long start = System.nanoTime();
 			useConsoleOut(false);
@@ -154,24 +152,6 @@ class RunConfiguration {
 			e.printStackTrace();
 			System.exit(1);
 			return null;
-		}
-	}
-
-	/**
-	 * Converts a deadline type and value string to an Deadline object
-	 * 
-	 * @param deadlineType
-	 *            Type of deadline (either "round" or "time")
-	 * @param deadlineValue
-	 *            Value for deadline (should be integer parseable)
-	 * @return The Deadline object
-	 */
-	private Deadline generateDeadline(String deadlineType, String deadlineValue) {
-		int value = Integer.parseInt(deadlineValue);
-		if (deadlineType.toLowerCase().equals("time")) {
-			return new Deadline(value, -1);
-		} else {
-			return new Deadline(-1, value);
 		}
 	}
 
@@ -263,11 +243,8 @@ class RunConfiguration {
 	@XmlElement(name = "protocol")
 	private String mProtocol;
 
-	@XmlElement(name = "deadline-type")
-	private String mDeadlineType;
-
-	@XmlElement(name = "deadline-value")
-	private String mDeadlineValue;
+	@XmlElement
+	private Deadline deadline;
 
 	/**
 	 * makes a deep copy of this object using different profile ordering.

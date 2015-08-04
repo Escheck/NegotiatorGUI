@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Contains the deadline which is a combination of time and rounds deadline. If
  * both are set, the deadline is reached when the first deadline (time or
  * rounds) is reached.
+ * <p>
+ * Deadline is a unmodifyable object.
  * 
  * @author David Festen
  * @author W.Pasman
@@ -18,48 +20,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Deadline {
 
 	@XmlElement
-	private final Integer totalTime;
+	private final Integer value;
 	@XmlElement
-	private final Integer totalRounds;
+	private final DeadlineType type;
 
+	/**
+	 * Create default value.
+	 */
 	public Deadline() {
-		totalTime = 180;
-		totalRounds = 0;
-	}
+		value = 180;
+		type = DeadlineType.TIME;
+	};
 
-	public Deadline(Integer time, Integer rounds) {
-		totalTime = time;
-		totalRounds = rounds;
-	}
-
-	/**
-	 * returns the total time available. If <=0 then the total time is undefined
-	 * and will be ignored.
-	 */
-	public Integer getTotalTime() {
-		return totalTime;
-	}
-
-	/**
-	 * returns the total rounds available. If <=0 then the total rounds is
-	 * undefined and will be ignored.
-	 */
-	public Integer getTotalRounds() {
-		return totalRounds;
+	public Deadline(int val, DeadlineType tp) {
+		if (val <= 0) {
+			throw new IllegalArgumentException("value must be >0 but got "
+					+ val);
+		}
+		if (tp == null) {
+			throw new NullPointerException("type is null");
+		}
+		value = val;
+		type = tp;
 	}
 
 	/**
-	 * @return true iff the time deadline is >0 and engaged
+	 * Get the total value
+	 * 
+	 * @return
 	 */
-	public boolean isTime() {
-		return totalTime > 0;
+	public int getValue() {
+		return value;
 	}
 
 	/**
-	 * @return true iff the rounds deadline is >0 and engaged
+	 * Get the type of this deadline.
+	 * 
+	 * @return
 	 */
-	public boolean isRounds() {
-		return totalRounds > 0;
+	public DeadlineType getType() {
+		return type;
 	}
 
 	/**
@@ -71,15 +71,25 @@ public class Deadline {
 		return 3 * 60;
 	}
 
+	public String toString() {
+		return "Deadline:" + valueString();
+	}
+
+	public String valueString() {
+		return value + type.units();
+	}
+
 	/**
-	 * Get time out in seconds, or default timeout if time not set.
+	 * get the time, or a default time time-out. This is needed to determine the
+	 * time-out for code execution with {@link DeadlineType#ROUND} deadlines.
 	 * 
-	 * @return time out in seconds, always >0.
+	 * @return
 	 */
-	public Integer getTimeOrDefaultTimeout() {
-		if (totalTime > 0) {
-			return totalTime;
+	public int getTimeOrDefaultTimeout() {
+		if (type == DeadlineType.ROUND) {
+			return 180;
 		}
-		return getDefaultTimeout();
+		return value;
+
 	}
 }

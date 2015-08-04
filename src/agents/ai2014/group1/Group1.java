@@ -7,6 +7,7 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -70,7 +71,8 @@ public class Group1 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
-		totalRounds = deadlines.getTotalRounds();
+		totalRounds = deadlines.getType() == DeadlineType.ROUND ? deadlines
+				.getValue() : 0;
 		// System.out.println("totalRounds: " + totalRounds);
 		currentRound++;
 		// System.out.println("agentID: " + getPartyId().toString() +

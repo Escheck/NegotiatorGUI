@@ -169,13 +169,7 @@ public class CsvLogger implements Closeable {
 			values.add("" + (session.getRoundNumber() + 1));
 
 			// round / time
-			if (session.getDeadlines().isRounds()) {
-				values.add("Round");
-				values.add("" + session.getDeadlines().getTotalRounds());
-			} else {
-				values.add("Time");
-				values.add("" + session.getDeadlines().getTotalTime());
-			}
+			values.add(session.getDeadlines().toString());
 
 			// discounted and agreement
 			boolean isDiscounted = false;

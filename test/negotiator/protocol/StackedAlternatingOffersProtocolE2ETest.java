@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
@@ -151,7 +152,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				"negotiator.parties.BoulwareNegotiationParty",
 				"negotiator.parties.ConcederNegotiationParty",
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
-		Deadline deadline = new Deadline(0, 60);
+		Deadline deadline = new Deadline(60, DeadlineType.ROUND);
 		Session session = new Session(deadline);
 		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 

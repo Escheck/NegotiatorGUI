@@ -62,14 +62,8 @@ public class AgreementEvent extends NegotiationEvent {
 			values.put(DataKey.RUNTIME, format("%.3f", runTime));
 			values.put(DataKey.ROUND, "" + (session.getRoundNumber() + 1));
 
-			// round / time
-			if (session.getDeadlines().isRounds()) {
-				values.put(DataKey.MAX_ROUNDS, ""
-						+ session.getDeadlines().getTotalRounds());
-			} else {
-				values.put(DataKey.MAX_TIME, ""
-						+ session.getDeadlines().getTotalTime());
-			}
+			// deadline
+			values.put(DataKey.DEADLINE, session.getDeadlines().valueString());
 
 			// discounted and agreement
 			boolean isDiscounted = false;

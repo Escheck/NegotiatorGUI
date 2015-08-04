@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import negotiator.Deadline;
+import negotiator.DeadlineType;
 import negotiator.config.GuiConfiguration;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultiPartyTournamentProgressUI;
@@ -109,7 +111,7 @@ public class MultilateralUI extends JPanel {
 		config = new GuiConfiguration();
 
 		// set config defaults
-		config.setDeadline(new Deadline(180, 0));
+		config.setDeadline(new Deadline(180, DeadlineType.TIME));
 		config.setProtocolItem(ContentProxy.fetchProtocols().get(0));
 		config.setNumSessions(1);
 		config.setNumAgentsPerSession(2);
@@ -154,7 +156,8 @@ public class MultilateralUI extends JPanel {
 				dialog.pack();
 				dialog.setVisible(true);
 
-				config.setDeadline(dialog.getDeadlines());
+				config.setDeadline(dialog.getDeadline());
+				lblDeadlines.setText(config.getDeadline().toString());
 				lblDeadlinesValue.setText(asString(config.getDeadline()));
 			}
 		});
@@ -332,18 +335,7 @@ public class MultilateralUI extends JPanel {
 	 * @return human readable string
 	 */
 	private static String asString(Deadline deadline) {
-		String time = "time: " + deadline.getTotalTime();
-		String round = "round:" + deadline.getTotalRounds();
-		if (deadline.isTime()) {
-			if (deadline.isRounds()) {
-				return time + " or " + round;
-			}
-			return time;
-		}
-		if (deadline.isRounds()) {
-			return round;
-		}
-		return "Not set";
+		return deadline.toString();
 	}
 
 	/**
@@ -388,6 +380,7 @@ public class MultilateralUI extends JPanel {
 			btnStartTournament.setEnabled(false);
 			btnStartTournament.repaint();
 
+			config.save(new File("test.xml"));
 			// init data model, GUI, logger.
 			MultiPartyDataModel dataModel = new MultiPartyDataModel(
 					config.getNumAgentsPerSession());
