@@ -242,12 +242,14 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 		return partyId;
 	}
 
+	@Override
 	public String getDescription() {
 		return this.getClass().getSimpleName();
 	}
 
-	public MultilateralProtocolAdapter getProtocol() {
-		return new StackedAlternatingOffersProtocol();
+	@Override
+	public Class<? extends MultilateralProtocolAdapter> getProtocol() {
+		return StackedAlternatingOffersProtocol.class;
 	}
 
 }

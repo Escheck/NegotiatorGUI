@@ -68,8 +68,8 @@ public abstract class NastyAgent implements NegotiationParty {
 	}
 
 	@Override
-	public MultilateralProtocolAdapter getProtocol() {
-		return new StackedAlternatingOffersProtocol();
+	public Class<? extends MultilateralProtocolAdapter> getProtocol() {
+		return StackedAlternatingOffersProtocol.class;
 	}
 
 }

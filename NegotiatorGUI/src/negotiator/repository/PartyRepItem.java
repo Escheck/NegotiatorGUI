@@ -111,7 +111,7 @@ public class PartyRepItem implements RepItem {
 		NegotiationParty party1 = load();
 		partyName = party1.getClass().getSimpleName();
 		description = party1.getDescription();
-		protocolClassPath = party1.getProtocol().getClass().getCanonicalName();
+		protocolClassPath = party1.getProtocol().getCanonicalName();
 
 	}
 
