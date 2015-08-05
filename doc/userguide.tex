@@ -1254,7 +1254,7 @@ public interface NegotiationParty {
 	 * @return the actual supported {@link MultilateralProtocol}, usually
 	 *         {@link StackedAlternatingOffersProtocol}.
 	 */
-	public MultilateralProtocolAdapter getProtocol();
+	public Class<? extends MultilateralProtocol> getProtocol();
 
 }
 \end{lstlisting}
