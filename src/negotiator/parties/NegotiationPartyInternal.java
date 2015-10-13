@@ -240,4 +240,8 @@ public class NegotiationPartyInternal {
 		return session;
 	}
 
+	@Override
+	public String toString() {
+		return getPartyId().toString();
+	}
 }

@@ -66,9 +66,6 @@
 			<partyRepItem description="15. Neo"
 				classPath="agents.anac.y2015.AgentNeo.Groupn" partyName="ANAC2015-15-Neo"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="16. Forseti"
-				classPath="agents.anac.y2015.Forseti.Forseti" partyName="ANAC2015-16-Forseti"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
 			<partyRepItem description="17. HP"
 				classPath="agents.anac.y2015.AgentHP.AgentHP" partyName="ANAC2015-17-HP"
 				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
