@@ -2,6 +2,7 @@ package multipartyexample;
 
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -39,19 +40,19 @@ public class Groupn extends AbstractNegotiationParty {
 	 * their utility.
 	 *
 	 * @param sender
-	 *            The party that did the action.
+	 *            The party that did the action. Can be null.
 	 * @param action
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 		// Here you hear other parties' messages
 	}
-    
-    @Override
-    public String getDescription() {
-        return "example party group N";
-    }
+
+	@Override
+	public String getDescription() {
+		return "example party group N";
+	}
 
 }
