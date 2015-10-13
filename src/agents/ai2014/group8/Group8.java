@@ -178,7 +178,7 @@ public class Group8 extends AbstractNegotiationParty {
 	@Override
 	public void receiveMessage(AgentID sender, Action action) {
 		// handle first message from framework to initialize list of opponents
-		if (sender.equals("Protocol")) {
+		if (sender == null) {
 			super.receiveMessage(sender, action);
 
 			// get number of agents in the negotiation

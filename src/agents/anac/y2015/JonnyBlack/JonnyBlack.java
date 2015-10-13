@@ -1,5 +1,6 @@
 package agents.anac.y2015.JonnyBlack;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -10,6 +11,8 @@ import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
+import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
@@ -135,32 +138,30 @@ public class JonnyBlack extends AbstractNegotiationParty {
 			lastBid = b;
 		}
 
-		// following HACK will never work anymore. disabled #1125
-		// if (sender instanceof AbstractNegotiationParty) {
-		// Party p = new Party(((AbstractNegotiationParty) sender)
-		// .getPartyId().toString(), issueValOrder);
-		// if (!parties.contains(p)) {
-		// parties.add(p);
-		// p.setOrderedBids(this.acceptableBids, utilitySpace);
-		// } else {
-		// p = parties.get(parties.indexOf(p));
-		// }
-		// if (lastBid != null && !action.equals(new Accept())) {
-		// ArrayList<Issue> issues = lastBid.getIssues();
-		// try {
-		// for (int i = 0; i < issues.size(); i++) {
-		// IssueDiscrete id = (IssueDiscrete) utilitySpace
-		// .getIssue(i);
-		// int choice = id.getValueIndex((ValueDiscrete) lastBid
-		// .getValue(i + 1));
-		// p.counts[i][choice]++;
-		// }
-		// p.calcWeights();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// }
+		if (sender != null) {
+			Party p = new Party(sender.toString(), issueValOrder);
+			if (!parties.contains(p)) {
+				parties.add(p);
+				p.setOrderedBids(this.acceptableBids, utilitySpace);
+			} else {
+				p = parties.get(parties.indexOf(p));
+			}
+			if (lastBid != null && !action.equals(new Accept())) {
+				ArrayList<Issue> issues = lastBid.getIssues();
+				try {
+					for (int i = 0; i < issues.size(); i++) {
+						IssueDiscrete id = (IssueDiscrete) utilitySpace
+								.getIssue(i);
+						int choice = id.getValueIndex((ValueDiscrete) lastBid
+								.getValue(i + 1));
+						p.counts[i][choice]++;
+					}
+					p.calcWeights();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		// Here you can listen to other parties' messages
 	}
 

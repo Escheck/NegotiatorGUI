@@ -204,7 +204,7 @@ public class RandomDance extends AbstractNegotiationParty {
 	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 
-		if (sender.toString().equals("Protocol")) {
+		if (sender == null) {
 			Inform inform = (Inform) action;
 			// System.err.println(inform.getName());
 			// System.err.println((int)inform.getValue());

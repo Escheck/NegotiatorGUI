@@ -331,7 +331,7 @@ public class XianFaAgent extends AbstractNegotiationParty {
 		// Here you can listen to other parties' messages
 
 		// Assign party ids to the two opponents
-		if (!sender.toString().equals("Protocol") && firstRound) {
+		if (sender != null && firstRound) {
 			if (!(opponentA.equals("") || opponentB.equals("")))
 				firstRound = false;
 			if (!myTurnPrev) {
