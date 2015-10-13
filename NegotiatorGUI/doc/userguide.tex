@@ -1237,11 +1237,11 @@ public interface NegotiationParty {
 	 * {@link Action}.
 	 *
 	 * @param sender
-	 *            The initiator of the action
+	 *            The initiator of the action. May be null if initiator is not an agent.
 	 * @param arguments
 	 *            The action performed
 	 */
-	void receiveMessage(Object sender, Action arguments);
+	void receiveMessage(AgentID sender, Action arguments);
 
 	/**
 	 * @return a description for this party
