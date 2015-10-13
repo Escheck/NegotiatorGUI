@@ -222,7 +222,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		if (arguments instanceof Inform) {
 			numberOfParties = (Integer) ((Inform) arguments).getValue();
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -102,7 +103,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 		String agentName = sender.toString();
 		// action.getAgent() != null ? action.getAgent().toString() :

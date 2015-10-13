@@ -165,7 +165,7 @@ public class Group6 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 
 		history.put(sender, action);

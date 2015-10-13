@@ -175,7 +175,7 @@ public class FeedbackMediator extends AbstractNegotiationParty implements
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		if (arguments instanceof GiveFeedback)
 			currentFeedbackList.add(((GiveFeedback) arguments).getFeedback());
 

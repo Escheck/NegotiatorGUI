@@ -110,7 +110,7 @@ public class kawaii extends AbstractNegotiationParty {
 	 */
 	@Override
 	// ���g�ȊO�̌��Q���҂�Action����M
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 
 		// System.out.println("��M");
 		// System.out.println("Sender:"+sender+", Action:"+action);

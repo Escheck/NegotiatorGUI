@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Objective;
@@ -15,14 +16,14 @@ import negotiator.utility.EvaluatorReal;
 import negotiator.utility.UtilitySpace;
 
 public class NegotiationModel {
-	private List<AbstractNegotiationParty> opponents = new ArrayList<AbstractNegotiationParty>();
+	private List<AgentID> opponents = new ArrayList<AgentID>();
 	private UtilitySpace baseUtilSpace; // A standardized utility space with all
 										// weights and utilities equal.
 	private UtilitySpace myUtilSpace;
-	private HashMap<AbstractNegotiationParty, OpponentModel> opponentModels = new HashMap<AbstractNegotiationParty, OpponentModel>(); // One
-																																		// model
-																																		// per
-																																		// opponent.
+	private HashMap<AgentID, OpponentModel> opponentModels = new HashMap<AgentID, OpponentModel>(); // One
+																									// model
+																									// per
+																									// opponent.
 
 	public NegotiationModel(UtilitySpace us) {
 		myUtilSpace = us;
@@ -30,7 +31,7 @@ public class NegotiationModel {
 	}
 
 	// Add a new opponent to the model, using the standardized utility space.
-	public void addOpponent(AbstractNegotiationParty opponent) {
+	public void addOpponent(AgentID opponent) {
 		opponents.add(opponent);
 		opponentModels.put(opponent, new OpponentModel(baseUtilSpace));
 	}
@@ -82,7 +83,7 @@ public class NegotiationModel {
 		return util;
 	}
 
-	public void addBid(AbstractNegotiationParty opponent, Bid bid) {
+	public void addBid(AgentID opponent, Bid bid) {
 		opponentModels.get(opponent).addBid(bid);
 	}
 

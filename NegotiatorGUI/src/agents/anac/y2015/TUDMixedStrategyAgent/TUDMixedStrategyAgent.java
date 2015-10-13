@@ -139,43 +139,37 @@ public class TUDMixedStrategyAgent extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		// Here you can listen to other parties' messages
 
 		if (action instanceof Offer) {
-			if (!partylist
-					.contains(/* action.getAgent() */((AbstractNegotiationParty) sender)
-							.getPartyId())) {
+			if (!partylist.contains(/* action.getAgent() */((AgentID) sender))) {
 				// We have never seen this agent
 				// System.out.println("New Agent: " +
 				// action.getAgent().toString());
-				partylist.add(((AbstractNegotiationParty) sender).getPartyId()); // add
-																					// it
-																					// to
-																					// our
-																					// list
+				partylist.add(((AgentID) sender)); // add
+													// it
+													// to
+													// our
+													// list
 				BidHistory newAgentBidHistory = new BidHistory(); // create a
 																	// new agent
 																	// list and
 																	// add it.
 				bidhistorylist.add(newAgentBidHistory);
 				// create a new agentUtils and add it
-				AgentUtils newAgentUtils = new AgentUtils(
-						((AbstractNegotiationParty) sender).getPartyId(),
+				AgentUtils newAgentUtils = new AgentUtils(((AgentID) sender),
 						newAgentBidHistory, utilitySpace.getNrOfEvaluators());
 				agentUtilsList.add(newAgentUtils);
 			}
 			lastbid = Action.getBidFromAction(action);
 			// add the bid to the bidhistory
-			bidhistorylist.get(
-					partylist.indexOf(((AbstractNegotiationParty) sender)
-							.getPartyId())).add(
+			bidhistorylist.get(partylist.indexOf(((AgentID) sender))).add(
 					new BidDetails(lastbid, getUtility(lastbid)));
 			// Loop through our agent List to find the one that sent the message
 			// and update his AgentUtils
 			for (int i = 0; i < agentUtilsList.size(); i++) {
-				if (agentUtilsList.get(i).agent == ((AbstractNegotiationParty) sender)
-						.getPartyId()) {
+				if (agentUtilsList.get(i).agent == ((AgentID) sender)) {
 					agentUtilsList.get(i).recalculateUtilFunction();
 					break;
 				}

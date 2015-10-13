@@ -201,7 +201,7 @@ public class RandomDance extends AbstractNegotiationParty {
 	Bid olderBid = null;
 
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 
 		if (sender.toString().equals("Protocol")) {

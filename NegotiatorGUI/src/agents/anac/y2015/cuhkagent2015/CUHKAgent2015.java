@@ -512,7 +512,7 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action opponentAction) {
+	public void receiveMessage(AgentID sender, Action opponentAction) {
 		super.receiveMessage(sender, opponentAction);
 		// sender.getClass().getName();
 		this.ActionOfOpponent = opponentAction;

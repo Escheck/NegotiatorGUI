@@ -113,7 +113,7 @@ public class AgentW extends AbstractNegotiationParty {
 	 */
 	@Override
 	// 自身以外の交渉参加者のActionを受信
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 		// Here you can listen to other parties' messages
 		if (isPrinting) {

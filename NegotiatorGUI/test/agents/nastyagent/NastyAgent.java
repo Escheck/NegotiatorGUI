@@ -59,7 +59,7 @@ public abstract class NastyAgent implements NegotiationParty {
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 	}
 
 	@Override

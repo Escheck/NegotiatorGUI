@@ -27,10 +27,10 @@ public class Forseti extends AbstractNegotiationParty {
 
 	private Bid lastBid = null; // Last bid made by anyone.
 	private Bid myLastBid = null; // Last bid made by this agent.
-	private AbstractNegotiationParty currentAgent = null; // The agent currently
-															// bidding/accepting
+	private AgentID currentAgent = null; // The agent currently
+											// bidding/accepting
 	private NegotiationModel model; // Our model of the negotiation.
-	private List<AbstractNegotiationParty> opponents = new ArrayList<AbstractNegotiationParty>();
+	private List<AgentID> opponents = new ArrayList<AgentID>();
 	private boolean opponentsListFull = false;
 	private List<Bid> goodBids = new ArrayList<Bid>(); // List of bids with
 														// utility above our
@@ -98,7 +98,7 @@ public class Forseti extends AbstractNegotiationParty {
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Method is called every time it's this agent's turn.
-		currentAgent = this;
+		currentAgent = getPartyId();
 
 		// First offer is always the maximum utility offer.
 		if (!validActions.contains(Accept.class) || round == 1) {
@@ -236,15 +236,12 @@ public class Forseti extends AbstractNegotiationParty {
 	 */
 
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 
-		boolean noSender = false;
-		try {
-			currentAgent = (AbstractNegotiationParty) sender;
-		} catch (Exception e1) {
-			noSender = true;
-		}
+		boolean noSender = (sender == null);
+		if (!noSender)
+			currentAgent = sender;
 
 		// In the first round, add the opponents to the model.
 		if (!opponentsListFull && !noSender) {
