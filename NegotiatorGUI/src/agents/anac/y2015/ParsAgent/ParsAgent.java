@@ -105,7 +105,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	@Override
 	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
-		String agentName = sender.toString();
+		String agentName = sender == null ? "null" : sender.toString();
 		// action.getAgent() != null ? action.getAgent().toString() :
 		// fornullAgent ? "null1" : "null2";
 		fornullAgent = !fornullAgent;

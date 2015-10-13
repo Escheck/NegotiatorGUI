@@ -228,7 +228,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 
 		super.receiveMessage(sender, action);
 
-		if (sender.toString().equalsIgnoreCase("Protocol")
+		if (sender == null
 				|| !((action instanceof Offer) || (action instanceof Accept))) {
 			return;
 		}
