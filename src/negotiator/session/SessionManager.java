@@ -354,7 +354,7 @@ public class SessionManager implements Runnable {
 								@Override
 								public Object call() {
 									observer.getParty().receiveMessage(
-											actionOwner.getParty(), action);
+											actionOwner.getPartyId(), action);
 									return null;
 								}
 							});

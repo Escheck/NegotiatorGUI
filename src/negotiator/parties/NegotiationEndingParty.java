@@ -67,7 +67,7 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(final Object sender, final Action arguments) {
+	public void receiveMessage(final AgentID sender, final Action arguments) {
 		super.receiveMessage(sender, arguments);
 	}
 

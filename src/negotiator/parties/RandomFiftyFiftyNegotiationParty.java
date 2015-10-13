@@ -2,6 +2,7 @@ package negotiator.parties;
 
 import java.util.List;
 
+import negotiator.AgentID;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.OfferForVoting;
@@ -47,7 +48,7 @@ public class RandomFiftyFiftyNegotiationParty extends AbstractNegotiationParty {
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		// not used
 	}
 

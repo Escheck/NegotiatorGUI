@@ -235,7 +235,7 @@ public class StackedAlternatingOffersProtocol extends
 							@Override
 							public Object call() throws Exception {
 								party.getParty().receiveMessage(
-										"Protocol",
+										null,
 										new Inform("NumberOfAgents", parties
 												.size()));
 

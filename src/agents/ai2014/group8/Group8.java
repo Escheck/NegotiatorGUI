@@ -10,6 +10,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Inform;
 import negotiator.actions.Offer;
+import negotiator.issue.Issue;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.UtilitySpace;
@@ -34,7 +35,7 @@ public class Group8 extends AbstractNegotiationParty {
 	private Bid mostRecentBid;
 
 	// most recent bidder
-	private AbstractNegotiationParty mostRecentBidder;
+	private AgentID mostRecentBidder;
 
 	// list of opponents modeled by opponentModel class
 	private List<OpponentModel> opponents;
@@ -150,8 +151,7 @@ public class Group8 extends AbstractNegotiationParty {
 		OpponentModel nextAgent = null;
 
 		for (OpponentModel opponent : this.opponents) {
-			if (opponent.agent.getPartyId().equals(
-					this.mostRecentBidder.getPartyId())) {
+			if (opponent.agent.equals(this.mostRecentBidder)) {
 				int indexOfPreviousBidder = this.opponents
 						.indexOf(mostRecentBidder);
 
@@ -176,7 +176,7 @@ public class Group8 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		// handle first message from framework to initialize list of opponents
 		if (sender.equals("Protocol")) {
 			super.receiveMessage(sender, action);
@@ -192,12 +192,12 @@ public class Group8 extends AbstractNegotiationParty {
 			return;
 		}
 
-		AbstractNegotiationParty senderAgent = (AbstractNegotiationParty) sender;
-		this.mostRecentBidder = senderAgent;
+		this.mostRecentBidder = sender;
 
+		ArrayList<Issue> issues = getUtilitySpace().getDomain().getIssues();
 		// add sender agent to list of other parties if not present
-		if (this.opponents.contains(new OpponentModel(senderAgent)) == false) {
-			OpponentModel newOpponent = new OpponentModel(senderAgent);
+		if (this.opponents.contains(new OpponentModel(sender, issues)) == false) {
+			OpponentModel newOpponent = new OpponentModel(sender, issues);
 			this.opponents.add(newOpponent);
 		}
 
@@ -208,7 +208,7 @@ public class Group8 extends AbstractNegotiationParty {
 			OpponentModel senderModel = null;
 
 			for (OpponentModel opponent : this.opponents) {
-				if (opponent.agent.getPartyId() == senderAgent.getPartyId()) {
+				if (opponent.agent == sender) {
 					senderModel = opponent;
 					break;
 				}

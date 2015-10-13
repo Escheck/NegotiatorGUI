@@ -112,7 +112,7 @@ public class Group12 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		// Here you can listen to other parties' messages
 		super.receiveMessage(sender, action);
 

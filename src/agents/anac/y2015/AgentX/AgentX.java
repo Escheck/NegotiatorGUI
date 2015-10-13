@@ -102,7 +102,7 @@ public class AgentX extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 		// Here you can listen to other parties' messages
 		if (isPrinting) {

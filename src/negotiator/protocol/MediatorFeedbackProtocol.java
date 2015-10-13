@@ -106,7 +106,7 @@ public class MediatorFeedbackProtocol extends MediatorProtocol {
 			List<NegotiationPartyInternal> parties) {
 		Inform inform = new Inform().setName("numParties").setValue(
 				parties.size());
-		getMediator(parties).getParty().receiveMessage(this, inform);
+		getMediator(parties).getParty().receiveMessage(null, inform);
 	}
 
 	/**

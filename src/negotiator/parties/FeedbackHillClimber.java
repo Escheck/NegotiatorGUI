@@ -95,7 +95,7 @@ public class FeedbackHillClimber extends AbstractNegotiationParty {
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 
 		if (arguments instanceof InformVotingResult) {
 			// update the utility of last accepted bid by all

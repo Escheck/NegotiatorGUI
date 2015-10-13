@@ -99,7 +99,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		if (arguments instanceof Offer)
 			lastBid = ((Offer) arguments).getBid();
 	}

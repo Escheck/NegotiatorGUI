@@ -72,7 +72,7 @@ public class Group7 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		Bid bid = Action.getBidFromAction(action);
 		if (bid != null)
 			activeBid = bid;

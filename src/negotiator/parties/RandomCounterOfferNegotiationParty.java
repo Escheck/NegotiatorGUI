@@ -87,7 +87,7 @@ public class RandomCounterOfferNegotiationParty extends
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		// not used
 	}
 

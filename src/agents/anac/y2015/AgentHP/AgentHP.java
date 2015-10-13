@@ -245,7 +245,7 @@ public class AgentHP extends AbstractNegotiationParty {
 	 *            行動内容(Accept,Offer,Inform)
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 
 		// オーバーライドのため
 		super.receiveMessage(sender, action);

@@ -55,7 +55,7 @@ public class UINegotiationParty extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		this.opponentAction = arguments;
 		if (opponentAction instanceof Offer) {
 			mostRecentBid = ((Offer) opponentAction).getBid();

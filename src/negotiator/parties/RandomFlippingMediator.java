@@ -114,7 +114,7 @@ public class RandomFlippingMediator extends AbstractNegotiationParty implements
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		if (arguments instanceof VoteForOfferAcceptance) {
 			isAcceptable &= ((VoteForOfferAcceptance) arguments).getVote() == Vote.ACCEPT;
 		}

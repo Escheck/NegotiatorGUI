@@ -51,14 +51,14 @@ public class CounterOfferHumanNegotiationParty extends AbstractNegotiationParty 
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		this.opponentAction = arguments;
 
 		if (opponentAction instanceof Offer) {
 			mostRecentOffer = ((Offer) opponentAction).getBid();
 		}
 
-		if (opponentAction instanceof Accept && sender != this) {
+		if (opponentAction instanceof Accept && sender != this.getPartyId()) {
 			JOptionPane.showMessageDialog(null, "" + sender
 					+ " accepted the last offer.");
 		}

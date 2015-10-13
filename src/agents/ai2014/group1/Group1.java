@@ -148,7 +148,7 @@ public class Group1 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		// First check if the opponent is new or not
 		// If so, create a new opponent model for that opponent
 		if (!myOpponents.contains(sender.toString())) {

@@ -187,7 +187,7 @@ public class Group9 extends AbstractNegotiationParty {
 	 *            The action that party did.
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action action) {
+	public void receiveMessage(AgentID sender, Action action) {
 		// Here you can listen to other parties' messages
 		if (!partyBids.containsKey(sender)
 				&& !sender.toString().equals("Protocol")) {

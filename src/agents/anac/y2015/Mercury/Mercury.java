@@ -122,7 +122,7 @@ public class Mercury extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public void receiveMessage(Object sender, Action opponentAction) {
+	public void receiveMessage(AgentID sender, Action opponentAction) {
 		super.receiveMessage(sender, opponentAction);
 
 		this.ActionOfOpponent = opponentAction;

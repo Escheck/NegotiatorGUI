@@ -73,11 +73,12 @@ public interface NegotiationParty {
 	 * {@link Action}.
 	 *
 	 * @param sender
-	 *            The initiator of the action
+	 *            The initiator of the action.This is either the AgentID, or
+	 *            null if the sender is not an agent (e.g., the protocol).
 	 * @param arguments
 	 *            The action performed
 	 */
-	void receiveMessage(Object sender, Action arguments);
+	void receiveMessage(AgentID sender, Action arguments);
 
 	/**
 	 * @return a human-readable description for this party

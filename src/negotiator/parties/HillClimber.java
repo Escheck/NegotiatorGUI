@@ -80,7 +80,7 @@ public class HillClimber extends AbstractNegotiationParty {
 	 *            The action performed
 	 */
 	@Override
-	public void receiveMessage(Object sender, Action arguments) {
+	public void receiveMessage(AgentID sender, Action arguments) {
 		if (arguments instanceof OfferForVoting) {
 			lastReceivedBidUtility = getUtility(((OfferForVoting) arguments)
 					.getBid());
