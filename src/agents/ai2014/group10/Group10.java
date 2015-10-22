@@ -245,7 +245,7 @@ public class Group10 extends AbstractNegotiationParty {
 				Pair<Integer, Value> pair = ordered_pair.get(i).getKey();
 				int issue = pair.getInteger();
 				Value value = pair.getValue();
-				bid.setValue(issue, value);
+				bid = bid.putValue(issue, value);
 			}
 		}
 		return bid;

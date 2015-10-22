@@ -4,25 +4,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.lang.Math;
 
-import negotiator.NegotiationResult;
 import negotiator.Agent;
-import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
+import negotiator.NegotiationResult;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
-import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
-import negotiator.issue.ValueReal;
+import agents.SimpleAgentSavingBidHistory;
 
 /**
  * @author S. Hourmann Some improvements over the standard Agent. Saving Bid
@@ -52,6 +48,7 @@ public class AgentM extends Agent {
 	private ArrayList myissue = new ArrayList();
 	private ArrayList<Integer> movement = new ArrayList<Integer>();
 	private ArrayList<Integer> maxissue = new ArrayList<Integer>();
+
 	/**
 	 * init is called when a next session starts with the same opponent.
 	 */
@@ -62,18 +59,17 @@ public class AgentM extends Agent {
 		prevSessOppBidHistory = new BidHistory();
 		mySessBidHistory = new BidHistory();
 
-		int[] numAllay = new int[10]; 
-		for(int j=0; j<10;j++){
+		int[] numAllay = new int[10];
+		for (int j = 0; j < 10; j++) {
 			numAllay[j] = 0;
 		}
 		Integer num = 0;
-		for(int i=0; i < this.utilitySpace.getDomain().getIssues().size();i++){
+		for (int i = 0; i < this.utilitySpace.getDomain().getIssues().size(); i++) {
 			issueAllay.add(numAllay.clone());
 			movement.add(num);
 			maxissue.add(num);
 		}
 	}
-
 
 	public void myBeginSession() {
 		System.out.println("Starting match num: " + sessionNr);
@@ -82,14 +78,14 @@ public class AgentM extends Agent {
 		// First try to load saved data
 		// ---- Loading from agent's function "loadSessionData"
 		Serializable prev = this.loadSessionData();
-		AgentMData a = (AgentMData)prev;
+		AgentMData a = (AgentMData) prev;
 		if (a != null) {
 			this.endbid = a.getBid();
 			System.out.println("load complete");
-			//			System.out
-			//					.println("---------/////////// NEW  NEW  NEW /////////////----------");
-			//			System.out.println("The size of the previous BidHistory is: "
-			//					+ prevSessOppBidHistory.size());
+			// System.out
+			// .println("---------/////////// NEW  NEW  NEW /////////////----------");
+			// System.out.println("The size of the previous BidHistory is: "
+			// + prevSessOppBidHistory.size());
 		} else {
 			// If didn't succeed, it means there is no data for this preference
 			// profile
@@ -116,23 +112,30 @@ public class AgentM extends Agent {
 			try {
 				BidDetails opponentBid = new BidDetails(bid,
 						utilitySpace.getUtility(bid), timeline.getTime());
-				if(currSessOppBidHistory.getLastBidDetails() != null){
-					this.prevSessOppBidHistory.add(this.currSessOppBidHistory.getLastBidDetails());
+				if (currSessOppBidHistory.getLastBidDetails() != null) {
+					this.prevSessOppBidHistory.add(this.currSessOppBidHistory
+							.getLastBidDetails());
 				}
 				currSessOppBidHistory.add(opponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		try{
-			if(this.prevSessOppBidHistory.getLastBid() != null){
-				if(getUtility(this.prevSessOppBidHistory.getBestBidDetails().getBid()) < getUtility(this.currSessOppBidHistory.getLastBid())){
-					this.concessionRate = Math.pow(getUtility(this.prevSessOppBidHistory.getWorstBidDetails().getBid()) - getUtility(this.currSessOppBidHistory.getBestBidDetails().getBid()),2.0);
+		try {
+			if (this.prevSessOppBidHistory.getLastBid() != null) {
+				if (getUtility(this.prevSessOppBidHistory.getBestBidDetails()
+						.getBid()) < getUtility(this.currSessOppBidHistory
+						.getLastBid())) {
+					this.concessionRate = Math
+							.pow(getUtility(this.prevSessOppBidHistory
+									.getWorstBidDetails().getBid())
+									- getUtility(this.currSessOppBidHistory
+											.getBestBidDetails().getBid()), 2.0);
 				}
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 
 	public Action chooseAction() {
@@ -168,7 +171,7 @@ public class AgentM extends Agent {
 				tryToSaveAndPrintState();
 				// /////////////////////////////////
 			}
-			//			sleep(0.001); // just for fun
+			// sleep(0.001); // just for fun
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 
@@ -188,67 +191,73 @@ public class AgentM extends Agent {
 
 		// ---- Saving from agent's function "saveSessionData"
 
-		//		Bid lastBid = this.currSessOppBidHistory.getLastBid();
-		//		System.out.println("testtettttttt");
-		//		AgentMData data = new AgentMData(lastBid);
-		//		System.out.println(data.getBid());
-		//		this.saveSessionData(data);
-		//		System.out.println(state + "The size of the BidHistory I'm saving is: "
-		//				+ currSessOppBidHistory.size());
+		// Bid lastBid = this.currSessOppBidHistory.getLastBid();
+		// System.out.println("testtettttttt");
+		// AgentMData data = new AgentMData(lastBid);
+		// System.out.println(data.getBid());
+		// this.saveSessionData(data);
+		// System.out.println(state +
+		// "The size of the BidHistory I'm saving is: "
+		// + currSessOppBidHistory.size());
 	}
 
 	private boolean isAcceptable(double offeredUtilFromOpponent,
 			double myOfferedUtil, double time) throws Exception {
-		//double P = Paccept(offeredUtilFromOpponent, time);
-		//offeredUtilFromOpponent ‘ŠŽè‚Ì’ñˆÄ myOfferedUtil  Ž©•ª‚Ì’ñˆÄ
-		//double offerOk = (getUtility(mySessBidHistory.getWorstBidDetails().getBid()) + getUtility(mySessBidHistory.getBestBidDetails().getBid()))/2;
-		double offerOk = getUtility(mySessBidHistory.getWorstBidDetails().getBid());
+		// double P = Paccept(offeredUtilFromOpponent, time);
+		// offeredUtilFromOpponent ‘ŠŽè‚Ì’ñˆÄ myOfferedUtil Ž©•ª‚Ì’ñˆÄ
+		// double offerOk =
+		// (getUtility(mySessBidHistory.getWorstBidDetails().getBid()) +
+		// getUtility(mySessBidHistory.getBestBidDetails().getBid()))/2;
+		double offerOk = getUtility(mySessBidHistory.getWorstBidDetails()
+				.getBid());
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 
-		//‘ŠŽè‚Ìlastbid‚©‚çissueAllay‚É‚»‚Ì’l‚ð’Ç‰Á
-		int opfirstoplast=0;
-		for(int i = 1;i < issues.size()+1;i++){
-			ValueInteger opLast = (ValueInteger) this.currSessOppBidHistory.getLastBid().getValue(i);
+		// ‘ŠŽè‚Ìlastbid‚©‚çissueAllay‚É‚»‚Ì’l‚ð’Ç‰Á
+		int opfirstoplast = 0;
+		for (int i = 1; i < issues.size() + 1; i++) {
+			ValueInteger opLast = (ValueInteger) this.currSessOppBidHistory
+					.getLastBid().getValue(i);
 			int oplast = Integer.valueOf(opLast.toString());
-			int[] tempAllay = (int[]) issueAllay.get(i-1);
+			int[] tempAllay = (int[]) issueAllay.get(i - 1);
 			tempAllay[oplast] += 1;
-			this.issueAllay.set(i-1,tempAllay.clone());
+			this.issueAllay.set(i - 1, tempAllay.clone());
 		}
 
-		//		System.out.println("check");
+		// System.out.println("check");
 
-		//’ñˆÄ‚³‚ê‚½bid‚©‚ç‚»‚Ìissue‚Ì’†‚Å�Å‚à‰ñ�”‚Ì‘½‚¢‚à‚Ì‚ðmaxissue‚É�Ý’è
-		for(int i = 0;i < issues.size() ; i++){
-			//issue‚ÌŽæ‚é’l‚ðŽæ‚è�o‚·
+		// ’ñˆÄ‚³‚ê‚½bid‚©‚ç‚»‚Ìissue‚Ì’†‚Å�Å‚à‰ñ�”‚Ì‘½‚¢‚à‚Ì‚ðmaxissue‚É�Ý’è
+		for (int i = 0; i < issues.size(); i++) {
+			// issue‚ÌŽæ‚é’l‚ðŽæ‚è�o‚·
 			IssueInteger lIssueInteger = (IssueInteger) issues.get(i);
 			int issueNumber = lIssueInteger.getNumber();
 			int issueIndexMin = lIssueInteger.getLowerBound();
 			int issueIndexMax = lIssueInteger.getUpperBound();
-			//issueAllay‚Å‚Íissue‚Ìbid‚³‚ê‚½‰ñ�”‚ð•Û‘¶
+			// issueAllay‚Å‚Íissue‚Ìbid‚³‚ê‚½‰ñ�”‚ð•Û‘¶
 			int[] temp = (int[]) issueAllay.get(i);
-			//num‚ÍissueIndexMin,issueIndexMax‚ÌŠÔ‚Ì’l
+			// num‚ÍissueIndexMin,issueIndexMax‚ÌŠÔ‚Ì’l
 			int num = 0;
-			//maxissuenum‚ÍŒÄ‚Ñ�o‚³‚ê‚½‰ñ�”‚Ì’l‚Ìmax
+			// maxissuenum‚ÍŒÄ‚Ñ�o‚³‚ê‚½‰ñ�”‚Ì’l‚Ìmax
 			int maxissuenum = 0;
-			for(int j = issueIndexMin;j < issueIndexMax; j++){
-				if(maxissuenum < temp[j]){
-					//System.out.println(j);
+			for (int j = issueIndexMin; j < issueIndexMax; j++) {
+				if (maxissuenum < temp[j]) {
+					// System.out.println(j);
 					num = j;
 					maxissuenum = temp[j];
 				}
 			}
 			Integer a = num;
-			this.maxissue.set(i,a);
+			this.maxissue.set(i, a);
 		}
 
-		//‘ŠŽè—\‘ª’l:w
-		if(endbid!=null){
-			//System.out.println(getUtility(endbid));
-			if(offeredUtilFromOpponent > offerOk || offeredUtilFromOpponent >= getUtility(endbid) ){
+		// ‘ŠŽè—\‘ª’l:w
+		if (endbid != null) {
+			// System.out.println(getUtility(endbid));
+			if (offeredUtilFromOpponent > offerOk
+					|| offeredUtilFromOpponent >= getUtility(endbid)) {
 				return true;
 			}
 		}
-		if(offeredUtilFromOpponent > offerOk){
+		if (offeredUtilFromOpponent > offerOk) {
 			return true;
 		}
 		return false;
@@ -274,20 +283,20 @@ public class AgentM extends Agent {
 	}
 
 	/**
-	 * @param value 
+	 * @param value
 	 * @return a random bid with high enough utility value.
 	 * @throws Exception
 	 *             if we can't compute the utility (eg no evaluators have been
 	 *             set) or when other evaluators than a DiscreteEvaluator are
 	 *             present in the util space.
 	 */
-	public void endSession(NegotiationResult result){
-		//		System.out.println(result);
-		//		System.out.println(result.isAgreement());
-		if(result.isAgreement()){
+	public void endSession(NegotiationResult result) {
+		// System.out.println(result);
+		// System.out.println(result.isAgreement());
+		if (result.isAgreement()) {
 			Bid lastBid = result.getLastBid();
 			AgentMData data = new AgentMData(lastBid);
-			//System.out.println(data.getBid());
+			// System.out.println(data.getBid());
 			this.saveSessionData(data);
 		}
 	}
@@ -305,28 +314,29 @@ public class AgentM extends Agent {
 		// in that case we will search for a bid till the time is up (3 minutes)
 		// but this is just a simple agent.
 		Bid bid = null;
-		if(this.bidmax ==null){
+		if (this.bidmax == null) {
 			int i = 0;
 
-			double currentUtility,maxUtility = 0;
-			do{
+			double currentUtility, maxUtility = 0;
+			do {
 				bid = utilitySpace.getDomain().getRandomBid();
 				currentUtility = utilitySpace.getUtility(bid);
-				if(bidmax == null || getUtility(bidmax) < currentUtility){
+				if (bidmax == null || getUtility(bidmax) < currentUtility) {
 					bidmax = bid;
 					maxUtility = getUtility(bidmax);
-					if(maxUtility > 0.98){
+					if (maxUtility > 0.98) {
 						break;
 					}
 				}
 				i++;
-			}while(i < NUMBER_ITERATIONS);
+			} while (i < NUMBER_ITERATIONS);
 			i = 0;
 			while ((i++ < NUMBER_ITERATIONS) && (maxUtility < 0.999)) {
 				Bid nextBid = nextBid(bid); // ‹ß–TBid‚ð’T�õ
 				double nextUtility = utilitySpace.getUtility(nextBid); // ‹ß–TBid‚ÌŒø—p’l
 				double temperature = calculateTemperature(i); // ‰·“x‚ÌŽZ�o
-				double probability = calculateProbability(currentUtility, nextUtility, temperature); // ‘JˆÚŠm—¦‚ÌŽZ�o
+				double probability = calculateProbability(currentUtility,
+						nextUtility, temperature); // ‘JˆÚŠm—¦‚ÌŽZ�o
 				if (probability > randomnr.nextDouble()) {
 					bid = nextBid; // Bid‚Ì�X�V
 					currentUtility = utilitySpace.getUtility(nextBid); // Œø—p’l‚Ì�X�V
@@ -337,81 +347,97 @@ public class AgentM extends Agent {
 					}
 				}
 			}
-		}
-		else{
+		} else {
 			int i = 0;
 
-			double currentUtility,maxUtility = 0;
-			do{
+			double currentUtility, maxUtility = 0;
+			do {
 				bid = utilitySpace.getDomain().getRandomBid();
 				currentUtility = utilitySpace.getUtility(bid);
-				if(bidmax == null || getUtility(bidmax) < currentUtility){
+				if (bidmax == null || getUtility(bidmax) < currentUtility) {
 					bidmax = bid;
 					maxUtility = getUtility(bidmax);
-					if(maxUtility > 0.98){
+					if (maxUtility > 0.98) {
 						break;
 					}
 				}
 				i++;
-			}while(i < NUMBER_ITERATIONS);
+			} while (i < NUMBER_ITERATIONS);
 			i = 0;
 			int j = 0;
 
-			values = this.mySessBidHistory.getBestBidDetails().getBid().getValues();
+			values = this.mySessBidHistory.getBestBidDetails().getBid()
+					.getValues();
 
 			double endpoint;
-			this.concessionRate = Math.pow(getUtility(this.currSessOppBidHistory.getWorstBidDetails().getBid()) - getUtility(this.currSessOppBidHistory.getBestBidDetails().getBid()),2.0) + timeline.getTime()/10;
-			if(this.endbid == null){
+			this.concessionRate = Math.pow(
+					getUtility(this.currSessOppBidHistory.getWorstBidDetails()
+							.getBid())
+							- getUtility(this.currSessOppBidHistory
+									.getBestBidDetails().getBid()), 2.0)
+					+ timeline.getTime() / 10;
+			if (this.endbid == null) {
 				endpoint = 0.999 - this.concessionRate;
-			}
-			else{
+			} else {
 				endpoint = getUtility(this.endbid);
 			}
-			while (((i++ < NUMBER_ITERATIONS) && (maxUtility < 0.999 - this.concessionRate)) || ((i < NUMBER_ITERATIONS) && maxUtility < endpoint)) {
+			while (((i++ < NUMBER_ITERATIONS) && (maxUtility < 0.999 - this.concessionRate))
+					|| ((i < NUMBER_ITERATIONS) && maxUtility < endpoint)) {
 				Bid nextBid = nextBid(bid); // ‹ß–TBid‚ð’T�õ
-				//			for(j = 0; j < (timeline.getTime()*issues.size()/5); j++){
-				for(j = 0; j < (issues.size()/5); j++){
+				// for(j = 0; j < (timeline.getTime()*issues.size()/5); j++){
+				for (j = 0; j < (issues.size() / 5); j++) {
 					int issueIndex = randomnr.nextInt(issues.size());
-					IssueInteger lIssueInteger = (IssueInteger) issues.get(issueIndex);
+					IssueInteger lIssueInteger = (IssueInteger) issues
+							.get(issueIndex);
 					int issueNumber = lIssueInteger.getNumber();
 					int issueIndexMin = lIssueInteger.getLowerBound();
 					int issueIndexMax = lIssueInteger.getUpperBound();
 					int optionIndex = 0;
-					ValueInteger lIssueValue = (ValueInteger) bid.getValue(issueNumber);
-					int issueValue = Integer.valueOf(lIssueValue.toString()).intValue();
-					optionIndex = nextOptionIndex(issueIndexMin, issueIndexMax,issueValue);
+					ValueInteger lIssueValue = (ValueInteger) bid
+							.getValue(issueNumber);
+					int issueValue = Integer.valueOf(lIssueValue.toString())
+							.intValue();
+					optionIndex = nextOptionIndex(issueIndexMin, issueIndexMax,
+							issueValue);
 					lIssueInteger = (IssueInteger) issues.get(issueIndex);
 					issueNumber = lIssueInteger.getNumber();
 					int test_value = 0;
-					if(j%2==0){
-						test_value = this.maxissue.get(issueNumber-1);
-					}
-					else{
-						//	        	ValueInteger aaa = (ValueInteger) this.currSessOppBidHistory.getBestBid().getValue(issueNumber);
-						ValueInteger aaa = (ValueInteger) this.currSessOppBidHistory.getBestBidDetails().getBid().getValue(issueNumber);
+					if (j % 2 == 0) {
+						test_value = this.maxissue.get(issueNumber - 1);
+					} else {
+						// ValueInteger aaa = (ValueInteger)
+						// this.currSessOppBidHistory.getBestBid().getValue(issueNumber);
+						ValueInteger aaa = (ValueInteger) this.currSessOppBidHistory
+								.getBestBidDetails().getBid()
+								.getValue(issueNumber);
 						test_value = Integer.valueOf(aaa.toString());
 					}
-					nextBid.setValue(issueNumber, new ValueInteger(test_value));
-					issueValue = Integer.valueOf(lIssueValue.toString()).intValue();
+					nextBid = nextBid.putValue(issueNumber, new ValueInteger(
+							test_value));
+					issueValue = Integer.valueOf(lIssueValue.toString())
+							.intValue();
 					issueIndex = randomnr.nextInt(issues.size());
 					lIssueInteger = (IssueInteger) issues.get(issueIndex);
 					issueNumber = lIssueInteger.getNumber();
-					ValueInteger bbb = (ValueInteger) this.currSessOppBidHistory.getBestBidDetails().getBid().getValue(issueNumber);
+					ValueInteger bbb = (ValueInteger) this.currSessOppBidHistory
+							.getBestBidDetails().getBid().getValue(issueNumber);
 					test_value = Integer.valueOf(bbb.toString());
-					nextBid.setValue(issueNumber, new ValueInteger(test_value));
+					nextBid = nextBid.putValue(issueNumber, new ValueInteger(
+							test_value));
 				}
 				double nextUtility = utilitySpace.getUtility(nextBid); // ‹ß–TBid‚ÌŒø—p’l
 				double temperature = calculateTemperature(i); // ‰·“x‚ÌŽZ�o
-				double probability = calculateProbability(currentUtility, nextUtility, temperature); // ‘JˆÚŠm—¦‚ÌŽZ�o
+				double probability = calculateProbability(currentUtility,
+						nextUtility, temperature); // ‘JˆÚŠm—¦‚ÌŽZ�o
 				if (probability > randomnr.nextDouble()) {
 					bid = nextBid; // Bid‚Ì�X�V
 					currentUtility = utilitySpace.getUtility(nextBid); // Œø—p’l‚Ì�X�V
 					// �Å“K‰ð‚Ì�X�V
-					//				if (nextUtility > maxUtility) {
+					// if (nextUtility > maxUtility) {
 					if (nextUtility > (getUtility(this.bidmax) - this.concessionRate)) {
 						this.bidmax = nextBid;
 						maxUtility = nextUtility;
-						//System.out.println(getUtility(this.bidmax)-this.concessionRate);
+						// System.out.println(getUtility(this.bidmax)-this.concessionRate);
 					}
 				}
 			}
@@ -427,7 +453,8 @@ public class AgentM extends Agent {
 		int optionIndex = 0;
 		Random randomnr = new Random();
 		if (issueIndexMin < issueIndexMax) {
-			optionIndex = issueIndexMin + randomnr.nextInt(issueIndexMax - issueIndexMin);
+			optionIndex = issueIndexMin
+					+ randomnr.nextInt(issueIndexMax - issueIndexMin);
 		} else {
 			optionIndex = issueIndexMin; // issueIndexMin == issueIndexMax‚Ì�ê�‡
 		}
@@ -437,12 +464,17 @@ public class AgentM extends Agent {
 
 	/**
 	 * ‹ß–T’T�õ
-	 * @param issueIndexMin ‰ºŒÀ’l
-	 * @param issueIndexMax �ãŒÀ’l
-	 * @param issueValue Œ»�Ý‚Ì’l
+	 * 
+	 * @param issueIndexMin
+	 *            ‰ºŒÀ’l
+	 * @param issueIndexMax
+	 *            �ãŒÀ’l
+	 * @param issueValue
+	 *            Œ»�Ý‚Ì’l
 	 * @return ’l‚ð1‚¾‚¯‘�Œ¸‚³‚¹‚é
 	 */
-	private int nextOptionIndex(int issueIndexMin, int issueIndexMax, int issueValue) {
+	private int nextOptionIndex(int issueIndexMin, int issueIndexMax,
+			int issueValue) {
 		int step = 1; // ’l‚ð‘�Œ¸‚³‚¹‚é•�
 		Random randomnr = new Random();
 		int direction = randomnr.nextBoolean() ? 1 : -1; // ƒ‰ƒ“ƒ_ƒ€‚É‘�Œ¸‚ðŒˆ’è
@@ -459,7 +491,6 @@ public class AgentM extends Agent {
 
 		return issueValue + step * direction;
 	}
-
 
 	/**
 	 * This function determines the accept probability for an offer. At t=0 it
@@ -497,7 +528,9 @@ public class AgentM extends Agent {
 	double sq(double x) {
 		return x * x;
 	}
-	private double calculateProbability(double currentUtil, double nextUtil, double temperature) {
+
+	private double calculateProbability(double currentUtil, double nextUtil,
+			double temperature) {
 		double diff = currentUtil - nextUtil;
 		if (diff > 0.0) {
 			return Math.exp(-diff / temperature); // Œ»�Ý‚ÌŒø—p’l‚Ì•û‚ª�‚‚¢�ê�‡
@@ -529,26 +562,30 @@ public class AgentM extends Agent {
 			if (optionFlag) {
 				optionIndex = randomOptionIndex(issueIndexMin, issueIndexMax); // ƒ‰ƒ“ƒ_ƒ€‚É’l‚ð•Ï‚¦‚é
 			} else {
-				ValueInteger lIssueValue = (ValueInteger) bid.getValue(issueNumber); // Žw’è‚µ‚½issue‚ÌValue
-				int issueValue = Integer.valueOf(lIssueValue.toString()).intValue();
-				optionIndex = nextOptionIndex(issueIndexMin, issueIndexMax, issueValue); // ’l‚ð1‘�Œ¸‚³‚¹‚é
+				ValueInteger lIssueValue = (ValueInteger) bid
+						.getValue(issueNumber); // Žw’è‚µ‚½issue‚ÌValue
+				int issueValue = Integer.valueOf(lIssueValue.toString())
+						.intValue();
+				optionIndex = nextOptionIndex(issueIndexMin, issueIndexMax,
+						issueValue); // ’l‚ð1‘�Œ¸‚³‚¹‚é
 			}
 
-			nextBid.setValue(issueNumber, new ValueInteger(optionIndex)); // Œ»�Ý‚ÌBid‚©‚çIssue‚Ì’l‚ð“ü‚ê‘Ö‚¦‚é
+			nextBid = nextBid.putValue(issueNumber, new ValueInteger(
+					optionIndex)); // Œ»�Ý‚ÌBid‚©‚çIssue‚Ì’l‚ð“ü‚ê‘Ö‚¦‚é
 		}
 		return nextBid;
 	}
 }
 
-class AgentMData implements Serializable{
+class AgentMData implements Serializable {
 	Bid lastBid;
 	Boolean isAgreement;
 
-
-	public AgentMData(Bid last){
+	public AgentMData(Bid last) {
 		this.lastBid = last;
 	}
-	public Bid getBid(){
-		return lastBid;	
+
+	public Bid getBid() {
+		return lastBid;
 	}
 }

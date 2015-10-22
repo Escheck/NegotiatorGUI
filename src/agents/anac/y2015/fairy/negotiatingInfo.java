@@ -96,7 +96,7 @@ public class negotiatingInfo {
 			currentBid = new Bid(maxBid);
 			values = getValues(issue);
 			for (Value value : values) {
-				currentBid.setValue(issue.getNumber(), value);
+				currentBid = currentBid.putValue(issue.getNumber(), value);
 				valueRelativeUtility.get(issue).put(
 						value,
 						utilitySpace.getUtility(currentBid)

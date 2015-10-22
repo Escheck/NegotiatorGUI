@@ -143,7 +143,7 @@ public class RandomFlippingMediator extends AbstractNegotiationParty implements
 				newValue = getRandomValue(currentIssue);
 			} while (newValue.equals(lastAcceptedBid.getValue(currentIndex)));
 
-			modifiedBid.setValue(currentIndex, newValue);
+			modifiedBid = modifiedBid.putValue(currentIndex, newValue);
 
 			return modifiedBid;
 		} catch (Exception e) {

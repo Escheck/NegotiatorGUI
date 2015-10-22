@@ -105,13 +105,13 @@ public class BestBids {
 				// System.out.format("%d %d %d", vs[ri].length,
 				// vprefs[ri].length, V+1);
 				// System.out.println(vs[ri][vprefs[ri][V+1]]);
-				b.setValue(rI + 1, vs[rI][vprefs[rI][V + 1]]);
+				b = b.putValue(rI + 1, vs[rI][vprefs[rI][V + 1]]);
 			} else if (U >= maxValue) { // decrease the preference of an issue
 										// to the next lowest level
 				if (V <= 0) {
 					continue;
 				}
-				b.setValue(rI + 1, vs[rI][vprefs[rI][V - 1]]);
+				b = b.putValue(rI + 1, vs[rI][vprefs[rI][V - 1]]);
 			}
 			U = utilitySpace.getUtility(b);
 		}

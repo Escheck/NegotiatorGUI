@@ -301,7 +301,7 @@ public class ShAgent extends Agent {
 		 */
 		private void updateUtilityForSpecificValue(final Issue issue,
 				Value value) throws Exception {
-			bid.setValue(issue.getNumber(), value);
+			bid = bid.putValue(issue.getNumber(), value);
 			double util = utilitySpace.getWeight(issue.getNumber())
 					* utilitySpace.getEvaluation(issue.getNumber(), bid);
 			utilityPerValuePerIssue.get(issue).put(value, util);
@@ -374,7 +374,7 @@ public class ShAgent extends Agent {
 				}
 			}
 
-			offer.setValue(bestStep.Issue.getNumber(), bestStep.Value);
+			offer = offer.putValue(bestStep.Issue.getNumber(), bestStep.Value);
 
 			return offer;
 		}
@@ -413,7 +413,7 @@ public class ShAgent extends Agent {
 				oldValue = lastOffer.getValue(i);
 				oldIndex = issueValues.indexOf(oldValue);
 
-				bid.setValue(issue.getNumber(), oldValue);
+				bid = bid.putValue(issue.getNumber(), oldValue);
 				oldUtil = this.utilitySpace.getWeight(issue.getNumber())
 						* this.utilitySpace.getEvaluation(issue.getNumber(),
 								bid);
@@ -425,14 +425,14 @@ public class ShAgent extends Agent {
 				newValue = new ValueReal(Math.min(dOldValue + step,
 						issueReal.getUpperBound()));
 
-				bid.setValue(issue.getNumber(), newValue);
+				bid = bid.putValue(issue.getNumber(), newValue);
 				newUtil = this.utilitySpace.getWeight(issue.getNumber())
 						* this.utilitySpace.getEvaluation(issue.getNumber(),
 								bid);
 
 				Value newValueDown = new ValueReal(Math.max(dOldValue - step,
 						issueReal.getLowerBound()));
-				bid.setValue(issue.getNumber(), newValueDown);
+				bid = bid.putValue(issue.getNumber(), newValueDown);
 				double newUtilDown = this.utilitySpace.getWeight(issue
 						.getNumber())
 						* this.utilitySpace.getEvaluation(issue.getNumber(),

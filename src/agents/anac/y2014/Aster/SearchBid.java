@@ -3,10 +3,10 @@ package agents.anac.y2014.Aster;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
+import negotiator.utility.UtilitySpace;
 
 public class SearchBid {
 	private UtilitySpace utilitySpace;
@@ -16,10 +16,10 @@ public class SearchBid {
 	}
 
 	/**
-	 * Search Bid for nonlinear
-	 * ã� ã�„ã�¶é«˜é€ŸåŒ–ã�—ã�Ÿãƒ�ãƒ¼ã‚¸ãƒ§ãƒ³
+	 * Search Bid for nonlinear ã� ã�„ã�¶é«˜é€ŸåŒ–ã�—ã�Ÿãƒ�ãƒ¼ã‚¸ãƒ§ãƒ³
 	 */
-	public ArrayList<Bid> searchOfferingBid(ArrayList<Bid> bidHistory, Bid bid, double bidTarget) throws Exception {
+	public ArrayList<Bid> searchOfferingBid(ArrayList<Bid> bidHistory, Bid bid,
+			double bidTarget) throws Exception {
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 		Bid nextBid = new Bid(bid);
 		IssueInteger lIssueInteger;
@@ -33,7 +33,7 @@ public class SearchBid {
 			issueIndexMax = lIssueInteger.getUpperBound();
 
 			for (int i = issueIndexMin; i <= issueIndexMax; i++) {
-				nextBid.setValue(issueNumber, new ValueInteger(i));
+				nextBid = nextBid.putValue(issueNumber, new ValueInteger(i));
 				nextBidUtility = utilitySpace.getUtility(nextBid);
 
 				// æ–°ã�—ã�„Bidã�ŒTargetä»¥ä¸‹ã�®å ´å�ˆã�¯å�´ä¸‹

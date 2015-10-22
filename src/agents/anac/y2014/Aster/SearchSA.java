@@ -21,7 +21,7 @@ public class SearchSA {
 	public SearchSA(UtilitySpace utilitySpace, int sessionNr) {
 		this.utilitySpace = utilitySpace;
 		this.temperature = 1000000;
-		//this.fileWriter = createFileWriter(sessionNr);
+		// this.fileWriter = createFileWriter(sessionNr);
 	}
 
 	public Bid getBidbySA(double bidTarget) throws Exception {
@@ -39,11 +39,12 @@ public class SearchSA {
 		maxBid = currentBid;
 		maxUtility = currentUtility;
 
-		while((iteration++ < NUMBER_ITERATIONS) && (maxUtility < bidTarget)) {
+		while ((iteration++ < NUMBER_ITERATIONS) && (maxUtility < bidTarget)) {
 			nextBid = nextBid(currentBid);
 			nextUtility = utilitySpace.getUtility(nextBid);
 			temperature = calculateTemperature();
-			probability = calculateProbability(currentUtility, nextUtility, temperature);
+			probability = calculateProbability(currentUtility, nextUtility,
+					temperature);
 
 			if (probability > randomnr.nextDouble()) {
 				currentBid = nextBid;
@@ -80,7 +81,7 @@ public class SearchSA {
 		maxBid = getMaxBid(bidList);
 		maxUtility = utilitySpace.getUtility(maxBid);
 
-//		fileWrite(fileWriter, maxUtility);
+		// fileWrite(fileWriter, maxUtility);
 
 		// æŒ‡å®šå›žæ•°ã�‹æœ€é�©è§£ã�Œè¦‹ã�¤ã�‹ã‚‹ã�¾ã�§ç¹°ã‚Šè¿”ã�—
 		while ((iteration++ < NUMBER_ITERATIONS) && (maxUtility < bidTarget)) {
@@ -100,16 +101,15 @@ public class SearchSA {
 			// æ¸©åº¦ã�®ç®—å‡º
 			temperature = calculateTemperature();
 
-
 			// æœ€é�©è§£ã�®æ›´æ–°
 			maxBid = getMaxBid(bidList);
 			maxUtility = utilitySpace.getUtility(maxBid);
 
-//			fileWrite(fileWriter, maxUtility);
+			// fileWrite(fileWriter, maxUtility);
 
 		}
 
-//		fileWriter.close();
+		// fileWriter.close();
 		return maxBid;
 	}
 
@@ -168,7 +168,7 @@ public class SearchSA {
 		int issueValue = Integer.valueOf(lIssueValue.toString()).intValue();
 		optionIndex = nextOptionIndex(issueIndexMin, issueIndexMax, issueValue); // å€¤ã‚’1å¢—æ¸›ã�•ã�›ã‚‹
 
-		nextBid.setValue(issueNumber, new ValueInteger(optionIndex)); // ç�¾åœ¨ã�®Bidã�‹ã‚‰Issueã�®å€¤ã‚’å…¥ã‚Œæ›¿ã�ˆã‚‹
+		nextBid = nextBid.putValue(issueNumber, new ValueInteger(optionIndex)); // ç�¾åœ¨ã�®Bidã�‹ã‚‰Issueã�®å€¤ã‚’å…¥ã‚Œæ›¿ã�ˆã‚‹
 
 		return nextBid;
 	}

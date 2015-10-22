@@ -223,7 +223,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 			int issueID = issueOrder[is];
 			int item = issueValOrder[issueID][i] - 1;
 			ValueDiscrete val = Functions.getVal(utilitySpace, issueID, item);
-			b1.setValue(issueID + 1, val);
+			b1 = b1.putValue(issueID + 1, val);
 			if (Functions.getBidValue(utilitySpace, b1) > this.finalStopVal) {
 				v1.addAll(recurseBids(b1, v1, is + 1));
 			}

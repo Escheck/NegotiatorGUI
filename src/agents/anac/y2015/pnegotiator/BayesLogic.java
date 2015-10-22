@@ -91,7 +91,7 @@ public class BayesLogic {
 			// highestExpectedUtilVal = vfr.value;
 			// }
 			// }
-			b.setValue(i + 1, highestExpectedUtilVal);
+			b = b.putValue(i + 1, highestExpectedUtilVal);
 		}
 		return b;
 	}
@@ -99,7 +99,7 @@ public class BayesLogic {
 	private Bid asBid(ValueFrequency[] b) throws Exception {
 		Bid b1 = utilitySpace.getMaxUtilityBid();
 		for (int i = 0; i < b.length; i++) {
-			b1.setValue(i + 1, b[i].value);
+			b1 = b1.putValue(i + 1, b[i].value);
 		}
 		return b1;
 	}

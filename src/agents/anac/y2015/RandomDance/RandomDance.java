@@ -357,7 +357,7 @@ public class RandomDance extends AbstractNegotiationParty {
 					maxValue = value;
 				}
 			}
-			ret.setValue(id.getNumber(), maxValue);
+			ret = ret.putValue(id.getNumber(), maxValue);
 		}
 		return ret;
 	}
@@ -480,7 +480,7 @@ class PlayerData {
 			IssueData issueData = map.get(issue);
 
 			for (ValueDiscrete value : values) {
-				bid.setValue(issue.getNumber(), value);
+				bid = bid.putValue(issue.getNumber(), value);
 				double v = utilitySpace.getUtility(bid) - min;
 				issueData.setValue(value, v);
 			}

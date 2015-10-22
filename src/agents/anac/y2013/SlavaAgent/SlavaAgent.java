@@ -81,40 +81,40 @@ public class SlavaAgent extends Agent {
 
 			if (currIssue.getType().equals(ISSUETYPE.INTEGER)) {
 				IssueInteger issueInteger = (IssueInteger) currIssue;
-				tempBidding.setValue(currIssue.getNumber(), new ValueInteger(
-						issueInteger.getUpperBound()));
+				tempBidding = tempBidding.putValue(currIssue.getNumber(),
+						new ValueInteger(issueInteger.getUpperBound()));
 				maxUtil = utilitySpace.getUtility(tempBidding);
-				tempBidding.setValue(currIssue.getNumber(), new ValueInteger(
-						issueInteger.getLowerBound()));
+				tempBidding = tempBidding.putValue(currIssue.getNumber(),
+						new ValueInteger(issueInteger.getLowerBound()));
 				double minUtil = utilitySpace.getUtility(tempBidding);
 				if (maxUtil > minUtil) {
-					max.setValue(currIssue.getNumber(), new ValueInteger(
+					max = max.putValue(currIssue.getNumber(), new ValueInteger(
 							issueInteger.getUpperBound()));
 				} else {
-					max.setValue(currIssue.getNumber(), new ValueInteger(
+					max = max.putValue(currIssue.getNumber(), new ValueInteger(
 							issueInteger.getLowerBound()));
 				}
 
 			} else if (currIssue.getType().equals(ISSUETYPE.REAL)) {
 				IssueReal issueReal = (IssueReal) currIssue;
-				tempBidding.setValue(currIssue.getNumber(), new ValueReal(
-						issueReal.getUpperBound()));
+				tempBidding = tempBidding.putValue(currIssue.getNumber(),
+						new ValueReal(issueReal.getUpperBound()));
 				maxUtil = utilitySpace.getUtility(tempBidding);
-				tempBidding.setValue(currIssue.getNumber(), new ValueReal(
-						issueReal.getLowerBound()));
+				tempBidding = tempBidding.putValue(currIssue.getNumber(),
+						new ValueReal(issueReal.getLowerBound()));
 				double minUtil = utilitySpace.getUtility(tempBidding);
 				if (maxUtil > minUtil) {
-					max.setValue(currIssue.getNumber(),
-							new ValueReal(issueReal.getUpperBound()));
+					max = max.putValue(currIssue.getNumber(), new ValueReal(
+							issueReal.getUpperBound()));
 				} else {
-					max.setValue(currIssue.getNumber(),
-							new ValueReal(issueReal.getLowerBound()));
+					max = max.putValue(currIssue.getNumber(), new ValueReal(
+							issueReal.getLowerBound()));
 				}
 
 			} else if (currIssue.getType().equals(ISSUETYPE.DISCRETE)) {
 				IssueDiscrete issueDiscrete = (IssueDiscrete) currIssue;
 				for (int j = 0; j < issueDiscrete.getNumberOfValues(); j++) {
-					tempBidding.setValue(currIssue.getNumber(),
+					tempBidding = tempBidding.putValue(currIssue.getNumber(),
 							issueDiscrete.getValue(j));
 					double tempUtil = utilitySpace.getUtility(tempBidding);
 					if (tempUtil > maxUtil) {
@@ -122,7 +122,7 @@ public class SlavaAgent extends Agent {
 						maxUtil = tempUtil;
 					}
 				}
-				max.setValue(currIssue.getNumber(),
+				max = max.putValue(currIssue.getNumber(),
 						issueDiscrete.getValue(indexOfMaximumValue));
 			}
 		}
@@ -231,9 +231,9 @@ public class SlavaAgent extends Agent {
 	 * immediately.
 	 * 
 	 * Otherwise, split to 2: Exploration and exploitation. In exploration part,
-	 * receiveMessage the maximal bid for us (if found) and with probability of 0.5,
-	 * offer it to the opponent and with probability of 0.5, offer to him a bid
-	 * that is good enough for us randomly (one that has utility more than
+	 * receiveMessage the maximal bid for us (if found) and with probability of
+	 * 0.5, offer it to the opponent and with probability of 0.5, offer to him a
+	 * bid that is good enough for us randomly (one that has utility more than
 	 * UTILITY_THRESHOLD). In exploitation part, offer always the best bid for
 	 * us. Accept if the opponent offers a bid that has utility more than
 	 * MIN_UTILITY_ACCEPT and has value higher or equals to all his previous

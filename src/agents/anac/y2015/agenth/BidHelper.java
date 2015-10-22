@@ -8,7 +8,6 @@ import java.util.Random;
 
 import negotiator.Bid;
 import negotiator.Domain;
-import agents.anac.y2015.agenth.BidHistory.Entry;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -18,6 +17,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
+import agents.anac.y2015.agenth.BidHistory.Entry;
 
 public class BidHelper {
 	// 探索のパラメータ
@@ -33,35 +33,35 @@ public class BidHelper {
 	/** 乱数 */
 	private Random mRandom;
 	/** 自身の効用空間における各論点値の相対効用値行列（線形効用空間用) */
-    private HashMap<Issue, HashMap<Value, Double>> mValueRelativeUtility;
-    /** 効用値 MAX の bid */
-    private Bid mMaxBid;
-	
+	private HashMap<Issue, HashMap<Value, Double>> mValueRelativeUtility;
+	/** 効用値 MAX の bid */
+	private Bid mMaxBid;
+
 	public BidHelper(AgentH agent) throws Exception {
 		mAgent = agent;
 		mRandom = new Random();
 		mValueRelativeUtility = new HashMap<Issue, HashMap<Value, Double>>();
-		
+
 		initMaxBid();
 		initValueRelativeUtility();
 		setValueRelativeUtility(mMaxBid);
 	}
-	
+
 	/** 相対効用行列の初期化 */
-    private void initValueRelativeUtility() throws Exception{
+	private void initValueRelativeUtility() throws Exception {
 		final ArrayList<Issue> issues = getIssues();
-		for(Issue issue : issues) { 
+		for (Issue issue : issues) {
 			// 論点行の初期化
 			mValueRelativeUtility.put(issue, new HashMap<Value, Double>());
 			// 論点行の要素の初期化
 			final ArrayList<Value> values = getValuesForIssue(issue);
-			for(Value value : values) {
+			for (Value value : values) {
 				mValueRelativeUtility.get(issue).put(value, 0.0);
 			}
-    	}
+		}
 	}
- 
-    /** 最大効用値Bidの初期探索(最初は効用空間のタイプが不明であるため，SAを用いて探索する) */
+
+	/** 最大効用値Bidの初期探索(最初は効用空間のタイプが不明であるため，SAを用いて探索する) */
 	private void initMaxBid() throws Exception {
 		final UtilitySpace utilitySpace = mAgent.getUtilitySpace();
 
@@ -70,61 +70,69 @@ public class BidHelper {
 		for (int i = 0; i < tryNum; i++) {
 			do {
 				generateFromSimulatedAnnealingSearch(mMaxBid, 1.0);
-			} while (utilitySpace.getUtility(mMaxBid) < utilitySpace.getReservationValue());
-			
+			} while (utilitySpace.getUtility(mMaxBid) < utilitySpace
+					.getReservationValue());
+
 			if (utilitySpace.getUtility(mMaxBid) == 1.0) {
 				break;
 			}
 		}
 	}
-	
-    /** 相対効用行列の導出 */
+
+	/** 相対効用行列の導出 */
 	public void setValueRelativeUtility(Bid maxBid) throws Exception {
 		final AgentH agent = mAgent;
-		
+
 		Bid currentBid = null;
 		final ArrayList<Issue> issues = getIssues();
-		for(Issue issue : issues){ 
-			currentBid = new Bid(maxBid);			
+		for (Issue issue : issues) {
+			currentBid = new Bid(maxBid);
 			final ArrayList<Value> values = getValuesForIssue(issue);
-			for(Value value:values){ 
-				currentBid.setValue(issue.getNumber(), value);
-				mValueRelativeUtility.get(issue).put(value, agent.getUtility(currentBid) - agent.getUtility(maxBid));
-			} 
-    	}
+			for (Value value : values) {
+				currentBid = currentBid.putValue(issue.getNumber(), value);
+				mValueRelativeUtility.get(issue)
+						.put(value,
+								agent.getUtility(currentBid)
+										- agent.getUtility(maxBid));
+			}
+		}
 	}
-	
+
 	public Domain getDomain() {
 		return mAgent.getUtilitySpace().getDomain();
 	}
-	
+
 	public ArrayList<Issue> getIssues() {
 		return getDomain().getIssues();
 	}
-	
+
 	public ArrayList<Value> getValuesForIssue(Issue issue) {
 		final ArrayList<Value> values = new ArrayList<Value>();
-    	switch(issue.getType()) {
-			case DISCRETE:
-				List<ValueDiscrete> valuesDis = ((IssueDiscrete)issue).getValues();
-				for(Value value:valuesDis){ values.add(value); }
-				break;
-			case INTEGER:
-				int min_value = ((IssueInteger)issue).getUpperBound();
-				int max_value = ((IssueInteger)issue).getUpperBound();
-				for(int j=min_value; j<=max_value; j++){
-					Object valueObject = new Integer(j);
-					values.add((Value)valueObject);
-				} 
-				break;
-			default: try {
-				throw new Exception("issue type "+ issue.getType()+" not supported by Atlas3");
-			} catch (Exception e) {
-//    			System.out.println("論点の取り得る値の取得に失敗しました");
-//				e.printStackTrace();
+		switch (issue.getType()) {
+		case DISCRETE:
+			List<ValueDiscrete> valuesDis = ((IssueDiscrete) issue).getValues();
+			for (Value value : valuesDis) {
+				values.add(value);
 			}
-    	}
-    	return values;
+			break;
+		case INTEGER:
+			int min_value = ((IssueInteger) issue).getUpperBound();
+			int max_value = ((IssueInteger) issue).getUpperBound();
+			for (int j = min_value; j <= max_value; j++) {
+				Object valueObject = new Integer(j);
+				values.add((Value) valueObject);
+			}
+			break;
+		default:
+			try {
+				throw new Exception("issue type " + issue.getType()
+						+ " not supported by Atlas3");
+			} catch (Exception e) {
+				// System.out.println("論点の取り得る値の取得に失敗しました");
+				// e.printStackTrace();
+			}
+		}
+		return values;
 	}
 
 	/** 相対効用値に基づく探索 */
@@ -145,7 +153,7 @@ public class BidHelper {
 				// 最大効用値を基準とした相対効用値
 				relativeUtility = valueRelativeUtility.get(issue).get(value);
 				if (d <= concessionSum + relativeUtility) {
-					bid.setValue(issue.getNumber(), value);
+					bid = bid.putValue(issue.getNumber(), value);
 					concessionSum += relativeUtility;
 					break;
 				}
@@ -153,9 +161,10 @@ public class BidHelper {
 		}
 		return bid;
 	}
-	
+
 	/** SA */
-	public Bid generateFromSimulatedAnnealingSearch(Bid baseBid, double threshold) {
+	public Bid generateFromSimulatedAnnealingSearch(Bid baseBid,
+			double threshold) {
 		final AgentH agent = mAgent;
 		final ArrayList<Issue> issues = getIssues();
 
@@ -178,9 +187,10 @@ public class BidHelper {
 				Issue issue = issues.get(issueIndex); // 指定したindexのissue
 				ArrayList<Value> values = getValuesForIssue(issue);
 				int valueIndex = randomnr.nextInt(values.size()); // 取り得る値の範囲でランダムに指定
-				nextBid.setValue(issue.getNumber(), values.get(valueIndex));
+				nextBid = nextBid.putValue(issue.getNumber(),
+						values.get(valueIndex));
 				nextBidUtil = agent.getUtility(nextBid);
-				
+
 				// 最大効用値Bidの更新
 				if (mMaxBid == null || nextBidUtil >= agent.getUtility(mMaxBid)) {
 					mMaxBid = new Bid(nextBid);
@@ -220,56 +230,70 @@ public class BidHelper {
 			return new Bid(targetBids.get(randomnr.nextInt(targetBids.size())));
 		} // 効用値が境界値付近となるBidを返す
 	}
-	
+
 	/**
 	 * 過去の bid から次の bid を生成
+	 * 
 	 * @param threshold
 	 * @return
 	 */
 	public Bid generateFromHistory(double threshold) {
 		Bid nextBid = null;
 		double nextUtility = 0;
-		
+
 		// 過去の bid を効用値の高い順に持ってくる
 		final BidHistory bidHistory = mAgent.mBidHistory;
 		final List<Entry> entries = bidHistory.getSortedList();
 		for (BidHistory.Entry e : entries) {
 			nextBid = null;
 			nextUtility = e.utility;
-			
+
 			// bid を少し変えたものを次の bid とする
 			final ArrayList<Issue> issues = e.bid.getIssues();
 			for (Issue issue : issues) {
 				final int issueNr = issue.getNumber();
-				final Bid bid = new Bid(e.bid);
+				Bid bid = new Bid(e.bid);
 				switch (issue.getType()) {
 				case DISCRETE: {
-					final List<ValueDiscrete> values = ((IssueDiscrete) issue).getValues();
+					final List<ValueDiscrete> values = ((IssueDiscrete) issue)
+							.getValues();
 					Collections.shuffle(values);
-					bid.setValue(issueNr, values.get(0));
-				} break;
-				case INTEGER: {
-					final int upperBound = ((IssueInteger) issue).getUpperBound();
-					final int lowerBound = ((IssueInteger) issue).getLowerBound();
-					bid.setValue(issueNr, new ValueInteger(lowerBound+mRandom.nextInt(upperBound-lowerBound)));
-				} break;
-				case REAL: {
-					final double upperBound = ((IssueReal) issue).getUpperBound();
-					final double lowerBound = ((IssueReal) issue).getLowerBound();
-					bid.setValue(issueNr, new ValueReal(lowerBound+mRandom.nextDouble()*(upperBound-lowerBound)));
-				} break;
+					bid = bid.putValue(issueNr, values.get(0));
 				}
-				if (nextUtility - mAgent.getUtility(bid) < threshold && !bidHistory.containsBid(bid)) {
+					break;
+				case INTEGER: {
+					final int upperBound = ((IssueInteger) issue)
+							.getUpperBound();
+					final int lowerBound = ((IssueInteger) issue)
+							.getLowerBound();
+					bid = bid.putValue(issueNr, new ValueInteger(lowerBound
+							+ mRandom.nextInt(upperBound - lowerBound)));
+				}
+					break;
+				case REAL: {
+					final double upperBound = ((IssueReal) issue)
+							.getUpperBound();
+					final double lowerBound = ((IssueReal) issue)
+							.getLowerBound();
+					bid = bid
+							.putValue(issueNr, new ValueReal(lowerBound
+									+ mRandom.nextDouble()
+									* (upperBound - lowerBound)));
+				}
+					break;
+				}
+				if (nextUtility - mAgent.getUtility(bid) < threshold
+						&& !bidHistory.containsBid(bid)) {
 					nextBid = bid;
-//					System.out.println("OreoreAgent#generateNextBid(): nextBid="+nextBid);
+					// System.out.println("OreoreAgent#generateNextBid(): nextBid="+nextBid);
 				}
 			}
-			
+
 			if (nextBid != null) {
 				break;
 			}
 		}
-		
+
 		return nextBid;
 	}
 }
