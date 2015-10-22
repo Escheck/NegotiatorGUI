@@ -128,7 +128,7 @@ public class BRAMAgent2 extends Agent {
 
 	public Action chooseAction() {
 		Action action = null;
-		Bid bid2offer = new Bid();
+		Bid bid2offer = new Bid(utilitySpace.getDomain());
 		threshold = getNewThreshold();// Update the threshold according to the
 										// discount factor
 		try {
@@ -171,11 +171,13 @@ public class BRAMAgent2 extends Agent {
 						updateStatistics(opponentBid, false);
 						bidToOffer = bestBid;
 					} else {
-						// Remove the oldest bid and receiveMessage the statistics
+						// Remove the oldest bid and receiveMessage the
+						// statistics
 						bidToRemove = opponentBidsArray.get(0);
 						updateStatistics(bidToRemove, true);
 						opponentBidsArray.remove(0);
-						// Add the new bid of the opponent and receiveMessage the
+						// Add the new bid of the opponent and receiveMessage
+						// the
 						// statistics
 						opponentBidsArray.add(opponentBid);
 						updateStatistics(opponentBid, false);
@@ -284,7 +286,8 @@ public class BRAMAgent2 extends Agent {
 						first = last;
 						last = last + lOneStep;
 					}
-					// If no matching value was found, receiveMessage the last cell
+					// If no matching value was found, receiveMessage the last
+					// cell
 					if (found == false) {
 						int i = opponentBidsStatisticsForReal.get(realIndex)
 								.size() - 1;
@@ -474,7 +477,7 @@ public class BRAMAgent2 extends Agent {
 	 * @return
 	 */
 	private Bid createBidByOpponentModeling() {
-		Bid bid = new Bid();
+		Bid bid = new Bid(utilitySpace.getDomain());
 		try {
 
 			HashMap<Integer, Value> valuesToOfferPerIssue = new HashMap<Integer, Value>();
@@ -771,7 +774,8 @@ public class BRAMAgent2 extends Agent {
 
 		if (lastPositionInBidArray + rndNum < 0)// If the index is smaller than
 												// the lower bound of the array
-												// receiveMessage it to the first cell
+												// receiveMessage it to the
+												// first cell
 			newIndex = 0;
 		else if (lastPositionInBidArray + rndNum > (arraySize - 1))// If the
 																	// index is
@@ -780,7 +784,8 @@ public class BRAMAgent2 extends Agent {
 																	// upper
 																	// bound of
 																	// the array
-																	// receiveMessage it
+																	// receiveMessage
+																	// it
 																	// to the
 																	// last cell
 			newIndex = arraySize - 1;
@@ -804,17 +809,20 @@ public class BRAMAgent2 extends Agent {
 		// ADDED *********************************//
 		if (this.utilitySpace.getUtilityWithDiscount(toSend, timeline) < threshold) {
 			toSend = previousOfferedBid;
-			bidsCountProposalArray[lastPositionInBidArray]++;// receiveMessage the
+			bidsCountProposalArray[lastPositionInBidArray]++;// receiveMessage
+																// the
 																// number of
 																// times that
 																// this bid was
 																// offered
 		} else {
 			previousOfferedBid = toSend;
-			lastPositionInBidArray = newIndex;// receiveMessage the last position - this
+			lastPositionInBidArray = newIndex;// receiveMessage the last
+												// position - this
 												// is an indication to the last
 												// bid that was offered
-			bidsCountProposalArray[newIndex]++;// receiveMessage the number of times
+			bidsCountProposalArray[newIndex]++;// receiveMessage the number of
+												// times
 												// that this bid was offered
 		}
 

@@ -85,7 +85,7 @@ public class Group12 extends AbstractNegotiationParty {
 		}
 
 		if (!validActions.contains(Accept.class) || acceptingValue >= bidValue) {
-			Bid bid = new Bid();
+			Bid bid = new Bid(utilitySpace.getDomain());
 			try {
 				bid = BidGenerator.generateBid(this.utilitySpace,
 						this.preference, acceptingValue,

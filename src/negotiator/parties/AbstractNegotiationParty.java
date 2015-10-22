@@ -105,7 +105,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 		} catch (Exception e) {
 
 			// return empty bid if an error occurred
-			return new Bid();
+			return new Bid(utilitySpace.getDomain());
 		}
 	}
 
