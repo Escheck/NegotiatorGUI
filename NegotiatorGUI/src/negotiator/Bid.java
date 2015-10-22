@@ -140,20 +140,6 @@ public final class Bid implements XMLable, Serializable {
 		return new Bid(fDomain, newValues);
 	}
 
-	/**
-	 * Set the value of the issue with the given issueID to the given value.
-	 * 
-	 * @param issueId
-	 *            unique ID of an issue.
-	 * @param pValue
-	 *            value of the issue.
-	 */
-	// public void setValue(int issueId, Value pValue) {
-	// if (fValues.get(issueId).getType() == pValue.getType()) {
-	// fValues.put(issueId, pValue);
-	// }
-	// }
-
 	public String toString() {
 		String s = "Bid[";
 		Set<Entry<Integer, Value>> value_set = fValues.entrySet();
@@ -182,7 +168,7 @@ public final class Bid implements XMLable, Serializable {
 	 * @return true if the values of this and the given bid are equal.
 	 */
 	public boolean equals(Bid pBid) {
-		return fValues.equals(pBid.getValues());
+		return fValues.equals(pBid.fValues);
 	}
 
 	/*
@@ -198,16 +184,11 @@ public final class Bid implements XMLable, Serializable {
 	}
 
 	/**
-	 * Helper function to enable the comparison between two Bids. Wouter:
-	 * changed to public for convenience.
-	 * 
-	 * @return
+	 * @return a (copy of ) the list of all values in this bid.
 	 */
 
-	// Reyhan: Changed public (it was "protected")
 	public HashMap<Integer, Value> getValues() {
-		// createFrom a clone, to avoid changing of the values.
-		return fValues;
+		return new HashMap<Integer, Value>(fValues);
 	}
 
 	// Reyhan: add this method
