@@ -27,9 +27,9 @@ import negotiator.xml.SimpleElement;
  * 
  * Wouter: a bid is a set of <idnumber,value> pairs, where idnumber is the
  * unique number of the issue, and value is the picked alternative.
- * 
- * Wouter #1128: Bid is a FINAL object. Do not modify this code that would allow
- * bids to be changed.
+ * <p>
+ * Bid is a final object that can not be changed. But you can create modified
+ * copies using {@link #putValue(int, Value)}.
  * 
  * @author Dmytro Tykhonov & Koen Hindriks
  */

@@ -3,11 +3,13 @@ package negotiator.issue;
 import java.io.Serializable;
 
 /**
- * Specifies a generic value of an issue. This superclass needs to
- * be extended by a subclass.
+ * Specifies a generic value of an issue. This superclass needs to be extended
+ * by a subclass.
+ * <p>
+ * Value objects are final and can not be modified after creation.
  */
 public class Value implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -16,12 +18,17 @@ public class Value implements Serializable {
 	/**
 	 * Empty constructor used to createFrom a new Value.
 	 */
-	public Value() { }
-	
+	public Value() {
+	}
+
 	/**
 	 * @return type of the issue.
 	 */
-	public ISSUETYPE getType() {return ISSUETYPE.UNKNOWN;};
-	
-	public String toString() { return "unknown!";}
+	public ISSUETYPE getType() {
+		return ISSUETYPE.UNKNOWN;
+	};
+
+	public String toString() {
+		return "unknown!";
+	}
 }
