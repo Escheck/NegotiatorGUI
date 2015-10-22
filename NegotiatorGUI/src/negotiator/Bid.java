@@ -28,6 +28,9 @@ import negotiator.xml.SimpleElement;
  * Wouter: a bid is a set of <idnumber,value> pairs, where idnumber is the
  * unique number of the issue, and value is the picked alternative.
  * 
+ * Wouter #1128: Bid is a FINAL object. Do not modify this code that would allow
+ * bids to be changed.
+ * 
  * @author Dmytro Tykhonov & Koen Hindriks
  */
 @XmlRootElement
@@ -38,16 +41,17 @@ public final class Bid implements XMLable, Serializable {
 	 */
 	private static final long serialVersionUID = -7723017380013100614L;
 	// Class fields
-	private Domain fDomain;
+	private final Domain fDomain;
 	@XmlElement(name = "values")
 	@XmlJavaTypeAdapter(MyMapAdapter.class)
-	private HashMap<Integer, Value> fValues; // Wouter: the bid values for each
-												// IssueID
+	// Wouter: the bid values for each IssueID
+	private HashMap<Integer, Value> fValues;
 
 	/**
 	 * Create a new empty bid of which the values still must be set.
 	 */
-	public Bid() {
+	public Bid(Domain domain) {
+		fDomain = domain;
 		fValues = new HashMap<Integer, Value>();
 	}
 
@@ -63,7 +67,7 @@ public final class Bid implements XMLable, Serializable {
 	 * @throws Exception
 	 *             if the bid is not a legal bid in the domain.
 	 */
-	public Bid(Domain domainP, HashMap<Integer, Value> bidP) throws Exception {
+	public Bid(Domain domainP, HashMap<Integer, Value> bidP) {
 		this.fDomain = domainP; // THIS NEEDS A CHECK!
 
 		// Check if indexes are ok
@@ -112,6 +116,26 @@ public final class Bid implements XMLable, Serializable {
 			throw new Exception("There is no evaluator for issue " + issueNr);
 		}
 		return v;
+	}
+
+	/**
+	 * Make a new Bid as the current bid but with the value of the issue with
+	 * the given issueID to the given value.
+	 * 
+	 * @param issueId
+	 *            unique ID of an issue.
+	 * @param pValue
+	 *            value of the issue.
+	 */
+	public Bid putValue(int issueId, Value pValue) {
+		if (fDomain.getIssue(issueId).getType() != pValue.getType()) {
+			throw new IllegalArgumentException("expected value of type "
+					+ fDomain.getIssue(issueId).getType() + "but got " + pValue
+					+ " of type " + pValue.getType());
+		}
+		HashMap<Integer, Value> newValues = new HashMap<Integer, Value>(fValues);
+		newValues.put(issueId, pValue);
+		return new Bid(fDomain, newValues);
 	}
 
 	/**
