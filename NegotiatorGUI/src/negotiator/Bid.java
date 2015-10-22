@@ -128,7 +128,9 @@ public final class Bid implements XMLable, Serializable {
 	 *            value of the issue.
 	 */
 	public Bid putValue(int issueId, Value pValue) {
-		if (fDomain.getIssue(issueId).getType() != pValue.getType()) {
+		if (fValues.get(issueId).getType() != pValue.getType()) {
+			// FIXME
+			// if (fDomain.getIssue(issueId).getType() != pValue.getType()) {
 			throw new IllegalArgumentException("expected value of type "
 					+ fDomain.getIssue(issueId).getType() + "but got " + pValue
 					+ " of type " + pValue.getType());
@@ -146,11 +148,11 @@ public final class Bid implements XMLable, Serializable {
 	 * @param pValue
 	 *            value of the issue.
 	 */
-	public void setValue(int issueId, Value pValue) {
-		if (fValues.get(issueId).getType() == pValue.getType()) {
-			fValues.put(issueId, pValue);
-		}
-	}
+	// public void setValue(int issueId, Value pValue) {
+	// if (fValues.get(issueId).getType() == pValue.getType()) {
+	// fValues.put(issueId, pValue);
+	// }
+	// }
 
 	public String toString() {
 		String s = "Bid[";

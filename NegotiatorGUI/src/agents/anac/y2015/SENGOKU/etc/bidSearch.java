@@ -144,7 +144,7 @@ public class bidSearch {
 			values = negotiatingInfo.getValues(issue);
 			Bid currentBid = new Bid(baseBid);
 			for (Value value : values) {
-				currentBid.setValue(issue.getNumber(), value);
+				currentBid = currentBid.putValue(issue.getNumber(), value);
 				// System.out.println("変換中ビット"+currentBid);
 				bidArray.add(currentBid);
 			}
@@ -287,7 +287,7 @@ public class bidSearch {
 			for (Value value : randomValues) {
 				relativeUtility = valueRelativeUtility.get(issue).get(value); // 最大効用値を基準とした相対効用値
 				if (d <= concessionSum + relativeUtility) {
-					bid.setValue(issue.getNumber(), value);
+					bid = bid.putValue(issue.getNumber(), value);
 					concessionSum += relativeUtility;
 					break;
 				}
@@ -319,7 +319,8 @@ public class bidSearch {
 				Issue issue = issues.get(issueIndex); // 指定したindexのissue
 				ArrayList<Value> values = negotiatingInfo.getValues(issue);
 				int valueIndex = randomnr.nextInt(values.size()); // 取り得る値の範囲でランダムに指定
-				nextBid.setValue(issue.getNumber(), values.get(valueIndex));
+				nextBid = nextBid.putValue(issue.getNumber(),
+						values.get(valueIndex));
 				nextBidUtil = utilitySpace.getUtility(nextBid);
 				if (maxBid == null
 						|| nextBidUtil >= utilitySpace.getUtility(maxBid)) {

@@ -284,10 +284,11 @@ public class Group6 extends AbstractNegotiationParty {
 					.equals(majorityMaxValue))
 				continue;
 
-			resBid.setValue(leastImportantIssue.getNumber(), majorityMaxValue);
+			resBid = resBid.putValue(leastImportantIssue.getNumber(),
+					majorityMaxValue);
 
 			if (!isAcceptable(resBid)) {
-				resBid.setValue(leastImportantIssue.getNumber(),
+				resBid = resBid.putValue(leastImportantIssue.getNumber(),
 						maxBid.getValue(leastImportantIssue.getNumber()));
 				break;
 			}
@@ -304,7 +305,7 @@ public class Group6 extends AbstractNegotiationParty {
 					.getNumber())).getMaxValue();
 			if (value == null)
 				break;
-			resBid.setValue(issue.getNumber(), value);
+			resBid = resBid.putValue(issue.getNumber(), value);
 		}
 
 		return resBid;

@@ -209,7 +209,7 @@ public class FeedbackMediator extends AbstractNegotiationParty implements
 		if (selectedValue == null)
 			return null;
 
-		modifiedBid.setValue(currentIndex, selectedValue);
+		modifiedBid = modifiedBid.putValue(currentIndex, selectedValue);
 
 		// if (modifiedBid==lastBid)
 		// return null;

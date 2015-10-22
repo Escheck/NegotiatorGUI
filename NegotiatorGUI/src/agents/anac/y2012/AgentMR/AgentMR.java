@@ -370,7 +370,8 @@ public class AgentMR extends Agent {
 						standardBid = bidRunk.get(currentBidNumber);
 					}
 					standardBid = clone(standardBid);
-					standardBid.setValue(lIssue.getNumber(), value);
+					standardBid = standardBid.putValue(lIssue.getNumber(),
+							value);
 					double utility = getUtility(standardBid);
 
 					if ((utility > minimumBidUtility)
@@ -390,7 +391,8 @@ public class AgentMR extends Agent {
 								* (double) (optionInd)
 								/ (double) (lIssueReal
 										.getNumberOfDiscretizationSteps()));
-				standardBid.setValue(lIssueReal.getNumber(), pValue);
+				standardBid = standardBid.putValue(lIssueReal.getNumber(),
+						pValue);
 				double utility = getUtility(standardBid);
 				getBids.put(standardBid, utility);
 				break;
@@ -400,7 +402,8 @@ public class AgentMR extends Agent {
 						+ random100.nextInt(lIssueInteger.getUpperBound()
 								- lIssueInteger.getLowerBound());
 				Value pValue2 = new ValueInteger(optionIndex2);
-				standardBid.setValue(lIssueInteger.getNumber(), pValue2);
+				standardBid = standardBid.putValue(lIssueInteger.getNumber(),
+						pValue2);
 				double utility2 = getUtility(standardBid);
 				getBids.put(standardBid, utility2);
 				break;

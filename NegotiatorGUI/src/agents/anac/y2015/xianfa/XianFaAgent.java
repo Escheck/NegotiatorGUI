@@ -401,12 +401,12 @@ public class XianFaAgent extends AbstractNegotiationParty {
 		if (opponent.equals(opponentA)) {
 			for (AIssue iss : issuesA) {
 				Value val = iss.getDesiredVal();
-				bid.setValue(iss.getIssNr(), val);
+				bid = bid.putValue(iss.getIssNr(), val);
 			}
 		} else if (opponent.equals(opponentB)) {
 			for (AIssue iss : issuesB) {
 				Value val = iss.getDesiredVal();
-				bid.setValue(iss.getIssNr(), val);
+				bid = bid.putValue(iss.getIssNr(), val);
 			}
 		}
 		try {

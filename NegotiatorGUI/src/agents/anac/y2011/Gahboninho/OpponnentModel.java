@@ -478,7 +478,7 @@ public class OpponnentModel {
 				.get(IssueNumber)];
 		Issue I = IS.IssueBase;
 		Bid tmpBid = US.getDomain().getRandomBid(random500);
-		tmpBid.setValue(IssueNumber, ValToImprove);
+		tmpBid = tmpBid.putValue(IssueNumber, ValToImprove);
 
 		double oppUtilityWithVal = IS.Issue
 				.GetExpectedUtilityByValue(ValToImprove);
@@ -492,7 +492,7 @@ public class OpponnentModel {
 		int size = DI.getNumberOfValues();
 		for (int i = 0; i < size; i++) {
 			ValueDiscrete curr = DI.getValue(i);
-			tmpBid.setValue(IssueNumber, curr);
+			tmpBid = tmpBid.putValue(IssueNumber, curr);
 			double myUtilityWithCurrent = US.getEvaluation(IssueNumber, tmpBid);
 			double oppUtilityWithCurrent = IS.Issue
 					.GetExpectedUtilityByValue(curr);
@@ -515,18 +515,18 @@ public class OpponnentModel {
 		for (Issue issue : US.getDomain().getIssues()) {
 			try {
 				if (issue.getType() == ISSUETYPE.DISCRETE)
-					resultBid.setValue(
+					resultBid = resultBid.putValue(
 							issue.getNumber(),
 							ImproveValue(issue.getNumber(),
 									(ValueDiscrete) BidToImprove.getValue(issue
 											.getNumber())));
 				else
-					resultBid.setValue(issue.getNumber(),
+					resultBid = resultBid.putValue(issue.getNumber(),
 							BidToImprove.getValue(issue.getNumber()));
 
 			} catch (Exception e) {
 				try {
-					resultBid.setValue(issue.getNumber(),
+					resultBid = resultBid.putValue(issue.getNumber(),
 							(ValueDiscrete) BidToImprove.getValue(issue
 									.getNumber()));
 				} catch (Exception E) {

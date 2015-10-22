@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.AcceptanceStrategy;
@@ -24,15 +25,16 @@ import negotiator.issue.ValueReal;
 import negotiator.utility.UtilitySpace;
 
 /**
- * This is the Acceptance condition of AgentMR
- * Due to the connectedness of the original code if another Bidding strategy is being used,
- * the Bidding Strategy of AgentMR will be run in the background 
+ * This is the Acceptance condition of AgentMR Due to the connectedness of the
+ * original code if another Bidding strategy is being used, the Bidding Strategy
+ * of AgentMR will be run in the background
+ * 
  * @author Alexander Dirkzwager
  */
-public class AC_AgentMR extends AcceptanceStrategy{
-	
+public class AC_AgentMR extends AcceptanceStrategy {
+
 	private boolean EQUIVALENCE_TEST = true;
-	private Random random100;	
+	private Random random100;
 	private ArrayList<Double> observationUtility = new ArrayList<Double>();
 	private HashMap<Bid, Double> bidTables = new HashMap<Bid, Double>();
 	private static boolean firstOffer;
@@ -42,235 +44,259 @@ public class AC_AgentMR extends AcceptanceStrategy{
 	private int currentBidNumber = 0;
 	private UtilitySpace utilitySpace;
 	private boolean alreadyDone = false;
-	private Actions nextAction; 
-	
+	private Actions nextAction;
+
 	private boolean activeHelper = false;
 	private static final double MINIMUM_ACCEPT_P = 0.965;
 
+	public AC_AgentMR() {
+	}
 
-	
-	public AC_AgentMR() { }
-    
-	public AC_AgentMR(NegotiationSession negoSession, OfferingStrategy strat) throws Exception {
+	public AC_AgentMR(NegotiationSession negoSession, OfferingStrategy strat)
+			throws Exception {
 		initializeAgent(negoSession, strat);
 	}
-	
+
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat,
+			OpponentModel opponentModel, HashMap<String, Double> parameters)
+			throws Exception {
 		initializeAgent(negoSession, strat);
 	}
-	
-	public void initializeAgent(NegotiationSession negotiationSession, OfferingStrategy os) throws Exception {
+
+	public void initializeAgent(NegotiationSession negotiationSession,
+			OfferingStrategy os) throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.offeringStrategy = os;
-		
-		if (offeringStrategy.getHelper() == null || (!offeringStrategy.getHelper().getName().equals("AgentMR"))) {
+
+		if (offeringStrategy.getHelper() == null
+				|| (!offeringStrategy.getHelper().getName().equals("AgentMR"))) {
 			helper = new AgentMRSAS(negotiationSession);
 			activeHelper = true;
-		} else {	
+		} else {
 			helper = (AgentMRSAS) offeringStrategy.getHelper();
 		}
-		
-		if (discountFactor) { 
+
+		if (discountFactor) {
 			((AgentMRSAS) helper).setSigmoidGain(-3.0);
 			((AgentMRSAS) helper).setPercent(0.55);
-		} else { 
+		} else {
 			((AgentMRSAS) helper).setSigmoidGain(-5.0);
 			((AgentMRSAS) helper).setPercent(0.70);
 		}
-		
-		if(activeHelper){
+
+		if (activeHelper) {
 			firstOffer = true;
 			try {
 				utilitySpace = negotiationSession.getUtilitySpace();
 				getDiscountFactor();
 				getReservationFactor();
-	
+
 				Bid b = negotiationSession.getMaxBidinDomain().getBid();
 				bidTables.put(b, getUtility(b));
 				((AgentMRSAS) helper).getBidRunk().add(b);
-				
-				if(EQUIVALENCE_TEST){
+
+				if (EQUIVALENCE_TEST) {
 					random100 = new Random(100);
 				} else {
 					random100 = new Random();
 				}
-			} catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	
-	
+
 	@Override
 	public Actions determineAcceptability() {
-		if(activeHelper)
+		if (activeHelper)
 			nextAction = activeDetermineAcceptability();
 		else
 			nextAction = regularDetermineAcceptability();
 		return nextAction;
 	}
-	
-	private Actions activeDetermineAcceptability(){
+
+	private Actions activeDetermineAcceptability() {
 		nextAction = Actions.Reject;
-		if(negotiationSession.getOpponentBidHistory().getHistory().isEmpty()){
-			if(!alreadyDone){
+		if (negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
+			if (!alreadyDone) {
 				((AgentMRSAS) helper).updateMinimumBidUtility(0);
 				alreadyDone = true;
 			}
 			return Actions.Reject;
 		}
-		
+
 		try {
 			BidDetails partnerBid;
-			if(firstOffer){
-				partnerBid = negotiationSession.getOpponentBidHistory().getHistory().get(0);
-			}else {
-				partnerBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
+			if (firstOffer) {
+				partnerBid = negotiationSession.getOpponentBidHistory()
+						.getHistory().get(0);
+			} else {
+				partnerBid = negotiationSession.getOpponentBidHistory()
+						.getLastBidDetails();
 			}
-				
-				
-				// get current time
-				double time = negotiationSession.getTime();
-				//System.out.println("test: " + negotiationSession.getDiscountedUtility(negotiationSession.getOpponentBidHistory().getFirstBidDetails().getBid(), negotiationSession.getOpponentBidHistory().getFirstBidDetails().getTime()));
-				double offeredutil; 
-				if (discountFactor) {
-					offeredutil = getUtility(partnerBid.getBid()) * (1 / Math.pow(negotiationSession.getUtilitySpace().getDiscountFactor(), time));
+
+			// get current time
+			double time = negotiationSession.getTime();
+			// System.out.println("test: " +
+			// negotiationSession.getDiscountedUtility(negotiationSession.getOpponentBidHistory().getFirstBidDetails().getBid(),
+			// negotiationSession.getOpponentBidHistory().getFirstBidDetails().getTime()));
+			double offeredutil;
+			if (discountFactor) {
+				offeredutil = getUtility(partnerBid.getBid())
+						* (1 / Math.pow(negotiationSession.getUtilitySpace()
+								.getDiscountFactor(), time));
+			} else {
+				offeredutil = getUtility(partnerBid.getBid());
+
+			}
+			if (firstOffer) {
+				offereMaxUtility = offeredutil;
+				((AgentMRSAS) helper).setFirstOffereUtility(offeredutil);
+
+				observationUtility.add(offeredutil); // addObservation
+				if (offeredutil > 0.5) {
+					((AgentMRSAS) helper).setP(0.90);
 				} else {
-					offeredutil = getUtility(partnerBid.getBid());
-
+					((AgentMRSAS) helper).setP(0.80);
 				}
-				if (firstOffer) {
-					offereMaxUtility = offeredutil; 
-					((AgentMRSAS) helper).setFirstOffereUtility(offeredutil); 
+				firstOffer = !firstOffer;
+			}
+			((AgentMRSAS) helper).updateMinimumBidUtility(time);
 
-					observationUtility.add(offeredutil); // addObservation
-					if (offeredutil > 0.5) { 
-						((AgentMRSAS) helper).setP(0.90);
+			/*
+			 * if (partnerBid.equals(previousPartnerBid)) { if (currentBidNumber
+			 * > 0 && 0.5 > 0.65) { currentBidNumber--; //
+			 * ç¢ºçŽ‡çš„ã�«Bidã‚’ç§»å‹• } }
+			 */
+			if (offeredutil > offereMaxUtility) {
+				offereMaxUtility = offeredutil;
+				// addObservation
+				observationUtility.add(offeredutil);
+				if ((time > 0.5) && !discountFactor) {
+					newupdateSigmoidFunction();
+				}
+			}
+
+			// forecasting
+			if ((time > 0.5) && forecastTime) {
+				updateSigmoidFunction();
+				forecastTime = !forecastTime;
+			}
+
+			double P = Paccept(offeredutil, time);
+
+			if ((P > MINIMUM_ACCEPT_P)
+					|| (negotiationSession.getOpponentBidHistory()
+							.getLastBidDetails().getMyUndiscountedUtil() > ((AgentMRSAS) helper)
+							.getMinimumBidUtility())
+					|| ((AgentMRSAS) helper).getBidRunk().contains(
+							negotiationSession.getOpponentBidHistory()
+									.getLastBid())) {
+				nextAction = Actions.Accept;
+			} else {
+				if (offeredutil > ((AgentMRSAS) helper).getMinimumOffereDutil()) {
+					HashMap<Bid, Double> getBids = getBidTable(1);
+					if (getBids.size() >= 1) {
+						// BidTable
+						currentBidNumber = 0;
+						((AgentMRSAS) helper).getBidRunk().clear();
+						bidTables = getBids;
+						sortBid(getBids); // Sort BidTable
 					} else {
-						((AgentMRSAS) helper).setP(0.80);
+						getBids = getBidTable(2);
+						if (getBids.size() >= 1) {
+							sortBid(getBids); // Sort BidTable
+							Bid maxBid = getMaxBidUtility(getBids);
+							currentBidNumber = ((AgentMRSAS) helper)
+									.getBidRunk().indexOf(maxBid);
+						}
 					}
-					firstOffer = !firstOffer; 
-				}
-				((AgentMRSAS) helper).updateMinimumBidUtility(time); 
+					if (currentBidNumber + 1 < ((AgentMRSAS) helper)
+							.getBidRunk().size()) {
+						// System.out.println("Decoupled currentBidNumberChange1");
 
-				/*
-				if (partnerBid.equals(previousPartnerBid)) { 
-					if (currentBidNumber > 0 && 0.5 > 0.65) {
-						currentBidNumber--; // ç¢ºçŽ‡çš„ã�«Bidã‚’ç§»å‹•
+						currentBidNumber++;
 					}
-				}
-				*/
-				if (offeredutil > offereMaxUtility) {
-					offereMaxUtility = offeredutil;
-					// addObservation
-					observationUtility.add(offeredutil);
-					if ((time > 0.5) && !discountFactor) {
-						newupdateSigmoidFunction();
-					}
-				}
 
-				// forecasting
-				if ((time > 0.5) && forecastTime) {
-					updateSigmoidFunction();
-					forecastTime = !forecastTime;
-				}
-				
-				double P = Paccept(offeredutil, time);
-				
-				if ((P > MINIMUM_ACCEPT_P) || (negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() > ((AgentMRSAS) helper).getMinimumBidUtility())
-						|| ((AgentMRSAS) helper).getBidRunk().contains(negotiationSession.getOpponentBidHistory().getLastBid())) {
-					nextAction = Actions.Accept;
-				} 
-			else {
-				if(offeredutil > ((AgentMRSAS) helper).getMinimumOffereDutil()) {
-				HashMap<Bid, Double> getBids = getBidTable(1);
-				if (getBids.size() >= 1) {
-					// BidTable
-					currentBidNumber = 0;
-					((AgentMRSAS) helper).getBidRunk().clear();
-					bidTables = getBids;
-					sortBid(getBids); // Sort BidTable
-				} else { 
-					getBids = getBidTable(2);
+				} else {
+					HashMap<Bid, Double> getBids = getBidTable(2);
+
 					if (getBids.size() >= 1) {
 						sortBid(getBids); // Sort BidTable
 						Bid maxBid = getMaxBidUtility(getBids);
-						currentBidNumber = ((AgentMRSAS) helper).getBidRunk().indexOf(maxBid);
+						currentBidNumber = ((AgentMRSAS) helper).getBidRunk()
+								.indexOf(maxBid);
+					}
+
+					if (currentBidNumber + 1 < ((AgentMRSAS) helper)
+							.getBidRunk().size()) {
+						currentBidNumber++;
+					} else {
+						currentBidNumber = 0;
 					}
 				}
-				if (currentBidNumber + 1 < ((AgentMRSAS) helper).getBidRunk().size()) {
-					//System.out.println("Decoupled currentBidNumberChange1");
-
-					currentBidNumber++;
-				}
-				
-			} else {
-				HashMap<Bid, Double> getBids = getBidTable(2);
-
-				if (getBids.size() >= 1) {
-					sortBid(getBids); // Sort BidTable
-					Bid maxBid = getMaxBidUtility(getBids);
-					currentBidNumber = ((AgentMRSAS) helper).getBidRunk().indexOf(maxBid);					
-				}						
-
-				if (currentBidNumber + 1 < ((AgentMRSAS) helper).getBidRunk().size()) {
-					currentBidNumber++;
-				} else {
-					currentBidNumber = 0;
-				}
 			}
-					}			
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return nextAction;
 	}
-	
-	private Actions regularDetermineAcceptability(){
-		
-		if(!(negotiationSession.getOpponentBidHistory().isEmpty())){
-			double offeredutil = negotiationSession.getOpponentBidHistory().getFirstBidDetails().getMyUndiscountedUtil();
-			((AgentMRSAS) helper).setFirstOffereUtility(offeredutil); 			
+
+	private Actions regularDetermineAcceptability() {
+
+		if (!(negotiationSession.getOpponentBidHistory().isEmpty())) {
+			double offeredutil = negotiationSession.getOpponentBidHistory()
+					.getFirstBidDetails().getMyUndiscountedUtil();
+			((AgentMRSAS) helper).setFirstOffereUtility(offeredutil);
 		}
 		double P;
 		try {
-			if(negotiationSession.getOpponentBidHistory().isEmpty()){
+			if (negotiationSession.getOpponentBidHistory().isEmpty()) {
 				return Actions.Reject;
 			}
-			P = Paccept(negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil(), negotiationSession.getTime());
+			P = Paccept(negotiationSession.getOpponentBidHistory()
+					.getLastBidDetails().getMyUndiscountedUtil(),
+					negotiationSession.getTime());
 
-
-			
-			if(activeHelper){
-				((AgentMRSAS) helper).updateMinimumBidUtility(negotiationSession.getTime());
+			if (activeHelper) {
+				((AgentMRSAS) helper)
+						.updateMinimumBidUtility(negotiationSession.getTime());
 			}
-		
-			//System.out.println("Decoupled condition1: " + (P > MINIMUM_ACCEPT_P));
-			//System.out.println("Decoupled condition2: " +  (negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() > ((AgentMRSAS) helper).getMinimumBidUtility()));
-			//System.out.println("Decoupled condition3: " +((AgentMRSAS) helper).getBidRunk().contains(negotiationSession.getOpponentBidHistory().getLastBid()));
-		// Accept
-		if ((P > MINIMUM_ACCEPT_P) || (negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil() > ((AgentMRSAS) helper).getMinimumBidUtility())
-				|| ((AgentMRSAS) helper).getBidRunk().contains(negotiationSession.getOpponentBidHistory().getLastBid())) {
-			return Actions.Accept;
-		}
+
+			// System.out.println("Decoupled condition1: " + (P >
+			// MINIMUM_ACCEPT_P));
+			// System.out.println("Decoupled condition2: " +
+			// (negotiationSession.getOpponentBidHistory().getLastBidDetails().getMyUndiscountedUtil()
+			// > ((AgentMRSAS) helper).getMinimumBidUtility()));
+			// System.out.println("Decoupled condition3: " +((AgentMRSAS)
+			// helper).getBidRunk().contains(negotiationSession.getOpponentBidHistory().getLastBid()));
+			// Accept
+			if ((P > MINIMUM_ACCEPT_P)
+					|| (negotiationSession.getOpponentBidHistory()
+							.getLastBidDetails().getMyUndiscountedUtil() > ((AgentMRSAS) helper)
+							.getMinimumBidUtility())
+					|| ((AgentMRSAS) helper).getBidRunk().contains(
+							negotiationSession.getOpponentBidHistory()
+									.getLastBid())) {
+				return Actions.Accept;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return Actions.Reject;	}
-	
-	
-	
-	private double getUtility(Bid bid)
-    {
-    	return negotiationSession.getUtilitySpace().getUtilityWithDiscount(bid, negotiationSession.getTimeline());
-    }
-	
+		return Actions.Reject;
+	}
+
+	private double getUtility(Bid bid) {
+		return negotiationSession.getUtilitySpace().getUtilityWithDiscount(bid,
+				negotiationSession.getTimeline());
+	}
+
 	private void getReservationFactor() {
 		if (utilitySpace.getReservationValue() != null) {
-			((AgentMRSAS) helper).setReservation(utilitySpace.getReservationValue());
+			((AgentMRSAS) helper).setReservation(utilitySpace
+					.getReservationValue());
 		}
 	}
 
@@ -310,40 +336,46 @@ public class AC_AgentMR extends AcceptanceStrategy{
 				* (-1. + 2 * t))))
 				/ (-1. + 2 * t);
 	}
-	
+
 	double sq(double x) {
 		return x * x;
 	}
-	
+
 	private void newupdateSigmoidFunction() {
-		double latestObservation = observationUtility.get(observationUtility.size() - 1);
-		double concessionPercent = Math.abs(latestObservation - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
-		double modPercent = Math.abs(((AgentMRSAS) helper).getMinimumOffereDutil() - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double latestObservation = observationUtility.get(observationUtility
+				.size() - 1);
+		double concessionPercent = Math.abs(latestObservation
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double modPercent = Math.abs(((AgentMRSAS) helper)
+				.getMinimumOffereDutil()
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
 
 		if (modPercent < concessionPercent) {
 			((AgentMRSAS) helper).setPercent(concessionPercent);
 		}
 	}
-	
+
 	private void updateSigmoidFunction() {
 		int observationSize = observationUtility.size();
 		double latestObservation = observationUtility.get(observationSize - 1); // æœ€æ–°ã�®ç›¸æ‰‹BidUtil
-		double concessionPercent = Math.abs(latestObservation - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double concessionPercent = Math.abs(latestObservation
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
 
 		if (discountFactor) {
-			if ((concessionPercent < 0.20) ||
-					(observationSize < 3)) {
+			if ((concessionPercent < 0.20) || (observationSize < 3)) {
 				((AgentMRSAS) helper).setPercent(0.35);
 				((AgentMRSAS) helper).setSigmoidGain(-2);
 			} else {
 				((AgentMRSAS) helper).setPercent(0.45);
 			}
 		} else {
-			if ((concessionPercent < 0.20) ||
-					(observationSize < 3)) {
+			if ((concessionPercent < 0.20) || (observationSize < 3)) {
 				((AgentMRSAS) helper).setPercent(0.50);
 				((AgentMRSAS) helper).setSigmoidGain(-4);
-			} else if (concessionPercent > 0.60) { 
+			} else if (concessionPercent > 0.60) {
 				((AgentMRSAS) helper).setPercent(0.80);
 				((AgentMRSAS) helper).setSigmoidGain(-6);
 			} else {
@@ -351,7 +383,7 @@ public class AC_AgentMR extends AcceptanceStrategy{
 			}
 		}
 	}
-	
+
 	/**
 	 * @param maxBid
 	 * @return
@@ -360,7 +392,7 @@ public class AC_AgentMR extends AcceptanceStrategy{
 	private HashMap<Bid, Double> getBidTable(int flag) throws Exception {
 		HashMap<Bid, Double> getBids = new HashMap<Bid, Double>();
 
-		//Random randomnr = new Random();
+		// Random randomnr = new Random();
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 		Bid standardBid = null;
 
@@ -372,43 +404,61 @@ public class AC_AgentMR extends AcceptanceStrategy{
 					if (flag == 0) {
 						standardBid = utilitySpace.getMaxUtilityBid(); // è‡ªåˆ†ã�®æœ€é«˜å€¤
 					} else if (flag == 1) {
-						standardBid = negotiationSession.getOpponentBidHistory().getLastBid(); 
+						standardBid = negotiationSession
+								.getOpponentBidHistory().getLastBid();
 					} else {
-						standardBid = ((AgentMRSAS) helper).getBidRunk().get(currentBidNumber);
+						standardBid = ((AgentMRSAS) helper).getBidRunk().get(
+								currentBidNumber);
 					}
 					standardBid = clone(standardBid);
-					standardBid.setValue(lIssue.getNumber(), value);
+					standardBid = standardBid.putValue(lIssue.getNumber(),
+							value);
 					double utility = getUtility(standardBid);
-					//System.out.println("Decoupled minimumBidUtility: " + ((AgentMRSAS) helper).getMinimumBidUtility());
+					// System.out.println("Decoupled minimumBidUtility: " +
+					// ((AgentMRSAS) helper).getMinimumBidUtility());
 					if ((utility > ((AgentMRSAS) helper).getMinimumBidUtility())
-							&& (!((AgentMRSAS) helper).getBidRunk().contains(standardBid))) {
+							&& (!((AgentMRSAS) helper).getBidRunk().contains(
+									standardBid))) {
 						getBids.put(standardBid, utility);
 					}
 				}
 				break;
 			case REAL:
-				IssueReal lIssueReal = (IssueReal)lIssue;
-				int optionInd = random100.nextInt(lIssueReal.getNumberOfDiscretizationSteps()-1);
-				Value pValue = new ValueReal(lIssueReal.getLowerBound() + (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())*(double)(optionInd)/(double)(lIssueReal.getNumberOfDiscretizationSteps()));
-				standardBid.setValue(lIssueReal.getNumber(), pValue);
+				IssueReal lIssueReal = (IssueReal) lIssue;
+				int optionInd = random100.nextInt(lIssueReal
+						.getNumberOfDiscretizationSteps() - 1);
+				Value pValue = new ValueReal(
+						lIssueReal.getLowerBound()
+								+ (lIssueReal.getUpperBound() - lIssueReal
+										.getLowerBound())
+								* (double) (optionInd)
+								/ (double) (lIssueReal
+										.getNumberOfDiscretizationSteps()));
+				standardBid = standardBid.putValue(lIssueReal.getNumber(),
+						pValue);
 				double utility = getUtility(standardBid);
 				getBids.put(standardBid, utility);
 				break;
 			case INTEGER:
-				IssueInteger lIssueInteger = (IssueInteger)lIssue;
-				int optionIndex2 = lIssueInteger.getLowerBound() + random100.nextInt(lIssueInteger.getUpperBound()-lIssueInteger.getLowerBound());
+				IssueInteger lIssueInteger = (IssueInteger) lIssue;
+				int optionIndex2 = lIssueInteger.getLowerBound()
+						+ random100.nextInt(lIssueInteger.getUpperBound()
+								- lIssueInteger.getLowerBound());
 				Value pValue2 = new ValueInteger(optionIndex2);
-				standardBid.setValue(lIssueInteger.getNumber(), pValue2);
+				standardBid = standardBid.putValue(lIssueInteger.getNumber(),
+						pValue2);
 				double utility2 = getUtility(standardBid);
 				getBids.put(standardBid, utility2);
 				break;
-			default: throw new Exception("issue type "+lIssue.getType()+" not supported by AgentMR");
+			default:
+				throw new Exception("issue type " + lIssue.getType()
+						+ " not supported by AgentMR");
 			}
 		}
 
 		return getBids;
 	}
-	
+
 	/**
 	 * BidTable
 	 *
@@ -421,17 +471,19 @@ public class AC_AgentMR extends AcceptanceStrategy{
 			((AgentMRSAS) helper).getBidRunk().add(bid); // Add bidRunk
 		}
 
-		if(!EQUIVALENCE_TEST){
-		// Bidã‚½ãƒ¼ãƒˆå‡¦ç�†
-			Collections.sort(((AgentMRSAS) helper).getBidRunk(), new Comparator<Bid>() {
-				@Override
-				public int compare(Bid o1, Bid o2) {
-					return (int) Math.ceil(-(bidTables.get(o1) - bidTables.get(o2)));
-				}
-			});
+		if (!EQUIVALENCE_TEST) {
+			// Bidã‚½ãƒ¼ãƒˆå‡¦ç�†
+			Collections.sort(((AgentMRSAS) helper).getBidRunk(),
+					new Comparator<Bid>() {
+						@Override
+						public int compare(Bid o1, Bid o2) {
+							return (int) Math.ceil(-(bidTables.get(o1) - bidTables
+									.get(o2)));
+						}
+					});
 		}
 	}
-	
+
 	private Bid getMaxBidUtility(HashMap<Bid, Double> bidTable) {
 		Double maxBidUtility = 0.0;
 		Bid maxBid = null;
@@ -443,7 +495,7 @@ public class AC_AgentMR extends AcceptanceStrategy{
 		}
 		return maxBid;
 	}
-	
+
 	private Bid clone(Bid source) throws Exception {
 		HashMap<Integer, Value> hash = new HashMap<Integer, Value>();
 		for (Issue i : utilitySpace.getDomain().getIssues()) {

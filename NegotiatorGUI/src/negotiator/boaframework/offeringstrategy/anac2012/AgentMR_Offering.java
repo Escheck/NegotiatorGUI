@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.OutcomeSpace;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
@@ -28,12 +28,13 @@ import negotiator.utility.UtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of AgentMR
+ * 
  * @author Alex Dirkzwager
  */
-public class AgentMR_Offering extends OfferingStrategy{
+public class AgentMR_Offering extends OfferingStrategy {
 
 	private boolean EQUIVALENCE_TEST = false;
-	private Random random100;	
+	private Random random100;
 	private ArrayList<Double> observationUtility = new ArrayList<Double>();
 	private HashMap<Bid, Double> bidTables = new HashMap<Bid, Double>();
 	private static boolean firstOffer;
@@ -47,9 +48,11 @@ public class AgentMR_Offering extends OfferingStrategy{
 	private boolean alreadyDone = false;
 	private SortedOutcomeSpace outcomeSpace;
 
-	public AgentMR_Offering() { }
+	public AgentMR_Offering() {
+	}
 
-	public AgentMR_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
+	public AgentMR_Offering(NegotiationSession negoSession,
+			OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
 	}
 
@@ -57,7 +60,9 @@ public class AgentMR_Offering extends OfferingStrategy{
 	 * Init required for the Decoupled Framework.
 	 */
 	@Override
-	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OpponentModel model,
+			OMStrategy oms, HashMap<String, Double> parameters)
+			throws Exception {
 		super.init(negoSession, model, omStrategy, parameters);
 		if (model instanceof DefaultModel) {
 			model = new NoModel();
@@ -67,7 +72,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 		}
 		this.opponentModel = model;
 		this.omStrategy = oms;
-		
+
 		helper = new AgentMRSAS(negotiationSession);
 		firstOffer = true;
 		try {
@@ -78,14 +83,14 @@ public class AgentMR_Offering extends OfferingStrategy{
 			Bid b = negoSession.getMaxBidinDomain().getBid();
 			bidTables.put(b, getUtility(b));
 			((AgentMRSAS) helper).getBidRunk().add(b);
-			if (discountFactor) { 
+			if (discountFactor) {
 				((AgentMRSAS) helper).setSigmoidGain(-3.0);
 				((AgentMRSAS) helper).setPercent(0.55);
-			} else { 
+			} else {
 				((AgentMRSAS) helper).setSigmoidGain(-5.0);
 				((AgentMRSAS) helper).setPercent(0.70);
 			}
-			if(EQUIVALENCE_TEST){
+			if (EQUIVALENCE_TEST) {
 				random100 = new Random(100);
 			} else {
 				random100 = new Random();
@@ -104,8 +109,8 @@ public class AgentMR_Offering extends OfferingStrategy{
 
 	@Override
 	public BidDetails determineNextBid() {
-		if(negotiationSession.getOpponentBidHistory().getHistory().isEmpty()){
-			if(!alreadyDone){
+		if (negotiationSession.getOpponentBidHistory().getHistory().isEmpty()) {
+			if (!alreadyDone) {
 				((AgentMRSAS) helper).updateMinimumBidUtility(0);
 				alreadyDone = true;
 			}
@@ -115,27 +120,30 @@ public class AgentMR_Offering extends OfferingStrategy{
 		}
 		try {
 			BidDetails partnerBid;
-			if(firstOffer){
-				partnerBid = negotiationSession.getOpponentBidHistory().getHistory().get(0);
+			if (firstOffer) {
+				partnerBid = negotiationSession.getOpponentBidHistory()
+						.getHistory().get(0);
 			} else {
-				partnerBid = negotiationSession.getOpponentBidHistory().getLastBidDetails();
+				partnerBid = negotiationSession.getOpponentBidHistory()
+						.getLastBidDetails();
 			}
 			// get current time
 			double time = negotiationSession.getTime();
-			double offeredutil; 
+			double offeredutil;
 			if (discountFactor) {
 				offeredutil = getUtility(partnerBid.getBid())
-						* (1 / Math.pow(negotiationSession.getUtilitySpace().getDiscountFactor(),
-								time));
+						* (1 / Math.pow(negotiationSession.getUtilitySpace()
+								.getDiscountFactor(), time));
 
 			} else {
 				offeredutil = getUtility(partnerBid.getBid());
 
 			}
-			//System.out.println(firstOffer);
+			// System.out.println(firstOffer);
 			if (firstOffer) {
-				//System.out.println("Decoupled partnerBid: " + partnerBid.getBid());
-				//System.out.println("Decoupled offeredutil: " + offeredutil);
+				// System.out.println("Decoupled partnerBid: " +
+				// partnerBid.getBid());
+				// System.out.println("Decoupled offeredutil: " + offeredutil);
 
 				offereMaxBid = partnerBid;
 				offereMaxUtility = offeredutil;
@@ -149,7 +157,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 				}
 				firstOffer = !firstOffer;
 			}
-			((AgentMRSAS) helper).updateMinimumBidUtility(time); 
+			((AgentMRSAS) helper).updateMinimumBidUtility(time);
 
 			if (offeredutil > offereMaxUtility) {
 				offereMaxBid = partnerBid;
@@ -167,22 +175,21 @@ public class AgentMR_Offering extends OfferingStrategy{
 				forecastTime = !forecastTime;
 			}
 
-
-
 			if (offereMaxUtility > ((AgentMRSAS) helper).getMinimumBidUtility()) {
 				nextBid = offereMaxBid;
-			}
-			else if (time > 0.985) {
+			} else if (time > 0.985) {
 				if (offereMaxUtility > ((AgentMRSAS) helper).getReservation()) {
-					nextBid =offereMaxBid;
-				} else { 
-					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(((AgentMRSAS) helper).getBidRunk().size() - lastBidNumber);
-					nextBid = new BidDetails(nBid, negotiationSession.getUtilitySpace().getUtility(nBid));
+					nextBid = offereMaxBid;
+				} else {
+					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(
+							((AgentMRSAS) helper).getBidRunk().size()
+									- lastBidNumber);
+					nextBid = new BidDetails(nBid, negotiationSession
+							.getUtilitySpace().getUtility(nBid));
 					lastBidNumber++;
 				}
-			}
-			else {
-				if(offeredutil > ((AgentMRSAS) helper).getMinimumOffereDutil()) {
+			} else {
+				if (offeredutil > ((AgentMRSAS) helper).getMinimumOffereDutil()) {
 					HashMap<Bid, Double> getBids = getBidTable(1);
 					if (getBids.size() >= 1) {
 						// BidTable
@@ -195,13 +202,17 @@ public class AgentMR_Offering extends OfferingStrategy{
 						if (getBids.size() >= 1) {
 							sortBid(getBids); // Sort BidTable
 							Bid maxBid = getMaxBidUtility(getBids);
-							currentBidNumber = ((AgentMRSAS) helper).getBidRunk().indexOf(maxBid);
+							currentBidNumber = ((AgentMRSAS) helper)
+									.getBidRunk().indexOf(maxBid);
 						}
 					}
-					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(currentBidNumber);
-					nextBid = new BidDetails(nBid, negotiationSession.getUtilitySpace().getUtility(nBid));
+					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(
+							currentBidNumber);
+					nextBid = new BidDetails(nBid, negotiationSession
+							.getUtilitySpace().getUtility(nBid));
 
-					if (currentBidNumber + 1 < ((AgentMRSAS) helper).getBidRunk().size()) {
+					if (currentBidNumber + 1 < ((AgentMRSAS) helper)
+							.getBidRunk().size()) {
 						currentBidNumber++;
 					}
 
@@ -210,27 +221,32 @@ public class AgentMR_Offering extends OfferingStrategy{
 					if (getBids.size() >= 1) {
 						sortBid(getBids); // Sort BidTable
 						Bid maxBid = getMaxBidUtility(getBids);
-						currentBidNumber = ((AgentMRSAS) helper).getBidRunk().indexOf(maxBid);
+						currentBidNumber = ((AgentMRSAS) helper).getBidRunk()
+								.indexOf(maxBid);
 					}
 
-					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(currentBidNumber);
-					nextBid = new BidDetails(nBid, negotiationSession.getUtilitySpace().getUtility(nBid));
+					Bid nBid = ((AgentMRSAS) helper).getBidRunk().get(
+							currentBidNumber);
+					nextBid = new BidDetails(nBid, negotiationSession
+							.getUtilitySpace().getUtility(nBid));
 
-					if (currentBidNumber + 1 < ((AgentMRSAS) helper).getBidRunk().size()) {
+					if (currentBidNumber + 1 < ((AgentMRSAS) helper)
+							.getBidRunk().size()) {
 						currentBidNumber++;
 					} else {
 						currentBidNumber = 0;
 					}
 				}
 
-			}			
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (!(opponentModel instanceof NoModel)) {
 			try {
-				nextBid = omStrategy.getBid(outcomeSpace, utilitySpace.getUtility(nextBid.getBid()));
+				nextBid = omStrategy.getBid(outcomeSpace,
+						utilitySpace.getUtility(nextBid.getBid()));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -241,7 +257,8 @@ public class AgentMR_Offering extends OfferingStrategy{
 
 	private void getReservationFactor() {
 		if (utilitySpace.getReservationValue() != null) {
-			((AgentMRSAS) helper).setReservation(utilitySpace.getReservationValue());
+			((AgentMRSAS) helper).setReservation(utilitySpace
+					.getReservationValue());
 		}
 	}
 
@@ -250,15 +267,20 @@ public class AgentMR_Offering extends OfferingStrategy{
 	}
 
 	private void newupdateSigmoidFunction() {
-		double latestObservation = observationUtility.get(observationUtility.size() - 1);
-		double concessionPercent = Math.abs(latestObservation - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
-		double modPercent = Math.abs(((AgentMRSAS) helper).getMinimumOffereDutil() - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double latestObservation = observationUtility.get(observationUtility
+				.size() - 1);
+		double concessionPercent = Math.abs(latestObservation
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double modPercent = Math.abs(((AgentMRSAS) helper)
+				.getMinimumOffereDutil()
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
 
 		if (modPercent < concessionPercent) {
 			((AgentMRSAS) helper).setPercent(concessionPercent);
 		}
 	}
-
 
 	private Bid getMaxBidUtility(HashMap<Bid, Double> bidTable) {
 		Double maxBidUtility = 0.0;
@@ -271,7 +293,6 @@ public class AgentMR_Offering extends OfferingStrategy{
 		}
 		return maxBid;
 	}
-
 
 	/**
 	 * BidTable
@@ -286,12 +307,14 @@ public class AgentMR_Offering extends OfferingStrategy{
 		}
 
 		if (!EQUIVALENCE_TEST) {
-			Collections.sort(((AgentMRSAS) helper).getBidRunk(), new Comparator<Bid>() {
-				@Override
-				public int compare(Bid o1, Bid o2) {
-					return (int) Math.ceil(-(bidTables.get(o1) - bidTables.get(o2)));
-				}
-			});
+			Collections.sort(((AgentMRSAS) helper).getBidRunk(),
+					new Comparator<Bid>() {
+						@Override
+						public int compare(Bid o1, Bid o2) {
+							return (int) Math.ceil(-(bidTables.get(o1) - bidTables
+									.get(o2)));
+						}
+					});
 		}
 	}
 
@@ -311,7 +334,7 @@ public class AgentMR_Offering extends OfferingStrategy{
 	private HashMap<Bid, Double> getBidTable(int flag) throws Exception {
 		HashMap<Bid, Double> getBids = new HashMap<Bid, Double>();
 
-		//Random randomnr = new Random();
+		// Random randomnr = new Random();
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 		Bid standardBid = null;
 
@@ -321,69 +344,85 @@ public class AgentMR_Offering extends OfferingStrategy{
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
 				for (ValueDiscrete value : lIssueDiscrete.getValues()) {
 					if (flag == 0) {
-						standardBid = utilitySpace.getMaxUtilityBid(); 
+						standardBid = utilitySpace.getMaxUtilityBid();
 					} else if (flag == 1) {
-						standardBid = negotiationSession.getOpponentBidHistory().getLastBid(); 
+						standardBid = negotiationSession
+								.getOpponentBidHistory().getLastBid();
 					} else {
-						standardBid = ((AgentMRSAS) helper).getBidRunk().get(currentBidNumber);
+						standardBid = ((AgentMRSAS) helper).getBidRunk().get(
+								currentBidNumber);
 					}
 					standardBid = clone(standardBid);
-					standardBid.setValue(lIssue.getNumber(), value);
+					standardBid = standardBid.putValue(lIssue.getNumber(),
+							value);
 					double utility = getUtility(standardBid);
 					if ((utility > ((AgentMRSAS) helper).getMinimumBidUtility())
-							&& (!((AgentMRSAS) helper).getBidRunk().contains(standardBid))) {
+							&& (!((AgentMRSAS) helper).getBidRunk().contains(
+									standardBid))) {
 						getBids.put(standardBid, utility);
 					}
 				}
 				break;
 			case REAL:
-				IssueReal lIssueReal = (IssueReal)lIssue;
-				int optionInd = random100.nextInt(lIssueReal.getNumberOfDiscretizationSteps()-1);
-				Value pValue = new ValueReal(lIssueReal.getLowerBound() + (lIssueReal.getUpperBound()-lIssueReal.getLowerBound())*(double)(optionInd)/(double)(lIssueReal.getNumberOfDiscretizationSteps()));
-				standardBid.setValue(lIssueReal.getNumber(), pValue);
+				IssueReal lIssueReal = (IssueReal) lIssue;
+				int optionInd = random100.nextInt(lIssueReal
+						.getNumberOfDiscretizationSteps() - 1);
+				Value pValue = new ValueReal(
+						lIssueReal.getLowerBound()
+								+ (lIssueReal.getUpperBound() - lIssueReal
+										.getLowerBound())
+								* (double) (optionInd)
+								/ (double) (lIssueReal
+										.getNumberOfDiscretizationSteps()));
+				standardBid = standardBid.putValue(lIssueReal.getNumber(),
+						pValue);
 				double utility = getUtility(standardBid);
 				getBids.put(standardBid, utility);
 				break;
 			case INTEGER:
-				IssueInteger lIssueInteger = (IssueInteger)lIssue;
-				int optionIndex2 = lIssueInteger.getLowerBound() + random100.nextInt(lIssueInteger.getUpperBound()-lIssueInteger.getLowerBound());
+				IssueInteger lIssueInteger = (IssueInteger) lIssue;
+				int optionIndex2 = lIssueInteger.getLowerBound()
+						+ random100.nextInt(lIssueInteger.getUpperBound()
+								- lIssueInteger.getLowerBound());
 				Value pValue2 = new ValueInteger(optionIndex2);
-				standardBid.setValue(lIssueInteger.getNumber(), pValue2);
+				standardBid = standardBid.putValue(lIssueInteger.getNumber(),
+						pValue2);
 				double utility2 = getUtility(standardBid);
 				getBids.put(standardBid, utility2);
 				break;
-			default: throw new Exception("issue type "+lIssue.getType()+" not supported by AgentMR");
+			default:
+				throw new Exception("issue type " + lIssue.getType()
+						+ " not supported by AgentMR");
 			}
 		}
 
 		return getBids;
 	}
 
-	public double getUtility(Bid bid)
-	{
-		return negotiationSession.getUtilitySpace().getUtilityWithDiscount(bid, negotiationSession.getTimeline());
+	public double getUtility(Bid bid) {
+		return negotiationSession.getUtilitySpace().getUtilityWithDiscount(bid,
+				negotiationSession.getTimeline());
 	}
-
 
 	private void updateSigmoidFunction() {
 		int observationSize = observationUtility.size();
 		double latestObservation = observationUtility.get(observationSize - 1);
-		double concessionPercent = Math.abs(latestObservation - ((AgentMRSAS) helper).getFirstOffereUtility()) / (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
+		double concessionPercent = Math.abs(latestObservation
+				- ((AgentMRSAS) helper).getFirstOffereUtility())
+				/ (1.0 - ((AgentMRSAS) helper).getFirstOffereUtility());
 
 		if (discountFactor) {
-			if ((concessionPercent < 0.20) ||
-					(observationSize < 3)) {
+			if ((concessionPercent < 0.20) || (observationSize < 3)) {
 				((AgentMRSAS) helper).setPercent(0.35);
 				((AgentMRSAS) helper).setSigmoidGain(-2);
 			} else {
 				((AgentMRSAS) helper).setPercent(0.45);
 			}
 		} else {
-			if ((concessionPercent < 0.20) ||
-					(observationSize < 3)) {
+			if ((concessionPercent < 0.20) || (observationSize < 3)) {
 				((AgentMRSAS) helper).setPercent(0.50);
 				((AgentMRSAS) helper).setSigmoidGain(-4);
-			} else if (concessionPercent > 0.60) { 
+			} else if (concessionPercent > 0.60) {
 				((AgentMRSAS) helper).setPercent(0.80);
 				((AgentMRSAS) helper).setSigmoidGain(-6);
 			} else {
