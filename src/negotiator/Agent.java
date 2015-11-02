@@ -64,7 +64,8 @@ public abstract class Agent {
 	/** Reference to protocol which is set when experimental setup is enabled. */
 	public BilateralAtomicNegotiationSession fNegotiation;// can be accessed
 															// only in the
-															// experimental setup
+															// experimental
+															// setup
 	/** Parameters given to the agent which may be specified in the agent. */
 	@Deprecated
 	protected HashMap<AgentParameterVariable, AgentParamValue> parametervalues;
@@ -73,12 +74,13 @@ public abstract class Agent {
 	 * repository.
 	 */
 	protected StrategyParameters strategyParameters;
-	/**
-	 * A static instance (shared by all UtilitySpace instances) which handles
-	 * saving and loading data for the agents. We set "DataObjects" to be the
-	 * source folder that saves the data.
-	 */
-	private static DataObjects dataObjects = new DataObjects("DataObjects");
+
+	// /**
+	// * A static instance (shared by all UtilitySpace instances) which handles
+	// * saving and loading data for the agents. We set "DataObjects" to be the
+	// * source folder that saves the data.
+	// */
+	// private static DataObjects dataObjects = new DataObjects("DataObjects");
 
 	/**
 	 * Empty constructor used to initialize the agent. Later on internalInit is
@@ -86,8 +88,8 @@ public abstract class Agent {
 	 */
 	public Agent() {
 		this.strategyParameters = new StrategyParameters();
-	}	
-	
+	}
+
 	/**
 	 * @return version of the agent.
 	 */
@@ -317,8 +319,8 @@ public abstract class Agent {
 		String agentClassName = getUniqueIdentifier();
 		try { // utility may be null
 			String prefProfName = utilitySpace.getFileName();
-			return dataObjects.saveData(dataToSave, agentClassName,
-					prefProfName);
+			return DataObjects.getInstance().saveData(dataToSave,
+					agentClassName, prefProfName);
 		} catch (Exception e) {
 			new Warning("Exception during saving data for agent "
 					+ agentClassName + " : " + e.getMessage());
@@ -349,7 +351,8 @@ public abstract class Agent {
 		String agentClassName = getUniqueIdentifier();
 		try { // utility may be null
 			String prefProfName = utilitySpace.getFileName();
-			return dataObjects.loadData(agentClassName, prefProfName);
+			return DataObjects.getInstance().loadData(agentClassName,
+					prefProfName);
 		} catch (Exception e) {
 			new Warning("Exception during loading data for agent "
 					+ agentClassName + " : " + e.getMessage());
@@ -369,7 +372,7 @@ public abstract class Agent {
 	 */
 	public static boolean restartDataObjectsFolder(Object sender) {
 		if (sender instanceof TournamentRunner) {
-			return dataObjects.restartFolder();
+			return DataObjects.getInstance().restartFolder();
 		}
 		return false;
 	}
