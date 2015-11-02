@@ -1,6 +1,9 @@
 package agents;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import negotiator.Agent;
@@ -12,6 +15,7 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
+import negotiator.issue.Value;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
@@ -472,13 +476,61 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		BidPoint bestBid = null;
 		double bestsimilarity = -1; // lower than worst similarity
 		for (BidPoint bidpoint : bids) {
-			double similarity = bidpoint.getBid().getSimilarity(targetbid);
+			double similarity = getSimilarity(bidpoint.getBid(), targetbid);
 			if (similarity > bestsimilarity) {
 				bestBid = bidpoint;
 				bestsimilarity = similarity;
 			}
 		}
 		return bestBid;
+	}
+
+	/**
+	 * Calculates similarity with another bid. Similarity is measured by
+	 * counting the amount of values that are equal across both bids and then
+	 * dividing that by the total amount of values in both bids. A similarity of
+	 * 1.0 indicates that the bids are one and the same, and a similarity of 0.0
+	 * indicates that they are completely different.
+	 * 
+	 * @param my
+	 *            my {@link Bid}
+	 * @param other
+	 *            The other {@link Bid} to compare with.
+	 * @return value between 0 and 1. 1 means totally the same bid, 0 totally
+	 *         different.
+	 */
+	public double getSimilarity(Bid my, Bid other) {
+		double sum = 0.0;
+		double total = 0.0;
+		HashMap<Integer, Value> fValues = my.getValues();
+		HashMap<Integer, Value> otherfValues = other.getValues();
+		Set<Entry<Integer, Value>> value_set_this = fValues.entrySet();
+		Iterator<Entry<Integer, Value>> value_it_this = value_set_this
+				.iterator();
+		Set<Entry<Integer, Value>> value_set_other = otherfValues.entrySet();
+		Iterator<Entry<Integer, Value>> value_it_other = value_set_other
+				.iterator();
+		while (value_it_this.hasNext()) {
+			int ind = ((Entry<Integer, Value>) value_it_this.next()).getKey();
+			((Entry<Integer, Value>) value_it_other.next()).getKey();
+			// Objective isn't recognized here, GKW. hdv
+			Object tmpobj = utilitySpace.getDomain().getObjective(ind);
+			if (tmpobj != null) {
+				if (fValues.get(ind).equals(otherfValues.get(ind))) {
+					sum += 1.0;
+				}
+				total += 1.0;
+			} else {
+				System.out.println("objective with index " + ind
+						+ " does not exist");
+			}
+
+		}
+		if (total == 0.0) {
+			return 0.0;
+		}
+		return sum / total;
+
 	}
 
 	/**
