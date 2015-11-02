@@ -132,8 +132,8 @@ public final class Bid implements XMLable, Serializable {
 			// FIXME
 			// if (fDomain.getIssue(issueId).getType() != pValue.getType()) {
 			throw new IllegalArgumentException("expected value of type "
-					+ fDomain.getIssue(issueId).getType() + "but got " + pValue
-					+ " of type " + pValue.getType());
+					+ fDomain.getIssue(issueId).getType() + " but got "
+					+ pValue + " of type " + pValue.getType());
 		}
 		HashMap<Integer, Value> newValues = new HashMap<Integer, Value>(fValues);
 		newValues.put(issueId, pValue);
