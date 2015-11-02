@@ -1,6 +1,8 @@
 package negotiator;
 
+import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.Offer;
 import negotiator.session.Timeline;
 import negotiator.utility.UtilitySpace;
 
@@ -52,7 +54,9 @@ public interface PocketNegotiatorAgent {
 	/**
 	 * ask the agent for its next action.
 	 * 
-	 * @return next Action
+	 * @return next Action. Only {@link Accept} and {@link Offer} are allowed to
+	 *         be used but this is not enforced. Using other actions can crash
+	 *         PocketNegotiator.
 	 */
 	public Action getAction();
 
@@ -64,8 +68,8 @@ public interface PocketNegotiatorAgent {
 	 * <br>
 	 * 
 	 * This one call allows to change both profiles. This is to avoid expensive
-	 * useless computations if both spaces need receiveMessage. If only one needs to be
-	 * updated , you can pass null for the other.
+	 * useless computations if both spaces need receiveMessage. If only one
+	 * needs to be updated , you can pass null for the other.
 	 * 
 	 * @param myUtilities
 	 *            the new {@link UtilitySpace} for the bot to use as his own
