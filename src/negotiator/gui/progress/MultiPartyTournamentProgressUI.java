@@ -68,7 +68,7 @@ public class MultiPartyTournamentProgressUI extends Panel implements
  */
 @SuppressWarnings("serial")
 class Progress extends JPanel {
-	private final int SCALE = 1000;
+	private final int SCALE = 1000000;
 	private JProgressBar progressbar = new JProgressBar(0, SCALE);
 	private JLabel label = new JLabel("starting tournament");
 
