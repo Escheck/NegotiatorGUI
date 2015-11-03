@@ -3,6 +3,7 @@ package negotiator.tournament;
 import static negotiator.utility.UTILITYSPACETYPE.getUtilitySpaceType;
 
 import java.lang.reflect.Constructor;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -364,17 +365,37 @@ public class TournamentGenerator {
 		int nProfiles = config.getPartyProfileItems().size();
 		int perSession = config.getNumAgentsPerSession();
 
-		int profileCombos = factorial(nProfiles)
-				/ (factorial(perSession) * factorial(nProfiles - perSession));
-		int agentCombos = config.getRepetitionAllowed() ? (int) Math.pow(
-				nAgents, perSession) : factorial(nAgents)
-				/ factorial(nAgents - perSession);
+		BigInteger profileCombos = factorial(nProfiles).divide(
+				factorial(perSession).multiply(
+						factorial(nProfiles - perSession)));
+		BigInteger agentCombosBig = config.getRepetitionAllowed() ? BigInteger
+				.valueOf(nAgents).pow(perSession) : factorial(nAgents).divide(
+				factorial(nAgents - perSession));
+		if (agentCombosBig.bitLength() > 30) {
+			throw new IllegalStateException(
+					"Number of possible agent combinations is too large to handle:"
+							+ agentCombosBig);
+		}
+		if (profileCombos.bitLength() > 30) {
+			throw new IllegalStateException(
+					"Number of possible profile combinations is too large to handle:"
+							+ profileCombos);
 
-		return agentCombos * profileCombos;
+		}
+
+		return agentCombosBig.intValue() * profileCombos.intValue();
 	}
 
-	private int factorial(int n) {
-		return n <= 1 ? 1 : n * factorial(n - 1);
+	/**
+	 * Computes factorial. Also works for big numbers like n>15
+	 * 
+	 * @param n
+	 * @return n!
+	 */
+	private BigInteger factorial(int n) {
+		if (n <= 1)
+			return BigInteger.ONE;
+		return factorial(n - 1).multiply(BigInteger.valueOf(n));
 	}
 
 }
