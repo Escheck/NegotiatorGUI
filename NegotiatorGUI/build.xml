@@ -38,7 +38,7 @@
 	</target>
 
 	<target name="javadoc">
-		<javadoc destdir="javadoc" version="true" use="true" windowtitle="Genius GUI Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" >
+		<javadoc destdir="javadoc" version="true" use="true" windowtitle="Genius GUI Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false">
 			<packageset dir="src" defaultexcludes="yes">
 				<exclude name="agents/**" />
 				<exclude name="flanagan/**" />
@@ -104,6 +104,9 @@
 		<unzip src="${dep}/absolutelayout.jar" dest="${tmp}" />
 	</target>
 
+	<target name="unpackberkeley" depends="makeTempDir">
+		<unzip src="${dep}/berkeleylm.jar" dest="${tmp}" />
+	</target>
 
 	<target name="makeXMLCheckerJar" description="Create a utility space checker app for party domain" depends="cleanup, unpackJTreeTable">
 		<delete file="${dist}/checker.jar" quiet="true" />
@@ -151,7 +154,7 @@
 		<ant target="cleanup" />
 	</target>
 
-	<target name="makeNegoSimulatorWithAllAgentJar" description="Create a jar for the Negotiation Simulator including all agents" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackMySQL, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackFormsRT, unpackCombinatoricsLib, unpackSwingAddons, unpackIAMhaggler">
+	<target name="makeNegoSimulatorWithAllAgentJar" description="Create a jar for the Negotiation Simulator including all agents" depends="cleanup, unpackJTreeTable, unpackAbsoluteLayout, unpackMySQL, unpackJAXB, unpackJFreeChart, unpackJOpt, unpackFormsRT, unpackCombinatoricsLib, unpackSwingAddons, unpackIAMhaggler,unpackberkeley">
 		<delete file="${dist}/negosimulator.jar" quiet="true" />
 		<jar destfile="${dist}/negosimulator.jar">
 			<fileset dir="${build}" includes="negotiator/**, agents/**, misc/**" />
@@ -578,12 +581,12 @@
 			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
-		<zip destfile="${dist}/Genius 5.2.11.zip">
+		<zip destfile="${dist}/Genius 5.2.12.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="Jama/,org/,uk/,com/,org/,edu/" prefix="genius" />
 			<zipfileset dir="${tutorials}" includes="anac2013example/**" prefix="genius" />
 			<zipfileset dir="${tutorials}" includes="examplepackage/**" prefix="genius" />
 			<zipfileset dir="${tutorials}" includes="boaexamplepackage/**" prefix="genius" />
