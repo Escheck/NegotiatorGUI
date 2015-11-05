@@ -29,7 +29,7 @@ import negotiator.gui.dialogs.NewIssueDialog;
 import negotiator.issue.Issue;
 import negotiator.issue.Objective;
 import negotiator.repository.DomainRepItem;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Frame from a domain.
@@ -59,7 +59,7 @@ public class TreeFrame extends JPanel {
 		this(new NegotiatorTreeTableModel(domain), hasNoProfiles);
 	}
 
-	public TreeFrame(Domain domain, UtilitySpace utilitySpace) {
+	public TreeFrame(Domain domain, AdditiveUtilitySpace utilitySpace) {
 		this(new NegotiatorTreeTableModel(domain, utilitySpace), false);
 	}
 
@@ -69,7 +69,7 @@ public class TreeFrame extends JPanel {
 		init(treeModel, null);
 	}
 
-	public void clearTreeTable(Domain domain, UtilitySpace utilitySpace) {
+	public void clearTreeTable(Domain domain, AdditiveUtilitySpace utilitySpace) {
 		init(new NegotiatorTreeTableModel(domain, utilitySpace), this.getSize());
 	}
 

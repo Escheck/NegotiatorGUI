@@ -18,7 +18,7 @@ import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.Objective;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * 
@@ -42,7 +42,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 	private Domain domain;
 	private String[] colNames;
 	private Class[] colTypes;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean containsUtilitySpace;
 	private Map<Objective, JTextField> names;
 	private Map<Objective, JTextField> types;
@@ -79,7 +79,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 		issueValues = new HashMap<Objective, IssueValuePanel>();
 	}
 
-	public NegotiatorTreeTableModel(Domain domain, UtilitySpace utilitySpace) {
+	public NegotiatorTreeTableModel(Domain domain, AdditiveUtilitySpace utilitySpace) {
 		this.domain = domain;
 		this.root = domain.getObjectivesRoot();
 		this.utilitySpace = utilitySpace;
@@ -257,7 +257,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 	 * 
 	 * @return the UtilitySpace.
 	 */
-	public UtilitySpace getUtilitySpace() {
+	public AdditiveUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 
@@ -268,7 +268,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 	 * @param space
 	 *            a UtilitySpace object.
 	 */
-	public void setUtilitySpace(UtilitySpace space) {
+	public void setUtilitySpace(AdditiveUtilitySpace space) {
 		utilitySpace = space;
 
 		if (space != null) {

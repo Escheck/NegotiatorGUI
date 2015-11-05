@@ -23,7 +23,7 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.ai2014.group11.OpponentUtilityModel.InvalidBidException;
 import agents.ai2014.group11.OpponentUtilityModel.InvalidDomainException;
 
@@ -56,7 +56,7 @@ public class Group11 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 

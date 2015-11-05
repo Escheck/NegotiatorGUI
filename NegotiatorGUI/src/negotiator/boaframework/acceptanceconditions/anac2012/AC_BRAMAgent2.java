@@ -10,7 +10,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Acceptance Condition from BRAMAgent2 (ANAC2012).
@@ -27,7 +27,7 @@ public class AC_BRAMAgent2 extends AcceptanceStrategy{
 	private boolean activeHelper = false;
 	private BidDetails bestBid;
 	private Bid worstBid;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	
 	public AC_BRAMAgent2() { }
 	

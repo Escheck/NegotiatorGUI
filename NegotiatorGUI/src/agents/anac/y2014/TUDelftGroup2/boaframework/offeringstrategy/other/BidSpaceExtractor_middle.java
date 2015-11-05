@@ -20,7 +20,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2014.TUDelftGroup2.boaframework.opponentmodel.Group2_OM;
 
 /**
@@ -47,8 +47,8 @@ import agents.anac.y2014.TUDelftGroup2.boaframework.opponentmodel.Group2_OM;
  * 
  */
 public class BidSpaceExtractor_middle extends OfferingStrategy {
-	/** {@link UtilitySpace} */
-	UtilitySpace utilitySpace;
+	/** {@link AdditiveUtilitySpace} */
+	AdditiveUtilitySpace utilitySpace;
 
 	// Used for MatLab link
 	private int switchover_toMiddle;

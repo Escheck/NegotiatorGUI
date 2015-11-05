@@ -17,7 +17,7 @@ import negotiator.actions.Reject;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Boulware/Conceder tactics, by Tim Baarslag, adapted from [1]. Adapted by Mark
@@ -36,7 +36,7 @@ public abstract class AbstractTimeDependentNegotiationParty extends
 	Bid lastBid = null;
 
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline deadline,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilSpace, deadlines, timeline, randomSeed, id);
 		outcomeSpace = new SortedOutcomeSpace(utilitySpace);

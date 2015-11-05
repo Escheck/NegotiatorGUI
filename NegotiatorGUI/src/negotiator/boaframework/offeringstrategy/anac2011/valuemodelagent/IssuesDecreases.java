@@ -11,7 +11,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 //a class that translate the issue values of all issue types
 //into our standart ValueDecrease.
@@ -23,7 +23,7 @@ public class IssuesDecreases{
 	//for use in real
 	private boolean goingDown;
 	
-	IssuesDecreases(UtilitySpace space){
+	IssuesDecreases(AdditiveUtilitySpace space){
 		values = new HashMap<String,ValueDecrease>();
 	}
 	//at start assumes that all issues have the same value.

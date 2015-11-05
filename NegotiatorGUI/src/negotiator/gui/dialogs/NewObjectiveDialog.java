@@ -6,7 +6,7 @@ import javax.swing.*;
 import negotiator.gui.tree.*;
 import negotiator.issue.*;
 import negotiator.gui.tree.NegotiatorTreeTableModel;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.*;
 /**
  * Maakt een Dialog om een nieuwe Objective toe te voegen
@@ -155,7 +155,7 @@ public class NewObjectiveDialog extends JDialog implements ActionListener {
 		//objective.setDescription(description);
 		selected.addChild(objective);
 		//Wouter: following code is new.
-		UtilitySpace utilspace=treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		AdditiveUtilitySpace utilspace=treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 		if (utilspace!=null)
 		{
 			EvaluatorObjective ev=new EvaluatorObjective();

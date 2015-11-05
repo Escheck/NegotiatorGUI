@@ -6,7 +6,7 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *  Class that is used to save opponents bid and learn opponent utility
@@ -17,7 +17,7 @@ public class OpponentBids {
 	private ArrayList<Bid> oppBids = new ArrayList<Bid>();
 	private HashMap<Issue,BidStatistic> statistic = new HashMap<Issue,BidStatistic>(); 
 	private Bid maxUtilityBidForMe =null;
-	private UtilitySpace  utilitySpace;
+	private AdditiveUtilitySpace  utilitySpace;
 	
 	/**
 	 * add opponent bid and updates statistics
@@ -54,7 +54,7 @@ public class OpponentBids {
 		return oppBids;
 	}
 
-	public OpponentBids(UtilitySpace utilitySpace) {
+	public OpponentBids(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
 		for (Issue issue : issues) {

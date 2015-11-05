@@ -26,7 +26,7 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * IAMhagglerModel by Colin Williams, adapted for the BOA framework.
@@ -48,7 +48,7 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 	private double SIGMA = 0.25;
 	private final int totalTriangularFunctions = 4;
 	private Domain domain;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean useAll = false;
 	private int startingBidIssue = 0;
 	
@@ -667,7 +667,7 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, domain);
 	}
 
@@ -687,7 +687,7 @@ public class PerfectIAMhagglerBayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		this.opponentUtilitySpace = opponentUtilitySpace;
 	}
 }

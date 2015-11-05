@@ -5,7 +5,7 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 //ver. 1.06
 public class TimeBidHistory {	
@@ -16,7 +16,7 @@ public class TimeBidHistory {
 	public int curIndex = 0; //new, refer to the current position of opp bid history 
 	public int curLength = 0; //new, the size of current bid window
 	private double discount = 0;
-	protected UtilitySpace fUtilitySpace;
+	protected AdditiveUtilitySpace fUtilitySpace;
 	public double est_t =0;
 	public double est_u =0;	
 	public double maxU = -1;
@@ -25,7 +25,7 @@ public class TimeBidHistory {
 	public double [] maxBlock; // record max
 	public List<Integer> newMC;  // times where new maximum concession is given
 	
-	public TimeBidHistory(UtilitySpace pUtilitySpace, double dis) {
+	public TimeBidHistory(AdditiveUtilitySpace pUtilitySpace, double dis) {
 		discount = dis;
 		fMyBids = new ArrayList<Bid>();	
 		fTimes = new ArrayList<Double>();  //new	

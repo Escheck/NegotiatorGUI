@@ -11,7 +11,7 @@ import negotiator.issue.Objective;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 public class BidGenerator {
@@ -212,7 +212,7 @@ public class BidGenerator {
 	public ValueDiscrete getValueBidOneOut(HashMap<Integer, Value> condition, int issueNr) {
 		ValueDiscrete bestValue = null;
 		double maxUtility = 0.0;
-		UtilitySpace us = agent.getUtilitySpace();
+		AdditiveUtilitySpace us = agent.getUtilitySpace();
 		ValueDiscrete previousValue = null;
 
 		try {

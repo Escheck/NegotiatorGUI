@@ -14,7 +14,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.Domain;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 //import negotiator.parties.AbstractNegotiationParty;
 /**
  * Operations related with the opponent's bid history.
@@ -37,7 +37,7 @@ public class OpponentBidHistory {
 	private ArrayList<Object> acceHistoryParty;
 	private ArrayList<Bid> oppAcce;
 	private int partyNum = -1;
-	protected UtilitySpace fUtilitySpace;
+	protected AdditiveUtilitySpace fUtilitySpace;
 	
 	public OpponentBidHistory() {
 		this.bidHistory = new ArrayList<Bid>();
@@ -46,7 +46,7 @@ public class OpponentBidHistory {
 		opponentBidsStatisticsForInteger = new ArrayList<ArrayList<Integer>>();
 	}
 	
-	public void initiPartyRec(int num, UtilitySpace pUtilitySpace){
+	public void initiPartyRec(int num, AdditiveUtilitySpace pUtilitySpace){
 		this.partyOrder = new ArrayList<Object>();
 		this.oppMax = new ArrayList<Bid>(); // the best opponent offer from each party
 		this.acceHistoryParty = new ArrayList<Object>();
@@ -110,7 +110,7 @@ public class OpponentBidHistory {
 		return acceHistory.get(acceHistory.size()-1);
 	}
 	
-	public void addBid(Bid bid, UtilitySpace utilitySpace) {
+	public void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
 		if (bidHistory.indexOf(bid) == -1) {
 			bidHistory.add(bid);
 		}
@@ -181,7 +181,7 @@ public class OpponentBidHistory {
 	 * This function updates the opponent's Model by calling the
 	 * updateStatistics method
 	 */
-	public void updateOpponentModel(Bid bidToUpdate, Object sender, Domain domain, UtilitySpace utilitySpace) {
+	public void updateOpponentModel(Bid bidToUpdate, Object sender, Domain domain, AdditiveUtilitySpace utilitySpace) {
 		this.addBid(bidToUpdate, utilitySpace);
 		//partyHistory.add(sender);
 		
@@ -395,7 +395,7 @@ public class OpponentBidHistory {
 	 * return the best bid from the opponent's bidding history
 	 */
 
-	public Bid chooseBestFromHistory(UtilitySpace utilitySpace) {
+	public Bid chooseBestFromHistory(AdditiveUtilitySpace utilitySpace) {
 		double max = -1;
 		Bid maxBid = null;
 		try {
@@ -412,7 +412,7 @@ public class OpponentBidHistory {
 	}
 
 	//one way to predict the concession degree of the opponent
-	public double concedeDegree(UtilitySpace utilitySpace) {
+	public double concedeDegree(AdditiveUtilitySpace utilitySpace) {
 		int numOfBids = bidHistory.size();
 		HashMap<Bid, Integer> bidCounter = new HashMap<Bid, Integer>();
 		try {

@@ -10,7 +10,7 @@ import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Stores the configuration variables for the
@@ -66,14 +66,14 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		Class party = loader.loadClass(partyRepItem.getClassPath());
 
-		Class[] paramTypes = { UtilitySpace.class };
+		Class[] paramTypes = { AdditiveUtilitySpace.class };
 
 		@SuppressWarnings("unchecked")
 		Constructor partyConstructor = party.getConstructor(paramTypes);
 
 		// System.out.println("Found the constructor: " + cons);
 
-		UtilitySpace utilSpace = createFrom(profileRepItem);
+		AdditiveUtilitySpace utilSpace = createFrom(profileRepItem);
 		return (NegotiationParty) partyConstructor.newInstance(utilSpace);
 	}
 
@@ -100,14 +100,14 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		Class party = loader.loadClass(partyRepItem.getClassPath());
 
-		Class[] paramTypes = { UtilitySpace.class };
+		Class[] paramTypes = { AdditiveUtilitySpace.class };
 
 		@SuppressWarnings("unchecked")
 		Constructor partyConstructor = party.getConstructor(paramTypes);
 
 		// System.out.println("Found the constructor: " + cons);
 
-		UtilitySpace utilSpace = new UtilitySpace(domain);
+		AdditiveUtilitySpace utilSpace = new AdditiveUtilitySpace(domain);
 		return (NegotiationParty) partyConstructor.newInstance(utilSpace);
 	}
 
@@ -153,7 +153,7 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static UtilitySpace createFrom(ProfileRepItem item) throws Exception {
+	public static AdditiveUtilitySpace createFrom(ProfileRepItem item) throws Exception {
 		Domain domain = Repository.get_domain_repos().getDomain(
 				item.getDomain());
 		return Repository.get_domain_repos().getUtilitySpace(domain, item);

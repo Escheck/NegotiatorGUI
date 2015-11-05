@@ -13,11 +13,11 @@ import negotiator.issue.IssueReal;
 import negotiator.utility.EVALFUNCTYPE;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class FSEGAOpponentModel extends OpponentModel
 {
-	private UtilitySpace uUS;
+	private AdditiveUtilitySpace uUS;
 	private ArrayList<UtilitySpaceHypothesis> uUSHypothesis;
 	private double previousBidUtility;
 	private double SIGMA = 0.25;
@@ -27,7 +27,7 @@ public class FSEGAOpponentModel extends OpponentModel
 	private boolean	bUseMostProb = true;
 	private ArrayList<UtilitySpaceHypothesis> mostProbHyps;
 	
-	public FSEGAOpponentModel(UtilitySpace pUS)
+	public FSEGAOpponentModel(AdditiveUtilitySpace pUS)
 	{
 		if(pUS == null)
 			throw new NullPointerException("MyBayesianOpponentModel: utility space = null");

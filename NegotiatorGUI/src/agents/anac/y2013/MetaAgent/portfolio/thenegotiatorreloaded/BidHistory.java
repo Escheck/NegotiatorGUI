@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class contains the bidding history of a negotiation agent.
@@ -26,7 +26,7 @@ public class BidHistory {
 		bidList =  bids;
 	}
 	
-	public BidHistory(UtilitySpace utilSpace) {
+	public BidHistory(AdditiveUtilitySpace utilSpace) {
 		BidIterator bidsIter = new BidIterator(utilSpace.getDomain());
 		bidList = new ArrayList<BidDetails>();
 		while (bidsIter.hasNext()) {

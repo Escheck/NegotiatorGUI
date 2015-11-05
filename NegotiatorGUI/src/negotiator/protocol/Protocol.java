@@ -22,7 +22,7 @@ import negotiator.tournament.Tournament;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -49,7 +49,7 @@ public abstract class Protocol implements Runnable, Serializable {
     
     /** -- **/
     protected Domain domain;
-    private UtilitySpace[] agentUtilitySpaces;
+    private AdditiveUtilitySpace[] agentUtilitySpaces;
     
     ArrayList<NegotiationEventListener> actionEventListener = new ArrayList<NegotiationEventListener>();    
 
@@ -95,7 +95,7 @@ public abstract class Protocol implements Runnable, Serializable {
 		agentNames[1] = "Agent B";
 		
 		//load the utility space		
-		agentUtilitySpaces = new UtilitySpace[profileRepItems.length]; 
+		agentUtilitySpaces = new AdditiveUtilitySpace[profileRepItems.length]; 
 		for(int i=0;i<profileRepItems.length;i++) {
 			ProfileRepItem profile = profileRepItems[i];
 			agentUtilitySpaces[i] =  Repository.get_domain_repos().getUtilitySpace(domain, profile);
@@ -155,7 +155,7 @@ public abstract class Protocol implements Runnable, Serializable {
     	return agentParams[index];
     }
     
-    public  UtilitySpace getAgentUtilitySpaces(int index) {
+    public  AdditiveUtilitySpace getAgentUtilitySpaces(int index) {
     	return agentUtilitySpaces[index];
     }
     public int getNumberOfAgents() {

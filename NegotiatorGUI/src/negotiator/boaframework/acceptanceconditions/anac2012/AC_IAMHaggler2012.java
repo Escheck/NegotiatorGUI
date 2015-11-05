@@ -8,7 +8,7 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Acceptance Condition from IAMhaggler2012 (ANAC2012).
@@ -22,7 +22,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class AC_IAMHaggler2012 extends AcceptanceStrategy{
 
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private double acceptMultiplier = 1.02;
 	private double MAXIMUM_ASPIRATION = 0.9;
 

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import negotiator.Bid;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class Party {
 	String ID;
@@ -26,7 +26,7 @@ public class Party {
 		this.orderedBids=new Vector<BidHolder>();
 	}
 	
-	public double getPredictedUtility(Bid b,UtilitySpace us)
+	public double getPredictedUtility(Bid b,AdditiveUtilitySpace us)
 	{
 		double total = 0;
 		for(int i=0;i<this.counts.length;i++)
@@ -36,7 +36,7 @@ public class Party {
 		return total;
 	}
 	
-	public double getValueForIssue(Bid b, UtilitySpace us,int i)
+	public double getValueForIssue(Bid b, AdditiveUtilitySpace us,int i)
 	{
 		double eval =0;
 		try {
@@ -163,7 +163,7 @@ public class Party {
 		}
 		
 	}	
-	public void orderBids(UtilitySpace us)
+	public void orderBids(AdditiveUtilitySpace us)
 	{
 		for(BidHolder b : orderedBids)
 		{
@@ -172,7 +172,7 @@ public class Party {
 		Collections.sort(orderedBids);
 	}
 
-	public void setOrderedBids(Vector<BidHolder> acceptableBids,UtilitySpace us) {
+	public void setOrderedBids(Vector<BidHolder> acceptableBids,AdditiveUtilitySpace us) {
 		for(BidHolder bh :acceptableBids)
 		{
 			BidHolder bh1 = new BidHolder();

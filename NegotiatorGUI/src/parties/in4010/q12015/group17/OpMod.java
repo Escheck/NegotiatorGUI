@@ -14,16 +14,16 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpMod extends OpponentModel {
 
 	/**
 	 * This is the opponent model class. Class variables.
 	 */
-	HashMap<String, UtilitySpace> opponentSpace;
+	HashMap<String, AdditiveUtilitySpace> opponentSpace;
 	HashMap<String, BidHistory> bidHistories;
-	UtilitySpace startSpace;
+	AdditiveUtilitySpace startSpace;
 	double growRate;
 	Domain domain;
 
@@ -35,23 +35,23 @@ public class OpMod extends OpponentModel {
 	 */
 	public void init(NegotiationSession negotiationSession) {
 		super.init(negotiationSession);
-		opponentSpace = new HashMap<String, UtilitySpace>();
+		opponentSpace = new HashMap<String, AdditiveUtilitySpace>();
 		bidHistories = new HashMap<String, BidHistory>();
 		domain = negotiationSession.getUtilitySpace().getDomain();
 	}
 
 	/**
-	 * Creates a new {@link UtilitySpace} for the current domain, with equal
+	 * Creates a new {@link AdditiveUtilitySpace} for the current domain, with equal
 	 * weights and evaluation values. Does this by cloning a "clean"
-	 * {@link UtilitySpace} of the domain. This clean {@link UtilitySpace} is
+	 * {@link AdditiveUtilitySpace} of the domain. This clean {@link AdditiveUtilitySpace} is
 	 * created the first time this method is called.
 	 * 
-	 * @returns The new {@link UtilitySpace}
+	 * @returns The new {@link AdditiveUtilitySpace}
 	 * @throws Exception
 	 */
-	private UtilitySpace cloneUtil() throws Exception {
+	private AdditiveUtilitySpace cloneUtil() throws Exception {
 		if (startSpace == null) {
-			startSpace = new UtilitySpace(domain);
+			startSpace = new AdditiveUtilitySpace(domain);
 
 			int issueAmount = domain.getObjectives().size();
 			for (int i = 1; i < issueAmount; i++) {
@@ -69,11 +69,11 @@ public class OpMod extends OpponentModel {
 				startSpace.addEvaluator(domain.getObjective(i), eval);
 			}
 		}
-		return new UtilitySpace(startSpace);
+		return new AdditiveUtilitySpace(startSpace);
 	}
 
 	/**
-	 * Updates the opponent {@link UtilitySpace} (predicted utility space).
+	 * Updates the opponent {@link AdditiveUtilitySpace} (predicted utility space).
 	 * 
 	 * @param bid
 	 *            The {@link Bid} offered by the opponent
@@ -85,13 +85,13 @@ public class OpMod extends OpponentModel {
 		// If this is the first time we hear of the opponent, we create a new
 		// opponentSpace and bidHistory.
 		if (!opponentSpace.containsKey(sender)) {
-			UtilitySpace us = cloneUtil();
+			AdditiveUtilitySpace us = cloneUtil();
 			opponentSpace.put(sender, us);
 			bidHistories.put(sender, new BidHistory());
 		}
 
 		// Retrieves the opponents UtilitySpace for updating
-		UtilitySpace opUtil = opponentSpace.get(sender);
+		AdditiveUtilitySpace opUtil = opponentSpace.get(sender);
 		BidHistory opHist = bidHistories.get(sender);
 
 		for (int i = 0; i < bid.getIssues().size(); i++) {
@@ -123,12 +123,12 @@ public class OpMod extends OpponentModel {
 
 	/**
 	 * Normalises the weights of every evaluator within the given
-	 * {@link UtilitySpace}.
+	 * {@link AdditiveUtilitySpace}.
 	 * 
 	 * @param util
-	 *            The provided {@link UtilitySpace}
+	 *            The provided {@link AdditiveUtilitySpace}
 	 */
-	private void normalize(UtilitySpace util) {
+	private void normalize(AdditiveUtilitySpace util) {
 		int size = util.getNrOfEvaluators();
 		double sum = 0;
 
@@ -155,7 +155,7 @@ public class OpMod extends OpponentModel {
 		double util = Math.pow(
 				negotiationSession.getUtilitySpace().getUtility(bid),
 				selfWeight);
-		Iterator<UtilitySpace> opSpaces = opponentSpace.values().iterator();
+		Iterator<AdditiveUtilitySpace> opSpaces = opponentSpace.values().iterator();
 
 		while (opSpaces.hasNext()) {
 			util = util * opSpaces.next().getUtility(bid);
@@ -164,13 +164,13 @@ public class OpMod extends OpponentModel {
 	}
 
 	/**
-	 * Returns the {@link UtilitySpace} belonging to the provided party.
+	 * Returns the {@link AdditiveUtilitySpace} belonging to the provided party.
 	 * 
 	 * @param name
 	 *            which is the name of the provided party
-	 * @return Opponent {@link UtilitySpace}
+	 * @return Opponent {@link AdditiveUtilitySpace}
 	 * */
-	public UtilitySpace getOpSpace(String name) {
+	public AdditiveUtilitySpace getOpSpace(String name) {
 		return opponentSpace.get(name);
 	}
 

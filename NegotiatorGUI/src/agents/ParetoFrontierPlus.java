@@ -4,7 +4,7 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.ParetoFrontier;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Like {@link ParetoFrontier}, but with extra functionality. This version loads
@@ -15,13 +15,13 @@ import negotiator.utility.UtilitySpace;
  * 
  * When a utility space changes, you currently just need to make a new
  * {@link ParetoFrontierPlus} from scratch using the constructor. This is
- * because we can not listen to changes in {@link UtilitySpace}s
+ * because we can not listen to changes in {@link AdditiveUtilitySpace}s
  * 
  * @author W.Pasman 3sep14
  *
  */
 public class ParetoFrontierPlus {
-	UtilitySpace mySpace, otherSpace;
+	AdditiveUtilitySpace mySpace, otherSpace;
 	private ParetoFrontier pareto = null;
 
 	/**
@@ -29,7 +29,7 @@ public class ParetoFrontierPlus {
 	 * 
 	 * @throws Exception
 	 */
-	public ParetoFrontierPlus(UtilitySpace spaceMe, UtilitySpace spaceOther) {
+	public ParetoFrontierPlus(AdditiveUtilitySpace spaceMe, AdditiveUtilitySpace spaceOther) {
 		mySpace = spaceMe;
 		otherSpace = spaceOther;
 		try {

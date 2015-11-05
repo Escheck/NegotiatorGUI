@@ -11,7 +11,7 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.exceptions.AnalysisException;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * A collection of utilityspaces can be viewed as a space in which a bid is
@@ -24,7 +24,7 @@ import negotiator.utility.UtilitySpace;
 public class BidSpace {
 
 	/** Collection of utility spaces constituting the space. */
-	private UtilitySpace[] utilspaces;
+	private AdditiveUtilitySpace[] utilspaces;
 	/** Domain of the utility spaces. */
 	private Domain domain;
 	/** List of all bidpoints in the domain. */
@@ -45,7 +45,7 @@ public class BidSpace {
 	 * @throws Exception
 	 *             is thrown when one of the utility spaces is corrupt.
 	 */
-	public BidSpace(UtilitySpace... utilityspaces) throws Exception {
+	public BidSpace(AdditiveUtilitySpace... utilityspaces) throws Exception {
 		initializeUtilitySpaces(utilityspaces);
 		buildSpace(true);
 	}
@@ -64,9 +64,9 @@ public class BidSpace {
 	 * @throws Exception
 	 *             is thrown when one of the utility spaces is corrupt.
 	 */
-	public BidSpace(UtilitySpace utilityspaceA, UtilitySpace utilityspaceB,
+	public BidSpace(AdditiveUtilitySpace utilityspaceA, AdditiveUtilitySpace utilityspaceB,
 			boolean excludeBids) throws Exception {
-		UtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
+		AdditiveUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		initializeUtilitySpaces(spaces);
 		buildSpace(excludeBids);
 	}
@@ -90,11 +90,11 @@ public class BidSpace {
 	 *             if something goes wrong when calculating the utility of a
 	 *             bid.
 	 */
-	public BidSpace(UtilitySpace utilityspaceA, UtilitySpace utilityspaceB,
+	public BidSpace(AdditiveUtilitySpace utilityspaceA, AdditiveUtilitySpace utilityspaceB,
 			boolean excludeBids, boolean skipCheckSpaceB) throws Exception {
 		if (utilityspaceA == null || utilityspaceB == null)
 			throw new NullPointerException("util space is null");
-		UtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
+		AdditiveUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		utilspaces = spaces.clone();
 		domain = utilspaces[0].getDomain();
 		utilityspaceA.checkReadyForNegotiation(domain);
@@ -111,16 +111,16 @@ public class BidSpace {
 	 * @throws Exception
 	 *             if one of the utility spaces is null.
 	 */
-	private void initializeUtilitySpaces(UtilitySpace[] utilityspaces)
+	private void initializeUtilitySpaces(AdditiveUtilitySpace[] utilityspaces)
 			throws Exception {
 		utilspaces = utilityspaces.clone();
-		for (UtilitySpace utilitySpace : utilityspaces) {
+		for (AdditiveUtilitySpace utilitySpace : utilityspaces) {
 			if (utilitySpace == null)
 				throw new NullPointerException("util space is null: "
 						+ utilityspaces);
 		}
 		domain = utilspaces[0].getDomain();
-		for (UtilitySpace space : utilityspaces) {
+		for (AdditiveUtilitySpace space : utilityspaces) {
 			space.checkReadyForNegotiation(domain);
 		}
 	}
@@ -177,7 +177,7 @@ public class BidSpace {
 	}
 
 	/**
-	 * Create the space with all bid points from all the {@link UtilitySpace}s.
+	 * Create the space with all bid points from all the {@link AdditiveUtilitySpace}s.
 	 * 
 	 * @param excludeBids
 	 *            if true do not store the real bids.

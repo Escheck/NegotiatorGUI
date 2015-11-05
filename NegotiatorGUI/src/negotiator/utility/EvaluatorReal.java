@@ -81,7 +81,7 @@ public class EvaluatorReal implements Evaluator {
 	public boolean weightLocked(){
 		return fweightLock;
 	}	
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
+	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid, int index) {
 		double utility;		
 		double value =-1;
 		try {

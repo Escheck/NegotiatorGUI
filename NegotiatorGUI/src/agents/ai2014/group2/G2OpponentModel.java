@@ -1,14 +1,14 @@
 package agents.ai2014.group2;
 
 //import negotiator.Domain;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 class G2OpponentModel {
 	G2UtilitySpace utilitySpace;
 	private int _nBids = 0;
 	//private Domain _domain;
 	
-	G2OpponentModel(UtilitySpace domain) {
+	G2OpponentModel(AdditiveUtilitySpace domain) {
 		utilitySpace = new G2UtilitySpace(domain);
 		utilitySpace.resetAll();
 		//_domain = domain.getDomain();

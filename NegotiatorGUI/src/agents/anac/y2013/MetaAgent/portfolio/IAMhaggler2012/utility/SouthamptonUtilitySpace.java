@@ -8,7 +8,7 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.issue.Objective;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
@@ -16,9 +16,9 @@ import negotiator.issue.ValueReal;
 
 public class SouthamptonUtilitySpace {
 	
-	UtilitySpace us;
+	AdditiveUtilitySpace us;
 
-	public SouthamptonUtilitySpace(UtilitySpace us) {
+	public SouthamptonUtilitySpace(AdditiveUtilitySpace us) {
 		super();
 		this.us = us;
 	}

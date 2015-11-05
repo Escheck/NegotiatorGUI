@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Keeps track of all bids exchanged by both the agent and its opponent. 
@@ -18,15 +18,15 @@ import negotiator.utility.UtilitySpace;
 public class BidHistory {
 	private List<Entry<Double, Bid>> myBids;
 	private List<Bid> opponentBids;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
 	/**
 	 * BidHistory class constructor. 
 	 * 
-	 * @param utilSpace a {@link UtilitySpace} to be set for utility calculations of stored bids.
+	 * @param utilSpace a {@link AdditiveUtilitySpace} to be set for utility calculations of stored bids.
 	 * @return An object of this type used to keep track of exchanged bids.
 	 */	
-	public BidHistory(UtilitySpace utilSpace) {
+	public BidHistory(AdditiveUtilitySpace utilSpace) {
 		
 		utilitySpace = utilSpace;
 		myBids = new ArrayList<Entry<Double, Bid>>();

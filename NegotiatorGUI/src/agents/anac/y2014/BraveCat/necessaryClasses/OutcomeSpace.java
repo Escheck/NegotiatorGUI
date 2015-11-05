@@ -6,14 +6,14 @@
  import negotiator.Bid;
  import negotiator.BidIterator;
  import negotiator.bidding.BidDetails;
- import negotiator.utility.UtilitySpace;
+ import negotiator.utility.AdditiveUtilitySpace;
  
  public class OutcomeSpace
  {
-   protected UtilitySpace utilitySpace;
+   protected AdditiveUtilitySpace utilitySpace;
    protected List<BidDetails> allBids = new ArrayList();
  
-   public OutcomeSpace(UtilitySpace utilSpace)
+   public OutcomeSpace(AdditiveUtilitySpace utilSpace)
    {
      this.utilitySpace = utilSpace;
      System.out.println("Generating All Bids...");
@@ -21,7 +21,7 @@
      System.out.println("All Bids Generated!");
    }
  
-   public void generateAllBids(UtilitySpace utilSpace)
+   public void generateAllBids(AdditiveUtilitySpace utilSpace)
    {
      BidIterator iter = new BidIterator(utilSpace.getDomain());
      while (iter.hasNext()) {

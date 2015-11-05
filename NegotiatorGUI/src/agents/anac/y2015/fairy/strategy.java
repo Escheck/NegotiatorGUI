@@ -3,10 +3,10 @@ package agents.anac.y2015.fairy;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class strategy {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private negotiatingInfo negotiatingInfo;
 	//inamoto
 	public double minThreshold = 0.8;
@@ -14,7 +14,7 @@ public class strategy {
 	private double df = 0.0; // 髯ｷ謇假ｽｽ�ｲ髯滄��ｩ繧托ｽｽ�ｿ郢ｧ閧ｲ�ｽ
 	private double rv = 0.0; // 鬨ｾ�｡陷ｷ�ｩ�ｽ�ｿ隴乗��ｽ�ｾ�ｽ�｡髫ｴ�ｬ�ｽ�ｼ
 
-	public strategy(UtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
+	public strategy(AdditiveUtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
 		this.utilitySpace = utilitySpace;
 		this.negotiatingInfo = negotiatingInfo;
 		df = utilitySpace.getDiscountFactor();

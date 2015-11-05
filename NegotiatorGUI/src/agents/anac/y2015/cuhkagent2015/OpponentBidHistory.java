@@ -18,7 +18,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -41,7 +41,7 @@ public class OpponentBidHistory {
 		opponentBidsStatisticsForInteger = new ArrayList<ArrayList<Integer>>();
 	}
 
-	protected void addBid(Bid bid, UtilitySpace utilitySpace) {
+	protected void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
 		if (bidHistory.indexOf(bid) == -1) {
 			bidHistory.add(bid);
 		}
@@ -119,7 +119,7 @@ public class OpponentBidHistory {
 	 * updateStatistics method
 	 */
 	protected void updateOpponentModel(Bid bidToUpdate, Domain domain,
-			UtilitySpace utilitySpace) {
+			AdditiveUtilitySpace utilitySpace) {
 		this.addBid(bidToUpdate, utilitySpace);
 
 		if (bidCounter.get(bidToUpdate) == null) {
@@ -497,7 +497,7 @@ public class OpponentBidHistory {
 	 * return the best bid from the opponent's bidding history
 	 */
 
-	protected Bid chooseBestFromHistory(UtilitySpace utilitySpace) {
+	protected Bid chooseBestFromHistory(AdditiveUtilitySpace utilitySpace) {
 		double max = -1;
 		Bid maxBid = null;
 		try {
@@ -514,7 +514,7 @@ public class OpponentBidHistory {
 	}
 
 	// one way to predict the concession degree of the opponent
-	protected double concedeDegree(UtilitySpace utilitySpace) {
+	protected double concedeDegree(AdditiveUtilitySpace utilitySpace) {
 		int numOfBids = bidHistory.size();
 		HashMap<Bid, Integer> bidCounter = new HashMap<Bid, Integer>();
 		try {

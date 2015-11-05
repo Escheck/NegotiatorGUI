@@ -30,7 +30,7 @@ import negotiator.xml.SimpleElement;
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
-public class UtilitySpace implements Serializable {
+public class AdditiveUtilitySpace implements Serializable {
 
 	// Class fields
 	protected Domain domain;
@@ -49,7 +49,7 @@ public class UtilitySpace implements Serializable {
 	/**
 	 * Creates an empty utility space.
 	 */
-	public UtilitySpace() {
+	public AdditiveUtilitySpace() {
 		this(new Domain(), new HashMap<Objective, Evaluator>());
 	}
 
@@ -59,11 +59,11 @@ public class UtilitySpace implements Serializable {
 	 * @param domain
 	 *            for which the utilityspace should be specified.
 	 */
-	public UtilitySpace(Domain domain) {
+	public AdditiveUtilitySpace(Domain domain) {
 		this(domain, new HashMap<Objective, Evaluator>());
 	}
 
-	public UtilitySpace(Domain domain, Map<Objective, Evaluator> fEvaluators) {
+	public AdditiveUtilitySpace(Domain domain, Map<Objective, Evaluator> fEvaluators) {
 		this.domain = domain;
 		this.fEvaluators = fEvaluators;
 	}
@@ -79,7 +79,7 @@ public class UtilitySpace implements Serializable {
 	 *             if error occurs, e.g. if domain does not match the util
 	 *             space, or file not found.
 	 */
-	public UtilitySpace(Domain domain, String fileName) throws Exception {
+	public AdditiveUtilitySpace(Domain domain, String fileName) throws Exception {
 		this.domain = domain;
 		this.fileName = fileName;
 		fEvaluators = new HashMap<Objective, Evaluator>();
@@ -101,7 +101,7 @@ public class UtilitySpace implements Serializable {
 	 * @param us
 	 *            utility space to be cloned.
 	 */
-	public UtilitySpace(UtilitySpace us) {
+	public AdditiveUtilitySpace(AdditiveUtilitySpace us) {
 		domain = us.getDomain();
 		fileName = us.getFileName();
 		fEvaluators = new HashMap<Objective, Evaluator>();
@@ -1191,9 +1191,9 @@ public class UtilitySpace implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof UtilitySpace))
+		if (!(obj instanceof AdditiveUtilitySpace))
 			return false;
-		UtilitySpace obj2 = (UtilitySpace) obj;
+		AdditiveUtilitySpace obj2 = (AdditiveUtilitySpace) obj;
 		// check domains
 		if (!domain.equals(obj2.getDomain()))
 			return false;

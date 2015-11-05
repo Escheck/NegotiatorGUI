@@ -7,7 +7,7 @@ import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Acceptance Condition from OMACagent (ANAC2012).
@@ -22,7 +22,7 @@ import negotiator.utility.UtilitySpace;
 public class AC_OMACagent extends AcceptanceStrategy{
 
 	private double discount = 1.0;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	public double discountThreshold = 0.845D;
 
 	

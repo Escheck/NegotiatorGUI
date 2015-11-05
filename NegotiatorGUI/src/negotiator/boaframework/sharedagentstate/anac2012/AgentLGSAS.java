@@ -22,13 +22,13 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 
 public class AgentLGSAS extends SharedAgentState{
 	
-	private UtilitySpace  utilitySpace;
+	private AdditiveUtilitySpace  utilitySpace;
 	private OpponentBids  opponentBids;
 	private ArrayList<Bid> allBids = null; 
 	private Bid maxLastOpponentBid;

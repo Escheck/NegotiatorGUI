@@ -4,7 +4,7 @@ import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ class G2UtilitySpace {
 	Map<String, G2Issue> utilities;
 	G2Bid _lastBid;
 	
-	Map<String, G2Issue> extractUtilitiesFromUtilitySpace(UtilitySpace utilitySpace) {
+	Map<String, G2Issue> extractUtilitiesFromUtilitySpace(AdditiveUtilitySpace utilitySpace) {
 		HashMap<String, G2Issue> util = new HashMap<String, G2Issue>();
 		
 		Set<Entry<Objective, Evaluator>> evaluatorSet = utilitySpace.getEvaluators();
@@ -72,7 +72,7 @@ class G2UtilitySpace {
 		}
 	}
 	
-	G2UtilitySpace(UtilitySpace utilitySpace)
+	G2UtilitySpace(AdditiveUtilitySpace utilitySpace)
 	{
 		utilities = extractUtilitiesFromUtilitySpace(utilitySpace);
 	}

@@ -8,7 +8,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Adapter for BayesianOpponentModelScalable for the BOA framework.
@@ -87,7 +87,7 @@ public class ScalableBayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
 	}
 	

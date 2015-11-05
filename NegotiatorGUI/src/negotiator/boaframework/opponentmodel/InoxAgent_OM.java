@@ -14,7 +14,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.IssueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * BOA framework implementation of an Adapted Frequency Model.
@@ -81,7 +81,7 @@ public class InoxAgent_OM extends OpponentModel {
 	 * Method to initialize the model.
 	 */
 	private void initializeModel(){
-		opponentUtilitySpace = new UtilitySpace(negotiationSession.getUtilitySpace());
+		opponentUtilitySpace = new AdditiveUtilitySpace(negotiationSession.getUtilitySpace());
 		amountOfIssues = opponentUtilitySpace.getDomain().getIssues().size();
 		double commonWeight = 1D / (double)amountOfIssues;    
 		

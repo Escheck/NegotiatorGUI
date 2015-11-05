@@ -26,7 +26,7 @@ import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.TournamentIndicesGenerator;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class will generate the party lists for each negotiation in a
@@ -118,7 +118,7 @@ public class TournamentGenerator {
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		Class party = loader.loadClass(partyRepItem.getClassPath());
 
-		Class[] paramTypes = { UtilitySpace.class, Deadline.class,
+		Class[] paramTypes = { AdditiveUtilitySpace.class, Deadline.class,
 				Timeline.class, long.class };
 
 		@SuppressWarnings("unchecked")
@@ -126,7 +126,7 @@ public class TournamentGenerator {
 
 		// System.out.println("Found the constructor: " + cons);
 
-		UtilitySpace utilitySpace;
+		AdditiveUtilitySpace utilitySpace;
 		switch (type) {
 		case NONLINEAR:
 			utilitySpace = new NonlinearUtilitySpace(domain);
@@ -135,7 +135,7 @@ public class TournamentGenerator {
 			utilitySpace = new ConstraintUtilitySpace(domain);
 			break;
 		default:
-			utilitySpace = new UtilitySpace(domain);
+			utilitySpace = new AdditiveUtilitySpace(domain);
 		}
 
 		long randomSeed = System.currentTimeMillis();

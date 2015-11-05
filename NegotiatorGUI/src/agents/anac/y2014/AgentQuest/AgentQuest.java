@@ -12,7 +12,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * 
@@ -23,7 +23,7 @@ import negotiator.utility.UtilitySpace;
 public class AgentQuest extends Agent {
 	
 	private Action partnerAction;
-	private UtilitySpace myUtilitySpace;
+	private AdditiveUtilitySpace myUtilitySpace;
 	private Bid myLastBid;
 	private Bid bestBid;
 	private Bid opponentLastBid;

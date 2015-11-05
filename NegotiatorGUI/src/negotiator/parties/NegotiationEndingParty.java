@@ -8,7 +8,7 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Most basic voting agent implementation I could think of: this agent accepts
@@ -35,7 +35,7 @@ public class NegotiationEndingParty extends AbstractNegotiationParty {
 	 *            reproducible)
 	 */
 	@Override
-	public void init(final UtilitySpace utilitySpace, final Deadline deadlines,
+	public void init(final AdditiveUtilitySpace utilitySpace, final Deadline deadlines,
 			final TimeLineInfo timeline, final long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 	}

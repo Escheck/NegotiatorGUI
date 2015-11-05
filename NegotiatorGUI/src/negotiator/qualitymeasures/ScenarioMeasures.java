@@ -20,7 +20,7 @@ import negotiator.Global;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.exceptions.Warning;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 
 /**
@@ -100,9 +100,9 @@ public class ScenarioMeasures {
 		OrderedSimpleElement prefResults = new OrderedSimpleElement("preference_profiles_statistics");
 		for (ScenarioInfo domainSt : domains) {
 			Domain domain = new Domain(dir + domainSt.getDomain());
-			UtilitySpace utilitySpaceA, utilitySpaceB;
-			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
-			utilitySpaceB =  new UtilitySpace(domain, dir + domainSt.getPrefProfB());
+			AdditiveUtilitySpace utilitySpaceA, utilitySpaceB;
+			utilitySpaceA =  new AdditiveUtilitySpace(domain, dir + domainSt.getPrefProfA());
+			utilitySpaceB =  new AdditiveUtilitySpace(domain, dir + domainSt.getPrefProfB());
 			OrderedSimpleElement results = new OrderedSimpleElement("domain_result");
 			results.setAttribute("domain", domainSt.getDomain());
 			results.setAttribute("profileA", domainSt.getPrefProfA());
@@ -166,7 +166,7 @@ public class ScenarioMeasures {
 	 * @param utilitySpaceB
 	 * @return XML representation of the domain characteristics
 	 */
-	public static OrderedSimpleElement calculateDistances(OrderedSimpleElement element, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+	public static OrderedSimpleElement calculateDistances(OrderedSimpleElement element, AdditiveUtilitySpace utilitySpaceA, AdditiveUtilitySpace utilitySpaceB) {
 		double rankingDistWeights = UtilspaceTools.getRankingDistanceOfIssueWeights(utilitySpaceA, utilitySpaceB);	
 		double pearsonCorrWeights = UtilspaceTools.getPearsonCorrelationCoefficientOfIssueWeights(utilitySpaceA, utilitySpaceB);
 		double rankingDistUtil = UtilspaceTools.getRankingDistanceOfBids(utilitySpaceA, utilitySpaceB, MONTE_CARLO_SIMULATIONS);
@@ -201,8 +201,8 @@ public class ScenarioMeasures {
 	 * @param utilitySpaceB
 	 * @return amount of Pareto bids
 	 */
-	private static int calculateAmountOfParetoBids(BidSpace bidSpace, UtilitySpace utilitySpaceA,
-			UtilitySpace utilitySpaceB) {
+	private static int calculateAmountOfParetoBids(BidSpace bidSpace, AdditiveUtilitySpace utilitySpaceA,
+			AdditiveUtilitySpace utilitySpaceB) {
 		List<Bid> bids = null;
 		try {
 			bids = bidSpace.getParetoFrontierBids();
@@ -221,7 +221,7 @@ public class ScenarioMeasures {
 	 * @return opposition of scenario
 	 */
 	private static double calculateOpposition(
-			BidSpace bidSpace, UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+			BidSpace bidSpace, AdditiveUtilitySpace utilitySpaceA, AdditiveUtilitySpace utilitySpaceB) {
 		double result = 0;
 		try {
 			BidPoint kalai = bidSpace.getKalaiSmorodinsky();
@@ -239,7 +239,7 @@ public class ScenarioMeasures {
 	 * @return average pareto distance of the scenario
 	 */
 	private static double calculateAverageParetoDistance(BidSpace bidSpace,
-			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+			AdditiveUtilitySpace utilitySpaceA, AdditiveUtilitySpace utilitySpaceB) {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {

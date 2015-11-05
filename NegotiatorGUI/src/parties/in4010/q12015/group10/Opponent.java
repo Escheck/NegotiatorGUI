@@ -17,7 +17,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 //import negotiator.Bid;
@@ -48,7 +48,7 @@ public class Opponent {
 																// utility for
 																// Group 10.
 
-	private UtilitySpace myEstUtilitySpace;
+	private AdditiveUtilitySpace myEstUtilitySpace;
 
 	private boolean hasMadeFirstBid = false;
 
@@ -90,11 +90,11 @@ public class Opponent {
 	private int bidGetValueIndexOffset = 1;
 
 	// constructor
-	Opponent(int givenPartyNumber, UtilitySpace myUtilitySpace,
+	Opponent(int givenPartyNumber, AdditiveUtilitySpace myUtilitySpace,
 			Deadline givenDeadline) {
 		myDeadline = givenDeadline;
 		myPartyNumber = givenPartyNumber;
-		myEstUtilitySpace = new UtilitySpace(myUtilitySpace);
+		myEstUtilitySpace = new AdditiveUtilitySpace(myUtilitySpace);
 
 		numberOfIssues = myEstUtilitySpace.getNrOfEvaluators();
 		numberOfValuesPerIssue = new int[numberOfIssues];
@@ -258,7 +258,7 @@ public class Opponent {
 		myAcceptedBidHistory.add(acceptedBidDetails);
 	}
 
-	UtilitySpace getEstimatedUtilitySpace() {
+	AdditiveUtilitySpace getEstimatedUtilitySpace() {
 		return myEstUtilitySpace;
 	}
 
@@ -474,7 +474,7 @@ public class Opponent {
 
 	}
 
-	public void ExportProfile(UtilitySpace utilitySpaceToExport,
+	public void ExportProfile(AdditiveUtilitySpace utilitySpaceToExport,
 			String profileFileNameWithoutExtension) {
 
 		// This function saves the specified utilityspace under the given name.

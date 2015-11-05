@@ -2,7 +2,7 @@ package negotiator.bidding;
 
 import java.util.Comparator;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Comparator which sorts a set of Bids based on their utility.
@@ -15,14 +15,14 @@ import negotiator.utility.UtilitySpace;
  */
 public class BidStrictSorterUtility implements Comparator<Bid>{
 	
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	
 	/**
 	 * Initializes the comperator by setting the bidding space.
 	 * The utility space is necessary to evaluate the utility of the bids.
 	 * @param utilitySpace used to evaluate the utility of the bids.
 	 */
-	public BidStrictSorterUtility(UtilitySpace utilitySpace) {
+	public BidStrictSorterUtility(AdditiveUtilitySpace utilitySpace) {
 		super();
 		this.utilitySpace = utilitySpace;
 	}

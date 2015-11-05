@@ -12,7 +12,7 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.DataObjects;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * A basic negotiation agent. You might want to consider using the BOA
@@ -36,7 +36,7 @@ public abstract class Agent {
 	/** Name of the name as set by the method setName. */
 	private String fName = null;
 	/** Preference profile of the agent as assigned by the tournamentrunner. */
-	public UtilitySpace utilitySpace;
+	public AdditiveUtilitySpace utilitySpace;
 	/**
 	 * Date object specifying when the negotiation started. Use timeline
 	 * instead.
@@ -120,7 +120,7 @@ public abstract class Agent {
 	 */
 	public final void internalInit(int sessionNr, int sessionsTotal,
 			Date startTimeP, Integer totalTimeP, Timeline timeline,
-			UtilitySpace us,
+			AdditiveUtilitySpace us,
 			HashMap<AgentParameterVariable, AgentParamValue> params) {
 		startTime = startTimeP;
 		totalTime = totalTimeP;
@@ -183,7 +183,7 @@ public abstract class Agent {
 	 * will take discount factors into account (if any), using the status of the
 	 * current {@link #timeline}.
 	 * 
-	 * @see UtilitySpace
+	 * @see AdditiveUtilitySpace
 	 * @param bid
 	 *            of which we are interested in the utility.
 	 * @return discounted utility of the given bid.

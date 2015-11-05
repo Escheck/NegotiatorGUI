@@ -5,15 +5,15 @@ import java.util.Iterator;
 import java.util.Random;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class ChooseAction {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private Random rnd;
 	private static final int NUMBER_ITERATIONS = 1000; // ç¹°ã‚Šè¿”ã�—å›žæ•°
 	private static final double EPSILON = 0.3D;
 
-	public ChooseAction(UtilitySpace utilitySpace) {
+	public ChooseAction(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		this.rnd = new Random();
 	}

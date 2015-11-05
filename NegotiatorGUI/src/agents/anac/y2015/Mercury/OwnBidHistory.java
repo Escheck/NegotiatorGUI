@@ -5,7 +5,7 @@ package agents.anac.y2015.Mercury;
 
 import java.util.ArrayList;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -21,7 +21,7 @@ public class OwnBidHistory {
         BidHistory = new ArrayList<Bid>();
     }
 
-    public void addBid(Bid bid, UtilitySpace utilitySpace) {
+    public void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
     	lastBid = bid;
     	
     	if (BidHistory.indexOf(bid) == -1) {
@@ -76,7 +76,7 @@ public class OwnBidHistory {
         return BidHistory.size();
     }
 
-    protected Bid chooseLowestBidInHistory(UtilitySpace utilitySpace) {
+    protected Bid chooseLowestBidInHistory(AdditiveUtilitySpace utilitySpace) {
         double minUtility = 100;
         Bid minBid = null;
         try {

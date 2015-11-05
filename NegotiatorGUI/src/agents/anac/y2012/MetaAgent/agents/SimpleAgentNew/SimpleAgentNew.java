@@ -5,7 +5,7 @@ import java.util.*;
 import negotiator.*;
 import negotiator.actions.*;
 import negotiator.issue.*;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Erez Shalom 27325372 Naseem Biadsy 037733029 Fridman Iliya 309411882
@@ -46,7 +46,7 @@ public class SimpleAgentNew extends Agent {
 	}
 
 	public void init(int sessionNumberP, int sessionTotalNumberP,
-			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
+			Date startTimeP, Integer totalTimeP, AdditiveUtilitySpace us) {
 
 	}
 

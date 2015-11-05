@@ -13,7 +13,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.qoagent2.QAgentsCore;
 import agents.qoagent2.QMessages;
 
@@ -26,7 +26,7 @@ public class QOAgent extends Agent {
 	private boolean fFirstOffer;
 	private Action fNextAction;
 	private int fMessageId;
-	public UtilitySpace[] opponentModels;
+	public AdditiveUtilitySpace[] opponentModels;
 
 	@Override
 	public Action chooseAction() {
@@ -49,13 +49,13 @@ public class QOAgent extends Agent {
 	public void init() {
 		fFirstOffer = true;
 		fMessageId = 1;
-		opponentModels = new UtilitySpace[3];
+		opponentModels = new AdditiveUtilitySpace[3];
 		try {
-			opponentModels[0] = new UtilitySpace(utilitySpace.getDomain(),
+			opponentModels[0] = new AdditiveUtilitySpace(utilitySpace.getDomain(),
 					getName() + "_long_term.xml");
-			opponentModels[1] = new UtilitySpace(utilitySpace.getDomain(),
+			opponentModels[1] = new AdditiveUtilitySpace(utilitySpace.getDomain(),
 					getName() + "_short_term.xml");
-			opponentModels[2] = new UtilitySpace(utilitySpace.getDomain(),
+			opponentModels[2] = new AdditiveUtilitySpace(utilitySpace.getDomain(),
 					getName() + "_compromise.xml");
 		} catch (Exception e) {
 			e.printStackTrace();

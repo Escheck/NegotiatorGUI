@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class UtilitySpaceHypothesis extends Hypothesis {
 	private WeightHypothesis fWeightHyp;
 	private EvaluatorHypothesis[] fEvalHyp;
 	private Domain fDomain;
-	private UtilitySpace fUS;
+	private AdditiveUtilitySpace fUS;
 	ArrayList<Issue> issues;
 	
 	public UtilitySpaceHypothesis(Domain pDomain,
-								  UtilitySpace pUS,
+								  AdditiveUtilitySpace pUS,
 								  WeightHypothesis pWeightHyp,
 								  EvaluatorHypothesis[] pEvalHyp) {
 		fUS = pUS;
@@ -29,7 +29,7 @@ public class UtilitySpaceHypothesis extends Hypothesis {
 		return fDomain;
 	}
 
-	public UtilitySpace getUtilitySpace() {
+	public AdditiveUtilitySpace getUtilitySpace() {
 		return fUS;
 	}
 	

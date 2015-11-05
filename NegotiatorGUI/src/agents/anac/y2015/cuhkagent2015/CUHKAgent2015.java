@@ -27,7 +27,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -181,7 +181,7 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 	String fileName;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);

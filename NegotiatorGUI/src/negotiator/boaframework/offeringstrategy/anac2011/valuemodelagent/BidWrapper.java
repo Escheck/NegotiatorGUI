@@ -3,7 +3,7 @@ package negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent;
 import java.util.Comparator;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BidWrapper{
 	public boolean sentByUs;
@@ -14,7 +14,7 @@ public class BidWrapper{
 	public double theirUtilityReliability;
 	public Bid bid;
 	
-	public BidWrapper(Bid bid,UtilitySpace space,double maxUtil){
+	public BidWrapper(Bid bid,AdditiveUtilitySpace space,double maxUtil){
 		this.bid = bid;
 		sentByUs = false;
 		sentByThem  = false;

@@ -55,7 +55,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -85,7 +85,7 @@ public class EnterBidDialogExtended extends JDialog {
     private UtilityPlot plot;
     
     
-    public EnterBidDialogExtended(UIAgentExtended agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
+    public EnterBidDialogExtended(UIAgentExtended agent, java.awt.Frame parent, boolean modal, AdditiveUtilitySpace us)  throws Exception
     {
         super(parent, modal);
         this.agent = agent;
@@ -98,7 +98,7 @@ public class EnterBidDialogExtended extends JDialog {
     // quick hack.. we can't refer to the Agent's utilitySpace because
     // the field is protected and there is no getUtilitySpace function either.
     // therefore the Agent has to inform us when utilspace changes.
-    public void setUtilitySpace(UtilitySpace us)
+    public void setUtilitySpace(AdditiveUtilitySpace us)
     { 
     	negoinfo.utilitySpace=us;
     	historyinfo.utilitySpace=us;
@@ -361,9 +361,9 @@ class HistoryInfo extends AbstractTableModel{
 	private UIAgentExtended agent;
 	private String[] colNames={"Round","Bid of your Opponent","u(opp)","Your Bid","u(own)"};
 	public String getColumnName(int col) { return colNames[col]; }
-	public UtilitySpace utilitySpace;
+	public AdditiveUtilitySpace utilitySpace;
 	
-	HistoryInfo(UIAgentExtended agent, Bid our,Bid opponent, UtilitySpace us) throws Exception
+	HistoryInfo(UIAgentExtended agent, Bid our,Bid opponent, AdditiveUtilitySpace us) throws Exception
 	{
 		this.agent=agent;
 		utilitySpace=us;
@@ -441,14 +441,14 @@ class NegoInfo extends AbstractTableModel implements ActionListener
 	public Bid ourOldBid;			// Bid is hashmap <issueID,Value>. Our current bid is only in the comboboxes,
 									// use getBid().
 	public Bid lastAccepted;
-	public UtilitySpace utilitySpace;	// WARNING: this may be null
+	public AdditiveUtilitySpace utilitySpace;	// WARNING: this may be null
 	public ArrayList<Issue> issues=new ArrayList<Issue>(); 
 	// the issues, in row order as in the GUI. Init to empty, to enable 
 	// freshly initialized NegoInfo to give useful results to the GUI.
 	public ArrayList<Integer> IDs; //the IDs/numbers of the issues, ordered to row number
 	public ArrayList<JComboBox> comboBoxes; // the combo boxes for the second column, ordered to row number
 	
-	NegoInfo(Bid our,Bid lastAccepted, UtilitySpace us) throws Exception
+	NegoInfo(Bid our,Bid lastAccepted, AdditiveUtilitySpace us) throws Exception
 	{
 		//Wouter: just discovered that assert does nothing...........
         //David@Wouter: Assert only works when assert compile flag is set to true
@@ -612,7 +612,7 @@ class NegoShowOffer extends NegoInfo
 {
     private Bid topic;
 
-    public NegoShowOffer(Bid our, Bid opponent, UtilitySpace us, Bid topic) throws Exception
+    public NegoShowOffer(Bid our, Bid opponent, AdditiveUtilitySpace us, Bid topic) throws Exception
     {
         super(our, opponent, us);
         this.topic = topic;
@@ -669,7 +669,7 @@ class NegoShowOffer extends NegoInfo
 
 class NegoProposeOffer extends NegoInfo
 {
-    NegoProposeOffer(Bid our,Bid opponent, UtilitySpace us) throws Exception
+    NegoProposeOffer(Bid our,Bid opponent, AdditiveUtilitySpace us) throws Exception
     {
         super(our, opponent, us);
     }
@@ -711,7 +711,7 @@ class NegoProposeOffer extends NegoInfo
 
 class NegoOffer extends NegoInfo
 {
-    NegoOffer(Bid our,Bid opponent, UtilitySpace us) throws Exception
+    NegoOffer(Bid our,Bid opponent, AdditiveUtilitySpace us) throws Exception
     {
         super(our, opponent, us);
     }

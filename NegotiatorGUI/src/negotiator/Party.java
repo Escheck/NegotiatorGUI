@@ -16,7 +16,7 @@ import negotiator.parties.NegotiationParty;
 import negotiator.session.Timeline;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
 *
@@ -28,7 +28,7 @@ import negotiator.utility.UtilitySpace;
 public abstract class Party {
 
 	protected AgentID partyID;   //unique id for each negotiating party
-	protected UtilitySpace utilitySpace; 
+	protected AdditiveUtilitySpace utilitySpace; 
 	protected HashMap<AgentParameterVariable,AgentParamValue> parametervalues; // not used now
 	protected ArrayList<Integer> partyListenerIndices;
 
@@ -62,11 +62,11 @@ public abstract class Party {
 	}
 
 
-	public UtilitySpace getUtilitySpace() {
+	public AdditiveUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 
-	public void setUtilitySpace(UtilitySpace utilitySpace) {
+	public void setUtilitySpace(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 	}
 
@@ -96,7 +96,7 @@ public abstract class Party {
       * @param us utility space of the agent for the session
      * @param params parameters of the agent
      */
-    public final void internalInit(int sessionNo, DeadlineType deadlineType, int totalRoundOrTime,UtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
+    public final void internalInit(int sessionNo, DeadlineType deadlineType, int totalRoundOrTime,AdditiveUtilitySpace us, HashMap<AgentParameterVariable,AgentParamValue> params) {
     	this.setSessionNo(sessionNo);
     	this.setDeadlineType(deadlineType);
     	this.setTotalRoundOrTime(totalRoundOrTime);
@@ -125,7 +125,7 @@ public abstract class Party {
     /**
      * A convenience method to get the utility of a bid. This method will take discount factors into account (if any), 
      * using the status of the current {@link #timeline}.
-     * @see {@link UtilitySpace}.
+     * @see {@link AdditiveUtilitySpace}.
      */
     public double getUtility(Bid bid)
     {

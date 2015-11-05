@@ -37,7 +37,7 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.FrameView;
@@ -336,14 +336,14 @@ public class NegoGUIView extends FrameView {
 								.getURL().getFile());
 
 				// FIXME copy of code from Repository.
-				UtilitySpace utilitySpace;
+				AdditiveUtilitySpace utilitySpace;
 				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.NONLINEAR) {
 					utilitySpace = new NonlinearUtilitySpace(domain, filename);
 				}
 				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.CONSTRAINT) {
 					utilitySpace = new ConstraintUtilitySpace(domain, filename);
 				} else {
-					utilitySpace = new UtilitySpace(domain, filename);
+					utilitySpace = new AdditiveUtilitySpace(domain, filename);
 				}
 
 				tf = new TreeFrame(domain, utilitySpace);

@@ -5,7 +5,7 @@ package agents.anac.y2012.CUHKAgent;
 
 import java.util.ArrayList;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -20,7 +20,7 @@ public class OwnBidHistory {
         BidHistory = new ArrayList<Bid>();
     }
 
-    public void addBid(Bid bid, UtilitySpace utilitySpace) {
+    public void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
         if (BidHistory.indexOf(bid) == -1) {
             BidHistory.add(bid);
         }
@@ -54,7 +54,7 @@ public class OwnBidHistory {
         return BidHistory.size();
     }
 
-    protected Bid chooseLowestBidInHistory(UtilitySpace utilitySpace) {
+    protected Bid chooseLowestBidInHistory(AdditiveUtilitySpace utilitySpace) {
         double minUtility = 100;
         Bid minBid = null;
         try {

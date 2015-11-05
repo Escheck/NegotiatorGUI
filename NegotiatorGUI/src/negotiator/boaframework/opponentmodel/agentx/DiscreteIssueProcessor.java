@@ -6,7 +6,7 @@ import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Class for processing discrete issues, weighting them based on opponent bids. Also
@@ -68,7 +68,7 @@ public class DiscreteIssueProcessor {
 	 * @param u
 	 * @param d
 	 */
-	public DiscreteIssueProcessor(UtilitySpace u, Domain d){
+	public DiscreteIssueProcessor(AdditiveUtilitySpace u, Domain d){
 		
 		ArrayList<Issue> issues = d.getIssues();
 		

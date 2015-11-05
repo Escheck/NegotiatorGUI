@@ -23,7 +23,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.NonlinearUtilitySpace;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * First prototype of our custom implementation of {@code OpponentModel}.

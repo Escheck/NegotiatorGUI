@@ -21,7 +21,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of OMACAgent
@@ -54,7 +54,7 @@ public class OMACagent_Offering extends OfferingStrategy{
 	private double est_mu;
 	private double est_mt;
 	private double maxTime = 180.0;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private SortedOutcomeSpace outcomespace;
 	
 	private Random randomnr;

@@ -10,7 +10,7 @@ import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsSorterTime;
 import negotiator.bidding.BidDetailsSorterUtility;
 import negotiator.bidding.BidDetailsStrictSorterUtility;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class contains the bidding history of a negotiation agent.
@@ -142,7 +142,7 @@ public class BidHistory implements Serializable {
 	 *         maxT].
 	 */
 	public BidHistory discountedFilterBetween(double minU, double maxU,
-			double minT, double maxT, UtilitySpace utilSpace) {
+			double minT, double maxT, AdditiveUtilitySpace utilSpace) {
 		BidHistory bidHistory = new BidHistory();
 		for (BidDetails b : bidList) {
 			if (minU < utilSpace
@@ -235,7 +235,7 @@ public class BidHistory implements Serializable {
 	 *            a bid.
 	 * @return bid with highest utility
 	 */
-	public BidDetails getBestDiscountedBidDetails(UtilitySpace util) {
+	public BidDetails getBestDiscountedBidDetails(AdditiveUtilitySpace util) {
 		double max = Double.NEGATIVE_INFINITY;
 		BidDetails bestBid = null;
 		for (BidDetails b : bidList) {
@@ -318,7 +318,7 @@ public class BidHistory implements Serializable {
 	 *            a bid.
 	 * @return average discounted utility of bids stored.
 	 */
-	public double getAverageDiscountedUtility(UtilitySpace utilSpace) {
+	public double getAverageDiscountedUtility(AdditiveUtilitySpace utilSpace) {
 		int size = size();
 		if (size == 0)
 			return 0;

@@ -6,12 +6,12 @@ import java.util.Iterator;
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class AcceptStrat {
-	private UtilitySpace ourUtility;
+	private AdditiveUtilitySpace ourUtility;
 
-	public AcceptStrat(UtilitySpace ownUtility) {
+	public AcceptStrat(AdditiveUtilitySpace ownUtility) {
 		ourUtility = ownUtility;
 	}
 
@@ -19,7 +19,7 @@ public class AcceptStrat {
 	// accept
 	public boolean determineAcceptance(Bid opponentBid,
 			HashMap<Object, BidHistory> previousBidsMap, Bid ourBid,
-			HashMap<Object, UtilitySpace> opponentUtilities,
+			HashMap<Object, AdditiveUtilitySpace> opponentUtilities,
 			TimeLineInfo timeLine) {
 		try {
 			double ourBidUtil = ourUtility.getUtility(ourBid);

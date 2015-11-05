@@ -1,10 +1,10 @@
 package negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent;
 
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentModeler {
-	UtilitySpace utilitySpace;
+	AdditiveUtilitySpace utilitySpace;
 	double lastTime;
 	public double delta;
 	double discount;
@@ -20,7 +20,7 @@ public class OpponentModeler {
 	//this is used for fail safe estimation
 	double paretoRatioEstimation=5;
 	
-	public OpponentModeler(int bidCount,UtilitySpace space,Timeline timeline,BidList our,BidList their,ValueModeler vmodeler,BidList allBids){
+	public OpponentModeler(int bidCount,AdditiveUtilitySpace space,Timeline timeline,BidList our,BidList their,ValueModeler vmodeler,BidList allBids){
 		ourPastBids = our;
 		theirPastBids = their;
 		utilitySpace = space;

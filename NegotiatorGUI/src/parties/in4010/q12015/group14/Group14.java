@@ -21,7 +21,7 @@ import negotiator.boaframework.OutcomeSpace;
 //import negotiator.issue.IssueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is your negotiation party.
@@ -30,7 +30,7 @@ public class Group14 extends AbstractNegotiationParty {
 
 	private Random randomGen = new Random();
 	private Action lastAction = null;
-	private UtilitySpace myUtilSpace;
+	private AdditiveUtilitySpace myUtilSpace;
 	private TimeLineInfo myTimeLine;
 	private OutcomeSpace outSpace;
 	private List<BidDetails> allbids, allbidsByNash; // eventually a sorted list
@@ -48,7 +48,7 @@ public class Group14 extends AbstractNegotiationParty {
 	/**
 	 * This method is called to initialize our agent
 	 */
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		firstSetBids = new ArrayList<BidDetails>();
@@ -348,7 +348,7 @@ public class Group14 extends AbstractNegotiationParty {
 	 * @return The Offer with maximum utility, in case of exception an offer
 	 *         with a random bid
 	 */
-	public Offer maxUtilBid(UtilitySpace us) {
+	public Offer maxUtilBid(AdditiveUtilitySpace us) {
 		try {
 			return new Offer(us.getMaxUtilityBid());
 		} catch (Exception e) {

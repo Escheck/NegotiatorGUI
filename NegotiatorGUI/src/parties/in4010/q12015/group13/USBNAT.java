@@ -19,7 +19,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Multipary negotiator which tries to find bids that the opponent would accept,
@@ -47,7 +47,7 @@ public class USBNAT extends AbstractNegotiationParty {
 	private final int panic = 5; // How many rounds left till we start to panic
 
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 

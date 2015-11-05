@@ -17,7 +17,7 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.issue.Value;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is your negotiation party.
@@ -52,7 +52,7 @@ public class Group3 extends AbstractNegotiationParty {
 		return "Group 3.oct-19-4.2";
 	}
 
-	public void init(UtilitySpace utilSpace, Deadline deadline,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID) {
 
 		System.out.println("\n");

@@ -2,7 +2,7 @@ package agents;
 
 import negotiator.Bid;
 import negotiator.PocketNegotiatorAgent;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * A utility class for {@link PocketNegotiatorAgent}s. PocketNegotiatorAgents
@@ -27,25 +27,25 @@ import negotiator.utility.UtilitySpace;
  * @author W.Pasman ripped from {@link SimpleTitForTatPN}.
  *
  */
-public class SimpleFakeOpponentUtilitySpace extends UtilitySpace {
+public class SimpleFakeOpponentUtilitySpace extends AdditiveUtilitySpace {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4744417384585431753L;
 
-	private final UtilitySpace ownSpace;
+	private final AdditiveUtilitySpace ownSpace;
 	private final double firstOpponentBidUtility;
 
 	/**
 	 * 
 	 * @param us
-	 *            our OWN {@link UtilitySpace} (not the opponent's)
+	 *            our OWN {@link AdditiveUtilitySpace} (not the opponent's)
 	 * @param firstBid
 	 *            first opponent bid.
 	 * @throws Exception
 	 *             if we can't determine utility of firstBid
 	 */
-	public SimpleFakeOpponentUtilitySpace(UtilitySpace us, Bid firstBid)
+	public SimpleFakeOpponentUtilitySpace(AdditiveUtilitySpace us, Bid firstBid)
 			throws Exception {
 		if (firstBid == null)
 			throw new NullPointerException("bid=null");

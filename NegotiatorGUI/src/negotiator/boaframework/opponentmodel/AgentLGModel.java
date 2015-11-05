@@ -9,7 +9,7 @@ import negotiator.boaframework.opponentmodel.agentlg.BidStatistic;
 import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Adaptation of the opponent model used by AgentLG in the ANAC2012 to
@@ -97,7 +97,7 @@ public class AgentLGModel extends OpponentModel {
 	 * @return utilityspace created by using the opponent model adapter.
 	 */
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
 	}
 	

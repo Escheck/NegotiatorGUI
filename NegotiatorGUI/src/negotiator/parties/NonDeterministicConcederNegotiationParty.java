@@ -9,7 +9,7 @@ import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.bidding.BidDetails;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class NonDeterministicConcederNegotiationParty extends
 		AbstractTimeDependentNegotiationParty {
@@ -18,7 +18,7 @@ public class NonDeterministicConcederNegotiationParty extends
 	protected Random random;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		random = new Random();

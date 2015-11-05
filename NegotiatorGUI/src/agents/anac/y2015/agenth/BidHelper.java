@@ -16,7 +16,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2015.agenth.BidHistory.Entry;
 
 public class BidHelper {
@@ -63,7 +63,7 @@ public class BidHelper {
 
 	/** 最大効用値Bidの初期探索(最初は効用空間のタイプが不明であるため，SAを用いて探索する) */
 	private void initMaxBid() throws Exception {
-		final UtilitySpace utilitySpace = mAgent.getUtilitySpace();
+		final AdditiveUtilitySpace utilitySpace = mAgent.getUtilitySpace();
 
 		int tryNum = getIssues().size(); // 試行回数
 		mMaxBid = mAgent.getUtilitySpace().getDomain().getRandomBid();

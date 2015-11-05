@@ -3,10 +3,10 @@ package agents.anac.y2015.SENGOKU.etc;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class strategy {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private negotiatingInfo negotiatingInfo;
 	private bidSearch bidSearch;
 
@@ -25,7 +25,7 @@ public class strategy {
 	// デバッグ用
 	public static boolean isPrinting = false; // メッセージを表示する
 
-	public strategy(UtilitySpace utilitySpace, negotiatingInfo negotiatingInfo,
+	public strategy(AdditiveUtilitySpace utilitySpace, negotiatingInfo negotiatingInfo,
 			bidSearch bidSeach) {
 		this.utilitySpace = utilitySpace;
 		this.negotiatingInfo = negotiatingInfo;

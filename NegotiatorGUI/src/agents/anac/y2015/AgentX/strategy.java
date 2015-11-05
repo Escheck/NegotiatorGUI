@@ -3,16 +3,16 @@ package agents.anac.y2015.AgentX;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class strategy {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private negotiatingInfo negotiatingInfo;
 	
 	private double df = 0.0; // 割引係数
 	private double rv = 0.0; // 留保価格
 
-	public strategy(UtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
+	public strategy(AdditiveUtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
 		this.utilitySpace = utilitySpace;
 		this.negotiatingInfo = negotiatingInfo;
 		df = utilitySpace.getDiscountFactor();

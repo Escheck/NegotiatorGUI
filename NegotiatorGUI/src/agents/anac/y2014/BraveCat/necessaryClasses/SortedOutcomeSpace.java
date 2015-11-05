@@ -6,11 +6,11 @@
  import misc.Range;
  import negotiator.bidding.BidDetails;
  import negotiator.bidding.BidDetailsSorterUtility;
- import negotiator.utility.UtilitySpace;
+ import negotiator.utility.AdditiveUtilitySpace;
  
  public class SortedOutcomeSpace extends OutcomeSpace
  {
-   public SortedOutcomeSpace(UtilitySpace utilSpace)
+   public SortedOutcomeSpace(AdditiveUtilitySpace utilSpace)
    {
      super(utilSpace);
      Collections.sort(this.allBids, new BidDetailsSorterUtility());

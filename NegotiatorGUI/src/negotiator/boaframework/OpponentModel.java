@@ -3,7 +3,7 @@ package negotiator.boaframework;
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 public abstract class OpponentModel extends BOA {
 
 	/** Reference to the estimated opponent's utility state */
-	protected UtilitySpace opponentUtilitySpace;
+	protected AdditiveUtilitySpace opponentUtilitySpace;
 	/** Boolean to indicate that the model has been cleared to free resources */
 	private boolean cleared;
 
@@ -36,7 +36,7 @@ public abstract class OpponentModel extends BOA {
 	public void init(NegotiationSession negotiationSession,
 			HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession);
-		opponentUtilitySpace = new UtilitySpace(
+		opponentUtilitySpace = new AdditiveUtilitySpace(
 				negotiationSession.getUtilitySpace());
 		cleared = false;
 	}
@@ -50,7 +50,7 @@ public abstract class OpponentModel extends BOA {
 	 */
 	public void init(NegotiationSession negotiationSession) {
 		this.negotiationSession = negotiationSession;
-		opponentUtilitySpace = new UtilitySpace(
+		opponentUtilitySpace = new AdditiveUtilitySpace(
 				negotiationSession.getUtilitySpace());
 		cleared = false;
 	}
@@ -93,7 +93,7 @@ public abstract class OpponentModel extends BOA {
 	/**
 	 * @return the estimated utility space of the opponent
 	 */
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return opponentUtilitySpace;
 	}
 
@@ -113,7 +113,7 @@ public abstract class OpponentModel extends BOA {
 	 * 
 	 * @param opponentUtilitySpace
 	 */
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 	}
 
 	/**

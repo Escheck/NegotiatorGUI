@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.issue.IssueDiscrete;
 import java.util.HashMap;
 
@@ -16,15 +16,15 @@ import java.util.HashMap;
  */
 public class BidSelector
 {
-	private  UtilitySpace utilitySpace;
+	private  AdditiveUtilitySpace utilitySpace;
 	private TreeMap<Double, Bid> BidList;
 	
 	/**
 	 * BidSelector constructor
 	 * 
-	 * @param pUtilitySpace a passed {@link UtilitySpace} that is used to generate all possible bid of its domain
+	 * @param pUtilitySpace a passed {@link AdditiveUtilitySpace} that is used to generate all possible bid of its domain
 	 */
-	public BidSelector(UtilitySpace pUtilitySpace){
+	public BidSelector(AdditiveUtilitySpace pUtilitySpace){
 		
 		this.utilitySpace=pUtilitySpace;
 		BidList = new TreeMap<Double, Bid>();
@@ -97,11 +97,11 @@ public class BidSelector
 		return lNewBidValues;
 	}
 
-	public UtilitySpace getUtilitySpace() {
+	public AdditiveUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 
-	public void setUtilitySpace(UtilitySpace utilitySpace) {
+	public void setUtilitySpace(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 	}
 

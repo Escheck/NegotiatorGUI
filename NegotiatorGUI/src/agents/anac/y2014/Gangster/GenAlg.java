@@ -11,12 +11,12 @@ import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.utility.NonlinearUtilitySpace;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 class GenAlg {
 
-	UtilitySpace utilitySpace;
+	AdditiveUtilitySpace utilitySpace;
 	int numIssues;
 	
 	int initialGenerationSize;

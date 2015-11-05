@@ -13,13 +13,13 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Created by chad on 2/28/15.
  */
 public class BayesLogic {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private ArrayList<TreeSet<ValueFrequency>> valueFrequencies;
 	private ArrayList<ValueFrequency>[] vFreqs;
 	public int T = 1;
@@ -27,7 +27,7 @@ public class BayesLogic {
 	int P;
 	public int V = 1;
 
-	public BayesLogic(UtilitySpace utilitySpace, int P) throws Exception {
+	public BayesLogic(AdditiveUtilitySpace utilitySpace, int P) throws Exception {
 		Domain domain = utilitySpace.getDomain();
 		List<Issue> issues = domain.getIssues();
 		this.P = P;

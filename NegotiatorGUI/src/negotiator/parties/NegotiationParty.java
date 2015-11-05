@@ -9,7 +9,7 @@ import negotiator.protocol.MultilateralProtocol;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Base interface for Negotiation parties. All parties must minimally implement
@@ -22,7 +22,7 @@ import negotiator.utility.UtilitySpace;
  * <h1>IMPORTANT</h1> Implementors of this class must have a public no-argument
  * constructor. In fact we recommend not to implement any constructor at all.
  * Initialization will be done through
- * {@link #init(UtilitySpace, Deadline, Timeline, long)}.
+ * {@link #init(AdditiveUtilitySpace, Deadline, Timeline, long)}.
  * 
  * <h1>history</h1> {@link NegotiationParty} replaces {@link negotiator.Agent} .
  * If you are using a protocol that inherits from {@link MultilateralProtocol}
@@ -45,7 +45,7 @@ public interface NegotiationParty {
 	 * This is called one time only.
 	 *
 	 * @param utilSpace
-	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
+	 *            (a copy of/readonly version of) the {@link AdditiveUtilitySpace} to be
 	 *            used for this session.
 	 * @param timeline
 	 *            The {@link TimeLineInfo} about current session.
@@ -54,7 +54,7 @@ public interface NegotiationParty {
 	 * @throws RuntimeException
 	 *             if init fails.
 	 */
-	public void init(UtilitySpace utilSpace, Deadline deadline,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**

@@ -17,10 +17,10 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponnentModel {
-	UtilitySpace US;
+	AdditiveUtilitySpace US;
 	private final boolean TEST_EQUIVALENCE = false;
 	private Random random500;
 	private Random random600;
@@ -323,7 +323,7 @@ public class OpponnentModel {
 	public double TotalIssueOptionsVariance;
 	private Timeline timeline;
 
-	public OpponnentModel(UtilitySpace utilitySpace, Timeline timeline) {
+	public OpponnentModel(AdditiveUtilitySpace utilitySpace, Timeline timeline) {
 		// utilitySpace is derived (and initialized) from Agent
 		if (TEST_EQUIVALENCE) {
 			random500 = new Random(500);

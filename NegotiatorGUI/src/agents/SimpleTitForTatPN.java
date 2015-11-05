@@ -14,7 +14,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Very simplistic tit-for-tat. Only PN can provide us with a good approximation
@@ -27,7 +27,7 @@ import negotiator.utility.UtilitySpace;
 public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 
 	// initialized when opponent makes first bid, or when we receive it from PN.
-	protected UtilitySpace otherUtilitySpace = null;
+	protected AdditiveUtilitySpace otherUtilitySpace = null;
 
 	private Bid myLastBid = null;
 	private Bid lastOpponentBid = null;
@@ -40,7 +40,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	/**
 	 * Here we store the bids that have been used. We must store the bids, not
 	 * the utilities because the utilities can change any time
-	 * {@link #updateProfiles(UtilitySpace, UtilitySpace)} is called, and that
+	 * {@link #updateProfiles(AdditiveUtilitySpace, AdditiveUtilitySpace)} is called, and that
 	 * call does not clear usedBids.
 	 */
 	private Set<Bid> usedBids = new HashSet<Bid>();
@@ -242,7 +242,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 
 	/************* implements PocketNegotiatorAgent ***************/
 	@Override
-	public void initPN(UtilitySpace mySide, UtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
 		updateProfiles(mySide, otherSide);
 		timeline = tl;
 	}
@@ -259,8 +259,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	@Override
-	public void updateProfiles(UtilitySpace myUtilities,
-			UtilitySpace opponentUtilities) {
+	public void updateProfiles(AdditiveUtilitySpace myUtilities,
+			AdditiveUtilitySpace opponentUtilities) {
 		utilitySpace = myUtilities;
 		otherUtilitySpace = opponentUtilities;
 		goodBids.clear(); // we fill it lazily
@@ -287,8 +287,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
  * 
  */
 @SuppressWarnings("serial")
-class OpponentUtilitySpace extends UtilitySpace {
-	private final UtilitySpace ownSpace;
+class OpponentUtilitySpace extends AdditiveUtilitySpace {
+	private final AdditiveUtilitySpace ownSpace;
 	private final double firstOpponentBidUtility;
 
 	/**
@@ -300,7 +300,7 @@ class OpponentUtilitySpace extends UtilitySpace {
 	 * @throws Exception
 	 *             if we can't determine utility of firstBid
 	 */
-	public OpponentUtilitySpace(UtilitySpace us, Bid firstBid) throws Exception {
+	public OpponentUtilitySpace(AdditiveUtilitySpace us, Bid firstBid) throws Exception {
 		if (firstBid == null)
 			throw new NullPointerException("bid=null");
 

@@ -24,7 +24,7 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.tournament.VariablesAndValues.AgentValue;
 import negotiator.tournament.VariablesAndValues.AgentVariable;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 import agents.BayesianAgentForAuction;
 
@@ -61,8 +61,8 @@ public class AuctionProtocol extends Protocol {
 			double outcome[] = new double[numberOfSellers ];
 			//int i=0;
 			for (int i=0;i<numberOfSellers ;i++) {
-				UtilitySpace centerUtilitySpace = getAgentUtilitySpaces(0);
-				UtilitySpace sellerUtilitySpace = getAgentUtilitySpaces(1+i);
+				AdditiveUtilitySpace centerUtilitySpace = getAgentUtilitySpaces(0);
+				AdditiveUtilitySpace sellerUtilitySpace = getAgentUtilitySpaces(1+i);
 				outcome[i] = Double.NEGATIVE_INFINITY;
 				BidIterator iter = new BidIterator(centerUtilitySpace.getDomain());
 				while(iter.hasNext()) {
@@ -87,8 +87,8 @@ public class AuctionProtocol extends Protocol {
 				}
 			}
 			//find the final outcome
-			UtilitySpace centerUtilitySpace = getAgentUtilitySpaces(0);
-			UtilitySpace sellerUtilitySpace = getAgentUtilitySpaces(1+winner);
+			AdditiveUtilitySpace centerUtilitySpace = getAgentUtilitySpaces(0);
+			AdditiveUtilitySpace sellerUtilitySpace = getAgentUtilitySpaces(1+winner);
 			double finalOutcome[] = new double[2];
 			BidIterator iter = new BidIterator(centerUtilitySpace.getDomain());
 			while(iter.hasNext()) {
@@ -349,8 +349,8 @@ public class AuctionProtocol extends Protocol {
 			String agentBname, 
 			ProfileRepItem profileRepItemA,
 			ProfileRepItem profileRepItemB,
-			UtilitySpace spaceA, 
-			UtilitySpace spaceB,
+			AdditiveUtilitySpace spaceA, 
+			AdditiveUtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
  
@@ -423,8 +423,8 @@ public class AuctionProtocol extends Protocol {
 			String agentBname, 
 			ProfileRepItem profileRepItemA,
 			ProfileRepItem profileRepItemB,
-			UtilitySpace spaceA, 
-			UtilitySpace spaceB,
+			AdditiveUtilitySpace spaceA, 
+			AdditiveUtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams)  throws Exception
 			{

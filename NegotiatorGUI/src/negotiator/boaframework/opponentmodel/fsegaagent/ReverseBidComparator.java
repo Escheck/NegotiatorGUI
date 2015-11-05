@@ -1,13 +1,13 @@
 package negotiator.boaframework.opponentmodel.fsegaagent;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class ReverseBidComparator implements java.util.Comparator<Bid>
 {
-	private UtilitySpace usp;
+	private AdditiveUtilitySpace usp;
 	
-	public ReverseBidComparator(UtilitySpace pUsp)
+	public ReverseBidComparator(AdditiveUtilitySpace pUsp)
 	{
 		usp = pUsp;
 	}

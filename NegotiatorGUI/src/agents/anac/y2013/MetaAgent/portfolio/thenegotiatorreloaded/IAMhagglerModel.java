@@ -12,7 +12,7 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * @author Colin Williams
@@ -31,7 +31,7 @@ public class IAMhagglerModel extends OpponentModel {
 	private final int totalTriangularFunctions = 4;
 	private TimeConcessionFunction opponentConcessionFunction;
 	private Domain domain;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean useAll = true;
 	
 	@Override
@@ -605,7 +605,7 @@ public class IAMhagglerModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, domain);
 	}
 

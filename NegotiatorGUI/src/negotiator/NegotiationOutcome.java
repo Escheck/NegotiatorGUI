@@ -26,7 +26,7 @@ import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNeg
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -163,7 +163,7 @@ public class NegotiationOutcome {
 
 		// double cooperation;
 		if (logCompetitiveness) {
-			UtilitySpace[] spaces = {
+			AdditiveUtilitySpace[] spaces = {
 					alternatingOffersBilateralAtomicNegoSession
 							.getAgentAUtilitySpace(),
 					alternatingOffersBilateralAtomicNegoSession
@@ -383,11 +383,11 @@ public class NegotiationOutcome {
 			for (BidPointTime bidPointTime : bids) {
 				double discountedBidPoint;
 				if (agentX.equals("A")) {
-					discountedBidPoint = UtilitySpace.discount(
+					discountedBidPoint = AdditiveUtilitySpace.discount(
 							bidPointTime.getUtilityA(), bidPointTime.getTime(),
 							discountFactorA);
 				} else {
-					discountedBidPoint = UtilitySpace.discount(
+					discountedBidPoint = AdditiveUtilitySpace.discount(
 							bidPointTime.getUtilityB(), bidPointTime.getTime(),
 							discountFactorB);
 				}

@@ -8,7 +8,7 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.session.RepositoryException;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Only for use in the core. Keeps a NegotiationParty along with core-private
@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class NegotiationPartyInternal {
 	private NegotiationParty party;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private Session session;
 	private AgentID agentId;
 
@@ -82,7 +82,7 @@ public class NegotiationPartyInternal {
 			throw new RepositoryException("failed to load " + partyRepItem, e);
 		}
 		// createInstance(partyRepItem, profileRepItem, session);
-		party.init(new UtilitySpace(utilitySpace), session.getDeadlines(),
+		party.init(new AdditiveUtilitySpace(utilitySpace), session.getDeadlines(),
 				session.getTimeline(), randomSeed, getAgentId());
 		return party;
 	}
@@ -205,7 +205,7 @@ public class NegotiationPartyInternal {
 	 *
 	 * @return the agent's utility space
 	 */
-	public UtilitySpace getUtilitySpace() {
+	public AdditiveUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 

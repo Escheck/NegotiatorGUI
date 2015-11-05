@@ -7,7 +7,7 @@ import negotiator.Bid;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Created by chad on 2/27/15.
@@ -20,9 +20,9 @@ public class BestBids {
 	ValueDiscrete[][] vs;
 	int[][] vprefs;
 
-	UtilitySpace utilitySpace;
+	AdditiveUtilitySpace utilitySpace;
 
-	public BestBids(UtilitySpace utilitySpace) {
+	public BestBids(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		try {
 			this.genIssuePreferenceOrder();

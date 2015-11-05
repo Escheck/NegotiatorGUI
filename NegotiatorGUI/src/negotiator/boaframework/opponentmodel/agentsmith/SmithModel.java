@@ -7,7 +7,7 @@ import agents.bayesianopponentmodel.OpponentModel;
 
 import negotiator.Bid;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * The OpponentModel. This model manages the opponents preferences, stores the bids and based
@@ -17,12 +17,12 @@ import negotiator.utility.UtilitySpace;
 public class SmithModel extends OpponentModel
 {
 	private HashMap<Issue, IssueModel> fIssueModels;
-	private UtilitySpace space;
+	private AdditiveUtilitySpace space;
 	
 	/**
 	 *  Constructor
 	 */
-	public SmithModel(UtilitySpace space)
+	public SmithModel(AdditiveUtilitySpace space)
 	{
 		fIssueModels = new HashMap<Issue, IssueModel>();
 		fDomain = space.getDomain();

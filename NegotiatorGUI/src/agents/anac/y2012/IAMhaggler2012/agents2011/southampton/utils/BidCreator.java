@@ -1,7 +1,7 @@
 package agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public interface BidCreator {
 
@@ -36,7 +36,7 @@ public interface BidCreator {
 	 *            The maximum utility value.
 	 * @return a bid (within a utility range if possible).
 	 */
-	public Bid getBid(UtilitySpace utilitySpace, double min, double max);
+	public Bid getBid(AdditiveUtilitySpace utilitySpace, double min, double max);
 
 	public Bid logBid(Bid opponentBid, double time);
 }

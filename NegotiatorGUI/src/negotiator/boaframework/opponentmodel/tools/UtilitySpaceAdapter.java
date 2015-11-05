@@ -3,7 +3,7 @@ package negotiator.boaframework.opponentmodel.tools;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.boaframework.OpponentModel;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Some opponent models do not use the UtilitySpace-object. Using this
@@ -11,7 +11,7 @@ import negotiator.utility.UtilitySpace;
  * 
  * @author Mark Hendrikx
  */
-public class UtilitySpaceAdapter extends UtilitySpace {
+public class UtilitySpaceAdapter extends AdditiveUtilitySpace {
 	
 	private OpponentModel opponentModel;
 		

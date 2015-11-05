@@ -20,12 +20,12 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class IssueManager {
 	// world state :
 	private Timeline T;
-	private UtilitySpace US;
+	private AdditiveUtilitySpace US;
 	private int TotalBiddingPossibilities; // amount of all possible bidsd
 	// oponent properties :
 	private Bid OpponentBestBid; // the first bid opponent gave us

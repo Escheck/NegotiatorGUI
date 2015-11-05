@@ -8,7 +8,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.PerfectModel;
 import negotiator.boaframework.opponentmodel.OppositeModel;
 import negotiator.boaframework.opponentmodel.WorstModel;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class is used to load a simple trace of the opponent's bids,
@@ -46,7 +46,7 @@ public class TraceProcessor {
 			OpponentModelMeasures omMeasures = null;
 			try {
 				opponentModel.init(negotiationSession, null);
-				UtilitySpace opponentSpace = new UtilitySpace(negotiationSession.getUtilitySpace().getDomain(), mainDir + "/" + trace.getOpponentProfile());
+				AdditiveUtilitySpace opponentSpace = new AdditiveUtilitySpace(negotiationSession.getUtilitySpace().getDomain(), mainDir + "/" + trace.getOpponentProfile());
 				opponentModel.setOpponentUtilitySpace(opponentSpace);
 				omMeasures = new OpponentModelMeasures(negotiationSession.getUtilitySpace(), opponentSpace);
 			} catch (Exception e) {
@@ -66,7 +66,7 @@ public class TraceProcessor {
 						currentSample++;
 						omMeasuresResults.addBidIndex(trace.getOfferedBids().get(i).getFirst());
 						if (currentSample == 1 || !(opponentModel instanceof OppositeModel || opponentModel instanceof WorstModel)) {
-							UtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
+							AdditiveUtilitySpace estimatedOpponentUS = opponentModel.getOpponentUtilitySpace();
 							BidSpace estimatedBS = new BidSpace(negotiationSession.getUtilitySpace(), estimatedOpponentUS, false, true);
 							omMeasuresResults.addPearsonCorrelationCoefficientOfBids(omMeasures.calculatePearsonCorrelationCoefficientBids(estimatedOpponentUS));
 							omMeasuresResults.addRankingDistanceOfBids(omMeasures.calculateRankingDistanceBids(estimatedOpponentUS));

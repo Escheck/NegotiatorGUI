@@ -1,7 +1,7 @@
 package negotiator.boaframework.opponentmodel;
 
 import java.util.ArrayList;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
 import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixturePrediction;
@@ -42,7 +42,7 @@ public class IAMHagglerOpponentConcessionModel {
 	 * @param numberOfSlots (within the total negotiation
 	 * @param utilitySpace
 	 */
-	public IAMHagglerOpponentConcessionModel(int numberOfSlots, UtilitySpace utilitySpace, int amountOfSamples){
+	public IAMHagglerOpponentConcessionModel(int numberOfSlots, AdditiveUtilitySpace utilitySpace, int amountOfSamples){
 		double discountingFactor = 0.5;
 		try
 		{

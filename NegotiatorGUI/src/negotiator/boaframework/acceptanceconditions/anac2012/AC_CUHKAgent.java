@@ -20,7 +20,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Acceptance Condition from CUHKAgent (ANAC2012).
@@ -36,7 +36,7 @@ public class AC_CUHKAgent extends AcceptanceStrategy {
 
 	private boolean activeHelper = false;
     private double reservationValue;
-    private UtilitySpace utilitySpace;
+    private AdditiveUtilitySpace utilitySpace;
     private double discountingFactor;
     private double previousTime;
     private Actions nextAction;

@@ -22,7 +22,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModel;
 import edu.berkeley.nlp.lm.ArrayEncodedProbBackoffLm;
@@ -82,7 +82,7 @@ public class Group2 extends AbstractNegotiationParty {
 	 * collection.
 	 */
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		try {

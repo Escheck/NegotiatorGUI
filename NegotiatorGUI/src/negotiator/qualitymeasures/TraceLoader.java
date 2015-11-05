@@ -8,7 +8,7 @@ import java.util.HashMap;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Simple parser which is designed to load CSV files containing the trace of the opponent and possibly
@@ -23,7 +23,7 @@ public class TraceLoader {
 	private Trace currentTrace;
 	private Domain currentDomain;
 	private SortedOutcomeSpace currentOutcomeSpace;
-	private UtilitySpace myCurrentUtilSpace;
+	private AdditiveUtilitySpace myCurrentUtilSpace;
 	
 	public ArrayList<Trace> loadTraces(String mainDir, String logPath) {
 		ArrayList<Trace> traces = null;
@@ -62,7 +62,7 @@ public class TraceLoader {
 		        	break;
 				case PREFPROFA:
 					currentTrace.setAgentProfile(line);
-					myCurrentUtilSpace = new UtilitySpace(currentDomain, mainDir + "/" + currentTrace.getAgentProfile());
+					myCurrentUtilSpace = new AdditiveUtilitySpace(currentDomain, mainDir + "/" + currentTrace.getAgentProfile());
 					mode = Mode.AGENTB;
 					break;
 				case AGENTB:
@@ -71,7 +71,7 @@ public class TraceLoader {
 					break;
 				case PREFPROFB:
 					currentTrace.setOpponentProfile(line);
-					UtilitySpace opponentSpace = new UtilitySpace(currentDomain, mainDir + "/" + currentTrace.getOpponentProfile());
+					AdditiveUtilitySpace opponentSpace = new AdditiveUtilitySpace(currentDomain, mainDir + "/" + currentTrace.getOpponentProfile());
 					currentOutcomeSpace = new SortedOutcomeSpace(opponentSpace);
 					mode = Mode.TIME;
 					break;

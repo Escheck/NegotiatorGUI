@@ -9,7 +9,7 @@
  import negotiator.bidding.BidDetails;
  import negotiator.bidding.BidDetailsSorterTime;
  import negotiator.bidding.BidDetailsSorterUtility;
- import negotiator.utility.UtilitySpace;
+ import negotiator.utility.AdditiveUtilitySpace;
  
  public class BidHistory
    implements Serializable
@@ -76,7 +76,7 @@
      return bidHistory;
    }
  
-   public BidHistory discountedFilterBetween(double minU, double maxU, double minT, double maxT, UtilitySpace utilSpace)
+   public BidHistory discountedFilterBetween(double minU, double maxU, double minT, double maxT, AdditiveUtilitySpace utilSpace)
    {
      BidHistory bidHistory = new BidHistory();
      for (BidDetails b : this.bidList)
@@ -147,7 +147,7 @@
      return bestBid;
    }
  
-   public BidDetails getBestDiscountedBidDetails(UtilitySpace util)
+   public BidDetails getBestDiscountedBidDetails(AdditiveUtilitySpace util)
    {
      double max = (-1.0D / 0.0D);
      BidDetails bestBid = null;
@@ -210,7 +210,7 @@
      return totalUtil / size;
    }
  
-   public double getAverageDiscountedUtility(UtilitySpace utilSpace)
+   public double getAverageDiscountedUtility(AdditiveUtilitySpace utilSpace)
    {
      int size = size();
      if (size == 0)

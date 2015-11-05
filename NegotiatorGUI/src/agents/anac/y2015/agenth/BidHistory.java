@@ -17,11 +17,11 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BidHistory extends LinkedList<BidHistory.Entry> {
 	/** UtilitySpace */
-	private UtilitySpace mUtilitySpace;
+	private AdditiveUtilitySpace mUtilitySpace;
 	/** bid と sender の対応マップ */
 	private HashMap<Bid, Object> mBids;
 	/** エージェントごとの値 */
@@ -33,7 +33,7 @@ public class BidHistory extends LinkedList<BidHistory.Entry> {
 	private Bid mMeans;
 	private ValueCounter mValueCounter;
 	
-	public BidHistory(UtilitySpace utilitySpace) {
+	public BidHistory(AdditiveUtilitySpace utilitySpace) {
 		mUtilitySpace = utilitySpace;
 		mBids = new HashMap<Bid, Object>();
 		mValueCounterMap = new HashMap<Object, ValueCounter>();

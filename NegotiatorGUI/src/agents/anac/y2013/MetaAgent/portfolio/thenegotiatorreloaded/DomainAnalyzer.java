@@ -2,7 +2,7 @@ package agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded;
 
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Class used to estimate the Kalai point. This approach works well
@@ -15,7 +15,7 @@ public class DomainAnalyzer {
 	// when an opponent model is given, the model is used in the Kalai estimation
 	private OpponentModel opponentModel;
 	// the utility space of our agent
-	private UtilitySpace ownUtilSpace;
+	private AdditiveUtilitySpace ownUtilSpace;
 	// default value for Kalai which is used when the opponent model is unavailable or unreliable
 	private static double DEFAULT_KALAI = 0.7;
 	// opponent model strategy, used to check if the model can be updated
@@ -29,7 +29,7 @@ public class DomainAnalyzer {
 	 * @param opponentModel used to estimate the opponent's preference profile
 	 * @param opponentHistory
 	 */
-	public DomainAnalyzer(UtilitySpace ownUtilSpace, OpponentModel opponentModel, OMStrategy omStrategy) {
+	public DomainAnalyzer(AdditiveUtilitySpace ownUtilSpace, OpponentModel opponentModel, OMStrategy omStrategy) {
 		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
 		this.ownUtilSpace = ownUtilSpace;

@@ -9,7 +9,7 @@ import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Optimized version of the ANAC2012 CUKHAgent opponent model.
@@ -41,7 +41,7 @@ public class CUHKFrequencyModelV2 extends OpponentModel {
     /** Highest possible sum of values */
     private int maxPossibleTotal = 0;
     /** After 100 bids the utilityspace does not chance, and can therefore be cached */
-    private UtilitySpace cache = null;
+    private AdditiveUtilitySpace cache = null;
     /** Boolean which indicates if the utilityspaced is arleady cached */
 	private boolean cached = false;
     
@@ -169,7 +169,7 @@ public class CUHKFrequencyModelV2 extends OpponentModel {
      * Returns the estimated utilityspace. After 100 unique bids the opponent model is not
      * longer updated, and therefore a cached version can be used.
      */
-    public UtilitySpace getOpponentUtilitySpace() {
+    public AdditiveUtilitySpace getOpponentUtilitySpace() {
     	if (!cached && this.bidHistory.size() >= this.maximumBidsStored) {
     		cached  = true;
     		cache = new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());

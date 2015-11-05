@@ -19,7 +19,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -61,8 +61,8 @@ public class DomainGenerator {
 		Domain domain = new Domain(dir + "thompson_employment.xml");
 		
 		// 3. Specify the baseline utility spaces
-		UtilitySpace utilitySpaceA =  new UtilitySpace(domain, dir + "thompson_employee.xml");
-		UtilitySpace utilitySpaceB =  new UtilitySpace(domain, dir + "thompson_employer.xml");
+		AdditiveUtilitySpace utilitySpaceA =  new AdditiveUtilitySpace(domain, dir + "thompson_employee.xml");
+		AdditiveUtilitySpace utilitySpaceB =  new AdditiveUtilitySpace(domain, dir + "thompson_employer.xml");
 		
 		// 4. Specify the name and path to which the new domain must be saved
 		String logToDirA = dir + "thompson_employee_hOhD.xml";
@@ -91,7 +91,7 @@ public class DomainGenerator {
 	 * @param varyBoth if false then solely a new preference profile for the B side is created.
 	 * @throws Exception when something goes wrong when storing the new domain.
 	 */
-	public static void findDomain(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB, String logToDirA, String logToDirB, Range opp, Range dist, boolean biasForHighOpp, boolean varyBoth) throws Exception {
+	public static void findDomain(Domain domain, AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB, String logToDirA, String logToDirB, Range opp, Range dist, boolean biasForHighOpp, boolean varyBoth) throws Exception {
 		System.out.println("Starting random domain generator");
 
 		double[] result = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
@@ -132,7 +132,7 @@ public class DomainGenerator {
 	 * @param utilitySpace profile to be randomized.
 	 * @param bias towards domains with a high opposition.
 	 */
-	private static void randomizeUtilSpace(UtilitySpace utilitySpace, boolean bias) 
+	private static void randomizeUtilSpace(AdditiveUtilitySpace utilitySpace, boolean bias) 
 	{
 		if (bias) {
 			for(Issue i : utilitySpace.getDomain().getIssues()){
@@ -164,7 +164,7 @@ public class DomainGenerator {
 	 * @param objective of which the weights must be set.
 	 * @param weight to which the weight of the objective must be set.
 	 */
-	public static void setWeightSimple(UtilitySpace uspace, Issue i, double weight)
+	public static void setWeightSimple(AdditiveUtilitySpace uspace, Issue i, double weight)
 	{
 		try
 		{
@@ -204,7 +204,7 @@ public class DomainGenerator {
 	 * @param utilitySpaceB utility space of side B.
 	 * @return the opposition (position 0) and bid distribution (position 1) of a scenario.
 	 */
-	private static double[] calculateDistances(UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+	private static double[] calculateDistances(AdditiveUtilitySpace utilitySpaceA, AdditiveUtilitySpace utilitySpaceB) {
 		BidSpace bidSpace = null;
 		try {
 			bidSpace = new BidSpace(utilitySpaceA, utilitySpaceB);
@@ -248,7 +248,7 @@ public class DomainGenerator {
 	 * @return bid distribution of the given scenario.
 	 */
 	private static double calculateBidDistribution(BidSpace bidSpace,
-			UtilitySpace utilitySpaceA, UtilitySpace utilitySpaceB) {
+			AdditiveUtilitySpace utilitySpaceA, AdditiveUtilitySpace utilitySpaceB) {
 		BidIterator iterator = new BidIterator(utilitySpaceA.getDomain());
 		double total = 0;
 		try {

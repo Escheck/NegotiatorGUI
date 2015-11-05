@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.awt.Container;
 import negotiator.Agent;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.actions.*;
 
 /**
@@ -32,7 +32,7 @@ public class EnterBidDialog extends JDialog {
     private JPanel buttonPanel=new JPanel();    
     private JTable BidTable ;
     
-    public EnterBidDialog(Agent agent, java.awt.Frame parent, boolean modal, UtilitySpace us)  throws Exception
+    public EnterBidDialog(Agent agent, java.awt.Frame parent, boolean modal, AdditiveUtilitySpace us)  throws Exception
     {
         super(parent, modal);
         this.agent = agent;
@@ -44,7 +44,7 @@ public class EnterBidDialog extends JDialog {
     // quick hack.. we can't refer to the Agent's utilitySpace because
     // the field is protected and there is no getUtilitySpace function either.
     // therefore the Agent has to inform us when utilspace changes.
-    public void setUtilitySpace(UtilitySpace us)
+    public void setUtilitySpace(AdditiveUtilitySpace us)
     { negoinfo.utilitySpace=us; }
     
     

@@ -36,7 +36,7 @@ import negotiator.tournament.VariablesAndValues.AssignedParamValue;
 import negotiator.tournament.VariablesAndValues.AssignedParameterVariable;
 import negotiator.tournament.VariablesAndValues.TotalSessionNumberValue;
 import negotiator.tournament.VariablesAndValues.TournamentValue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -253,7 +253,7 @@ public class AlternatingOffersProtocol extends Protocol
 		if (TournamentConfiguration.getBooleanOption("logDetailedAnalysis", false))
 		{
 			// Calculate the opponent model quality measures and log them
-			UtilitySpace[] spaces = { getAgentAUtilitySpace(), getAgentBUtilitySpace() };
+			AdditiveUtilitySpace[] spaces = { getAgentAUtilitySpace(), getAgentBUtilitySpace() };
 			UtilityMeasures disCalc = new UtilityMeasures(BidSpaceCache.getBidSpace(spaces));
 			SimpleElement utQualityMeasures = disCalc.calculateMeasures(outcome.agentAutility, outcome.agentButility);
 			BidSpace bidSpace = BidSpaceCache.getBidSpace(this.getAgentAUtilitySpace(), this.getAgentBUtilitySpace());
@@ -466,12 +466,12 @@ public class AlternatingOffersProtocol extends Protocol
 		return domain;
 	}
 
-	public UtilitySpace getAgentAUtilitySpace()
+	public AdditiveUtilitySpace getAgentAUtilitySpace()
 	{
 		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_A_INDEX);
 	}
 
-	public UtilitySpace getAgentBUtilitySpace()
+	public AdditiveUtilitySpace getAgentBUtilitySpace()
 	{
 		return getAgentUtilitySpaces(ALTERNATING_OFFERS_AGENT_B_INDEX);
 	}

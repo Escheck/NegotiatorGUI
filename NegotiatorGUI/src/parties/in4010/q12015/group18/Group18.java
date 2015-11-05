@@ -12,7 +12,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is our negotiation agent.
@@ -24,7 +24,7 @@ public class Group18 extends AbstractNegotiationParty {
 	private boolean bidListInit = false;
 	private ArrayList<Bid>[] partiesBidList;
 	private ArrayList<String> partiesNameList = new ArrayList<String>();
-	private ArrayList<UtilitySpace> OpponentUtilities = new ArrayList<UtilitySpace>();
+	private ArrayList<AdditiveUtilitySpace> OpponentUtilities = new ArrayList<AdditiveUtilitySpace>();
 
 	// This function will give the final action by calling the BiddingStrategy
 	// and the AcceptStrategie
@@ -77,7 +77,7 @@ public class Group18 extends AbstractNegotiationParty {
 			if (TimePercentage > 0.25) {
 				double TotalOpponentUtilityRandomBid = 0;
 				double MaxOpponentUtilityRandomBid = 0;
-				for (UtilitySpace Opponent : OpponentUtilities) {
+				for (AdditiveUtilitySpace Opponent : OpponentUtilities) {
 					try {
 						TotalOpponentUtilityRandomBid = TotalOpponentUtilityRandomBid
 								+ Opponent
@@ -331,7 +331,7 @@ public class Group18 extends AbstractNegotiationParty {
 																				// model
 			partiesBidList[PartyNo - 1] = new ArrayList<Bid>();
 			try {
-				OpponentUtilities.add(new UtilitySpace(this.getUtilitySpace()
+				OpponentUtilities.add(new AdditiveUtilitySpace(this.getUtilitySpace()
 						.getDomain(), ""));
 			} catch (Exception e) {
 				e.printStackTrace();

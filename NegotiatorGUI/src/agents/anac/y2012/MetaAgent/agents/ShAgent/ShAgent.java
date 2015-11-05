@@ -22,7 +22,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class ShAgent extends Agent {
 
@@ -214,13 +214,13 @@ public class ShAgent extends Agent {
 	}
 
 	private class UtilityAnalyzer {
-		private UtilitySpace utilitySpace;
+		private AdditiveUtilitySpace utilitySpace;
 		private ArrayList<Issue> allIssues;
 		private HashMap<Issue, ArrayList<Value>> preferredValuesPerIssue = new HashMap<Issue, ArrayList<Value>>();
 		private HashMap<Issue, HashMap<Value, Double>> utilityPerValuePerIssue = new HashMap<Issue, HashMap<Value, Double>>();
 		private Bid bid;
 
-		public UtilityAnalyzer(UtilitySpace space, Bid maxUtilityBid) {
+		public UtilityAnalyzer(AdditiveUtilitySpace space, Bid maxUtilityBid) {
 			this.utilitySpace = space;
 			allIssues = utilitySpace.getDomain().getIssues();
 			bid = Clone(maxUtilityBid);
@@ -493,7 +493,7 @@ public class ShAgent extends Agent {
 		private int turnNumber = 0;
 		private double lastTurnStartTime = 0;
 
-		public OpponentModel(UtilitySpace utilitySpace, Timeline timeline) {
+		public OpponentModel(AdditiveUtilitySpace utilitySpace, Timeline timeline) {
 			this.timeline = timeline;
 
 			allIssues = utilitySpace.getDomain().getIssues();

@@ -18,7 +18,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * TODO: 1. Support multiple issue types? 2. It could be possible that
@@ -46,7 +46,7 @@ public class Group8 extends AbstractNegotiationParty {
 	private Map<AgentID, OpponentModel> opponentModels = new HashMap<AgentID, OpponentModel>();
 
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID) {
 		super.init(utilSpace, deadlines, timeline, randomSeed, agentID);
 		// utilSpace.getReservationValueUndiscounted();

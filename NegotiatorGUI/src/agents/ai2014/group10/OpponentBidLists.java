@@ -11,16 +11,16 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.utility.Evaluator;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentBidLists {
 
 	private ArrayList<Object> senders;
 	private HashMap<Object, ArrayList<Bid>> map;
 	private boolean single_list;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
-	public OpponentBidLists(UtilitySpace utilitySpace, boolean single_list) {
+	public OpponentBidLists(AdditiveUtilitySpace utilitySpace, boolean single_list) {
 		senders = new ArrayList<Object>();
 		map = new HashMap<Object, ArrayList<Bid>>();
 		this.single_list = single_list;

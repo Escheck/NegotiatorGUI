@@ -22,17 +22,17 @@ import negotiator.utility.*;
  */
 public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 
-	private UtilitySpace fUS;
+	private AdditiveUtilitySpace fUS;
 	private ArrayList<ArrayList<WeightHypothesis2>> fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 
 	ArrayList<Issue> issues;
 	private double[] fExpectedWeights;
-	private UtilitySpace opponentSpace;
+	private AdditiveUtilitySpace opponentSpace;
 	
 	
 	
-	public PerfectBayesianOpponentModelScalable(UtilitySpace pUtilitySpace) {
+	public PerfectBayesianOpponentModelScalable(AdditiveUtilitySpace pUtilitySpace) {
 		fDomain = pUtilitySpace.getDomain();
 		issues=fDomain.getIssues();
 		fUS = pUtilitySpace;
@@ -347,7 +347,7 @@ public class PerfectBayesianOpponentModelScalable extends OpponentModel {
 		}
 		return (getExpectedWeight(i.getNumber() - startingNumber)) / sum;
 	}
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		this.opponentSpace = opponentUtilitySpace;
 	}
 }

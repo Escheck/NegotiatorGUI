@@ -10,7 +10,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 ///Final Project In The Course: Information In Decision Making Processess
 ///Done By: Guy Gabay 		ID: 303125462
@@ -31,7 +31,7 @@ public class GYRL extends Agent {
 	 * init is called when a next session starts with the same opponent.
 	 */
 	public void init(int sessionNumberP, int sessionTotalNumberP,
-			Date startTimeP, Integer totalTimeP, UtilitySpace us) {
+			Date startTimeP, Integer totalTimeP, AdditiveUtilitySpace us) {
 		super.init();
 		super.internalInit(sessionNumberP, sessionTotalNumberP, startTimeP,
 				totalTimeP, timeline, us, params);

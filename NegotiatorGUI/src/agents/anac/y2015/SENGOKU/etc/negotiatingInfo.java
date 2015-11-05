@@ -10,10 +10,10 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class negotiatingInfo {
-	private UtilitySpace utilitySpace; // 効用空間
+	private AdditiveUtilitySpace utilitySpace; // 効用空間
 	private ArrayList<Issue> issues; // 論点
 	private ArrayList<Object> opponents; // 自身以外の交渉参加者のsender
 	private ArrayList<Bid> MyBidHistory = null; // 提案履歴 自分！
@@ -52,7 +52,7 @@ public class negotiatingInfo {
 	private ArrayList<Double> aveTime = new ArrayList<Double>(); // 自分のターンが回ってくるまでの時間
 	public Boolean lastFlag = false; // 最後の妥協にしようするフラグ
 
-	public negotiatingInfo(UtilitySpace utilitySpace) {
+	public negotiatingInfo(AdditiveUtilitySpace utilitySpace) {
 		// 初期化
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();

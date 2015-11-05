@@ -19,15 +19,15 @@ import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	
     protected 	Agent   		agentA;
     protected 	Agent   		agentB;
-    protected 	UtilitySpace 	spaceA;
-    protected 	UtilitySpace 	spaceB;
+    protected 	AdditiveUtilitySpace 	spaceA;
+    protected 	AdditiveUtilitySpace 	spaceB;
     protected	String 			agentAname;
     protected	String 			agentBname;
     protected 	Bid 			lastBid    = null;				// the last bid that has been done
@@ -55,8 +55,8 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
     		Agent agentB, 
     		String agentAname,
     		String agentBname,
-    		UtilitySpace spaceA, 
-    		UtilitySpace spaceB,
+    		AdditiveUtilitySpace spaceA, 
+    		AdditiveUtilitySpace spaceB,
     		HashMap<AgentParameterVariable, AgentParamValue> agentAparams, 
     		HashMap<AgentParameterVariable, AgentParamValue> agentBparams) throws Exception {
     	this.protocol = protocol;
@@ -237,10 +237,10 @@ public abstract class BilateralAtomicNegotiationSession implements Runnable {
 	public Agent getAgentB() {
 		return agentB;
 	}
-	public UtilitySpace getAgentAUtilitySpace() {
+	public AdditiveUtilitySpace getAgentAUtilitySpace() {
 		return spaceA;
 	}
-	public UtilitySpace getAgentBUtilitySpace() {
+	public AdditiveUtilitySpace getAgentBUtilitySpace() {
 		return spaceB;
 	}
 	

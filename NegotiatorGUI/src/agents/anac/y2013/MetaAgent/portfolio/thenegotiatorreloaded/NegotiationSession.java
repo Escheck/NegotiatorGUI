@@ -6,7 +6,7 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is an abstract class which manages all the negotiation Session pertinent information to a single agent
@@ -24,11 +24,11 @@ public class NegotiationSession {
 	/** Reference to the negotiation domain */
 	protected Domain domain;
 	/** Reference to the agent's preference profile for the domain */
-	protected UtilitySpace utilitySpace;
+	protected AdditiveUtilitySpace utilitySpace;
 	/** Reference to the timeline */
 	protected Timeline timeline;
 
-	public NegotiationSession(UtilitySpace utilitySpace, Timeline timeline){
+	public NegotiationSession(AdditiveUtilitySpace utilitySpace, Timeline timeline){
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
 		this.domain = utilitySpace.getDomain();
@@ -68,7 +68,7 @@ public class NegotiationSession {
 		return timeline.getTime();
 	}
 	
-	public UtilitySpace getUtilitySpace(){
+	public AdditiveUtilitySpace getUtilitySpace(){
 		return utilitySpace;
 	}
 	

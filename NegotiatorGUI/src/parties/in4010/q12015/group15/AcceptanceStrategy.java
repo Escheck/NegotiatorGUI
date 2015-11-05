@@ -4,7 +4,7 @@ import negotiator.Bid;
 import negotiator.boaframework.Actions;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Accepts only bids with high utility early in negotiation but lowers the
@@ -13,9 +13,9 @@ import negotiator.utility.UtilitySpace;
  *
  */
 public class AcceptanceStrategy {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
-	public AcceptanceStrategy(UtilitySpace utilitySpace) {
+	public AcceptanceStrategy(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 	}
 

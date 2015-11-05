@@ -7,7 +7,7 @@ import java.util.Set;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2010.Southampton.analysis.BidSpace;
 
 /**
@@ -22,7 +22,7 @@ import agents.anac.y2010.Southampton.analysis.BidSpace;
  */
 public class SimpleBidSpace {
 
-	private UtilitySpace mySpace, otherSpace;
+	private AdditiveUtilitySpace mySpace, otherSpace;
 
 	// lazy init to avoid duplicate computations.
 	private ParetoFrontierPlus pareto = null;
@@ -30,11 +30,11 @@ public class SimpleBidSpace {
 	/**
 	 * 
 	 * @param my
-	 *            {@link UtilitySpace} of mySide
+	 *            {@link AdditiveUtilitySpace} of mySide
 	 * @param other
-	 *            {@link UtilitySpace} of otherSide.
+	 *            {@link AdditiveUtilitySpace} of otherSide.
 	 */
-	public SimpleBidSpace(UtilitySpace my, UtilitySpace other) {
+	public SimpleBidSpace(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
 		changeSpaces(my, other);
 	}
 
@@ -43,11 +43,11 @@ public class SimpleBidSpace {
 	 * not do that.
 	 * 
 	 * @param my
-	 *            {@link UtilitySpace} of mySide
+	 *            {@link AdditiveUtilitySpace} of mySide
 	 * @param other
-	 *            {@link UtilitySpace} of otherSide
+	 *            {@link AdditiveUtilitySpace} of otherSide
 	 */
-	public void changeSpaces(UtilitySpace my, UtilitySpace other) {
+	public void changeSpaces(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
 		if (my == null || other == null) {
 			throw new NullPointerException("my or other UtilitySpace is null");
 		}
@@ -61,9 +61,9 @@ public class SimpleBidSpace {
 	 * Utility spaces should not be changed directly, because the ParetoFrontier
 	 * can not see such changes.
 	 * 
-	 * @return own's {@link UtilitySpace}.
+	 * @return own's {@link AdditiveUtilitySpace}.
 	 */
-	public UtilitySpace getMyUtilitySpace() {
+	public AdditiveUtilitySpace getMyUtilitySpace() {
 		return mySpace;
 	}
 
@@ -71,9 +71,9 @@ public class SimpleBidSpace {
 	 * Utility spaces should not be changed directly, because the ParetoFrontier
 	 * can not see such changes.
 	 * 
-	 * @return the opponent's {@link UtilitySpace}.
+	 * @return the opponent's {@link AdditiveUtilitySpace}.
 	 */
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return otherSpace;
 	}
 

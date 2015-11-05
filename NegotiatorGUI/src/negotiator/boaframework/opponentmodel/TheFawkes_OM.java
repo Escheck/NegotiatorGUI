@@ -22,7 +22,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.session.Timeline;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Opponent Model
@@ -77,7 +77,7 @@ public final class TheFawkes_OM extends OpponentModel
 
     private void initializeFrequencyModel()
     {
-        this.opponentUtilitySpace = new UtilitySpace( this.negotiationSession.getUtilitySpace() );
+        this.opponentUtilitySpace = new AdditiveUtilitySpace( this.negotiationSession.getUtilitySpace() );
         this.amountOfIssues = this.opponentUtilitySpace.getDomain().getIssues().size();
         double commonWeight = 1 / (double)this.amountOfIssues;
         for( Map.Entry<Objective, Evaluator> ev : this.opponentUtilitySpace.getEvaluators() )

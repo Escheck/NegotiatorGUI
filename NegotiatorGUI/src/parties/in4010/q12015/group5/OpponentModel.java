@@ -14,7 +14,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class represents a model of the issue and value weights of an Opponent.
@@ -122,7 +122,7 @@ public class OpponentModel {
 	 *         opponent.
 	 * @throws Exception
 	 */
-	public UtilitySpace getUtilitySpace() throws Exception {
+	public AdditiveUtilitySpace getUtilitySpace() throws Exception {
 		Map<Objective, Evaluator> evaluatorMap = new HashMap<Objective, Evaluator>();
 		for (IssueDiscrete issue : issueModel.keySet()) {
 			EvaluatorDiscrete evaluator = new EvaluatorDiscrete();
@@ -134,7 +134,7 @@ public class OpponentModel {
 			}
 			evaluatorMap.put(issue, evaluator);
 		}
-		return new UtilitySpace(domain, evaluatorMap);
+		return new AdditiveUtilitySpace(domain, evaluatorMap);
 	}
 
 	/**

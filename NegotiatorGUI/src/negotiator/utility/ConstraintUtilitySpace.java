@@ -13,7 +13,7 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public class ConstraintUtilitySpace  extends UtilitySpace {
+public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
 	
 	private HashMap<Integer,Rank> rankingofIssues;
 	private ArrayList<Integer> issueIndices;
@@ -59,7 +59,7 @@ public class ConstraintUtilitySpace  extends UtilitySpace {
 	}
 	
 	/** @return a clone of another utility space */
-	public ConstraintUtilitySpace(UtilitySpace us) {
+	public ConstraintUtilitySpace(AdditiveUtilitySpace us) {
 		domain = us.getDomain();
 		fileName = us.getFileName();
 		spaceType = UTILITYSPACETYPE.CONSTRAINT;

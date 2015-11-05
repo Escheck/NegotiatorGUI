@@ -13,10 +13,10 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class bidSearch {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private negotiatingInfo negotiatingInfo; // �����
 	private Bid maxBid = null; // �ő��p�lBid
 
@@ -28,7 +28,7 @@ public class bidSearch {
 	static int STEP = 1;// �ύX���镝
 	static int STEP_NUM = 1; // �ύX�����
 
-	public bidSearch(UtilitySpace utilitySpace, negotiatingInfo negotiatingInfo)
+	public bidSearch(AdditiveUtilitySpace utilitySpace, negotiatingInfo negotiatingInfo)
 			throws Exception {
 		this.utilitySpace = utilitySpace;
 		this.negotiatingInfo = negotiatingInfo;

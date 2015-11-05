@@ -12,7 +12,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class specifies a set of opponent model measures used to measure the performance
@@ -33,9 +33,9 @@ import negotiator.utility.UtilitySpace;
 public class OpponentModelMeasures {
 
 	/** Utilityspace of the agent under consideration */
-	private UtilitySpace ownUS;
+	private AdditiveUtilitySpace ownUS;
 	/** Utilityspace of the opponent */
-	private UtilitySpace opponentUS;
+	private AdditiveUtilitySpace opponentUS;
 	/** The real kalai value */
 	private BidPoint realKalai;
 	/** The real Nash value */
@@ -59,7 +59,7 @@ public class OpponentModelMeasures {
 	 * @param ownSpace utilityspace of self
 	 * @param opponentUS utilityspace of opponent
 	 */
-	public OpponentModelMeasures(UtilitySpace ownSpace, UtilitySpace opponentUS) {
+	public OpponentModelMeasures(AdditiveUtilitySpace ownSpace, AdditiveUtilitySpace opponentUS) {
 		this.ownUS = ownSpace;
 		this.opponentUS = opponentUS;
 		try {
@@ -84,7 +84,7 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return pearson correlation coefficient
 	 */
-	public double calculatePearsonCorrelationCoefficientBids(UtilitySpace estimatedSpace) {
+	public double calculatePearsonCorrelationCoefficientBids(AdditiveUtilitySpace estimatedSpace) {
 		return UtilspaceTools.getPearsonCorrelationCoefficientOfBids(estimatedSpace, opponentUS);
 	}
 	
@@ -95,7 +95,7 @@ public class OpponentModelMeasures {
 	 * @param opponentModel
 	 * @return ranking distance
 	 */
-	public double calculateRankingDistanceBids(UtilitySpace estimatedSpace) {
+	public double calculateRankingDistanceBids(AdditiveUtilitySpace estimatedSpace) {
 		return UtilspaceTools.getRankingDistanceOfBids(estimatedSpace, opponentUS, AMOUNT_OF_SIMULATIONS);
 	}
 	
@@ -154,7 +154,7 @@ public class OpponentModelMeasures {
 	 * @param estimatedSpace
 	 * @return average difference in utility for the Pareto optimal bids
 	 */
-	public double calculateAvgDiffParetoBidToEstimate(UtilitySpace estimatedSpace) {
+	public double calculateAvgDiffParetoBidToEstimate(AdditiveUtilitySpace estimatedSpace) {
 		double sum = 0;
 		
 		// its a difference, not a distance, as we know how we evaluate our own bid

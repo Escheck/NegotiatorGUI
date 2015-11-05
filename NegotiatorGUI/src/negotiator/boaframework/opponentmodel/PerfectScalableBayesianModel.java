@@ -14,7 +14,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.TournamentConfiguration;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Adapter for BayesianOpponentModelScalable for the BOA framework.
@@ -44,7 +44,7 @@ public class PerfectScalableBayesianModel extends OpponentModel {
 	}
 
 	@Override
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		System.out.println("called");
 		model.setOpponentUtilitySpace(opponentUtilitySpace);
 	}
@@ -113,7 +113,7 @@ public class PerfectScalableBayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
 	}
 	

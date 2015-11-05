@@ -18,7 +18,7 @@ import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class contains main agent methods and algorithms that agent uses in a
@@ -45,7 +45,7 @@ public class KLH extends Agent {
 	private boolean firstRound = true;
 
 	private Domain domain = null;
-	private UtilitySpace oppUtility = null;
+	private AdditiveUtilitySpace oppUtility = null;
 	private int numberOfIssues = 0;
 
 	private double maxUtil = 1;
@@ -67,7 +67,7 @@ public class KLH extends Agent {
 	public void init() {
 		BSelector = new BidSelector(utilitySpace);
 		bidHistory = new BidHistory(utilitySpace);
-		oppUtility = new UtilitySpace(this.utilitySpace);
+		oppUtility = new AdditiveUtilitySpace(this.utilitySpace);
 		offerQueue = new LinkedList<Entry<Double, Bid>>();
 		domain = utilitySpace.getDomain();
 		numberOfIssues = domain.getIssues().size();
@@ -172,7 +172,7 @@ public class KLH extends Agent {
 	}
 
 	/**
-	 * Contains an object of type {@link UtilitySpace} that is updated over time
+	 * Contains an object of type {@link AdditiveUtilitySpace} that is updated over time
 	 * and as bids are received, to match the preference profile of the
 	 * opponent.
 	 * 

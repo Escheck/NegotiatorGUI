@@ -15,7 +15,7 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.utility.Evaluator;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentBidLists {
 
@@ -23,9 +23,9 @@ public class OpponentBidLists {
 	// map: Sender -> ("<issue_id,issue_value>" -> count)
 	private Map<Object, Map<Pair<Integer, Value>, Integer>> map;
 	private boolean single_list;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
-	public OpponentBidLists(UtilitySpace utilitySpace, boolean single_list) {
+	public OpponentBidLists(AdditiveUtilitySpace utilitySpace, boolean single_list) {
 		senders = new ArrayList<Object>();
 		map = new HashMap<Object, Map<Pair<Integer, Value>, Integer>>();
 		this.single_list = single_list;

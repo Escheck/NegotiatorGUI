@@ -2,9 +2,9 @@
 
  import negotiator.Bid;
  import negotiator.Domain;
- import negotiator.utility.UtilitySpace;
+ import negotiator.utility.AdditiveUtilitySpace;
  
- public class UtilitySpaceAdapter extends UtilitySpace
+ public class UtilitySpaceAdapter extends AdditiveUtilitySpace
  {
    private OpponentModel opponentModel;
  

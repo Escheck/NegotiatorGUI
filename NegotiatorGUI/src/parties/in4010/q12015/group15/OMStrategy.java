@@ -5,7 +5,7 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This strategy uses Opponent Modeling to find a best bid out of a range of
@@ -17,10 +17,10 @@ import negotiator.utility.UtilitySpace;
 public class OMStrategy {
 
 	private OpponentModel om;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private List<Bid> bidsOffered = new ArrayList<>();
 
-	public OMStrategy(OpponentModel om, UtilitySpace utilitySpace) {
+	public OMStrategy(OpponentModel om, AdditiveUtilitySpace utilitySpace) {
 		this.om = om;
 		this.utilitySpace = utilitySpace;
 	}

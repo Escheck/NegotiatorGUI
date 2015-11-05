@@ -12,7 +12,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BidOptions {
 
@@ -113,7 +113,7 @@ public class BidOptions {
 		}
 	}
 
-	protected void addBidOpp1(Bid bid, UtilitySpace utilitySpace) {
+	protected void addBidOpp1(Bid bid, AdditiveUtilitySpace utilitySpace) {
 
 		bidHistory.add(bid);
 		if (bidHistoryOpp1.indexOf(bid) == -1) { // list does not contain the
@@ -138,7 +138,7 @@ public class BidOptions {
 		}
 	}
 
-	protected void addBidOpp2(Bid bid, UtilitySpace utilitySpace) {
+	protected void addBidOpp2(Bid bid, AdditiveUtilitySpace utilitySpace) {
 
 		bidHistory.add(bid);
 		if (bidHistoryOpp2.indexOf(bid) == -1) { // list does not contain the
@@ -164,7 +164,7 @@ public class BidOptions {
 		}
 	}
 
-	protected void addBidOpp3(Bid bid, UtilitySpace utilitySpace) {
+	protected void addBidOpp3(Bid bid, AdditiveUtilitySpace utilitySpace) {
 
 		bidHistory.add(bid);
 		if (bidHistoryOpp3.indexOf(bid) == -1) { // list does not contain the
@@ -192,7 +192,7 @@ public class BidOptions {
 	}
 
 	protected void addOpponentBid(Bid bidToUpdate, Domain domain,
-			UtilitySpace utilitySpace, Object IDOfOpponent) {
+			AdditiveUtilitySpace utilitySpace, Object IDOfOpponent) {
 		String OppID = IDOfOpponent.toString();
 
 		if (OppID.equals("Party 1")) {

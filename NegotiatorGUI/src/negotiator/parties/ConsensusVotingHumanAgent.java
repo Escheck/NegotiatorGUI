@@ -16,7 +16,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.actions.OfferForVoting;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.EnterBidDialogAcceptReject;
 import agents.EnterBidDialogInterface;
 import agents.EnterBidDialogOfferForVoting;
@@ -34,7 +34,7 @@ public class ConsensusVotingHumanAgent extends AbstractNegotiationParty {
 	 * One agent will be kept alive over multiple sessions. Init will be called
 	 * at the start of each negotiation session.
 	 */
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			Timeline timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		System.out.println("init UIAgent");

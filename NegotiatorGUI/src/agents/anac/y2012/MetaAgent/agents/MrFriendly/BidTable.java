@@ -20,7 +20,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BidTable {
 	
@@ -32,7 +32,7 @@ public class BidTable {
 	/**
 	 * utilitySpace which we need here
 	 */
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
 	/**
 	 * Contains all bids that we still consider, mapped to an index integer. Note that we remove
@@ -94,7 +94,7 @@ public class BidTable {
 	 */
 	private static final double TOP_BIDS_PERCENTAGE = 0.005;
 	
-	public BidTable(Agent a, UtilitySpace us, double mbu, OpponentModel opponentModel){
+	public BidTable(Agent a, AdditiveUtilitySpace us, double mbu, OpponentModel opponentModel){
 		agent = a;
 		utilitySpace = us;
 		bestOpponentBid = null;

@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.issue.*;
 
 public class LinearBidIterator extends BidIterator {
 
 	private List<Issue> sortedIssues;
-	public LinearBidIterator(Domain domain, final UtilitySpace space, double maxUtil, double minUtil) {
+	public LinearBidIterator(Domain domain, final AdditiveUtilitySpace space, double maxUtil, double minUtil) {
 		super(domain);
 		sortedIssues = new LinkedList<Issue>();
 		//sort issues wrt their weights

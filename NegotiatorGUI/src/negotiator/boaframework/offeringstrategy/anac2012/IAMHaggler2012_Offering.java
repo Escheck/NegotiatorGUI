@@ -31,7 +31,7 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
 
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 
@@ -69,7 +69,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	private double minOfferedUtility = Double.MAX_VALUE;
 	private SortedOutcomeSpace outcomespace;
 	private RandomBidCreator bidCreator;	
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private SouthamptonUtilitySpace sus;
 
 	/**

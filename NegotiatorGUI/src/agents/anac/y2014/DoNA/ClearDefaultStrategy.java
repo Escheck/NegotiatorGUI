@@ -13,7 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 //1.  Check Utility is not 1. Multiple with MaxUtility
@@ -31,7 +31,7 @@ import negotiator.utility.UtilitySpace;
  * @since 2013-01-13
  */
 public class ClearDefaultStrategy  {
-	public static UtilitySpace utilitySpace;
+	public static AdditiveUtilitySpace utilitySpace;
 	public static Timeline timeline;
 	
 	

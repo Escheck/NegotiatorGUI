@@ -19,7 +19,7 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.protocol.MultilateralProtocolAdapter;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Negotiation party for Group15. Group members: Fabio Izzi, Kristin Fjola
@@ -65,7 +65,7 @@ public class Group15 extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline deadline,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, deadline, timeline, randomSeed, agentId);
 
