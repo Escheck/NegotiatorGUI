@@ -148,7 +148,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param issueID
 	 *            unique id of the issue of which we want the evaluation.
 	 */
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int issueID)
+	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid, int issueID)
 			throws Exception {
 		if (getEvalMax() > 1.0) {
 			return normalize(getValue((ValueDiscrete) bid.getValue(issueID)));

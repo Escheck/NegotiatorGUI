@@ -24,7 +24,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of AgentMR
@@ -44,7 +44,7 @@ public class AgentMR_Offering extends OfferingStrategy {
 	private static double offereMaxUtility;
 	private int currentBidNumber = 0;
 	private int lastBidNumber = 1;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean alreadyDone = false;
 	private SortedOutcomeSpace outcomeSpace;
 

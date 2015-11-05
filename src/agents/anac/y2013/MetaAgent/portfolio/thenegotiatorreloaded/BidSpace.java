@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.analysis.BidPoint;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * @author W.Pasman 15nov07
@@ -14,15 +14,15 @@ import negotiator.utility.UtilitySpace;
  * But to be safe I did not try to modify the Analysis class and introduced a new class.
  */
 public class BidSpace {
-	UtilitySpace utilspaceA;
-	UtilitySpace utilspaceB;
+	AdditiveUtilitySpace utilspaceA;
+	AdditiveUtilitySpace utilspaceB;
 	Domain domain; // equals to utilspaceA.domain = utilspaceB.domain
 	public ArrayList<BidPoint> bidPoints;
 	ArrayList<BidPoint> paretoFrontier=null; // not yet set.
 	BidPoint kalaiSmorodinsky=null; // null if not set.
 	BidPoint nash=null; // null if not set.
 	
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB) throws Exception
+	public BidSpace(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB) throws Exception
 	{
 		utilspaceA=spaceA;
 		utilspaceB=spaceB;
@@ -46,7 +46,7 @@ public class BidSpace {
 	 * being a third parameter that makes a differnet function call.
 	 * @throws Exception
 	 */
-	public BidSpace(UtilitySpace spaceA, UtilitySpace spaceB,boolean anything) throws Exception
+	public BidSpace(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB,boolean anything) throws Exception
 	{
 		utilspaceA=spaceA;
 		utilspaceB=spaceB;

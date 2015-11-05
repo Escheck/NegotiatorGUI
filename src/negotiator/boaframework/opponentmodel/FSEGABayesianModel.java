@@ -8,7 +8,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.fsegaagent.*;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Adapter to opponent model of FSEGA.
@@ -71,7 +71,7 @@ public class FSEGABayesianModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
 	}
 	

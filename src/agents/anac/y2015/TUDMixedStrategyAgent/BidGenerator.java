@@ -10,7 +10,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 public class BidGenerator {
@@ -55,7 +55,7 @@ public class BidGenerator {
 	}
 
 	// Generates a List of all possible bids in this UtilitySpace
-	public static ArrayList<Bid> BidList (UtilitySpace utilitySpace){
+	public static ArrayList<Bid> BidList (AdditiveUtilitySpace utilitySpace){
 		ArrayList<Issue> issueList = utilitySpace.getDomain().getIssues();
 		ArrayList<ArrayList<ValueDiscrete>> listValueList= new ArrayList<ArrayList<ValueDiscrete>>();
 		ArrayList<Bid> bidList = new ArrayList<Bid>();

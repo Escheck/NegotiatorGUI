@@ -4,7 +4,7 @@ import negotiator.PocketNegotiatorAgent;
 import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Action;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class TimeDependentAgentConcederPN extends TimeDependentAgent implements
 		PocketNegotiatorAgent {
@@ -26,7 +26,7 @@ public class TimeDependentAgentConcederPN extends TimeDependentAgent implements
 	/******* implements PocketNegotiatorAgent ***********/
 
 	@Override
-	public void initPN(UtilitySpace mySide, UtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
 		utilitySpace = mySide;
 		timeline = tl;
 		init();
@@ -43,7 +43,7 @@ public class TimeDependentAgentConcederPN extends TimeDependentAgent implements
 	}
 
 	@Override
-	public void updateProfiles(UtilitySpace my, UtilitySpace other) {
+	public void updateProfiles(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
 		if (my != null) {
 			utilitySpace = my;
 			initFields();

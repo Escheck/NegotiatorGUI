@@ -37,7 +37,7 @@ import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is an updated version which has shared deadlines for both agents,
@@ -85,7 +85,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
 			Agent agentA, Agent agentB, String agentAname, String agentBname,
-			UtilitySpace spaceA, UtilitySpace spaceB,
+			AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent) throws Exception {
@@ -147,7 +147,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				// linear
 				agentA.internalInit(protocol.getSessionNumber(),
 						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new UtilitySpace(spaceA), agentAparams);
+						timeline, new AdditiveUtilitySpace(spaceA), agentAparams);
 			agentA.init();
 
 			if (spaceB.getType() == UTILITYSPACETYPE.NONLINEAR)
@@ -164,7 +164,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 				// linear
 				agentB.internalInit(protocol.getSessionNumber(),
 						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new UtilitySpace(spaceB), agentBparams);
+						timeline, new AdditiveUtilitySpace(spaceB), agentBparams);
 			agentB.init();
 
 			stopNegotiation = false;
@@ -720,7 +720,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getOpponentModel();
 				if (!(opponentModel instanceof NoModel)) {
 
-					UtilitySpace estimatedOpponentUS = opponentModel
+					AdditiveUtilitySpace estimatedOpponentUS = opponentModel
 							.getOpponentUtilitySpace();
 					BidSpace estimatedBS = null;
 					try {

@@ -14,7 +14,7 @@ import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Class used to validate the domain, preference profile, and the consistency
@@ -46,7 +46,7 @@ public class ScenarioValidator {
 	}
 
 	private static String validateCorrespondenceDomainAndProfile(Domain domain,
-			UtilitySpace space) {
+			AdditiveUtilitySpace space) {
 
 		String errors = isComplete(space);
 		if (errors == null) {
@@ -57,7 +57,7 @@ public class ScenarioValidator {
 		return errors;
 	}
 
-	private static String isComplete(UtilitySpace space)
+	private static String isComplete(AdditiveUtilitySpace space)
 	// Oh damn, problem, we don't have the domain template here anymore.
 	// so how can we check domain compativility?
 	// only we can check that all fields are filled.........
@@ -78,7 +78,7 @@ public class ScenarioValidator {
 		return null;
 	}
 
-	private static String validatePreferenceProfile(UtilitySpace space) {
+	private static String validatePreferenceProfile(AdditiveUtilitySpace space) {
 		String errors = "";
 		double weightSum = 0;
 		for (Entry<Objective, Evaluator> pair : space.getEvaluators()) {
@@ -134,7 +134,7 @@ public class ScenarioValidator {
 				Domain domain = new Domain(dri.getURL().getFile());
 
 				for (ProfileRepItem pri : dri.getProfiles()) {
-					UtilitySpace space = new UtilitySpace(domain, pri.getURL()
+					AdditiveUtilitySpace space = new AdditiveUtilitySpace(domain, pri.getURL()
 							.getFile());
 					String newErrors = "";
 					newErrors += (validateDomain(domain));

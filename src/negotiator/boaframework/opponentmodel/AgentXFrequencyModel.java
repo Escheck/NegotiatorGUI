@@ -12,7 +12,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Class for building an opponent model in discrete space.
@@ -168,7 +168,7 @@ public class AgentXFrequencyModel extends OpponentModel {
 	/**
 	 * @return utilityspace created by using the opponent model adapter.
 	 */
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
 	}
 	

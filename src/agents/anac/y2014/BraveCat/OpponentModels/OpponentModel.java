@@ -11,12 +11,12 @@
  import negotiator.protocol.BilateralAtomicNegotiationSession;
  import negotiator.utility.NonlinearUtilitySpace;
  import negotiator.utility.UTILITYSPACETYPE;
- import negotiator.utility.UtilitySpace;
+ import negotiator.utility.AdditiveUtilitySpace;
  
  public abstract class OpponentModel
  {
    protected NegotiationSession negotiationSession;
-   protected UtilitySpace opponentUtilitySpace;
+   protected AdditiveUtilitySpace opponentUtilitySpace;
    private boolean cleared;
  
    public void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters, UTILITYSPACETYPE utilitySpaceType)
@@ -26,7 +26,7 @@
      if(utilitySpaceType ==  UTILITYSPACETYPE.NONLINEAR)
         this.opponentUtilitySpace = new NonlinearUtilitySpace(negotiationSession.getUtilitySpace());
      else
-        this.opponentUtilitySpace = new UtilitySpace(negotiationSession.getUtilitySpace());
+        this.opponentUtilitySpace = new AdditiveUtilitySpace(negotiationSession.getUtilitySpace());
      this.cleared = false;
    }
 
@@ -42,7 +42,7 @@
      if(utilitySpaceType ==  UTILITYSPACETYPE.NONLINEAR)
         this.opponentUtilitySpace = new NonlinearUtilitySpace(negotiationSession.getUtilitySpace());
      else
-        this.opponentUtilitySpace = new UtilitySpace(negotiationSession.getUtilitySpace());
+        this.opponentUtilitySpace = new AdditiveUtilitySpace(negotiationSession.getUtilitySpace());
      this.cleared = false;
    }
  
@@ -70,7 +70,7 @@
    {
      return 0;
    }
-   public UtilitySpace getOpponentUtilitySpace()
+   public AdditiveUtilitySpace getOpponentUtilitySpace()
    {
      return this.opponentUtilitySpace;
    }
@@ -79,7 +79,7 @@
    {
    }
  
-   public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace)
+   public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace)
    {
    }
  

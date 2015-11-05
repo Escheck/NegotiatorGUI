@@ -26,7 +26,7 @@ import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class Mercury extends AbstractNegotiationParty {
 
@@ -72,7 +72,7 @@ public class Mercury extends AbstractNegotiationParty {
 	// private double succDis = 0.9;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 

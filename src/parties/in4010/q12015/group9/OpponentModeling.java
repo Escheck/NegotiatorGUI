@@ -13,36 +13,36 @@ import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentModeling {
-	private HashMap<Object, UtilitySpace> opponentUtilities;// Object is other
+	private HashMap<Object, AdditiveUtilitySpace> opponentUtilities;// Object is other
 															// agent objects
 															// used to identify
 															// them,
 															// utilityspaces are
 															// current estimates
 	private Domain currentDomain;
-	private UtilitySpace ourUtility;
+	private AdditiveUtilitySpace ourUtility;
 	private double learnCoef = 0.2;
 	private int learnValueAddition = 1;
 	private int amountOfIssues;
 
-	public OpponentModeling(UtilitySpace ownUtility) {
+	public OpponentModeling(AdditiveUtilitySpace ownUtility) {
 		ourUtility = ownUtility;
 		currentDomain = ourUtility.getDomain();
-		opponentUtilities = new HashMap<Object, UtilitySpace>();
+		opponentUtilities = new HashMap<Object, AdditiveUtilitySpace>();
 	}
 
 	// Simple getter
-	public HashMap<Object, UtilitySpace> getOpponentUtilities() {
+	public HashMap<Object, AdditiveUtilitySpace> getOpponentUtilities() {
 		return opponentUtilities;
 	}
 
 	// Determines the difference between bids given the opponent's prevoius
 	// Utility Space
 	private HashMap<Integer, Integer> determineDifference(
-			UtilitySpace thisSpace, BidDetails first, BidDetails second) {
+			AdditiveUtilitySpace thisSpace, BidDetails first, BidDetails second) {
 
 		HashMap<Integer, Integer> diff = new HashMap<Integer, Integer>();
 		try {
@@ -64,7 +64,7 @@ public class OpponentModeling {
 		if (!opponentUtilities.containsKey(agent)) {
 			createNewModel(agent);
 		}
-		UtilitySpace updatedSpace = opponentUtilities.get(agent);
+		AdditiveUtilitySpace updatedSpace = opponentUtilities.get(agent);
 		// updating Utility space, both for accepting actions and new offer
 		// actions, will probably want to split those completely
 		if (previousBidsMap.get(agent).size() < 2) {
@@ -136,7 +136,7 @@ public class OpponentModeling {
 	// creates standard UtilitySpace model given no current information
 	private void createNewModel(Object agent) {
 		// UtilitySpace newUtilitySpace = new UtilitySpace(currentDomain);
-		UtilitySpace newUtilitySpace = new UtilitySpace(ourUtility);
+		AdditiveUtilitySpace newUtilitySpace = new AdditiveUtilitySpace(ourUtility);
 		// set all issue weights to be equal and evaluations 1)
 		amountOfIssues = newUtilitySpace.getDomain().getIssues().size();
 		double commonWeight = 1D / (double) amountOfIssues;

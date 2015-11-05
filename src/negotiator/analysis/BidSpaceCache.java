@@ -1,7 +1,7 @@
 package negotiator.analysis;
 
 import java.util.Arrays;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Caches the BidSpace such that we don't have to recompute it each time.
@@ -24,7 +24,7 @@ public class BidSpaceCache {
 	 * @param spaces from which a BidSpace must be constructed.
 	 * @return BidSpace belonging to the given UtilitySpace's.
 	 */
-	public static BidSpace getBidSpace(UtilitySpace ... spaces) {
+	public static BidSpace getBidSpace(AdditiveUtilitySpace ... spaces) {
 		// determine the unique identifier of the given utilityspaces.
 		String[] ident = new String[spaces.length];
 		for (int i = 0; i < spaces.length; i++) {

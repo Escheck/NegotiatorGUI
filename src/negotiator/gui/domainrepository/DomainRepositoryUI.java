@@ -23,7 +23,7 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -205,9 +205,9 @@ public class DomainRepositoryUI {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			UtilitySpace space = null;
+			AdditiveUtilitySpace space = null;
 			try {
-				space = new UtilitySpace(domain, "");
+				space = new AdditiveUtilitySpace(domain, "");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

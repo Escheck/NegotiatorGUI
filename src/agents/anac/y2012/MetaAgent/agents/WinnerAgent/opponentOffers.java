@@ -18,7 +18,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class opponentOffers {
 	
@@ -31,14 +31,14 @@ public class opponentOffers {
 	private double _ourAvgUtilFromOppOffers; //the average utility for our agent from the opponent offers so far
 	private double _ourMaxUtilFromOppOffers; //the max utility for our agent from the opponent offers so far
 	private double _oppConcessionRate; //the opponents concession rate (1=no concession, 1.5 means he offered us twice utility than before)
-	private UtilitySpace _utilitySpace;//the utility space
+	private AdditiveUtilitySpace _utilitySpace;//the utility space
 	private double _avgFlag;
 	private ArrayList<Set<Bid>> _oppoentOffersByUtility; //bids offered by opponent separated to bins according to their utility for us
 	
 	/**
 	 * creating and initializing the opponent's offers and data structure
 	 */
-	public opponentOffers(UtilitySpace utilitySpace, double avgFlag)
+	public opponentOffers(AdditiveUtilitySpace utilitySpace, double avgFlag)
 	{
 		//initialize data structures
 		_avgFlag = avgFlag;

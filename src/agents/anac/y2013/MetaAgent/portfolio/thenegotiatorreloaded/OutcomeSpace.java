@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import negotiator.Bid;
 import negotiator.BidIterator;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class generates the complete outcome space and is therefore
@@ -17,13 +17,13 @@ import negotiator.utility.UtilitySpace;
 public class OutcomeSpace {
 	
 	/** Reference to the utility space */
-	protected UtilitySpace utilitySpace;
+	protected AdditiveUtilitySpace utilitySpace;
 	/** List of all possible bids in the domain */
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
 	
 	public OutcomeSpace() { }
 	
-	public OutcomeSpace(UtilitySpace utilSpace) {
+	public OutcomeSpace(AdditiveUtilitySpace utilSpace) {
 		this.utilitySpace = utilSpace;
 		generateAllBids(utilSpace);
 	}
@@ -33,7 +33,7 @@ public class OutcomeSpace {
 	 * 
 	 * @param utilSpace
 	 */
-	public void generateAllBids(UtilitySpace utilSpace) {
+	public void generateAllBids(AdditiveUtilitySpace utilSpace) {
 		
 		BidIterator iter = new BidIterator(utilSpace.getDomain());
 		while (iter.hasNext()) {

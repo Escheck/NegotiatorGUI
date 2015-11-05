@@ -18,12 +18,12 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class IssueManager {
 	// world state :
 	Timeline T;
-	UtilitySpace US;
+	AdditiveUtilitySpace US;
 	int TotalBiddingPossibilities; // amount of all possible bidsd
 	// oponent properties :
 	Bid OpponentBestBid; // the first bid opponent gave us
@@ -123,7 +123,7 @@ public class IssueManager {
 	}
 
 	// fill utility-to-bid map here:
-	public IssueManager(UtilitySpace US, Timeline T, OpponnentModel om) {
+	public IssueManager(AdditiveUtilitySpace US, Timeline T, OpponnentModel om) {
 		if (TEST_EQUIVALENCE) {
 			random100 = new Random(100);
 			random200 = new Random(200);

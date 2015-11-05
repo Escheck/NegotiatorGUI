@@ -10,10 +10,10 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class negotiatingInfo {
-	private UtilitySpace utilitySpace; // ��p���
+	private AdditiveUtilitySpace utilitySpace; // ��p���
 	private ArrayList<Issue> issues; // �_�_
 	private ArrayList<Object> opponents; // ���g�ȊO�̌��Q���҂�sender
 	private ArrayList<Bid> MyBidHistory = null; // ��ė���
@@ -29,7 +29,7 @@ public class negotiatingInfo {
 	private int negotiatorNum = 3; // ���Ґ�
 	private boolean isLinerUtilitySpace = true; // ��`��p��Ԃł��邩�ǂ���
 
-	public negotiatingInfo(UtilitySpace utilitySpace) {
+	public negotiatingInfo(AdditiveUtilitySpace utilitySpace) {
 		// ����
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();

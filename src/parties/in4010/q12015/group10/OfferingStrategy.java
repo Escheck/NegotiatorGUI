@@ -12,11 +12,11 @@ import negotiator.Deadline;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OutcomeSpace;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OfferingStrategy {
 
-	public static Bid createPotentialBid(UtilitySpace utilitySpace,
+	public static Bid createPotentialBid(AdditiveUtilitySpace utilitySpace,
 			Opponent[] opponents, TimeLineInfo timeline, Deadline deadLine) {
 		System.out.println("OfferingStrategy - createPotentialBid");
 
@@ -69,7 +69,7 @@ public class OfferingStrategy {
 		for (Opponent currentOpponent : opponents) {
 			// Iterates over all opponents
 			BidCounter = 0;
-			UtilitySpace OpponentUtilities = currentOpponent
+			AdditiveUtilitySpace OpponentUtilities = currentOpponent
 					.getEstimatedUtilitySpace();
 			for (Iterator<BidDetails> BidDetailsIterator = PotentialBids
 					.iterator(); BidDetailsIterator.hasNext();) {

@@ -17,7 +17,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.issue.Value;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Agent proposed by Reyhan Aydogan #944 , conform the 'optimal bidder' agent by
@@ -65,7 +65,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	/************* implements PocketNegotiatorAgent ***************/
 	@Override
-	public void initPN(UtilitySpace mySide, UtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
 		updateProfiles(mySide, otherSide);
 		timeline = tl;
 	}
@@ -82,8 +82,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	}
 
 	@Override
-	public void updateProfiles(UtilitySpace myUtilities,
-			UtilitySpace opponentUtilities) {
+	public void updateProfiles(AdditiveUtilitySpace myUtilities,
+			AdditiveUtilitySpace opponentUtilities) {
 		utilitySpace = myUtilities; // keep Agent happy... For Genius
 		historySpace.setUtilities(myUtilities, opponentUtilities);
 
@@ -587,7 +587,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (myTurnsLeft < 0) {
 			myTurnsLeft = 0;
 		}
-		UtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
+		AdditiveUtilitySpace us = historySpace.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
 		if (RESERVATION_VALUE > maxutil) {
 			throw new IllegalStateException(

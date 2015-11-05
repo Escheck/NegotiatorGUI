@@ -6,7 +6,7 @@ import java.util.List;
 import misc.Range;
 import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsSorterUtility;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class is an OutcomeSpace but with a sorted list of BidDetails based on the utility
@@ -23,7 +23,7 @@ public class SortedOutcomeSpace extends OutcomeSpace {
 	 * 
 	 * @param utilSpace utilityspace of the agent.
 	 */
-	public SortedOutcomeSpace(UtilitySpace utilSpace) {
+	public SortedOutcomeSpace(AdditiveUtilitySpace utilSpace) {
 		super(utilSpace);
 		Collections.sort(allBids, new BidDetailsSorterUtility());
 	}

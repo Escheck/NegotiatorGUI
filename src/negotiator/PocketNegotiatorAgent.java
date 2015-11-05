@@ -4,7 +4,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * #915 Agents of this type are compatible with the PocketNegotiator.
@@ -42,7 +42,7 @@ public interface PocketNegotiatorAgent {
 	 *            negotiation. We pass it here because the init may already need
 	 *            it.
 	 */
-	void initPN(UtilitySpace mySide, UtilitySpace otherSide, Timeline timeline);
+	void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline timeline);
 
 	/**
 	 * the agent's opponent did an action. Inform the agent.
@@ -72,12 +72,12 @@ public interface PocketNegotiatorAgent {
 	 * needs to be updated , you can pass null for the other.
 	 * 
 	 * @param myUtilities
-	 *            the new {@link UtilitySpace} for the bot to use as his own
+	 *            the new {@link AdditiveUtilitySpace} for the bot to use as his own
 	 *            utility space.
 	 * @param opponentUtilities
-	 *            the new {@link UtilitySpace} for the bot to use as his
+	 *            the new {@link AdditiveUtilitySpace} for the bot to use as his
 	 *            opponent utility space.
 	 */
-	void updateProfiles(UtilitySpace myUtilities, UtilitySpace opponentUtilities);
+	void updateProfiles(AdditiveUtilitySpace myUtilities, AdditiveUtilitySpace opponentUtilities);
 
 }

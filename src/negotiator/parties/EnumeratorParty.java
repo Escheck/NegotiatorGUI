@@ -18,7 +18,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.logging.CsvLogger;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Debug class for enumerating all offers to a file
@@ -28,7 +28,7 @@ public class EnumeratorParty extends AbstractNegotiationParty {
 	public static int id = 0;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID agtid) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, agtid);
 

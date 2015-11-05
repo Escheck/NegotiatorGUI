@@ -8,7 +8,7 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.tools.UtilitySpaceAdapter;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.TournamentConfiguration;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * The theoretically worst opponent model. Note that for using this model
@@ -39,7 +39,7 @@ public class WorstModel extends OpponentModel {
 	}
 	
 	@Override
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		this.opponentUtilitySpace = opponentUtilitySpace;
 		this.worstUtilitySpace = new UtilitySpaceAdapter(this, opponentUtilitySpace.getDomain());
 	}
@@ -59,7 +59,7 @@ public class WorstModel extends OpponentModel {
 		return "Worst Model";
 	}
 	
-	public UtilitySpace getOpponentUtilitySpace(){
+	public AdditiveUtilitySpace getOpponentUtilitySpace(){
 		return worstUtilitySpace;
 	}
 	

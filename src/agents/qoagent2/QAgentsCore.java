@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 /*
@@ -1844,7 +1844,7 @@ public class QAgentsCore {
 	 * @param agentType - the returned agent
 	 * Note: this function is identical to readUtilityFile in the Client 	  
 	 */
-	private void createAgentTypeFromFile(UtilitySpace utilitySpace, QAgentType agentType)
+	private void createAgentTypeFromFile(AdditiveUtilitySpace utilitySpace, QAgentType agentType)
 	{
 		//DT: BufferedReader br = null;
 		String line;
@@ -1876,7 +1876,7 @@ public class QAgentsCore {
 	 * @param dGeneralValues - array of the general values
 	 * @return line - the new line
 	 */
-	public String readUtilityDetails(UtilitySpace utilitySpace, ArrayList<UtilityDetails> lstUtilityDetails, double dGeneralValues[])
+	public String readUtilityDetails(AdditiveUtilitySpace utilitySpace, ArrayList<UtilityDetails> lstUtilityDetails, double dGeneralValues[])
 	{
 		UtilityDetails utilityDetails = null;
 

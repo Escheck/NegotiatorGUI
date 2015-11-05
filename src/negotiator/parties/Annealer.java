@@ -16,7 +16,7 @@ import negotiator.actions.OfferForVoting;
 import negotiator.actions.VoteForOfferAcceptance;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Implementation of a party that uses simulated annealing strategy to get to an
@@ -63,7 +63,7 @@ public class Annealer extends AbstractNegotiationParty {
 	 *            reproducible)
 	 */
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		lastAcceptedBidUtility = 0;

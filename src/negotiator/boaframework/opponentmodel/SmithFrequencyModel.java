@@ -8,7 +8,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.agentsmith.SmithModel;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Adapter for the Frequency Model for the BOA framework.
@@ -45,7 +45,7 @@ public class SmithFrequencyModel extends OpponentModel {
 	}
 	
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		if (round > 0) {
 			return new OpponentModelUtilSpace(model);
 		} else {

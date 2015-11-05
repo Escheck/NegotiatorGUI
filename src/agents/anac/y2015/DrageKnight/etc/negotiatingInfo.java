@@ -10,10 +10,10 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class negotiatingInfo {
-	private UtilitySpace utilitySpace; // 効用空間
+	private AdditiveUtilitySpace utilitySpace; // 効用空間
 	private ArrayList<Issue> issues; // 論点
 	private ArrayList<Object> opponents; // 自身以外の交渉参加者のsender
 	private ArrayList<Bid> MyBidHistory = null; // 提案履歴
@@ -28,7 +28,7 @@ public class negotiatingInfo {
 	private int negotiatorNum = 0; // 交渉者数
 	private boolean isLinerUtilitySpace = true; // 線形効用空間であるかどうか
 
-	public negotiatingInfo(UtilitySpace utilitySpace) {
+	public negotiatingInfo(AdditiveUtilitySpace utilitySpace) {
 		// 初期化
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();

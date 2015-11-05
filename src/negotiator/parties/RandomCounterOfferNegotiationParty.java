@@ -9,7 +9,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Basic voting implementation: this agent accepts and rejects offers with a 50%
@@ -37,7 +37,7 @@ public class RandomCounterOfferNegotiationParty extends
 	 *            reproducible)
 	 */
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);

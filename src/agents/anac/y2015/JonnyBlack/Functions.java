@@ -5,10 +5,10 @@ import java.util.Vector;
 import negotiator.Bid;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class Functions {
-	public static int[] calcOrderOfIssues(UtilitySpace us) {
+	public static int[] calcOrderOfIssues(AdditiveUtilitySpace us) {
 		int noOfIssues = us.getNrOfEvaluators();
 		int[] issueOrder = new int[noOfIssues];
 		for (int i = 0; i < issueOrder.length; i++) {
@@ -26,7 +26,7 @@ public class Functions {
 		return issueOrder;
 	}
 
-	public static int[][] calcOrderOfIssueVals(UtilitySpace us) {
+	public static int[][] calcOrderOfIssueVals(AdditiveUtilitySpace us) {
 		int noOfIssues = us.getNrOfEvaluators();
 		int[][] orderOfVals = new int[noOfIssues][];
 		for (int i = 0; i < noOfIssues; i++) {
@@ -55,7 +55,7 @@ public class Functions {
 		return orderOfVals;
 	}
 
-	public static double getValueOfIssueVal(UtilitySpace us, int issue, int val) {
+	public static double getValueOfIssueVal(AdditiveUtilitySpace us, int issue, int val) {
 		Bid temp = getCopyOfBestBid(us);
 		ValueDiscrete vd = getVal(us, issue, val);
 		temp = temp.putValue(issue + 1, vd);
@@ -63,12 +63,12 @@ public class Functions {
 		return value;
 	}
 
-	public static ValueDiscrete getVal(UtilitySpace us, int issue, int valID) {
+	public static ValueDiscrete getVal(AdditiveUtilitySpace us, int issue, int valID) {
 		IssueDiscrete is = (IssueDiscrete) us.getIssue(issue);
 		return is.getValue(valID);
 	}
 
-	public static double evaluateOneIssue(UtilitySpace us, int issue, Bid b) {
+	public static double evaluateOneIssue(AdditiveUtilitySpace us, int issue, Bid b) {
 		try {
 			return us.getEvaluator(issue + 1).getEvaluation(us, b, issue + 1);
 		} catch (Exception e) {
@@ -77,7 +77,7 @@ public class Functions {
 		return -1;
 	}
 
-	public static Bid getCopyOfBestBid(UtilitySpace us) {
+	public static Bid getCopyOfBestBid(AdditiveUtilitySpace us) {
 		try {
 			return new Bid(us.getMaxUtilityBid());
 		} catch (Exception e) {
@@ -86,7 +86,7 @@ public class Functions {
 		return null;
 	}
 
-	public static double getBidValue(UtilitySpace us, Bid b) {
+	public static double getBidValue(AdditiveUtilitySpace us, Bid b) {
 		try {
 			return us.getUtility(b);
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class Functions {
 	}
 
 	public static double calcStopVal(Vector<Party> parties, int n,
-			UtilitySpace us) {
+			AdditiveUtilitySpace us) {
 		for (Party p : parties) {
 			p.orderBids(us);
 		}

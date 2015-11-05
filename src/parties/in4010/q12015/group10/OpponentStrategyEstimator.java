@@ -12,12 +12,12 @@ import negotiator.DeadlineType;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.OutcomeSpace;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentStrategyEstimator {
 
 	static double updateAllModels(Opponent[] opponents, Deadline deadLine,
-			TimeLineInfo timeLine, UtilitySpace myUtilitySpace) {
+			TimeLineInfo timeLine, AdditiveUtilitySpace myUtilitySpace) {
 		boolean acceptableQuality = false;
 		if (deadLine.getType() == DeadlineType.TIME) {
 			return 0.0;

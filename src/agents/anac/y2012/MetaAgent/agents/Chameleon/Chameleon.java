@@ -19,7 +19,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /*
  * Agent Chameleon. Changes its behavior by adapting to the opponent.
@@ -33,7 +33,7 @@ public class Chameleon extends Agent {
 		/*
 		 * Initialize the given strategy
 		 */
-		public void init(UtilitySpace utilitySpace);
+		public void init(AdditiveUtilitySpace utilitySpace);
 
 		/*
 		 * Receive an opponent bid
@@ -53,7 +53,7 @@ public class Chameleon extends Agent {
 		private static final int MAX_RANDOM_BID_SEARCH_TRIES = 10000;
 		private Bid maxUtilityBid;
 		private double maxUtility;
-		private UtilitySpace utilitySpace;
+		private AdditiveUtilitySpace utilitySpace;
 		private Map<Bid, Double> opponentBids;
 		private Map<Bid, Double> opponentBidTimes;
 		private Bid lastOpponentBid;
@@ -63,7 +63,7 @@ public class Chameleon extends Agent {
 		/*
 		 * Initialize the given strategy
 		 */
-		public void init(UtilitySpace utilitySpace) {
+		public void init(AdditiveUtilitySpace utilitySpace) {
 			this.utilitySpace = utilitySpace;
 
 			try {
@@ -94,7 +94,7 @@ public class Chameleon extends Agent {
 		/*
 		 * Get the utility space
 		 */
-		protected UtilitySpace getUtilitySpace() {
+		protected AdditiveUtilitySpace getUtilitySpace() {
 			return utilitySpace;
 		}
 
@@ -252,7 +252,7 @@ public class Chameleon extends Agent {
 		/*
 		 * Initialize the strategy
 		 */
-		public void init(UtilitySpace utilitySpace) {
+		public void init(AdditiveUtilitySpace utilitySpace) {
 			super.init(utilitySpace);
 			targetUtility = 1.0;
 		}
@@ -385,7 +385,7 @@ public class Chameleon extends Agent {
 		 * @see ro.pub.cs.anac.strategies.BaseStrategy#init(negotiator.utility.
 		 * UtilitySpace)
 		 */
-		public void init(UtilitySpace utilitySpace) {
+		public void init(AdditiveUtilitySpace utilitySpace) {
 			super.init(utilitySpace);
 			bestNeighbourUtility = 0.0;
 			bestNeighbour = null;

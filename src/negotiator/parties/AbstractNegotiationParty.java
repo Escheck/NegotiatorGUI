@@ -18,7 +18,7 @@ import negotiator.issue.ValueReal;
 import negotiator.protocol.MultilateralProtocolAdapter;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import org.apache.commons.lang.NullArgumentException;
 
@@ -55,7 +55,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 * NOTICE this is protected and appears to be used directly by lots of
 	 * implementations.
 	 */
-	protected UtilitySpace utilitySpace;// should be final after init
+	protected AdditiveUtilitySpace utilitySpace;// should be final after init
 
 	/**
 	 * The id used to identify this agent (if set to null, a default identifier
@@ -64,7 +64,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	private AgentID partyId;
 
 	@Override
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		if (utilSpace == null) {
 			throw new NullArgumentException("utilSpace");
@@ -198,7 +198,7 @@ public abstract class AbstractNegotiationParty implements NegotiationParty {
 	 *
 	 * @return The utility space
 	 */
-	public final UtilitySpace getUtilitySpace() {
+	public final AdditiveUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 

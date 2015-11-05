@@ -16,7 +16,7 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * NegotiationParty for Group 5. This agent moves closer to the estimated Nash
@@ -57,7 +57,7 @@ public class Group5 extends AbstractNegotiationParty {
 	 * UtilitySpace, negotiator.Deadline, negotiator.session.TimeLineInfo, long,
 	 * negotiator.AgentID)
 	 */
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		opponentModels = new HashMap<Object, OpponentModel>();
@@ -138,7 +138,7 @@ public class Group5 extends AbstractNegotiationParty {
 
 		// Get modeled utility spaces for opponents
 		Set<Object> opponents = opponentModels.keySet();
-		Map<Object, UtilitySpace> opponentUtilSpaces = new HashMap<Object, UtilitySpace>();
+		Map<Object, AdditiveUtilitySpace> opponentUtilSpaces = new HashMap<Object, AdditiveUtilitySpace>();
 		for (Object opponent : opponents) {
 			opponentUtilSpaces.put(opponent, opponentModels.get(opponent)
 					.getUtilitySpace());
@@ -171,7 +171,7 @@ public class Group5 extends AbstractNegotiationParty {
 
 			double nash = ourUtil;
 			for (Object opponent : opponents) {
-				UtilitySpace opponentUtilSpace = opponentUtilSpaces
+				AdditiveUtilitySpace opponentUtilSpace = opponentUtilSpaces
 						.get(opponent);
 				nash *= opponentUtilSpace.getUtility(bid.getBid());
 			}

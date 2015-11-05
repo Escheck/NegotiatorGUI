@@ -10,7 +10,7 @@ import negotiator.boaframework.ComponentsEnum;
 import negotiator.boaframework.SessionData;
 import negotiator.issue.Issue;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
  
  public class NegotiationSession
  {
@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
    protected BidHistory opponentBidHistory;
    protected BidHistory ownBidHistory;
    protected Domain domain;
-   protected UtilitySpace utilitySpace;
+   protected AdditiveUtilitySpace utilitySpace;
    protected Timeline timeline;
    private SessionData sessionData;
  
@@ -26,12 +26,12 @@ import negotiator.utility.UtilitySpace;
    {
    }
  
-   public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline)
+   public NegotiationSession(SessionData sessionData, AdditiveUtilitySpace utilitySpace, Timeline timeline)
    {
      this(sessionData, utilitySpace, timeline, null);
    }
  
-   public NegotiationSession(SessionData sessionData, UtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace)
+   public NegotiationSession(SessionData sessionData, AdditiveUtilitySpace utilitySpace, Timeline timeline, OutcomeSpace outcomeSpace)
    {
      this.sessionData = sessionData;
      this.utilitySpace = utilitySpace;
@@ -81,7 +81,7 @@ import negotiator.utility.UtilitySpace;
      return null;
    }
  
-   public UtilitySpace getUtilitySpace()
+   public AdditiveUtilitySpace getUtilitySpace()
    {
      return this.utilitySpace;
    }

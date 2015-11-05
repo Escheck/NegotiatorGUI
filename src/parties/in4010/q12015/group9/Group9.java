@@ -13,7 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is your negotiation party.
@@ -99,7 +99,7 @@ public class Group9 extends AbstractNegotiationParty {
 	}
 
 	// Mostly initiate the super, besides that create the BOA components
-	public void init(UtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		acceptCount = 0;

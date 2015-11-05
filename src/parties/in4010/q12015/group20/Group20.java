@@ -19,7 +19,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is your negotiation party.
@@ -54,7 +54,7 @@ public class Group20 extends AbstractNegotiationParty {
 	 * Initialization function
 	 */
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline dl, TimeLineInfo tl,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline dl, TimeLineInfo tl,
 			long randomSeed, AgentID agentId) {
 		super.init(utilitySpace, dl, tl, randomSeed, agentId);
 		agentWeights = new Double[utilitySpace.getDomain().getIssues().size()];

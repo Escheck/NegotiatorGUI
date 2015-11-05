@@ -3,10 +3,10 @@ package agents.anac.y2014.Aster;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class GetAcceptProb {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private double target;
 	private double bidTarget;
 	private double sum;
@@ -31,7 +31,7 @@ public class GetAcceptProb {
 	private static final int EMA_SHORT = 26;
 	private static final int EMA_LONG = 52;
 
-	public GetAcceptProb(UtilitySpace utilitySpace) {
+	public GetAcceptProb(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		this.target = 1.0D;
 		this.bidTarget = 1.0D;

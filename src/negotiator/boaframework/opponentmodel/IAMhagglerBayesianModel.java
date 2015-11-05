@@ -24,7 +24,7 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.EvaluatorHypothesis;
 import agents.bayesianopponentmodel.Hypothesis;
 
@@ -49,7 +49,7 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	private final int totalTriangularFunctions = 4;
 	private TimeConcessionFunction opponentConcessionFunction;
 	private Domain domain;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean useAll = false;
 	private int startingBidIssue = 0;
 
@@ -771,7 +771,7 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 	}
 
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new UtilitySpaceAdapter(this, domain);
 	}
 

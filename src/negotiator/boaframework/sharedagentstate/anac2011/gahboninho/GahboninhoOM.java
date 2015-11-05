@@ -17,10 +17,10 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class GahboninhoOM {
-	UtilitySpace US;
+	AdditiveUtilitySpace US;
 	private final boolean TEST_EQUIVALENCE = false;
 	private Random random500;
 	private Random random600;
@@ -323,7 +323,7 @@ public class GahboninhoOM {
 	public double TotalIssueOptionsVariance;
 	private Timeline timeline;
 
-	public GahboninhoOM(UtilitySpace utilitySpace, Timeline timeline) {
+	public GahboninhoOM(AdditiveUtilitySpace utilitySpace, Timeline timeline) {
 		if (TEST_EQUIVALENCE) {
 			random500 = new Random(500);
 			random600 = new Random(600);

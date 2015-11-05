@@ -22,7 +22,7 @@ import negotiator.utility.*;
 public class BayesianOpponentModelScalable extends OpponentModel {
 	
 
-	private UtilitySpace fUS;
+	private AdditiveUtilitySpace fUS;
 	private ArrayList<ArrayList<WeightHypothesis2>> fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 //	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;
@@ -34,7 +34,7 @@ public class BayesianOpponentModelScalable extends OpponentModel {
 	
 	
 	
-	public BayesianOpponentModelScalable(UtilitySpace pUtilitySpace) {
+	public BayesianOpponentModelScalable(AdditiveUtilitySpace pUtilitySpace) {
 		//
 
 		fPreviousBidUtility = 1;

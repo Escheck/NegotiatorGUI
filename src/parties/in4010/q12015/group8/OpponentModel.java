@@ -8,7 +8,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentModel {
 	private static final double FREQUENCY_THRESHOLD = 0.95;
@@ -20,14 +20,14 @@ public class OpponentModel {
 	private double totalBids = 0.0;
 	private Bid previousBid = null;
 	private int updatedIssues = 0;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 
 	/**
 	 * Create OppentModel for current utility space
 	 * 
 	 * @param utilitySpace
 	 */
-	public OpponentModel(UtilitySpace utilitySpace) {
+	public OpponentModel(AdditiveUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		for (Issue issue : utilitySpace.getDomain().getIssues()) {
 			List<ValueDiscrete> values = ((IssueDiscrete) issue).getValues();

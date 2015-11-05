@@ -12,7 +12,7 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public class NonlinearUtilitySpace extends UtilitySpace {
+public class NonlinearUtilitySpace extends AdditiveUtilitySpace {
 	private double maxUtilityValue;
 	private UtilityFunction nonlinearFunction;
 	private ArrayList<InclusiveHyperRectangle> allinclusiveConstraints; // we
@@ -82,7 +82,7 @@ public class NonlinearUtilitySpace extends UtilitySpace {
 	}
 
 	/** @return a clone of another utility space */
-	public NonlinearUtilitySpace(UtilitySpace us) {
+	public NonlinearUtilitySpace(AdditiveUtilitySpace us) {
 		domain = us.getDomain();
 		fileName = us.getFileName();
 		spaceType = UTILITYSPACETYPE.NONLINEAR;

@@ -7,7 +7,7 @@ import negotiator.Global;
 import negotiator.boaframework.OpponentModel;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.TournamentConfiguration;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * An opponent model symbolizing perfect knowledge about the opponent's preferences.
@@ -35,7 +35,7 @@ public class PerfectModel extends OpponentModel {
 	}
 	
 	@Override
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		this.opponentUtilitySpace = opponentUtilitySpace;
 	}
 

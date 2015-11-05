@@ -7,10 +7,10 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class SearchSA {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private Random randomnr = new Random();
 	private ArrayList<Bid> bidList = new ArrayList<Bid>();
 	private double temperature;
@@ -18,7 +18,7 @@ public class SearchSA {
 	private static final int NUMBER_ITERATIONS = 10000; // ç¹°ã‚Šè¿”ã�—å›žæ•°
 	private static final int NUMBER_SOLUTIONS = 50;
 
-	public SearchSA(UtilitySpace utilitySpace, int sessionNr) {
+	public SearchSA(AdditiveUtilitySpace utilitySpace, int sessionNr) {
 		this.utilitySpace = utilitySpace;
 		this.temperature = 1000000;
 		// this.fileWriter = createFileWriter(sessionNr);

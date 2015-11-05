@@ -13,7 +13,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.qualitymeasures.ScenarioInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class can be used to test if the implementation of the Pareto frontier
@@ -91,9 +91,9 @@ public class ParetoTest {
 		for (ScenarioInfo domainSt : domains) {
 			// 1. Load the domain
 			Domain domain = new Domain(dir + domainSt.getDomain());
-			UtilitySpace utilitySpaceA, utilitySpaceB;
-			utilitySpaceA =  new UtilitySpace(domain, dir + domainSt.getPrefProfA());
-			utilitySpaceB =  new UtilitySpace(domain, dir + domainSt.getPrefProfB());
+			AdditiveUtilitySpace utilitySpaceA, utilitySpaceB;
+			utilitySpaceA =  new AdditiveUtilitySpace(domain, dir + domainSt.getPrefProfA());
+			utilitySpaceB =  new AdditiveUtilitySpace(domain, dir + domainSt.getPrefProfB());
 			
 			// 2. Determine all Pareto-bids using both a bruteforce algorithm and algorithm in the BidSpace class
 			ArrayList<BidPoint> realParetoBids = bruteforceParetoBids(domain, utilitySpaceA, utilitySpaceB);
@@ -173,7 +173,7 @@ public class ParetoTest {
 	 * @param spaceB
 	 * @return set of Pareto-bids
 	 */
-	private static ArrayList<BidPoint> bruteforceParetoBids(Domain domain, UtilitySpace spaceA, UtilitySpace spaceB) {
+	private static ArrayList<BidPoint> bruteforceParetoBids(Domain domain, AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB) {
 		SortedOutcomeSpace outcomeSpaceA = new SortedOutcomeSpace(spaceA);
 		ArrayList<BidPoint> paretoBids = new ArrayList<BidPoint>();
 		try {

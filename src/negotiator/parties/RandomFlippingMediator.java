@@ -15,7 +15,7 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Mediator that randomly flips one issue of the current offer to generate a new
@@ -57,7 +57,7 @@ public class RandomFlippingMediator extends AbstractNegotiationParty implements
 	 *            reproducible)
 	 */
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		isAcceptable = true;

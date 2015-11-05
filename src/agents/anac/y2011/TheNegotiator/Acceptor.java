@@ -2,7 +2,7 @@ package agents.anac.y2011.TheNegotiator;
 
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * The Acceptor class is used to decide when to accept a bid.
@@ -12,7 +12,7 @@ import negotiator.utility.UtilitySpace;
 public class Acceptor {
 	
 	// utilityspace of the negotiation
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	// reference to the bidscollection
 	private BidsCollection bidsCollection;
 	
@@ -23,7 +23,7 @@ public class Acceptor {
 	 * @param utilitySpace
 	 * @param bidsCollection of all possible bids (for us) and the partner bids
 	 */
-	public Acceptor(UtilitySpace utilitySpace, BidsCollection bidsCollection) {
+	public Acceptor(AdditiveUtilitySpace utilitySpace, BidsCollection bidsCollection) {
 		this.utilitySpace = utilitySpace;
 		this.bidsCollection = bidsCollection;
 	}

@@ -12,7 +12,7 @@ import negotiator.Domain;
 import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsSorterUtility;
 import negotiator.bidding.BidDetailsStrictSorterUtility;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BidHistory implements Iterable<BidDetails>
 {
@@ -32,7 +32,7 @@ public class BidHistory implements Iterable<BidDetails>
 	/**
 	 * Pretends all bids in the domain were made on t = 0.
 	 */
-	public BidHistory(UtilitySpace u)
+	public BidHistory(AdditiveUtilitySpace u)
 	{
 		this();
 		Domain domain = u.getDomain();

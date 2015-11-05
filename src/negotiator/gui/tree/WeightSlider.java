@@ -68,7 +68,7 @@ public class WeightSlider extends JPanel implements ChangeListener, ItemListener
 		
 		// Wouter: new code using the hasWeight field.
 		boolean hasweight=true;
-		UtilitySpace us=tableModel.getUtilitySpace();
+		AdditiveUtilitySpace us=tableModel.getUtilitySpace();
 		if (us != null)
 		{
 			Evaluator ev=us.getEvaluator(obj.getNumber());

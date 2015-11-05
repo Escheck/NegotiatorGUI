@@ -47,7 +47,7 @@ public interface Evaluator {
 	 * @return utility of the value for an issue, not normalized by the issue weight.
 	 * @throws Exception if problem, for instance illegal evaluation values.
 	 */
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) throws Exception;
+	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid, int index) throws Exception;
 	
 	/**
 	 * @return type of evaluation function, for example EVALUATORTYPE.LINEAR.

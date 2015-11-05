@@ -5,7 +5,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 import misc.Pair;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
@@ -46,7 +46,7 @@ public class IAMhaggler_Concession {
 
 
 	
-	public IAMhaggler_Concession(UtilitySpace utilitySpace) {
+	public IAMhaggler_Concession(AdditiveUtilitySpace utilitySpace) {
 		double discountingFactor = 0.5;
 		try
 		{

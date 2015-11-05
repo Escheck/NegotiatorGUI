@@ -7,19 +7,19 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class Opponent {
-	private UtilitySpace utilSpace, U16;
+	private AdditiveUtilitySpace utilSpace, U16;
 
 	// The learning rate of the weights
 	private double n = 0.05;
 
 	private ArrayList<Bid> bidList;
 
-	public Opponent(UtilitySpace utilSpaceGeneral, UtilitySpace utilSpaceAgent16) {
-		U16 = new UtilitySpace(utilSpaceAgent16);
-		utilSpace = new UtilitySpace(utilSpaceGeneral.getDomain());
+	public Opponent(AdditiveUtilitySpace utilSpaceGeneral, AdditiveUtilitySpace utilSpaceAgent16) {
+		U16 = new AdditiveUtilitySpace(utilSpaceAgent16);
+		utilSpace = new AdditiveUtilitySpace(utilSpaceGeneral.getDomain());
 		// Initializing all weights as 1/NrOfIssues:
 		double initWeight = (double) 1
 				/ (utilSpace.getDomain().getObjectives().size() - 1);
@@ -129,7 +129,7 @@ public class Opponent {
 		}
 	}
 
-	public UtilitySpace getUtilSpace() {
+	public AdditiveUtilitySpace getUtilSpace() {
 		return utilSpace;
 	}
 

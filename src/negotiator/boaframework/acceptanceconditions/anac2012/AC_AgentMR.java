@@ -22,7 +22,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the Acceptance condition of AgentMR Due to the connectedness of the
@@ -42,7 +42,7 @@ public class AC_AgentMR extends AcceptanceStrategy {
 	private static boolean discountFactor;
 	private static double offereMaxUtility;
 	private int currentBidNumber = 0;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private boolean alreadyDone = false;
 	private Actions nextAction;
 

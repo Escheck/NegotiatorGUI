@@ -15,7 +15,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -32,7 +32,7 @@ public class Preference {
 	 * to fill the values of each issue and their order.
 	 * @param utilitySpace of the player in turn
 	 */
-	public Preference(UtilitySpace utilitySpace){
+	public Preference(AdditiveUtilitySpace utilitySpace){
 		Domain domain = utilitySpace.getDomain();
 		int size = utilitySpace.getEvaluators().size();
 		System.out.println("size: "+size);
@@ -60,7 +60,7 @@ public class Preference {
 	 * @param utilitySpace of the agent receiving the message
 	 * @param bid
 	 */
-	public Preference(UtilitySpace utilitySpace, Bid bid){
+	public Preference(AdditiveUtilitySpace utilitySpace, Bid bid){
 		Domain domain = utilitySpace.getDomain();
 		int size = utilitySpace.getEvaluators().size();
 		System.out.println("size: "+size);

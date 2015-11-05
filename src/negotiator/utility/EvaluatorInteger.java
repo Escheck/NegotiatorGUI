@@ -67,7 +67,7 @@ public class EvaluatorInteger implements Evaluator {
 		return fweightLock;
 	}	
 	
-	public Double getEvaluation(UtilitySpace uspace, Bid bid, int index) {
+	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid, int index) {
 		Integer lTmp = null;
 		try {
 			lTmp = ((ValueInteger)bid.getValue(index)).getValue();

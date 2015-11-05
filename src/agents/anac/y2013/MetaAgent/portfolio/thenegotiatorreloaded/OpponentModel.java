@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import negotiator.Bid;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the abstract class for the agents Opponent Model.
@@ -14,18 +14,18 @@ import negotiator.utility.UtilitySpace;
 public abstract class OpponentModel {
 	
 	protected NegotiationSession negotiationSession;
-	protected UtilitySpace opponentUtilitySpace;
+	protected AdditiveUtilitySpace opponentUtilitySpace;
 	private boolean cleared;
 	
 	public void init(NegotiationSession domainKnow, HashMap<String, Double> parameters) throws Exception {
 		negotiationSession = domainKnow;
-		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
+		opponentUtilitySpace = new AdditiveUtilitySpace(domainKnow.getUtilitySpace());
 		cleared = false;
 	}
 	
 	public void init(NegotiationSession domainKnow) {
 		negotiationSession = domainKnow;
-		opponentUtilitySpace = new UtilitySpace(domainKnow.getUtilitySpace());
+		opponentUtilitySpace = new AdditiveUtilitySpace(domainKnow.getUtilitySpace());
 	}
 
 	public abstract void updateModel(Bid opponentBid);
@@ -54,7 +54,7 @@ public abstract class OpponentModel {
 		return opponentUtilitySpace.getUtilityWithDiscount(b, time);
 	}
 	
-	public UtilitySpace getOpponentUtilitySpace(){
+	public AdditiveUtilitySpace getOpponentUtilitySpace(){
 		return opponentUtilitySpace;
 	}
 

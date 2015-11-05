@@ -29,7 +29,7 @@ import negotiator.session.TimeLineInfo;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import flanagan.analysis.Regression;
 
 public class AgentBuyogMain extends AbstractNegotiationParty {
@@ -62,7 +62,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 	private int numberOfRounds = 0;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		this.totalHistory = new BidHistory();
@@ -331,7 +331,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 		}
 
 		// CODE TO LEARN OPPONENT PREFERENCES
-		UtilitySpace opponentUtilitySpace = senderInfo
+		AdditiveUtilitySpace opponentUtilitySpace = senderInfo
 				.getOpponentUtilitySpace();
 
 		if (senderInfo.getAgentBidHistory().size() < 2) {

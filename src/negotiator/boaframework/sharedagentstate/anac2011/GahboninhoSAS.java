@@ -5,7 +5,7 @@ import negotiator.boaframework.SharedAgentState;
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.GahboninhoOM;
 import negotiator.boaframework.sharedagentstate.anac2011.gahboninho.IssueManager;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is the shared code of the acceptance condition and bidding strategy of ANAC 2011 Gahboninho.
@@ -16,7 +16,7 @@ import negotiator.utility.UtilitySpace;
 public class GahboninhoSAS extends SharedAgentState {
 	private GahboninhoOM om;
 	private IssueManager im;
-	private UtilitySpace utilSpace;
+	private AdditiveUtilitySpace utilSpace;
 	private Timeline timeline;
 	private int firstActions = 40;
 	private NegotiationSession negotiationSession;

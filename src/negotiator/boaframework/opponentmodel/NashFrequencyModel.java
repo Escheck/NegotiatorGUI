@@ -18,7 +18,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 /**
@@ -202,7 +202,7 @@ public class NashFrequencyModel extends OpponentModel
 		return "NASH Frequency Model";
 	}
 	
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		if (issueEvaluationList.isReady()) {
 			return new UtilitySpaceAdapter(this, negotiationSession.getUtilitySpace().getDomain());
 		} else {

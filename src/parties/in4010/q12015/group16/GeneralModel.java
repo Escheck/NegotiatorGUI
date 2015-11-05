@@ -13,7 +13,7 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Model representing the 'average' of all negotiators during a session. This is
@@ -27,8 +27,8 @@ public class GeneralModel {
 
 	private int i = -1;
 
-	private UtilitySpace utilSpaceAgent16;
-	private UtilitySpace utilSpaceGeneral;
+	private AdditiveUtilitySpace utilSpaceAgent16;
+	private AdditiveUtilitySpace utilSpaceGeneral;
 	private SortedOutcomeSpace outcomeSpace;
 
 	private ArrayList<AgentID> opponentIDs;
@@ -42,12 +42,12 @@ public class GeneralModel {
 	 * @param sortedOutcomeSpace
 	 *            all possible bids sorted according to utilSpace
 	 */
-	public GeneralModel(UtilitySpace utilSpace,
+	public GeneralModel(AdditiveUtilitySpace utilSpace,
 			SortedOutcomeSpace sortedOutcomeSpace) {
 		utilSpaceAgent16 = utilSpace;
 		// Create general utility space by copying ours; otherwise we can't do
 		// 'new SortedOutcomeSpace(utilSpaceGeneral)' in 'generate()'
-		utilSpaceGeneral = new UtilitySpace(utilSpaceAgent16);
+		utilSpaceGeneral = new AdditiveUtilitySpace(utilSpaceAgent16);
 		outcomeSpace = sortedOutcomeSpace;
 
 		opponentList = new HashMap<AgentID, Opponent>();
@@ -104,7 +104,7 @@ public class GeneralModel {
 	 * averaging issue weights and values.
 	 */
 	private void combineUtilitySpaces() {
-		UtilitySpace opponentUtilitySpace = null;
+		AdditiveUtilitySpace opponentUtilitySpace = null;
 		double sumOfWeights = 0;
 		double weight = 0;
 		for (Issue issue : utilSpaceGeneral.getDomain().getIssues()) {
@@ -182,7 +182,7 @@ public class GeneralModel {
 		return proposal;
 	}
 
-	public UtilitySpace getUtilSpaceGeneral() {
+	public AdditiveUtilitySpace getUtilSpaceGeneral() {
 		return utilSpaceGeneral;
 	}
 

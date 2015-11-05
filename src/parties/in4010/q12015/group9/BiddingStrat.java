@@ -14,10 +14,10 @@ import negotiator.BidHistory;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class BiddingStrat {
-	private UtilitySpace ourUtility;
+	private AdditiveUtilitySpace ourUtility;
 	private SortedOutcomeSpace sortedSpace;
 	private Bid ourPreviousBid;
 	private boolean gahboninhoConcReactionDet;
@@ -30,7 +30,7 @@ public class BiddingStrat {
 	private Random rand;
 	private double gahboninoConcActualDeadline;
 
-	public BiddingStrat(UtilitySpace ownUtility) {
+	public BiddingStrat(AdditiveUtilitySpace ownUtility) {
 		ourUtility = ownUtility;
 		sortedSpace = new SortedOutcomeSpace(ourUtility);
 		ourPreviousBid = sortedSpace.getMaxBidPossible().getBid();
@@ -46,7 +46,7 @@ public class BiddingStrat {
 	// This is called every time an actions needs to be chosen to generate our
 	// candidate bid
 	public Bid createBid(HashMap<Object, BidHistory> previousBids,
-			HashMap<Object, UtilitySpace> opponentUtilities,
+			HashMap<Object, AdditiveUtilitySpace> opponentUtilities,
 			TimeLineInfo timeLine) {
 		ourPreviousBid = getGahboninhoBid(previousBids, opponentUtilities,
 				timeLine);
@@ -65,7 +65,7 @@ public class BiddingStrat {
 	// It's basically boulware against a hardliner and hardliner against
 	// concession agents
 	private Bid getGahboninhoBid(HashMap<Object, BidHistory> previousBids,
-			HashMap<Object, UtilitySpace> opponentUtilities,
+			HashMap<Object, AdditiveUtilitySpace> opponentUtilities,
 			TimeLineInfo timeLine) {
 		// Parameters
 		final double concessionDeadline = 0.05;
@@ -180,7 +180,7 @@ public class BiddingStrat {
 	// Find set of bids the opponents would most prefer out of the bids in our
 	// target utility range
 	private Bid getBidFromTargetRange(Range bidRange,
-			HashMap<Object, UtilitySpace> opponentUtilities) {
+			HashMap<Object, AdditiveUtilitySpace> opponentUtilities) {
 		final int numberBidsConsider = 3;
 		List<Entry<Bid, Double>> consideredBids = new ArrayList<Entry<Bid, Double>>();
 		List<BidDetails> possibleBids = sortedSpace.getBidsinRange(bidRange);
@@ -191,7 +191,7 @@ public class BiddingStrat {
 
 		for (BidDetails candidate : possibleBids) {
 			double opponentUtilMult = 1;
-			for (UtilitySpace opponentSpace : opponentUtilities.values()) {
+			for (AdditiveUtilitySpace opponentSpace : opponentUtilities.values()) {
 				try {
 					opponentUtilMult = opponentUtilMult
 							* opponentSpace.getUtility(candidate.getBid());

@@ -7,7 +7,7 @@ import agents.bayesianopponentmodel.OpponentModel;
 
 import negotiator.Bid;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Highly optimized version of the Smith Frequency Model.
@@ -28,7 +28,7 @@ public class SmithModelV2 extends OpponentModel {
 	/**
 	 * Creates a highly optimized version of the SmithFrequencyModel.
 	 */
-	public SmithModelV2(UtilitySpace space)
+	public SmithModelV2(AdditiveUtilitySpace space)
 	{
 		fIssueModels = new HashMap<Issue, IssueModel>();
 		fDomain = space.getDomain();

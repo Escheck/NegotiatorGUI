@@ -3,7 +3,7 @@ package agents;
 import java.util.Comparator;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * {@link Comparator} for {@link Bid}s. Used for sorting a set of bids.
@@ -16,9 +16,9 @@ import negotiator.utility.UtilitySpace;
  *
  */
 public class BidComparator implements java.util.Comparator<Bid> {
-	UtilitySpace utilspace;
+	AdditiveUtilitySpace utilspace;
 
-	public BidComparator(UtilitySpace us) {
+	public BidComparator(AdditiveUtilitySpace us) {
 		if (us == null)
 			throw new NullPointerException("null utility space");
 		utilspace = us;

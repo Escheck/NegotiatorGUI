@@ -32,7 +32,7 @@ import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 /**
@@ -389,7 +389,7 @@ public class NewIssueDialog extends NewObjectiveDialog implements ItemListener {
 		// And at  the end they check whethere there is a util space
 		// anyway, and if not they throw away the new evaluator.....
 		// Also we are paying here for the mix between domain and utility space editor-in-one
-		UtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		AdditiveUtilitySpace uts = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 		Evaluator evaluator=null;
 		if (uts!=null && issue!=null) evaluator=uts.getEvaluator(issue.getNumber());
 		

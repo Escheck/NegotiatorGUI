@@ -2,15 +2,15 @@ package agents.anac.y2011.ValueModelAgent;
 
 import negotiator.Bid;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class ValueModeler {
 	public boolean initialized=false;
-	UtilitySpace utilitySpace;
+	AdditiveUtilitySpace utilitySpace;
 	IssuesDecreases[] issues;
 	//initializing the opponenent model with the opponentFirstBid,
 	//which is assumed to be the best bid possible
-	public void initialize(UtilitySpace space,Bid firstBid) throws Exception{
+	public void initialize(AdditiveUtilitySpace space,Bid firstBid) throws Exception{
 		initialized=true;
 		utilitySpace  = space;
 		int issueCount = utilitySpace.getDomain().getIssues().size();

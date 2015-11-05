@@ -8,7 +8,7 @@ import negotiator.issue.IssueReal;
 import negotiator.utility.EVALFUNCTYPE;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Implementation of the unscalable Bayesian Model.
@@ -18,7 +18,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class BayesianOpponentModel extends OpponentModel{
 	
-	private UtilitySpace fUS;
+	private AdditiveUtilitySpace fUS;
 	private WeightHypothesis[] fWeightHyps;
 	private ArrayList<ArrayList<EvaluatorHypothesis>> fEvaluatorHyps;
 	private ArrayList<EvaluatorHypothesis[]> fEvalHyps;	
@@ -31,7 +31,7 @@ public class BayesianOpponentModel extends OpponentModel{
 	private boolean USE_DOMAIN_KNOWLEDGE = false;
 	ArrayList<Issue> issues;
 	
-	public BayesianOpponentModel(UtilitySpace pUtilitySpace) {
+	public BayesianOpponentModel(AdditiveUtilitySpace pUtilitySpace) {
 		if (pUtilitySpace==null) throw new NullPointerException("pUtilitySpace=null");
 		fDomain = pUtilitySpace.getDomain();
 		fPreviousBidUtility = 1;

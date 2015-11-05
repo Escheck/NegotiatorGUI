@@ -1,9 +1,9 @@
 package agents.bayesianopponentmodel;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
-public class OpponentModelUtilSpace extends UtilitySpace
+public class OpponentModelUtilSpace extends AdditiveUtilitySpace
 {
 	OpponentModel opponentmodel;
 	

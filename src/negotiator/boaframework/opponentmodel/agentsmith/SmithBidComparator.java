@@ -3,7 +3,7 @@ import java.util.Comparator;
 
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /*
  * The BidComparator compares two given bids. This class is used to slowly descent to the opponent while
@@ -12,11 +12,11 @@ import negotiator.utility.UtilitySpace;
  */
 public class SmithBidComparator implements Comparator<BidDetails> {
 
-	private UtilitySpace mySpace;
-	private UtilitySpace opponentSpace;
+	private AdditiveUtilitySpace mySpace;
+	private AdditiveUtilitySpace opponentSpace;
 	
 	
-	public SmithBidComparator(UtilitySpace mySpace, UtilitySpace opponentSpace) {
+	public SmithBidComparator(AdditiveUtilitySpace mySpace, AdditiveUtilitySpace opponentSpace) {
 		this.mySpace = mySpace;
 		this.opponentSpace = opponentSpace;
 	}

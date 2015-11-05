@@ -20,7 +20,7 @@ import negotiator.session.RepositoryException;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Repository contains a set of known files This can be agent files or
@@ -187,13 +187,13 @@ public class Repository {
 		return domain;
 	}
 
-	public UtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
+	public AdditiveUtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
 		String file = profile.getURL().getFile();
 		return getUtilitySpace(domain, file);
 	}
 
-	public UtilitySpace getUtilitySpace(Domain domain, String file) {
-		UtilitySpace us = null;
+	public AdditiveUtilitySpace getUtilitySpace(Domain domain, String file) {
+		AdditiveUtilitySpace us = null;
 		try {
 			if ((sourceFolder != null) && (!sourceFolder.equals(""))) {
 
@@ -204,14 +204,14 @@ public class Repository {
 					us = new ConstraintUtilitySpace(domain, sourceFolder + "/"
 							+ file); // RA
 				else
-					us = new UtilitySpace(domain, sourceFolder + "/" + file);
+					us = new AdditiveUtilitySpace(domain, sourceFolder + "/" + file);
 			} else {
 				if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.NONLINEAR) // RA
 					us = new NonlinearUtilitySpace(domain, file);
 				else if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.CONSTRAINT) // RA
 					us = new ConstraintUtilitySpace(domain, file);
 				else
-					us = new UtilitySpace(domain, file);
+					us = new AdditiveUtilitySpace(domain, file);
 			}
 
 		} catch (Exception e) {
@@ -223,7 +223,7 @@ public class Repository {
 	}
 
 	public boolean existUtilitySpace(Domain domain, ProfileRepItem profile) {
-		UtilitySpace us = null;
+		AdditiveUtilitySpace us = null;
 		try {
 			File file;
 			if ((sourceFolder != null) && (!sourceFolder.equals("")))

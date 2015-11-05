@@ -22,7 +22,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * 
@@ -62,7 +62,7 @@ public class AresParty extends AbstractNegotiationParty {
 	private int NoOfParty = -1;
 
 	@Override
-	public void init(UtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		myparty = getPartyId();

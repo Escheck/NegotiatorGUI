@@ -15,24 +15,24 @@ import negotiator.issue.ValueInteger;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpponentInfo {
 
 	private String agentID;
 	private BidHistory agentBidHistory, bestBids;
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private Double leniency, domainCompetitiveness, agentDifficulty;
 	private Bid bestBid;
 	private List<Integer> bidPointWeights;
 	
-	public OpponentInfo(String agentID, UtilitySpace utilitySpace){
+	public OpponentInfo(String agentID, AdditiveUtilitySpace utilitySpace){
 		this.agentID = agentID;
 		this.agentBidHistory = new BidHistory();
 		this.bestBids = new BidHistory();
 		this.domainCompetitiveness = null;
 		this.leniency = null;
-		this.utilitySpace = new UtilitySpace(utilitySpace);
+		this.utilitySpace = new AdditiveUtilitySpace(utilitySpace);
 		this.bidPointWeights = new ArrayList<Integer>();
 		this.agentDifficulty = null;
 		
@@ -105,13 +105,13 @@ public class OpponentInfo {
 	/**
 	 * @return the opponentUtilitySpace
 	 */
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return utilitySpace;
 	}
 	/**
 	 * @param opponentUtilitySpace the opponentUtilitySpace to set
 	 */
-	public void setOpponentUtilitySpace(UtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
 		this.utilitySpace = opponentUtilitySpace;
 	}
 	/**

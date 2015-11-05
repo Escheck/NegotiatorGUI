@@ -11,7 +11,7 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.issue.Issue;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.BayesianOpponentModel;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 
@@ -110,7 +110,7 @@ public class BayesianModel extends OpponentModel {
 	 * @return utilityspace created by using the opponent model adapter.
 	 */
 	@Override
-	public UtilitySpace getOpponentUtilitySpace() {
+	public AdditiveUtilitySpace getOpponentUtilitySpace() {
 		return new OpponentModelUtilSpace(model);
 	}
 

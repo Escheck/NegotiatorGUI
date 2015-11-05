@@ -2,10 +2,10 @@ package agents.anac.y2015.Atlas3.etc;
 
 import agents.anac.y2015.Atlas3.Atlas3;
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class strategy {
-	private UtilitySpace utilitySpace;
+	private AdditiveUtilitySpace utilitySpace;
 	private negotiatingInfo negotiatingInfo;
 	
 	private double df = 0.0; // 割引係数
@@ -19,7 +19,7 @@ public class strategy {
 	static private double TF = 1.0; // 最終提案フェーズの時刻
 	static private double PF = 0.5; // 最終提案フェーズにおいて互いのが妥協戦略を選択した場合に，自身が相手よりも先に譲歩する確率
 	
-	public strategy(UtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
+	public strategy(AdditiveUtilitySpace utilitySpace, negotiatingInfo negotiatingInfo) {		
 		this.utilitySpace = utilitySpace;
 		this.negotiatingInfo = negotiatingInfo;
 		df = utilitySpace.getDiscountFactor();

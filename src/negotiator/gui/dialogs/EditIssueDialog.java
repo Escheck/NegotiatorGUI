@@ -13,7 +13,7 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import java.awt.CardLayout;
 
 /**
@@ -50,7 +50,7 @@ public class EditIssueDialog extends NewIssueDialog {
 	 * @param issue
 	 */
 	private void setPanelContents(Issue issue) {
-		UtilitySpace utilSpace = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
+		AdditiveUtilitySpace utilSpace = treeFrame.getNegotiatorTreeTableModel().getUtilitySpace();
 		
 		nameField.setText(issue.getName());
 		numberField.setText("" + issue.getNumber());

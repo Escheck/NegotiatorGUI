@@ -14,7 +14,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class RandomBidCreator implements BidCreator {
 
@@ -36,7 +36,7 @@ public class RandomBidCreator implements BidCreator {
 	 *            The utility space to generate the random bid from.
 	 * @return a random bid.
 	 */
-	private Bid getRandomBid(UtilitySpace utilitySpace) {
+	private Bid getRandomBid(AdditiveUtilitySpace utilitySpace) {
 		Domain domain = utilitySpace.getDomain();
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 		ArrayList<Issue> issues = domain.getIssues();
@@ -89,7 +89,7 @@ public class RandomBidCreator implements BidCreator {
 	 *            The minimum utility value.
 	 * @return a random bid (above a minimum utility value if possible).
 	 */
-	private Bid getRandomBid(UtilitySpace utilitySpace, double min) {
+	private Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min) {
 		int i = 0;
 		while (true) {
 			Bid b = getRandomBid(utilitySpace);
@@ -120,7 +120,7 @@ public class RandomBidCreator implements BidCreator {
 	 *            The maximum utility value.
 	 * @return a random bid (within a utility range if possible).
 	 */
-	public Bid getRandomBid(UtilitySpace utilitySpace, double min, double max) {
+	public Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min, double max) {
 		int i = 0;
 		while (true) {
 			if (max >= 1) {
@@ -144,7 +144,7 @@ public class RandomBidCreator implements BidCreator {
 	}
 
 	@Override
-	public Bid getBid(UtilitySpace utilitySpace, double min, double max) {
+	public Bid getBid(AdditiveUtilitySpace utilitySpace, double min, double max) {
 		return getRandomBid(utilitySpace, min, max);
 	}
 }

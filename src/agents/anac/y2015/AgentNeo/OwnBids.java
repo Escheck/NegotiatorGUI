@@ -16,7 +16,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 public class OwnBids {
@@ -28,7 +28,7 @@ public class OwnBids {
         BidHistory = new ArrayList<Bid>();
     }
 
-    protected void addBid(Bid bid, UtilitySpace utilitySpace) {
+    protected void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
        // if (BidHistory.indexOf(bid) == -1) {
             BidHistory.add(bid);
             System.out.println(minBidInHistory + "OWN BIDS"); 
@@ -67,7 +67,7 @@ public class OwnBids {
         return BidHistory.size();
     }
 
-    protected Bid chooseLowestBidInHistory(UtilitySpace utilitySpace) {
+    protected Bid chooseLowestBidInHistory(AdditiveUtilitySpace utilitySpace) {
         double minUtility = 100;
         Bid minBid = null;
         try {

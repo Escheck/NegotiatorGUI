@@ -6,7 +6,7 @@ import negotiator.Domain;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.session.Timeline;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Converts a stored negotiation trace of the opponent to a negotiation session.
@@ -25,7 +25,7 @@ public class NegotiationSessionWrapper extends NegotiationSession {
 	public NegotiationSessionWrapper(Trace trace, String mainPath) {
 		try {
 			this.domain = new Domain(mainPath + "/" + trace.getDomain());
-			this.utilitySpace = new UtilitySpace(domain, mainPath + "/" + trace.getAgentProfile());
+			this.utilitySpace = new AdditiveUtilitySpace(domain, mainPath + "/" + trace.getAgentProfile());
 			this.opponentBidHistory = new BidHistory();
 		} catch (Exception e) {
 			e.printStackTrace();

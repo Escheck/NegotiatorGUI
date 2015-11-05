@@ -2,7 +2,7 @@ package agents.anac.y2013.MetaAgent.portfolio.thenegotiatorreloaded;
 
 import java.util.Collections;
 import java.util.List;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class is an OutcomeSpace but with a sorted list of BidDetails based on the utility
@@ -13,7 +13,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class SortedOutcomeSpace extends OutcomeSpace {
 
-	public SortedOutcomeSpace(UtilitySpace utilSpace) {
+	public SortedOutcomeSpace(AdditiveUtilitySpace utilSpace) {
 		generateAllBids(utilSpace);
 		utilitySpace = utilSpace;
 		Collections.sort(allBids, new BidDetailsSorterUtility());

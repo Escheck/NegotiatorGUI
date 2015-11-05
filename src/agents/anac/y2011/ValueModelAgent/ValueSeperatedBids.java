@@ -6,7 +6,7 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.issue.ISSUETYPE;
 
 public class ValueSeperatedBids {
@@ -26,7 +26,7 @@ public class ValueSeperatedBids {
 		public Map<String, ValueBidData> values = new HashMap<String, ValueBidData>();
 	}
 
-	UtilitySpace utilitySpace;
+	AdditiveUtilitySpace utilitySpace;
 	IssueSeperatedBids[] issues;
 	ValueModeler model;
 
@@ -62,7 +62,7 @@ public class ValueSeperatedBids {
 		}
 	}
 
-	public void init(UtilitySpace space, ValueModeler model) {
+	public void init(AdditiveUtilitySpace space, ValueModeler model) {
 		this.model = model;
 		utilitySpace = space;
 		int issueCount = utilitySpace.getDomain().getIssues().size();

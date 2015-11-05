@@ -7,7 +7,7 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
 import negotiator.issue.Issue;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Collection of useful methods to analyze a pair of utility spaces.
@@ -20,7 +20,7 @@ public class UtilspaceTools {
 	// takes to long and an estimation procedure is used.
 	static final int MAX_SIZE_FOR_EXACT_CALCULATION = 80000;
 	
-	public static double getRankingDistanceOfBids(UtilitySpace spaceA, UtilitySpace spaceB, int simulations) {
+	public static double getRankingDistanceOfBids(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB, int simulations) {
 		double bidsUtilA[] = getBidsUtil(spaceA);
 		double bidsUtilB[] = getBidsUtil(spaceB);
 		if (bidsUtilA.length <= MAX_SIZE_FOR_EXACT_CALCULATION) {
@@ -29,19 +29,19 @@ public class UtilspaceTools {
 		return calculateRankingDistanceMonteCarlo(bidsUtilA, bidsUtilB, simulations);
 	}
 	
-	public static double getPearsonCorrelationCoefficientOfBids(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getPearsonCorrelationCoefficientOfBids(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB) {
 		double bidsUtilA[] = getBidsUtil(spaceA);
 		double bidsUtilB[] = getBidsUtil(spaceB);
 		return calculatePearsonCorrelationCoefficient(bidsUtilA, bidsUtilB);
 	}
 	
-	public static double getRankingDistanceOfIssueWeights(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getRankingDistanceOfIssueWeights(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB) {
 		double issueWeightsA[] = UtilspaceTools.getIssueWeights(spaceA);
 		double issueWeightsB[] = UtilspaceTools.getIssueWeights(spaceB);
 		return calculateRankingDistance(issueWeightsA, issueWeightsB);
 	}
 	
-	public static double getPearsonCorrelationCoefficientOfIssueWeights(UtilitySpace spaceA, UtilitySpace spaceB) {
+	public static double getPearsonCorrelationCoefficientOfIssueWeights(AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB) {
 		double issueWeightsA[] = UtilspaceTools.getIssueWeights(spaceA);
 		double issueWeightsB[] = UtilspaceTools.getIssueWeights(spaceB);
 		return calculatePearsonCorrelationCoefficient(issueWeightsA, issueWeightsB);
@@ -52,7 +52,7 @@ public class UtilspaceTools {
 	 * @param utilityspace
 	 * @return array of issue weights
 	 */
-	public static double[] getIssueWeights(UtilitySpace space) {
+	public static double[] getIssueWeights(AdditiveUtilitySpace space) {
 		double issueWeights[] = new double[space.getDomain().getIssues().size()];
 
 		int i = 0;
@@ -70,7 +70,7 @@ public class UtilspaceTools {
 	 * @param utilityspace
 	 * @return array of utilities
 	 */
-	private static double[] getBidsUtil(UtilitySpace space) {
+	private static double[] getBidsUtil(AdditiveUtilitySpace space) {
 		double bidsUtil[] = new double[(int)(space.getDomain().getNumberOfPossibleBids())];
 		BidIterator lIter = new BidIterator( space.getDomain());
 		

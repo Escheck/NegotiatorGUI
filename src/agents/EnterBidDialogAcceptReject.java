@@ -21,7 +21,7 @@ import negotiator.actions.OfferForVoting;
 import negotiator.actions.Reject;
 import negotiator.exceptions.Warning;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  *
@@ -46,7 +46,7 @@ public class EnterBidDialogAcceptReject extends JDialog implements
 	private JTable BidTable;
 
 	public EnterBidDialogAcceptReject(AbstractNegotiationParty party,
-			Frame parent, boolean modal, UtilitySpace us, Bid topic)
+			Frame parent, boolean modal, AdditiveUtilitySpace us, Bid topic)
 			throws Exception {
 
 		super(parent, modal);
@@ -59,7 +59,7 @@ public class EnterBidDialogAcceptReject extends JDialog implements
 	// quick hack.. we can't refer to the Agent's utilitySpace because
 	// the field is protected and there is no getUtilitySpace function either.
 	// therefore the Agent has to inform us when utilspace changes.
-	public void setUtilitySpace(UtilitySpace us) {
+	public void setUtilitySpace(AdditiveUtilitySpace us) {
 		negoOffer.utilitySpace = us;
 	}
 

@@ -13,7 +13,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This Opponent Model uses frequency analysis to make preference profiles for
@@ -25,16 +25,16 @@ import negotiator.utility.UtilitySpace;
 public class OpponentModel {
 
 	// Preference profile
-	private Map<String, UtilitySpace> opponentUtilitySpaces = new HashMap<>();
-	private Map<String, UtilitySpace> lastOpponentUtilitySpaces = new HashMap<>();
+	private Map<String, AdditiveUtilitySpace> opponentUtilitySpaces = new HashMap<>();
+	private Map<String, AdditiveUtilitySpace> lastOpponentUtilitySpaces = new HashMap<>();
 	private Map<String, Bid> lastBids = new HashMap<>();
-	private UtilitySpace emptyOpponentUtilitySpace;
+	private AdditiveUtilitySpace emptyOpponentUtilitySpace;
 	private double n;
 
 	// Opponent strategy
 	private Map<String, Map<BidUtilChange, Double>> utilChanges = new HashMap<>();
 
-	public OpponentModel(UtilitySpace utilSpace) {
+	public OpponentModel(AdditiveUtilitySpace utilSpace) {
 		System.out.println("INIT OpponentModel");
 		this.n = 0.1;
 
@@ -47,8 +47,8 @@ public class OpponentModel {
 	 * 
 	 * @param utilSpace
 	 */
-	public void initOpponentProfiles(UtilitySpace utilSpace) {
-		emptyOpponentUtilitySpace = new UtilitySpace(utilSpace);
+	public void initOpponentProfiles(AdditiveUtilitySpace utilSpace) {
+		emptyOpponentUtilitySpace = new AdditiveUtilitySpace(utilSpace);
 		double totalIssues = emptyOpponentUtilitySpace.getNrOfEvaluators();
 		double equalWeight = 1 / totalIssues;
 		for (Entry<Objective, Evaluator> eval : emptyOpponentUtilitySpace
@@ -112,7 +112,7 @@ public class OpponentModel {
 	 */
 	private void addAgent(String agent, Bid opponentBid) {
 		System.out.println("First bid for " + agent);
-		opponentUtilitySpaces.put(agent, new UtilitySpace(
+		opponentUtilitySpaces.put(agent, new AdditiveUtilitySpace(
 				emptyOpponentUtilitySpace));
 		lastBids.put(agent, opponentBid);
 
@@ -255,7 +255,7 @@ public class OpponentModel {
 	 * @param agent
 	 * @return utility space for agent
 	 */
-	public UtilitySpace getUtilitySpace(String agent) {
+	public AdditiveUtilitySpace getUtilitySpace(String agent) {
 		return opponentUtilitySpaces.get(agent);
 	}
 
@@ -263,7 +263,7 @@ public class OpponentModel {
 	 * @param agent
 	 * @return utility space for agent before the last update
 	 */
-	public UtilitySpace getLastUtilitySpace(String agent) {
+	public AdditiveUtilitySpace getLastUtilitySpace(String agent) {
 		return lastOpponentUtilitySpaces.get(agent);
 	}
 
@@ -273,7 +273,7 @@ public class OpponentModel {
 	 * @param agent
 	 */
 	private void saveLastUtilitySpace(String agent) {
-		lastOpponentUtilitySpaces.put(agent, new UtilitySpace(
+		lastOpponentUtilitySpaces.put(agent, new AdditiveUtilitySpace(
 				getUtilitySpace(agent)));
 	}
 

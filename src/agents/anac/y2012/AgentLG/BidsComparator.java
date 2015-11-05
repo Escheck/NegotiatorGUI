@@ -2,17 +2,17 @@ package agents.anac.y2012.AgentLG;
 import java.util.Comparator;
 
 import negotiator.Bid;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 
 public class BidsComparator  implements Comparator<Bid> {
 	
-	public BidsComparator(UtilitySpace utilitySpace) {
+	public BidsComparator(AdditiveUtilitySpace utilitySpace) {
 		super();
 		this.utilitySpace = utilitySpace;
 	}
 
-	private UtilitySpace  utilitySpace;
+	private AdditiveUtilitySpace  utilitySpace;
 	
 	@Override
 	public int compare(Bid arg0, Bid arg1) {

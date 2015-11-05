@@ -13,7 +13,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.Domain;
-import negotiator.utility.UtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Class for keeping the history of bids sent by our opponent, 
@@ -53,7 +53,7 @@ public class OpponentBidHistory {
 	 * add a new opponent bid
 	 * @author Justin
 	 */
-	public void addBid(Bid bid, UtilitySpace utilitySpace) {
+	public void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
 		if (bidHistory.indexOf(bid) == -1) {
 			bidHistory.add(bid);
 		}
@@ -130,7 +130,7 @@ public class OpponentBidHistory {
 	 * updateStatistics method
 	 * @author Eden Erez, Erel Segal haLevi
 	 */
-	public void updateOpponentModel(Bid bidToUpdate, double weight, UtilitySpace utilitySpace) {
+	public void updateOpponentModel(Bid bidToUpdate, double weight, AdditiveUtilitySpace utilitySpace) {
 		this.addBid(bidToUpdate, utilitySpace);
 		if (this.bidHistory.size() <= this.maximumBidsStored) {
 			this.updateStatistics(bidToUpdate, weight, utilitySpace.getDomain());
