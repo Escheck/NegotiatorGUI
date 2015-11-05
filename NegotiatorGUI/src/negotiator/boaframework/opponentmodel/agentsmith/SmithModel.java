@@ -3,42 +3,40 @@ package negotiator.boaframework.opponentmodel.agentsmith;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import agents.bayesianopponentmodel.OpponentModel;
-
 import negotiator.Bid;
 import negotiator.issue.Issue;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
+import agents.bayesianopponentmodel.OpponentModel;
 
 /**
- * The OpponentModel. This model manages the opponents preferences, stores the bids and based
- * on the number of times the opponent proposes a specific option in a bid, that option becomes
- * more important and our agent uses this information to construct its own bids.
+ * The OpponentModel. This model manages the opponents preferences, stores the
+ * bids and based on the number of times the opponent proposes a specific option
+ * in a bid, that option becomes more important and our agent uses this
+ * information to construct its own bids.
  */
-public class SmithModel extends OpponentModel
-{
+public class SmithModel extends OpponentModel {
 	private HashMap<Issue, IssueModel> fIssueModels;
-	private AdditiveUtilitySpace space;
-	
+	private AbstractUtilitySpace space;
+
 	/**
-	 *  Constructor
+	 * Constructor
 	 */
-	public SmithModel(AdditiveUtilitySpace space)
-	{
+	public SmithModel(AbstractUtilitySpace space) {
 		fIssueModels = new HashMap<Issue, IssueModel>();
 		fDomain = space.getDomain();
 		this.space = space;
-		initIssueModels();	
+		initIssueModels();
 	}
-	
+
 	/**
-	 * For each of the issues it initializes a model which stores the opponents' preferences
+	 * For each of the issues it initializes a model which stores the opponents'
+	 * preferences
 	 */
-	private void initIssueModels()
-	{
+	private void initIssueModels() {
 		ArrayList<Issue> lIssues = space.getDomain().getIssues();
-		for(Issue lIssue:lIssues) {
+		for (Issue lIssue : lIssues) {
 			IssueModel lModel;
-			lModel = new IssueModel(lIssue);	
+			lModel = new IssueModel(lIssue);
 			fIssueModels.put(lIssue, lModel);
 		}
 	}
@@ -48,33 +46,33 @@ public class SmithModel extends OpponentModel
 	 */
 	public void addBid(Bid pBid) {
 		ArrayList<Issue> lIssues = space.getDomain().getIssues();
-		for(Issue lIssue:lIssues) {
-       		fIssueModels.get(lIssue).addValue(IssueModel.getBidValueByIssue(pBid, lIssue));
-       	}
+		for (Issue lIssue : lIssues) {
+			fIssueModels.get(lIssue).addValue(
+					IssueModel.getBidValueByIssue(pBid, lIssue));
+		}
 	}
-	
-	
+
 	/**
 	 * Returns a hashmap with the weights for each of the issues
 	 */
 	public HashMap<Issue, Double> getWeights() {
 		HashMap<Issue, Double> lWeights = new HashMap<Issue, Double>();
 		ArrayList<Issue> lIssues = space.getDomain().getIssues();
-		for(Issue lIssue:lIssues) {
+		for (Issue lIssue : lIssues) {
 			lWeights.put(lIssue, fIssueModels.get(lIssue).getWeight());
 		}
-		
+
 		double lTotal = 0;
-		for(Issue lIssue:lIssues)
+		for (Issue lIssue : lIssues)
 			lTotal += lWeights.get(lIssue);
-		
-		for(Issue lIssue:lIssues) {
+
+		for (Issue lIssue : lIssues) {
 			lWeights.put(lIssue, lWeights.get(lIssue) / lTotal);
 		}
-		
+
 		return lWeights;
 	}
-	
+
 	public double getWeight(int issueNr) {
 		HashMap<Issue, Double> lWeights = getWeights();
 		Issue foundIssue = null;
@@ -86,7 +84,7 @@ public class SmithModel extends OpponentModel
 		}
 		return lWeights.get(foundIssue);
 	}
-	
+
 	/**
 	 * Returns the utility of a bid, but instead of the normal utility it is
 	 * based on the weights of each issues
@@ -95,10 +93,10 @@ public class SmithModel extends OpponentModel
 		double lUtility = 0;
 		HashMap<Issue, Double> lWeights = getWeights();
 		ArrayList<Issue> lIssues = space.getDomain().getIssues();
-		
-		for(Issue lIssue:lIssues) {
-			double lWeight = lWeights.get(lIssue); 
-			double lLocalUtility = fIssueModels.get(lIssue).getUtility(pBid); 	
+
+		for (Issue lIssue : lIssues) {
+			double lWeight = lWeights.get(lIssue);
+			double lLocalUtility = fIssueModels.get(lIssue).getUtility(pBid);
 			lUtility += lWeight * lLocalUtility;
 		}
 		return lUtility;

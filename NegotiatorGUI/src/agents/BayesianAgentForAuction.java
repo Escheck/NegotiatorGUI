@@ -13,6 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.BayesianOpponentModel;
 import agents.bayesianopponentmodel.OpponentModel;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
@@ -134,8 +135,10 @@ public class BayesianAgentForAuction extends Agent {
 
 	protected void prepareOpponentModel() {
 		fOpponentModels = new BayesianOpponentModel[2];
-		fOpponentModels[0] = new BayesianOpponentModel(utilitySpace);
-		fOpponentModels[1] = new BayesianOpponentModel(utilitySpace);
+		fOpponentModels[0] = new BayesianOpponentModel(
+				(AdditiveUtilitySpace) utilitySpace);
+		fOpponentModels[1] = new BayesianOpponentModel(
+				(AdditiveUtilitySpace) utilitySpace);
 		fOpponentModel = fOpponentModels[0];
 	}
 
@@ -268,8 +271,8 @@ public class BayesianAgentForAuction extends Agent {
 			throw new Exception("myLastBid==null");
 		log("Get next bid ...");
 
-		BidSpace bs = new BidSpace(utilitySpace, new OpponentModelUtilSpace(
-				fOpponentModel), true, true);
+		BidSpace bs = new BidSpace((AdditiveUtilitySpace) utilitySpace,
+				new OpponentModelUtilSpace(fOpponentModel), true, true);
 		// System.out.println("Bidspace:\n"+bs);
 
 		// compute opponent's concession

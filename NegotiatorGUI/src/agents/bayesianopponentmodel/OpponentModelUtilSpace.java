@@ -3,23 +3,24 @@ package agents.bayesianopponentmodel;
 import negotiator.Bid;
 import negotiator.utility.AdditiveUtilitySpace;
 
-public class OpponentModelUtilSpace extends AdditiveUtilitySpace
-{
+@SuppressWarnings("serial")
+public class OpponentModelUtilSpace extends AdditiveUtilitySpace {
 	OpponentModel opponentmodel;
-	
-	public OpponentModelUtilSpace(OpponentModel opmod)
-	{
-		domain=opmod.getDomain();
-		opponentmodel=opmod;
+
+	public OpponentModelUtilSpace(OpponentModel opmod) {
+		super(opmod.getDomain());
+		opponentmodel = opmod;
 	}
-	
-	public double getUtility(Bid b)
-	{ 
-		double u=0.;
-		try { u=opponentmodel.getNormalizedUtility(b); } 
-		catch (Exception e) {
+
+	public double getUtility(Bid b) {
+		double u = 0.;
+		try {
+			u = opponentmodel.getNormalizedUtility(b);
+		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
+			System.out.println("getNormalizedUtility failed. returning 0");
+			u = 0.;
+		}
 		return u;
 	}
 }

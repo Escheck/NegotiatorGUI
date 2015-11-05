@@ -15,9 +15,9 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * BOA framework implementation of the HardHeaded Frequecy Model. My main
@@ -65,8 +65,8 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 	}
 
 	private void initializeModel() {
-		opponentUtilitySpace = new AdditiveUtilitySpace(
-				negotiationSession.getUtilitySpace());
+		opponentUtilitySpace = (AdditiveUtilitySpace) negotiationSession
+				.getUtilitySpace().copy();
 		amountOfIssues = opponentUtilitySpace.getDomain().getIssues().size();
 		double commonWeight = 1D / (double) amountOfIssues;
 

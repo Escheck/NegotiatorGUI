@@ -14,14 +14,14 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 public class RandomBidCreator implements BidCreator {
 
 	protected Random random;
-	
+
 	private boolean TEST_EQUIVALENCE = true;
-	
+
 	public RandomBidCreator() {
 		if (TEST_EQUIVALENCE) {
 			random = new Random(100);
@@ -29,8 +29,7 @@ public class RandomBidCreator implements BidCreator {
 			random = new Random();
 		}
 	}
-	
-	
+
 	/**
 	 * Get a random bid.
 	 * 
@@ -38,7 +37,7 @@ public class RandomBidCreator implements BidCreator {
 	 *            The utility space to generate the random bid from.
 	 * @return a random bid.
 	 */
-	private Bid getRandomBid(AdditiveUtilitySpace utilitySpace) {
+	private Bid getRandomBid(UtilitySpace utilitySpace) {
 		Domain domain = utilitySpace.getDomain();
 		HashMap<Integer, Value> values = new HashMap<Integer, Value>();
 		ArrayList<Issue> issues = domain.getIssues();
@@ -67,19 +66,27 @@ public class RandomBidCreator implements BidCreator {
 		return bid;
 	}
 
-	protected void generateValue(HashMap<Integer, Value> values, IssueDiscrete issue) {
+	protected void generateValue(HashMap<Integer, Value> values,
+			IssueDiscrete issue) {
 		int randomDiscrete = random.nextInt(issue.getNumberOfValues());
-		values.put(Integer.valueOf(issue.getNumber()), issue.getValue(randomDiscrete));
+		values.put(Integer.valueOf(issue.getNumber()),
+				issue.getValue(randomDiscrete));
 	}
-	
+
 	protected void generateValue(HashMap<Integer, Value> values, IssueReal issue) {
-		double randomReal = issue.getLowerBound() + random.nextDouble() * (issue.getUpperBound() - issue.getLowerBound());
-		values.put(Integer.valueOf(issue.getNumber()), new ValueReal(randomReal));
+		double randomReal = issue.getLowerBound() + random.nextDouble()
+				* (issue.getUpperBound() - issue.getLowerBound());
+		values.put(Integer.valueOf(issue.getNumber()),
+				new ValueReal(randomReal));
 	}
-	
-	protected void generateValue(HashMap<Integer, Value> values, IssueInteger issue) {
-		int randomInteger = issue.getLowerBound() + random.nextInt(issue.getUpperBound() - issue.getLowerBound() + 1);
-		values.put(Integer.valueOf(issue.getNumber()), new ValueInteger(randomInteger));
+
+	protected void generateValue(HashMap<Integer, Value> values,
+			IssueInteger issue) {
+		int randomInteger = issue.getLowerBound()
+				+ random.nextInt(issue.getUpperBound() - issue.getLowerBound()
+						+ 1);
+		values.put(Integer.valueOf(issue.getNumber()), new ValueInteger(
+				randomInteger));
 	}
 
 	/**
@@ -91,8 +98,8 @@ public class RandomBidCreator implements BidCreator {
 	 *            The minimum utility value.
 	 * @return a random bid (above a minimum utility value if possible).
 	 */
-	protected Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min) {
-		if(min > 1.0)
+	protected Bid getRandomBid(UtilitySpace utilitySpace, double min) {
+		if (min > 1.0)
 			return null;
 		int i = 0;
 		while (true) {
@@ -100,7 +107,7 @@ public class RandomBidCreator implements BidCreator {
 			try {
 				double util = utilitySpace.getUtility(b);
 				if (util >= min) {
-					//printVal(util);
+					// printVal(util);
 					return b;
 				}
 			} catch (Exception e) {
@@ -124,9 +131,9 @@ public class RandomBidCreator implements BidCreator {
 	 *            The maximum utility value.
 	 * @return a random bid (within a utility range if possible).
 	 */
-	public Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min, double max) {
-		//printRange(min, max);
-		//System.out.println("Get bid in range ["+min+", "+max+"]");
+	public Bid getRandomBid(UtilitySpace utilitySpace, double min, double max) {
+		// printRange(min, max);
+		// System.out.println("Get bid in range ["+min+", "+max+"]");
 		int i = 0;
 		while (true) {
 			if (max >= 1) {
@@ -136,7 +143,7 @@ public class RandomBidCreator implements BidCreator {
 			try {
 				double util = utilitySpace.getUtility(b);
 				if (util >= min && util <= max) {
-					//printVal(util);
+					// printVal(util);
 					return b;
 				}
 			} catch (Exception e) {
@@ -150,34 +157,19 @@ public class RandomBidCreator implements BidCreator {
 	}
 
 	@Override
-	public Bid getBid(AdditiveUtilitySpace utilitySpace, double min, double max) {
+	public Bid getBid(UtilitySpace utilitySpace, double min, double max) {
 		return getRandomBid(utilitySpace, min, max);
 	}
 
 	/*
-	private void printVal(double util) {
-		for(int i = 0; i < util*100; i++)
-		{
-			System.out.print(" ");
-		}
-		System.out.println("^");
-	}
-
-	private void printRange(double min, double max) {
-		min = Math.max(min, 0);
-		max = Math.min(max, 1);
-		int i = 0;
-		for(; i < min*100; i++)
-		{
-			System.out.print(" ");
-		}
-		for(; i < max*100; i++)
-		{
-			System.out.print("-");
-		}
-		System.out.println();
-	}
-	*/
+	 * private void printVal(double util) { for(int i = 0; i < util*100; i++) {
+	 * System.out.print(" "); } System.out.println("^"); }
+	 * 
+	 * private void printRange(double min, double max) { min = Math.max(min, 0);
+	 * max = Math.min(max, 1); int i = 0; for(; i < min*100; i++) {
+	 * System.out.print(" "); } for(; i < max*100; i++) { System.out.print("-");
+	 * } System.out.println(); }
+	 */
 
 	@Override
 	public Bid logBid(Bid opponentBid, double time) {

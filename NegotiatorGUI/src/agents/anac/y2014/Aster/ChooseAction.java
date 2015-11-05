@@ -5,15 +5,15 @@ import java.util.Iterator;
 import java.util.Random;
 
 import negotiator.Bid;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class ChooseAction {
-	private AdditiveUtilitySpace utilitySpace;
+	private AbstractUtilitySpace utilitySpace;
 	private Random rnd;
 	private static final int NUMBER_ITERATIONS = 1000; // ç¹°ã‚Šè¿”ã�—å›žæ•°
 	private static final double EPSILON = 0.3D;
 
-	public ChooseAction(AdditiveUtilitySpace utilitySpace) {
+	public ChooseAction(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		this.rnd = new Random();
 	}
@@ -22,8 +22,9 @@ public class ChooseAction {
 	 * Select Next Bid (for MultiList)
 	 *
 	 */
-	public Bid nextOfferingBid(double bidTarget, ArrayList<Bid> selectMyBidList,
-			ArrayList<Bid> opponentBidList) throws Exception {
+	public Bid nextOfferingBid(double bidTarget,
+			ArrayList<Bid> selectMyBidList, ArrayList<Bid> opponentBidList)
+			throws Exception {
 		Bid nextBid = null;
 		double nextBidUtil = 0.0;
 		int iteration = 0;
@@ -32,7 +33,8 @@ public class ChooseAction {
 			if (Math.random() > EPSILON) {
 				nextBid = selectWeightedBid(opponentBidList);
 			} else {
-				nextBid = selectRandomBid(selectMyBidList, selectMyBidList.size());
+				nextBid = selectRandomBid(selectMyBidList,
+						selectMyBidList.size());
 			}
 			nextBidUtil = utilitySpace.getUtility(nextBid);
 		} while ((nextBidUtil < bidTarget) && (++iteration < NUMBER_ITERATIONS));

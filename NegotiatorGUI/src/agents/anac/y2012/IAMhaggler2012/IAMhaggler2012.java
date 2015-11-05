@@ -2,6 +2,7 @@ package agents.anac.y2012.IAMhaggler2012;
 
 import negotiator.Bid;
 import negotiator.SupportedNegotiationSetting;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2012.IAMhaggler2012.agents2011.IAMhaggler2011;
 import agents.anac.y2012.IAMhaggler2012.utility.SouthamptonUtilitySpace;
 
@@ -25,7 +26,7 @@ public class IAMhaggler2012 extends IAMhaggler2011 {
 	public void init() {
 		debug = false;
 		super.init();
-		sus = new SouthamptonUtilitySpace(utilitySpace);
+		sus = new SouthamptonUtilitySpace((AdditiveUtilitySpace) utilitySpace);
 	}
 
 	/*

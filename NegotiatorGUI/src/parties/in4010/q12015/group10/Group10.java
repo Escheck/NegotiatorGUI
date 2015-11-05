@@ -13,6 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -47,8 +48,8 @@ public class Group10 extends AbstractNegotiationParty {
 	 * initialize our own variables, too.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		// Original (hidden) initialization
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
@@ -66,7 +67,7 @@ public class Group10 extends AbstractNegotiationParty {
 		// Initialize each of them by calling their constructors
 		for (int opponentNumber = 0; opponentNumber < numberOfOpponents; opponentNumber++) {
 			opponents[opponentNumber] = new Opponent(opponentNumber,
-					utilitySpace, deadLine);
+					(AdditiveUtilitySpace) utilitySpace, deadLine);
 		}
 	}
 
@@ -201,8 +202,9 @@ public class Group10 extends AbstractNegotiationParty {
 			java.util.List<Class<? extends Action>> validActions) {
 		OpponentModelEstimator.updateAllModels(opponents, timeline);
 
-		Bid potentialBid = OfferingStrategy.createPotentialBid(utilitySpace,
-				opponents, timeline, deadLine);
+		Bid potentialBid = OfferingStrategy.createPotentialBid(
+				(AdditiveUtilitySpace) utilitySpace, opponents, timeline,
+				deadLine);
 
 		// Create a BidDetails object of our potential bid
 		double timeNow = timeline.getTime(); // The current time

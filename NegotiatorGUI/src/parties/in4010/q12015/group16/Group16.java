@@ -12,6 +12,7 @@ import negotiator.actions.Offer;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -52,8 +53,8 @@ public class Group16 extends AbstractNegotiationParty {
 	 *             if init() fails.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
 		utilitySpace.setDiscount(0);
@@ -65,7 +66,7 @@ public class Group16 extends AbstractNegotiationParty {
 			e.printStackTrace();
 		}
 
-		GM = new GeneralModel(utilitySpace, outcomeSpace);
+		GM = new GeneralModel((AdditiveUtilitySpace) utilitySpace, outcomeSpace);
 	}
 
 	/**

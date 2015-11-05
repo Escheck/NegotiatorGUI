@@ -9,10 +9,14 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.Evaluator;
 
 /**
+ * Uses {@link Evaluator}s and therefore requires {@link AdditiveUtilitySpace}
  * 
  * @author W.Pasman, modified version of Dmytro's UIAgent
+ * 
  */
 public class UIAgent extends Agent {
 	private Action opponentAction = null;
@@ -40,7 +44,8 @@ public class UIAgent extends Agent {
 		}
 		System.out.println("old  dialog closed. Trying to open new dialog. ");
 		try {
-			ui = new EnterBidDialog(this, null, true, utilitySpace);
+			ui = new EnterBidDialog(this, null, true,
+					(AdditiveUtilitySpace) utilitySpace);
 		} catch (Exception e) {
 			System.out.println("Problem in UIAgent2.init:" + e.getMessage());
 			e.printStackTrace();

@@ -9,6 +9,7 @@ import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
+import negotiator.utility.AdditiveUtilitySpace;
 
 //This agent uses a very complex form of temporal difference reinforcement
 //learning to learn opponent's utility space.
@@ -57,6 +58,9 @@ public class ValueModelAgent extends Agent {
 	private double opponentUtil;
 
 	public void init() {
+		@SuppressWarnings("unused")
+		// it's not unused, check space type.
+		AdditiveUtilitySpace a = (AdditiveUtilitySpace) utilitySpace;
 		opponentUtilModel = null;
 		allBids = null;
 		approvedBids = null;
@@ -172,7 +176,8 @@ public class ValueModelAgent extends Agent {
 				allBids = new BidList();
 				approvedBids = new BidList();
 				opponentUtilModel = new ValueModeler();
-				seperatedBids.init(utilitySpace, opponentUtilModel);
+				seperatedBids.init((AdditiveUtilitySpace) utilitySpace,
+						opponentUtilModel);
 				myMaximumUtility = utilitySpace.getUtility(utilitySpace
 						.getMaxUtilityBid());
 				BidIterator iter = new BidIterator(utilitySpace.getDomain());
@@ -211,10 +216,12 @@ public class ValueModelAgent extends Agent {
 
 				if (opponent == null) {
 					opponentStartbidUtil = opponentUtil;
-					opponent = new OpponentModeler(bidCount, utilitySpace,
-							timeline, ourBids, opponentBids, opponentUtilModel,
-							allBids, this);
-					opponentUtilModel.initialize(utilitySpace, opponentBid);
+					opponent = new OpponentModeler(bidCount,
+							(AdditiveUtilitySpace) utilitySpace, timeline,
+							ourBids, opponentBids, opponentUtilModel, allBids,
+							this);
+					opponentUtilModel.initialize(
+							(AdditiveUtilitySpace) utilitySpace, opponentBid);
 					approvedBids.sortByOpponentUtil(opponentUtilModel);
 				} else {
 					opponent.tick();

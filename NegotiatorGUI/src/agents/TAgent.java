@@ -24,6 +24,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.session.Timeline;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 
@@ -100,7 +101,8 @@ public class TAgent extends Agent {
 					ValueDiscrete value = discrete_pie.getValue(i);
 					values.put(pie.getNumber(), discrete_pie.getValue(i));
 					// evaluation
-					Evaluator eval = utilitySpace.getEvaluator(pie.getNumber());
+					Evaluator eval = ((AdditiveUtilitySpace) utilitySpace)
+							.getEvaluator(pie.getNumber());
 					EvaluatorDiscrete evalDiscrete = (EvaluatorDiscrete) eval;
 					Integer evaluation = evalDiscrete
 							.getValue((ValueDiscrete) value);
@@ -253,7 +255,8 @@ public class TAgent extends Agent {
 				sleep(0.005); // just for fun
 
 			timeLeftAfterAction = timeline.getCurrentTime();
-			estimated_rounds_left(false); // receiveMessage the estimation for own
+			estimated_rounds_left(false); // receiveMessage the estimation for
+											// own
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
 			action = new Accept(getAgentID()); // best guess if things go wrong.

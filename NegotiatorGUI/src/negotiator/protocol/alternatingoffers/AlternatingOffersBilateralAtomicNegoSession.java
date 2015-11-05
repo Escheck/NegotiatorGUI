@@ -34,10 +34,7 @@ import negotiator.session.Timeline;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.ConstraintUtilitySpace;
-import negotiator.utility.NonlinearUtilitySpace;
-import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This is an updated version which has shared deadlines for both agents,
@@ -85,7 +82,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 	/** load the runtime objects to start negotiation */
 	public AlternatingOffersBilateralAtomicNegoSession(Protocol protocol,
 			Agent agentA, Agent agentB, String agentAname, String agentBname,
-			AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB,
+			AbstractUtilitySpace spaceA, AbstractUtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent) throws Exception {
@@ -133,38 +130,16 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 			// note, we clone the utility spaces for security reasons, so that
 			// the agent cannot damage them.
 
-			if (spaceA.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentA.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new NonlinearUtilitySpace(spaceA),
-						agentAparams);
-			else if (spaceA.getType() == UTILITYSPACETYPE.CONSTRAINT)
-				agentA.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new ConstraintUtilitySpace(spaceA),
-						agentAparams);
-			else
-				// linear
-				agentA.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new AdditiveUtilitySpace(spaceA), agentAparams);
+			agentA.internalInit(protocol.getSessionNumber(),
+					protocol.getTotalSessions(), startTime, totalTime,
+					timeline, (AbstractUtilitySpace) spaceA.copy(),
+					agentAparams);
 			agentA.init();
 
-			if (spaceB.getType() == UTILITYSPACETYPE.NONLINEAR)
-				agentB.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new NonlinearUtilitySpace(spaceB),
-						agentBparams);
-			else if (spaceB.getType() == UTILITYSPACETYPE.CONSTRAINT)
-				agentB.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new ConstraintUtilitySpace(spaceB),
-						agentBparams);
-			else
-				// linear
-				agentB.internalInit(protocol.getSessionNumber(),
-						protocol.getTotalSessions(), startTime, totalTime,
-						timeline, new AdditiveUtilitySpace(spaceB), agentBparams);
+			agentB.internalInit(protocol.getSessionNumber(),
+					protocol.getTotalSessions(), startTime, totalTime,
+					timeline, (AbstractUtilitySpace) spaceB.copy(),
+					agentBparams);
 			agentB.init();
 
 			stopNegotiation = false;
@@ -720,7 +695,7 @@ public class AlternatingOffersBilateralAtomicNegoSession extends
 						.getOpponentModel();
 				if (!(opponentModel instanceof NoModel)) {
 
-					AdditiveUtilitySpace estimatedOpponentUS = opponentModel
+					AbstractUtilitySpace estimatedOpponentUS = opponentModel
 							.getOpponentUtilitySpace();
 					BidSpace estimatedBS = null;
 					try {

@@ -13,6 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
+import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModelUtilSpace;
 
@@ -65,7 +66,8 @@ public class NiceTitForTat extends BilateralAgent {
 	}
 
 	protected void prepareOpponentModel() {
-		opponentModel = new BayesianOpponentModelScalable(utilitySpace);
+		opponentModel = new BayesianOpponentModelScalable(
+				(AdditiveUtilitySpace) utilitySpace);
 	}
 
 	@Override
@@ -134,8 +136,8 @@ public class NiceTitForTat extends BilateralAgent {
 	}
 
 	/**
-	 * Decides if we have enough time to receiveMessage opponent model and nash point.
-	 * On large domains, this may take 3 seconds.
+	 * Decides if we have enough time to receiveMessage opponent model and nash
+	 * point. On large domains, this may take 3 seconds.
 	 * 
 	 * @param time
 	 */

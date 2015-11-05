@@ -3,10 +3,10 @@ package agents.anac.y2014.Aster;
 import java.util.ArrayList;
 
 import negotiator.Bid;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class GetAcceptProb {
-	private AdditiveUtilitySpace utilitySpace;
+	private AbstractUtilitySpace utilitySpace;
 	private double target;
 	private double bidTarget;
 	private double sum;
@@ -31,7 +31,7 @@ public class GetAcceptProb {
 	private static final int EMA_SHORT = 26;
 	private static final int EMA_LONG = 52;
 
-	public GetAcceptProb(AdditiveUtilitySpace utilitySpace) {
+	public GetAcceptProb(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		this.target = 1.0D;
 		this.bidTarget = 1.0D;
@@ -58,7 +58,8 @@ public class GetAcceptProb {
 	 * Calculate Accept Probability
 	 *
 	 */
-	public double getAcceptProbability(Bid offeredBid, double oppMaxUtil, double time) throws Exception {
+	public double getAcceptProbability(Bid offeredBid, double oppMaxUtil,
+			double time) throws Exception {
 		double unDiscountedOfferedUtil = utilitySpace.getUtility(offeredBid);
 		double offeredUtility = utilitySpace.getUtilityWithDiscount(offeredBid,
 				time);
@@ -79,15 +80,17 @@ public class GetAcceptProb {
 			if (oppShort_EMA.isEmpty()) {
 				oppShort_EMA.add(calcN_EMA_init(oppUtilHistory, EMA_SHORT));
 			} else {
-				emaUtility = oppShort_EMA.get(oppShort_EMA.size()-1);
-				oppShort_EMA.add(calcN_EMA(emaUtility, unDiscountedOfferedUtil, EMA_SHORT));
+				emaUtility = oppShort_EMA.get(oppShort_EMA.size() - 1);
+				oppShort_EMA.add(calcN_EMA(emaUtility, unDiscountedOfferedUtil,
+						EMA_SHORT));
 			}
 			if (oppUtilHistory.size() > EMA_LONG) {
 				if (oppLong_EMA.isEmpty()) {
 					oppLong_EMA.add(calcN_EMA_init(oppUtilHistory, EMA_LONG));
 				} else {
-					emaUtility = oppLong_EMA.get(oppLong_EMA.size()-1);
-					oppLong_EMA.add(calcN_EMA(emaUtility, unDiscountedOfferedUtil, EMA_LONG));
+					emaUtility = oppLong_EMA.get(oppLong_EMA.size() - 1);
+					oppLong_EMA.add(calcN_EMA(emaUtility,
+							unDiscountedOfferedUtil, EMA_LONG));
 					estrangement = calcEMAEstrangement();
 				}
 			}
@@ -100,7 +103,6 @@ public class GetAcceptProb {
 		} else {
 			weight = 1.0;
 		}
-
 
 		// å�ˆè¨ˆå€¤
 		sum += offeredUtility;
@@ -147,9 +149,10 @@ public class GetAcceptProb {
 
 		// è£œæ­£
 		target = calcTarget(ratio, preTarget, time, oppMaxUtil, false);
-		bidTarget = calcTarget(ratio2, preTarget2, time, oppMaxUtil, true) * estrangement;
+		bidTarget = calcTarget(ratio2, preTarget2, time, oppMaxUtil, true)
+				* estrangement;
 		if (bidTarget > 1.0D) {
-			bidTarget =  0.99D;
+			bidTarget = 0.99D;
 		}
 
 		utilityEval = offeredUtility - oppMaxUtil;
@@ -177,11 +180,13 @@ public class GetAcceptProb {
 
 	/**
 	 * åˆ�å›žè¨­å®š
+	 * 
 	 * @param sessionNr
 	 * @param maxConcessionUtility
 	 * @param opponentMinUtility
 	 */
-	public void setTargetParam(int sessionNr, double maxConcessionUtility, double opponentMinUtility) {
+	public void setTargetParam(int sessionNr, double maxConcessionUtility,
+			double opponentMinUtility) {
 		// åˆ�å›žã�¯å¼·æ°—
 		if (sessionNr == 0) {
 			this.firstFlag = true;
@@ -258,13 +263,13 @@ public class GetAcceptProb {
 
 	// EMAã�®è¨ˆç®—
 	private double calcN_EMA(double prevutil, double util, int n) {
-		return prevutil+(2.0D/(1.0D+(double)n))*(util - prevutil);
+		return prevutil + (2.0D / (1.0D + (double) n)) * (util - prevutil);
 	}
 
 	// EMA2ç·šã‚«ã‚¤ãƒªçŽ‡
 	private double calcEMAEstrangement() {
-		int size = oppLong_EMA.size()-1;
-		double emaShort = oppShort_EMA.get(size+EMA_SHORT);
+		int size = oppLong_EMA.size() - 1;
+		double emaShort = oppShort_EMA.get(size + EMA_SHORT);
 		double emaLong = oppLong_EMA.get(size);
 		double estrangement = 1.0 + ((emaShort - emaLong) / emaLong);
 		if (estrangement > 1.0) {

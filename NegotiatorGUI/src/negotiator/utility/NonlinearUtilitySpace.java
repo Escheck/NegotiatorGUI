@@ -12,7 +12,7 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public class NonlinearUtilitySpace extends AdditiveUtilitySpace {
+public class NonlinearUtilitySpace extends AbstractUtilitySpace {
 	private double maxUtilityValue;
 	private UtilityFunction nonlinearFunction;
 	private ArrayList<InclusiveHyperRectangle> allinclusiveConstraints; // we
@@ -31,35 +31,33 @@ public class NonlinearUtilitySpace extends AdditiveUtilitySpace {
 																		// negotiating
 																		// agent's
 																		// strategy
+	private SimpleElement fXMLRoot;
 
 	// add some parameters for discount factor
 	/**
 	 * Creates an empty nonlinear utility space.
 	 */
 	public NonlinearUtilitySpace() {
-		this.domain = new Domain();
+		super(new Domain());
 		this.nonlinearFunction = new UtilityFunction();
 		this.allinclusiveConstraints = new ArrayList<InclusiveHyperRectangle>();
 		this.allexclusiveConstraints = new ArrayList<ExclusiveHyperRectangle>();
-		spaceType = UTILITYSPACETYPE.NONLINEAR;
 	}
 
 	public NonlinearUtilitySpace(Domain domain) {
-		this.domain = domain;
+		super(domain);
 		this.nonlinearFunction = new UtilityFunction();
 		this.allinclusiveConstraints = new ArrayList<InclusiveHyperRectangle>();
 		this.allexclusiveConstraints = new ArrayList<ExclusiveHyperRectangle>();
-		spaceType = UTILITYSPACETYPE.NONLINEAR;
 	}
 
 	public NonlinearUtilitySpace(Domain domain, String fileName)
 			throws Exception {
-		this.domain = domain;
+		super(domain);
 		this.nonlinearFunction = new UtilityFunction();
 		this.fileName = fileName;
 		this.allinclusiveConstraints = new ArrayList<InclusiveHyperRectangle>();
 		this.allexclusiveConstraints = new ArrayList<ExclusiveHyperRectangle>();
-		spaceType = UTILITYSPACETYPE.NONLINEAR;
 
 		if (!fileName.equals("")) {
 			SimpleDOMParser parser = new SimpleDOMParser();
@@ -82,11 +80,10 @@ public class NonlinearUtilitySpace extends AdditiveUtilitySpace {
 	}
 
 	/** @return a clone of another utility space */
-	public NonlinearUtilitySpace(AdditiveUtilitySpace us) {
-		domain = us.getDomain();
+	public NonlinearUtilitySpace(NonlinearUtilitySpace us) {
+		super(us.getDomain());
 		fileName = us.getFileName();
-		spaceType = UTILITYSPACETYPE.NONLINEAR;
-		fXMLRoot = us.getXMLRoot();
+		fXMLRoot = us.fXMLRoot;
 		maxUtilityValue = ((NonlinearUtilitySpace) us).getMaxUtilityValue();
 		nonlinearFunction = ((NonlinearUtilitySpace) us).getNonlinearFunction();
 		allinclusiveConstraints = ((NonlinearUtilitySpace) us)
@@ -399,4 +396,8 @@ public class NonlinearUtilitySpace extends AdditiveUtilitySpace {
 		return new Bound(b2.getIssueIndex(), min, max);
 	}
 
+	@Override
+	public UtilitySpace copy() {
+		return new NonlinearUtilitySpace(this);
+	}
 }

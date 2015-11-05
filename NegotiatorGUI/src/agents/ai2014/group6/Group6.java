@@ -21,11 +21,13 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
- * This is your negotiation party.
+ * This is your negotiation party. Theis agent is juggling weights so only can
+ * be used with {@link AdditiveUtilitySpace}.
  */
 public class Group6 extends AbstractNegotiationParty {
 
@@ -51,7 +53,7 @@ public class Group6 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -185,12 +187,13 @@ public class Group6 extends AbstractNegotiationParty {
 	}
 
 	private Queue<Issue> getOrderedIssues() {
+		final AdditiveUtilitySpace utilspace1 = (AdditiveUtilitySpace) utilitySpace;
 		PriorityQueue<Issue> issues = new PriorityQueue<Issue>(
 				this.utilitySpace.getDomain().getIssues().size(),
 				new Comparator<Issue>() {
 					@Override
 					public int compare(Issue i1, Issue i2) {
-						return (int) (utilitySpace.getWeight(i1.getNumber()) - utilitySpace
+						return (int) (utilspace1.getWeight(i1.getNumber()) - utilspace1
 								.getWeight(i2.getNumber()));
 					}
 				});
@@ -258,6 +261,7 @@ public class Group6 extends AbstractNegotiationParty {
 		issues.removeAll(toBeRemoved);
 
 		// Do a concession on the least important issue(s)
+		AdditiveUtilitySpace utilitySpace1 = (AdditiveUtilitySpace) utilitySpace;
 		for (Issue leastImportantIssue : issues) {
 			List<Value> majorityValue = majorityValues.get(leastImportantIssue);
 
@@ -265,7 +269,7 @@ public class Group6 extends AbstractNegotiationParty {
 			Value majorityMaxValue = null;
 
 			for (Value value : majorityValue) {
-				double valueUtility = ((EvaluatorDiscrete) utilitySpace
+				double valueUtility = ((EvaluatorDiscrete) utilitySpace1
 						.getEvaluator(leastImportantIssue.getNumber()))
 						.getEvaluation((ValueDiscrete) value);
 
@@ -299,9 +303,10 @@ public class Group6 extends AbstractNegotiationParty {
 
 	private Bid getMaximumUtilityBid() {
 		Bid resBid = generateRandomBid();
+		AdditiveUtilitySpace utilitySpace1 = (AdditiveUtilitySpace) utilitySpace;
 
 		for (Issue issue : utilitySpace.getDomain().getIssues()) {
-			Value value = ((EvaluatorDiscrete) utilitySpace.getEvaluator(issue
+			Value value = ((EvaluatorDiscrete) utilitySpace1.getEvaluator(issue
 					.getNumber())).getMaxValue();
 			if (value == null)
 				break;

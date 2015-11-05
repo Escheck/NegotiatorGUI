@@ -7,7 +7,7 @@ import misc.Range;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.bidding.BidDetails;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This class generates the complete outcome space and is therefore useful if
@@ -20,7 +20,7 @@ import negotiator.utility.AdditiveUtilitySpace;
 public class OutcomeSpace {
 
 	/** Reference to the utility space */
-	protected AdditiveUtilitySpace utilitySpace;
+	protected AbstractUtilitySpace utilitySpace;
 	/** List of all possible bids in the domain */
 	protected List<BidDetails> allBids = new ArrayList<BidDetails>();
 
@@ -29,7 +29,7 @@ public class OutcomeSpace {
 	 * 
 	 * @param utilSpace
 	 */
-	public OutcomeSpace(AdditiveUtilitySpace utilSpace) {
+	public OutcomeSpace(AbstractUtilitySpace utilSpace) {
 		this.utilitySpace = utilSpace;
 		generateAllBids(utilSpace);
 	}
@@ -39,7 +39,7 @@ public class OutcomeSpace {
 	 * 
 	 * @param utilSpace
 	 */
-	public void generateAllBids(AdditiveUtilitySpace utilSpace) {
+	public void generateAllBids(AbstractUtilitySpace utilSpace) {
 
 		BidIterator iter = new BidIterator(utilSpace.getDomain());
 		while (iter.hasNext()) {

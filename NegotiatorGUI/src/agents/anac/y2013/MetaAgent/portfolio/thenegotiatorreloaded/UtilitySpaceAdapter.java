@@ -4,23 +4,25 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.utility.AdditiveUtilitySpace;
 
+@SuppressWarnings("serial")
 public class UtilitySpaceAdapter extends AdditiveUtilitySpace {
-	
-	private OpponentModel opponentModel;
-		
-	public UtilitySpaceAdapter(OpponentModel opponentModel, Domain domain) {
-		this.opponentModel = opponentModel;
-		this.domain = domain;
-	}
-	
-	public double getUtility(Bid b)
-	{ 
-		double u=0.;
-		try { u = opponentModel.getBidEvaluation(b); } 
-		catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("getNormalizedUtility failed. returning 0");u=0.;}
-		return u;
-	} 
-}
 
+	private OpponentModel opponentModel;
+
+	public UtilitySpaceAdapter(OpponentModel opponentModel, Domain domain) {
+		super(domain);
+		this.opponentModel = opponentModel;
+	}
+
+	public double getUtility(Bid b) {
+		double u = 0.;
+		try {
+			u = opponentModel.getBidEvaluation(b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getNormalizedUtility failed. returning 0");
+			u = 0.;
+		}
+		return u;
+	}
+}

@@ -20,7 +20,7 @@ import negotiator.issue.Value;
 import negotiator.parties.partialopponentmodel.PartialPreferenceModels;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Implementation of a mediator that uses feedback to make a (partial)
@@ -73,7 +73,7 @@ public class FeedbackMediator extends AbstractNegotiationParty implements
 	 *            reproducible)
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		lastAcceptedBid = null;

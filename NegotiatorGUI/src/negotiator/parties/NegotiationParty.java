@@ -9,6 +9,7 @@ import negotiator.protocol.MultilateralProtocol;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -45,8 +46,8 @@ public interface NegotiationParty {
 	 * This is called one time only.
 	 *
 	 * @param utilSpace
-	 *            (a copy of/readonly version of) the {@link AdditiveUtilitySpace} to be
-	 *            used for this session.
+	 *            (a copy of/readonly version of) the
+	 *            {@link AdditiveUtilitySpace} to be used for this session.
 	 * @param timeline
 	 *            The {@link TimeLineInfo} about current session.
 	 * @param agentID
@@ -54,7 +55,7 @@ public interface NegotiationParty {
 	 * @throws RuntimeException
 	 *             if init fails.
 	 */
-	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**

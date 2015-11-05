@@ -6,6 +6,7 @@ import negotiator.SupportedNegotiationSetting;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * The Agent is most of the time stubborn but in the end it starts to
@@ -100,8 +101,8 @@ public class AgentLG extends Agent {
 
 	public void init() {
 		oppenentsBid = new OpponentBids(utilitySpace);
-		bidChooser = new BidChooser(this.utilitySpace, getAgentID(),
-				oppenentsBid);
+		bidChooser = new BidChooser((AdditiveUtilitySpace) this.utilitySpace,
+				getAgentID(), oppenentsBid);
 	}
 
 	public void ReceiveMessage(Action opponentAction) {

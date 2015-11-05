@@ -19,9 +19,10 @@ import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.AdditiveUtilitySpace;
 
 /************************************************
  * Assignment AI Technique - Negotiation Agent By: J.K. van Schoubroeck
@@ -41,8 +42,8 @@ public class Group11 extends AbstractNegotiationParty {
 	private int learnValueAddition;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		lastBid = new Bid(utilSpace.getDomain());
@@ -109,7 +110,8 @@ public class Group11 extends AbstractNegotiationParty {
 		BidHistory bidHist = bidHistory.get(sender.toString());
 		if (!opponentUtilitySpace.containsKey(sender.toString())) {
 			// initialize opponent model's weight
-			AdditiveUtilitySpace oppUSpace = new AdditiveUtilitySpace(getUtilitySpace());
+			AdditiveUtilitySpace oppUSpace = (AdditiveUtilitySpace) getUtilitySpace()
+					.copy();
 			amountOfIssues = oppUSpace.getDomain().getIssues().size();
 			for (Entry<Objective, Evaluator> e : oppUSpace.getEvaluators()) {
 				// set the issue weights equally to 1/#OfIssues
@@ -151,7 +153,8 @@ public class Group11 extends AbstractNegotiationParty {
 		double maximumWeight = 1D - ((double) amountOfIssues) * goldenValue
 				/ totalSum;
 
-		AdditiveUtilitySpace oppUSpace = opponentUtilitySpace.get(sender.toString());
+		AdditiveUtilitySpace oppUSpace = opponentUtilitySpace.get(sender
+				.toString());
 
 		// update and normalize issue weights
 		for (Integer i : lastDiffSet.keySet()) {
@@ -283,7 +286,8 @@ public class Group11 extends AbstractNegotiationParty {
 		double myUtil = getUtility(bid);
 		// compare the utility with opponent's utility and check if the agent
 		// gets the highest utility
-		for (Entry<Object, AdditiveUtilitySpace> opU : opponentUtilitySpace.entrySet()) {
+		for (Entry<Object, AdditiveUtilitySpace> opU : opponentUtilitySpace
+				.entrySet()) {
 			try {
 				if (myUtil < opU.getValue().getUtility(bid)) {
 					return false;

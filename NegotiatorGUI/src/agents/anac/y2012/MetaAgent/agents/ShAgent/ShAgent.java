@@ -40,14 +40,16 @@ public class ShAgent extends Agent {
 	 * init is called when a next session starts with the same opponent.
 	 */
 	public void init() {
-		opponentModel = new OpponentModel(utilitySpace, timeline);
+		opponentModel = new OpponentModel((AdditiveUtilitySpace) utilitySpace,
+				timeline);
 
 		try {
 			maxUtilityBid = utilitySpace.getMaxUtilityBid();
 		} catch (Exception e) {
 		}
 
-		utilAnalyzer = new UtilityAnalyzer(utilitySpace, maxUtilityBid);
+		utilAnalyzer = new UtilityAnalyzer((AdditiveUtilitySpace) utilitySpace,
+				maxUtilityBid);
 	}
 
 	@Override
@@ -493,7 +495,8 @@ public class ShAgent extends Agent {
 		private int turnNumber = 0;
 		private double lastTurnStartTime = 0;
 
-		public OpponentModel(AdditiveUtilitySpace utilitySpace, Timeline timeline) {
+		public OpponentModel(AdditiveUtilitySpace utilitySpace,
+				Timeline timeline) {
 			this.timeline = timeline;
 
 			allIssues = utilitySpace.getDomain().getIssues();

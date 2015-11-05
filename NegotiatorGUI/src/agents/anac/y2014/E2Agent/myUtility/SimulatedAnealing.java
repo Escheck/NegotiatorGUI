@@ -7,15 +7,15 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class SimulatedAnealing {
 	private ArrayList<Issue> issues = null; // åŠ¹ç”¨ç©ºé–“ã�®å…¨ã�¦ã�®è«–ç‚¹
 	private Random randomnr = null;
-	private AdditiveUtilitySpace utilitySpace = null;
+	private AbstractUtilitySpace utilitySpace = null;
 	private MethodForSA methods = null;
 
-	public SimulatedAnealing(AdditiveUtilitySpace u) {
+	public SimulatedAnealing(AbstractUtilitySpace u) {
 		utilitySpace = u;
 		issues = utilitySpace.getDomain().getIssues();
 		randomnr = new Random();

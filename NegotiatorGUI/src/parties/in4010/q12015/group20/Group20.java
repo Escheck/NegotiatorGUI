@@ -18,8 +18,9 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
  * This is your negotiation party.
@@ -54,8 +55,8 @@ public class Group20 extends AbstractNegotiationParty {
 	 * Initialization function
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilitySpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilitySpace, dl, tl, randomSeed, agentId);
 		agentWeights = new Double[utilitySpace.getDomain().getIssues().size()];
 
@@ -87,16 +88,17 @@ public class Group20 extends AbstractNegotiationParty {
 			agentWeights[issueID - 1] = 1.0 / issues.size(); // initialize the
 																// opponents'
 																// weight
-			ourWeights[issueID - 1] = utilitySpace.getWeight(issueID); // save
-																		// weights
-																		// of
-																		// issues
-																		// into
-																		// weights[]
+			ourWeights[issueID - 1] = ((AdditiveUtilitySpace) utilitySpace)
+					.getWeight(issueID); // save
+			// weights
+			// of
+			// issues
+			// into
+			// weights[]
 
 			IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
 			Double[] evals = new Double[lIssueDiscrete.getNumberOfValues()];
-			EvaluatorDiscrete evaluator = (EvaluatorDiscrete) utilitySpace
+			EvaluatorDiscrete evaluator = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 					.getEvaluator(issueID);
 
 			for (int i = 0; i < lIssueDiscrete.getNumberOfValues(); i++) {
@@ -296,7 +298,7 @@ public class Group20 extends AbstractNegotiationParty {
 		HashMap<Integer, Value> tmpValues = new HashMap<Integer, Value>();
 		for (Iterator iterator = valueList.iterator(); iterator.hasNext(); i++) {
 			int maxIndex = getIndexMaxValue((Integer[]) iterator.next());
-			ValueDiscrete maxPreValue = ((IssueDiscrete) utilitySpace
+			ValueDiscrete maxPreValue = ((IssueDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 					.getIssue(i - 1)).getValue(maxIndex);
 			tmpValues.put(i, maxPreValue);
 		}
@@ -359,8 +361,8 @@ public class Group20 extends AbstractNegotiationParty {
 				idx = i;
 			}
 		}
-		return ((IssueDiscrete) utilitySpace.getIssue(issueId - 1))
-				.getValue(idx);
+		return ((IssueDiscrete) ((AdditiveUtilitySpace) utilitySpace)
+				.getIssue(issueId - 1)).getValue(idx);
 	}
 
 	/**

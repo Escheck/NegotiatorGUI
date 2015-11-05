@@ -24,6 +24,7 @@ import negotiator.issue.Objective;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueReal;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorReal;
 
@@ -209,25 +210,29 @@ public class ABMPAgent extends Agent {
 		// used to compute first bid.
 		lUtilityGap = targetUtility - utilitySpace.getUtility(myLastBid);
 		for (int i = 0; i < issues.size(); i++) {
-			lBE[i] = (Double) (utilitySpace.getEvaluator(issues.get(i)
-					.getNumber()).getEvaluation(utilitySpace, myLastBid, issues
-					.get(i).getNumber()));
+			lBE[i] = (Double) (((AdditiveUtilitySpace) utilitySpace)
+					.getEvaluator(issues.get(i).getNumber()).getEvaluation(
+					((AdditiveUtilitySpace) utilitySpace), myLastBid, issues
+							.get(i).getNumber()));
 		}
 
 		// STEP 1: Retrieve issue value for last bid and compute concession on
 		// each issue.
 		int i = 0;
 		for (Issue lIssue : issues) {
-			lAlpha = (1 - utilitySpace.getWeight(lIssue.getNumber())) * lBE[i]; // CHECK:
-																				// (1
-																				// -
-																				// lBE[i]);
-																				// This
-																				// factor
-																				// is
-																				// not
-																				// right??
-			lNF = lNF + utilitySpace.getWeight(lIssue.getNumber()) * lAlpha;
+			lAlpha = (1 - ((AdditiveUtilitySpace) utilitySpace)
+					.getWeight(lIssue.getNumber())) * lBE[i]; // CHECK:
+			// (1
+			// -
+			// lBE[i]);
+			// This
+			// factor
+			// is
+			// not
+			// right??
+			lNF = lNF
+					+ ((AdditiveUtilitySpace) utilitySpace).getWeight(lIssue
+							.getNumber()) * lAlpha;
 			lIssueAlpha[i] = lAlpha;
 			i++;
 		}
@@ -239,8 +244,9 @@ public class ABMPAgent extends Agent {
 
 		// STEP 2: Add configuration tolerance for opponent's bid
 		for (i = 0; i < issues.size(); i++) {
-			lUtility = (Double) (utilitySpace.getEvaluator(issues.get(i)
-					.getNumber()).getEvaluation(utilitySpace,
+			lUtility = (Double) (((AdditiveUtilitySpace) utilitySpace)
+					.getEvaluator(issues.get(i).getNumber()).getEvaluation(
+					((AdditiveUtilitySpace) utilitySpace),
 					((Offer) messageOpponent).getBid(), issues.get(i)
 							.getNumber()));
 			lTE[i] = (1 - CONFTOLERANCE) * lBTE[i] + CONFTOLERANCE * lUtility;
@@ -259,7 +265,7 @@ public class ABMPAgent extends Agent {
 			if (lIssue.getType() == ISSUETYPE.DISCRETE) {
 				IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
 				for (int j = 0; j < lIssueDiscrete.getNumberOfValues(); j++) {
-					lEvalValue = ((EvaluatorDiscrete) utilitySpace
+					lEvalValue = ((EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 							.getEvaluator(lIssue.getNumber()))
 							.getEvaluation(lIssueDiscrete.getValue(j));
 					if (Math.abs(lTE[i] - lEvalValue) < lUtility) {
@@ -270,8 +276,9 @@ public class ABMPAgent extends Agent {
 					}// if
 				}// for
 
-				lTotalConcession += utilitySpace.getWeight(lIssue.getNumber())
-						* (lBE[i] - ((EvaluatorDiscrete) utilitySpace
+				lTotalConcession += ((AdditiveUtilitySpace) utilitySpace)
+						.getWeight(lIssue.getNumber())
+						* (lBE[i] - ((EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 								.getEvaluator(lIssue.getNumber()))
 								.getEvaluation((ValueDiscrete) (lIssueIndex
 										.get(lIssue.getNumber()))));
@@ -299,7 +306,7 @@ public class ABMPAgent extends Agent {
 			Objective lIssue = issues.get(i);
 			if (lIssue.getType() == ISSUETYPE.REAL) {
 				lTE[i] += lRestUtitility / lNrOfRealIssues;
-				EvaluatorReal lRealEvaluator = (EvaluatorReal) (utilitySpace
+				EvaluatorReal lRealEvaluator = (EvaluatorReal) (((AdditiveUtilitySpace) utilitySpace)
 						.getEvaluator(lIssue.getNumber()));
 				double r = lRealEvaluator.getValueByEvaluation(lTE[i]);
 				// lIssueIndex[i] = new ValueReal(r);

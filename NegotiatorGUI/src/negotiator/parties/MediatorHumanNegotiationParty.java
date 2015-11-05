@@ -13,6 +13,7 @@ import negotiator.actions.Action;
 import negotiator.actions.InformVotingResult;
 import negotiator.actions.OfferForVoting;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import agents.EnterBidDialogAcceptance;
 
@@ -33,7 +34,7 @@ public class MediatorHumanNegotiationParty extends AbstractNegotiationParty
 	 * at the start of each nego session.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		System.out.println("init UIAgent");
@@ -45,7 +46,8 @@ public class MediatorHumanNegotiationParty extends AbstractNegotiationParty
 		}
 		System.out.println("old  dialog closed. Trying to open new dialog. ");
 		try {
-			ui = new EnterBidDialogAcceptance(this, null, true, utilitySpace);
+			ui = new EnterBidDialogAcceptance(this, null, true,
+					(AdditiveUtilitySpace) utilitySpace);
 		} catch (Exception e) {
 			System.out.println("Problem in UIAgent2.init:" + e.getMessage());
 			e.printStackTrace();

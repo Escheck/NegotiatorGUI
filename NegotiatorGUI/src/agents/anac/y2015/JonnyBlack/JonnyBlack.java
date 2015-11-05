@@ -16,6 +16,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -50,11 +51,11 @@ public class JonnyBlack extends AbstractNegotiationParty {
 	double unwillingness = 1.1;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
-		initializeCounts(utilitySpace);
+		initializeCounts((AdditiveUtilitySpace) utilitySpace);
 	}
 
 	/**
@@ -74,7 +75,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 		round++;
 		if (round % 10 == 0) {
 			this.agreeVal = Functions.calcStopVal(parties, topNofOpp,
-					utilitySpace);
+					(AdditiveUtilitySpace) utilitySpace);
 			System.out.println(getPartyId());
 			unwillingness *= .995;
 			System.out.println(unwillingness);
@@ -89,7 +90,8 @@ public class JonnyBlack extends AbstractNegotiationParty {
 		}
 		double d = 0;
 		if (lastBid != null)
-			d = Functions.getBidValue(utilitySpace, lastBid);
+			d = Functions.getBidValue((AdditiveUtilitySpace) utilitySpace,
+					lastBid);
 		// System.out.println(d);
 		if (d >= this.stopValue())
 			return new Accept();
@@ -142,7 +144,8 @@ public class JonnyBlack extends AbstractNegotiationParty {
 			Party p = new Party(sender.toString(), issueValOrder);
 			if (!parties.contains(p)) {
 				parties.add(p);
-				p.setOrderedBids(this.acceptableBids, utilitySpace);
+				p.setOrderedBids(this.acceptableBids,
+						(AdditiveUtilitySpace) utilitySpace);
 			} else {
 				p = parties.get(parties.indexOf(p));
 			}
@@ -150,7 +153,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 				ArrayList<Issue> issues = lastBid.getIssues();
 				try {
 					for (int i = 0; i < issues.size(); i++) {
-						IssueDiscrete id = (IssueDiscrete) utilitySpace
+						IssueDiscrete id = (IssueDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 								.getIssue(i);
 						int choice = id.getValueIndex((ValueDiscrete) lastBid
 								.getValue(i + 1));
@@ -188,7 +191,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 				BidHolder bh = acceptableBids.get(i);
 				if (bh.v > stopValue()
 						&& parties.get(agentToFavor).getPredictedUtility(bh.b,
-								utilitySpace) > care) {
+								(AdditiveUtilitySpace) utilitySpace) > care) {
 					lastorder = i;
 					return bh.b;
 				}
@@ -202,7 +205,7 @@ public class JonnyBlack extends AbstractNegotiationParty {
 
 	public Vector<BidHolder> getFeasibleBids() {
 		Vector<BidHolder> bids = new Vector<BidHolder>();
-		Bid b = Functions.getCopyOfBestBid(utilitySpace);
+		Bid b = Functions.getCopyOfBestBid((AdditiveUtilitySpace) utilitySpace);
 		bids = recurseBids(b, bids, 0);
 		System.out.println("Vector Size:" + bids.size());
 		return bids;
@@ -213,7 +216,8 @@ public class JonnyBlack extends AbstractNegotiationParty {
 		if (is == issueOrder.length) {
 			BidHolder bh = new BidHolder();
 			bh.b = b;
-			bh.v = Functions.getBidValue(utilitySpace, b);
+			bh.v = Functions
+					.getBidValue((AdditiveUtilitySpace) utilitySpace, b);
 			v1.addElement(bh);
 
 			return v1;
@@ -222,9 +226,10 @@ public class JonnyBlack extends AbstractNegotiationParty {
 			Bid b1 = new Bid(b);
 			int issueID = issueOrder[is];
 			int item = issueValOrder[issueID][i] - 1;
-			ValueDiscrete val = Functions.getVal(utilitySpace, issueID, item);
+			ValueDiscrete val = Functions.getVal(
+					(AdditiveUtilitySpace) utilitySpace, issueID, item);
 			b1 = b1.putValue(issueID + 1, val);
-			if (Functions.getBidValue(utilitySpace, b1) > this.finalStopVal) {
+			if (Functions.getBidValue((AdditiveUtilitySpace) utilitySpace, b1) > this.finalStopVal) {
 				v1.addAll(recurseBids(b1, v1, is + 1));
 			}
 		}

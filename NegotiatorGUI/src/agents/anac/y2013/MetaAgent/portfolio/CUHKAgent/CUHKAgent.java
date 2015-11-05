@@ -19,6 +19,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * 
@@ -128,7 +129,8 @@ public class CUHKAgent extends Agent {
 				// receiveMessage opponent model first
 				this.opponentBidHistory.updateOpponentModel(
 						((Offer) ActionOfOpponent).getBid(),
-						utilitySpace.getDomain(), this.utilitySpace);
+						utilitySpace.getDomain(),
+						(AdditiveUtilitySpace) this.utilitySpace);
 				this.updateConcedeDegree();
 				// receiveMessage the estimation
 				if (ownBidHistory.numOfBidsProposed() == 0) {
@@ -307,7 +309,7 @@ public class CUHKAgent extends Agent {
 			}
 			// System.out.println("i propose " + debug + " bid at time " +
 			// timeline.getTime());
-			this.ownBidHistory.addBid(bid, utilitySpace);
+			this.ownBidHistory.addBid(bid, (AdditiveUtilitySpace) utilitySpace);
 			this.timeLeftAfter = timeline.getCurrentTime();
 			this.estimateRoundLeft(false);// receiveMessage the estimation
 			// System.out.println(this.utilitythreshold + "-***-----" +
@@ -742,8 +744,8 @@ public class CUHKAgent extends Agent {
 	}
 
 	/*
-	 * receiveMessage the concede-to-time degree based on the predicted toughness degree
-	 * of the opponent
+	 * receiveMessage the concede-to-time degree based on the predicted
+	 * toughness degree of the opponent
 	 */
 
 	private void updateConcedeDegree() {

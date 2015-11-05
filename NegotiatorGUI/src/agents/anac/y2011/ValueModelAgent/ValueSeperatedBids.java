@@ -2,12 +2,13 @@ package agents.anac.y2011.ValueModelAgent;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import negotiator.Bid;
+import negotiator.issue.ISSUETYPE;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
 import negotiator.utility.AdditiveUtilitySpace;
-import negotiator.issue.ISSUETYPE;
 
 public class ValueSeperatedBids {
 

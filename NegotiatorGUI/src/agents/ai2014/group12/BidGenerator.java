@@ -8,11 +8,11 @@ import java.util.Map;
 import negotiator.Bid;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class BidGenerator {
 	static ArrayList<Bid> bidCombinations;
-	static AdditiveUtilitySpace utilitySpace;
+	static AbstractUtilitySpace utilitySpace;
 
 	/**
 	 * This function returns the best bid that an agent can make with regards to
@@ -26,8 +26,8 @@ public class BidGenerator {
 	 * @throws Exception
 	 */
 
-	public static Bid generateBid(AdditiveUtilitySpace ut, Preference preference,
-			double acceptingValue,
+	public static Bid generateBid(AbstractUtilitySpace ut,
+			Preference preference, double acceptingValue,
 			HashMap<String, Preference> otherAgentsPreference) throws Exception {
 		System.out.println("Begin combinations");
 		utilitySpace = ut;
@@ -126,7 +126,7 @@ public class BidGenerator {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Bid getBestBid(ArrayList<Bid> bids, AdditiveUtilitySpace ut,
+	private static Bid getBestBid(ArrayList<Bid> bids, AbstractUtilitySpace ut,
 			Preference preference,
 			HashMap<String, Preference> otherAgentsPreference) throws Exception {
 		ArrayList<ArrayList<Double>> list = new ArrayList<ArrayList<Double>>();

@@ -27,6 +27,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -181,7 +182,7 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 	String fileName;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -305,10 +306,10 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 				// update opponent model first
 				this.opponentBidHistory1.updateOpponentModel(
 						this.oppPreviousBid_Agent1, utilitySpace.getDomain(),
-						this.utilitySpace);
+						(AdditiveUtilitySpace) this.utilitySpace);
 				this.opponentBidHistory2.updateOpponentModel(
 						this.oppPreviousBid_Agent2, utilitySpace.getDomain(),
-						this.utilitySpace);
+						(AdditiveUtilitySpace) this.utilitySpace);
 				if (this.discountingFactor == 1) {
 					this.updateConcedeDegree_nonDiscountingFactor_Agent1();
 					this.updateConcedeDegree_nonDiscountingFactor_Agent2();
@@ -481,7 +482,7 @@ public class CUHKAgent2015 extends AbstractNegotiationParty {
 			this.myLastBid = bid;
 			// System.out.println("i propose " + debug + " bid at time " +
 			// timeline.getTime());
-			this.ownBidHistory.addBid(bid, utilitySpace);
+			this.ownBidHistory.addBid(bid, (AdditiveUtilitySpace) utilitySpace);
 			this.timeLeftAfter = timeline.getCurrentTime();
 			if (this.timeLeftAfter - this.timeLeftBefore > this.maximumTimeOfOwn) {
 				this.maximumTimeOfOwn = this.timeLeftAfter

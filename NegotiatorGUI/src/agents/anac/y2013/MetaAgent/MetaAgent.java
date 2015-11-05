@@ -26,6 +26,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.EVALUATORTYPE;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
@@ -86,7 +87,7 @@ public class MetaAgent extends Agent {
 		// params 5+6+7 - Expected Utility of role, Standard deviation of
 		// Utility of role, Standard deviation of weights of role
 		double EU = 0, stdevU = 0, stdevW = 0, sW = 0, ssW = 0, countW = 0, relevantEU = 0;
-		Iterator<Entry<Objective, Evaluator>> issue = utilitySpace
+		Iterator<Entry<Objective, Evaluator>> issue = ((AdditiveUtilitySpace) utilitySpace)
 				.getEvaluators().iterator();
 		List<Double> ssWList = new ArrayList<Double>();
 		while (issue.hasNext()) { // every issue
@@ -154,7 +155,8 @@ public class MetaAgent extends Agent {
 		Iterator<Double> wIt = ssWList.iterator();
 		double avgW = sW / countW;
 		double avgSize = ((double) sumSize)
-				/ ((double) utilitySpace.getEvaluators().size());
+				/ ((double) ((AdditiveUtilitySpace) utilitySpace)
+						.getEvaluators().size());
 
 		while (wIt.hasNext()) {
 			ssW += Math.pow(wIt.next() - avgW, 2);
@@ -326,7 +328,8 @@ public class MetaAgent extends Agent {
 
 		for (Issue issue : utilitySpace.getDomain().getIssues()) { // for every
 																	// issue
-			ArrayList<Bid> tempBids = new ArrayList<Bid>(); // createFrom a list of
+			ArrayList<Bid> tempBids = new ArrayList<Bid>(); // createFrom a list
+															// of
 															// bids
 			ArrayList<Value> issueValues = new ArrayList<Value>();
 			if (issue.getType() == ISSUETYPE.DISCRETE) {

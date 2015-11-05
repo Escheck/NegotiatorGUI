@@ -163,7 +163,7 @@ public class IssueManager {
 		}
 
 		this.T = T;
-		this.US = negoSession.getUtilitySpace();
+		this.US = (AdditiveUtilitySpace) negoSession.getUtilitySpace();
 		this.OM = om;
 		try {
 			maxBid = GetMaxBidWithNoCost(); // try sparing the brute force

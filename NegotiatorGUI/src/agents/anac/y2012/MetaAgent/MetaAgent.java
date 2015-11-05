@@ -14,6 +14,7 @@ import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.Objective;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.EVALUATORTYPE;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
@@ -106,7 +107,7 @@ public class MetaAgent extends Agent {
 		// params 5+6+7 - Expected Utility of role, Standard deviation of
 		// Utility of role, Standard deviation of weights of role
 		double EU = 0, stdevU = 0, stdevW = 0, sW = 0, ssW = 0, countW = 0;
-		Iterator<Entry<Objective, Evaluator>> issue = utilitySpace
+		Iterator<Entry<Objective, Evaluator>> issue = ((AdditiveUtilitySpace) utilitySpace)
 				.getEvaluators().iterator();
 		List<Double> ssWList = new ArrayList<Double>();
 		while (issue.hasNext()) { // every issue

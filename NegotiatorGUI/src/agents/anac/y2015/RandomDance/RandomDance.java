@@ -22,6 +22,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -46,7 +47,7 @@ public class RandomDance extends AbstractNegotiationParty {
 	 */
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -319,7 +320,7 @@ public class RandomDance extends AbstractNegotiationParty {
 				.getIssues(), 1.0);
 
 		try {
-			playerData.SetMyUtility(utilitySpace);
+			playerData.SetMyUtility((AdditiveUtilitySpace) utilitySpace);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -467,7 +468,8 @@ class PlayerData {
 		return map.get(issue).GetValueWithWeight(value);
 	}
 
-	public void SetMyUtility(AdditiveUtilitySpace utilitySpace) throws Exception {
+	public void SetMyUtility(AdditiveUtilitySpace utilitySpace)
+			throws Exception {
 
 		Bid bid = utilitySpace.getMinUtilityBid();
 		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();

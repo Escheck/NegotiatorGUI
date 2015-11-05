@@ -22,6 +22,7 @@ import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -62,7 +63,7 @@ public class AresParty extends AbstractNegotiationParty {
 	private int NoOfParty = -1;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		myparty = getPartyId();
@@ -127,7 +128,8 @@ public class AresParty extends AbstractNegotiationParty {
 
 				this.opponentBidHistory.updateOpponentModel(
 						((Offer) ActionOfOpponent).getBid(),
-						utilitySpace.getDomain(), this.utilitySpace);
+						utilitySpace.getDomain(),
+						(AdditiveUtilitySpace) this.utilitySpace);
 
 			} else if (ActionOfOpponent instanceof Accept) {
 				// receive an accept from an opponent over an offer, which may
@@ -167,7 +169,8 @@ public class AresParty extends AbstractNegotiationParty {
 				// update opponent model first
 				this.opponentBidHistory.updateOpponentModel(
 						((Offer) ActionOfOpponent).getBid(),
-						utilitySpace.getDomain(), this.utilitySpace);
+						utilitySpace.getDomain(),
+						(AdditiveUtilitySpace) this.utilitySpace);
 				this.updateConcedeDegree();
 				// update the estimation
 				if (ownBidHistory.numOfBidsProposed() == 0) {
@@ -361,7 +364,8 @@ public class AresParty extends AbstractNegotiationParty {
 			// timeline.getTime());
 
 			if (bid != null)
-				this.ownBidHistory.addBid(bid, utilitySpace);
+				this.ownBidHistory.addBid(bid,
+						(AdditiveUtilitySpace) utilitySpace);
 
 			this.timeLeftAfter = timeline.getCurrentTime();
 			this.estimateRoundLeft(false);// update the estimation

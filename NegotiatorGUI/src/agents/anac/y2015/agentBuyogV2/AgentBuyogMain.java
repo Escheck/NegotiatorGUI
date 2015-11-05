@@ -26,10 +26,11 @@ import negotiator.issue.ValueDiscrete;
 import negotiator.issue.ValueInteger;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
-import negotiator.utility.AdditiveUtilitySpace;
 import flanagan.analysis.Regression;
 
 public class AgentBuyogMain extends AbstractNegotiationParty {
@@ -62,7 +63,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 	private int numberOfRounds = 0;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 		this.totalHistory = new BidHistory();
@@ -557,9 +558,11 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 
 	private void initializeOpponentInfo(Object sender) {
 		if (infoA == null) {
-			infoA = new OpponentInfo(sender.toString(), utilitySpace);
+			infoA = new OpponentInfo(sender.toString(),
+					(AdditiveUtilitySpace) utilitySpace);
 		} else if (infoB == null) {
-			infoB = new OpponentInfo(sender.toString(), utilitySpace);
+			infoB = new OpponentInfo(sender.toString(),
+					(AdditiveUtilitySpace) utilitySpace);
 		}
 
 		if (infoA != null && infoB != null) {

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import negotiator.Domain;
 import negotiator.exceptions.Warning;
 import negotiator.session.RepositoryException;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * ProfileRepItem is a profile, as an item to put in the registry. The profile
@@ -131,7 +131,7 @@ public class ProfileRepItem implements RepItem {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public AdditiveUtilitySpace create() throws RepositoryException {
+	public AbstractUtilitySpace create() throws RepositoryException {
 		Domain domain;
 		try {
 			domain = Repository.get_domain_repos().getDomain(getDomain());

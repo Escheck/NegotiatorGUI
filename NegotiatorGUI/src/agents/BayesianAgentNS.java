@@ -1,6 +1,7 @@
 package agents;
 
-import agents.bayesianopponentmodel.BayesianOpponentModelScalable;;
+import negotiator.utility.AdditiveUtilitySpace;
+import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 
 public class BayesianAgentNS extends BayesianAgent {
 
@@ -11,7 +12,8 @@ public class BayesianAgentNS extends BayesianAgent {
 
 	@Override
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);
+		fOpponentModel = new BayesianOpponentModelScalable(
+				(AdditiveUtilitySpace) utilitySpace);
 	}
 
 }

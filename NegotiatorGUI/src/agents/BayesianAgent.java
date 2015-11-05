@@ -14,6 +14,7 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.issue.Issue;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModel;
@@ -68,6 +69,9 @@ public class BayesianAgent extends Agent {
 	}
 
 	public void init() {
+		@SuppressWarnings("unused")
+		// cast to ensure AdditiveUtilitySpace
+		AdditiveUtilitySpace a = (AdditiveUtilitySpace) utilitySpace;
 		messageOpponent = null;
 		myLastAction = null;
 		fSmartSteps = 0;
@@ -76,7 +80,8 @@ public class BayesianAgent extends Agent {
 	}
 
 	protected void prepareOpponentModel() {
-		fOpponentModel = new BayesianOpponentModelScalable(utilitySpace);
+		fOpponentModel = new BayesianOpponentModelScalable(
+				(AdditiveUtilitySpace) utilitySpace);
 	}
 
 	// Class methods
@@ -87,7 +92,7 @@ public class BayesianAgent extends Agent {
 	private Action proposeInitialBid() throws Exception {
 		Bid lBid = null;
 		// Return (one of the) possible bid(s) with maximal utility.
-		lBid = utilitySpace.getMaxUtilityBid();
+		lBid = ((AdditiveUtilitySpace) utilitySpace).getMaxUtilityBid();
 		fSmartSteps = NUMBER_OF_SMART_STEPS;
 		myLastBid = lBid;
 		return new Offer(getAgentID(), lBid);
@@ -109,8 +114,8 @@ public class BayesianAgent extends Agent {
 			throw new Exception("myLastBid==null");
 		log("Get next bid ...");
 
-		BidSpace bs = new BidSpace(utilitySpace, new OpponentModelUtilSpace(
-				fOpponentModel), false, true);
+		BidSpace bs = new BidSpace((AdditiveUtilitySpace) utilitySpace,
+				new OpponentModelUtilSpace(fOpponentModel), false, true);
 		// System.out.println("Bidspace:\n"+bs);
 
 		// compute opponent's concession

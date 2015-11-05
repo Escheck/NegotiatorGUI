@@ -12,6 +12,7 @@ import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -40,7 +41,7 @@ public class AgentW extends AbstractNegotiationParty {
 	 * @throws Exception
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -49,13 +50,16 @@ public class AgentW extends AbstractNegotiationParty {
 			System.out.println("*** Agent W ***");
 		}
 
-		negotiatingInfo = new negotiatingInfo(utilitySpace);
+		negotiatingInfo = new negotiatingInfo(
+				(AdditiveUtilitySpace) utilitySpace);
 		try {
-			bidSearch = new bidSearch(utilitySpace, negotiatingInfo);
+			bidSearch = new bidSearch((AdditiveUtilitySpace) utilitySpace,
+					negotiatingInfo);
 		} catch (Exception e) {
 			throw new RuntimeException("init failed:" + e, e);
 		}
-		strategy = new strategy(utilitySpace, negotiatingInfo);
+		strategy = new strategy((AdditiveUtilitySpace) utilitySpace,
+				negotiatingInfo);
 	}
 
 	/**

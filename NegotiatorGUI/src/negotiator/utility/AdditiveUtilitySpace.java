@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,13 +13,10 @@ import java.util.Set;
 import java.util.Vector;
 
 import negotiator.Bid;
-import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
-import negotiator.session.TimeLineInfo;
-import negotiator.session.Timeline;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
@@ -30,18 +26,17 @@ import negotiator.xml.SimpleElement;
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
-public class AdditiveUtilitySpace implements Serializable {
+public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 
-	// Class fields
-	protected Domain domain;
-	protected String fileName;
-	protected UTILITYSPACETYPE spaceType;
-	private double discountFactor = 1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8746748105840831474L;
 
-	private Double fReservationValue = null;
-	// Added by Dmytro: I need the XMLRoot for the utility space to load the
-	// Similarity functions
-	// in the Similarity agent
+	/*
+	 * Added by Dmytro: I need the XMLRoot for the utility space to load the
+	 * Similarity functions in the Similarity agent
+	 */
 	protected SimpleElement fXMLRoot;
 	private Map<Objective, Evaluator> fEvaluators; // changed to use Objective.
 													// TODO check casts.
@@ -63,8 +58,9 @@ public class AdditiveUtilitySpace implements Serializable {
 		this(domain, new HashMap<Objective, Evaluator>());
 	}
 
-	public AdditiveUtilitySpace(Domain domain, Map<Objective, Evaluator> fEvaluators) {
-		this.domain = domain;
+	public AdditiveUtilitySpace(Domain domain,
+			Map<Objective, Evaluator> fEvaluators) {
+		super(domain);
 		this.fEvaluators = fEvaluators;
 	}
 
@@ -79,8 +75,9 @@ public class AdditiveUtilitySpace implements Serializable {
 	 *             if error occurs, e.g. if domain does not match the util
 	 *             space, or file not found.
 	 */
-	public AdditiveUtilitySpace(Domain domain, String fileName) throws Exception {
-		this.domain = domain;
+	public AdditiveUtilitySpace(Domain domain, String fileName)
+			throws Exception {
+		super(domain);
 		this.fileName = fileName;
 		fEvaluators = new HashMap<Objective, Evaluator>();
 		if (!fileName.equals(""))
@@ -102,12 +99,12 @@ public class AdditiveUtilitySpace implements Serializable {
 	 *            utility space to be cloned.
 	 */
 	public AdditiveUtilitySpace(AdditiveUtilitySpace us) {
-		domain = us.getDomain();
+		super(us.getDomain());
 		fileName = us.getFileName();
 		fEvaluators = new HashMap<Objective, Evaluator>();
-		fReservationValue = us.getReservationValue();
+		setReservationValue(us.getReservationValue());
 		// and clone the evaluators
-		for (Objective obj : domain.getObjectives()) {
+		for (Objective obj : getDomain().getObjectives()) {
 			Evaluator e = us.getEvaluator(obj.getNumber());
 			if (e != null)
 				fEvaluators.put(obj, e.clone());
@@ -116,16 +113,7 @@ public class AdditiveUtilitySpace implements Serializable {
 			// evlauator.
 		}
 		fXMLRoot = us.getXMLRoot();
-		discountFactor = us.discountFactor;
-	}
-
-	/**
-	 * This method returns the type of utility space: either linear or
-	 * nonlinear. May also return null, this means linear FAIK.
-	 */
-	public UTILITYSPACETYPE getType() {
-
-		return this.spaceType;
+		setDiscount(us.getDiscountFactor());
 	}
 
 	/**
@@ -163,7 +151,7 @@ public class AdditiveUtilitySpace implements Serializable {
 	 * @return true if the weigths are indeed normalized, false if they aren't.
 	 */
 	private boolean checkTreeNormalization() {
-		return checkTreeNormalizationRecursive(domain.getObjectivesRoot());
+		return checkTreeNormalizationRecursive(getDomain().getObjectivesRoot());
 	}
 
 	protected void normalizeWeights(Objective currentRoot) {
@@ -230,7 +218,7 @@ public class AdditiveUtilitySpace implements Serializable {
 		// check if utility spaces are instance of the domain
 		// following checks normally succeed, as the domain of the domain space
 		// is enforced in the loader.
-		if (!(dom.equals(domain)))
+		if (!(dom.equals(getDomain())))
 			throw new Exception("domain does not match the negotiation domain");
 		String err = isComplete();
 		if (err != null)
@@ -264,28 +252,13 @@ public class AdditiveUtilitySpace implements Serializable {
 	 */
 	public final Evaluator getEvaluator(int index) {
 		// checkForLinearSpaceType();
-		Objective obj = domain.getObjective(index); // Used to be Issue in stead
-													// of Objective
+		Objective obj = getDomain().getObjective(index); // Used to be Issue in
+															// stead
+		// of Objective
 		if (obj != null) {
 			return fEvaluators.get(obj);
 		} else
 			return null;
-	}
-
-	/**
-	 * Throws an exception is the the space type is not linear. This method is
-	 * necessary because some parts of this class assume we work with weights
-	 * and evaluators.
-	 */
-	private void checkForLinearSpaceType() {
-		if (getType() == null)
-			return;
-
-		if (getType() != UTILITYSPACETYPE.LINEAR
-				&& getType() != UTILITYSPACETYPE.CONSTRAINT)
-			throw new IllegalStateException(
-					"This method is to be used for linear utility spaces only. This space is "
-							+ getType());
 	}
 
 	/**
@@ -300,7 +273,7 @@ public class AdditiveUtilitySpace implements Serializable {
 		EVALUATORTYPE type;
 		double utility = 0, financialUtility = 0, financialRat = 0;
 
-		Objective root = domain.getObjectivesRoot();
+		Objective root = getDomain().getObjectivesRoot();
 		Enumeration<Objective> issueEnum = root.getPreorderIssueEnumeration();
 		while (issueEnum.hasMoreElements()) {
 			Objective is = issueEnum.nextElement();
@@ -326,95 +299,6 @@ public class AdditiveUtilitySpace implements Serializable {
 	}
 
 	/**
-	 * Let d in (0, 1) be the discount factor. (If d <= 0 or d >= 1, we assume
-	 * that d = 1.) Let t in [0, 1] be the current time, as defined by the
-	 * {@link Timeline}. We compute the <i>discounted</i> utility
-	 * discountedUtility as follows:
-	 * 
-	 * discountedUtility = originalUtility * d^t.
-	 * 
-	 * For t = 0 the utility remains unchanged, and for t = 1 the original
-	 * utility is multiplied by the discount factor. The effect is almost linear
-	 * in between. Works with any utility space.
-	 * 
-	 * @param bid
-	 *            of which we are interested in its utility.
-	 * @param timeline
-	 *            indicating the time passed in the negotiation.
-	 * @return discounted utility.
-	 */
-	public double getUtilityWithDiscount(Bid bid, TimeLineInfo timeline) {
-		double time = timeline.getTime();
-		return getUtilityWithDiscount(bid, time);
-	}
-
-	/**
-	 * @see #getUtilityWithDiscount(Bid, Timeline)
-	 * @param bid
-	 *            of which we want to know the utility at the given time.
-	 * @param time
-	 *            at which we want to know the utility of the bid.
-	 * @return discounted utility.
-	 */
-	public double getUtilityWithDiscount(Bid bid, double time) {
-		double util = 0;
-		try {
-			util = getUtility(bid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		double discountedUtil = discount(util, time);
-		// System.out.println(util + " * " + discount + "^" + time + " = " +
-		// discountedUtil);
-		return discountedUtil;
-	}
-
-	/**
-	 * Computes:
-	 * 
-	 * discountedUtil = util * Math.pow(discount, time).
-	 * 
-	 * Checks for bounds on the discount factor and time.
-	 * 
-	 * @param util
-	 *            undiscounted utility.
-	 * @param time
-	 *            at which we want to know the discounted utility.
-	 * @param discountFactor
-	 *            of the preference profile.
-	 * @return discounted version of the given utility at the given time.
-	 */
-	public static double discount(double util, double time,
-			double discountFactor) {
-		double discount = discountFactor;
-		if (time < 0) {
-			System.err.println("Warning: time = " + time
-					+ " < 0, using time = 0 instead.");
-			time = 0;
-		}
-		if (time > 1) {
-			System.err.println("Warning: time = " + time
-					+ " > 1, using time = 1 instead.");
-			time = 1;
-		}
-
-		double discountedUtil = util * Math.pow(discount, time);
-		return discountedUtil;
-	}
-
-	/**
-	 * Computes:
-	 * 
-	 * discountedUtil = util * Math.pow(discount, time).
-	 * 
-	 * Checks for bounds on the discount factor and time.
-	 */
-	public Double discount(double util, double time) {
-		return discount(util, time, discountFactor);
-	}
-
-	/**
 	 * Returns the utility of one issue in the bid. Note that this value is in
 	 * the range [0,1] as it is not normalized by the issue weight. Only works
 	 * with linear utility spaces.
@@ -434,61 +318,6 @@ public class AdditiveUtilitySpace implements Serializable {
 		Evaluator lEvaluator = fEvaluators.get(lObj);
 
 		return lEvaluator.getEvaluation(this, bid, pIssueIndex);
-	}
-
-	/**
-	 * Returns the maximum bid in the utility space. This is only supported for
-	 * linear utility spaces. Totally revised, brute-force search now.
-	 * 
-	 * @return a bid with the maximum utility value attainable in this util
-	 *         space
-	 * @throws Exception
-	 *             if there is no bid at all in this util space.
-	 */
-	public final Bid getMaxUtilityBid() throws Exception {
-		checkForLinearSpaceType();
-		Bid maxBid = null;
-		double maxutil = 0.;
-		BidIterator bidit = new BidIterator(domain);
-
-		if (!bidit.hasNext())
-			throw new Exception("The domain does not contain any bids!");
-		while (bidit.hasNext()) {
-			Bid thisBid = bidit.next();
-			double thisutil = getUtility(thisBid);
-			if (thisutil > maxutil) {
-				maxutil = thisutil;
-				maxBid = thisBid;
-			}
-		}
-		return maxBid;
-	}
-
-	/**
-	 * Returns the worst bid in the utility space. This is only supported for
-	 * linear utility spaces.
-	 * 
-	 * @return a bid with the lowest possible utility
-	 * @throws Exception
-	 *             if there is no bid at all in the util space
-	 */
-	public Bid getMinUtilityBid() throws Exception {
-		checkForLinearSpaceType();
-		Bid minBid = null;
-		double minUtil = 1.2;
-		BidIterator bidit = new BidIterator(domain);
-
-		if (!bidit.hasNext())
-			throw new Exception("The domain does not contain any bids!");
-		while (bidit.hasNext()) {
-			Bid thisBid = bidit.next();
-			double thisutil = getUtility(thisBid);
-			if (thisutil < minUtil) {
-				minUtil = thisutil;
-				minBid = thisBid;
-			}
-		}
-		return minBid;
 	}
 
 	/**
@@ -535,8 +364,8 @@ public class AdditiveUtilitySpace implements Serializable {
 					&& (currentRoot.getChildByTagName("reservation").length > 0)) {
 				SimpleElement xml_reservation = (SimpleElement) (currentRoot
 						.getChildByTagName("reservation")[0]);
-				fReservationValue = Double.valueOf(xml_reservation
-						.getAttribute("value"));
+				setReservationValue(Double.valueOf(xml_reservation
+						.getAttribute("value")));
 			}
 		} catch (Exception e) {
 			System.out.println("Utility space has no reservation value");
@@ -549,7 +378,7 @@ public class AdditiveUtilitySpace implements Serializable {
 						.getChildByTagName("discount_factor")[0]);
 				double df = Double.valueOf(xml_reservation
 						.getAttribute("value"));
-				discountFactor = validateDiscount(df);
+				setDiscount(validateDiscount(df));
 			}
 		} catch (Exception e) {
 			System.out.println("Utility space has no discount factor;");
@@ -691,18 +520,6 @@ public class AdditiveUtilitySpace implements Serializable {
 		return returnval;
 	}
 
-	protected double validateDiscount(double df) {
-		if (df < 0 || df > 1) {
-			System.err.println("Warning: discount factor = " + df
-					+ " was discarded.");
-		}
-
-		if (df <= 0 || df > 1) {
-			df = 1;
-		}
-		return df;
-	}
-
 	/**
 	 * 
 	 * @param issueID
@@ -713,7 +530,7 @@ public class AdditiveUtilitySpace implements Serializable {
 	public double getWeight(int issueID) {
 		checkForLinearSpaceType();
 		// TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
-		Objective ob = domain.getObjective(issueID);
+		Objective ob = getDomain().getObjective(issueID);
 		if (ob != null) {
 			// System.out.println("Obje index "+ issueID +" != null");
 			Evaluator ev = fEvaluators.get(ob);
@@ -765,14 +582,7 @@ public class AdditiveUtilitySpace implements Serializable {
 	 * @return the indexed objective or issue
 	 */
 	public final Objective getIssue(int index) {
-		return domain.getIssue(index);
-	}
-
-	/**
-	 * @return domain belonging to this preference profile.
-	 */
-	public final Domain getDomain() {
-		return domain;
+		return getDomain().getIssue(index);
 	}
 
 	/**
@@ -934,9 +744,9 @@ public class AdditiveUtilitySpace implements Serializable {
 	 * @throws IOException
 	 */
 	public SimpleElement toXML() throws IOException {
-		SimpleElement root = (domain.getObjectivesRoot()).toXML(); // convert
-																	// the
-																	// domain.
+		SimpleElement root = (getDomain().getObjectivesRoot()).toXML(); // convert
+		// the
+		// domain.
 		root = toXMLrecurse(root);
 		SimpleElement rootWrapper = new SimpleElement("utility_space");
 		rootWrapper.addChildElement(root);
@@ -975,7 +785,8 @@ public class AdditiveUtilitySpace implements Serializable {
 			int childIndex = Integer
 					.valueOf(currentChild.getAttribute("index"));
 			try {
-				Evaluator ev = fEvaluators.get(domain.getObjective(childIndex));
+				Evaluator ev = fEvaluators.get(getDomain().getObjective(
+						childIndex));
 				// Wouter: nasty, they dont check whether object actually has
 				// weight.
 				// they account on an exception being thrown in dthat case....
@@ -999,7 +810,7 @@ public class AdditiveUtilitySpace implements Serializable {
 
 			// set the weight
 			int childIndex = Integer.valueOf(issueL.getAttribute("index"));
-			Objective tmpEvObj = domain.getObjective(childIndex);
+			Objective tmpEvObj = getDomain().getObjective(childIndex);
 			try {
 
 				Evaluator ev = fEvaluators.get(tmpEvObj);
@@ -1018,7 +829,7 @@ public class AdditiveUtilitySpace implements Serializable {
 					for (int itemInd = 0; itemInd < items.length; itemInd++) {
 						// SimpleElement tmpItem = (SimpleElement)
 						// items[itemInd];
-						IssueDiscrete theIssue = (IssueDiscrete) domain
+						IssueDiscrete theIssue = (IssueDiscrete) getDomain()
 								.getObjective(childIndex);
 
 						EvaluatorDiscrete dev = (EvaluatorDiscrete) ev;
@@ -1076,7 +887,7 @@ public class AdditiveUtilitySpace implements Serializable {
 	private String isComplete() {
 		// We don't have the domain template here anymore.
 		// so we can only check that all fields are filled.
-		ArrayList<Issue> issues = domain.getIssues();
+		ArrayList<Issue> issues = getDomain().getIssues();
 		if (issues == null)
 			return "Utility space is not complete, in fact it is empty!";
 		String mess;
@@ -1089,94 +900,6 @@ public class AdditiveUtilitySpace implements Serializable {
 				return mess;
 		}
 		return null;
-	}
-
-	/**
-	 * @param newRV
-	 *            new reservation value.
-	 */
-	public void setReservationValue(double newRV) {
-		fReservationValue = newRV;
-	}
-
-	/**
-	 * @param newDiscount
-	 *            new discount factor.
-	 */
-	public void setDiscount(double newDiscount) {
-		discountFactor = validateDiscount(newDiscount);
-	}
-
-	/**
-	 * The reservation value is the least favourable point at which one will
-	 * accept a negotiated agreement. Also sometimes referred to as the �walk
-	 * away� point.
-	 * 
-	 * This is value remains constant during the negotiation. However, by
-	 * default, the reservation value descreases with time. To obtain the
-	 * discounted version of the reservation value, use
-	 * {@link #getReservationValueWithDiscount(Timeline)}.
-	 * 
-	 * @return undiscounted reservation value of the preference profile (may be
-	 *         null).
-	 */
-	public Double getReservationValue() {
-		return getReservationValueUndiscounted();
-	}
-
-	/**
-	 * Equivalent to {@link #getReservationValue()}, but always returns a double
-	 * value. When the original reservation value is <b>null</b> it returns the
-	 * default value 0.
-	 * 
-	 * @return undiscounted reservation value of the preference profile (never
-	 *         null).
-	 * @see #getReservationValue()
-	 */
-	public double getReservationValueUndiscounted() {
-		if (fReservationValue == null)
-			return 0;
-		return fReservationValue;
-	}
-
-	/**
-	 * The discounted version of {@link #getReservationValue()}.
-	 * 
-	 * @param time
-	 *            at which we want to know the utility of the reservation value.
-	 * @return discounted reservation value.
-	 */
-	public double getReservationValueWithDiscount(double time) {
-		Double rv = getReservationValue();
-		if (rv == null || rv == 0)
-			return 0;
-
-		return discount(rv, time);
-	}
-
-	/**
-	 * The discounted version of {@link #getReservationValue()}.
-	 * 
-	 * @param timeline
-	 *            specifying the current time in the negotiation.
-	 * @return discounted reservation value.
-	 */
-	public double getReservationValueWithDiscount(TimeLineInfo timeline) {
-		return getReservationValueWithDiscount(timeline.getTime());
-	}
-
-	/**
-	 * @return filename of this preference profile.
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * @return true if the domain features discounts.
-	 */
-	public boolean isDiscounted() {
-		return discountFactor < 1.0;
 	}
 
 	public String toString() {
@@ -1195,7 +918,7 @@ public class AdditiveUtilitySpace implements Serializable {
 			return false;
 		AdditiveUtilitySpace obj2 = (AdditiveUtilitySpace) obj;
 		// check domains
-		if (!domain.equals(obj2.getDomain()))
+		if (!getDomain().equals(obj2.getDomain()))
 			return false;
 		// check evaluators
 		for (Entry<Objective, Evaluator> entry : fEvaluators.entrySet()) {
@@ -1207,10 +930,8 @@ public class AdditiveUtilitySpace implements Serializable {
 		return true;
 	}
 
-	/**
-	 * @return Discount factor of this preference profile.
-	 */
-	public final double getDiscountFactor() {
-		return discountFactor;
+	@Override
+	public UtilitySpace copy() {
+		return new AdditiveUtilitySpace(this);
 	}
 }

@@ -88,7 +88,8 @@ public class AC_AgentMR extends AcceptanceStrategy {
 		if (activeHelper) {
 			firstOffer = true;
 			try {
-				utilitySpace = negotiationSession.getUtilitySpace();
+				utilitySpace = (AdditiveUtilitySpace) negotiationSession
+						.getUtilitySpace();
 				getDiscountFactor();
 				getReservationFactor();
 

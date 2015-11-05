@@ -12,6 +12,7 @@ import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -52,7 +53,7 @@ public class MultilateralAnalysis {
 	/**
 	 * Collection of utility spaces constituting the space.
 	 */
-	private AdditiveUtilitySpace[] utilitySpaces;
+	private AbstractUtilitySpace[] utilitySpaces;
 
 	/**
 	 * Domain of the utility spaces.
@@ -128,18 +129,19 @@ public class MultilateralAnalysis {
 		return bidSeries;
 	}
 
-	public AdditiveUtilitySpace[] getUtilitySpaces(
+	public AbstractUtilitySpace[] getUtilitySpaces(
 			List<NegotiationPartyInternal> parties) {
 		List<NegotiationPartyInternal> agents = MediatorProtocol
 				.getNonMediators(parties);
-		AdditiveUtilitySpace[] spaces = new AdditiveUtilitySpace[agents.size()];
+		AbstractUtilitySpace[] spaces = new AdditiveUtilitySpace[agents.size()];
 		for (int i = 0; i < agents.size(); i++)
 			spaces[i] = agents.get(i).getUtilitySpace();
 		return spaces;
 	}
 
 	/**
-	 * Create the space with all bid points from all the {@link AdditiveUtilitySpace}s.
+	 * Create the space with all bid points from all the
+	 * {@link AdditiveUtilitySpace}s.
 	 *
 	 * @param excludeBids
 	 *            if true do not store the real bids.
@@ -273,17 +275,17 @@ public class MultilateralAnalysis {
 	 * @throws Exception
 	 *             if one of the utility spaces is null.
 	 */
-	private void initializeUtilitySpaces(AdditiveUtilitySpace[] utilitySpaces)
+	private void initializeUtilitySpaces(AbstractUtilitySpace[] utilitySpaces)
 			throws Exception {
 		this.utilitySpaces = utilitySpaces.clone();
 
-		for (AdditiveUtilitySpace utilitySpace : utilitySpaces)
+		for (AbstractUtilitySpace utilitySpace : utilitySpaces)
 			if (utilitySpace == null)
 				throw new NullPointerException("util space is null");
 
 		domain = this.utilitySpaces[0].getDomain();
 
-		for (AdditiveUtilitySpace space : utilitySpaces)
+		for (AbstractUtilitySpace space : utilitySpaces)
 			space.checkReadyForNegotiation(domain);
 	}
 

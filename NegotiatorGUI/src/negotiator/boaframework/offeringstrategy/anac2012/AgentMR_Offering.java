@@ -76,7 +76,7 @@ public class AgentMR_Offering extends OfferingStrategy {
 		helper = new AgentMRSAS(negotiationSession);
 		firstOffer = true;
 		try {
-			utilitySpace = negoSession.getUtilitySpace();
+			utilitySpace = (AdditiveUtilitySpace) negoSession.getUtilitySpace();
 			getDiscountFactor();
 			getReservationFactor();
 

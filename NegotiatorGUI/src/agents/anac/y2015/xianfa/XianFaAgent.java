@@ -21,8 +21,9 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
  * This is your negotiation party.
@@ -91,7 +92,7 @@ public class XianFaAgent extends AbstractNegotiationParty {
 	 */
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -469,7 +470,7 @@ public class XianFaAgent extends AbstractNegotiationParty {
 			if (utilitySpace.getDomain().getIssue(curDepth).getType() == ISSUETYPE.DISCRETE) {
 				id = (IssueDiscrete) utilitySpace.getDomain()
 						.getIssue(curDepth);
-				ed = (EvaluatorDiscrete) utilitySpace
+				ed = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 						.getEvaluator(curDepth + 1);
 				for (int curMember = 0; curMember < tree
 						.getSizeOfLevel(curDepth); curMember++) { // for all

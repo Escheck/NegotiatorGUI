@@ -4,6 +4,7 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.ParetoFrontier;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -21,7 +22,7 @@ import negotiator.utility.AdditiveUtilitySpace;
  *
  */
 public class ParetoFrontierPlus {
-	AdditiveUtilitySpace mySpace, otherSpace;
+	AbstractUtilitySpace mySpace, otherSpace;
 	private ParetoFrontier pareto = null;
 
 	/**
@@ -29,7 +30,8 @@ public class ParetoFrontierPlus {
 	 * 
 	 * @throws Exception
 	 */
-	public ParetoFrontierPlus(AdditiveUtilitySpace spaceMe, AdditiveUtilitySpace spaceOther) {
+	public ParetoFrontierPlus(AbstractUtilitySpace spaceMe,
+			AbstractUtilitySpace spaceOther) {
 		mySpace = spaceMe;
 		otherSpace = spaceOther;
 		try {

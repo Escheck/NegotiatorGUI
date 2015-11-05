@@ -12,6 +12,7 @@ import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.parties.AbstractTimeDependentNegotiationParty;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This is ParsAgent party.
@@ -394,9 +395,10 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	public int chooseBestIssue() {
 		double random = Math.random();
 		double sumWeight = 0d;
+		AdditiveUtilitySpace utilitySpace1 = (AdditiveUtilitySpace) utilitySpace;
 
-		for (int i = utilitySpace.getDomain().getIssues().size(); i > 0; --i) {
-			sumWeight += utilitySpace.getWeight(i);
+		for (int i = utilitySpace1.getDomain().getIssues().size(); i > 0; --i) {
+			sumWeight += utilitySpace1.getWeight(i);
 			if (sumWeight > random)
 				return i;
 		}
@@ -408,10 +410,11 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 		double sumWeight = 0d;
 		int minin = 1;
 		double min = 1.0d;
-		for (int i = utilitySpace.getDomain().getIssues().size(); i > 0; --i) {
-			sumWeight += 1.0d / utilitySpace.getWeight(i);
-			if (utilitySpace.getWeight(i) < min) {
-				min = utilitySpace.getWeight(i);
+		AdditiveUtilitySpace utilitySpace1 = (AdditiveUtilitySpace) utilitySpace;
+		for (int i = utilitySpace1.getDomain().getIssues().size(); i > 0; --i) {
+			sumWeight += 1.0d / utilitySpace1.getWeight(i);
+			if (utilitySpace1.getWeight(i) < min) {
+				min = utilitySpace1.getWeight(i);
 				minin = i;
 			}
 			if (sumWeight > random)

@@ -22,6 +22,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.BayesianOpponentModelScalable;
 import agents.bayesianopponentmodel.OpponentModel;
@@ -82,8 +83,8 @@ public class Group2 extends AbstractNegotiationParty {
 	 * collection.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		try {
 			this.maxBid = utilitySpace.getMaxUtilityBid();
@@ -222,7 +223,8 @@ public class Group2 extends AbstractNegotiationParty {
 			return; // Wouter added
 		if (!this.opponentsModels.containsKey(sender.toString())) {
 			this.opponentsModels.put(sender.toString(),
-					new BayesianOpponentModelScalable(utilitySpace));
+					new BayesianOpponentModelScalable(
+							(AdditiveUtilitySpace) utilitySpace));
 		}
 		if ((arguments instanceof Offer)) {
 			try {

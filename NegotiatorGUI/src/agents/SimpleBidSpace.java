@@ -7,6 +7,7 @@ import java.util.Set;
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.analysis.BidPoint;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2010.Southampton.analysis.BidSpace;
 
@@ -22,7 +23,7 @@ import agents.anac.y2010.Southampton.analysis.BidSpace;
  */
 public class SimpleBidSpace {
 
-	private AdditiveUtilitySpace mySpace, otherSpace;
+	private AbstractUtilitySpace mySpace, otherSpace;
 
 	// lazy init to avoid duplicate computations.
 	private ParetoFrontierPlus pareto = null;
@@ -34,7 +35,7 @@ public class SimpleBidSpace {
 	 * @param other
 	 *            {@link AdditiveUtilitySpace} of otherSide.
 	 */
-	public SimpleBidSpace(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
+	public SimpleBidSpace(AbstractUtilitySpace my, AbstractUtilitySpace other) {
 		changeSpaces(my, other);
 	}
 
@@ -47,7 +48,7 @@ public class SimpleBidSpace {
 	 * @param other
 	 *            {@link AdditiveUtilitySpace} of otherSide
 	 */
-	public void changeSpaces(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
+	public void changeSpaces(AbstractUtilitySpace my, AbstractUtilitySpace other) {
 		if (my == null || other == null) {
 			throw new NullPointerException("my or other UtilitySpace is null");
 		}
@@ -63,7 +64,7 @@ public class SimpleBidSpace {
 	 * 
 	 * @return own's {@link AdditiveUtilitySpace}.
 	 */
-	public AdditiveUtilitySpace getMyUtilitySpace() {
+	public AbstractUtilitySpace getMyUtilitySpace() {
 		return mySpace;
 	}
 
@@ -73,7 +74,7 @@ public class SimpleBidSpace {
 	 * 
 	 * @return the opponent's {@link AdditiveUtilitySpace}.
 	 */
-	public AdditiveUtilitySpace getOpponentUtilitySpace() {
+	public AbstractUtilitySpace getOpponentUtilitySpace() {
 		return otherSpace;
 	}
 

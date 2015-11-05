@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.Issue;
@@ -19,7 +20,7 @@ public class RandomBidCreator {
 
 	protected Random random;
 	private boolean TEST_EQUIVALENCE = false;
-	
+
 	public RandomBidCreator() {
 		if (TEST_EQUIVALENCE) {
 			random = new Random(100);
@@ -27,7 +28,7 @@ public class RandomBidCreator {
 			random = new Random();
 		}
 	}
-	
+
 	/**
 	 * Get a random bid.
 	 * 
@@ -64,19 +65,27 @@ public class RandomBidCreator {
 		return bid;
 	}
 
-	protected void generateValue(HashMap<Integer, Value> values, IssueDiscrete issue) {
+	protected void generateValue(HashMap<Integer, Value> values,
+			IssueDiscrete issue) {
 		int randomDiscrete = random.nextInt(issue.getNumberOfValues());
-		values.put(Integer.valueOf(issue.getNumber()), issue.getValue(randomDiscrete));
+		values.put(Integer.valueOf(issue.getNumber()),
+				issue.getValue(randomDiscrete));
 	}
-	
+
 	protected void generateValue(HashMap<Integer, Value> values, IssueReal issue) {
-		double randomReal = issue.getLowerBound() + random.nextDouble() * (issue.getUpperBound() - issue.getLowerBound());
-		values.put(Integer.valueOf(issue.getNumber()), new ValueReal(randomReal));
+		double randomReal = issue.getLowerBound() + random.nextDouble()
+				* (issue.getUpperBound() - issue.getLowerBound());
+		values.put(Integer.valueOf(issue.getNumber()),
+				new ValueReal(randomReal));
 	}
-	
-	protected void generateValue(HashMap<Integer, Value> values, IssueInteger issue) {
-		int randomInteger = issue.getLowerBound() + random.nextInt(issue.getUpperBound() - issue.getLowerBound() + 1);
-		values.put(Integer.valueOf(issue.getNumber()), new ValueInteger(randomInteger));
+
+	protected void generateValue(HashMap<Integer, Value> values,
+			IssueInteger issue) {
+		int randomInteger = issue.getLowerBound()
+				+ random.nextInt(issue.getUpperBound() - issue.getLowerBound()
+						+ 1);
+		values.put(Integer.valueOf(issue.getNumber()), new ValueInteger(
+				randomInteger));
 	}
 
 	/**
@@ -95,7 +104,7 @@ public class RandomBidCreator {
 			try {
 				double util = utilitySpace.getUtility(b);
 				if (util >= min) {
-					//printVal(util);
+					// printVal(util);
 					return b;
 				}
 			} catch (Exception e) {
@@ -119,7 +128,8 @@ public class RandomBidCreator {
 	 *            The maximum utility value.
 	 * @return a random bid (within a utility range if possible).
 	 */
-	public Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min, double max) {
+	public Bid getRandomBid(AdditiveUtilitySpace utilitySpace, double min,
+			double max) {
 		int i = 0;
 		while (true) {
 			if (max >= 1) {
@@ -129,7 +139,7 @@ public class RandomBidCreator {
 			try {
 				double util = utilitySpace.getUtility(b);
 				if (util >= min && util <= max) {
-					//printVal(util);
+					// printVal(util);
 					return b;
 				}
 			} catch (Exception e) {
