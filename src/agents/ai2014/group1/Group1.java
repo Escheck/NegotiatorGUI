@@ -14,6 +14,7 @@ import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2010.Yushu.Utility;
 import agents.anac.y2011.IAMhaggler2011.RandomBidCreator;
@@ -51,7 +52,7 @@ public class Group1 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls its parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -110,8 +111,8 @@ public class Group1 extends AbstractNegotiationParty {
 						oppThreshold -= 0.05;
 						counter = 0;
 					}
-					tempBid = rbc.getBid(utilitySpace, threshold - 0.05,
-							threshold + 0.05);
+					tempBid = rbc.getBid(((AdditiveUtilitySpace) utilitySpace),
+							threshold - 0.05, threshold + 0.05);
 					newUtility = getUtility(tempBid);
 					allOpponentsUtilHigh = checkUtils(oppThreshold, tempBid);
 					counter++;
@@ -123,7 +124,8 @@ public class Group1 extends AbstractNegotiationParty {
 			// first round
 			else {
 				try {
-					myBid = Utility.getRandomBid(utilitySpace);
+					myBid = Utility
+							.getRandomBid(((AdditiveUtilitySpace) utilitySpace));
 				} catch (Exception e1) {
 					do {
 						myBid = generateRandomBid();

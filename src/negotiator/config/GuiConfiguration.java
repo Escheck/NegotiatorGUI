@@ -10,6 +10,7 @@ import negotiator.repository.MultiPartyProtocolRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -73,7 +74,7 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration {
 
 		// System.out.println("Found the constructor: " + cons);
 
-		AdditiveUtilitySpace utilSpace = createFrom(profileRepItem);
+		AbstractUtilitySpace utilSpace = createFrom(profileRepItem);
 		return (NegotiationParty) partyConstructor.newInstance(utilSpace);
 	}
 
@@ -153,7 +154,8 @@ public class GuiConfiguration extends MultilateralTournamentConfiguration {
 	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
 	 *             throws an exception.
 	 */
-	public static AdditiveUtilitySpace createFrom(ProfileRepItem item) throws Exception {
+	public static AbstractUtilitySpace createFrom(ProfileRepItem item)
+			throws Exception {
 		Domain domain = Repository.get_domain_repos().getDomain(
 				item.getDomain());
 		return Repository.get_domain_repos().getUtilitySpace(domain, item);

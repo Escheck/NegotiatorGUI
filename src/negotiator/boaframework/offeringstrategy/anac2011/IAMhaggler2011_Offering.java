@@ -3,6 +3,19 @@ package negotiator.boaframework.offeringstrategy.anac2011;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import misc.Pair;
+import negotiator.Bid;
+import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.OMStrategy;
+import negotiator.boaframework.OfferingStrategy;
+import negotiator.boaframework.OpponentModel;
+import negotiator.boaframework.SortedOutcomeSpace;
+import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
+import negotiator.boaframework.opponentmodel.DefaultModel;
+import negotiator.boaframework.opponentmodel.NoModel;
+import negotiator.utility.AdditiveUtilitySpace;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
 import org.apache.commons.math.special.Erf;
@@ -15,27 +28,15 @@ import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
 import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
-
 import Jama.Matrix;
 
-import misc.Pair;
-import misc.Range;
-import negotiator.Bid;
-import negotiator.bidding.BidDetails;
-import negotiator.boaframework.NegotiationSession;
-import negotiator.boaframework.OMStrategy;
-import negotiator.boaframework.OfferingStrategy;
-import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
-import negotiator.boaframework.opponentmodel.DefaultModel;
-import negotiator.boaframework.opponentmodel.NoModel;
-
 /**
- * This is the decoupled Offering Strategy for IAMhaggler2011 (ANAC2011).
- * The code was taken from the ANAC2011 IAMhaggler2011 and adapted to work within the BOA framework.
+ * This is the decoupled Offering Strategy for IAMhaggler2011 (ANAC2011). The
+ * code was taken from the ANAC2011 IAMhaggler2011 and adapted to work within
+ * the BOA framework.
  * 
- * The default opponent model implementation selects the best bid for the opponent.
+ * The default opponent model implementation selects the best bid for the
+ * opponent.
  * 
  * DEFAULT OM: None
  * 
@@ -45,7 +46,7 @@ import negotiator.boaframework.opponentmodel.NoModel;
  * @author Mark Hendrikx
  */
 public class IAMhaggler2011_Offering extends OfferingStrategy {
-	
+
 	protected double RISK_PARAMETER = 3.0;
 	private Matrix utilitySamples;
 	private Matrix timeSamples;
@@ -58,7 +59,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	private double maxUtilityInTimeSlot;
 	private int lastTimeSlot = -1;
 	private Matrix means;
-	private Matrix variances;	
+	private Matrix variances;
 	private double maxUtility;
 	private Bid bestReceivedBid;
 	private double previousTargetUtility;
@@ -67,14 +68,17 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	protected double MAXIMUM_ASPIRATION = 0.9;
 	protected double acceptMultiplier = 1.02;
 	private ArrayList<Bid> opponentBids;
-	
+
 	/**
 	 * Empty constructor for the BOA framework.
 	 */
-	public IAMhaggler2011_Offering() { }
+	public IAMhaggler2011_Offering() {
+	}
 
 	@Override
-	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negotiationSession,
+			OpponentModel opponentModel, OMStrategy omStrategy,
+			HashMap<String, Double> parameters) throws Exception {
 		if (opponentModel instanceof DefaultModel) {
 			opponentModel = new NoModel();
 		}
@@ -83,40 +87,39 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 		this.omStrategy = omStrategy;
 
 		if (!(opponentModel instanceof NoModel)) {
-			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+			outcomespace = new SortedOutcomeSpace(
+					negotiationSession.getUtilitySpace());
 		}
 		opponentBids = new ArrayList<Bid>();
 
 		double discountingFactor = 0.5;
-		try
-		{
-			discountingFactor = negotiationSession.getUtilitySpace().getDiscountFactor();
-		}
-		catch(Exception ex)
-		{
+		try {
+			discountingFactor = negotiationSession.getUtilitySpace()
+					.getDiscountFactor();
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if(discountingFactor == 0)
+		if (discountingFactor == 0)
 			discountingFactor = 1;
 		makeUtilitySamples(100);
 		makeTimeSamples(100);
 		Matrix discounting = generateDiscountingFunction(discountingFactor);
 		Matrix risk = generateRiskFunction(RISK_PARAMETER);
 		utility = risk.arrayTimes(discounting);
-		
+
 		BasicPrior[] bps = { new BasicPrior(11, 0.252, 0.5),
 				new BasicPrior(11, 0.166, 0.5), new BasicPrior(1, .01, 1.0) };
 		CovarianceFunction cf = new SumCovarianceFunction(
 				Matern3CovarianceFunction.getInstance(),
 				NoiseCovarianceFunction.getInstance());
-		
+
 		regression = new GaussianProcessRegressionBMC();
 		regression.setCovarianceFunction(cf);
 		regression.setPriors(bps);
-		
+
 		maxUtility = 0;
 		previousTargetUtility = 1;
-		
+
 		bidCreator = new RandomBidCreator();
 	}
 
@@ -130,7 +133,8 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 		double[] utilitySamplesArray = new double[m];
 		{
 			for (int i = 0; i < utilitySamplesArray.length; i++) {
-				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5) / ((double) m + 1.0);
+				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5)
+						/ ((double) m + 1.0);
 			}
 		}
 		utilitySamples = new Matrix(utilitySamplesArray,
@@ -168,23 +172,26 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	 * @see agents.southampton.SouthamptonAgent#proposeNextBid(negotiator.Bid)
 	 */
 	protected Bid proposeNextBid(Bid opponentBid) throws Exception {
-		double opponentUtility = negotiationSession.getUtilitySpace().getUtility(opponentBid);
-		
-		if(opponentUtility > maxUtility)
-		{
+		double opponentUtility = negotiationSession.getUtilitySpace()
+				.getUtility(opponentBid);
+
+		if (opponentUtility > maxUtility) {
 			bestReceivedBid = opponentBid;
 			maxUtility = opponentUtility;
 		}
-		
-		double targetUtility = getTarget(opponentUtility, negotiationSession.getTime());
-		
-		if(targetUtility <= maxUtility && previousTargetUtility > maxUtility)
+
+		double targetUtility = getTarget(opponentUtility,
+				negotiationSession.getTime());
+
+		if (targetUtility <= maxUtility && previousTargetUtility > maxUtility)
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 		// Now get a random bid in the range targetUtility � 0.025
 		if (opponentModel instanceof NoModel) {
-			return bidCreator.getBid(negotiationSession.getUtilitySpace(), targetUtility - 0.025,
-				targetUtility + 0.025);
+			return bidCreator
+					.getBid((AdditiveUtilitySpace) negotiationSession
+							.getUtilitySpace(), targetUtility - 0.025,
+							targetUtility + 0.025);
 		} else {
 			return omStrategy.getBid(outcomespace, targetUtility).getBid();
 		}
@@ -234,7 +241,8 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			double[] x = new double[opponentTimes.size()];
 			double[] xAdjust = new double[opponentTimes.size()];
 			double[] y = new double[opponentUtilities.size()];
-			double[] timeSamplesAdjust = new double[timeSamples.getColumnDimension()];
+			double[] timeSamplesAdjust = new double[timeSamples
+					.getColumnDimension()];
 
 			int i;
 			i = 0;
@@ -259,10 +267,11 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			Matrix matrixX = new Matrix(x, x.length);
 			Matrix matrixXAdjust = new Matrix(xAdjust, xAdjust.length);
 			Matrix matrixY = new Matrix(y, y.length);
-			Matrix matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust, timeSamplesAdjust.length);
+			Matrix matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust,
+					timeSamplesAdjust.length);
 
 			matrixY.minusEquals(matrixXAdjust);
-			
+
 			GaussianProcessMixture predictor = regression.calculateRegression(
 					matrixX, matrixY);
 
@@ -274,12 +283,13 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			variances = prediction.getVariance();
 		}
 
-		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means, variances,
-				time);
+		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means,
+				variances, time);
 		Matrix probabilityAccept = acceptMatrices.getFirst();
 		Matrix cumulativeAccept = acceptMatrices.getSecond();
 
-		Matrix probabilityExpectedUtility = probabilityAccept.arrayTimes(utility);
+		Matrix probabilityExpectedUtility = probabilityAccept
+				.arrayTimes(utility);
 		Matrix cumulativeExpectedUtility = cumulativeAccept.arrayTimes(utility);
 
 		Pair<Double, Double> bestAgreement = getExpectedBestAgreement(
@@ -290,7 +300,7 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 		double targetUtility = lastRegressionUtility
 				+ ((time - lastRegressionTime)
 						* (bestUtility - lastRegressionUtility) / (bestTime - lastRegressionTime));
-	
+
 		// Store the target utility and time
 		lastRegressionUtility = targetUtility;
 		lastRegressionTime = time;
@@ -321,9 +331,9 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	}
 
 	/**
-	 * Generate an (n-1)-by-m matrix representing the probability of acceptance for
-	 * a given utility-time combination. The combinations are given by the time
-	 * and utility samples stored in timeSamples and utilitySamples
+	 * Generate an (n-1)-by-m matrix representing the probability of acceptance
+	 * for a given utility-time combination. The combinations are given by the
+	 * time and utility samples stored in timeSamples and utilitySamples
 	 * respectively.
 	 * 
 	 * @param mean
@@ -334,8 +344,8 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	 *            The current time, in the range [0, 1].
 	 * @return An (n-1)-by-m matrix representing the probability of acceptance.
 	 */
-	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean, Matrix variance,
-			double time) {
+	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean,
+			Matrix variance, double time) {
 		int i = 0;
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			if (timeSamples.get(0, i) > time)
@@ -345,29 +355,30 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 				timeSamples.getColumnDimension(), 0);
 		Matrix probabilityAccept = new Matrix(utilitySamples.getRowDimension(),
 				timeSamples.getColumnDimension(), 0);
-		
-		double interval = 1.0/utilitySamples.getRowDimension();
+
+		double interval = 1.0 / utilitySamples.getRowDimension();
 
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			double s = Math.sqrt(2 * variance.get(i, 0));
 			double m = mean.get(i, 0);
-			
-			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0) + (interval/2.0) - m)
+
+			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0)
+					+ (interval / 2.0) - m)
 					/ s))));
-			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(utilitySamples.getRowDimension()-1, 0) - (interval/2.0) - m)
+			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(
+					utilitySamples.getRowDimension() - 1, 0) - (interval / 2.0) - m)
 					/ s))));
-			
+
 			for (int j = 0; j < utilitySamples.getRowDimension(); j++) {
 				double utility = utilitySamples.get(j, 0);
-				double p = (1.0 - (0.5 * (1 + erf((utility - m)
+				double p = (1.0 - (0.5 * (1 + erf((utility - m) / s))));
+				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval / 2.0) - m)
 						/ s))));
-				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval/2.0) - m)
+				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval / 2.0) - m)
 						/ s))));
-				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval/2.0) - m)
-						/ s))));
-								
-				cumulativeAccept.set(j, i, (p-minp)/(maxp-minp));
-				probabilityAccept.set(j, i, (p1-p2)/(maxp-minp));
+
+				cumulativeAccept.set(j, i, (p - minp) / (maxp - minp));
+				probabilityAccept.set(j, i, (p1 - p2) / (maxp - minp));
 			}
 		}
 		return new Pair<Matrix, Matrix>(probabilityAccept, cumulativeAccept);
@@ -461,20 +472,25 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	 *         best agreement.
 	 */
 	private Pair<Double, Double> getExpectedBestAgreement(
-			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues, double time) {
-		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(probabilityExpectedValues, time);
-		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(cumulativeExpectedValues, time);
+			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues,
+			double time) {
+		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(
+				probabilityExpectedValues, time);
+		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(
+				cumulativeExpectedValues, time);
 
-		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues.getArray();
-		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues.getArray();
+		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues
+				.getArray();
+		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues
+				.getArray();
 
 		Double bestX = null;
 		Double bestY = null;
-		
+
 		double[] colSums = new double[probabilityFutureExpectedValuesArray[0].length];
 		double bestColSum = 0;
 		int bestCol = 0;
-		
+
 		for (int x = 0; x < probabilityFutureExpectedValuesArray[0].length; x++) {
 			colSums[x] = 0;
 			for (int y = 0; y < probabilityFutureExpectedValuesArray.length; y++) {
@@ -489,18 +505,18 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 
 		int bestRow = 0;
 		double bestRowValue = 0;
-		
+
 		for (int y = 0; y < cumulativeFutureExpectedValuesArray.length; y++) {
 			double expectedValue = cumulativeFutureExpectedValuesArray[y][bestCol];
-			if(expectedValue > bestRowValue) {
+			if (expectedValue > bestRowValue) {
 				bestRowValue = expectedValue;
 				bestRow = y;
 			}
 		}
 
-		bestX = timeSamples.get(0, bestCol
-				+ probabilityExpectedValues.getColumnDimension()
-				- probabilityFutureExpectedValues.getColumnDimension());
+		bestX = timeSamples.get(0,
+				bestCol + probabilityExpectedValues.getColumnDimension()
+						- probabilityFutureExpectedValues.getColumnDimension());
 		bestY = utilitySamples.get(bestRow, 0);
 
 		return new Pair<Double, Double>(bestX, bestY);
@@ -525,8 +541,8 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 				break;
 		}
 		return expectedValues.getMatrix(0,
-				expectedValues.getRowDimension() - 1, i, expectedValues
-						.getColumnDimension() - 1);
+				expectedValues.getRowDimension() - 1, i,
+				expectedValues.getColumnDimension() - 1);
 	}
 
 	/**
@@ -561,7 +577,6 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	public static String getVersion() {
 		return "2.0";
 	}
-	
 
 	@Override
 	public BidDetails determineOpeningBid() {
@@ -572,17 +587,19 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 	public BidDetails determineNextBid() {
 		Bid bid = chooseAction();
 		try {
-			return new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid), negotiationSession.getTime());
+			return new BidDetails(bid, negotiationSession.getUtilitySpace()
+					.getUtility(bid), negotiationSession.getTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public Bid chooseAction() {
 		Bid bidToOffer = null;
-		Bid opponentBid = negotiationSession.getOpponentBidHistory().getLastBidDetails().getBid();
-		
+		Bid opponentBid = negotiationSession.getOpponentBidHistory()
+				.getLastBidDetails().getBid();
+
 		try {
 			if (negotiationSession.getOwnBidHistory().size() == 0) {
 				bidToOffer = proposeInitialBid();
@@ -591,7 +608,8 @@ public class IAMhaggler2011_Offering extends OfferingStrategy {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			bidToOffer = negotiationSession.getOwnBidHistory().getLastBidDetails().getBid();
+			bidToOffer = negotiationSession.getOwnBidHistory()
+					.getLastBidDetails().getBid();
 		}
 
 		return bidToOffer;

@@ -11,8 +11,8 @@ import negotiator.actions.Offer;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
  * This is our negotiation agent.
@@ -38,8 +38,9 @@ public class Group18 extends AbstractNegotiationParty {
 
 	// This function determines the next bid you are going to propose
 	public Action BiddingStrategy() {
-		Bid[] PossibleBids = new Bid[this.utilitySpace.getNrOfEvaluators()];
-		Double[] UtilityPossibleBids = new Double[this.utilitySpace
+		Bid[] PossibleBids = new Bid[((AdditiveUtilitySpace) utilitySpace)
+				.getNrOfEvaluators()];
+		Double[] UtilityPossibleBids = new Double[((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators()];
 
 		Bid MyBestBid;
@@ -66,7 +67,7 @@ public class Group18 extends AbstractNegotiationParty {
 			// are good, they are used
 
 		Bid RandomBid;
-		for (int RandomBidNo = 0; RandomBidNo < this.utilitySpace
+		for (int RandomBidNo = 0; RandomBidNo < ((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators(); RandomBidNo++) {
 			do {
 				RandomBid = generateRandomBid();
@@ -102,7 +103,7 @@ public class Group18 extends AbstractNegotiationParty {
 
 		double BestBidValue = 0;
 		int BestBidNo = 0;
-		for (int RandomBidNo = 0; RandomBidNo < this.utilitySpace
+		for (int RandomBidNo = 0; RandomBidNo < ((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators(); RandomBidNo++) {
 			if (UtilityPossibleBids[RandomBidNo] > BestBidValue) {
 				BestBidValue = UtilityPossibleBids[RandomBidNo];
@@ -203,7 +204,7 @@ public class Group18 extends AbstractNegotiationParty {
 
 		// Different Evaluators are weighted.
 		// STEP 0, create structures to save weights
-		double[] EvaluatorWeights = new double[this.utilitySpace
+		double[] EvaluatorWeights = new double[((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators()];
 		double sumEvaluatorWeights = 0; // needed to normalize
 
@@ -220,7 +221,7 @@ public class Group18 extends AbstractNegotiationParty {
 														// list add index of ID
 
 		// STEP 2, count number of changes per Evaluator
-		for (int EvaluatorNo = 0; EvaluatorNo < this.utilitySpace
+		for (int EvaluatorNo = 0; EvaluatorNo < ((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators(); EvaluatorNo++) {
 			EvaluatorWeights[EvaluatorNo] = OpponentUtilities.get(OpponentIDNo)
 					.getEvaluator(EvaluatorNo + 1).getWeight();
@@ -243,7 +244,7 @@ public class Group18 extends AbstractNegotiationParty {
 		}
 
 		// STEP 3, Normalize and update weights in model
-		for (int EvaluatorNo = 0; EvaluatorNo < this.utilitySpace
+		for (int EvaluatorNo = 0; EvaluatorNo < ((AdditiveUtilitySpace) utilitySpace)
 				.getNrOfEvaluators(); EvaluatorNo++) {
 			OpponentUtilities
 					.get(OpponentIDNo)
@@ -331,18 +332,18 @@ public class Group18 extends AbstractNegotiationParty {
 																				// model
 			partiesBidList[PartyNo - 1] = new ArrayList<Bid>();
 			try {
-				OpponentUtilities.add(new AdditiveUtilitySpace(this.getUtilitySpace()
-						.getDomain(), ""));
+				OpponentUtilities.add(new AdditiveUtilitySpace(this
+						.getUtilitySpace().getDomain(), ""));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			for (int EvaluatorNo = 1; EvaluatorNo <= this.utilitySpace
+			for (int EvaluatorNo = 1; EvaluatorNo <= ((AdditiveUtilitySpace) utilitySpace)
 					.getNrOfEvaluators(); EvaluatorNo++) {
 				OpponentUtilities
 						.get(PartyNo - 1)
 						.getEvaluator(EvaluatorNo)
 						.setWeight(
-								1 / (double) this.utilitySpace
+								1 / (double) ((AdditiveUtilitySpace) utilitySpace)
 										.getNrOfEvaluators());
 			}
 		}

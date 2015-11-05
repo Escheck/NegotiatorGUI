@@ -11,7 +11,9 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.exceptions.AnalysisException;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 /**
  * A collection of utilityspaces can be viewed as a space in which a bid is
@@ -24,7 +26,7 @@ import negotiator.utility.AdditiveUtilitySpace;
 public class BidSpace {
 
 	/** Collection of utility spaces constituting the space. */
-	private AdditiveUtilitySpace[] utilspaces;
+	private AbstractUtilitySpace[] utilspaces;
 	/** Domain of the utility spaces. */
 	private Domain domain;
 	/** List of all bidpoints in the domain. */
@@ -45,15 +47,15 @@ public class BidSpace {
 	 * @throws Exception
 	 *             is thrown when one of the utility spaces is corrupt.
 	 */
-	public BidSpace(AdditiveUtilitySpace... utilityspaces) throws Exception {
+	public BidSpace(AbstractUtilitySpace... utilityspaces) throws Exception {
 		initializeUtilitySpaces(utilityspaces);
 		buildSpace(true);
 	}
 
 	/**
-	 * Constructor to createFrom a BidSpace given exactly two utility spaces. The
-	 * main difference is that if excludeBids is true, then only the bid points
-	 * are saved. This has is a good way to save memory.
+	 * Constructor to createFrom a BidSpace given exactly two utility spaces.
+	 * The main difference is that if excludeBids is true, then only the bid
+	 * points are saved. This has is a good way to save memory.
 	 * 
 	 * @param utilityspaceA
 	 *            utilityspace of agent A.
@@ -64,9 +66,10 @@ public class BidSpace {
 	 * @throws Exception
 	 *             is thrown when one of the utility spaces is corrupt.
 	 */
-	public BidSpace(AdditiveUtilitySpace utilityspaceA, AdditiveUtilitySpace utilityspaceB,
-			boolean excludeBids) throws Exception {
-		AdditiveUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
+	public BidSpace(AbstractUtilitySpace utilityspaceA,
+			AbstractUtilitySpace utilityspaceB, boolean excludeBids)
+			throws Exception {
+		AbstractUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		initializeUtilitySpaces(spaces);
 		buildSpace(excludeBids);
 	}
@@ -90,11 +93,12 @@ public class BidSpace {
 	 *             if something goes wrong when calculating the utility of a
 	 *             bid.
 	 */
-	public BidSpace(AdditiveUtilitySpace utilityspaceA, AdditiveUtilitySpace utilityspaceB,
-			boolean excludeBids, boolean skipCheckSpaceB) throws Exception {
+	public BidSpace(AbstractUtilitySpace utilityspaceA,
+			AbstractUtilitySpace utilityspaceB, boolean excludeBids,
+			boolean skipCheckSpaceB) throws Exception {
 		if (utilityspaceA == null || utilityspaceB == null)
 			throw new NullPointerException("util space is null");
-		AdditiveUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
+		AbstractUtilitySpace[] spaces = { utilityspaceA, utilityspaceB };
 		utilspaces = spaces.clone();
 		domain = utilspaces[0].getDomain();
 		utilityspaceA.checkReadyForNegotiation(domain);
@@ -111,16 +115,16 @@ public class BidSpace {
 	 * @throws Exception
 	 *             if one of the utility spaces is null.
 	 */
-	private void initializeUtilitySpaces(AdditiveUtilitySpace[] utilityspaces)
+	private void initializeUtilitySpaces(AbstractUtilitySpace[] utilityspaces)
 			throws Exception {
 		utilspaces = utilityspaces.clone();
-		for (AdditiveUtilitySpace utilitySpace : utilityspaces) {
+		for (UtilitySpace utilitySpace : utilityspaces) {
 			if (utilitySpace == null)
 				throw new NullPointerException("util space is null: "
 						+ utilityspaces);
 		}
 		domain = utilspaces[0].getDomain();
-		for (AdditiveUtilitySpace space : utilityspaces) {
+		for (AbstractUtilitySpace space : utilityspaces) {
 			space.checkReadyForNegotiation(domain);
 		}
 	}
@@ -177,7 +181,8 @@ public class BidSpace {
 	}
 
 	/**
-	 * Create the space with all bid points from all the {@link AdditiveUtilitySpace}s.
+	 * Create the space with all bid points from all the
+	 * {@link AdditiveUtilitySpace}s.
 	 * 
 	 * @param excludeBids
 	 *            if true do not store the real bids.
@@ -224,8 +229,8 @@ public class BidSpace {
 				bidPoints.add(new BidPoint(bid, utils));
 			}
 		}
-//		System.out.println("Real outcome space:");
-//		System.out.println(bidPoints);
+		// System.out.println("Real outcome space:");
+		// System.out.println(bidPoints);
 	}
 
 	/**

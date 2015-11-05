@@ -19,6 +19,7 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.protocol.MultilateralProtocolAdapter;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -65,7 +66,7 @@ public class Group15 extends AbstractNegotiationParty {
 	}
 
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline deadline,
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, deadline, timeline, randomSeed, agentId);
 
@@ -86,9 +87,9 @@ public class Group15 extends AbstractNegotiationParty {
 		isUsingOMS = false; // Start by not using OMS
 
 		// BOA elements
-		om = new OpponentModel(utilSpace);
-		as = new AcceptanceStrategy(utilSpace);
-		oms = new OMStrategy(om, utilSpace);
+		om = new OpponentModel((AdditiveUtilitySpace) utilSpace);
+		as = new AcceptanceStrategy((AdditiveUtilitySpace) utilSpace);
+		oms = new OMStrategy(om, (AdditiveUtilitySpace) utilSpace);
 	}
 
 	/**

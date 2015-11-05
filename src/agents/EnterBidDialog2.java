@@ -23,7 +23,8 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
- *
+ * only works with {@link AdditiveUtilitySpace}
+ * 
  * @author W.Pasman
  */
 public class EnterBidDialog2 extends JDialog implements EnterBidDialogInterface {

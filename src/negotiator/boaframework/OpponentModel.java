@@ -1,15 +1,17 @@
 package negotiator.boaframework;
 
-import negotiator.Bid;
-import negotiator.issue.Issue;
-import negotiator.protocol.BilateralAtomicNegotiationSession;
-import negotiator.utility.AdditiveUtilitySpace;
-
 import java.io.Serializable;
 import java.util.HashMap;
 
+import negotiator.Bid;
+import negotiator.issue.Issue;
+import negotiator.protocol.BilateralAtomicNegotiationSession;
+import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
+
 /**
- * Describes an opponent model of an agent of the BOA framework.
+ * Describes an opponent model of an agent of the BOA framework. This model
+ * assumes issue weights hence only supports {@link AdditiveUtilitySpace}.
  * 
  * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M.
  * Jonker. Decoupling Negotiating Agents to Explore the Space of Negotiation
@@ -36,8 +38,8 @@ public abstract class OpponentModel extends BOA {
 	public void init(NegotiationSession negotiationSession,
 			HashMap<String, Double> parameters) throws Exception {
 		super.init(negotiationSession);
-		opponentUtilitySpace = new AdditiveUtilitySpace(
-				negotiationSession.getUtilitySpace());
+		opponentUtilitySpace = (AdditiveUtilitySpace) negotiationSession
+				.getUtilitySpace().copy();
 		cleared = false;
 	}
 
@@ -50,8 +52,8 @@ public abstract class OpponentModel extends BOA {
 	 */
 	public void init(NegotiationSession negotiationSession) {
 		this.negotiationSession = negotiationSession;
-		opponentUtilitySpace = new AdditiveUtilitySpace(
-				negotiationSession.getUtilitySpace());
+		opponentUtilitySpace = (AdditiveUtilitySpace) negotiationSession
+				.getUtilitySpace().copy();
 		cleared = false;
 	}
 
@@ -93,7 +95,7 @@ public abstract class OpponentModel extends BOA {
 	/**
 	 * @return the estimated utility space of the opponent
 	 */
-	public AdditiveUtilitySpace getOpponentUtilitySpace() {
+	public AbstractUtilitySpace getOpponentUtilitySpace() {
 		return opponentUtilitySpace;
 	}
 
@@ -113,18 +115,21 @@ public abstract class OpponentModel extends BOA {
 	 * 
 	 * @param opponentUtilitySpace
 	 */
-	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(
+			AdditiveUtilitySpace opponentUtilitySpace) {
 	}
 
 	/**
-	 * Returns the weight of a particular issue in the domain.
+	 * Returns the weight of a particular issue in the domain. Only works with
+	 * {@link AdditiveUtilitySpace}.
 	 * 
 	 * @param issue
 	 *            from which the weight should be returned
 	 * @return weight of the given issue
 	 */
 	public double getWeight(Issue issue) {
-		return opponentUtilitySpace.getWeight(issue.getNumber());
+		return ((AdditiveUtilitySpace) opponentUtilitySpace).getWeight(issue
+				.getNumber());
 	}
 
 	/**

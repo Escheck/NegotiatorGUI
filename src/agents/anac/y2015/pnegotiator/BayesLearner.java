@@ -12,6 +12,7 @@ import negotiator.actions.Offer;
 import negotiator.issue.Objective;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -55,7 +56,7 @@ public class BayesLearner extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -65,7 +66,8 @@ public class BayesLearner extends AbstractNegotiationParty {
 		this.objectives = utilitySpace.getDomain().getObjectives();
 
 		try {
-			this.bestBids = new BestBids(this.utilitySpace);
+			this.bestBids = new BestBids(
+					(AdditiveUtilitySpace) this.utilitySpace);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -156,7 +158,8 @@ public class BayesLearner extends AbstractNegotiationParty {
 
 	private void updateBayes() throws Exception {
 		if (bayesLogic == null) {
-			this.bayesLogic = new BayesLogic(this.utilitySpace,
+			this.bayesLogic = new BayesLogic(
+					(AdditiveUtilitySpace) this.utilitySpace,
 					this.getNumberOfParties());
 		}
 		bayesLogic.T = (int) (getTimeLine().getTime() * 100);

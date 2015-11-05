@@ -3,22 +3,7 @@ package negotiator.boaframework.offeringstrategy.anac2012;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.MaxIterationsExceededException;
-import org.apache.commons.math.special.Erf;
-import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 
-import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.RandomBidCreator;
-import agents.anac.y2012.IAMhaggler2012.utility.SouthamptonUtilitySpace;
-import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
-import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
-import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixturePrediction;
-import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessRegressionBMC;
-import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
-import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
-import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
-import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
-import Jama.Matrix;
 import misc.Pair;
 import negotiator.Bid;
 import negotiator.BidIterator;
@@ -30,10 +15,23 @@ import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.opponentmodel.DefaultModel;
 import negotiator.boaframework.opponentmodel.NoModel;
-
 import negotiator.utility.AdditiveUtilitySpace;
 
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.MaxIterationsExceededException;
+import org.apache.commons.math.special.Erf;
 
+import uk.ac.soton.ecs.gp4j.bmc.BasicPrior;
+import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixture;
+import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessMixturePrediction;
+import uk.ac.soton.ecs.gp4j.bmc.GaussianProcessRegressionBMC;
+import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.CovarianceFunction;
+import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.Matern3CovarianceFunction;
+import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.NoiseCovarianceFunction;
+import uk.ac.soton.ecs.gp4j.gp.covariancefunctions.SumCovarianceFunction;
+import Jama.Matrix;
+import agents.anac.y2012.IAMhaggler2012.agents2011.southampton.utils.RandomBidCreator;
+import agents.anac.y2012.IAMhaggler2012.utility.SouthamptonUtilitySpace;
 
 /**
  * @author Colin Williams
@@ -42,7 +40,7 @@ import negotiator.utility.AdditiveUtilitySpace;
  *         Williams, V. Robu, E. H. Gerding and N. R. Jennings.
  * 
  */
-public class IAMHaggler2012_Offering extends OfferingStrategy{
+public class IAMHaggler2012_Offering extends OfferingStrategy {
 
 	protected double RISK_PARAMETER = 1;
 
@@ -68,16 +66,18 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	private double maxOfferedUtility = Double.MIN_VALUE;
 	private double minOfferedUtility = Double.MAX_VALUE;
 	private SortedOutcomeSpace outcomespace;
-	private RandomBidCreator bidCreator;	
+	private RandomBidCreator bidCreator;
 	private AdditiveUtilitySpace utilitySpace;
 	private SouthamptonUtilitySpace sus;
 
 	/**
 	 * Empty constructor for the BOA framework.
 	 */
-	public IAMHaggler2012_Offering() { }
+	public IAMHaggler2012_Offering() {
+	}
 
-	public IAMHaggler2012_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms) throws Exception {
+	public IAMHaggler2012_Offering(NegotiationSession negoSession,
+			OpponentModel model, OMStrategy oms) throws Exception {
 		init(negoSession, model, oms, null);
 	}
 
@@ -85,33 +85,33 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 * Init required for the Decoupled Framework.
 	 */
 	@Override
-	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negoSession, OpponentModel model,
+			OMStrategy oms, HashMap<String, Double> parameters)
+			throws Exception {
 		if (model instanceof DefaultModel) {
 			model = new NoModel();
 		}
-		super.init(negoSession, model, oms, parameters);	
+		super.init(negoSession, model, oms, parameters);
 		if (!(opponentModel instanceof NoModel)) {
-			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
+			outcomespace = new SortedOutcomeSpace(
+					negotiationSession.getUtilitySpace());
 		}
 
-		utilitySpace = negoSession.getUtilitySpace();
+		utilitySpace = (AdditiveUtilitySpace) negoSession.getUtilitySpace();
 		double discountingFactor = 0.5;
-		try
-		{
-			discountingFactor = adjustDiscountFactor(utilitySpace.getDiscountFactor());
-		}
-		catch(Exception ex)
-		{
+		try {
+			discountingFactor = adjustDiscountFactor(utilitySpace
+					.getDiscountFactor());
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		if(discountingFactor == 0)
+		if (discountingFactor == 0)
 			discountingFactor = 1;
 		makeUtilitySamples(100);
 		makeTimeSamples(100);
 		Matrix discounting = generateDiscountingFunction(discountingFactor);
 		Matrix risk = generateRiskFunction(RISK_PARAMETER);
 		utility = risk.arrayTimes(discounting);
-
 
 		BasicPrior[] bps = { new BasicPrior(11, 0.252, 0.5),
 				new BasicPrior(11, 0.166, 0.5), new BasicPrior(1, .01, 1.0) };
@@ -123,10 +123,11 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		regression.setCovarianceFunction(cf);
 		regression.setPriors(bps);
 
-		//regression.calculateRegression(new Matrix(new double[] {}, 0), new Matrix(new double[] {}, 0));
+		// regression.calculateRegression(new Matrix(new double[] {}, 0), new
+		// Matrix(new double[] {}, 0));
 
 		maxUtility = 0;
-		previousTargetUtility = 1;			
+		previousTargetUtility = 1;
 		bidCreator = new RandomBidCreator();
 
 		sus = new SouthamptonUtilitySpace(utilitySpace);
@@ -139,18 +140,19 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 	@Override
 	public BidDetails determineNextBid() {
-		Bid opponentBid =  negotiationSession.getOpponentBidHistory().getLastBid();
+		Bid opponentBid = negotiationSession.getOpponentBidHistory()
+				.getLastBid();
 		Bid b;
 		try {
 			b = handleOffer(opponentBid);
-			nextBid = new BidDetails(b, negotiationSession.getUtilitySpace().getUtility(b));			
+			nextBid = new BidDetails(b, negotiationSession.getUtilitySpace()
+					.getUtility(b));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return nextBid;
 	}
-
 
 	/**
 	 * Handle an opponent's offer.
@@ -168,16 +170,15 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 			bidToOffer = proposeInitialBid();
 			if (bidToOffer == null) {
 				endNegotiation = true;
-			} 
+			}
 		} else {
 			bidToOffer = proposeNextBid(opponentBid);
-			if(bidToOffer == null)
-				endNegotiation = true;			
+			if (bidToOffer == null)
+				endNegotiation = true;
 		}
 
 		return bidToOffer;
 	}
-
 
 	/*
 	 * 
@@ -187,7 +188,10 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 */
 	private Bid proposeInitialBid() throws Exception {
 		Bid b = sus.getMaxUtilityBid();
-		if(utilitySpace.getUtilityWithDiscount(b, negotiationSession.getTimeline()) < utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline())) {
+		if (utilitySpace.getUtilityWithDiscount(b,
+				negotiationSession.getTimeline()) < utilitySpace
+				.getReservationValueWithDiscount(negotiationSession
+						.getTimeline())) {
 			return null;
 		}
 		return b;
@@ -202,16 +206,15 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 		double opponentUtility = utilitySpace.getUtility(opponentBid);
 
-		if(opponentUtility > maxUtility)
-		{
+		if (opponentUtility > maxUtility) {
 			bestReceivedBid = opponentBid;
 			maxUtility = opponentUtility;
 		}
 
+		double targetUtility = getTarget(opponentUtility,
+				negotiationSession.getTime());
 
-		double targetUtility = getTarget(opponentUtility, negotiationSession.getTime());
-
-		if(targetUtility <= maxUtility && previousTargetUtility > maxUtility)
+		if (targetUtility <= maxUtility && previousTargetUtility > maxUtility)
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 
@@ -224,15 +227,20 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 			b = omStrategy.getBid(outcomespace, targetUtility).getBid();
 		}
 
-		if(utilitySpace.getUtilityWithDiscount(b, negotiationSession.getTimeline()) < utilitySpace.getReservationValueWithDiscount(negotiationSession.getTimeline())) {
+		if (utilitySpace.getUtilityWithDiscount(b,
+				negotiationSession.getTimeline()) < utilitySpace
+				.getReservationValueWithDiscount(negotiationSession
+						.getTimeline())) {
 			return utilitySpace.getMaxUtilityBid();
 		}
-		//System.out.println("Decoupled Bid: " + b);
-		
+		// System.out.println("Decoupled Bid: " + b);
+
 		return b;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see agents2011.southampton.IAMhaggler2011#getTarget(double, double)
 	 */
 	protected double getTarget(double opponentUtility, double time) {
@@ -253,16 +261,17 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 			if (lastTimeSlot != -1) {
 				// Store the data from the time slot
 				opponentTimes.add((lastTimeSlot + 0.5) / 36.0);
-				if(opponentUtilities.size() == 0)
-				{
+				if (opponentUtilities.size() == 0) {
 					intercept = Math.max(0.5, maxUtilityInTimeSlot);
-					double[] timeSamplesAdjust = new double[timeSamples.getColumnDimension()];
+					double[] timeSamplesAdjust = new double[timeSamples
+							.getColumnDimension()];
 					int i = 0;
 					double gradient = 0.9 - intercept;
 					for (double d : timeSamples.getRowPackedCopy()) {
 						timeSamplesAdjust[i++] = intercept + (gradient * d);
 					}
-					matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust, timeSamplesAdjust.length);
+					matrixTimeSamplesAdjust = new Matrix(timeSamplesAdjust,
+							timeSamplesAdjust.length);
 				}
 				opponentUtilities.add(maxUtilityInTimeSlot);
 				// Flag regression receiveMessage required
@@ -274,7 +283,6 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 			maxUtilityInTimeSlot = 0;
 		}
 
-
 		// Calculate the maximum utility observed in the current time slot
 		maxUtilityInTimeSlot = Math.max(maxUtilityInTimeSlot, opponentUtility);
 
@@ -285,54 +293,44 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		if (regressionUpdateRequired) {
 			double gradient = 0.9 - intercept;
 			/*
-				double[] x = new double[opponentTimes.size()];
-				double[] yAdjust = new double[opponentTimes.size()];
-				double[] y = new double[opponentUtilities.size()];
-
-				int i;
-				i = 0;
-				for (double d : opponentTimes) {
-					x[i++] = d;
-				}
-				i = 0;
-				for (double d : opponentTimes) {
-					yAdjust[i++] = intercept + (gradient * d);
-				}
-				i = 0;
-				for (double d : opponentUtilities) {
-					y[i++] = d;
-				}
-
-				Matrix matrixX = new Matrix(x, x.length);
-				Matrix matrixYAdjust = new Matrix(yAdjust, yAdjust.length);
-				Matrix matrixY = new Matrix(y, y.length);
-
-				matrixY.minusEquals(matrixYAdjust);
-
-				//GaussianProcessMixture predictor = regression.calculateRegression(matrixX, matrixY);
+			 * double[] x = new double[opponentTimes.size()]; double[] yAdjust =
+			 * new double[opponentTimes.size()]; double[] y = new
+			 * double[opponentUtilities.size()];
+			 * 
+			 * int i; i = 0; for (double d : opponentTimes) { x[i++] = d; } i =
+			 * 0; for (double d : opponentTimes) { yAdjust[i++] = intercept +
+			 * (gradient * d); } i = 0; for (double d : opponentUtilities) {
+			 * y[i++] = d; }
+			 * 
+			 * Matrix matrixX = new Matrix(x, x.length); Matrix matrixYAdjust =
+			 * new Matrix(yAdjust, yAdjust.length); Matrix matrixY = new
+			 * Matrix(y, y.length);
+			 * 
+			 * matrixY.minusEquals(matrixYAdjust);
+			 * 
+			 * //GaussianProcessMixture predictor =
+			 * regression.calculateRegression(matrixX, matrixY);
 			 */
 
 			GaussianProcessMixture predictor;
 
-			if(lastTimeSlot == -1)
-			{
-				predictor = regression.calculateRegression(new double[] {}, new double[] {});
-			}
-			else
-			{
+			if (lastTimeSlot == -1) {
+				predictor = regression.calculateRegression(new double[] {},
+						new double[] {});
+			} else {
 				double x;
 				double y;
 				try {
 					x = opponentTimes.get(opponentTimes.size() - 1);
 					y = opponentUtilities.get(opponentUtilities.size() - 1);
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					System.out.println("Error getting x or y");
 					throw new Error(ex);
 				}
 
-				predictor = regression.updateRegression(
-						new Matrix(new double[] {x}, 1),
-						new Matrix(new double[] {y - intercept - (gradient * x)}, 1));
+				predictor = regression.updateRegression(new Matrix(
+						new double[] { x }, 1), new Matrix(new double[] { y
+						- intercept - (gradient * x) }, 1));
 			}
 
 			GaussianProcessMixturePrediction prediction = predictor
@@ -344,15 +342,14 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 		}
 
-		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means, variances,
-				time);
+		Pair<Matrix, Matrix> acceptMatrices = generateProbabilityAccept(means,
+				variances, time);
 		Matrix probabilityAccept = acceptMatrices.getFirst();
 		Matrix cumulativeAccept = acceptMatrices.getSecond();
 
-		Matrix probabilityExpectedUtility = probabilityAccept.arrayTimes(utility);
+		Matrix probabilityExpectedUtility = probabilityAccept
+				.arrayTimes(utility);
 		Matrix cumulativeExpectedUtility = cumulativeAccept.arrayTimes(utility);
-
-
 
 		Pair<Double, Double> bestAgreement = getExpectedBestAgreement(
 				probabilityExpectedUtility, cumulativeExpectedUtility, time);
@@ -369,7 +366,6 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 		double d = limitConcession(targetUtility);
 
-
 		return Math.max(utilitySpace.getReservationValueWithDiscount(time), d);
 	}
 
@@ -383,7 +379,8 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		double[] utilitySamplesArray = new double[m];
 		{
 			for (int i = 0; i < utilitySamplesArray.length; i++) {
-				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5) / ((double) m + 1.0);
+				utilitySamplesArray[i] = 1.0 - ((double) i + 0.5)
+						/ ((double) m + 1.0);
 			}
 		}
 		utilitySamples = new Matrix(utilitySamplesArray,
@@ -408,8 +405,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 	private double limitConcession(double targetUtility) {
 		double limit = 1.0 - ((maxOfferedUtility - minOfferedUtility) + 0.1);
-		if(limit > targetUtility)
-		{
+		if (limit > targetUtility) {
 			return limit;
 		}
 		return targetUtility;
@@ -428,7 +424,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	private Matrix generateDiscountingFunction(double discountingFactor) {
 		double[] discountingSamples = timeSamples.getRowPackedCopy();
 		double[][] m = new double[utilitySamples.getRowDimension()][timeSamples
-		                                                            .getColumnDimension()];
+				.getColumnDimension()];
 		for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[i].length; j++) {
 				m[i][j] = Math.pow(discountingFactor, discountingSamples[j]);
@@ -438,9 +434,9 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	}
 
 	/**
-	 * Generate an (n-1)-by-m matrix representing the probability of acceptance for
-	 * a given utility-time combination. The combinations are given by the time
-	 * and utility samples stored in timeSamples and utilitySamples
+	 * Generate an (n-1)-by-m matrix representing the probability of acceptance
+	 * for a given utility-time combination. The combinations are given by the
+	 * time and utility samples stored in timeSamples and utilitySamples
 	 * respectively.
 	 * 
 	 * @param mean
@@ -451,8 +447,8 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 *            The current time, in the range [0, 1].
 	 * @return An (n-1)-by-m matrix representing the probability of acceptance.
 	 */
-	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean, Matrix variance,
-			double time) {
+	private Pair<Matrix, Matrix> generateProbabilityAccept(Matrix mean,
+			Matrix variance, double time) {
 		int i = 0;
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			if (timeSamples.get(0, i) > time)
@@ -463,28 +459,29 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		Matrix probabilityAccept = new Matrix(utilitySamples.getRowDimension(),
 				timeSamples.getColumnDimension(), 0);
 
-		double interval = 1.0/utilitySamples.getRowDimension();
+		double interval = 1.0 / utilitySamples.getRowDimension();
 
 		for (; i < timeSamples.getColumnDimension(); i++) {
 			double s = Math.sqrt(2 * variance.get(i, 0));
 			double m = mean.get(i, 0);
 
-			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0) + (interval/2.0) - m)
+			double minp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(0, 0)
+					+ (interval / 2.0) - m)
 					/ s))));
-			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(utilitySamples.getRowDimension()-1, 0) - (interval/2.0) - m)
+			double maxp = (1.0 - (0.5 * (1 + erf((utilitySamples.get(
+					utilitySamples.getRowDimension() - 1, 0) - (interval / 2.0) - m)
 					/ s))));
 
 			for (int j = 0; j < utilitySamples.getRowDimension(); j++) {
 				double utility = utilitySamples.get(j, 0);
-				double p = (1.0 - (0.5 * (1 + erf((utility - m)
+				double p = (1.0 - (0.5 * (1 + erf((utility - m) / s))));
+				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval / 2.0) - m)
 						/ s))));
-				double p1 = (1.0 - (0.5 * (1 + erf((utility - (interval/2.0) - m)
-						/ s))));
-				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval/2.0) - m)
+				double p2 = (1.0 - (0.5 * (1 + erf((utility + (interval / 2.0) - m)
 						/ s))));
 
-				cumulativeAccept.set(j, i, (p-minp)/(maxp-minp));
-				probabilityAccept.set(j, i, (p1-p2)/(maxp-minp));
+				cumulativeAccept.set(j, i, (p - minp) / (maxp - minp));
+				probabilityAccept.set(j, i, (p1 - p2) / (maxp - minp));
 			}
 		}
 		return new Pair<Matrix, Matrix>(probabilityAccept, cumulativeAccept);
@@ -535,7 +532,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 		double[] riskSamples = utilitySamples.getColumnPackedCopy();
 		double[][] m = new double[utilitySamples.getRowDimension()][timeSamples
-		                                                            .getColumnDimension()];
+				.getColumnDimension()];
 		for (int i = 0; i < m.length; i++) {
 			double val;
 			if (range == 0) {
@@ -578,12 +575,17 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 *         best agreement.
 	 */
 	private Pair<Double, Double> getExpectedBestAgreement(
-			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues, double time) {
-		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(probabilityExpectedValues, time);
-		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(cumulativeExpectedValues, time);
+			Matrix probabilityExpectedValues, Matrix cumulativeExpectedValues,
+			double time) {
+		Matrix probabilityFutureExpectedValues = getFutureExpectedValues(
+				probabilityExpectedValues, time);
+		Matrix cumulativeFutureExpectedValues = getFutureExpectedValues(
+				cumulativeExpectedValues, time);
 
-		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues.getArray();
-		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues.getArray();
+		double[][] probabilityFutureExpectedValuesArray = probabilityFutureExpectedValues
+				.getArray();
+		double[][] cumulativeFutureExpectedValuesArray = cumulativeFutureExpectedValues
+				.getArray();
 
 		Double bestX = null;
 		Double bestY = null;
@@ -609,15 +611,15 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 
 		for (int y = 0; y < cumulativeFutureExpectedValuesArray.length; y++) {
 			double expectedValue = cumulativeFutureExpectedValuesArray[y][bestCol];
-			if(expectedValue > bestRowValue) {
+			if (expectedValue > bestRowValue) {
 				bestRowValue = expectedValue;
 				bestRow = y;
 			}
 		}
 
-		bestX = timeSamples.get(0, bestCol
-				+ probabilityExpectedValues.getColumnDimension()
-				- probabilityFutureExpectedValues.getColumnDimension());
+		bestX = timeSamples.get(0,
+				bestCol + probabilityExpectedValues.getColumnDimension()
+						- probabilityFutureExpectedValues.getColumnDimension());
 		bestY = utilitySamples.get(bestRow, 0);
 
 		return new Pair<Double, Double>(bestX, bestY);
@@ -642,10 +644,9 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 				break;
 		}
 		return expectedValues.getMatrix(0,
-				expectedValues.getRowDimension() - 1, i, expectedValues
-				.getColumnDimension() - 1);
+				expectedValues.getRowDimension() - 1, i,
+				expectedValues.getColumnDimension() - 1);
 	}
-
 
 	/**
 	 * Get all of the bids in a utility range.
@@ -657,7 +658,8 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 * @return all of the bids in a utility range.
 	 * @throws Exception
 	 */
-	private ArrayList<Bid> getBidsInRange(double lowerBound, double upperBound) throws Exception {
+	private ArrayList<Bid> getBidsInRange(double lowerBound, double upperBound)
+			throws Exception {
 		ArrayList<Bid> bidsInRange = new ArrayList<Bid>();
 		BidIterator iter = new BidIterator(utilitySpace.getDomain());
 		while (iter.hasNext()) {
@@ -685,7 +687,8 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 	 * @return a random bid in a given utility range.
 	 * @throws Exception
 	 */
-	protected Bid getRandomBidInRange(double lowerBound, double upperBound) throws Exception {
+	protected Bid getRandomBidInRange(double lowerBound, double upperBound)
+			throws Exception {
 		ArrayList<Bid> bidsInRange = getBidsInRange(lowerBound, upperBound);
 
 		int index = (new Random()).nextInt(bidsInRange.size() - 1);
@@ -693,8 +696,7 @@ public class IAMHaggler2012_Offering extends OfferingStrategy{
 		return bidsInRange.get(index);
 	}
 
-
 	public double adjustDiscountFactor(double discountFactor) {
 		return discountFactor;
-	}	
+	}
 }

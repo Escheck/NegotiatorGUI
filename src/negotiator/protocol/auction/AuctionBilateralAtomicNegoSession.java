@@ -7,13 +7,14 @@ import negotiator.protocol.Protocol;
 import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNegoSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
-public class AuctionBilateralAtomicNegoSession extends AlternatingOffersBilateralAtomicNegoSession {
+public class AuctionBilateralAtomicNegoSession extends
+		AlternatingOffersBilateralAtomicNegoSession {
 
 	public AuctionBilateralAtomicNegoSession(Protocol protocol, Agent agentA,
 			Agent agentB, String agentAname, String agentBname,
-			AdditiveUtilitySpace spaceA, AdditiveUtilitySpace spaceB,
+			AbstractUtilitySpace spaceA, AbstractUtilitySpace spaceB,
 			HashMap<AgentParameterVariable, AgentParamValue> agentAparams,
 			HashMap<AgentParameterVariable, AgentParamValue> agentBparams,
 			String startingAgent, int totalTime) throws Exception {

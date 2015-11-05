@@ -2,6 +2,7 @@ package agents;
 
 import negotiator.Bid;
 import negotiator.PocketNegotiatorAgent;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -33,24 +34,24 @@ public class SimpleFakeOpponentUtilitySpace extends AdditiveUtilitySpace {
 	 */
 	private static final long serialVersionUID = 4744417384585431753L;
 
-	private final AdditiveUtilitySpace ownSpace;
+	private final AbstractUtilitySpace ownSpace;
 	private final double firstOpponentBidUtility;
 
 	/**
 	 * 
-	 * @param us
+	 * @param utilitySpace
 	 *            our OWN {@link AdditiveUtilitySpace} (not the opponent's)
 	 * @param firstBid
 	 *            first opponent bid.
 	 * @throws Exception
 	 *             if we can't determine utility of firstBid
 	 */
-	public SimpleFakeOpponentUtilitySpace(AdditiveUtilitySpace us, Bid firstBid)
-			throws Exception {
+	public SimpleFakeOpponentUtilitySpace(AbstractUtilitySpace utilitySpace,
+			Bid firstBid) throws Exception {
 		if (firstBid == null)
 			throw new NullPointerException("bid=null");
 
-		ownSpace = us;
+		ownSpace = utilitySpace;
 		firstOpponentBidUtility = ownSpace.getUtility(firstBid);
 	}
 

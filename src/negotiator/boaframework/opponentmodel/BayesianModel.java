@@ -42,7 +42,8 @@ public class BayesianModel extends OpponentModel {
 	public void init(NegotiationSession negotiationSession,
 			HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
-		model = new BayesianOpponentModel(negotiationSession.getUtilitySpace());
+		model = new BayesianOpponentModel(
+				(AdditiveUtilitySpace) negotiationSession.getUtilitySpace());
 		if (parameters.get("m") != null) {
 			model.setMostProbableUSHypsOnly(parameters.get("m") > 0);
 		} else {

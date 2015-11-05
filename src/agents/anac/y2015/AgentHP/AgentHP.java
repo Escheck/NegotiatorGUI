@@ -15,8 +15,9 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.EvaluatorDiscrete;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.EvaluatorDiscrete;
 
 /**
  * This is your negotiation party.
@@ -109,7 +110,7 @@ public class AgentHP extends AbstractNegotiationParty {
 	 *            乱数用シード
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 
 		// 親クラスコンストラクタ
@@ -657,12 +658,12 @@ public class AgentHP extends AbstractNegotiationParty {
 			int issue_num = tmp.getNumber();
 
 			// 論点の重み取得し重み付き格納
-			addupWeightArray[issue_num - 1] = utilitySpace.getWeight(issue_num)
-					* myWeight;
+			addupWeightArray[issue_num - 1] = ((AdditiveUtilitySpace) utilitySpace)
+					.getWeight(issue_num) * myWeight;
 
 			// 論点内の項目事の値を取得
 			IssueDiscrete tmpDiscrete = (IssueDiscrete) tmp;
-			EvaluatorDiscrete evaluator = (EvaluatorDiscrete) utilitySpace
+			EvaluatorDiscrete evaluator = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace)
 					.getEvaluator(issue_num);
 			for (int j = 0; j < tmpDiscrete.getNumberOfValues(); j++) {
 

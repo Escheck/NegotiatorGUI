@@ -9,7 +9,7 @@ import negotiator.Domain;
 import negotiator.bidding.BidDetails;
 import negotiator.issue.Issue;
 import negotiator.session.Timeline;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This is a class which manages all the negotiation session pertinent
@@ -28,7 +28,7 @@ public class NegotiationSession {
 	/** Reference to the negotiation domain. */
 	protected Domain domain;
 	/** Reference to the agent's preference profile for the domain. */
-	protected AdditiveUtilitySpace utilitySpace;
+	protected AbstractUtilitySpace utilitySpace;
 	/** Reference to the timeline. */
 	protected Timeline timeline;
 
@@ -51,7 +51,7 @@ public class NegotiationSession {
 	 *            of the current negotiation.
 	 */
 	public NegotiationSession(SessionData sessionData,
-			AdditiveUtilitySpace utilitySpace, Timeline timeline) {
+			AbstractUtilitySpace utilitySpace, Timeline timeline) {
 		this(sessionData, utilitySpace, timeline, null);
 	}
 
@@ -67,7 +67,7 @@ public class NegotiationSession {
 	 *            representation of the possible outcomes.
 	 */
 	public NegotiationSession(SessionData sessionData,
-			AdditiveUtilitySpace utilitySpace, Timeline timeline,
+			AbstractUtilitySpace utilitySpace, Timeline timeline,
 			OutcomeSpace outcomeSpace) {
 		this.sessionData = sessionData;
 		this.utilitySpace = utilitySpace;
@@ -147,7 +147,7 @@ public class NegotiationSession {
 	 * 
 	 * @return utilityspace of the agent.
 	 */
-	public AdditiveUtilitySpace getUtilitySpace() {
+	public AbstractUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 

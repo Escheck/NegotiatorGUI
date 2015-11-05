@@ -18,6 +18,7 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.offeringstrategy.anac2011.iamhaggler2011.RandomBidCreator;
 import negotiator.boaframework.opponentmodel.IAMHagglerOpponentConcessionModel;
 import negotiator.tournament.TournamentConfiguration;
+import negotiator.utility.AdditiveUtilitySpace;
 import Jama.Matrix;
 
 public class IAMHaggler_Test_Offering extends OfferingStrategy {
@@ -63,7 +64,8 @@ public class IAMHaggler_Test_Offering extends OfferingStrategy {
 
 		concessionModel = new IAMHagglerOpponentConcessionModel(
 				(int) amountOfRegressions,
-				negotiationSession.getUtilitySpace(), amountOfSamples);
+				(AdditiveUtilitySpace) negotiationSession.getUtilitySpace(),
+				amountOfSamples);
 		bidCreator = new RandomBidCreator();
 		MAX_UTILITY_BID = negotiationSession.getMaxBidinDomain();
 		SortedOutcomeSpace outcomespace = new SortedOutcomeSpace(

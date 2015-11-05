@@ -34,9 +34,6 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.RepItem;
 import negotiator.tournament.TournamentRunner;
-import negotiator.utility.ConstraintUtilitySpace;
-import negotiator.utility.NonlinearUtilitySpace;
-import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.AdditiveUtilitySpace;
 
 import org.jdesktop.application.Action;
@@ -335,16 +332,10 @@ public class NegoGUIView extends FrameView {
 						((DomainRepItem) (parentNode.getRepositoryItem()))
 								.getURL().getFile());
 
-				// FIXME copy of code from Repository.
-				AdditiveUtilitySpace utilitySpace;
-				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.NONLINEAR) {
-					utilitySpace = new NonlinearUtilitySpace(domain, filename);
-				}
-				if (UTILITYSPACETYPE.getUtilitySpaceType(filename) == UTILITYSPACETYPE.CONSTRAINT) {
-					utilitySpace = new ConstraintUtilitySpace(domain, filename);
-				} else {
-					utilitySpace = new AdditiveUtilitySpace(domain, filename);
-				}
+				// we can handle only AdditiveUtilitySpace in TreeFrame anyway
+				// so we guess it's that...
+				AdditiveUtilitySpace utilitySpace = new AdditiveUtilitySpace(
+						domain, filename);
 
 				tf = new TreeFrame(domain, utilitySpace);
 				addTab(StripExtension(GetPlainFileName(filename)), tf);

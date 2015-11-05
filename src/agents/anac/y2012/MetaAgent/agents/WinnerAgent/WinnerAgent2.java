@@ -20,6 +20,7 @@ import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * @author WIN-TEAM Amir Harel, Ma'ayan Gafny, Michal Dahan, Ofra Amir Agent
@@ -63,7 +64,8 @@ public class WinnerAgent2 extends Agent {
 	 * init is called when a next session starts with the same opponent.
 	 */
 	public void init() {
-		_opponentOffers = new opponentOffers(utilitySpace, _notZeroSumThreshold);
+		_opponentOffers = new opponentOffers(
+				(AdditiveUtilitySpace) utilitySpace, _notZeroSumThreshold);
 		_allReasonableOffers = (_allReasonableOffers == null ? createSortedOffersArray()
 				: _allReasonableOffers);
 		_myOffers = randomlySelectOffers(1);
@@ -95,7 +97,8 @@ public class WinnerAgent2 extends Agent {
 		Set<Bid> bids = new HashSet<Bid>();
 		try {
 
-			// createFrom the list of all discrete\discretisized values possible in
+			// createFrom the list of all discrete\discretisized values possible
+			// in
 			// this domain
 			ArrayList<Vector<? extends Value>> issuesVec = createIssueVec();
 			ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
@@ -414,7 +417,8 @@ public class WinnerAgent2 extends Agent {
 				ourWeight = Math.max(_ourMinWeight, 1 - (0.05 * _nextPhase));
 				_minimumJointUtility = _minimumJointUtility - 0.05;
 
-				// receiveMessage minimal acceptance utility based on discount factor
+				// receiveMessage minimal acceptance utility based on discount
+				// factor
 				// and opponents concession rate and best offer
 				double assumedBestOfferWeGetNext = _opponentOffers
 						.getOurMaxUtilFromOppOffers()
@@ -429,7 +433,8 @@ public class WinnerAgent2 extends Agent {
 						_minimumAcceptenceUtility); // make sure we don't go
 													// under 0.65 unless it's
 													// zero-sum game
-				// receiveMessage our knowledge about the opponent from what we've
+				// receiveMessage our knowledge about the opponent from what
+				// we've
 				// learned so far
 				_opponentOffers.updateWeightsAndUtils();
 				if (_opponentOffers.getOurAvgUtilFromOppOffers() <= _zeroSumUtil) {

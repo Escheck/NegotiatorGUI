@@ -13,39 +13,39 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
-public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
-	
-	private HashMap<Integer,Rank> rankingofIssues;
+public class ConstraintUtilitySpace extends AbstractUtilitySpace {
+
+	private HashMap<Integer, Rank> rankingofIssues;
 	private ArrayList<Integer> issueIndices;
-	private HashMap<Integer,ArrayList<RConstraint>> contraintList;
+	private HashMap<Integer, ArrayList<RConstraint>> contraintList;
 	private ArrayList<ZeroOutcomeContraint> zeroOutcomeConstraints;
-	
-	public ConstraintUtilitySpace(){
-		this.domain = new Domain();
-		this.setRankingofIssues(new HashMap<Integer,Rank>());
-		this.setContraints(new HashMap<Integer,ArrayList<RConstraint>>());
+	private String fileName;
+	private SimpleElement fXMLRoot;
+
+	public ConstraintUtilitySpace() {
+		super(new Domain());
+		this.setRankingofIssues(new HashMap<Integer, Rank>());
+		this.setContraints(new HashMap<Integer, ArrayList<RConstraint>>());
 		this.setZeroOutcomeConstraints(new ArrayList<ZeroOutcomeContraint>());
-		spaceType = UTILITYSPACETYPE.CONSTRAINT;
 	}
-	
-	public ConstraintUtilitySpace(Domain domain){
-		this.domain = domain;
-		this.setRankingofIssues(new HashMap<Integer,Rank>());
-		this.setContraints(new HashMap<Integer,ArrayList<RConstraint>>());
+
+	public ConstraintUtilitySpace(Domain domain) {
+		super(domain);
+		this.setRankingofIssues(new HashMap<Integer, Rank>());
+		this.setContraints(new HashMap<Integer, ArrayList<RConstraint>>());
 		this.setIssueIndices(new ArrayList<Integer>());
 		this.setZeroOutcomeConstraints(new ArrayList<ZeroOutcomeContraint>());
-		spaceType = UTILITYSPACETYPE.CONSTRAINT;
 	}
-	
-	public ConstraintUtilitySpace(Domain domain, String fileName) throws IOException{
-		this.domain = domain;
+
+	public ConstraintUtilitySpace(Domain domain, String fileName)
+			throws IOException {
+		super(domain);
 		this.fileName = fileName;
-		this.setRankingofIssues(new HashMap<Integer,Rank>());
-		this.setContraints(new HashMap<Integer,ArrayList<RConstraint>>());
+		this.setRankingofIssues(new HashMap<Integer, Rank>());
+		this.setContraints(new HashMap<Integer, ArrayList<RConstraint>>());
 		this.setIssueIndices(new ArrayList<Integer>());
 		this.setZeroOutcomeConstraints(new ArrayList<ZeroOutcomeContraint>());
-		spaceType = UTILITYSPACETYPE.CONSTRAINT;
-		
+
 		if (!fileName.equals("")) {
 			SimpleDOMParser parser = new SimpleDOMParser();
 			BufferedReader file = new BufferedReader(new FileReader(new File(
@@ -57,23 +57,23 @@ public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
 		} else
 			throw new IOException();
 	}
-	
+
 	/** @return a clone of another utility space */
-	public ConstraintUtilitySpace(AdditiveUtilitySpace us) {
-		domain = us.getDomain();
+	public ConstraintUtilitySpace(ConstraintUtilitySpace us) {
+		super(us.getDomain());
 		fileName = us.getFileName();
-		spaceType = UTILITYSPACETYPE.CONSTRAINT;
-		fXMLRoot = us.getXMLRoot();
-		setRankingofIssues(((ConstraintUtilitySpace) us).getRankingofIssues());
-		setIssueIndices(((ConstraintUtilitySpace) us).getIssueIndices());
-	    setContraints(((ConstraintUtilitySpace) us).getContraints());
-	    setZeroOutcomeConstraints(((ConstraintUtilitySpace) us).getZeroOutcomeConstraints());
-		//if you add some other data members, please d`o not forget to add them here !
-		this.setDiscount(((ConstraintUtilitySpace) us).getDiscountFactor());
+		fXMLRoot = us.fXMLRoot;
+		setRankingofIssues(us.getRankingofIssues());
+		setIssueIndices(us.getIssueIndices());
+		setContraints(us.getContraints());
+		setZeroOutcomeConstraints(us.getZeroOutcomeConstraints());
+		// if you add some other data members, please d`o not forget to add them
+		// here !
+		this.setDiscount(us.getDiscountFactor());
 		this.setReservationValue(((ConstraintUtilitySpace) us)
 				.getReservationValue());
 	}
-	
+
 	@Override
 	public SimpleElement toXML() throws IOException {
 		/**
@@ -109,124 +109,196 @@ public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
 		return root;
 	}
 
-
 	private void loadRanks(SimpleElement ranks) {
 
-		
-		Object[] allRankObjects=ranks.getChildByTagName("issue");
-		
-		for (int k=0; k<allRankObjects.length; k++) {
-			
-			this.issueIndices.add(Integer.valueOf(((SimpleElement) allRankObjects[k]).getAttribute("index").toString()));
-			Rank currentRanking=new Rank(Integer.valueOf(((SimpleElement) allRankObjects[k]).getAttribute("index").toString()));
-			
-			Object[] rankList=((SimpleElement) allRankObjects[k]).getChildByTagName("item");
-			
-			for (int m=0; m<rankList.length; m++) {
-				 currentRanking.addRank(((SimpleElement) rankList[m]).getAttribute("value"),((SimpleElement) rankList[m]).getAttribute("rank"));
+		Object[] allRankObjects = ranks.getChildByTagName("issue");
+
+		for (int k = 0; k < allRankObjects.length; k++) {
+
+			this.issueIndices.add(Integer
+					.valueOf(((SimpleElement) allRankObjects[k]).getAttribute(
+							"index").toString()));
+			Rank currentRanking = new Rank(
+					Integer.valueOf(((SimpleElement) allRankObjects[k])
+							.getAttribute("index").toString()));
+
+			Object[] rankList = ((SimpleElement) allRankObjects[k])
+					.getChildByTagName("item");
+
+			for (int m = 0; m < rankList.length; m++) {
+				currentRanking.addRank(
+						((SimpleElement) rankList[m]).getAttribute("value"),
+						((SimpleElement) rankList[m]).getAttribute("rank"));
 			}
-			
-			this.rankingofIssues.put(Integer.valueOf(((SimpleElement) allRankObjects[k]).getAttribute("index").toString()),currentRanking);
+
+			this.rankingofIssues.put(Integer
+					.valueOf(((SimpleElement) allRankObjects[k]).getAttribute(
+							"index").toString()), currentRanking);
 		}
 
 	}
 
 	private void addRConstraint(RConstraint currentConstraint) {
-		
+
 		ArrayList<RConstraint> myRConstraints;
 		if (this.contraintList.containsKey(currentConstraint.getIssueIndex()))
-		     myRConstraints=this.contraintList.get(currentConstraint.getIssueIndex());
-		else 
-			myRConstraints=new ArrayList<RConstraint>();
-		
-		 myRConstraints.add(currentConstraint);
-		 this.contraintList.put(currentConstraint.getIssueIndex(),myRConstraints);
+			myRConstraints = this.contraintList.get(currentConstraint
+					.getIssueIndex());
+		else
+			myRConstraints = new ArrayList<RConstraint>();
+
+		myRConstraints.add(currentConstraint);
+		this.contraintList.put(currentConstraint.getIssueIndex(),
+				myRConstraints);
 	}
 
 	private void loadConstraints(SimpleElement constraints) {
-	
-		Object[] allConstraintObjects=constraints.getChildByTagName("constraint");
-		
-		for (int k=0; k<allConstraintObjects.length; k++){
-			//check the type of the constraints and act accordingly..
-			
-			String constraintType= ((SimpleElement) allConstraintObjects[k]).getAttribute("type").toString();
-			if ((constraintType.equals("inclusiveZeroOutcomeConstraint")) || (constraintType.equals("conditionalZeroOutcomeConstraint"))) {
-					
+
+		Object[] allConstraintObjects = constraints
+				.getChildByTagName("constraint");
+
+		for (int k = 0; k < allConstraintObjects.length; k++) {
+			// check the type of the constraints and act accordingly..
+
+			String constraintType = ((SimpleElement) allConstraintObjects[k])
+					.getAttribute("type").toString();
+			if ((constraintType.equals("inclusiveZeroOutcomeConstraint"))
+					|| (constraintType
+							.equals("conditionalZeroOutcomeConstraint"))) {
+
 				ZeroOutcomeContraint currentConstraint;
-					
+
 				if (constraintType.equals("inclusiveZeroOutcomeConstraint"))
-						currentConstraint=new InclusiveZeroOutcomeConstraint();
-				else currentConstraint= new ConditionalZeroOutcomeConstraint();
-					
-				 Object[] checkAssignmentList=((SimpleElement)  allConstraintObjects[k]).getChildByTagName("checkassignment");
-				 
-				 for (int s=0; s<checkAssignmentList.length; s++){
-					 currentConstraint.addContraint(Integer.valueOf(((SimpleElement) checkAssignmentList[s]).getAttribute("index").toString()), ((SimpleElement) checkAssignmentList[s]).getAttribute("condition"));
-				 }
-				 this.zeroOutcomeConstraints.add(currentConstraint);
-			}//if	 
-			else if ( (constraintType.equals("zeroConstraint")) || (constraintType.equals("sumZeroConstraint")) || (constraintType.equals("sumZeroNotConstraint")) ||(constraintType.equals("sumZeroConstraintList")) || (constraintType.equals("conditionalZeroConstraint")) ) {
-				
-				
-				 RConstraint currentConstraint=null;
-				 
-				 if (constraintType.equals("zeroConstraint")){
-				     currentConstraint=new ZeroConstraint(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("index").toString()));
-				 	 Object[] valueAssignmentList=((SimpleElement)  allConstraintObjects[k]).getChildByTagName("valueassignment");
-					 for (int s=0; s<valueAssignmentList.length; s++){
-						 currentConstraint.addContraint(Integer.valueOf(((SimpleElement)valueAssignmentList[s]).getAttribute("index").toString()), ((SimpleElement)valueAssignmentList[s]).getAttribute("value"));
-					 }
+					currentConstraint = new InclusiveZeroOutcomeConstraint();
+				else
+					currentConstraint = new ConditionalZeroOutcomeConstraint();
 
-				 }else	if (constraintType.equals("conditionalZeroConstraint")) {
-					 
-					 currentConstraint=new ConditionalZeroConstraint(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("index").toString()), ((SimpleElement) allConstraintObjects[k]).getAttribute("value").toString());
-				 	 Object[] valueAssignmentList=((SimpleElement)  allConstraintObjects[k]).getChildByTagName("valueassignment");
-					 for (int s=0; s<valueAssignmentList.length; s++){
-						 currentConstraint.addContraint(Integer.valueOf(((SimpleElement)valueAssignmentList[s]).getAttribute("index").toString()), ((SimpleElement)valueAssignmentList[s]).getAttribute("value"));
-					 }
-					 
-				  }else	if ( (constraintType.equals("sumZeroConstraint")) ||  (constraintType.equals("sumZeroNotConstraint"))) {
-					 
-					    if  (constraintType.equals("sumZeroConstraint"))
-						 	currentConstraint=new SumZeroConstraint(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("index").toString()));
-					 else 
-							currentConstraint=new SumZeroNotConstraint(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("index").toString()));
-					 
-					 
-						 	((SumZeroConstraint)currentConstraint).setValueToBeChecked(((SimpleElement) allConstraintObjects[k]).getAttribute("value").toString());
-						 	((SumZeroConstraint)currentConstraint).setMax(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("max").toString()));
-						 	((SumZeroConstraint)currentConstraint).setMin(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("min").toString()));
-						 	
-						 	 Object[] issueList=((SimpleElement) allConstraintObjects[k]).getChildByTagName("item");
-						 	 
-						 	  for (int t=0; t<issueList.length; t++)
-						 		 ((SumZeroConstraint)currentConstraint).addRelatedIssue(Integer.valueOf(((SimpleElement)issueList[t]).getAttribute("index").toString()));
-						 	 
-				   } else if (constraintType.equals("sumZeroConstraintList")) {
-					  
-					   currentConstraint=new SumZeroConstraintList(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("index").toString()));
+				Object[] checkAssignmentList = ((SimpleElement) allConstraintObjects[k])
+						.getChildByTagName("checkassignment");
 
-					 	((SumZeroConstraintList)currentConstraint).setMax(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("max").toString()));
-					 	((SumZeroConstraintList)currentConstraint).setMin(Integer.valueOf(((SimpleElement) allConstraintObjects[k]).getAttribute("min").toString()));
-					 	
-					 	 Object[] issueList=((SimpleElement) allConstraintObjects[k]).getChildByTagName("item");
-					 	 
-					 	  for (int t=0; t<issueList.length; t++)
-					 		 ((SumZeroConstraintList)currentConstraint).addRelatedIssue(Integer.valueOf(((SimpleElement)issueList[t]).getAttribute("index").toString()));
-					 	 
-					 	 Object[] conditionList=((SimpleElement) allConstraintObjects[k]).getChildByTagName("condition");
-					 	 
-					 	for (int t=0; t<conditionList.length; t++)
-					 		 ((SumZeroConstraintList)currentConstraint).addValueToBeChecked(((SimpleElement)conditionList[t]).getAttribute("value").toString());
-					 	  
-				   }
-				 addRConstraint(currentConstraint);
+				for (int s = 0; s < checkAssignmentList.length; s++) {
+					currentConstraint.addContraint(Integer
+							.valueOf(((SimpleElement) checkAssignmentList[s])
+									.getAttribute("index").toString()),
+							((SimpleElement) checkAssignmentList[s])
+									.getAttribute("condition"));
+				}
+				this.zeroOutcomeConstraints.add(currentConstraint);
+			}// if
+			else if ((constraintType.equals("zeroConstraint"))
+					|| (constraintType.equals("sumZeroConstraint"))
+					|| (constraintType.equals("sumZeroNotConstraint"))
+					|| (constraintType.equals("sumZeroConstraintList"))
+					|| (constraintType.equals("conditionalZeroConstraint"))) {
+
+				RConstraint currentConstraint = null;
+
+				if (constraintType.equals("zeroConstraint")) {
+					currentConstraint = new ZeroConstraint(
+							Integer.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("index").toString()));
+					Object[] valueAssignmentList = ((SimpleElement) allConstraintObjects[k])
+							.getChildByTagName("valueassignment");
+					for (int s = 0; s < valueAssignmentList.length; s++) {
+						currentConstraint
+								.addContraint(
+										Integer.valueOf(((SimpleElement) valueAssignmentList[s])
+												.getAttribute("index")
+												.toString()),
+										((SimpleElement) valueAssignmentList[s])
+												.getAttribute("value"));
+					}
+
+				} else if (constraintType.equals("conditionalZeroConstraint")) {
+
+					currentConstraint = new ConditionalZeroConstraint(
+							Integer.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("index").toString()),
+							((SimpleElement) allConstraintObjects[k])
+									.getAttribute("value").toString());
+					Object[] valueAssignmentList = ((SimpleElement) allConstraintObjects[k])
+							.getChildByTagName("valueassignment");
+					for (int s = 0; s < valueAssignmentList.length; s++) {
+						currentConstraint
+								.addContraint(
+										Integer.valueOf(((SimpleElement) valueAssignmentList[s])
+												.getAttribute("index")
+												.toString()),
+										((SimpleElement) valueAssignmentList[s])
+												.getAttribute("value"));
+					}
+
+				} else if ((constraintType.equals("sumZeroConstraint"))
+						|| (constraintType.equals("sumZeroNotConstraint"))) {
+
+					if (constraintType.equals("sumZeroConstraint"))
+						currentConstraint = new SumZeroConstraint(
+								Integer.valueOf(((SimpleElement) allConstraintObjects[k])
+										.getAttribute("index").toString()));
+					else
+						currentConstraint = new SumZeroNotConstraint(
+								Integer.valueOf(((SimpleElement) allConstraintObjects[k])
+										.getAttribute("index").toString()));
+
+					((SumZeroConstraint) currentConstraint)
+							.setValueToBeChecked(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("value").toString());
+					((SumZeroConstraint) currentConstraint).setMax(Integer
+							.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("max").toString()));
+					((SumZeroConstraint) currentConstraint).setMin(Integer
+							.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("min").toString()));
+
+					Object[] issueList = ((SimpleElement) allConstraintObjects[k])
+							.getChildByTagName("item");
+
+					for (int t = 0; t < issueList.length; t++)
+						((SumZeroConstraint) currentConstraint)
+								.addRelatedIssue(Integer
+										.valueOf(((SimpleElement) issueList[t])
+												.getAttribute("index")
+												.toString()));
+
+				} else if (constraintType.equals("sumZeroConstraintList")) {
+
+					currentConstraint = new SumZeroConstraintList(
+							Integer.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("index").toString()));
+
+					((SumZeroConstraintList) currentConstraint).setMax(Integer
+							.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("max").toString()));
+					((SumZeroConstraintList) currentConstraint).setMin(Integer
+							.valueOf(((SimpleElement) allConstraintObjects[k])
+									.getAttribute("min").toString()));
+
+					Object[] issueList = ((SimpleElement) allConstraintObjects[k])
+							.getChildByTagName("item");
+
+					for (int t = 0; t < issueList.length; t++)
+						((SumZeroConstraintList) currentConstraint)
+								.addRelatedIssue(Integer
+										.valueOf(((SimpleElement) issueList[t])
+												.getAttribute("index")
+												.toString()));
+
+					Object[] conditionList = ((SimpleElement) allConstraintObjects[k])
+							.getChildByTagName("condition");
+
+					for (int t = 0; t < conditionList.length; t++)
+						((SumZeroConstraintList) currentConstraint)
+								.addValueToBeChecked(((SimpleElement) conditionList[t])
+										.getAttribute("value").toString());
+
+				}
+				addRConstraint(currentConstraint);
 			}
-			
-		}//for		
-		
+
+		}// for
+
 	}
+
 	private void loadConstraintSpace(SimpleElement root) {
 		// load reservation value
 		try {
@@ -261,58 +333,63 @@ public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
 		// load utility
 		Object rules = ((SimpleElement) root.getChildElements()[0])
 				.getChildByTagName("rules")[0];
-		//load the ranks 
-		loadRanks((SimpleElement) ((SimpleElement) rules).getChildByTagName("ranks")[0]);
-		loadConstraints((SimpleElement) ((SimpleElement) rules).getChildByTagName("constraints")[0]);
-		//similarly load the constraints
+		// load the ranks
+		loadRanks((SimpleElement) ((SimpleElement) rules)
+				.getChildByTagName("ranks")[0]);
+		loadConstraints((SimpleElement) ((SimpleElement) rules)
+				.getChildByTagName("constraints")[0]);
+		// similarly load the constraints
 	}
 
-	private HashMap<Integer,Rank> getRankingofIssues() {
+	private HashMap<Integer, Rank> getRankingofIssues() {
 		return rankingofIssues;
 	}
 
-	private void setRankingofIssues(HashMap<Integer,Rank> rankingofIssues) {
+	private void setRankingofIssues(HashMap<Integer, Rank> rankingofIssues) {
 		this.rankingofIssues = rankingofIssues;
 	}
 
-	private HashMap<Integer,ArrayList<RConstraint>> getContraints() {
+	private HashMap<Integer, ArrayList<RConstraint>> getContraints() {
 		return contraintList;
 	}
 
-	private void setContraints(HashMap<Integer,ArrayList<RConstraint>> contraints) {
+	private void setContraints(
+			HashMap<Integer, ArrayList<RConstraint>> contraints) {
 		this.contraintList = contraints;
 	}
-	
-	
+
 	private boolean isZeroUtility(Integer index, Bid bid) throws Exception {
-		
-		if (!this.contraintList.containsKey(index)) 
+
+		if (!this.contraintList.containsKey(index))
 			return false;
-		
-		for (RConstraint myConstraints:this.contraintList.get(index)){
+
+		for (RConstraint myConstraints : this.contraintList.get(index)) {
 			if (myConstraints.willZeroUtility(bid))
 				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public double getUtility(Bid bid) throws Exception {
-		
-		double utility=0.0;
-		
-		for (int s=0; s<this.zeroOutcomeConstraints.size(); s++) {
+
+		double utility = 0.0;
+
+		for (int s = 0; s < this.zeroOutcomeConstraints.size(); s++) {
 			if (zeroOutcomeConstraints.get(s).willGetZeroOutcomeUtility(bid))
 				return 0.0;
 		}
-		
-		for (int i=0; i<this.issueIndices.size(); i++){
-		
+
+		for (int i = 0; i < this.issueIndices.size(); i++) {
+
 			if (!isZeroUtility(this.issueIndices.get(i), bid))
-			    utility+=this.rankingofIssues.get(this.issueIndices.get(i)).getNormalizedRank(bid.getValue(this.issueIndices.get(i)).toString());
+				utility += this.rankingofIssues.get(this.issueIndices.get(i))
+						.getNormalizedRank(
+								bid.getValue(this.issueIndices.get(i))
+										.toString());
 		}
-		return ((double)((double)utility/this.issueIndices.size()));
-		
+		return ((double) ((double) utility / this.issueIndices.size()));
+
 	}
 
 	@Override
@@ -339,7 +416,13 @@ public class ConstraintUtilitySpace  extends AdditiveUtilitySpace {
 		return zeroOutcomeConstraints;
 	}
 
-	public void setZeroOutcomeConstraints(ArrayList<ZeroOutcomeContraint> zeroOutcomeConstraints) {
+	public void setZeroOutcomeConstraints(
+			ArrayList<ZeroOutcomeContraint> zeroOutcomeConstraints) {
 		this.zeroOutcomeConstraints = zeroOutcomeConstraints;
+	}
+
+	@Override
+	public UtilitySpace copy() {
+		return new ConstraintUtilitySpace(this);
 	}
 }

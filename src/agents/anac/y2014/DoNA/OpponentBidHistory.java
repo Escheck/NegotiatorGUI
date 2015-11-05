@@ -1,10 +1,11 @@
 package agents.anac.y2014.DoNA;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
@@ -12,35 +13,37 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.Domain;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
- * Class for keeping the history of bids sent by our opponent, 
- * weighted according to the time they were sent.
+ * Class for keeping the history of bids sent by our opponent, weighted
+ * according to the time they were sent.
  * 
  * The sooner they are sent - the higher the weight.
  * 
- * Also tries to estimate, from a given list of acceptable bids, the best one for our opponent, 
- * according to the sum of weights for each issue-value pair, in each bid from the range.
+ * Also tries to estimate, from a given list of acceptable bids, the best one
+ * for our opponent, according to the sum of weights for each issue-value pair,
+ * in each bid from the range.
  * 
- * Initialization, adding and maintaining the structure are based on work from 2012 competition, by Justin
+ * Initialization, adding and maintaining the structure are based on work from
+ * 2012 competition, by Justin
  */
 public class OpponentBidHistory {
 
 	private ArrayList<Bid> bidHistory;
 
 	/**
-	 * These arrays map issues to frequency-maps:
-	 * For each issue, they keep a map that maps each possible value to the number of times it was offered by the opponent.
+	 * These arrays map issues to frequency-maps: For each issue, they keep a
+	 * map that maps each possible value to the number of times it was offered
+	 * by the opponent.
 	 */
 	private ArrayList<ArrayList<Double>> opponentBidsStatisticsForReal;
 	private ArrayList<HashMap<Value, Double>> opponentBidsStatisticsDiscrete;
 	private ArrayList<ArrayList<Double>> opponentBidsStatisticsForInteger;
 
 	private int maximumBidsStored = 1000000;
-	private Bid bid_maximum_from_opponent;//the bid with maximum utility proposed by the opponent so far.
-
+	private Bid bid_maximum_from_opponent;// the bid with maximum utility
+											// proposed by the opponent so far.
 
 	public OpponentBidHistory() {
 		this.bidHistory = new ArrayList<Bid>();
@@ -51,9 +54,10 @@ public class OpponentBidHistory {
 
 	/**
 	 * add a new opponent bid
+	 * 
 	 * @author Justin
 	 */
-	public void addBid(Bid bid, AdditiveUtilitySpace utilitySpace) {
+	public void addBid(Bid bid, AbstractUtilitySpace utilitySpace) {
 		if (bidHistory.indexOf(bid) == -1) {
 			bidHistory.add(bid);
 		}
@@ -61,7 +65,8 @@ public class OpponentBidHistory {
 			if (bidHistory.size() == 1) {
 				this.bid_maximum_from_opponent = bidHistory.get(0);
 			} else {
-				if (utilitySpace.getUtility(bid) > utilitySpace.getUtility(this.bid_maximum_from_opponent)) {
+				if (utilitySpace.getUtility(bid) > utilitySpace
+						.getUtility(this.bid_maximum_from_opponent)) {
 					this.bid_maximum_from_opponent = bid;
 				}
 			}
@@ -76,14 +81,16 @@ public class OpponentBidHistory {
 
 	/**
 	 * initialization
-	 * @author Justin
-	 * Changed by Eden Erez and Erel Segal haLevi (added weight 0.0)
+	 * 
+	 * @author Justin Changed by Eden Erez and Erel Segal haLevi (added weight
+	 *         0.0)
 	 */
 	public void initializeDataStructures(Domain domain) {
 		try {
 			ArrayList<Issue> issues = domain.getIssues();
 			for (Issue lIssue : issues) {
-				// For each issue, initialize a map from each possible value to integer. The integer is initially 0:
+				// For each issue, initialize a map from each possible value to
+				// integer. The integer is initially 0:
 
 				switch (lIssue.getType()) {
 
@@ -100,7 +107,8 @@ public class OpponentBidHistory {
 				case REAL:
 					IssueReal lIssueReal = (IssueReal) lIssue;
 					ArrayList<Double> numProposalsPerValue = new ArrayList<Double>();
-					int lNumOfPossibleValuesInThisIssue = lIssueReal.getNumberOfDiscretizationSteps();
+					int lNumOfPossibleValuesInThisIssue = lIssueReal
+							.getNumberOfDiscretizationSteps();
 					for (int i = 0; i < lNumOfPossibleValuesInThisIssue; i++) {
 						numProposalsPerValue.add(0.0);
 					}
@@ -111,8 +119,12 @@ public class OpponentBidHistory {
 					IssueInteger lIssueInteger = (IssueInteger) lIssue;
 					ArrayList<Double> numOfValueProposals = new ArrayList<Double>();
 
-					// number of possible value when issue is integer (we should add 1 in order to include all values)
-					int lNumOfPossibleValuesForThisIssue = lIssueInteger.getUpperBound() - lIssueInteger.getLowerBound() + 1;
+					// number of possible value when issue is integer (we should
+					// add 1 in order to include all values)
+					int lNumOfPossibleValuesForThisIssue = lIssueInteger
+							.getUpperBound()
+							- lIssueInteger.getLowerBound()
+							+ 1;
 					for (int i = 0; i < lNumOfPossibleValuesForThisIssue; i++) {
 						numOfValueProposals.add(0.0);
 					}
@@ -128,9 +140,11 @@ public class OpponentBidHistory {
 	/**
 	 * This function updates the opponent's Model by calling the
 	 * updateStatistics method
+	 * 
 	 * @author Eden Erez, Erel Segal haLevi
 	 */
-	public void updateOpponentModel(Bid bidToUpdate, double weight, AdditiveUtilitySpace utilitySpace) {
+	public void updateOpponentModel(Bid bidToUpdate, double weight,
+			AbstractUtilitySpace utilitySpace) {
 		this.addBid(bidToUpdate, utilitySpace);
 		if (this.bidHistory.size() <= this.maximumBidsStored) {
 			this.updateStatistics(bidToUpdate, weight, utilitySpace.getDomain());
@@ -142,15 +156,15 @@ public class OpponentBidHistory {
 	 * the opponent.
 	 * 
 	 * New algorithm!
-	 * @author Justin
-	 * Changed by Eden Erez and Erel Segal haLevi (added weight)
+	 * 
+	 * @author Justin Changed by Eden Erez and Erel Segal haLevi (added weight)
 	 * @since 2013-01
 	 */
 	private void updateStatistics(Bid bidToUpdate, double weight, Domain domain) {
 		try {
 			ArrayList<Issue> issues = domain.getIssues();
 
-			//counters for each type of the issues
+			// counters for each type of the issues
 			int realIssueIndex = 0;
 			int discreteIssueIndex = 0;
 			int integerIssueIndex = 0;
@@ -160,12 +174,16 @@ public class OpponentBidHistory {
 				switch (lIssue.getType()) {
 				case DISCRETE:
 					if (opponentBidsStatisticsDiscrete == null) {
-						System.out.println("opponentBidsStatisticsDiscrete is NULL");
-					} else if (opponentBidsStatisticsDiscrete.get(discreteIssueIndex) != null) {
-						double totalWeightPerValue = opponentBidsStatisticsDiscrete.get(discreteIssueIndex).get(v);
+						System.out
+								.println("opponentBidsStatisticsDiscrete is NULL");
+					} else if (opponentBidsStatisticsDiscrete
+							.get(discreteIssueIndex) != null) {
+						double totalWeightPerValue = opponentBidsStatisticsDiscrete
+								.get(discreteIssueIndex).get(v);
 
-						totalWeightPerValue+=weight;
-						opponentBidsStatisticsDiscrete.get(discreteIssueIndex).put(v, totalWeightPerValue);
+						totalWeightPerValue += weight;
+						opponentBidsStatisticsDiscrete.get(discreteIssueIndex)
+								.put(v, totalWeightPerValue);
 					}
 					discreteIssueIndex++;
 					break;
@@ -173,33 +191,42 @@ public class OpponentBidHistory {
 				case REAL:
 
 					IssueReal lIssueReal = (IssueReal) lIssue;
-					int lNumOfPossibleRealValues = lIssueReal.getNumberOfDiscretizationSteps();
-					double lOneStep = (lIssueReal.getUpperBound() - lIssueReal.getLowerBound()) / lNumOfPossibleRealValues;
+					int lNumOfPossibleRealValues = lIssueReal
+							.getNumberOfDiscretizationSteps();
+					double lOneStep = (lIssueReal.getUpperBound() - lIssueReal
+							.getLowerBound()) / lNumOfPossibleRealValues;
 					double first = lIssueReal.getLowerBound();
 					double last = lIssueReal.getLowerBound() + lOneStep;
 					double valueReal = ((ValueReal) v).getValue();
 					boolean found = false;
 
-					for (int i = 0; !found && i < opponentBidsStatisticsForReal.get(realIssueIndex).size(); i++) {
+					for (int i = 0; !found
+							&& i < opponentBidsStatisticsForReal.get(
+									realIssueIndex).size(); i++) {
 						if (valueReal >= first && valueReal <= last) {
-							double countPerValue = opponentBidsStatisticsForReal.get(realIssueIndex).get(i);
+							double countPerValue = opponentBidsStatisticsForReal
+									.get(realIssueIndex).get(i);
 
-							countPerValue+=weight;
+							countPerValue += weight;
 
-							opponentBidsStatisticsForReal.get(realIssueIndex).set(i, countPerValue);
+							opponentBidsStatisticsForReal.get(realIssueIndex)
+									.set(i, countPerValue);
 							found = true;
 						}
 						first = last;
 						last = last + lOneStep;
 					}
-					//If no matching value was found, update the last cell
+					// If no matching value was found, update the last cell
 					if (found == false) {
-						int i = opponentBidsStatisticsForReal.get(realIssueIndex).size() - 1;
-						double countPerValue = opponentBidsStatisticsForReal.get(realIssueIndex).get(i);
+						int i = opponentBidsStatisticsForReal.get(
+								realIssueIndex).size() - 1;
+						double countPerValue = opponentBidsStatisticsForReal
+								.get(realIssueIndex).get(i);
 
-						countPerValue+=weight;
+						countPerValue += weight;
 
-						opponentBidsStatisticsForReal.get(realIssueIndex).set(i, countPerValue);
+						opponentBidsStatisticsForReal.get(realIssueIndex).set(
+								i, countPerValue);
 					}
 					realIssueIndex++;
 					break;
@@ -209,29 +236,44 @@ public class OpponentBidHistory {
 					IssueInteger lIssueInteger = (IssueInteger) lIssue;
 					int valueInteger = ((ValueInteger) v).getValue();
 
-					int valueIndex = valueInteger - lIssueInteger.getLowerBound(); //For ex. LowerBound index is 0, and the lower bound is 2, the value is 4, so the index of 4 would be 2 which is exactly 4-2
-					double countPerValue = opponentBidsStatisticsForInteger.get(integerIssueIndex).get(valueIndex);
-					countPerValue+=weight;
-					opponentBidsStatisticsForInteger.get(integerIssueIndex).set(valueIndex, countPerValue);
+					int valueIndex = valueInteger
+							- lIssueInteger.getLowerBound(); // For ex.
+																// LowerBound
+																// index is 0,
+																// and the lower
+																// bound is 2,
+																// the value is
+																// 4, so the
+																// index of 4
+																// would be 2
+																// which is
+																// exactly 4-2
+					double countPerValue = opponentBidsStatisticsForInteger
+							.get(integerIssueIndex).get(valueIndex);
+					countPerValue += weight;
+					opponentBidsStatisticsForInteger.get(integerIssueIndex)
+							.set(valueIndex, countPerValue);
 					integerIssueIndex++;
 					break;
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Exception in updateStatistics: " + e.getMessage());
+			System.out.println("Exception in updateStatistics: "
+					+ e.getMessage());
 		}
 	}
 
-	
-
 	/**
-	 * choose a bid which is optimal for the opponent among a set of candidate bids.
+	 * choose a bid which is optimal for the opponent among a set of candidate
+	 * bids.
 	 * 
 	 * New algorithm!
+	 * 
 	 * @author Eden Erez, Erel Segal haLevi
 	 * @since 2013-01
 	 */
-	public Bid ChooseBid(List<Bid> candidateBids, Domain domain) throws Exception {
+	public Bid ChooseBid(List<Bid> candidateBids, Domain domain)
+			throws Exception {
 		if (candidateBids.isEmpty()) {
 			System.out.println("test");
 		}
@@ -245,28 +287,40 @@ public class OpponentBidHistory {
 			double totalWeightOfAllValuesInCurrentCandidateBid = 0;
 			realIndex = discreteIndex = integerIndex = 0;
 			for (int iIssue = 0; iIssue < issues.size(); iIssue++) {
-				Value valueInCurrentIssueInCurrentCandidateBid = candidateBids.get(iCandidateBid).getValue(issues.get(iIssue).getNumber());
+				Value valueInCurrentIssueInCurrentCandidateBid = candidateBids
+						.get(iCandidateBid).getValue(
+								issues.get(iIssue).getNumber());
 				switch (issues.get(iIssue).getType()) {
 				case DISCRETE:
 					if (opponentBidsStatisticsDiscrete == null) {
-						System.out.println("opponentBidsStatisticsDiscrete is NULL");
-					} else if (opponentBidsStatisticsDiscrete.get(discreteIndex) != null) {
-						double totalWeightPerValue = opponentBidsStatisticsDiscrete.get(discreteIndex).get(valueInCurrentIssueInCurrentCandidateBid);
+						System.out
+								.println("opponentBidsStatisticsDiscrete is NULL");
+					} else if (opponentBidsStatisticsDiscrete
+							.get(discreteIndex) != null) {
+						double totalWeightPerValue = opponentBidsStatisticsDiscrete
+								.get(discreteIndex)
+								.get(valueInCurrentIssueInCurrentCandidateBid);
 						totalWeightOfAllValuesInCurrentCandidateBid += totalWeightPerValue;
 					}
 					discreteIndex++;
 					break;
 				case REAL:
 					IssueReal lIssueReal = (IssueReal) issues.get(iIssue);
-					int lNumOfPossibleRealValues = lIssueReal.getNumberOfDiscretizationSteps();
-					double lOneStep = (lIssueReal.getUpperBound() - lIssueReal.getLowerBound()) / lNumOfPossibleRealValues;
+					int lNumOfPossibleRealValues = lIssueReal
+							.getNumberOfDiscretizationSteps();
+					double lOneStep = (lIssueReal.getUpperBound() - lIssueReal
+							.getLowerBound()) / lNumOfPossibleRealValues;
 					double first = lIssueReal.getLowerBound();
 					double last = lIssueReal.getLowerBound() + lOneStep;
-					double valueReal = ((ValueReal) valueInCurrentIssueInCurrentCandidateBid).getValue();
+					double valueReal = ((ValueReal) valueInCurrentIssueInCurrentCandidateBid)
+							.getValue();
 					boolean found = false;
-					for (int k = 0; !found && k < opponentBidsStatisticsForReal.get(realIndex).size(); k++) {
+					for (int k = 0; !found
+							&& k < opponentBidsStatisticsForReal.get(realIndex)
+									.size(); k++) {
 						if (valueReal >= first && valueReal <= last) {
-							double totalWeightPerValue = opponentBidsStatisticsForReal.get(realIndex).get(k);
+							double totalWeightPerValue = opponentBidsStatisticsForReal
+									.get(realIndex).get(k);
 							totalWeightOfAllValuesInCurrentCandidateBid += totalWeightPerValue;
 							found = true;
 						}
@@ -274,36 +328,57 @@ public class OpponentBidHistory {
 						last = last + lOneStep;
 					}
 					if (found == false) {
-						int k = opponentBidsStatisticsForReal.get(realIndex).size() - 1;
-						double totalWeightPerValue = opponentBidsStatisticsForReal.get(realIndex).get(k);
+						int k = opponentBidsStatisticsForReal.get(realIndex)
+								.size() - 1;
+						double totalWeightPerValue = opponentBidsStatisticsForReal
+								.get(realIndex).get(k);
 						totalWeightOfAllValuesInCurrentCandidateBid += totalWeightPerValue;
 					}
 					realIndex++;
 					break;
 
 				case INTEGER:
-					IssueInteger lIssueInteger = (IssueInteger) issues.get(iIssue);
-					int valueInteger = ((ValueInteger) valueInCurrentIssueInCurrentCandidateBid).getValue();
-					int valueIndex = valueInteger - lIssueInteger.getLowerBound(); //For ex. LowerBound index is 0, and the lower bound is 2, the value is 4, so the index of 4 would be 2 which is exactly 4-2
-					double totalWeightPerValue = opponentBidsStatisticsForInteger.get(integerIndex).get(valueIndex);
+					IssueInteger lIssueInteger = (IssueInteger) issues
+							.get(iIssue);
+					int valueInteger = ((ValueInteger) valueInCurrentIssueInCurrentCandidateBid)
+							.getValue();
+					int valueIndex = valueInteger
+							- lIssueInteger.getLowerBound(); // For ex.
+																// LowerBound
+																// index is 0,
+																// and the lower
+																// bound is 2,
+																// the value is
+																// 4, so the
+																// index of 4
+																// would be 2
+																// which is
+																// exactly 4-2
+					double totalWeightPerValue = opponentBidsStatisticsForInteger
+							.get(integerIndex).get(valueIndex);
 					totalWeightOfAllValuesInCurrentCandidateBid += totalWeightPerValue;
 					integerIndex++;
 					break;
 				}
 			}
-			if (totalWeightOfAllValuesInCurrentCandidateBid > maxTotalWeightOfAllValuesInCandidateBids) {//choose the bid with the maximum maxValue
+			if (totalWeightOfAllValuesInCurrentCandidateBid > maxTotalWeightOfAllValuesInCandidateBids) {// choose
+																											// the
+																											// bid
+																											// with
+																											// the
+																											// maximum
+																											// maxValue
 				maxTotalWeightOfAllValuesInCandidateBids = totalWeightOfAllValuesInCurrentCandidateBid;
 				indexOfBestCandidateBid = iCandidateBid;
 			}
 		}
-		//System.out.println("indexOfBestCandidateBid: " + indexOfBestCandidateBid);
-		if(indexOfBestCandidateBid == -1)
+		// System.out.println("indexOfBestCandidateBid: " +
+		// indexOfBestCandidateBid);
+		if (indexOfBestCandidateBid == -1)
 			return null;
 		return candidateBids.get(indexOfBestCandidateBid);
 	}
 
-
-	
 	/**
 	 * @return the number of bids - without duplicates
 	 */
@@ -311,5 +386,4 @@ public class OpponentBidHistory {
 		return bidHistory.size();
 	}
 
-	
 }

@@ -22,11 +22,12 @@ import negotiator.repository.ProfileRepItem;
 import negotiator.session.RepositoryException;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
+import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.TournamentIndicesGenerator;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This class will generate the party lists for each negotiation in a
@@ -126,7 +127,7 @@ public class TournamentGenerator {
 
 		// System.out.println("Found the constructor: " + cons);
 
-		AdditiveUtilitySpace utilitySpace;
+		AbstractUtilitySpace utilitySpace;
 		switch (type) {
 		case NONLINEAR:
 			utilitySpace = new NonlinearUtilitySpace(domain);

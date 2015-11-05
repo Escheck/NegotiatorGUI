@@ -12,6 +12,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * 
@@ -52,7 +53,8 @@ public class UIAgentExtended extends Agent {
 		}
 		System.out.println("old  dialog closed. Trying to open new dialog. ");
 		try {
-			ui = new EnterBidDialogExtended(this, null, true, utilitySpace);
+			ui = new EnterBidDialogExtended(this, null, true,
+					(AdditiveUtilitySpace) utilitySpace);
 			// alina: dialog in the center- doesnt really work
 			Toolkit t = Toolkit.getDefaultToolkit();
 			int x = (int) ((t.getScreenSize().getWidth() - ui.getWidth()) / 2);

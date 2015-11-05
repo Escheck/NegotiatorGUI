@@ -15,6 +15,7 @@ import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -50,7 +51,7 @@ public class Group3 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
@@ -59,7 +60,8 @@ public class Group3 extends AbstractNegotiationParty {
 		bidhistorylist = new ArrayList<BidHistory>();
 		partylist = new ArrayList<AgentID>();
 		alreadyProposed = new ArrayList<Bid>();
-		possibleBids = BidGenerator.BidList(utilitySpace);
+		possibleBids = BidGenerator
+				.BidList(((AdditiveUtilitySpace) utilitySpace));
 		agentUtilsList = new ArrayList<AgentUtils>();
 
 	}
@@ -159,7 +161,9 @@ public class Group3 extends AbstractNegotiationParty {
 				bidhistorylist.add(newAgentBidHistory);
 				// create a new agentUtils and add it
 				AgentUtils newAgentUtils = new AgentUtils(((AgentID) sender),
-						newAgentBidHistory, utilitySpace.getNrOfEvaluators());
+						newAgentBidHistory,
+						((AdditiveUtilitySpace) utilitySpace)
+								.getNrOfEvaluators());
 				agentUtilsList.add(newAgentUtils);
 			}
 			lastbid = Action.getBidFromAction(action);

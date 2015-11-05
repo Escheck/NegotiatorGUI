@@ -666,7 +666,7 @@ public class Chameleon extends Agent {
 	public void init() {
 		strategies = getStrategies();
 		for (Strategy strategy : strategies)
-			strategy.init(utilitySpace);
+			strategy.init((AdditiveUtilitySpace) utilitySpace);
 
 		strategyWeights = new ArrayList<Double>();
 		for (int i = 0; i < strategies.size(); i++)

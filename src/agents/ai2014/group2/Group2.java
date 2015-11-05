@@ -15,6 +15,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -50,13 +51,14 @@ public class Group2 extends AbstractNegotiationParty {
 	 *            If you use any randomization, use this seed for it.
 	 */
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		opponentModels = new HashMap<Object, G2OpponentModel>();
-		ourUtilitySpace = new G2UtilitySpace(utilitySpace);
+		ourUtilitySpace = new G2UtilitySpace(
+				(AdditiveUtilitySpace) utilitySpace);
 		reservationValue = utilitySpace.getReservationValueUndiscounted();
 		if (loggingOn) {
 			logger.log("Our utilityspace");
@@ -137,7 +139,7 @@ public class Group2 extends AbstractNegotiationParty {
 		Bid returnBid = null;
 		try {
 			returnBid = nextBid.convertToBid(getUtilitySpace().getDomain(),
-					getUtilitySpace().getEvaluators());
+					((AdditiveUtilitySpace) getUtilitySpace()).getEvaluators());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -226,7 +228,7 @@ public class Group2 extends AbstractNegotiationParty {
 			// make a new one
 			if (!opponentModels.containsKey(sender)) {
 				opponentModels.put(sender, new G2OpponentModel(
-						getUtilitySpace()));
+						(AdditiveUtilitySpace) getUtilitySpace()));
 			}
 			G2Bid bid = new G2Bid(Action.getBidFromAction(action));
 			opponentModels.get(sender).updateModel(bid);

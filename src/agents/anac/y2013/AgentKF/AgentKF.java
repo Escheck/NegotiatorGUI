@@ -20,6 +20,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.utility.AdditiveUtilitySpace;
 
 public class AgentKF extends Agent {
 
@@ -249,24 +250,24 @@ public class AgentKF extends Agent {
 				switch (lIssue.getType()) {
 				case DISCRETE:
 					IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
-					double weight_d = utilitySpace.getWeight(lIssueDiscrete
-							.getNumber());
+					double weight_d = ((AdditiveUtilitySpace) utilitySpace)
+							.getWeight(lIssueDiscrete.getNumber());
 					if (theBid.getValue(lIssueDiscrete.getNumber()) == targetBid
 							.getValue(lIssueDiscrete.getNumber()))
 						Value += 1.0 * weight_d;
 					break;
 				case REAL:
 					IssueReal lIssueReal = (IssueReal) lIssue;
-					double weight_r = utilitySpace.getWeight(lIssueReal
-							.getNumber());
+					double weight_r = ((AdditiveUtilitySpace) utilitySpace)
+							.getWeight(lIssueReal.getNumber());
 					if (theBid.getValue(lIssueReal.getNumber()) == targetBid
 							.getValue(lIssueReal.getNumber()))
 						Value += 1.0 * weight_r;
 					break;
 				case INTEGER:
 					IssueInteger lIssueInteger = (IssueInteger) lIssue;
-					double weight_i = utilitySpace.getWeight(lIssueInteger
-							.getNumber());
+					double weight_i = ((AdditiveUtilitySpace) utilitySpace)
+							.getWeight(lIssueInteger.getNumber());
 					if (theBid.getValue(lIssueInteger.getNumber()) == targetBid
 							.getValue(lIssueInteger.getNumber()))
 						Value += 1.0 * weight_i;

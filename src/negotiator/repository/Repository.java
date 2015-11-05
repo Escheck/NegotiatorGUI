@@ -17,10 +17,11 @@ import javax.xml.namespace.QName;
 import negotiator.Domain;
 import negotiator.exceptions.Warning;
 import negotiator.session.RepositoryException;
+import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.ConstraintUtilitySpace;
 import negotiator.utility.NonlinearUtilitySpace;
 import negotiator.utility.UTILITYSPACETYPE;
-import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * Repository contains a set of known files This can be agent files or
@@ -187,13 +188,14 @@ public class Repository {
 		return domain;
 	}
 
-	public AdditiveUtilitySpace getUtilitySpace(Domain domain, ProfileRepItem profile) {
+	public AbstractUtilitySpace getUtilitySpace(Domain domain,
+			ProfileRepItem profile) {
 		String file = profile.getURL().getFile();
 		return getUtilitySpace(domain, file);
 	}
 
-	public AdditiveUtilitySpace getUtilitySpace(Domain domain, String file) {
-		AdditiveUtilitySpace us = null;
+	public AbstractUtilitySpace getUtilitySpace(Domain domain, String file) {
+		AbstractUtilitySpace us = null;
 		try {
 			if ((sourceFolder != null) && (!sourceFolder.equals(""))) {
 
@@ -204,7 +206,8 @@ public class Repository {
 					us = new ConstraintUtilitySpace(domain, sourceFolder + "/"
 							+ file); // RA
 				else
-					us = new AdditiveUtilitySpace(domain, sourceFolder + "/" + file);
+					us = new AdditiveUtilitySpace(domain, sourceFolder + "/"
+							+ file);
 			} else {
 				if (UTILITYSPACETYPE.getUtilitySpaceType(file) == UTILITYSPACETYPE.NONLINEAR) // RA
 					us = new NonlinearUtilitySpace(domain, file);

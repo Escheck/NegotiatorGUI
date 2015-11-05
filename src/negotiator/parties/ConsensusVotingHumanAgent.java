@@ -84,10 +84,10 @@ public class ConsensusVotingHumanAgent extends AbstractNegotiationParty {
 			if (possibleActions.contains(Accept.class)) {
 				Bid topic = offers.poll();
 				ui = new EnterBidDialogAcceptReject(this, null, true,
-						utilitySpace, topic);
+						(AdditiveUtilitySpace) utilitySpace, topic);
 			} else {
 				ui = new EnterBidDialogOfferForVoting(this, null, true,
-						utilitySpace);
+						(AdditiveUtilitySpace) utilitySpace);
 			}
 
 		} catch (Exception e) {

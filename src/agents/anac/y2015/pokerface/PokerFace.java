@@ -21,8 +21,9 @@ import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.Evaluator;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.Evaluator;
 
 /**
  * This is your negotiation party.
@@ -69,13 +70,14 @@ public class PokerFace extends AbstractNegotiationParty {
 	private Random random;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		// Make sure that this constructor calls it's parent.
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
 		random = new Random(randomSeed);
-		opponent_bid_list = new OpponentBidLists(utilitySpace, true);
+		opponent_bid_list = new OpponentBidLists(
+				(AdditiveUtilitySpace) utilitySpace, true);
 		total_time = timeline.getTotalTime();
 		last_rounds_time = new double[MA_SIZE];
 	}
@@ -370,10 +372,11 @@ public class PokerFace extends AbstractNegotiationParty {
 			Issue issue = b.getIssues().get(j);
 			double eval;
 			try {
-				Evaluator evaluator = utilitySpace.getEvaluator(issue
-						.getNumber());
+				Evaluator evaluator = ((AdditiveUtilitySpace) utilitySpace)
+						.getEvaluator(issue.getNumber());
 				eval = evaluator.getWeight()
-						* evaluator.getEvaluation(utilitySpace, b,
+						* evaluator.getEvaluation(
+								(AdditiveUtilitySpace) utilitySpace, b,
 								issue.getNumber());
 			} catch (Exception e) {
 				eval = 0.0;

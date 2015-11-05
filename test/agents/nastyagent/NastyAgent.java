@@ -16,7 +16,7 @@ import negotiator.parties.NegotiationParty;
 import negotiator.protocol.MultilateralProtocolAdapter;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 import agents.BidComparator;
 
 /**
@@ -39,7 +39,7 @@ public abstract class NastyAgent implements NegotiationParty {
 								// bids.
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 
 		BidIterator biter = new BidIterator(utilitySpace.getDomain());

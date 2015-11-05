@@ -12,9 +12,9 @@ import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OpponentModel;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.AdditiveUtilitySpace;
 
 public class OpMod extends OpponentModel {
 
@@ -41,10 +41,11 @@ public class OpMod extends OpponentModel {
 	}
 
 	/**
-	 * Creates a new {@link AdditiveUtilitySpace} for the current domain, with equal
-	 * weights and evaluation values. Does this by cloning a "clean"
-	 * {@link AdditiveUtilitySpace} of the domain. This clean {@link AdditiveUtilitySpace} is
-	 * created the first time this method is called.
+	 * Creates a new {@link AdditiveUtilitySpace} for the current domain, with
+	 * equal weights and evaluation values. Does this by cloning a "clean"
+	 * {@link AdditiveUtilitySpace} of the domain. This clean
+	 * {@link AdditiveUtilitySpace} is created the first time this method is
+	 * called.
 	 * 
 	 * @returns The new {@link AdditiveUtilitySpace}
 	 * @throws Exception
@@ -56,8 +57,8 @@ public class OpMod extends OpponentModel {
 			int issueAmount = domain.getObjectives().size();
 			for (int i = 1; i < issueAmount; i++) {
 
-				EvaluatorDiscrete eval = ((EvaluatorDiscrete) negotiationSession
-						.getUtilitySpace().getEvaluator(i)).clone();
+				EvaluatorDiscrete eval = ((EvaluatorDiscrete) ((AdditiveUtilitySpace) negotiationSession
+						.getUtilitySpace()).getEvaluator(i)).clone();
 				Set<ValueDiscrete> valset = eval.getValues();
 				Iterator<ValueDiscrete> vals = valset.iterator();
 
@@ -73,7 +74,8 @@ public class OpMod extends OpponentModel {
 	}
 
 	/**
-	 * Updates the opponent {@link AdditiveUtilitySpace} (predicted utility space).
+	 * Updates the opponent {@link AdditiveUtilitySpace} (predicted utility
+	 * space).
 	 * 
 	 * @param bid
 	 *            The {@link Bid} offered by the opponent
@@ -155,7 +157,8 @@ public class OpMod extends OpponentModel {
 		double util = Math.pow(
 				negotiationSession.getUtilitySpace().getUtility(bid),
 				selfWeight);
-		Iterator<AdditiveUtilitySpace> opSpaces = opponentSpace.values().iterator();
+		Iterator<AdditiveUtilitySpace> opSpaces = opponentSpace.values()
+				.iterator();
 
 		while (opSpaces.hasNext()) {
 			util = util * opSpaces.next().getUtility(bid);

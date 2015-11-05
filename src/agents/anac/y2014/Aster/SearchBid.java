@@ -6,12 +6,12 @@ import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class SearchBid {
-	private AdditiveUtilitySpace utilitySpace;
+	private AbstractUtilitySpace utilitySpace;
 
-	public SearchBid(AdditiveUtilitySpace utilitySpace) {
+	public SearchBid(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 	}
 

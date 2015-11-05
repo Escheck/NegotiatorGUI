@@ -14,8 +14,8 @@ import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.ValueInteger;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.Bound;
-import negotiator.utility.NonlinearUtilitySpace;
 import agents.anac.y2014.E2Agent.myUtility.AgentKStorategy;
 import agents.anac.y2014.E2Agent.myUtility.BidStorage;
 import agents.anac.y2014.E2Agent.myUtility.BidStorageComparator;
@@ -30,7 +30,7 @@ public class AnacSampleAgent extends Agent {
 	private Action actionOfPartner = null;
 	private static int SAMPLE_NUMBER = 3; // å�–å¾—ã�™ã‚‹ã‚µãƒ³ãƒ—ãƒ«æ•°
 	private static int SA_K_MAX = 10000; // ç„¼ã��ã�ªã�¾ã�—æ³•ã�®ãƒ«ãƒ¼ãƒ—æ•°
-	private NonlinearUtilitySpace nonlinear = null; // é�žç·šå½¢åŠ¹ç”¨ç©ºé–“
+	private AbstractUtilitySpace nonlinear = null; // é�žç·šå½¢åŠ¹ç”¨ç©ºé–“
 	// private ArrayList<BidStorage> partnerBidHistory = null; //
 	// ç›¸æ‰‹ã�®Bidå±¥æ­´
 	private BidStorageList partnerBidHistory = null;
@@ -61,7 +61,7 @@ public class AnacSampleAgent extends Agent {
 		// System.out.println(param);
 
 		randomnr = new Random();
-		nonlinear = new NonlinearUtilitySpace(utilitySpace);
+		nonlinear = (AbstractUtilitySpace) utilitySpace.copy();
 		issues = utilitySpace.getDomain().getIssues();
 		discountFactor = utilitySpace.getDiscountFactor();
 		reservationValue = utilitySpace.getReservationValue();

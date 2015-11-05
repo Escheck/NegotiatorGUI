@@ -2,7 +2,7 @@ package parties.in4010.q12015.group17;
 
 import negotiator.Bid;
 import negotiator.session.TimeLineInfo;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This class is responsible for determining whether to accept a bid or not.
@@ -11,10 +11,10 @@ import negotiator.utility.AdditiveUtilitySpace;
  */
 public class AcceptStrategy {
 
-	private final AdditiveUtilitySpace utilitySpace;
+	private final AbstractUtilitySpace utilitySpace;
 	private final TimeLineInfo timeline;
 
-	public AcceptStrategy(AdditiveUtilitySpace us, TimeLineInfo t) {
+	public AcceptStrategy(AbstractUtilitySpace us, TimeLineInfo t) {
 		this.utilitySpace = us;
 		this.timeline = t;
 	}

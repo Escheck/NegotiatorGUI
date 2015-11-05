@@ -9,6 +9,7 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.utility.AdditiveUtilitySpace;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.MaxIterationsExceededException;
@@ -174,8 +175,8 @@ public class IAMhaggler2011 extends Agent {
 			return bestReceivedBid;
 		previousTargetUtility = targetUtility;
 		// Now get a random bid in the range targetUtility � 0.025
-		return bidCreator.getBid(utilitySpace, targetUtility - 0.025,
-				targetUtility + 0.025);
+		return bidCreator.getBid((AdditiveUtilitySpace) utilitySpace,
+				targetUtility - 0.025, targetUtility + 0.025);
 	}
 
 	/**

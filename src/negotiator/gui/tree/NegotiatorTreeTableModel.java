@@ -17,13 +17,13 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.Objective;
-import negotiator.utility.UTILITYSPACETYPE;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UTILITYSPACETYPE;
 
 /**
  * 
- * @author Richard Noorlandt
- * 
+ * @author Richard Noorlandt Works with issue weights and thus can only handle
+ *         {@link AdditiveUtilitySpace}.
  */
 
 // TODO: replace instances of root by Domain.getRoot (or something similar)
@@ -79,7 +79,8 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 		issueValues = new HashMap<Objective, IssueValuePanel>();
 	}
 
-	public NegotiatorTreeTableModel(Domain domain, AdditiveUtilitySpace utilitySpace) {
+	public NegotiatorTreeTableModel(Domain domain,
+			AdditiveUtilitySpace utilitySpace) {
 		this.domain = domain;
 		this.root = domain.getObjectivesRoot();
 		this.utilitySpace = utilitySpace;

@@ -26,6 +26,7 @@ import negotiator.protocol.alternatingoffers.AlternatingOffersBilateralAtomicNeg
 import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
@@ -163,7 +164,7 @@ public class NegotiationOutcome {
 
 		// double cooperation;
 		if (logCompetitiveness) {
-			AdditiveUtilitySpace[] spaces = {
+			AbstractUtilitySpace[] spaces = {
 					alternatingOffersBilateralAtomicNegoSession
 							.getAgentAUtilitySpace(),
 					alternatingOffersBilateralAtomicNegoSession

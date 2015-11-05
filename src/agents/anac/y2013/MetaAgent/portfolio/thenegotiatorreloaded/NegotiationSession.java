@@ -6,15 +6,17 @@ import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.session.Timeline;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
- * This is an abstract class which manages all the negotiation Session pertinent information to a single agent
+ * This is an abstract class which manages all the negotiation Session pertinent
+ * information to a single agent
  * 
- @author Alex Dirkzwager
+ * @author Alex Dirkzwager
  */
 public class NegotiationSession {
-	
+
 	/** Optional outcomespace which should be set manually */
 	protected OutcomeSpace outcomeSpace;
 	/** History of bids made by the opponent */
@@ -24,62 +26,65 @@ public class NegotiationSession {
 	/** Reference to the negotiation domain */
 	protected Domain domain;
 	/** Reference to the agent's preference profile for the domain */
-	protected AdditiveUtilitySpace utilitySpace;
+	protected AbstractUtilitySpace utilitySpace;
 	/** Reference to the timeline */
 	protected Timeline timeline;
 
-	public NegotiationSession(AdditiveUtilitySpace utilitySpace, Timeline timeline){
+	public NegotiationSession(AbstractUtilitySpace utilitySpace,
+			Timeline timeline) {
 		this.utilitySpace = utilitySpace;
 		this.timeline = timeline;
 		this.domain = utilitySpace.getDomain();
 		this.opponentBidHistory = new BidHistory();
 		this.ownBidHistory = new BidHistory();
 	}
-	
+
 	/**
 	 * Returns a list of bids offered by the opponent.
+	 * 
 	 * @return a list of of opponent bids
 	 */
-	public BidHistory getOpponentBidHistory(){
+	public BidHistory getOpponentBidHistory() {
 		return opponentBidHistory;
 	}
-	
-	public BidHistory getOwnBidHistory(){
+
+	public BidHistory getOwnBidHistory() {
 		return ownBidHistory;
 	}
-	
+
 	public double getDiscountFactor() {
 		return utilitySpace.getDiscountFactor();
 	}
-	
-	public ArrayList<Issue> getIssues(){
+
+	public ArrayList<Issue> getIssues() {
 		return domain.getIssues();
 	}
-	
-	public Timeline getTimeline(){
+
+	public Timeline getTimeline() {
 		return timeline;
 	}
-	
+
 	/**
 	 * gets the normalized time (t = [0,1])
+	 * 
 	 * @return time normalized
 	 */
 	public double getTime() {
 		return timeline.getTime();
 	}
-	
-	public AdditiveUtilitySpace getUtilitySpace(){
-		return utilitySpace;
+
+	public AdditiveUtilitySpace getUtilitySpace() {
+		return (AdditiveUtilitySpace) utilitySpace;
 	}
-	
-	public OutcomeSpace getOutcomeSpace(){
+
+	public OutcomeSpace getOutcomeSpace() {
 		return outcomeSpace;
 	}
-	
+
 	public void setOutcomeSpace(OutcomeSpace space) {
 		this.outcomeSpace = space;
 	}
-	
+
 	/**
 	 * Returns the best bid in the domain.
 	 */
@@ -88,7 +93,8 @@ public class NegotiationSession {
 		if (outcomeSpace == null) {
 			try {
 				Bid maximumBid = utilitySpace.getMaxUtilityBid();
-				maxBid = new BidDetails(maximumBid, utilitySpace.getUtility(maximumBid));
+				maxBid = new BidDetails(maximumBid,
+						utilitySpace.getUtility(maximumBid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -96,5 +102,5 @@ public class NegotiationSession {
 			maxBid = outcomeSpace.getMaxBidPossible();
 		}
 		return maxBid;
-	}	
+	}
 }

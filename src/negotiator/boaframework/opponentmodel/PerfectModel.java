@@ -3,39 +3,51 @@ package negotiator.boaframework.opponentmodel;
 import javax.swing.JOptionPane;
 
 import negotiator.Bid;
-import negotiator.Global;
 import negotiator.boaframework.OpponentModel;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
- * An opponent model symbolizing perfect knowledge about the opponent's preferences.
- * Note that for using this model experimentalSetup should be enabled in global.
+ * An opponent model symbolizing perfect knowledge about the opponent's
+ * preferences. Note that for using this model experimentalSetup should be
+ * enabled in global. Since this extends OpponentModel, it only supports
+ * {@link AdditiveUtilitySpace}.
  * 
- * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M. Jonker.
- * Decoupling Negotiating Agents to Explore the Space of Negotiation Strategies
+ * Tim Baarslag, Koen Hindriks, Mark Hendrikx, Alex Dirkzwager and Catholijn M.
+ * Jonker. Decoupling Negotiating Agents to Explore the Space of Negotiation
+ * Strategies
  * 
  * @author Mark Hendrikx
  */
 public class PerfectModel extends OpponentModel {
 
 	@Override
-	public void setOpponentUtilitySpace(BilateralAtomicNegotiationSession session) {
-		
-		if (TournamentConfiguration.getBooleanOption("accessPartnerPreferences", false)) {
-			opponentUtilitySpace = session.getAgentAUtilitySpace();
-			if (negotiationSession.getUtilitySpace().getFileName().equals(opponentUtilitySpace.getFileName())) {
-				opponentUtilitySpace = session.getAgentBUtilitySpace();
+	public void setOpponentUtilitySpace(
+			BilateralAtomicNegotiationSession session) {
+
+		if (TournamentConfiguration.getBooleanOption(
+				"accessPartnerPreferences", false)) {
+			opponentUtilitySpace = (AdditiveUtilitySpace) session
+					.getAgentAUtilitySpace();
+			if (negotiationSession.getUtilitySpace().getFileName()
+					.equals(opponentUtilitySpace.getFileName())) {
+				opponentUtilitySpace = (AdditiveUtilitySpace) session
+						.getAgentBUtilitySpace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "This opponent model needs access to the opponent's\npreferences. See tournament options.", "Model error", 0);
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"This opponent model needs access to the opponent's\npreferences. See tournament options.",
+							"Model error", 0);
 			System.err.println("Global.experimentalSetup should be enabled!");
-		}	
+		}
 	}
-	
+
 	@Override
-	public void setOpponentUtilitySpace(AdditiveUtilitySpace opponentUtilitySpace) {
+	public void setOpponentUtilitySpace(
+			AdditiveUtilitySpace opponentUtilitySpace) {
 		this.opponentUtilitySpace = opponentUtilitySpace;
 	}
 
@@ -53,6 +65,7 @@ public class PerfectModel extends OpponentModel {
 	public String getName() {
 		return "Perfect Model";
 	}
-	
-	public void updateModel(Bid opponentBid, double time) { }
+
+	public void updateModel(Bid opponentBid, double time) {
+	}
 }

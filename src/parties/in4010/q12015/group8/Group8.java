@@ -18,6 +18,7 @@ import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -46,7 +47,7 @@ public class Group8 extends AbstractNegotiationParty {
 	private Map<AgentID, OpponentModel> opponentModels = new HashMap<AgentID, OpponentModel>();
 
 	@Override
-	public void init(AdditiveUtilitySpace utilSpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID) {
 		super.init(utilSpace, deadlines, timeline, randomSeed, agentID);
 		// utilSpace.getReservationValueUndiscounted();
@@ -131,7 +132,7 @@ public class Group8 extends AbstractNegotiationParty {
 
 			if (opponentModels.get(action.getAgent()) == null) {
 				opponentModels.put(action.getAgent(), new OpponentModel(
-						utilitySpace));
+						(AdditiveUtilitySpace) utilitySpace));
 			}
 			opponentModels.get(offer.getAgent()).updateOpponentModel(curBid);
 

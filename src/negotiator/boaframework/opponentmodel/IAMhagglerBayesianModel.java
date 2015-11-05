@@ -19,12 +19,12 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.EVALFUNCTYPE;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
 import negotiator.utility.EvaluatorInteger;
 import negotiator.utility.EvaluatorReal;
-import negotiator.utility.AdditiveUtilitySpace;
 import agents.bayesianopponentmodel.EvaluatorHypothesis;
 import agents.bayesianopponentmodel.Hypothesis;
 
@@ -75,7 +75,8 @@ public class IAMhagglerBayesianModel extends OpponentModel {
 		weightHypotheses = new ArrayList<ArrayList<WeightHypothesis>>();
 		evaluatorHypotheses = new ArrayList<ArrayList<EvaluatorHypothesis>>();
 		this.domain = negotiationSession.getUtilitySpace().getDomain();
-		this.utilitySpace = negotiationSession.getUtilitySpace();
+		this.utilitySpace = (AdditiveUtilitySpace) negotiationSession
+				.getUtilitySpace();
 		expectedWeights = new double[domain.getIssues().size()];
 		biddingHistory = new ArrayList<Bid>();
 

@@ -11,8 +11,9 @@ import negotiator.session.Timeline;
 import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.DataObjects;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.DataObjects;
 
 /**
  * A basic negotiation agent. You might want to consider using the BOA
@@ -36,7 +37,7 @@ public abstract class Agent {
 	/** Name of the name as set by the method setName. */
 	private String fName = null;
 	/** Preference profile of the agent as assigned by the tournamentrunner. */
-	public AdditiveUtilitySpace utilitySpace;
+	public AbstractUtilitySpace utilitySpace;
 	/**
 	 * Date object specifying when the negotiation started. Use timeline
 	 * instead.
@@ -120,7 +121,7 @@ public abstract class Agent {
 	 */
 	public final void internalInit(int sessionNr, int sessionsTotal,
 			Date startTimeP, Integer totalTimeP, Timeline timeline,
-			AdditiveUtilitySpace us,
+			AbstractUtilitySpace us,
 			HashMap<AgentParameterVariable, AgentParamValue> params) {
 		startTime = startTimeP;
 		totalTime = totalTimeP;

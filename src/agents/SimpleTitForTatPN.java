@@ -40,8 +40,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	/**
 	 * Here we store the bids that have been used. We must store the bids, not
 	 * the utilities because the utilities can change any time
-	 * {@link #updateProfiles(AdditiveUtilitySpace, AdditiveUtilitySpace)} is called, and that
-	 * call does not clear usedBids.
+	 * {@link #updateProfiles(AdditiveUtilitySpace, AdditiveUtilitySpace)} is
+	 * called, and that call does not clear usedBids.
 	 */
 	private Set<Bid> usedBids = new HashSet<Bid>();
 
@@ -99,8 +99,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 			// if we get here , we are running inside Genius.
 			// That means we have to fake otherUtilitySpace
 			try {
-				otherUtilitySpace = new OpponentUtilitySpace(utilitySpace,
-						lastOpponentBid);
+				otherUtilitySpace = new OpponentUtilitySpace(
+						(AdditiveUtilitySpace) utilitySpace, lastOpponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -242,7 +242,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 
 	/************* implements PocketNegotiatorAgent ***************/
 	@Override
-	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide,
+			AdditiveUtilitySpace otherSide, Timeline tl) {
 		updateProfiles(mySide, otherSide);
 		timeline = tl;
 	}
@@ -300,7 +301,8 @@ class OpponentUtilitySpace extends AdditiveUtilitySpace {
 	 * @throws Exception
 	 *             if we can't determine utility of firstBid
 	 */
-	public OpponentUtilitySpace(AdditiveUtilitySpace us, Bid firstBid) throws Exception {
+	public OpponentUtilitySpace(AdditiveUtilitySpace us, Bid firstBid)
+			throws Exception {
 		if (firstBid == null)
 			throw new NullPointerException("bid=null");
 

@@ -24,7 +24,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This is the decoupled Bidding Strategy of AgentLG
@@ -90,7 +90,7 @@ public class BRAMAgent2_Offering extends OfferingStrategy {
 
 	private SortedOutcomeSpace outcomespace;
 	private Bid previousOfferedBid;
-	private AdditiveUtilitySpace utilitySpace;
+	private AbstractUtilitySpace utilitySpace;
 
 	/**
 	 * Empty constructor for the BOA framework.

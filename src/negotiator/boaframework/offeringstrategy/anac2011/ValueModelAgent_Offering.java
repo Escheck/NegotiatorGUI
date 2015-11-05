@@ -2,6 +2,7 @@ package negotiator.boaframework.offeringstrategy.anac2011;
 
 import java.util.HashMap;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.BidIterator;
 import negotiator.bidding.BidDetails;
@@ -16,17 +17,19 @@ import negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent.ValueDe
 import negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent.ValueModeler;
 import negotiator.boaframework.offeringstrategy.anac2011.valuemodelagent.ValueSeperatedBids;
 import negotiator.boaframework.sharedagentstate.anac2011.ValueModelAgentSAS;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
- * This is the decoupled Offering Strategy for ValueModelAgent (ANAC2011).
- * The code was taken from the ANAC2011 ValueModelAgent and adapted to work within the BOA framework.
+ * This is the decoupled Offering Strategy for ValueModelAgent (ANAC2011). The
+ * code was taken from the ANAC2011 ValueModelAgent and adapted to work within
+ * the BOA framework.
  * 
  * This agent has no OM implementation.
  * 
  * @author Mark Hendrikx
  */
 public class ValueModelAgent_Offering extends OfferingStrategy {
-	
+
 	private ValueModeler opponentUtilModel = null;
 	private BidList allBids = null;
 	private BidList approvedBids = null;
@@ -51,7 +54,9 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 	Random random100;
 	Random random200;
 
-	public void init(NegotiationSession negotiationSession, OpponentModel model, OMStrategy oms, HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negotiationSession,
+			OpponentModel model, OMStrategy oms,
+			HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negotiationSession;
 		this.opponentModel = model;
 		this.omStrategy = oms;
@@ -94,7 +99,8 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 
 	// remember our new bid in all needed data structures
 	private void bidSelectedByOpponent(Bid bid) {
-		BidWrapper opponentBid = new BidWrapper(bid, negotiationSession.getUtilitySpace(),
+		BidWrapper opponentBid = new BidWrapper(bid,
+				(AdditiveUtilitySpace) negotiationSession.getUtilitySpace(),
 				myMaximumUtility);
 		opponentBid.lastSentBid = bidCount;
 		opponentBid.sentByThem = true;
@@ -105,10 +111,11 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			noChangeCounter++;
 		}
 		try {
-			double opponentUtil = negotiationSession.getUtilitySpace().getUtility(bid)
-					/ myMaximumUtility;
-			if (((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() < opponentUtil) {
-				((ValueModelAgentSAS)helper).setOpponentMaxBidUtil(opponentUtil);
+			double opponentUtil = negotiationSession.getUtilitySpace()
+					.getUtility(bid) / myMaximumUtility;
+			if (((ValueModelAgentSAS) helper).getOpponentMaxBidUtil() < opponentUtil) {
+				((ValueModelAgentSAS) helper)
+						.setOpponentMaxBidUtil(opponentUtil);
 				opponentMaxBid = bid;
 			}
 			if (opponentUtilModel.initialized) {
@@ -152,7 +159,7 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			seperatedBids.addApproved(allBids.bids.get(i));
 		}
 		lowestApproved = threshold;
-		((ValueModelAgentSAS)helper).setLowestApprovedInitial(threshold);
+		((ValueModelAgentSAS) helper).setLowestApprovedInitial(threshold);
 		boolean added = amountOfApproved != i;
 		amountOfApproved = i;
 		return added;
@@ -167,21 +174,28 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 				allBids = new BidList();
 				approvedBids = new BidList();
 				opponentUtilModel = new ValueModeler();
-				seperatedBids.init(negotiationSession.getUtilitySpace(), opponentUtilModel);
-				myMaximumUtility = negotiationSession.getUtilitySpace().getUtility(negotiationSession.getUtilitySpace().getMaxUtilityBid());
-				BidIterator iter = new BidIterator(negotiationSession.getUtilitySpace().getDomain());
+				seperatedBids.init((AdditiveUtilitySpace) negotiationSession
+						.getUtilitySpace(), opponentUtilModel);
+				myMaximumUtility = negotiationSession.getUtilitySpace()
+						.getUtility(
+								negotiationSession.getUtilitySpace()
+										.getMaxUtilityBid());
+				BidIterator iter = new BidIterator(negotiationSession
+						.getUtilitySpace().getDomain());
 				while (iter.hasNext()) {
 					Bid tmpBid = iter.next();
 					try {
 						// if(utilitySpace.getCost(tmpBid)<=1200){
-						BidWrapper wrap = new BidWrapper(tmpBid, negotiationSession.getUtilitySpace(),
-								myMaximumUtility);
+						BidWrapper wrap = new BidWrapper(tmpBid,
+								(AdditiveUtilitySpace) negotiationSession
+										.getUtilitySpace(), myMaximumUtility);
 						allBids.bids.add(wrap);
 						// }
 					} catch (Exception ex) {
 
-						BidWrapper wrap = new BidWrapper(tmpBid, negotiationSession.getUtilitySpace(),
-								myMaximumUtility);
+						BidWrapper wrap = new BidWrapper(tmpBid,
+								(AdditiveUtilitySpace) negotiationSession
+										.getUtilitySpace(), myMaximumUtility);
 						allBids.bids.add(wrap);
 					}
 				} // while
@@ -200,32 +214,38 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			}
 			// first bid is the highest bid
 			if (bidCount == 0) {
-				offer = new BidDetails(allBids.bids.get(0).bid, negotiationSession.getUtilitySpace().getUtility(allBids.bids.get(0).bid));
+				offer = new BidDetails(allBids.bids.get(0).bid,
+						negotiationSession.getUtilitySpace().getUtility(
+								allBids.bids.get(0).bid));
 				bidSelected(allBids.bids.get(0));
 			}
-			
-			// treat opponent's offer
-			
-			if (negotiationSession.getOpponentBidHistory().size() > 0) {
-				BidDetails lastBidByOpp = negotiationSession.getOpponentBidHistory().getLastBidDetails();
-				opponentBid = lastBidByOpp.getBid();
-				double opponentUtil = negotiationSession.getUtilitySpace().getUtility(opponentBid)
-						/ myMaximumUtility;
 
-				((ValueModelAgentSAS)helper).setOpponentUtil(opponentUtil);
-				
+			// treat opponent's offer
+
+			if (negotiationSession.getOpponentBidHistory().size() > 0) {
+				BidDetails lastBidByOpp = negotiationSession
+						.getOpponentBidHistory().getLastBidDetails();
+				opponentBid = lastBidByOpp.getBid();
+				double opponentUtil = negotiationSession.getUtilitySpace()
+						.getUtility(opponentBid) / myMaximumUtility;
+
+				((ValueModelAgentSAS) helper).setOpponentUtil(opponentUtil);
+
 				bidSelectedByOpponent(opponentBid);
 				if (opponent == null) {
-			
+
 					opponentStartbidUtil = opponentUtil;
-					opponent = new OpponentModeler(bidCount, negotiationSession.getUtilitySpace(),
-							negotiationSession.getTimeline(), ourBids, opponentBids, opponentUtilModel,
-							allBids);
-					opponentUtilModel.initialize(negotiationSession.getUtilitySpace(), opponentBid);
+					opponent = new OpponentModeler(bidCount,
+							(AdditiveUtilitySpace) negotiationSession
+									.getUtilitySpace(),
+							negotiationSession.getTimeline(), ourBids,
+							opponentBids, opponentUtilModel, allBids);
+					opponentUtilModel.initialize(
+							(AdditiveUtilitySpace) negotiationSession
+									.getUtilitySpace(), opponentBid);
 					approvedBids.sortByOpponentUtil(opponentUtilModel);
 				} else {
-					
-					
+
 					opponent.tick();
 					if (noChangeCounter == 0) {
 						double opponentExpectedBidValue = opponent
@@ -242,34 +262,43 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 				// get most of what would be a "fair" distribution
 				// of the utility
 
-				if (negotiationSession.getTime() > 0.9 && negotiationSession.getTime() <= 0.96) {
+				if (negotiationSession.getTime() > 0.9
+						&& negotiationSession.getTime() <= 0.96) {
 					offer = chickenGame(0.039, 0, 0.7);
 				}
-				if (negotiationSession.getTime() > 0.96 && negotiationSession.getTime() <= 0.97) {
+				if (negotiationSession.getTime() > 0.96
+						&& negotiationSession.getTime() <= 0.97) {
 					offer = chickenGame(0.019, 0.5, 0.65);
 
 				}
-				if (negotiationSession.getTime() > 0.98 && negotiationSession.getTime() <= 0.99) {
-					((ValueModelAgentSAS)helper).setLowestApprovedInitial(lowestApproved);
-					
+				if (negotiationSession.getTime() > 0.98
+						&& negotiationSession.getTime() <= 0.99) {
+					((ValueModelAgentSAS) helper)
+							.setLowestApprovedInitial(lowestApproved);
+
 					if (bidCount % 5 == 0) {
 						offer = exploreScan();
 					} else
 						offer = bestScan();
 				}
-				if (negotiationSession.getTime() > 0.99 && negotiationSession.getTime() <= 0.995) {
+				if (negotiationSession.getTime() > 0.99
+						&& negotiationSession.getTime() <= 0.995) {
 					offer = chickenGame(0.004, 0.8, 0.6);
 
 				}
 
-				if (negotiationSession.getTime() > 0.995 && ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() > 0.55 &&
-						opponentUtil < ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() * 0.99) {
-					offer = new BidDetails(opponentMaxBid, negotiationSession.getUtilitySpace().getUtility(opponentMaxBid));
-					
+				if (negotiationSession.getTime() > 0.995
+						&& ((ValueModelAgentSAS) helper)
+								.getOpponentMaxBidUtil() > 0.55
+						&& opponentUtil < ((ValueModelAgentSAS) helper)
+								.getOpponentMaxBidUtil() * 0.99) {
+					offer = new BidDetails(opponentMaxBid, negotiationSession
+							.getUtilitySpace().getUtility(opponentMaxBid));
+
 					// this will probably not work but what can we
 					// do? he dosn't even give us 50%!
 				}
-				
+
 				if (negotiationSession.getTime() > 0.995) {
 					offer = bestScan();
 				}
@@ -278,13 +307,9 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 					bidCount++;
 					return offer;
 				}
-				
-				
-				((ValueModelAgentSAS)helper).setLowestApproved(lowestApproved);
-				
-				
-				
-				
+
+				((ValueModelAgentSAS) helper).setLowestApproved(lowestApproved);
+
 				// otherwise we try to stretch it out
 				if (opponentUtil > lowestApproved * 0.99
 						&& !negotiationSession.getUtilitySpace().isDiscounted()) {
@@ -293,7 +318,9 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 					retreatMode = true;
 				}
 				if (bidCount > 0 && bidCount < 4) {
-					offer = new BidDetails(allBids.bids.get(0).bid, negotiationSession.getUtilitySpace().getUtility(allBids.bids.get(0).bid));
+					offer = new BidDetails(allBids.bids.get(0).bid,
+							negotiationSession.getUtilitySpace().getUtility(
+									allBids.bids.get(0).bid));
 					if (bidCount < allBids.bids.size()) {
 						bidSelected(allBids.bids.get(bidCount));
 					}
@@ -312,24 +339,26 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 					double minConcession = concession < concession2 ? concession
 							: concession2;
 					minConcession = minConcessionMaker(minConcession,
-							1 - ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil());
-					
-					
+							1 - ((ValueModelAgentSAS) helper)
+									.getOpponentMaxBidUtil());
+
 					if (minConcession > (1 - lowestApproved)) {
 						if (lowestAcceptable > (1 - minConcession)) {
 							lowestApproved = lowestAcceptable;
 						} else {
 							lowestApproved = 1 - minConcession;
 						}
-						if (lowestApproved < ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil())
-							lowestApproved = ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() + 0.001;
+						if (lowestApproved < ((ValueModelAgentSAS) helper)
+								.getOpponentMaxBidUtil())
+							lowestApproved = ((ValueModelAgentSAS) helper)
+									.getOpponentMaxBidUtil() + 0.001;
 
 						if (setApprovedThreshold(lowestApproved, false)) {
 							approvedBids.sortByOpponentUtil(opponentUtilModel);
 						}
 
 					}
-					
+
 					if (bidCount % 5 == 0) {
 						offer = exploreScan();
 					} else
@@ -339,27 +368,31 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			}
 
 			if (offer == null) {
-				offer = negotiationSession.getOwnBidHistory().getLastBidDetails();
+				offer = negotiationSession.getOwnBidHistory()
+						.getLastBidDetails();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			((ValueModelAgentSAS)helper).triggerSkipAcceptDueToCrash();
-			
+			((ValueModelAgentSAS) helper).triggerSkipAcceptDueToCrash();
+
 			if (myLastBid == null) {
 				try {
-					Bid maxBid = negotiationSession.getUtilitySpace().getMaxUtilityBid();
-					return new BidDetails(maxBid, negotiationSession.getUtilitySpace().getUtility(maxBid));
+					Bid maxBid = negotiationSession.getUtilitySpace()
+							.getMaxUtilityBid();
+					return new BidDetails(maxBid, negotiationSession
+							.getUtilitySpace().getUtility(maxBid));
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
 			}
 
 			try {
-				return new BidDetails(myLastBid, negotiationSession.getUtilitySpace().getUtility(myLastBid));
+				return new BidDetails(myLastBid, negotiationSession
+						.getUtilitySpace().getUtility(myLastBid));
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			
+
 		}
 		bidCount++;
 		return offer;
@@ -368,14 +401,15 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 	private BidDetails bestScan() {
 		approvedBids.sortByOpponentUtil(opponentUtilModel);
 		BidDetails toOffer = null;
-		
+
 		// find the "best" bid for opponent
 		// and choose it if we didn't send it to opponent
 		for (int i = 0; i < approvedBids.bids.size(); i++) {
 			BidWrapper tempBid = approvedBids.bids.get(i);
 			if (!tempBid.sentByUs) {
 				try {
-					toOffer = new BidDetails(tempBid.bid, negotiationSession.getUtilitySpace().getUtility(tempBid.bid));
+					toOffer = new BidDetails(tempBid.bid, negotiationSession
+							.getUtilitySpace().getUtility(tempBid.bid));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -388,7 +422,8 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			BidWrapper tempBid = approvedBids.bids.get((int) (random200
 					.nextDouble() * maxIndex));
 			try {
-				toOffer = new BidDetails(tempBid.bid, negotiationSession.getUtilitySpace().getUtility(tempBid.bid));
+				toOffer = new BidDetails(tempBid.bid, negotiationSession
+						.getUtilitySpace().getUtility(tempBid.bid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -402,7 +437,8 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		BidWrapper tempBid = seperatedBids.explore(bidCount);
 		if (tempBid != null) {
 			try {
-				toOffer = new BidDetails(tempBid.bid, negotiationSession.getUtilitySpace().getUtility(tempBid.bid));
+				toOffer = new BidDetails(tempBid.bid, negotiationSession
+						.getUtilitySpace().getUtility(tempBid.bid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -412,14 +448,16 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		return toOffer;
 	}
 
-	private BidDetails chickenGame(double timeToGive, double concessionPortion, double acceptableThresh) {
+	private BidDetails chickenGame(double timeToGive, double concessionPortion,
+			double acceptableThresh) {
 		BidDetails toOffer = null;
-		
+
 		// set timeToGive to be 0.005 unless each turn is very
 		// large
 		// double timeToGive =
 		// 0.005>(opponent.delta*4)?0.005:(opponent.delta*4);
-		double concessionLeft = lowestApproved - ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil();
+		double concessionLeft = lowestApproved
+				- ((ValueModelAgentSAS) helper).getOpponentMaxBidUtil();
 		double planedThresh = lowestApproved - concessionPortion
 				* concessionLeft;
 		if (acceptableThresh > planedThresh)
@@ -427,8 +465,8 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 		setApprovedThreshold(planedThresh, false);
 		approvedBids.sortByOpponentUtil(opponentUtilModel);
 
-		((ValueModelAgentSAS)helper).setPlanedThreshold(planedThresh);
-		
+		((ValueModelAgentSAS) helper).setPlanedThreshold(planedThresh);
+
 		if (1.0 - negotiationSession.getTime() - timeToGive > 0) {
 			if (!TEST_EQUIVALENCE) {
 				double time = (1.0 - negotiationSession.getTime() - timeToGive) * 180000;
@@ -439,9 +477,11 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 				}
 			}
 		}
-		if (retreatMode || ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() >= planedThresh - 0.01) {
+		if (retreatMode
+				|| ((ValueModelAgentSAS) helper).getOpponentMaxBidUtil() >= planedThresh - 0.01) {
 			try {
-				toOffer = new BidDetails(opponentMaxBid, negotiationSession.getUtilitySpace().getUtility(opponentMaxBid));
+				toOffer = new BidDetails(opponentMaxBid, negotiationSession
+						.getUtilitySpace().getUtility(opponentMaxBid));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -471,21 +511,22 @@ public class ValueModelAgent_Offering extends OfferingStrategy {
 			ourMinUtilities[tind - 1] = lowestApproved;
 		if (lowestApproved < ourMinUtilities[tind])
 			ourMinUtilities[tind] = lowestApproved;
-		if (((ValueModelAgentSAS)helper).getOpponentMaxBidUtil() > theirMaxUtilities[tind])
-			theirMaxUtilities[tind] = ((ValueModelAgentSAS)helper).getOpponentMaxBidUtil();
+		if (((ValueModelAgentSAS) helper).getOpponentMaxBidUtil() > theirMaxUtilities[tind])
+			theirMaxUtilities[tind] = ((ValueModelAgentSAS) helper)
+					.getOpponentMaxBidUtil();
 		double d = negotiationSession.getDiscountFactor();
 		double defaultVal = 1 - ourMinUtilities[tind - 1];
 		if (tind == 1 || tind >= 19)
 			return defaultVal;
 		if (ourMinUtilities[tind - 2] == 0)
 			ourMinUtilities[tind - 2] = lowestApproved;
-		
+
 		// if(defaultVal>minConcession) return minConcession;
 		boolean theyMoved = theirMaxUtilities[tind]
 				- theirMaxUtilities[tind - 2] > 0.01;
 		boolean weMoved = ourMinUtilities[tind - 2] - ourMinUtilities[tind - 1] > 0;
 		double returnVal = defaultVal;
-		
+
 		if (!negotiationSession.getUtilitySpace().isDiscounted()) {
 			// first 10% is reserved for 0.98...
 			if (tind > 2) {

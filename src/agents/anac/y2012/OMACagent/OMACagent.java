@@ -18,6 +18,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
+import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * @author Siqi Chen/Maastricht University
@@ -80,7 +81,8 @@ public class OMACagent extends Agent {
 			// System.out.println("Errors in ini process!");
 		}
 
-		mBidHistory = new TimeBidHistory(this.utilitySpace, discount);
+		mBidHistory = new TimeBidHistory(
+				(AdditiveUtilitySpace) this.utilitySpace, discount);
 	}
 
 	@Override

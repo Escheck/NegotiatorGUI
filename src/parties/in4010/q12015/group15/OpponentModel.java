@@ -11,9 +11,9 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Objective;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.Evaluator;
 import negotiator.utility.EvaluatorDiscrete;
-import negotiator.utility.AdditiveUtilitySpace;
 
 /**
  * This Opponent Model uses frequency analysis to make preference profiles for
@@ -21,6 +21,9 @@ import negotiator.utility.AdditiveUtilitySpace;
  * options that appear the most often have the highest values. The opponent's
  * strategy is evaluated in a way that it's possible to see if he concedes a lot
  * or not.
+ * <p>
+ * Opponent model uses weights and therefore only supports
+ * {@link AdditiveUtilitySpace}.
  */
 public class OpponentModel {
 

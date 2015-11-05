@@ -26,6 +26,7 @@ import negotiator.issue.ValueReal;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 public class Mercury extends AbstractNegotiationParty {
@@ -72,7 +73,7 @@ public class Mercury extends AbstractNegotiationParty {
 	// private double succDis = 0.9;
 
 	@Override
-	public void init(AdditiveUtilitySpace utilitySpace, Deadline deadlines,
+	public void init(AbstractUtilitySpace utilitySpace, Deadline deadlines,
 			TimeLineInfo timeline, long randomSeed, AgentID id) {
 		super.init(utilitySpace, deadlines, timeline, randomSeed, id);
 
@@ -132,7 +133,8 @@ public class Mercury extends AbstractNegotiationParty {
 
 		if (numberOfParty == -1) {
 			numberOfParty = getNumberOfParties();
-			opponentBidHistory.initiPartyRec(numberOfParty, this.utilitySpace);
+			opponentBidHistory.initiPartyRec(numberOfParty,
+					(AdditiveUtilitySpace) this.utilitySpace);
 			// System.out.println("first informed action"+opponentAction.toString());
 		} else if (opponentAction instanceof Offer) {
 
@@ -141,7 +143,8 @@ public class Mercury extends AbstractNegotiationParty {
 
 			this.opponentBidHistory.updateOpponentModel(
 					((Offer) ActionOfOpponent).getBid(), sender,
-					utilitySpace.getDomain(), this.utilitySpace);
+					utilitySpace.getDomain(),
+					(AdditiveUtilitySpace) this.utilitySpace);
 
 			this.opponentBidHistory.updateOppRec(
 					((Offer) ActionOfOpponent).getBid(), sender);
@@ -165,7 +168,8 @@ public class Mercury extends AbstractNegotiationParty {
 
 				this.opponentBidHistory.updateOpponentModel(
 						ownBidHistory.getLastBid(), sender,
-						utilitySpace.getDomain(), this.utilitySpace);
+						utilitySpace.getDomain(),
+						(AdditiveUtilitySpace) this.utilitySpace);
 
 				this.opponentBidHistory.updateAccRec(
 						ownBidHistory.getLastBid(), sender);
@@ -174,7 +178,8 @@ public class Mercury extends AbstractNegotiationParty {
 				// only works when agents are less than 3!
 				this.opponentBidHistory.updateOpponentModel(
 						opponentBidHistory.getLastOppBid(), sender,
-						utilitySpace.getDomain(), this.utilitySpace);
+						utilitySpace.getDomain(),
+						(AdditiveUtilitySpace) this.utilitySpace);
 
 				this.opponentBidHistory.updateAccRec(
 						opponentBidHistory.getLastOppBid(), sender);
@@ -502,7 +507,8 @@ public class Mercury extends AbstractNegotiationParty {
 			// this.ownBidHistory.addBid(bid, utilitySpace);
 
 			if (bid != null)
-				this.ownBidHistory.addBid(bid, utilitySpace);
+				this.ownBidHistory.addBid(bid,
+						(AdditiveUtilitySpace) utilitySpace);
 
 			this.timeLeftAfter = timeline.getCurrentTime();
 			this.estimateRoundLeft(false);// update the estimation
