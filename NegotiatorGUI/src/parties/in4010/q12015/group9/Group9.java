@@ -13,6 +13,7 @@ import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -99,13 +100,14 @@ public class Group9 extends AbstractNegotiationParty {
 	}
 
 	// Mostly initiate the super, besides that create the BOA components
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		acceptCount = 0;
-		opponentModels = new OpponentModeling(utilSpace);
-		acceptStrat = new AcceptStrat(utilSpace);
-		biddingStrat = new BiddingStrat(utilSpace);
+		opponentModels = new OpponentModeling((AdditiveUtilitySpace) utilSpace);
+		acceptStrat = new AcceptStrat((AdditiveUtilitySpace) utilSpace);
+		biddingStrat = new BiddingStrat((AdditiveUtilitySpace) utilSpace);
 		previousBidsMap = new HashMap<Object, BidHistory>();
 	}
 

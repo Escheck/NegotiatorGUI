@@ -15,7 +15,7 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
-import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Group 17's negotiation party. It is inspired by the BOA framework and has
@@ -35,8 +35,9 @@ public class Group17 extends AbstractNegotiationParty {
 	private SortedOutcomeSpace sos;
 	private boolean acceptOffer = false;
 
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		sos = new SortedOutcomeSpace(utilitySpace);
 		SessionData sessionData = new SessionData();

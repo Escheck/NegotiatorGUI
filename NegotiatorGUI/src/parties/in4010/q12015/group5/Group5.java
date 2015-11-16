@@ -16,6 +16,7 @@ import negotiator.bidding.BidDetails;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -57,8 +58,9 @@ public class Group5 extends AbstractNegotiationParty {
 	 * UtilitySpace, negotiator.Deadline, negotiator.session.TimeLineInfo, long,
 	 * negotiator.AgentID)
 	 */
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		opponentModels = new HashMap<Object, OpponentModel>();
 		sos = new SortedOutcomeSpace(utilSpace);
