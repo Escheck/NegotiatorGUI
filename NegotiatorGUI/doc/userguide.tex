@@ -1219,7 +1219,7 @@ public interface NegotiationParty {
 	 * @throws RuntimeException
 	 *             if init fails.
 	 */
-	public void init(UtilitySpace utilSpace, Deadline deadline,
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**
@@ -1260,15 +1260,17 @@ public interface NegotiationParty {
 }
 \end{lstlisting}
 
+You may want to check AbstractUtilitySpace, if your agent supports for example only AdditiveutilitySpace.
+
 We recommend to use the javadoc included with the distribution to check the details of all the involved classes. 
 
-But in practice, it may be more convenient to extend the class \texttt{negotiator.parties.AbstractNegotiationParty} that provides convenient support functions. 
+For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty} directly. That class provides convenient support functions. 
 
 The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol usually returns an instance of StackedAlternatingOffersProtocol.
 
 
-\subsection{Compiling a NegotiationParty}
 
+\subsection{Compiling a NegotiationParty}
 
 To compile the example agent, go to your genius project folder and use the command line to execute this compile command
 
