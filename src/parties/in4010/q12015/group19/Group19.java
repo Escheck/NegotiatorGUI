@@ -6,11 +6,14 @@ import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
+import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Group19 negotiation Agent version 0.2 - 23-10-15 D2 assignment
@@ -56,7 +59,9 @@ public class Group19 extends AbstractNegotiationParty {
 																								// issue
 																								// amounts
 
-	public void init() {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 	}
 
 	private void initfunc() throws Exception {

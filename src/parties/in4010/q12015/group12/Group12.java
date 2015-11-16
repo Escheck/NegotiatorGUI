@@ -7,6 +7,7 @@ import java.util.Set;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.BidHistory;
+import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
@@ -15,6 +16,8 @@ import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 
 public class Group12 extends AbstractNegotiationParty {
 
@@ -30,7 +33,9 @@ public class Group12 extends AbstractNegotiationParty {
 	/**
 	 * init is called when a next session starts with the same opponent.
 	 */
-	public void init() {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		resetValues();
 	}
 

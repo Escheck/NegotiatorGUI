@@ -21,6 +21,7 @@ import negotiator.boaframework.OutcomeSpace;
 //import negotiator.issue.IssueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -48,8 +49,9 @@ public class Group14 extends AbstractNegotiationParty {
 	/**
 	 * This method is called to initialize our agent
 	 */
-	public void init(AdditiveUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl,
-			long randomSeed, AgentID agentId) {
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		firstSetBids = new ArrayList<BidDetails>();
 		secondSetBids = new ArrayList<BidDetails>();
@@ -58,7 +60,7 @@ public class Group14 extends AbstractNegotiationParty {
 		fifthSetBids = new ArrayList<BidDetails>();
 		lastSetBids = new ArrayList<BidDetails>();
 		oppBidHistory = new BidHistory();
-		myUtilSpace = utilSpace;
+		myUtilSpace = (AdditiveUtilitySpace) utilSpace;
 		myTimeLine = tl;
 		outSpace = new OutcomeSpace(utilSpace);
 		allbids = outSpace.getAllOutcomes(); // get all possible outcomes
