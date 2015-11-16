@@ -68,8 +68,13 @@ public class Group2_OM extends OpponentModel {
 			// Initialize all variables used in object scope
 			this.negotiationSession = negotiationSession;
 
-			this.opponentUtilitySpace = (AdditiveUtilitySpace) negotiationSession
-					.getUtilitySpace().copy();
+			// Wouter: #1158 this does not work anymore with nonlinear space.
+			// Replaced it with a created Additive domain.
+			// (AdditiveUtilitySpace) negotiationSession
+			// .getUtilitySpace().copy();
+			this.opponentUtilitySpace = new AdditiveUtilitySpace(
+					negotiationSession.getDomain());
+
 			this.amountOfIssues = opponentUtilitySpace.getDomain().getIssues()
 					.size();
 
