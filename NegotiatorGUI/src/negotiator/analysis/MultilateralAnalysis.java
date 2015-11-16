@@ -14,6 +14,7 @@ import negotiator.session.Session;
 import negotiator.session.Timeline;
 import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 /**
  * Start on analysis of the multi party tournament. Code in this class is mainly
@@ -133,7 +134,7 @@ public class MultilateralAnalysis {
 			List<NegotiationPartyInternal> parties) {
 		List<NegotiationPartyInternal> agents = MediatorProtocol
 				.getNonMediators(parties);
-		AbstractUtilitySpace[] spaces = new AdditiveUtilitySpace[agents.size()];
+		AbstractUtilitySpace[] spaces = new AbstractUtilitySpace[agents.size()];
 		for (int i = 0; i < agents.size(); i++)
 			spaces[i] = agents.get(i).getUtilitySpace();
 		return spaces;
@@ -279,13 +280,13 @@ public class MultilateralAnalysis {
 			throws Exception {
 		this.utilitySpaces = utilitySpaces.clone();
 
-		for (AbstractUtilitySpace utilitySpace : utilitySpaces)
+		for (UtilitySpace utilitySpace : utilitySpaces)
 			if (utilitySpace == null)
 				throw new NullPointerException("util space is null");
 
 		domain = this.utilitySpaces[0].getDomain();
 
-		for (AbstractUtilitySpace space : utilitySpaces)
+		for (UtilitySpace space : utilitySpaces)
 			space.checkReadyForNegotiation(domain);
 	}
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import negotiator.Bid;
 import negotiator.Domain;
+import negotiator.session.Timeline;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -68,5 +69,20 @@ public interface UtilitySpace extends Serializable {
 	 * @return Discount factor of this preference profile.
 	 */
 	public double getDiscountFactor();
+
+	/**
+	 * The reservation value is the least favourable point at which one will
+	 * accept a negotiated agreement. Also sometimes referred to as the walk
+	 * away point.
+	 * <p>
+	 * This is value remains constant during the negotiation. However, by
+	 * default, the reservation value descreases with time. To obtain the
+	 * discounted version of the reservation value, use
+	 * {@link #getReservationValueWithDiscount(Timeline)}.
+	 * 
+	 * @return undiscounted reservation value of the preference profile (may be
+	 *         null).
+	 */
+	public Double getReservationValue();
 
 }
