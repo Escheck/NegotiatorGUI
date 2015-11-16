@@ -122,40 +122,41 @@
 This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
 
 \subsection{Negotiation Objects}
-Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and a number of utility spaces (also called preference profiles) -- one for each party/agent in the negotiation. Figure~\ref{Fig:overviewStructures} provides an overview of the relation between the domain and the utility space of an agent.
+Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and a number of utility spaces (also called preference profiles) -- one for each party/agent in the negotiation.  Figure~\ref{Fig:domain} shows a picture of a domain that describes the issues in the negotiation.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.8\textwidth]{media/datastructures.png}
-	\caption{Overview of the data structures and relations.}\label{Fig:overviewStructures}
+	\includegraphics[width=0.4\textwidth]{media/domain.png}
+	\caption{An example domain for laptop negotiation.}\label{Fig:domain}
 \end{figure}
 
 The \textit{Domain} describes which issues are the subject of the negotiation and which values an issue can attain. A domain contains $n$ issues: $D=(I_1,\ldots,I_n)$. Each issue $i$ consists of $k$ values: $I_i=(v^i_1,\ldots,v^i_k)$.  Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a chosen value (denoted by $c$), $b=(v^i_{c},\ldots,v^n_{c})$. 
 
 To give an example, in the laptop domain the issues are ``laptop'', ``harddisk'' and ``monitor''. In this domain the issues can only attain discrete values, e.g. the ``harddisk'' issue can only have the values ``60 Gb'', ``80 Gb'' and ``120 Gb''. These issues are all instance of \textit{IssueDiscrete}. A valid bid in the laptop domain is a Dell laptop with 80 Gb and a 17' inch monitor.
 
-The \textit{Utility Space} specifies the preferences of the bids for an agent using an evaluator. The evaluator of an issue maps the evaluation of an issue value -- which is specified in the preference profile -- to a utility for that issue. The evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0 to simplify calculating the utility of a bid. To illustrate, the ``harddisk'' issue is of the type \textit{IssueDiscrete}, and therefore its evaluator is of the type \textit{EvaluatorDiscrete}.
+The \textit{Utility Space} specifies the preferences of the bids for an agent using an evaluator. It is basically just a function that maps bids into a real number in the range [0,1] where 0 is the minimum utility and 1 is the maximum utility of a bid.
 
-In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties. We discuss the optimality of a bid in the next section.
+A common form of the Utility space is the \textit{Additive Utility Space}. Such a space is additive because each of the issues in the domain have their own utility of their own. For instance, we like Apple with 0.7 and Dell with 0.4, completely independent of how much memory the computer has. Figure~\ref{Fig:utilspace} shows a picture of a utility space for the example domain that we gave above.
 
-\subsection{Optimality of a Bid}
-%Before discussing the optimality of a bid, we first need to formalize the concept of a bid. 
-%A bid is a set of chosen values $v_1, \ldots, v_n$  for each of the $N$ issues. Each of these values has been assigned an evaluation value $\text{eval}(v_i)$ in the utility space. The utility is the weighted sum of the scaled evaluation values.
-%A bid is a set of values, one chosen for each issue $n$ in the domain. (the subscript $c$ denotes the chosen value for issue $i$).
-Each value of a bid is assigned an evaluation value $\text{eval}(v^n_{c})$ in the utility space. The utility is the weighted sum of the scaled evaluation values.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{media/utilspace.png}
+	\caption{An example additive utility space for the laptop domain.}\label{Fig:utilspace}
+\end{figure}
+ 
+In an additive space the evaluator also specifies the importance of the issue relative to the other issues in the form of a weight. The weights of all issues sum up to 1.0 to simplify calculating the utility of a bid. The utility is the weighted sum of the scaled evaluation values.
 
 \begin{equation}
 	U(v^i_{c},\ldots,v^n_{c}) = \sum_{i=1}^{n} w_i \dfrac{\text{eval}(v^i_{c})}{\text{max}(\text{eval}(I_i))}
 	\label{eqn:Utility}
 \end{equation}
 
-%\begin{equation}
-%	U(v_1, \ldots, v_n) = \sum_{i=1}^{N} w_i \dfrac{\text{eval}(v_i)}{\text{max}(\text{eval}(v_i))}
-%	\label{eqn:Utility}
-%\end{equation}
-\pagebreak
 
-For a single agent, the optimal bid is of maximum utility for the agent. Often this bid has a low utility for the opponent, and therefore the chance of agreement is low. A more general notion of optimality of a negotiation involves the utility of both agents.
+\subsection{Optimality of a Bid}
+In general, given the set of all bids, there are a small subset of bids which are more preferred as outcomes by both agents. Identifying these special bids may lead to a better agreement for both parties.
+
+For a single agent, the optimal bid is of maximum utility for the agent. Often this bid has a low utility for the other party, and therefore the chance of agreement is low. A more general notion of optimality of a negotiation involves the utility of both agents.
+
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.37\textwidth]{media/image5.png}
