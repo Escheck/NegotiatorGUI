@@ -12,25 +12,29 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
+/**
+ * 
+ * In the non-linear scenarios, the agents no longer have linear utility
+ * functions; instead, they can only sample their utility of a bid through the
+ * getUtility() method. The utility of an offer can be completely arbitrary, so
+ * there is no underlying structure you can use. In terms of the API of Genius,
+ * this means the agents no longer have access to methods pertaining to linear
+ * scenarios (e.g., getWeight()). Please use the getUtility() method to sample
+ * the utilities in the non-linear scenarios to search through the outcome
+ * space.
+ */
+@SuppressWarnings("serial")
 public class NonlinearUtilitySpace extends AbstractUtilitySpace {
 	private double maxUtilityValue;
 	private UtilityFunction nonlinearFunction;
-	private ArrayList<InclusiveHyperRectangle> allinclusiveConstraints; // we
-																		// keep
-																		// all
-																		// constraints
-																		// for
-																		// negotiating
-																		// agent's
-																		// strategy
-	private ArrayList<ExclusiveHyperRectangle> allexclusiveConstraints; // we
-																		// keep
-																		// all
-																		// constraints
-																		// for
-																		// negotiating
-																		// agent's
-																		// strategy
+	/*
+	 * we keep all constraints for negotiating agent's strategy
+	 */
+	private ArrayList<InclusiveHyperRectangle> allinclusiveConstraints;
+	/*
+	 * we keep all constraints for negotiating agent's strategy
+	 */
+	private ArrayList<ExclusiveHyperRectangle> allexclusiveConstraints;
 	private SimpleElement fXMLRoot;
 
 	// add some parameters for discount factor
