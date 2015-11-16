@@ -18,7 +18,6 @@ import negotiator.issue.IssueInteger;
 import negotiator.issue.IssueReal;
 import negotiator.issue.Objective;
 import negotiator.utility.AdditiveUtilitySpace;
-import negotiator.utility.UTILITYSPACETYPE;
 
 /**
  * 
@@ -202,7 +201,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 		else if (getColumnName(column) == VALUE)
 			return getIssueValuePanel(objective);
 		else if (getColumnName(column) == WEIGHT)
-			if (utilitySpace.getType() != UTILITYSPACETYPE.NONLINEAR) {
+			if (utilitySpace instanceof AdditiveUtilitySpace) {
 				return getWeightSlider(objective);
 			} else {
 				return null;
@@ -378,7 +377,7 @@ public class NegotiatorTreeTableModel extends AbstractTreeTableModel implements
 
 	public IssueValuePanel getIssueValuePanel(Objective node) {
 		if (utilitySpace != null
-				&& utilitySpace.getType() == UTILITYSPACETYPE.NONLINEAR)
+				&& !(utilitySpace instanceof AdditiveUtilitySpace))
 			return null;
 		IssueValuePanel value = issueValues.get(node);
 		if (value == null) {
