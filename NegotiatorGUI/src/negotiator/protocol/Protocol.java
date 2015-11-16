@@ -22,7 +22,6 @@ import negotiator.tournament.TournamentRunner;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.AbstractUtilitySpace;
-import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -100,7 +99,7 @@ public abstract class Protocol implements Runnable, Serializable {
 		agentNames[1] = "Agent B";
 
 		// load the utility space
-		agentUtilitySpaces = new AdditiveUtilitySpace[profileRepItems.length];
+		agentUtilitySpaces = new AbstractUtilitySpace[profileRepItems.length];
 		for (int i = 0; i < profileRepItems.length; i++) {
 			ProfileRepItem profile = profileRepItems[i];
 			agentUtilitySpaces[i] = Repository.get_domain_repos()
