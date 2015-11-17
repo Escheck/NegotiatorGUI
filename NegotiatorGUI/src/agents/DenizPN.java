@@ -17,7 +17,6 @@ import negotiator.actions.Offer;
 import negotiator.analysis.BidPoint;
 import negotiator.issue.Value;
 import negotiator.session.Timeline;
-import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**
@@ -589,8 +588,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (myTurnsLeft < 0) {
 			myTurnsLeft = 0;
 		}
-		AbstractUtilitySpace us = historySpace.getOutcomeSpace()
-				.getMyUtilitySpace();
+		AdditiveUtilitySpace us = (AdditiveUtilitySpace) historySpace
+				.getOutcomeSpace().getMyUtilitySpace();
 		double maxutil = us.getUtility(us.getMaxUtilityBid());
 		if (RESERVATION_VALUE > maxutil) {
 			throw new IllegalStateException(
