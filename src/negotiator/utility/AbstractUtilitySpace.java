@@ -1,7 +1,6 @@
 package negotiator.utility;
 
 import negotiator.Bid;
-import negotiator.BidIterator;
 import negotiator.Domain;
 import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
@@ -24,6 +23,7 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	protected String fileName;
 	private double discountFactor = 1;
 	private Double fReservationValue = null;
+	private UtilitySpaceTools ustools;
 
 	/**
 	 * sets domain and tries to load the file into XML root.
@@ -34,6 +34,7 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	 */
 	public AbstractUtilitySpace(Domain dom) {
 		domain = dom;
+		ustools = new UtilitySpaceTools(this);
 	}
 
 	@Override
@@ -263,22 +264,7 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	 *             if there is no bid at all in this util space.
 	 */
 	public final Bid getMaxUtilityBid() throws Exception {
-		checkForLinearSpaceType();
-		Bid maxBid = null;
-		double maxutil = 0.;
-		BidIterator bidit = new BidIterator(getDomain());
-
-		if (!bidit.hasNext())
-			throw new Exception("The domain does not contain any bids!");
-		while (bidit.hasNext()) {
-			Bid thisBid = bidit.next();
-			double thisutil = getUtility(thisBid);
-			if (thisutil > maxutil) {
-				maxutil = thisutil;
-				maxBid = thisBid;
-			}
-		}
-		return maxBid;
+		return ustools.getMaxUtilityBid();
 	}
 
 	/**
@@ -307,22 +293,7 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	 *             if there is no bid at all in the util space
 	 */
 	public Bid getMinUtilityBid() throws Exception {
-		checkForLinearSpaceType();
-		Bid minBid = null;
-		double minUtil = 1.2;
-		BidIterator bidit = new BidIterator(getDomain());
-
-		if (!bidit.hasNext())
-			throw new Exception("The domain does not contain any bids!");
-		while (bidit.hasNext()) {
-			Bid thisBid = bidit.next();
-			double thisutil = getUtility(thisBid);
-			if (thisutil < minUtil) {
-				minUtil = thisutil;
-				minBid = thisBid;
-			}
-		}
-		return minBid;
+		return ustools.getMinUtilityBid();
 	}
 
 	/**
