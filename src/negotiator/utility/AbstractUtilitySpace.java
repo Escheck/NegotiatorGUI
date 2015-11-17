@@ -42,39 +42,6 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	}
 
 	/**
-	 * Computes:
-	 * 
-	 * discountedUtil = util * Math.pow(discount, time).
-	 * 
-	 * Checks for bounds on the discount factor and time.
-	 * 
-	 * @param util
-	 *            undiscounted utility.
-	 * @param time
-	 *            at which we want to know the discounted utility.
-	 * @param discountFactor
-	 *            of the preference profile.
-	 * @return discounted version of the given utility at the given time.
-	 */
-	public static double discount(double util, double time,
-			double discountFactor) {
-		double discount = discountFactor;
-		if (time < 0) {
-			System.err.println("Warning: time = " + time
-					+ " < 0, using time = 0 instead.");
-			time = 0;
-		}
-		if (time > 1) {
-			System.err.println("Warning: time = " + time
-					+ " > 1, using time = 1 instead.");
-			time = 1;
-		}
-
-		double discountedUtil = util * Math.pow(discount, time);
-		return discountedUtil;
-	}
-
-	/**
 	 * @param newRV
 	 *            new reservation value.
 	 */
@@ -215,14 +182,48 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	}
 
 	/**
+	 * Specific implementation for discount, based on a discount factor.
 	 * Computes:
 	 * 
 	 * discountedUtil = util * Math.pow(discount, time).
 	 * 
 	 * Checks for bounds on the discount factor and time.
 	 */
+	@Override
 	public Double discount(double util, double time) {
 		return discount(util, time, discountFactor);
+	}
+
+	/**
+	 * Computes:
+	 * 
+	 * discountedUtil = util * Math.pow(discount, time).
+	 * 
+	 * Checks for bounds on the discount factor and time.
+	 * 
+	 * @param util
+	 *            undiscounted utility.
+	 * @param time
+	 *            at which we want to know the discounted utility.
+	 * @param discountFactor
+	 *            of the preference profile.
+	 * @return discounted version of the given utility at the given time.
+	 */
+	private double discount(double util, double time, double discountFactor) {
+		double discount = discountFactor;
+		if (time < 0) {
+			System.err.println("Warning: time = " + time
+					+ " < 0, using time = 0 instead.");
+			time = 0;
+		}
+		if (time > 1) {
+			System.err.println("Warning: time = " + time
+					+ " > 1, using time = 1 instead.");
+			time = 1;
+		}
+
+		double discountedUtil = util * Math.pow(discount, time);
+		return discountedUtil;
 	}
 
 	protected double validateDiscount(double df) {
