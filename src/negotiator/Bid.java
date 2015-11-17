@@ -107,13 +107,14 @@ public final class Bid implements XMLable, Serializable {
 	 * @throws Exception
 	 *             if there exist no issue with the given number.
 	 */
-	public Value getValue(int issueNr) throws Exception {
+	public Value getValue(int issueNr) {
 		Value v = fValues.get(issueNr);
 		if (v == null) {
 			if (fDomain.getIssue(issueNr) == null)
-				throw new Exception("Bid.getValue: issue " + issueNr
-						+ " does not exist at all");
-			throw new Exception("There is no evaluator for issue " + issueNr);
+				throw new IllegalArgumentException("Bid.getValue: issue "
+						+ issueNr + " does not exist at all");
+			throw new IllegalStateException("There is no evaluator for issue "
+					+ issueNr);
 		}
 		return v;
 	}

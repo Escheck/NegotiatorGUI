@@ -249,7 +249,7 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 * @throws Exception
 	 *             when bid is incomplete or invalid.
 	 */
-	public double getUtility(Bid bid) throws Exception {
+	public double getUtility(Bid bid) {
 		EVALUATORTYPE type;
 		double utility = 0, financialUtility = 0, financialRat = 0;
 
@@ -290,8 +290,7 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 * @throws Exception
 	 *             if the bid or value is null.
 	 */
-	public final double getEvaluation(int pIssueIndex, Bid bid)
-			throws Exception {
+	public final double getEvaluation(int pIssueIndex, Bid bid) {
 		checkForLinearSpaceType();
 
 		Object lObj = getDomain().getObjective(pIssueIndex);

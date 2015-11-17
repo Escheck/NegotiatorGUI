@@ -25,11 +25,9 @@ public interface UtilitySpace extends Serializable {
 	 *            of which we are interested in its utility.
 	 * @return Utility of the given bid. This utility is undiscounted: there is
 	 *         no time dependent devaluation of the utility.
-	 * @throws Exception
-	 *             when bid is incomplete or invalid. FIXME make more precise
 	 */
 
-	public double getUtility(Bid bid) throws Exception;
+	public double getUtility(Bid bid);
 
 	/**
 	 * Computes the discounted utility of a bid. The actual implementation is
