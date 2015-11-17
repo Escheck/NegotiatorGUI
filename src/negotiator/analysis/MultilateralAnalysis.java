@@ -286,7 +286,7 @@ public class MultilateralAnalysis {
 
 		domain = this.utilitySpaces[0].getDomain();
 
-		for (UtilitySpace space : utilitySpaces)
+		for (AbstractUtilitySpace space : utilitySpaces)
 			space.checkReadyForNegotiation(domain);
 	}
 

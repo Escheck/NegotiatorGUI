@@ -284,10 +284,6 @@ public class NonlinearUtilitySpace extends AbstractUtilitySpace {
 			return result;
 	}
 
-	@Override
-	public void checkReadyForNegotiation(Domain dom) throws Exception {
-	}
-
 	/**
 	 * Uses the original equals of {@link Object}.
 	 */
@@ -403,5 +399,11 @@ public class NonlinearUtilitySpace extends AbstractUtilitySpace {
 	@Override
 	public UtilitySpace copy() {
 		return new NonlinearUtilitySpace(this);
+	}
+
+	@Override
+	public String isComplete() {
+		return null;
+		// FIXME a real test is missing.
 	}
 }

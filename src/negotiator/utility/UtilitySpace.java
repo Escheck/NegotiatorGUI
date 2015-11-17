@@ -6,7 +6,6 @@ import java.io.Serializable;
 import negotiator.Bid;
 import negotiator.Domain;
 import negotiator.session.TimeLineInfo;
-import negotiator.session.Timeline;
 import negotiator.xml.SimpleElement;
 
 /**
@@ -16,6 +15,11 @@ import negotiator.xml.SimpleElement;
  *
  */
 public interface UtilitySpace extends Serializable {
+	/**
+	 * @return domain belonging to this preference profile.
+	 */
+	public Domain getDomain();
+
 	/**
 	 * @param bid
 	 *            of which we are interested in its utility.
@@ -46,14 +50,12 @@ public interface UtilitySpace extends Serializable {
 	public UtilitySpace copy();
 
 	/**
-	 * Check if this utility space is ready for negotiation.
+	 * Check if this utility space is complete and ready for negotiation.
 	 * 
-	 * @param dom
-	 *            is the domain in which nego is taking place
-	 * @throws Exception
-	 *             if utility space is incomplete
+	 * @return null if util space is complete, else returns String containing
+	 *         explanation why not.
 	 */
-	public void checkReadyForNegotiation(Domain dom) throws Exception;
+	public String isComplete();
 
 	/**
 	 * Creates an xml representation (in the form of a SimpleElements) of the
@@ -75,19 +77,13 @@ public interface UtilitySpace extends Serializable {
 	public boolean equals(Object obj);
 
 	/**
-	 * @return domain belonging to this preference profile.
-	 */
-	public Domain getDomain();
-
-	/**
 	 * The reservation value is the least favourable point at which one will
 	 * accept a negotiated agreement. Also sometimes referred to as the walk
 	 * away point.
 	 * <p>
 	 * This is value remains constant during the negotiation. However, by
-	 * default, the reservation value descreases with time. To obtain the
-	 * discounted version of the reservation value, use
-	 * {@link #getReservationValueWithDiscount(Timeline)}.
+	 * default, the reservation value descreases with time. Refer to
+	 * {@link #discount(double, double)} or use support functions.
 	 * 
 	 * @return undiscounted reservation value of the preference profile (may be
 	 *         null).
