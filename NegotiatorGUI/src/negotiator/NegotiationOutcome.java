@@ -27,7 +27,6 @@ import negotiator.qualitymeasures.OpponentModelMeasuresResults;
 import negotiator.qualitymeasures.logmanipulation.OutcomeInfo;
 import negotiator.tournament.TournamentConfiguration;
 import negotiator.utility.AbstractUtilitySpace;
-import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.xml.OrderedSimpleElement;
 import negotiator.xml.SimpleElement;
 
@@ -374,23 +373,21 @@ public class NegotiationOutcome {
 	 */
 	private double getMaxDiscountedRecievedUtil(String agentX,
 			ArrayListXML<BidPointTime> bids) {
-		double discountFactorA = alternatingOffersBilateralAtomicNegoSession
-				.getAgentAUtilitySpace().getDiscountFactor();
-		double discountFactorB = alternatingOffersBilateralAtomicNegoSession
-				.getAgentBUtilitySpace().getDiscountFactor();
 
 		double maxRecievedDiscountedUtil = 0;
 		if (!bids.isEmpty()) {
 			for (BidPointTime bidPointTime : bids) {
 				double discountedBidPoint;
 				if (agentX.equals("A")) {
-					discountedBidPoint = AdditiveUtilitySpace.discount(
-							bidPointTime.getUtilityA(), bidPointTime.getTime(),
-							discountFactorA);
+					discountedBidPoint = alternatingOffersBilateralAtomicNegoSession
+							.getAgentAUtilitySpace().discount(
+									bidPointTime.getUtilityA(),
+									bidPointTime.getTime());
 				} else {
-					discountedBidPoint = AdditiveUtilitySpace.discount(
-							bidPointTime.getUtilityB(), bidPointTime.getTime(),
-							discountFactorB);
+					discountedBidPoint = alternatingOffersBilateralAtomicNegoSession
+							.getAgentBUtilitySpace().discount(
+									bidPointTime.getUtilityB(),
+									bidPointTime.getTime());
 				}
 
 				if (discountedBidPoint > maxRecievedDiscountedUtil) {

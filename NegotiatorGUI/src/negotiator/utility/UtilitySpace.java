@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import negotiator.Bid;
 import negotiator.Domain;
+import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 import negotiator.xml.SimpleElement;
 
@@ -25,6 +26,19 @@ public interface UtilitySpace extends Serializable {
 	 */
 
 	public double getUtility(Bid bid) throws Exception;
+
+	/**
+	 * Computes the discounted utility of a bid. The actual implementation is
+	 * implementation specific.
+	 * 
+	 * @param util
+	 *            the undiscounted utility as coming from
+	 *            {@link #getUtility(Bid)}.
+	 * @param time
+	 *            a real number in the range [0,1] where 0 is the start of the
+	 *            negotiation and 1 the end. See also {@link TimeLineInfo}.
+	 */
+	public Double discount(double util, double time);
 
 	/**
 	 * @return a deep copy of this utility space.
@@ -64,11 +78,6 @@ public interface UtilitySpace extends Serializable {
 	 * @return domain belonging to this preference profile.
 	 */
 	public Domain getDomain();
-
-	/**
-	 * @return Discount factor of this preference profile.
-	 */
-	public double getDiscountFactor();
 
 	/**
 	 * The reservation value is the least favourable point at which one will
