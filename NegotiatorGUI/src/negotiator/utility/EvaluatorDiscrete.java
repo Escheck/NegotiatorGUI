@@ -110,7 +110,7 @@ public class EvaluatorDiscrete implements Evaluator {
 		return fEval.get(value);
 	}
 
-	private void calcEvalMax() throws Exception {
+	private void calcEvalMax() {
 		if (fEval == null)
 			throw new NullPointerException("fEval==null");
 		Collection<Double> alts = fEval.values();
@@ -119,9 +119,11 @@ public class EvaluatorDiscrete implements Evaluator {
 			if (maximum == null || d > maximum)
 				maximum = d;
 		if (maximum == null)
-			throw new Exception("no evaluators available, can't get max");
+			throw new IllegalStateException(
+					"no evaluators available, can't get max");
 		if (maximum < 0)
-			throw new Exception("Internal error: values <0 in evaluators.");
+			throw new IllegalStateException(
+					"Internal error: values <0 in evaluators.");
 		evalMax = maximum;
 	}
 
@@ -130,7 +132,7 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @throws Exception
 	 *             if there are no alternatives.
 	 */
-	public Integer getEvalMax() throws Exception {
+	public Integer getEvalMax() {
 		if (evalMax == null) {
 			calcEvalMax();
 		}
@@ -148,8 +150,8 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @param issueID
 	 *            unique id of the issue of which we want the evaluation.
 	 */
-	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid, int issueID)
-			throws Exception {
+	public Double getEvaluation(AdditiveUtilitySpace uspace, Bid bid,
+			int issueID) {
 		if (getEvalMax() > 1.0) {
 			return normalize(getValue((ValueDiscrete) bid.getValue(issueID)));
 		}
@@ -202,10 +204,10 @@ public class EvaluatorDiscrete implements Evaluator {
 	 * @throws Exception
 	 *             if no evaluators or illegal values in evaluator.
 	 * 
-	 *             ASSUMED that Max value is at least 1, becaues EVERY
+	 *             ASSUMED that Max value is at least 1, because EVERY
 	 *             evaluatordiscrete is at least 1.
 	 */
-	public Double normalize(Integer EvalValueL) throws Exception {
+	public Double normalize(Integer EvalValueL) {
 		if (EvalValueL == null)
 			throw new NullPointerException("EvalValuel=null");
 		if (getEvalMax().doubleValue() < 0.00001)

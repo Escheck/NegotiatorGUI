@@ -358,7 +358,7 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 		this.contraintList = contraints;
 	}
 
-	private boolean isZeroUtility(Integer index, Bid bid) throws Exception {
+	private boolean isZeroUtility(Integer index, Bid bid) {
 
 		if (!this.contraintList.containsKey(index))
 			return false;
@@ -371,7 +371,7 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 	}
 
 	@Override
-	public double getUtility(Bid bid) throws Exception {
+	public double getUtility(Bid bid) {
 
 		double utility = 0.0;
 

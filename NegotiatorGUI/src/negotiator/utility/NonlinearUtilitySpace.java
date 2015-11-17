@@ -274,7 +274,7 @@ public class NonlinearUtilitySpace extends AbstractUtilitySpace {
 	}
 
 	@Override
-	public double getUtility(Bid bid) throws Exception {
+	public double getUtility(Bid bid) {
 		double result = (double) nonlinearFunction.getUtility(bid)
 				/ this.maxUtilityValue;
 

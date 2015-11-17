@@ -318,7 +318,7 @@ class OpponentUtilitySpace extends AdditiveUtilitySpace {
 	 *         range [0,1].
 	 * @throws Exception
 	 */
-	private double distanceToFirstBid(Bid b) throws Exception {
+	private double distanceToFirstBid(Bid b) {
 		return Math.abs(ownSpace.getUtility(b) - firstOpponentBidUtility);
 	}
 
@@ -326,7 +326,7 @@ class OpponentUtilitySpace extends AdditiveUtilitySpace {
 	 * estimates utility of bid for the opponent.
 	 */
 
-	public double getUtility(Bid bid) throws Exception {
+	public double getUtility(Bid bid) {
 		return 1.0 - distanceToFirstBid(bid);
 	}
 }

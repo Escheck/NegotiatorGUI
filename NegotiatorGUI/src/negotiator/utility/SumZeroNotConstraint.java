@@ -4,26 +4,24 @@ import java.util.ArrayList;
 
 import negotiator.Bid;
 
-public class SumZeroNotConstraint extends SumZeroConstraint{
+public class SumZeroNotConstraint extends SumZeroConstraint {
 
-
-	
-	public SumZeroNotConstraint(int index){
+	public SumZeroNotConstraint(int index) {
 		super(index);
 	}
-	
+
 	@Override
 	public Integer getIssueIndex() {
 		return index;
 	}
 
 	@Override
-	public boolean willZeroUtility(Bid bid) throws Exception {
+	public boolean willZeroUtility(Bid bid) {
 
 		int total = 0;
 		for (int i = 0; i < relatedIssues.size(); i++) {
-			total += Integer.valueOf(bid.
-					getValue(relatedIssues.get(i)).toString());
+			total += Integer.valueOf(bid.getValue(relatedIssues.get(i))
+					.toString());
 		}
 
 		if ((min <= total) && (total <= max)) {
@@ -33,19 +31,19 @@ public class SumZeroNotConstraint extends SumZeroConstraint{
 		return false;
 	}
 
-		@Override
+	@Override
 	public void addContraint(Integer issueIndex, String conditionToBeCheck) {
-			
+
 	}
 
-	public void addRelatedIssues(ArrayList<Integer> relatedIssueIndices){
-		this.relatedIssues=relatedIssueIndices;
+	public void addRelatedIssues(ArrayList<Integer> relatedIssueIndices) {
+		this.relatedIssues = relatedIssueIndices;
 	}
-	
-	public void addRelatedIssue(Integer relatedIndex){
+
+	public void addRelatedIssue(Integer relatedIndex) {
 		this.relatedIssues.add(relatedIndex);
 	}
-	
+
 	public String getValueToBeChecked() {
 		return valueToBeChecked;
 	}

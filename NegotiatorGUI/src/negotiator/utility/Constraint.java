@@ -3,18 +3,19 @@ package negotiator.utility;
 import negotiator.Bid;
 
 /**
- * Specifies an area that has a utility. 
+ * Specifies an area that has a utility.
  */
 public class Constraint {
 
-	protected double weight=1.0;
-	
-	//The following method will be overridden by super classes (classes extending "Constraint" e.g. InclusiveHyperRectangle)
-	
-	public double getUtility(Bid bid) throws Exception {
+	protected double weight = 1.0;
+
+	// The following method will be overridden by super classes (classes
+	// extending "Constraint" e.g. InclusiveHyperRectangle)
+
+	public double getUtility(Bid bid) {
 		return 0.0;
 	}
-	
+
 	protected double getWeight() {
 		return weight;
 	}
