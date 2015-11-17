@@ -392,10 +392,6 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 
 	}
 
-	@Override
-	public void checkReadyForNegotiation(Domain dom) throws Exception {
-	}
-
 	/**
 	 * Uses the original equals of {@link Object}.
 	 */
@@ -425,4 +421,11 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 	public UtilitySpace copy() {
 		return new ConstraintUtilitySpace(this);
 	}
+
+	@Override
+	public String isComplete() {
+		return null;
+		// FIXME a real test is missing.
+	}
+
 }

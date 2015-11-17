@@ -325,4 +325,24 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 		return minBid;
 	}
 
+	/**
+	 * Check if this utility space is ready for negotiation. To be so, the
+	 * domain must match the given domain and the space must be complete.
+	 * 
+	 * @param dom
+	 *            is the domain in which nego is taking place
+	 * @throws Exception
+	 *             if utility space is incomplete (@see isComplete())
+	 */
+	public void checkReadyForNegotiation(Domain dom) throws Exception {
+		// check if utility spaces are instance of the domain
+		// following checks normally succeed, as the domain of the domain space
+		// is enforced in the loader.
+		if (!(dom.equals(getDomain())))
+			throw new Exception("domain does not match the negotiation domain");
+		String err = isComplete();
+		if (err != null)
+			throw new Exception("utility space '" + fileName
+					+ "' is incomplete\n" + err);
+	}
 }
