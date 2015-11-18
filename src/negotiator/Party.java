@@ -17,6 +17,7 @@ import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
 import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 /**
  *
@@ -27,7 +28,7 @@ import negotiator.utility.AdditiveUtilitySpace;
 public abstract class Party {
 
 	protected AgentID partyID; // unique id for each negotiating party
-	protected AbstractUtilitySpace utilitySpace;
+	protected UtilitySpace utilitySpace;
 	protected HashMap<AgentParameterVariable, AgentParamValue> parametervalues; // not
 																				// used
 																				// now
@@ -59,7 +60,7 @@ public abstract class Party {
 		this.partyID = partyID;
 	}
 
-	public AbstractUtilitySpace getUtilitySpace() {
+	public UtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 
@@ -138,8 +139,16 @@ public abstract class Party {
 		}
 	}
 
+	/**
+	 * @param bid
+	 *            the bid to compute the discounted value for
+	 * @return discounted utility:
+	 *         utilitySpace.discount(utilitySpace.getUtility(bid),
+	 *         timeline.getTime())
+	 */
 	public double getUtilityWithDiscount(Bid bid) {
-		return utilitySpace.getUtilityWithDiscount(bid, timeline);
+		return utilitySpace.discount(utilitySpace.getUtility(bid),
+				timeline.getTime());
 	}
 
 	public abstract void ReceiveMessage(Action opponentAction);

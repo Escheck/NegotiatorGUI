@@ -21,8 +21,7 @@ import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
 /**
- * The utility space couples all objectives to weights and evaluators. A
- * utilityspace currently is not bound to one agent.
+ * The additive utility space couples all objectives to weights and evaluators.
  * 
  * @author D. Tykhonov, K. Hindriks, W. Pasman
  */
@@ -218,7 +217,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *         functions.
 	 */
 	public final int getNrOfEvaluators() {
-		checkForLinearSpaceType();
 		return fEvaluators.size();
 	}
 
@@ -241,14 +239,7 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 			return null;
 	}
 
-	/**
-	 * @param bid
-	 *            of which we are interested in its utility.
-	 * @return Undiscounted utility of the given bid. Works for any utility
-	 *         space.
-	 * @throws Exception
-	 *             when bid is incomplete or invalid.
-	 */
+	@Override
 	public double getUtility(Bid bid) {
 		EVALUATORTYPE type;
 		double utility = 0, financialUtility = 0, financialRat = 0;
@@ -291,8 +282,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *             if the bid or value is null.
 	 */
 	public final double getEvaluation(int pIssueIndex, Bid bid) {
-		checkForLinearSpaceType();
-
 		Object lObj = getDomain().getObjective(pIssueIndex);
 		Evaluator lEvaluator = fEvaluators.get(lObj);
 
@@ -507,7 +496,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *         linear utility spaces.
 	 */
 	public double getWeight(int issueID) {
-		checkForLinearSpaceType();
 		// TODO geeft -1.0 terug als de weight of de eveluator niet bestaat.
 		Objective ob = getDomain().getObjective(issueID);
 		if (ob != null) {
@@ -534,7 +522,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 * @return the new weight of the issue after normalization.
 	 */
 	public double setWeight(Objective objective, double weight) {
-		checkForLinearSpaceType();
 		try {
 			Evaluator ev = fEvaluators.get(objective);
 			double oldWt = ev.getWeight();
@@ -575,7 +562,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 * @return The given evaluator.
 	 */
 	public final Evaluator addEvaluator(Objective obj, Evaluator ev) {
-		checkForLinearSpaceType();
 		fEvaluators.put(obj, ev); // replaces old value for that object-key if
 									// key already existed.
 		return ev;
@@ -586,7 +572,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *         utilityspace. Only works with linear utility spaces.
 	 */
 	public final Set<Map.Entry<Objective, Evaluator>> getEvaluators() {
-		checkForLinearSpaceType();
 		return fEvaluators.entrySet();
 	}
 
@@ -601,7 +586,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *         objective doesn't have an evaluator yet.
 	 */
 	public final boolean lock(Objective obj) {
-		checkForLinearSpaceType();
 		try {
 			fEvaluators.get(obj).lockWeight();
 		} catch (Exception e) {
@@ -621,7 +605,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 *         the objective or issue doesn't have an evaluator yet.
 	 */
 	public final boolean unlock(Objective obj) {
-		checkForLinearSpaceType();
 		try {
 			fEvaluators.get(obj).unlockWeight();
 		} catch (Exception e) {
@@ -641,7 +624,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 */
 	public final Set<Map.Entry<Objective, Evaluator>> normalizeChildren(
 			Objective obj) {
-		checkForLinearSpaceType();
 		Enumeration<Objective> childs = obj.children();
 		double RENORMALCORR = 0.05; // we add this to all weight sliders to
 									// solve the slider-stuck-at-0 problem.
@@ -714,14 +696,7 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 		return getEvaluators();
 	}
 
-	/**
-	 * Creates an xml representation (in the form of a SimpleElements) of the
-	 * utilityspace.
-	 * 
-	 * @return A representation of this utilityspace or <code>null</code> when
-	 *         there was an error.
-	 * @throws IOException
-	 */
+	@Override
 	public SimpleElement toXML() throws IOException {
 		SimpleElement root = (getDomain().getObjectivesRoot()).toXML(); // convert
 		// the
@@ -855,16 +830,13 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 		return currentLevel;
 	}
 
-	/**
-	 * Wouter: this function *should* check that the domainSubtreeP is a subtree
-	 * of the utilSubtreeP, and that all leaf nodes are complete. However
-	 * currently we only check that all the leaf nodes are complete,
-	 * 
-	 * @return null if util space is complete, else returns string containging
-	 *         explanation why not.
-	 */
 	@Override
 	public String isComplete() {
+		/**
+		 * This function *should* check that the domainSubtreeP is a subtree of
+		 * the utilSubtreeP, and that all leaf nodes are complete. However
+		 * currently we only check that all the leaf nodes are complete,
+		 */
 		// We don't have the domain template here anymore.
 		// so we can only check that all fields are filled.
 		ArrayList<Issue> issues = getDomain().getIssues();
@@ -914,4 +886,5 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	public UtilitySpace copy() {
 		return new AdditiveUtilitySpace(this);
 	}
+
 }

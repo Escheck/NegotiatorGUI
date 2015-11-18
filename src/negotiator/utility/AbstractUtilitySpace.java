@@ -6,10 +6,14 @@ import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 
 /**
- * Some default functionality to support implementation of concrete utility
- * spaces.
+ * Implements the basic functionality of UtilitySpace but does not implement the
+ * details. Adds the discountFactor as a mechanism to implement discount. A
+ * filename is remembered. Also adds default functionality to support
+ * implementation of concrete utility spaces.
  * 
- * @author W.Pasman 5nov15
+ * In the future this class may have to be split in more parts.
+ * 
+ * @author W.Pasman 5nov15 (refactor from old code).
  *
  */
 @SuppressWarnings("serial")
@@ -237,21 +241,6 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 			df = 1;
 		}
 		return df;
-	}
-
-	/**
-	 * Throws an exception is the the space type is not linear. This method is
-	 * necessary because some parts of this class assume we work with weights
-	 * and evaluators.
-	 */
-	protected void checkForLinearSpaceType() {
-		if (this instanceof AdditiveUtilitySpace
-				|| this instanceof ConstraintUtilitySpace)
-			return;
-
-		throw new IllegalStateException(
-				"This method is to be used for linear utility spaces only. This space is "
-						+ this.getClass());
 	}
 
 	/**

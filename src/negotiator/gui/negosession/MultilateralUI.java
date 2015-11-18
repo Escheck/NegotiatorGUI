@@ -34,7 +34,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import negotiator.Deadline;
 import negotiator.DeadlineType;
-import negotiator.config.GuiConfiguration;
+import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.progress.MultiPartyTournamentProgressUI;
 import negotiator.gui.progress.MultipartyNegoEventLogger;
@@ -95,7 +95,7 @@ public class MultilateralUI extends JPanel {
 	private JPanel pnlStartTournament;
 
 	// Holds the configuration for this user interface
-	private final GuiConfiguration config;
+	private final MultilateralTournamentConfiguration config;
 
 	/**
 	 * Creates a new instance of the
@@ -108,7 +108,7 @@ public class MultilateralUI extends JPanel {
 		super();
 		add(pnlRoot);
 		setVisible(true);
-		config = new GuiConfiguration();
+		config = new MultilateralTournamentConfiguration();
 
 		// set config defaults
 		config.setDeadline(new Deadline(180, DeadlineType.TIME));
@@ -401,7 +401,7 @@ public class MultilateralUI extends JPanel {
 					progressUI);
 
 			final TournamentManager manager = new TournamentManager(
-					new GuiConfiguration(config));
+					new MultilateralTournamentConfiguration(config));
 
 			manager.addEventListener(progressUI);
 			manager.addEventListener(dataModel);
