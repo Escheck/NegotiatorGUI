@@ -5,7 +5,7 @@ import java.util.List;
 
 import negotiator.Deadline;
 import negotiator.DeadlineType;
-import negotiator.config.GuiConfiguration;
+import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.repository.DomainRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -13,7 +13,8 @@ import negotiator.repository.RepItem;
 import negotiator.repository.Repository;
 import negotiator.session.Session;
 
-public class AutomatedTournamentConfiguration extends GuiConfiguration {
+public class AutomatedTournamentConfiguration extends
+		MultilateralTournamentConfiguration {
 
 	/**
 	 * Number of agents in each test run (make sure that this is reflected in

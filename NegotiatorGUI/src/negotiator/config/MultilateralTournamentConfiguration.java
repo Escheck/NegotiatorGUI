@@ -86,7 +86,7 @@ public class MultilateralTournamentConfiguration implements
 		partyProfileItems = new ArrayList<ProfileRepItem>();
 	}
 
-	public MultilateralTournamentConfiguration(GuiConfiguration config) {
+	public MultilateralTournamentConfiguration(MultilateralTournamentConfiguration config) {
 		setDeadline(config.getDeadline());
 		this.mediatorItem = config.getMediatorItem();
 		this.partyItems = new ArrayList<PartyRepItem>(config.getPartyItems());

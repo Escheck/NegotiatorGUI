@@ -13,13 +13,13 @@ import negotiator.Domain;
 import negotiator.xml.SimpleDOMParser;
 import negotiator.xml.SimpleElement;
 
+@SuppressWarnings("serial")
 public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 
 	private HashMap<Integer, Rank> rankingofIssues;
 	private ArrayList<Integer> issueIndices;
 	private HashMap<Integer, ArrayList<RConstraint>> contraintList;
 	private ArrayList<ZeroOutcomeContraint> zeroOutcomeConstraints;
-	private String fileName;
 	private SimpleElement fXMLRoot;
 
 	public ConstraintUtilitySpace() {

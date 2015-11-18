@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import negotiator.Bid;
 import negotiator.BidHistory;
-import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 /**
  * This stores the bidding history and the {@link SimpleBidSpace}. Notice that
@@ -36,7 +36,7 @@ public class HistorySpace {
 	 * @param my
 	 * @param other
 	 */
-	void setUtilities(AbstractUtilitySpace my, AbstractUtilitySpace other) {
+	void setUtilities(UtilitySpace my, UtilitySpace other) {
 		outcomeSpace = new SimpleBidSpace(my, other);
 
 	}
