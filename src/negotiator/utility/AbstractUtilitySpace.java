@@ -268,23 +268,6 @@ public abstract class AbstractUtilitySpace implements UtilitySpace {
 	}
 
 	/**
-	 * @return type of the space. Note, you can just as well use instanceof
-	 */
-	public UTILITYSPACETYPE getType() {
-		if (this instanceof AdditiveUtilitySpace) {
-			return UTILITYSPACETYPE.LINEAR;
-		}
-		if (this instanceof NonlinearUtilitySpace) {
-			return UTILITYSPACETYPE.NONLINEAR;
-		}
-		if (this instanceof ConstraintUtilitySpace) {
-			return UTILITYSPACETYPE.CONSTRAINT;
-		}
-
-		return null;
-	}
-
-	/**
 	 * Returns the worst bid in the utility space. This is only supported for
 	 * linear utility spaces.
 	 * 
