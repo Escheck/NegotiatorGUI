@@ -55,7 +55,7 @@ public class Group3 extends AbstractNegotiationParty {
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID) {
-
+		super.init(utilSpace, deadline, timeline, randomSeed, agentID);
 		System.out.println("\n");
 		System.out.println("####### STARTING SESSION #########");
 		System.out.println("Initializing Agent");
