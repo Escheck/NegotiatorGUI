@@ -36,6 +36,7 @@ public class Group12 extends AbstractNegotiationParty {
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
 			TimeLineInfo tl, long randomSeed, AgentID agentId) {
+		super.init(utilSpace, dl, tl, randomSeed, agentId);
 		resetValues();
 	}
 
