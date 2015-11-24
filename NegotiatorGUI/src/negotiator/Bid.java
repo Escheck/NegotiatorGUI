@@ -23,10 +23,8 @@ import negotiator.issue.ValueReal;
 import negotiator.xml.SimpleElement;
 
 /**
- * 
- * 
- * Wouter: a bid is a set of <idnumber,value> pairs, where idnumber is the
- * unique number of the issue, and value is the picked alternative.
+ * A bid is a set of <idnumber,value> pairs, where idnumber is the unique number
+ * of the issue, and value is the picked alternative.
  * <p>
  * Bid is a final object that can not be changed. But you can create modified
  * copies using {@link #putValue(int, Value)}.

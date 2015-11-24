@@ -4,9 +4,10 @@ import negotiator.Bid;
 import negotiator.BidIterator;
 
 /**
- * Some utility functions that work on a utility space. Works as an add-on on a
- * given {@link UtilitySpace}. Does not extend it, so that receivers of an
- * abstract {@link UtilitySpace} can connect it with these tools too.
+ * Companion class to {@link UtilitySpace}. Some utility functions that work on
+ * a utility space. Works as an add-on on a given {@link UtilitySpace}. Does not
+ * extend it, so that receivers of an abstract {@link UtilitySpace} can connect
+ * it with these tools too.
  * <p>
  * This is a class, not a set of static functions, to allow caching of results
  * (not yet used).
