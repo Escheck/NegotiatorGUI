@@ -15,7 +15,6 @@ import negotiator.issue.ValueReal;
 import negotiator.session.Timeline;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
-import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.UtilitySpace;
 
@@ -96,7 +95,7 @@ public abstract class Party {
 	 *            parameters of the agent
 	 */
 	public final void internalInit(int sessionNo, DeadlineType deadlineType,
-			int totalRoundOrTime, AbstractUtilitySpace us,
+			int totalRoundOrTime, UtilitySpace us,
 			HashMap<AgentParameterVariable, AgentParamValue> params) {
 		this.setSessionNo(sessionNo);
 		this.setDeadlineType(deadlineType);
