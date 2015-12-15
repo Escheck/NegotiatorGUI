@@ -42,7 +42,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	SortedOutcomeSpace outcomespace;
 
 	/**
-	 * Empty constructor used for reflexion. Note this constructor assumes that
+	 * Empty constructor used for reflection. Note this constructor assumes that
 	 * init is called next.
 	 */
 	public TimeDependent_Offering() {
