@@ -1,7 +1,7 @@
 <negotiation_template number_of_sessions="1">
 	<utility_space number_of_issues="0">
 		<objective index="0" etype="objective" type="objective"
-			description="" name="GratchDomain">
+			description="" name="AuctionWarsDomain">
 			
 			<issue index="1" etype="discrete" type="discrete" vtype="discrete"
 				name="Records">
