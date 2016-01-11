@@ -36,7 +36,7 @@ import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.session.Session;
 import negotiator.session.SessionManager;
-import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -364,8 +364,8 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		return bidSeries;
 	}
 
-	private List<AbstractUtilitySpace> getUtilitySpaces() {
-		List<AbstractUtilitySpace> spaces = new ArrayList<AbstractUtilitySpace>();
+	private List<UtilitySpace> getUtilitySpaces() {
+		List<UtilitySpace> spaces = new ArrayList<UtilitySpace>();
 		for (NegotiationPartyInternal party : MediatorProtocol
 				.getNonMediators(parties))
 			spaces.add(party.getUtilitySpace());
@@ -386,7 +386,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 
 			currentBid = lBidIter.next();
 
-			for (AbstractUtilitySpace utilitySpace : getUtilitySpaces())
+			for (UtilitySpace utilitySpace : getUtilitySpaces())
 				tempProduct *= utilitySpace.getUtility(currentBid);
 
 			if (tempProduct > nashProduct) {

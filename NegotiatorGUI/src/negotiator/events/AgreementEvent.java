@@ -18,6 +18,7 @@ import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Indicates that an agreement was reached.
@@ -106,8 +107,13 @@ public class AgreementEvent extends NegotiationEvent {
 
 			List<String> files = new ArrayList<String>();
 			for (NegotiationPartyInternal agent : agents) {
-				File utilfile = new File(agent.getUtilitySpace().getFileName());
-				files.add(utilfile.getName());
+				String name = "-";
+				if (agent.getUtilitySpace() instanceof AbstractUtilitySpace) {
+					name = new File(
+							((AbstractUtilitySpace) agent.getUtilitySpace())
+									.getFileName()).getName();
+				}
+				files.add(name);
 			}
 			values.put(DataKey.FILES, files);
 

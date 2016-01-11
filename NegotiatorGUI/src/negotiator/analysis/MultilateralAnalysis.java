@@ -12,9 +12,9 @@ import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
-import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.UtilitySpace;
+import negotiator.utility.UtilitySpaceTools;
 
 /**
  * Start on analysis of the multi party tournament. Code in this class is mainly
@@ -54,7 +54,7 @@ public class MultilateralAnalysis {
 	/**
 	 * Collection of utility spaces constituting the space.
 	 */
-	private AbstractUtilitySpace[] utilitySpaces;
+	private UtilitySpace[] utilitySpaces;
 
 	/**
 	 * Domain of the utility spaces.
@@ -80,11 +80,7 @@ public class MultilateralAnalysis {
 			for (int i = 0; i < utilitySpaces.length; i++)
 				utils[i] = 0.0;
 		else
-			for (int i = 0; i < utilitySpaces.length; i++) {
-				utils[i] = timeline == null ? utilitySpaces[i]
-						.getUtility(finalBid) : utilitySpaces[i]
-						.getUtilityWithDiscount(finalBid, timeline);
-			}
+			utils = getUtils(finalBid);
 		agreement = new BidPoint(finalBid, utils);
 
 		// System.out.println("done");
@@ -130,11 +126,11 @@ public class MultilateralAnalysis {
 		return bidSeries;
 	}
 
-	public AbstractUtilitySpace[] getUtilitySpaces(
+	public UtilitySpace[] getUtilitySpaces(
 			List<NegotiationPartyInternal> parties) {
 		List<NegotiationPartyInternal> agents = MediatorProtocol
 				.getNonMediators(parties);
-		AbstractUtilitySpace[] spaces = new AbstractUtilitySpace[agents.size()];
+		UtilitySpace[] spaces = new UtilitySpace[agents.size()];
 		for (int i = 0; i < agents.size(); i++)
 			spaces[i] = agents.get(i).getUtilitySpace();
 		return spaces;
@@ -166,18 +162,26 @@ public class MultilateralAnalysis {
 				break;
 			}
 			Bid bid = lBidIterator.next();
-			Double[] utils = new Double[utilitySpaces.length];
-			for (int i = 0; i < utilitySpaces.length; i++) {
-				utils[i] = timeline == null ? utilitySpaces[i].getUtility(bid)
-						: utilitySpaces[i]
-								.getUtilityWithDiscount(bid, timeline);
-			}
+			Double[] utils = getUtils(bid);
 			if (excludeBids) {
 				bidPoints.add(new BidPoint(null, utils));
 			} else {
 				bidPoints.add(new BidPoint(bid, utils));
 			}
 		}
+	}
+
+	/**
+	 * @return current utility values for all parties as an array
+	 */
+	private Double[] getUtils(Bid bid) {
+		Double[] utils = new Double[utilitySpaces.length];
+		for (int i = 0; i < utilitySpaces.length; i++) {
+			UtilitySpace us = utilitySpaces[i];
+			utils[i] = timeline == null ? us.getUtility(bid) : us.discount(
+					us.getUtility(bid), timeline.getTime());
+		}
+		return utils;
 	}
 
 	/**
@@ -204,11 +208,7 @@ public class MultilateralAnalysis {
 			int count = 0;
 			while (lBidIterator.hasNext() && count < ENUMERATION_CUTOFF) {
 				Bid bid = lBidIterator.next();
-				Double[] utils = new Double[utilitySpaces.length];
-				for (int i = 0; i < utilitySpaces.length; i++)
-					utils[i] = timeline == null ? utilitySpaces[i]
-							.getUtility(bid) : utilitySpaces[i]
-							.getUtilityWithDiscount(bid, timeline);
+				Double[] utils = getUtils(bid);
 				tmpBidPoints.add(new BidPoint(bid, utils));
 				count++;
 				if (count > 500000) {
@@ -276,7 +276,7 @@ public class MultilateralAnalysis {
 	 * @throws Exception
 	 *             if one of the utility spaces is null.
 	 */
-	private void initializeUtilitySpaces(AbstractUtilitySpace[] utilitySpaces)
+	private void initializeUtilitySpaces(UtilitySpace[] utilitySpaces)
 			throws Exception {
 		this.utilitySpaces = utilitySpaces.clone();
 
@@ -286,8 +286,9 @@ public class MultilateralAnalysis {
 
 		domain = this.utilitySpaces[0].getDomain();
 
-		for (AbstractUtilitySpace space : utilitySpaces)
-			space.checkReadyForNegotiation(domain);
+		for (UtilitySpace space : utilitySpaces) {
+			new UtilitySpaceTools(space).checkReadyForNegotiation(domain);
+		}
 	}
 
 	public double getSocialWelfare() {
