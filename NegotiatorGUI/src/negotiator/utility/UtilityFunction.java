@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import negotiator.Bid;
 
+/**
+ * Implements part of {@link NonlinearUtilitySpace}. Needs more documentation.
+ *
+ */
 public class UtilityFunction {
 
 	private AGGREGATIONTYPE aggregationType;

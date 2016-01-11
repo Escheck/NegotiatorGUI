@@ -174,7 +174,7 @@ public class CsvLogger implements Closeable {
 			// discounted and agreement
 			boolean isDiscounted = false;
 			for (NegotiationPartyInternal party : parties)
-				isDiscounted |= party.getUtilitySpace().isDiscounted();
+				isDiscounted |= (party.getUtilitySpace().discount(1, 1) != 1);
 			values.add(agreement == null ? "No" : "Yes");
 			values.add(isDiscounted ? "Yes" : "No");
 

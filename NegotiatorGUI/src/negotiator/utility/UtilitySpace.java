@@ -24,14 +24,19 @@ public interface UtilitySpace extends Serializable {
 	 * @param bid
 	 *            of which we are interested in its utility.
 	 * @return Utility of the given bid. This utility is undiscounted: there is
-	 *         no time dependent devaluation of the utility.
+	 *         no time dependent devaluation of the utility. See also
+	 *         {@link #discount(double, double)}.
+	 * @throws (may throw) if the Bid's {@link Domain} does not match our
+	 *         domain.
 	 */
 
 	public double getUtility(Bid bid);
 
 	/**
 	 * Computes the discounted utility of a bid. The actual implementation is
-	 * implementation specific.
+	 * implementation specific but we assume that this function is monotonically
+	 * decreasing so that the discount at time 1.0 gives the biggest possible
+	 * discount.
 	 * 
 	 * @param util
 	 *            the undiscounted utility as coming from
@@ -39,6 +44,7 @@ public interface UtilitySpace extends Serializable {
 	 * @param time
 	 *            a real number in the range [0,1] where 0 is the start of the
 	 *            negotiation and 1 the end. See also {@link TimeLineInfo}.
+	 * @return the time-discounted utility at given time.
 	 */
 	public Double discount(double util, double time);
 

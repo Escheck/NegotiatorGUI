@@ -68,7 +68,7 @@ public class AgreementEvent extends NegotiationEvent {
 			// discounted and agreement
 			boolean isDiscounted = false;
 			for (NegotiationPartyInternal party : parties)
-				isDiscounted |= party.getUtilitySpace().isDiscounted();
+				isDiscounted |= (party.getUtilitySpace().discount(1, 1) != 1);
 			values.put(DataKey.IS_AGREEMENT, agreement == null ? "No" : "Yes");
 			values.put(DataKey.IS_DISCOUNT, isDiscounted ? "Yes" : "No");
 
