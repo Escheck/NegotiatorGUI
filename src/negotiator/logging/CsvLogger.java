@@ -20,6 +20,7 @@ import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.session.Session;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Logger interface that writes the log to a comma separated value file (.csv
@@ -201,8 +202,15 @@ public class CsvLogger implements Closeable {
 				values.add("" + agent);
 			for (double util : utils)
 				values.add(format("%.5f", util));
-			for (NegotiationPartyInternal agent : agents)
-				values.add(stripPath(agent.getUtilitySpace().getFileName()));
+			for (NegotiationPartyInternal agent : agents) {
+				String name = "-";
+				if (agent.getUtilitySpace() instanceof AbstractUtilitySpace) {
+					name = stripPath(((AbstractUtilitySpace) agent
+							.getUtilitySpace()).getFileName());
+				}
+				values.add(name);
+
+			}
 
 		} catch (Exception e) {
 			values.add("EXCEPTION OCCURRED");

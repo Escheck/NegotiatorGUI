@@ -9,6 +9,7 @@ import negotiator.session.RepositoryException;
 import negotiator.session.Session;
 import negotiator.session.Timeline;
 import negotiator.utility.AbstractUtilitySpace;
+import negotiator.utility.UtilitySpace;
 
 /**
  * Only for use in the core. Keeps a NegotiationParty along with core-private
@@ -206,7 +207,7 @@ public class NegotiationPartyInternal {
 	 *
 	 * @return the agent's utility space
 	 */
-	public AbstractUtilitySpace getUtilitySpace() {
+	public UtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
 
