@@ -19,7 +19,7 @@ import negotiator.utility.UtilitySpace;
  */
 public class NegotiationPartyInternal {
 	private NegotiationParty party;
-	private AbstractUtilitySpace utilitySpace;
+	private UtilitySpace utilitySpace;
 	private Session session;
 	private AgentID agentId;
 
@@ -82,7 +82,6 @@ public class NegotiationPartyInternal {
 		} catch (Exception e) {
 			throw new RepositoryException("failed to load " + partyRepItem, e);
 		}
-		// createInstance(partyRepItem, profileRepItem, session);
 		party.init((AbstractUtilitySpace) utilitySpace.copy(),
 				session.getDeadlines(), session.getTimeline(), randomSeed,
 				getAgentId());
@@ -103,53 +102,6 @@ public class NegotiationPartyInternal {
 					+ hashCode());
 		}
 		return agentId;
-	}
-
-	/**
-	 * Creates a new Party from repository items, but does not yet call init.
-	 *
-	 * @param partyRepItem
-	 *            Party Repository item to createFrom party from
-	 * @param profileRepItem
-	 *            Profile Repository item to createFrom party from
-	 * @return new Party
-	 * @throws RepositoryException
-	 * @throws java.lang.NoSuchMethodException
-	 *             If requested Party does not have a constructor accepting only
-	 *             preference profiles
-	 * @throws java.lang.ClassNotFoundException
-	 *             If requested Party class can not be found.
-	 * @throws java.lang.Exception
-	 *             If
-	 *             {@link negotiator.repository.Repository#copyFrom(negotiator.repository.Repository)}
-	 *             throws an exception.
-	 */
-	@SuppressWarnings("unchecked")
-	private NegotiationParty createInstance(PartyRepItem partyRepItem,
-			ProfileRepItem profileRepItem, Session session)
-			throws RepositoryException, NegotiatorException {
-		Exception exception = null;
-		String extraMessage = "";
-
-		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class<? extends NegotiationParty> partyClass;
-		try {
-			partyClass = (Class<? extends NegotiationParty>) loader
-					.loadClass(partyRepItem.getClassPath());
-
-			return (NegotiationParty) partyClass.getConstructor().newInstance();
-		} catch (NoSuchMethodException e) {
-			extraMessage = ": no public default constructor was found";
-			exception = e;
-		} catch (Exception e) {
-			exception = e;
-		}
-
-		// if we get here there was an exception.
-		throw new NegotiatorException(
-				"An exception occured while creating agent "
-						+ partyRepItem.getName() + " using profile "
-						+ profileRepItem + extraMessage, exception);
 	}
 
 	/**
@@ -196,8 +148,8 @@ public class NegotiationPartyInternal {
 			return getUtility(bid);
 		} else {
 			// otherwise, return discounted utility
-			return utilitySpace.getUtilityWithDiscount(bid,
-					session.getTimeline());
+			return utilitySpace.discount(utilitySpace.getUtility(bid), session
+					.getTimeline().getTime());
 		}
 
 	}
