@@ -6,10 +6,10 @@ import negotiator.session.TimeLineInfo;
 import negotiator.session.Timeline;
 
 /**
- * Implements the basic functionality of UtilitySpace but does not implement the
- * details. Adds the discountFactor as a mechanism to implement discount. A
- * filename is remembered. Also adds default functionality to support
- * implementation of concrete utility spaces.
+ * Implements the basic functionality of {@link UtilitySpace} but does not
+ * implement the details. Adds the discountFactor as a mechanism to implement
+ * discount. A filename is remembered. Also adds default functionality to
+ * support implementation of concrete utility spaces.
  * 
  * In the future this class may have to be split in more parts.
  * 
