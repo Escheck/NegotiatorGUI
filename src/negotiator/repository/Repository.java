@@ -116,7 +116,7 @@ public class Repository {
 	public AgentRepItem getAgentOfClass(String className) {
 		for (RepItem it : items) {
 			if (it instanceof AgentRepItem)
-				if (((AgentRepItem) it).classPath.equals(className))
+				if (((AgentRepItem) it).getClassPath().equals(className))
 					return (AgentRepItem) it;
 		}
 		return null;
