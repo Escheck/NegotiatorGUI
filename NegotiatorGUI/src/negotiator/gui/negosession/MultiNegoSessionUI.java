@@ -156,7 +156,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 			if (!partyPath.equals(protocolPath))
 				continue;
 
-			if (((PartyRepItem) prt).getIsMediator())
+			if (((PartyRepItem) prt).isMediator())
 				cmbMediatorStr
 						.addItem(new PartyComboBoxItem((PartyRepItem) prt));
 			else
@@ -227,7 +227,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 					if (!partyPath.equals(protocolPath))
 						continue;
 
-					if (((PartyRepItem) prt).getIsMediator())
+					if (((PartyRepItem) prt).isMediator())
 						cmbMediatorStr.addItem(new PartyComboBoxItem(
 								(PartyRepItem) prt));
 					else
@@ -274,7 +274,7 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 		Session session = new Session(deadline);
 
 		// Second the list of agent
-		if (selectedPartyRepItems.get(0).getIsMediator()) {
+		if (selectedPartyRepItems.get(0).isMediator()) {
 			PartyRepItem mediator = selectedPartyRepItems.get(0);
 			List<PartyRepItem> agents = selectedPartyRepItems.subList(1,
 					selectedPartyRepItems.size());

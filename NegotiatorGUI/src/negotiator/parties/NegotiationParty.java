@@ -47,7 +47,7 @@ public interface NegotiationParty {
 	 *
 	 * @param utilSpace
 	 *            (a copy of/readonly version of) the
-	 *            {@link AdditiveUtilitySpace} to be used for this session.
+	 *            {@link AbstractUtilitySpace} to be used for this session.
 	 * @param timeline
 	 *            The {@link TimeLineInfo} about current session.
 	 * @param agentID

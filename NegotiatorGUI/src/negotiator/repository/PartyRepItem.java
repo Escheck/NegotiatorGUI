@@ -3,7 +3,6 @@ package negotiator.repository;
 import static negotiator.repository.Property.IS_MEDIATOR;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +21,12 @@ import negotiator.parties.NegotiationParty;
  * @author David Festen added the properties list
  */
 
+@SuppressWarnings("serial")
 @XmlRootElement
 public class PartyRepItem implements RepItem {
-	/**
-	 * getVersion is bit involved, need to call the agent getVersion() to get it
-	 */
-	private static final Class[] parameters = new Class[] { URL.class };
 
-	/**************************** PRIVATE FIELDS. DO NOT ACCESS DIRECTLY!!! **********************/
-	// only public to enable XML serialization JAXB.
-	// These fields are all just cached results from the real agent object.
 	@XmlAttribute
-	String partyName; // must be short version of class path.
+	private String partyName; // must be short version of class path.
 
 	/**
 	 * This can be two things:
@@ -46,31 +39,32 @@ public class PartyRepItem implements RepItem {
 	 * </ul>
 	 * */
 	@XmlAttribute
-	String classPath = "";
+	private String classPath = "";
 	/**
 	 * file path including the class name
 	 */
 
 	@XmlAttribute
-	String description = "";
+	private String description = "";
 	/**
 	 * description of this agent
 	 */
 
 	@XmlAttribute
-	String protocolClassPath = "";
+	private String protocolClassPath = "";
 
 	/**
 	 * Completely unused, we need to figure this out.
 	 */
 	@XmlElementWrapper(name = "properties")
 	@XmlElement(name = "property")
-	List<String> properties = new ArrayList<String>();
+	private List<String> properties = new ArrayList<String>();
 
 	/**
-	 * Do not use this: It's only here to support XML de-serialization.
+	 * needed to support XML de-serialization.
 	 */
-	public PartyRepItem() {
+	@SuppressWarnings("unused")
+	private PartyRepItem() {
 	}
 
 	/**
@@ -144,13 +138,13 @@ public class PartyRepItem implements RepItem {
 		return description;
 	}
 
-	public Boolean getIsMediator() {
+	public Boolean isMediator() {
 		return properties.contains(IS_MEDIATOR);
 	} // RA
 
 	public String toString() {
 		return "PartyRepositoryItem[" + partyName + "," + classPath + ","
-				+ description + ", is mediator=" + getIsMediator().toString()
+				+ description + ", is mediator=" + isMediator().toString()
 				+ "]";
 	} // RA
 }
