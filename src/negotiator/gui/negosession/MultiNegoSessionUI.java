@@ -6,6 +6,7 @@
 package negotiator.gui.negosession;
 
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1122,7 +1123,8 @@ public class MultiNegoSessionUI extends javax.swing.JPanel {
 						.add(((ProfileComboBoxItem) cmbMediatorPref
 								.getSelectedItem()).profile);
 			else
-				selectedProfileRepItems.add(new ProfileRepItem());
+				selectedProfileRepItems.add(new ProfileRepItem(new URL(
+						"file:uninstantiatedProfilerepitem"), null));
 
 			selectedPartyParams
 					.add(new HashMap<AgentParameterVariable, AgentParamValue>());

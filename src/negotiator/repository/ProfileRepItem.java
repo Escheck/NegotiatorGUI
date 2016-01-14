@@ -26,12 +26,14 @@ import negotiator.utility.UtilitySpace;
 public class ProfileRepItem implements RepItem {
 	private static final long serialVersionUID = -5071749178482314158L;
 	@XmlAttribute
-	URL url; // URL is not accepted by JAXB xml thingie. We convert in getURL().
-	@XmlTransient
-	DomainRepItem domain;
+	private URL url;
 
-	/** This creator is not for public use, only to keep XML parser happy... */
-	public ProfileRepItem() {
+	@XmlTransient
+	private DomainRepItem domain;
+
+	/** needed by XML serializer */
+	@SuppressWarnings("unused")
+	private ProfileRepItem() {
 		try {
 			url = new URL("file:uninstantiatedProfilerepitem");
 		} catch (Exception e) {
