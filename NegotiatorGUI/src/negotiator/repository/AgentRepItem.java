@@ -26,7 +26,7 @@ public class AgentRepItem implements RepItem {
 	 * during a negotiation.
 	 */
 	@XmlAttribute
-	String agentName;
+	private String agentName;
 
 	/**
 	 * This can now be two things:
@@ -41,13 +41,13 @@ public class AgentRepItem implements RepItem {
 	 * {@see #load()}
 	 * */
 	@XmlAttribute
-	String classPath;
+	private String classPath;
 	/** description of this agent */
 	@XmlAttribute
-	String description;
+	private String description;
 	/** Parameters of the agent, for example a concession parameter */
 	@XmlAttribute
-	String params;
+	private String params;
 
 	/**
 	 * @return true if agentName and classPath equal. Note that agentName alone
@@ -61,10 +61,10 @@ public class AgentRepItem implements RepItem {
 	}
 
 	/**
-	 * Empty constructor. Do not use. Only here and public because the XML
-	 * serializer needs it.
+	 * XML serializer needs this.
 	 */
-	public AgentRepItem() {
+	@SuppressWarnings("unused")
+	private AgentRepItem() {
 	}
 
 	public AgentRepItem(String aName, String cPath, String desc) {
