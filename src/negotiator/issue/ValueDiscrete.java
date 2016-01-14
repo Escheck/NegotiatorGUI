@@ -18,10 +18,8 @@ public class ValueDiscrete extends Value {
 	@XmlAttribute
 	private String value;
 
-	/**
-	 * Creates a discrete value without name.
-	 */
-	public ValueDiscrete() {
+	@SuppressWarnings("unused")
+	private ValueDiscrete() {
 	}
 
 	/**
