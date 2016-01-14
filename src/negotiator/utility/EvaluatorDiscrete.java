@@ -39,12 +39,12 @@ public class EvaluatorDiscrete implements Evaluator {
 	// Since 8oct07: only POSITIVE integer values acceptable as evaluation
 	// value.
 
-	// Class fields
 	private double fweight; // the weight of the evaluated Objective or Issue.
 	private boolean fweightLock;
 	private HashMap<ValueDiscrete, Double> fEval;
 	private Double evalMax = null;
-	private DecimalFormat f = new DecimalFormat("0.00");
+
+	private static final DecimalFormat f = new DecimalFormat("0.00");
 
 	/**
 	 * Creates a new discrete evaluator with weight 0 and no values.
@@ -263,6 +263,15 @@ public class EvaluatorDiscrete implements Evaluator {
 		fEval.clear();
 	}
 
+	/**
+	 * Loads {@link #fEval} from a SimpleElement containing something like this:
+	 * {@code
+	 * 			<item index="1" description="Buy bags of chips and party nuts for all guests."
+				value="Chips and Nuts" cost="100.0" evaluation="3">}.
+	 * 
+	 * Only the value and evaluation are used, the rest is ignored. NOTICE: the
+	 * fWeight of this EvaluatorDiscrete is not set.
+	 */
 	public void loadFromXML(SimpleElement pRoot) {
 		Object[] xml_items = ((SimpleElement) pRoot).getChildByTagName("item");
 		int nrOfValues = xml_items.length;
