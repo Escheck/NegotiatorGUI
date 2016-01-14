@@ -13,10 +13,15 @@ public class ValueReal extends Value {
 	 * 
 	 */
 	private static final long serialVersionUID = 8695408707220542052L;
+
 	@XmlAttribute
 	private double value;
 
-	public ValueReal() {
+	/**
+	 * only for XML deserialization.
+	 */
+	@SuppressWarnings("unused")
+	private ValueReal() {
 	}
 
 	public ValueReal(double r) {
