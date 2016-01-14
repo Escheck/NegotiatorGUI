@@ -38,11 +38,14 @@ public final class Bid implements XMLable, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -7723017380013100614L;
-	// Class fields
+
 	private final Domain fDomain;
+
+	/**
+	 * the bid values for each IssueID
+	 */
 	@XmlElement(name = "values")
 	@XmlJavaTypeAdapter(MyMapAdapter.class)
-	// Wouter: the bid values for each IssueID
 	private HashMap<Integer, Value> fValues;
 
 	/**
