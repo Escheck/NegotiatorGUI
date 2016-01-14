@@ -3,39 +3,46 @@ package negotiator.repository;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import negotiator.Party;
-
 @XmlRootElement
 public class MultiPartyProtocolRepItem implements RepItem {
 
 	@XmlAttribute
-	String protocolName; 
-	/**  the key: short but unique name of the protocol as it will be known in the nego system.
-	 						* This is an arbitrary but unique label for this protocol.	 						 */
+	private String protocolName;
+	/**
+	 * the key: short but unique name of the protocol as it will be known in the
+	 * nego system. This is an arbitrary but unique label for this protocol.
+	 */
 	@XmlAttribute
-	String classPath; /** file path including the class name */
+	private String classPath;
+	/** file path including the class name */
 	@XmlAttribute
-	String description; /** description of this agent */
-	
-	@XmlAttribute  //RA: For multiparty negotiation, there are two type of agents: mediator and negotiating party
-	Boolean hasMediator; /** whether the protocol involves a mediator */
-	
-	@XmlAttribute // If there is a mediator, does it have any preference profile?
-	Boolean hasMediatorProfile;
+	private String description;
+	/** description of this agent */
+
+	@XmlAttribute
+	// RA: For multiparty negotiation, there are two type of agents: mediator
+	// and negotiating party
+	private Boolean hasMediator;
+	/** whether the protocol involves a mediator */
+
+	@XmlAttribute
+	// If there is a mediator, does it have any preference profile?
+	private Boolean hasMediatorProfile;
 
 	public MultiPartyProtocolRepItem() {
-	
+
 	}
-	
-	public MultiPartyProtocolRepItem(String protocolName, String classPath, String description, Boolean mediator, Boolean hasMediatorProfile) {
+
+	public MultiPartyProtocolRepItem(String protocolName, String classPath,
+			String description, Boolean mediator, Boolean hasMediatorProfile) {
 		super();
 		this.protocolName = protocolName;
 		this.classPath = classPath;
 		this.description = description;
-		this.hasMediator=mediator;		//RA
-		this.hasMediatorProfile=hasMediatorProfile;
+		this.hasMediator = mediator; // RA
+		this.hasMediatorProfile = hasMediatorProfile;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -47,12 +54,14 @@ public class MultiPartyProtocolRepItem implements RepItem {
 		result = prime * result
 				+ ((protocolName == null) ? 0 : protocolName.hashCode());
 		result = prime * result
-				+ ((hasMediator == null) ? 0 : hasMediator.hashCode()); //RA
-		result = prime * result
-				+ ((hasMediatorProfile == null) ? 0 : hasMediatorProfile.hashCode()); //RA
+				+ ((hasMediator == null) ? 0 : hasMediator.hashCode()); // RA
+		result = prime
+				* result
+				+ ((hasMediatorProfile == null) ? 0 : hasMediatorProfile
+						.hashCode()); // RA
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,28 +76,28 @@ public class MultiPartyProtocolRepItem implements RepItem {
 				return false;
 		} else if (!classPath.equals(other.classPath))
 			return false;
-		
+
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		
+
 		if (protocolName == null) {
 			if (other.protocolName != null)
 				return false;
 		} else if (!protocolName.equals(other.protocolName))
-			return false;		   
-		
-		if (hasMediator == null) { //RA
+			return false;
+
+		if (hasMediator == null) { // RA
 			if (other.hasMediator != null)
 				return false;
-		} else if (hasMediator!=other.hasMediator)
+		} else if (hasMediator != other.hasMediator)
 			return false;
-			
+
 		return true;
 	}
-	
+
 	/** Getters and Setters **/
 	public String getName() {
 		return protocolName;
@@ -101,13 +110,13 @@ public class MultiPartyProtocolRepItem implements RepItem {
 	public String getDescription() {
 		return description;
 	}
-	
-	public Boolean getHasMediator() { //RA
+
+	public Boolean getHasMediator() { // RA
 		return hasMediator;
-	}	
-	
-	public Boolean getHasMediatorProfile() { //RA
+	}
+
+	public Boolean getHasMediatorProfile() { // RA
 		return hasMediatorProfile;
 	}
-	
+
 }

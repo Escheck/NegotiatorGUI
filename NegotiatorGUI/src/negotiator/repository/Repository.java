@@ -161,7 +161,7 @@ public class Repository {
 		Repository domRep = get_domain_repos();
 		DomainRepItem domainRepItem = null;
 		for (RepItem tmp : domRep.getItems()) {
-			if (((DomainRepItem) tmp).url.toString().equals(name)) {
+			if (((DomainRepItem) tmp).getURL().toString().equals(name)) {
 				domainRepItem = (DomainRepItem) tmp;
 				break;
 			}
