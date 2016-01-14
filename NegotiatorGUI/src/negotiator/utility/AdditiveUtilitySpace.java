@@ -32,11 +32,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	 */
 	private static final long serialVersionUID = 8746748105840831474L;
 
-	/*
-	 * Added by Dmytro: I need the XMLRoot for the utility space to load the
-	 * Similarity functions in the Similarity agent
-	 */
-	protected SimpleElement fXMLRoot;
 	private Map<Objective, Evaluator> fEvaluators; // changed to use Objective.
 													// TODO check casts.
 
@@ -111,7 +106,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 			// especially, objectives (the non-Issues) won't generally have an
 			// evlauator.
 		}
-		fXMLRoot = us.getXMLRoot();
 		setDiscount(us.getDiscountFactor());
 	}
 
@@ -206,13 +200,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 	}
 
 	/**
-	 * @return XML root of this utilityspace.
-	 */
-	protected SimpleElement getXMLRoot() {
-		return fXMLRoot;
-	}
-
-	/**
 	 * @return number of issues. This can only be used for linear utility
 	 *         functions.
 	 */
@@ -299,7 +286,6 @@ public class AdditiveUtilitySpace extends AbstractUtilitySpace {
 		BufferedReader file = new BufferedReader(new FileReader(new File(
 				filename)));
 		SimpleElement root = parser.parse(file);
-		fXMLRoot = root;
 		return loadTreeRecursive(root);
 	}
 

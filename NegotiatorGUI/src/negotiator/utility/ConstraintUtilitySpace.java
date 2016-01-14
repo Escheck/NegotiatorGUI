@@ -20,7 +20,8 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 	private ArrayList<Integer> issueIndices;
 	private HashMap<Integer, ArrayList<RConstraint>> contraintList;
 	private ArrayList<ZeroOutcomeContraint> zeroOutcomeConstraints;
-	private SimpleElement fXMLRoot;
+
+	// private SimpleElement fXMLRoot;
 
 	public ConstraintUtilitySpace() {
 		super(new Domain());
@@ -51,7 +52,7 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 			BufferedReader file = new BufferedReader(new FileReader(new File(
 					fileName)));
 			SimpleElement root = parser.parse(file);
-			fXMLRoot = root;
+			// fXMLRoot = root;
 			loadConstraintSpace(root);
 
 		} else
@@ -62,7 +63,7 @@ public class ConstraintUtilitySpace extends AbstractUtilitySpace {
 	public ConstraintUtilitySpace(ConstraintUtilitySpace us) {
 		super(us.getDomain());
 		fileName = us.getFileName();
-		fXMLRoot = us.fXMLRoot;
+		// fXMLRoot = us.fXMLRoot;
 		setRankingofIssues(us.getRankingofIssues());
 		setIssueIndices(us.getIssueIndices());
 		setContraints(us.getContraints());
