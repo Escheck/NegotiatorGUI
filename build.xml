@@ -581,7 +581,7 @@
 			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
-		<zip destfile="${dist}/Genius 5.3.3.zip">
+		<zip destfile="${dist}/Genius-5.3.3.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
