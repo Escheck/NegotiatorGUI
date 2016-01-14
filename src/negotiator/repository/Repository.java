@@ -126,7 +126,7 @@ public class Repository {
 	public PartyRepItem getPartyOfClass(String className) {
 		for (RepItem it : items) {
 			if (it instanceof PartyRepItem)
-				if (((PartyRepItem) it).classPath.equals(className))
+				if (((PartyRepItem) it).getClassPath().equals(className))
 					return (PartyRepItem) it;
 		}
 		return null;

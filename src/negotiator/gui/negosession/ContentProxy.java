@@ -51,7 +51,7 @@ public final class ContentProxy {
 		// cast list element-wise and remove mediators
 		for (RepItem item : items) {
 			PartyRepItem prItem = (PartyRepItem) item;
-			if (!prItem.getIsMediator())
+			if (!prItem.isMediator())
 				itemsCasted.add(prItem);
 		}
 
@@ -94,7 +94,7 @@ public final class ContentProxy {
 		// cast list element-wise and only add mediators
 		for (RepItem item : items) {
 			PartyRepItem prItem = (PartyRepItem) item;
-			if (prItem.getIsMediator())
+			if (prItem.isMediator())
 				itemsCasted.add(prItem);
 		}
 

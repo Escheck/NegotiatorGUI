@@ -76,6 +76,12 @@ public class NegotiationPartyInternal {
 			ProfileRepItem profileRepItem, Session session)
 			throws RepositoryException, NegotiatorException {
 		utilitySpace = profileRepItem.create();
+		if (!(utilitySpace instanceof AbstractUtilitySpace)) {
+			throw new IllegalArgumentException(
+					"utilityspace in "
+							+ profileRepItem
+							+ " is not extending AbstractUtilitySpace and currently not supported for negotiation parties");
+		}
 		long randomSeed = System.currentTimeMillis();
 		try {
 			party = partyRepItem.load();
