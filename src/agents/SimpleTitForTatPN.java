@@ -45,6 +45,11 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private Set<Bid> usedBids = new HashSet<Bid>();
 
+	/**
+	 * Human readable explanation of our last bid.
+	 */
+	private String lastBidExplanation = null;
+
 	/**************** extends Agent *******************/
 	@Override
 	public void init() {
@@ -65,6 +70,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 
 	@Override
 	public Action chooseAction() {
+		lastBidExplanation = "Chosen fallback option to accept because something failed while chosing the next action.";
 		try {
 			Bid bid = chooseAction1();
 			if (bid == null) {
@@ -90,6 +96,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	 */
 	private Bid chooseAction1() throws Exception {
 		if (lastOpponentBid == null || myLastBid == null) {
+			lastBidExplanation = "Chosen highest utility bid as first offer.";
 			// First round. place our best bid.
 			return utilitySpace.getMaxUtilityBid();
 		}
@@ -119,6 +126,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		targetUtil = Math.max(targetUtil, 0.6);
 		targetUtil = Math.max(targetUtil,
 				utilitySpace.getUtility(myLastBid) - 0.1);
+		lastBidExplanation = "Based on the opponent's last bid and the tit-for-tat strategy, a target utility of "
+				+ targetUtil + " was picked. ";
 
 		Bid bid = getUnusedBidNearUtil(targetUtil);
 		double util = utilitySpace.getUtility(bid);
@@ -126,8 +135,11 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		// keep an eye on the deadline
 		double minimumutility = util - 0.2 * (1. - timeline.getTime());
 		if (utilitySpace.getUtility(lastOpponentBid) >= minimumutility) {
+			lastBidExplanation += "However, also considering the time, and that the opponent's utility is higher than "
+					+ minimumutility + ", accepting the last offer seems best.";
 			return null;// accept
 		}
+		lastBidExplanation = "Returned a new bid close to that.";
 		return bid;
 	}
 
@@ -265,6 +277,11 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		utilitySpace = myUtilities;
 		otherUtilitySpace = opponentUtilities;
 		goodBids.clear(); // we fill it lazily
+	}
+
+	@Override
+	public String getLastBidExplanation() {
+		return lastBidExplanation;
 	}
 
 }

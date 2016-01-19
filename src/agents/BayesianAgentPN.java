@@ -1,7 +1,9 @@
 package agents;
 
 import negotiator.PocketNegotiatorAgent;
+import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.Offer;
 import negotiator.session.Timeline;
 import negotiator.utility.AdditiveUtilitySpace;
 
@@ -12,7 +14,8 @@ public class BayesianAgentPN extends BayesianAgent implements
 		PocketNegotiatorAgent {
 
 	@Override
-	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide,
+			AdditiveUtilitySpace otherSide, Timeline tl) {
 		utilitySpace = mySide;
 		// FIXME set other side for use
 		timeline = tl;
@@ -21,7 +24,8 @@ public class BayesianAgentPN extends BayesianAgent implements
 	}
 
 	@Override
-	public void updateProfiles(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
+	public void updateProfiles(AdditiveUtilitySpace my,
+			AdditiveUtilitySpace other) {
 		if (my != null) {
 			utilitySpace = my;
 		}
@@ -35,6 +39,21 @@ public class BayesianAgentPN extends BayesianAgent implements
 	@Override
 	public Action getAction() {
 		return chooseAction();
+	}
+
+	@Override
+	public String getLastBidExplanation() {
+		// QUICK HACK. Simplistic explanation.
+		if (myLastAction == null) {
+			return null;
+		}
+		if (myLastAction instanceof Accept) {
+			return "The last opponent's offer was better than our intended bid.";
+		} else if (myLastAction instanceof Offer) {
+			return "An estimation was made of the opponent preferences, based on his actual bids. "
+					+ "A concession was made, matching the opponents estimated concession.";
+		}
+		return "It is not clear what happened.";
 	}
 
 }
