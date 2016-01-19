@@ -42,14 +42,15 @@ public interface PocketNegotiatorAgent {
 	 *            negotiation. We pass it here because the init may already need
 	 *            it.
 	 */
-	void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline timeline);
+	void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide,
+			Timeline timeline);
 
 	/**
 	 * the agent's opponent did an action. Inform the agent.
 	 * 
 	 * @param act
 	 */
-	public void handleAction(Action act);
+	void handleAction(Action act);
 
 	/**
 	 * ask the agent for its next action.
@@ -58,7 +59,7 @@ public interface PocketNegotiatorAgent {
 	 *         be used but this is not enforced. Using other actions can crash
 	 *         PocketNegotiator.
 	 */
-	public Action getAction();
+	Action getAction();
 
 	/**
 	 * Change own and other side utility profile to the given one. Additionally,
@@ -72,12 +73,22 @@ public interface PocketNegotiatorAgent {
 	 * needs to be updated , you can pass null for the other.
 	 * 
 	 * @param myUtilities
-	 *            the new {@link AdditiveUtilitySpace} for the bot to use as his own
-	 *            utility space.
+	 *            the new {@link AdditiveUtilitySpace} for the bot to use as his
+	 *            own utility space.
 	 * @param opponentUtilities
 	 *            the new {@link AdditiveUtilitySpace} for the bot to use as his
 	 *            opponent utility space.
 	 */
-	void updateProfiles(AdditiveUtilitySpace myUtilities, AdditiveUtilitySpace opponentUtilities);
+	void updateProfiles(AdditiveUtilitySpace myUtilities,
+			AdditiveUtilitySpace opponentUtilities);
+
+	/**
+	 * Get a human readable explanation on why getAction returned its last
+	 * action.
+	 * 
+	 * @return explanation of last action. Returns null if getAction was not
+	 *         called yet.
+	 */
+	String getLastBidExplanation();
 
 }

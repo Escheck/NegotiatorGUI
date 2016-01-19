@@ -63,6 +63,9 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	HistorySpace historySpace = new HistorySpace();
 
+	/** Human readable explanation of chosen last bid */
+	private String lastBidExplanation = null;
+
 	/************* implements PocketNegotiatorAgent ***************/
 	@Override
 	public void initPN(AdditiveUtilitySpace mySide,
@@ -149,6 +152,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		 * PN as a we do not want to give the user a wrong Accept suggestion if
 		 * the agent crashes. #972
 		 */
+		lastBidExplanation = "Chosen a default fallback, something failed while chosing the next action.";
 		Action action = new EndNegotiation();
 
 		try {
@@ -198,6 +202,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 				|| ((DiscreteTimeline) timeline).getOwnTotalRounds() == 1 + ((DiscreteTimeline) timeline)
 						.getOwnRoundsLeft()) {
 			// First round. place our best bid
+			lastBidExplanation = "Picked the highest-utility bid as the first offer.";
 			return new Offer(utilitySpace.getMaxUtilityBid());
 		}
 
@@ -285,13 +290,16 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		double minutesSinceStart = diff_ms / 60000;
 
 		if (minutesSinceStart > 15) {
+			lastBidExplanation = "After 15 minutes into the negotiation, Deniz decides to stop the negotiation.";
 			return MyMoves.STOP;
 		}
 
 		if (roundsleft < 0) { // pass the deadline?
 			if (roundsleft < -3) { // pass the extra-time?
+				lastBidExplanation = "We are 3 rounds past the deadline. Deniz decides to stop the negotiation.";
 				return MyMoves.STOP;
 			}
+			lastBidExplanation = "We reached the deadline. Deniz sticks with the last bid.";
 			return MyMoves.SILENT;
 		}
 		return determineMyMove();
@@ -332,18 +340,24 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 		if (isSelfish(move0)) {
 			if (isSelfishOrUnfortunate(historySpace.getMoveType(1))) {
 				if (isSelfishOrUnfortunate(historySpace.getMoveType(2))) {
+					lastBidExplanation = "The opponent did three selfish moves in a row. Deniz sticks with the last bid.";
 					return MyMoves.SAME;
 				}
 				// last 2 moves selfish, but before that not.
+				lastBidExplanation = "The opponent did a two selfish moves in a row. Deniz does a concession.";
 				return MyMoves.CONCEDE;
 			}
 			// current move selfish, previous move not
+			lastBidExplanation = "The opponent did a selfish move. Deniz does a silent bid.";
 			return MyMoves.SILENT;
 		}
 		// current move not selfish
 		if (move0 == MoveType.UNFORTUNATE) {
+			lastBidExplanation = "The opponent did an unfortunate move. Deniz chooses between concession "
+					+ "or moving his bid back to the pareto frontier";
 			return MyMoves.CONCEDE_OR_PARETO;
 		}
+		lastBidExplanation = "The opponent did a concession offer. Deniz makes a concession too. ";
 		return MyMoves.CONCEDE;
 	}
 
@@ -435,7 +449,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 	 * 
 	 * <h1>Assumes</h1>
 	 * <ul>
-	 * <li>both sides placed at least one bid.
+	 * <li>both sides placed at least one bid. also, {@link #lastBidExplanation}
+	 * is assumed to have been set to some partial explanation already.
 	 * </ul>
 	 * 
 	 * @return concession bid
@@ -450,11 +465,19 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 				.getBetweenUtility(targetUtility,
 						plausiblePrevBid.getUtilityA(),
 						plausiblePrevBid.getUtilityB(), false);
+
+		lastBidExplanation += "Deniz currently aims at a bid of utility "
+				+ targetUtility + ". ";
 		if (concessions.isEmpty()) {
+			lastBidExplanation += "However, there are no bids available with that utility, "
+					+ "and therfore Deniz considers bids closer to the previous bid.";
 			// note, this may give multiple bids.
 			concessions = historySpace.getOutcomeSpace().getBetweenUtility(
 					targetUtility, plausiblePrevBid.getUtilityA(),
 					plausiblePrevBid.getUtilityB(), true);
+		} else {
+			lastBidExplanation += "Deniz picked a such bid, close to the opponent's bid"
+					+ targetUtility;
 		}
 
 		Bid lastopponentbid = historySpace.getOpponentBids().last();
@@ -634,6 +657,11 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 			return 0.5 + 0.5 * Math.pow(targetUtilNormalized(myTurnsLeft - 1),
 					2);
 		}
+	}
+
+	@Override
+	public String getLastBidExplanation() {
+		return lastBidExplanation;
 	}
 
 }

@@ -11,14 +11,16 @@ import negotiator.utility.AdditiveUtilitySpace;
 public class SimpleAgentPN extends SimpleAgent implements PocketNegotiatorAgent {
 
 	@Override
-	public void initPN(AdditiveUtilitySpace mySide, AdditiveUtilitySpace otherSide, Timeline tl) {
+	public void initPN(AdditiveUtilitySpace mySide,
+			AdditiveUtilitySpace otherSide, Timeline tl) {
 		utilitySpace = mySide;
 		timeline = tl;
 
 	}
 
 	@Override
-	public void updateProfiles(AdditiveUtilitySpace my, AdditiveUtilitySpace other) {
+	public void updateProfiles(AdditiveUtilitySpace my,
+			AdditiveUtilitySpace other) {
 		if (my != null) {
 			utilitySpace = my;
 		}
@@ -32,6 +34,11 @@ public class SimpleAgentPN extends SimpleAgent implements PocketNegotiatorAgent 
 	@Override
 	public Action getAction() {
 		return chooseAction();
+	}
+
+	@Override
+	public String getLastBidExplanation() {
+		return "Simple agent does random bids.";
 	}
 
 }
