@@ -32,7 +32,7 @@ public class BayesianAgent extends Agent {
 	private Action messageOpponent;
 	private Bid myLastBid = null;
 	protected Action myLastAction = null;
-	private Bid fOpponentPreviousBid = null;
+	protected Bid fOpponentPreviousBid = null;
 
 	private enum ACTIONTYPE {
 		START, OFFER, ACCEPT, BREAKOFF
