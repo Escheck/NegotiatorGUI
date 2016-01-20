@@ -357,7 +357,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 					+ "or moving his bid back to the pareto frontier";
 			return MyMoves.CONCEDE_OR_PARETO;
 		}
-		lastBidExplanation = "The opponent did a concession offer. Deniz makes a concession too. ";
+		lastBidExplanation = "The opponent made a concession. Deniz makes a concession too. ";
 		return MyMoves.CONCEDE;
 	}
 
@@ -476,7 +476,7 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 					targetUtility, plausiblePrevBid.getUtilityA(),
 					plausiblePrevBid.getUtilityB(), true);
 		} else {
-			lastBidExplanation += "Deniz picked a such bid, close to the opponent's bid"
+			lastBidExplanation += "Deniz picked a such bid, close to the opponent's bid, and on the pareto frontier."
 					+ targetUtility;
 		}
 
