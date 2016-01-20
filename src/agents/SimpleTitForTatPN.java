@@ -139,7 +139,7 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 					+ minimumutility + ", accepting the last offer seems best.";
 			return null;// accept
 		}
-		lastBidExplanation = "Returned a new bid close to that.";
+		lastBidExplanation += "Returned a new bid close to that.";
 		return bid;
 	}
 

@@ -50,6 +50,9 @@ public class BayesianAgentPN extends BayesianAgent implements
 		if (myLastAction instanceof Accept) {
 			return "The last opponent's offer was better than our intended bid.";
 		} else if (myLastAction instanceof Offer) {
+			if (fOpponentPreviousBid == null) {
+				return "First bid is bid with maximum utility";
+			}
 			return "An estimation was made of the opponent preferences, based on his actual bids. "
 					+ "A concession was made, matching the opponents estimated concession.";
 		}
