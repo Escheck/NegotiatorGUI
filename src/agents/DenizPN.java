@@ -1,5 +1,6 @@
 package agents;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,6 +66,8 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 
 	/** Human readable explanation of chosen last bid */
 	private String lastBidExplanation = null;
+
+	private static final DecimalFormat twoDigits = new DecimalFormat("#0.00");
 
 	/************* implements PocketNegotiatorAgent ***************/
 	@Override
@@ -467,17 +470,16 @@ public class DenizPN extends Agent implements PocketNegotiatorAgent {
 						plausiblePrevBid.getUtilityB(), false);
 
 		lastBidExplanation += "Deniz currently aims at a bid of utility "
-				+ targetUtility + ". ";
+				+ twoDigits.format(targetUtility) + ". ";
 		if (concessions.isEmpty()) {
 			lastBidExplanation += "However, there are no bids available with that utility, "
-					+ "and therfore Deniz considers bids closer to the previous bid.";
+					+ "and therefore Deniz considers bids closer to the previous bid.";
 			// note, this may give multiple bids.
 			concessions = historySpace.getOutcomeSpace().getBetweenUtility(
 					targetUtility, plausiblePrevBid.getUtilityA(),
 					plausiblePrevBid.getUtilityB(), true);
 		} else {
-			lastBidExplanation += "Deniz picked a such bid, close to the opponent's bid, and on the pareto frontier."
-					+ targetUtility;
+			lastBidExplanation += "Deniz picked a such bid, close to the opponent's bid, and on the pareto frontier.";
 		}
 
 		Bid lastopponentbid = historySpace.getOpponentBids().last();

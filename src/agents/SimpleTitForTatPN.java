@@ -1,5 +1,6 @@
 package agents;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,6 +50,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 	 * Human readable explanation of our last bid.
 	 */
 	private String lastBidExplanation = null;
+
+	private static final DecimalFormat twoDigits = new DecimalFormat("#0.00");
 
 	/**************** extends Agent *******************/
 	@Override
@@ -126,8 +129,8 @@ public class SimpleTitForTatPN extends Agent implements PocketNegotiatorAgent {
 		targetUtil = Math.max(targetUtil, 0.6);
 		targetUtil = Math.max(targetUtil,
 				utilitySpace.getUtility(myLastBid) - 0.1);
-		lastBidExplanation = "Based on the opponent's last bid and the tit-for-tat strategy, a target utility of "
-				+ targetUtil + " was picked. ";
+		lastBidExplanation = "Based on the estimated utility of the opponent's last bid, a target utility of "
+				+ twoDigits.format(targetUtil) + " was picked. ";
 
 		Bid bid = getUnusedBidNearUtil(targetUtil);
 		double util = utilitySpace.getUtility(bid);
