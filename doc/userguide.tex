@@ -186,7 +186,7 @@ In the bilateral alternating offers protocol two parties -- agent $A$ and agent 
 
 When it is an agent's turn, it is informed about the opponent's action. Based on the opponent's action the agent comes up with an action, which it presents to the opponent. Sequentially, the opponent presents a counter action. This process goes on until the negotiation finishes in one of the following ways:
 \begin{itemize}
-	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined for both agents according to their preference profiles. The opponent is informed of acceptance via the \textit{ReceiveMessage} method.
+	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined for both agents according to their preference profiles. The opponent is informed of acceptance via the \textit{receiveMessage} method.
 	\item The action returned by an agent is \textsc{EndNegotiation}. In this case the score of both agents is set to their reservation value.
 	\item Finally, if an agent does not follow the protocol -- for instance by sending an action that is not one of the above or by crashing -- the agent's utility is set to its reservation value, whereas the opponent is awarded the utility of the last offer.
 \end{itemize}
@@ -775,7 +775,7 @@ A convenience method to get the utility of a bid taking the discount factor into
 \texttt{void init()}\\
 Informs the agent about beginning of a new negotiation session.\\
 \hline
-\texttt{void ReceiveMessage(Action opponentAction)}\\
+\texttt{void receiveMessage(Action opponentAction)}\\
 Informs the agent which action the opponent did.\\
 \hline
 \texttt{Action chooseAction()}\\
@@ -790,13 +790,13 @@ Returns the name of the agent. Please override this to give a proper name to you
 \end{table}
 
 \subsection{Receiving the Opponent's Action}\label{sec:receiveAction}
-The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
+The \texttt{receiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to specify an \texttt{Action} to send to the opponent.
 
-In the SimpleAgent code, the following code is available for \texttt{ReceiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
+In the SimpleAgent code, the following code is available for \texttt{receiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
 
 \begin{lstlisting}
-public void ReceiveMessage(Action opponentAction) {
+public void receiveMessage(Action opponentAction) {
 	actionOfPartner = opponentAction;
 }
 \end{lstlisting}
