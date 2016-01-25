@@ -758,7 +758,7 @@ In the examples we will use manual compilation to avoid the need to discuss IDE 
 \section{Creating a Bilateral Negotiation Agent}
 This section discusses how to create a basic bilateral negotiation agent in Java. Bilateral means you can only use this agent in a two-party negotation but not in a multi-party negotiation. A standard negotiation agent implements an agent as a single block of logic: a mix of a bidding strategy, acceptance strategy, and possibly an opponent model. In contrast, we recommend to separately implement these components to create a BOA agent as discussed in Section~\ref{sec:boa}. The main advantage of a BOA agent is that existing components can be reused, allowing for easier agent development.
 
-Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{receiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes as long as one class extends the \textit{negotiator.Agent} class.
+Finally, to create an agent create a new class and extend the \textit{negotiator.Agent} class. Table~\ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}. An agent may consist of multiple classes as long as one class extends the \textit{negotiator.Agent} class.
 
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
@@ -775,7 +775,7 @@ A convenience method to get the utility of a bid taking the discount factor into
 \texttt{void init()}\\
 Informs the agent about beginning of a new negotiation session.\\
 \hline
-\texttt{void receiveMessage(Action opponentAction)}\\
+\texttt{void ReceiveMessage(Action opponentAction)}\\
 Informs the agent which action the opponent did.\\
 \hline
 \texttt{Action chooseAction()}\\
@@ -790,7 +790,7 @@ Returns the name of the agent. Please override this to give a proper name to you
 \end{table}
 
 \subsection{Receiving the Opponent's Action}\label{sec:receiveAction}
-The \texttt{receiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
+The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
 The \texttt{chooseAction()} asks you to specify an \texttt{Action} to send to the opponent.
 
 In the SimpleAgent code, the following code is available for \texttt{receiveMessage}. The SimpleAgent stores the opponent's action to use it when choosing an action.
