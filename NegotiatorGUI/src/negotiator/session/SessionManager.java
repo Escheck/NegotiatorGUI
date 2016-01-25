@@ -130,6 +130,7 @@ public class SessionManager implements Runnable {
 	 */
 	public void runAndWait() throws InvalidActionError, InterruptedException,
 			ExecutionException, NegotiationPartyTimeoutException {
+		System.gc();
 		// pre session protocol call
 		protocol.beforeSession(session, parties);
 
