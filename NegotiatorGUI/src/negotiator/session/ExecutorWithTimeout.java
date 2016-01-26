@@ -34,89 +34,6 @@ public class ExecutorWithTimeout {
 	}
 
 	/**
-	 * Inner thread class, this is the thread where the Callable will be run.
-	 * 
-	 * @author W.Pasman 1apr15
-	 *
-	 * @param <V>
-	 *            the return type of the callable.
-	 */
-	class myThread<V> extends Thread {
-		// flag indicating that the thread is done.
-		BlockingQueue<Boolean> ready = new ArrayBlockingQueue<Boolean>(1);
-
-		private V result = null;
-		private Throwable resultError = null;
-
-		Callable<V> callable;
-
-		public myThread(Callable<V> c) {
-			callable = c;
-		}
-
-		@Override
-		public void run() {
-			try {
-				result = callable.call();
-			} catch (Throwable e) {
-				resultError = e;
-			}
-			try {
-				ready.put(true);
-			} catch (InterruptedException e) {
-				// at this point, either result or resultError has been set
-				// already.
-			}
-		}
-
-		/**
-		 * Execute this thread and wait for thread to terminate or terminate
-		 * after timeout millis. Blocking call. After return, the Callable has
-		 * been executed, OR we have thrown.
-		 * 
-		 * @param name
-		 *            the name for the thread (usually, the agent name). Used
-		 *            for reporting errors.
-		 * 
-		 * @param timeout
-		 *            timeout in millis.
-		 * @throws TimeoutException
-		 *             if the callable did not complete within the available
-		 *             time.
-		 */
-		public V executeWithTimeout(String name, long timeout)
-				throws ExecutionException, TimeoutException {
-			start();
-
-			// wait for the thread to finish, but at most timeout ms.
-			try {
-				if (ready.poll(timeout, TimeUnit.MILLISECONDS) == null) {
-					/*
-					 * not finished. terminate and throw. stop() is only way to
-					 * force thread to die. interrupt() is too weak.
-					 * executorService only supports interrupt(), not stop().
-					 * Therefore we use plain Threads here.
-					 */
-					stop();
-					throw new TimeoutException("agent " + name
-							+ " passed deadline and was killed");
-				}
-			} catch (InterruptedException e) {
-				/*
-				 * we should not get here. Just in case
-				 */
-				resultError = e;
-			}
-			// if we get here, thread ended and result or resultError was set.
-			if (resultError != null) {
-				throw new ExecutionException("Execution failed of " + name+":"+resultError,
-						resultError);
-			}
-			return result;
-		}
-	}
-
-	/**
 	 * Execute the command within the remaining time of this executor. Blocking
 	 * call. Used time will be subtracted from the quotum of this Executor. This
 	 * function is synchronized and can execute only 1 Callable at any time.
@@ -137,15 +54,85 @@ public class ExecutorWithTimeout {
 	public synchronized <V> V execute(String name, final Callable<V> command)
 			throws ExecutionException, TimeoutException {
 
-		return new myThread<V>(command).executeWithTimeout(name,
-				remainingTimeMs);
+		return new myThread<V>(command).executeWithTimeout(name, remainingTimeMs);
+	}
+}
+
+/**
+ * Private thread class, this is the thread where the Callable will be run.
+ * 
+ * @author W.Pasman 1apr15
+ *
+ * @param <V>
+ *            the return type of the callable.
+ */
+class myThread<V> extends Thread {
+	// flag indicating that the thread is done.
+	BlockingQueue<Boolean> ready = new ArrayBlockingQueue<Boolean>(1);
+
+	private V result = null;
+	private Throwable resultError = null;
+
+	Callable<V> callable;
+
+	public myThread(Callable<V> c) {
+		callable = c;
+	}
+
+	@Override
+	public void run() {
+		try {
+			result = callable.call();
+		} catch (Throwable e) {
+			resultError = e;
+		}
+		try {
+			ready.put(true);
+		} catch (InterruptedException e) {
+			// at this point, either result or resultError has been set
+			// already.
+		}
 	}
 
 	/**
-	 * @return remaining time for this executor
+	 * Execute this thread and wait for thread to terminate or terminate after
+	 * timeout millis. Blocking call. After return, the Callable has been
+	 * executed, OR we have thrown.
+	 * 
+	 * @param name
+	 *            the name for the thread (usually, the agent name). Used for
+	 *            reporting errors.
+	 * 
+	 * @param timeout
+	 *            timeout in millis.
+	 * @throws TimeoutException
+	 *             if the callable did not complete within the available time.
 	 */
-	public long getRemainingTimeMs() {
-		return remainingTimeMs;
-	}
+	public V executeWithTimeout(String name, long timeout) throws ExecutionException, TimeoutException {
+		start();
 
+		// wait for the thread to finish, but at most timeout ms.
+		try {
+			if (ready.poll(timeout, TimeUnit.MILLISECONDS) == null) {
+				/*
+				 * not finished. terminate and throw. stop() is only way to
+				 * force thread to die. interrupt() is too weak. executorService
+				 * only supports interrupt(), not stop(). Therefore we use plain
+				 * Threads here.
+				 */
+				stop();
+				throw new TimeoutException("agent " + name + " passed deadline and was killed");
+			}
+		} catch (InterruptedException e) {
+			/*
+			 * we should not get here. Just in case
+			 */
+			resultError = e;
+		}
+		// if we get here, thread ended and result or resultError was set.
+		if (resultError != null) {
+			throw new ExecutionException("Execution failed of " + name + ":" + resultError, resultError);
+		}
+		return result;
+	}
 }
