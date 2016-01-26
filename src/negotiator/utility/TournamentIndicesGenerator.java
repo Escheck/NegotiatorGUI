@@ -43,8 +43,8 @@ public class TournamentIndicesGenerator implements Iterable<List<Integer>> {
 		}
 	}
 
-	public TournamentIndicesGenerator(int numAgentsPerSession, int profilesPerRun,
-			boolean repAllowed, int numPartyRepItems) {
+	public TournamentIndicesGenerator(int numAgentsPerSession,
+			int profilesPerRun, boolean repAllowed, int numPartyRepItems) {
 		List<Integer> indices = new ArrayList<Integer>(numPartyRepItems);
 		for (int i = 0; i < numPartyRepItems; i++) {
 			indices.add(i);
@@ -109,32 +109,4 @@ public class TournamentIndicesGenerator implements Iterable<List<Integer>> {
 		};
 	}
 
-	// public int getNumIndices()
-	// {
-	// if (numIndices > 0) return numIndices;
-	// int t = testSize;
-	// int p = profileSize;
-	// int e = elements.getSize();
-	//
-	// int permutationsPerCombination = (repetitionAllowed) ? t * t : fac(t);
-	// int combinations = max(comb(e, t), 1);
-	//
-	// numIndices = combinations * permutationsPerCombination;
-	// return numIndices;
-	// }
-
-	public int comb(int n, int r) {
-		return fac(n) / (fac(r) * fac(n - r));
-	}
-
-	public int fac(int base) {
-		if (base == 0)
-			return 1;
-		else {
-			int fac = 1;
-			for (int i = 2; i <= base; i++)
-				fac *= i;
-			return fac;
-		}
-	}
 }
