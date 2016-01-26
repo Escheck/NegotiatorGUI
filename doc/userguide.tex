@@ -213,7 +213,7 @@ If a discount factor is present, reservation values will be discounted in exactl
  
 %=========================================================================================
 \section{Running the Environment}
-The negotiation environment has been tested extensively. It should run on any machine running Java 6 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
+Genius should run on any machine running Java 7 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
 To install the environment, the file \texttt{Genius\_release.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package called ``genius" which contains the following files:
 
@@ -890,7 +890,7 @@ Compiling an agent can be done as follows (here we compile the examplepackage; m
 \begin{itemize}
 \item Open a terminal
 \item Switch to the root directory of genius
-\item execute the command \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6  examplepackage/ExampleAgent.java}
+\item execute the command \texttt{javac -cp negosimulator.jar -source 1.7 -target 1.7  examplepackage/ExampleAgent.java}
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
@@ -1109,7 +1109,7 @@ To compile a BOA component, do the following steps (in this example we compile t
 \begin{itemize}
 \item Open a terminal 
 \item Switch to the root directory of genius
-\item Enter the command \texttt{javac -cp negosimulator.jar -source 1.6 -target 1.6 boaexamplepackage/*.java }
+\item Enter the command \texttt{javac -cp negosimulator.jar -source 1.7 -target 1.7 boaexamplepackage/*.java }
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
@@ -1274,7 +1274,7 @@ The functions \verb|receiveMessage| and \verb|chooseAction| are basically the sa
 
 To compile the example agent, go to your genius project folder and use the command line to execute this compile command
 
-\verb|javac -cp negosimulator.jar -source 1.6 -target 1.6  multipartyexample/Groupn.java|
+\verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 multipartyexample/Groupn.java|
 
 \subsection{Loading a NegotiationParty}
 
