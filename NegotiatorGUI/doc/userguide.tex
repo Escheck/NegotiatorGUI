@@ -8,7 +8,7 @@
 \usepackage[utf8]{inputenc}
 
 % Setup for fullpage use
-\usepackage{fullpage}
+\usepackage[cm]{fullpage}
 
 % Uncomment some of the following if you use the features
 %
@@ -72,6 +72,8 @@
 \else
 \usepackage{graphicx}
 \fi
+
+
 \title{Negotiation User Guide}
 \author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx, D. Feirstein}
 
@@ -574,7 +576,7 @@ The contents of each \verb|<tournament>| element is as follows
 
     \item \textbf{partyRepItems}. This element contains a number of \verb|<item>| elements. Each of these party items contains the following:
       \begin{itemize}
-        \item \textbf{protocolClassPath}. We do not support other protocols than negotiator.protocol.StackedAlternatingOffersProtocol at this moment.
+        \item \raggedright \textbf{protocolClassPath}. We do not support other protocols than negotiator.protocol.StackedAlternatingOffersProtocol at this moment.
         \item \textbf{description}A plain text description of this party
         \item \textbf{classPath} the java.party.class.path to the main class. That class must implement the NegotiationParty interface
         \item \textbf{partyName} the plain text name of the party
@@ -890,7 +892,7 @@ Compiling an agent can be done as follows (here we compile the examplepackage; m
 \begin{itemize}
 \item Open a terminal
 \item Switch to the root directory of genius
-\item execute the command \texttt{javac -cp negosimulator.jar -source 1.7 -target 1.7  examplepackage/ExampleAgent.java}
+\item \raggedright execute the command \verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 examplepackage/ExampleAgent.java|
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
@@ -917,7 +919,7 @@ The next step is to load the compiled agent in \Genius. We can add the agent in 
   <items>
    <agentRepItems>
                <agentRepItem description="Simple Agent" 
-               classPath="/Users/wouter/Desktop/genius/examplepackage/ExampleAgent.class"
+               classPath="/Users/genius/examplepackage/ExampleAgent.class"
                agentName="Simple Agent"/>
                params="e=2;time=0.95"/>
      </agentRepItems>
@@ -1109,7 +1111,7 @@ To compile a BOA component, do the following steps (in this example we compile t
 \begin{itemize}
 \item Open a terminal 
 \item Switch to the root directory of genius
-\item Enter the command \texttt{javac -cp negosimulator.jar -source 1.7 -target 1.7 boaexamplepackage/*.java }
+\item \raggedright Enter the command \verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 boaexamplepackage/*.java |
 \end{itemize}
 
 You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
@@ -1150,9 +1152,10 @@ public class SimpleBOAagent extends BOAagent{
 	public void agentSetup() {
 		OpponentModel om = new FrequencyModel(negotiationSession, 0.2, 1);
 		OMStrategy oms = new NullStrategy(negotiationSession);
-		OfferingStrategy offering  = new TimeDependent_Offering(negotiationSession,
-								om, oms, 0.2, 0, 1, 0);
-		AcceptanceStrategy ac = new AC_Next(negotiationSession, offering, 1, 0);
+		OfferingStrategy offering  = new TimeDependent_Offering(
+			negotiationSession, om, oms, 0.2, 0, 1, 0);
+		AcceptanceStrategy ac = 
+			new AC_Next(negotiationSession, offering, 1, 0);
 		setDecoupledComponents(ac, offering, om, oms);		
 	}
 
@@ -1175,16 +1178,16 @@ To create a multi-acceptance condition component you first need to extend the cl
 \begin{lstlisting}
 public class AC_MAC extends Multi_AcceptanceCondition {
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat, 
-			OpponentModel opponentModel, HashMap<String, Double> parameters)
-			throws Exception {
+	public void init(NegotiationSession negoSession, 
+			OfferingStrategy strat, OpponentModel opponentModel, 
+			HashMap<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		outcomes = new ArrayList<OutcomeTuple> ();
 		ACList = new ArrayList<AcceptanceStrategy>();
 		for (int e = 0; e < 5; e++) {
-			ACList.add(new AC_Next(negotiationSession, offeringStrategy, 1, 
-												e * 0.01));
+			ACList.add(new AC_Next(negotiationSession, 
+				offeringStrategy, 1, e * 0.01));
 		}
 	}
 }
@@ -1206,41 +1209,43 @@ To implement the interface, one needs to implement five functions:
 public interface NegotiationParty {
 	/**
 	 * This is the first call made to a NegotiationParty after its
-	 * instantiation. Tells which utility space and timeline we are running in.
-	 * This is called one time only.
+	 * instantiation. Tells which utility space and timeline we 
+	 * are running in. This is called one time only.
 	 *
 	 * @param utilSpace
-	 *            (a copy of/readonly version of) the {@link UtilitySpace} to be
-	 *            used for this session.
+	 * 	(a copy of/readonly version of) the {@link UtilitySpace} 
+	 * 	to be used for this session.
 	 * @param timeline
-	 *            The {@link TimeLineInfo} about current session.
+	 * 	The {@link TimeLineInfo} about current session.
 	 * @param agentID
-	 *            the {@link AgentID}.
+	 * 	the {@link AgentID}.
 	 * @throws RuntimeException
-	 *             if init fails.
+	 * 	if init fails.
 	 */
 	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
 			TimeLineInfo timeline, long randomSeed, AgentID agentID);
 
 	/**
-	 * When this function is called, it is expected that the Party chooses one
-	 * of the actions from the possible action list and returns an instance of
-	 * the chosen action.
+	 * When this function is called, it is expected that the Party 
+	 * chooses one of the actions from the possible action list 
+	 * and returns an instance of the chosen action.
 	 *
 	 * @param possibleActions
-	 *            List of all actions possible.
+	 *	List of all actions possible.
 	 * @return The chosen {@link Action}.
 	 */
-	public Action chooseAction(List<Class<? extends Action>> possibleActions);
+	public Action chooseAction(
+		List<Class<? extends Action>> possibleActions);
 
 	/**
-	 * This method is called when another {@link NegotiationParty} chose an
-	 * {@link Action}.
+	 * This method is called when another {@link NegotiationParty} 
+	 * chose an{@link Action}.
 	 *
 	 * @param sender
-	 *            The initiator of the action. May be null if initiator is not an agent.
+	 * 	The initiator of the action. May be null if initiator is 
+	 *	not an agent.
 	 * @param arguments
-	 *            The action performed
+	 *	The action performed
 	 */
 	void receiveMessage(AgentID sender, Action arguments);
 
