@@ -13,6 +13,29 @@ import negotiator.parties.AbstractNegotiationParty;
  */
 public class Groupn extends AbstractNegotiationParty {
 
+	private double discountFactor = 0; // if you want to keep the discount
+										// factor
+	private double reservationValue = 0; // if you want to keep the reservation
+											// value
+
+	@Override
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
+			TimeLineInfo tl, long randomSeed, AgentID agentId) {
+
+		super.init(utilSpace, dl, tl, randomSeed, agentId);
+
+		discountFactor = utilSpace.getDiscountFactor(); // read discount factor
+		System.out.println("Discount Factor is " + discountFactor);
+		reservationValue = utilSpace.getReservationValueUndiscounted(); // read
+																		// reservation
+																		// value
+		System.out.println("Reservation Value is " + reservationValue);
+
+		// if you need to initialize some variables, please initialize them
+		// below
+
+	}
+
 	/**
 	 * Each round this method gets called and ask you to accept or offer. The
 	 * first party in the first round is a bit different, it can only propose an
