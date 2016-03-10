@@ -269,24 +269,40 @@ public class CsvLogger implements Closeable {
 			MultilateralProtocol protocol,
 			List<NegotiationPartyInternal> parties, double runTime)
 			throws Exception {
-		List<NegotiationPartyInternal> agents = MediatorProtocol
-				.getNonMediators(parties);
+
 		List<String> values = new ArrayList<String>();
 		Bid agreement = protocol.getCurrentAgreement(session, parties);
+		List<Double> utils = getUtils(parties, agreement);
+
+		double minUtil = Collections.min(utils);
+		double maxUtil = Collections.max(utils);
+
 		MultilateralAnalysis analysis = new MultilateralAnalysis(session,
 				parties, protocol);
-		List<Double> utils = new ArrayList<Double>();
+
+		// check if at least one of the util spaces is discounted.
 		boolean isDiscounted = false;
-		double minUtil = 1;
-		double maxUtil = 0;
-		for (NegotiationPartyInternal agent : agents) {
-			double util = agent.getUtilityWithDiscount(agreement);
-			double undiscounted = agent.getUtility(agreement);
-			isDiscounted |= util != undiscounted;
-			utils.add(util);
-			minUtil = Math.min(minUtil, util);
-			maxUtil = Math.max(maxUtil, util);
+		for (NegotiationPartyInternal party : parties) {
+			if (party.getUtilitySpace().discount(1, 1) != 1) {
+				isDiscounted = true;
+			}
 		}
+
+		// List<NegotiationPartyInternal> agents = MediatorProtocol
+		// .getNonMediators(parties);
+		//
+		// List<Double> utils = new ArrayList<Double>();
+		// boolean isDiscounted = false;
+		// double minUtil = 1;
+		// double maxUtil = 0;
+		// for (NegotiationPartyInternal agent : agents) {
+		// double util = agent.getUtilityWithDiscount(agreement);
+		// double undiscounted = agent.getUtility(agreement);
+		// isDiscounted |= util != undiscounted;
+		// utils.add(util);
+		// minUtil = Math.min(minUtil, util);
+		// maxUtil = Math.max(maxUtil, util);
+		// }
 
 		values.add("Time (s):\t\t");
 		values.add("" + runTime + "\n");
@@ -300,38 +316,27 @@ public class CsvLogger implements Closeable {
 		values.add("Discounted?:\t\t");
 		values.add(isDiscounted ? "Yes\n" : "No\n");
 
-		if (agreement != null) {
-			values.add("Approval:\t\t");
-			values.add(""
-					+ protocol.getNumberOfAgreeingParties(session, agents)
-					+ "\n");
+		values.add("" + protocol.getNumberOfAgreeingParties(session, parties)
+				+ "\n");
 
-			values.add("Min. utility:\t\t");
-			values.add(String.format("%.5f\n", minUtil));
+		values.add("Min. utility:\t\t");
+		values.add(String.format("%.5f\n", minUtil));
 
-			values.add("Max. utility:\t\t");
-			values.add(String.format("%.5f\n", maxUtil));
+		values.add("Max. utility:\t\t");
+		values.add(String.format("%.5f\n", maxUtil));
 
-			values.add("Distance to pareto:\t");
-			values.add(String.format("%.5f\n", analysis.getDistanceToPareto()));
+		values.add("Distance to pareto:\t");
+		values.add(String.format("%.5f\n", analysis.getDistanceToPareto()));
 
-			values.add("Distance to Nash:\t");
-			values.add(String.format("%.5f\n", analysis.getDistanceToNash()));
+		values.add("Distance to Nash:\t");
+		values.add(String.format("%.5f\n", analysis.getDistanceToNash()));
 
-			values.add("Social welfare:\t\t");
-			values.add(String.format("%.5f\n", analysis.getSocialWelfare()));
+		values.add("Social welfare:\t\t");
+		values.add(String.format("%.5f\n", analysis.getSocialWelfare()));
 
-			for (int i = 0; i < agents.size(); i++) {
-				values.add(String.format("Agent utility:\t\t%.5f (%s)\n",
-						utils.get(i), agents.get(i).getPartyId()));
-			}
-		} else {
-			for (NegotiationPartyInternal agent : agents) {
-				String msg = String.format("Agent utility [RV]:\t%.5f (%s)\n",
-						agent.getUtilitySpace().getReservationValue(),
-						agent.getPartyId());
-				values.add(msg);
-			}
+		for (int i = 0; i < parties.size(); i++) {
+			values.add(String.format("Agent utility:\t\t%.5f (%s)\n",
+					utils.get(i), parties.get(i).getPartyId()));
 		}
 
 		return join(values, "");
