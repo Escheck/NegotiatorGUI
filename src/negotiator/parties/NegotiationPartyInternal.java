@@ -120,7 +120,7 @@ public class NegotiationPartyInternal {
 	}
 
 	/**
-	 * Gets the utility for the given bid.
+	 * Gets the (undiscounted) utility for the given bid.
 	 *
 	 * @param bid
 	 *            The bid to get the utility for
