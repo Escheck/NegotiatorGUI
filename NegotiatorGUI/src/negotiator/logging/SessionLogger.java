@@ -108,7 +108,7 @@ public class SessionLogger {
 			ArrayList<Double> utils = new ArrayList<Double>();
 			for (NegotiationPartyInternal party : MediatorProtocol
 					.getNonMediators(parties))
-				utils.add(party.getUtility(bid));
+				utils.add(party.getUtilityWithDiscount(bid));
 			MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(
 					owner, round, turn, time, action, utils, agree);
 
