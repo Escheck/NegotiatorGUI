@@ -196,9 +196,6 @@ public class SessionManager implements Runnable {
 								|| !currentAgreement.equals(lastAgreement)) {
 							agreementUtilitiesDiscounted[0][agentId] = entry[0];
 							agreementUtilitiesDiscounted[1][agentId] = entry[1];
-							System.out.println(agentId + ":" + entry[0] + ","
-									+ entry[1]);
-
 						}
 					}
 					if (currentAgreement == null || lastAgreement == null
