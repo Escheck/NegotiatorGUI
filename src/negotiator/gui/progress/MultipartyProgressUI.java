@@ -320,49 +320,11 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		session = evt.getSession();
 		bidChart.setMaxRound(session.getRoundNumber() + 1);
 		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
-		bidChart.setBidSeries(getPartyBidSeries());
+		bidChart.setBidSeries(manager.getAgentUtils());
 
-		if (evt.getAgreement() != null)
+		if (evt.getAgreement() != null) {
 			bidChart.setAgreementPoints(manager.getAgreementUtilities());
-	}
-
-	private ArrayList<double[][]> getPartyBidSeries() {
-
-		List<List<Double[]>> partyUtilityHistoryList = manager.getAgentUtils();
-
-		ArrayList<double[][]> bidSeries = new ArrayList<double[][]>();
-		double[][] product = new double[2][partyUtilityHistoryList.get(0)
-				.size()];
-		try {
-			for (int i = 0; i < partyUtilityHistoryList.size(); i++) {
-
-				double[][] xPartyUtilities = new double[2][partyUtilityHistoryList
-						.get(i).size()];
-				int index = 0;
-
-				for (Double[] utilityHistory : partyUtilityHistoryList.get(i)) {
-
-					xPartyUtilities[0][index] = utilityHistory[0];
-					xPartyUtilities[1][index] = utilityHistory[1];
-
-					product[0][index] = utilityHistory[0];
-					if (i == 0) // for the first agent
-						product[1][index] = utilityHistory[1];
-					else
-						product[1][index] *= utilityHistory[1];
-					index++;
-				}
-
-				bidSeries.add(xPartyUtilities);
-			}
-			bidSeries.add(product);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
 		}
-
-		return bidSeries;
 	}
 
 	private List<UtilitySpace> getUtilitySpaces() {
