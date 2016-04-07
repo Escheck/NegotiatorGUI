@@ -185,8 +185,8 @@ public class CsvLogger implements Closeable {
 			values.add(""
 					+ protocol.getNumberOfAgreeingParties(session, agents));
 
-			// min and max utility
-			List<Double> utils = getUtils(parties, agreement);
+			// discounted min and max utility
+			List<Double> utils = getUtils(parties, agreement, true);
 			values.add(format("%.5f", Collections.min(utils)));
 			values.add(format("%.5f", Collections.max(utils)));
 
@@ -224,11 +224,14 @@ public class CsvLogger implements Closeable {
 	 *            the parties in the nego
 	 * @param agreement
 	 *            the reached agreement, or null if there was no agreement.
-	 * @return list with discounted utilities/res value of each of the parties.
-	 *         Res value is only used if agreement=null.
+	 * @param discount
+	 *            true iff you want the discounted utilities.
+	 * @return list with (possibly discounted) utilities/res value of each of
+	 *         the parties. Res value is only used if agreement=null.
+	 * 
 	 */
 	public static List<Double> getUtils(List<NegotiationPartyInternal> parties,
-			Bid agreement) {
+			Bid agreement, boolean discount) {
 		List<Double> utils = new ArrayList<Double>();
 		double time = 0;
 
@@ -237,7 +240,11 @@ public class CsvLogger implements Closeable {
 		}
 
 		for (NegotiationPartyInternal agent : parties) {
-			utils.add(getUtil(agent, agreement, time));
+			double util = getUtil(agent, agreement);
+			if (discount) {
+				util = agent.getUtilitySpace().discount(util, time);
+			}
+			utils.add(util);
 		}
 		return utils;
 	}
@@ -249,20 +256,14 @@ public class CsvLogger implements Closeable {
 	 * @param agreement
 	 *            the agreement, or null if there is no agreement in which case
 	 *            the reservation value is used
-	 * @param time
-	 *            , used to compute discount. set to 0 if no timeline available.
-	 * @return the discounted utility/reservation value of the given agreement.
+	 * @return the undiscounted utility/reservation value of the given
+	 *         agreement.
 	 */
-	private static double getUtil(NegotiationPartyInternal agent,
-			Bid agreement, double time) {
-		double util = 0;
+	private static double getUtil(NegotiationPartyInternal agent, Bid agreement) {
 		if (agreement == null) {
-			util = agent.getUtilitySpace().getReservationValue();
-		} else {
-			util = agent.getUtility(agreement);
+			return agent.getUtilitySpace().getReservationValue();
 		}
-
-		return agent.getUtilitySpace().discount(util, time);
+		return agent.getUtility(agreement);
 	}
 
 	public static String logSingleSession(Session session,
@@ -272,7 +273,7 @@ public class CsvLogger implements Closeable {
 
 		List<String> values = new ArrayList<String>();
 		Bid agreement = protocol.getCurrentAgreement(session, parties);
-		List<Double> utils = getUtils(parties, agreement);
+		List<Double> utils = getUtils(parties, agreement, true);
 
 		double minUtil = Collections.min(utils);
 		double maxUtil = Collections.max(utils);

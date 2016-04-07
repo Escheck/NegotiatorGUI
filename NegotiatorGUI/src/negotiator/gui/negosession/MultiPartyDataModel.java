@@ -39,7 +39,7 @@ public class MultiPartyDataModel extends DataKeyTableModel implements
 		LinkedHashMap<DataKey, Integer> colspec = new LinkedHashMap<DataKey, Integer>();
 		for (DataKey key : DataKey.values()) {
 			if (key == DataKey.AGENTS || key == DataKey.FILES
-					|| key == DataKey.UTILS) {
+					|| key == DataKey.UTILS || key == DataKey.DISCOUNTED_UTILS) {
 				colspec.put(key, numAgents);
 			} else {
 				colspec.put(key, 1);
