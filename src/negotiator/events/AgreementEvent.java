@@ -79,10 +79,15 @@ public class AgreementEvent extends NegotiationEvent {
 			values.put(DataKey.NUM_AGREE,
 					"" + protocol.getNumberOfAgreeingParties(session, agents));
 
-			// min and max utility
-			List<Double> utils = CsvLogger.getUtils(parties, agreement);
-			values.put(DataKey.MINUTIL, format("%.5f", Collections.min(utils)));
-			values.put(DataKey.MAXUTIL, format("%.5f", Collections.max(utils)));
+			// disc. and undisc. utils;
+			List<Double> utils = CsvLogger.getUtils(parties, agreement, false);
+			List<Double> discountedUtils = CsvLogger.getUtils(parties,
+					agreement, true);
+			// min and max discounted utility
+			values.put(DataKey.MINUTIL,
+					format("%.5f", Collections.min(discountedUtils)));
+			values.put(DataKey.MAXUTIL,
+					format("%.5f", Collections.max(discountedUtils)));
 
 			// analysis (distances, social welfare, etc)
 			MultilateralAnalysis analysis = new MultilateralAnalysis(session,
@@ -104,6 +109,8 @@ public class AgreementEvent extends NegotiationEvent {
 			values.put(DataKey.AGENTS, agts);
 
 			values.put(DataKey.UTILS, utils);// format("%.5f ", util);
+			values.put(DataKey.DISCOUNTED_UTILS, discountedUtils);// format("%.5f ",
+																	// util);
 
 			List<String> files = new ArrayList<String>();
 			for (NegotiationPartyInternal agent : agents) {

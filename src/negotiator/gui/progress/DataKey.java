@@ -13,7 +13,8 @@ import negotiator.events.AgreementEvent;
  * The keys also have a human-readable text version. This can be used as basis
  * for the column text strings for data display and logging.
  * 
- * The keys UTILS, FILES and AGENTS contain lists. The function
+ * The keys {@value #DISCOUNTED_UTILS}, {@value #UTILS}, {@value #FILES} and
+ * {@value #AGENTS} contain lists. The function
  * {@link AgreementEvent#getFlatMap()} and {@link AgreementEvent#getValues()}
  * will convert these to strings and extend these keys with the agent number,
  * and we then have eg 3 columns "Utility 1", "Utility 2" and "Utility 3" in the
@@ -33,8 +34,8 @@ public enum DataKey implements Comparable<DataKey> {
 			"deadline"), IS_AGREEMENT("Agreement"), IS_DISCOUNT("Discounted"), NUM_AGREE(
 			"#agreeing"), MINUTIL("min.util."), MAXUTIL("max.util."), DIST_PARETO(
 			"Dist. to Pareto"), DIST_NASH("Dist. to Nash"), DIST_SOCIAL_WELFARE(
-			"Dist. to Social Welfare"), AGENTS("Agent"), UTILS("Utility"), FILES(
-			"Profile");
+			"Dist. to Social Welfare"), AGENTS("Agent"), UTILS("Utility"), DISCOUNTED_UTILS(
+			"Disc. Util."), FILES("Profile");
 
 	String name;
 
