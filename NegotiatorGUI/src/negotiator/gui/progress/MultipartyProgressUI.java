@@ -320,10 +320,10 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		session = evt.getSession();
 		bidChart.setMaxRound(session.getRoundNumber() + 1);
 		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
-		bidChart.setBidSeries(manager.getAgentUtils());
+		bidChart.setBidSeries(manager.getAgentUtilsDiscounted());
 
 		if (evt.getAgreement() != null) {
-			bidChart.setAgreementPoints(manager.getAgreementUtilities());
+			bidChart.setAgreementPoints(manager.getAgreementUtilitiesDiscounted());
 		}
 	}
 
