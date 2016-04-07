@@ -8,18 +8,18 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 
 import javax.swing.JOptionPane;
 
 import negotiator.gui.NegoGUIApp;
 import negotiator.gui.agentrepository.AgentRepositoryUI;
-import negotiator.multipartyprotocol.MultiPartyProtocol;
 import negotiator.protocol.Protocol;
 import negotiator.repository.AgentRepItem;
-import negotiator.repository.MultiPartyProtocolRepItem;
-import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.ProtocolRepItem;
 import negotiator.tournament.TournamentConfiguration;
@@ -48,7 +48,9 @@ public class Global {
 	private static final Date loadDate = Calendar.getInstance().getTime();
 
 	/** Temporary flag for use in AAMAS 2014 experiments */
-	public static final boolean AAMAS_2014_EXPERIMENTS = false;// true; //RA: we should change it as false;
+	public static final boolean AAMAS_2014_EXPERIMENTS = false;// true; //RA: we
+																// should change
+																// it as false;
 
 	public Global() {
 	}
@@ -166,36 +168,6 @@ public class Global {
 		Object theObject = cons.newInstance(args);
 		// System.out.println( "New object: " + theObject);
 		ns = (Protocol) (theObject);
-		return ns;
-
-	}
-
-	// RA: createMultiPartyPRotocolInstance
-	public static MultiPartyProtocol createMultiPartyProtocolInstance(
-			MultiPartyProtocolRepItem protRepItem,
-			ArrayList<PartyRepItem> partyRepItems,
-			ArrayList<AgentID> partyIDList,
-			ArrayList<ProfileRepItem> profileRepItems,
-			ArrayList<HashMap<AgentParameterVariable, AgentParamValue>> partyParams,
-			DeadlineType deadlineType, int totalRoundOrTime) throws Exception {
-		MultiPartyProtocol ns;
-
-		java.lang.ClassLoader loader = ClassLoader.getSystemClassLoader();
-		Class klass = loader.loadClass(protRepItem.getClassPath());
-
-		Class[] paramTypes = { ArrayList.class, ArrayList.class,
-				ArrayList.class, ArrayList.class, DeadlineType.class, int.class };
-
-		Constructor cons = klass.getConstructor(paramTypes);
-
-		// System.out.println("Found the constructor: " + cons);
-
-		Object[] args = { partyRepItems, partyIDList, profileRepItems,
-				partyParams, deadlineType, totalRoundOrTime };
-
-		Object theObject = cons.newInstance(args);
-		ns = (MultiPartyProtocol) (theObject);
-
 		return ns;
 
 	}
