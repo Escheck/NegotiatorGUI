@@ -1,7 +1,5 @@
 package negotiator.session;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -58,13 +56,13 @@ public class SessionManager implements Runnable {
 	// negotiation session
 	private SessionLogger sessionLogger;
 
-	// holds a history of all the utilities for the agents. Used for logging
+	// holds a history of all the utilities for the agents. Used for plotting
 	// purposes
-	private List<List<Double[]>> agentUtils;
+	private List<List<Double[]>> agentUtilsDiscounted;
 
 	// utility of most recent agreements. Only holds sane information in case of
 	// agreement.
-	private double[][] agreementUtilities;
+	private double[][] agreementUtilitiesDiscounted;
 
 	// needed for reference (for indexing the parties)
 	List<NegotiationPartyInternal> agents;
@@ -96,7 +94,7 @@ public class SessionManager implements Runnable {
 		this.parties = parties;
 		this.listeners = protocol.getActionListeners(parties);
 		this.sessionLogger = new SessionLogger(this);
-		this.agentUtils = new ArrayList<List<Double[]>>();
+		this.agentUtilsDiscounted = new ArrayList<List<Double[]>>();
 		this.executor = exec;
 
 		protocol.setExecutor(exec);
@@ -106,9 +104,9 @@ public class SessionManager implements Runnable {
 
 		// add a util list for each non-mediator agent
 		for (int i = 0; i < agents.size(); i++)
-			agentUtils.add(new LinkedList<Double[]>());
+			agentUtilsDiscounted.add(new LinkedList<Double[]>());
 
-		agreementUtilities = new double[2][agents.size()];
+		agreementUtilitiesDiscounted = new double[2][agents.size()];
 	}
 
 	/**
@@ -189,14 +187,18 @@ public class SessionManager implements Runnable {
 						Double[] entry = {
 								session.getRoundNumber()
 										+ session.getTurnNumber() / 10d,
-								agent.getUtility(((Offer) action).getBid()) };
-						if (agentUtils.get(0).size() < MAX_UTIL_HISTORY)
-							agentUtils.get(agentId).add(entry);
+								agent.getUtilityWithDiscount(((Offer) action)
+										.getBid()) };
+						if (agentUtilsDiscounted.get(0).size() < MAX_UTIL_HISTORY)
+							agentUtilsDiscounted.get(agentId).add(entry);
 
 						if (currentAgreement == null || lastAgreement == null
 								|| !currentAgreement.equals(lastAgreement)) {
-							agreementUtilities[0][agentId] = entry[0];
-							agreementUtilities[1][agentId] = entry[1];
+							agreementUtilitiesDiscounted[0][agentId] = entry[0];
+							agreementUtilitiesDiscounted[1][agentId] = entry[1];
+							System.out.println(agentId + ":" + entry[0] + ","
+									+ entry[1]);
+
 						}
 					}
 					if (currentAgreement == null || lastAgreement == null
@@ -237,15 +239,15 @@ public class SessionManager implements Runnable {
 			sessionLogger.logMessage("No agreement found.");
 		else {
 			sessionLogger.logMessage("Found an agreement: %s", agreement);
-			agreementUtilities = new double[2][agents.size()];
+			agreementUtilitiesDiscounted = new double[2][agents.size()];
 			for (NegotiationPartyInternal agent : agents) {
 				int agentId = agents.indexOf(agent);
 				double when = findLastIndexOfBid(agreement, session);
 				Double[] entry = {
 						Double.isNaN(when) ? session.getRoundNumber() : when,
-						agent.getUtility(agreement) };
-				agreementUtilities[0][agentId] = entry[0];
-				agreementUtilities[1][agentId] = entry[1];
+						agent.getUtilityWithDiscount(agreement) };
+				agreementUtilitiesDiscounted[0][agentId] = entry[0];
+				agreementUtilitiesDiscounted[1][agentId] = entry[1];
 			}
 
 		}
@@ -382,10 +384,10 @@ public class SessionManager implements Runnable {
 	}
 
 	/**
-	 * Get the history of the utilities for all agents so far. Outer list is a
-	 * list of agent id's and utilities inner list is a list of double[2] where
-	 * the first double identifies the round and the second double identifies
-	 * the util.
+	 * Get the history of the (discounted) utilities for all agents so far.
+	 * Outer list is a list of agent id's and utilities inner list is a list of
+	 * double[2] where the first double identifies the round and the second
+	 * double identifies the util.
 	 *
 	 * Example (History of two agents with two rounds): list[0][0] = {1, 0.90}
 	 * list[0][1] = {2, 0.60} list[1][0] = {1, 0.70} list[1][1] = {2, 0.80} ^ ^
@@ -394,21 +396,21 @@ public class SessionManager implements Runnable {
 	 *
 	 * @return Utility history
 	 */
-	public List<List<Double[]>> getAgentUtils() {
-		return agentUtils;
+	public List<List<Double[]>> getAgentUtilsDiscounted() {
+		return agentUtilsDiscounted;
 	}
 
 	/**
-	 * Returns round number and utility value of agreement if any. If no
-	 * agreement this function is undefined.
+	 * Returns round number and (discounted) utility value of agreement if any.
+	 * If no agreement this function is undefined.
 	 *
 	 * result[0][0] = 2.1 <-- round number result[0][1] = 2.1 <-- round number
 	 * result[1][0] = 0.40 <-- utility result[1][1] = 0.80 <-- utility
 	 *
 	 * @return The round number and utility of agreement if any.
 	 */
-	public double[][] getAgreementUtilities() {
-		return agreementUtilities;
+	public double[][] getAgreementUtilitiesDiscounted() {
+		return agreementUtilitiesDiscounted;
 	}
 
 	// Finds the last index of the bid in the session or NaN if not found.
@@ -425,29 +427,4 @@ public class SessionManager implements Runnable {
 		return Double.NaN;
 	}
 
-	/**
-	 * Silences or restores the console output. This can be useful to suppress
-	 * output of foreign code, like submitted agents
-	 * 
-	 * @param enable
-	 *            Enables console output if set to true or disables it when set
-	 *            to false
-	 */
-	private void useConsoleOut(boolean enable) {
-		if (enable) {
-			System.setErr(orgErr);
-			System.setOut(orgOut);
-		} else {
-			System.setOut(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-			System.setErr(new PrintStream(new OutputStream() {
-				@Override
-				public void write(int b) throws IOException { /* no-op */
-				}
-			}));
-		}
-	}
 }

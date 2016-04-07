@@ -155,6 +155,15 @@ public class MultipartyBidChart {
 		setBidSeries(getReadyToPlotListWithProduct(agentUtils));
 	}
 
+	/**
+	 * Assumes that first party's list is long enough for the product list.
+	 * 
+	 * @param partyUtilityHistoryList
+	 *            list of utilities for all parties.
+	 * @return ready to plot list which is basically duplicate of the provided
+	 *         list but then in double[] format, plus a list containing the
+	 *         product of all utilities.
+	 */
 	private ArrayList<double[][]> getReadyToPlotListWithProduct(
 			List<List<Double[]>> partyUtilityHistoryList) {
 		ArrayList<double[][]> bidSeries = new ArrayList<double[][]>();
