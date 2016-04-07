@@ -122,16 +122,16 @@ public abstract class Party {
 	}
 
 	/**
-	 * A convenience method to get the utility of a bid. This method will take
-	 * discount factors into account (if any), using the status of the current
-	 * {@link #timeline}.
+	 * A convenience method to get the undiscounted utility of a bid. if
 	 * 
-	 * @see {@link AdditiveUtilitySpace}.
+	 * @return utility of bid, or 0 if the computation of the utility fails
+	 *         somehow.
 	 */
 	public double getUtility(Bid bid) {
 		try {
 			return utilitySpace.getUtility(bid);
 		} catch (Exception e) {
+			// FIXME remove this. We should not catch bugs.
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return (0.0);
