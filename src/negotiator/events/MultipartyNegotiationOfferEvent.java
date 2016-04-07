@@ -24,7 +24,7 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	 * @param action
 	 *            the most recent action in the nego
 	 * @param partyUtilities
-	 *            the undiscounted utils of the parties
+	 *            the discounted utils of the parties
 	 * @param agreementFound
 	 *            true iff the parties agreed
 	 */
@@ -74,7 +74,7 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 
 	/**
 	 * 
-	 * @return the undiscounted utils of the parties
+	 * @return the discounted utils of the parties
 	 */
 	public ArrayList<Double> getPartyUtilities() {
 		return partyUtilities;
