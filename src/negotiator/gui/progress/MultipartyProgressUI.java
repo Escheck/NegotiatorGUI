@@ -185,8 +185,9 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 
 		jSplitPane3.setTopComponent(jPanelNegoChart);
 
-		jPanelNegoTable.setBorder(javax.swing.BorderFactory
-				.createTitledBorder("Utility of the proposed offers"));
+		jPanelNegoTable
+				.setBorder(javax.swing.BorderFactory
+						.createTitledBorder("Discounted utility of the proposed offers"));
 		jPanelNegoTable.setName("jPanelNegoTable"); // NOI18N
 
 		jScrollPaneNegoTable.setName("jScrollPaneNegoTable"); // NOI18N

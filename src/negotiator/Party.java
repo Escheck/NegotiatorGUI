@@ -123,9 +123,7 @@ public abstract class Party {
 
 	/**
 	 * A convenience method to get the undiscounted utility of a bid. if
-	 * 
-	 * @return utility of bid, or 0 if the computation of the utility fails
-	 *         somehow.
+	 * @return utility of bid, or 0 if the computation of the utility fails somehow.
 	 */
 	public double getUtility(Bid bid) {
 		try {

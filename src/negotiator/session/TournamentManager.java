@@ -172,7 +172,6 @@ public class TournamentManager extends Thread {
 			notifyEvent(new SessionStartedEvent(this, sessionNumber,
 					totalSessions));
 
-			StringBuilder logline = new StringBuilder("" + sessionNumber);
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
 					1000 * configuration.getDeadline()
 							.getTimeOrDefaultTimeout());
