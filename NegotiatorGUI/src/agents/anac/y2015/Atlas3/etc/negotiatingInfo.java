@@ -12,6 +12,7 @@ import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueInteger;
 import negotiator.utility.AdditiveUtilitySpace;
 import agents.anac.y2015.Atlas3.Atlas3;
 
@@ -353,11 +354,10 @@ public class negotiatingInfo {
 			}
 			break;
 		case INTEGER:
-			int min_value = ((IssueInteger) issue).getUpperBound();
+			int min_value = ((IssueInteger) issue).getLowerBound();
 			int max_value = ((IssueInteger) issue).getUpperBound();
 			for (int j = min_value; j <= max_value; j++) {
-				Object valueObject = new Integer(j);
-				values.add((Value) valueObject);
+				values.add(new ValueInteger(j));
 			}
 			break;
 		default:
