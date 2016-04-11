@@ -59,4 +59,9 @@ public class ValueInteger extends Value {
 		} else
 			return false;
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
 }
