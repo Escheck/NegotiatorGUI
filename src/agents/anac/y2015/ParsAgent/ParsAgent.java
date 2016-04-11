@@ -168,8 +168,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	}
 
 	/**
-	 * @param issueindex
-	 *            the issue for which we need the best value (index).
+	 * @param issueindex the issue for which we need the best value (index).
 	 * @return the best value-index for issue <issueindex>. For integer values,
 	 *         returns the best value itself, no 'index'.
 	 */
