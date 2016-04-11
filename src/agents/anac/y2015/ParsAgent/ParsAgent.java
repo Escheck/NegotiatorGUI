@@ -11,7 +11,9 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
+import negotiator.issue.ValueInteger;
 import negotiator.parties.AbstractTimeDependentNegotiationParty;
 import negotiator.utility.AdditiveUtilitySpace;
 
@@ -165,19 +167,28 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 		// Here you can listen to other parties' messages
 	}
 
+	/**
+	 * @param issueindex
+	 *            the issue for which we need the best value (index).
+	 * @return the best value-index for issue <issueindex>. For integer values,
+	 *         returns the best value itself, no 'index'.
+	 */
 	public int MyBestValue(int issueindex) {
 		ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
 		Issue isu = dissues.get(issueindex);
-		HashMap map = new HashMap();
+		HashMap<Integer, Value> map = new HashMap<Integer, Value>();
 		double maxutil = 0d;
 		int maxvalIndex = 0;
 		try {
 			map = utilitySpace.getMaxUtilityBid().getValues();
 		} catch (Exception e) {
-			System.out.println("Exception 3323  " + e.getMessage());
+			e.printStackTrace();
 		}
 		if (isu instanceof IssueDiscrete) {
 			IssueDiscrete is = (IssueDiscrete) isu;
+
+			// Bizarre way to get the value-index of this issue in the max-util
+			// bid?
 			for (int num = 0; num < is.getNumberOfValues(); ++num) {
 				map.put(new Integer(issueindex + 1), is.getValue(num));
 				Bid temp;
@@ -186,7 +197,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 					temp = new Bid(utilitySpace.getDomain(), map);
 					u = utilitySpace.getUtility(temp);
 				} catch (Exception e) {
-					System.out.println("Exception 98989  " + e.getMessage());
+					e.printStackTrace();
 				}
 				if (u > maxutil) {
 					maxutil = u;
@@ -195,10 +206,18 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 				break;
 
 			}
+		} else if (isu instanceof IssueInteger) {
+			if (map != null) {
+				// +1 because the map has first issue = 1.
+				return ((ValueInteger) map.get(issueindex + 1)).getValue();
+			}
 		}
 		return maxvalIndex;
 	}
 
+	/**
+	 * @return a next bid.
+	 */
 	public Bid offerMyNewBid() {
 		Bid bidNN = null;
 		if (opponentAB != null && opponentAB.size() != 0)
@@ -212,27 +231,39 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 				ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
 				for (int i = 0; i < isues.size(); ++i) {
 					List<Object> keyVal = isues.get(i);
-					if (keyVal != null
-							&& dissues.get(i) instanceof IssueDiscrete) {
-						IssueDiscrete is = (IssueDiscrete) dissues.get(i);
-						for (int num = 0; num < is.getNumberOfValues(); ++num) {
-							if (is.getValue(num).toString()
-									.equals(keyVal.get(0).toString())) {
-								map.put(new Integer(i + 1), is.getValue(num));
-								break;
+
+					Issue dissue = dissues.get(i);
+					if (dissue instanceof IssueDiscrete) {
+						if (keyVal != null) {
+							IssueDiscrete is = (IssueDiscrete) dissues.get(i);
+							// search the value that matches keyVal(0) and put
+							// in map.
+							// fails silently!
+							for (int num = 0; num < is.getNumberOfValues(); ++num) {
+								if (is.getValue(num).toString()
+										.equals(keyVal.get(0).toString())) {
+									map.put(new Integer(i + 1),
+											is.getValue(num));
+									break;
+								}
+
 							}
-
+						} else { // keyVal == null
+							IssueDiscrete is = (IssueDiscrete) dissues.get(i);
+							map.put(new Integer(i + 1),
+									is.getValue(MyBestValue(i)));
 						}
-
-					} else if (keyVal == null
-							&& dissues.get(i) instanceof IssueDiscrete) {
-						IssueDiscrete is = (IssueDiscrete) dissues.get(i);
-						map.put(new Integer(i + 1), is.getValue(MyBestValue(i)));
-
-					} else if (keyVal != null) {
-						// keyval !=null, but NOT discrete issue.
-						throw new IllegalStateException("not implemented");
-						// map.put(new Integer(i + 1), keyVal.get(0));
+					} else if (dissue instanceof IssueInteger) {
+						if (keyVal != null) {
+							map.put(new Integer(i + 1),
+									(ValueInteger) keyVal.get(0));
+						} else { // keyVal==null
+							// IssueInteger is = (IssueInteger) dissues.get(i);
+							map.put(i + 1, new ValueInteger(MyBestValue(i)));
+						}
+					} else {
+						throw new IllegalStateException("not supported issue "
+								+ dissue);
 					}
 
 				}
@@ -255,6 +286,13 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 		return null;
 	}
 
+	/**
+	 * Seems that this determines for each issue the top-2 of occuring values.
+	 * 
+	 * @return list of &lt;issue, maxval1, maxval2 &gt; triplets (triplets
+	 *         encoded as List<Object>...). maxval1 is mostly used value;
+	 *         maxval2 is one-but-mostly used.
+	 */
 	public List<List<Object>> getMutualIssues() {
 		List<List<Object>> mutualList = new ArrayList<List<Object>>();
 		ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
@@ -262,80 +300,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 		while (twocycle > 0) {
 			mutualList = new ArrayList<List<Object>>();
 			for (int i = 0; i < dissues.size(); ++i) {
-				if (oppAPreferences.getRepeatedissue().get(
-						dissues.get(i).getName()) != null) {
-					HashMap<Value, Integer> vals = oppAPreferences
-							.getRepeatedissue().get(dissues.get(i).getName());
-					HashMap<Value, Integer> valsB = oppBPreferences
-							.getRepeatedissue().get(dissues.get(i).getName());
-
-					Object[] keys = vals.keySet().toArray();
-					int[] max = new int[] { 0, 0 };
-					Object[] maxkey = new Object[] { null, null };
-					for (int j = 0; j < keys.length; ++j) {
-						Integer temp = (Integer) vals.get(keys[j]);
-						if (temp.intValue() > max[0]) {
-							max[0] = temp.intValue();
-							maxkey[0] = keys[j];
-						} else if (temp.intValue() > max[1]) {
-							max[1] = temp.intValue();
-							maxkey[1] = keys[j];
-						}
-					}
-					if (valsB != null) {
-						Object[] keysB = valsB.keySet().toArray();
-						int[] maxB = new int[] { 0, 0 };
-						;
-						Object[] maxkeyB = new Object[] { null, null };
-						for (int j = 0; j < keysB.length; ++j) {
-							Integer temp = (Integer) valsB.get(keysB[j]);
-							if (temp.intValue() > maxB[0]) {
-								maxB[0] = temp.intValue();
-								maxkeyB[0] = keysB[j];
-							} else if (temp.intValue() > maxB[1]) {
-								maxB[1] = temp.intValue();
-								maxkeyB[1] = keysB[j];
-							}
-						}
-						if (twocycle == 2) {
-							if (maxkey[0] != null && maxkeyB[0] != null
-									&& maxkey[0].equals(maxkeyB[0])) {
-								ArrayList<Object> l = new ArrayList();
-								l.add(maxkey[0]);
-								l.add(maxB[0]);
-								l.add(max[0]);
-								mutualList.add(i, l);
-							} else
-								mutualList.add(i, null);
-						} else {
-							boolean insideloop = true;
-							for (int m = 0; insideloop && m < 2; ++m) {
-								for (int z = 0; insideloop && z < 2; ++z) {
-									if (maxkey[m] != null && maxkeyB[z] != null
-											&& maxkey[m].equals(maxkeyB[z])) {
-										ArrayList<Object> l = new ArrayList();
-										l.add(maxkey[m]);
-										l.add(maxB[z]);
-										l.add(max[m]);
-										mutualList.add(i, l);
-										insideloop = false;
-									}
-								}
-							}
-							if (insideloop)
-								mutualList.add(i, null);
-
-						}
-					} else {
-						mutualList.add(i, null);
-						oppBPreferences.getRepeatedissue().put(
-								dissues.get(i).getName(), new HashMap());
-					}
-				} else {
-					oppAPreferences.getRepeatedissue().put(
-							dissues.get(i).getName(), new HashMap());
-					mutualList.add(i, null);
-				}
+				updateMutualList(mutualList, dissues, twocycle, i);
 				if (((HashMap) oppAPreferences.getRepeatedissue().get(
 						dissues.get(i).getName())).size() == 0
 						|| ((HashMap) oppAPreferences.getRepeatedissue().get(
@@ -361,6 +326,91 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 			}
 		}
 		return mutualList;
+	}
+
+	/**
+	 * Search two highest repeated issues for each issue
+	 * 
+	 * @param mutualList
+	 * @param dissues
+	 * @param twocycle
+	 * @param i
+	 */
+	private void updateMutualList(List<List<Object>> mutualList,
+			ArrayList<Issue> dissues, int twocycle, int i) {
+		if (oppAPreferences.getRepeatedissue().get(dissues.get(i).getName()) != null) {
+			HashMap<Value, Integer> vals = oppAPreferences.getRepeatedissue()
+					.get(dissues.get(i).getName());
+			HashMap<Value, Integer> valsB = oppBPreferences.getRepeatedissue()
+					.get(dissues.get(i).getName());
+
+			Object[] keys = vals.keySet().toArray();
+			int[] max = new int[] { 0, 0 };
+			Object[] maxkey = new Object[] { null, null };
+			for (int j = 0; j < keys.length; ++j) {
+				Integer temp = (Integer) vals.get(keys[j]);
+				if (temp.intValue() > max[0]) {
+					max[0] = temp.intValue();
+					maxkey[0] = keys[j];
+				} else if (temp.intValue() > max[1]) {
+					max[1] = temp.intValue();
+					maxkey[1] = keys[j];
+				}
+			}
+			if (valsB != null) {
+				Object[] keysB = valsB.keySet().toArray();
+				int[] maxB = new int[] { 0, 0 };
+				;
+				Object[] maxkeyB = new Object[] { null, null };
+				for (int j = 0; j < keysB.length; ++j) {
+					Integer temp = (Integer) valsB.get(keysB[j]);
+					if (temp.intValue() > maxB[0]) {
+						maxB[0] = temp.intValue();
+						maxkeyB[0] = keysB[j];
+					} else if (temp.intValue() > maxB[1]) {
+						maxB[1] = temp.intValue();
+						maxkeyB[1] = keysB[j];
+					}
+				}
+				if (twocycle == 2) {
+					if (maxkey[0] != null && maxkeyB[0] != null
+							&& maxkey[0].equals(maxkeyB[0])) {
+						ArrayList<Object> l = new ArrayList();
+						l.add(maxkey[0]);
+						l.add(maxB[0]);
+						l.add(max[0]);
+						mutualList.add(i, l);
+					} else
+						mutualList.add(i, null);
+				} else {
+					boolean insideloop = true;
+					for (int m = 0; insideloop && m < 2; ++m) {
+						for (int z = 0; insideloop && z < 2; ++z) {
+							if (maxkey[m] != null && maxkeyB[z] != null
+									&& maxkey[m].equals(maxkeyB[z])) {
+								ArrayList<Object> l = new ArrayList();
+								l.add(maxkey[m]);
+								l.add(maxB[z]);
+								l.add(max[m]);
+								mutualList.add(i, l);
+								insideloop = false;
+							}
+						}
+					}
+					if (insideloop)
+						mutualList.add(i, null);
+
+				}
+			} else {
+				mutualList.add(i, null);
+				oppBPreferences.getRepeatedissue().put(
+						dissues.get(i).getName(), new HashMap());
+			}
+		} else {
+			oppAPreferences.getRepeatedissue().put(dissues.get(i).getName(),
+					new HashMap());
+			mutualList.add(i, null);
+		}
 	}
 
 	public Bid getNNBid(ArrayList<BidUtility> oppAB) {
