@@ -144,9 +144,10 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 				calculateParamForOpponent(
 						(oppAName.equals(agentName) ? oppAPreferences
 								: oppBPreferences), newBid);
+				System.out.println("opp placed bid:" + newBid);
 				lastBid = newBid;
 			} catch (Exception e) {
-				// System.out.println("Exception 33 " + e.getMessage());
+				e.printStackTrace();
 			}
 		} else if (action != null && action instanceof Accept) {
 			BidUtility opBid = null;
@@ -155,7 +156,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 						utilitySpace.getUtility(lastBid),
 						System.currentTimeMillis());
 			} catch (Exception e) {
-				// System.out.println("Exception  44" + e.getMessage());
+				System.out.println("Exception  44" + e.getMessage());
 			}
 			addBidToList(opponentAB, opBid);
 		}
@@ -205,12 +206,12 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 		try {
 			if (bidNN == null
 					|| utilitySpace.getUtility(bidNN) < getMyutility()) {
-				ArrayList isues = getMutualIssues();
-				HashMap map = new HashMap();
+				List<List<Object>> isues = getMutualIssues();
+				HashMap<Integer, Value> map = new HashMap<Integer, Value>();
 				Bid bid;
 				ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
 				for (int i = 0; i < isues.size(); ++i) {
-					ArrayList keyVal = (ArrayList) isues.get(i);
+					List<Object> keyVal = isues.get(i);
 					if (keyVal != null
 							&& dissues.get(i) instanceof IssueDiscrete) {
 						IssueDiscrete is = (IssueDiscrete) dissues.get(i);
@@ -229,7 +230,9 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 						map.put(new Integer(i + 1), is.getValue(MyBestValue(i)));
 
 					} else if (keyVal != null) {
-						map.put(new Integer(i + 1), keyVal.get(0));
+						// keyval !=null, but NOT discrete issue.
+						throw new IllegalStateException("not implemented");
+						// map.put(new Integer(i + 1), keyVal.get(0));
 					}
 
 				}
@@ -247,23 +250,23 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 			} else
 				return bidNN;
 		} catch (Exception e) {
-			System.out.println("Exception 121212 == " + e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public ArrayList getMutualIssues() {
-		ArrayList mutualList = new ArrayList();
+	public List<List<Object>> getMutualIssues() {
+		List<List<Object>> mutualList = new ArrayList<List<Object>>();
 		ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
 		int twocycle = 2;
 		while (twocycle > 0) {
-			mutualList = new ArrayList();
+			mutualList = new ArrayList<List<Object>>();
 			for (int i = 0; i < dissues.size(); ++i) {
 				if (oppAPreferences.getRepeatedissue().get(
 						dissues.get(i).getName()) != null) {
-					HashMap vals = (HashMap) oppAPreferences.getRepeatedissue()
-							.get(dissues.get(i).getName());
-					HashMap valsB = (HashMap) oppBPreferences
+					HashMap<Value, Integer> vals = oppAPreferences
+							.getRepeatedissue().get(dissues.get(i).getName());
+					HashMap<Value, Integer> valsB = oppBPreferences
 							.getRepeatedissue().get(dissues.get(i).getName());
 
 					Object[] keys = vals.keySet().toArray();
@@ -297,7 +300,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 						if (twocycle == 2) {
 							if (maxkey[0] != null && maxkeyB[0] != null
 									&& maxkey[0].equals(maxkeyB[0])) {
-								ArrayList l = new ArrayList();
+								ArrayList<Object> l = new ArrayList();
 								l.add(maxkey[0]);
 								l.add(maxB[0]);
 								l.add(max[0]);
@@ -310,7 +313,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 								for (int z = 0; insideloop && z < 2; ++z) {
 									if (maxkey[m] != null && maxkeyB[z] != null
 											&& maxkey[m].equals(maxkeyB[z])) {
-										ArrayList l = new ArrayList();
+										ArrayList<Object> l = new ArrayList();
 										l.add(maxkey[m]);
 										l.add(maxB[z]);
 										l.add(max[m]);
@@ -474,7 +477,8 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	public void calculateParamForOpponent(OpponentPreferences op, Bid bid) {
 		ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
 		HashMap<Integer, Value> bidVal = bid.getValues();
-		Integer[] keys = (Integer[]) bidVal.keySet().toArray();
+		Integer[] keys = new Integer[0];
+		keys = (Integer[]) bidVal.keySet().toArray(keys);
 
 		for (int i = 0; i < dissues.size(); ++i) {
 			if (op.getRepeatedissue().get(dissues.get(i).getName()) != null) {
