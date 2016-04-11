@@ -11,6 +11,7 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Value;
 import negotiator.parties.AbstractTimeDependentNegotiationParty;
 import negotiator.utility.AdditiveUtilitySpace;
 
@@ -463,15 +464,22 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 
 	}
 
+	/**
+	 * Updates the opponent preferences model. Basically updates the number of
+	 * times the issue values occurred.
+	 * 
+	 * @param op
+	 * @param bid
+	 */
 	public void calculateParamForOpponent(OpponentPreferences op, Bid bid) {
 		ArrayList<Issue> dissues = utilitySpace.getDomain().getIssues();
-		HashMap bidVal = bid.getValues();
-		Object[] keys = bidVal.keySet().toArray();
+		HashMap<Integer, Value> bidVal = bid.getValues();
+		Integer[] keys = (Integer[]) bidVal.keySet().toArray();
 
 		for (int i = 0; i < dissues.size(); ++i) {
 			if (op.getRepeatedissue().get(dissues.get(i).getName()) != null) {
 
-				HashMap vals = (HashMap) op.getRepeatedissue().get(
+				HashMap<Value, Integer> vals = op.getRepeatedissue().get(
 						dissues.get(i).getName());
 
 				try {
@@ -486,7 +494,7 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 					// System.out.println("Exception 88 " + e.getMessage());
 				}
 			} else {
-				HashMap h = new HashMap();
+				HashMap<Value, Integer> h = new HashMap<Value, Integer>();
 				// op.getRepeatedissue().get(dissues.get(i).getName());
 				try {
 
@@ -518,15 +526,29 @@ public class ParsAgent extends AbstractTimeDependentNegotiationParty {
 	}
 
 	private class OpponentPreferences {
-		private HashMap repeatedissue = new HashMap();
+		/**
+		 * map with number of times an issue values occurred in an opponent bid.
+		 */
+		private HashMap<String, HashMap<Value, Integer>> repeatedissue = new HashMap();
 		private ArrayList selectedValues;
 		ArrayList<BidUtility> opponentBids = new ArrayList<BidUtility>();
 
-		public void setRepeatedissue(HashMap repeatedissue) {
+		/**
+		 * actually, not used. Code modifies map returned from
+		 * {@link #getRepeatedissue()} directly.
+		 * 
+		 * @param repeatedissue
+		 */
+		public void setRepeatedissue(
+				HashMap<String, HashMap<Value, Integer>> repeatedissue) {
 			this.repeatedissue = repeatedissue;
 		}
 
-		public HashMap getRepeatedissue() {
+		/**
+		 * @return map with number of times an issue values occurred in an
+		 *         opponent bid
+		 */
+		public HashMap<String, HashMap<Value, Integer>> getRepeatedissue() {
 			return repeatedissue;
 		}
 
