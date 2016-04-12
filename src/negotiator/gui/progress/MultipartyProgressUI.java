@@ -288,45 +288,6 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		biddingTable.setModel(partyModel);
 	}
 
-	private void handleLogMessageEvent(LogMessageEvent evt) {
-		textOutput.append(evt.getMessage() + "\n");
-		if (textOutput.getLineCount() > MAX_TEXT_OUTPUT) {
-			try {
-				int end = textOutput.getLineEndOffset(0);
-				textOutput.replaceRange("", 0, end);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-		// writing log to session --> session.setLog(textOutput.getText());
-	}
-
-	@Override
-	public void handleEvent(NegotiationEvent e) {
-		if (e instanceof LogMessageEvent) {
-			handleLogMessageEvent((LogMessageEvent) e);
-		} else if (e instanceof MultipartyNegotiationOfferEvent) {
-			MultipartyNegotiationOfferEvent e1 = (MultipartyNegotiationOfferEvent) e;
-			// time will be used later
-			addRowBiddingTable(e1.getRound(), e1.getTurn(),
-					e1.getPartyUtilities());
-		} else if (e instanceof MultipartyNegotiationSessionEvent) {
-			handleMultipartyNegotiationEvent((MultipartyNegotiationSessionEvent) e);
-		}
-	}
-
-	private void handleMultipartyNegotiationEvent(
-			MultipartyNegotiationSessionEvent evt) {
-		session = evt.getSession();
-		bidChart.setMaxRound(session.getRoundNumber() + 1);
-		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
-		bidChart.setBidSeries(manager.getAgentUtilsDiscounted());
-
-		if (evt.getAgreement() != null) {
-			bidChart.setAgreementPoints(manager.getAgreementUtilitiesDiscounted());
-		}
-	}
-
 	private List<UtilitySpace> getUtilitySpaces() {
 		List<UtilitySpace> spaces = new ArrayList<UtilitySpace>();
 		for (NegotiationPartyInternal party : MediatorProtocol
@@ -375,6 +336,46 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		nashDataSeries[1][1] = nashProduct;
 
 		return nashDataSeries;
+	}
+
+	@Override
+	public void handleEvent(NegotiationEvent e) {
+		if (e instanceof LogMessageEvent) {
+			handleLogMessageEvent((LogMessageEvent) e);
+		} else if (e instanceof MultipartyNegotiationOfferEvent) {
+			MultipartyNegotiationOfferEvent e1 = (MultipartyNegotiationOfferEvent) e;
+			// time will be used later
+			addRowBiddingTable(e1.getRound(), e1.getTurn(),
+					e1.getPartyUtilities());
+		} else if (e instanceof MultipartyNegotiationSessionEvent) {
+			handleMultipartyNegotiationEvent((MultipartyNegotiationSessionEvent) e);
+		}
+	}
+
+	private void handleLogMessageEvent(LogMessageEvent evt) {
+		textOutput.append(evt.getMessage() + "\n");
+		if (textOutput.getLineCount() > MAX_TEXT_OUTPUT) {
+			try {
+				int end = textOutput.getLineEndOffset(0);
+				textOutput.replaceRange("", 0, end);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
+		// writing log to session --> session.setLog(textOutput.getText());
+	}
+
+	private void handleMultipartyNegotiationEvent(
+			MultipartyNegotiationSessionEvent evt) {
+		session = evt.getSession();
+		bidChart.setMaxRound(session.getRoundNumber() + 1);
+		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
+		bidChart.setBidSeries(manager.getAgentUtilsDiscounted());
+
+		if (evt.getAgreement() != null) {
+			bidChart.setAgreementPoints(manager
+					.getAgreementUtilitiesDiscounted());
+		}
 	}
 
 }

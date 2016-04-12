@@ -1,6 +1,5 @@
 package negotiator.session;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,10 +65,6 @@ public class SessionManager implements Runnable {
 
 	// needed for reference (for indexing the parties)
 	List<NegotiationPartyInternal> agents;
-
-	// Used to silence and restore console output for agents
-	private PrintStream orgOut = System.out;
-	private PrintStream orgErr = System.err;
 
 	private ExecutorWithTimeout executor;
 
