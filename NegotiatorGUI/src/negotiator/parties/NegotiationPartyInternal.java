@@ -82,6 +82,11 @@ public class NegotiationPartyInternal {
 							+ profileRepItem
 							+ " is not extending AbstractUtilitySpace and currently not supported for negotiation parties");
 		}
+		String err = utilitySpace.isComplete();
+		if (!err.isEmpty()) {
+			throw new IllegalArgumentException("utilityspace in "
+					+ profileRepItem + " is not ready to run:" + err);
+		}
 		long randomSeed = System.currentTimeMillis();
 		try {
 			party = partyRepItem.load();
