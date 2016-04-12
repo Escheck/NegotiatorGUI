@@ -21,7 +21,8 @@ import negotiator.session.Session;
 import negotiator.utility.AbstractUtilitySpace;
 
 /**
- * Indicates that an agreement was reached.
+ * Indicates that an agreement was reached. Used exclusively in multi-party
+ * tournament (not in single session).
  * 
  * @author W.Pasman 15jul15
  *
