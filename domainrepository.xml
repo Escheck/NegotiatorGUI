@@ -61,7 +61,7 @@
 				<profile url="file:etc/templates/partydomain/party8_utility.xml" />
 				<profile url="file:etc/templates/partydomain/party9_utility.xml" />
 			</domainRepItem>
-			<!-- -------------------------ANAC 2016 -------------------- -->
+			<!-- ************************ ANAC 2016 ***************************** -->
 			<domainRepItem
 				url="file:etc/templates/ANAC2016/AgentHp2/energy_grid_domain.xml">
 				<profile url="file:etc/templates/ANAC2016/AgentHp2/consumer.xml" />
@@ -186,7 +186,7 @@
 					url="file:etc/templates/ANAC2016/YXagent/Smart_Energy_Grid_util4.xml" />
 			</domainRepItem>
 
-			<!-- -------------------------ANAC 2015 -------------------- -->
+			<!-- ************************ ANAC 2015 ***************************** -->
 			<domainRepItem
 				url="file:etc/templates/ANAC2015/group1-university/University.xml">
 				<profile
@@ -440,6 +440,7 @@
 				<profile
 					url="file:etc/templates/ANAC2015/group12-symposium/Symposium-Profile9.xml" />
 			</domainRepItem>
+			<!-- ************************ ANAC 2010 ***************************** -->
 			<domainRepItem
 				url="file:etc/templates/anac/y2010/EnglandZimbabwe/EnglandZimbabwe_domain.xml">
 				<profile url="file:etc/templates/anac/y2010/EnglandZimbabwe/England.xml" />
@@ -458,6 +459,7 @@
 				<profile url="file:etc/templates/anac/y2010/Travel/travel_chox.xml" />
 				<profile url="file:etc/templates/anac/y2010/Travel/travel_fanny.xml" />
 			</domainRepItem>
+			<!-- ************************ ANAC 2011 ***************************** -->
 			<domainRepItem url="file:etc/templates/anac/y2011/Car/adg.xml">
 				<profile url="file:etc/templates/anac/y2011/Car/adg_deal.xml" />
 				<profile url="file:etc/templates/anac/y2011/Car/adg_deal2.xml" />
