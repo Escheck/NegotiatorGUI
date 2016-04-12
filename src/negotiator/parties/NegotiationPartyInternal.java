@@ -83,7 +83,7 @@ public class NegotiationPartyInternal {
 							+ " is not extending AbstractUtilitySpace and currently not supported for negotiation parties");
 		}
 		String err = utilitySpace.isComplete();
-		if (!err.isEmpty()) {
+		if (err != null) {
 			throw new IllegalArgumentException("utilityspace in "
 					+ profileRepItem + " is not ready to run:" + err);
 		}
