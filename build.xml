@@ -14,7 +14,7 @@
 	Check for the ant user manual
 	http://ant.apache.org/manual/index.html
 -->
-<project name="Negotiator" default="makeGenius5.3.5" basedir=".">
+<project name="Negotiator" default="makeGenius5.4.0" basedir=".">
 	<property name="dist" location="dist" />
 	<property name="build" location="bin" />
 	<property name="javadoc" location="javadoc" />
@@ -544,9 +544,9 @@
 		<ant target="cleanup" />
 	</target>
 
-	<target name="makeGenius5.3.5" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
+	<target name="makeGenius5.4.0" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/domains/domainrepository.xml" />
+			<fileset file="domainrepository.xml" />
 			<globmapper from="domainrepository.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
@@ -568,7 +568,7 @@
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/parties/partyrepository.xml" />
+			<fileset file="partyrepository.xml" />
 			<globmapper from="partyrepository.xml" to="partyrepository.xml" />
 		</copy>
 
@@ -581,7 +581,7 @@
 			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
-		<zip destfile="${dist}/Genius-5.3.5.zip">
+		<zip destfile="${dist}/Genius-5.4.0.zip">
 			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
