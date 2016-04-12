@@ -547,7 +547,7 @@
 	<target name="makeGenius5.4.0" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrepository.ANAC2016.xml" />
-			<globmapper from="domainrepository.xml" to="domainrepository.xml" />
+			<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/boa/boarepository.xml" />
@@ -568,8 +568,8 @@
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="partyrepository.xml" />
-			<globmapper from="partyrepository.xml" to="partyrepository.xml" />
+			<fileset file="${repositories}/parties/partyrepository.ANAC2016.xml" />
+			<globmapper from="partyrepository.ANAC2016.xml" to="partyrepository.xml" />
 		</copy>
 
 
