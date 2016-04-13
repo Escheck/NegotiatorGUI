@@ -1,4 +1,4 @@
-package negotiator.logging;
+package negotiator.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,12 @@ import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
-import negotiator.session.Session;
 
 /**
  * Logger class for the command line interface displayed in the gui during
  * multilateral negotiation sessions.
  */
-public class SessionLogger {
+public class SessionEventHandler {
 	// private list of all events this logger listens to
 	private List<MultipartyNegotiationEventListener> listeners;
 
@@ -33,7 +32,7 @@ public class SessionLogger {
 	 *            The object creating this class. Used for reference in log
 	 *            messages
 	 */
-	public SessionLogger(Object owner) {
+	public SessionEventHandler(Object owner) {
 		this.listeners = new ArrayList<MultipartyNegotiationEventListener>();
 		this.owner = owner;
 	}
@@ -46,24 +45,6 @@ public class SessionLogger {
 	 */
 	public void addListener(MultipartyNegotiationEventListener listener) {
 		listeners.add(listener);
-	}
-
-	/**
-	 * Removes a listener from this logger
-	 *
-	 * @param listener
-	 *            The listener that should stop receiving messages from this
-	 *            logger
-	 */
-	public void removeListener(MultipartyNegotiationEventListener listener) {
-		listeners.remove(listener);
-	}
-
-	/**
-	 * Removes all listeners
-	 */
-	public void clearListeners() {
-		listeners.clear();
 	}
 
 	/**
