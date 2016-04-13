@@ -1,6 +1,6 @@
 package negotiator.events;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import negotiator.Bid;
 
@@ -8,9 +8,9 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	private int round;
 	private int turn;
 	private double timeline; // current run time in seconds.
-	private ArrayList<Double> partyUtilities;
-	private boolean agreementFound;
+	private List<Double> partyUtilities;
 	private Bid bid;
+	private List<Double> agreementUtils;
 
 	/**
 	 * @param source
@@ -25,19 +25,20 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	 *            the most recent action in the nego
 	 * @param partyUtilities
 	 *            the discounted utils of the parties
-	 * @param agreementFound
-	 *            true iff the parties agreed
+	 * @param agreementUtils
+	 *            the utilities of the {@link Bid} that the parties agreed on ,
+	 *            or null if no agreement yet.
 	 */
 	public MultipartyNegotiationOfferEvent(Object source, Bid bid, int round,
-			int turn, double time, ArrayList<Double> partyUtilities,
-			boolean agreementFound) {
+			int turn, double time, List<Double> partyUtilities,
+			List<Double> agreementUtils) {
 		super(source);
 		this.bid = bid;
 		this.round = round;
 		this.turn = turn;
 		this.timeline = time;
 		this.partyUtilities = partyUtilities;
-		this.agreementFound = agreementFound;
+		this.agreementUtils = agreementUtils;
 	}
 
 	/**
@@ -68,16 +69,16 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	 * 
 	 * @return the discounted utils of the parties
 	 */
-	public ArrayList<Double> getPartyUtilities() {
+	public List<Double> getPartyUtilities() {
 		return partyUtilities;
 	}
 
 	/**
 	 * 
-	 * @return true iff the parties agreed
+	 * @return The bid the parties agreed on, or null if no such agreement.
 	 */
-	public boolean getAgreementFound() {
-		return agreementFound;
+	public List<Double> getAgreementUtils() {
+		return agreementUtils;
 	}
 
 	public String toString() {

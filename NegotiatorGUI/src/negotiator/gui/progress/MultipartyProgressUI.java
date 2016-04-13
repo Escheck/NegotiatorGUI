@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -73,12 +74,28 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 	private javax.swing.JSplitPane jSplitPane3;
 	private javax.swing.JTextArea textOutput;
 
+	// maximum utility history to keep for each session (absolute maximum is
+	// int.max)
+	public static final int MAX_UTIL_HISTORY = 100000; // 100K
+
+	// holds a history of all the utilities for the agents. Used for plotting
+	// purposes
+	private List<List<Double[]>> turnAndUtilPerRoundPerAgent;
+
 	/** Creates new form ProgressUI2 */
 	public MultipartyProgressUI(ArrayList<String> partyInfo,
 			SessionManager mgr, List<NegotiationPartyInternal> parties) {
 
 		this.manager = mgr;
 		this.parties = parties;
+
+		this.turnAndUtilPerRoundPerAgent = new ArrayList<List<Double[]>>();
+		// add a util list for each non-mediator agent
+		// needed for reference (for indexing the parties)
+		List<NegotiationPartyInternal> agents = MediatorProtocol
+				.getNonMediators(parties);
+		for (int i = 0; i < agents.size(); i++)
+			turnAndUtilPerRoundPerAgent.add(new LinkedList<Double[]>());
 
 		progressTableInfo = new String[partyInfo.size() + 1];
 		progressTableInfo[0] = "Round";
@@ -269,7 +286,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void addRowBiddingTable(int round, int turn,
-			ArrayList<Double> partyUtilities) {
+			List<Double> partyUtilities) {
 
 		DefaultTableModel partyModel = (DefaultTableModel) biddingTable
 				.getModel();
@@ -343,13 +360,24 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		if (e instanceof LogMessageEvent) {
 			handleLogMessageEvent((LogMessageEvent) e);
 		} else if (e instanceof MultipartyNegotiationOfferEvent) {
-			MultipartyNegotiationOfferEvent e1 = (MultipartyNegotiationOfferEvent) e;
-			// time will be used later
-			addRowBiddingTable(e1.getRound(), e1.getTurn(),
-					e1.getPartyUtilities());
+			handleOfferEvent((MultipartyNegotiationOfferEvent) e);
 		} else if (e instanceof MultipartyNegotiationSessionEvent) {
 			handleMultipartyNegotiationEvent((MultipartyNegotiationSessionEvent) e);
 		}
+	}
+
+	/**
+	 * Handle reported offer
+	 */
+	private void handleOfferEvent(MultipartyNegotiationOfferEvent e) {
+
+		for (int agentId = 0; agentId < e.getPartyUtilities().size(); agentId++) {
+			Double[] entry = { e.getRound() + e.getTurn() / 10d,
+					e.getPartyUtilities().get(agentId) };
+			if (turnAndUtilPerRoundPerAgent.get(0).size() < MAX_UTIL_HISTORY)
+				turnAndUtilPerRoundPerAgent.get(agentId).add(entry);
+		}
+		addRowBiddingTable(e.getRound(), e.getTurn(), e.getPartyUtilities());
 	}
 
 	private void handleLogMessageEvent(LogMessageEvent evt) {
@@ -370,7 +398,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 		session = evt.getSession();
 		bidChart.setMaxRound(session.getRoundNumber() + 1);
 		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));
-		bidChart.setBidSeries(manager.getAgentUtilsDiscounted());
+		bidChart.setBidSeries(turnAndUtilPerRoundPerAgent);
 
 		if (evt.getAgreement() != null) {
 			bidChart.setAgreementPoints(manager

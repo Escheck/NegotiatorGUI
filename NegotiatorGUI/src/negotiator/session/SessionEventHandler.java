@@ -72,25 +72,37 @@ public class SessionEventHandler {
 	 * @param bid
 	 *            the bid that was offered
 	 * @param agreed
-	 *            flag indicating whether the offer is an agreement or not
+	 *            the agreement bid, or null if no agreement reached yet.
 	 * @param session
 	 *            the session
 	 */
 	public void offered(List<NegotiationPartyInternal> parties, Bid bid,
-			boolean agreed, Session session) {
-		if (agreed == true) {
-			System.out.println("Bid but already agreed?!");
-		}
-		ArrayList<Double> utils = new ArrayList<Double>();
-		for (NegotiationPartyInternal party : MediatorProtocol
-				.getNonMediators(parties))
-			utils.add(party.getUtilityWithDiscount(bid));
+			Bid agreed, Session session) {
 		MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(
 				owner, bid, session.getRoundNumber(), session.getTurnNumber(),
-				session.getRuntimeInSeconds(), utils, agreed);
+				session.getRuntimeInSeconds(), getUtils(bid, parties),
+				getUtils(agreed, parties));
 
 		for (MultipartyNegotiationEventListener listener : listeners)
 			listener.handleEvent(event);
+	}
+
+	/**
+	 * Make list of utilities for a bid, one for each party.
+	 * 
+	 * @param bid
+	 *            the {@link Bid} to be evaluated
+	 * @param parties
+	 *            list of {@link NegotiationPartyInternal} involved.
+	 * @return List of utilities, in the order of the parties.
+	 */
+	private List<Double> getUtils(Bid bid,
+			List<NegotiationPartyInternal> parties) {
+		List<Double> utils = new ArrayList<Double>();
+		for (NegotiationPartyInternal party : MediatorProtocol
+				.getNonMediators(parties))
+			utils.add(party.getUtilityWithDiscount(bid));
+		return utils;
 	}
 
 	/**
