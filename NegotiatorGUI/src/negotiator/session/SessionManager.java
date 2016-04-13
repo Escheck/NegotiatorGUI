@@ -16,7 +16,6 @@ import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.exceptions.NegotiationPartyTimeoutException;
 import negotiator.logging.CsvLogger;
-import negotiator.logging.SessionLogger;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 import negotiator.protocol.MultilateralProtocol;
@@ -53,7 +52,7 @@ public class SessionManager implements Runnable {
 	// Command line interface sessionLogger used to log messages to the cli part
 	// of the gui in a single
 	// negotiation session
-	private SessionLogger sessionLogger;
+	private SessionEventHandler sessionLogger;
 
 	// holds a history of all the utilities for the agents. Used for plotting
 	// purposes
@@ -88,7 +87,7 @@ public class SessionManager implements Runnable {
 		this.protocol = protocol;
 		this.parties = parties;
 		this.listeners = protocol.getActionListeners(parties);
-		this.sessionLogger = new SessionLogger(this);
+		this.sessionLogger = new SessionEventHandler(this);
 		this.agentUtilsDiscounted = new ArrayList<List<Double[]>>();
 		this.executor = exec;
 
