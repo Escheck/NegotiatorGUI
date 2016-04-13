@@ -1,7 +1,0 @@
-<a>
-<NegotiationOutcome currentTime="2014-01-16 10:52:52" timeOfAgreement="0.005112945355555555" bids="1007" domain="etc/templates/nonlinear/simple/domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i1: 4, c1-i2: 5, c1-i3: 5, ]" errors="" startingAgent="A"> 
-<resultsOfAgent agent="A" agentName="Conceder" discount="1.0" agentClass="agents.TimeDependentAgentConceder" utilspace="etc/templates/nonlinear/simple/agent-1.xml" Opponent-agentName="Conceder" Opponent-agentClass="agents.TimeDependentAgentConceder" Opponent-utilspace="etc/templates/nonlinear/simple/agent-2.xml" finalUtility="0.8571428571428571" discountedUtility="0.8571428571428571" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.8571428571428571" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-<resultsOfAgent agent="B" agentName="Conceder" discount="1.0" agentClass="agents.TimeDependentAgentConceder" utilspace="etc/templates/nonlinear/simple/agent-2.xml" Opponent-agentName="Conceder" Opponent-agentClass="agents.TimeDependentAgentConceder" Opponent-utilspace="etc/templates/nonlinear/simple/agent-1.xml" finalUtility="1.0" discountedUtility="1.0" bestAcceptableBid="1.0" bestDiscountedAccepableBid="0.005108836044444444" maxUtility="1.0" normalizedUtility="1.0" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-</NegotiationOutcome> 

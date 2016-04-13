@@ -1,7 +1,0 @@
-<a>
-<NegotiationOutcome currentTime="2011-01-03 10:27:07" timeOfAgreement="0.10004955078333333" startingAgent="A"> 
-<resultsOfAgent agent="A" agentName="Testing Agent" agentClass="agents.TestingAgent" utilspace="etc/templates/SON/son_buyer.xml" finalUtility="0.7547619047619047" discountedUtility="0.7547619047619047" agentADiscUtil="0.7547619047619047" agentBDiscUtil="" maxUtility="1.0" normalizedUtility="0.7547619047619047"> 
-</resultsOfAgent> 
-<resultsOfAgent agent="B" agentName="Testing Agent" agentClass="agents.TestingAgent" utilspace="etc/templates/SON/son_seller.xml" finalUtility="0.2357142857142857" discountedUtility="0.2357142857142857" agentADiscUtil="" agentBDiscUtil="0.2357142857142857" maxUtility="1.0" normalizedUtility="0.2357142857142857"> 
-</resultsOfAgent> 
-</NegotiationOutcome> 
