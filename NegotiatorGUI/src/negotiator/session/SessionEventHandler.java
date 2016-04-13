@@ -12,8 +12,7 @@ import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 
 /**
- * Logger class for the command line interface displayed in the gui during
- * multilateral negotiation sessions.
+ * Reports {@link SessionManager} events to listeners.
  */
 public class SessionEventHandler {
 	// private list of all events this logger listens to
@@ -65,19 +64,23 @@ public class SessionEventHandler {
 	}
 
 	/**
-	 * some offer was placed. Make event containing the details.
+	 * some offer was placed. Broadcast {@link MultipartyNegotiationOfferEvent}
+	 * containing the details.
 	 * 
 	 * @param parties
 	 *            The parties involved in the offer
-	 * @param agree
-	 *            flag indicating whether the offer is an agreement or not
 	 * @param bid
-	 * @param round
-	 * @param turn
-	 * @param time
+	 *            the bid that was offered
+	 * @param agreed
+	 *            flag indicating whether the offer is an agreement or not
+	 * @param session
+	 *            the session
 	 */
 	public void offered(List<NegotiationPartyInternal> parties, Bid bid,
 			boolean agreed, Session session) {
+		if (agreed == true) {
+			System.out.println("Bid but already agreed?!");
+		}
 		ArrayList<Double> utils = new ArrayList<Double>();
 		for (NegotiationPartyInternal party : MediatorProtocol
 				.getNonMediators(parties))
