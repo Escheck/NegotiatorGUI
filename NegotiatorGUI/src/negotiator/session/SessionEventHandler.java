@@ -86,16 +86,33 @@ public class SessionEventHandler {
 			int round = session.getRoundNumber();
 			int turn = session.getTurnNumber();
 			double time = session.getRuntimeInSeconds();
-			ArrayList<Double> utils = new ArrayList<Double>();
-			for (NegotiationPartyInternal party : MediatorProtocol
-					.getNonMediators(parties))
-				utils.add(party.getUtilityWithDiscount(bid));
-			MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(
-					owner, round, turn, time, action, utils, agree);
-
-			for (MultipartyNegotiationEventListener listener : listeners)
-				listener.handleEvent(event);
+			offered(parties, agree, bid, round, turn, time);
 		}
+	}
+
+	/**
+	 * some offer was placed. Make event containing the details.
+	 * 
+	 * @param parties
+	 *            The parties involved in the offer
+	 * @param agree
+	 *            flag indicating whether the offer is an agreement or not
+	 * @param bid
+	 * @param round
+	 * @param turn
+	 * @param time
+	 */
+	public void offered(List<NegotiationPartyInternal> parties, boolean agree,
+			Bid bid, int round, int turn, double time) {
+		ArrayList<Double> utils = new ArrayList<Double>();
+		for (NegotiationPartyInternal party : MediatorProtocol
+				.getNonMediators(parties))
+			utils.add(party.getUtilityWithDiscount(bid));
+		MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(
+				owner, bid, round, turn, time, utils, agree);
+
+		for (MultipartyNegotiationEventListener listener : listeners)
+			listener.handleEvent(event);
 	}
 
 	/**
