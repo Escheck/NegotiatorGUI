@@ -5,8 +5,6 @@ import java.util.List;
 
 import negotiator.Bid;
 import negotiator.MultipartyNegotiationEventListener;
-import negotiator.actions.Action;
-import negotiator.actions.Offer;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartyNegotiationSessionEvent;
@@ -67,30 +65,6 @@ public class SessionEventHandler {
 	}
 
 	/**
-	 * Log the sessions most recent action as an offer. Called after every
-	 * offer.
-	 *
-	 * @param session
-	 *            The session to get the most recent action out of
-	 * @param parties
-	 *            The parties involved in the offer
-	 * @param agree
-	 *            flag indicating whether the offer is an agreement or not
-	 */
-	public void logBid(Session session, List<NegotiationPartyInternal> parties,
-			boolean agree) {
-		Action action = session.getMostRecentAction();
-
-		if (action instanceof Offer) {
-			Bid bid = ((Offer) action).getBid();
-			int round = session.getRoundNumber();
-			int turn = session.getTurnNumber();
-			double time = session.getRuntimeInSeconds();
-			offered(parties, agree, bid, round, turn, time);
-		}
-	}
-
-	/**
 	 * some offer was placed. Make event containing the details.
 	 * 
 	 * @param parties
@@ -102,14 +76,15 @@ public class SessionEventHandler {
 	 * @param turn
 	 * @param time
 	 */
-	public void offered(List<NegotiationPartyInternal> parties, boolean agree,
-			Bid bid, int round, int turn, double time) {
+	public void offered(List<NegotiationPartyInternal> parties, Bid bid,
+			boolean agreed, Session session) {
 		ArrayList<Double> utils = new ArrayList<Double>();
 		for (NegotiationPartyInternal party : MediatorProtocol
 				.getNonMediators(parties))
 			utils.add(party.getUtilityWithDiscount(bid));
 		MultipartyNegotiationOfferEvent event = new MultipartyNegotiationOfferEvent(
-				owner, bid, round, turn, time, utils, agree);
+				owner, bid, session.getRoundNumber(), session.getTurnNumber(),
+				session.getRuntimeInSeconds(), utils, agreed);
 
 		for (MultipartyNegotiationEventListener listener : listeners)
 			listener.handleEvent(event);
