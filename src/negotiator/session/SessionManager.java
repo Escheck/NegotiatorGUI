@@ -1,7 +1,6 @@
 package negotiator.session;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -30,9 +29,6 @@ import negotiator.protocol.MultilateralProtocol;
  * 
  */
 public class SessionManager implements Runnable {
-	// maximum utility history to keep for each session (absolute maximum is
-	// int.max)
-	public static final int MAX_UTIL_HISTORY = 100000; // 100K
 
 	private final Session session;
 
@@ -42,10 +38,6 @@ public class SessionManager implements Runnable {
 	private final List<NegotiationPartyInternal> parties;
 
 	private SessionEventHandler events;
-
-	// holds a history of all the utilities for the agents. Used for plotting
-	// purposes
-	private List<List<Double[]>> agentUtilsDiscounted;
 
 	// utility of most recent agreements. Only holds sane information in case of
 	// agreement.
@@ -76,17 +68,12 @@ public class SessionManager implements Runnable {
 		this.protocol = protocol;
 		this.parties = parties;
 		this.events = new SessionEventHandler(this);
-		this.agentUtilsDiscounted = new ArrayList<List<Double[]>>();
 		this.executor = exec;
 
 		protocol.setExecutor(exec);
 
 		// needed for reference (for indexing the parties)
 		agents = MediatorProtocol.getNonMediators(parties);
-
-		// add a util list for each non-mediator agent
-		for (int i = 0; i < agents.size(); i++)
-			agentUtilsDiscounted.add(new LinkedList<Double[]>());
 
 		agreementUtilitiesDiscounted = new double[2][agents.size()];
 	}
@@ -161,35 +148,11 @@ public class SessionManager implements Runnable {
 				events.logMessage("  Turn %d: %-13s %s", turnNumber, party,
 						action);
 
-				// update history list if this was an offer
 				if (action instanceof Offer) {
-
 					Bid currentAgreement = protocol.getCurrentAgreement(
 							session, parties);
-
-					for (NegotiationPartyInternal agent : agents) {
-						int agentId = agents.indexOf(agent);
-						Double[] entry = {
-								session.getRoundNumber()
-										+ session.getTurnNumber() / 10d,
-								agent.getUtilityWithDiscount(((Offer) action)
-										.getBid()) };
-						if (agentUtilsDiscounted.get(0).size() < MAX_UTIL_HISTORY)
-							agentUtilsDiscounted.get(agentId).add(entry);
-
-						// if (currentAgreement == null || lastAgreement == null
-						// || !currentAgreement.equals(lastAgreement)) {
-						// agreementUtilitiesDiscounted[0][agentId] = entry[0];
-						// agreementUtilitiesDiscounted[1][agentId] = entry[1];
-						// }
-					}
-					// if (currentAgreement == null || lastAgreement == null
-					// || !currentAgreement.equals(lastAgreement))
-					// lastAgreement = currentAgreement;
-
 					events.offered(parties, ((Offer) action).getBid(),
-							currentAgreement != null, session);
-
+							currentAgreement, session);
 				}
 
 				// Do not start new turn in current round if protocol is
@@ -379,9 +342,9 @@ public class SessionManager implements Runnable {
 	 *
 	 * @return Utility history
 	 */
-	public List<List<Double[]>> getAgentUtilsDiscounted() {
-		return agentUtilsDiscounted;
-	}
+	// public List<List<Double[]>> getAgentUtilsDiscounted() {
+	// return agentUtilsDiscounted;
+	// }
 
 	/**
 	 * Returns round number and (discounted) utility value of agreement if any.
