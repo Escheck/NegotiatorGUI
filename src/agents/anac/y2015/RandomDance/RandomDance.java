@@ -14,7 +14,6 @@ import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
-import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -60,13 +59,11 @@ public class RandomDance extends AbstractNegotiationParty {
 	final int NumberOfRandomTargetCheck = 3;
 
 	private boolean init = false;
-	private int playerNumber = 0;
 	/**
 	 * Map with {@link AgentID} as key
 	 */
 	private Map<String, PlayerDataLib> utilityDatas = new HashMap<String, PlayerDataLib>();
 	private PlayerData myData = null;
-	private int offerCount = 0;
 
 	private List<String> nash = new LinkedList<String>();
 	private Map<String, Bid> olderBidMap = new HashMap<String, Bid>();
@@ -78,8 +75,6 @@ public class RandomDance extends AbstractNegotiationParty {
 
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
-
-		offerCount++;
 
 		if (!init) {
 			init = true;
@@ -212,36 +207,27 @@ public class RandomDance extends AbstractNegotiationParty {
 		super.receiveMessage(sender, action);
 
 		if (sender == null) {
-			Inform inform = (Inform) action;
-			// System.err.println(inform.getName());
-			// System.err.println((int)inform.getValue());
-			playerNumber = (Integer) inform.getValue();
-
-		} else {
-			if (utilityDatas.containsKey(sender.toString()) == false) {
-				utilityDatas.put(sender.toString(), new PlayerDataLib(
-						utilitySpace.getDomain().getIssues()));
-			}
-
-			if (action.getClass() == Offer.class) {
-				Offer offer = (Offer) action;
-				Bid bid = offer.getBid();
-				olderBid = bid;
-			}
-
-			olderBidMap.put(sender.toString(), olderBid);
-
-			try {
-				utilityDatas.get(sender.toString()).AddBid(olderBid);
-			} catch (Exception e) {
-				// System.err.println("Error In AddBid");
-				e.printStackTrace();
-			}
-			// System.err.println(sender.toString());
-			// System.err.println(utilityDatas.get(sender.toString()).toString());
-
+			return;
 		}
-		// Here you can listen to other parties' messages
+		if (utilityDatas.containsKey(sender.toString()) == false) {
+			utilityDatas.put(sender.toString(), new PlayerDataLib(utilitySpace
+					.getDomain().getIssues()));
+		}
+
+		if (action.getClass() == Offer.class) {
+			Offer offer = (Offer) action;
+			Bid bid = offer.getBid();
+			olderBid = bid;
+		}
+
+		olderBidMap.put(sender.toString(), olderBid);
+
+		try {
+			utilityDatas.get(sender.toString()).AddBid(olderBid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private boolean IsAccept(double target, double utility) {
@@ -455,7 +441,7 @@ class PlayerDataLib {
 }
 
 class PlayerData {
-
+	// IssueData is raw type.
 	Map<Issue, IssueData> map = new HashMap<Issue, IssueData>();
 	Set<Bid> history = new HashSet<Bid>();
 	double derta = 1.00;
@@ -557,7 +543,8 @@ class PlayerData {
 				map.put(issue, new IssueDataDiscrete((IssueDiscrete) issue,
 						derta));
 			} else {
-				throw new RuntimeException("NOT IMPLEMENTED YET");
+				map.put(issue,
+						new IssueDataInteger((IssueInteger) issue, derta));
 			}
 		}
 	}
@@ -573,30 +560,34 @@ class PlayerData {
 	}
 
 	/*
-	 * 各Issueごとの数え上げデータ: count data for each issue
+	 * 各Issueごとの数え上げデータ: count data for each issue Refactored W.Pasman to handle
+	 * other issue types
 	 */
-	abstract class IssueData {
+	abstract class IssueData<IssueType extends Issue, ValueType extends Value> {
 		private boolean locked = false;
 		private double weight = 1;
 		private double derta = 1.0;
 		private double max = 1;
 		private Map<Value, Double> map = new HashMap<Value, Double>();
 		private double adder = 1.0;
-		private Issue issue;
+		private IssueType issue;
 
-		public IssueData(Issue issue, double derta) {
+		/**
+		 * 
+		 * @param issue
+		 *            the issue that this data contains
+		 * @param derta
+		 *            the relevance change for each next bid. So if eg 0.8, each
+		 *            next update has a relevance 0.8 times the previous update.
+		 */
+		public IssueData(IssueType issue, double derta) {
 			this.issue = issue;
 			this.derta = derta;
 
-			for (Value value : getValues()) {
+			for (ValueType value : getValues()) {
 				setValue(value, 0);
 			}
 		}
-
-		/*
-		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
-		 */
-		abstract public void ValuePut(Value value);
 
 		public Issue getIssue() {
 			return issue;
@@ -606,7 +597,7 @@ class PlayerData {
 		 * Returns the possible values for this issue. Similar to
 		 * {@link IssueDiscrete#getValues()}
 		 */
-		public abstract List<Value> getValues();
+		public abstract List<ValueType> getValues();
 
 		/**
 		 * /* 更新禁止のロックをかける ロックは外せない : lock the update
@@ -631,12 +622,12 @@ class PlayerData {
 			return max;
 		}
 
-		double GetValue(Value value) {
+		double GetValue(ValueType value) {
 			ValuePut(value);
 			return map.get(value) / max;
 		}
 
-		double GetValueWithWeight(Value value) {
+		double GetValueWithWeight(ValueType value) {
 			return GetValue(value) * getWeight();
 		}
 
@@ -644,7 +635,7 @@ class PlayerData {
 		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
 		 * have relevance changed by factor derta.
 		 */
-		public void UpdateInternal(Value value) {
+		public void Update(ValueType value) {
 			if (isLocked()) {
 				System.err.println("LockedAccess!!");
 				return;
@@ -660,7 +651,7 @@ class PlayerData {
 			return "weight:" + getWeight() + ":" + map.toString();
 		}
 
-		protected void setValueInternal(Value value, double util) {
+		protected void setValue(ValueType value, double util) {
 			if (isLocked()) {
 				System.err.println("LockedAccess!!");
 			} else {
@@ -668,114 +659,44 @@ class PlayerData {
 			}
 		}
 
-		protected void ValuePutInternal(Value value) {
+		/*
+		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
+		 */
+		protected void ValuePut(ValueType value) {
 			if (!map.containsKey(value)) {
 				map.put(value, 0.0);
 			}
 		}
 
-		/*
-		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
-		 * have relevance changed by factor derta.
-		 */
-
-		abstract public void Update(Value value);
-
-		abstract public void setValue(Value value, double util);
-
 	}
 
-	class IssueDataDiscrete extends IssueData {
-		/**
-		 * 
-		 * @param issue
-		 * @param derta
-		 *            the relevance change for each next bid. So if eg 0.8, each
-		 *            next update has a relevance 0.8 times the previous update.
-		 */
+	class IssueDataDiscrete extends IssueData<IssueDiscrete, ValueDiscrete> {
+
 		public IssueDataDiscrete(IssueDiscrete issue, double derta) {
 			super(issue, derta);
 		}
 
-		public void setValue(Value value, double util) {
-			checkDiscrete(value);
-			setValueInternal(value, util);
-		}
-
-		public void Update(Value value) {
-			checkDiscrete(value);
-			UpdateInternal(value);
-		}
-
-		private void checkDiscrete(Value value) {
-			if (!(value instanceof ValueDiscrete)) {
-				throw new IllegalArgumentException(
-						"value must be a ValueDiscrete");
-			}
-		}
-
 		@Override
-		public List<Value> getValues() {
-			List<Value> values = new ArrayList<Value>();
-
-			for (ValueDiscrete v : ((IssueDiscrete) getIssue()).getValues()) {
-				values.add(v);
-			}
-			return values;
+		public List<ValueDiscrete> getValues() {
+			return ((IssueDiscrete) getIssue()).getValues();
 		}
-
-		@Override
-		public void ValuePut(Value value) {
-			checkDiscrete(value);
-			ValuePutInternal(value);
-		}
-
 	}
 
-	class IssueDataInteger extends IssueData {
-		/**
-		 * 
-		 * @param issue
-		 * @param derta
-		 *            the relevance change for each next bid. So if eg 0.8, each
-		 *            next update has a relevance 0.8 times the previous update.
-		 */
+	class IssueDataInteger extends IssueData<IssueInteger, ValueInteger> {
+
 		public IssueDataInteger(IssueInteger issue, double derta) {
 			super(issue, derta);
 		}
 
-		public void setValue(Value value, double util) {
-			checkInteger(value);
-			setValueInternal(value, util);
-		}
-
-		public void Update(Value value) {
-			checkInteger(value);
-			UpdateInternal(value);
-		}
-
-		private void checkInteger(Value value) {
-			if (!(value instanceof ValueInteger)) {
-				throw new IllegalArgumentException(
-						"value must be a ValueDiscrete");
-			}
-		}
-
 		@Override
-		public List<Value> getValues() {
+		public List<ValueInteger> getValues() {
 			IssueInteger iss = (IssueInteger) getIssue();
-			List<Value> values = new ArrayList<Value>();
+			List<ValueInteger> values = new ArrayList<ValueInteger>();
 
 			for (int v = iss.getLowerBound(); v <= iss.getUpperBound(); v++) {
 				values.add(new ValueInteger(v));
 			}
 			return values;
-		}
-
-		@Override
-		public void ValuePut(Value value) {
-			checkInteger(value);
-			ValuePutInternal(value);
 		}
 
 	}
