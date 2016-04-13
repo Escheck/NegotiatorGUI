@@ -1,7 +1,0 @@
-<a>
-<NegotiationOutcome currentTime="2014-04-08 11:44:06" timeOfAgreement="0.020421678866666668" bids="3" domain="etc/templates/ANAC2014/S-1NMVMAF-1/S-1NMVMAF-1-domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i10: 5, c1-i9: 4, c1-i8: 8, c1-i7: 4, c1-i6: 2, c1-i5: 3, c1-i4: 2, c1-i3: 3, c1-i2: 6, c1-i1: 6, ]" errors="" startingAgent="A"> 
-<resultsOfAgent agent="A" agentName="Simple Agent" discount="1.0" agentClass="agents.SimpleAgent" utilspace="etc/templates/ANAC2014/S-1NMVMAF-1/profile-1.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/ANAC2014/S-1NMVMAF-1/profile-2.xml" finalUtility="0.5226586102719033" discountedUtility="0.5226586102719033" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.5226586102719033" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-<resultsOfAgent agent="B" agentName="Simple Agent" discount="1.0" agentClass="agents.SimpleAgent" utilspace="etc/templates/ANAC2014/S-1NMVMAF-1/profile-2.xml" Opponent-agentName="Simple Agent" Opponent-agentClass="agents.SimpleAgent" Opponent-utilspace="etc/templates/ANAC2014/S-1NMVMAF-1/profile-1.xml" finalUtility="0.8463276836158192" discountedUtility="0.8463276836158192" bestAcceptableBid="0.8463276836158192" bestDiscountedAccepableBid="0.015363537427777777" maxUtility="1.0" normalizedUtility="0.8463276836158192" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-</NegotiationOutcome> 

@@ -1,7 +1,0 @@
-<a>
-<NegotiationOutcome currentTime="2014-01-27 22:34:16" timeOfAgreement="1.1200130555555555E-4" bids="1" domain="etc/templates/nonlinear/simple/domain.xml" lastAction="(Accept)" runNumber="0" finalOutcome="Bid[c1-i1: 4, c1-i2: 2, c1-i3: 7, ]" errors="" startingAgent="A"> 
-<resultsOfAgent agent="A" agentName="Simple ANAC2013 Agent" discount="1.0" agentClass="agents.SimpleANAC2013Agent" utilspace="etc/templates/nonlinear/simple/agent-1.xml" Opponent-agentName="Simple ANAC2013 Agent" Opponent-agentClass="agents.SimpleANAC2013Agent" Opponent-utilspace="etc/templates/nonlinear/simple/agent-2.xml" finalUtility="0.14285714285714285" discountedUtility="0.14285714285714285" bestAcceptableBid="0.0" bestDiscountedAccepableBid="0.0" maxUtility="1.0" normalizedUtility="0.14285714285714285" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-<resultsOfAgent agent="B" agentName="Simple ANAC2013 Agent" discount="0.95" agentClass="agents.SimpleANAC2013Agent" utilspace="etc/templates/nonlinear/simple/agent-2.xml" Opponent-agentName="Simple ANAC2013 Agent" Opponent-agentClass="agents.SimpleANAC2013Agent" Opponent-utilspace="etc/templates/nonlinear/simple/agent-1.xml" finalUtility="0.875" discountedUtility="0.8749949732129938" bestAcceptableBid="0.875" bestDiscountedAccepableBid="4.5134888888888885E-5" maxUtility="1.0" normalizedUtility="0.875" AcceptedBy="agentB"> 
-</resultsOfAgent> 
-</NegotiationOutcome> 
