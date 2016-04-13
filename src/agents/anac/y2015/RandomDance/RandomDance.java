@@ -18,8 +18,10 @@ import negotiator.actions.Inform;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
+import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueDiscrete;
+import negotiator.issue.ValueInteger;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
@@ -580,10 +582,24 @@ class PlayerData {
 		private double max = 1;
 		private Map<Value, Double> map = new HashMap<Value, Double>();
 		private double adder = 1.0;
+		private Issue issue;
 
-		public IssueData(double derta) {
+		public IssueData(Issue issue, double derta) {
+			this.issue = issue;
 			this.derta = derta;
 
+			for (Value value : getValues()) {
+				setValue(value, 0);
+			}
+		}
+
+		/*
+		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
+		 */
+		abstract public void ValuePut(Value value);
+
+		public Issue getIssue() {
+			return issue;
 		}
 
 		/**
@@ -613,15 +629,6 @@ class PlayerData {
 
 		private double getMax() {
 			return max;
-		}
-
-		/*
-		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
-		 */
-		public void ValuePut(Value value) {
-			if (!map.containsKey(value)) {
-				map.put(value, 0.0);
-			}
 		}
 
 		double GetValue(Value value) {
@@ -661,6 +668,12 @@ class PlayerData {
 			}
 		}
 
+		protected void ValuePutInternal(Value value) {
+			if (!map.containsKey(value)) {
+				map.put(value, 0.0);
+			}
+		}
+
 		/*
 		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
 		 * have relevance changed by factor derta.
@@ -673,9 +686,6 @@ class PlayerData {
 	}
 
 	class IssueDataDiscrete extends IssueData {
-
-		private IssueDiscrete id;
-
 		/**
 		 * 
 		 * @param issue
@@ -684,41 +694,90 @@ class PlayerData {
 		 *            next update has a relevance 0.8 times the previous update.
 		 */
 		public IssueDataDiscrete(IssueDiscrete issue, double derta) {
-			super(derta);
-
-			id = (IssueDiscrete) issue;
-
-			List<ValueDiscrete> list = id.getValues();
-			for (ValueDiscrete value : list) {
-				setValue(value, 0);
-			}
+			super(issue, derta);
 		}
 
 		public void setValue(Value value, double util) {
-			if (!(value instanceof ValueDiscrete)) {
-				throw new IllegalArgumentException(
-						"value must be a ValueDiscrete");
-			}
+			checkDiscrete(value);
 			setValueInternal(value, util);
 		}
 
 		public void Update(Value value) {
+			checkDiscrete(value);
+			UpdateInternal(value);
+		}
+
+		private void checkDiscrete(Value value) {
 			if (!(value instanceof ValueDiscrete)) {
 				throw new IllegalArgumentException(
 						"value must be a ValueDiscrete");
 			}
-			UpdateInternal(value);
 		}
 
 		@Override
 		public List<Value> getValues() {
 			List<Value> values = new ArrayList<Value>();
 
-			for (ValueDiscrete v : id.getValues()) {
+			for (ValueDiscrete v : ((IssueDiscrete) getIssue()).getValues()) {
 				values.add(v);
 			}
 			return values;
 		}
 
+		@Override
+		public void ValuePut(Value value) {
+			checkDiscrete(value);
+			ValuePutInternal(value);
+		}
+
 	}
+
+	class IssueDataInteger extends IssueData {
+		/**
+		 * 
+		 * @param issue
+		 * @param derta
+		 *            the relevance change for each next bid. So if eg 0.8, each
+		 *            next update has a relevance 0.8 times the previous update.
+		 */
+		public IssueDataInteger(IssueInteger issue, double derta) {
+			super(issue, derta);
+		}
+
+		public void setValue(Value value, double util) {
+			checkInteger(value);
+			setValueInternal(value, util);
+		}
+
+		public void Update(Value value) {
+			checkInteger(value);
+			UpdateInternal(value);
+		}
+
+		private void checkInteger(Value value) {
+			if (!(value instanceof ValueInteger)) {
+				throw new IllegalArgumentException(
+						"value must be a ValueDiscrete");
+			}
+		}
+
+		@Override
+		public List<Value> getValues() {
+			IssueInteger iss = (IssueInteger) getIssue();
+			List<Value> values = new ArrayList<Value>();
+
+			for (int v = iss.getLowerBound(); v <= iss.getUpperBound(); v++) {
+				values.add(new ValueInteger(v));
+			}
+			return values;
+		}
+
+		@Override
+		public void ValuePut(Value value) {
+			checkInteger(value);
+			ValuePutInternal(value);
+		}
+
+	}
+
 }
