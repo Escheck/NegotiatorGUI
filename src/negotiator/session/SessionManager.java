@@ -52,7 +52,7 @@ public class SessionManager implements Runnable {
 	// Command line interface sessionLogger used to log messages to the cli part
 	// of the gui in a single
 	// negotiation session
-	private SessionEventHandler sessionLogger;
+	private SessionEventHandler events;
 
 	// holds a history of all the utilities for the agents. Used for plotting
 	// purposes
@@ -87,7 +87,7 @@ public class SessionManager implements Runnable {
 		this.protocol = protocol;
 		this.parties = parties;
 		this.listeners = protocol.getActionListeners(parties);
-		this.sessionLogger = new SessionEventHandler(this);
+		this.events = new SessionEventHandler(this);
 		this.agentUtilsDiscounted = new ArrayList<List<Double[]>>();
 		this.executor = exec;
 
@@ -127,8 +127,8 @@ public class SessionManager implements Runnable {
 		protocol.beforeSession(session, parties);
 
 		// announce our session to the sessionLogger
-		sessionLogger.logSession(session, null);
-		sessionLogger.logMessage("Starting negotiation session.");
+		events.logSession(session, null);
+		events.logMessage("Starting negotiation session.");
 
 		// start timers
 		session.startTimer();
@@ -147,7 +147,7 @@ public class SessionManager implements Runnable {
 
 			if (checkDeadlineReached())
 				break;
-			sessionLogger.logMessage("Round %d", session.getRoundNumber());
+			events.logMessage("Round %d", session.getRoundNumber());
 			int turnNumber = 0;
 
 			// Let each party do an action
@@ -198,9 +198,9 @@ public class SessionManager implements Runnable {
 				}
 
 				// log messages
-				sessionLogger.logMessage("  Turn %d: %-13s %s", turnNumber,
+				events.logMessage("  Turn %d: %-13s %s", turnNumber,
 						party, action);
-				sessionLogger.logBid(session, parties,
+				events.logBid(session, parties,
 						protocol.getCurrentAgreement(session, parties) != null);
 
 				// Do not start new turn in current round if protocol is
@@ -227,9 +227,9 @@ public class SessionManager implements Runnable {
 		// log result messages;
 		Bid agreement = protocol.getCurrentAgreement(session, parties);
 		if (agreement == null)
-			sessionLogger.logMessage("No agreement found.");
+			events.logMessage("No agreement found.");
 		else {
-			sessionLogger.logMessage("Found an agreement: %s", agreement);
+			events.logMessage("Found an agreement: %s", agreement);
 			agreementUtilitiesDiscounted = new double[2][agents.size()];
 			for (NegotiationPartyInternal agent : agents) {
 				int agentId = agents.indexOf(agent);
@@ -243,14 +243,14 @@ public class SessionManager implements Runnable {
 
 		}
 		double runTime = session.getRuntimeInSeconds();
-		sessionLogger.logMessage("Finished negotiation session in %.3fs",
+		events.logMessage("Finished negotiation session in %.3fs",
 				runTime);
 		try {
-			sessionLogger.logSession(session, agreement);
-			sessionLogger.logMessage(CsvLogger.logSingleSession(session,
+			events.logSession(session, agreement);
+			events.logMessage(CsvLogger.logSingleSession(session,
 					protocol, agents, runTime));
 		} catch (Exception e) {
-			sessionLogger.logMessage("Error: could not log session details");
+			events.logMessage("Error: could not log session details");
 		}
 	}
 
@@ -266,7 +266,7 @@ public class SessionManager implements Runnable {
 						.getValue();
 				session.setRuntimeInSeconds(runTimeInSeconds);
 			}
-			sessionLogger.logMessage("Deadline reached: %s",
+			events.logMessage("Deadline reached: %s",
 					session.getDeadlines());
 			return true;
 		}
@@ -307,7 +307,7 @@ public class SessionManager implements Runnable {
 			String msg = String.format(
 					"Negotiating party %s timed out in chooseAction() method.",
 					party.getPartyId());
-			sessionLogger.logMessage(msg);
+			events.logMessage(msg);
 			throw new NegotiationPartyTimeoutException(party, msg, e);
 		}
 
@@ -356,7 +356,7 @@ public class SessionManager implements Runnable {
 					String msg = String
 							.format("Negotiating party %s timed out in receiveMessage() method.",
 									observer.getPartyId());
-					sessionLogger.logMessage(msg);
+					events.logMessage(msg);
 					throw new NegotiationPartyTimeoutException(observer, msg, e);
 				}
 			}
@@ -371,7 +371,7 @@ public class SessionManager implements Runnable {
 	 */
 	public void addLoggingListener(
 			MultipartyNegotiationEventListener eventListener) {
-		sessionLogger.addListener(eventListener);
+		events.addListener(eventListener);
 	}
 
 	/**
