@@ -199,10 +199,9 @@ public class SessionManager implements Runnable {
 							|| !currentAgreement.equals(lastAgreement))
 						lastAgreement = currentAgreement;
 
-					events.logBid(
-							session,
-							parties,
-							protocol.getCurrentAgreement(session, parties) != null);
+					events.offered(parties, ((Offer) action).getBid(),
+							currentAgreement != null, session);
+
 				}
 
 				// Do not start new turn in current round if protocol is
