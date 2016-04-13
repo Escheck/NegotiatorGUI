@@ -34,24 +34,13 @@ public class SessionManager implements Runnable {
 	// int.max)
 	public static final int MAX_UTIL_HISTORY = 100000; // 100K
 
-	// Holds the session instance
 	private final Session session;
 
-	// Holds the protocol instance
 	private final MultilateralProtocol protocol;
 
-	// Holds a list of participating parties
+	// participating parties
 	private final List<NegotiationPartyInternal> parties;
 
-	// Holds parties that are listening to other parties.
-	// Key represent the even broadcasting parties, value is a list parties that
-	// are listening to
-	// the events that are send.
-	private final Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> listeners;
-
-	// Command line interface sessionLogger used to log messages to the cli part
-	// of the gui in a single
-	// negotiation session
 	private SessionEventHandler events;
 
 	// holds a history of all the utilities for the agents. Used for plotting
@@ -86,7 +75,6 @@ public class SessionManager implements Runnable {
 		this.session = session;
 		this.protocol = protocol;
 		this.parties = parties;
-		this.listeners = protocol.getActionListeners(parties);
 		this.events = new SessionEventHandler(this);
 		this.agentUtilsDiscounted = new ArrayList<List<Double[]>>();
 		this.executor = exec;
@@ -134,7 +122,7 @@ public class SessionManager implements Runnable {
 		session.startTimer();
 
 		// initialize last agreement (which is null at start)
-		Bid lastAgreement = null;
+		// Bid lastAgreement = null;
 
 		// execute main loop (using the protocol's round structure)
 		do {
@@ -189,15 +177,15 @@ public class SessionManager implements Runnable {
 						if (agentUtilsDiscounted.get(0).size() < MAX_UTIL_HISTORY)
 							agentUtilsDiscounted.get(agentId).add(entry);
 
-						if (currentAgreement == null || lastAgreement == null
-								|| !currentAgreement.equals(lastAgreement)) {
-							agreementUtilitiesDiscounted[0][agentId] = entry[0];
-							agreementUtilitiesDiscounted[1][agentId] = entry[1];
-						}
+						// if (currentAgreement == null || lastAgreement == null
+						// || !currentAgreement.equals(lastAgreement)) {
+						// agreementUtilitiesDiscounted[0][agentId] = entry[0];
+						// agreementUtilitiesDiscounted[1][agentId] = entry[1];
+						// }
 					}
-					if (currentAgreement == null || lastAgreement == null
-							|| !currentAgreement.equals(lastAgreement))
-						lastAgreement = currentAgreement;
+					// if (currentAgreement == null || lastAgreement == null
+					// || !currentAgreement.equals(lastAgreement))
+					// lastAgreement = currentAgreement;
 
 					events.offered(parties, ((Offer) action).getBid(),
 							currentAgreement != null, session);
@@ -323,7 +311,9 @@ public class SessionManager implements Runnable {
 	}
 
 	/**
-	 * Update all parties in the listeners map with the new action
+	 * Update all parties in the listeners map with the new action. Has to be
+	 * here since interface does not deal with implementation details (which is
+	 * correct)
 	 *
 	 * @param actionOwner
 	 *            The Party that initiated the action
@@ -333,6 +323,9 @@ public class SessionManager implements Runnable {
 	private void updateListeners(final NegotiationPartyInternal actionOwner,
 			final Action action) throws NegotiationPartyTimeoutException,
 			ExecutionException, InterruptedException {
+		Map<NegotiationPartyInternal, List<NegotiationPartyInternal>> listeners = protocol
+				.getActionListeners(parties);
+
 		// Sadly not even the listener object was created, so don't bother
 		if (listeners == null)
 			return;
