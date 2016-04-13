@@ -468,7 +468,12 @@ class PlayerData {
 	 */
 	public PlayerData(ArrayList<Issue> issues, double derta) {
 		for (Issue issue : issues) {
-			map.put(issue, new IssueData(issue, derta));
+			if (issue instanceof IssueDiscrete) {
+				map.put(issue, new IssueDataDiscrete((IssueDiscrete) issue,
+						derta));
+			} else {
+				throw new RuntimeException("NOT YET IMPLEMENTED");
+			}
 		}
 		this.derta = derta;
 	}
@@ -499,12 +504,11 @@ class PlayerData {
 		double min = utilitySpace.getUtility(bid);
 
 		for (Issue issue : issues) {
-			bid = utilitySpace.getMinUtilityBid();
-			IssueDiscrete id = (IssueDiscrete) issue;
-			List<ValueDiscrete> values = id.getValues();
 			IssueData issueData = map.get(issue);
+			bid = utilitySpace.getMinUtilityBid();
+			List<Value> values = issueData.getValues();
 
-			for (ValueDiscrete value : values) {
+			for (Value value : values) {
 				bid = bid.putValue(issue.getNumber(), value);
 				double v = utilitySpace.getUtility(bid) - min;
 				issueData.setValue(value, v);
@@ -547,7 +551,12 @@ class PlayerData {
 	 */
 	private void ValuePut(Issue issue) {
 		if (!map.containsKey(issue)) {
-			map.put(issue, new IssueData(issue, derta));
+			if (issue instanceof IssueDiscrete) {
+				map.put(issue, new IssueDataDiscrete((IssueDiscrete) issue,
+						derta));
+			} else {
+				throw new RuntimeException("NOT IMPLEMENTED YET");
+			}
 		}
 	}
 
@@ -564,35 +573,27 @@ class PlayerData {
 	/*
 	 * 各Issueごとの数え上げデータ: count data for each issue
 	 */
-
-	class IssueData {
-
-		private Map<Value, Double> map = new HashMap<Value, Double>();
-		private double weight = 1;
+	abstract class IssueData {
 		private boolean locked = false;
-		private double max = 1;
+		private double weight = 1;
 		private double derta = 1.0;
+		private double max = 1;
+		private Map<Value, Double> map = new HashMap<Value, Double>();
 		private double adder = 1.0;
 
-		/**
-		 * 
-		 * @param issue
-		 * @param derta
-		 *            the relevance change for each next bid. So if eg 0.8, each
-		 *            next update has a relevance 0.8 times the previous update.
-		 */
-		public IssueData(Issue issue, double derta) {
-			IssueDiscrete id = (IssueDiscrete) issue;
-
-			List<ValueDiscrete> list = id.getValues();
-			for (Value value : list) {
-				setValue(value, 0);
-			}
+		public IssueData(double derta) {
 			this.derta = derta;
+
 		}
 
-		/*
-		 * 更新禁止のロックをかける ロックは外せない : lock the update
+		/**
+		 * Returns the possible values for this issue. Similar to
+		 * {@link IssueDiscrete#getValues()}
+		 */
+		public abstract List<Value> getValues();
+
+		/**
+		 * /* 更新禁止のロックをかける ロックは外せない : lock the update
 		 */
 		public void Locked() {
 			locked = true;
@@ -606,8 +607,54 @@ class PlayerData {
 			this.weight = weight;
 		}
 
-		public void setValue(Value value, double util) {
-			if (locked) {
+		public boolean isLocked() {
+			return locked;
+		}
+
+		private double getMax() {
+			return max;
+		}
+
+		/*
+		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
+		 */
+		public void ValuePut(Value value) {
+			if (!map.containsKey(value)) {
+				map.put(value, 0.0);
+			}
+		}
+
+		double GetValue(Value value) {
+			ValuePut(value);
+			return map.get(value) / max;
+		}
+
+		double GetValueWithWeight(Value value) {
+			return GetValue(value) * getWeight();
+		}
+
+		/*
+		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
+		 * have relevance changed by factor derta.
+		 */
+		public void UpdateInternal(Value value) {
+			if (isLocked()) {
+				System.err.println("LockedAccess!!");
+				return;
+			}
+			ValuePut(value);
+			map.put(value, map.get(value) + adder);
+			max = Math.max(max, map.get(value));
+			adder *= derta;
+		}
+
+		@Override
+		public String toString() {
+			return "weight:" + getWeight() + ":" + map.toString();
+		}
+
+		protected void setValueInternal(Value value, double util) {
+			if (isLocked()) {
 				System.err.println("LockedAccess!!");
 			} else {
 				map.put(value, util);
@@ -618,42 +665,59 @@ class PlayerData {
 		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
 		 * have relevance changed by factor derta.
 		 */
-		public void Update(Value value) {
-			if (locked) {
-				System.err.println("LockedAccess!!");
-				return;
-			}
-			ValuePut(value);
-			map.put(value, map.get(value) + adder);
-			max = Math.max(max, map.get(value));
-			adder *= derta;
-		}
 
-		double GetValue(Value value) {
-			ValuePut(value);
-			return map.get(value) / max;
-		}
+		abstract public void Update(Value value);
 
-		double GetValueWithWeight(Value value) {
-			return GetValue(value) * weight;
-		}
+		abstract public void setValue(Value value, double util);
 
-		/*
-		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
+	}
+
+	class IssueDataDiscrete extends IssueData {
+
+		private IssueDiscrete id;
+
+		/**
+		 * 
+		 * @param issue
+		 * @param derta
+		 *            the relevance change for each next bid. So if eg 0.8, each
+		 *            next update has a relevance 0.8 times the previous update.
 		 */
-		private void ValuePut(Value value) {
-			if (!map.containsKey(value)) {
-				map.put(value, 0.0);
+		public IssueDataDiscrete(IssueDiscrete issue, double derta) {
+			super(derta);
+
+			id = (IssueDiscrete) issue;
+
+			List<ValueDiscrete> list = id.getValues();
+			for (ValueDiscrete value : list) {
+				setValue(value, 0);
 			}
 		}
 
-		private double getMax() {
-			return max;
+		public void setValue(Value value, double util) {
+			if (!(value instanceof ValueDiscrete)) {
+				throw new IllegalArgumentException(
+						"value must be a ValueDiscrete");
+			}
+			setValueInternal(value, util);
+		}
+
+		public void Update(Value value) {
+			if (!(value instanceof ValueDiscrete)) {
+				throw new IllegalArgumentException(
+						"value must be a ValueDiscrete");
+			}
+			UpdateInternal(value);
 		}
 
 		@Override
-		public String toString() {
-			return "weight:" + weight + ":" + map.toString();
+		public List<Value> getValues() {
+			List<Value> values = new ArrayList<Value>();
+
+			for (ValueDiscrete v : id.getValues()) {
+				values.add(v);
+			}
+			return values;
 		}
 
 	}
