@@ -266,6 +266,16 @@ public class CsvLogger implements Closeable {
 		return agent.getUtility(agreement);
 	}
 
+	/**
+	 * Makes a string for the log file.
+	 * 
+	 * @param session
+	 * @param protocol
+	 * @param parties
+	 * @param runTime
+	 * @return
+	 * @throws Exception
+	 */
 	public static String logSingleSession(Session session,
 			MultilateralProtocol protocol,
 			List<NegotiationPartyInternal> parties, double runTime)
@@ -288,22 +298,6 @@ public class CsvLogger implements Closeable {
 				isDiscounted = true;
 			}
 		}
-
-		// List<NegotiationPartyInternal> agents = MediatorProtocol
-		// .getNonMediators(parties);
-		//
-		// List<Double> utils = new ArrayList<Double>();
-		// boolean isDiscounted = false;
-		// double minUtil = 1;
-		// double maxUtil = 0;
-		// for (NegotiationPartyInternal agent : agents) {
-		// double util = agent.getUtilityWithDiscount(agreement);
-		// double undiscounted = agent.getUtility(agreement);
-		// isDiscounted |= util != undiscounted;
-		// utils.add(util);
-		// minUtil = Math.min(minUtil, util);
-		// maxUtil = Math.max(maxUtil, util);
-		// }
 
 		values.add("Time (s):\t\t");
 		values.add("" + runTime + "\n");

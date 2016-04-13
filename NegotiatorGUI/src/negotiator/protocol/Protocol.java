@@ -12,7 +12,6 @@ import negotiator.NegotiationOutcome;
 import negotiator.actions.Action;
 import negotiator.events.ActionEvent;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
-import negotiator.events.LogMessageEvent;
 import negotiator.exceptions.Warning;
 import negotiator.repository.AgentRepItem;
 import negotiator.repository.ProfileRepItem;
@@ -143,13 +142,6 @@ public abstract class Protocol implements Runnable, Serializable {
 			listener.handleBlateralAtomicNegotiationSessionEvent(new BilateralAtomicNegotiationSessionEvent(
 					this, session, profileA, profileB, agentA, agentB,
 					agenAName, agentBName));
-		}
-	}
-
-	public synchronized void fireLogMessage(String source, String log) {
-		for (NegotiationEventListener listener : actionEventListener) {
-			listener.handleLogMessageEvent(new LogMessageEvent(this, source,
-					log));
 		}
 	}
 
