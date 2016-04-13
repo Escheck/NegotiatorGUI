@@ -170,6 +170,9 @@ public class SessionManager implements Runnable {
 				// get current party's ids
 				int partyId = parties.indexOf(party);
 
+				events.logMessage("  Turn %d: %-13s %s", turnNumber, party,
+						action);
+
 				// update history list if this was an offer
 				if (action instanceof Offer) {
 
@@ -195,13 +198,12 @@ public class SessionManager implements Runnable {
 					if (currentAgreement == null || lastAgreement == null
 							|| !currentAgreement.equals(lastAgreement))
 						lastAgreement = currentAgreement;
-				}
 
-				// log messages
-				events.logMessage("  Turn %d: %-13s %s", turnNumber,
-						party, action);
-				events.logBid(session, parties,
-						protocol.getCurrentAgreement(session, parties) != null);
+					events.logBid(
+							session,
+							parties,
+							protocol.getCurrentAgreement(session, parties) != null);
+				}
 
 				// Do not start new turn in current round if protocol is
 				// finished at this point
@@ -243,12 +245,11 @@ public class SessionManager implements Runnable {
 
 		}
 		double runTime = session.getRuntimeInSeconds();
-		events.logMessage("Finished negotiation session in %.3fs",
-				runTime);
+		events.logMessage("Finished negotiation session in %.3fs", runTime);
 		try {
 			events.logSession(session, agreement);
-			events.logMessage(CsvLogger.logSingleSession(session,
-					protocol, agents, runTime));
+			events.logMessage(CsvLogger.logSingleSession(session, protocol,
+					agents, runTime));
 		} catch (Exception e) {
 			events.logMessage("Error: could not log session details");
 		}
@@ -266,8 +267,7 @@ public class SessionManager implements Runnable {
 						.getValue();
 				session.setRuntimeInSeconds(runTimeInSeconds);
 			}
-			events.logMessage("Deadline reached: %s",
-					session.getDeadlines());
+			events.logMessage("Deadline reached: %s", session.getDeadlines());
 			return true;
 		}
 		return false;

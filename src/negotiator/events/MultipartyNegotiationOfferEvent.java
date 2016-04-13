@@ -2,15 +2,15 @@ package negotiator.events;
 
 import java.util.ArrayList;
 
-import negotiator.actions.Action;
+import negotiator.Bid;
 
 public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	private int round;
 	private int turn;
 	private double timeline; // current run time in seconds.
-	private Action action; // action also keeps the party id
 	private ArrayList<Double> partyUtilities;
 	private boolean agreementFound;
+	private Bid bid;
 
 	/**
 	 * @param source
@@ -28,14 +28,14 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	 * @param agreementFound
 	 *            true iff the parties agreed
 	 */
-	public MultipartyNegotiationOfferEvent(Object source, int round, int turn,
-			double time, Action action, ArrayList<Double> partyUtilities,
+	public MultipartyNegotiationOfferEvent(Object source, Bid bid, int round,
+			int turn, double time, ArrayList<Double> partyUtilities,
 			boolean agreementFound) {
 		super(source);
+		this.bid = bid;
 		this.round = round;
 		this.turn = turn;
 		this.timeline = time;
-		this.action = action;
 		this.partyUtilities = partyUtilities;
 		this.agreementFound = agreementFound;
 	}
@@ -66,14 +66,6 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 
 	/**
 	 * 
-	 * @return the most recent action in the nego
-	 */
-	public Action getAction() {
-		return action;
-	}
-
-	/**
-	 * 
 	 * @return the discounted utils of the parties
 	 */
 	public ArrayList<Double> getPartyUtilities() {
@@ -89,8 +81,8 @@ public class MultipartyNegotiationOfferEvent extends NegotiationEvent {
 	}
 
 	public String toString() {
-		return "ActionEvent[" + action.getAgent() + "," + action + " at "
-				+ round + " round]";
+		return "MultipartyNegotiationOfferEvent[" + bid + " at " + round
+				+ " round]";
 	}
 
 }
