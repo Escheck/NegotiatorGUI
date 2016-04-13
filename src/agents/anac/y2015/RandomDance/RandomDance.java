@@ -334,11 +334,11 @@ public class RandomDance extends AbstractNegotiationParty {
 	private Bid SearchBidWithWeights(Map<String, PlayerData> datas,
 			Map<String, Double> weights) {
 		Bid ret = generateRandomBid();
+		// there must be some player, we use it to get the issue values.
+		PlayerData player0data = datas.get(datas.keySet().iterator().next());
 		for (Issue issue : utilitySpace.getDomain().getIssues()) {
 
-			List<ValueDiscrete> values = new ArrayList<ValueDiscrete>();
-			IssueDiscrete id = (IssueDiscrete) issue;
-			values = id.getValues();
+			List<Value> values = player0data.getIssueData(issue).getValues();
 
 			double max = -1;
 			Value maxValue = null;
@@ -357,7 +357,7 @@ public class RandomDance extends AbstractNegotiationParty {
 					maxValue = value;
 				}
 			}
-			ret = ret.putValue(id.getNumber(), maxValue);
+			ret = ret.putValue(issue.getNumber(), maxValue);
 		}
 		return ret;
 	}
@@ -446,6 +446,10 @@ class PlayerData {
 	Set<Bid> history = new HashSet<Bid>();
 	double derta = 1.00;
 
+	public IssueData<Issue, Value> getIssueData(Issue issue) {
+		return map.get(issue);
+	}
+
 	/**
 	 * Mape a map of IssueData for all issues.
 	 * 
@@ -460,7 +464,8 @@ class PlayerData {
 				map.put(issue, new IssueDataDiscrete((IssueDiscrete) issue,
 						derta));
 			} else {
-				throw new RuntimeException("NOT YET IMPLEMENTED");
+				map.put(issue,
+						new IssueDataInteger((IssueInteger) issue, derta));
 			}
 		}
 		this.derta = derta;
