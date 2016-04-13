@@ -59,6 +59,9 @@ public class RandomDance extends AbstractNegotiationParty {
 
 	private boolean init = false;
 	private int playerNumber = 0;
+	/**
+	 * Map with {@link AgentID} as key
+	 */
 	private Map<String, PlayerDataLib> utilityDatas = new HashMap<String, PlayerDataLib>();
 	private PlayerData myData = null;
 	private int offerCount = 0;
@@ -88,7 +91,8 @@ public class RandomDance extends AbstractNegotiationParty {
 		utilityMap.put("my", myData);
 
 		/*
-		 * 前回の相手のBidのうち、より他の相手に歩み寄っているプレイヤーを探す
+		 * 前回の相手のBidのうち、より他の相手に歩み寄っているプレイヤーを探す : Find player that walked maximum
+		 * value?
 		 */
 		double maxval = -999;
 		String maxPlayer = null;
@@ -151,7 +155,7 @@ public class RandomDance extends AbstractNegotiationParty {
 
 	public Map<String, Double> getWeights() {
 		/*
-		 * プレイヤーウェイトの計算
+		 * プレイヤーウェイトの計算 : Calculation of player weight
 		 */
 		Map<String, Double> playerWeight = new HashMap<String, Double>();
 		int rand = (int) (Math.random() * 3);
@@ -251,7 +255,7 @@ public class RandomDance extends AbstractNegotiationParty {
 		if (olderBid == null) {
 			return false;
 		}
-		// targetより大きければAccept
+		// targetより大きければAccept : If greater than the target Accept
 		if (utility > target) {
 			// System.err.println("Accept utility over target! " + target + " "
 			// + utility);
@@ -332,6 +336,13 @@ public class RandomDance extends AbstractNegotiationParty {
 
 	}
 
+	/**
+	 * 
+	 * @param datas
+	 * @param weights
+	 *            Map with {@link AgentID} as key, and weight as value.
+	 * @return bid that has maximum utility, using the given weights.
+	 */
 	private Bid SearchBidWithWeights(Map<String, PlayerData> datas,
 			Map<String, Double> weights) {
 		Bid ret = generateRandomBid();
@@ -378,7 +389,7 @@ public class RandomDance extends AbstractNegotiationParty {
 
 		Map<String, Double> weightbuf = new HashMap<String, Double>();
 		/*
-		 * 敵ウェイトを合計1になるようにする
+		 * 敵ウェイトを合計1になるようにする: set weights to sum to 1
 		 */
 		double sum = 0;
 		for (Double d : weights.values()) {
@@ -405,6 +416,10 @@ public class RandomDance extends AbstractNegotiationParty {
 
 }
 
+/**
+ * 3 player datas for each player, one with constant derta, one with decreasing
+ * and one with increasing.
+ */
 class PlayerDataLib {
 
 	ArrayList<PlayerData> playerDatas = new ArrayList<PlayerData>();
@@ -443,6 +458,14 @@ class PlayerData {
 	Set<Bid> history = new HashSet<Bid>();
 	double derta = 1.00;
 
+	/**
+	 * Mape a map of IssueData for all issues.
+	 * 
+	 * @param issues
+	 * @param derta
+	 *            the relevance change for each next bid. So if eg 0.8, each
+	 *            next update has a relevance 0.8 times the previous update
+	 */
 	public PlayerData(ArrayList<Issue> issues, double derta) {
 		for (Issue issue : issues) {
 			map.put(issue, new IssueData(issue, derta));
@@ -494,6 +517,12 @@ class PlayerData {
 
 	}
 
+	/**
+	 * Accumulates occurences of issues
+	 * 
+	 * @param bid
+	 * @throws Exception
+	 */
 	public void AddBid(Bid bid) throws Exception {
 
 		if (history.contains(bid)) {
@@ -514,7 +543,7 @@ class PlayerData {
 	}
 
 	/*
-	 * Mapにキーがない時に追加する関数
+	 * Mapにキーがない時に追加する関数: put in map if not there yet
 	 */
 	private void ValuePut(Issue issue) {
 		if (!map.containsKey(issue)) {
@@ -533,7 +562,7 @@ class PlayerData {
 	}
 
 	/*
-	 * 各Issueごとの数え上げデータ
+	 * 各Issueごとの数え上げデータ: count data for each issue
 	 */
 
 	class IssueData {
@@ -545,6 +574,13 @@ class PlayerData {
 		private double derta = 1.0;
 		private double adder = 1.0;
 
+		/**
+		 * 
+		 * @param issue
+		 * @param derta
+		 *            the relevance change for each next bid. So if eg 0.8, each
+		 *            next update has a relevance 0.8 times the previous update.
+		 */
 		public IssueData(Issue issue, double derta) {
 			IssueDiscrete id = (IssueDiscrete) issue;
 
@@ -556,7 +592,7 @@ class PlayerData {
 		}
 
 		/*
-		 * 更新禁止のロックをかける ロックは外せない
+		 * 更新禁止のロックをかける ロックは外せない : lock the update
 		 */
 		public void Locked() {
 			locked = true;
@@ -579,7 +615,8 @@ class PlayerData {
 		}
 
 		/*
-		 * 相手のBidがきた時の更新関数 とりあえず1を足す
+		 * 相手のBidがきた時の更新関数 とりあえず1を足す put value in the map. Each next update will
+		 * have relevance changed by factor derta.
 		 */
 		public void Update(Value value) {
 			if (locked) {
@@ -602,7 +639,7 @@ class PlayerData {
 		}
 
 		/*
-		 * Mapにキーがない時に追加する関数
+		 * Mapにキーがない時に追加する関数 : put key in map if not yet there
 		 */
 		private void ValuePut(Value value) {
 			if (!map.containsKey(value)) {
