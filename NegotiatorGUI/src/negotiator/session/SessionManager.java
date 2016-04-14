@@ -39,10 +39,6 @@ public class SessionManager implements Runnable {
 
 	private SessionEventHandler events;
 
-	// utility of most recent agreements. Only holds sane information in case of
-	// agreement.
-	private double[][] agreementUtilitiesDiscounted;
-
 	// needed for reference (for indexing the parties)
 	List<NegotiationPartyInternal> agents;
 
@@ -74,8 +70,6 @@ public class SessionManager implements Runnable {
 
 		// needed for reference (for indexing the parties)
 		agents = MediatorProtocol.getNonMediators(parties);
-
-		agreementUtilitiesDiscounted = new double[2][agents.size()];
 	}
 
 	/**
@@ -115,21 +109,11 @@ public class SessionManager implements Runnable {
 			events.logMessage("No agreement found.");
 		else {
 			events.logMessage("Found an agreement: %s", agreement);
-			agreementUtilitiesDiscounted = new double[2][agents.size()];
-			for (NegotiationPartyInternal agent : agents) {
-				int agentId = agents.indexOf(agent);
-				double when = findLastIndexOfBid(agreement, session);
-				Double[] entry = {
-						Double.isNaN(when) ? session.getRoundNumber() : when,
-						agent.getUtilityWithDiscount(agreement) };
-				agreementUtilitiesDiscounted[0][agentId] = entry[0];
-				agreementUtilitiesDiscounted[1][agentId] = entry[1];
-			}
 
 		}
 		double runTime = session.getRuntimeInSeconds();
 		events.logMessage("Finished negotiation session in %.3fs", runTime);
-		events.logSessionEnded(session, agreement);
+		events.logSessionEnded(session, agreement, parties);
 		try {
 			events.logMessage(CsvLogger.logSingleSession(session, protocol,
 					agents, runTime));
@@ -347,50 +331,6 @@ public class SessionManager implements Runnable {
 	public void addLoggingListener(
 			MultipartyNegotiationEventListener eventListener) {
 		events.addListener(eventListener);
-	}
-
-	/**
-	 * Get the history of the (discounted) utilities for all agents so far.
-	 * Outer list is a list of agent id's and utilities inner list is a list of
-	 * double[2] where the first double identifies the round and the second
-	 * double identifies the util.
-	 *
-	 * Example (History of two agents with two rounds): list[0][0] = {1, 0.90}
-	 * list[0][1] = {2, 0.60} list[1][0] = {1, 0.70} list[1][1] = {2, 0.80} ^ ^
-	 * ^ ^ agent ___| | | | round id ___| | | round number _____| | round
-	 * utility _________|
-	 *
-	 * @return Utility history
-	 */
-	// public List<List<Double[]>> getAgentUtilsDiscounted() {
-	// return agentUtilsDiscounted;
-	// }
-
-	/**
-	 * Returns round number and (discounted) utility value of agreement if any.
-	 * If no agreement this function is undefined.
-	 *
-	 * result[0][0] = 2.1 <-- round number result[0][1] = 2.1 <-- round number
-	 * result[1][0] = 0.40 <-- utility result[1][1] = 0.80 <-- utility
-	 *
-	 * @return The round number and utility of agreement if any.
-	 */
-	public double[][] getAgreementUtilitiesDiscounted() {
-		return agreementUtilitiesDiscounted;
-	}
-
-	// Finds the last index of the bid in the session or NaN if not found.
-	private static double findLastIndexOfBid(Bid needle, Session session) {
-		for (int roundIndex = session.getRounds().size() - 1; roundIndex >= 0; roundIndex--) {
-			Round round = session.getRounds().get(roundIndex);
-			for (int actionIndex = round.getActions().size() - 1; actionIndex >= 0; actionIndex--) {
-				Action action = round.getActions().get(actionIndex);
-				if (action instanceof Offer
-						&& ((Offer) action).getBid().equals(needle))
-					return (roundIndex + 1) + (actionIndex + 1) / 10d;
-			}
-		}
-		return Double.NaN;
 	}
 
 }

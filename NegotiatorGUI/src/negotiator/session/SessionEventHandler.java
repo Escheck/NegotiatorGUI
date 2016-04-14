@@ -113,10 +113,12 @@ public class SessionEventHandler {
 	 * @param agreement
 	 *            The agreement if any (NULL otherwise)
 	 */
-	public void logSessionEnded(Session session, Bid agreement) {
+	public void logSessionEnded(Session session, Bid agreement,
+			List<NegotiationPartyInternal> parties) {
+		MultipartySessionEndedEvent evt = new MultipartySessionEndedEvent(
+				owner, session, agreement, parties);
 		for (MultipartyNegotiationEventListener listener : listeners)
-			listener.handleEvent(new MultipartySessionEndedEvent(owner,
-					session, agreement));
+			listener.handleEvent(evt);
 	}
 
 }
