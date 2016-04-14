@@ -86,16 +86,13 @@ public class SessionManager implements Runnable {
 
 	/**
 	 * Runs the negotiation session and wait for it to complete.
-	 * 
-	 * TODO David: This method has become huge, needs to be refactored.
 	 */
 	public void runAndWait() throws InvalidActionError, InterruptedException,
 			ExecutionException, NegotiationPartyTimeoutException {
+		// force GC to clean up mess of previous runs.
 		System.gc();
-		// pre session protocol call
-		protocol.beforeSession(session, parties);
 
-		// announce our session to the sessionLogger
+		protocol.beforeSession(session, parties);
 		events.logMessage("Starting negotiation session.");
 
 		executeProtocol();
