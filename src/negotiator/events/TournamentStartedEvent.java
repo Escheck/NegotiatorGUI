@@ -6,7 +6,7 @@ package negotiator.events;
  * @author W.Pasman 15jul15
  *
  */
-public class TournamentStartedEvent extends NegotiationEvent {
+public class TournamentStartedEvent extends TournamentEvent {
 
 	private final int totalNumberOfSessions;
 	private final int tournamentNumber;
