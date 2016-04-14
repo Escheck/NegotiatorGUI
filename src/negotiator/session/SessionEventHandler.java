@@ -56,6 +56,7 @@ public class SessionEventHandler {
 	 *            format arguments in case message is a format string.
 	 *
 	 */
+	@Deprecated
 	public void logMessage(String message, Object... params) {
 		LogMessageEvent event = new LogMessageEvent(owner, "Nego",
 				String.format(message, params));
