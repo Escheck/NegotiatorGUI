@@ -30,7 +30,7 @@ import negotiator.BidIterator;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.gui.chart.MultipartyBidChart;
 import negotiator.parties.NegotiationPartyInternal;
@@ -361,8 +361,8 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 			handleLogMessageEvent((LogMessageEvent) e);
 		} else if (e instanceof MultipartyNegotiationOfferEvent) {
 			handleOfferEvent((MultipartyNegotiationOfferEvent) e);
-		} else if (e instanceof MultipartyNegotiationSessionEvent) {
-			handleMultipartyNegotiationEvent((MultipartyNegotiationSessionEvent) e);
+		} else if (e instanceof MultipartySessionEndedEvent) {
+			handleMultipartyNegotiationEvent((MultipartySessionEndedEvent) e);
 		}
 	}
 
@@ -394,7 +394,7 @@ public class MultipartyProgressUI extends javax.swing.JPanel implements
 	}
 
 	private void handleMultipartyNegotiationEvent(
-			MultipartyNegotiationSessionEvent evt) {
+			MultipartySessionEndedEvent evt) {
 		session = evt.getSession();
 		bidChart.setMaxRound(session.getRoundNumber() + 1);
 		bidChart.setNashSeries(getNashProduct(session.getRoundNumber()));

@@ -1,7 +1,8 @@
 package negotiator.events;
 
 /**
- * Indicates that a session started.
+ * Indicates that a session started. You get this message only in tournaments,
+ * where multiple sessions can be running.
  * 
  * @author W.Pasman 15jul15
  *
