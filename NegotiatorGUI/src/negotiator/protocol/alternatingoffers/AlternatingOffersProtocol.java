@@ -133,9 +133,6 @@ public class AlternatingOffersProtocol extends Protocol {
 				.getParams());// (Agent)(loaderB.loadClass(getAgentBRep().getClassPath()).newInstance());
 		agentB.setName(getAgentBname());
 
-		// Passes the Experimental Variables to agent A and B
-		if (tournamentRunner != null)
-			tournamentRunner.fireNegotiationSessionStartedEvent(this);
 		// NegotiationSession nego = new NegotiationSession(agentA, agentB, nt,
 		// sessionNumber,
 		// sessionTotalNumber,agentAStarts,actionEventListener,this);

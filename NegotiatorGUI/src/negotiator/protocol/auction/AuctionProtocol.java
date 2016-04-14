@@ -435,8 +435,6 @@ public class AuctionProtocol extends Protocol {
 
 	{
 		int sessionTestNumber = 1;
-		if (tournamentRunner != null)
-			tournamentRunner.fireNegotiationSessionStartedEvent(this);
 		// NegotiationSession nego = new NegotiationSession(agentA, agentB, nt,
 		// sessionNumber,
 		// sessionTotalNumber,agentAStarts,actionEventListener,this);

@@ -3,7 +3,6 @@ package negotiator;
 import negotiator.events.ActionEvent;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationEvent;
 
 /**
  * implement this class in order to subscribe with the NegotiationManager to get
@@ -24,8 +23,6 @@ public interface NegotiationEventListener {
 	public void handleActionEvent(ActionEvent evt);
 
 	public void handleLogMessageEvent(LogMessageEvent evt);
-
-	public void handeNegotiationSessionEvent(NegotiationEvent evt);
 
 	public void handleBlateralAtomicNegotiationSessionEvent(
 			BilateralAtomicNegotiationSessionEvent evt);
