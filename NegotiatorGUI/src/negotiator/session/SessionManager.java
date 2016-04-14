@@ -102,7 +102,6 @@ public class SessionManager implements Runnable {
 		protocol.beforeSession(session, parties);
 
 		// announce our session to the sessionLogger
-		events.logSession(session, null);
 		events.logMessage("Starting negotiation session.");
 
 		executeProtocol();
@@ -130,8 +129,8 @@ public class SessionManager implements Runnable {
 		}
 		double runTime = session.getRuntimeInSeconds();
 		events.logMessage("Finished negotiation session in %.3fs", runTime);
+		events.logSessionEnded(session, agreement);
 		try {
-			events.logSession(session, agreement);
 			events.logMessage(CsvLogger.logSingleSession(session, protocol,
 					agents, runTime));
 		} catch (Exception e) {

@@ -7,7 +7,7 @@ import negotiator.Bid;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MediatorProtocol;
 
@@ -113,9 +113,9 @@ public class SessionEventHandler {
 	 * @param agreement
 	 *            The agreement if any (NULL otherwise)
 	 */
-	public void logSession(Session session, Bid agreement) {
+	public void logSessionEnded(Session session, Bid agreement) {
 		for (MultipartyNegotiationEventListener listener : listeners)
-			listener.handleEvent(new MultipartyNegotiationSessionEvent(owner,
+			listener.handleEvent(new MultipartySessionEndedEvent(owner,
 					session, agreement));
 	}
 

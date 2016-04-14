@@ -4,12 +4,12 @@ package negotiator.events;
 import negotiator.Bid;
 import negotiator.session.Session;
 
-public class MultipartyNegotiationSessionEvent extends NegotiationEvent
+public class MultipartySessionEndedEvent extends NegotiationEvent
 {
     private Session session;
     private Bid agreement;
 
-    public MultipartyNegotiationSessionEvent(Object source, Session session, Bid agreement)
+    public MultipartySessionEndedEvent(Object source, Session session, Bid agreement)
     {
 
         super(source);
