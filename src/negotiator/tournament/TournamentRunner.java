@@ -10,7 +10,7 @@ import negotiator.Global;
 import negotiator.NegotiationEventListener;
 import negotiator.distributedtournament.DBController;
 import negotiator.distributedtournament.Job;
-import negotiator.events.NegotiationSessionEvent;
+import negotiator.events.NegotiationSessionStartedEvent;
 import negotiator.exceptions.Warning;
 import negotiator.gui.NegoGUIApp;
 import negotiator.protocol.Protocol;
@@ -291,10 +291,10 @@ public class TournamentRunner implements Runnable {
 		return sessions;
 	}
 
-	public void fireNegotiationSessionEvent(Protocol session) {
+	public void fireNegotiationSessionStartedEvent(Protocol session) {
 		for (NegotiationEventListener listener : negotiationEventListeners)
 			if (listener != null)
-				listener.handeNegotiationSessionEvent(new NegotiationSessionEvent(
+				listener.handeNegotiationSessionEvent(new NegotiationSessionStartedEvent(
 						this, session));
 	}
 }

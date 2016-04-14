@@ -135,7 +135,7 @@ public class AlternatingOffersProtocol extends Protocol {
 
 		// Passes the Experimental Variables to agent A and B
 		if (tournamentRunner != null)
-			tournamentRunner.fireNegotiationSessionEvent(this);
+			tournamentRunner.fireNegotiationSessionStartedEvent(this);
 		// NegotiationSession nego = new NegotiationSession(agentA, agentB, nt,
 		// sessionNumber,
 		// sessionTotalNumber,agentAStarts,actionEventListener,this);
