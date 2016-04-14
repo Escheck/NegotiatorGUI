@@ -17,7 +17,7 @@ import negotiator.config.MultilateralTournamentConfiguration;
 import negotiator.events.AgreementEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.events.SessionFailedEvent;
-import negotiator.events.SessionStartedEvent;
+import negotiator.events.TournamentSessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 import negotiator.events.TournamentStartedEvent;
 import negotiator.exceptions.AnalysisException;
@@ -169,7 +169,7 @@ public class TournamentManager extends Thread {
 			List<NegotiationPartyInternal> agentList = null; // null=bad
 
 			sessionNumber++;
-			notifyEvent(new SessionStartedEvent(this, sessionNumber,
+			notifyEvent(new TournamentSessionStartedEvent(this, sessionNumber,
 					totalSessions));
 
 			ExecutorWithTimeout executor = new ExecutorWithTimeout(
