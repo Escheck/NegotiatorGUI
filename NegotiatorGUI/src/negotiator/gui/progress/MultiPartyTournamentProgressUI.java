@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.NegotiationEvent;
-import negotiator.events.SessionStartedEvent;
+import negotiator.events.TournamentSessionStartedEvent;
 import negotiator.events.TournamentEndedEvent;
 
 @SuppressWarnings("serial")
@@ -55,8 +55,8 @@ public class MultiPartyTournamentProgressUI extends Panel implements
 			System.out.println(((LogMessageEvent) e).getMessage());
 		} else if (e instanceof TournamentEndedEvent) {
 			progress.finish();
-		} else if (e instanceof SessionStartedEvent) {
-			SessionStartedEvent e1 = (SessionStartedEvent) e;
+		} else if (e instanceof TournamentSessionStartedEvent) {
+			TournamentSessionStartedEvent e1 = (TournamentSessionStartedEvent) e;
 			progress.update(e1.getCurrentSession(), e1.getTotalSessions());
 		}
 	}

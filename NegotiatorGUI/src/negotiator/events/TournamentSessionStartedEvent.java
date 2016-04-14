@@ -7,7 +7,7 @@ package negotiator.events;
  * @author W.Pasman 15jul15
  *
  */
-public class SessionStartedEvent extends TournamentEvent {
+public class TournamentSessionStartedEvent extends TournamentEvent {
 
 	private final int currentSession;
 	private final int totalSessions;
@@ -24,7 +24,7 @@ public class SessionStartedEvent extends TournamentEvent {
 	 *            First session has number 1.
 	 * @param total
 	 */
-	public SessionStartedEvent(Object source, int session, int total) {
+	public TournamentSessionStartedEvent(Object source, int session, int total) {
 		super(source);
 		currentSession = session;
 		totalSessions = total;
