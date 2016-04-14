@@ -6,7 +6,7 @@ package negotiator.events;
  * @author W.Pasman 15jul15
  *
  */
-public class TournamentEndedEvent extends NegotiationEvent {
+public class TournamentEndedEvent extends TournamentEvent {
 
 	/**
 	 * 
