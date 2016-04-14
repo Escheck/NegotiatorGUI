@@ -105,73 +105,7 @@ public class SessionManager implements Runnable {
 		events.logSession(session, null);
 		events.logMessage("Starting negotiation session.");
 
-		// start timers
-		session.startTimer();
-
-		// initialize last agreement (which is null at start)
-		// Bid lastAgreement = null;
-
-		// execute main loop (using the protocol's round structure)
-		do {
-
-			// generate new round
-			Round round = protocol.getRoundStructure(parties, session);
-
-			// add round to session
-			session.startNewRound(round);
-
-			if (checkDeadlineReached())
-				break;
-			events.logMessage("Round %d", session.getRoundNumber());
-			int turnNumber = 0;
-
-			// Let each party do an action
-			for (Turn turn : round.getTurns()) {
-				if (checkDeadlineReached())
-					break;
-				// for each party, set the round-based timeline again (to avoid
-				// tempering)
-				if (session.getTimeline() instanceof DiscreteTimeline) {
-					((DiscreteTimeline) session.getTimeline())
-							.setcRound(session.getRoundNumber());
-				}
-
-				turnNumber++;
-				NegotiationPartyInternal party = turn.getParty();
-				Action action = requestAction(party, turn.getValidActions());
-				turn.setAction(action);
-				updateListeners(party, action);
-
-				// get current party's ids
-				int partyId = parties.indexOf(party);
-
-				events.logMessage("  Turn %d: %-13s %s", turnNumber, party,
-						action);
-
-				if (action instanceof Offer) {
-					Bid currentAgreement = protocol.getCurrentAgreement(
-							session, parties);
-					events.offered(parties, ((Offer) action).getBid(),
-							currentAgreement, session);
-				}
-
-				// Do not start new turn in current round if protocol is
-				// finished at this point
-				if (protocol.isFinished(session, parties)) {
-					break;
-				}
-			}
-			if (checkDeadlineReached())
-				break;
-
-		}
-		// run main loop while protocol does not say it is finished
-		while (!protocol.isFinished(session, parties)
-				&& !checkDeadlineReached());
-
-		// stop timers if running
-		if (session.isTimerRunning())
-			session.stopTimer();
+		executeProtocol();
 
 		// post session protocol call
 		protocol.afterSession(session, parties);
@@ -202,6 +136,93 @@ public class SessionManager implements Runnable {
 					agents, runTime));
 		} catch (Exception e) {
 			events.logMessage("Error: could not log session details");
+		}
+	}
+
+	/**
+	 * execute main loop (using the protocol's round structure). Run main loop
+	 * till protocol is finished or deadline is reached
+	 * 
+	 * @throws InvalidActionError
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws NegotiationPartyTimeoutException
+	 */
+	private void executeProtocol() throws InvalidActionError,
+			InterruptedException, ExecutionException,
+			NegotiationPartyTimeoutException {
+		do {
+			// start timers
+			session.startTimer();
+
+			// generate new round
+			Round round = protocol.getRoundStructure(parties, session);
+
+			// add round to session
+			session.startNewRound(round);
+
+			if (checkDeadlineReached())
+				break;
+			events.logMessage("Round %d", session.getRoundNumber());
+			int turnNumber = 0;
+
+			// Let each party do an action
+			for (Turn turn : round.getTurns()) {
+				if (checkDeadlineReached())
+					break;
+				// for each party, set the round-based timeline again (to avoid
+				// tempering)
+				if (session.getTimeline() instanceof DiscreteTimeline) {
+					((DiscreteTimeline) session.getTimeline())
+							.setcRound(session.getRoundNumber());
+				}
+
+				turnNumber++;
+				doPartyTurn(turnNumber, turn);
+
+				// Do not start new turn in current round if protocol is
+				// finished at this point
+				if (protocol.isFinished(session, parties)) {
+					break;
+				}
+			}
+			if (checkDeadlineReached())
+				break;
+
+		} while (!protocol.isFinished(session, parties)
+				&& !checkDeadlineReached());
+
+		// stop timers if running
+		if (session.isTimerRunning())
+			session.stopTimer();
+
+	}
+
+	/**
+	 * Let a party decide for an action and create events for the taken action.
+	 * 
+	 * @param turnNumber
+	 * @param turn
+	 * @throws InvalidActionError
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws NegotiationPartyTimeoutException
+	 */
+	private void doPartyTurn(int turnNumber, Turn turn)
+			throws InvalidActionError, InterruptedException,
+			ExecutionException, NegotiationPartyTimeoutException {
+		NegotiationPartyInternal party = turn.getParty();
+		Action action = requestAction(party, turn.getValidActions());
+		turn.setAction(action);
+		updateListeners(party, action);
+
+		events.logMessage("  Turn %d: %-13s %s", turnNumber, party, action);
+
+		if (action instanceof Offer) {
+			Bid currentAgreement = protocol.getCurrentAgreement(session,
+					parties);
+			events.offered(parties, ((Offer) action).getBid(),
+					currentAgreement, session);
 		}
 	}
 
