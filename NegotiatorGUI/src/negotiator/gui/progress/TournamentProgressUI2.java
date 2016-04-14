@@ -9,7 +9,7 @@ import negotiator.actions.EndNegotiation;
 import negotiator.events.ActionEvent;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.tournament.VariablesAndValues.AgentParamValue;
 import negotiator.tournament.VariablesAndValues.AgentParameterVariable;
@@ -242,7 +242,8 @@ public class TournamentProgressUI2 extends javax.swing.JPanel implements
 		sessionProgress.setNegotiationSession(negoSession);
 	}
 
-	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+	@Override
+	public void handeNegotiationSessionEvent(NegotiationEvent evt) {
 
 	}
 

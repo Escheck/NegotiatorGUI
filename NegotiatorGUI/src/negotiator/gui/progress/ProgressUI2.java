@@ -31,7 +31,7 @@ import negotiator.analysis.BidSpace;
 import negotiator.analysis.BidSpaceCache;
 import negotiator.events.BilateralAtomicNegotiationSessionEvent;
 import negotiator.events.LogMessageEvent;
-import negotiator.events.NegotiationSessionEvent;
+import negotiator.events.NegotiationEvent;
 import negotiator.gui.chart.BidChart;
 import negotiator.protocol.BilateralAtomicNegotiationSession;
 import negotiator.protocol.Protocol;
@@ -574,7 +574,8 @@ public class ProgressUI2 extends javax.swing.JPanel implements
 		addLoggingText(evt.getMessage());
 	}
 
-	public void handeNegotiationSessionEvent(NegotiationSessionEvent evt) {
+	@Override
+	public void handeNegotiationSessionEvent(NegotiationEvent evt) {
 	}
 
 	public void handleBlateralAtomicNegotiationSessionEvent(
