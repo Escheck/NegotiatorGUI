@@ -17,7 +17,6 @@ import negotiator.protocol.MultilateralProtocolAdapter;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
-import agents.BidComparator;
 
 /**
  * NastyAgent is an agent with nasty behaviour: throws, returns silly actions,
