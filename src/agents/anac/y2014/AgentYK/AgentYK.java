@@ -23,7 +23,6 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import agents.SimpleAgent;
 
 public class AgentYK extends Agent {
 

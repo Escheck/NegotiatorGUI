@@ -18,7 +18,6 @@ import negotiator.issue.Issue;
 import negotiator.issue.IssueInteger;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
-import agents.SimpleAgentSavingBidHistory;
 
 /**
  * @author S. Hourmann Some improvements over the standard Agent. Saving Bid
