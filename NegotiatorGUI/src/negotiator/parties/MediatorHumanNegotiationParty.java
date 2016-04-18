@@ -15,7 +15,6 @@ import negotiator.actions.OfferForVoting;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
-import agents.EnterBidDialogAcceptance;
 
 /**
  * modified version of W.Pasman's modified version of Dmytro's UIAgent
