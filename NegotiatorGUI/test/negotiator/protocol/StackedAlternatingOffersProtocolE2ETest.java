@@ -12,7 +12,7 @@ import negotiator.DeadlineType;
 import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
-import negotiator.events.MultipartyNegotiationSessionEvent;
+import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.repository.DomainRepItem;
@@ -109,13 +109,13 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 		private List<MultipartyNegotiationOfferEvent> offers = new ArrayList<MultipartyNegotiationOfferEvent>();
 		private List<String> logs = new ArrayList<String>();
-		private List<MultipartyNegotiationSessionEvent> events = new ArrayList<MultipartyNegotiationSessionEvent>();
+		private List<MultipartySessionEndedEvent> events = new ArrayList<MultipartySessionEndedEvent>();
 
 		public List<String> getLogs() {
 			return logs;
 		}
 
-		public List<MultipartyNegotiationSessionEvent> getEvents() {
+		public List<MultipartySessionEndedEvent> getEvents() {
 			return events;
 		}
 
@@ -126,8 +126,8 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				System.out.println(((LogMessageEvent) e).getMessage());
 			} else if (e instanceof MultipartyNegotiationOfferEvent) {
 				offers.add((MultipartyNegotiationOfferEvent) e);
-			} else if (e instanceof MultipartyNegotiationSessionEvent) {
-				events.add((MultipartyNegotiationSessionEvent) e);
+			} else if (e instanceof MultipartySessionEndedEvent) {
+				events.add((MultipartySessionEndedEvent) e);
 
 			}
 
@@ -188,7 +188,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		manager.runAndWait();
 
 		/*********** and finally check the outcome **************/
-		MultipartyNegotiationSessionEvent lastEvent = listener.getEvents().get(
+		MultipartySessionEndedEvent lastEvent = listener.getEvents().get(
 				listener.getEvents().size() - 1);
 		assertNotNull(lastEvent.getAgreement());
 
