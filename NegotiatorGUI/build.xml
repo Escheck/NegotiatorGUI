@@ -544,7 +544,7 @@
 		<ant target="cleanup" />
 	</target>
 
-	<target name="makeGenius5.4.2" depends="makeNegoSimulatorWithAllAgentJar, javadoc">
+	<target name="makeGenius5.4.2">
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrepository.ANAC2016.xml" />
 			<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />
@@ -582,7 +582,7 @@
 		</copy>
 
 		<zip destfile="${dist}/Genius-5.4.2.zip">
-			<zipfileset dir="${dist}" includes="negosimulator.jar" prefix="genius" />
+			<zipfileset dir="dep" includes="GeniusCoreWithAgents.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
@@ -600,10 +600,6 @@
 			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
 			<zipfileset dir="" includes="javadoc/" prefix="genius" />
-			<!--
-			<zipfileset dir="etc/templates/anac" prefix="genius/etc/templates/anac"/>
-			<zipfileset dir="etc/templates/nonlinear" prefix="genius/etc/templates/nonlinear"/>
-			-->
 			<zipfileset dir="etc/templates" prefix="genius/etc/templates/" />
 		</zip>
 		<ant target="cleanup" />
