@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<multilateralTournamentsConfiguration>
+    <tournaments>
+        <tournament>
+            <deadline>
+                <value>10</value>
+                <type>TIME</type>
+                <DEFAULT_TIME_OUT>180</DEFAULT_TIME_OUT>
+            </deadline>
+            <protocolItem hasMediatorProfile="false" hasMediator="false" description="Each agents makes offer, counter-offer, or accepts" classPath="negotiator.protocol.StackedAlternatingOffersProtocol" protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)"/>
+            <partyRepItems>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="1. Phoenix" classPath="agents.anac.y2015.Phoenix.PhoenixParty" partyName="ANAC2015-1-Phoenix">
+                    <properties/>
+                </item>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="2. CUHK" classPath="agents.anac.y2015.cuhkagent2015.CUHKAgent2015" partyName="ANAC2015-2-CUHK">
+                    <properties/>
+                </item>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="3. ParsAgent" classPath="agents.anac.y2015.ParsAgent.ParsAgent" partyName="ANAC2015-3-ParsAgent">
+                    <properties/>
+                </item>
+            </partyRepItems>
+            <partyProfileItems>
+                <item url="file:etc/templates/partydomain/party1_utility.xml"/>
+                <item url="file:etc/templates/partydomain/party2_utility.xml"/>
+                <item url="file:etc/templates/partydomain/party3_utility.xml"/>
+            </partyProfileItems>
+            <numSessions>1</numSessions>
+            <numberOfAgentsPerSession>3</numberOfAgentsPerSession>
+            <repetitionAllowed>false</repetitionAllowed>
+        </tournament>
+    </tournaments>
+</multilateralTournamentsConfiguration>
