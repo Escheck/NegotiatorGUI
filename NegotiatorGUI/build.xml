@@ -2,15 +2,9 @@
 <project name="Negotiator" default="makeGenius5.4.2" basedir=".">
 	<property name="dist" location="dist" />
 	<property name="build" location="bin" />
-	<property name="javadoc" location="javadoc" />
 	<property name="tmp" location="tmp" />
-	<property name="dep" location="dep" />
-	<property name="src" location="src" />
-	<property name="repositories" location="repositories" />
-	<property name="anac2010" location="/ANAC2010" />
-	<property name="anacResources" location="/ANAC/All ANAC 2010 and ANAC 2011 resources" />
-	<property name="anac2011" location="${anacResources}/bin/anac/y2011" />
 	<property name="tutorials" location="tutorials/" />
+	<property name="repositories" location="repositories" />
 
 	<target name="cleanup">
 		<delete file="${dist}/negosimulator.jar" />
@@ -27,15 +21,6 @@
 			</packageset>
 		</javadoc>
 	</target>
-
-
-
-	<target name="compilesimpleAgent">
-		<javac srcdir="." includes="./SimpleAgent.java" classpath="${build}">
-		</javac>
-	</target>
-
-
 
 
 
