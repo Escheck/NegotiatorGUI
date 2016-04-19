@@ -29,8 +29,8 @@
 
 	<target name="makeGenius5.4.2" depends="negosimulatorjar">
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/domains/domainrepository.ANAC2016.xml" />
-			<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />
+			<fileset file="domainrepository.xml" />
+			<!--<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />-->
 		</copy>
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/boa/boarepository.xml" />
@@ -51,8 +51,8 @@
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/parties/partyrepository.ANAC2016.xml" />
-			<globmapper from="partyrepository.ANAC2016.xml" to="partyrepository.xml" />
+			<fileset file="partyrepository.xml" />
+			<!--<globmapper from="partyrepository.ANAC2016.xml" to="partyrepository.xml" />-->
 		</copy>
 
 
@@ -64,7 +64,7 @@
 			<fileset dir="doc" includes="userguide.pdf" />
 		</copy>
 
-		<zip destfile="${dist}/Genius-5.4.2.zip">
+		<zip destfile="target/Genius-5.4.2.zip">
 			<zipfileset dir="${tmp}" includes="*.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
