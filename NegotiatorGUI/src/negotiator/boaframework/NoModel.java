@@ -1,7 +1,6 @@
-package negotiator.boaframework.opponentmodel;
+package negotiator.boaframework;
 
 import negotiator.Bid;
-import negotiator.boaframework.OpponentModel;
 
 /**
  * Placeholder to notify an agent that there is no opponent model available.

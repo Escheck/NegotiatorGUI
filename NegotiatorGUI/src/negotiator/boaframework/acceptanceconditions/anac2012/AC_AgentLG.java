@@ -6,9 +6,9 @@ import agents.anac.y2012.AgentLG.OpponentBids;
 import negotiator.boaframework.AcceptanceStrategy;
 import negotiator.boaframework.Actions;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.BRAMAgentSAS;
 import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 

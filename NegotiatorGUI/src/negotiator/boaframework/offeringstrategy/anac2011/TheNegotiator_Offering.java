@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.bidding.BidDetailsStrictSorterUtility;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.DefaultModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.TheNegotiatorSAS;
 
 /**

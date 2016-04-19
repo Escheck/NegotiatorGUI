@@ -8,11 +8,11 @@ import java.util.Set;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.BOAparameter;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
  * The problem with the default TDT, is that when the negotiation starts, some

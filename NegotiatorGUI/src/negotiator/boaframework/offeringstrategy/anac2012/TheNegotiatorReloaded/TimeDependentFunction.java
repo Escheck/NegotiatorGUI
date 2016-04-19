@@ -2,10 +2,10 @@ package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
 
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.opponentmodel.NoModel;
 
 public class TimeDependentFunction {
 	

@@ -1,8 +1,8 @@
 package agents.anac.y2013.TheFawkes;
 
 import negotiator.SupportedNegotiationSetting;
+import negotiator.boaframework.BOAagent;
 import negotiator.boaframework.acceptanceconditions.anac2013.AC_TheFawkes;
-import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2013.Fawkes_Offering;
 import negotiator.boaframework.omstrategy.TheFawkes_OMS;
 import negotiator.boaframework.opponentmodel.TheFawkes_OM;

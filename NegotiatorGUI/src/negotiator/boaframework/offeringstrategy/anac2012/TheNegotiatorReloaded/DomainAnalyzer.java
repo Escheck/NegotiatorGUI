@@ -2,9 +2,9 @@ package negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded;
 
 import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.utility.AdditiveUtilitySpace;
 
 /**

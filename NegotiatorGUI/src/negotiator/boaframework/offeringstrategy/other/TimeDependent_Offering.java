@@ -8,11 +8,11 @@ import java.util.Set;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.BOAparameter;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
-import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
  * This is an abstract class used to implement a TimeDependentAgent Strategy

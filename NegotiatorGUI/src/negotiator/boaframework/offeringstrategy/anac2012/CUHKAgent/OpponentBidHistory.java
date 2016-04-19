@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.List;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.IssueInteger;

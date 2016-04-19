@@ -1,15 +1,16 @@
 package negotiator.boaframework.offeringstrategy.anac2012;
 
 import java.util.HashMap;
+
 import agents.anac.y2012.AgentLG.OpponentBids;
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.DefaultModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2012.AgentLGSAS;
 
 public class AgentLG_Offering extends OfferingStrategy{

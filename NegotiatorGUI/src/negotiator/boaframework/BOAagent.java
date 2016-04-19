@@ -1,4 +1,4 @@
-package negotiator.boaframework.agent;
+package negotiator.boaframework;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,16 +12,6 @@ import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.bidding.BidDetails;
-import negotiator.boaframework.AcceptanceStrategy;
-import negotiator.boaframework.Actions;
-import negotiator.boaframework.NegotiationSession;
-import negotiator.boaframework.OMStrategy;
-import negotiator.boaframework.OfferingStrategy;
-import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.OutcomeSpace;
-import negotiator.boaframework.SessionData;
-import negotiator.boaframework.acceptanceconditions.other.Multi_AcceptanceCondition;
-import negotiator.boaframework.opponentmodel.NoModel;
 
 /**
  * This class describes a basic decoupled agent. The TheBOAagent class extends
