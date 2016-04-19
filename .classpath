@@ -1,37 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="dep/absolutelayout.jar"/>
-	<classpathentry kind="lib" path="dep/jtreetable.jar"/>
-	<classpathentry kind="lib" path="dep/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="dep/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="dep/activation.jar"/>
-	<classpathentry kind="lib" path="dep/jaxb1-impl.jar"/>
-	<classpathentry kind="lib" path="dep/jaxb-impl.jar"/>
-	<classpathentry kind="lib" path="dep/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="dep/jopt-simple-3.2-rc1.jar" sourcepath="dep/jopt-simple-3.2-rc1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI voor AAMAS competitie/dep/jopt-simple-3.2-rc1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="dep/jfxrt.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="dep/swing-layout-1.0.3.jar"/>
-	<classpathentry kind="lib" path="dep/swing-worker-1.1.jar"/>
-	<classpathentry kind="lib" path="dep/appframework-1.0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="dep/mysql-connector-java-5.1.18-bin.jar"/>
-	<classpathentry kind="lib" path="dep/jcommon-1.0.17.jar"/>
-	<classpathentry kind="lib" path="dep/jfreechart-1.0.14.jar"/>
-	<classpathentry kind="lib" path="dep/IAMhaggler2011packages.jar"/>
-	<classpathentry kind="lib" path="dep/forms_rt-7.0.3.jar"/>
-	<classpathentry kind="lib" path="dep/combinatoricslib-2.0.jar" sourcepath="dep/combinatoricslib-2.0_src.zip">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/NegotiatorGUI%20voor%20AAMAS%20competitie/dep/combinatoricslib-2.0_doc.zip!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="dep/mockito-all-1.9.5.jar"/>
-	<classpathentry kind="lib" path="dep/berkeleylm.jar"/>
+	<classpathentry kind="lib" path="dep/GeniusCoreWithAgents.jar" sourcepath="/core/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
