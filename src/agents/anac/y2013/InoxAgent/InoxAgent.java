@@ -1,8 +1,8 @@
 package agents.anac.y2013.InoxAgent;
 
 import negotiator.SupportedNegotiationSetting;
+import negotiator.boaframework.BOAagent;
 import negotiator.boaframework.acceptanceconditions.anac2013.AC_InoxAgent;
-import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2013.InoxAgent_Offering;
 import negotiator.boaframework.omstrategy.BestBid;
 import negotiator.boaframework.opponentmodel.InoxAgent_OM;

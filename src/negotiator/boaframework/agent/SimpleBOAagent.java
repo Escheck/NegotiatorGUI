@@ -1,6 +1,7 @@
 package negotiator.boaframework.agent;
 
 import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.BOAagent;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;

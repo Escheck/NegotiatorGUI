@@ -2,7 +2,9 @@ package negotiator.boaframework.acceptanceconditions.other;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.Multi_AcceptanceCondition;
 import negotiator.boaframework.NegotiationSession;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;

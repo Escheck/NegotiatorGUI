@@ -3,15 +3,16 @@ package negotiator.boaframework.offeringstrategy.anac2011;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.SortedOutcomeSpace;
 import negotiator.boaframework.opponentmodel.DefaultModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.sharedagentstate.anac2011.AgentK2SAS;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;

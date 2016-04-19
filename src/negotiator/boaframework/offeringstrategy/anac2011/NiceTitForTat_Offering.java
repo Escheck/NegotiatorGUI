@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.BidHistory;
 import negotiator.BidIterator;
@@ -11,11 +12,11 @@ import negotiator.analysis.BidPoint;
 import negotiator.analysis.BidSpace;
 import negotiator.bidding.BidDetails;
 import negotiator.boaframework.NegotiationSession;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import negotiator.boaframework.opponentmodel.DefaultModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 import negotiator.boaframework.opponentmodel.ScalableBayesianModel;
 import negotiator.boaframework.sharedagentstate.anac2011.NiceTitForTatSAS;
 

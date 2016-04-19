@@ -1,11 +1,11 @@
 package agents.anac.y2014.TUDelftGroup2;
 
 import negotiator.boaframework.AcceptanceStrategy;
+import negotiator.boaframework.BOAagent;
 import negotiator.boaframework.OMStrategy;
 import negotiator.boaframework.OfferingStrategy;
 import negotiator.boaframework.OpponentModel;
 import agents.anac.y2014.TUDelftGroup2.boaframework.acceptanceconditions.other.Group2_AS;
-import negotiator.boaframework.agent.BOAagent;
 import agents.anac.y2014.TUDelftGroup2.boaframework.offeringstrategy.other.Group2_BS;
 import negotiator.boaframework.omstrategy.BestBid;
 import negotiator.boaframework.omstrategy.NullStrategy;

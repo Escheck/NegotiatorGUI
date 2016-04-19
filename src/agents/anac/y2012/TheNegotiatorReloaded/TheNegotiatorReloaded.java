@@ -1,12 +1,12 @@
 package agents.anac.y2012.TheNegotiatorReloaded;
 
 import negotiator.SupportedNegotiationSetting;
+import negotiator.boaframework.BOAagent;
+import negotiator.boaframework.NoModel;
 import negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded;
-import negotiator.boaframework.agent.BOAagent;
 import negotiator.boaframework.offeringstrategy.anac2012.TheNegotiatorReloaded_Offering;
 import negotiator.boaframework.omstrategy.NullStrategy;
 import negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel;
-import negotiator.boaframework.opponentmodel.NoModel;
 
 public class TheNegotiatorReloaded extends BOAagent {
 

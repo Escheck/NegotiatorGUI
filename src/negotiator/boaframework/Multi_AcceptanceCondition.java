@@ -1,14 +1,9 @@
-package negotiator.boaframework.acceptanceconditions.other;
+package negotiator.boaframework;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import negotiator.analysis.BidPointTime;
-import negotiator.boaframework.AcceptanceStrategy;
-import negotiator.boaframework.Actions;
-import negotiator.boaframework.NegotiationSession;
-import negotiator.boaframework.OfferingStrategy;
-import negotiator.boaframework.OpponentModel;
-import negotiator.boaframework.OutcomeTuple;
 import negotiator.Bid;
 
 /**
