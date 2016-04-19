@@ -12,22 +12,22 @@
 		<delete dir="${tmp}" />
 	</target>
 
+	<target name="negosimulatorjar"> 
+		<jar destfile="${tmp}/negosimulator.jar">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="negotiator.gui.NegoGUIApp" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
 
-	<target name="javadoc">
-		<javadoc destdir="javadoc" version="true" use="true" windowtitle="Genius GUI Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false">
-			<packageset dir="src" defaultexcludes="yes">
-				<exclude name="agents/**" />
-				<exclude name="flanagan/**" />
-			</packageset>
-		</javadoc>
+			<zipgroupfileset dir="dep" includes="GeniusCore.jar,Agents.jar" />
+		</jar>
+
 	</target>
 
+		
 
-
-
-
-
-	<target name="makeGenius5.4.2">
+	<target name="makeGenius5.4.2" depends="negosimulatorjar">
 		<copy todir="${tmp}">
 			<fileset file="${repositories}/domains/domainrepository.ANAC2016.xml" />
 			<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />
@@ -65,7 +65,7 @@
 		</copy>
 
 		<zip destfile="${dist}/Genius-5.4.2.zip">
-			<zipfileset dir="dep" includes="*.jar" prefix="genius" />
+			<zipfileset dir="${tmp}" includes="*.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
