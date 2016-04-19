@@ -582,7 +582,7 @@
 		</copy>
 
 		<zip destfile="${dist}/Genius-5.4.2.zip">
-			<zipfileset dir="dep" includes="GeniusCoreWithAgents.jar" prefix="genius" />
+			<zipfileset dir="dep" includes="*.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="doc/" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="DataObjects" prefix="genius" />
