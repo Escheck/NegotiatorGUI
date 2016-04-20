@@ -28,6 +28,10 @@
 		
 
 	<target name="makeGenius5.4.2" depends="negosimulatorjar">
+		<unzip src="dep/AgentRepo.jar" dest="${tmp}/repositories"></unzip>
+		<unzip src="dep/PartyRepo.jar" dest="${tmp}/repositories"></unzip>
+
+		<!-- collect the xml files -->
 		<copy todir="${tmp}">
 			<fileset file="domainrepository.xml" />
 			<!--<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />-->
@@ -37,7 +41,7 @@
 			<globmapper from="boarepository.xml" to="boarepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
-			<fileset file="${repositories}/agents/agentrepository.xml" />
+			<fileset file="${tmp}/repositories/agents/agentrepository.xml" />
 			<globmapper from="agentrepository.xml" to="agentrepository.xml" />
 		</copy>
 		<copy todir="${tmp}">
