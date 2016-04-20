@@ -90,7 +90,7 @@
 			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
-			<zipfileset dir="" includes="javadoc/" prefix="genius" />
+			<zipfileset src="dep/GeniusCore-javadoc.jar" prefix="genius/javadoc" />
 			<zipfileset src="dep/Domains.jar" prefix="genius/etc/templates"/>
 		</zip>
 		<ant target="cleanup" />
