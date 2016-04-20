@@ -37,7 +37,7 @@
 
 		<!-- collect the xml files -->
 		<copy todir="${tmp}">
-			<fileset file="domainrepository.xml" />
+			<fileset file="${tmp}/repositories/domains/domainrepository.xml" />
 			<!--<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />-->
 		</copy>
 		<copy todir="${tmp}">
@@ -50,16 +50,16 @@
 		</copy>
 		<copy todir="${tmp}">
 			<fileset file="${tmp}/repositories/protocols/protocolrepository.xml" />
-			<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />
+			<!--<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />-->
 		</copy>
 
 		<copy todir="${tmp}">
 			<fileset file="${tmp}/repositories/multipartyprotocols/multipartyprotocolrepository.xml" />
-			<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />
+			<!--<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />-->
 		</copy>
 
 		<copy todir="${tmp}">
-			<fileset file="partyrepository.xml" />
+			<fileset file="${tmp}/repositories/parties/partyrepository.xml" />
 			<!--<globmapper from="partyrepository.ANAC2016.xml" to="partyrepository.xml" />-->
 		</copy>
 
