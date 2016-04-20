@@ -28,41 +28,6 @@
 		
 
 	<target name="makeGenius5.4.2" depends="negosimulatorjar">
-		<unzip src="dep/AgentRepo.jar" dest="${tmp}/repositories"></unzip>
-		<unzip src="dep/PartyRepo.jar" dest="${tmp}/repositories"></unzip>
-		<unzip src="dep/BoaRepo.jar" dest="${tmp}/repositories"></unzip>
-		<unzip src="dep/ProtocolsRepo.jar" dest="${tmp}/repositories"></unzip>
-		<!--<unzip src="dep/Domains.jar" dest="etc/templates"></unzip>-->
-		<unzip src="dep/DomainsRepo.jar" dest="${tmp}/repositories"></unzip>
-
-		<!-- collect the xml files -->
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/domains/domainrepository.xml" />
-			<!--<globmapper from="domainrepository.ANAC2016.xml" to="domainrepository.xml" />-->
-		</copy>
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/boa/boarepository.xml" />
-			<globmapper from="boarepository.xml" to="boarepository.xml" />
-		</copy>
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/agents/agentrepository.xml" />
-			<globmapper from="agentrepository.xml" to="agentrepository.xml" />
-		</copy>
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/protocols/protocolrepository.xml" />
-			<!--<globmapper from="protocolrepository.xml" to="protocolrepository.xml" />-->
-		</copy>
-
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/multipartyprotocols/multipartyprotocolrepository.xml" />
-			<!--<globmapper from="multipartyprotocolrepository.xml" to="multipartyprotocolrepository.xml" />-->
-		</copy>
-
-		<copy todir="${tmp}">
-			<fileset file="${tmp}/repositories/parties/partyrepository.xml" />
-			<!--<globmapper from="partyrepository.ANAC2016.xml" to="partyrepository.xml" />-->
-		</copy>
-
 
 		<mkdir dir="${tmp}/doc" />
 		<mkdir dir="${tmp}/log" />
@@ -84,11 +49,15 @@
 			<zipfileset dir="${tutorials}/tutorial_pdfs/" prefix="genius/tutorials" />
 			<zipfileset dir="${tutorials}" includes="multipartyexample/**" prefix="genius" />
 			<zipfileset dir="xml-runner" includes="multilateraltournament.xml" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="agentrepository.xml" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="domainrepository.xml" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="protocolrepository.xml" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="boarepository.xml" prefix="genius" />
-			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
+			
+			<!-- select the required repository xml files using includes and rename to correct name  -->
+			<zipfileset src="dep/AgentRepo.jar" includes="agents/agentrepository.xml" fullpath="genius/agentrepository.xml"/>
+			<zipfileset src="dep/BoaRepo.jar" includes="boa/boarepository.xml" fullpath="genius/boarepository.xml"/>
+			<zipfileset src="dep/DomainsRepo.jar" includes="domains/domainrepository.xml" fullpath="genius/domainrepository.xml"/>
+			<zipfileset src="dep/ProtocolsRepo.jar" includes="protocols/protocolrepository.xml" fullpath="genius/protocolrepository.xml"/>
+			<zipfileset src="dep/ProtocolsRepo.jar" includes="multipartyprotocols/multipartyprotocolrepository.xml" fullpath="genius/multipartyprotocolrepository.xml"/>
+			<zipfileset src="dep/PartyRepo.jar" includes="parties/partyrepository.xml" fullpath="genius/partyrepository.xml"/>
+
 			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
 			<zipfileset src="dep/GeniusCore-javadoc.jar" prefix="genius/javadoc" />
 			<zipfileset src="dep/Domains.jar" prefix="genius/etc/templates"/>
