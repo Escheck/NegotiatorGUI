@@ -32,6 +32,8 @@
 		<unzip src="dep/PartyRepo.jar" dest="${tmp}/repositories"></unzip>
 		<unzip src="dep/BoaRepo.jar" dest="${tmp}/repositories"></unzip>
 		<unzip src="dep/ProtocolsRepo.jar" dest="${tmp}/repositories"></unzip>
+		<unzip src="dep/Domains.jar" dest="etc/templates"></unzip>
+		<unzip src="dep/DomainsRepo.jar" dest="${tmp}/repositories"></unzip>
 
 		<!-- collect the xml files -->
 		<copy todir="${tmp}">
