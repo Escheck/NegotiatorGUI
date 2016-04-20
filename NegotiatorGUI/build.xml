@@ -32,7 +32,7 @@
 		<unzip src="dep/PartyRepo.jar" dest="${tmp}/repositories"></unzip>
 		<unzip src="dep/BoaRepo.jar" dest="${tmp}/repositories"></unzip>
 		<unzip src="dep/ProtocolsRepo.jar" dest="${tmp}/repositories"></unzip>
-		<unzip src="dep/Domains.jar" dest="etc/templates"></unzip>
+		<!--<unzip src="dep/Domains.jar" dest="etc/templates"></unzip>-->
 		<unzip src="dep/DomainsRepo.jar" dest="${tmp}/repositories"></unzip>
 
 		<!-- collect the xml files -->
@@ -91,7 +91,7 @@
 			<zipfileset dir="${tmp}" includes="multipartyprotocolrepository.xml" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="partyrepository.xml" prefix="genius" />
 			<zipfileset dir="" includes="javadoc/" prefix="genius" />
-			<zipfileset dir="etc/templates" prefix="genius/etc/templates/" />
+			<zipfileset src="dep/Domains.jar" prefix="genius/etc/templates"/>
 		</zip>
 		<ant target="cleanup" />
 	</target>
