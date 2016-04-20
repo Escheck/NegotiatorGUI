@@ -96,4 +96,7 @@
 		<ant target="cleanup" />
 	</target>
 
+	<target name="debug">
+		<unzip src="dep/Domains.jar" dest="debug/etc/templates"></unzip>
+	</target>
 </project>
