@@ -21,33 +21,37 @@ public class multipartytest {
 
 		Runner.main(new String[] { "test/multitest.xml",
 				output.getCanonicalPath() });
-		equal(output, new File("test/multitestexpected.txt"));
+		equal(new File("test/multitestexpected.txt"), output);
 	}
 
 	/**
 	 * Check the output log files line by line.
 	 * 
-	 * @param file1
-	 * @param file2
+	 * @param expectedFile
+	 *            the file containing the expected log
+	 * @param actualFile
+	 *            the file containing the actual log
 	 * @return
 	 * @throws IOException
 	 * @throws NotEqualException
 	 */
-	private void equal(File file1, File file2) throws IOException,
+	private void equal(File expectedFile, File actualFile) throws IOException,
 			NotEqualException {
-		BufferedReader br1 = new BufferedReader(new FileReader(file1));
-		BufferedReader br2 = new BufferedReader(new FileReader(file2));
+		BufferedReader expectedFileReader = new BufferedReader(new FileReader(
+				expectedFile));
+		BufferedReader actualFileReader = new BufferedReader(new FileReader(
+				actualFile));
 
 		int linenr = 1;
-		String line1, line2;
-		while ((line1 = br1.readLine()) != null) {
-			line2 = br2.readLine();
-			equal(linenr, line1, line2);
+		String expectedLine, actualLine;
+		while ((expectedLine = expectedFileReader.readLine()) != null) {
+			actualLine = actualFileReader.readLine();
+			equal(linenr, expectedLine, actualLine);
 			linenr++;
 		}
 
-		br1.close();
-		br2.close();
+		expectedFileReader.close();
+		actualFileReader.close();
 	}
 
 	/**
@@ -60,28 +64,37 @@ public class multipartytest {
 	 * Check that given lines are equal. ";" is separator character.
 	 * 
 	 * @param linenr
-	 * @param line1
-	 * @param line2
+	 * @param expected
+	 *            the expected line in the log
+	 * @param actual
+	 *            the actual line in the log
 	 * @throws NotEqualException
 	 */
 
-	private void equal(int linenr, String line1, String line2)
+	private void equal(int linenr, String expected, String actual)
 			throws NotEqualException {
-		String[] elements1 = line1.split(";");
-		String[] elements2 = line2.split(";");
-		if (elements1.length != elements2.length) {
+		String[] expectedElems = expected.split(";");
+		String[] actualElems = actual.split(";");
+		if (expectedElems.length != actualElems.length) {
 			throw new NotEqualException(
 					"Lines do not contain the same number of results", linenr,
-					"" + elements1.length, "" + elements2.length);
+					"" + expectedElems.length, "" + actualElems.length);
 		}
-		for (int i = 0; i < elements1.length; i++) {
+		for (int i = 0; i < expectedElems.length; i++) {
 			if (indicesToSkip.contains(i))
 				continue;
-			String elem1 = elements1[i];
-			String elem2 = elements2[i];
-			if (!elem1.equals(elem2)) {
+			String expectedElem = expectedElems[i];
+			String actualElem = actualElems[i];
+			boolean equals = false;
+			try {
+				equals = Math.abs(Double.parseDouble(expectedElem)
+						- Double.parseDouble(actualElem)) < 0.000001;
+			} catch (NumberFormatException e) {
+				equals = expectedElem.equals(actualElem);
+			}
+			if (!equals) {
 				throw new NotEqualException("element " + (i + 1)
-						+ " is not equal", linenr, elem1, elem2);
+						+ " is not equal", linenr, expectedElem, actualElem);
 			}
 		}
 	}
