@@ -51,10 +51,10 @@ public class multipartytest {
 	}
 
 	/**
-	 * ignore run time(s), agent1, agent2, agent3. We ignore the agents because
-	 * they contain memory address
+	 * ignore run time(s), agent1, agent2, agent3, agent4. We ignore the agents
+	 * because they contain memory address
 	 */
-	List<Integer> indicesToSkip = Arrays.asList(0, 12, 13, 14);
+	List<Integer> indicesToSkip = Arrays.asList(0, 12, 13, 14, 15);
 
 	/**
 	 * Check that given lines are equal. ";" is separator character.
