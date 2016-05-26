@@ -100,7 +100,7 @@ public class SimpleANAC2013Agent extends Agent {
 		try {
 			int loops = 0;
 			do {
-				bid = utilitySpace.getDomain().getRandomBid();
+				bid = utilitySpace.getDomain().getRandomBid(null);
 				loops++;
 			} while (loops < 100000 && utilitySpace.getUtility(bid) < target);
 			if (bid == null) {

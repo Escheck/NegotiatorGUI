@@ -1,8 +1,8 @@
 package anac2013example;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import negotiator.Agent;
@@ -199,7 +199,7 @@ public class SimpleAgentSavingBidHistory extends Agent {
 																		// <issuenumber,chosen
 																		// value
 																		// string>
-		ArrayList<Issue> issues = utilitySpace.getDomain().getIssues();
+		List<Issue> issues = utilitySpace.getDomain().getIssues();
 		Random randomnr = new Random();
 
 		// create a random bid with utility>MINIMUM_BID_UTIL.
