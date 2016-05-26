@@ -3,10 +3,13 @@ package multipartyexample;
 import java.util.List;
 
 import negotiator.AgentID;
+import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
+import negotiator.session.TimeLineInfo;
+import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This is your negotiation party.

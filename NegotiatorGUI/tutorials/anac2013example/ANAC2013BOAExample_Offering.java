@@ -59,7 +59,7 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 		try {
 			do {
 				bid = negotiationSession.getUtilitySpace().getDomain()
-						.getRandomBid();
+						.getRandomBid(null);
 			} while (negotiationSession.getUtilitySpace().getUtility(bid) < breakoff);
 			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace()
 					.getUtility(bid));
