@@ -331,6 +331,11 @@
 				partyName="Smith-anac2016">
 				<properties />
 			</partyRepItem>
+			<partyRepItem protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"
+				description="Mediator1" classPath="negotiator.parties.RandomFlippingMediator"
+				partyName="NotParty">
+				<properties />
+			</partyRepItem>
 
 
 
