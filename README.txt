@@ -22,6 +22,20 @@ into the dep/ directory of the NegotiatorGUI project.
 If you make changes in one of the projects, you have to 
  * build the changed project (ant run the build.xml).
  * copy all target/*.jar files into NegotiatorGUI/dep/
+ 
+Alternate project settings
+==========================
+If you want to change the Genius core or an existing agent, it is convenient if
+Eclipse would use your changes directly for testing (without the need to copy the jar files
+to dep as described above). To do this, download the agents and core projects from svn as mentioned above.
+After that, you can modify the project settings of the NegotiatorGUI project as follows:
+
+1. remove Agents.jar and GeniusCore.jar from the Libraries (Project/Properties/Java Build Path/Libraries)
+2. Add project dependencies for agents/ and core/  (Project/Properties/Java Build Path/Projects). 
+
+You still have to follow the "Debugging with Eclipse" steps below.
+
+Final releases should always have the correct files in dep, this setup is only for testing.
 
 
 Debugging with Eclipse
@@ -48,6 +62,6 @@ Setting up Eclipse for running/debugging NegotiationGUI goes as follows
 
 NOTICE!
 
-The files in de debug folder are ONLY FOR DEBUGGING. 
+The files in the debug folder are ONLY FOR DEBUGGING. 
 Modifying these has no effect on the release version of Genius.
 
