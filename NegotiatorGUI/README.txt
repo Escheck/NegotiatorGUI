@@ -14,6 +14,10 @@ The different components that Genius consists of are in the following separate p
 
 You can access all these projects with your SVN account at
 
+https://ii.tudelft.nl/svn/nego/<project>
+
+You can browse the sources through
+
 http://ii.tudelft.nl/trac/negotiation/<project>
 
 Most projects generate multiple jars in their target directory. All these jars are copied
