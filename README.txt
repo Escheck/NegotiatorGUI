@@ -34,8 +34,13 @@ Eclipse would use your changes directly for testing (without the need to copy th
 to dep as described above). To do this, download the agents and core projects from svn as mentioned above.
 After that, you can modify the project settings of the NegotiatorGUI project as follows:
 
+Fix the NegotiatorGUI project:
 1. remove Agents.jar and GeniusCore.jar from the Libraries (Project/Properties/Java Build Path/Libraries)
 2. Add project dependencies for agents/ and core/  (Project/Properties/Java Build Path/Projects). 
+
+Fix the agents project similarly:
+3. Remove GeniusCore.jar from the agents project  Libraries (Project/Properties/Java Build Path/Libraries)
+4. Add project dependencies for core/ (Project/Properties/Java Build Path/Projects). 
 
 You still have to follow the "Debugging with Eclipse" steps below.
 
