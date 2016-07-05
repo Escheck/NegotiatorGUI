@@ -156,13 +156,13 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 			if (lastDiffSet.get(i) == 0
 					&& opponentUtilitySpace.getWeight(i) < maximumWeight)
 				opponentUtilitySpace.setWeight(opponentUtilitySpace.getDomain()
-						.getObjective(i),
+						.getObjectives().get(i),
 						(opponentUtilitySpace.getWeight(i) + goldenValue)
 								/ totalSum);
 			else
 				opponentUtilitySpace.setWeight(opponentUtilitySpace.getDomain()
-						.getObjective(i), opponentUtilitySpace.getWeight(i)
-						/ totalSum);
+						.getObjectives().get(i),
+						opponentUtilitySpace.getWeight(i) / totalSum);
 		}
 
 		// Then for each issue value that has been offered last time, a constant
