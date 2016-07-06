@@ -16,7 +16,10 @@
 				classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
 				protocolName="Mediated Single Text Negotiation Protocol (MSTNP)"
 				hasMediator="true" hasMediatorProfile="false" />
-
+			<multiPartyProtocolRepItem description="Each agents votes on first agent's offer"
+				classPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol"
+				protocolName="Alternating Offer Majority Voting"
+				hasMediator="false" hasMediatorProfile="false" />
 		</multiPartyProtocolRepItem>
 	</items>
 	<filename>multipartyprotocolrepository.xml</filename>

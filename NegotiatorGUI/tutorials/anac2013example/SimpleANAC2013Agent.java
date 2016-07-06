@@ -72,7 +72,9 @@ public class SimpleANAC2013Agent extends Agent {
 	 * Retrieve the bid from the opponent's last action.
 	 */
 	public void ReceiveMessage(Action opponentAction) {
-		opponentLastBid = Action.getBidFromAction(opponentAction);
+		if (opponentAction instanceof Offer) {
+			opponentLastBid = ((Offer) opponentAction).getBid();
+		}
 	}
 
 	/**
@@ -83,7 +85,7 @@ public class SimpleANAC2013Agent extends Agent {
 	public Action chooseAction() {
 		if (opponentLastBid != null
 				&& getUtility(opponentLastBid) >= MINIMUM_BID_UTILITY) {
-			return new Accept();
+			return new Accept(getAgentID(), opponentLastBid);
 		}
 		return getRandomBid(MINIMUM_BID_UTILITY);
 	}
@@ -114,6 +116,6 @@ public class SimpleANAC2013Agent extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new Offer(bid);
+		return new Offer(getAgentID(), bid);
 	}
 }

@@ -339,6 +339,22 @@
 
 
 
+			<partyRepItem description="Simple UI party"
+				classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
+				partyName="UI Party"
+				protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+			</partyRepItem>
+			<partyRepItem description="Human party"
+				classPath="negotiator.parties.ConsensusVotingHumanAgent?" partyName="UI Party"
+				protocolClassPath="negotiator.protocol.AlternatingOfferConsensusProtocol">
+			</partyRepItem>
+			
+			<partyRepItem description="Random Agent MajorityVoter"
+				classPath="negotiator.parties.RandomMajorityVoting"
+				partyName="Random Agent MajorityVoter"
+				protocolClassPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol">
+			</partyRepItem>
+
 		</partyRepItems>
 		<domainRepItem />
 		<protocolRepItem />
