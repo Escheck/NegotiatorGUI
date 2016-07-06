@@ -30,9 +30,10 @@ import org.junit.Test;
 public class StackedAlternatingOffersProtocolE2ETest {
 
 	private static final String BID_PATTERN = "Bid [a: .., b: .., c: .., d: .., e: .., f: .., g: .., h: .. , ]";
-	private static final String OFFER_PATTERN = "( Offer: " + BID_PATTERN
+	private static final String OFFER_PATTERN = "( Offer bid:" + BID_PATTERN
 			+ " ) ";
-	private static final String ACCEPT_PATTERN = "( Accept )";
+	private static final String ACCEPT_PATTERN = "( Accept bid: " + BID_PATTERN
+			+ ")";
 
 	enum BidType {
 		OFFER, ACCEPT, PLAIN_BID
