@@ -3,6 +3,7 @@ package multipartyexample;
 import java.util.List;
 
 import negotiator.AgentID;
+import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -16,10 +17,7 @@ import negotiator.utility.AbstractUtilitySpace;
  */
 public class Groupn extends AbstractNegotiationParty {
 
-	private double discountFactor = 0; // if you want to keep the discount
-										// factor
-	private double reservationValue = 0; // if you want to keep the reservation
-											// value
+	private Bid lastReceivedBid = null;
 
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
@@ -27,12 +25,10 @@ public class Groupn extends AbstractNegotiationParty {
 
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
-		discountFactor = utilSpace.getDiscountFactor(); // read discount factor
-		System.out.println("Discount Factor is " + discountFactor);
-		reservationValue = utilSpace.getReservationValueUndiscounted(); // read
-																		// reservation
-																		// value
-		System.out.println("Reservation Value is " + reservationValue);
+		System.out.println("Discount Factor is "
+				+ utilSpace.getDiscountFactor());
+		System.out.println("Reservation Value is "
+				+ utilSpace.getReservationValueUndiscounted());
 
 		// if you need to initialize some variables, please initialize them
 		// below
@@ -53,10 +49,11 @@ public class Groupn extends AbstractNegotiationParty {
 
 		// with 50% chance, counter offer
 		// if we are the first party, also offer.
-		if (!validActions.contains(Accept.class) || Math.random() > 0.5) {
-			return new Offer(generateRandomBid());
+		if (lastReceivedBid == null || !validActions.contains(Accept.class)
+				|| Math.random() > 0.5) {
+			return new Offer(getPartyId(), generateRandomBid());
 		} else {
-			return new Accept();
+			return new Accept(getPartyId(), lastReceivedBid);
 		}
 	}
 
@@ -73,7 +70,9 @@ public class Groupn extends AbstractNegotiationParty {
 	@Override
 	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
-		// Here you hear other parties' messages
+		if (action instanceof Offer) {
+			lastReceivedBid = ((Offer) action).getBid();
+		}
 	}
 
 	@Override

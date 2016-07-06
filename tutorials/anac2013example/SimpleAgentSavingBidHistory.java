@@ -41,6 +41,7 @@ public class SimpleAgentSavingBidHistory extends Agent {
 
 	private BidHistory currSessOppBidHistory;
 	private BidHistory prevSessOppBidHistory;
+	private Bid lastPartnerBid;
 
 	public SimpleAgentSavingBidHistory() {
 		super();
@@ -89,11 +90,12 @@ public class SimpleAgentSavingBidHistory extends Agent {
 	public void ReceiveMessage(Action opponentAction) {
 		actionOfPartner = opponentAction;
 		if (opponentAction instanceof Offer) {
-			Bid bid = ((Offer) opponentAction).getBid();
+			lastPartnerBid = ((Offer) opponentAction).getBid();
 			// 2. store the opponent's trace
 			try {
-				BidDetails opponentBid = new BidDetails(bid,
-						utilitySpace.getUtility(bid), timeline.getTime());
+				BidDetails opponentBid = new BidDetails(lastPartnerBid,
+						utilitySpace.getUtility(lastPartnerBid),
+						timeline.getTime());
 				currSessOppBidHistory.add(opponentBid);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -118,7 +120,7 @@ public class SimpleAgentSavingBidHistory extends Agent {
 
 				// accept under certain circumstances
 				if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time)) {
-					action = new Accept(getAgentID());
+					action = new Accept(getAgentID(), lastPartnerBid);
 
 					// ---- Code for trying save and load functionality
 					// /////////////////////////////////
@@ -146,7 +148,9 @@ public class SimpleAgentSavingBidHistory extends Agent {
 			tryToSaveAndPrintState();
 			// /////////////////////////////////
 
-			action = new Accept(getAgentID()); // best guess if things go wrong.
+			action = new Accept(getAgentID(), lastPartnerBid); // best guess if
+																// things go
+																// wrong.
 		}
 		return action;
 	}
@@ -182,8 +186,12 @@ public class SimpleAgentSavingBidHistory extends Agent {
 			System.out.println("Problem with received bid:" + e.getMessage()
 					+ ". cancelling bidding");
 		}
-		if (nextBid == null)
-			return (new Accept(getAgentID()));
+		if (nextBid == null) {
+			if (lastPartnerBid != null) {
+				return new Accept(getAgentID(), lastPartnerBid);
+			}
+			return new EndNegotiation(getAgentID());
+		}
 		return (new Offer(getAgentID(), nextBid));
 	}
 

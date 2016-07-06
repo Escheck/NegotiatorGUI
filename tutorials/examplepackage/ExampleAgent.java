@@ -8,6 +8,7 @@ import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
+import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
@@ -26,6 +27,7 @@ import agents.SimpleAgent;
  */
 public class ExampleAgent extends Agent {
 	private Action actionOfPartner = null;
+	private Bid lastPartnerBid;
 	/**
 	 * Note: {@link SimpleAgent} does not account for the discount factor in its
 	 * computations
@@ -53,17 +55,20 @@ public class ExampleAgent extends Agent {
 	@Override
 	public void ReceiveMessage(Action opponentAction) {
 		actionOfPartner = opponentAction;
+		if (actionOfPartner instanceof Offer) {
+			lastPartnerBid = ((Offer) actionOfPartner).getBid();
+		}
 	}
 
 	@Override
 	public Action chooseAction() {
 		Action action = null;
+
 		try {
 			if (actionOfPartner == null)
 				action = chooseRandomBidAction();
-			if (actionOfPartner instanceof Offer) {
-				Bid partnerBid = ((Offer) actionOfPartner).getBid();
-				double offeredUtilFromOpponent = getUtility(partnerBid);
+			else if (actionOfPartner instanceof Offer) {
+				double offeredUtilFromOpponent = getUtility(lastPartnerBid);
 				// get current time
 				double time = timeline.getTime();
 				action = chooseRandomBidAction();
@@ -73,7 +78,7 @@ public class ExampleAgent extends Agent {
 
 				// accept under certain circumstances
 				if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
-					action = new Accept(getAgentID());
+					action = new Accept(getAgentID(), lastPartnerBid);
 
 			}
 			if (timeline.getType().equals(Timeline.Type.Time)) {
@@ -81,7 +86,11 @@ public class ExampleAgent extends Agent {
 			}
 		} catch (Exception e) {
 			System.out.println("Exception in ChooseAction:" + e.getMessage());
-			action = new Accept(getAgentID()); // best guess if things go wrong.
+			if (lastPartnerBid != null) {
+				action = new Accept(getAgentID(), lastPartnerBid);
+			} else {
+				action = new EndNegotiation(getAgentID());
+			}
 		}
 		return action;
 	}
@@ -109,7 +118,7 @@ public class ExampleAgent extends Agent {
 					+ ". cancelling bidding");
 		}
 		if (nextBid == null)
-			return (new Accept(getAgentID()));
+			return (new Accept(getAgentID(), lastPartnerBid));
 		return (new Offer(getAgentID(), nextBid));
 	}
 
