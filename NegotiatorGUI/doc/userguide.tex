@@ -227,7 +227,12 @@ In each odd round there are N voting turns for each party (N being the number of
 \end{itemize}
 
 
+\subsection{Alternating Majority Consensus Protocol}
 
+This protocol is essentially equal to the Alternating Multiple Offers Protocol, but now an offer the protocol keeps track of the acceptable offer that got most accepts.
+Initially, this may be the first offer that got one accept. After a number of rounds, some offers receive multiple accepts and these then become the new acceptable offer.
+
+If an offer is accepted by all parties, the negotiation ends. Otherwise, the negotiation continues (unless the deadline is reached). If the deadline is reached, the acceptable offer becomes the agreement.
  
 %=========================================================================================
 \section{Running the Environment}
