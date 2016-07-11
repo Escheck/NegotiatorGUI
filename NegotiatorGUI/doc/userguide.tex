@@ -170,28 +170,8 @@ There are multiple ways to define a more global ``optimum''. One approach to opt
 A major challenge in a negotiation is that agents can hide their preferences. This entails that an agent does not know which bid the opponent prefers given a set of bids. This problem can be partly resolved by building an \textit{opponent model} of the opponent's preferences by analyzing the negotiation trace. Each turn the agent can now offer the best bid for the opponent given a set of similar preferred bids. \Genius  provides a number of components that can estimate an opponent model.
 
 \subsection{Negotiation Protocol}
-The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, as deviations from the protocol are caught and penalized. This section discusses the details of the bilateral alternating offers protocol used in \Genius.
+The negotiation protocol determines the overall order of actions during a negotiation. Agents are obliged to stick to this protocol, as deviations from the protocol are caught and penalized. \Genius supports multiple protocols. These are discussed in detail in section \ref{sec:protocols}.
 
-In the bilateral alternating offers protocol two parties -- agent $A$ and agent $B$ -- take turns. Agent $A$ starts the negotiation. Each turn an agent presents one of the three possible actions:
-
-\begin{center}
-\begin{tabular}{cm{0.6\textwidth}}
-\hline
-\textsc{Accept} & This action indicates that agent accepts the opponent's last bid.\\
-\hline
-\textsc{Offer} & This action represents the bid made by an agent.\\
-\hline
-\textsc{EndNegotiation} & This action indicates that the agent terminates the negotiation.\\
-\hline
-\end{tabular}
-\end{center}
-
-When it is an agent's turn, it is informed about the opponent's action. Based on the opponent's action the agent comes up with an action, which it presents to the opponent. Sequentially, the opponent presents a counter action. This process goes on until the negotiation finishes in one of the following ways:
-\begin{itemize}
-	\item An agent accepts the opponent's offer using the action \textsc{Accept}. The utility of the opponent's last bid is determined for both agents according to their preference profiles. The opponent is informed of acceptance via the \textit{receiveMessage} method.
-	\item The action returned by an agent is \textsc{EndNegotiation}. In this case the score of both agents is set to their reservation value.
-	\item Finally, if an agent does not follow the protocol -- for instance by sending an action that is not one of the above or by crashing -- the agent's utility is set to its reservation value, whereas the opponent is awarded the utility of the last offer.
-\end{itemize}
  
 \subsection{Reservation Value}
 A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA).
@@ -213,33 +193,38 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
  
 %=========================================================================================
-\section{Protocols}
+\section{Protocols}\label{sec:protocols}
 This section describes the various protocols. We focus on the MultiParty protocols as these have been properly developed. There is also a protocol class for the bilateral negotiation, but this is basically a hard coded Stacked Alternating Offers Protocol and not further developed. 
 
   The (Multilateral)  protocol describes if the negotiation is finished, what the agreement is, which actions can be done in the next round.   Briefly, to run a session the system checks with the protocol if the negotiation is already finished,  and if not which calls need to be made to the parties (both chooseAction and receiveMessage).  We recommend checking the javadoc of MultilateralProtocol for up-to-date detail information and how the protocol is used by the system to run sessions.
   
  The Multilateral protocol uses the notion of rounds and turns to describe the negotiation layout. A round is a part of the negotiation where all participants get a turn to respond to the current state of the negotiation. A turn refers to the opportunity of one party to make a response to the current state of the negotiation. 
   
+If an agent violates the protocol -- for instance by sending an action that is not one of the allowed ones, or by crashing, the negotiation ends and the outcome usually is 'no agreement' for all parties.  In bilateral negotiation we have a special case then: the agent's utility is set to its reservation value, whereas the opponent is awarded the utility of the last offer.
 
 \subsection{Stacked Alternating Offers Protocol}
 According to this protocol \cite{MultilateralOffersProtocols} , all of the participants around the table get a turn per round. Turns are taken clock-wise around the table. One of the negotiating parties starts the negotiation with an offer that is observed by all others immediately. Whenever an offer is made, the next party in line gets a call to receiveMessage containing the bid, followed by a call to chooseAction from which it can return the following actions:
-\begin{itemize}\item Accept the offer (not available the very first turn)\item send an Offer to make a counter offer (thus rejecting and overriding the previous offer) 
-\item send an EndNegotiation and ending the negotiation without any agreement.
+\begin{itemize}
+\item Accept the offer (not available the very first turn). In bilateral negotiation, the opponent is also informed of acceptance via the \textit{receiveMessage} method.
+\item send an Offer to make a counter offer (thus rejecting and overriding the previous offer) 
+\item send an EndNegotiation and ending the negotiation without any agreement. In bilateral negotiation the score of both agents is set to their reservation value.
 \end{itemize}
 
 This protocol is the default protocol for Parties, unless  the getProtocol() function of NegotiationParty is overridden. 
 
+In bilateral negotiation, this is the only available protocol, and then with two participants only. 
+
+
 \subsection{Alternating Multiple Offers Protocol}
 According to this protocol \cite{MultilateralOffersProtocols} , all agents have a bid from all agents available to them, before they vote on these bids. This implemented in the following way: The protocol has a bidding phase followed by voting phases. In the bidding phase all participants put their offer on the table. These offers appear to all agents through receiveMessage() in a specific order. In the voting phases all participants vote on all of the bids on the negotiation table, in the same order as received. For each offer, the agent chooseAction() is called. If one of the bids on the negotiation table is accepted by all of the parties, then the negotiation ends with this bid. 
 
-In each even round, each party gets only one turn for an OfferForVoting. 
+In each even round (we start in round 0), each party gets only one turn for an OfferForVoting. 
 
 In each odd round there are N voting turns for each party (N being the number of offers), one for each offer in order of reception. these are the available options:
-\begin{itemize}\item Accept the offer
+\begin{itemize}
+\item Accept the offer
 \item Reject the offer
 \end{itemize}
-
-So ending the negotiation before the deadline is not an option in this protocol.
 
 
 
