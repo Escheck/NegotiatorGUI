@@ -212,6 +212,37 @@ If $d = 1$, the utility is not affected by time, and such a scenario is consider
 
 If a discount factor is present, reservation values will be discounted in exactly the same way as the utility of any other outcome. It is worth noting that, by having a discounted reservation value, it may be rational for an agent to end the negotiation early and thereby default to the reservation value.
  
+%=========================================================================================
+\section{Protocols}
+This section describes the various protocols. We focus on the MultiParty protocols as these have been properly developed. There is also a protocol class for the bilateral negotiation, but this is basically a hard coded Stacked Alternating Offers Protocol and not further developed. 
+
+  The (Multilateral)  protocol describes if the negotiation is finished, what the agreement is, which actions can be done in the next round.   Briefly, to run a session the system checks with the protocol if the negotiation is already finished,  and if not which calls need to be made to the parties (both chooseAction and receiveMessage).  We recommend checking the javadoc of MultilateralProtocol for up-to-date detail information and how the protocol is used by the system to run sessions.
+  
+ The Multilateral protocol uses the notion of rounds and turns to describe the negotiation layout. A round is a part of the negotiation where all participants get a turn to respond to the current state of the negotiation. A turn refers to the opportunity of one party to make a response to the current state of the negotiation. 
+  
+
+\subsection{Stacked Alternating Offers Protocol}
+According to this protocol \cite{MultilateralOffersProtocols} , all of the participants around the table get a turn per round. Turns are taken clock-wise around the table. One of the negotiating parties starts the negotiation with an offer that is observed by all others immediately. Whenever an offer is made, the next party in line gets a call to receiveMessage containing the bid, followed by a call to chooseAction from which it can return the following actions:
+\begin{itemize}\item Accept the offer (not available the very first turn)\item send an Offer to make a counter offer (thus rejecting and overriding the previous offer) 
+\item send an EndNegotiation and ending the negotiation without any agreement.
+\end{itemize}
+
+This protocol is the default protocol for Parties, unless  the getProtocol() function of NegotiationParty is overridden. 
+
+\subsection{Alternating Multiple Offers Protocol}
+According to this protocol \cite{MultilateralOffersProtocols} , all agents have a bid from all agents available to them, before they vote on these bids. This implemented in the following way: The protocol has a bidding phase followed by voting phases. In the bidding phase all participants put their offer on the table. These offers appear to all agents through receiveMessage() in a specific order. In the voting phases all participants vote on all of the bids on the negotiation table, in the same order as received. For each offer, the agent chooseAction() is called. If one of the bids on the negotiation table is accepted by all of the parties, then the negotiation ends with this bid. 
+
+In each even round, each party gets only one turn for an OfferForVoting. 
+
+In each odd round there are N voting turns for each party (N being the number of offers), one for each offer in order of reception. these are the available options:
+\begin{itemize}\item Accept the offer
+\item Reject the offer
+\end{itemize}
+
+So ending the negotiation before the deadline is not an option in this protocol.
+
+
+
  
 %=========================================================================================
 \section{Running the Environment}
