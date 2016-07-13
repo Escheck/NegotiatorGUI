@@ -235,17 +235,27 @@ Initially, this may be the first offer that got one accept. After a number of ro
 If an offer is accepted by all parties, the negotiation ends. Otherwise, the negotiation continues (unless the deadline is reached). If the deadline is reached, the acceptable offer becomes the agreement.
  
  
- \subsection{Simple Mediator Based Protocol}
-This protocol uses the following rounds:
+\subsection{Simple Mediator Based Protocol}
+In this protocol, the parties do not hear the other parties directly. Instead, they only hear the mediator and the mediator hears the bids of all the parties. The mediator determines which bid will be voted on, collects the votes and determines the outcome. The mediator is just another NegotiationParty, but it extends Mediator.
+
+The protocol requires that exactly one party is a Mediator. The \Genius GUI enforces this presence of a Mediator. When you run a negotiation from the command line you have to ensure the presence of a single Mediator.
+
+This protocol uses the following turns in every round:
 \begin{enumerate}
 \item Mediator proposes an OfferForVoting
-\item The other parties (not the mediator) place a VoteForOfferAcceptance
-\item The mediator makes a InformVotingResult 
+\item The other parties (not the mediator) place a VoteForOfferAcceptance on the OfferForVoting
+\item The mediator makes a InformVotingResult that informs all parties about the outcome of this round.
 \end{enumerate}
 
-In this protocol, the parties do not hear the other parties directly. Instead, they only hear the mediator and the mediator hears the bids of all the parties.
+With this protocol, the last InformVotingResult with an accept determines the current outcome. 
 
-% TODO document what the current agreement is with a mediator. RandomFlippingMediator has getLastAcceptedBid()
+As mentioned, you have to provide one mediator. There is the following options 
+\begin{itemize}
+\item RandomFlippingMediator.   This mediator generates random bids until all agents accept. Then, it
+  randomly flips one issue of the current offer to generate a new offer. It
+  keeps going until the deadline is reached. 
+ 
+\end{itemize}
 
 %=========================================================================================
 \section{Running the Environment}
