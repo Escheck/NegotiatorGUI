@@ -367,6 +367,13 @@
 					<property>isMediator</property>
 				</properties>
 			</partyRepItem>
+			<partyRepItem description="Fixed Order Flipping Mediator"
+				classPath="negotiator.parties.FixedOrderFlippingMediator" partyName="Fixed Order Flipping Mediator"
+				protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+				<properties>
+					<property>isMediator</property>
+				</properties>
+			</partyRepItem>
 
 			<partyRepItem description="Hill Climber Negotiator"
 				classPath="parties.SimpleMediatorBased.HillClimberParty" partyName="Hill Climber Party"
