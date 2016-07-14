@@ -624,10 +624,17 @@ The contents of each \verb|<tournament>| element is as follows
 
     \item \textbf{partyRepItems}. This element contains a number of \verb|<item>| elements. Each of these party items contains the following:
       \begin{itemize}
-        \item \raggedright \textbf{protocolClassPath}. Protocols were discussed in section \ref{sec:protocols}.
+        \item \raggedright \textbf{protocolClassPath}. This is the protocol that this party assumes to be used. 
+        		You will get errors like "used with wrong protocol" if your party is used in the wrong protocol context. 
+		Protocols were discussed in section \ref{sec:protocols}.
         \item \textbf{description}A plain text description of this party
         \item \textbf{classPath} the java.party.class.path to the main class. That class must implement the NegotiationParty interface
         \item \textbf{partyName} the plain text name of the party
+        \item \textbf{properties} can contain a number of \verb|<property>| nodes with these values
+        		\begin{itemize}
+		\item isMediator: this property indicates the party item is a mediator. If not set, the party will be 
+		run as a normal party instead of a mediator, which will probably cause protocol violations
+		\end{itemize}
       \end{itemize}
 
 	If you use a protocol that requires a mediator, the mediator should be one of these items.   
