@@ -11,7 +11,7 @@
 				protocolName="Simple Mediator" />
 			<partyRepItems>
 				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
-					description="RF Mediator" classPath="negotiator.parties.RandomFlippingMediator"
+					description="RF Mediator" classPath="negotiator.parties.FixedOrderFlippingMediator"
 					partyName="RF Mediator">
 					<properties>
 						<property>isMediator</property>
