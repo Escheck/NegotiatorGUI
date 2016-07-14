@@ -8,6 +8,7 @@
 				partyName="Boulware">
 				<properties />
 			</partyRepItem>
+
 			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				description="Deadline-based conceder agent" classPath="negotiator.parties.ConcederNegotiationParty"
 				partyName="Conceder">
@@ -75,7 +76,7 @@
 				<properties />
 			</partyRepItem>
 			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-				description="10.  agents.anac.y2015.AgentX.AgentX " classPath="agents.anac.y2015.AgentX.AgentX"
+				description="10. agents.anac.y2015.AgentX.AgentX " classPath="agents.anac.y2015.AgentX.AgentX"
 				partyName="ANAC2015-10-AgentX">
 				<properties />
 			</partyRepItem>
@@ -166,7 +167,8 @@
 				<properties />
 			</partyRepItem>
 			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-				description="I heard you like parties so we created a party to negotiate about your party"
+				description="I heard you like parties so we created a party to negotiate 
+				about your party"
 				classPath="parties.in4010.q12015.group5.Group5" partyName="Group5">
 				<properties />
 			</partyRepItem>
@@ -250,7 +252,6 @@
 				partyName="Group22">
 				<properties />
 			</partyRepItem>
-			<!-- ANAC 2016 -->
 			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				description="AgentHP" classPath="agents.anac.y2016.agenthp2.AgentHP2_main"
 				partyName="HP2-anac2016">
@@ -331,29 +332,52 @@
 				partyName="Smith-anac2016">
 				<properties />
 			</partyRepItem>
-			<partyRepItem protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"
-				description="Mediator1" classPath="negotiator.parties.RandomFlippingMediator"
-				partyName="NotParty">
-				<properties />
+
+
+			<!-- negotiator.protocol.AlternatingMultipleOffersProtocol -->
+			<partyRepItem description="Random AMOP Party"
+				classPath="parties.AlternatingMultipleOffers.RandomAmopParty"
+				partyName="Random AMOP Party" protocolClassPath="negotiator.protocol.AlternatingMultipleOffersProtocol">
+			</partyRepItem>
+			<!-- negotiator.protocol.AlternatingMajorityConsensusProtocol -->
+			<partyRepItem description="Random AMOP Party"
+				classPath="parties.AlternatingMultipleOffers.RandomAmopPartyMajority"
+				partyName="Random AMOP Party" protocolClassPath="negotiator.protocol.AlternatingMajorityConsensusProtocol">
 			</partyRepItem>
 
 
-
-			<partyRepItem description="Simple UI party"
+			<partyRepItem description="Simple 
+				UI party"
 				classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
-				partyName="UI Party"
-				protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
+				partyName="UI Party" protocolClassPath="negotiator.protocol.AlternatingOfferCounterOfferProtocol">
 			</partyRepItem>
 			<partyRepItem description="Human party"
 				classPath="negotiator.parties.ConsensusVotingHumanAgent?" partyName="UI Party"
 				protocolClassPath="negotiator.protocol.AlternatingOfferConsensusProtocol">
 			</partyRepItem>
-			
 			<partyRepItem description="Random Agent MajorityVoter"
-				classPath="negotiator.parties.RandomMajorityVoting"
-				partyName="Random Agent MajorityVoter"
+				classPath="negotiator.parties.RandomMajorityVoting" partyName="Random Agent MajorityVoter"
 				protocolClassPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol">
 			</partyRepItem>
+
+			<partyRepItem description="Random Flipping Mediator"
+				classPath="negotiator.parties.RandomFlippingMediator" partyName="Random Flipping Mediator"
+				protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
+				<properties>
+					<property>isMediator</property>
+				</properties>
+			</partyRepItem>
+
+			<partyRepItem description="Hill Climber Negotiator"
+				classPath="parties.SimpleMediatorBased.HillClimberParty" partyName="Hill Climber Party"
+				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
+			<partyRepItem description="Annealer Negotiator"
+				classPath="negotiator.parties.AnnealerParty" partyName="Annealer Party"
+				isMediator="false"  protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
+			<partyRepItem description="Feedback Negotiator"
+				classPath="negotiator.parties.FeedbackParty" partyName="Feedback Party"
+				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
+
 
 		</partyRepItems>
 		<domainRepItem />
