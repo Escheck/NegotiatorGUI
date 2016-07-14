@@ -256,7 +256,8 @@ As mentioned, you have to provide one mediator. There is the following options
 \item RandomFlippingMediator.   This mediator generates random bids until all agents accept. Then, it
   randomly flips one issue of the current offer to generate a new offer. It
   keeps going until the deadline is reached. 
- 
+ \item FixedOrderFlippingMediator.   This mediator behaves exactly like the RandomFlippingMediator, except that it uses a fixed-seed Random generator for every run. This makes it easier for testing. 
+
 \end{itemize}
 
 %=========================================================================================
