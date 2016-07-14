@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<multilateralTournamentsConfiguration>
+	<tournaments>
+		<tournament>
+			<deadline>
+				<value>30</value>
+				<type>ROUND</type>
+			</deadline>
+			<protocolItem hasMediatorProfile="false" hasMediator="true"
+				description="Simple Mediator" classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
+				protocolName="Simple Mediator" />
+			<partyRepItems>
+				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
+					description="RF Mediator" classPath="negotiator.parties.RandomFlippingMediator"
+					partyName="RF Mediator">
+					<properties>
+						<property>isMediator</property>
+					</properties>
+				</item>
+				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
+					description="Hill Climber" classPath="negotiator.parties.HillClimber"
+					partyName="Hill Climber">
+					<properties />
+				</item>
+			</partyRepItems>
+			<partyProfileItems>
+				<item url="file:etc/templates/partydomain/party1_utility.xml" />
+				<item url="file:etc/templates/partydomain/party2_utility.xml" />
+				<item url="file:etc/templates/partydomain/party3_utility.xml" />
+			</partyProfileItems>
+			<numSessions>1</numSessions>
+			<numberOfNonMediatorsPerSession>3</numberOfNonMediatorsPerSession>
+			<repetitionAllowed>true</repetitionAllowed>
+		</tournament>
+	</tournaments>
+</multilateralTournamentsConfiguration>
