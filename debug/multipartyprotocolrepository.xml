@@ -6,20 +6,31 @@
 		<domainRepItem />
 		<protocolRepItem />
 		<multiPartyProtocolRepItem>
+
 			<multiPartyProtocolRepItem
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)"
 				hasMediator="false" hasMediatorProfile="false" />
+
 			<multiPartyProtocolRepItem
-				description="Mediated Single Text Negotiation Protocol (MSTNP)"
-				classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
-				protocolName="Mediated Single Text Negotiation Protocol (MSTNP)"
+				description="Simple Mediator Based Protocol" classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
+				protocolName="Simple Mediator Based Protocol"
 				hasMediator="true" hasMediatorProfile="false" />
-			<multiPartyProtocolRepItem description="Each agents votes on first agent's offer"
-				classPath="negotiator.protocol.AlternatingOfferMajorityVotingProtocol"
-				protocolName="Alternating Offer Majority Voting"
-				hasMediator="false" hasMediatorProfile="false" />
+
+			<multiPartyProtocolRepItem
+				description="All agents place an offer, then they all vote on offers till majority"
+				classPath="negotiator.protocol.AlternatingMajorityConsensusProtocol"
+				protocolName="AlternatingMajorityConsensusProtocol" hasMediator="false"
+				hasMediatorProfile="false" />
+
+			<multiPartyProtocolRepItem
+				description="All agents place an offer, then they all vote on offers till consensus"
+				classPath="negotiator.protocol.AlternatingMultipleOffersProtocol"
+				protocolName="AlternatingMultipleOffersProtocol" hasMediator="false"
+				hasMediatorProfile="false" />
+
+
 		</multiPartyProtocolRepItem>
 	</items>
 	<filename>multipartyprotocolrepository.xml</filename>
