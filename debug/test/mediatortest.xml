@@ -11,14 +11,14 @@
 				protocolName="Simple Mediator" />
 			<partyRepItems>
 				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
-					description="RF Mediator" classPath="negotiator.parties.FixedOrderFlippingMediator"
+					description="RF Mediator" classPath="parties.simplemediator.FixedOrderFlippingMediator"
 					partyName="RF Mediator">
 					<properties>
 						<property>isMediator</property>
 					</properties>
 				</item>
 				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
-					description="Hill Climber" classPath="parties.SimpleMediatorBased.HillClimber"
+					description="Hill Climber" classPath="parties.simplemediator.HillClimber"
 					partyName="Hill Climber">
 					<properties />
 				</item>
