@@ -18,7 +18,7 @@
 					</properties>
 				</item>
 				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
-					description="Hill Climber" classPath="negotiator.parties.HillClimber"
+					description="Hill Climber" classPath="parties.SimpleMediatorBased.HillClimber"
 					partyName="Hill Climber">
 					<properties />
 				</item>
