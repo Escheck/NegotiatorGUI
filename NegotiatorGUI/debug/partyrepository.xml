@@ -376,13 +376,13 @@
 			</partyRepItem>
 
 			<partyRepItem description="Hill Climber"
-				classPath="parties.SimpleMediatorBased.HillClimber" partyName="Hill Climber"
+				classPath="parties.simplemediator.HillClimber" partyName="Hill Climber"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
 			<partyRepItem description="Annealer"
-				classPath="parties.SimpleMediatorBased.Annealer" partyName="Annealer"
+				classPath="parties.simplemediator.Annealer" partyName="Annealer"
 				isMediator="false"  protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
 			<partyRepItem description="Feedback Negotiator"
-				classPath="parties.SimpleMediatorBased.FeedbackParty" partyName="Feedback"
+				classPath="parties.simplemediator.FeedbackParty" partyName="Feedback"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
 
 
