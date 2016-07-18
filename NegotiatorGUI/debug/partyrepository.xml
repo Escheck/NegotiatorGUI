@@ -374,13 +374,6 @@
 					<property>isMediator</property>
 				</properties>
 			</partyRepItem>
-			<partyRepItem description="Feedback Mediator"
-				classPath="parties.simplemediator.FeedbackMediator"
-				partyName="Feedback Mediator" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
-				<properties>
-					<property>isMediator</property>
-				</properties>
-			</partyRepItem>
 
 			<partyRepItem description="Hill Climber"
 				classPath="parties.simplemediator.HillClimber" partyName="Hill Climber"
