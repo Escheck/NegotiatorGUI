@@ -640,10 +640,10 @@ The contents of each \verb|<tournament>| element is as follows
 
 	If you use a protocol that requires a mediator, the mediator should be one of these items.   
 
-    \item \textbf{partyProfileItems}. This element contains a number of items. There must be at least as much as numberOfAgentsPerSession. Each item element contains just the url that contains the description of that party profile. Usually these URIs have to point to files and therefore are of the form \verb|file:path/to/file.xml|
+    \item \textbf{partyProfileItems}. This element contains a number of items. There must be at least as much as numberOfNonMediatorsPerSession. Each item element contains just the url that contains the description of that party profile. These URIs point to files and therefore are of the form \verb|file:path/to/file.xml|
 \end{itemize}
 
-The tournament will consist of sessions created creating all permutations of \verb|<numberOfAgentsPerSession>| from the partyRepItems (with or without reuse, depending on \textbf{repetitionAllowed}. The randomization also is applied to the profile items.
+The tournament will consist of sessions created creating all permutations of \verb|<numberOfNonMediatorsPerSession>| from the partyRepItems (with or without reuse, depending on \textbf{repetitionAllowed}. The randomization also is applied to the profile items.
 
 
 \subsubsection{Run the tournament}
