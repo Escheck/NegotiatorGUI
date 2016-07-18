@@ -375,14 +375,14 @@
 				</properties>
 			</partyRepItem>
 
-			<partyRepItem description="Hill Climber Negotiator"
-				classPath="parties.SimpleMediatorBased.HillClimberParty" partyName="Hill Climber Party"
+			<partyRepItem description="Hill Climber"
+				classPath="parties.SimpleMediatorBased.HillClimber" partyName="Hill Climber"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
-			<partyRepItem description="Annealer Negotiator"
-				classPath="negotiator.parties.AnnealerParty" partyName="Annealer Party"
+			<partyRepItem description="Annealer"
+				classPath="parties.SimpleMediatorBased.Annealer" partyName="Annealer"
 				isMediator="false"  protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
 			<partyRepItem description="Feedback Negotiator"
-				classPath="negotiator.parties.FeedbackParty" partyName="Feedback Party"
+				classPath="parties.SimpleMediatorBased.FeedbackParty" partyName="Feedback"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol"/>
 
 
