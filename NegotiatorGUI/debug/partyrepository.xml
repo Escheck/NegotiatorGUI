@@ -361,14 +361,14 @@
 			</partyRepItem>
 
 			<partyRepItem description="Random Flipping Mediator"
-				classPath="negotiator.parties.RandomFlippingMediator" partyName="Random Flipping Mediator"
+				classPath="parties.simplemediator.RandomFlippingMediator" partyName="Random Flipping Mediator"
 				protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
 				<properties>
 					<property>isMediator</property>
 				</properties>
 			</partyRepItem>
 			<partyRepItem description="Fixed Order Flipping Mediator"
-				classPath="negotiator.parties.FixedOrderFlippingMediator" partyName="Fixed Order Flipping Mediator"
+				classPath="parties.simplemediator.FixedOrderFlippingMediator" partyName="Fixed Order Flipping Mediator"
 				protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
 				<properties>
 					<property>isMediator</property>
