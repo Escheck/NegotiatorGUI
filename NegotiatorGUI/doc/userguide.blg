@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: userguide.aux
 The style file: plain.bst
 Database file #1: genius.bib
-You've used 2 entries,
+You've used 3 entries,
             2118 wiz_defined-function locations,
-            510 strings with 4515 characters,
-and the built_in function-call counts, 686 in all, are:
-= -- 58
-> -- 56
-< -- 0
-+ -- 22
-- -- 20
-* -- 52
-:= -- 135
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 16
+            517 strings with 4928 characters,
+and the built_in function-call counts, 1242 in all, are:
+= -- 105
+> -- 94
+< -- 2
++ -- 35
+- -- 32
+* -- 97
+:= -- 224
+add.period$ -- 10
+call.type$ -- 3
+change.case$ -- 22
 chr.to.int$ -- 0
-cite$ -- 2
-duplicate$ -- 20
-empty$ -- 35
-format.name$ -- 20
-if$ -- 127
+cite$ -- 3
+duplicate$ -- 43
+empty$ -- 76
+format.name$ -- 32
+if$ -- 251
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 2
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 16
+int.to.str$ -- 3
+missing$ -- 3
+newline$ -- 18
+num.names$ -- 8
+pop$ -- 25
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 19
 quote$ -- 0
-skip$ -- 14
+skip$ -- 29
 stack$ -- 0
-substring$ -- 10
-swap$ -- 2
-text.length$ -- 0
+substring$ -- 35
+swap$ -- 11
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 8
+type$ -- 12
 warning$ -- 0
-while$ -- 4
-width$ -- 3
-write$ -- 22
+while$ -- 9
+width$ -- 4
+write$ -- 34
