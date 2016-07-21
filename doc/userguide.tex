@@ -56,6 +56,9 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
+
+\newcommand*\vtick{\textsc{\char13}}
+
 \lstset{
   language=Java,
   tabsize=4,
@@ -259,6 +262,19 @@ As mentioned, you have to provide one mediator. There is the following options
  \item FixedOrderFlippingMediator.   This mediator behaves exactly like the RandomFlippingMediator, except that it uses a fixed-seed Random generator for every run. This makes it easier for testing. 
 
 \end{itemize}
+
+\subsection{Mediator  Feedback Based Protocol}
+Like the Simple Mediator Based Protocol, the parties do not hear the other parties directly. Instead, they only hear the mediator and the mediator hears the bids of all the parties. The mediator determines which bid will be voted on, collects the votes and determines the outcome. The mediator is just another NegotiationParty, but it extends Mediator.
+
+ The mediator generates its first bid randomly and sends it to the negotiating agents. After each bid, each negotiating agent comparing the current bid with the mediator\vtick s previous bid and gives feedback (`better', `worse' or `same')  to the mediator. For its further bids, the mediator updates the previous bid by flipping one of the issues. This process continues iteratively until reaching a predefined number of bids. This protocol is explained in detail in \cite{MultiMediatedNegoProtocolsWithFeedback}.
+
+This protocol uses the following turns in every round:
+\begin{enumerate}
+\item Mediator proposes an OfferForFeedback. 
+\item The other parties (not the mediator) place a GiveFeedback,  indicateing whether the last bid placed by the mediator is better or worse than the previous bid.
+\end{enumerate}
+
+The accepted bid is the last bid that was not receiving a `worse' vote. The negotiation runs on until the deadline (unless some party crashes).
 
 %=========================================================================================
 \section{Running the Environment}
