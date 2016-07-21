@@ -375,6 +375,7 @@
 				</properties>
 			</partyRepItem>
 
+
 			<partyRepItem description="Hill Climber"
 				classPath="parties.simplemediator.HillClimber" partyName="Hill Climber"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol" />
@@ -384,6 +385,18 @@
 			<partyRepItem description="Feedback Negotiator"
 				classPath="parties.simplemediator.FeedbackParty" partyName="Feedback"
 				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol" />
+
+			<partyRepItem description="Feedback Mediator"
+				classPath="parties.feedbackmediator.FeedbackMediator" partyName="Feedback Mediator"
+				protocolClassPath="negotiator.protocol.MediatorFeedbackBasedProtocol">
+				<properties>
+					<property>isMediator</property>
+				</properties>
+			</partyRepItem>
+			<partyRepItem description="Feedback Hillclimber"
+				classPath="negotiator.parties.FeedbackHillClimber" partyName="Feedback Hillclimber"
+				isMediator="false" protocolClassPath="negotiator.protocol.MediatorFeedbackBasedProtocol" />
+
 
 
 		</partyRepItems>

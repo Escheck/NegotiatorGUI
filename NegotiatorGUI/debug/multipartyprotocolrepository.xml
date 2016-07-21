@@ -10,13 +10,20 @@
 			<multiPartyProtocolRepItem
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)"
+				protocolName="Stacked Alternating Offers Protocol"
 				hasMediator="false" hasMediatorProfile="false" />
 
+			<multiPartyProtocolRepItem description="Simple Mediator Based Protocol"
+				classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
+				protocolName="Simple Mediator Based Protocol" hasMediator="true"
+				hasMediatorProfile="false" />
+
 			<multiPartyProtocolRepItem
-				description="Simple Mediator Based Protocol" classPath="negotiator.protocol.SimpleMediatorBasedProtocol"
-				protocolName="Simple Mediator Based Protocol"
+				description="Mediator Feedback Based Multiparty Protocol" 
+				classPath="negotiator.protocol.MediatorFeedbackBasedProtocol"
+				protocolName="Mediator Feedback Based Multiparty Protocol"
 				hasMediator="true" hasMediatorProfile="false" />
+
 
 			<multiPartyProtocolRepItem
 				description="All agents place an offer, then they all vote on offers till majority"
