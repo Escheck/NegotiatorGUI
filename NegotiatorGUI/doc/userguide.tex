@@ -266,7 +266,7 @@ As mentioned, you have to provide one mediator. There is the following options
 \subsection{Mediator  Feedback Based Protocol}
 Like the Simple Mediator Based Protocol, the parties do not hear the other parties directly. Instead, they only hear the mediator and the mediator hears the bids of all the parties. The mediator determines which bid will be voted on, collects the votes and determines the outcome. The mediator is just another NegotiationParty, but it extends Mediator.
 
- The mediator generates its first bid randomly and sends it to the negotiating agents. After each bid, each negotiating agent comparing the current bid with the mediator\vtick s previous bid and gives feedback (`better', `worse' or `same')  to the mediator. For its further bids, the mediator updates the previous bid by flipping one of the issues. This process continues iteratively until reaching a predefined number of bids. This protocol is explained in detail in \cite{MultiMediatedNegoProtocolsWithFeedback}.
+ The mediator generates its first bid randomly and sends it to the negotiating agents. After each bid, each party compares the mediator\vtick s new bid with his previous bid and gives feedback (`better', `worse' or `same')  to the mediator. For its further bids, the mediator updates the previous bid, hopefully working towards some optimum. The negotiation runs on until the deadline (unless some party crashes). This protocol is explained in detail in \cite{MultiMediatedNegoProtocolsWithFeedback}.
 
 This protocol uses the following turns in every round:
 \begin{enumerate}
@@ -274,7 +274,7 @@ This protocol uses the following turns in every round:
 \item The other parties (not the mediator) place a GiveFeedback,  indicateing whether the last bid placed by the mediator is better or worse than the previous bid.
 \end{enumerate}
 
-The accepted bid is the last bid that was not receiving a `worse' vote. The negotiation runs on until the deadline (unless some party crashes).
+The accepted bid is the last bid that was not receiving a `worse' vote. 
 
 %=========================================================================================
 \section{Running the Environment}
