@@ -1318,10 +1318,10 @@ public interface NegotiationParty {
 	 * @param sender
 	 * 	The initiator of the action. May be null if initiator is 
 	 *	not an agent.
-	 * @param arguments
+	 * @param action
 	 *	The action performed
 	 */
-	void receiveMessage(AgentID sender, Action arguments);
+	void receiveMessage(AgentID sender, Action action);
 
 	/**
 	 * @return a description for this party
