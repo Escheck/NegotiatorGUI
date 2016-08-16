@@ -1274,10 +1274,9 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 %=========================================================================================
 
 \section{Creating a Multi Party Negotiation Agent}
-This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament but not in a two-party negotiation or tournament. Notice that you can still do two-party negotiations in the multilateral negotiation and tournament.
+This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament. A Multilateral agent extends NegotiationParty and is not compatible with the bilateral negotiation Agents.
 
-To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also this class must have a public default (no-argument) constructor.
-To implement the interface, one needs to implement five functions: 
+To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also your implementation must have a public default (no-argument) constructor. To implement the interface, one needs to implement five functions: 
 
 \begin{lstlisting}
 public interface NegotiationParty {
@@ -1339,15 +1338,13 @@ public interface NegotiationParty {
 }
 \end{lstlisting}
 
-You may want to check AbstractUtilitySpace, if your agent supports for example only AdditiveutilitySpace.
+For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty}. This class provides convenient support functions for building your agent. 
+
+Your agent might need check the provided AbstractUtilitySpace, for instance if your agent supports for example only AdditiveutilitySpace.
 
 We recommend to use the javadoc included with the distribution to check the details of all the involved classes. 
 
-For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty} directly. That class provides convenient support functions. 
-
-The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol usually returns an instance of StackedAlternatingOffersProtocol.
-
-
+The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol by default returns an instance of StackedAlternatingOffersProtocol. Your agent should override this if it works on a different protocol.
 
 \subsection{Compiling a NegotiationParty}
 
