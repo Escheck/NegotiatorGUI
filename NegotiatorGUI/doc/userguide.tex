@@ -1281,49 +1281,52 @@ To implement a multi-party negotiation party, at a minimum one needs to implemen
 \begin{lstlisting}
 public interface NegotiationParty {
 	/**
-	 * This is the first call made to a NegotiationParty after its
-	 * instantiation. Tells which utility space and timeline we 
-	 * are running in. This is called one time only.
-	 *
+	 * Initializes the party. Informs this party which utility space and
+	 * timeline the party is running in. This replaces the standard constructor.
+	 * This MUST be called exactly once, by the code that instantiates this
+	 * class, immediately after instantiation.
+	 * 
 	 * @param utilSpace
-	 * 	(a copy of/readonly version of) the {@link UtilitySpace} 
-	 * 	to be used for this session.
+	 *            (a copy of/readonly version of) the
+	 *            {@link AbstractUtilitySpace} to be used for this session.
+	 * @param deadline
+	 *            The deadline used for this negotiation.
 	 * @param timeline
-	 * 	The {@link TimeLineInfo} about current session.
+	 *            The {@link TimeLineInfo} about current session.
+	 * @param randomSeed
+	 *            A random seed that can be used for creating "consistent
+	 *            random" behaviour.
 	 * @param agentID
-	 * 	the {@link AgentID}.
-	 * @throws RuntimeException
-	 * 	if init fails.
+	 *            The agent's ID.
 	 */
-	public void init(AbstractUtilitySpace utilSpace, Deadline deadline,
-			TimeLineInfo timeline, long randomSeed, AgentID agentID);
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline, TimeLineInfo timeline, long randomSeed,
+			AgentID agentID);
 
 	/**
-	 * When this function is called, it is expected that the Party 
-	 * chooses one of the actions from the possible action list 
-	 * and returns an instance of the chosen action.
+	 * When this function is called, it is expected that the Party chooses one
+	 * of the actions from the possible action list and returns an instance of
+	 * the chosen action.
 	 *
 	 * @param possibleActions
-	 *	List of all actions possible.
+	 *            List of all actions possible.
 	 * @return The chosen {@link Action}.
 	 */
-	public Action chooseAction(
-		List<Class<? extends Action>> possibleActions);
+	public Action chooseAction(List<Class<? extends Action>> possibleActions);
 
 	/**
-	 * This method is called when another {@link NegotiationParty} 
-	 * chose an{@link Action}.
+	 * This method is called when another {@link NegotiationParty} chose an
+	 * {@link Action}.
 	 *
 	 * @param sender
-	 * 	The initiator of the action. May be null if initiator is 
-	 *	not an agent.
+	 *            The initiator of the action.This is either the AgentID, or
+	 *            null if the sender is not an agent (e.g., the protocol).
 	 * @param action
-	 *	The action performed
+	 *            The action performed
 	 */
 	void receiveMessage(AgentID sender, Action action);
 
 	/**
-	 * @return a description for this party
+	 * @return a human-readable description for this party
 	 */
 	public String getDescription();
 
@@ -1334,7 +1337,6 @@ public interface NegotiationParty {
 	 *         {@link StackedAlternatingOffersProtocol}.
 	 */
 	public Class<? extends MultilateralProtocol> getProtocol();
-
 }
 \end{lstlisting}
 
