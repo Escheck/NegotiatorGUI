@@ -3,6 +3,8 @@
 	<name>NegotiatorGUI voor AAMAS competitie</name>
 	<comment></comment>
 	<projects>
+		<project>agents</project>
+		<project>core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
