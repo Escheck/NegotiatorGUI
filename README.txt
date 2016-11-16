@@ -69,6 +69,11 @@ Setting up Eclipse for running/debugging NegotiationGUI goes as follows
   * switch to JRE tab and check Java SE 7 is selected  
   
 
+Running the junit tests
+=======================
+To run the junit tests, you need prepare the Debug folder and set the Working directory similarly
+as "Debugging with Eclipse".
+
 NOTICE!
 
 The files in the debug folder are ONLY FOR DEBUGGING. 
