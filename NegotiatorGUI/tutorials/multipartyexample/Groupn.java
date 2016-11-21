@@ -9,7 +9,6 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
-import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 
 /**
@@ -20,15 +19,13 @@ public class Groupn extends AbstractNegotiationParty {
 	private Bid lastReceivedBid = null;
 
 	@Override
-	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
-			TimeLineInfo tl, long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl, negotiator.timeline.TimeLineInfo tl, long randomSeed,
+			AgentID agentId) {
 
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
-		System.out.println("Discount Factor is "
-				+ utilSpace.getDiscountFactor());
-		System.out.println("Reservation Value is "
-				+ utilSpace.getReservationValueUndiscounted());
+		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
+		System.out.println("Reservation Value is " + utilSpace.getReservationValueUndiscounted());
 
 		// if you need to initialize some variables, please initialize them
 		// below
@@ -49,8 +46,7 @@ public class Groupn extends AbstractNegotiationParty {
 
 		// with 50% chance, counter offer
 		// if we are the first party, also offer.
-		if (lastReceivedBid == null || !validActions.contains(Accept.class)
-				|| Math.random() > 0.5) {
+		if (lastReceivedBid == null || !validActions.contains(Accept.class) || Math.random() > 0.5) {
 			return new Offer(getPartyId(), generateRandomBid());
 		} else {
 			return new Accept(getPartyId(), lastReceivedBid);

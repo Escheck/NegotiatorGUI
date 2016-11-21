@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import agents.SimpleAgent;
 import negotiator.Agent;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -17,8 +18,7 @@ import negotiator.issue.IssueReal;
 import negotiator.issue.Value;
 import negotiator.issue.ValueInteger;
 import negotiator.issue.ValueReal;
-import negotiator.session.Timeline;
-import agents.SimpleAgent;
+import negotiator.timeline.Timeline;
 
 /**
  * @author W.Pasman Some improvements over the standard SimpleAgent.
@@ -95,8 +95,7 @@ public class ExampleAgent extends Agent {
 		return action;
 	}
 
-	private boolean isAcceptable(double offeredUtilFromOpponent,
-			double myOfferedUtil, double time) throws Exception {
+	private boolean isAcceptable(double offeredUtilFromOpponent, double myOfferedUtil, double time) throws Exception {
 		double P = Paccept(offeredUtilFromOpponent, time);
 		if (P > Math.random())
 			return true;
@@ -114,8 +113,7 @@ public class ExampleAgent extends Agent {
 		try {
 			nextBid = getRandomBid();
 		} catch (Exception e) {
-			System.out.println("Problem with received bid:" + e.getMessage()
-					+ ". cancelling bidding");
+			System.out.println("Problem with received bid:" + e.getMessage() + ". cancelling bidding");
 		}
 		if (nextBid == null)
 			return (new Accept(getAgentID(), lastPartnerBid));
@@ -147,35 +145,25 @@ public class ExampleAgent extends Agent {
 				switch (lIssue.getType()) {
 				case DISCRETE:
 					IssueDiscrete lIssueDiscrete = (IssueDiscrete) lIssue;
-					int optionIndex = randomnr.nextInt(lIssueDiscrete
-							.getNumberOfValues());
-					values.put(lIssue.getNumber(),
-							lIssueDiscrete.getValue(optionIndex));
+					int optionIndex = randomnr.nextInt(lIssueDiscrete.getNumberOfValues());
+					values.put(lIssue.getNumber(), lIssueDiscrete.getValue(optionIndex));
 					break;
 				case REAL:
 					IssueReal lIssueReal = (IssueReal) lIssue;
-					int optionInd = randomnr.nextInt(lIssueReal
-							.getNumberOfDiscretizationSteps() - 1);
-					values.put(
-							lIssueReal.getNumber(),
+					int optionInd = randomnr.nextInt(lIssueReal.getNumberOfDiscretizationSteps() - 1);
+					values.put(lIssueReal.getNumber(),
 							new ValueReal(lIssueReal.getLowerBound()
-									+ (lIssueReal.getUpperBound() - lIssueReal
-											.getLowerBound())
-									* (double) (optionInd)
-									/ (double) (lIssueReal
-											.getNumberOfDiscretizationSteps())));
+									+ (lIssueReal.getUpperBound() - lIssueReal.getLowerBound()) * (double) (optionInd)
+											/ (double) (lIssueReal.getNumberOfDiscretizationSteps())));
 					break;
 				case INTEGER:
 					IssueInteger lIssueInteger = (IssueInteger) lIssue;
 					int optionIndex2 = lIssueInteger.getLowerBound()
-							+ randomnr.nextInt(lIssueInteger.getUpperBound()
-									- lIssueInteger.getLowerBound());
-					values.put(lIssueInteger.getNumber(), new ValueInteger(
-							optionIndex2));
+							+ randomnr.nextInt(lIssueInteger.getUpperBound() - lIssueInteger.getLowerBound());
+					values.put(lIssueInteger.getNumber(), new ValueInteger(optionIndex2));
 					break;
 				default:
-					throw new Exception("issue type " + lIssue.getType()
-							+ " not supported by SimpleAgent2");
+					throw new Exception("issue type " + lIssue.getType() + " not supported by SimpleAgent2");
 				}
 			}
 			bid = new Bid(utilitySpace.getDomain(), values);
@@ -212,9 +200,7 @@ public class ExampleAgent extends Agent {
 			u = 1;
 		if (t == 0.5)
 			return u;
-		return (u - 2. * u * t + 2. * (-1. + t + Math.sqrt(sq(-1. + t) + u
-				* (-1. + 2 * t))))
-				/ (-1. + 2 * t);
+		return (u - 2. * u * t + 2. * (-1. + t + Math.sqrt(sq(-1. + t) + u * (-1. + 2 * t)))) / (-1. + 2 * t);
 	}
 
 	double sq(double x) {
