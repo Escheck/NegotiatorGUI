@@ -554,27 +554,14 @@ The following parameters need to be specified to run a negotiation:
 \begin{minipage}{.8 \textwidth}
 \begin{itemize}
 	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
-	\item \textbf{A table with participants}. This table shows all currently added participants. 
-	\item \textbf{Deadline Type}. The deadline in use. Can be "Round" or "Time".
-	\item \textbf{Max duration}. The maximum duration of the session. The units are Round or Time as selected above.
+	\item \textbf{Mediator}. The mediator ID and strategy that is to be used for this session. This is only visible if the protocol uses a mediator.
+	\item \textbf{Participant Information}. The information (ID, strategy, profile) for the a party in the session. This information is copied into the table of participants when you click "Add Party".
+	\item \textbf{A table with participants}. This table shows all currently added participants. You can add a party by setting the participant information above, and then clicking "Add Party". You can remove a party by selecting the party to remove in the table, and then clicking "Remove Party". 
+	\item \textbf{Timeout}. The deadline to use. Can be "Round" or "Time". This determines the maximum duration of the session.
 \end{itemize}
 \end{minipage}
 \medskip
 
-To modify the table of participants, you can either remove or add a party. 
-To remove a party, select the party in the list and click the "Remove Party" button. To add a party, select the correct values for the next party:
-
-\medskip
-\begin{minipage}{.8 \textwidth}
-\begin{itemize}
-	\item \textbf{Party ID}. The name of the next party to be added.
-	\item \textbf{Strategy}. The ID of the NegotiationParty (java class) to use for this party.
-	\item \textbf{Preference profile}. The preference profile to be used by the next party to be added.
-\end{itemize}
-\end{minipage}
-\medskip
-
-After the correct settings have been set, press the "Add Party" button.
 
 The negotiation is started when you press the start button. The tab contents will change to  a progress overview panel
 showing you the results of the negotiation. The results are also stored in a log file.
@@ -586,7 +573,7 @@ A multi-party tournament is a set of multi-party sessions. To prepare a multi-pa
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{media/multipartytournament.png}
+	\includegraphics[width=0.7\textwidth]{media/multipartytournament.png}
 \caption{Multi-Party Tournament}\label{Fig:multipartytournament}
 \end{figure}
 
@@ -598,8 +585,9 @@ The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}.
 	\item \textbf{Number of tournaments}. The number of times the entire tournament will be run.
 	\item \textbf{Agents per Session}. The number of agents N to use for each session.
 	\item \textbf{Agent Repetition Allowed}. Determines if agents are put back into the pool of agents after a run.
-	\item \textbf{Agents}. The pool of agents to draw from. Click "Add" to select the set of agents to put into the pool. Select an agent and click "remove" to remove an agent from the pool. Click "Clear" to clear the pool.
-	\item \textbf{Profiles}. The set of profiles to draw from. Click "Add" to select the set of profiles to put in the pool. Select a profile and click "Remove" to remove a profile from the pool. Click "Clear" to clear the pool. This option disables if there are more agents per session than the number of agents in the pool.
+	\item \textbf{Mediator}. The mediator to use. This option is visible only if the selected protocol needs a mediator. This option enables in the locked position if there are more agents per session than the size of the agents pool.
+	\item \textbf{Agents}. The pool of agents to draw from. Click or drag in the agents area to (de)select agents. Click "Clear" to clear the pool.
+	\item \textbf{Profiles}. The profiles pool. Click or drag in the profiles area to (de)select agents. Click "Clear" to clear the pool.
 \end{itemize}
 
 If you select a protocol that requires a mediator, an extra area in the panel will appear where you can select the mediator strategy. The GUI shows you a combo box with valid mediator agents for the selected protocol. 
