@@ -1264,15 +1264,14 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 \section{Creating a Multi Party Negotiation Agent}
 This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament. A Multilateral agent extends NegotiationParty and is not compatible with the bilateral negotiation Agents.
 
-To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also your implementation must have a public default (no-argument) constructor. To implement the interface, one needs to implement five functions: 
+To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also your implementation must have a public default (no-argument) constructor. The interface is as follows: 
 
 \begin{lstlisting}
 public interface NegotiationParty {
 	/**
-	 * Initializes the party. Informs this party which utility space and
-	 * timeline the party is running in. This replaces the standard constructor.
-	 * This MUST be called exactly once, by the code that instantiates this
-	 * class, immediately after instantiation.
+	 * Initializes the party. This MUST be called immediately after construction
+	 * of any class implementing this. Tells which utility space and timeline
+	 * the party is running in. This must be called one time only.
 	 * 
 	 * @param utilSpace
 	 *            (a copy of/readonly version of) the
@@ -1325,6 +1324,17 @@ public interface NegotiationParty {
 	 *         {@link StackedAlternatingOffersProtocol}.
 	 */
 	public Class<? extends MultilateralProtocol> getProtocol();
+
+	/**
+	 * This is called to inform the agent that the negotiation has been ended.
+	 * This allows the agent to record some final conclusions about the run.
+	 * 
+	 * @param acceptedBid
+	 *            the final accepted bid, or null if no agreement was reached.
+	 * @return {@link HashMap} containing data to log for this agent. Returning
+	 *         null is equal to returning an empty HashMap.
+	 */
+	public HashMap<String, String> negotiationEnded(Bid acceptedBid);
 }
 \end{lstlisting}
 
