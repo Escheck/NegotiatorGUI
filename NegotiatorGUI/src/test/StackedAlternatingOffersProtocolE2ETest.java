@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.junit.Test;
+
 import negotiator.Deadline;
 import negotiator.DeadlineType;
-import negotiator.MultipartyNegotiationEventListener;
 import negotiator.events.LogMessageEvent;
 import negotiator.events.MultipartyNegotiationOfferEvent;
 import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.events.NegotiationEvent;
+import negotiator.listener.Listener;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
@@ -25,15 +27,11 @@ import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Session;
 import negotiator.session.SessionManager;
 
-import org.junit.Test;
-
 public class StackedAlternatingOffersProtocolE2ETest {
 
 	private static final String BID_PATTERN = "Bid [a: .., b: .., c: .., d: .., e: .., f: .., g: .., h: .. , ]";
-	private static final String OFFER_PATTERN = "( Offer bid:" + BID_PATTERN
-			+ " ) ";
-	private static final String ACCEPT_PATTERN = "( Accept bid: " + BID_PATTERN
-			+ ")";
+	private static final String OFFER_PATTERN = "( Offer bid:" + BID_PATTERN + " ) ";
+	private static final String ACCEPT_PATTERN = "( Accept bid: " + BID_PATTERN + ")";
 
 	enum BidType {
 		OFFER, ACCEPT, PLAIN_BID
@@ -49,8 +47,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		if (match(preamble + BID_PATTERN, text)) {
 			return BidType.PLAIN_BID;
 		}
-		throw new IllegalArgumentException("text " + text
-				+ " does not contain offer or accept");
+		throw new IllegalArgumentException("text " + text + " does not contain offer or accept");
 
 	}
 
@@ -108,7 +105,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		getType(preamble, text); // any type goes.
 	}
 
-	private class myListener implements MultipartyNegotiationEventListener {
+	private class myListener implements Listener<NegotiationEvent> {
 
 		private List<MultipartyNegotiationOfferEvent> offers = new ArrayList<MultipartyNegotiationOfferEvent>();
 		private List<String> logs = new ArrayList<String>();
@@ -123,7 +120,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		}
 
 		@Override
-		public void handleEvent(NegotiationEvent e) {
+		public void notifyChange(NegotiationEvent e) {
 			if (e instanceof LogMessageEvent) {
 				logs.add(((LogMessageEvent) e).getMessage());
 				System.out.println(((LogMessageEvent) e).getMessage());
@@ -151,8 +148,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 	public void runMultiPartyNego1() throws Exception {
 
 		/** set up a multiparty negotiation */
-		final String[] partyclasses = {
-				"negotiator.parties.BoulwareNegotiationParty",
+		final String[] partyclasses = { "negotiator.parties.BoulwareNegotiationParty",
 				"negotiator.parties.ConcederNegotiationParty",
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
 		Deadline deadline = new Deadline(60, DeadlineType.ROUND);
@@ -161,17 +157,15 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 		// bad to have absolute ref. But there's no better function in
 		// Repository...
-		DomainRepItem domain8 = Repository
-				.getDomainByName("file:etc/templates/Domain8/Domain8.xml");
+		DomainRepItem domain8 = Repository.getDomainByName("file:etc/templates/Domain8/Domain8.xml");
 		Repository party_rep = Repository.get_party_repository();
 
 		for (int partynr = 0; partynr < 3; partynr++) {
 			ProfileRepItem profileRepItem = domain8.getProfiles().get(partynr);
-			PartyRepItem partyRepItem = party_rep
-					.getPartyOfClass(partyclasses[partynr]);
+			PartyRepItem partyRepItem = party_rep.getPartyOfClass(partyclasses[partynr]);
 
-			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(
-					partyRepItem, profileRepItem, session, null);
+			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(partyRepItem, profileRepItem, session,
+					null);
 			parties.add(negoparty);
 		}
 		// maybe we can craete the parties directly, using this?
@@ -181,8 +175,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
 
 		SessionManager manager = new SessionManager(parties, protocol, session,
-				new ExecutorWithTimeout(
-						1000 * deadline.getTimeOrDefaultTimeout()));
+				new ExecutorWithTimeout(1000 * deadline.getTimeOrDefaultTimeout()));
 
 		myListener listener = new myListener();
 
@@ -191,8 +184,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		manager.runAndWait();
 
 		/*********** and finally check the outcome **************/
-		MultipartySessionEndedEvent lastEvent = listener.getEvents().get(
-				listener.getEvents().size() - 1);
+		MultipartySessionEndedEvent lastEvent = listener.getEvents().get(listener.getEvents().size() - 1);
 		assertNotNull(lastEvent.getAgreement());
 
 		// check the logs file. It should be of this form
@@ -219,25 +211,17 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		for (int n = 0; n < rounds; n++) {
 			// System.out.println("check round " + (n + 1));
 			assertMatch("Round " + (n + 1), listener.getLogs().get(line++));
-			assertBidOrAccept(" Turn 1: Boulware\\S* ",
-					listener.getLogs().get(line++));
-			assertBidOrAccept(" Turn 2: Conceder\\S* ",
-					listener.getLogs().get(line++));
-			assertBidOrAccept(" Turn 3: Random\\S* ",
-					listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 1: Boulware\\S* ", listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 2: Conceder\\S* ", listener.getLogs().get(line++));
+			assertBidOrAccept(" Turn 3: Random\\S* ", listener.getLogs().get(line++));
 		}
 		// then the accept round
 		assertMatch("Round " + (rounds + 1), listener.getLogs().get(line++));
-		assertEquals(BidType.ACCEPT,
-				getType(" Turn 1: \\S* ", listener.getLogs().get(line++)));
-		assertEquals(BidType.ACCEPT,
-				getType(" Turn 2: \\S* ", listener.getLogs().get(line++)));
+		assertEquals(BidType.ACCEPT, getType(" Turn 1: \\S* ", listener.getLogs().get(line++)));
+		assertEquals(BidType.ACCEPT, getType(" Turn 2: \\S* ", listener.getLogs().get(line++)));
 		// then "found an agreement"
-		assertEquals(
-				BidType.PLAIN_BID,
-				getType(" Found an agreement: ", listener.getLogs().get(line++)));
-		assertMatch(" Finished negotiation session in \\S* ", listener
-				.getLogs().get(line++));
+		assertEquals(BidType.PLAIN_BID, getType(" Found an agreement: ", listener.getLogs().get(line++)));
+		assertMatch(" Finished negotiation session in \\S* ", listener.getLogs().get(line++));
 		// list line is the wrap-up. Not checked yet, pretty complex.
 	}
 
