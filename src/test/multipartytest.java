@@ -9,18 +9,19 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import negotiator.xml.multipartyrunner.Runner;
-
 import org.junit.Test;
+
+import negotiator.xml.multipartyrunner.Runner;
 
 public class multipartytest {
 
 	@Test
 	public void test1() throws IOException, NotEqualException, JAXBException {
-		File output = File.createTempFile("temp-file-name", ".tmp");
+		File output = File.createTempFile("temp-file-name", ".csv");
 
-		Runner.main(new String[] { "test/multitest.xml",
-				output.getCanonicalPath() });
+		// use filename without .csv extension for the runner. It may create
+		// multiple log files.
+		Runner.main(new String[] { "test/multitest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
 		equal(new File("test/multitestexpected.txt"), output);
 	}
 
@@ -35,12 +36,9 @@ public class multipartytest {
 	 * @throws IOException
 	 * @throws NotEqualException
 	 */
-	private void equal(File expectedFile, File actualFile) throws IOException,
-			NotEqualException {
-		BufferedReader expectedFileReader = new BufferedReader(new FileReader(
-				expectedFile));
-		BufferedReader actualFileReader = new BufferedReader(new FileReader(
-				actualFile));
+	private void equal(File expectedFile, File actualFile) throws IOException, NotEqualException {
+		BufferedReader expectedFileReader = new BufferedReader(new FileReader(expectedFile));
+		BufferedReader actualFileReader = new BufferedReader(new FileReader(actualFile));
 
 		int linenr = 1;
 		String expectedLine, actualLine;
@@ -71,13 +69,11 @@ public class multipartytest {
 	 * @throws NotEqualException
 	 */
 
-	private void equal(int linenr, String expected, String actual)
-			throws NotEqualException {
+	private void equal(int linenr, String expected, String actual) throws NotEqualException {
 		String[] expectedElems = expected.split(";");
 		String[] actualElems = actual.split(";");
 		if (expectedElems.length != actualElems.length) {
-			throw new NotEqualException(
-					"Lines do not contain the same number of results", linenr,
+			throw new NotEqualException("Lines do not contain the same number of results", linenr,
 					"" + expectedElems.length, "" + actualElems.length);
 		}
 		for (int i = 0; i < expectedElems.length; i++) {
@@ -87,14 +83,12 @@ public class multipartytest {
 			String actualElem = actualElems[i];
 			boolean equals = false;
 			try {
-				equals = Math.abs(Double.parseDouble(expectedElem)
-						- Double.parseDouble(actualElem)) < 0.000001;
+				equals = Math.abs(Double.parseDouble(expectedElem) - Double.parseDouble(actualElem)) < 0.000001;
 			} catch (NumberFormatException e) {
 				equals = expectedElem.equals(actualElem);
 			}
 			if (!equals) {
-				throw new NotEqualException("element " + (i + 1)
-						+ " is not equal", linenr, expectedElem, actualElem);
+				throw new NotEqualException("element " + (i + 1) + " is not equal", linenr, expectedElem, actualElem);
 			}
 		}
 	}
