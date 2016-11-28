@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import test.NotEqualException;
 
 import javax.xml.bind.JAXBException;
 
@@ -18,9 +17,9 @@ public class mediatortest {
 
 	@Test
 	public void test1() throws IOException, NotEqualException, JAXBException {
-		File output = File.createTempFile("temp-file-name", ".tmp");
+		File output = File.createTempFile("test", ".csv");
 
-		Runner.main(new String[] { "test/mediatortest.xml", output.getCanonicalPath() });
+		Runner.main(new String[] { "test/mediatortest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
 		equal(new File("test/mediatortestexpected.txt"), output);
 	}
 
