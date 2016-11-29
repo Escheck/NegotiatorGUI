@@ -19,6 +19,7 @@ import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.listener.Listener;
 import negotiator.parties.NegotiationPartyInternal;
+import negotiator.parties.SessionsInfo;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.repository.DomainRepItem;
@@ -155,6 +156,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
 		Deadline deadline = new Deadline(60, DeadlineType.ROUND);
 		Session session = new Session(deadline);
+		SessionsInfo info = new SessionsInfo();
 		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 
 		// bad to have absolute ref. But there's no better function in
@@ -167,7 +169,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 			PartyRepItem partyRepItem = party_rep.getPartyOfClass(partyclasses[partynr]);
 
 			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(partyRepItem, profileRepItem, session,
-					null);
+					null, info);
 			parties.add(negoparty);
 		}
 		// maybe we can craete the parties directly, using this?
