@@ -1300,9 +1300,21 @@ public interface NegotiationParty {
 	 *            random" behaviour.
 	 * @param agentID
 	 *            The agent's ID.
+	 * @param storage
+	 *            storage space where the agent can store data that is
+	 *            persistent over sessions. Each <agentclass, profiles> tuple
+	 *            has its own unique storage that persists only during the run
+	 *            of a tournament. Between sessions, this data is saved to disk
+	 *            to avoid memory issues when other agents are running. If the
+	 *            storage is not empty, this data is retrieved at the start of
+	 *            each session and saved at the end of each session. The load
+	 *            time is charged on the total available negotiation time. The
+	 *            save time is limited to 1 second. The programmer should ensure
+	 *            that storage is actually serializable.
 	 */
-	public void init(AbstractUtilitySpace utilSpace, Deadline deadline, TimeLineInfo timeline, long randomSeed,
-			AgentID agentID);
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline, 
+			TimeLineInfo timeline, long randomSeed,
+			AgentID agentID, SerializableMap storage);
 
 	/**
 	 * When this function is called, it is expected that the Party chooses one
