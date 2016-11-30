@@ -527,6 +527,24 @@
 				partyName="UnknownValue">
 				<properties />
 			</partyRepItem>
+			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				description="StoreAndRetrieve.class"
+				classPath="/Volumes/Documents/genius/core/bin/agents/nastyagent/StoreAndRetrieve.class"
+				partyName="StoreAndRetrieve">
+				<properties />
+			</partyRepItem>
+			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				description="StoreNull"
+				classPath="/Volumes/Documents/genius/core/bin/agents/nastyagent/StoreNull.class"
+				partyName="StoreNull">
+				<properties />
+			</partyRepItem>
+			<partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				description="StoreUnserializableThing"
+				classPath="/Volumes/Documents/genius/core/bin/agents/nastyagent/StoreUnserializableThing.class"
+				partyName="StoreUnserializableThing">
+				<properties />
+			</partyRepItem>
 		</partyRepItems>
 		<domainRepItem />
 		<protocolRepItem />
