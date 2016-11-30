@@ -3,10 +3,13 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import negotiator.Bid;
@@ -38,7 +41,19 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 	enum BidType {
 		OFFER, ACCEPT, PLAIN_BID
-	};
+	}
+
+	private SessionsInfo info;;
+
+	@Before
+	public void before() throws IOException {
+		info = new SessionsInfo();
+	}
+
+	@After
+	public void after() {
+		info.close();
+	}
 
 	private BidType getType(String preamble, String text) {
 		if (match(preamble + OFFER_PATTERN, text)) {
@@ -156,7 +171,6 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
 		Deadline deadline = new Deadline(60, DeadlineType.ROUND);
 		Session session = new Session(deadline);
-		SessionsInfo info = new SessionsInfo();
 		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 
 		// bad to have absolute ref. But there's no better function in
