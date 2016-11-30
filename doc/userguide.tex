@@ -207,6 +207,7 @@ If an agent violates the protocol -- for instance by sending an action that is n
 
 All protocols are found in the package \verb|negotiator.protocol| and have the names matching the subsections below.
 
+
 \subsection{Stacked Alternating Offers Protocol}
 According to this protocol \cite{MultilateralOffersProtocols} , all of the participants around the table get a turn per round. Turns are taken clock-wise around the table. One of the negotiating parties starts the negotiation with an offer that is observed by all others immediately. Whenever an offer is made, the next party in line gets a call to receiveMessage containing the bid, followed by a call to chooseAction from which it can return the following actions:
 \begin{itemize}
@@ -275,6 +276,20 @@ This protocol uses the following turns in every round:
 \end{enumerate}
 
 The accepted bid is the last bid that was not receiving a `worse' vote. 
+
+\subsection{Beyond the Protocol}
+This section outlines the procedures surrounding running a negotiation outside the protocol.
+
+Before the protocol can be started, the parties have to be loaded and initialized. During initialization, the party's persistent data may have to be loaded from a file. If the persistent data can not be read, a default empty dataset is created for the agent. Then the party's init code is called to set up the agent. All the time spent in this initialization phase is already being subtracted from the total available negotiation time.
+
+After the protocol has been completed, the protocol is called a last time to determine the final outcome. 
+The parties are called to inform them that the negotiation ended, and what the outcome was. This happens even when agents crashed or did illegal actions. The negotiation has already finished, so these calls are not weighing in on the total negotiation time. Instead, these calls are typically limited to 1 second. 
+
+Finally, if the If the agent has modified the persistent data, this data needs to be saved. Again, this action is limited to a 1 second duration.
+
+Errors surrounding these out-of-protocol procedures are not part of the negotiation itself and therefore logged and handled separately. These errors are printed only to the console/terminal \footnote{To see the console output, run from Eclipse or start up Genius from a separate terminal. }
+, and only from the single session runner.
+
 
 %=========================================================================================
 \section{Running the Environment}
