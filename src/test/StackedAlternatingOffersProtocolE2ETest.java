@@ -47,7 +47,8 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 	@Before
 	public void before() throws IOException {
-		info = new SessionsInfo();
+		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
+		info = new SessionsInfo(protocol);
 	}
 
 	@After
@@ -170,7 +171,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 				"negotiator.parties.ConcederNegotiationParty",
 				"negotiator.parties.RandomCounterOfferNegotiationParty" };
 		Deadline deadline = new Deadline(60, DeadlineType.ROUND);
-		Session session = new Session(deadline);
+		Session session = new Session(deadline, info);
 		List<NegotiationPartyInternal> parties = new ArrayList<NegotiationPartyInternal>();
 
 		// bad to have absolute ref. But there's no better function in
@@ -190,9 +191,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 		// parties.add(new BoulwareNegotiationParty(utilitySpace, deadlines,
 		// timeline, randomSeed));
 
-		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
-
-		SessionManager manager = new SessionManager(parties, protocol, session,
+		SessionManager manager = new SessionManager(parties, session,
 				new ExecutorWithTimeout(1000 * deadline.getTimeOrDefaultTimeout()));
 
 		myListener listener = new myListener();
