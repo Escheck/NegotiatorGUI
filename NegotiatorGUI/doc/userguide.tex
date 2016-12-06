@@ -197,7 +197,8 @@ If a discount factor is present, reservation values will be discounted in exactl
  
 %=========================================================================================
 \section{Protocols}\label{sec:protocols}
-This section describes the various protocols. We focus on the MultiParty protocols as these have been properly developed. There is also a protocol class for the bilateral negotiation, but this is basically a hard coded Stacked Alternating Offers Protocol and not further developed. 
+This section describes the various negotiation protocols. The protocol determines the overall order of actions during a negotiation.
+This section focuses on the MultiParty protocols as these have been properly developed. There is also a protocol class for the bilateral negotiation, but this is basically a hard coded Stacked Alternating Offers Protocol and not further developed. 
 
   The (Multilateral)  protocol describes if the negotiation is finished, what the agreement is, which actions can be done in the next round.   Briefly, to run a session the system checks with the protocol if the negotiation is already finished,  and if not which calls need to be made to the parties (both chooseAction and receiveMessage).  We recommend checking the javadoc of MultilateralProtocol for up-to-date detail information and how the protocol is used by the system to run sessions.
   
