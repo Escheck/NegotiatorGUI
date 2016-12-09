@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import listener.Listener;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.DeadlineType;
@@ -20,7 +21,6 @@ import negotiator.events.MultipartyNegoActionEvent;
 import negotiator.events.MultipartySessionEndedEvent;
 import negotiator.events.NegotiationEvent;
 import negotiator.gui.progress.session.ActionDocumentModel;
-import negotiator.listener.Listener;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.parties.SessionsInfo;
 import negotiator.protocol.MultilateralProtocol;
