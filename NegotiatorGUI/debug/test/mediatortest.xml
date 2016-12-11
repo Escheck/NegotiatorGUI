@@ -29,7 +29,7 @@
 				<item url="file:etc/templates/partydomain/party3_utility.xml" />
 			</partyProfileItems>
 			<numSessions>1</numSessions>
-			<numberOfNonMediatorsPerSession>3</numberOfNonMediatorsPerSession>
+			<numberOfPartiesPerSession>3</numberOfPartiesPerSession>
 			<repetitionAllowed>true</repetitionAllowed>
 		</tournament>
 	</tournaments>
