@@ -34,7 +34,7 @@
 				<item url="file:etc/templates/partydomain/party2_utility.xml" />
 				<item url="file:etc/templates/partydomain/party3_utility.xml" />
 			</partyProfileItems>
-			<numSessions>1</numSessions>
+			<repeats>1</repeats>
 			<numberOfPartiesPerSession>3</numberOfPartiesPerSession>
 			<repetitionAllowed>false</repetitionAllowed>
 		</tournament>
@@ -78,7 +78,7 @@
 				<item url="file:etc/templates/partydomain/party5_utility.xml" />
 				<item url="file:etc/templates/partydomain/party6_utility.xml" />
 			</partyProfileItems>
-			<numSessions>1</numSessions>
+			<repeats>1</repeats>
 			<numberOfPartiesPerSession>4</numberOfPartiesPerSession>
 			<repetitionAllowed>false</repetitionAllowed>
 		</tournament>
