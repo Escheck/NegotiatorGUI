@@ -11,12 +11,13 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
+import negotiator.exceptions.InstantiateException;
 import negotiator.xml.multipartyrunner.Runner;
 
 public class multipartytest {
 
 	@Test
-	public void test1() throws IOException, NotEqualException, JAXBException {
+	public void test1() throws IOException, NotEqualException, JAXBException, InstantiateException {
 		File output = File.createTempFile("temp-file-name", ".csv");
 
 		// use filename without .csv extension for the runner. It may create
