@@ -11,12 +11,13 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
+import negotiator.exceptions.InstantiateException;
 import negotiator.xml.multipartyrunner.Runner;
 
 public class mediatortest {
 
 	@Test
-	public void test1() throws IOException, NotEqualException, JAXBException {
+	public void test1() throws IOException, NotEqualException, JAXBException, InstantiateException {
 		File output = File.createTempFile("test", ".csv");
 
 		Runner.main(new String[] { "test/mediatortest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
