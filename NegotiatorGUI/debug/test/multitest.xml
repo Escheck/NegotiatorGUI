@@ -37,6 +37,7 @@
 			<repeats>1</repeats>
 			<numberOfPartiesPerSession>3</numberOfPartiesPerSession>
 			<repetitionAllowed>false</repetitionAllowed>
+			<persistentDataType>DISABLED</persistentDataType>
 		</tournament>
 
 		<tournament>
@@ -81,6 +82,7 @@
 			<repeats>1</repeats>
 			<numberOfPartiesPerSession>4</numberOfPartiesPerSession>
 			<repetitionAllowed>false</repetitionAllowed>
+			<persistentDataType>DISABLED</persistentDataType>
 		</tournament>
 
 	</tournaments>
