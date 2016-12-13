@@ -23,6 +23,7 @@ import negotiator.events.NegotiationEvent;
 import negotiator.gui.progress.session.ActionDocumentModel;
 import negotiator.parties.NegotiationPartyInternal;
 import negotiator.parties.SessionsInfo;
+import negotiator.persistent.PersistentDataType;
 import negotiator.protocol.MultilateralProtocol;
 import negotiator.protocol.StackedAlternatingOffersProtocol;
 import negotiator.repository.DomainRepItem;
@@ -48,7 +49,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 	@Before
 	public void before() throws IOException {
 		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
-		info = new SessionsInfo(protocol);
+		info = new SessionsInfo(protocol, PersistentDataType.DISABLED);
 	}
 
 	@After
