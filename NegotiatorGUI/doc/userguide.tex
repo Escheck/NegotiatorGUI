@@ -1373,9 +1373,9 @@ To implement a multi-party negotiation party, at a minimum one needs to implemen
 \begin{lstlisting}
 public interface NegotiationParty {
 	/**
-	 * Initializes the party. This MUST be called immediately after construction
-	 * of any class implementing this. Tells which utility space and timeline
-	 * the party is running in. This must be called one time only.
+	 * Initializes the party. This will be called once, immediately after
+	 * construction of any class implementing this. Tells which utility space
+	 * and timeline the party is running in.
 	 * 
 	 * @param utilSpace
 	 *            (a copy of/readonly version of) the
@@ -1391,19 +1391,21 @@ public interface NegotiationParty {
 	 *            The agent's ID.
 	 * @param storage
 	 *            storage space where the agent can store data that is
-	 *            persistent over sessions. Each <agentclass, profiles> tuple
-	 *            has its own unique storage that persists only during the run
-	 *            of a tournament. Between sessions, this data is saved to disk
-	 *            to avoid memory issues when other agents are running. If the
-	 *            storage is not empty, this data is retrieved at the start of
-	 *            each session and saved at the end of each session. The load
-	 *            time is charged on the total available negotiation time. The
-	 *            save time is limited to 1 second. The programmer should ensure
-	 *            that storage is actually serializable.
+	 *            persistent over sessions. Depending on the run settings, each
+	 *            [agentclass, profiles] tuple can have its own unique storage
+	 *            that persists only during the run of a tournament. Between
+	 *            sessions, this data is saved to disk to avoid memory issues
+	 *            when other agents are running. If the storage is not empty,
+	 *            this data is retrieved at the start of each session and saved
+	 *            at the end of each session. The load is timeboxed by the
+	 *            negotiation settings. The save time is limited to 1 second.
+	 *            The programmer should ensure that storage is actually
+	 *            serializable. This call is timeboxed by the negotiation
+	 *            deadline settings.
+	 * 
 	 */
-	public void init(AbstractUtilitySpace utilSpace, Deadline deadline, 
-			TimeLineInfo timeline, long randomSeed,
-			AgentID agentID, SerializableMap storage);
+	public void init(AbstractUtilitySpace utilSpace, Deadline deadline, TimeLineInfo timeline, long randomSeed,
+			AgentID agentID, PersistentDataContainer storage);
 
 	/**
 	 * When this function is called, it is expected that the Party chooses one
@@ -1463,10 +1465,35 @@ We recommend to use the javadoc included with the distribution to check the deta
 The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol by default returns an instance of StackedAlternatingOffersProtocol. Your agent should override this if it works on a different protocol.
 
 \subsection{Compiling a NegotiationParty}
+Here we discuss two simple examples showing some aspects of a multiparty agent.
 
-To compile the example agent, go to your genius project folder and use the command line to execute this compile command
+\subsubsection{Multiparty example}
+This example party just accepts any acceptable bid with a random probability of 0.5. To compile the example agent, go to your genius project folder and use the command line to execute this compile command
 
 \verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 multipartyexample/Groupn.java|
+
+You can run this agent against a team of parties already provided in \Genius.
+
+\subsubsection{Storage example}
+Another example is demonstrating the persistent data storage. This example is showing how the storage can be used to wait a little longer every next time the party is in a negotiation.
+
+Compile the example agent in the storageexample using
+
+\verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 storageexample/Groupn.java|
+
+Then, load it into \Genius and run it in a multiparty tournament. Set the tournament with the following settings
+\begin{itemize}
+\item  number of tournaments= 20
+\item   agents per session =2
+\item  persistency=standard
+\item  agent side A: Groupn, \verb|party1_utility.xml|
+\item  agent side B: Random Party, \verb|party6_utility.xml|
+\end{itemize}
+
+and start the tournament and check the number of rounds till agreement: it will increase every session.
+
+Now run another tournament with the same settings but pick select both \verb|party1_utility.xml| and \verb|party2_utility.xml|. Run the tournament.
+Now you will see that the the number of rounds till agreement goes up every other run. This is because your agent gets a different profile every other run and thus there are persistent data stores, one for each profile. 
 
 \subsection{Loading a NegotiationParty}
 
