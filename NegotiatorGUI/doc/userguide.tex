@@ -553,7 +553,7 @@ It should be noted that currently there is no option in \Genius~to delete old to
 
 
 
-\subsection{Running a Multi-Party Negotiation}
+\subsection{Running a Multi-Party Negotiation}\label{sec:singlesessionrun}
 To run a negotiation session select ``Start'' and then ``Multi-Party Negotiation''. This opens a window similar to Figure~\ref{Fig:multipartysession}. 
 
 
@@ -573,7 +573,13 @@ The following parameters need to be specified to run a negotiation:
 	\item \textbf{Mediator}. The mediator ID and strategy that is to be used for this session. This is only visible if the protocol uses a mediator.
 	\item \textbf{Participant Information}. The information (ID, strategy, profile) for the a party in the session. This information is copied into the table of participants when you click "Add Party".
 	\item \textbf{A table with participants}. This table shows all currently added participants. You can add a party by setting the participant information above, and then clicking "Add Party". You can remove a party by selecting the party to remove in the table, and then clicking "Remove Party". 
-	\item \textbf{Timeout}. The deadline to use. Can be "Round" or "Time". This determines the maximum duration of the session.
+	\item \textbf{Deadline}. The deadline to use. Can be "Round" or "Time". This determines the maximum duration of the session.
+	\item \textbf{Data Persistency}. What kind of persistent data is available to the parties. The options are 
+	\begin{itemize}
+	\item \textbf{Disabled}. Parties do not have persistent data. This is the default
+	\item \textbf{Serializable}. Parties can save anything serializable
+	\item \textbf{Standard}. Parties receive a prepared, read only StandardInfo object.
+	\end{itemize}
 \end{itemize}
 \end{minipage}
 \medskip
@@ -600,13 +606,26 @@ The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}.
 	\item \textbf{Deadline}. The limits on time and number of rounds for each session.
 	\item \textbf{Number of tournaments}. The number of times the entire tournament will be run.
 	\item \textbf{Agents per Session}. The number of agents N to use for each session.
-	\item \textbf{Agent Repetition Allowed}. Determines if agents are put back into the pool of agents after a run.
-	\item \textbf{Mediator}. The mediator to use. This option is visible only if the selected protocol needs a mediator. This option enables in the locked position if there are more agents per session than the size of the agents pool.
+	\item \textbf{Agent Repetition}. If selected, parties drawn from the Agents pool with return. If not selected, parties are drawn without return. This option can only be disabled if 'Agents per session' is less or equal to the size of the Agents pool.
+	\item \textbf{Randomize session order}. If set, all sessions within a single run of the tournament are randomized in order. Each repetition of the tournament is randomized separately.
+	\item \textbf{Data persistency}. The type of persistent data available to the parties. Same options as in section \ref{sec:singlesessionrun}.
+	\item \textbf{Mediator}. The mediator to use. This option is visible only if the selected protocol needs a mediator. 
 	\item \textbf{Agents}. The pool of agents to draw from. Click or drag in the agents area to (de)select agents. Click "Clear" to clear the pool.
 	\item \textbf{Profiles}. The profiles pool. Click or drag in the profiles area to (de)select agents. Click "Clear" to clear the pool.
 \end{itemize}
 
 If you select a protocol that requires a mediator, an extra area in the panel will appear where you can select the mediator strategy. The GUI shows you a combo box with valid mediator agents for the selected protocol. 
+
+
+\subsubsection{Bilateral special options}
+If you have set 'Agents per session' to 2, and deselect 'Agent play both sides', you get an additional panel where you can select different Agents and Profiles for the B side of the 2-sided negotiation as in Figure~\ref{Fig:multipartytournament2}. 
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{media/multipartytournament2.png}
+\caption{Multi-Party Bilateral Tournament}\label{Fig:multipartytournament2}
+\end{figure}
+
 
 After you click "Start", the tournament starts. 
 
