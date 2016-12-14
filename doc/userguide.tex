@@ -553,8 +553,8 @@ It should be noted that currently there is no option in \Genius~to delete old to
 
 
 
-\subsection{Running a Multi-Party Negotiation}\label{sec:singlesessionrun}
-To run a negotiation session select ``Start'' and then ``Multi-Party Negotiation''. This opens a window similar to Figure~\ref{Fig:multipartysession}. 
+\subsection{Running a Multi-Party Negotiation Session}\label{sec:singlesessionrun}
+To run a negotiation session select the menu ``Start'' and then ``Multi-Party Negotiation''. This opens a window similar to Figure~\ref{Fig:multipartysession}. 
 
 \begin{figure}[h!]
 	\centering
@@ -572,14 +572,8 @@ The following parameters need to be specified to run a negotiation:
 	\item \textbf{Participant Information}. The information (ID, strategy, profile) for the a party in the session. This information is copied into the table of participants when you click "Add Party".
 	\item \textbf{A table with participants}. This table shows all currently added participants. You can add a party by setting the participant information above, and then clicking "Add Party". You can remove a party by selecting the party to remove in the table, and then clicking "Remove Party". 
 	\item \textbf{Deadline}. The deadline to use. Can be "Round" or "Time". This determines the maximum duration of the session.
-	\item \textbf{Data Persistency}. What kind of persistent data is available to the parties. The options are 
-	\begin{itemize}
-	\item \textbf{Disabled}. Parties do not have persistent data. This is the default
-	\item \textbf{Serializable}. Parties can save anything serializable
-	\item \textbf{Standard}. Parties receive a prepared, read only StandardInfo object.
-	\end{itemize}
-
-\item bilateral options. These appear only if you have exactly 2 parties added. The sub-options of this panel are
+	\item \textbf{Data Persistency}. What kind of persistent data is available to the parties. The options are discussed in section \ref{sec:sessiongeneration}.
+\item \textbf{Bilateral options} These appear only if you have exactly 2 parties added. The sub-options of this panel are
 	\begin{itemize}
 	\item \textbf{Show Util-Util Graph}. If enabled, the progress panel will show a graph where the utilities of the 2 parties are set along the X and Y axes. Also, the pareto frontier and nash point are shown in this graph. If disabled, it will show the default: a graph where the utilities of all parties are along the Y axis, and the time along the X axis. 
 	\item \textbf{Show all bids}.  If enabled, and if 'Show Util-Util Graph' is enabled, this will show all the possible bids in the Util-Util graph.
@@ -591,9 +585,22 @@ The following parameters need to be specified to run a negotiation:
 
 
 The negotiation is started when you press the start button. The tab contents will change to  a progress overview panel
-showing you the results of the negotiation. The results are also stored in a log file.
+showing you the results of the negotiation (Figure \ref{fig:biprogress} and Figure \ref{fig:multiprogress}). The results are also stored in a log file.
  These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel})
 
+	\begin{figure}[ht]
+		\center
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/bilateralprogress.png}
+		\caption{Bilateral progress panel.}
+		\label{fig:biprogress}
+		\end{minipage}
+		\begin{minipage}[b]{0.4\linewidth}
+			\includegraphics[width=0.95\textwidth]{media/multilateralprogress.png}
+		\caption{Multilateral progress.}\label{fig:multiprogress}
+		\end{minipage}
+		\end{figure}
+		
 
 \subsection{Running a Multi-Party Tournament}
 A multi-party tournament is a set of multi-party sessions. To prepare a multi-party tournament, select  ``Start'' and then ``Multi-Party Tournament''. 
@@ -604,15 +611,15 @@ A multi-party tournament is a set of multi-party sessions. To prepare a multi-pa
 \caption{Multi-Party Tournament}\label{Fig:multipartytournament}
 \end{figure}
 
-The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}. This panel shows a set of tournament options:
+The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}. This panel shows a set of tournament options. The detailed meaning of all these settings is explained in \ref{sec:sessiongeneration}.
 
 \begin{itemize}
-	\item \textbf{Protocol}. The protocol to use for each session. See Chapter \ref{sec:protocols}
+	\item \textbf{Protocol}. The protocol to use for each session.
 	\item \textbf{Deadline}. The limits on time and number of rounds for each session.
 	\item \textbf{Number of tournaments}. The number of times the entire tournament will be run.
 	\item \textbf{Agents per Session}. The number of agents N to use for each session.
-	\item \textbf{Agent Repetition}. If selected, parties drawn from the Agents pool with return. If not selected, parties are drawn without return. This option can only be disabled if 'Agents per session' is less or equal to the size of the Agents pool.
-	\item \textbf{Randomize session order}. If set, all sessions within a single run of the tournament are randomized in order. Each repetition of the tournament is randomized separately.
+	\item \textbf{Agent Repetition}. whether to draw parties with or without return.
+	\item \textbf{Randomize session order}. whether to randomize the session order
 	\item \textbf{Data persistency}. The type of persistent data available to the parties. Same options as in section \ref{sec:singlesessionrun}.
 	\item \textbf{Mediator}. The mediator to use. This option is visible only if the selected protocol needs a mediator. 
 	\item \textbf{Agents}. The pool of agents to draw from. Click or drag in the agents area to (de)select agents. Click "Clear" to clear the pool.
@@ -620,7 +627,6 @@ The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}.
 	\item \textbf{Special bilateral options}. These options appear only if Agents per session is set to 2 and is discussed in below .
 \end{itemize}
 
-After you click "Start", the tournament starts. The panel then is swapped for a tournament progress panel. 
 
 
 \subsubsection{Bilateral special options}
@@ -632,9 +638,14 @@ If you have set 'Agents per session' to 2, and deselect 'Agent play both sides',
 \caption{Multi-Party Bilateral Tournament}\label{Fig:multipartytournament2}
 \end{figure}
 
+After you click "Start Tournament", the tournament starts. The panel then is swapped for a tournament progress panel (Figure \ref{Fig:tournamentprogress}). 
+In the top there is a progress bar showing the total number of sessions and the current session. The table shows all session results. The table is also saved to a $.csv$ log file in the log directory.
 
-
-The parties and profiles for each session are determined by created by all possible permutations of N parties from the agents pool  and permutations of N profiles from the profile pool, where N is the selected number of "Agents per Session". The mediator is not taking part in this permutation, and is added to each session. The value of "Agents per session" is excluding the mediator.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.9\textwidth]{media/tournamentprogress.png}
+\caption{Tournament Progress panel}\label{Fig:tournamentprogress}
+\end{figure}
 
 The results of the tournament are shown on screen and also stored in a log file.  These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel})
 
@@ -648,6 +659,7 @@ You can run a multi-party tournament from the command line, as follows.
 \end{enumerate}
 
 \subsubsection{Prepare the XML settings file}
+The first step is to create an xml file containing the values needed for session generation (Section \ref{sec:sessiongeneration}).
 Make a copy of the \verb|multilateraltournament.xml| file inside your genius directory and edit it (with a plain text editor).  Inside the \verb|<tournaments>| element you will find a number of \verb|<tournament>| elements. Each of these \verb|<tournament>| elements defines a complete tournament so you can run multiple tournaments using one xml file.
 
 The contents of each \verb|<tournament>| element is as follows. The meaning of the fields is detailed in section \ref{sec:sessiongeneration}.
@@ -656,6 +668,7 @@ The contents of each \verb|<tournament>| element is as follows. The meaning of t
 \item \textbf{protocolItem}. Contains the protocol to use, in the form of a protocolItem.
 \item \textbf{deadline}.  the Deadline value.
 \item \textbf{repeats}. the repeats value. 
+\item \textbf{persistentDataType}. The type of the persistent data.
 \item \textbf{numberOfPartiesPerSession}. the Parties per session value.
 \item  \textbf{repetitionAllowed}. the value for the Party Repetition. 
 \item \textbf{partyRepItems}. This element contains a number of \verb|<item>| elements. Each of these party items contains a description of a party as discussed below.
@@ -697,9 +710,6 @@ We have a number of items:
 
 
 
-
-
-
 The tournament will consist of sessions created creating all permutations of \verb|<numberOfNonMediatorsPerSession>| from the partyRepItems (with or without reuse, depending on \textbf{repetitionAllowed}. The randomization also is applied to the profile items.
 
 
@@ -718,24 +728,30 @@ Instead of manually setting all the setting, a tournament generates the exact se
 settings are specified either in the user interface settings, or in an XML file. The parameters are:
 
 \begin{itemize}
-\item Protocol. The protocol value is used for all sessions. See section \ref{sec:protocols}.
-\item Mediator. The mediator to use for all sessions (ignored if the protocol does not need a mediator)
-\item Deadline. The deadline is used for all sessions.  A deadline contains two values:
+\item \textbf{Protocol} The protocol value is used for all sessions. See section \ref{sec:protocols}.
+\item \textbf{Mediator} The mediator to use for all sessions (ignored if the protocol does not need a mediator)
+\item \textbf{Deadline} The deadline is used for all sessions.  A deadline contains two values:
      \begin{itemize}
         \item \textbf{value}. This is the maximum value determining the deadline. Must be an integer $\ge 1$.
         \item \textbf{type.} Can be either $ROUND$ or $TIME$. If $ROUND$, the value is the number of rounds. If $TIME$, value is a time in seconds.
       \end{itemize}
-\item repeats. This is also called 'number of tournaments' and determines the number of times a complete tournament will be run.
-\item Randomize Session Order. Whether all generated sessions within a tournament must be randomized.
-\item Parties per session. The number of agents to draw for each session. This excludes a possible mediator.
-\item Party Repetition. true if agents are to be drawn from the agents pool with return, false if they are to be drawn without return.
-\item Parties and Profile pool for side A
-\item Parties and Profile pool for side B
+\item \textbf{Data persistency}. The type of persistent data available to the parties. The next time an agent of the same class and same profile runs in a tournament, it will receive the previously stored data. The options are 
+	\begin{itemize}
+	\item \textbf{Disabled}. Parties do not receive any persistent data. This is the default.
+	\item \textbf{Serializable}. Parties can save anything serializable in the $PersistentDataContainer$.
+	\item \textbf{Standard}. Parties receive a prepared, read only StandardInfo object inside the $PersistentDataContainer$.. 
+	\end{itemize}
+\item \textbf{repeats} This is also called 'number of tournaments' and determines the number of times a complete tournament will be run.
+\item \textbf{Randomize Session Order} Whether all generated sessions within a tournament must be randomized.
+\item \textbf{Parties per session} The number of agents to draw for each session. This excludes a possible mediator.
+\item \textbf{Party Repetition} true if agents are to be drawn from the agents pool with return, false if they are to be drawn without return.
+\item \textbf{Parties and Profile pool for side A}  A list from which parties and profiles will be drawn
+\item \textbf{Parties and Profile pool for side B} Another list of parties and profiles. Only used with bilateral generation (see below).
 \end{itemize}
 
 The tournament generation works as follows. 
 
-If there are exactly 2 agents per session and the agents and profiles for side B have been set, then bilateral generation is used. Otherwise, multilateral generation is used. This generation method creates an ordered list of sessions for 1 tournament.  If the 'Randomize Session Order' is set, the list is randomized. All sessions use the same protocol, mediator, deadline.
+If there are exactly 2 agents per session and the agents and profiles for side B have been set, then bilateral generation is used. Otherwise, multilateral generation is used. This generation method creates an ordered list of sessions for 1 tournament.  If the 'Randomize Session Order' is set, the list is randomized. All sessions use the same protocol, mediator, deadline and data persistency.
 This generation is called repeatedly, as set in 'repeats', and all generated session lists are accumulated in a big session list. This is the final result of the  tournament generation.
 
 \subsubsection{Multilateral generation}
