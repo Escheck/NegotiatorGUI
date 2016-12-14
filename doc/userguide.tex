@@ -556,20 +556,18 @@ It should be noted that currently there is no option in \Genius~to delete old to
 \subsection{Running a Multi-Party Negotiation}\label{sec:singlesessionrun}
 To run a negotiation session select ``Start'' and then ``Multi-Party Negotiation''. This opens a window similar to Figure~\ref{Fig:multipartysession}. 
 
-
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.5\textwidth]{media/multipartysession.png}
 \caption{A multi-party negotiation session.}\label{Fig:multipartysession}
 \end{figure}
 
-
 The following parameters need to be specified to run a negotiation:
 
 \medskip
 \begin{minipage}{.8 \textwidth}
 \begin{itemize}
-	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
+	\item \textbf{Negotiation protocol}. The set of available protocols. See Chapter \ref{sec:protocols}.
 	\item \textbf{Mediator}. The mediator ID and strategy that is to be used for this session. This is only visible if the protocol uses a mediator.
 	\item \textbf{Participant Information}. The information (ID, strategy, profile) for the a party in the session. This information is copied into the table of participants when you click "Add Party".
 	\item \textbf{A table with participants}. This table shows all currently added participants. You can add a party by setting the participant information above, and then clicking "Add Party". You can remove a party by selecting the party to remove in the table, and then clicking "Remove Party". 
@@ -580,6 +578,13 @@ The following parameters need to be specified to run a negotiation:
 	\item \textbf{Serializable}. Parties can save anything serializable
 	\item \textbf{Standard}. Parties receive a prepared, read only StandardInfo object.
 	\end{itemize}
+
+\item bilateral options. These appear only if you have exactly 2 parties added. The sub-options of this panel are
+	\begin{itemize}
+	\item \textbf{Show Util-Util Graph}. If enabled, the progress panel will show a graph where the utilities of the 2 parties are set along the X and Y axes. Also, the pareto frontier and nash point are shown in this graph. If disabled, it will show the default: a graph where the utilities of all parties are along the Y axis, and the time along the X axis. 
+	\item \textbf{Show all bids}.  If enabled, and if 'Show Util-Util Graph' is enabled, this will show all the possible bids in the Util-Util graph.
+	\end{itemize}
+
 \end{itemize}
 \end{minipage}
 \medskip
@@ -599,10 +604,10 @@ A multi-party tournament is a set of multi-party sessions. To prepare a multi-pa
 \caption{Multi-Party Tournament}\label{Fig:multipartytournament}
 \end{figure}
 
-The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}. This window shows a set of options which we need to specify:
+The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}. This panel shows a set of tournament options:
 
 \begin{itemize}
-	\item \textbf{Protocol}. The protocol to use for each session.
+	\item \textbf{Protocol}. The protocol to use for each session. See Chapter \ref{sec:protocols}
 	\item \textbf{Deadline}. The limits on time and number of rounds for each session.
 	\item \textbf{Number of tournaments}. The number of times the entire tournament will be run.
 	\item \textbf{Agents per Session}. The number of agents N to use for each session.
@@ -612,9 +617,10 @@ The Tournament tab will appear similar to Figure~\ref{Fig:multipartytournament}.
 	\item \textbf{Mediator}. The mediator to use. This option is visible only if the selected protocol needs a mediator. 
 	\item \textbf{Agents}. The pool of agents to draw from. Click or drag in the agents area to (de)select agents. Click "Clear" to clear the pool.
 	\item \textbf{Profiles}. The profiles pool. Click or drag in the profiles area to (de)select agents. Click "Clear" to clear the pool.
+	\item \textbf{Special bilateral options}. These options appear only if Agents per session is set to 2 and is discussed in below .
 \end{itemize}
 
-If you select a protocol that requires a mediator, an extra area in the panel will appear where you can select the mediator strategy. The GUI shows you a combo box with valid mediator agents for the selected protocol. 
+After you click "Start", the tournament starts. The panel then is swapped for a tournament progress panel. 
 
 
 \subsubsection{Bilateral special options}
@@ -627,12 +633,11 @@ If you have set 'Agents per session' to 2, and deselect 'Agent play both sides',
 \end{figure}
 
 
-After you click "Start", the tournament starts. 
 
 The parties and profiles for each session are determined by created by all possible permutations of N parties from the agents pool  and permutations of N profiles from the profile pool, where N is the selected number of "Agents per Session". The mediator is not taking part in this permutation, and is added to each session. The value of "Agents per session" is excluding the mediator.
 
 The results of the tournament are shown on screen and also stored in a log file.  These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel})
-	
+
 
 \subsection{Running from the command line}
 You can run a multi-party tournament from the command line, as follows.
@@ -645,42 +650,55 @@ You can run a multi-party tournament from the command line, as follows.
 \subsubsection{Prepare the XML settings file}
 Make a copy of the \verb|multilateraltournament.xml| file inside your genius directory and edit it (with a plain text editor).  Inside the \verb|<tournaments>| element you will find a number of \verb|<tournament>| elements. Each of these \verb|<tournament>| elements defines a complete tournament so you can run multiple tournaments using one xml file.
 
-The contents of each \verb|<tournament>| element is as follows 
+The contents of each \verb|<tournament>| element is as follows. The meaning of the fields is detailed in section \ref{sec:sessiongeneration}.
 
 \begin{itemize}
-    \item \textbf{deadline}. The deadline element contains two values:
-      \begin{itemize}
-        \item \textbf{value}. This is the maximum value determining the deadline. Must be an integer $\ge 1$.
-        \item \textbf{type.} Can be either $ROUND$ or $TIME$. If $ROUND$, the value is the number of rounds. If $TIME$, value is a time in seconds.
-      \end{itemize}
-      
-    \item \textbf{numSessions}. The number of times each session will be run in the tournament. 
+\item \textbf{protocolItem}. Contains the protocol to use, in the form of a protocolItem.
+\item \textbf{deadline}.  the Deadline value.
+\item \textbf{repeats}. the repeats value. 
+\item \textbf{numberOfPartiesPerSession}. the Parties per session value.
+\item  \textbf{repetitionAllowed}. the value for the Party Repetition. 
+\item \textbf{partyRepItems}. This element contains a number of \verb|<item>| elements. Each of these party items contains a description of a party as discussed below.
+\item \textbf{mediator}. the mediator, if needed. This is similar in contents to a party item discussed below. 
+ \item \textbf{partyProfileItems}. This element contains a number of items. There must be at least as much as numberOfNonMediatorsPerSession. 
+ \end{itemize}
 
-    \item \textbf{numberOfNonMediatorsPerSession}. The number of parties to be used for each session, excluding mediators. If your partyRepItems contain mediators, these will all be added to every session.
-      
-    \item \textbf{protocolItem}. Contains the information about the protocol. See section \ref{sec:protocols}.
+We have a number of items:
+\begin{itemize}
 
-    \item  \textbf{repetitionAllowed}. If true, agents from the partyRepItems negotiate against themselves in the sessions. 
+\item A profile item : contains 
+	 \begin{itemize}
+	\item \textbf{url} that contains the description of that party profile. These URIs point to files and therefore are of the form \verb|file:path/to/file.xml|
+  	\end{itemize}
 
-    \item \textbf{partyRepItems}. This element contains a number of \verb|<item>| elements. Each of these party items contains the following:
-      \begin{itemize}
-        \item \raggedright \textbf{protocolClassPath}. This is the protocol that this party assumes to be used. 
-        		You will get errors like "used with wrong protocol" if your party is used in the wrong protocol context. 
+\item A party item  (and mediator) contains:
+  \begin{itemize}
+    \item \raggedright \textbf{protocolClassPath}. This is the protocol that this party assumes to be used. 
+    		You will get errors like "used with wrong protocol" if your party is used in the wrong protocol context. 
 		Protocols were discussed in section \ref{sec:protocols}.
-        \item \textbf{description}A plain text description of this party
-        \item \textbf{classPath} the java.party.class.path to the main class. That class must implement the NegotiationParty interface
-        \item \textbf{partyName} the plain text name of the party
-        \item \textbf{properties} can contain a number of \verb|<property>| nodes with these values
-        		\begin{itemize}
+    \item \textbf{description}A plain text description of this party
+    \item \textbf{classPath} the java.party.class.path to the main class. That class must implement the NegotiationParty interface
+    \item \textbf{partyName} the plain text name of the party
+    \item \textbf{properties} can contain a number of \verb|<property>| nodes with these values
+    		\begin{itemize}
 		\item isMediator: this property indicates the party item is a mediator. If not set, the party will be 
 		run as a normal party instead of a mediator, which will probably cause protocol violations
 		\end{itemize}
-      \end{itemize}
+  \end{itemize}
 
-	If you use a protocol that requires a mediator, the mediator should be one of these items.   
-
-    \item \textbf{partyProfileItems}. This element contains a number of items. There must be at least as much as numberOfNonMediatorsPerSession. Each item element contains just the url that contains the description of that party profile. These URIs point to files and therefore are of the form \verb|file:path/to/file.xml|
+\item protocol item. This item contains the protocol information: 
+	\begin{itemize}
+	\item \textbf{hasMediator} which is true iff protocol requires mediator
+	\item \textbf{description} a one-line textual description of the mediator
+	\item \textbf{classPath} the java full.class.path of the protocol class
+	\item \textbf{ptorocolName} a brief protocol name 
+	\end{itemize}
 \end{itemize}
+
+
+
+
+
 
 The tournament will consist of sessions created creating all permutations of \verb|<numberOfNonMediatorsPerSession>| from the partyRepItems (with or without reuse, depending on \textbf{repetitionAllowed}. The randomization also is applied to the profile items.
 
@@ -694,6 +712,41 @@ Then enter this command (where yourfile.xml is the name of the file you just edi
 \vspace{0.5cm}
 
 Press return when the app prompts you for the log file location to log to  the default \verb|logs/...csv| file.
+
+\subsection{Tournament Session Generation}\label{sec:sessiongeneration}
+Instead of manually setting all the setting, a tournament generates the exact session settings from the tournament settings. These
+settings are specified either in the user interface settings, or in an XML file. The parameters are:
+
+\begin{itemize}
+\item Protocol. The protocol value is used for all sessions. See section \ref{sec:protocols}.
+\item Mediator. The mediator to use for all sessions (ignored if the protocol does not need a mediator)
+\item Deadline. The deadline is used for all sessions.  A deadline contains two values:
+     \begin{itemize}
+        \item \textbf{value}. This is the maximum value determining the deadline. Must be an integer $\ge 1$.
+        \item \textbf{type.} Can be either $ROUND$ or $TIME$. If $ROUND$, the value is the number of rounds. If $TIME$, value is a time in seconds.
+      \end{itemize}
+\item repeats. This is also called 'number of tournaments' and determines the number of times a complete tournament will be run.
+\item Randomize Session Order. Whether all generated sessions within a tournament must be randomized.
+\item Parties per session. The number of agents to draw for each session. This excludes a possible mediator.
+\item Party Repetition. true if agents are to be drawn from the agents pool with return, false if they are to be drawn without return.
+\item Parties and Profile pool for side A
+\item Parties and Profile pool for side B
+\end{itemize}
+
+The tournament generation works as follows. 
+
+If there are exactly 2 agents per session and the agents and profiles for side B have been set, then bilateral generation is used. Otherwise, multilateral generation is used. This generation method creates an ordered list of sessions for 1 tournament.  If the 'Randomize Session Order' is set, the list is randomized. All sessions use the same protocol, mediator, deadline.
+This generation is called repeatedly, as set in 'repeats', and all generated session lists are accumulated in a big session list. This is the final result of the  tournament generation.
+
+\subsubsection{Multilateral generation}
+In multilateral generation,  all possible combinations of parties and profiles (using pool A) are generated as follows. the indicated number of parties per session $N$ are drawn from agent pool A, with our without return as specified in 'Party Repetition'. Also, $N$ profile items are drawn, ordered without return, from the profiles pool. These two lists are then paired into groups of $N$ party-profile pairs. 
+
+\subsubsection{Bilateral generation}
+In bilateral generation, first a set of participants P of all combinations of 1 party and 1 profile are drawn from the side A pool. Similarly a set of participants Q is drawn for the B pool. Then, the sessions set consists of all combinations of one participant from P and another participant from Q . 
+
+
+
+
 
 %=========================================================================================
 \section{Quality Measures in Genius}\label{sec:qm}
