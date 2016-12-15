@@ -20,7 +20,8 @@ import negotiator.timeline.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 
 /**
- * This is your negotiation party.
+ * Sample party that accepts the Nth offer, where N is the number of sessions
+ * this [agent-profile] already did.
  */
 public class GroupX extends AbstractNegotiationParty {
 
@@ -37,8 +38,6 @@ public class GroupX extends AbstractNegotiationParty {
 		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
 		System.out.println("Reservation Value is " + utilSpace.getReservationValueUndiscounted());
 
-		// if you need to initialize some variables, please initialize them
-		// below
 		if (getData().getPersistentDataType() != PersistentDataType.STANDARD) {
 			throw new IllegalStateException("need standard persistent data");
 		}
@@ -54,19 +53,11 @@ public class GroupX extends AbstractNegotiationParty {
 				Double util = offered.get2();
 				maxutils.put(party, maxutils.containsKey(party) ? Math.max(maxutils.get(party), util) : util);
 			}
-			System.out.println(maxutils); // notice tournament suppresses all output.
+			System.out.println(maxutils); // notice tournament suppresses all
+											// output.
 		}
 	}
 
-	/**
-	 * Each round this method gets called and ask you to accept or offer. The
-	 * first party in the first round is a bit different, it can only propose an
-	 * offer.
-	 *
-	 * @param validActions
-	 *            Either a list containing both accept and offer or only offer.
-	 * @return The chosen action.
-	 */
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		nrChosenActions++;
@@ -77,16 +68,6 @@ public class GroupX extends AbstractNegotiationParty {
 		}
 	}
 
-	/**
-	 * All offers proposed by the other parties will be received as a message.
-	 * You can use this information to your advantage, for example to predict
-	 * their utility.
-	 *
-	 * @param sender
-	 *            The party that did the action. Can be null.
-	 * @param action
-	 *            The action that party did.
-	 */
 	@Override
 	public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
