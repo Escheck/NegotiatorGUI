@@ -18,7 +18,7 @@ import negotiator.utility.AbstractUtilitySpace;
 /**
  * This is your negotiation party.
  */
-public class Groupn extends AbstractNegotiationParty {
+public class GroupX extends AbstractNegotiationParty {
 
 	private Bid lastReceivedBid = null;
 	private int nrChosenActions = 0; // number of times chosenAction was called.
