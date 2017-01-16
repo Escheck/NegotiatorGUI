@@ -30,6 +30,7 @@ import negotiator.repository.DomainRepItem;
 import negotiator.repository.PartyRepItem;
 import negotiator.repository.ProfileRepItem;
 import negotiator.repository.Repository;
+import negotiator.repository.RepositoryFactory;
 import negotiator.session.ExecutorWithTimeout;
 import negotiator.session.Session;
 import negotiator.session.SessionManager;
@@ -169,8 +170,8 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 		// bad to have absolute ref. But there's no better function in
 		// Repository...
-		DomainRepItem domain8 = Repository.getDomainByName("file:etc/templates/Domain8/Domain8.xml");
-		Repository party_rep = Repository.get_party_repository();
+		DomainRepItem domain8 = RepositoryFactory.getDomainByName("file:etc/templates/Domain8/Domain8.xml");
+		Repository<PartyRepItem> party_rep = RepositoryFactory.get_party_repository();
 
 		for (int partynr = 0; partynr < 3; partynr++) {
 			ProfileRepItem profileRepItem = domain8.getProfiles().get(partynr);
