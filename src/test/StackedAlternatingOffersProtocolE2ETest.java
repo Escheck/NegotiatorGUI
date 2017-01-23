@@ -50,7 +50,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 	@Before
 	public void before() throws IOException {
 		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
-		info = new SessionsInfo(protocol, PersistentDataType.DISABLED);
+		info = new SessionsInfo(protocol, PersistentDataType.DISABLED, false);
 	}
 
 	@After
