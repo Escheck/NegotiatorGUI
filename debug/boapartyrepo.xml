@@ -7,10 +7,10 @@
         </biddingStrategy>
         <acceptanceStrategy>
             <parameters value="0" name="b"/>
-            <parameters value="0.979999999999999982236431605997495353221893310546875" name="c"/>
-            <parameters value="0.9899999999999999911182158029987476766109466552734375" name="t"/>
+            <parameters value="0.97" name="c"/>
+            <parameters value="0.98" name="t"/>
             <parameters value="1" name="a"/>
-            <parameters value="1.0500000000000000444089209850062616169452667236328125" name="ad"/>
+            <parameters value="1.05" name="ad"/>
             <parameters value="0" name="bd"/>
             <item classpath="negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded"/>
         </acceptanceStrategy>
