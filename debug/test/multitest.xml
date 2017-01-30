@@ -11,23 +11,21 @@
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)" />
 			<partyRepItems>
-
-
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Boulware " classPath="negotiator.parties.BoulwareNegotiationParty"
 					partyName="Boulware">
 					<properties />
-				</item>
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				</party>
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Conceder" classPath="negotiator.parties.ConcederNegotiationParty"
 					partyName="Conceder">
 					<properties />
-				</item>
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				</party>
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Conceder" classPath="negotiator.parties.ConcederNegotiationParty"
 					partyName="Conceder">
 					<properties />
-				</item>
+				</party>
 			</partyRepItems>
 			<partyProfileItems>
 				<item url="file:etc/templates/partydomain/party1_utility.xml" />
@@ -50,27 +48,27 @@
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)" />
 			<partyRepItems>
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Boulware " classPath="negotiator.parties.BoulwareNegotiationParty"
 					partyName="Boulware">
 					<properties />
-				</item>
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				</party>
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Boulware " classPath="negotiator.parties.BoulwareNegotiationParty"
 					partyName="Boulware">
 					<properties />
-				</item>
+				</party>
 
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Conceder" classPath="negotiator.parties.ConcederNegotiationParty"
 					partyName="Conceder">
 					<properties />
-				</item>
-				<item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
+				</party>
+				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 					description="Conceder" classPath="negotiator.parties.ConcederNegotiationParty"
 					partyName="Conceder">
 					<properties />
-				</item>
+				</party>
 
 			</partyRepItems>
 			<partyProfileItems>

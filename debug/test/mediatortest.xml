@@ -17,11 +17,11 @@
 				</properties>
 			</mediator>
 			<partyRepItems>
-				<item protocolClassPath="negotiator.protocol.MediatorProtocol"
+				<party protocolClassPath="negotiator.protocol.MediatorProtocol"
 					description="Hill Climber" classPath="parties.simplemediator.HillClimber"
 					partyName="Hill Climber">
 					<properties />
-				</item>
+				</party>
 			</partyRepItems>
 			<partyProfileItems>
 				<item url="file:etc/templates/partydomain/party1_utility.xml" />

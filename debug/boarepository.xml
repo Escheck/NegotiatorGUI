@@ -83,7 +83,7 @@
 		<opponentmodel description="Bayesian Model" classpath="negotiator.boaframework.opponentmodel.BayesianModel"/>
 		<opponentmodel description="Perfect Scalable Bay. Model" classpath="negotiator.boaframework.opponentmodel.PerfectScalableBayesianModel"/>
 		<opponentmodel description="The Negotiator Reloaded Model" classpath="negotiator.boaframework.opponentmodel.IAMhagglerBayesianModel"/>
-		<opponentmodel description="No Model" classpath="negotiator.boaframework.opponentmodel.NoModel"/>
+		<opponentmodel description="No Model" classpath="negotiator.boaframework.NoModel"/>
 		<opponentmodel description="FSEGA Bayesian Model" classpath="negotiator.boaframework.opponentmodel.FSEGABayesianModel"/>
 		<opponentmodel description="Smith Frequency Model V2" classpath="negotiator.boaframework.opponentmodel.SmithFrequencyModelV2"/>
 		<opponentmodel description="Perfect IAMhaggler Bay. Model" classpath="negotiator.boaframework.opponentmodel.PerfectIAMhagglerBayesianModel"/>
