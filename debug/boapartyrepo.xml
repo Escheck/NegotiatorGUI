@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <boaPartiesList>
-    <boaparties partyName="test party">
+    <boaparties partyName="test2boa">
+        <properties/>
+        <biddingStrategy>
+            <item classpath="negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent_Offering"/>
+        </biddingStrategy>
+        <acceptanceStrategy>
+            <item classpath="negotiator.boaframework.acceptanceconditions.anac2012.AC_CUHKAgent"/>
+        </acceptanceStrategy>
+        <opponentModel>
+            <item classpath="negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2"/>
+        </opponentModel>
+        <omStrategy>
+            <item classpath="negotiator.boaframework.omstrategy.TheFawkes_OMS"/>
+        </omStrategy>
+    </boaparties>
+    <boaparties partyName="boatest1">
         <properties/>
         <biddingStrategy>
             <item classpath="negotiator.boaframework.offeringstrategy.anac2010.IAMhaggler2010_Offering"/>
         </biddingStrategy>
         <acceptanceStrategy>
-            <parameters value="0" name="b"/>
-            <parameters value="0.97" name="c"/>
-            <parameters value="0.98" name="t"/>
+            <parameters value="0.9899999999999999911182158029987476766109466552734375" name="t"/>
+            <parameters value="0.979999999999999982236431605997495353221893310546875" name="c"/>
+            <parameters value="1.0500000000000000444089209850062616169452667236328125" name="ad"/>
             <parameters value="1" name="a"/>
-            <parameters value="1.05" name="ad"/>
             <parameters value="0" name="bd"/>
+            <parameters value="0" name="b"/>
             <item classpath="negotiator.boaframework.acceptanceconditions.anac2012.AC_TheNegotiatorReloaded"/>
         </acceptanceStrategy>
         <opponentModel>
@@ -19,6 +34,22 @@
         </opponentModel>
         <omStrategy>
             <item classpath="negotiator.boaframework.omstrategy.NTFTstrategy"/>
+        </omStrategy>
+    </boaparties>
+    <boaparties partyName="test3">
+        <properties/>
+        <biddingStrategy>
+            <item classpath="negotiator.boaframework.offeringstrategy.anac2010.Nozomi_Offering"/>
+        </biddingStrategy>
+        <acceptanceStrategy>
+            <item classpath="negotiator.boaframework.acceptanceconditions.anac2011.AC_BRAMAgent"/>
+        </acceptanceStrategy>
+        <opponentModel>
+            <parameters value="0" name="m"/>
+            <item classpath="negotiator.boaframework.opponentmodel.BayesianModel"/>
+        </opponentModel>
+        <omStrategy>
+            <item classpath="negotiator.boaframework.omstrategy.TheFawkes_OMS"/>
         </omStrategy>
     </boaparties>
 </boaPartiesList>
