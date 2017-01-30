@@ -43,7 +43,7 @@ public class AC_Next extends AcceptanceStrategy {
 
 	@Override
 	public void init(NegotiationSession negoSession, OfferingStrategy strat,
-			OpponentModel opponentModel, HashMap<String, Double> parameters)
+			OpponentModel opponentModel, Map<String, Double> parameters)
 			throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
