@@ -29,29 +29,6 @@ public class BestBid extends OMStrategy {
 	double updateThreshold = 1.1;
 
 	/**
-	 * Empty constructor for the BOA framework.
-	 */
-	public BestBid() {
-	}
-
-	/**
-	 * Normal constructor used to initialize the BestBid opponent model
-	 * strategy.
-	 * 
-	 * @param negotiationSession
-	 *            symbolizing the negotiation state.
-	 * @param model
-	 *            used by the opponent model strategy.
-	 */
-	public BestBid(NegotiationSession negotiationSession, OpponentModel model) {
-		try {
-			super.init(negotiationSession, model);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Initializes the opponent model strategy. If a value for the parameter t
 	 * is given, then it is set to this value. Otherwise, the default value is
 	 * used.
@@ -64,8 +41,8 @@ public class BestBid extends OMStrategy {
 	 * @param parameters
 	 *            set of parameters for this opponent model strategy.
 	 */
-	public void init(NegotiationSession negotiationSession,
-			OpponentModel model, HashMap<String, Double> parameters)
+	@Override
+	public void init(NegotiationSession negotiationSession, OpponentModel model, Map<String, Double> parameters)
 			throws Exception {
 		super.init(negotiationSession, model);
 		if (parameters.get("t") != null) {
@@ -130,8 +107,7 @@ public class BestBid extends OMStrategy {
 	@Override
 	public Set<BOAparameter> getParameters() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter("t", new BigDecimal(1.1),
-				"Time after which the OM should not be updated"));
+		set.add(new BOAparameter("t", new BigDecimal(1.1), "Time after which the OM should not be updated"));
 		return set;
 	}
 }
