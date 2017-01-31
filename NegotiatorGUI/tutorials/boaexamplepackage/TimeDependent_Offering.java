@@ -1,6 +1,5 @@
 package boaexamplepackage;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -149,10 +148,10 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	@Override
 	public Set<BOAparameter> getParameterSpec() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter("e", new BigDecimal(1.0), "Concession rate"));
-		set.add(new BOAparameter("k", new BigDecimal(0.0), "Offset"));
-		set.add(new BOAparameter("min", new BigDecimal(0.0), "Minimum utility"));
-		set.add(new BOAparameter("max", new BigDecimal(0.99), "Maximum utility"));
+		set.add(new BOAparameter("e", 1.0, "Concession rate"));
+		set.add(new BOAparameter("k", 0.0, "Offset"));
+		set.add(new BOAparameter("min", 0.0, "Minimum utility"));
+		set.add(new BOAparameter("max", 0.99, "Maximum utility"));
 
 		return set;
 	}

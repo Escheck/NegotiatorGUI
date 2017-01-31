@@ -1,6 +1,5 @@
 package boaexamplepackage;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +104,7 @@ public class BestBid extends OMStrategy {
 	@Override
 	public Set<BOAparameter> getParameterSpec() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter("t", new BigDecimal(1.1), "Time after which the OM should not be updated"));
+		set.add(new BOAparameter("t", 1.1, "Time after which the OM should not be updated"));
 		return set;
 	}
 

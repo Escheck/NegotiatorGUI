@@ -1,6 +1,5 @@
 package boaexamplepackage;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -189,7 +188,7 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 	@Override
 	public Set<BOAparameter> getParameterSpec() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter("l", new BigDecimal(0.2),
+		set.add(new BOAparameter("l", 0.2,
 				"The learning coefficient determines how quickly the issue weights are learned"));
 		return set;
 	}
