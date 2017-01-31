@@ -686,12 +686,7 @@ We have a number of items:
 
 \item A party item  (and mediator) contains:
   \begin{itemize}
-    \item \raggedright \textbf{protocolClassPath}. This is the protocol that this party assumes to be used. 
-    		You will get errors like "used with wrong protocol" if your party is used in the wrong protocol context. 
-		Protocols were discussed in section \ref{sec:protocols}.
-    \item \textbf{description}A plain text description of this party
     \item \textbf{classPath} the java.party.class.path to the main class. That class must implement the NegotiationParty interface
-    \item \textbf{partyName} the plain text name of the party
     \item \textbf{properties} can contain a number of \verb|<property>| nodes with these values
     		\begin{itemize}
 		\item isMediator: this property indicates the party item is a mediator. If not set, the party will be 
