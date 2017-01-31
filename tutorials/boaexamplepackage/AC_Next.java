@@ -1,6 +1,5 @@
 package boaexamplepackage;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -75,9 +74,9 @@ public class AC_Next extends AcceptanceStrategy {
 	public Set<BOAparameter> getParameterSpec() {
 
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter("a", new BigDecimal(1.0),
+		set.add(new BOAparameter("a", 1.0,
 				"Accept when the opponent's utility * a + b is greater than the utility of our current bid"));
-		set.add(new BOAparameter("b", new BigDecimal(0.0),
+		set.add(new BOAparameter("b", 0.0,
 				"Accept when the opponent's utility * a + b is greater than the utility of our current bid"));
 
 		return set;
