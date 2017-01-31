@@ -183,7 +183,7 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 
 	@Override
 	public String getName() {
-		return "HardHeaded Frequency Model";
+		return "HardHeaded Frequency Model example";
 	}
 
 	@Override
