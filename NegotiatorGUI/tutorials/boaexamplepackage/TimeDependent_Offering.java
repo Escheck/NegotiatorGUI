@@ -1,8 +1,8 @@
 package boaexamplepackage;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import negotiator.bidding.BidDetails;
@@ -25,13 +25,11 @@ import negotiator.boaframework.SortedOutcomeSpace;
  * Note that this agent is not fully equivalent to the theoretical model,
  * loading the domain may take some time, which may lead to the agent skipping
  * the first bid. A better implementation is GeniusTimeDependent_Offering.
- * 
- * @author Alex Dirkzwager, Mark Hendrikx
  */
 public class TimeDependent_Offering extends OfferingStrategy {
 
 	/**
-	 * k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility
+	 * k in [0, 1]. For k = 0 the agent starts with a bid of maximum utility
 	 */
 	private double k;
 	/** Maximum target utility */
@@ -41,34 +39,16 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	/** Concession factor */
 	private double e;
 	/** Outcome space */
-	SortedOutcomeSpace outcomespace;
-
-	/**
-	 * Empty constructor used for reflexion. Note this constructor assumes that
-	 * init is called next.
-	 */
-	public TimeDependent_Offering() {
-	}
-
-	public TimeDependent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, double e,
-			double k, double max, double min) {
-		this.e = e;
-		this.k = k;
-		this.Pmax = max;
-		this.Pmin = min;
-		this.negotiationSession = negoSession;
-		outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
-		negotiationSession.setOutcomeSpace(outcomespace);
-		this.opponentModel = model;
-		this.omStrategy = oms;
-	}
+	private SortedOutcomeSpace outcomespace;
 
 	/**
 	 * Method which initializes the agent by setting all parameters. The
 	 * parameter "e" is the only parameter which is required.
 	 */
+	@Override
 	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms,
-			HashMap<String, Double> parameters) throws Exception {
+			Map<String, Double> parameters) throws Exception {
+		super.init(negoSession, parameters);
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;
 
