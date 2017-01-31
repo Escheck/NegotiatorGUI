@@ -35,7 +35,6 @@ import negotiator.utility.EvaluatorDiscrete;
  * Jonker. Decoupling Negotiating Agents to Explore the Space of Negotiation
  * Strategies
  * 
- * @author Mark Hendrikx
  */
 public class HardHeadedFrequencyModel extends OpponentModel {
 
@@ -54,6 +53,7 @@ public class HardHeadedFrequencyModel extends OpponentModel {
 	 */
 	@Override
 	public void init(NegotiationSession negotiationSession, Map<String, Double> parameters) {
+		super.init(negotiationSession, parameters);
 		this.negotiationSession = negotiationSession;
 		if (parameters != null && parameters.get("l") != null) {
 			learnCoef = parameters.get("l");
