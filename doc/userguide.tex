@@ -1185,7 +1185,7 @@ The next step is to specify three variants of the acceptance strategy differing 
 This section discusses how create your own components. An example implementation of each component is included in the ``boaexamplepackage'' folder. The next section discusses how these components can be added to the list of available components in the BOA framework GUI.
 
 \subsubsection{Parameters}
-All BOA components have the same mechanism to be tuned with parameters. 
+All BOA components have the same mechanism to be tuned with parameters. They should have no constructor : the default empty constructor will be called. They initialize through a call to init().
 
 The parameters and their default parameters are indicated by the component by overriding the getParameters() function. This function should return a set of $BAOparameter$ objects, each parameter having a unique name, description and default value.
 
@@ -1193,7 +1193,7 @@ The parameters and their default parameters are indicated by the component by ov
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
-\texttt{public Set<BOAparameter> getParameters() }\\
+\texttt{public Set<BOAparameter> getParameterSpec() }\\
  Override this function to add parameters to the module.\\
 \hline
 \end{tabular}
@@ -1213,7 +1213,7 @@ An approach often taken by many bidding strategies is to first generate all poss
 \begin{tabular}{m{0.9\textwidth}}
 \hline
 \texttt{void init(NegotiationSession negotiationSession, OpponentModel opponentModel, 
-						OMStrategy omStrategy, HashMap<String, Double> parameters)}\\
+	OMStrategy omStrategy, Map<String, Double> parameters)}\\
 Method directly called after creating the agent which should be used to initialize the component.\\
 \hline
 \texttt{BidDetails determineOpeningBid()}\\
@@ -1235,7 +1235,7 @@ This section discusses how to create an acceptance strategy class by extending t
 \begin{tabular}{m{0.9\textwidth}}
 \hline
 \texttt{void init(NegotiationSession negotiationSession, OfferingStrategy offeringStrategy,
-						OpponentModel opponentModel, HashMap<String, Double> parameters)}\\
+			OpponentModel opponentModel, Map<String, Double> parameters)}\\
 Method directly called after creating the agent which should be used to initialize the component.\\
 \hline
 \texttt{Actions determineAcceptability()}\\
@@ -1252,7 +1252,7 @@ This section discusses how to create an opponent model by extending the abstract
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
-\texttt{void init(NegotiationSession negotiationSession, HashMap<String, Double> parameters)}\\
+\texttt{void init(NegotiationSession negotiationSession, Map<String, Double> parameters)}\\
 Method directly called after creating the agent which should be used to initialize the component.\\
 \hline
 \texttt{double getBidEvaluation(Bid bid)}\\
@@ -1275,7 +1275,7 @@ This section discusses how to create an opponent model strategy by extending the
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
-\texttt{void init(NegotiationSession negotiationSession, OpponentModel model, HashMap<String, Double> parameters)}\\
+\texttt{void init(NegotiationSession negotiationSession, OpponentModel model, Map<String, Double> parameters)}\\
 Method directly called after creating the agent which should be used to initialize the component.\\
 \hline
 \texttt{BidDetails getBid(List<BidDetails> bidsInRange);}\\
