@@ -2,29 +2,23 @@
 <multilateralTournamentsConfiguration>
 	<tournaments>
 		<tournament>
-            <deadline>
-                <value>12</value>
-                <type>TIME</type>
-            </deadline>
+			<deadline>
+				<value>12</value>
+				<type>TIME</type>
+			</deadline>
 			<protocolItem hasMediatorProfile="false" hasMediator="false"
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)" />
 			<partyRepItems>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="18. agents.anac.y2015.group2.Group2 " classPath="agents.anac.y2015.group2.Group2"
-					partyName="ANAC2015-18-Group2">
+				<party classPath="agents.anac.y2015.group2.Group2">
 					<properties />
 				</party>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="19. PokerFace" classPath="agents.anac.y2015.pokerface.PokerFace"
-					partyName="ANAC2015-19-PokerFace">
+				<party classPath="agents.anac.y2015.pokerface.PokerFace">
 					<properties />
 				</party>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="20. TUDMixedStrategy"
-					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent"
-					partyName="ANAC2015-20-TUDMixedStrategy">
+				<party
+					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent">
 					<properties />
 				</party>
 			</partyRepItems>
@@ -40,35 +34,27 @@
 		</tournament>
 
 		<tournament>
-            <deadline>
-                <value>10</value>
-                <type>ROUND</type>
-            </deadline>
+			<deadline>
+				<value>10</value>
+				<type>ROUND</type>
+			</deadline>
 			<protocolItem hasMediatorProfile="false" hasMediator="false"
 				description="Each agents makes offer, counter-offer, or accepts"
 				classPath="negotiator.protocol.StackedAlternatingOffersProtocol"
 				protocolName="Stacked Alternating Offers Protocol for Multi-Lateral Negotiation (SAOPMN)" />
 			<partyRepItems>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="18. agents.anac.y2015.group2.Group2 " classPath="agents.anac.y2015.group2.Group2"
-					partyName="ANAC2015-18-Group2">
+				<party classPath="agents.anac.y2015.group2.Group2">
 					<properties />
 				</party>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="19. PokerFace" classPath="agents.anac.y2015.pokerface.PokerFace"
-					partyName="ANAC2015-19-PokerFace">
+				<party classPath="agents.anac.y2015.pokerface.PokerFace">
 					<properties />
 				</party>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="20. TUDMixedStrategy"
-					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent"
-					partyName="ANAC2015-20-TUDMixedStrategy">
+				<party
+					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent">
 					<properties />
 				</party>
-				<party protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"
-					description="20. TUDMixedStrategy"
-					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent"
-					partyName="ANAC2015-20-TUDMixedStrategy">
+				<party
+					classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent">
 					<properties />
 				</party>
 
