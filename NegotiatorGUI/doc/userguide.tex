@@ -1532,9 +1532,7 @@ Locate the Parties repository tab in the GUI (Figure \ref{fig:partiesrepo}). Rig
 To do this manually, quit \Genius , open the \verb|partyrepository.xml| file and add a section like this
 
 \begin{lstlisting}
-<partyRepItem description="description for your agent"
-	classPath="class.of.your.agent" partyName="nameForYourAgent"
-	protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
+<partyRepItem classPath="class.of.your.agent" <properties/> />
 \end{lstlisting}
 
 After that you can restart \Genius .
