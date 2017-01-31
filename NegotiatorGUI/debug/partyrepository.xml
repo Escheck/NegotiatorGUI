@@ -1,380 +1,323 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <repository fileName="partyrepository.xml">
-	<items>
-		<agentRepItems />
-		<partyRepItems>
-			<partyRepItem description="Deadline-based boulware agent"
-				classPath="negotiator.parties.BoulwareNegotiationParty" partyName="Boulware"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="Deadline-based conceder agent"
-				classPath="negotiator.parties.ConcederNegotiationParty" partyName="Conceder"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="Simple UI party"
-				classPath="negotiator.parties.CounterOfferHumanNegotiationParty"
-				partyName="UI Party" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol">
-			</partyRepItem>
-			<partyRepItem description="Random party"
-				classPath="negotiator.parties.RandomCounterOfferNegotiationParty"
-				partyName="Random party" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol">
-			</partyRepItem>
-			<partyRepItem description="Random party 2"
-				classPath="negotiator.parties.RandomCounterOfferNegotiationParty"
-				partyName="Random party 2" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol">
-			</partyRepItem>
-
-			<!-- ANAC2015 agents -->
-			<partyRepItem description="1. Phoenix"
-				classPath="agents.anac.y2015.Phoenix.PhoenixParty" partyName="ANAC2015-1-Phoenix"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="2. CUHK"
-				classPath="agents.anac.y2015.cuhkagent2015.CUHKAgent2015" partyName="ANAC2015-2-CUHK"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="3. ParsAgent"
-				classPath="agents.anac.y2015.ParsAgent.ParsAgent" partyName="ANAC2015-3-ParsAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="4. Ares"
-				classPath="agents.anac.y2015.AresParty.AresParty" partyName="ANAC2015-4-Ares"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="5. Mercury "
-				classPath="agents.anac.y2015.Mercury.Mercury" partyName="ANAC2015-5-Mercury"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="6. Atlas"
-				classPath="agents.anac.y2015.Atlas3.Atlas3" partyName="ANAC2015-6-Atlas"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="7. AgentH "
-				classPath="agents.anac.y2015.agenth.AgentH" partyName="ANAC2015-7-AgentH"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="8. SENGOKU"
-				classPath="agents.anac.y2015.SENGOKU.SENGOKU" partyName="ANAC2015-8-SENGOKU"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="9. AgentW"
-				classPath="agents.anac.y2015.AgentW.AgentW" partyName="ANAC2015-9-AgentW"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="10.  agents.anac.y2015.AgentX.AgentX "
-				classPath="agents.anac.y2015.AgentX.AgentX" partyName="ANAC2015-10-AgentX"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="11. DrageKnight"
-				classPath="agents.anac.y2015.DrageKnight.DrageKnight" partyName="ANAC2015-11-DrageKnight"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="12. Kawaii"
-				classPath="agents.anac.y2015.fairy.kawaii" partyName="ANAC2015-12-Kawaii"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="13. Buyog"
-				classPath="agents.anac.y2015.agentBuyogV2.AgentBuyogMain" partyName="ANAC2015-13-Buyog"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="14. XianFa"
-				classPath="agents.anac.y2015.xianfa.XianFaAgent" partyName="ANAC2015-14-XianFa"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="15. Neo"
-				classPath="agents.anac.y2015.AgentNeo.Groupn" partyName="ANAC2015-15-Neo"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="17. HP"
-				classPath="agents.anac.y2015.AgentHP.AgentHP" partyName="ANAC2015-17-HP"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="18. agents.anac.y2015.group2.Group2 "
-				classPath="agents.anac.y2015.group2.Group2" partyName="ANAC2015-18-Group2"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="19. PokerFace"
-				classPath="agents.anac.y2015.pokerface.PokerFace" partyName="ANAC2015-19-PokerFace"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="20. TUDMixedStrategy"
-				classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent"
-				partyName="ANAC2015-20-TUDMixedStrategy" protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="21. Mean"
-				classPath="agents.anac.y2015.meanBot.MeanBot" partyName="ANAC2015-21-Mean"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="22. PNegotiator"
-				classPath="agents.anac.y2015.pnegotiator.PNegotiator" partyName="ANAC2015-22-PNegotiator"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="23. RandomDance"
-				classPath="agents.anac.y2015.RandomDance.RandomDance" partyName="ANAC2015-23-RandomDance"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-			<partyRepItem description="24. JonnyBlack"
-				classPath="agents.anac.y2015.JonnyBlack.JonnyBlack" partyName="ANAC2015-24-JonnyBlack"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" />
-
-
-			<!-- Old Agents, refactored as parties -->
-			<partyRepItem description="Utility Based Acceptor"
-				classPath="agents.UtilityBasedAcceptor" partyName="Utility Based Acceptor"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - AgentFSEGA"
-				classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA" partyName="ANAC 2010 - AgentFSEGA"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - AgentK"
-				classPath="agents.anac.y2010.AgentK.Agent_K"
-				partyName="ANAC 2010 - AgentK (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - IAMhaggler"
-				classPath="agents.anac.y2010.Southampton.IAMhaggler" partyName="ANAC 2010 - IAMhaggler"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - IAMcrazyHaggler"
-				classPath="agents.anac.y2010.Southampton.IAMcrazyHaggler" partyName="ANAC 2010 - IAMcrazyHaggler"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - AgentSmith"
-				classPath="agents.anac.y2010.AgentSmith.AgentSmith" partyName="ANAC 2010 - AgentSmith"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - Nozomi"
-				classPath="agents.anac.y2010.Nozomi.Nozomi" partyName="ANAC 2010 - Nozomi"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2010 - Yushu"
-				classPath="agents.anac.y2010.Yushu.Yushu" partyName="ANAC 2010 - Yushu"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - TheNegotiator"
-				classPath="agents.anac.y2011.TheNegotiator.TheNegotiator" partyName="ANAC 2011 - TheNegotiator"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - ValueModelAgent"
-				classPath="agents.anac.y2011.ValueModelAgent.ValueModelAgent"
-				partyName="ANAC 2011 - ValueModelAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - Gahboninho"
-				classPath="agents.anac.y2011.Gahboninho.Gahboninho"
-				partyName="ANAC 2011 - Gahboninho (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - BRAMAgent"
-				classPath="agents.anac.y2011.BramAgent.BRAMAgent" partyName="ANAC 2011 - BRAMAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - HardHeaded"
-				classPath="agents.anac.y2011.HardHeaded.KLH" partyName="ANAC 2011 - HardHeaded"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - Nice Tit for Tat"
-				classPath="agents.anac.y2011.Nice_Tit_for_Tat.NiceTitForTat"
-				partyName="ANAC 2011 - Nice Tit fo Tat"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - IAMhaggler2011"
-				classPath="agents.anac.y2011.IAMhaggler2011.IAMhaggler2011"
-				partyName="ANAC 2011 - IAMhaggler2011" 
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2011 - AgentK2"
-				classPath="agents.anac.y2011.AgentK2.Agent_K2"
-				partyName="ANAC 2011 - AgentK2 (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - AgentLG"
-				classPath="agents.anac.y2012.AgentLG.AgentLG" partyName="ANAC 2012 - AgentLG"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - AgentMR"
-				classPath="agents.anac.y2012.AgentMR.AgentMR" partyName="ANAC 2012 - AgentMR"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - The Negotiator Reloaded"
-				classPath="agents.anac.y2012.TheNegotiatorReloaded.TheNegotiatorReloaded"
-				partyName="ANAC 2012 - The Negotiator Reloaded" 
-								protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-
-			<partyRepItem description="ANAC 2012 - BRAMAgent2"
-				classPath="agents.anac.y2012.BRAMAgent2.BRAMAgent2" partyName="ANAC 2012 - BRAMAgent2"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - CUHKAgent"
-				classPath="agents.anac.y2012.CUHKAgent.CUHKAgent" partyName="ANAC 2012 - CUHKAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - IAMhaggler2012"
-				classPath="agents.anac.y2012.IAMhaggler2012.IAMhaggler2012"
-				partyName="ANAC 2012 - IAMhaggler2012" 
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - MetaAgent"
-				classPath="agents.anac.y2012.MetaAgent.MetaAgent" partyName="ANAC 2012 - MetaAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2012 - OMACAgent"
-				classPath="agents.anac.y2012.OMACagent.OMACagent" partyName="ANAC 2012 - OMACAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - InoxAgent"
-				classPath="agents.anac.y2013.InoxAgent.InoxAgent" partyName="ANAC 2013 - InoxAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - TheFawkes"
-				classPath="agents.anac.y2013.TheFawkes.TheFawkes" partyName="ANAC 2013 - TheFawkes"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - AgentKF"
-				classPath="agents.anac.y2013.AgentKF.AgentKF"
-				partyName="ANAC 2013 - AgentKF (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - GAgent"
-				classPath="agents.anac.y2013.GAgent.AgentI" partyName="ANAC 2013 - GAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - Meta-Agent"
-				classPath="agents.anac.y2013.MetaAgent.MetaAgent" partyName="ANAC 2013 - Meta-Agent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - Slava Agent"
-				classPath="agents.anac.y2013.SlavaAgent.SlavaAgent"
-				partyName="ANAC 2013 - SlavaAgent (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="ANAC 2013 - TMFAgent"
-				classPath="agents.anac.y2013.TMFAgent.TMFAgent" partyName="ANAC 2013 - TMFAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - AgentM (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentM.AgentM" description="ANAC 2014 - AgentM"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - AgentQuest (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentQuest.AgentQuest" description="ANAC 2014 - AgentQuest"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - AgentTD (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentTD.AgentTD" description="ANAC 2014 - AgentTD"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - AgentTRP (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentTRP.AgentTRP" description="ANAC 2014 - AgentTRP"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - WhaleAgent (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentWhale.WhaleAgent" description="ANAC 2014 - WhaleAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - AgentYK (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.AgentYK.AgentYK" description="ANAC 2014 - AgentYK"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - ArisawaYaki (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.ArisawaYaki.ArisawaYaki" description="ANAC 2014 - ArisawaYaki"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Aster (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.Aster.Aster" description="ANAC 2014 - Aster"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Atlas (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.Atlas.Atlas" description="ANAC 2014 - Atlas"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - BraveCat (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.BraveCat.BraveCat" description="ANAC 2014 - BraveCat"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - DoNA (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.DoNA.DoNA" description="ANAC 2014 - DoNA"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - E2Agent (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.E2Agent.AnacSampleAgent" description="ANAC 2014 - E2Agent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Flinch (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.Flinch.Flinch" description="ANAC 2014 - Flinch"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Gangster (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.Gangster.Gangster" description="ANAC 2014 - Gangster"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - kGA_gent (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.KGAgent.KGAgent" description="ANAC 2014 - kGA_gent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Simpatico (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.SimpaticoAgent.Simpatico" description="ANAC 2014 - Simpatico"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Sobut (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.Sobut.Sobut" description="ANAC 2014 - Sobut"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				partyName="ANAC 2014 - Group2Agent (compatible with non-linear utility spaces)"
-				classPath="agents.anac.y2014.TUDelftGroup2.Group2Agent" description="ANAC 2014 - Group2Agent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Simple UI agent" classPath="agents.UIAgent"
-				partyName="UIAgent" 
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="UI agent with advanced GUI (by Alina)"
-				classPath="agents.UIAgentExtended" partyName="UIAgent Extended"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="The Random Walker" classPath="agents.SimpleAgent"
-				partyName="The Random Walker (compatible with non-linear utility spaces)"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Improved Random Walker"
-				classPath="agents.SimpleAgt2" partyName="Improved Random Walker"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				description="Trade-Off agent designed by P. Faratin, C. Sierra and N. R. Jennings"
-				classPath="agents.SimilarityAgent" partyName="Trade-Off agent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem
-				description="Fuzzy agent designed by Zaynab Raeesy and Ryszard Kowalczyk"
-				classPath="agents.FuzzyAgent" partyName="FuzzyAgent"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Boulware"
-				classPath="agents.TimeDependentAgentBoulware" partyName="Boulware"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Conceder"
-				classPath="agents.TimeDependentAgentConceder" partyName="Conceder"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Hardliner"
-				classPath="agents.TimeDependentAgentHardliner" partyName="Hardliner"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Conceder Linear"
-				classPath="agents.TimeDependentAgentLinear" partyName="Conceder Linear"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Immediate Acceptor"
-				classPath="agents.ImmediateAcceptor" partyName="Immediate Acceptor"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Implementation of optimal bidder."
-				classPath="agents.OptimalBidderSimple" partyName="OptimalBidderSimple"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Implementation of FunctionalAcceptor."
-				classPath="agents.FunctionalAcceptor" partyName="FunctionalAcceptor"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="" classPath="agents.BayesianAgent"
-				partyName="BayesianAgent" 
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="" classPath="agents.ABMPAgent2"
-				partyName="ABMPAgent2" 
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-			<partyRepItem description="Simplistic Tit for Tat Agent"
-				classPath="agents.SimpleTitForTatPN" partyName="SimpleTitForTatPN"
-				protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol"/>
-
-			<!-- negotiator.protocol.AlternatingMultipleOffersProtocol -->
-			<partyRepItem description="Random AMOP Party"
-				classPath="parties.AlternatingMultipleOffers.RandomAmopParty"
-				partyName="Random AMOP Party" protocolClassPath="negotiator.protocol.AlternatingMultipleOffersProtocol">
-			</partyRepItem>
-			<!-- negotiator.protocol.AlternatingMajorityConsensusProtocol -->
-			<partyRepItem description="Random AMOP Party"
-				classPath="parties.AlternatingMultipleOffers.RandomAmopPartyMajority"
-				partyName="Random AMOP Party" protocolClassPath="negotiator.protocol.AlternatingMajorityConsensusProtocol">
-			</partyRepItem>
-
-			<!-- negotiator.protocol.SimpleMediatorBasedProtocol -->
-			<partyRepItem description="Random Flipping Mediator"
-				classPath="parties.simplemediator.RandomFlippingMediator" partyName="Random Flipping Mediator"
-				protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
-				<properties>
-					<property>isMediator</property>
-				</properties>
-			</partyRepItem>
-			<partyRepItem description="Fixed Order Flipping Mediator"
-				classPath="parties.simplemediator.FixedOrderFlippingMediator"
-				partyName="Fixed Order Flipping Mediator" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol">
-				<properties>
-					<property>isMediator</property>
-				</properties>
-			</partyRepItem>
-
-			<partyRepItem description="Hill Climber"
-				classPath="parties.simplemediator.HillClimber" partyName="Hill Climber"
-				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol" />
-			<partyRepItem description="Annealer"
-				classPath="parties.simplemediator.Annealer" partyName="Annealer"
-				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol" />
-			<partyRepItem description="Feedback Negotiator"
-				classPath="parties.simplemediator.FeedbackParty" partyName="Feedback"
-				isMediator="false" protocolClassPath="negotiator.protocol.SimpleMediatorBasedProtocol" />
-
-			<!-- negotiator.protocol.MediatorFeedbackBasedProtocol -->
-			<partyRepItem description="Feedback Mediator"
-				classPath="parties.feedbackmediator.FeedbackMediator" partyName="Feedback Mediator"
-				protocolClassPath="negotiator.protocol.MediatorFeedbackBasedProtocol">
-				<properties>
-					<property>isMediator</property>
-				</properties>
-			</partyRepItem>
-			<partyRepItem description="Feedback Hillclimber"
-				classPath="negotiator.parties.FeedbackHillClimber" partyName="Feedback Hillclimber"
-				isMediator="false" protocolClassPath="negotiator.protocol.MediatorFeedbackBasedProtocol" />
-
-
-		</partyRepItems>
-		<domainRepItem />
-		<protocolRepItem />
-		<multiPartyProtocolRepItem />
-	</items>
+    <items>
+        <agentRepItems/>
+        <partyRepItems>
+            <partyRepItem classPath="negotiator.parties.BoulwareNegotiationParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="negotiator.parties.ConcederNegotiationParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="negotiator.parties.CounterOfferHumanNegotiationParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="negotiator.parties.RandomCounterOfferNegotiationParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="negotiator.parties.RandomCounterOfferNegotiationParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.Phoenix.PhoenixParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.cuhkagent2015.CUHKAgent2015">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.ParsAgent.ParsAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.AresParty.AresParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.Mercury.Mercury">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.Atlas3.Atlas3">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.agenth.AgentH">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.SENGOKU.SENGOKU">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.AgentW.AgentW">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.AgentX.AgentX">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.DrageKnight.DrageKnight">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.fairy.kawaii">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.agentBuyogV2.AgentBuyogMain">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.xianfa.XianFaAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.AgentNeo.Groupn">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.AgentHP.AgentHP">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.group2.Group2">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.pokerface.PokerFace">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.TUDMixedStrategyAgent.TUDMixedStrategyAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.meanBot.MeanBot">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.pnegotiator.PNegotiator">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.RandomDance.RandomDance">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2015.JonnyBlack.JonnyBlack">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.UtilityBasedAcceptor">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.AgentFSEGA.AgentFSEGA">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.AgentK.Agent_K">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.Southampton.IAMhaggler">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.Southampton.IAMcrazyHaggler">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.AgentSmith.AgentSmith">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.Nozomi.Nozomi">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2010.Yushu.Yushu">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.TheNegotiator.TheNegotiator">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.ValueModelAgent.ValueModelAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.Gahboninho.Gahboninho">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.BramAgent.BRAMAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.HardHeaded.KLH">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.Nice_Tit_for_Tat.NiceTitForTat">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.IAMhaggler2011.IAMhaggler2011">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2011.AgentK2.Agent_K2">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.AgentLG.AgentLG">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.AgentMR.AgentMR">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.TheNegotiatorReloaded.TheNegotiatorReloaded">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.BRAMAgent2.BRAMAgent2">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.CUHKAgent.CUHKAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.IAMhaggler2012.IAMhaggler2012">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.MetaAgent.MetaAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2012.OMACagent.OMACagent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.InoxAgent.InoxAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.TheFawkes.TheFawkes">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.AgentKF.AgentKF">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.GAgent.AgentI">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.MetaAgent.MetaAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.SlavaAgent.SlavaAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2013.TMFAgent.TMFAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentM.AgentM">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentQuest.AgentQuest">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentTD.AgentTD">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentTRP.AgentTRP">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentWhale.WhaleAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.AgentYK.AgentYK">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.ArisawaYaki.ArisawaYaki">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.Aster.Aster">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.Atlas.Atlas">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.BraveCat.BraveCat">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.DoNA.DoNA">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.E2Agent.AnacSampleAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.Flinch.Flinch">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.Gangster.Gangster">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.KGAgent.KGAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.SimpaticoAgent.Simpatico">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.Sobut.Sobut">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.anac.y2014.TUDelftGroup2.Group2Agent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.UIAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.UIAgentExtended">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.SimpleAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.SimpleAgt2">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.SimilarityAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.FuzzyAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.TimeDependentAgentBoulware">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.TimeDependentAgentConceder">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.TimeDependentAgentHardliner">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.TimeDependentAgentLinear">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.ImmediateAcceptor">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.OptimalBidderSimple">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.FunctionalAcceptor">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.BayesianAgent">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.ABMPAgent2">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="agents.SimpleTitForTatPN">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.AlternatingMultipleOffers.RandomAmopParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.AlternatingMultipleOffers.RandomAmopPartyMajority">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.simplemediator.RandomFlippingMediator">
+                <properties>
+                    <property>isMediator</property>
+                </properties>
+            </partyRepItem>
+            <partyRepItem classPath="parties.simplemediator.FixedOrderFlippingMediator">
+                <properties>
+                    <property>isMediator</property>
+                </properties>
+            </partyRepItem>
+            <partyRepItem classPath="parties.simplemediator.HillClimber">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.simplemediator.Annealer">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.simplemediator.FeedbackParty">
+                <properties/>
+            </partyRepItem>
+            <partyRepItem classPath="parties.feedbackmediator.FeedbackMediator">
+                <properties>
+                    <property>isMediator</property>
+                </properties>
+            </partyRepItem>
+            <partyRepItem classPath="negotiator.parties.FeedbackHillClimber">
+                <properties/>
+            </partyRepItem>
+        </partyRepItems>
+        <domainRepItem/>
+        <protocolRepItem/>
+        <multiPartyProtocolRepItem/>
+    </items>
 </repository>
