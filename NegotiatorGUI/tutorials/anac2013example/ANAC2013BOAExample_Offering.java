@@ -1,7 +1,7 @@
 package anac2013example;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.Map;
 
 import negotiator.Bid;
 import negotiator.NegotiationResult;
@@ -32,9 +32,8 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 	}
 
 	@Override
-	public void init(NegotiationSession negotiationSession,
-			OpponentModel opponentModel, OMStrategy omStrategy,
-			HashMap<String, Double> parameters) throws Exception {
+	public void init(NegotiationSession negotiationSession, OpponentModel opponentModel, OMStrategy omStrategy,
+			Map<String, Double> parameters) {
 		this.negotiationSession = negotiationSession;
 		this.opponentModel = opponentModel;
 		this.omStrategy = omStrategy;
@@ -58,11 +57,9 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 		Bid bid = null;
 		try {
 			do {
-				bid = negotiationSession.getUtilitySpace().getDomain()
-						.getRandomBid(null);
+				bid = negotiationSession.getUtilitySpace().getDomain().getRandomBid(null);
 			} while (negotiationSession.getUtilitySpace().getUtility(bid) < breakoff);
-			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace()
-					.getUtility(bid));
+			nextBid = new BidDetails(bid, negotiationSession.getUtilitySpace().getUtility(bid));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,8 +75,7 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 		if (result.isAgreement()) {
 			// if utility received was higher than target, increase target
 			if (result.getMyDiscountedUtility() > breakoff) {
-				System.out.println("Accept, my new target is: "
-						+ result.getMyDiscountedUtility());
+				System.out.println("Accept, my new target is: " + result.getMyDiscountedUtility());
 				storeData(new Double(result.getMyDiscountedUtility()));
 			}
 		} else {
@@ -88,5 +84,10 @@ public class ANAC2013BOAExample_Offering extends OfferingStrategy {
 			System.out.println("No accept, my new target is: " + newBreakoff);
 			storeData(new Double(newBreakoff));
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "ANAC2013BOA Example Offering";
 	}
 }

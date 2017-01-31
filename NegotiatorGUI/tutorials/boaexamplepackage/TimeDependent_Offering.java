@@ -30,7 +30,9 @@ import negotiator.boaframework.SortedOutcomeSpace;
  */
 public class TimeDependent_Offering extends OfferingStrategy {
 
-	/** k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility */
+	/**
+	 * k \in [0, 1]. For k = 0 the agent starts with a bid of maximum utility
+	 */
 	private double k;
 	/** Maximum target utility */
 	private double Pmax;
@@ -48,16 +50,14 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	public TimeDependent_Offering() {
 	}
 
-	public TimeDependent_Offering(NegotiationSession negoSession,
-			OpponentModel model, OMStrategy oms, double e, double k,
-			double max, double min) {
+	public TimeDependent_Offering(NegotiationSession negoSession, OpponentModel model, OMStrategy oms, double e,
+			double k, double max, double min) {
 		this.e = e;
 		this.k = k;
 		this.Pmax = max;
 		this.Pmin = min;
 		this.negotiationSession = negoSession;
-		outcomespace = new SortedOutcomeSpace(
-				negotiationSession.getUtilitySpace());
+		outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 		negotiationSession.setOutcomeSpace(outcomespace);
 		this.opponentModel = model;
 		this.omStrategy = oms;
@@ -67,14 +67,12 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	 * Method which initializes the agent by setting all parameters. The
 	 * parameter "e" is the only parameter which is required.
 	 */
-	public void init(NegotiationSession negoSession, OpponentModel model,
-			OMStrategy oms, HashMap<String, Double> parameters)
-			throws Exception {
+	public void init(NegotiationSession negoSession, OpponentModel model, OMStrategy oms,
+			HashMap<String, Double> parameters) throws Exception {
 		if (parameters.get("e") != null) {
 			this.negotiationSession = negoSession;
 
-			outcomespace = new SortedOutcomeSpace(
-					negotiationSession.getUtilitySpace());
+			outcomespace = new SortedOutcomeSpace(negotiationSession.getUtilitySpace());
 			negotiationSession.setOutcomeSpace(outcomespace);
 
 			this.e = parameters.get("e");
@@ -87,8 +85,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 			if (parameters.get("min") != null)
 				this.Pmin = parameters.get("min");
 			else
-				this.Pmin = negoSession.getMinBidinDomain()
-						.getMyUndiscountedUtil();
+				this.Pmin = negoSession.getMinBidinDomain().getMyUndiscountedUtil();
 
 			if (parameters.get("max") != null) {
 				Pmax = parameters.get("max");
@@ -100,8 +97,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 			this.opponentModel = model;
 			this.omStrategy = oms;
 		} else {
-			throw new Exception(
-					"Constant \"e\" for the concession speed was not set.");
+			throw new Exception("Constant \"e\" for the concession speed was not set.");
 		}
 	}
 
@@ -128,8 +124,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 
 		// if there is no opponent model available
 		if (opponentModel instanceof NoModel) {
-			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(
-					utilityGoal);
+			nextBid = negotiationSession.getOutcomeSpace().getBidNearUtility(utilityGoal);
 		} else {
 			nextBid = omStrategy.getBid(outcomespace, utilityGoal);
 		}
@@ -172,7 +167,7 @@ public class TimeDependent_Offering extends OfferingStrategy {
 	}
 
 	@Override
-	public Set<BOAparameter> getParameters() {
+	public Set<BOAparameter> getParameterSpec() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
 		set.add(new BOAparameter("e", new BigDecimal(1.0), "Concession rate"));
 		set.add(new BOAparameter("k", new BigDecimal(0.0), "Offset"));
@@ -180,5 +175,10 @@ public class TimeDependent_Offering extends OfferingStrategy {
 		set.add(new BOAparameter("max", new BigDecimal(0.99), "Maximum utility"));
 
 		return set;
+	}
+
+	@Override
+	public String getName() {
+		return "TimeDependent Offering example";
 	}
 }
