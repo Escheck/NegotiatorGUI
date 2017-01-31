@@ -1,9 +1,9 @@
 package boaexamplepackage;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -42,9 +42,8 @@ public class BestBid extends OMStrategy {
 	 *            set of parameters for this opponent model strategy.
 	 */
 	@Override
-	public void init(NegotiationSession negotiationSession, OpponentModel model, Map<String, Double> parameters)
-			throws Exception {
-		super.init(negotiationSession, model);
+	public void init(NegotiationSession negotiationSession, OpponentModel model, Map<String, Double> parameters) {
+		super.init(negotiationSession, model, parameters);
 		if (parameters.get("t") != null) {
 			updateThreshold = parameters.get("t").doubleValue();
 		} else {
@@ -105,9 +104,14 @@ public class BestBid extends OMStrategy {
 	}
 
 	@Override
-	public Set<BOAparameter> getParameters() {
+	public Set<BOAparameter> getParameterSpec() {
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
 		set.add(new BOAparameter("t", new BigDecimal(1.1), "Time after which the OM should not be updated"));
 		return set;
+	}
+
+	@Override
+	public String getName() {
+		return "BestBid example";
 	}
 }

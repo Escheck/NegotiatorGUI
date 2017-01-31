@@ -1,8 +1,8 @@
 package boaexamplepackage;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import negotiator.boaframework.AcceptanceStrategy;
@@ -33,8 +33,7 @@ public class AC_Next extends AcceptanceStrategy {
 	public AC_Next() {
 	}
 
-	public AC_Next(NegotiationSession negoSession, OfferingStrategy strat,
-			double alpha, double beta) {
+	public AC_Next(NegotiationSession negoSession, OfferingStrategy strat, double alpha, double beta) {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 		this.a = alpha;
@@ -42,9 +41,8 @@ public class AC_Next extends AcceptanceStrategy {
 	}
 
 	@Override
-	public void init(NegotiationSession negoSession, OfferingStrategy strat,
-			OpponentModel opponentModel, Map<String, Double> parameters)
-			throws Exception {
+	public void init(NegotiationSession negoSession, OfferingStrategy strat, OpponentModel opponentModel,
+			Map<String, Double> parameters) throws Exception {
 		this.negotiationSession = negoSession;
 		this.offeringStrategy = strat;
 
@@ -65,10 +63,9 @@ public class AC_Next extends AcceptanceStrategy {
 
 	@Override
 	public Actions determineAcceptability() {
-		double nextMyBidUtil = offeringStrategy.getNextBid()
+		double nextMyBidUtil = offeringStrategy.getNextBid().getMyUndiscountedUtil();
+		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory().getLastBidDetails()
 				.getMyUndiscountedUtil();
-		double lastOpponentBidUtil = negotiationSession.getOpponentBidHistory()
-				.getLastBidDetails().getMyUndiscountedUtil();
 
 		if (a * lastOpponentBidUtil + b >= nextMyBidUtil) {
 			return Actions.Accept;
@@ -77,18 +74,19 @@ public class AC_Next extends AcceptanceStrategy {
 	}
 
 	@Override
-	public Set<BOAparameter> getParameters() {
+	public Set<BOAparameter> getParameterSpec() {
 
 		Set<BOAparameter> set = new HashSet<BOAparameter>();
-		set.add(new BOAparameter(
-				"a",
-				new BigDecimal(1.0),
+		set.add(new BOAparameter("a", new BigDecimal(1.0),
 				"Accept when the opponent's utility * a + b is greater than the utility of our current bid"));
-		set.add(new BOAparameter(
-				"b",
-				new BigDecimal(0.0),
+		set.add(new BOAparameter("b", new BigDecimal(0.0),
 				"Accept when the opponent's utility * a + b is greater than the utility of our current bid"));
 
 		return set;
+	}
+
+	@Override
+	public String getName() {
+		return "AC_Next example";
 	}
 }
