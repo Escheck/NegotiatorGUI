@@ -1109,6 +1109,10 @@ Instead of implementing your negotiating agent from scratch, we recommend you cr
 
 The advantages of separating the negotiation strategy into these four components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the reuse of existing components \textit{simplifies the creation of new negotiation strategies}.
 
+BOA components can be used both in bilateral tournaments and multilateral negotiation (both single sessions and tournaments). 
+
+
+
 \subsection{Components of the BOA Framework}
 A negotiation agent in the BOA framework, called a \textit{BOA agent}, consists of four components:
 \begin{description}
@@ -1132,7 +1136,21 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 \end{figure}
 \pagebreak
 \subsection{Using Existing Components}
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. The BOA framework GUI (see Figure~\ref{fig:decoupledGUI}) can be opened by double clicking the \textit{Values} section next to the \textit{BOA Agent side A} or \textit{BOA Agent side B} when creating a (distributed) tournament.
+
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. 
+
+In the mulitilateral system, the boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item. 
+
+In the bilateral tournament runner you edit the BOA agents in the tournament settings, and the Boa Parties repository is ignored. The BOA framework GUI (see Figure~\ref{fig:decoupledGUI}) can be opened by double clicking the \textit{Values} section next to the \textit{BOA Agent side A} or \textit{BOA Agent side B} when creating a (distributed) tournament.
+
+
+\begin{figure}[t] 
+	\center
+	\includegraphics[width=10.0cm]{media/boacomponants.png}
+	\caption{The BOA Parties repository tab.}
+	\label{fig:boaparties}
+\end{figure}
+
 
 \begin{figure}[h!]
 	\center
