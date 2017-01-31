@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Negotiator" default="makeGenius7.0.1" basedir=".">
+<project name="Negotiator" default="makeGenius7.1.0" basedir=".">
 	<property name="dist" location="dist" />
 	<property name="build" location="bin" />
 	<property name="tmp" location="tmp" />
@@ -26,13 +26,13 @@
 
 		
 
-	<target name="makeGenius7.0.1" depends="negosimulatorjar">
+	<target name="makeGenius7.1.0" depends="negosimulatorjar">
 
 		<!-- create empty directories that we need... -->
 		<mkdir dir="${tmp}/log" />
 		<mkdir dir="${tmp}/DataObjects" />
 
-		<zip destfile="target/Genius-7.0.1.zip">
+		<zip destfile="target/Genius-7.1.0.zip">
 			<!-- the main content: negosimulator, javadoc, profiles (domains) -->
 			<zipfileset dir="${tmp}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
@@ -43,6 +43,7 @@
 			<!-- repository xml files using includes and rename to correct name  -->
 			<zipfileset src="dep/AgentRepo.jar" includes="agents/agentrepository.xml" fullpath="genius/agentrepository.xml"/>
 			<zipfileset src="dep/BoaRepo.jar" includes="boa/boarepository.xml" fullpath="genius/boarepository.xml"/>
+			<zipfileset src="dep/BoaRepo.jar" includes="boa/boapartyrepo.xml" fullpath="genius/boapartyrepo.xml"/>
 			<zipfileset src="dep/DomainsRepo.jar" includes="domains/domainrepository.xml" fullpath="genius/domainrepository.xml"/>
 			<zipfileset src="dep/ProtocolsRepo.jar" includes="protocols/protocolrepository.xml" fullpath="genius/protocolrepository.xml"/>
 			<zipfileset src="dep/ProtocolsRepo.jar" includes="multipartyprotocols/multipartyprotocolrepository.xml" fullpath="genius/multipartyprotocolrepository.xml"/>
