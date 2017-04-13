@@ -573,6 +573,8 @@ The following parameters need to be specified to run a negotiation:
 	\item \textbf{A table with participants}. This table shows all currently added participants. You can add a party by setting the participant information above, and then clicking "Add Party". You can remove a party by selecting the party to remove in the table, and then clicking "Remove Party". 
 	\item \textbf{Deadline}. The deadline to use. Can be "Round" or "Time". This determines the maximum duration of the session.
 	\item \textbf{Data Persistency}. What kind of persistent data is available to the parties. The options are discussed in section \ref{sec:sessiongeneration}.
+	\item \textbf{Enable System.out print}. If disabled, all system.out.print is suppressed during the negotiation. This is useful if for instance agents are flooding the output console, slowing down the system.
+		\item \textbf{Enable progress graph}. If enabled (default), a progress chart is shown during the negotiation. You can disable this e.g. if the drawing is slowing down the system.
 \item \textbf{Bilateral options} These appear only if you have exactly 2 parties added. The sub-options of this panel are
 	\begin{itemize}
 	\item \textbf{Show Util-Util Graph}. If enabled, the progress panel will show a graph where the utilities of the 2 parties are set along the X and Y axes. Also, the pareto frontier and nash point are shown in this graph. If disabled, it will show the default: a graph where the utilities of all parties are along the Y axis, and the time along the X axis. 
