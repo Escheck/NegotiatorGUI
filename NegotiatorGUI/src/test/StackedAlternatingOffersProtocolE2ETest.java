@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import listener.Listener;
+import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.DeadlineType;
@@ -178,7 +179,7 @@ public class StackedAlternatingOffersProtocolE2ETest {
 			PartyRepItem partyRepItem = party_rep.getPartyOfClass(partyclasses[partynr]);
 
 			NegotiationPartyInternal negoparty = new NegotiationPartyInternal(partyRepItem, profileRepItem, session,
-					null, info);
+					info, AgentID.generateID(partyRepItem.getUniqueName()));
 			parties.add(negoparty);
 		}
 		// maybe we can craete the parties directly, using this?
