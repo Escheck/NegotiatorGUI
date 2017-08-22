@@ -15,17 +15,14 @@
 			<partyRepItem classPath="negotiator.parties.RandomCounterOfferNegotiationParty">
 				<properties />
 			</partyRepItem>
-			<partyRepItem classPath="negotiator.parties.RandomCounterOfferNegotiationParty">
-				<properties />
-			</partyRepItem>
-
+	
 			<partyRepItem classPath="agents.anac.y2016.agenthp2.AgentHP2_main">
 				<properties />
 			</partyRepItem>
 			<partyRepItem classPath="agents.anac.y2016.agentlight.AgentLight">
 				<properties />
 			</partyRepItem>
-			<partyRepItem classPath="agents.anac.y2016.atlas3.Atlas3">
+			<partyRepItem classPath="agents.anac.y2016.atlas3.Atlas3B">
 				<properties />
 			</partyRepItem>
 			<partyRepItem classPath="agents.anac.y2016.caduceus.Caduceus">
@@ -64,7 +61,7 @@
 			<partyRepItem classPath="agents.anac.y2016.yxagent.YXAgent">
 				<properties />
 			</partyRepItem>
-			<partyRepItem classPath="agents.anac.y2016.agentsmith.AgentSmith">
+			<partyRepItem classPath="agents.anac.y2016.agentsmith.AgentSmithB">
 				<properties />
 			</partyRepItem>
 
@@ -224,7 +221,7 @@
 			<partyRepItem classPath="agents.anac.y2013.GAgent.AgentI">
 				<properties />
 			</partyRepItem>
-			<partyRepItem classPath="agents.anac.y2013.MetaAgent.MetaAgent">
+			<partyRepItem classPath="agents.anac.y2013.MetaAgent.MetaAgentB">
 				<properties />
 			</partyRepItem>
 			<partyRepItem classPath="agents.anac.y2013.SlavaAgent.SlavaAgent">
