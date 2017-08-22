@@ -3,6 +3,13 @@
 	<items>
 		<agentRepItems />
 		<partyRepItems>
+			<partyRepItem classPath="negotiator.parties.RandomParty">
+				<properties />
+			</partyRepItem>
+			<partyRepItem classPath="negotiator.parties.RandomParty2">
+				<properties />
+			</partyRepItem>
+
 			<partyRepItem classPath="negotiator.parties.BoulwareNegotiationParty">
 				<properties />
 			</partyRepItem>
@@ -15,7 +22,7 @@
 			<partyRepItem classPath="negotiator.parties.RandomCounterOfferNegotiationParty">
 				<properties />
 			</partyRepItem>
-	
+
 			<partyRepItem classPath="agents.anac.y2016.agenthp2.AgentHP2_main">
 				<properties />
 			</partyRepItem>
