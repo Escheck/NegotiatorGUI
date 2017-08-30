@@ -731,11 +731,8 @@
                 <profile url="file:etc/templates/Domain16/Domain16_util5.xml"/>
                 <profile url="file:etc/templates/Domain16/Domain16_util6.xml"/>
             </domainRepItem>
-            <domainRepItem url="file:etc/templates/testIntDomain/test.xml">
-                <profile url="file:etc/templates/testIntDomain/test_util1.xml"/>
-                <profile url="file:etc/templates/testIntDomain/test_util2.xml"/>
-                <profile url="file:etc/templates/testIntDomain/test_util3.xml"/>
-                <profile url="file:etc/templates/testIntDomain/test_util4.xml"/>
+            <domainRepItem url="file:etc/templates/test/test.xml">
+                <profile url="file:etc/templates/test/test_util1.xml"/>
             </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
