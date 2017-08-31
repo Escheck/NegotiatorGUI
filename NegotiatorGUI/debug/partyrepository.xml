@@ -10,6 +10,7 @@
 				<properties />
 			</partyRepItem>
 
+
 			<partyRepItem classPath="negotiator.parties.BoulwareNegotiationParty">
 				<properties />
 			</partyRepItem>
@@ -334,9 +335,6 @@
 				<properties />
 			</partyRepItem>
 			<partyRepItem classPath="agents.ABMPAgent2">
-				<properties />
-			</partyRepItem>
-			<partyRepItem classPath="agents.SimpleTitForTatPN">
 				<properties />
 			</partyRepItem>
 			<partyRepItem classPath="parties.AlternatingMultipleOffers.RandomAmopParty">
