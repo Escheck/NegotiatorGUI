@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Negotiator" default="makeGenius7.1.5" basedir=".">
+<project name="Negotiator" default="makeGenius7.1.6" basedir=".">
 	<property name="dist" location="dist" />
 	<property name="build" location="bin" />
 	<property name="tmp" location="tmp" />
@@ -26,13 +26,13 @@
 
 		
 
-	<target name="makeGenius7.1.5" depends="negosimulatorjar">
+	<target name="makeGenius7.1.6" depends="negosimulatorjar">
 
 		<!-- create empty directories that we need... -->
 		<mkdir dir="${tmp}/log" />
 		<mkdir dir="${tmp}/DataObjects" />
 
-		<zip destfile="target/Genius-7.1.5.zip">
+		<zip destfile="target/Genius-7.1.6.zip">
 			<!-- the main content: negosimulator, javadoc, profiles (domains) -->
 			<zipfileset dir="${tmp}" includes="negosimulator.jar" prefix="genius" />
 			<zipfileset dir="${tmp}" includes="log" prefix="genius" />
