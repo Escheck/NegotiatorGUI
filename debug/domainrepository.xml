@@ -734,6 +734,10 @@
             <domainRepItem url="file:etc/templates/test/test.xml">
                 <profile url="file:etc/templates/test/test_util1.xml"/>
             </domainRepItem>
+            <domainRepItem url="file:etc/templates/NDA/NDA.xml">
+                <profile url="file:etc/templates/NDA/NDA_util1.xml"/>
+                <profile url="file:etc/templates/NDA/NDA_util2.xml"/>
+            </domainRepItem>
         </domainRepItem>
         <protocolRepItem/>
         <multiPartyProtocolRepItem/>
