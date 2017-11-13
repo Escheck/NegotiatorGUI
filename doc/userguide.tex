@@ -1485,6 +1485,10 @@ and start the tournament and check the number of rounds till agreement: it will 
 
 Now run another tournament with the same settings but pick select both \verb|party1_utility.xml| and \verb|party2_utility.xml|. Run the tournament.
 Now you will see that the the number of rounds till agreement goes up every other run. This is because your agent gets a different profile every other run and thus there are persistent data stores, one for each profile. 
+\subsection{Using third party libraries}
+
+If you want to use a third party library, you will have to include all the source code of that library with your code, including all sub-dependencies. The code should be copied inside the package name of your agent, instead of using the original package name of that library (so do not use "org.apache" for instance). This is to ensure that we are really running your agent on the specific version of the library that your agent needs and to avoid version conflicts (java will run an unspecified version of the library in case of conficts). 
+
 
 \subsection{Loading a NegotiationParty}
 
