@@ -76,6 +76,8 @@
 \usepackage{graphicx}
 \fi
 
+% this gives us \FloatBarrier to prevent images to float all to the end
+\usepackage{placeins}
 
 \title{Negotiation User Guide}
 \author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx, D. Feirstein}
@@ -1513,6 +1515,7 @@ To do this manually, quit \Genius , open the \verb|partyrepository.xml| file and
 \end{lstlisting}
 
 After that you can restart \Genius .
+\FloatBarrier
 
 \section{Conclusion}
 This concludes the manual of \Genius. If you experience problems or have suggestions on how to improve \Genius, please send them to \url{negotiation@ii.tudelft.nl}. 
@@ -1523,16 +1526,18 @@ This concludes the manual of \Genius. If you experience problems or have suggest
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Appendix}
+This appendix describes how to set up Eclipse to create and debug your own agent.
+
 \label{sec:appendix}
 
-\subsection{Get Genius up and running in Eclipse}
+\subsection{Connect Genius to Eclipse}
 \label{sec:appendix-run-genius}
 We expect that you installed Eclipse (Neon or higher) and Java (version 7 or higher) on your computer.
 \begin{enumerate}
 
 \item Open the Eclipse Navigator with the menu Window/Show View/Navigator. You can close the Package Explorer.
 
-\item{Right click in the Navigator area and select New/Java Project. Create a new Java project and name it \texttt{AI2017GroupNassignment}, where N is your group number.} Make sure you select "JavaSE-1.7" or equivalent to ensure your code will be java 7 compatible \textbf{(Figure \ref{fig:run-genius-1})}. Click Finish.
+\item Right click in the Navigator area and select New/Java Project. Create a new Java project. We name it \texttt{AI2016Group3assignment} but you can use any convenient name. Make sure you select "JavaSE-1.7" or equivalent to ensure your code will be java 7 compatible (Figure \ref{fig:run-genius-1}). Click Finish.
 
 \begin{figure}[h!]
 	\centering
@@ -1541,25 +1546,27 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 	\label{fig:run-genius-1}
 \end{figure}
 
-\item Drag all files from the genius folder into the project in the Eclipse Navigator area. Select "Copy files and folders" and press OK \textbf{(Figure \ref{fig:run-genius-2})}.
+\item Drag all files from the genius folder into the project in the Eclipse Navigator area. Select "Copy files and folders" and press OK (Figure \ref{fig:run-genius-2}).
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics[width=0.8\textwidth]{media/dragdrop_generated.pdf}
+		\includegraphics[width=0.5\textwidth]{media/dragdrop_generated.pdf}
 		\caption{Copy Genius files}
 	\label{fig:run-genius-2}
 \end{figure}
 
+\FloatBarrier
+
 \item{Add the \texttt{negosimulator} Jar:
 	\begin{enumerate}
-		\item Right click on the \texttt{AI2017GroupNassignment} icon and select "Properties".
+		\item Right click on the \texttt{AI2016Group3assignment} icon and select "Properties".
 		\item Select the Java Build Path.
 		\item Select the Libraries Tab.
-		\item Select "Add JARs", in the JAR Selection window \textbf{(Figure \ref{fig:run-genius-3})}.
-		\item Open the \texttt{AI2016GroupNAssignment} folder and scroll down to select \texttt{negosimulator.jar}.
+		\item Select "Add JARs", in the JAR Selection window (Figure \ref{fig:run-genius-3}).
+		\item Open the \texttt{AI2016Group3assignment} folder and scroll down to select \texttt{negosimulator.jar}.
 		\item Click OK once.
 		
-		\item Expand the library and double click "Javadoc location" \textbf{(Figure \ref{fig:attachjavadoc})}.
+		\item Expand the library and double click "Javadoc location" (Figure \ref{fig:attachjavadoc}).
 		\item click on the Browse button and select the "javadoc" directory inside your eclipse workspace.
 		\item click a few times ok to close all dialog boxes.
 
@@ -1573,7 +1580,6 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 	\label{fig:run-genius-3}
 \end{figure}
 
-\newpage
 
 
 \begin{figure}[h!]
@@ -1584,7 +1590,7 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 \end{figure}
 
     
-\item Now you can run G\textsc{enius} as a Java application, by launching it as a \texttt{NegoGUIapp} \textbf{(Figure \ref{fig:startgenius})}. To do this, right click on the project, select \texttt{Run As}, select \texttt{Java Application} and then in the browser select \texttt{NegoGuiApp}.
+\item Now you can run G\textsc{enius} as a Java application, by launching it as a \texttt{NegoGUIapp} (Figure \ref{fig:startgenius}). To do this, right click on the project, select \texttt{Run As}, select \texttt{Java Application} and then in the browser select \texttt{NegoGuiApp}.
 
 \begin{figure}[h!]
 	\centering
@@ -1594,6 +1600,11 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 \end{figure}
 \end{enumerate}
 
+\FloatBarrier
+
+
+\subsection{Debugging}
+Once you have Genius running in Eclipse, you can simply place a breakpoint in your agent and run Genius from Eclipse in debug mode.
 
 
 \bibliographystyle{plain}
