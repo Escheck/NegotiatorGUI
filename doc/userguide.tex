@@ -1133,22 +1133,48 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 	\caption{The BOA Framework Architecture.}
 	\label{fig:flowchart}
 \end{figure}
-\pagebreak
-\subsection{Using Existing Components}
-
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. 
-
-In the mulitilateral system, the boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item. 
-
-In the bilateral tournament runner you edit the BOA agents in the tournament settings, and the Boa Parties repository is ignored. The BOA framework GUI (see Figure~\ref{fig:decoupledGUI}) can be opened by double clicking the \textit{Values} section next to the \textit{BOA Agent side A} or \textit{BOA Agent side B} when creating a (distributed) tournament.
 
 
-\begin{figure}[t] 
+\subsection{Create "Multi"lateral BOA Party}
+For use in the mulit-ilateral negotiation system, the boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item.  These BOA parties are at this moment still a simple extension of the old bilateral system, and can \emph{only be used in multi-lateral negotiation with exactly 2 parties per session}.  
+
+
+\begin{figure}[!ht] 
 	\center
 	\includegraphics[width=10.0cm]{media/boacomponants.png}
 	\caption{The BOA Parties repository tab.}
 	\label{fig:boaparties}
 \end{figure}
+
+
+After you selected to add or edit a BOA party (Figure \ref{fig:editboaparty}).  Here you can select a different Bidding Strategy, Acceptance Strategy, Opponent Model and Opponent Model Strategy by selecting the appropriate strategy with the combo boxes. If the strategy has parameters, the current parameter settings are shown and the respective "Change" button enables.
+
+
+\begin{figure}[!ht] 
+	\center
+	\includegraphics[width=10.0cm]{media/EditBoaParty.png}
+	\caption{Editing a BOA party.}
+	\label{fig:editboaparty}
+\end{figure}
+
+If you click on the  "Change" button, another panel pops up where you can edit the parameters (Figure \ref{fig:editparameters}). You can click directly in the table to edit values.
+
+\begin{figure}[!ht] 
+	\center
+	\includegraphics[width=10.0cm]{media/EditParameters.png}
+	\caption{Editing the Parameters of a BOA party.}
+	\label{fig:editparameters}
+\end{figure}
+
+When you have correctly set all strategies and their parameters, you can click the "OK" button in the BOA party editor (Figure  \ref{fig:editboaparty}). Then, agents with the given name are generated, one for each permutation of the range of settings you set in the parameters. For example, if you set you want parameter m to have values 0,1 and 2 and x to have values 7 and 8, there will appear 6 new agents, with settings [0,7],[0,8],[1,7],[1,8],[2,7], and [2,8]. Be careful with this generation as it is easy to create an excessive amount of agents this way.
+
+\subsection{Bi-Lateral BOA}
+
+In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. 
+
+In the bilateral tournament runner you edit the BOA agents in the tournament settings, and the Boa Parties repository is ignored. The BOA framework GUI (see Figure~\ref{fig:decoupledGUI}) can be opened by double clicking the \textit{Values} section next to the \textit{BOA Agent side A} or \textit{BOA Agent side B} when creating a (distributed) tournament.
+
+
 
 
 \begin{figure}[h!]
