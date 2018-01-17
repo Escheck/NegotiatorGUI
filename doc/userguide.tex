@@ -767,7 +767,12 @@ In bilateral generation, first a set of participants P of all combinations of 1 
 \section{Quality Measures in Genius}\label{sec:qm}
 A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
-There are now two types of logs used in \Genius: the standard log and the tournament log. The standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents. The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average final utility for all sessions which resulted in an agreement.
+There are  three types of logs used in \Genius: the standard log, the tournament log and the tournament statistics log.
+\begin{itemize}
+\item The standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents.
+\item The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average final utility for all sessions which resulted in an agreement.
+\item The Tournament statistics log is logged only for the Multiparty Tournament. The file is written in the \verb|logs/| directory with the same name as the tournament log, but with an additions "Stats". It contains statistics for each agent in the tournament.
+\end{itemize}
 
 First, Section~\ref{sec:standardLog} discusses the measures incorporated in the standard log. Next, Section~\ref{sec:tournamentLog} details the tournament log. Finally, Section~\ref{sec:analysisExcel} discusses how Excel can be used to analyze logs.
 
