@@ -2,8 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/agents"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="dep/AgentRepo.jar"/>
+	<classpathentry kind="lib" path="dep/Agents.jar"/>
+	<classpathentry kind="lib" path="dep/BoaRepo.jar"/>
+	<classpathentry kind="lib" path="dep/Domains.jar"/>
+	<classpathentry kind="lib" path="dep/DomainsRepo.jar"/>
+	<classpathentry kind="lib" path="dep/GeniusCore-javadoc.jar"/>
+	<classpathentry kind="lib" path="dep/GeniusCore.jar" sourcepath="/core/src/main/java"/>
+	<classpathentry kind="lib" path="dep/PartyRepo.jar"/>
+	<classpathentry kind="lib" path="dep/ProtocolsRepo.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
