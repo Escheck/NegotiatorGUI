@@ -12,6 +12,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import genius.AgentsInstaller;
+import genius.ProtocolsInstaller;
+import genius.domains.DomainInstaller;
 import listener.Listener;
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -50,6 +53,10 @@ public class StackedAlternatingOffersProtocolE2ETest {
 
 	@Before
 	public void before() throws IOException {
+		ProtocolsInstaller.run();
+		DomainInstaller.run();
+		AgentsInstaller.run();
+
 		MultilateralProtocol protocol = new StackedAlternatingOffersProtocol();
 		info = new SessionsInfo(protocol, PersistentDataType.DISABLED, false);
 	}
