@@ -22,8 +22,9 @@ public class boapartytest {
 
 		// use filename without .csv extension for the runner. It may create
 		// multiple log files.
-		Runner.main(new String[] { "test/boapartytest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
-		equal(new File("test/boapartytest.txt"), output);
+		Runner.main(new String[] { "src/test/resources/test/boapartytest.xml",
+				output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
+		equal(new File("src/test/resources/test/boapartytest.txt"), output);
 	}
 
 	/**

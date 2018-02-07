@@ -20,8 +20,9 @@ public class mediatortest {
 	public void test1() throws IOException, NotEqualException, JAXBException, InstantiateException {
 		File output = File.createTempFile("test", ".csv");
 
-		Runner.main(new String[] { "test/mediatortest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
-		equal(new File("test/mediatortestexpected.txt"), output);
+		Runner.main(new String[] { "src/test/resources/test/mediatortest.xml",
+				output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
+		equal(new File("src/test/resources/test/mediatortestexpected.txt"), output);
 	}
 
 	/**
