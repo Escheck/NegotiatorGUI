@@ -161,7 +161,6 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4.1</version>
 				<configuration>
-					<!-- get all project dependencies -->
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
@@ -177,6 +176,23 @@
 					<execution>
 						<id>make-assembly</id>
 						<!-- bind to the packaging phase -->
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<descriptor>src/assembly/assembly.xml</descriptor>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-archive</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
