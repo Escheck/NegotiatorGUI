@@ -23,9 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="dep/core-1.0.0-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="dep/domains-1.0.0-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="dep/agents-1.0.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

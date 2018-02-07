@@ -22,8 +22,9 @@ public class multipartytest {
 
 		// use filename without .csv extension for the runner. It may create
 		// multiple log files.
-		Runner.main(new String[] { "test/multitest.xml", output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
-		equal(new File("test/multitestexpected.txt"), output);
+		Runner.main(new String[] { "src/test/resources/test/multitest.xml",
+				output.getCanonicalPath().replaceFirst("[.][^.]+$", "") });
+		equal(new File("src/test/resources/test/multitestexpected.txt"), output);
 	}
 
 	/**
