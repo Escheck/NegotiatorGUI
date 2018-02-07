@@ -17,6 +17,15 @@
 			</includes>
 		</fileSet>
 		
+				<fileSet>
+			<directory>${project.basedir}/src/test/resources</directory>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>multilateraltournament.xml</include>
+			</includes>
+		</fileSet>
+		
+		
 		<fileSet>
 			<directory>${project.basedir}/src/test/java</directory>
 			<outputDirectory>.</outputDirectory>
