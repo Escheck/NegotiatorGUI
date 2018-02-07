@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="dep/AgentRepo.jar"/>
-	<classpathentry kind="lib" path="dep/Agents.jar"/>
-	<classpathentry kind="lib" path="dep/BoaRepo.jar"/>
-	<classpathentry kind="lib" path="dep/Domains.jar"/>
-	<classpathentry kind="lib" path="dep/DomainsRepo.jar"/>
-	<classpathentry kind="lib" path="dep/GeniusCore-javadoc.jar"/>
-	<classpathentry kind="lib" path="dep/GeniusCore.jar" sourcepath="/core/src/main/java"/>
-	<classpathentry kind="lib" path="dep/PartyRepo.jar"/>
-	<classpathentry kind="lib" path="dep/ProtocolsRepo.jar"/>
+	<classpathentry kind="lib" path="dep/core-1.0.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="dep/domains-1.0.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="dep/agents-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
