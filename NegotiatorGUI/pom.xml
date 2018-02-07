@@ -74,10 +74,15 @@
 	<repositories>
 		<repository>
 			<id>artifactory.ewi.tudelft.nl</id>
-			<url>http://artifactory.ewi.tudelft.nl/artifactory/release</url>
+			<url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>netbeans</id>
+			<name>Netbeans rep</name>
+			<url>http://bits.netbeans.org/maven2/</url>
 		</repository>
 	</repositories>
 
