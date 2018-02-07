@@ -296,17 +296,15 @@ Errors surrounding these out-of-protocol procedures are not part of the negotiat
 
 %=========================================================================================
 \section{Running the Environment}
-Genius should run on any machine running Java 7 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
+Genius should run on any machine running Java 8 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
-To install the environment, the file \texttt{Genius\_release.zip} can be downloaded. Unzip the file at a convenient location on your machine. This will result in a package called ``genius" which contains the following files:
+To install the environment, the file \texttt{genius-XXX.zip} can be downloaded from \url{http://ii.tudelft.nl/genius/?q=article/releases}. Unzip the file at a convenient location on your machine. This will result in a package called ``genius-XXX" which contains the following files:
 
 \begin{itemize}
-	\item a \texttt{doc} folder, containing \texttt{userguide.pdf} which is this document.
-	\item \texttt{negosimulator.jar}, the negotiation simulator;
-	\item a \texttt{tutorials} folder, containing various quick-start tutorials.
+	\item a  \texttt{userguide.pdf} which is this document.
+	\item \texttt{genius-XXX.jar}, the negotiation simulator;
 	\item a few \texttt{...package} folders, containing ready-to-compile agents and components.
-	\item  a \texttt{javadoc} folder, containing the complete JavaDoc documentation of Genius.
-	
+	\item a \texttt{multilateraltournament.xml} example file
 \end{itemize}
 
 When you run the negosimulator (by double-clicking the application or using open with and then selecting Java), progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the negosimulator and enter
@@ -387,12 +385,9 @@ The final step is to set the reservation value and discount of a preference prof
 
 %=========================================================================================
 \section{Running Negotiations}
-This section discusses how to run a negotiation. There are a number of modes to run a negotiation:
+This section discusses how to run a negotiation. There are two modes to run a negotiation:
 
 \begin{itemize}
-	\item \textbf{Negotiation session}. A negotiation session concerns a single negotiation in which two agents compete. This mode is mainly intended for new users.
-	\item \textbf{Tournament}. A tournament is a collection of sessions. Two sets of agents compete against each other on a set of domains. The results of the sessions are stored in the ``log'' directory. These results can be more easily viewed by importing them into Excel and using pivot tables (cf. Section~\ref{sec:analysisExcel}).
-	\item \textbf{Distributed tournament}. A distributed tournament is a tournament which is stored in a database and can therefore be divided among multiple computers to speed up calculation.
 	\item \textbf{Multi-Party Negotiation}. A single negotiation session in which a number of agents (not necessarily 2) compete. Notice that this is a generalization of the simple Negotiation session above.
 	\item \textbf{Multi-Party Tournament}. A tournament of multiparty sessions. Again, this is a generalization of the tournament above.
 	
@@ -401,158 +396,6 @@ This section discusses how to run a negotiation. There are a number of modes to 
 Before going into detail on how each of these modes work, we first discuss the two types of agents that can be used: automated agents and non-automated agents. Automated agents are agents that can compete against other agents in a negotiation without relying on input by a user. In general, these agents are able to make a large amount of bids in a limited amount of time.
 
 In contrast, non-automated agents are agents that are fully controlled by the user. These types of agents ask the user each round which action they should make. \Genius~by default includes the UIAgent -- which has a simple user interface -- and the more extensive Extended UIAgent.
-
-
-\subsection{Running a Negotiation Session}
-To run a negotiation session select ``Start'' and then ``Negotiation Session''. This opens a window similar to Figure~\ref{Fig:session}. The following parameters need to be specified to run a negotiation:
-\begin{itemize}
-	\item \textbf{Negotiation protocol}. The set of available protocols. Normally ``Alternating Offers'' is used.
-	\item \textbf{Side A/Side B}. The configuration of the agents of both sides.
-	\item \textbf{Preference profile}. The preference profile to be used by the agent of that side.
-	\item \textbf{Agent name}. The agent participating in the negotiation.
-	\item \textbf{Deadline (seconds)}. The length of the negotiation in seconds.
-\end{itemize}
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.65\textwidth]{media/image11.png}
-\caption{A negotiation session.}\label{Fig:session}
-\end{figure}
-
-
-\subsection{Running a Tournament}\label{sec:runningTournament}
-Besides running a single negotiation session, it is also possible to run a tournament. A tournament can be seen as a collection of sessions. In contrast to running a single session, the results of a tournament are stored in the ``log'' directory. These results can be easily analyzed by importing them into Excel (cf. Section~\ref{sec:analysisExcel}). A tournament can be created by first selecting ``Start'' and then ``Tournament''. The Tournament tab will appear similar to Figure~\ref{Fig:tournament}. This window shows a set of options which we need to specify. The value of an option can be specified by double clicking the option in the ``Values'' column.
-
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.9\textwidth]{media/image16.png}
-\caption{Tournament tab.}\label{Fig:tournament}
-\end{figure}
-
-\begin{itemize}
-	\item \textbf{Protocol}. The set of available protocols.
-	\item \textbf{Preference profiles}. The set of scenarios on which the agents should compete. Each selected scenario should feature at least two preference profiles.
-	\item \textbf{Agent side A/B}. The set of agents in set A competes against all agents in set B.
-	\item \textbf{Number of sessions}. The number of times each session should be repeated.
-	\item \textbf{Tournament options}. Options which specify how to run the tournament (see below).
-	\item \textbf{BOA Agent side A/B}. Type of agents that consist of multiple components (see~Section~\ref{sec:boa}).
-\end{itemize}
-
-\subsubsection{Tournament Options}
-A large set of tournament options can be specified which influence the composition and running of the tournament. There are four categories of options:
-
-\begin{itemize}
-	\item \textsc{Protocol settings} (Figure~\ref{fig:TourOptions1})
-	\begin{itemize}
-		\item \textbf{Protocol mode} . Specifies if the negotiation features rounds or time. In a time-based negotiation there is an amount of time to reach an agreement. Time passes while an agent deliberates an action. In contrast, in a rounds-based negotiation the deadline is specified in rounds. An agent can take more time to compute an action as time does not pass within a round.
-		\item \textbf{Deadline}. Depending on the protocol mode, this is the maximum amount of time in seconds or amount of rounds. Note that one single round corresponds to one turn of a single agent.
-		\item \textbf{Access partner preferences}. Allows agents to access the preference profile of the negotiation session, which contains the opponent's preference profile.
-		\item \textbf{One-sided bidding} If enabled then agent A's bids are ignored, and replaced by the bid that has max utility for A. agent A's accepts are passed through.
-		\item \textbf{Allow pausing timeline}. Allow agents to pause the negotiation by using the timeline.pause() and time.resume() methods.
-	\end{itemize}
-	\item \textsc{Session generation}(Figure~\ref{fig:TourOptions2})
-	\begin{itemize}
-		\item \textbf{Play both sides}. When generating the sessions, whether each pair of agents should play both sides on a scenario or not.
-		\item \textbf{Play against self}. An agent may be included both in the set Agent side A and side B. If this option is enabled an agent is allowed to play against itself. If disabled, the sessions in which agents negotiate against themselves are removed.
-		\item \textbf{Starting agent}. This agent has to place the first bid.
-		\item \textbf{Generation mode}. Standard or Random. If set to random, the generated sessions are shuffled into a random order, using the random seed
-		\item \textbf{Random seed}. Random seed used for shuffling sessions.
-	\end{itemize}
-
-
-
-		\begin{figure}[ht]
-		\center
-		\begin{minipage}[b]{0.4\linewidth}
-			\includegraphics[width=0.95\textwidth]{media/TourOptions1.png}
-		\caption{Protocol Settings.}
-		\label{fig:TourOptions1}
-		\end{minipage}
-		\begin{minipage}[b]{0.4\linewidth}
-			\includegraphics[width=0.95\textwidth]{media/TourOptions2.png}
-		\caption{Session Generation options.}\label{fig:TourOptions2}
-		\end{minipage}
-		\end{figure}
-
-
-	\item \textsc{Logging}(Figure~\ref{fig:TourOptions3})
-	\begin{itemize}
-		\item \textbf{Log detailed analysis}. Enabling this option activates a set of quality measures to capture the quality of the negotiation process. The quality measures are added to the default log. In addition, for the whole tournament an overview log is created. This log is prefixed with ``TM-''.
-		\item \textbf{Log negotiation trace}. If enabled, a more extensive log is written including the bid history, to a file having the name {\tt "extensive\_log.xml"}. 
-		\item \textbf{Log final accuracy} Logs the accuracy of the final opponent model of BOA agents on side A. This is done by comparing the opponent model of side A with the actual utility space of side B. Calculated are:
-		\begin{itemize}
-		\item the Pearson correlation coefficient by comparing the utility of each bid estimated by the real and estimated opponent's utility space. Higher is better.
-		\item the ranking distance by comparing the utility of each bid estimated by the real and estimated opponent's utility space. Lower is better.
-		\item the ranking distance by comparing the utility of each weight estimated by the real and estimated opponent's utility space. Lower is better.
-		\item average difference between the real and estimated utility.
-		\item average difference between the real and estimated issue weights.
-		\item the absolute difference between the estimated Kalai point and the real Kalai point. Note that we are only interested in the value for the opponent.
-		\item the absolute difference between the estimated Nash point and the real Nash point. Note that we are only interested in the value for the opponent.
-		\item the average difference between the real estimated pareto bids and their estimated utility for the opponent.
-		\item the amount of real Pareto bids which have been found by the opponent model. Note that the estimated utility space may have more or less Pareto bids than there really are.
-		\item the percentage of bids in the estimated Pareto bids which is really Pareto optimal.
-		\item  the Pareto frontier distance using the following steps: 1. Map the estimated Pareto-bids to the real space. 2. Calculate the surface beneath the real Pareto bids and estimated Pareto bids. 3. Subtract the surfaces and return the absolute difference. Note that the Pareto frontier difference can be positive and negative. In general, the mapped estimate of the Pareto frontier will have less surface; however, it can happen that less Pareto-points were estimated. In this case a Pareto-point is missed, and it can happen that the surface is therefore larger.
-
-		\end{itemize}
-		\item \textbf{Log competitiveness} this computes the amount of discrepancy between the two utility spaces. If X is the bid with maximum utility for side B, then {\em full yield of A} is the utility of X for side A.  The competitiveness ratio is defined as $CR(util)=1 - \frac{max(fullyield, util) - fullyield}{1 - fullyield}$. If this option is enabled, the following info is logged  for side A and side B
-		\begin{itemize}
-		\item full yield utility.
-		\item BSCR = CR(minUtil) where minUtil is the minimum utility that an agent asked for (in one of its bids). 
-		\item total CR. which equals to CR(final utility for this agent)
-		\item ACCR =  total CR - BSCR.
-		\item normalized ACCR = ACCR / (1 - BSCR)
-		\end{itemize}
-		\item \textbf{Append mode and deadline} appends the protocol mode and deadline (time or rounds) to the filename
-	\end{itemize}
-	\item \textsc{Visualization}(Figure~\ref{fig:TourOptions4})
-	\begin{itemize}
-		\item \textbf{Show all bids}. When enabled all bids in a scenario are visualized as red points in the negotiation status window. This option has some impact on performance.
-		\item \textbf{Show last bid}. When enabled the last bid is marked with a special symbol to make it clear which move an agent performed.
-		\item \textbf{Disable GUI}. When enabled most GUI elements are disabled. This speeds-up the negotiation up to a factor of 200 times. The progress of the tournament is printed to the console.
-	\end{itemize}
-\end{itemize}
-
-
-
-		\begin{figure}[ht]
-		\center
-		\begin{minipage}[b]{0.4\linewidth}
-			\includegraphics[width=0.95\textwidth]{media/TourOptions3.png}
-		\caption{Protocol Settings.}
-		\label{fig:TourOptions3}
-		\end{minipage}
-		\begin{minipage}[b]{0.4\linewidth}
-			\includegraphics[width=0.95\textwidth]{media/TourOptions4.png}
-		\caption{Session Generation options.}\label{fig:TourOptions4}
-		\end{minipage}
-		\end{figure}
-		
-		
-\subsection{Advanced: Running a Distributed Tournament}
-A tournament quickly becomes practically too large to run. Running a distributed tournament resolves this problem as the tournament is stored in a database. Next, instances of \Genius~-- perhaps running on the same computer -- can connect to the database and process part of the tournament.
-
-Before we can run a distributed tournament, we first need to setup a simple MySQL server which can be accessed by the computers. The installation of the database should include the ``InnoDB'' database engine. We will use this engine because it allows us to more easily remove old tournament data that we no longer need. Furthermore we recommend at least 50 Mb of free space. The required database structure can be created by using the SQL dump which can be found in the directory \textit{doc/database}.
-
-The next step is to specify a tournament to run. Towards this end, select ``Start'' and then ``Distributed tournament''. This opens a GUI similar to Figure~\ref{Fig:tournament}, except for the following four options:
-
-\begin{itemize}
-	\item \textbf{Database address}. The address of the database, for example \url{sql.ewi.tudelft.nl:3306/DG}.
-	\item \textbf{Database user}. The username of the account for the database.
-	\item \textbf{Database password}. The password of the user account for the database.
-	\item \textbf{Database sessionname}. The identifier of the tournament. The identifier is needed as multiple distributed tournaments can be run at the same time.
-\end{itemize}
-
-After specifying the tournament and database parameters we can start the distributed tournament by pressing ``Start distributed tournament''. Selecting this button splits the tournament into smaller jobs which are stored in the database. The tournament is automatically started similar to a normal tournament. Now other computers can easily connect by specifying the database parameters and selecting ``Join distributed tournament''. For these computers we only need to fill in the database parameters as the configuration is loaded from the database. Finally, after running the full tournament the results are sent to all computers and stored in the ``log'' directory. Figure~\ref{fig:dtournament} summarizes the process.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.50\textwidth]{media/DistributedGenius.png}
-\caption{Distributed tournament process.}\label{fig:dtournament}
-\end{figure}
-
-It should be noted that currently there is no option in \Genius~to delete old tournament data. Therefore we recommend to install \textit{phpMyAdmin}. Using phpMyAdmin the old data of a tournament can be easily deleted by removing the tournament in the jobs table.
-
 
 
 \subsection{Running a Multi-Party Negotiation Session}\label{sec:singlesessionrun}

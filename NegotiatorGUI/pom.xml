@@ -193,6 +193,7 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
+					<finalName>genius-${pom.version}</finalName>
 					<descriptor>src/assembly/assembly.xml</descriptor>
 				</configuration>
 				<executions>
