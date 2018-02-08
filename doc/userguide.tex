@@ -1231,9 +1231,9 @@ As discussed in the introduction of this chapter, the acceptance condition deter
 
 Given this property, multiple acceptance criteria can be tested in parallel during the same negotiation trace. In practice, more than 50 variants of a simple acceptance condition as for example $\textbf{AC}_{next}$ can be tested in the same negotiation at a negligible computational cost.
 
-To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. Furthermore, the method \textit{isMac} should be overwritten to return \textit{true} and the name of the components in the repository should be \textit{Multi Acceptance Criteria}. An acceptance can be added to the MAC by appending it to the AClist as sown below. 
+To create a multi-acceptance condition component you first need to extend the class \textit{Mulit Acceptance Condition}, this gives access to the ACList which is a list of acceptance conditions to be tested in parallel. Furthermore, the method \textit{isMac} should be overwritten to return \textit{true} and the name of the components in the repository should be \textit{Multi Acceptance Criteria}. An acceptance can be added to the MAC by appending it to the AClist as shown below. 
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Java, caption={Example code for Acceptance condition}]
 public class AC_MAC extends Multi_AcceptanceCondition {
 	@Override
 	public void init(NegotiationSession negoSession, 
@@ -1249,80 +1249,35 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 		}
 	}
 }
-
 \end{lstlisting}
-
 
 
 
 %=========================================================================================
 
-\section{Creating a Multi Party Negotiation Agent}
-This section discusses how to create a multilateral negotiation agent in Java. Multilateral means you can use this agent in a multi-party negotation and multi-party tournament. A Multilateral agent extends NegotiationParty and is not compatible with the bilateral negotiation Agents.
+\section{Creating a (Multi Party) Negotiation Agent}
+This section discusses how to create a multilateral negotiation agent in Java. Obviously "multi" includes 2 so you can do bilateral negotiations with these agents as well. 
 
-To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface. Also your implementation must have a public default (no-argument) constructor. The interface is as follows (please refer to the javadocs for details on the parameters): 
+To implement a multi-party negotiation party, at a minimum one needs to implement a class that implements the \\texttt{negotiator.parties.NegotiationParty} interface (Table \ref{table:NegotiationPartyInterface}). Also your implementation must have a public default (no-argument) constructor. Please refer to the javadocs for details on the parameters.
 
-\begin{lstlisting}
-public interface NegotiationParty {
-	/**
-	 * Initializes the party. This will be called once, immediately after
-	 * construction of any class implementing this. Tells which utility space
-	 * and timeline the party is running in.
-	 * 
-	 * @param info
-	 *            information about the negotiation that this party is part of.
-	 */
-	public void init(NegotiationInfo info);
-
-
-	/**
-	 * When this function is called, it is expected that the Party chooses one
-	 * of the actions from the possible action list and returns an instance of
-	 * the chosen action.
-	 *
-	 * @param possibleActions
-	 *            List of all actions possible.
-	 * @return The chosen {@link Action}.
-	 */
-	public Action chooseAction(List<Class<? extends Action>> possibleActions);
-
-	/**
-	 * This method is called when another {@link NegotiationParty} chose an
-	 * {@link Action}.
-	 *
-	 * @param sender
-	 *            The initiator of the action.This is either the AgentID, or
-	 *            null if the sender is not an agent (e.g., the protocol).
-	 * @param action
-	 *            The action performed
-	 */
-	void receiveMessage(AgentID sender, Action action);
-
-	/**
-	 * @return a human-readable description for this party
-	 */
-	public String getDescription();
-
-	/**
-	 * Get the protocol that this party supports.
-	 * 
-	 * @return the actual supported {@link MultilateralProtocol}, usually
-	 *         {@link StackedAlternatingOffersProtocol}.
-	 */
-	public Class<? extends MultilateralProtocol> getProtocol();
-
-	/**
-	 * This is called to inform the agent that the negotiation has been ended.
-	 * This allows the agent to record some final conclusions about the run.
-	 * 
-	 * @param acceptedBid
-	 *            the final accepted bid, or null if no agreement was reached.
-	 * @return {@link HashMap} containing data to log for this agent. Returning
-	 *         null is equal to returning an empty HashMap.
-	 */
-	public HashMap<String, String> negotiationEnded(Bid acceptedBid);
-}
-\end{lstlisting}
+\begin{table*}[t]
+  \centering
+  \begin{tabular}{|p{4cm}|p{7cm}|}
+  \hline
+  Method & description \\
+  \hline\hline
+    init &Initializes the party, informing it of many negotiation details. This MUST be called exactly once, immediately after construction of any class implementing this \\
+    chooseAction & When this function is called, it is expected that the Party chooses one  of the actions from the possible action list and returns an instance of the chosen action. \\
+    receiveMessage & his method is called to inform the party that another {@link NegotiationParty} chose an {@link Action}.\\
+    getDescription & a human-readable description for this party \\
+    getProtocol & the actual supported MultilateralProtocol, usually StackedAlternatingOffersProtocol.\\
+    negotiationEnded & This is called to inform the agent that the negotiation has been ended. This allows the agent to record some final conclusions about the run\\
+    \hline
+  \end{tabular}
+  \caption{Methods of NegotiationParty. Check the javadoc for all the details}
+  \label{table:NegotiationPartyInterface}
+  \label{tab:1}
+\end{table*}
 
 For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty}. This class provides convenient support functions for building your agent. 
 
@@ -1338,7 +1293,7 @@ Here we discuss two simple examples showing some aspects of a multiparty agent.
 \subsubsection{Multiparty example}
 This example party just accepts any acceptable bid with a random probability of 0.5. To compile the example agent, go to your genius project folder and use the command line to execute this compile command
 
-\verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 multipartyexample/Groupn.java|
+\verb|javac -cp genius-1.0.0-jar-with-dependencies.jar -source 1.8 -target 1.8 multipartyexample/Groupn.java|
 
 You can run this agent against a team of parties already provided in \Genius.
 
@@ -1347,7 +1302,7 @@ Another example is demonstrating the persistent data storage. This example is sh
 
 Compile the example agent in the storageexample using
 
-\verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 storageexample/GroupX.java|
+\verb|javac -cp genius-XXX-jar-with-dependencies.jar -source 1.8 -target 1.8 storageexample/GroupX.java|
 
 Then, load it into \Genius and run it in a multiparty tournament. Set the tournament with the following settings
 \begin{itemize}
