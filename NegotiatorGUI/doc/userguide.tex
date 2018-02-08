@@ -1352,11 +1352,52 @@ This concludes the manual of \Genius. If you experience problems or have suggest
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Appendix}
-This appendix describes how to set up Eclipse to create and debug your own agent.
-
 \label{sec:appendix}
 
-\subsection{Connect Genius to Eclipse}
+This appendix describes how to set up Eclipse to create and debug your own agent.
+There are actually 2 ways to do this: using the zip file from the release page and using maven.
+
+
+\subsection{Using Maven}
+Select in the workbench File/New Project... and select Maven/new Maven project.
+Select "create a simple project" and click next. Enter some group id (eg "ai2019") and some artifactID (eg "group20"). Click finish.
+
+open the pom.xml file and insert this inside the \verb|<project>| part:
+
+\begin{lstlisting}
+	<dependencies>
+		<dependency>
+			<groupId>genius</groupId>
+			<artifactId>gui</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>artifactory.ewi.tudelft.nl</id>
+			<url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>
+		</repository>
+		<repository>
+			<id>netbeans</id>
+			<name>Netbeans rep</name>
+			<url>http://bits.netbeans.org/maven2/</url>
+		</repository>
+	</repositories>
+\end{lstlisting}
+
+Add your agent under the src/main/java. Eclipse  now automatically downloads and includes all dependencies into your project and build your agent into target/classes.
+
+To start Genius for debugging, do the following
+\begin{enumerate}
+\item Run/Debug Configurations...
+\item Select "Java Application" and click "new" button.
+\item enter \verb|genius.Application| in the "Main Class" field.
+\item Click "Debug".
+\end{enumerate}
+
+
+\subsection{Connect using the jar from the release page}
 \label{sec:appendix-run-genius}
 We expect that you installed Eclipse (Neon or higher) and Java (version 7 or higher) on your computer.
 \begin{enumerate}
