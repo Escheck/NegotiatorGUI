@@ -946,12 +946,6 @@ The next step is to load the compiled agent in \Genius. We can add the agent in 
 
 
 
-\subsection{Creating a ANAC2013 Agent}\label{sec:anac2013agent}
-The ANAC2013 introduces the concept that an agent can save and load information for each preference profile. This entails that an agent can learn from previous negotiations, against the same opponent or multiple opponents, to improve its competence when having a specific preference profile. It is only possible to retrieve information learned on the current preference profile as to avoid having perfect knowledge about the opponent's preferences.
-
-A single serializable object can be saved per preference profile by using the \textit{saveSessionData} method. If an object was already saved for the preference profile it is replaced. We recommend to store objects in the \textit{endSession} method, which is called when a negotiation is finished. The saved object can be requested by using the \textit{loadSessionData} method. A good place to do so is in in the \textit{init} method. Note that this functionality is also available to BOA agents (cf.\ Section~\ref{sec:anac2013agentBOA}).
-
-
 %=========================================================================================
 \section{Creating a BOA Agent}\label{sec:boa}
 Instead of implementing your negotiating agent from scratch, you can create a BOA agent using the \textit{BOA framework}. However, notice that the current BOA components only are suited for bi-lateral negotiation, not for general multi-lateral negotiation.
