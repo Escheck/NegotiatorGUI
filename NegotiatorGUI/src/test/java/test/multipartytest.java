@@ -11,8 +11,8 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
+import genius.cli.Runner;
 import negotiator.exceptions.InstantiateException;
-import negotiator.xml.multipartyrunner.Runner;
 
 public class multipartytest {
 
