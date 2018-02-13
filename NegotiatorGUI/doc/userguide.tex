@@ -114,7 +114,7 @@
 
 \maketitle
 
-\newcommand\Genius{{\sc Genius}}
+\newcommand\Genius{{\sc Genius\ }}
 
 \abstract{\noindent \Genius \cite{Genius}~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the environment, work with the provided scenarios and negotiation agents, and write, compile, and run an agent yourself.}
 
@@ -129,12 +129,12 @@
 This section provides a crash course on some essential theory needed to understand the negotiation system. Furthermore, it provides an overview of the features of a negotiation implemented in \Genius.
 
 \subsection{Negotiation Objects}
-Agents participating in a negotiation interact in a scenario. A scenario specifies the possible bids and their preference for both agents. A scenario consists of a domain (also called the outcome space) and a number of utility spaces (also called preference profiles) -- one for each party/agent in the negotiation.  Figure~\ref{Fig:domain} shows a picture of a domain that describes the issues in the negotiation.
+Parties participating in a negotiation interact in a domain. The domain specifies the possible bids. The parties all have their own preferences, which is reflected in their profile.  Figure~\ref{Fig:domain} shows a picture of a domain that describes the issues in the negotiation.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.4\textwidth]{media/domain.png}
-	\caption{An example domain for laptop negotiation.}\label{Fig:domain}
+	\caption{An example domain for laptop negotiation. Issues are orange, values are green}\label{Fig:domain}
 \end{figure}
 
 The \textit{Domain} describes which issues are the subject of the negotiation and which values an issue can attain. A domain contains $n$ issues: $D=(I_1,\ldots,I_n)$. Each issue $i$ consists of $k$ values: $I_i=(v^i_1,\ldots,v^i_k)$.  Combining these concepts, an agent can formulate a \textit{Bid}: a mapping from each issue to a chosen value (denoted by $c$), $b=(v^i_{c},\ldots,v^n_{c})$. 
@@ -189,7 +189,8 @@ A negotiation lasts a predefined time in seconds, or alternatively rounds. In \G
 
 There is an important difference between a time-based and rounds-based protocol. In a time-based protocol the computational cost of an agent should be taken into account as it directly influences the amount of bids which can be made. In contrast, for a rounds-based negotiation the time can be thought of as paused within a round; therefore computational cost does not play a role.
 
-Apart from a deadline, a scenario may also feature \emph{discount factors}. Discount factors decrease the utility of the bids under negotiation as time passes. While time is shared between both agents, the discount generally differs per agent. The implementation of discount factors is as follows: let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent; let $t$ in $[0, 1]$ be the current normalized time, as defined by the timeline; we compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
+Apart from a deadline, a scenario may also feature \emph{discount factors}. Discount factors decrease the utility of the bids under negotiation as time passes. While time is shared between both agents, the discount generally differs per agent. 
+The default implementation of discount factors is as follows: let $d$ in $[0, 1]$ be the discount factor that is specified in the preference profile of an agent; let $t$ in $[0, 1]$ be the current normalized time, as defined by the timeline; we compute the discounted utility $U_D^t$ of an outcome $\omega$ from the undiscounted utility function $U$ as follows:
 \begin{eqnarray}
 U_D^t(\omega) = U(\omega) \cdot d^t
 \end{eqnarray}
@@ -214,14 +215,12 @@ All protocols are found in the package \verb|negotiator.protocol| and have the n
 \subsection{Stacked Alternating Offers Protocol}
 According to this protocol \cite{MultilateralOffersProtocols} , all of the participants around the table get a turn per round. Turns are taken clock-wise around the table. One of the negotiating parties starts the negotiation with an offer that is observed by all others immediately. Whenever an offer is made, the next party in line gets a call to receiveMessage containing the bid, followed by a call to chooseAction from which it can return the following actions:
 \begin{itemize}
-\item Accept the offer (not available the very first turn). In bilateral negotiation, the opponent is also informed of acceptance via the \textit{receiveMessage} method.
-\item send an Offer to make a counter offer (thus rejecting and overriding the previous offer) 
-\item send an EndNegotiation and ending the negotiation without any agreement. In bilateral negotiation the score of both agents is set to their reservation value.
+\item Accept the offer (not available the very first turn). 
+\item send an Offer to make a counter offer (thus rejecting and overriding the previous offer, if there was any) 
+\item send an EndNegotiation and ending the negotiation without any agreement.
 \end{itemize}
 
-This protocol is the default protocol for Parties, unless  the getProtocol() function of NegotiationParty is overridden. 
-
-In bilateral negotiation, this is the only available protocol, and then with two participants only. 
+This protocol is the default protocol for Parties (as returned by getProtocol()).
 
 
 \subsection{Alternating Multiple Offers Protocol}
@@ -288,30 +287,30 @@ Before the protocol can be started, the parties have to be loaded and initialize
 After the protocol has been completed, the protocol is called a last time to determine the final outcome. 
 The parties are called to inform them that the negotiation ended, and what the outcome was. This happens even when agents crashed or did illegal actions. The negotiation has already finished, so these calls are not weighing in on the total negotiation time. Instead, these calls are typically limited to 1 second. 
 
-Finally, if the If the agent has modified the persistent data, this data needs to be saved. Again, this action is limited to a 1 second duration.
+Finally, if the agent has modified the persistent data, this data needs to be saved. Again, this action is limited to a 1 second duration.
 
 Errors surrounding these out-of-protocol procedures are not part of the negotiation itself and therefore logged and handled separately. These errors are printed only to the console/terminal \footnote{To see the console output, run from Eclipse or start up Genius from a separate terminal. }
 , and only from the single session runner.
 
 
 %=========================================================================================
-\section{Running the Environment}
-Genius should run on any machine running Java 8 or higher, including Windows, OSX, Solaris and Linux distributions. Under Ubuntu the jar file should be launched from the terminal to avoid problems with finding the repository files. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
+\section{Running \Genius }
+\Genius  can run on any machine running Java 8 or higher, including Windows, OSX, Solaris and Linux distributions. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
 To install the environment, the file \texttt{genius-XXX.zip} can be downloaded from \url{http://ii.tudelft.nl/genius/?q=article/releases}. Unzip the file at a convenient location on your machine. This will result in a package called ``genius-XXX" which contains the following files:
 
 \begin{itemize}
 	\item a  \texttt{userguide.pdf} which is this document.
 	\item \texttt{genius-XXX.jar}, the negotiation simulator;
-	\item a few \texttt{...package} folders, containing ready-to-compile agents and components.
+	\item a few example folders, containing ready-to-compile agents and components.
 	\item a \texttt{multilateraltournament.xml} example file
 \end{itemize}
 
-When you run the negosimulator (by double-clicking the application or using open with and then selecting Java), progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the negosimulator and enter
-\texttt{java -jar negosimulator.jar}.
+When you run \Genius (by double-clicking the application or using "open with" and then selecting Java), progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the genius-XXX.jar and enter
+\texttt{java -jar genius-XXX.jar}.
 This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
 
-Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar negosimulator.jar}.
+Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar genius-XXX.jar}. 
 
 
 %=========================================================================================
@@ -330,7 +329,7 @@ Start \Genius~by following the instructions in the previous section. After start
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.6\textwidth]{media/start.png}
-\caption{The negosimulator right after start-up. The left half is the components panel, the right half the status panel.}\label{Fig:negosimulator start}
+\caption{\Genius right after start-up. The left half is the components panel, the right half the status panel.}\label{Fig:negosimulator start}
 \end{figure}
 
 \subsection{Creating a Domain}
@@ -339,7 +338,7 @@ By right clicking on the list of available scenarios in the Components Window a 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.9\textwidth]{media/exampledomain.png}
-\caption{The negosimulator after creating a new Example domain.}\label{Fig:newdomain}
+\caption{\Genius after creating a new Example domain.}\label{Fig:newdomain}
 \end{figure}
 
 The current version of \Genius~supports the creation of discrete and integer issues. Starting with a discrete issue, the values of the issue should be specified. In Figure~\ref{fig:createIssueD} we show the values of the issue ``Harddisk''. Note the empty evaluation values window, later on when creating a preference profile we will use this tab to specify the preference of each value.
@@ -369,7 +368,7 @@ Now that we created a domain, the next step is to add a set of preference profil
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{media/laptop.png}
-\caption{The negosimulator after creating a new utility space.}\label{fig:utilcreated}
+\caption{\Genius after creating a new utility space.}\label{fig:utilcreated}
 \end{figure}
 
 Now you are ready to start customizing the preference profile. There are three steps: setting the importance of the issues, determining the preference of the values of the issues, and configuring the reservation value and discount. To start with the first step, you can adjust the relative weights of the issues by using the sliders next to that issue. Note that when you move a slider, the weights of the other sliders are automatically updated such that the all weights still sum up to one. If you do not want that the weight of another issue automatically changes, you can lock its weight by selecting the checkbox behind it. Now that we set the weights of the issues, it is a good idea to save the utility space.
@@ -658,7 +657,7 @@ The standard measures are the measures which are enabled by default and cannot b
 		\hline
 		\hline
 	\end{tabular}
-	\caption{Standard quality measures in \Genius~in alphabetic order.}
+	\caption{Standard quality measures in \Genius in alphabetic order.}
 	\label{tab:standardmeasures}
 \end{table}
 
@@ -756,18 +755,11 @@ The XML data of the standard log can be converted to a normal table by importing
 
 %=========================================================================================
 \section{Setting up Java and IDE}
-We assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: 
+We assume that you are familiar with programming in Java. In case you are not familiar with Java, please consult the following tutorial: \url{http://www.oracle.com/technetwork/java/javase/documentation/index.html} 
 
-\texttt{http://www.oracle.com/technetwork/java/javase/documentation/index.html} 
+The recommended way to develop an agent is to create a new project in for example Eclipse or Netbeans. Please refer to Appendix \ref{sec:appendix} where the configuration procedure is explained in detail.
 
-The Java API definitions can be found here as well.
-
-The recommended way to develop an agent is to create a new project in for example Eclipse or Netbeans. 
-To develop \Genius components, you will need to add the \textit{negosimulator.jar} as an external library to the project such that classes in the project can use the classes of \Genius. You can copy the negosimulator.jar from the zip file into your project space.
-In Appendix \ref{sec:appendix} the procedure is explained in detail for Eclipse.
-
-In the examples we will use manual compilation to avoid the need to discuss IDE peculiarities.
-
+In the examples we will use manual compilation using maven to avoid the need to discuss IDE peculiarities.
 
 
 %=========================================================================================
@@ -907,10 +899,10 @@ Compiling an agent can be done as follows (here we compile the examplepackage; m
 \begin{itemize}
 \item Open a terminal
 \item Switch to the root directory of genius
-\item \raggedright execute the command \verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 examplepackage/ExampleAgent.java|
+\item \raggedright execute the command \verb|javac -cp genius-XXX.jar -source 1.8 -target 1.8 examplepackage/ExampleAgent.java|
 \end{itemize}
 
-You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
+You can also compile from Eclipse or Netbeans. Make sure you add the genius-XXX.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this. Also you can check our tutorial on how to do this from Eclipse.
 
 \subsection{Loading an Agent}
 The next step is to load the compiled agent in \Genius. We can add the agent in one of the following two ways:
@@ -1165,10 +1157,10 @@ To compile a BOA component, do the following steps (in this example we compile t
 \begin{itemize}
 \item Open a terminal 
 \item Switch to the root directory of genius
-\item \raggedright Enter the command \verb|javac -cp negosimulator.jar -source 1.7 -target 1.7 boaexamplepackage/*.java |
+\item \raggedright Enter the command \verb|javac -cp genius-XXX.jar -source 1.8 -target 1.8 boaexamplepackage/*.java |
 \end{itemize}
 
-You can also compile from Eclipse or Netbeans. Make sure you add the negosimulator.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
+You can also compile from Eclipse or Netbeans. Make sure you add the genius-XXX.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
 
 
 \subsection{Adding a Component to the BOA Repository}
@@ -1424,13 +1416,13 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 
 \FloatBarrier
 
-\item{Add the \texttt{negosimulator} Jar:
+\item{Add the \texttt{genius-XXX} Jar:
 	\begin{enumerate}
 		\item Right click on the \texttt{AI2016Group3assignment} icon and select "Properties".
 		\item Select the Java Build Path.
 		\item Select the Libraries Tab.
 		\item Select "Add JARs", in the JAR Selection window (Figure \ref{fig:run-genius-3}).
-		\item Open the \texttt{AI2016Group3assignment} folder and scroll down to select \texttt{negosimulator.jar}.
+		\item Open the \texttt{AI2016Group3assignment} folder and scroll down to select \texttt{genius-XXX.jar}.
 		\item Click OK once.
 		
 		\item Expand the library and double click "Javadoc location" (Figure \ref{fig:attachjavadoc}).
@@ -1443,7 +1435,7 @@ We expect that you installed Eclipse (Neon or higher) and Java (version 7 or hig
 \begin{figure}[h!]
 	\centering
 		\includegraphics[width=0.6\textwidth]{media/selectjar.png}
-		\caption{Attach the negosimulator jar to the project.}
+		\caption{Attach the genius-XXX jar to the project.}
 	\label{fig:run-genius-3}
 \end{figure}
 
