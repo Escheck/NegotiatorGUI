@@ -1346,9 +1346,7 @@ This concludes the manual of \Genius. If you experience problems or have suggest
 \section{Appendix}
 \label{sec:appendix}
 
-This appendix describes how to set up Eclipse to create and debug your own agent.
-There are actually 2 ways to do this: using the zip file from the release page and using maven.
-
+This appendix describes how to set up Eclipse to create and debug your own agent. You can also create a maven project by just installing maven and creating a correctly formatted pom.xml, please refer to online maven tutorials for this. 
 
 \subsection{Using Maven}
 Select in the workbench File/New Project... and select Maven/new Maven project.
@@ -1389,75 +1387,7 @@ To start Genius for debugging, do the following
 \end{enumerate}
 
 
-\subsection{Connect using the jar from the release page}
-\label{sec:appendix-run-genius}
-We expect that you installed Eclipse (Neon or higher) and Java (version 7 or higher) on your computer.
-\begin{enumerate}
 
-\item Open the Eclipse Navigator with the menu Window/Show View/Navigator. You can close the Package Explorer.
-
-\item Right click in the Navigator area and select New/Java Project. Create a new Java project. We name it \texttt{AI2016Group3assignment} but you can use any convenient name. Make sure you select "JavaSE-1.7" or equivalent to ensure your code will be java 7 compatible (Figure \ref{fig:run-genius-1}). Click Finish.
-
-\begin{figure}[h!]
-	\centering
-		\includegraphics[width=0.5\textwidth]{media/dialogNewJavaProject.png}
-		\caption{Create a new java project with the proper name and settings.}
-	\label{fig:run-genius-1}
-\end{figure}
-
-\item Drag all files from the genius folder into the project in the Eclipse Navigator area. Select "Copy files and folders" and press OK (Figure \ref{fig:run-genius-2}).
-
-\begin{figure}[h!]
-	\centering
-		\includegraphics[width=0.5\textwidth]{media/dragdrop_generated.pdf}
-		\caption{Copy Genius files}
-	\label{fig:run-genius-2}
-\end{figure}
-
-\FloatBarrier
-
-\item{Add the \texttt{genius-XXX} Jar:
-	\begin{enumerate}
-		\item Right click on the \texttt{AI2016Group3assignment} icon and select "Properties".
-		\item Select the Java Build Path.
-		\item Select the Libraries Tab.
-		\item Select "Add JARs", in the JAR Selection window (Figure \ref{fig:run-genius-3}).
-		\item Open the \texttt{AI2016Group3assignment} folder and scroll down to select \texttt{genius-XXX.jar}.
-		\item Click OK once.
-		
-		\item Expand the library and double click "Javadoc location" (Figure \ref{fig:attachjavadoc}).
-		\item click on the Browse button and select the "javadoc" directory inside your eclipse workspace.
-		\item click a few times ok to close all dialog boxes.
-
-	\end{enumerate}
-	}
-	
-\begin{figure}[h!]
-	\centering
-		\includegraphics[width=0.6\textwidth]{media/selectjar.png}
-		\caption{Attach the genius-XXX jar to the project.}
-	\label{fig:run-genius-3}
-\end{figure}
-
-
-
-\begin{figure}[h!]
-	\centering
-		\includegraphics[width=0.6\textwidth]{media/setjavadoc.png}
-		\caption{Attach the javadoc to the jar file.}
-	\label{fig:attachjavadoc}
-\end{figure}
-
-    
-\item Now you can run G\textsc{enius} as a Java application, by launching it as a \texttt{NegoGUIapp} (Figure \ref{fig:startgenius}). To do this, right click on the project, select \texttt{Run As}, select \texttt{Java Application} and then in the browser select \texttt{NegoGuiApp}.
-
-\begin{figure}[h!]
-	\centering
-		\includegraphics[width=0.6\textwidth]{media/startup.pdf}
-		\caption{Starting Genius in Eclipse.}
-	\label{fig:startgenius}
-\end{figure}
-\end{enumerate}
 
 \FloatBarrier
 
