@@ -1354,27 +1354,8 @@ Select "create a simple project" and click next. Enter some group id (eg "ai2019
 
 open the pom.xml file and insert this inside the \verb|<project>| part:
 
-\begin{lstlisting}
-	<dependencies>
-		<dependency>
-			<groupId>genius</groupId>
-			<artifactId>gui</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>artifactory.ewi.tudelft.nl</id>
-			<url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>
-		</repository>
-		<repository>
-			<id>netbeans</id>
-			<name>Netbeans rep</name>
-			<url>http://bits.netbeans.org/maven2/</url>
-		</repository>
-	</repositories>
-\end{lstlisting}
+\begin{verbatim}
+   <dependencies>      <dependency>         <groupId>genius</groupId>         <artifactId>gui</artifactId>         <version>1.0.0</version>      </dependency>   </dependencies>   <repositories>      <repository>         <id>artifactory.ewi.tudelft.nl</id>         <url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>      </repository>      <repository>         <id>netbeans</id>         <name>Netbeans rep</name>         <url>http://bits.netbeans.org/maven2/</url>      </repository>   </repositories>\end{verbatim}
 
 Add your agent under the src/main/java. Eclipse  now automatically downloads and includes all dependencies into your project and build your agent into target/classes.
 
