@@ -1355,7 +1355,26 @@ Select "create a simple project" and click next. Enter some group id (eg "ai2019
 open the pom.xml file and insert this inside the \verb|<project>| part:
 
 \begin{verbatim}
-   <dependencies>      <dependency>         <groupId>genius</groupId>         <artifactId>gui</artifactId>         <version>1.0.0</version>      </dependency>   </dependencies>   <repositories>      <repository>         <id>artifactory.ewi.tudelft.nl</id>         <url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>      </repository>      <repository>         <id>netbeans</id>         <name>Netbeans rep</name>         <url>http://bits.netbeans.org/maven2/</url>      </repository>   </repositories>\end{verbatim}
+   <dependencies>
+      <dependency>
+         <groupId>genius</groupId>
+         <artifactId>gui</artifactId>
+         <version>8.0.0</version>
+      </dependency>
+   </dependencies>
+
+   <repositories>
+      <repository>
+         <id>artifactory.ewi.tudelft.nl</id>
+         <url>http://artifactory.ewi.tudelft.nl/artifactory/libs-release</url>
+      </repository>
+      <repository>
+         <id>netbeans</id>
+         <name>Netbeans rep</name>
+         <url>http://bits.netbeans.org/maven2/</url>
+      </repository>
+   </repositories>
+\end{verbatim}
 
 Add your agent under the src/main/java. Eclipse  now automatically downloads and includes all dependencies into your project and build your agent into target/classes.
 
@@ -1367,7 +1386,19 @@ To start Genius for debugging, do the following
 \item Click "Debug".
 \end{enumerate}
 
+{\em NOTICE}: Strictly, your agent should compile with only this dependency:
+\begin{verbatim}
+   <dependencies>
+      <dependency>
+         <groupId>genius</groupId>
+         <artifactId>core</artifactId>
+         <version>1.0.1</version>
+      </dependency>
+   </dependencies>
+\end{verbatim}
 
+However, we suggest using the gui dependency for now because of convenience of debugging and running your agent. 
+Take care that your agent does not re-use code from old agents, and use only the core APIs.
 
 
 \FloatBarrier
