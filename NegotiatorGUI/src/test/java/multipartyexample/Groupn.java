@@ -4,14 +4,11 @@ import java.util.List;
 
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
-import negotiator.persistent.PersistentDataContainer;
-import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * This is your negotiation party.
@@ -42,7 +39,6 @@ public class Groupn extends AbstractNegotiationParty {
 	 *            Either a list containing both accept and offer or only offer.
 	 * @return The chosen action.
 	 */
-	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 
 		// with 50% chance, counter offer
@@ -72,7 +68,6 @@ public class Groupn extends AbstractNegotiationParty {
 		}
 	}
 
-	@Override
 	public String getDescription() {
 		return "example party group N";
 	}
