@@ -7,18 +7,14 @@ import java.util.Map;
 import list.Tuple;
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
-import negotiator.persistent.PersistentDataContainer;
 import negotiator.persistent.PersistentDataType;
 import negotiator.persistent.StandardInfo;
 import negotiator.persistent.StandardInfoList;
-import negotiator.timeline.TimeLineInfo;
-import negotiator.utility.AbstractUtilitySpace;
 
 /**
  * Sample party that accepts the Nth offer, where N is the number of sessions
@@ -58,7 +54,6 @@ public class GroupX extends AbstractNegotiationParty {
 		}
 	}
 
-	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		nrChosenActions++;
 		if (nrChosenActions > history.size() & lastReceivedBid != null) {
@@ -76,7 +71,6 @@ public class GroupX extends AbstractNegotiationParty {
 		}
 	}
 
-	@Override
 	public String getDescription() {
 		return "accept Nth offer";
 	}
