@@ -89,11 +89,7 @@
 
 % this gives us \FloatBarrier to prevent images to float all to the end
 \usepackage{placeins}
-
-\title{Negotiation User Guide}
-\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx, D. Feirstein}
-
-\date{\today}
+\newcommand\Genius{{\sc Genius\ }}
 
 % Alter some LaTeX defaults for better treatment of figures:
     % See p.105 of "TeX Unbound" for suggested values.
@@ -114,6 +110,15 @@
     \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
 
 	% remember to use [htp] or [htpb] for placement
+
+
+
+%===========================================================================
+\title{\Genius Negotiation User Guide}
+\author{T. Baarslag, W. Pasman, K. Hindriks, D. Tykhonov, W. Visser, M. Hendrikx, D. Feirstein}
+
+\date{\today}
+
 	
 \begin{document}
 
@@ -125,7 +130,6 @@
 
 \maketitle
 
-\newcommand\Genius{{\sc Genius\ }}
 
 \abstract{\noindent \Genius \cite{Genius}~is a negotiation environment that implements an open architecture for heterogeneous negotiating agents. \Genius~can be used to implement, or simulate, real life negotiations. This document describes how you can install the environment, work with the provided scenarios and negotiation agents, and write, compile, and run an agent yourself.}
 
@@ -401,10 +405,11 @@ The final step is to set the reservation value and discount of a preference prof
 This section discusses how to run a negotiation. There are two modes to run a negotiation:
 
 \begin{itemize}
-	\item \textbf{Multi-Party Negotiation}. A single negotiation session in which a number of agents (not necessarily 2) compete.
+	\item \textbf{Multi-Party Negotiation Session}. A single negotiation session in which a number of agents negotiate.
 	\item \textbf{Multi-Party Tournament}. A tournament of multiparty sessions.
-	
 \end{itemize}
+
+you start one of these by selecting them from the Start menu (Figure \ref{Fig:negosimulator start}).
 
 Before going into detail on how each of these modes work, we first discuss the two types of agents that can be used: automated agents and non-automated agents. Automated agents are agents that can compete against other agents in a negotiation without relying on input by a user. In general, these agents are able to make a large amount of bids in a limited amount of time.
 
@@ -620,7 +625,7 @@ In bilateral generation, first a set of participants P of all combinations of 1 
 
 
 %=========================================================================================
-\section{Quality Measures in Genius}\label{sec:qm}
+\section{Quality Measures}\label{sec:qm}
 A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
 There are  three types of logs used in \Genius: the standard log, the tournament log and the tournament statistics log.
