@@ -32,38 +32,31 @@
 \BOOKMARK [3][-]{subsubsection.6.1.2}{Detailed Measures}{subsection.6.1}% 32
 \BOOKMARK [2][-]{subsection.6.2}{Overview of Quality Measures in the Tournament Log}{section.6}% 33
 \BOOKMARK [2][-]{subsection.6.3}{Analyzing Logs using Excel}{section.6}% 34
-\BOOKMARK [1][-]{section.7}{Setting up Java and IDE}{}% 35
-\BOOKMARK [1][-]{section.8}{Creating a Negotiation Agent}{}% 36
-\BOOKMARK [2][-]{subsection.8.1}{Receiving the Opponent's Action}{section.8}% 37
-\BOOKMARK [2][-]{subsection.8.2}{Choosing an Action}{section.8}% 38
-\BOOKMARK [2][-]{subsection.8.3}{General properties}{section.8}% 39
-\BOOKMARK [2][-]{subsection.8.4}{Overview of Classes}{section.8}% 40
-\BOOKMARK [2][-]{subsection.8.5}{Compiling an Agent}{section.8}% 41
-\BOOKMARK [2][-]{subsection.8.6}{Loading an Agent}{section.8}% 42
-\BOOKMARK [1][-]{section.9}{Creating a BOA Agent}{}% 43
-\BOOKMARK [2][-]{subsection.9.1}{Components of the BOA Framework}{section.9}% 44
-\BOOKMARK [2][-]{subsection.9.2}{Create "Multi"lateral BOA Party}{section.9}% 45
-\BOOKMARK [2][-]{subsection.9.3}{Bi-Lateral BOA}{section.9}% 46
-\BOOKMARK [2][-]{subsection.9.4}{Creating New Components}{section.9}% 47
-\BOOKMARK [3][-]{subsubsection.9.4.1}{Parameters}{subsection.9.4}% 48
-\BOOKMARK [3][-]{subsubsection.9.4.2}{Creating a Bidding Strategy}{subsection.9.4}% 49
-\BOOKMARK [3][-]{subsubsection.9.4.3}{Creating an Acceptance Condition}{subsection.9.4}% 50
-\BOOKMARK [3][-]{subsubsection.9.4.4}{Creating an Opponent Model}{subsection.9.4}% 51
-\BOOKMARK [3][-]{subsubsection.9.4.5}{Creating an Opponent Model Strategy}{subsection.9.4}% 52
-\BOOKMARK [2][-]{subsection.9.5}{Compiling BOA Components}{section.9}% 53
-\BOOKMARK [2][-]{subsection.9.6}{Adding a Component to the BOA Repository}{section.9}% 54
-\BOOKMARK [2][-]{subsection.9.7}{Creating a ANAC2013 BOA Agent}{section.9}% 55
-\BOOKMARK [2][-]{subsection.9.8}{Advanced: Converting a BOA Agent to an Agent}{section.9}% 56
-\BOOKMARK [2][-]{subsection.9.9}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.9}% 57
-\BOOKMARK [1][-]{section.10}{Creating a \(Multi Party\) Negotiation Agent}{}% 58
-\BOOKMARK [2][-]{subsection.10.1}{Compiling a NegotiationParty}{section.10}% 59
-\BOOKMARK [3][-]{subsubsection.10.1.1}{Multiparty example}{subsection.10.1}% 60
-\BOOKMARK [3][-]{subsubsection.10.1.2}{Storage example}{subsection.10.1}% 61
-\BOOKMARK [2][-]{subsection.10.2}{Using third party libraries}{section.10}% 62
-\BOOKMARK [2][-]{subsection.10.3}{Loading a NegotiationParty}{section.10}% 63
-\BOOKMARK [3][-]{subsubsection.10.3.1}{loading with the GUI}{subsection.10.3}% 64
-\BOOKMARK [3][-]{subsubsection.10.3.2}{manual loading}{subsection.10.3}% 65
-\BOOKMARK [1][-]{section.11}{Conclusion}{}% 66
-\BOOKMARK [1][-]{section.12}{Appendix: Building Agent in Eclipse}{}% 67
-\BOOKMARK [2][-]{subsection.12.1}{Using Maven}{section.12}% 68
-\BOOKMARK [2][-]{subsection.12.2}{Debugging}{section.12}% 69
+\BOOKMARK [1][-]{section.7}{Creating a Negotiation Agent}{}% 35
+\BOOKMARK [2][-]{subsection.7.1}{Set up your workspace}{section.7}% 36
+\BOOKMARK [2][-]{subsection.7.2}{Third party code}{section.7}% 37
+\BOOKMARK [2][-]{subsection.7.3}{Example agents}{section.7}% 38
+\BOOKMARK [2][-]{subsection.7.4}{Implementing NegotiationParty}{section.7}% 39
+\BOOKMARK [3][-]{subsubsection.7.4.1}{Receiving the Opponent's Action}{subsection.7.4}% 40
+\BOOKMARK [3][-]{subsubsection.7.4.2}{Choosing an Action}{subsection.7.4}% 41
+\BOOKMARK [3][-]{subsubsection.7.4.3}{General properties}{subsection.7.4}% 42
+\BOOKMARK [3][-]{subsubsection.7.4.4}{Overview of useful Classes}{subsection.7.4}% 43
+\BOOKMARK [2][-]{subsection.7.5}{Loading a NegotiationParty}{section.7}% 44
+\BOOKMARK [1][-]{section.8}{Debugging}{}% 45
+\BOOKMARK [2][-]{subsection.8.1}{Source code and javadocs}{section.8}% 46
+\BOOKMARK [1][-]{section.9}{Creating a BOA Agent}{}% 47
+\BOOKMARK [2][-]{subsection.9.1}{Components of the BOA Framework}{section.9}% 48
+\BOOKMARK [2][-]{subsection.9.2}{Create "Multi"lateral BOA Party}{section.9}% 49
+\BOOKMARK [2][-]{subsection.9.3}{Bi-Lateral BOA}{section.9}% 50
+\BOOKMARK [2][-]{subsection.9.4}{Creating New Components}{section.9}% 51
+\BOOKMARK [3][-]{subsubsection.9.4.1}{Parameters}{subsection.9.4}% 52
+\BOOKMARK [3][-]{subsubsection.9.4.2}{Creating a Bidding Strategy}{subsection.9.4}% 53
+\BOOKMARK [3][-]{subsubsection.9.4.3}{Creating an Acceptance Condition}{subsection.9.4}% 54
+\BOOKMARK [3][-]{subsubsection.9.4.4}{Creating an Opponent Model}{subsection.9.4}% 55
+\BOOKMARK [3][-]{subsubsection.9.4.5}{Creating an Opponent Model Strategy}{subsection.9.4}% 56
+\BOOKMARK [2][-]{subsection.9.5}{Compiling BOA Components}{section.9}% 57
+\BOOKMARK [2][-]{subsection.9.6}{Adding a Component to the BOA Repository}{section.9}% 58
+\BOOKMARK [2][-]{subsection.9.7}{Creating a ANAC2013 BOA Agent}{section.9}% 59
+\BOOKMARK [2][-]{subsection.9.8}{Advanced: Converting a BOA Agent to an Agent}{section.9}% 60
+\BOOKMARK [2][-]{subsection.9.9}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.9}% 61
+\BOOKMARK [1][-]{section.10}{Conclusion}{}% 62
