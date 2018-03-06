@@ -4,7 +4,7 @@
 
 	<groupId>genius</groupId>
 	<artifactId>gui</artifactId>
-	<version>8.0.0</version>
+	<version>8.0.1</version>
 	<packaging>jar</packaging>
 
 
@@ -23,13 +23,13 @@
 		<dependency>
 			<groupId>genius</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>genius</groupId>
 			<artifactId>agents</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 
 		<dependency>
