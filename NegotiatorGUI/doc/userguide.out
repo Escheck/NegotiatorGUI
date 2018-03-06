@@ -13,50 +13,48 @@
 \BOOKMARK [2][-]{subsection.2.6}{Beyond the Protocol}{section.2}% 13
 \BOOKMARK [1][-]{section.3}{Running Genius }{}% 14
 \BOOKMARK [1][-]{section.4}{Scenario Creation}{}% 15
-\BOOKMARK [2][-]{subsection.4.1}{Basic GUI Components}{section.4}% 16
-\BOOKMARK [2][-]{subsection.4.2}{Creating a Domain}{section.4}% 17
-\BOOKMARK [2][-]{subsection.4.3}{Creating a Preference Profile}{section.4}% 18
-\BOOKMARK [1][-]{section.5}{Running Negotiations}{}% 19
-\BOOKMARK [2][-]{subsection.5.1}{Running a Multi-Party Negotiation Session}{section.5}% 20
-\BOOKMARK [2][-]{subsection.5.2}{Running a Multi-Party Tournament}{section.5}% 21
-\BOOKMARK [3][-]{subsubsection.5.2.1}{Bilateral special options}{subsection.5.2}% 22
-\BOOKMARK [2][-]{subsection.5.3}{Running from the command line}{section.5}% 23
-\BOOKMARK [3][-]{subsubsection.5.3.1}{Prepare the XML settings file}{subsection.5.3}% 24
-\BOOKMARK [3][-]{subsubsection.5.3.2}{Run the tournament}{subsection.5.3}% 25
-\BOOKMARK [2][-]{subsection.5.4}{Tournament Session Generation}{section.5}% 26
-\BOOKMARK [3][-]{subsubsection.5.4.1}{Multilateral generation}{subsection.5.4}% 27
-\BOOKMARK [3][-]{subsubsection.5.4.2}{Bilateral generation}{subsection.5.4}% 28
-\BOOKMARK [1][-]{section.6}{Quality Measures in Genius}{}% 29
-\BOOKMARK [2][-]{subsection.6.1}{Overview of Quality Measures in the Standard Log}{section.6}% 30
-\BOOKMARK [3][-]{subsubsection.6.1.1}{Standard Measures}{subsection.6.1}% 31
-\BOOKMARK [3][-]{subsubsection.6.1.2}{Detailed Measures}{subsection.6.1}% 32
-\BOOKMARK [2][-]{subsection.6.2}{Overview of Quality Measures in the Tournament Log}{section.6}% 33
-\BOOKMARK [2][-]{subsection.6.3}{Analyzing Logs using Excel}{section.6}% 34
-\BOOKMARK [1][-]{section.7}{Creating a Negotiation Agent}{}% 35
-\BOOKMARK [2][-]{subsection.7.1}{Set up your workspace}{section.7}% 36
-\BOOKMARK [2][-]{subsection.7.2}{Third party code}{section.7}% 37
-\BOOKMARK [2][-]{subsection.7.3}{Example agents}{section.7}% 38
-\BOOKMARK [2][-]{subsection.7.4}{Implementing NegotiationParty}{section.7}% 39
-\BOOKMARK [3][-]{subsubsection.7.4.1}{Receiving the Opponent's Action}{subsection.7.4}% 40
-\BOOKMARK [3][-]{subsubsection.7.4.2}{Choosing an Action}{subsection.7.4}% 41
-\BOOKMARK [3][-]{subsubsection.7.4.3}{General properties}{subsection.7.4}% 42
-\BOOKMARK [3][-]{subsubsection.7.4.4}{Overview of useful Classes}{subsection.7.4}% 43
-\BOOKMARK [2][-]{subsection.7.5}{Loading a NegotiationParty}{section.7}% 44
-\BOOKMARK [1][-]{section.8}{Debugging}{}% 45
-\BOOKMARK [2][-]{subsection.8.1}{Source code and javadocs}{section.8}% 46
-\BOOKMARK [1][-]{section.9}{Creating a BOA Agent}{}% 47
-\BOOKMARK [2][-]{subsection.9.1}{Components of the BOA Framework}{section.9}% 48
-\BOOKMARK [2][-]{subsection.9.2}{Create "Multi"lateral BOA Party}{section.9}% 49
-\BOOKMARK [2][-]{subsection.9.3}{Bi-Lateral BOA}{section.9}% 50
-\BOOKMARK [2][-]{subsection.9.4}{Creating New Components}{section.9}% 51
-\BOOKMARK [3][-]{subsubsection.9.4.1}{Parameters}{subsection.9.4}% 52
-\BOOKMARK [3][-]{subsubsection.9.4.2}{Creating a Bidding Strategy}{subsection.9.4}% 53
-\BOOKMARK [3][-]{subsubsection.9.4.3}{Creating an Acceptance Condition}{subsection.9.4}% 54
-\BOOKMARK [3][-]{subsubsection.9.4.4}{Creating an Opponent Model}{subsection.9.4}% 55
-\BOOKMARK [3][-]{subsubsection.9.4.5}{Creating an Opponent Model Strategy}{subsection.9.4}% 56
-\BOOKMARK [2][-]{subsection.9.5}{Compiling BOA Components}{section.9}% 57
-\BOOKMARK [2][-]{subsection.9.6}{Adding a Component to the BOA Repository}{section.9}% 58
-\BOOKMARK [2][-]{subsection.9.7}{Creating a ANAC2013 BOA Agent}{section.9}% 59
-\BOOKMARK [2][-]{subsection.9.8}{Advanced: Converting a BOA Agent to an Agent}{section.9}% 60
-\BOOKMARK [2][-]{subsection.9.9}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.9}% 61
-\BOOKMARK [1][-]{section.10}{Conclusion}{}% 62
+\BOOKMARK [2][-]{subsection.4.1}{Creating a Domain}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.2}{Creating a Preference Profile}{section.4}% 17
+\BOOKMARK [1][-]{section.5}{Running Negotiations}{}% 18
+\BOOKMARK [2][-]{subsection.5.1}{Running a Multi-Party Negotiation Session}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.2}{Running a Multi-Party Tournament}{section.5}% 20
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Bilateral special options}{subsection.5.2}% 21
+\BOOKMARK [2][-]{subsection.5.3}{Running from the command line}{section.5}% 22
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Prepare the XML settings file}{subsection.5.3}% 23
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Run the tournament}{subsection.5.3}% 24
+\BOOKMARK [2][-]{subsection.5.4}{Tournament Session Generation}{section.5}% 25
+\BOOKMARK [3][-]{subsubsection.5.4.1}{Multilateral generation}{subsection.5.4}% 26
+\BOOKMARK [3][-]{subsubsection.5.4.2}{Bilateral generation}{subsection.5.4}% 27
+\BOOKMARK [1][-]{section.6}{Quality Measures in Genius}{}% 28
+\BOOKMARK [2][-]{subsection.6.1}{Overview of Quality Measures in the Standard Log}{section.6}% 29
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Standard Measures}{subsection.6.1}% 30
+\BOOKMARK [3][-]{subsubsection.6.1.2}{Detailed Measures}{subsection.6.1}% 31
+\BOOKMARK [2][-]{subsection.6.2}{Overview of Quality Measures in the Tournament Log}{section.6}% 32
+\BOOKMARK [2][-]{subsection.6.3}{Analyzing Logs using Excel}{section.6}% 33
+\BOOKMARK [1][-]{section.7}{Creating a Negotiation Agent}{}% 34
+\BOOKMARK [2][-]{subsection.7.1}{Set up your workspace}{section.7}% 35
+\BOOKMARK [2][-]{subsection.7.2}{Example agents}{section.7}% 36
+\BOOKMARK [2][-]{subsection.7.3}{Implementing NegotiationParty}{section.7}% 37
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Receiving the Opponent's Action}{subsection.7.3}% 38
+\BOOKMARK [3][-]{subsubsection.7.3.2}{Choosing an Action}{subsection.7.3}% 39
+\BOOKMARK [3][-]{subsubsection.7.3.3}{Overview of useful Classes}{subsection.7.3}% 40
+\BOOKMARK [2][-]{subsection.7.4}{Loading a NegotiationParty}{section.7}% 41
+\BOOKMARK [2][-]{subsection.7.5}{Third party code}{section.7}% 42
+\BOOKMARK [1][-]{section.8}{Creating a BOA Agent}{}% 43
+\BOOKMARK [2][-]{subsection.8.1}{Components of the BOA Framework}{section.8}% 44
+\BOOKMARK [2][-]{subsection.8.2}{Create a BOA Party}{section.8}% 45
+\BOOKMARK [2][-]{subsection.8.3}{Bi-Lateral BOA}{section.8}% 46
+\BOOKMARK [2][-]{subsection.8.4}{Creating New Components}{section.8}% 47
+\BOOKMARK [3][-]{subsubsection.8.4.1}{Parameters}{subsection.8.4}% 48
+\BOOKMARK [3][-]{subsubsection.8.4.2}{Creating a Bidding Strategy}{subsection.8.4}% 49
+\BOOKMARK [3][-]{subsubsection.8.4.3}{Creating an Acceptance Condition}{subsection.8.4}% 50
+\BOOKMARK [3][-]{subsubsection.8.4.4}{Creating an Opponent Model}{subsection.8.4}% 51
+\BOOKMARK [3][-]{subsubsection.8.4.5}{Creating an Opponent Model Strategy}{subsection.8.4}% 52
+\BOOKMARK [2][-]{subsection.8.5}{Compiling BOA Components}{section.8}% 53
+\BOOKMARK [2][-]{subsection.8.6}{Adding a Component to the BOA Repository}{section.8}% 54
+\BOOKMARK [2][-]{subsection.8.7}{Creating a ANAC2013 BOA Agent}{section.8}% 55
+\BOOKMARK [2][-]{subsection.8.8}{Advanced: Converting a BOA Agent to an Agent}{section.8}% 56
+\BOOKMARK [2][-]{subsection.8.9}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.8}% 57
+\BOOKMARK [1][-]{section.9}{Debugging}{}% 58
+\BOOKMARK [2][-]{subsection.9.1}{Source code and javadocs}{section.9}% 59
+\BOOKMARK [1][-]{section.10}{Conclusion}{}% 60

@@ -192,8 +192,7 @@ The negotiation protocol determines the overall order of actions during a negoti
 \subsection{Reservation Value}
 A reservation value is a real-valued constant that sets a threshold below which a rational agent should not accept any offers. Intuitively, a reservation value is the utility associated with the Best Alternative to a Negotiated Agreement (BATNA).
 
-A reservation value is the utility that an agent will obtain if no agreement is realized in a negotiation session. This can happen either if an agent leaves the negotiation, or by not reaching an agreement before the deadline. In other words: either the negotiating parties agree on an outcome $\omega$, and both agents receive the associated utility of $\omega$, or no agreement is reached, in which case both agents receive their reservation value instead. Reservation values typically differ for each negotiation agent. In case no reservation value is set in a profile, it is assumed to be 0.
-
+A reservation value is the minimum acceptable utility, offers with a utility would normally not be accepted by an agent. Reservation values typically differ for each negotiation agent. In case no reservation value is set in a profile, it is assumed to be 0. Notice that if a negotiation ends with no agreement, agents normally get a utility of 0, regardless of the reservation value.
 
 \subsection{Time Pressure}
 A negotiation lasts a predefined time in seconds, or alternatively rounds. In \Genius~the time line is \emph{normalized}, i.e.: time $t \in [0, 1]$, where $t = 0$ represents the start of the negotiation and $t = 1$ represents the deadline. Notice that manipulation of the remaining time can be a factor influencing the outcome.
@@ -291,7 +290,7 @@ This protocol uses the following turns in every round:
 The accepted bid is the last bid that was not receiving a `worse' vote. 
 
 \subsection{Beyond the Protocol}
-This section outlines the procedures surrounding running a negotiation outside the protocol.
+This section outlines the procedures for the parts of the session outside the scope of the protocol specification.
 
 Before the protocol can be started, the parties have to be loaded and initialized. During initialization, the party's persistent data may have to be loaded from a file. If the persistent data can not be read, a default empty dataset is created for the agent. Then the party's init code is called to set up the agent. All the time spent in this initialization phase is already being subtracted from the total available negotiation time.
 
@@ -312,27 +311,14 @@ To install the environment, the file \texttt{genius-XXX.zip} can be downloaded f
 
 \begin{itemize}
 	\item a  \texttt{userguide.pdf} which is this document.
-	\item \texttt{genius-XXX.jar}, the negotiation simulator;
+	\item \texttt{genius-XXX.jar}, the \Genius negotiation simulator;
 	\item a few example folders, containing ready-to-compile agents and components.
 	\item a \texttt{multilateraltournament.xml} example file
 \end{itemize}
 
-You start \Genius by double-clicking the application or using "open with" and then selecting Java. 
+You start \Genius by double-clicking the genius-XXX.jar file, or using "open with" and then selecting Java. 
 
-Progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the genius-XXX.jar and enter
-\texttt{java -jar genius-XXX.jar}.
-This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
-
-Note that some agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar genius-XXX.jar}. 
-
-Please refer to chapter \ref{sec:debugging} for instructions on running \Genius in debug mode to debug your agent.
-
-%=========================================================================================
-\section{Scenario Creation}
-A negotiation can be modeled in \Genius~by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
-
-\subsection{Basic GUI Components}
-Start \Genius~by following the instructions in the previous section. After starting the simulator a screen similar to Figure~\ref{Fig:negosimulator start} is shown. This screen is divided in three portions:
+ After starting the simulator a screen similar to Figure~\ref{Fig:negosimulator start} is shown. This screen is divided in three portions:
 
 \begin{itemize}
 	\item The \textbf{Menubar} allows us to start a new negotiation.
@@ -345,6 +331,20 @@ Start \Genius~by following the instructions in the previous section. After start
 	\includegraphics[width=0.6\textwidth]{media/start.png}
 \caption{\Genius right after start-up. The left half is the components panel, the right half the status panel.}\label{Fig:negosimulator start}
 \end{figure}
+
+
+Progress messages and error messages are printed mainly to the standard output. On Mac OSX you can view these messages by opening the console window (double-click on Systemdisk/Applications/Utilities/Console.app). On Windows this is not directly possible. Console output can be read only if you start the application from the console window by hand, as follows. Go to the directory with the genius-XXX.jar and enter
+\texttt{java -jar genius-XXX.jar}.
+This will start the simulator, and all messages will appear in the console window. You may see some errors and warnings that are non-critical.
+
+In some rare cases, agents and scenarios require more memory than allocated by default to Java. This problem can be resolved by using the Xmx and Xms parameters when launching the executable jar, for example \texttt{java -Xmx1536M -Xms1536M -jar genius-XXX.jar}. But usually, if your agent runs out of memory then there is some design flaw or bug. Competitions usually are run with the default amount of java memory so it is recommended to ensure that your  agent performs properly without requiring additional memory.
+
+Please refer to chapter \ref{sec:debugging} for instructions on running \Genius in debug mode to debug your agent.
+
+%=========================================================================================
+\section{Scenario Creation}
+A negotiation can be modeled in \Genius by creating a scenario. A scenario consists of a domain specifying the possible bids and a set of preference profiles corresponding to the preferences of the bids in the domain. This section discusses how to create a domain and a preference profile.
+
 
 \subsection{Creating a Domain}
 By right clicking on the list of available scenarios in the Components Window a popup menu with the option to create a new domain is shown. After clicking this option it is requested how the domain should be called. Next the domain is automatically created and a window similar to Figure~\ref{Fig:newdomain} is shown. Initially, a domain contains zero issues. We can simply add an issue by pressing the ``Add issue'' button. This results in the opening of a dialog similar to Figure~\ref{fig:createIssueD}.
@@ -816,11 +816,6 @@ The following steps are done in Eclipse:
 Eclipse now automatically downloads and includes all dependencies into your project and build your agent into target/classes. 
 
 
-\subsection{Third party code}
-You should not use maven to add dependencies, as Java 8 can not deal properly with multiple versions of the same library in within a JVM.
-
-Instead, if you want to use a third party library, you will have to include all the source code of that library with your code, including all sub-dependencies. The code should be copied inside the package name of your agent, instead of using the original package name of that library (so do not use "org.apache" for instance). This is to ensure that we are really running your agent on the specific version of the library that your agent needs and to avoid version conflicts (java will run an unspecified version of the library in case of conficts). 
-
 
 \subsection{Example agents}
 The \Genius zip file contains two examples: the Multiparty example and the Storage example
@@ -843,12 +838,13 @@ and start the tournament and check the number of rounds till agreement: it will 
 Now run another tournament with the same settings but pick select both \verb|party1_utility.xml| and \verb|party2_utility.xml|. Run the tournament.
 Now you will see that the the number of rounds till agreement goes up every other run. This is because your agent gets a different profile every other run and thus there are persistent data stores, one for each profile. 
 
+
+
+
 \subsection{Implementing NegotiationParty}
-Every agent must at least implement \texttt{negotiator.parties.NegotiationParty} i, 
+This section discusses details of implementing a NegotiationParty.  
 
-Also your implementation must have a public default (no-argument) constructor.
-
-This section discusses details of implementing a NegotiationParty.  Please refer to the javadocs for details on the parameters.
+Every agent must at least implement the \texttt{negotiator.parties.NegotiationParty} interface (Table \ref{table:NegotiationPartyInterface}),  Also the implementation must have a public default (no-argument) constructor. Please refer to the javadocs for details on the parameters.
 
 \begin{table*}[t]
   \centering
@@ -860,57 +856,50 @@ This section discusses details of implementing a NegotiationParty.  Please refer
     chooseAction & When this function is called, it is expected that the Party chooses one  of the actions from the possible action list and returns an instance of the chosen action. \\
     receiveMessage & This method is called to inform the party that another NegotiationParty chose an Action.\\
     getDescription & Returns a human-readable description for this party \\
-    getProtocol & The actual supported MultilateralProtocol, usually StackedAlternatingOffersProtocol.\\
+    getProtocol & The actual supported MultilateralProtocol. Usually this returns StackedAlternatingOffersProtocol.\\
     negotiationEnded & This is called to inform the agent that the negotiation has been ended. This allows the agent to record some final conclusions about the run\\
     \hline
   \end{tabular}
   \caption{Methods of NegotiationParty. Check the javadoc for all the details}
   \label{table:NegotiationPartyInterface}
-  \label{tab:1}
 \end{table*}
 
 For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty}. This class provides convenient support functions for building your agent. 
 
-Your agent might need check the provided AbstractUtilitySpace, for instance if your agent supports for example only AdditiveutilitySpace.
+Your agent might need to check the provided AbstractUtilitySpace, for instance if your agent supports for example only AdditiveutilitySpace.
 
 We recommend to use the javadoc included with the distribution to check the details of all the involved classes. 
-
-The functions \verb|receiveMessage| and \verb|chooseAction| are basically the same as described in section \ref{sec:receiveAction} and \ref{sec:chooseAction}. getProtocol by default returns an instance of StackedAlternatingOffersProtocol. Your agent should override this if it works on a different protocol.
 
 \FloatBarrier
 
 
-The examples extend AbstractNegotiationParty which is a basic implementation of NegotiationParty. Table \ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius. To implement your agent, you have to override the three methods: \textit{ReceiveMessage}, \textit{init}, and \textit{chooseAction}.
+The examples extend AbstractNegotiationParty which is a basic implementation of NegotiationParty. Table \ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
 
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
 \hline
+\texttt{void init(NegotiationInfo info)}\\
+Informs the agent about beginning of a new negotiation session.\\
+\hline
 \texttt{NegotiationInfo}\\
 The context of the negotiation: the utility space, the timeline and deadline, the agentID and persistent data container.\\
 \hline
-\texttt{UtilitySpace utilitySpace}\\
+\texttt{UtilitySpace}\\
 The preference profile of the scenario allocated to the agent.\\
 \hline
-\texttt{Timeline timeline}\\
+\texttt{Timeline }\\
 Use timeline for every time-related by using \texttt{getTime()}.\\
-\hline
-\texttt{double getUtility(Bid bid)}\\
-A convenience method to get the utility of a bid taking the discount factor into account.\\
-\hline
-\texttt{void init()}\\
-Informs the agent about beginning of a new negotiation session.\\
-\hline
-\texttt{void ReceiveMessage(Action opponentAction)}\\
-Informs the agent which action the opponent did.\\
-\hline
-\texttt{Action chooseAction()}\\
+\texttt{Action chooseAction(List<Class<? extends Action>> possibleActions)}\\
 This function should return the action your agent wants to make next.\\
 \hline
-\texttt{String getName()}\\
-Returns the name of the agent. Please override this to give a proper name to your agent.\\
+\texttt{Action}\\
+Superclass of negotiation actions like Offer, Accept and EndNegotiation..\\
+\hline
+\texttt{void receiveMessage(AgentID sender, Action action)}\\
+Informs the agent which action the opponent did.\\
 \hline
 \end{tabular}
-\caption{The most important methods and fields of the Agent class.}
+\caption{The most important methods and fields of the NegotiationParty class.}
 \label{tab:agentclass}
 \end{table}
 
@@ -936,28 +925,27 @@ While this strategy works, in general it will lead to suboptimal results as it d
 \begin{lstlisting}
 public Action chooseAction() {
 	Action action = null;
-	try { 
-		if (actionOfPartner == null) {
+	Bid partnerBid = null;
+	try {
+		if (actionOfPartner == null)
 			action = chooseRandomBidAction();
-		}
 		if (actionOfPartner instanceof Offer) {
-			Bid partnerBid = ((Offer) actionOfPartner).getBid();
+			partnerBid = ((Offer) actionOfPartner).getBid();
 			double offeredUtilFromOpponent = getUtility(partnerBid);
-			// get current time
 			double time = timeline.getTime();
 			action = chooseRandomBidAction();
-			
 			Bid myBid = ((Offer) action).getBid();
 			double myOfferedUtil = getUtility(myBid);
-			
 			// accept under certain circumstances
-			if (isAcceptable(offeredUtilFromOpponent,myOfferedUtil,time)) {
-				action = new Accept(getAgentID());
-			}
+			if (isAcceptable(offeredUtilFromOpponent, myOfferedUtil, time))
+				action = new Accept(getAgentID(), partnerBid);
 		}
-	} catch (Exception e) { 
-		e.printStackTrace();
-		action = new Accept(getAgentID()); // best guess if things go wrong. 
+		if (timeline.getType().equals(Timeline.Type.Time)) {
+			sleep(0.005); // just for fun
+		}
+	} catch (Exception e) {
+		 // best guess if things go wrong. Notice this may still fail
+		action = new Accept(getAgentID(), partnerBid);
 	}
 	return action;
 }
@@ -974,25 +962,7 @@ where $u$ is the utility of the bid made by the opponent (as measured in our uti
 	\includegraphics[width=0.3\textwidth]{media/image21.png}
 	\caption{$P_\text{accept}$ value as function of the utility and time (as a fraction of the total available time).}\label{Fig:Paccept}
 \end{figure}
-%\subsection{Init}
-%An important consideration for the implementation is that an agent may participate in multiple negotiation sessions with the same opponent. This enables the agent to learn from the previous sessions. For this reason, the negotiation environment calls the method \texttt{init} before starting the new session.
  
-Automatic agents have to negotiate on their own, and are not allowed to communicate with a human user. Therefore, do not override the \texttt{isUIAgent()} function in automatic negotiation agents.
-
-\subsubsection{General properties}
-Some agents have restrictions and can not be used in certain situations. 
-The agent indicates its capabilities through the function getSupportedNegotiationSetting().
-By default, the agent has no restrictions. If your agent has restrictions, you must override
-this function and return the appropriate supported settings.
-
-For example, if your agent can only handle linear utility spaces, you should override like this
-
-\begin{lstlisting}
-	@Override
-	public SupportedNegotiationSetting getSupportedNegotiationSetting() {
-		return SupportedNegotiationSetting.getLinearUtilitySpaceInstance();
-	}
-\end{lstlisting}
 
 \subsubsection{Overview of useful Classes}
 This section provides an overview of classes which might be useful when implementing an agent. For the documentation of the data structures that are presented, please refer to the Javadoc that can be found in your download of \Genius. 
@@ -1000,7 +970,6 @@ This section provides an overview of classes which might be useful when implemen
 \begin{itemize}
 
 \item \textbf{BidDetails} is a structure to store a bid and its utility.
-\item \textbf{BidDetailsTime} is a structure to store a bid, its utility, and the time of offering.
 \item \textbf{BidHistory} is a structure to keep track of the bids presented by the agent and the opponent.
 \item \textbf{BidIterator} is a class used to enumerate all possible bids. Also refer to \textit{SortedOutcomeSpace}.
 \item \textbf{BidSpace} is a class which can be used to determine the Pareto-optimal frontier and outcomes such as the Nash solution. This class can be used with the opponent's utility space as estimated by an opponent model.
@@ -1035,39 +1004,11 @@ To do this manually without using the GUI, quit \Genius, open the \verb|partyrep
 After that you can restart \Genius so that it loads the new party.
 \FloatBarrier
 
+\subsection{Third party code}
+You should not use maven to add dependencies, as Java 8 can not deal properly with multiple versions of the same library in within a JVM.
 
+Instead, if you want to use a third party library, you will have to include all the source code of that library with your code, including all sub-dependencies. The code should be copied inside the package name of your agent, instead of using the original package name of that library (so do not use "org.apache" for instance). This is to ensure that we are really running your agent on the specific version of the library that your agent needs and to avoid version conflicts (java will run an unspecified version of the library in case of conficts). 
 
-
-
-%=========================================================================================
-
-\section{Debugging}\label{sec:debugging}
-This section explains how to debug your agent using Eclipse. It is assumed you set up your agent already as in Chapter \ref{sec:createagent}.
-
-To easily debug this agent from Genius, take the following steps:
-
-\begin{enumerate}
-\item Add this dependency to the pom
-\begin{verbatim}
-      <dependency>
-         <groupId>genius</groupId>
-         <artifactId>gui</artifactId>
-         <version>8.0.0</version>
-      </dependency>
-\end{verbatim}
-\item Right click on your project root and select \verb|Debug As/Java Application|
-\item select \verb|Application - genius|.
-\item Click "Ok".
-\end{enumerate}
-
-{\em NOTICE}: Your agent must compile also without this added dependency. This extra dependency is only to facilitate debugging in \Genius 
-
-Once you have Genius running in Eclipse, you can simply place a breakpoint in your agent and run Genius from Eclipse in debug mode.
-
-\subsection{Source code and javadocs}
-Eclipse downloads all source codes and javadocs automatically. But if you like you can download these as a jar from \url{http://artifactory.ewi.tudelft.nl/artifactory/libs-release/genius/core/}. You can extract the files in the jar using \verb|jar -xf <file>.jar| or using your favorite unzip program.
-
-\FloatBarrier
 
 %=========================================================================================
 \section{Creating a BOA Agent}\label{sec:boa}
@@ -1103,7 +1044,7 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 \end{figure}
 
 
-\subsection{Create "Multi"lateral BOA Party}
+\subsection{Create a BOA Party}
 For use in the mulit-ilateral negotiation system, the boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item.  These BOA parties are at this moment still a simple extension of the old bilateral system, and can \emph{only be used in multi-lateral negotiation with exactly 2 parties per session}.  
 
 
@@ -1369,6 +1310,39 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 	}
 }
 \end{lstlisting}
+
+
+
+
+%=========================================================================================
+
+\section{Debugging}\label{sec:debugging}
+This section explains how to debug your agent using Eclipse. It is assumed you set up your agent already as in Chapter \ref{sec:createagent}.
+
+To easily debug this agent from Genius, take the following steps:
+
+\begin{enumerate}
+\item Add this dependency to the pom
+\begin{verbatim}
+      <dependency>
+         <groupId>genius</groupId>
+         <artifactId>gui</artifactId>
+         <version>8.0.0</version>
+      </dependency>
+\end{verbatim}
+\item Right click on your project root and select \verb|Debug As/Java Application|
+\item select \verb|Application - genius|.
+\item Click "Ok".
+\end{enumerate}
+
+{\em NOTICE}: Your agent must compile also without this added dependency. This extra dependency is only to facilitate debugging in \Genius 
+
+Once you have Genius running in Eclipse, you can simply place a breakpoint in your agent and run Genius from Eclipse in debug mode.
+
+\subsection{Source code and javadocs}
+Eclipse downloads all source codes and javadocs automatically. But if you like you can download these as a jar from \url{http://artifactory.ewi.tudelft.nl/artifactory/libs-release/genius/core/}. You can extract the files in the jar using \verb|jar -xf <file>.jar| or using your favorite unzip program.
+
+\FloatBarrier
 
 
 
