@@ -161,23 +161,13 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4.1</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<!-- MainClass in mainfest make a executable jar -->
-					<archive>
-						<manifest>
-							<mainClass>genius.Application</mainClass>
-						</manifest>
-					</archive>
 
-				</configuration>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
 				<executions>
+
 					<execution>
 						<id>make-assembly</id>
 						<!-- bind to the packaging phase -->
@@ -185,28 +175,39 @@
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<finalName>genius-${pom.version}</finalName>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<!-- MainClass in mainfest make a executable jar -->
+							<archive>
+								<manifest>
+									<mainClass>genius.Application</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
 					</execution>
-				</executions>
-			</plugin>
 
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.5.3</version>
-				<configuration>
-					<finalName>genius-${pom.version}</finalName>
-					<descriptor>src/assembly/assembly.xml</descriptor>
-					<appendAssemblyId>false</appendAssemblyId>
-				</configuration>
-				<executions>
 					<execution>
 						<id>create-archive</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<finalName>genius-${pom.version}</finalName>
+							<descriptor>src/assembly/assembly.xml</descriptor>
+<!-- 							<appendAssemblyId>false</appendAssemblyId>
+ -->						</configuration>
 					</execution>
+
+
+
 				</executions>
 			</plugin>
+
+
 
 		</plugins>
 
