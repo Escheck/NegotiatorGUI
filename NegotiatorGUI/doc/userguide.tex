@@ -626,6 +626,100 @@ In bilateral generation, first a set of participants P of all combinations of 1 
 
 %=========================================================================================
 \section{Quality Measures}\label{sec:qm}
+
+Genius logs quality measures to log files. Logs are written both  in \verb|.csv| and \verb|.xml| format.
+
+The output of the log files differs, depending on whether you ran a tournament or a single session. The following subsections discuss the output for these.
+
+Agent names are printed as follows. If the agent is a normal NegotiationParty, then the agent will print out as something like \verb|Atlas32016@2|. The part before the '@' is the agent name, the part after the '@' is added by the runner to make the name unique. If the agent is a BOA agent, the name is "boa-" followed by the concatenation of its offering strategy, acceptance condition, opponentmodel and omstrategy. For example you may get this as boa agent name:
+
+\begin{verbatim}
+boa-negotiator.boaframework.offeringstrategy.anac2012.CUHKAgent_Offering-
+negotiator.boaframework.acceptanceconditions.anac2012.AC_CUHKAgent-
+negotiator.boaframework.opponentmodel.CUHKFrequencyModelV2-
+negotiator.boaframework.omstrategy.TheFawkes_OMS@3
+\end{verbatim}
+
+
+\subsection{Session logs}
+Logs from single-session runs are written to the \verb|log/| directory. Filenames contain the date and time the session started. 
+
+\subsubsection{CSV file}
+The \verb|.csv| file contains one line for each turn, like this:
+
+\verb|1,1,0.0055248618784530384,AgentHP2_main@0,(Offer  bid:Bid[Food: Chips and Nuts, ...ials, ])|
+
+The columns are, in order:
+\begin{enumerate}
+\item round number.
+\item turn number
+\item the time of agreement, in the range [0,1] where 0 means the start of the session and 1 the maximum time/number of rounds allowed for the negotiation. 
+\item the agent that acted.
+\item the action that the agent did. The action consists of the action type name ("Offer", "Accept", "EndNegotiation", etc) and the bid details if available.
+\end{enumerate}
+
+
+\subsubsection{XML file}
+When running a session, the XML file contains only the details of the final outcome of the negotiation.
+
+It contains for the outcome:
+\begin{enumerate}
+\item currentTime: the moment when the final outcome was available. 
+\item timeOfAgreement, agreement time in the range [0,1] where 0 means the start of the session and 1 the maximum time/number of rounds allowed for the negotiation. 
+\item lastAction: the last action that was done
+\item the domain that was being run
+\item bids: the total number of bids that have been done in this session
+\item the total run time in seconds
+\item the outcome : the final accepted bid , or "-" if there was no final agreement
+\item the startingAgent,
+\item the deadline = maximum amount of time/rounds for this session.
+\end{enumerate}
+
+and then, for each of the agents that participated a "resultsOfAgent" element containing:
+\begin{enumerate}
+\item the agent name. 
+\item the agent's description
+\item the agent's utilityspace filename
+\item the full agent class path
+\item the final utility (un-discounted) of this agent, or 0 if there was no agreement
+\item the final utility (discounted) 
+\item the value of discount(1,1). This is the remaining utility that a un-discounted utility of 1 would have at the end time (t=1). For default discount formulas, this equals the 'discount factor'.   
+\end{enumerate}
+
+
+Here's an example
+\begin{verbatim}
+<?xml version="1.0"?>
+<Session>
+	<NegotiationOutcome currentTime="Thu Mar 08 12:50:33 CET 2018" 
+	    timeOfAgreement="0.3425414364640884" 
+	    lastAction="(Accept  bid:Bid[Food: Chips and Nuts, Drinks: Handmade ...oap, ])" 
+	    domain="etc/templates/partydomain/party_domain.xml" bids="175" runtime="0.652346172" 
+	    finalOutcome="Bid[Food: Chips and Nuts, Drinks: .....d Soap, ]" 
+	    startingAgent="-" deadline="180rounds">
+		<resultsOfAgent agent="AgentHP2_main@0" agentDesc="ANAC2016 agenthp2" 
+		    utilspace="etc/templates/partydomain/party1_utility.xml" 
+		    agentClass="agents.anac.y2016.agenthp2.AgentHP2_main" 
+		    finalUtility="0.8483333333333334" discountedUtility="0.8483333333333334" discount="1.0">
+		</resultsOfAgent>
+		<resultsOfAgent agent="AgentLight@1" agentDesc="ANAC2016 agentLight" 
+		    utilspace="etc/templates/partydomain/party2_utility.xml" 
+		    agentClass="agents.anac.y2016.agentlight.AgentLight" 
+		    finalUtility="0.8564909885811369" discountedUtility="0.8564909885811369" discount="1.0">
+		</resultsOfAgent>
+		<resultsOfAgent agent="Atlas32016@2" agentDesc="ANAC2016 Atlas3" 
+		    utilspace="etc/templates/partydomain/party3_utility.xml" 
+		    agentClass="agents.anac.y2016.atlas3.Atlas32016" 
+		    finalUtility="0.6924080946242358" 
+		    discountedUtility="0.6924080946242358" discount="1.0">
+		</resultsOfAgent>
+	</NegotiationOutcome>
+</Session>\end{verbatim}
+
+
+
+\subsection{Tournament logs}
+
 A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
 
 There are  three types of logs used in \Genius: the standard log, the tournament log and the tournament statistics log.
@@ -776,7 +870,7 @@ The XML data of the standard log can be converted to a normal table by importing
 \section{Creating a Negotiation Agent}\label{sec:createagent}
 This section discusses how to create a negotiation agent in Java. These agents can negotiate with any number of parties. 
 
-\subsection{Set up your workspace}\label{sec:setupworkspace}
+\subsection{Set up your Workspace}\label{sec:setupworkspace}
 In order to compile your agent  you need to set up a workspace. 
 We assume 
 \begin{itemize}
@@ -792,12 +886,13 @@ The following steps are done in Eclipse:
 \item Select "create a simple project" and click next. Enter some group id (eg "ai2019") and some artifactID (eg "group20"). Click finish.
 \item open the pom.xml file inside your new project and insert this inside the \verb|<project>| part:
 
+\begin{minipage}{\linewidth}
 \begin{verbatim}
    <dependencies>
       <dependency>
          <groupId>genius</groupId>
-         <artifactId>core</artifactId>
-         <version>1.0.2</version>
+         <artifactId>gui</artifactId>
+         <version>8.0.1</version>
       </dependency>
    </dependencies>
 
@@ -813,6 +908,8 @@ The following steps are done in Eclipse:
       </repository>
    </repositories>
 \end{verbatim}
+\end{minipage}
+
 
 \item Now you can proceed working on your code in \verb|src/main/java|.  For a quick start, you can just copy one of the examples provided in the zip.
 \end{enumerate}
@@ -1264,23 +1361,7 @@ public class AC_MAC extends Multi_AcceptanceCondition {
 \section{Debugging}\label{sec:debugging}
 This section explains how to debug your agent using Eclipse. It is assumed you set up your agent already as in Chapter \ref{sec:createagent}.
 
-To easily debug this agent from Genius, take the following steps:
-
-\begin{enumerate}
-\item Add this dependency to the pom
-\begin{verbatim}
-      <dependency>
-         <groupId>genius</groupId>
-         <artifactId>gui</artifactId>
-         <version>8.0.1</version>
-      </dependency>
-\end{verbatim}
-\item Right click on your project root and select \verb|Debug As/Java Application|
-\item select \verb|Application - genius|.
-\item Click "Ok".
-\end{enumerate}
-
-{\em NOTICE}: Your agent must compile also without this added dependency. This extra dependency is only to facilitate debugging in \Genius 
+To run or debug your agent as it runs in Genius, right click on the project root and select Run As.../Java Application. Then select \verb|Application - genius| and click ok.
 
 Once you have Genius running in Eclipse, you can simply place a breakpoint in your agent and run Genius from Eclipse in debug mode.
 
