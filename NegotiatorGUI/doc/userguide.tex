@@ -9,7 +9,7 @@
 
 % the page geometry.
 \usepackage[a4paper,top=2cm, bottom=2cm, left=1cm, right=1cm]{geometry}
-
+\usepackage{minibox}
 % Uncomment some of the following if you use the features
 %
 % Running Headers and footers
@@ -308,10 +308,10 @@ Errors surrounding these out-of-protocol procedures are not part of the negotiat
 
 
 %=========================================================================================
-\section{Running \Genius }
+\section{Install and Run \Genius }
 \Genius  can run on any machine running Java 8. Java 9 is not yet supported. Please report any bugs found to \url{negotiation@ii.tudelft.nl}.
 
-To install the environment, the file \texttt{genius-XXX.zip} can be downloaded from \url{http://ii.tudelft.nl/genius/?q=article/releases}. Unzip the file at a convenient location on your machine. This will result in a package called ``genius-XXX" which contains the following files:
+To install the environment, the file \texttt{genius-XXX.zip} can be downloaded from \url{http://ii.tudelft.nl/genius/?q=article/releases}. Unzip the file at a convenient location on your machine. This will result in a folder ``genius-XXX" containing the following files:
 
 \begin{itemize}
 	\item a  \texttt{userguide.pdf} which is this document.
@@ -861,7 +861,7 @@ Every agent must at least implement the \texttt{negotiator.parties.NegotiationPa
     chooseAction & When this function is called, it is expected that the Party chooses one  of the actions from the possible action list and returns an instance of the chosen action. \\
     receiveMessage & This method is called to inform the party that another NegotiationParty chose an Action.\\
     getDescription & Returns a human-readable description for this party \\
-    getProtocol & The actual supported MultilateralProtocol. Usually this returns StackedAlternatingOffersProtocol.\\
+    getProtocol & The actual supported MultilateralProtocol. Usually this returns StackedAlternating\-Offers\-Protocol. Your agent should override this if it supports a another protocol\\
     negotiationEnded & This is called to inform the agent that the negotiation has been ended. This allows the agent to record some final conclusions about the run\\
     \hline
   \end{tabular}
@@ -869,28 +869,24 @@ Every agent must at least implement the \texttt{negotiator.parties.NegotiationPa
   \label{table:NegotiationPartyInterface}
 \end{table*}
 
-For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty}. This class provides convenient support functions for building your agent. 
 
-Your agent might need to check the provided AbstractUtilitySpace, for instance if your agent supports for example only AdditiveutilitySpace.
+For convenience, you can also extend the class \texttt{negotiator.parties.AbstractNegotiationParty} which is a basic implementation of NegotiationParty. This class also provides convenient support functions for building your agent.
 
-We recommend to use the javadoc included with the distribution to check the details of all the involved classes. 
+Your agent might need to check the exact type of the provided AbstractUtilitySpace (inside NegotiationInfo), for instance if your agent supports for example only AdditiveutilitySpace.
 
-\FloatBarrier
+A number of useful classes is given in \ref{tab:agentclass}. The javadoc contains the full details of all available classes. We recommend to use the javadoc included with the distribution to check the details of all the involved classes.  Notice that some classes, e.g. SortedOutcomeSpace, may take a long time and large amounts of memory to sort a large bid space, which may exceed the available time and space for your agent. Therefore these methods should be used with caution.
 
 
-The examples extend AbstractNegotiationParty which is a basic implementation of NegotiationParty. Table \ref{tab:agentclass} shows the most important fields and methods of this class. For more information, please refer to the javadoc of \Genius.
+
 
 \begin{table}[h]
 \begin{tabular}{m{0.9\textwidth}}
-\hline
-\texttt{void init(NegotiationInfo info)}\\
-Informs the agent about beginning of a new negotiation session.\\
 \hline
 \texttt{NegotiationInfo}\\
 The context of the negotiation: the utility space, the timeline and deadline, the agentID and persistent data container.\\
 \hline
 \texttt{UtilitySpace}\\
-The preference profile of the scenario allocated to the agent.\\
+The preference profile of the scenario allocated to the agent. It is recommended to use this class when implementing a model of the opponent's preference profile.\\
 \hline
 \texttt{Timeline }\\
 Use timeline for every time-related by using \texttt{getTime()}.\\
@@ -900,13 +896,25 @@ This function should return the action your agent wants to make next.\\
 \texttt{Action}\\
 Superclass of negotiation actions like Offer, Accept and EndNegotiation..\\
 \hline
-\texttt{void receiveMessage(AgentID sender, Action action)}\\
-Informs the agent which action the opponent did.\\
+\texttt{BidHistory}\\
+a structure to keep track of the bids presented by the agent and the opponent.\\
+\hline
+\texttt{SortedOutcomeSpace}\\
+a structure which stores all possible bids and their utilities by using BidIterator. In addition, it implements search algorithms that can be used to search the space of possible bids for bids near a given utility or within a given utility range.\\
+\hline
+\texttt{BidIterator}\\
+a class used to enumerate all possible bids. Also refer to \textit{SortedOutcomeSpace}.\\
+\hline
+\texttt{BidDetails}\\
+a structure to store a bid and its utility.\\
 \hline
 \end{tabular}
-\caption{The most important methods and fields of the NegotiationParty class.}
+
+\caption{Important classes used for creating a NegotiationParty.}
 \label{tab:agentclass}
 \end{table}
+
+\FloatBarrier
 
 \subsubsection{Receiving the Opponent's Action}\label{sec:receiveAction}
 The \texttt{ReceiveMessage(Action opponentAction)} informs you that the opponent just performed the action \texttt{opponentAction}. The \texttt{opponentAction} may be  \texttt{null} if you are the first to place a bid, or an \texttt{Offer}, \texttt{Accept} or \texttt{EndNegotiation} action.
@@ -969,22 +977,6 @@ where $u$ is the utility of the bid made by the opponent (as measured in our uti
 \end{figure}
  
 
-\subsubsection{Overview of useful Classes}
-This section provides an overview of classes which might be useful when implementing an agent. For the documentation of the data structures that are presented, please refer to the Javadoc that can be found in your download of \Genius. 
-
-\begin{itemize}
-
-\item \textbf{BidDetails} is a structure to store a bid and its utility.
-\item \textbf{BidHistory} is a structure to keep track of the bids presented by the agent and the opponent.
-\item \textbf{BidIterator} is a class used to enumerate all possible bids. Also refer to \textit{SortedOutcomeSpace}.
-\item \textbf{BidSpace} is a class which can be used to determine the Pareto-optimal frontier and outcomes such as the Nash solution. This class can be used with the opponent's utility space as estimated by an opponent model.
-\item \textbf{Pair} is a simple pair of two objects.
-\item \textbf{Range} is a structure used to describe a continuous range.
-\item \textbf{SortedOutcomeSpace} is a structure which stores all possible bids and their utilities by using BidIterator. In addition, it implements efficient search algorithms that can be used to search the space of possible bids for bids near a given utility or within a given utility range.
-\item \textbf{UtilitySpace} is a representation of a preference profile. It is recommended to use this class when implementing a model of the opponent's preference profile.
-\end{itemize}
-
-
 
 \subsection{Loading a NegotiationParty}
 
@@ -1010,7 +1002,7 @@ After that you can restart \Genius so that it loads the new party.
 \FloatBarrier
 
 \subsection{Third party code}
-You should not use maven to add dependencies, as Java 8 can not deal properly with multiple versions of the same library in within a JVM.
+You should not use maven to add dependencies for your agent. The reason is \Genius or other agents might already have another version of your library in use. Java 8 can not deal properly with multiple versions of the same library in within a JVM. The result would be inconsistent, incorrect or buggy behaviour, or even crashes.
 
 Instead, if you want to use a third party library, you will have to include all the source code of that library with your code, including all sub-dependencies. The code should be copied inside the package name of your agent, instead of using the original package name of that library (so do not use "org.apache" for instance). This is to ensure that we are really running your agent on the specific version of the library that your agent needs and to avoid version conflicts (java will run an unspecified version of the library in case of conficts). 
 
@@ -1022,8 +1014,15 @@ The BOA negotiation agent architecture allows to reuse existing components from 
 
 The advantages of separating the negotiation strategy into these four components (or equivalently, fitting an agent into the BOA framework) are threefold: first, it allows to \textit{study the performance of individual components}; second, it allows to \textit{systematically explore the space of possible negotiation strategies}; third, the reuse of existing components \textit{simplifies the creation of new negotiation strategies}.
 
-BOA components can be used both in bilateral tournaments and multilateral negotiation (both single sessions and tournaments). 
-
+\begin{tabular}{|l|}
+\hline
+{\bf WARNING} \\
+Many of the provided BOA components currently assume a single opponent party. \\
+These will behave incorrectly when used with multiple opponents. \\
+We recommend checking the source code of the BOA components you want to use, \\
+or write your own components if you are creating a NegotiationParty.\\
+\hline
+\end{tabular}
 
 
 \subsection{Components of the BOA Framework}
@@ -1048,9 +1047,10 @@ Finally, the \textit{acceptance strategy} decides whether the opponent's action 
 	\label{fig:flowchart}
 \end{figure}
 
+\FloatBarrier
 
 \subsection{Create a BOA Party}
-For use in the mulit-ilateral negotiation system, the boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item.  These BOA parties are at this moment still a simple extension of the old bilateral system, and can \emph{only be used in multi-lateral negotiation with exactly 2 parties per session}.  
+A boa agents can be edited in the "Boa Parties" repository tab (Figure \ref{fig:boaparties}). Right-click in the panel to add items. Select an item and right-click to remove or edit an item.   
 
 
 \begin{figure}[!ht] 
@@ -1080,47 +1080,10 @@ If you click on the  "Change" button, another panel pops up where you can edit t
 	\label{fig:editparameters}
 \end{figure}
 
-When you have correctly set all strategies and their parameters, you can click the "OK" button in the BOA party editor (Figure  \ref{fig:editboaparty}). Then, agents with the given name are generated, one for each permutation of the range of settings you set in the parameters. For example, if you set you want parameter m to have values 0,1 and 2 and x to have values 7 and 8, there will appear 6 new agents, with settings [0,7],[0,8],[1,7],[1,8],[2,7], and [2,8]. Be careful with this generation as it is easy to create an excessive amount of agents this way.
-
-\subsection{Bi-Lateral BOA}
-
-In this section we create a \textit{BOA agent} by selecting its components from a list of existing components. 
-
-In the bilateral tournament runner you edit the BOA agents in the tournament settings, and the Boa Parties repository is ignored. The BOA framework GUI (see Figure~\ref{fig:decoupledGUI}) can be opened by double clicking the \textit{Values} section next to the \textit{BOA Agent side A} or \textit{BOA Agent side B} when creating a (distributed) tournament.
+When you have correctly set all strategies and their parameters, you can click the "OK" button in the BOA party editor (Figure  \ref{fig:editboaparty}). Then, agents with the given name are generated, one for each permutation of the range of settings you set in the parameters. For example, if you set you want parameter m to have values 0,1 and 2 and x to have values 7 and 8, there will appear 6 new agents, with settings [0,7],[0,8],[1,7],[1,8],[2,7], and [2,8]. Be careful with this generation as it is easy to create an excessive amount of boa parties this way.
 
 
-
-
-\begin{figure}[h!]
-	\center
-	\includegraphics[width=15cm]{media/BOAgui.png}
-	\caption{The BOA framework GUI.}
-	\label{fig:decoupledGUI}
-\end{figure}
-
-Our goal in this section is to specify three BOA agents which are equal except for a single parameter $a$ of their acceptance strategy. 
-
-To add the agents, click on the "Add agent(s)" button. A dialog pops up to enter the BOA agent details (Figure~\ref{fig:boadetails}).
-
-\begin{figure}[h!]
-	\center
-	\includegraphics[width=15cm]{media/BOAdetails.png}
-	\caption{The BOA agent components and parameters dialog.}
-	\label{fig:boadetails}
-\end{figure}
-
-We select the bidding strategy \textit{Other - Time Dependent} under the heading \textit{Bidding Strategy}. Note that when we select this strategy, the default parameters of the component appear in the textbox below. Next, we select the other three components shown in Figure~\ref{fig:boadetails}.
-
-The next step is to specify three variants of the acceptance strategy differing in the parameter $a$. To be more precise, we want $a$ to be 1.0, 1.1, and 1.2. To achieve this, press the ``Change'' button under  \textit{Acceptance Strategy}  to open a window similar to Figure~\ref{fig:boaparam}. Next, fill in the fields as shown in Figure~\ref{fig:boaparam}. Finally, we select ``Add agent(s)'' to create the three agents. Press "Save agents" to save the new BOA agents for the tournament. Note that in this example we only varied a single parameter of a single component. If we vary more parameters possibly of different components, then all possible combinations are generated.
-
-\begin{figure}[h!] 
-	\center
-	\includegraphics[width=15cm]{media/BOAparam.png}
-	\caption{Adding a parameter.}
-	\label{fig:boaparam}
-\end{figure}
-
-\subsection{Creating New Components}
+\subsection{Creating BOA Components}
 This section discusses how create your own components. An example implementation of each component is included in the ``boaexamplepackage'' folder. The next section discusses how these components can be added to the list of available components in the BOA framework GUI.
 
 \subsubsection{Parameters}
