@@ -776,7 +776,7 @@ The XML data of the standard log can be converted to a normal table by importing
 \section{Creating a Negotiation Agent}\label{sec:createagent}
 This section discusses how to create a negotiation agent in Java. These agents can negotiate with any number of parties. 
 
-\subsection{Set up your workspace}
+\subsection{Set up your workspace}\label{sec:setupworkspace}
 In order to compile your agent  you need to set up a workspace. 
 We assume 
 \begin{itemize}
@@ -814,16 +814,16 @@ The following steps are done in Eclipse:
    </repositories>
 \end{verbatim}
 
-\item Add/edit your agent under \verb|src/main/java|.  For a quick start, you can just copy the entire multypartyexample folder (available in the \Genius zip file you downloaded when installing) into src/main/java.
+\item Now you can proceed working on your code in \verb|src/main/java|.  For a quick start, you can just copy one of the examples provided in the zip.
 \end{enumerate}
  \FloatBarrier
 
-Eclipse now automatically downloads and includes all dependencies into your project and build your agent into target/classes. 
+Eclipse now automatically downloads and includes all dependencies into your project and build your code into target/classes. 
 
 
 
 \subsection{Example agents}
-The \Genius zip file contains two examples: the Multiparty example and the Storage example
+The \Genius zip file contains two examples: the Multiparty example and the Storage example. To compile an example, set up your workspace (Section \ref{sec:setupworkspace}) and copy the example folder into  \verb|src/main/java|.
 
 The multiparty example just accepts any acceptable bid with a random probability of 0.5. 
 
@@ -1082,9 +1082,17 @@ If you click on the  "Change" button, another panel pops up where you can edit t
 
 When you have correctly set all strategies and their parameters, you can click the "OK" button in the BOA party editor (Figure  \ref{fig:editboaparty}). Then, agents with the given name are generated, one for each permutation of the range of settings you set in the parameters. For example, if you set you want parameter m to have values 0,1 and 2 and x to have values 7 and 8, there will appear 6 new agents, with settings [0,7],[0,8],[1,7],[1,8],[2,7], and [2,8]. Be careful with this generation as it is easy to create an excessive amount of boa parties this way.
 
+\subsection{Set up a Workspace}
+BOA components must be compiled before they can be loaded into Genius.
+To compile a BOA component, follow the steps in (Section \ref{sec:setupworkspace}). Then, create your BOA code into \verb|src/main/java/| (instead of agent code). For a quick start, you can copy the boaexample folder into \verb|src/main/java/|. Maven automatically compiles your BOA components into \verb|target/classes|.
+
+Please refer to chapter \ref{sec:debugging} for instructions on running \Genius in debug mode to debug your components.
+
+
 
 \subsection{Creating BOA Components}
 This section discusses how create your own components. An example implementation of each component is included in the ``boaexamplepackage'' folder. The next section discusses how these components can be added to the list of available components in the BOA framework GUI.
+
 
 \subsubsection{Parameters}
 All BOA components have the same mechanism to be tuned with parameters. They should have no constructor : the default empty constructor will be called. They initialize through a call to init().
@@ -1191,42 +1199,11 @@ Determines if the opponent model may be updated this turn.\\
 \label{tab:BOAoms}
 \end{table}
 
-\subsection{Compiling BOA Components}
-BOA components must be compiled before they can be loaded into Genius.
-To compile a BOA component, do the following steps (in this example we compile the boa example components)
-\begin{itemize}
-\item Open a terminal 
-\item Switch to the root directory of genius
-\item \raggedright Enter the command \verb|javac -cp genius-XXX.jar -source 1.8 -target 1.8 boaexamplepackage/*.java |
-\end{itemize}
-
-You can also compile from Eclipse or Netbeans. Make sure you add the genius-XXX.jar to your class path. Please refer to the Eclipse or Netbeans documentation on how to do this.
 
 
-\subsection{Adding a Component to the BOA Repository}
-In the previous section we discussed how to create each type of BOA component. To use the components, we still need to add them to the \textit{BOA repository}. To do so, open the BOA components tab in the components window as shown in Figure~\ref{fig:boacomponents}. Right click and select ``Add new component''. This results in the opening of the window shown in Figure~\ref{fig:loadBOA}.
 
-\begin{figure}[h!] 
-	\center
-	\includegraphics[width=7cm]{media/AddBOA.png}
-	\caption{The BOA components window.}
-	\label{fig:boacomponents}
-\end{figure}
-
-Click on the "Open" button and select the main class file of your BOA component (the class file that implements the BOA interface). Then check the name of the component, you can change it but it has to be a unique name in the registry. Optionally add parameters. Finally, clicking ``Add component'' in this window adds the component to the repository.
-
-\begin{figure}[h!] 
-	\center
-	\includegraphics[width=5cm]{media/LoadBOA.png}
-	\caption{Loading a BOA agent.}
-	\label{fig:loadBOA}
-\end{figure}
-
-
-\subsection{Creating a ANAC2013 BOA Agent}\label{sec:anac2013agentBOA}
-In Section~\ref{sec:anac2013agent} we discussed how to create an agent for the ANAC2013. Using a similar procedure it is also possible to create BOA agents compatible with ANAC2013. An example to do so is included in this distribution of \Genius.
-
-As only a single object can be saved and loaded, the BOA framework stores an object \textit{SessionData} that includes the data saved by all three components. This object is loaded and saved automatically by the BOA framework. A component can easily access the data it saved by using the \textit{loadData} method. A component can at each moment during the negotiation update the saved information by using the \textit{storeData} method, although we recommend updating the information at the end of the negotiation by using the the \textit{endSession} method. The \textit{endSession} method of each method is automatically called at the end of the negotiation to inform the component of the result obtained and should be used to update the \textit{SessionData} object before it is automatically stored.
+\subsection{SessionData}
+The BOA framework stores an object \textit{SessionData} that includes the data saved by all three components. This object is loaded and saved automatically by the BOA framework. A component can easily access the data it saved by using the \textit{loadData} method. A component can at each moment during the negotiation update the saved information by using the \textit{storeData} method, although we recommend updating the information at the end of the negotiation by using the the \textit{endSession} method. The \textit{endSession} method of each method is automatically called at the end of the negotiation to inform the component of the result obtained and should be used to update the \textit{SessionData} object before it is automatically stored.
 
 \subsection{Advanced: Converting a BOA Agent to an Agent}
 To convert a BOA agent to a normal agent you have to create a class that extends \textit{BOA agent} and override the \textit{agentSetup} method. Below is an example of a BOA agent wrapped as a normal agent.
