@@ -628,6 +628,7 @@ In bilateral generation, first a set of participants P of all combinations of 1 
 \section{Quality Measures}\label{sec:qm}
 
 Genius logs quality measures to log files. Logs are written both  in \verb|.csv| and \verb|.xml| format.
+Logs are written to the \verb|log/| directory. Filenames contain the date and time the session/tournament started. 
 
 The output of the log files differs, depending on whether you ran a tournament or a single session. The following subsections discuss the output for these.
 
@@ -642,11 +643,10 @@ negotiator.boaframework.omstrategy.TheFawkes_OMS@3
 
 
 \subsection{Session logs}
-Logs from single-session runs are written to the \verb|log/| directory. Filenames contain the date and time the session started. 
+Both the XML and CSV log files from a session get the filename \verb|Log-Session_| followed by day and time. The contents however differ.
 
-\subsubsection{CSV file}
-The \verb|.csv| file contains one line for each turn, like this:
-
+\subsubsection{Session CSV file}
+ The \verb|.csv| file contains one line for each turn, like this:
 \verb|1,1,0.0055248618784530384,AgentHP2_main@0,(Offer  bid:Bid[Food: Chips and Nuts, ...ials, ])|
 
 The columns are, in order:
@@ -659,10 +659,10 @@ The columns are, in order:
 \end{enumerate}
 
 
-\subsubsection{XML file}
+\subsubsection{Session XML file}
 When running a session, the XML file contains only the details of the final outcome of the negotiation.
 
-It contains for the outcome:
+The fields in the \verb|NegotiationOutcome| element:\label{table:NegotiationOutcome}
 \begin{enumerate}
 \item currentTime: the moment when the final outcome was available. 
 \item timeOfAgreement, agreement time in the range [0,1] where 0 means the start of the session and 1 the maximum time/number of rounds allowed for the negotiation. 
@@ -719,150 +719,92 @@ Here's an example
 
 
 \subsection{Tournament logs}
+All log files from a tournament get the filename \verb|tournament-| followed by day and time followed by the domain name and an extension.
+There are 3 log files created: a log.csv file, a log.xml file and a logStats.xml file.
 
-A large set of quality measures have been incorporated in \Genius~ since version 4.0. Most quality measures are automatically available, while for others an option must be selected in the tournament options menu.
+If you terminate a tournament before it completes, the .log. files will be written up to the last completed session and there will be no logStats file.
 
-There are  three types of logs used in \Genius: the standard log, the tournament log and the tournament statistics log.
-\begin{itemize}
-\item The standard log captures the outcome of each negotiation in a tournament by logging the results of the quality measures for both agents.
-\item The tournament log uses the standard log to calculate averages and standard deviations of functions of the quality measures in the standard log, for example the average final utility for all sessions which resulted in an agreement.
-\item The Tournament statistics log is logged only for the Multiparty Tournament. The file is written in the \verb|logs/| directory when the tournament finishes. It has the same filename as the tournament log, but with an additions "Stats". It contains statistics for each agent in the tournament.
-\end{itemize}
+\subsubsection{Tournament log.csv file}
 
-First, Section~\ref{sec:standardLog} discusses the measures incorporated in the standard log. Next, Section~\ref{sec:tournamentLog} details the tournament log. Finally, Section~\ref{sec:analysisExcel} discusses how Excel can be used to analyze logs.
+tournament .csv files start with these a line containing \verb|sep=;| indicating that we use the comma as separator character for fields.
+Then there is a table header typically looking like this (if there are 3 parties in each session, and all this on 1 line)
+\begin{verbatim}
+Run time (s);Round;Exception;deadline;Agreement;Discounted;#agreeing;min.util.;max.util.;
+  Dist. to Pareto;Dist. to Nash;Social Welfare;
+  Agent 1;Agent 2;Agent 3;
+  Utility 1;Utility 2;Utility 3;
+  Disc. Util. 1;Disc. Util. 2;Disc. Util. 3;
+  Profile 1;Profile 2;Profile 3
+\end{verbatim}
 
-\subsection{Overview of Quality Measures in the Standard Log}\label{sec:standardLog}
-Since version 4.0, \Genius~ incorporates two types of quality measures: standard measures and detailed measures. In addition there are some experimental measure types, such as competitiveness and opponent model accuracy, however these are not discussed here. In the following sections we discuss both measure types in detail.
+The rest of the log file contains one line for each final session outcome, matching the columns in the header:
 
-\subsubsection{Standard Measures}
-The standard measures are the measures which are enabled by default and cannot be disabled. Table~\ref{tab:standardmeasures} provides an overview of all default quality measures.
+\begin{enumerate}
+\item the run time of that session (seconds). 
+\item the number of rounds that were completed
+\item the exception message, if an exception occured
+\item the deadline = maximum amount of time/rounds for this session.
+\item whether an agreement was reached (Yes) or not (No).
+\item whether there was a discount factor (i.e. discount(1,1) is not 1) (Yes or No).
+\item the final number of agreeing parties 
+\item the minimum utility achieved by the parties
+\item the maximum utility achieved by the parties
+\item the distance to the pareto curve (the nearest bidpoint on the pareto)
+\item the distance to the nash optimum point
+\item the distance to the social welfare point
+\item the names of all parties
+\item the un-discounted utilities of all parties
+\item the discounted utilities of all parties
+\item the profile names of all the parties
+\end{enumerate}
 
-\begin{table}[h!]
-	\small
-	\center
-	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
-		\hline\hline
-		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
-		\hline\hline
-		acceptance\_strategy & The acceptance strategy of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.2ex]\hline
-		agent & The side at which the agent played (A or B). \\[-0.2ex]\hline
-		agentClass & The classpath of the agent. \\[-0.2ex]\hline
-		agentName & The name of the agent. \\[-0.2ex]\hline
-		bestAcceptableBid & Utility of the best bid offered to the agent. Note that the discount is not taken into account. \\[-0.2ex]\hline
-		bestDiscountedAccepableBid & Utility of the best bid offered to the agent, taking the discount into account. \\[-0.2ex]\hline
-		bids & Amount of offers exchanged during the negotiation. \\[-0.2ex]\hline
-		currentTime & Time of storage of the result of the negotiation. \\[-0.2ex]\hline
-		discountedUtility & The discounted utility earned by the agent in the negotiation. \\[-0.3ex]\hline
-		domain & Domain at which the negotiation took place.\\[-0.3ex]\hline
-		errors & Errors encountered during the negotiation. Not reaching an agreement before the deadline is also treated as an error.\\[-0.3ex]\hline
-		finalUtility & The undiscounted utility earned by the agent in the negotiation.\\[-0.3ex]\hline
-		lastAction & Last action made before the negotiation ended.\\[-0.3ex]\hline
-		normalized\_utility & The final utility divided by the maximum possible utility according to the preference profile. In correct domains the result should be equal to the final utility.\\[-0.3ex]\hline
-		offering\_strategy & The offering strategy of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.3ex]\hline
-		opponent-agentClass & The classpath of the opponent.\\[-0.3ex]\hline
-		opponent-agentName & The name of opponent's agent.\\[-0.3ex]\hline
-		opponent\_model & The opponent model of a BOA agent~(see Section~\ref{sec:boa}). \\[-0.3ex]\hline
-		opponent-utilSpace & The opponent's preference profile.\\[-0.3ex]\hline
-		runNumber & How many times the negotiation has been repeated before.\\[-0.3ex]\hline
-		startingAgent & Side which started the negotiation: A or B.\\[-0.3ex]\hline
-		timeOfAgreement & Normalized time at which an agreement was established. 1.0 for no agreement. \\[-0.3ex]\hline
-		utilSpace & The agent's preference profile.\\[-0.3ex]
-		\hline
-		\hline
-	\end{tabular}
-	\caption{Standard quality measures in \Genius in alphabetic order.}
-	\label{tab:standardmeasures}
-\end{table}
 
-\subsubsection{Detailed Measures}\label{sec:detailedmeasures}
-The detailed quality measures consist of trajectory analysis measures and measures for the fairness and optimality of the outcome. The detailed measures can be enabled by selecting ``Log detailed analysis'' in the tournament options menu. Enabling this option also results in the generation of the tournament log discussed in Section~\ref{sec:tournamentLog}.
+For example, one line of the output can look like this (all on 1 line)
 
-\begin{table}[h!]
-	\small
-	\center
-	\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
-		\hline\hline
-		\textbf{Attribute} & \textbf{Description}\\[-0.2ex] 
-		\hline\hline
-		concession\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid with decreased its own utility and increased its opponent's utility.\\[-0.3ex]\hline
-		exploration\_rate & The percentage of bids in the outcome space explored by the agent. Two bids with exactly the same utilities for both parties are treated as a single same bid.\\[-0.3ex]\hline
-		fortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased both its own and its opponent's utility.\\[-0.3ex]\hline
-		joint\_exploration\_bids & The percentage of unique bids of the outcome space explored by both agents together. Two bids with exactly the same utilities for both parties are treated as a single same bid. \\[-0.3ex]\hline
-		kalai\_distance & Distance from the undiscounted utilities of the outcome to the Kalai-Smorodinsky solution.\\[-0.3ex]\hline
-		nash\_distance & Distance from the undiscounted utilities of the outcome to the Nash solution. \\[-0.3ex]\hline
-		nice\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased its opponent's utility without significantly changing its own utility.\\[-0.3ex]\hline
-		pareto\_distance & Distance from the undiscounted utilities of the outcome to the nearest bid on the Pareto-optimal frontier.\\[-0.3ex]\hline
-		perc\_pareto\_bids & Percentage of Pareto-optimal bids offered by an agent.\\[-0.3ex]\hline
-		selfish\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which increased its own utility and decreased its opponent's utility.\\[-0.3ex]\hline
-		silent\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which which was (nearly) equally valued by both agents.\\[-0.3ex]\hline
-		social\_welfare & A fairness measure being the sum of the utilities for both agents.\\[-0.3ex]\hline
-		unfortunate\_moves & The percentage of moves in which the agent, relative to the previous offer, offered a bid which decreased both its own and its opponent's utility.\\[-0.3ex]
-		\hline
-		\hline
-	\end{tabular}
-	\caption{Detailed quality measures in \Genius~in alphabetic order.}
-	\label{tab:detailedMeasures}
-\end{table}
+\begin{verbatim}
+4.965;173;;180rounds;Yes;No;3;0.58083;0.95256;0.00000;0.44991;2.13706;
+ClockworkAgent@14;Farma@15;Caduceus@16;
+0.5808333333333333;0.6036696609166442;0.9525594478616071;
+0.5808333333333333;0.6036696609166442;0.9525594478616071;
+party1_utility.xml;party2_utility.xml;party3_utility.xml
+\end{verbatim}
 
-\begin{comment}
-\subsubsection{Opponent Model Accuracy Measures}
-Log final accuracy
+\subsubsection{Tournament log.xml file}
 
-\begin{table}[h!]
-\small
-	\center
-\begin{tabular}{|p{4.7cm}|p{9.2cm}|}
-\hline
-\textbf{Attribute} &\textbf{Description}\\
-\hline\hline
-\textsl{Pearson\_Correlation\_Bids} & Pearson correlation coefficient between real and estimated preference profile.\\
-\hline
-\textsl{Ranking\_Distance\_Bids} & Ranking distance between real and estimated preference profile.\\
-\hline
-\textsl{Average\_Difference\_Bids} & Average difference between the real and estimated utility of each possible bid.\\
-\hline
-\textsl{Ranking\_Distance\_Issue\_Weights} & Ranking distance between real and estimated issue weights.\\
-\hline
-\textsl{Average\_Difference\_Issue\_Weights} & Average difference between the real and estimated issue weights.\\
-\hline
-\textsl{Kalai\_Difference} & Difference between the real and estimated utility of the Kalai-point.\\
-\hline
-\textsl{Nash\_Diference} & Difference between the real and estimated utility of the Nash-point.\\
-\hline
-\textsl{Difference\_Pareto\_Frontier} & The average difference between the real and estimated utility for each Pareto bid.\\
-\hline
-\textsl{Percentage\_Correct\_Pareto\_Bids} & Percentage of real Pareto bids which are also estimated to be a Pareto bid.\\
-\hline
-\textsl{Percentage\_Incorrect\_Pareto\_Bids} & Percentage of estimated Pareto bids which are also real Pareto bids.\\
-\hline
-\textsl{Pareto\_Frontier\_Distance} & First, the position of the estimated Pareto bids is determined in the real space. The value of the measure is the absolute difference in surface under the real Pareto bids and the bids estimated to be Pareto optimal.\\ % absolute, because if a point is missed, then surface of estimate can actually be larger. Note that this case is rare
-\hline
-\end{tabular}
-	\caption{Opponent model accuracy measures in \Genius~in alphabetic order.}
-	\label{tab:omaccuracyMeasures}
-\end{table} 
-\end{comment}
+The .log.xml file contains one \verb|<NegotiationOutcome>| element for each completed round.
+These elements are formatted exactly as in \ref{table:NegotiationOutcome}.
 
-\subsection{Overview of Quality Measures in the Tournament Log}~\label{sec:tournamentLog}
-The tournament log is an analysis of the results on the quality measures for each agent, for example the average utility for \textit{Agent K}. Similar to the detailed quality measured the tournament log can be enabled by selecting ``Log detailed analysis'' in the tournament options menu.
+\subsubsection{Tournament logStats.xml file}
+The logStats.xml file contains for each of the agents that participated in the tournament statistical info:
 
-Three types of measures are included in the log:
-\begin{itemize}
-	\item \textbf{Averages of quality measures}. The tournament log includes a large set of averages of the quality measures in the standard log. Examples include the average Nash distance, the average percentage of silent moves, and the average social welfare.
-	\item \textbf{Standard deviations of quality measures}. The tournament log also includes the standard deviation of some measures. Note that this not the normal standard deviation of for example the utility, but the more complicated deviation between runs. To illustrate, if there were ten runs of the tournament, then each run has an average utility and we can calculate the standard deviation of this utility between runs.
-	\item \textbf{Average of functions of quality measures}. The tournament log also includes a large set of measures which are functions of measures included in the standard log. An example is the average utility for an agent only for the matches which resulted in agreement. 
-\end{itemize}
+\begin{enumerate}
+\item agentname: the agent name (full class path)
+\item totalUndiscounted: the total sum of the un-discounted utilities that it achieved
+\item totalDiscounted: the total sum of the discounted utilities that it achieved
+\item numberOfSessions: the total number of sessions that it participated in
+\item totalNashDist: the accumulated distances to the Nash Point
+\item totalWelfare: the accumulated distances to the Social Welfare Point
+\item totalParetoDistance: the accumulated distances to the Pareto frontier
+\item meanDiscounted: totalDiscounted /  numberOfSessions
+\item meanUndiscounted: totalUndiscounted /  numberOfSessions
+\item meanNashDistance: totalNashDistance /  numberOfSessions
+\item meanWelfare: totalWelfare /  numberOfSessions
+\item meanPareto: totalPareto /  numberOfSessions
+\end{enumerate}
 
-\subsection{Analyzing Logs using Excel}~\label{sec:analysisExcel}
-The logs are in XML format, which entails that we can easily analyze them by using Excel. Note that the following discussion does not apply to the starter edition of Excel, as it does not support Pivot tables.
 
-The XML data of the standard log can be converted to a normal table by importing the data into Excel using the default options. This results in a large table showing the result for both agents A and B for each session. Analyzing these results manually is complicated, therefore we recommend to use pivot tables. Pivot tables allow to summarize a large set of data using statistics and can be created by selecting ``Insert'' and then ``Pivot Table''. To illustrate, by dragging the \textit{agentName} in ``Row Labels'' and the \textit{discountedUtility} in ``Values'' (see Figure~\ref{fig:pivottable}), we can easily see which agent scored best in the tournament. If solely the amount of matches of each agent is displayed, you need to set the ``Value Field Settings'' of \textit{discountedUtility} to average instead of count.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{media/PivotTable.png}
-\caption{Configuration required to summarize the discounted utility of each agent.}\label{fig:pivottable}
-\end{figure}
+%
+%
+%\subsection{Analyzing Logs using Excel}~\label{sec:analysisExcel}
+%The logs are in XML and CSV format, so we can easily analyze them with Excel. Note that the following discussion does not apply to the starter edition of Excel, as it does not support Pivot tables.
+%
+%The XML data of the standard log can be converted to a normal table by importing the data into Excel using the default options. This results in a large table showing the result for both agents A and B for each session. Analyzing these results manually is complicated, therefore we recommend to use pivot tables. Pivot tables allow to summarize a large set of data using statistics and can be created by selecting ``Insert'' and then ``Pivot Table''. To illustrate, by dragging the \textit{agentName} in ``Row Labels'' and the \textit{discountedUtility} in ``Values'' (see Figure~\ref{fig:pivottable}), we can easily see which agent scored best in the tournament. If solely the amount of matches of each agent is displayed, you need to set the ``Value Field Settings'' of \textit{discountedUtility} to average instead of count.
+%
+%\begin{figure}[htb]
+%	\centering
+%	\includegraphics[width=0.4\textwidth]{media/PivotTable.png}
+%\caption{Configuration required to summarize the discounted utility of each agent.}\label{fig:pivottable}
+%\end{figure}
 
 
 %=========================================================================================

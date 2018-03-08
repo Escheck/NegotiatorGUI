@@ -27,35 +27,33 @@
 \BOOKMARK [3][-]{subsubsection.5.4.2}{Bilateral generation}{subsection.5.4}% 27
 \BOOKMARK [1][-]{section.6}{Quality Measures}{}% 28
 \BOOKMARK [2][-]{subsection.6.1}{Session logs}{section.6}% 29
-\BOOKMARK [3][-]{subsubsection.6.1.1}{CSV file}{subsection.6.1}% 30
-\BOOKMARK [3][-]{subsubsection.6.1.2}{XML file}{subsection.6.1}% 31
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Session CSV file}{subsection.6.1}% 30
+\BOOKMARK [3][-]{subsubsection.6.1.2}{Session XML file}{subsection.6.1}% 31
 \BOOKMARK [2][-]{subsection.6.2}{Tournament logs}{section.6}% 32
-\BOOKMARK [2][-]{subsection.6.3}{Overview of Quality Measures in the Standard Log}{section.6}% 33
-\BOOKMARK [3][-]{subsubsection.6.3.1}{Standard Measures}{subsection.6.3}% 34
-\BOOKMARK [3][-]{subsubsection.6.3.2}{Detailed Measures}{subsection.6.3}% 35
-\BOOKMARK [2][-]{subsection.6.4}{Overview of Quality Measures in the Tournament Log}{section.6}% 36
-\BOOKMARK [2][-]{subsection.6.5}{Analyzing Logs using Excel}{section.6}% 37
-\BOOKMARK [1][-]{section.7}{Creating a Negotiation Agent}{}% 38
-\BOOKMARK [2][-]{subsection.7.1}{Set up your Workspace}{section.7}% 39
-\BOOKMARK [2][-]{subsection.7.2}{Example agents}{section.7}% 40
-\BOOKMARK [2][-]{subsection.7.3}{Implementing NegotiationParty}{section.7}% 41
-\BOOKMARK [3][-]{subsubsection.7.3.1}{Receiving the Opponent's Action}{subsection.7.3}% 42
-\BOOKMARK [3][-]{subsubsection.7.3.2}{Choosing an Action}{subsection.7.3}% 43
-\BOOKMARK [2][-]{subsection.7.4}{Loading a NegotiationParty}{section.7}% 44
-\BOOKMARK [2][-]{subsection.7.5}{Third party code}{section.7}% 45
-\BOOKMARK [1][-]{section.8}{Creating a BOA Agent}{}% 46
-\BOOKMARK [2][-]{subsection.8.1}{Components of the BOA Framework}{section.8}% 47
-\BOOKMARK [2][-]{subsection.8.2}{Create a BOA Party}{section.8}% 48
-\BOOKMARK [2][-]{subsection.8.3}{Set up a Workspace}{section.8}% 49
-\BOOKMARK [2][-]{subsection.8.4}{Creating BOA Components}{section.8}% 50
-\BOOKMARK [3][-]{subsubsection.8.4.1}{Parameters}{subsection.8.4}% 51
-\BOOKMARK [3][-]{subsubsection.8.4.2}{Creating a Bidding Strategy}{subsection.8.4}% 52
-\BOOKMARK [3][-]{subsubsection.8.4.3}{Creating an Acceptance Condition}{subsection.8.4}% 53
-\BOOKMARK [3][-]{subsubsection.8.4.4}{Creating an Opponent Model}{subsection.8.4}% 54
-\BOOKMARK [3][-]{subsubsection.8.4.5}{Creating an Opponent Model Strategy}{subsection.8.4}% 55
-\BOOKMARK [2][-]{subsection.8.5}{SessionData}{section.8}% 56
-\BOOKMARK [2][-]{subsection.8.6}{Advanced: Converting a BOA Agent to an Agent}{section.8}% 57
-\BOOKMARK [2][-]{subsection.8.7}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.8}% 58
-\BOOKMARK [1][-]{section.9}{Debugging}{}% 59
-\BOOKMARK [2][-]{subsection.9.1}{Source code and javadocs}{section.9}% 60
-\BOOKMARK [1][-]{section.10}{Conclusion}{}% 61
+\BOOKMARK [3][-]{subsubsection.6.2.1}{Tournament log.csv file}{subsection.6.2}% 33
+\BOOKMARK [3][-]{subsubsection.6.2.2}{Tournament log.xml file}{subsection.6.2}% 34
+\BOOKMARK [3][-]{subsubsection.6.2.3}{Tournament logStats.xml file}{subsection.6.2}% 35
+\BOOKMARK [1][-]{section.7}{Creating a Negotiation Agent}{}% 36
+\BOOKMARK [2][-]{subsection.7.1}{Set up your Workspace}{section.7}% 37
+\BOOKMARK [2][-]{subsection.7.2}{Example agents}{section.7}% 38
+\BOOKMARK [2][-]{subsection.7.3}{Implementing NegotiationParty}{section.7}% 39
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Receiving the Opponent's Action}{subsection.7.3}% 40
+\BOOKMARK [3][-]{subsubsection.7.3.2}{Choosing an Action}{subsection.7.3}% 41
+\BOOKMARK [2][-]{subsection.7.4}{Loading a NegotiationParty}{section.7}% 42
+\BOOKMARK [2][-]{subsection.7.5}{Third party code}{section.7}% 43
+\BOOKMARK [1][-]{section.8}{Creating a BOA Agent}{}% 44
+\BOOKMARK [2][-]{subsection.8.1}{Components of the BOA Framework}{section.8}% 45
+\BOOKMARK [2][-]{subsection.8.2}{Create a BOA Party}{section.8}% 46
+\BOOKMARK [2][-]{subsection.8.3}{Set up a Workspace}{section.8}% 47
+\BOOKMARK [2][-]{subsection.8.4}{Creating BOA Components}{section.8}% 48
+\BOOKMARK [3][-]{subsubsection.8.4.1}{Parameters}{subsection.8.4}% 49
+\BOOKMARK [3][-]{subsubsection.8.4.2}{Creating a Bidding Strategy}{subsection.8.4}% 50
+\BOOKMARK [3][-]{subsubsection.8.4.3}{Creating an Acceptance Condition}{subsection.8.4}% 51
+\BOOKMARK [3][-]{subsubsection.8.4.4}{Creating an Opponent Model}{subsection.8.4}% 52
+\BOOKMARK [3][-]{subsubsection.8.4.5}{Creating an Opponent Model Strategy}{subsection.8.4}% 53
+\BOOKMARK [2][-]{subsection.8.5}{SessionData}{section.8}% 54
+\BOOKMARK [2][-]{subsection.8.6}{Advanced: Converting a BOA Agent to an Agent}{section.8}% 55
+\BOOKMARK [2][-]{subsection.8.7}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.8}% 56
+\BOOKMARK [1][-]{section.9}{Debugging}{}% 57
+\BOOKMARK [2][-]{subsection.9.1}{Source code and javadocs}{section.9}% 58
+\BOOKMARK [1][-]{section.10}{Conclusion}{}% 59
