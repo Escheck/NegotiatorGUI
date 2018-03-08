@@ -198,8 +198,8 @@
 						<configuration>
 							<finalName>genius-${pom.version}</finalName>
 							<descriptor>src/assembly/assembly.xml</descriptor>
-<!-- 							<appendAssemblyId>false</appendAssemblyId>
- -->						</configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
 					</execution>
 
 
