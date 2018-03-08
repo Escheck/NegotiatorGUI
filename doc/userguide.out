@@ -11,7 +11,7 @@
 \BOOKMARK [2][-]{subsection.2.4}{Simple Mediator Based Protocol}{section.2}% 11
 \BOOKMARK [2][-]{subsection.2.5}{Mediator Feedback Based Protocol}{section.2}% 12
 \BOOKMARK [2][-]{subsection.2.6}{Beyond the Protocol}{section.2}% 13
-\BOOKMARK [1][-]{section.3}{Running Genius }{}% 14
+\BOOKMARK [1][-]{section.3}{Install and Run Genius }{}% 14
 \BOOKMARK [1][-]{section.4}{Scenario Creation}{}% 15
 \BOOKMARK [2][-]{subsection.4.1}{Creating a Domain}{section.4}% 16
 \BOOKMARK [2][-]{subsection.4.2}{Creating a Preference Profile}{section.4}% 17
@@ -37,24 +37,22 @@
 \BOOKMARK [2][-]{subsection.7.3}{Implementing NegotiationParty}{section.7}% 37
 \BOOKMARK [3][-]{subsubsection.7.3.1}{Receiving the Opponent's Action}{subsection.7.3}% 38
 \BOOKMARK [3][-]{subsubsection.7.3.2}{Choosing an Action}{subsection.7.3}% 39
-\BOOKMARK [3][-]{subsubsection.7.3.3}{Overview of useful Classes}{subsection.7.3}% 40
-\BOOKMARK [2][-]{subsection.7.4}{Loading a NegotiationParty}{section.7}% 41
-\BOOKMARK [2][-]{subsection.7.5}{Third party code}{section.7}% 42
-\BOOKMARK [1][-]{section.8}{Creating a BOA Agent}{}% 43
-\BOOKMARK [2][-]{subsection.8.1}{Components of the BOA Framework}{section.8}% 44
-\BOOKMARK [2][-]{subsection.8.2}{Create a BOA Party}{section.8}% 45
-\BOOKMARK [2][-]{subsection.8.3}{Bi-Lateral BOA}{section.8}% 46
-\BOOKMARK [2][-]{subsection.8.4}{Creating New Components}{section.8}% 47
-\BOOKMARK [3][-]{subsubsection.8.4.1}{Parameters}{subsection.8.4}% 48
-\BOOKMARK [3][-]{subsubsection.8.4.2}{Creating a Bidding Strategy}{subsection.8.4}% 49
-\BOOKMARK [3][-]{subsubsection.8.4.3}{Creating an Acceptance Condition}{subsection.8.4}% 50
-\BOOKMARK [3][-]{subsubsection.8.4.4}{Creating an Opponent Model}{subsection.8.4}% 51
-\BOOKMARK [3][-]{subsubsection.8.4.5}{Creating an Opponent Model Strategy}{subsection.8.4}% 52
-\BOOKMARK [2][-]{subsection.8.5}{Compiling BOA Components}{section.8}% 53
-\BOOKMARK [2][-]{subsection.8.6}{Adding a Component to the BOA Repository}{section.8}% 54
-\BOOKMARK [2][-]{subsection.8.7}{Creating a ANAC2013 BOA Agent}{section.8}% 55
-\BOOKMARK [2][-]{subsection.8.8}{Advanced: Converting a BOA Agent to an Agent}{section.8}% 56
-\BOOKMARK [2][-]{subsection.8.9}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.8}% 57
-\BOOKMARK [1][-]{section.9}{Debugging}{}% 58
-\BOOKMARK [2][-]{subsection.9.1}{Source code and javadocs}{section.9}% 59
-\BOOKMARK [1][-]{section.10}{Conclusion}{}% 60
+\BOOKMARK [2][-]{subsection.7.4}{Loading a NegotiationParty}{section.7}% 40
+\BOOKMARK [2][-]{subsection.7.5}{Third party code}{section.7}% 41
+\BOOKMARK [1][-]{section.8}{Creating a BOA Agent}{}% 42
+\BOOKMARK [2][-]{subsection.8.1}{Components of the BOA Framework}{section.8}% 43
+\BOOKMARK [2][-]{subsection.8.2}{Create a BOA Party}{section.8}% 44
+\BOOKMARK [2][-]{subsection.8.3}{Creating BOA Components}{section.8}% 45
+\BOOKMARK [3][-]{subsubsection.8.3.1}{Parameters}{subsection.8.3}% 46
+\BOOKMARK [3][-]{subsubsection.8.3.2}{Creating a Bidding Strategy}{subsection.8.3}% 47
+\BOOKMARK [3][-]{subsubsection.8.3.3}{Creating an Acceptance Condition}{subsection.8.3}% 48
+\BOOKMARK [3][-]{subsubsection.8.3.4}{Creating an Opponent Model}{subsection.8.3}% 49
+\BOOKMARK [3][-]{subsubsection.8.3.5}{Creating an Opponent Model Strategy}{subsection.8.3}% 50
+\BOOKMARK [2][-]{subsection.8.4}{Compiling BOA Components}{section.8}% 51
+\BOOKMARK [2][-]{subsection.8.5}{Adding a Component to the BOA Repository}{section.8}% 52
+\BOOKMARK [2][-]{subsection.8.6}{Creating a ANAC2013 BOA Agent}{section.8}% 53
+\BOOKMARK [2][-]{subsection.8.7}{Advanced: Converting a BOA Agent to an Agent}{section.8}% 54
+\BOOKMARK [2][-]{subsection.8.8}{Advanced: Multi-Acceptance Criteria \(MAC\)}{section.8}% 55
+\BOOKMARK [1][-]{section.9}{Debugging}{}% 56
+\BOOKMARK [2][-]{subsection.9.1}{Source code and javadocs}{section.9}% 57
+\BOOKMARK [1][-]{section.10}{Conclusion}{}% 58
